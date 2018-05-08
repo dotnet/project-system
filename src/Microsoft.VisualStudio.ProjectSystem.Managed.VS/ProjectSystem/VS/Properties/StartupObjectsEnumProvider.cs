@@ -21,13 +21,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         private readonly UnconfiguredProject _unconfiguredProject;
 
         [ImportingConstructor]
-        public StartupObjectsEnumProvider([Import(typeof(VisualStudioWorkspace))] Workspace workspace, UnconfiguredProject unconfiguredProject)
+        public StartupObjectsEnumProvider([Import(typeof(VisualStudioWorkspace))] Workspace workspace, UnconfiguredProject project)
         {
-            Requires.NotNull(workspace, nameof(workspace));
-            Requires.NotNull(unconfiguredProject, nameof(unconfiguredProject));
-
             _workspace = workspace;
-            _unconfiguredProject = unconfiguredProject;
+            _unconfiguredProject = project;
         }
 
         public Task<IDynamicEnumValuesGenerator> GetProviderAsync(IList<NameValuePair> options)
@@ -45,26 +42,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// <summary>
         /// When we implement WinForms support, we need to set this for VB winforms projects
         /// </summary>
-        private bool SearchForEntryPointsInFormsOnly => false;
+        private static bool SearchForEntryPointsInFormsOnly => false;
 
         [ImportingConstructor]
-        public StartupObjectsEnumGenerator(Workspace workspace, UnconfiguredProject unconfiguredProject)
+        public StartupObjectsEnumGenerator(Workspace workspace, UnconfiguredProject project)
         {
-            Requires.NotNull(workspace, nameof(workspace));
-            Requires.NotNull(unconfiguredProject, nameof(unconfiguredProject));
-
             _workspace = workspace;
-            _unconfiguredProject = unconfiguredProject;
+            _unconfiguredProject = project;
         }
 
         public async Task<ICollection<IEnumValue>> GetListedValuesAsync()
         {
-            var project = _workspace.CurrentSolution.Projects.Where(p => PathHelper.IsSamePath(p.FilePath, _unconfiguredProject.FullPath)).First();
-            var compilation = await project.GetCompilationAsync().ConfigureAwait(false);
+            Project project = _workspace.CurrentSolution.Projects.Where(p => PathHelper.IsSamePath(p.FilePath, _unconfiguredProject.FullPath)).First();
+            Compilation compilation = await project.GetCompilationAsync().ConfigureAwait(false);
 
-            var entryPointFinderService = project.LanguageServices.GetService<IEntryPointFinderService>();
-            var entryPoints = entryPointFinderService.FindEntryPoints(compilation.GlobalNamespace, SearchForEntryPointsInFormsOnly);
-            var entryPointNames = entryPoints.Select(e => e.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat.WithGlobalNamespaceStyle(SymbolDisplayGlobalNamespaceStyle.Omitted)));
+            IEntryPointFinderService entryPointFinderService = project.LanguageServices.GetService<IEntryPointFinderService>();
+            IEnumerable<INamedTypeSymbol> entryPoints = entryPointFinderService.FindEntryPoints(compilation.GlobalNamespace, SearchForEntryPointsInFormsOnly);
+            IEnumerable<string> entryPointNames = entryPoints.Select(e => e.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat.WithGlobalNamespaceStyle(SymbolDisplayGlobalNamespaceStyle.Omitted)));
 
             return entryPointNames.Select(name => (IEnumValue)new PageEnumValue(new EnumValue { Name = name, DisplayName = name })).ToArray();
         }

@@ -25,10 +25,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         [ImportingConstructor]
         public ProjectContextCodeModelProvider(IProjectThreadingService threadingService, ICodeModelFactory codeModelFactory, ILanguageServiceHost languageServiceHost)
         {
-            Requires.NotNull(threadingService, nameof(threadingService));
-            Requires.NotNull(codeModelFactory, nameof(codeModelFactory));
-            Requires.NotNull(languageServiceHost, nameof(languageServiceHost));
-
             _threadingService = threadingService;
             _codeModelFactory = codeModelFactory;
             _languageServiceHost = languageServiceHost;

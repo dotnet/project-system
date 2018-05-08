@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Option Explicit On
 Option Strict On
@@ -221,7 +221,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Implements IDisposable
 
             'The path that we're watching
-            Private _directoryPath As String
+            Private ReadOnly _directoryPath As String
 
             'A list of FileWatcherEntry's, one for each file in this directory being watched.
             Private _fileWatcherEntries As New Hashtable 'Key=FileName, maps to FileWatcherEntry
@@ -470,7 +470,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Implements IDisposable
 
             'The file name (no path) of the file being watched.
-            Private _fileNameOnly As String
+            Private ReadOnly _fileNameOnly As String
 
             'The parent DirectoryWatcher for this file.
             Private _directoryWatcher As DirectoryWatcher
@@ -484,7 +484,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             '  notifications, so we receive a single notification rather than 
             '  several (while the file's being written, etc.).  These often come
             '  in multiples.
-            Private Const s_delayInMilliseconds As Integer = 400
+            Private Const DelayInMilliseconds As Integer = 400
 
             Private _listeners As New ArrayList 'Of IFileWatchListener
 
@@ -592,7 +592,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' </summary>
             ''' <remarks></remarks>
             Friend Sub OnFileChanged()
-                Debug.WriteLineIf(Switches.RSEFileWatcher.TraceVerbose, "    FileWatcherEntry: Received file change on main thread: " & ToString & ", Thread = " & Hex(System.Threading.Thread.CurrentThread.GetHashCode) & ", Milliseconds = " & Now.Millisecond)
+                Debug.WriteLineIf(Switches.RSEFileWatcher.TraceVerbose, "    FileWatcherEntry: Received file change on main thread: " & ToString() & ", Thread = " & Hex(System.Threading.Thread.CurrentThread.GetHashCode) & ", Milliseconds = " & Now.Millisecond)
 
                 'It is common to get several notifications about the same file while it's
                 '  being written.  We want to let things settle down a bit before we
@@ -602,14 +602,14 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 If _timer Is Nothing Then
                     'This is the first notification we've seen - create a timer to track the
                     '  delay.
-                    Debug.WriteLineIf(Switches.RSEFileWatcher.TraceVerbose, "        Enabling timer delay of " & s_delayInMilliseconds & "ms.")
+                    Debug.WriteLineIf(Switches.RSEFileWatcher.TraceVerbose, "        Enabling timer delay of " & DelayInMilliseconds & "ms.")
                     _timer = New Timer
-                    _timer.Interval = s_delayInMilliseconds
+                    _timer.Interval = DelayInMilliseconds
                 Else
                     'We already have a timer, so that means we're in the delay stage of
                     '  a previous notification of the same event.  We'll reset the timer
                     '  and keep waiting.
-                    Debug.WriteLineIf(Switches.RSEFileWatcher.TraceVerbose, "        Currently active file change ignored.  Re-enabling timer delay of " & s_delayInMilliseconds & "ms.")
+                    Debug.WriteLineIf(Switches.RSEFileWatcher.TraceVerbose, "        Currently active file change ignored.  Re-enabling timer delay of " & DelayInMilliseconds & "ms.")
                     _timer.Enabled = False
                 End If
 

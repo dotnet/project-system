@@ -40,14 +40,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             foreach (CommandLineSourceFile additionalFile in removed.AdditionalFiles)
             {
-                var fullPath = _project.MakeRooted(additionalFile.Path);
+                string fullPath = _project.MakeRooted(additionalFile.Path);
 
                 RemoveFromContextIfPresent(fullPath, logger);
             }
 
             foreach (CommandLineSourceFile additionalFile in added.AdditionalFiles)
             {
-                var fullPath = _project.MakeRooted(additionalFile.Path);
+                string fullPath = _project.MakeRooted(additionalFile.Path);
 
                 AddToContextIfNotPresent(fullPath, isActiveContext, logger);
             }

@@ -38,15 +38,15 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
 
         'Backing for public properties
-        Private _associatedResourceTypeEditors() As ResourceTypeEditor
-        Private _categoryDisplay As Display
+        Private ReadOnly _associatedResourceTypeEditors() As ResourceTypeEditor
+        Private ReadOnly _categoryDisplay As Display
         Private ReadOnly _localizedName As String
         Private ReadOnly _programmaticName As String
         Private _resourceCount As Integer = 0
         Private _resourceView As ResourceListView.ResourceView = ResourceListView.ResourceView.Thumbnail
         Private _allowNewEntriesInStringTable As Boolean 'applies only to Display.StringTable
         Private _showTypeColumnInStringTable As Boolean 'applies only to Display.StringTable
-        Private _menuCommand as MenuCommand
+        Private ReadOnly _menuCommand as MenuCommand
         Private _addCommand As EventHandler
         Private _sorter As IComparer           ' how to sort resources in the category...
 

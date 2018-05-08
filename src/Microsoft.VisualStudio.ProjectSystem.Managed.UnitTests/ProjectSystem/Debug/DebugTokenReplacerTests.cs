@@ -4,9 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Threading.Tasks;
-using System.Xml;
 
-using Microsoft.Build.Construction;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 
 using Moq;
@@ -40,11 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         [Fact]
         public async Task ReplaceTokensInProfileTests()
         {
-            IUnconfiguredProjectCommonServices services = IUnconfiguredProjectCommonServicesFactory.Create();
-
-            IActiveDebugFrameworkServices activeDebugFramework = Mock.Of<IActiveDebugFrameworkServices>();
-
-            var replacer = new DebugTokenReplacerUnderTest(IUnconfiguredProjectCommonServicesFactory.Create(), _envHelper.Object, activeDebugFramework);
+            var replacer = CreateInstance();
 
             // Tests all the possible replacements. env3 tests that enviroment vars are resolved before msbuild tokens
             var launchProfile = new LaunchProfile()
@@ -56,8 +50,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 WorkingDirectory = "c:\\test\\%env3%",
                 LaunchBrowser = false,
                 LaunchUrl = "http://localhost:8080/$(unknownproperty)",
-                EnvironmentVariables = ImmutableDictionary<string, string>.Empty.Add("var1", "%env1%").Add("var2", "$(msbuildProperty3)"),
-                OtherSettings = ImmutableDictionary<string, object>.Empty.Add("setting1", "%env1%").Add("setting2", true),
+                EnvironmentVariables = ImmutableStringDictionary<string>.EmptyOrdinal.Add("var1", "%env1%").Add("var2", "$(msbuildProperty3)"),
+                OtherSettings = ImmutableStringDictionary<object>.EmptyOrdinal.Add("setting1", "%env1%").Add("setting2", true),
             };
 
             var resolvedProfile = await replacer.ReplaceTokensInProfileAsync(launchProfile);
@@ -77,50 +71,29 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         }
 
         [Theory]
-        [InlineData("this is msbuild: $(msbuildProperty5) %env1%",                      "this is msbuild: Property5 envVariable1",  true)]
-        [InlineData("this is msbuild: $(msbuildProperty5) %env1%",                      "this is msbuild: Property5 %env1%",        false)]
-        [InlineData("this is msbuild: $(UnknownMsbuildProperty) %env1%",                "this is msbuild:  envVariable1",           true)]
-        [InlineData("this is msbuild: $(UnknownMsbuildProperty) %Unknown%",             "this is msbuild:  %Unknown%",              true)]
+        [InlineData("this is msbuild: $(msbuildProperty5) %env1%",                      "this is msbuild: Property5 envVariable1", true)]
+        [InlineData("this is msbuild: $(msbuildProperty5) %env1%",                      "this is msbuild: Property5 %env1%", false)]
+        [InlineData("this is msbuild: $(UnknownMsbuildProperty) %env1%",                "this is msbuild:  envVariable1", true)]
+        [InlineData("this is msbuild: $(UnknownMsbuildProperty) %Unknown%",             "this is msbuild:  %Unknown%", true)]
         [InlineData("this is msbuild: %env3% $(msbuildProperty2) $(msbuildProperty3)",  "this is msbuild: Property6 Property2 Property3", true)]
         [InlineData(null, null, true)]
         [InlineData(" ", " ", true)]
         public async Task ReplaceTokensInStringTests(string input, string expected, bool expandEnvVars)
         {
-            IUnconfiguredProjectCommonServices services = IUnconfiguredProjectCommonServicesFactory.Create();
-
-            IActiveDebugFrameworkServices activeDebugFramework = Mock.Of<IActiveDebugFrameworkServices>();
-            var replacer = new DebugTokenReplacerUnderTest(IUnconfiguredProjectCommonServicesFactory.Create(), _envHelper.Object, activeDebugFramework);
+            var replacer = CreateInstance();
 
             // Test msbuild vars
             string result = await replacer.ReplaceTokensInStringAsync(input, expandEnvVars);
             Assert.Equal(expected, result);
         }
-    }
 
-    internal class DebugTokenReplacerUnderTest : DebugTokenReplacer
-    {
-        public DebugTokenReplacerUnderTest(IUnconfiguredProjectCommonServices commonServices, IEnvironmentHelper envHelper, IActiveDebugFrameworkServices debugFramework)
-            : base(commonServices, envHelper, debugFramework)
+        private DebugTokenReplacer CreateInstance()
         {
+            var projectCommonServices = IUnconfiguredProjectCommonServicesFactory.Create();
+            var environmentHelper = _envHelper.Object;
+            var activeDebugFramework = Mock.Of<IActiveDebugFrameworkServices>();
 
-        }
-
-        protected override Task<IProjectReadAccess> AccessProject()
-        {
-            return Task.FromResult((IProjectReadAccess)new TestProjectReadAccessor());
-        }
-
-        private class TestProjectReadAccessor : IProjectReadAccess
-        {
-            public TestProjectReadAccessor() { }
-            public Task<Microsoft.Build.Evaluation.Project> GetProjectAsync() { return Task.FromResult(CreateMsBuildProject()); }
-            public void Dispose() { }
-
-            private Microsoft.Build.Evaluation.Project CreateMsBuildProject()
-            {
-                // This is default. Can change it to match needs
-                string projectFile =
-                @"<?xml version=""1.0"" encoding=""utf-16""?><Project xmlns=""http://schemas.microsoft.com/developer/msbuild/2003"">
+            string projectFile = @"<Project>
                 <PropertyGroup>
                     <msbuildProperty1>Property1</msbuildProperty1>
                     <msbuildProperty2>Property2</msbuildProperty2>
@@ -131,19 +104,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 </PropertyGroup>
                 </Project>";
 
-                var settings = new XmlReaderSettings()
-                {
-                    DtdProcessing = DtdProcessing.Prohibit,
-                    XmlResolver = null,
-                    CloseInput = false,
-                };
-                using (var reader = XmlReader.Create(new System.IO.StringReader(projectFile), settings))
-                {
-                    var importFile = ProjectRootElement.Create(reader);
-                    return new Microsoft.Build.Evaluation.Project(importFile);
-                }
-            }
+            return new DebugTokenReplacer(projectCommonServices, environmentHelper, activeDebugFramework, IProjectAccessorFactory.Create(projectFile));
         }
-
     }
 }

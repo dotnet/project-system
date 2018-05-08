@@ -330,7 +330,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 #End Region
 
         Private Class DataConnectionDialogFilterer
-            Private _targetProject As EnvDTE.Project
+            Private ReadOnly _targetProject As EnvDTE.Project
 
             Public Sub New(project As EnvDTE.Project)
                 _targetProject = project

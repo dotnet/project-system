@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports EnvDTE
 Imports Common = Microsoft.VisualStudio.Editors.AppDesCommon
@@ -63,15 +63,15 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 #If DEBUG Then
         Private Shared s_applicationDesignerViewCount As Integer = 0
         Private Shared s_instanceCount As Integer = 0
-        Private _myInstanceCount As Integer
+        Private ReadOnly _myInstanceCount As Integer
 #End If
 
         ' explicitly hard-coding these strings since that's what QA's
         '   automation will look for in order to find our various tabs
         '
-        Private Const s_PROP_PAGE_TAB_PREFIX As String = "PropPage_"
-        Private Const s_RESOURCES_AUTOMATION_TAB_NAME As String = "Resources"
-        Private Const s_SETTINGS_AUTOMATION_TAB_NAME As String = "Settings"
+        Private Const PROP_PAGE_TAB_PREFIX As String = "PropPage_"
+        Private Const RESOURCES_AUTOMATION_TAB_NAME As String = "Resources"
+        Private Const SETTINGS_AUTOMATION_TAB_NAME As String = "Settings"
 
         'The designer panels hold the property pages and other designers
         Private _designerPanels As ApplicationDesignerPanel()
@@ -84,7 +84,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
         '*** Project Property related data
         Private _projectObject As Object 'Project's browse object
-        Private _DTEProject As Project 'Project's DTE object
+        Private _dteProject As Project 'Project's DTE object
         Private _specialFiles As IVsProjectSpecialFiles
 
         'Set to true when the application designer window pane has completely initialized the application designer view
@@ -232,7 +232,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                     Dim DTE As DTE
 
                     If TypeOf ExtObject Is Project Then
-                        _DTEProject = CType(ExtObject, Project)
+                        _dteProject = CType(ExtObject, Project)
                         DTE = DTEProject.DTE
                     End If
 
@@ -243,7 +243,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                     _projectFilePath = DTEProject.FullName
                 End If
 
-                If _DTEProject Is Nothing Then
+                If _dteProject Is Nothing Then
                     'Currently we require the DTE Project object.  In the future, if we are allowed in 
                     '  other project types, we'll need to ease this restriction.
                     Debug.Fail("Unable to retrieve DTE Project object")
@@ -282,7 +282,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <remarks></remarks>
         Public ReadOnly Property DTEProject() As Project
             Get
-                Return _DTEProject
+                Return _dteProject
             End Get
         End Property
 
@@ -760,17 +760,17 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                         .EditorCaption = PropertyPages(Index).Title
 
                         .TabTitle = .EditorCaption
-                        .TabAutomationName = s_PROP_PAGE_TAB_PREFIX & PropertyPages(Index).Guid.ToString("N")
+                        .TabAutomationName = PROP_PAGE_TAB_PREFIX & PropertyPages(Index).Guid.ToString("N")
 
                     Else
                         Dim FileName As String = DirectCast(AppDesignerItems(Index - PropertyPages.Length), String)
 
                         .EditFlags = CUInt(_VSRDTFLAGS.RDT_DontAddToMRU)
-                        If System.String.Compare(VisualBasic.Right(FileName, 5), ".resx", StringComparison.OrdinalIgnoreCase) = 0 Then
+                        If String.Compare(VisualBasic.Right(FileName, 5), ".resx", StringComparison.OrdinalIgnoreCase) = 0 Then
                             'Add .resx file with a known editor so user config cannot change
                             .EditorGuid = New Guid(My.Resources.Designer.ResourceEditorFactory_GUID)
                             .EditorCaption = My.Resources.Designer.APPDES_ResourceTabTitle
-                            .TabAutomationName = s_RESOURCES_AUTOMATION_TAB_NAME
+                            .TabAutomationName = RESOURCES_AUTOMATION_TAB_NAME
 
                             'If the resx file doesn't actually exist yet, we have to display the "Click here
                             '  to create it" message instead of the actual editor.
@@ -783,11 +783,11 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                             Else
                                 .CustomViewProvider = New SpecialFileCustomViewProvider(Me, DesignerPanel, __PSFFILEID2.PSFFILEID_AssemblyResource, My.Resources.Designer.APPDES_ClickHereCreateResx)
                             End If
-                        ElseIf System.String.Compare(VisualBasic.Right(FileName, 9), ".settings", StringComparison.OrdinalIgnoreCase) = 0 Then
+                        ElseIf String.Compare(VisualBasic.Right(FileName, 9), ".settings", StringComparison.OrdinalIgnoreCase) = 0 Then
                             'Add .settings file with a known editor so user config cannot change
                             .EditorGuid = New Guid(My.Resources.Designer.SettingsDesignerEditorFactory_GUID)
                             .EditorCaption = My.Resources.Designer.APPDES_SettingsTabTitle
-                            .TabAutomationName = s_SETTINGS_AUTOMATION_TAB_NAME
+                            .TabAutomationName = SETTINGS_AUTOMATION_TAB_NAME
 
                             'If the settings file doesn't actually exist yet, we have to display the "Click here
                             '  to create it" message instead of the actual editor.
@@ -962,7 +962,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
             If ServiceType Is GetType(PropPageDesigner.ConfigurationState) Then
                 If _configurationState Is Nothing Then
-                    _configurationState = New PropPageDesigner.ConfigurationState(_DTEProject, _projectHierarchy, Me)
+                    _configurationState = New PropPageDesigner.ConfigurationState(_dteProject, _projectHierarchy, Me)
                 End If
                 Return _configurationState
             End If

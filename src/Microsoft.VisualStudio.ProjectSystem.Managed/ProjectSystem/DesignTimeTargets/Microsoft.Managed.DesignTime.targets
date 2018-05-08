@@ -93,35 +93,62 @@
 
     <!-- Settings page capability -->
     <ProjectCapability Include="AppSettings" Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'"/>
+  
+    <!-- Publish capability enables the Publish command for the Project -->
+    <ProjectCapability Include="Publish"/>
   </ItemGroup>
 
   <!-- Common Project System rules that override rules defined in msbuild. These are exact copy of the rules defined in msbuild. -->
   <ItemGroup Condition="'$(DefineCommonManagedItemSchemas)' == 'true'">
+
+    <!-- Files/Folders schema -->
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ProjectItemsSchema.xaml">
+      <Context>Project</Context>
+    </PropertyPageSchema>
+    
+    <!-- Files/Folders -->
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)AdditionalFiles.xaml">
+      <Context>File;BrowseObject</Context>
+    </PropertyPageSchema>
+
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ApplicationDefinition.xaml">
+      <Context>File;BrowseObject</Context>
+    </PropertyPageSchema>
+    
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)Compile.xaml;">
       <Context>File</Context>
     </PropertyPageSchema>
+    
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)Compile.BrowseObject.xaml;">
       <Context>BrowseObject</Context>
-    </PropertyPageSchema>
-
-    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)DebuggerGeneral.xaml">
-      <Context>Project</Context>
-    </PropertyPageSchema>
-
-    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)SourceControl.xaml">
-      <Context>Invisible</Context>
-    </PropertyPageSchema>
-
-    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)Folder.xaml">
-      <Context>File;BrowseObject</Context>
     </PropertyPageSchema>
 
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)Content.xaml">
       <Context>File;BrowseObject</Context>
     </PropertyPageSchema>
 
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)CopyUpToDateMarker.xaml">
+      <Context>File</Context>
+    </PropertyPageSchema>
+
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)EmbeddedResource.xaml">
       <Context>File;BrowseObject</Context>
+    </PropertyPageSchema>
+
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)Folder.xaml">
+      <Context>File;BrowseObject</Context>
+    </PropertyPageSchema>
+
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)None.xaml">
+      <Context>File;BrowseObject</Context>
+    </PropertyPageSchema>
+
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)Page.xaml">
+      <Context>File;BrowseObject</Context>
+    </PropertyPageSchema>
+
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)SpecialFolder.xaml">
+      <Context>File;ProjectSubscriptionService</Context>
     </PropertyPageSchema>
 
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)UpToDateCheckInput.xaml">
@@ -135,21 +162,22 @@
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)UpToDateCheckBuilt.xaml">
       <Context>File</Context>
     </PropertyPageSchema>
-
-    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)CopyUpToDateMarker.xaml">
-      <Context>File</Context>
-    </PropertyPageSchema>
-
-    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)SpecialFolder.xaml">
-      <Context>File;ProjectSubscriptionService</Context>
-    </PropertyPageSchema>
-
+    
+    <!-- Project related settings -->
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)AppDesigner.xaml">
       <Context>ProjectSubscriptionService</Context>
     </PropertyPageSchema>
 
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)CompilerCommandLineArgs.xaml">
       <Context>ProjectSubscriptionService</Context>
+    </PropertyPageSchema>
+
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ConfigurationGeneral.xaml">
+      <Context>Project;ProjectSubscriptionService</Context>
+    </PropertyPageSchema>
+    
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)DebuggerGeneral.xaml">
+      <Context>Project</Context>
     </PropertyPageSchema>
 
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)GeneralBrowseObject.xaml">
@@ -160,33 +188,14 @@
       <Context>ConfiguredBrowseObject</Context>
     </PropertyPageSchema>
 
-    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)AdditionalFiles.xaml">
-      <Context>File;BrowseObject</Context>
-    </PropertyPageSchema>
-
-    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)None.xaml">
-      <Context>File;BrowseObject</Context>
-    </PropertyPageSchema>
-
-    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ConfigurationGeneral.xaml">
-      <Context>Project;ProjectSubscriptionService</Context>
-    </PropertyPageSchema>
-
-    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ProjectItemsSchema.xaml">
-      <Context>Project</Context>
-    </PropertyPageSchema>
-
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ProjectDebugger.xaml">
       <Context>Project</Context>
     </PropertyPageSchema>
 
-    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ApplicationDefinition.xaml">
-      <Context>File;BrowseObject</Context>
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)SourceControl.xaml">
+      <Context>Invisible</Context>
     </PropertyPageSchema>
-
-    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)Page.xaml">
-      <Context>File;BrowseObject</Context>
-    </PropertyPageSchema>
+    
   </ItemGroup>
 
   <ItemGroup Condition="'$(DefineCommonManagedReferenceSchemas)' == 'true'">
@@ -259,6 +268,11 @@
     </PropertyPageSchema>
   </ItemGroup>
 
+  <!-- List of external files that trigger design-time builds when they are modified -->
+  <ItemGroup>
+    <AdditionalDesignTimeBuildInput Include="$(ProjectAssetsFile)" />   <!-- NuGet assets file -->
+  </ItemGroup>
+
   <!--
     EmbeddedFiles are source files to be embedded to the PDB. 
     We need to set Visible to false in order to not display duplicate entries in project UI.
@@ -297,9 +311,20 @@
   <!-- This target collects all the resolved references that are used to actually compile. -->
   <Target Name="CollectResolvedCompilationReferencesDesignTime" DependsOnTargets="CompileDesignTime" Returns="@(ReferencePathWithRefAssemblies)" />
   
+  <!-- This target collects all the extra inputs for the up to date check. -->
+  <Target Name="CollectUpToDateCheckInputDesignTime" DependsOnTargets="CompileDesignTime" Returns="@(UpToDateCheckInput)">
+    <ItemGroup>
+      <!-- MSBuild additional compile file, such as the file input cache file -->
+      <UpToDateCheckInput Include="@(CustomAdditionalCompileInputs)"/>
+    </ItemGroup>
+  </Target>
+
+  <!-- This target collects all the extra inputs for the up to date check. -->
+  <Target Name="CollectUpToDateCheckOutputDesignTime" DependsOnTargets="CompileDesignTime" Returns="@(UpToDateCheckOutput)" />
+
   <!-- This target collects all the things built by the project for the up to date check. -->
   <!-- See CopyFileToOutputDirectory target -->
-  <Target Name="CollectBuiltDesignTime" DependsOnTargets="CompileDesignTime" Returns="@(UpToDateCheckBuilt)">
+  <Target Name="CollectUpToDateCheckBuiltDesignTime" DependsOnTargets="CompileDesignTime" Returns="@(UpToDateCheckBuilt)">
     <ItemGroup>
       <!-- Assembly output, bin and obj -->
       <UpToDateCheckBuilt Condition="'$(CopyBuildOutputToOutputDirectory)' != 'false' and '$(SkipCopyBuildProduct)' != 'true'" Include="$(TargetPath)"/>

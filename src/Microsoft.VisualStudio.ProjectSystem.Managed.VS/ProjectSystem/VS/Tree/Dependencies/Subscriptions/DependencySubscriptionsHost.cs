@@ -34,13 +34,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             IActiveConfiguredProjectSubscriptionService activeConfiguredProjectSubscriptionService,
             IActiveProjectConfigurationRefreshService activeProjectConfigurationRefreshService,
             ITargetFrameworkProvider targetFrameworkProvider,
-            IAggregateDependenciesSnapshotProvider aggregateSnapshotProvider)
+            IAggregateDependenciesSnapshotProvider aggregateSnapshotProvider,
+            IUnconfiguredProjectTasksService unconfiguredProjectTasksService)
             : base(commonServices,
                    contextProvider,
                    tasksService,
                    activeConfiguredProjectSubscriptionService,
                    activeProjectConfigurationRefreshService,
-                   targetFrameworkProvider)
+                   targetFrameworkProvider,
+                   unconfiguredProjectTasksService)
         {
             CommonServices = commonServices;
             DependencySubscribers = new OrderPrecedenceImportCollection<IDependencyCrossTargetSubscriber>(
@@ -106,7 +108,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
         [ImportMany]
         private OrderPrecedenceImportCollection<IDependenciesSnapshotFilter> SnapshotFilters { get; }
-        private object _subscribersLock = new object();
+        private readonly object _subscribersLock = new object();
         private IEnumerable<Lazy<ICrossTargetSubscriber>> _subscribers;
         protected override IEnumerable<Lazy<ICrossTargetSubscriber>> Subscribers
         {
@@ -116,7 +118,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 {
                     if (_subscribers == null)
                     {
-                        foreach (var subscriber in DependencySubscribers)
+                        foreach (Lazy<IDependencyCrossTargetSubscriber, IOrderPrecedenceMetadataView> subscriber in DependencySubscribers)
                         {
                             subscriber.Value.DependenciesChanged += OnSubscriberDependenciesChanged;
                         }
@@ -144,7 +146,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
             AggregateSnapshotProvider.RegisterSnapshotProvider(this);
 
-            foreach (var provider in SubTreeProviders)
+            foreach (Lazy<IProjectDependenciesSubTreeProvider, IOrderPrecedenceMetadataView> provider in SubTreeProviders)
             {
                 provider.Value.DependenciesChanged += OnSubtreeProviderDependenciesChanged;
             }
@@ -165,12 +167,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
             SnapshotProviderUnloading?.Invoke(this, new SnapshotProviderUnloadingEventArgs(this));
 
-            foreach (var subscriber in DependencySubscribers)
+            foreach (Lazy<IDependencyCrossTargetSubscriber, IOrderPrecedenceMetadataView> subscriber in DependencySubscribers)
             {
                 subscriber.Value.DependenciesChanged -= OnSubscriberDependenciesChanged;
             }
 
-            foreach (var provider in SubTreeProviders)
+            foreach (Lazy<IProjectDependenciesSubTreeProvider, IOrderPrecedenceMetadataView> provider in SubTreeProviders)
             {
                 provider.Value.DependenciesChanged -= OnSubtreeProviderDependenciesChanged;
             }
@@ -257,7 +259,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 targetFramework = TargetFramework.Any;
             }
 
-            var changes = ImmutableDictionary<ITargetFramework, IDependenciesChanges>.Empty.Add(targetFramework, e.Changes);
+            ImmutableDictionary<ITargetFramework, IDependenciesChanges> changes = ImmutableDictionary<ITargetFramework, IDependenciesChanges>.Empty.Add(targetFramework, e.Changes);
 
             UpdateDependenciesSnapshotAsync(changes, e.Catalogs, activeTargetFramework: null);
         }
@@ -301,7 +303,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             }
         }
 
-        private HashSet<string> GetProjectItemSpecsFromSnapshot(IProjectCatalogSnapshot catalogs)
+        private static HashSet<string> GetProjectItemSpecsFromSnapshot(IProjectCatalogSnapshot catalogs)
         {
             // We don't have catalog snapshot, we're likely updating because one of our project 
             // dependencies changed. Just return 'no data'
@@ -333,7 +335,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     return Task.FromCanceled(token);
                 }
 
-                var snapshot = CurrentSnapshot;
+                IDependenciesSnapshot snapshot = CurrentSnapshot;
                 if (snapshot == null)
                 {
                     return Task.CompletedTask;

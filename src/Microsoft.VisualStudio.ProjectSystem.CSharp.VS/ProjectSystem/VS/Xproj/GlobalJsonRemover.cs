@@ -74,12 +74,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
         public int OnAfterOpenSolution(object pUnkReserved, int fNewSolution)
         {
             UIThreadHelper.VerifyOnUIThread();
-            var dte = _serviceProvider.GetService<DTE2, DTE>();
-            var solution = _serviceProvider.GetService<IVsSolution, SVsSolution>();
+            DTE2 dte = _serviceProvider.GetService<DTE2, DTE>();
+            IVsSolution solution = _serviceProvider.GetService<IVsSolution, SVsSolution>();
             try
             {
                 Verify.HResult(solution.GetSolutionInfo(out string directory, out string solutionFile, out string optsFile));
-                var globalJsonPath = Path.Combine(directory, "global.json");
+                string globalJsonPath = Path.Combine(directory, "global.json");
                 ProjectItem globalJson = dte.Solution.FindProjectItem(globalJsonPath);
                 globalJson?.Delete();
                 try

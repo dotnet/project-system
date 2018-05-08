@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.Runtime.InteropServices
 Imports Microsoft.VisualStudio.OLE.Interop
@@ -9,8 +9,8 @@ Namespace Microsoft.VisualStudio.Editors.AppDesInterop
     <ComVisible(False)> _
     Friend NotInheritable Class NativeMethods
 
-        Private Const s_VB_COMPILER_GUID As String = "019971d6-4685-11d2-b48a-0000f87572eb"
-        Public Shared ReadOnly VBCompilerGuid As Guid = New Guid(s_VB_COMPILER_GUID)
+        Private Const VB_COMPILER_GUID As String = "019971d6-4685-11d2-b48a-0000f87572eb"
+        Public Shared ReadOnly VBCompilerGuid As Guid = New Guid(VB_COMPILER_GUID)
 
         '/ <summary>
         '/     Handle type for HDC's that count against the Win98 limit of five DC's.  HDC's
@@ -84,8 +84,8 @@ Namespace Microsoft.VisualStudio.Editors.AppDesInterop
             Private _connectionPoint2 As ComTypes.IConnectionPoint
             Private _cookie As UInteger
 #If DEBUG Then
-            Private _callStack As String
-            Private _eventInterface As Type
+            Private ReadOnly _callStack As String
+            Private ReadOnly _eventInterface As Type
 #End If
 
 
@@ -290,38 +290,38 @@ Namespace Microsoft.VisualStudio.Editors.AppDesInterop
                 Lib "user32" (hDlg As IntPtr, hCtl As IntPtr, bPrevious As Boolean) As IntPtr
 
 
-        <PreserveSig()> _
+        <PreserveSig()>
         Public Declare Auto Function GetWindow Lib "user32" (Hwnd As IntPtr, uCmd As UInteger) As IntPtr
 
-        <PreserveSig()> _
+        <PreserveSig()>
         Public Declare Auto Function DragQueryFile Lib "shell32" (hDrop As IntPtr, iFile As Integer, lpszFile As String, cch As Integer) As Integer
 
-        <PreserveSig()> _
+        <PreserveSig()>
         Public Declare Function GetUserDefaultLCID Lib "kernel32" () As UInteger
 
-        <PreserveSig()> _
+        <PreserveSig()>
         Public Declare Function GetTopWindow Lib "user32" (Hwnd As IntPtr) As IntPtr
 
-        <PreserveSig()> _
+        <PreserveSig()>
         Public Declare Auto Function SetWindowLong Lib "user32" (hWnd As IntPtr, Index As Integer, Value As IntPtr) As IntPtr
-        <PreserveSig()> _
+        <PreserveSig()>
         Public Declare Auto Function GetWindowLong Lib "user32" (Hwnd As IntPtr, Index As Integer) As IntPtr
 
-        <PreserveSig()> _
+        <PreserveSig()>
         Public Declare Auto Function GetWindowText Lib "user32" (hWnd As IntPtr, lpString As String, nMaxCount As Integer) As Integer
 
-        <DllImport("user32", CharSet:=CharSet.Auto)> _
+        <DllImport("user32", CharSet:=CharSet.Auto)>
         Public Shared Function GetWindowRect(hwnd As IntPtr, ByRef rect As RECT) As Integer
         End Function
 
         Public Declare Function MoveWindow Lib "user32" _
-          (hWnd As IntPtr, _
-            x As Integer, y As Integer, _
-            nWidth As Integer, _
-            nHeight As Integer, _
+          (hWnd As IntPtr,
+            x As Integer, y As Integer,
+            nWidth As Integer,
+            nHeight As Integer,
             bRepaint As Integer) As Integer
 
-        <StructLayout(LayoutKind.Sequential)> _
+        <StructLayout(LayoutKind.Sequential)>
         Public Structure RECT
             Public left As Integer
             Public top As Integer
@@ -329,10 +329,10 @@ Namespace Microsoft.VisualStudio.Editors.AppDesInterop
             Public bottom As Integer
         End Structure
 
-        <PreserveSig()> _
+        <PreserveSig()>
         Public Declare Auto Function IsChild Lib "user32" (hWndParent As IntPtr, hWnd As IntPtr) As Boolean
 
-        <PreserveSig()> _
+        <PreserveSig()>
         Public Declare Auto Function EnableWindow Lib "user32" (hWnd As IntPtr, bEnable As Boolean) As Boolean
 
         '<PreserveSig()> _
@@ -342,10 +342,10 @@ Namespace Microsoft.VisualStudio.Editors.AppDesInterop
         'Public Declare Auto Function SetWindowPos Lib "user32" (Hwnd As IntPtr, HwndInsertAfter As IntPtr, x As Integer, _
         '    y As Integer, cx As Integer, cy As Integer, flags As Integer) As Boolean
 
-        <PreserveSig()> _
+        <PreserveSig()>
         Public Declare Auto Function SystemParametersInfo Lib "user32" (uiAction As UInteger, uiParam As UInteger, pvParam As IntPtr, fWinIni As UInteger) As Integer
 
-        <PreserveSig()> _
+        <PreserveSig()>
         Public Declare Auto Function MsgWaitForMultipleObjects Lib "user32" (nCount As Integer, pHandles As IntPtr, fWaitAll As Boolean, dwMilliSeconds As Integer, dwWakeMask As Integer) As Integer
 
         Public Const GWL_EXSTYLE As Integer = -20
@@ -361,8 +361,9 @@ Namespace Microsoft.VisualStudio.Editors.AppDesInterop
 
         Public Declare Function IsWindowUnicode Lib "user32" (hWnd As IntPtr) As Boolean
 
-        <StructLayout(LayoutKind.Sequential, CharSet:=CharSet.Auto)> _
+        <StructLayout(LayoutKind.Sequential, CharSet:=CharSet.Auto)>
         Public Structure TVITEM
+#Disable Warning IDE1006 ' Naming Styles
             Public item_mask As Integer
             Public item_hItem As IntPtr
             Public item_state As Integer
@@ -373,6 +374,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesInterop
             Public item_iSelectedImage As Integer
             Public item_cChildren As Integer
             Public item_lParam As IntPtr
+#Enable Warning IDE1006 ' Naming Styles
         End Structure
 
         <DllImport("user32")> _

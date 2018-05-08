@@ -19,39 +19,39 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         public LaunchSettings(IEnumerable<ILaunchProfile> profiles, IDictionary<string, object> globalSettings, string activeProfile = null)
         {
             Profiles = ImmutableList<ILaunchProfile>.Empty;
-            foreach (var profile in profiles)
+            foreach (ILaunchProfile profile in profiles)
             {
                 Profiles = Profiles.Add(new LaunchProfile(profile));
             }
 
-            GlobalSettings = globalSettings == null ? ImmutableDictionary<string, object>.Empty : globalSettings.ToImmutableDictionary();
+            GlobalSettings = globalSettings == null ? ImmutableStringDictionary<object>.EmptyOrdinal : globalSettings.ToImmutableDictionary();
             _activeProfileName = activeProfile;
         }
 
         public LaunchSettings(LaunchSettingsData settingsData, string activeProfile = null)
         {
             Profiles = ImmutableList<ILaunchProfile>.Empty;
-            foreach (var profile in settingsData.Profiles)
+            foreach (LaunchProfileData profile in settingsData.Profiles)
             {
                 Profiles = Profiles.Add(new LaunchProfile(profile));
             }
 
-            GlobalSettings = settingsData.OtherSettings == null ? ImmutableDictionary<string, object>.Empty : settingsData.OtherSettings.ToImmutableDictionary();
+            GlobalSettings = settingsData.OtherSettings == null ? ImmutableStringDictionary<object>.EmptyOrdinal : settingsData.OtherSettings.ToImmutableDictionary();
             _activeProfileName = activeProfile;
         }
 
         public LaunchSettings(IWritableLaunchSettings settings)
         {
             Profiles = ImmutableList<ILaunchProfile>.Empty;
-            foreach (var profile in settings.Profiles)
+            foreach (IWritableLaunchProfile profile in settings.Profiles)
             {
                 Profiles = Profiles.Add(new LaunchProfile(profile));
             }
 
             // For global settings we want to make new copies of each entry so that the snapshot remains immutable. If the object implements 
             // ICloneable that is used, otherwise, it is serialized back to json, and a new object rehydrated from that
-            GlobalSettings = ImmutableDictionary<string, object>.Empty;
-            foreach (var kvp in settings.GlobalSettings)
+            GlobalSettings = ImmutableStringDictionary<object>.EmptyOrdinal;
+            foreach (KeyValuePair<string, object> kvp in settings.GlobalSettings)
             {
                 if (kvp.Value is ICloneable clonableObject)
                 {
@@ -71,7 +71,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         public LaunchSettings()
         {
             Profiles = ImmutableList<ILaunchProfile>.Empty;
-            GlobalSettings = ImmutableDictionary<string, object>.Empty;
+            GlobalSettings = ImmutableStringDictionary<object>.EmptyOrdinal;
         }
 
         public ImmutableList<ILaunchProfile> Profiles { get; }

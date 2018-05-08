@@ -1,37 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="ko" original="../UpToDateCheckOutput.xaml">
-    <body>
-      <trans-unit id="Rule|UpToDateCheckOutput|DisplayName">
-        <source>Up-to-date check output</source>
-        <target state="translated">최신 검사 출력</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="Rule|UpToDateCheckOutput|Description">
-        <source>File Properties</source>
-        <target state="translated">파일 속성</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="Category|Advanced|DisplayName">
-        <source>Advanced</source>
-        <target state="translated">고급</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="Category|Misc|DisplayName">
-        <source>Misc</source>
-        <target state="translated">기타</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|FullPath|DisplayName">
-        <source>Full Path</source>
-        <target state="translated">전체 경로</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|FullPath|Description">
-        <source>Location of the file.</source>
-        <target state="translated">파일의 위치입니다.</target>
-        <note />
-      </trans-unit>
-    </body>
+    <body />
   </file>
 </xliff>

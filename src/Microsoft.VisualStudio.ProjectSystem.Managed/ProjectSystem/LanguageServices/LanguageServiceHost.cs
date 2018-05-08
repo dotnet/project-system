@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading;
@@ -17,16 +18,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     ///     Hosts a <see cref="IWorkspaceProjectContext"/> and handles the interaction between the project system and the language service.
     /// </summary>
     [Export(typeof(ILanguageServiceHost))]
+    [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharpLanguageService)]
     internal partial class LanguageServiceHost : OnceInitializedOnceDisposedAsync, ILanguageServiceHost
     {
+#pragma warning disable CA2213 // OnceInitializedOnceDisposedAsync are not tracked corretly by the IDisposeable analyzer
         private readonly SemaphoreSlim _gate = new SemaphoreSlim(initialCount: 1);
+#pragma warning restore CA2213
         private readonly IUnconfiguredProjectCommonServices _commonServices;
         private readonly Lazy<IProjectContextProvider> _contextProvider;
         private readonly IProjectAsynchronousTasksService _tasksService;
         private readonly IActiveConfiguredProjectSubscriptionService _activeConfiguredProjectSubscriptionService;
         private readonly IActiveProjectConfigurationRefreshService _activeProjectConfigurationRefreshService;
         private readonly LanguageServiceHandlerManager _languageServiceHandlerManager;
-
+        private readonly IUnconfiguredProjectTasksService _unconfiguredProjectTasksService;
         private readonly List<IDisposable> _evaluationSubscriptionLinks;
         private readonly List<IDisposable> _designTimeBuildSubscriptionLinks;
         private readonly HashSet<ProjectConfiguration> _projectConfigurationsWithSubscriptions;
@@ -50,21 +54,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                                    [Import(ExportContractNames.Scopes.UnconfiguredProject)]IProjectAsynchronousTasksService tasksService,
                                    IActiveConfiguredProjectSubscriptionService activeConfiguredProjectSubscriptionService,
                                    IActiveProjectConfigurationRefreshService activeProjectConfigurationRefreshService,
-                                   LanguageServiceHandlerManager languageServiceHandlerManager)
+                                   LanguageServiceHandlerManager languageServiceHandlerManager,
+                                   IUnconfiguredProjectTasksService unconfiguredProjectTasksService)
             : base(commonServices.ThreadingService.JoinableTaskContext)
         {
-            Requires.NotNull(contextProvider, nameof(contextProvider));
-            Requires.NotNull(tasksService, nameof(tasksService));
-            Requires.NotNull(activeConfiguredProjectSubscriptionService, nameof(activeConfiguredProjectSubscriptionService));
-            Requires.NotNull(activeProjectConfigurationRefreshService, nameof(activeProjectConfigurationRefreshService));
-            Requires.NotNull(languageServiceHandlerManager, nameof(languageServiceHandlerManager));
-
             _commonServices = commonServices;
             _contextProvider = contextProvider;
             _tasksService = tasksService;
             _activeConfiguredProjectSubscriptionService = activeConfiguredProjectSubscriptionService;
             _activeProjectConfigurationRefreshService = activeProjectConfigurationRefreshService;
             _languageServiceHandlerManager = languageServiceHandlerManager;
+            _unconfiguredProjectTasksService = unconfiguredProjectTasksService;
             _evaluationSubscriptionLinks = new List<IDisposable>();
             _designTimeBuildSubscriptionLinks = new List<IDisposable>();
             _projectConfigurationsWithSubscriptions = new HashSet<ProjectConfiguration>();
@@ -76,23 +76,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
         public object HostSpecificEditAndContinueService => _currentAggregateProjectContext?.ENCProjectConfig;
 
-        [ProjectAutoLoad(ProjectLoadCheckpoint.ProjectFactoryCompleted)]
+        [ProjectAutoLoad(completeBy: ProjectLoadCheckpoint.ProjectFactoryCompleted)]
         [AppliesTo(ProjectCapability.DotNetLanguageService)]
         private Task OnProjectFactoryCompletedAsync()
         {
             return InitializeAsync();
         }
 
-        protected async override Task InitializeCoreAsync(CancellationToken cancellationToken)
+        protected override Task InitializeCoreAsync(CancellationToken cancellationToken)
         {
             if (IsDisposing || IsDisposed)
-                return;
+                return Task.CompletedTask;
 
-            // Don't initialize if we're unloading
-            _tasksService.UnloadCancellationToken.ThrowIfCancellationRequested();
+            _unconfiguredProjectTasksService.PrioritizedProjectLoadedInHostAsync(() =>
+            {
+                return UpdateProjectContextAndSubscriptionsAsync();
+            }).Forget();
 
-            // Update project context and subscriptions.
-            await UpdateProjectContextAndSubscriptionsAsync().ConfigureAwait(false);
+            return Task.CompletedTask;
         }
 
         Task ILanguageServiceHost.InitializeAsync(CancellationToken cancellationToken)
@@ -119,8 +120,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
         private async Task UpdateProjectContextAndSubscriptionsAsync()
         {
-            var previousProjectContext = _currentAggregateProjectContext;
-            var newProjectContext = await UpdateProjectContextAsync().ConfigureAwait(false);
+            AggregateWorkspaceProjectContext previousProjectContext = _currentAggregateProjectContext;
+            AggregateWorkspaceProjectContext newProjectContext = await UpdateProjectContextAsync().ConfigureAwait(false);
 
             if (previousProjectContext != newProjectContext)
             {
@@ -152,7 +153,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 await _commonServices.ThreadingService.SwitchToUIThread();
 
                 string newTargetFramework = null;
-                var projectProperties = await _commonServices.ActiveConfiguredProjectProperties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(false);
+                ConfigurationGeneral projectProperties = await _commonServices.ActiveConfiguredProjectProperties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(false);
 
                 // Check if we have already computed the project context.
                 if (_currentAggregateProjectContext != null)
@@ -175,8 +176,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                     else
                     {
                         // Check if the current project context is up-to-date for the current active and known project configurations.
-                        var activeProjectConfiguration = _commonServices.ActiveConfiguredProject.ProjectConfiguration;
-                        var knownProjectConfigurations = await _commonServices.Project.Services.ProjectConfigurationsService.GetKnownProjectConfigurationsAsync().ConfigureAwait(false);
+                        ProjectConfiguration activeProjectConfiguration = _commonServices.ActiveConfiguredProject.ProjectConfiguration;
+                        IImmutableSet<ProjectConfiguration> knownProjectConfigurations = await _commonServices.Project.Services.ProjectConfigurationsService.GetKnownProjectConfigurationsAsync().ConfigureAwait(false);
                         if (knownProjectConfigurations.All(c => c.IsCrossTargeting()) &&
                             _currentAggregateProjectContext.HasMatchingTargetFrameworks(activeProjectConfiguration, knownProjectConfigurations))
                         {
@@ -213,7 +214,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         {
             await _contextProvider.Value.ReleaseProjectContextAsync(projectContext).ConfigureAwait(false);
 
-            foreach (var innerContext in projectContext.DisposedInnerProjectContexts)
+            foreach (IWorkspaceProjectContext innerContext in projectContext.DisposedInnerProjectContexts)
             {
                 _languageServiceHandlerManager.OnContextReleased(innerContext);
             }
@@ -226,10 +227,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             await _commonServices.ThreadingService.SwitchToUIThread();
             await _tasksService.LoadedProjectAsync(() =>
             {
-                var watchedEvaluationRules = _languageServiceHandlerManager.GetWatchedRules(RuleHandlerType.Evaluation);
-                var watchedDesignTimeBuildRules = _languageServiceHandlerManager.GetWatchedRules(RuleHandlerType.DesignTimeBuild);
+                IEnumerable<string> watchedEvaluationRules = _languageServiceHandlerManager.GetWatchedRules(RuleHandlerType.Evaluation);
+                IEnumerable<string> watchedDesignTimeBuildRules = _languageServiceHandlerManager.GetWatchedRules(RuleHandlerType.DesignTimeBuild);
 
-                foreach (var configuredProject in newProjectContext.InnerConfiguredProjects)
+                foreach (ConfiguredProject configuredProject in newProjectContext.InnerConfiguredProjects)
                 {
                     if (_projectConfigurationsWithSubscriptions.Contains(configuredProject.ProjectConfiguration))
                     {
@@ -262,7 +263,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 await _commonServices.ThreadingService.SwitchToUIThread();
 
                 // Get the inner workspace project context to update for this change.
-                var projectContextToUpdate = _currentAggregateProjectContext.GetInnerProjectContext(update.Value.ProjectConfiguration, out bool isActiveContext);
+                IWorkspaceProjectContext projectContextToUpdate = _currentAggregateProjectContext.GetInnerProjectContext(update.Value.ProjectConfiguration, out bool isActiveContext);
                 if (projectContextToUpdate == null)
                 {
                     return;
@@ -272,7 +273,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             }).ConfigureAwait(false);
         }
 
-        private bool HasTargetFrameworksChanged(IProjectVersionedValue<IProjectSubscriptionUpdate> e)
+        private static bool HasTargetFrameworksChanged(IProjectVersionedValue<IProjectSubscriptionUpdate> e)
         {
             return e.Value.ProjectChanges.TryGetValue(ConfigurationGeneral.SchemaName, out IProjectChangeDescription projectChange) &&
                  projectChange.Difference.ChangedProperties.Contains(ConfigurationGeneral.TargetFrameworksProperty);
@@ -296,7 +297,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
         private void DisposeAndClearSubscriptions()
         {
-            foreach (var link in _evaluationSubscriptionLinks.Concat(_designTimeBuildSubscriptionLinks))
+            foreach (IDisposable link in _evaluationSubscriptionLinks.Concat(_designTimeBuildSubscriptionLinks))
             {
                 link.Dispose();
             }

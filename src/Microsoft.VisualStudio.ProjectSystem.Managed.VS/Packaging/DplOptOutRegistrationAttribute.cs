@@ -10,7 +10,7 @@ namespace Microsoft.VisualStudio.Packaging
     internal sealed class DplOptOutRegistrationAttribute : RegistrationAttribute
     {
         private Guid _projectTypeGuid;
-        private bool _optOutDeferredProjectLoad;
+        private readonly bool _optOutDeferredProjectLoad;
 
         public DplOptOutRegistrationAttribute(string projectTypeGuid, bool optOutDeferredProjectLoad)
         {

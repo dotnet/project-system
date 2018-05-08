@@ -4,7 +4,7 @@
   Name="ConfigurationGeneralBrowseObject"
   DisplayName="General"
   PageTemplate="generic"
-  Description="General"
+  Description="Project Properties"
   OverrideMode= "Replace"
   xmlns="http://schemas.microsoft.com/build/2009/properties">
 
@@ -85,19 +85,31 @@
         <EnumValue Name="OnOutputUpdated" DisplayName="When the build updates the project output" />
     </EnumProperty>
     <StringProperty Name="ReferencePath" DisplayName="Reference Path" Visible="False"/>
-    <StringProperty Name="FileName" DisplayName="Project File" ReadOnly="True">
+    <StringProperty Name="FileName" DisplayName="File Name" ReadOnly="True" Category="Misc" Description="Name of the project file.">
         <StringProperty.DataSource>
             <DataSource Persistence="ProjectFile" PersistedName="MSBuildProjectFile" SourceOfDefaultValue="AfterContext" />
         </StringProperty.DataSource>
     </StringProperty>
-    <StringProperty Name="FullPath" DisplayName="Project Folder" ReadOnly="True">
+    <StringProperty Name="FullPath" DisplayName="Project Folder" ReadOnly="True" Category="Misc" Description="Location of the project file.">
         <StringProperty.DataSource>
             <DataSource Persistence="ProjectFile" PersistedName="ProjectDir" SourceOfDefaultValue="AfterContext" />
         </StringProperty.DataSource>
     </StringProperty>
+    <!-- NOTE: csproj.dll does not provide this property on the browse object, but calls it "FullProjectFileName" behind the scenes. -->
+    <StringProperty Name="FullProjectFileName" DisplayName="Full Path" ReadOnly="True" Category="Misc" Description="Full name of the project file.">
+        <StringProperty.DataSource>
+            <DataSource Persistence="ProjectFile" PersistedName="MSBuildProjectFullPath" SourceOfDefaultValue="AfterContext" />
+        </StringProperty.DataSource>
+    </StringProperty>
+  
     <StringProperty Name="LocalPath" ReadOnly="True" Visible="False">
         <StringProperty.DataSource>
             <DataSource Persistence="ProjectFile" PersistedName="MSBuildProjectDirectory" SourceOfDefaultValue="AfterContext" />
+        </StringProperty.DataSource>
+    </StringProperty>
+    <StringProperty Name="URL" ReadOnly="True" Visible="False">
+        <StringProperty.DataSource>
+            <DataSource Persistence="ProjectFile" PersistedName="MSBuildProjectFullPath" SourceOfDefaultValue="AfterContext" />
         </StringProperty.DataSource>
     </StringProperty>
 

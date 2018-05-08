@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports Microsoft.VisualStudio.Editors.DesignerFramework
 Imports System.Windows.Forms
@@ -20,8 +20,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
         Private Shared s_previousSize As Size = Size.Empty
 
-        Private _projectItemid As UInteger
-        Private _vsHierarchy As IVsHierarchy
+        Private ReadOnly _projectItemid As UInteger
+        Private ReadOnly _vsHierarchy As IVsHierarchy
 
         Public Sub New(ServiceProvider As IServiceProvider, vsHierarchy As IVsHierarchy, ItemId As UInteger)
             MyBase.New(ServiceProvider)
@@ -501,29 +501,29 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         Private Class TypeTVNode
             Inherits TreeNode
 
-            Private _nodeType As NodeType
+            Private ReadOnly _nodeType As NodeType
 
-            Private Const s_DUMMY_ITEM_TEXT As String = " THIS IS THE DUMMY ITEM "
-            Private Const s_assemblyImageIndex As Integer = 0
-            Private Const s_selectedAssemblyImageIndex As Integer = 0
-            Private Const s_namespaceImageIndex As Integer = 1
-            Private Const s_selectedNamespaceImageIndex As Integer = 1
-            Private Const s_typeImageIndex As Integer = 2
-            Private Const s_selectedTypeImageIndex As Integer = 2
+            Private Const DUMMY_ITEM_TEXT As String = " THIS IS THE DUMMY ITEM "
+            Private Const AssemblyImageIndex As Integer = 0
+            Private Const SelectedAssemblyImageIndex As Integer = 0
+            Private Const NamespaceImageIndex As Integer = 1
+            Private Const SelectedNamespaceImageIndex As Integer = 1
+            Private Const TypeImageIndex As Integer = 2
+            Private Const SelectedTypeImageIndex As Integer = 2
 
             Public Sub New(nodeType As NodeType)
                 _nodeType = nodeType
 
                 Select Case nodeType
                     Case NodeType.ASSEMBLY_NODE
-                        ImageIndex = s_assemblyImageIndex
-                        SelectedImageIndex = s_selectedAssemblyImageIndex
+                        ImageIndex = AssemblyImageIndex
+                        SelectedImageIndex = SelectedAssemblyImageIndex
                     Case NodeType.NAMESPACE_NODE
-                        ImageIndex = s_namespaceImageIndex
-                        SelectedImageIndex = s_selectedNamespaceImageIndex
+                        ImageIndex = NamespaceImageIndex
+                        SelectedImageIndex = SelectedNamespaceImageIndex
                     Case NodeType.TYPE_NODE
-                        ImageIndex = s_typeImageIndex
-                        SelectedImageIndex = s_selectedTypeImageIndex
+                        ImageIndex = TypeImageIndex
+                        SelectedImageIndex = SelectedTypeImageIndex
                 End Select
 
             End Sub
@@ -536,7 +536,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
             Public ReadOnly Property HasDummyNode() As Boolean
                 Get
-                    Return Nodes.ContainsKey(s_DUMMY_ITEM_TEXT)
+                    Return Nodes.ContainsKey(DUMMY_ITEM_TEXT)
                 End Get
             End Property
 
@@ -555,13 +555,13 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
             Public Sub AddDummyNode()
                 If IsAssemblyNode() AndAlso Nodes.Count = 0 Then
-                    Nodes.Add(s_DUMMY_ITEM_TEXT, s_DUMMY_ITEM_TEXT)
+                    Nodes.Add(DUMMY_ITEM_TEXT, DUMMY_ITEM_TEXT)
                 End If
             End Sub
 
             Public Sub RemoveDummyNode()
-                If IsAssemblyNode() AndAlso Nodes.ContainsKey(s_DUMMY_ITEM_TEXT) Then
-                    Nodes.RemoveByKey(s_DUMMY_ITEM_TEXT)
+                If IsAssemblyNode() AndAlso Nodes.ContainsKey(DUMMY_ITEM_TEXT) Then
+                    Nodes.RemoveByKey(DUMMY_ITEM_TEXT)
                 End If
             End Sub
 
@@ -614,7 +614,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             s_previousSize = Size
         End Sub
 
-        Private Sub TypePickerDialog_HelpButtonClicked(sender As System.Object, e As System.ComponentModel.CancelEventArgs) Handles MyBase.HelpButtonClicked
+        Private Sub TypePickerDialog_HelpButtonClicked(sender As Object, e As System.ComponentModel.CancelEventArgs) Handles MyBase.HelpButtonClicked
             e.Cancel = True
             ShowHelp()
         End Sub

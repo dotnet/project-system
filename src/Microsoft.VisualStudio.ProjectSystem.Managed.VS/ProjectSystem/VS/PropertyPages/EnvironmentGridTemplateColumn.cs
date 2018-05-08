@@ -14,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             if (frameworkElement != null && frameworkElement is ContentPresenter)
             {
                 var contentPresenter = frameworkElement as ContentPresenter;
-                var textBox = WpfHelper.GetVisualChild<TextBox>(contentPresenter);
+                TextBox textBox = WpfHelper.GetVisualChild<TextBox>(contentPresenter);
                 if (textBox != null)
                 {
                     textBox.SelectAll();

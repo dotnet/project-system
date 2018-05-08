@@ -1,20 +1,23 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <VersionBase Condition="'$(UseVisualStudioVersion)' == 'true'">15.6.0</VersionBase>
-    <VersionBase Condition="'$(UseVisualStudioVersion)' != 'true'">2.6.0</VersionBase>
-    <PreReleaseVersionLabel>beta4</PreReleaseVersionLabel>
+    <VersionBase Condition="'$(UseVisualStudioVersion)' == 'true'">15.8.0</VersionBase>
+    <VersionBase Condition="'$(UseVisualStudioVersion)' != 'true'">2.8.0</VersionBase>
+    <PreReleaseVersionLabel>beta1</PreReleaseVersionLabel>
 
     <!-- Opt-in repo features -->
     <UsingToolVSSDK>true</UsingToolVSSDK>
     <UsingToolIbcOptimization>true</UsingToolIbcOptimization>
 
     <!-- Toolset -->
-    <RoslynToolsRepoToolsetVersion>1.0.0-beta-62615-02</RoslynToolsRepoToolsetVersion>
+    <RoslynToolsRepoToolsetVersion>1.0.0-beta-62705-01</RoslynToolsRepoToolsetVersion>
     <RoslynToolsVsixExpInstallerVersion>1.0.0-beta-62503-02</RoslynToolsVsixExpInstallerVersion>
     <RoslynDependenciesProjectSystemOptimizationDataVersion>2.6.0-beta1-62205-02</RoslynDependenciesProjectSystemOptimizationDataVersion>
-    <VSWhereVersion>2.1.4</VSWhereVersion>
+    <VSWhereVersion>2.3.2</VSWhereVersion>
     <MicrosoftDotNetIBCMergeVersion>4.7.1-alpha-00001</MicrosoftDotNetIBCMergeVersion>
-    <MicrosoftNetCompilersVersion>2.6.0-beta3-62310-01</MicrosoftNetCompilersVersion>
+    <MicrosoftNetCompilersVersion>2.6.1</MicrosoftNetCompilersVersion>
+    <MicrosoftDiaSymReaderPdb2PdbVersion>1.1.0-beta1-62624-01</MicrosoftDiaSymReaderPdb2PdbVersion>
+    <OpenCoverVersion>4.6.519</OpenCoverVersion>
+    <CodecovVersion>1.0.3</CodecovVersion>
 
     <!-- VS SDK -->
     <MicrosoftVisualStudioComponentModelHostVersion>15.0.26606</MicrosoftVisualStudioComponentModelHostVersion>
@@ -50,9 +53,8 @@
     <MicrosoftVisualStudioShellInterop150DesignTimeVersion>15.0.26201</MicrosoftVisualStudioShellInterop150DesignTimeVersion>
     <MicrosoftVisualStudioShellInterop153DesignTimeVersion>15.0.26606</MicrosoftVisualStudioShellInterop153DesignTimeVersion>
     <MicrosoftVisualStudioTemplateWizardInterfaceVersion>8.0.0-alpha</MicrosoftVisualStudioTemplateWizardInterfaceVersion>
-    <MicrosoftVisualStudioThreadingVersion>15.5.13-beta</MicrosoftVisualStudioThreadingVersion>
+    <MicrosoftVisualStudioThreadingVersion>15.5.24</MicrosoftVisualStudioThreadingVersion>
     <MicrosoftVisualStudioThreadingAnalyzersVersion>15.5.13-beta</MicrosoftVisualStudioThreadingAnalyzersVersion>
-    <MicrosoftVisualStudioProjectSystemAnalyzersVersion>15.3.224</MicrosoftVisualStudioProjectSystemAnalyzersVersion>
     <MicrosoftVisualStudioUtilitiesVersion>15.0.26607</MicrosoftVisualStudioUtilitiesVersion>
     <MicrosoftVisualStudioValidationVersion>15.3.32</MicrosoftVisualStudioValidationVersion>
     <MicrosoftVisualStudioVsHelpVersion>15.0.26606-alpha</MicrosoftVisualStudioVsHelpVersion>
@@ -60,23 +62,24 @@
     <MicrosoftVisualStudioXmlEditorVersion>15.0.26606-alpha</MicrosoftVisualStudioXmlEditorVersion>
     <MicrosoftVsDesignerVersion>15.0.26606-alpha</MicrosoftVsDesignerVersion>
     <VsWebSiteInteropVersion>8.0.0-alpha</VsWebSiteInteropVersion>
-    
+
     <!-- CPS -->
-    <MicrosoftVisualStudioProjectSystemSDKVersion>15.6.128-pre</MicrosoftVisualStudioProjectSystemSDKVersion>
+    <MicrosoftVisualStudioProjectSystemSDKVersion>15.7.117-pre</MicrosoftVisualStudioProjectSystemSDKVersion>
+    <MicrosoftVisualStudioProjectSystemAnalyzersVersion>$(MicrosoftVisualStudioProjectSystemSDKVersion)</MicrosoftVisualStudioProjectSystemAnalyzersVersion>
     
     <!-- Roslyn -->
     <MicrosoftVisualStudioLanguageServicesVersion>2.6.0-beta1-62113-02</MicrosoftVisualStudioLanguageServicesVersion>
     <MicrosoftVisualStudioIntegrationTestUtilitiesVersion>2.6.0-beta1-62113-02</MicrosoftVisualStudioIntegrationTestUtilitiesVersion>
     <RoslynIntegrationVsixVersion>2.6.0.6211302</RoslynIntegrationVsixVersion>
-    <MicrosoftNetRoslynDiagnosticsVersion>2.6.0-beta1-62322-01</MicrosoftNetRoslynDiagnosticsVersion>
+    <MicrosoftNetRoslynDiagnosticsVersion>2.6.1-beta1-62702-01</MicrosoftNetRoslynDiagnosticsVersion>
 
     <!-- NuGet -->
     <NuGetSolutionRestoreManagerInteropVersion>4.3.0</NuGetSolutionRestoreManagerInteropVersion>
     <NuGetVisualStudioVersion>4.3.0</NuGetVisualStudioVersion>
-    
+
     <!-- Msbuild -->
     <MicrosoftBuildVersion>15.6.0-preview-000010-1174357</MicrosoftBuildVersion>
-    
+
     <!-- Libs -->
     <NewtonsoftJsonVersion>9.0.1</NewtonsoftJsonVersion>
 
@@ -85,13 +88,13 @@
 
     <!-- Tests -->
     <MoqVersion>4.7.99</MoqVersion>
-    <XUnitAnalyzersVersion>0.7.0</XUnitAnalyzersVersion>
+    <XUnitAnalyzersVersion>0.8.0</XUnitAnalyzersVersion>
   </PropertyGroup>
 
   <PropertyGroup>
     <RestoreSources>
       $(RestoreSources);
-      http://www.myget.org/F/vs-devcore/api/v3/index.json;
+      https://vside.myget.org/F/devcore/api/v3/index.json;
       https://dotnet.myget.org/F/msbuild/api/v3/index.json;
       https://dotnet.myget.org/F/nuget-build/api/v3/index.json;
       https://dotnet.myget.org/F/roslyn/api/v3/index.json;

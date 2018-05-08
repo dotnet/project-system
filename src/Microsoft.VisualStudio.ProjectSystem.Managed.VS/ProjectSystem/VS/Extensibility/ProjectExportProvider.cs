@@ -15,12 +15,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Extensibility
     [AppliesTo(ProjectCapability.DotNet)]
     internal class ProjectExportProvider : IProjectExportProvider
     {
-        private IProjectServiceAccessor ProjectServiceAccesspr { get; }
+        private readonly IProjectServiceAccessor _projectServiceAccessor;
 
         [ImportingConstructor]
         public ProjectExportProvider(IProjectServiceAccessor serviceAccessor)
         {
-            ProjectServiceAccesspr = serviceAccessor;
+            _projectServiceAccessor = serviceAccessor;
         }
 
         /// <summary>
@@ -35,16 +35,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Extensibility
                 throw new ArgumentNullException(nameof(projectFilePath));
             }
 
-            var projectService = ProjectServiceAccesspr.GetProjectService();
+            IProjectService projectService = _projectServiceAccessor.GetProjectService();
             if (projectService == null)
             {
                 return null;
             }
 
-            var unconfiguredProject = projectService.LoadedUnconfiguredProjects
+            UnconfiguredProject project = projectService.LoadedUnconfiguredProjects
                                                     .FirstOrDefault(x => x.FullPath.Equals(projectFilePath,
                                                                             StringComparison.OrdinalIgnoreCase));
-            return unconfiguredProject?.Services.ExportProvider.GetExportedValueOrDefault<T>();
+            return project?.Services.ExportProvider.GetExportedValueOrDefault<T>();
         }
     }
 }

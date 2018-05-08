@@ -80,8 +80,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         public void UniqueSourceFilesPushedToWorkspace()
         {
             var sourceFilesPushedToWorkspace = new HashSet<string>(StringComparers.Paths);
-            Action<string> onSourceFileAdded = s => Assert.True(sourceFilesPushedToWorkspace.Add(s));
-            Action<string> onSourceFileRemoved = s => sourceFilesPushedToWorkspace.Remove(s);
+            void onSourceFileAdded(string s) => Assert.True(sourceFilesPushedToWorkspace.Add(s));
+            void onSourceFileRemoved(string s) => sourceFilesPushedToWorkspace.Remove(s);
 
             var project = UnconfiguredProjectFactory.Create(filePath: @"C:\Myproject.csproj");
             var context = IWorkspaceProjectContextFactory.CreateForSourceFiles(project, onSourceFileAdded, onSourceFileRemoved);
@@ -109,8 +109,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         public void RootedSourceFilesPushedToWorkspace()
         {
             var sourceFilesPushedToWorkspace = new HashSet<string>(StringComparers.Paths);
-            Action<string> onSourceFileAdded = s => Assert.True(sourceFilesPushedToWorkspace.Add(s));
-            Action<string> onSourceFileRemoved = s => sourceFilesPushedToWorkspace.Remove(s);
+            void onSourceFileAdded(string s) => Assert.True(sourceFilesPushedToWorkspace.Add(s));
+            void onSourceFileRemoved(string s) => sourceFilesPushedToWorkspace.Remove(s);
 
             var project = UnconfiguredProjectFactory.Create(filePath: @"C:\ProjectFolder\Myproject.csproj");
             var context = IWorkspaceProjectContextFactory.CreateForSourceFiles(project, onSourceFileAdded, onSourceFileRemoved);

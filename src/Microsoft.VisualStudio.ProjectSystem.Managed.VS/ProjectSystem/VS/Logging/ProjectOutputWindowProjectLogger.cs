@@ -21,10 +21,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Logging
         [ImportingConstructor]
         public ProjectOutputWindowProjectLogger(IProjectThreadingService threadingService, IProjectSystemOptions options, IProjectOutputWindowPaneProvider outputWindowProvider)
         {
-            Requires.NotNull(threadingService, nameof(threadingService));
-            Requires.NotNull(options, nameof(options));
-            Requires.NotNull(outputWindowProvider, nameof(outputWindowProvider));
-
             _threadingService = threadingService;
             _options = options;
             _outputWindowProvider = outputWindowProvider;

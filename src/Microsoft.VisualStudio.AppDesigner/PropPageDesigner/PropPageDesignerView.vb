@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.ComponentModel
 Imports System.ComponentModel.Design
@@ -226,8 +226,8 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         Private _rootDesigner As PropPageDesignerRootDesigner
         Private _projectHierarchy As IVsHierarchy
 
-        Private _UIShellService As IVsUIShell
-        Private _UIShell5Service As IVsUIShell5
+        Private _uiShellService As IVsUIShell
+        Private _uiShell5Service As IVsUIShell5
 
         ' The ConfigurationState object from the project designer.  This is shared among all the prop page designers
         '   for this project designer.
@@ -306,7 +306,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         'resulting from the #if DEBUG
         Private Shared s_propPageDesignerViewCount As Integer = 0
         Private Shared s_instanceCount As Integer
-        Private _myInstanceCount As Integer
+        Private ReadOnly _myInstanceCount As Integer
 #End If
 
         ''' <summary>
@@ -346,15 +346,15 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <remarks></remarks>
         Private ReadOnly Property VsUIShellService() As IVsUIShell
             Get
-                If (_UIShellService Is Nothing) Then
+                If (_uiShellService Is Nothing) Then
                     If VBPackageInstance IsNot Nothing Then
-                        _UIShellService = TryCast(VBPackageInstance.GetService(GetType(IVsUIShell)), IVsUIShell)
+                        _uiShellService = TryCast(VBPackageInstance.GetService(GetType(IVsUIShell)), IVsUIShell)
                     Else
-                        _UIShellService = TryCast(GetService(GetType(IVsUIShell)), IVsUIShell)
+                        _uiShellService = TryCast(GetService(GetType(IVsUIShell)), IVsUIShell)
                     End If
                 End If
 
-                Return _UIShellService
+                Return _uiShellService
             End Get
         End Property
 
@@ -364,23 +364,23 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <remarks></remarks>
         Private ReadOnly Property VsUIShell5Service() As IVsUIShell5
             Get
-                If (_UIShell5Service Is Nothing) Then
+                If (_uiShell5Service Is Nothing) Then
                     Dim VsUiShell As IVsUIShell = VsUIShellService
                     If VsUiShell IsNot Nothing Then
-                        _UIShell5Service = TryCast(VsUiShell, IVsUIShell5)
+                        _uiShell5Service = TryCast(VsUiShell, IVsUIShell5)
                     End If
                 End If
 
-                Return _UIShell5Service
+                Return _uiShell5Service
             End Get
         End Property
 
 
-        Private _DTEProject As EnvDTE.Project
+        Private _dteProject As EnvDTE.Project
 
         Public ReadOnly Property DTEProject() As EnvDTE.Project
             Get
-                Return _DTEProject
+                Return _dteProject
             End Get
         End Property
 
@@ -434,14 +434,14 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <param name="IsConfigPage"></param>
         ''' <remarks></remarks>
         Public Sub Init(DTEProject As EnvDTE.Project, PropPage As OleInterop.IPropertyPage, PropPageSite As PropertyPageSite, Hierarchy As IVsHierarchy, IsConfigPage As Boolean)
-            Debug.Assert(_DTEProject Is Nothing, "Init() called twice?")
+            Debug.Assert(_dteProject Is Nothing, "Init() called twice?")
 
             Debug.Assert(DTEProject IsNot Nothing, "DTEProject is Nothing")
             Debug.Assert(PropPage IsNot Nothing)
             Debug.Assert(PropPageSite IsNot Nothing)
             Debug.Assert(Hierarchy IsNot Nothing)
 
-            _DTEProject = DTEProject
+            _dteProject = DTEProject
             _loadedPage = PropPage
             _loadedPageSite = PropPageSite
             _projectHierarchy = Hierarchy

@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.ComponentModel.Design
 Imports System.Drawing
@@ -28,7 +28,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
 
 
         ' The maximal amount of files that can be added at one shot. (copied from other VS features)
-        Private Const s_VSDPLMAXFILES As Integer = 200
+        Private Const VSDPLMAXFILES As Integer = 200
 
         Private s_imageService As IVsImageService2
 
@@ -700,7 +700,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
 
             Dim MaxPathName As Integer = win.MAX_PATH + 1
             If MutiSelect Then
-                MaxPathName = (win.MAX_PATH + 1) * s_VSDPLMAXFILES
+                MaxPathName = (win.MAX_PATH + 1) * VSDPLMAXFILES
             End If
 
             Dim vsOpenFileName As VSOPENFILENAMEW()
@@ -1334,9 +1334,14 @@ Namespace Microsoft.VisualStudio.Editors.Common
 
             Dim objIsReferenceSupported As Object = Nothing
             Try
-                VSErrorHandler.ThrowOnFailure(Hierarchy.GetProperty(VSITEMID.ROOT, CInt(__VSHPROPID3.VSHPROPID_WebReferenceSupported), objIsReferenceSupported))
-                If objIsReferenceSupported IsNot Nothing AndAlso TypeOf objIsReferenceSupported Is Boolean Then
-                    Return CType(objIsReferenceSupported, Boolean)
+                Dim hr = Hierarchy.GetProperty(VSITEMID.ROOT, CInt(__VSHPROPID3.VSHPROPID_WebReferenceSupported), objIsReferenceSupported)
+                If hr <> VSConstants.DISP_E_MEMBERNOTFOUND AndAlso
+                    hr <> VSConstants.E_NOTIMPL Then
+
+                    VSErrorHandler.ThrowOnFailure(hr)
+                    If objIsReferenceSupported IsNot Nothing AndAlso TypeOf objIsReferenceSupported Is Boolean Then
+                        Return CType(objIsReferenceSupported, Boolean)
+                    End If
                 End If
             Catch ex As NotImplementedException
                 Return True

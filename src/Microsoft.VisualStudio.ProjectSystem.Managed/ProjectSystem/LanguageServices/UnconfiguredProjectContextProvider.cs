@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
-using Microsoft.VisualStudio.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 {
@@ -23,11 +22,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         private readonly object _gate = new object();
         private readonly IUnconfiguredProjectCommonServices _commonServices;
         private readonly Lazy<IWorkspaceProjectContextFactory> _contextFactory;
-        private readonly IProjectAsyncLoadDashboard _asyncLoadDashboard;
-        private readonly ITaskScheduler _taskScheduler;
         private readonly List<AggregateWorkspaceProjectContext> _contexts = new List<AggregateWorkspaceProjectContext>();
         private readonly IProjectHostProvider _projectHostProvider;
         private readonly IActiveConfiguredProjectsProvider _activeConfiguredProjectsProvider;
+        private readonly ISafeProjectGuidService _projectGuidService;
         private readonly IUnconfiguredProjectHostObject _unconfiguredProjectHostObject;
         private readonly Dictionary<ConfiguredProject, IWorkspaceProjectContext> _configuredProjectContextsMap = new Dictionary<ConfiguredProject, IWorkspaceProjectContext>();
         private readonly Dictionary<ConfiguredProject, IConfiguredProjectHostObject> _configuredProjectHostObjectsMap = new Dictionary<ConfiguredProject, IConfiguredProjectHostObject>();
@@ -35,25 +33,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         [ImportingConstructor]
         public UnconfiguredProjectContextProvider(IUnconfiguredProjectCommonServices commonServices,
                                                  Lazy<IWorkspaceProjectContextFactory> contextFactory,
-                                                 IProjectAsyncLoadDashboard asyncLoadDashboard,
-                                                 ITaskScheduler taskScheduler,
                                                  IProjectHostProvider projectHostProvider,
-                                                 IActiveConfiguredProjectsProvider activeConfiguredProjectsProvider)
+                                                 IActiveConfiguredProjectsProvider activeConfiguredProjectsProvider,
+                                                 ISafeProjectGuidService projectGuidService)
         {
-            Requires.NotNull(commonServices, nameof(commonServices));
-            Requires.NotNull(contextFactory, nameof(contextFactory));
-            Requires.NotNull(asyncLoadDashboard, nameof(asyncLoadDashboard));
-            Requires.NotNull(taskScheduler, nameof(taskScheduler));
-            Requires.NotNull(projectHostProvider, nameof(projectHostProvider));
-            Requires.NotNull(activeConfiguredProjectsProvider, nameof(activeConfiguredProjectsProvider));
-
             _commonServices = commonServices;
             _contextFactory = contextFactory;
-            _asyncLoadDashboard = asyncLoadDashboard;
-            _taskScheduler = taskScheduler;
             _projectHostProvider = projectHostProvider;
             _activeConfiguredProjectsProvider = activeConfiguredProjectsProvider;
-
+            _projectGuidService = projectGuidService;
             _unconfiguredProjectHostObject = _projectHostProvider.UnconfiguredProjectHostObject;
         }
 
@@ -61,7 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         {
             EnsureInitialized();
 
-            var context = await CreateProjectContextAsyncCore().ConfigureAwait(false);
+            AggregateWorkspaceProjectContext context = await CreateProjectContextAsyncCore().ConfigureAwait(false);
             if (context == null)
                 return null;
 
@@ -69,7 +57,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             {
                 // There's a race here, by the time we've created the project context,
                 // the project could have been renamed, handle this.
-                var projectData = GetProjectData();
+                ProjectData projectData = GetProjectData();
 
                 context.SetProjectFilePathAndDisplayName(projectData.FullPath, projectData.DisplayName);
                 _contexts.Add(context);
@@ -99,7 +87,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             await _commonServices.ThreadingService.SwitchToUIThread();
 
             // We don't want to dispose the inner workspace contexts that are still being used by other active aggregate contexts.
-            Func<IWorkspaceProjectContext, bool> shouldDisposeInnerContext = c => !usedProjectContexts.Contains(c);
+            bool shouldDisposeInnerContext(IWorkspaceProjectContext c) => !usedProjectContexts.Contains(c);
 
             context.Dispose(shouldDisposeInnerContext);
         }
@@ -116,15 +104,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             }
 
             var unusedConfiguredProjects = new HashSet<ConfiguredProject>(_configuredProjectContextsMap.Keys);
-            foreach (var context in _contexts)
+            foreach (AggregateWorkspaceProjectContext context in _contexts)
             {
-                foreach (var configuredProject in context.InnerConfiguredProjects)
+                foreach (ConfiguredProject configuredProject in context.InnerConfiguredProjects)
                 {
                     unusedConfiguredProjects.Remove(configuredProject);
                 }
             }
 
-            foreach (var configuredProject in unusedConfiguredProjects)
+            foreach (ConfiguredProject configuredProject in unusedConfiguredProjects)
             {
                 _configuredProjectContextsMap.Remove(configuredProject);
                 _configuredProjectHostObjectsMap.Remove(configuredProject);
@@ -146,9 +134,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         {
             lock (_gate)
             {
-                var projectData = GetProjectData();
+                ProjectData projectData = GetProjectData();
 
-                foreach (var context in _contexts)
+                foreach (AggregateWorkspaceProjectContext context in _contexts)
                 {
                     context.SetProjectFilePathAndDisplayName(projectData.FullPath, projectData.DisplayName);
                 }
@@ -165,15 +153,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 
             return (string)await properties.LanguageServiceName.GetValueAsync()
                                                                .ConfigureAwait(false);
-        }
-
-        private async Task<Guid> GetProjectGuidAsync()
-        {
-            ConfigurationGeneral properties = await _commonServices.ActiveConfiguredProjectProperties.GetConfigurationGeneralPropertiesAsync()
-                                                                                                     .ConfigureAwait(false);
-            Guid.TryParse((string)await properties.ProjectGuid.GetValueAsync().ConfigureAwait(false), out Guid guid);
-
-            return guid;
         }
 
         private async Task<string> GetTargetPathAsync()
@@ -228,71 +207,68 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             if (string.IsNullOrEmpty(languageName))
                 return null;
 
-            Guid projectGuid = await GetProjectGuidAsync().ConfigureAwait(false);
+            Guid projectGuid = await _projectGuidService.GetProjectGuidAsync()
+                                                        .ConfigureAwait(false);
+
             string targetPath = await GetTargetPathAsync().ConfigureAwait(false);
             if (string.IsNullOrEmpty(targetPath))
                 return null;
 
-            // Don't initialize until the project has been loaded into the IDE and available in Solution Explorer
-            await _asyncLoadDashboard.ProjectLoadedInHostWithCancellation(_commonServices.Project).ConfigureAwait(false);
 
             // TODO: https://github.com/dotnet/roslyn-project-system/issues/353
-            return await _taskScheduler.RunAsync(TaskSchedulerPriority.UIThreadBackgroundPriority, async () =>
-            {
-                await _commonServices.ThreadingService.SwitchToUIThread();
+            await _commonServices.ThreadingService.SwitchToUIThread();
 
-                var projectData = GetProjectData();
+                ProjectData projectData = GetProjectData();
 
-                // Get the set of active configured projects ignoring target framework.
+            // Get the set of active configured projects ignoring target framework.
 #pragma warning disable CS0618 // Type or member is obsolete
-                var configuredProjectsMap = await _activeConfiguredProjectsProvider.GetActiveConfiguredProjectsMapAsync().ConfigureAwait(true);
+                ImmutableDictionary<string, ConfiguredProject> configuredProjectsMap = await _activeConfiguredProjectsProvider.GetActiveConfiguredProjectsMapAsync().ConfigureAwait(true);
 #pragma warning restore CS0618 // Type or member is obsolete
 
                 // Get the unconfigured project host object (shared host object).
                 var configuredProjectsToRemove = new HashSet<ConfiguredProject>(_configuredProjectHostObjectsMap.Keys);
-                var activeProjectConfiguration = _commonServices.ActiveConfiguredProject.ProjectConfiguration;
+                ProjectConfiguration activeProjectConfiguration = _commonServices.ActiveConfiguredProject.ProjectConfiguration;
 
-                var innerProjectContextsBuilder = ImmutableDictionary.CreateBuilder<string, IWorkspaceProjectContext>();
+                ImmutableDictionary<string, IWorkspaceProjectContext>.Builder innerProjectContextsBuilder = ImmutableDictionary.CreateBuilder<string, IWorkspaceProjectContext>();
                 string activeTargetFramework = string.Empty;
                 IConfiguredProjectHostObject activeIntellisenseProjectHostObject = null;
 
-                foreach (var kvp in configuredProjectsMap)
+                foreach (KeyValuePair<string, ConfiguredProject> kvp in configuredProjectsMap)
                 {
-                    var targetFramework = kvp.Key;
-                    var configuredProject = kvp.Value;
+                    string targetFramework = kvp.Key;
+                    ConfiguredProject configuredProject = kvp.Value;
                     if (!TryGetConfiguredProjectState(configuredProject, out IWorkspaceProjectContext workspaceProjectContext, out IConfiguredProjectHostObject configuredProjectHostObject))
                     {
                         // Get the target path for the configured project.
-                        var projectProperties = configuredProject.Services.ExportProvider.GetExportedValue<ProjectProperties>();
-                        var configurationGeneralProperties = await projectProperties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(true);
+                        ProjectProperties projectProperties = configuredProject.Services.ExportProvider.GetExportedValue<ProjectProperties>();
+                        ConfigurationGeneral configurationGeneralProperties = await projectProperties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(true);
                         targetPath = (string)await configurationGeneralProperties.TargetPath.GetValueAsync().ConfigureAwait(true);
-                        var targetFrameworkMoniker = (string)await configurationGeneralProperties.TargetFrameworkMoniker.GetValueAsync().ConfigureAwait(true);
-                        var displayName = GetDisplayName(configuredProject, projectData, targetFramework);
+                        string targetFrameworkMoniker = (string)await configurationGeneralProperties.TargetFrameworkMoniker.GetValueAsync().ConfigureAwait(true);
+                        string displayName = GetDisplayName(configuredProject, projectData, targetFramework);
                         configuredProjectHostObject = _projectHostProvider.GetConfiguredProjectHostObject(_unconfiguredProjectHostObject, displayName, targetFrameworkMoniker);
 
-                        // TODO: https://github.com/dotnet/roslyn-project-system/issues/353
-                        await _commonServices.ThreadingService.SwitchToUIThread();
-                        workspaceProjectContext = _contextFactory.Value.CreateProjectContext(languageName, displayName, projectData.FullPath, projectGuid, configuredProjectHostObject, targetPath);
+                    // TODO: https://github.com/dotnet/roslyn-project-system/issues/353
+                    await _commonServices.ThreadingService.SwitchToUIThread();
+                    workspaceProjectContext = _contextFactory.Value.CreateProjectContext(languageName, displayName, projectData.FullPath, projectGuid, configuredProjectHostObject, targetPath);
 
-                        // By default, set "LastDesignTimeBuildSucceeded = false" to turn off diagnostics until first design time build succeeds for this project.
-                        workspaceProjectContext.LastDesignTimeBuildSucceeded = false;
+                    // By default, set "LastDesignTimeBuildSucceeded = false" to turn off diagnostics until first design time build succeeds for this project.
+                    workspaceProjectContext.LastDesignTimeBuildSucceeded = false;
 
-                        AddConfiguredProjectState(configuredProject, workspaceProjectContext, configuredProjectHostObject);
-                    }
-
-                    innerProjectContextsBuilder.Add(targetFramework, workspaceProjectContext);
-
-                    if (activeIntellisenseProjectHostObject == null && configuredProject.ProjectConfiguration.Equals(activeProjectConfiguration))
-                    {
-                        activeIntellisenseProjectHostObject = configuredProjectHostObject;
-                        activeTargetFramework = targetFramework;
-                    }
+                    AddConfiguredProjectState(configuredProject, workspaceProjectContext, configuredProjectHostObject);
                 }
 
-                _unconfiguredProjectHostObject.ActiveIntellisenseProjectHostObject = activeIntellisenseProjectHostObject;
+                innerProjectContextsBuilder.Add(targetFramework, workspaceProjectContext);
 
-                return new AggregateWorkspaceProjectContext(innerProjectContextsBuilder.ToImmutable(), configuredProjectsMap, activeTargetFramework, _unconfiguredProjectHostObject);
-            });
+                if (activeIntellisenseProjectHostObject == null && configuredProject.ProjectConfiguration.Equals(activeProjectConfiguration))
+                {
+                    activeIntellisenseProjectHostObject = configuredProjectHostObject;
+                    activeTargetFramework = targetFramework;
+                }
+            }
+
+            _unconfiguredProjectHostObject.ActiveIntellisenseProjectHostObject = activeIntellisenseProjectHostObject;
+
+            return new AggregateWorkspaceProjectContext(innerProjectContextsBuilder.ToImmutable(), configuredProjectsMap, activeTargetFramework, _unconfiguredProjectHostObject);
         }
 
         private static string GetDisplayName(ConfiguredProject configuredProject, ProjectData projectData, string targetFramework)

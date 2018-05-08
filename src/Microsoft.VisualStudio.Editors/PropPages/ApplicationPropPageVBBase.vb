@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.ComponentModel
 Imports System.ComponentModel.Design
@@ -41,7 +41,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Protected Friend m_CommonControls As CommonControls
 #End Region
 
-        Protected m_IconBrowseText As String
+        Protected IconBrowseText As String
 
         'Property names
         Protected Const Const_ApplicationIcon As String = "ApplicationIcon"
@@ -56,7 +56,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             InitializeComponent()
 
-            m_IconBrowseText = My.Resources.Designer.PPG_BrowseText
+            IconBrowseText = My.Resources.Designer.PPG_BrowseText
         End Sub
 
 #Region "Icon combobox"
@@ -89,7 +89,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             'Now add the <browse> entry
             If ProjectProperties.OutputType <> VSLangProj.prjOutputType.prjOutputTypeLibrary Then
-                ApplicationIconCombobox.Items.Add(m_IconBrowseText)
+                ApplicationIconCombobox.Items.Add(IconBrowseText)
             End If
         End Sub
 
@@ -198,7 +198,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Returns true if the text is the special "Browse" text for the icon combobox
         ''' </summary>
         Protected Overrides Function IconEntryIsBrowse(EntryText As String) As Boolean
-            Return EntryText IsNot Nothing AndAlso EntryText.Equals(m_IconBrowseText, StringComparison.OrdinalIgnoreCase)
+            Return EntryText IsNot Nothing AndAlso EntryText.Equals(IconBrowseText, StringComparison.OrdinalIgnoreCase)
         End Function
 
 #End Region
@@ -321,10 +321,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         Protected Class ApplicationTypeInfo
 
-            Private _applicationType As ApplicationTypes
-            Private _displayName As String
-            Private _name As String 'Non-localized name
-            Private _supportedInExpress As Boolean
+            Private ReadOnly _applicationType As ApplicationTypes
+            Private ReadOnly _displayName As String
+            Private ReadOnly _name As String 'Non-localized name
+            Private ReadOnly _supportedInExpress As Boolean
 
             ' Basic references need to be added to the project when the user changed the type of the application.
             '  We should maintain it to be the same as the list in the project templates.
@@ -443,7 +443,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
                 ' Non-localized name to match
                 Private _names As New Dictionary(Of String, Boolean)
-                Private _mustBeSupportedInExpressSKUs As Boolean
+                Private ReadOnly _mustBeSupportedInExpressSKUs As Boolean
 
                 ''' <summary>
                 ''' Create a new filter predicate
@@ -474,7 +474,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             ''' Does a given ApplicationTypeInfo instance have the same application type as I was constructed with?
             ''' </summary>
             Private Class AppTypePredicate
-                Private _appTypeToFind As ApplicationTypes
+                Private ReadOnly _appTypeToFind As ApplicationTypes
 
                 Friend Sub New(appType As ApplicationTypes)
                     _appTypeToFind = appType

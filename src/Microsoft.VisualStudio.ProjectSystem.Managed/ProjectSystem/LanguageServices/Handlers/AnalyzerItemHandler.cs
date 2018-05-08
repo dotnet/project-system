@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 
 using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
@@ -23,7 +22,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         private readonly IWorkspaceProjectContext _context;
         private readonly HashSet<string> _paths = new HashSet<string>(StringComparers.Paths);
 
-        [ImportingConstructor]
         public AnalyzerItemHandler(UnconfiguredProject project, IWorkspaceProjectContext context)
         {
             Requires.NotNull(project, nameof(project));
@@ -42,14 +40,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             foreach (CommandLineAnalyzerReference analyzer in removed.AnalyzerReferences)
             {
-                var fullPath = _project.MakeRooted(analyzer.FilePath);
+                string fullPath = _project.MakeRooted(analyzer.FilePath);
 
                 RemoveFromContextIfPresent(fullPath, logger);
             }
 
             foreach (CommandLineAnalyzerReference analyzer in added.AnalyzerReferences)
             {
-                var fullPath = _project.MakeRooted(analyzer.FilePath);
+                string fullPath = _project.MakeRooted(analyzer.FilePath);
 
                 AddToContextIfNotPresent(fullPath, logger);
             }

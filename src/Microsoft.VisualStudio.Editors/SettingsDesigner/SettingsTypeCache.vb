@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports Microsoft.VisualStudio.Shell.Interop
 Imports Microsoft.VSDesigner
@@ -14,32 +14,32 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
         Private _multiTargetService As MultiTargetService
         Private _typeResolutionService As ComponentModel.Design.ITypeResolutionService
-        Private _caseSensitive As Boolean
+        Private ReadOnly _caseSensitive As Boolean
 
         ' The list of types that we always know how to find. 
-        Private ReadOnly _wellKnownTypes() As Type = { _
-                                                    GetType(Boolean), _
-                                                    GetType(Byte), _
-                                                    GetType(Char), _
-                                                    GetType(DateTime), _
-                                                    GetType(Decimal), _
-                                                    GetType(Double), _
-                                                    GetType(Guid), _
-                                                    GetType(Short), _
-                                                    GetType(Integer), _
-                                                    GetType(Long), _
-                                                    GetType(SByte), _
-                                                    GetType(Single), _
-                                                    GetType(TimeSpan), _
-                                                    GetType(UShort), _
-                                                    GetType(UInteger), _
-                                                    GetType(ULong), _
-                                                    GetType(Drawing.Color), _
-                                                    GetType(Drawing.Font), _
-                                                    GetType(Drawing.Point), _
-                                                    GetType(Drawing.Size), _
-                                                    GetType(String), _
-                                                    GetType(Specialized.StringCollection) _
+        Private ReadOnly _wellKnownTypes() As Type = {
+                                                    GetType(Boolean),
+                                                    GetType(Byte),
+                                                    GetType(Char),
+                                                    GetType(Date),
+                                                    GetType(Decimal),
+                                                    GetType(Double),
+                                                    GetType(Guid),
+                                                    GetType(Short),
+                                                    GetType(Integer),
+                                                    GetType(Long),
+                                                    GetType(SByte),
+                                                    GetType(Single),
+                                                    GetType(TimeSpan),
+                                                    GetType(UShort),
+                                                    GetType(UInteger),
+                                                    GetType(ULong),
+                                                    GetType(Drawing.Color),
+                                                    GetType(Drawing.Font),
+                                                    GetType(Drawing.Point),
+                                                    GetType(Drawing.Size),
+                                                    GetType(String),
+                                                    GetType(Specialized.StringCollection)
                                                             }
 
         ''' <summary>
@@ -128,9 +128,9 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <remarks></remarks>
         Private Function ResolveType(persistedSettingTypeName As String, caseSensitive As Boolean) As Type
             Dim t As Type = Nothing
-            If System.String.Equals(persistedSettingTypeName, SettingsSerializer.CultureInvariantVirtualTypeNameConnectionString, StringComparison.Ordinal) Then
+            If String.Equals(persistedSettingTypeName, SettingsSerializer.CultureInvariantVirtualTypeNameConnectionString, StringComparison.Ordinal) Then
                 Return GetType(VSDesignerPackage.SerializableConnectionString)
-            ElseIf System.String.Equals(persistedSettingTypeName, SettingsSerializer.CultureInvariantVirtualTypeNameWebReference, StringComparison.Ordinal) Then
+            ElseIf String.Equals(persistedSettingTypeName, SettingsSerializer.CultureInvariantVirtualTypeNameWebReference, StringComparison.Ordinal) Then
                 t = GetType(String)
             Else
                 t = _typeResolutionService.GetType(persistedSettingTypeName, False, Not caseSensitive)

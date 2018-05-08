@@ -1,13 +1,15 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
-
+using Microsoft.Build.Evaluation;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.Shell;
@@ -33,10 +35,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         private readonly IActiveConfiguredProjectSubscriptionService _activeConfiguredProjectSubscriptionService;
         private readonly IProjectTreeProvider _fileSystemTreeProvider;
 
+#pragma warning disable CA2213 // OnceInitializedOnceDisposedAsync are not tracked corretly by the IDisposeable analyzer
         private CancellationTokenSource _watchedFileResetCancellationToken;
         private ITaskDelayScheduler _taskDelayScheduler;
-        private IVsFileChangeEx _fileChangeService;
         private IDisposable _treeWatcher;
+#pragma warning restore CA2213
+        private IVsFileChangeEx _fileChangeService;
         private uint _filechangeCookie;
         private string _fileBeingWatched;
         private byte[] _previousContentsHash;
@@ -94,8 +98,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         {
             await InitializeAsync().ConfigureAwait(false);
 
-            var treeSnapshot = dataFlowUpdate.Value.Item1;
-            var newTree = treeSnapshot.Tree;
+            IProjectTreeSnapshot treeSnapshot = dataFlowUpdate.Value.Item1;
+            IProjectTree newTree = treeSnapshot.Tree;
             if (newTree == null)
             {
                 return;
@@ -108,8 +112,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             }
 
             // NOTE: Project lock file path may be null
-            var projectUpdate = dataFlowUpdate.Value.Item2;
-            var projectLockFilePath = GetProjectAssetsFilePath(newTree, projectUpdate);
+            IProjectSubscriptionUpdate projectUpdate = dataFlowUpdate.Value.Item2;
+            string projectLockFilePath = GetProjectAssetsFilePath(newTree, projectUpdate);
 
             // project.json may have been renamed to {projectName}.project.json or in the case of the project.assets.json,
             // the immediate path could have changed. In either case, change the file watcher.
@@ -133,7 +137,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             await _projectTasksService.LoadedProjectAsync(() =>
                 {
                     // The tree source to get changes to the tree so that we can identify when the assets file changes.
-                    var treeSource = _fileSystemTreeProvider.Tree.SyncLinkOptions();
+                    ProjectDataSources.SourceBlockAndLink<IProjectVersionedValue<IProjectTreeSnapshot>> treeSource = _fileSystemTreeProvider.Tree.SyncLinkOptions();
 
                     // The property source used to get the value of the $ProjectAssetsFile property so that we can identify the location of the assets file.
                     var sourceLinkOptions = new StandardRuleDataflowLinkOptions
@@ -142,7 +146,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                         PropagateCompletion = true
                     };
 
-                    var propertySource = _activeConfiguredProjectSubscriptionService.ProjectRuleSource.SourceBlock.SyncLinkOptions(sourceLinkOptions);
+                    ProjectDataSources.SourceBlockAndLink<IProjectVersionedValue<IProjectSubscriptionUpdate>> propertySource = _activeConfiguredProjectSubscriptionService.ProjectRuleSource.SourceBlock.SyncLinkOptions(sourceLinkOptions);
                     var target = new ActionBlock<IProjectVersionedValue<Tuple<IProjectTreeSnapshot, IProjectSubscriptionUpdate>>>(DataFlow_ChangedAsync);
 
                     // Join the two sources so that we get synchronized versions of the data.
@@ -169,7 +173,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
             try
             {
-                using (var hasher = System.Security.Cryptography.SHA256.Create())
+                using (var hasher = SHA256.Create())
                 using (FileStream file = File.OpenRead(path))
                 {
                     file.Position = 0;
@@ -183,22 +187,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             return hash;
         }
 
-        private string GetProjectAssetsFilePath(IProjectTree newTree, IProjectSubscriptionUpdate projectUpdate)
+        private static string GetProjectAssetsFilePath(IProjectTree newTree, IProjectSubscriptionUpdate projectUpdate)
         {
-            var projectFilePath = projectUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.MSBuildProjectFullPathProperty, null);
+            string projectFilePath = projectUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.MSBuildProjectFullPathProperty, null);
 
             // First check to see if the project has a project.json.
             IProjectTree projectJsonNode = FindProjectJsonNode(newTree, projectFilePath);
             if (projectJsonNode != null)
             {
-                var projectDirectory = Path.GetDirectoryName(projectFilePath);
-                var projectLockJsonFilePath = Path.ChangeExtension(PathHelper.Combine(projectDirectory, projectJsonNode.Caption), ".lock.json");
+                string projectDirectory = Path.GetDirectoryName(projectFilePath);
+                string projectLockJsonFilePath = Path.ChangeExtension(PathHelper.Combine(projectDirectory, projectJsonNode.Caption), ".lock.json");
                 return projectLockJsonFilePath;
             }
 
             // If there is no project.json then get the patch to obj\project.assets.json file which is generated for projects
             // with <PackageReference> items.
-            var objDirectory = projectUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.BaseIntermediateOutputPathProperty, null);
+            string objDirectory = projectUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.BaseIntermediateOutputPathProperty, null);
 
             if (string.IsNullOrEmpty(objDirectory))
             {
@@ -207,18 +211,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             }
 
             objDirectory = PathHelper.MakeRooted(projectFilePath, objDirectory);
-            var projectAssetsFilePath = PathHelper.Combine(objDirectory, "project.assets.json");
+            string projectAssetsFilePath = PathHelper.Combine(objDirectory, "project.assets.json");
             return projectAssetsFilePath;
         }
 
-        private IProjectTree FindProjectJsonNode(IProjectTree newTree, string projectFilePath)
+        private static IProjectTree FindProjectJsonNode(IProjectTree newTree, string projectFilePath)
         {
             if (newTree.TryFindImmediateChild("project.json", out IProjectTree projectJsonNode))
             {
                 return projectJsonNode;
             }
 
-            var projectName = Path.GetFileNameWithoutExtension(projectFilePath);
+            string projectName = Path.GetFileNameWithoutExtension(projectFilePath);
             if (newTree.TryFindImmediateChild($"{projectName}.project.json", out projectJsonNode))
             {
                 return projectJsonNode;
@@ -288,14 +292,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                     cancellationToken.ThrowIfCancellationRequested();
                     await _projectServices.Project.Services.ProjectAsynchronousTasks.LoadedProjectAsync(async () =>
                         {
-                            using (var access = await _projectServices.ProjectLockService.WriteLockAsync(cancellationToken))
+                            using (ProjectWriteLockReleaser access = await _projectServices.ProjectLockService.WriteLockAsync(cancellationToken))
                             {
                                 // notify all the loaded configured projects
-                                var currentProjects = _projectServices.Project.LoadedConfiguredProjects;
-                                foreach (var configuredProject in currentProjects)
+                                IEnumerable<ConfiguredProject> currentProjects = _projectServices.Project.LoadedConfiguredProjects;
+                                foreach (ConfiguredProject configuredProject in currentProjects)
                                 {
                                     // Inside a write lock, we should get back to the same thread.
-                                    var project = await access.GetProjectAsync(configuredProject, cancellationToken).ConfigureAwait(true);
+                                    Project project = await access.GetProjectAsync(configuredProject, cancellationToken).ConfigureAwait(true);
                                     project.MarkDirty();
                                     configuredProject.NotifyProjectChange();
                                 }

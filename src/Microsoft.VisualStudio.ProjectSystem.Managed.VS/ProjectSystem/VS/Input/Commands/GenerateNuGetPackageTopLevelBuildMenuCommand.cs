@@ -16,16 +16,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
     {
         [ImportingConstructor]
         public GenerateNuGetPackageTopLevelBuildMenuCommand(
-            UnconfiguredProject unconfiguredProject,
+            UnconfiguredProject project,
             IProjectThreadingService threadingService,
             SVsServiceProvider serviceProvider,
             GeneratePackageOnBuildPropertyProvider generatePackageOnBuildPropertyProvider)
-            : base(unconfiguredProject, threadingService, serviceProvider, generatePackageOnBuildPropertyProvider)
+            : base(project, threadingService, serviceProvider, generatePackageOnBuildPropertyProvider)
         {
         }
 
         protected override bool ShouldHandle(IProjectTree node) => true;
         protected override string GetCommandText() =>
-            string.Format(VSResources.PackSelectedProjectCommand, Path.GetFileNameWithoutExtension(UnconfiguredProject.FullPath));
+            string.Format(VSResources.PackSelectedProjectCommand, Path.GetFileNameWithoutExtension(Project.FullPath));
     }
 }

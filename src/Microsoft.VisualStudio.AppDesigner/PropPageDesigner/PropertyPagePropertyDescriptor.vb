@@ -19,11 +19,11 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 
         'The property descriptor for the Project or Config property we wrap
         Private _propDesc As PropertyDescriptor
-        Private _typeConverter As TypeConverter
-        Private _displayName As String
-        Private _name As String
-        Private _propertyType As Type
-        Private _isReadOnly As Boolean
+        Private ReadOnly _typeConverter As TypeConverter
+        Private ReadOnly _displayName As String
+        Private ReadOnly _name As String
+        Private ReadOnly _propertyType As Type
+        Private ReadOnly _isReadOnly As Boolean
 
         ''' <summary>
         ''' Constructs a PropertyDescriptor using the wrapped properties property descriptor

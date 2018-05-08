@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         private const string LongReferencePrefix = "--reference:";
 
         [ImportMany]
-        private IEnumerable<Action<string, ImmutableArray<CommandLineSourceFile>, ImmutableArray<CommandLineReference>, ImmutableArray<string>>> _handlers = null;
+        private readonly IEnumerable<Action<string, ImmutableArray<CommandLineSourceFile>, ImmutableArray<CommandLineReference>, ImmutableArray<string>>> _handlers = null;
 
         [ImportingConstructor]
         public FSharpParseBuildOptions() { }
@@ -30,10 +30,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             var metadataReferences = new List<CommandLineReference>();
             var commandLineOptions = new List<string>();
 
-            foreach (var commandLineArgument in commandLineArgs)
+            foreach (string commandLineArgument in commandLineArgs)
             {
-                var args = commandLineArgument.Split(';');
-                foreach (var arg in args)
+                string[] args = commandLineArgument.Split(';');
+                foreach (string arg in args)
                 {
                     if (arg.StartsWith(HyphenReferencePrefix))
                     {
@@ -53,7 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                     else if (!(arg.StartsWith("-") || arg.StartsWith("/")))
                     {
                         // not an option, should be a regular file
-                        var extension = Path.GetExtension(arg).ToLowerInvariant();
+                        string extension = Path.GetExtension(arg).ToLowerInvariant();
                         switch (extension)
                         {
                             case ".fs":
@@ -90,7 +90,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         {
             if (added is FSharpBuildOptions fscAdded)
             {
-                foreach (var handler in _handlers)
+                foreach (Action<string, ImmutableArray<CommandLineSourceFile>, ImmutableArray<CommandLineReference>, ImmutableArray<string>> handler in _handlers)
                 {
                     handler?.Invoke(binPath, fscAdded.SourceFiles, fscAdded.MetadataReferences, fscAdded.CompileOptions);
                 }

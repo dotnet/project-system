@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports Microsoft.VisualStudio.Editors.Common
 Imports Microsoft.VisualStudio.Editors.MyApplication
@@ -32,26 +32,26 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
 
         Protected Const STARTUPOBJECT_SubMain As String = "Sub Main"
 
-        Private Const s_VB_EXTENSION As String = ".vb"
+        Private Const VB_EXTENSION As String = ".vb"
 
-        Private Const s_BUILDACTION_PAGE As String = "Page"
-        Private Const s_BUILDACTION_APPLICATIONDEFINITION As String = "ApplicationDefinition"
+        Private Const BUILDACTION_PAGE As String = "Page"
+        Private Const BUILDACTION_APPLICATIONDEFINITION As String = "ApplicationDefinition"
 
 
 #Region "User-defined properties for this page"
 
-        Private Const s_PROPID_StartupObjectOrUri As Integer = 100
-        Private Const s_PROPNAME_StartupObjectOrUri As String = "StartupObjectOrUri"
+        Private Const PROPID_StartupObjectOrUri As Integer = 100
+        Private Const PROPNAME_StartupObjectOrUri As String = "StartupObjectOrUri"
 
-        Private Const s_PROPID_ShutDownMode As Integer = 101
-        Private Const s_PROPNAME_ShutDownMode As String = "ShutdownMode"
+        Private Const PROPID_ShutDownMode As Integer = 101
+        Private Const PROPNAME_ShutDownMode As String = "ShutdownMode"
 
-        Private Const s_PROPID_UseApplicationFramework As Integer = 102
-        Private Const s_PROPNAME_UseApplicationFramework As String = "UseApplicationFramework"
+        Private Const PROPID_UseApplicationFramework As Integer = 102
+        Private Const PROPNAME_UseApplicationFramework As String = "UseApplicationFramework"
 
         'This property is added by the WPF flavor as an extended property
-        Private Const s_PROPID_HostInBrowser As Integer = 103
-        Private Const s_PROPNAME_HostInBrowser As String = "HostInBrowser"
+        Private Const PROPID_HostInBrowser As Integer = 103
+        Private Const PROPNAME_HostInBrowser As String = "HostInBrowser"
 
 #End Region
 
@@ -183,7 +183,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
                     '  will still cause a file checkout, it just won't be grouped together if there are
                     '  any other files needing to be checked out at the same time.
                     list.Add(New PropertyControlData(
-                        s_PROPID_StartupObjectOrUri, s_PROPNAME_StartupObjectOrUri,
+                        PROPID_StartupObjectOrUri, PROPNAME_StartupObjectOrUri,
                         StartupObjectOrUriComboBox,
                         AddressOf SetStartupObjectOrUriIntoUI, AddressOf GetStartupObjectOrUriFromUI,
                         ControlDataFlags.UserPersisted Or ControlDataFlags.NoOptimisticFileCheckout,
@@ -201,7 +201,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
 
                     'ShutdownMode (user-defined)
                     list.Add(New PropertyControlData(
-                        s_PROPID_ShutDownMode, s_PROPNAME_ShutDownMode,
+                        PROPID_ShutDownMode, PROPNAME_ShutDownMode,
                         ShutdownModeComboBox,
                         AddressOf SetShutdownModeIntoUI, AddressOf GetShutdownModeFromUI,
                         ControlDataFlags.UserPersisted Or ControlDataFlags.PersistedInApplicationDefinitionFile,
@@ -210,7 +210,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
                     'UseApplicationFramework (user-defined)
                     'Use RefreshAllPropertiesWhenChanged to force other property controls to get re-enabled/disabled when this changes
                     list.Add(New PropertyControlData(
-                        s_PROPID_UseApplicationFramework, s_PROPNAME_UseApplicationFramework, UseApplicationFrameworkCheckBox,
+                        PROPID_UseApplicationFramework, PROPNAME_UseApplicationFramework, UseApplicationFrameworkCheckBox,
                         AddressOf SetUseApplicationFrameworkIntoUI, AddressOf GetUseApplicationFrameworkFromUI,
                         ControlDataFlags.UserPersisted Or ControlDataFlags.RefreshAllPropertiesWhenChanged,
                         New Control() {WindowsAppGroupBox}))
@@ -218,13 +218,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
                     'HostInBrowser (Avalon flavor extended property)
                     '  Tells whether the project is an XBAP app
                     list.Add(New PropertyControlData(
-                        s_PROPID_HostInBrowser, s_PROPNAME_HostInBrowser, Nothing,
+                        PROPID_HostInBrowser, PROPNAME_HostInBrowser, Nothing,
                         ControlDataFlags.Hidden))
 
                     ' ApplicationManifest - added simply to enable flavoring visibility of the button
                     list.Add(New PropertyControlData(VsProjPropId90.VBPROJPROPID_ApplicationManifest, "ApplicationManifest", Nothing, ControlDataFlags.Hidden))
 
-                    m_TargetFrameworkPropertyControlData = New TargetFrameworkPropertyControlData(
+                    TargetFrameworkPropertyControlData = New TargetFrameworkPropertyControlData(
                         VsProjPropId100.VBPROJPROPID_TargetFrameworkMoniker,
                         ApplicationPropPage.Const_TargetFrameworkMoniker,
                         TargetFrameworkComboBox,
@@ -233,7 +233,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
                         ControlDataFlags.ProjectMayBeReloadedDuringPropertySet Or ControlDataFlags.NoOptimisticFileCheckout,
                         New Control() {TargetFrameworkLabel})
 
-                    list.Add(m_TargetFrameworkPropertyControlData)
+                    list.Add(TargetFrameworkPropertyControlData)
 
                     m_ControlData = list.ToArray()
                 End If
@@ -558,7 +558,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' <param name="Enable"></param>
         ''' <remarks></remarks>
         Private Sub EnableUseApplicationFrameworkCheckBox(Enable As Boolean)
-            GetPropertyControlData(s_PROPID_UseApplicationFramework).EnableControls(Enable)
+            GetPropertyControlData(PROPID_UseApplicationFramework).EnableControls(Enable)
         End Sub
 
         Private Enum TriState
@@ -747,7 +747,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
                         'We only do this if the build action is actually set to None.  We'll assume if it was set to
                         '  anything else that the user intended it that way.
                         If DTEUtils.GetBuildAction(foundAppDefinition) = VSLangProj.prjBuildAction.prjBuildActionNone Then
-                            DTEUtils.SetBuildActionAsString(foundAppDefinition, s_BUILDACTION_APPLICATIONDEFINITION)
+                            DTEUtils.SetBuildActionAsString(foundAppDefinition, BUILDACTION_APPLICATIONDEFINITION)
                         End If
                     End If
 
@@ -870,8 +870,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' <remarks></remarks>
         <Serializable()>
         Friend MustInherit Class StartupObjectOrUri
-            Private _value As String
-            Private _description As String
+            Private ReadOnly _value As String
+            Private ReadOnly _description As String
 
             Public Sub New(value As String, description As String)
                 If value Is Nothing Then
@@ -1286,7 +1286,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
                 If IO.Path.GetExtension(projectitem.FileNames(1)).Equals(".xaml", StringComparison.OrdinalIgnoreCase) Then
                     'We only want .xaml files with BuildAction="Page"
                     Dim CurrentBuildAction As String = DTEUtils.GetBuildActionAsString(projectitem)
-                    If CurrentBuildAction IsNot Nothing AndAlso s_BUILDACTION_PAGE.Equals(CurrentBuildAction, StringComparison.OrdinalIgnoreCase) Then
+                    If CurrentBuildAction IsNot Nothing AndAlso BUILDACTION_PAGE.Equals(CurrentBuildAction, StringComparison.OrdinalIgnoreCase) Then
                         'Build action is correct.
 
                         'Is the item inside the project folders (instead of, say, a link to an external file)?
@@ -1346,8 +1346,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' </summary>
         ''' <remarks></remarks>
         Friend Class ShutdownMode
-            Private _value As String
-            Private _description As String
+            Private ReadOnly _value As String
+            Private ReadOnly _description As String
 
             Public Sub New(value As String, description As String)
                 If value Is Nothing Then
@@ -1486,13 +1486,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' </remarks>
         Public Overrides Function GetUserDefinedPropertyDescriptor(PropertyName As String) As PropertyDescriptor
             Select Case PropertyName
-                Case s_PROPNAME_StartupObjectOrUri
+                Case PROPNAME_StartupObjectOrUri
                     Return New UserPropertyDescriptor(PropertyName, GetType(StartupObjectOrUri))
 
-                Case s_PROPNAME_ShutDownMode
+                Case PROPNAME_ShutDownMode
                     Return New UserPropertyDescriptor(PropertyName, GetType(String))
 
-                Case s_PROPNAME_UseApplicationFramework
+                Case PROPNAME_UseApplicationFramework
                     'Note: Need to specify Int32 instead of TriState enum because undo/redo code doesn't
                     '  handle the enum properly.
                     Return New UserPropertyDescriptor(PropertyName, GetType(Integer))
@@ -1516,7 +1516,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
             '  doing a refresh will not re-enable them.  Instead, we show an error value inside the control to the user.
 
             Select Case PropertyName
-                Case s_PROPNAME_StartupObjectOrUri
+                Case PROPNAME_StartupObjectOrUri
                     Try
                         If IsStartupObjectMissing() Then
                             Value = PropertyControlData.MissingProperty
@@ -1531,14 +1531,14 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
                         End If
                     End Try
 
-                Case s_PROPNAME_ShutDownMode
+                Case PROPNAME_ShutDownMode
                     Try
                         Value = GetShutdownModeFromStorage()
                     Catch ex As Exception When ReportWithoutCrash(ex, NameOf(ReadUserDefinedProperty), NameOf(ApplicationPropPageVBWPF))
                         Value = ""
                     End Try
 
-                Case s_PROPNAME_UseApplicationFramework
+                Case PROPNAME_UseApplicationFramework
                     Try
                         Value = GetUseApplicationFrameworkFromStorage()
                     Catch ex As Exception When ReportWithoutCrash(ex, NameOf(ReadUserDefinedProperty), NameOf(ApplicationPropPageVBWPF))
@@ -1561,13 +1561,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' <remarks></remarks>
         Public Overrides Function WriteUserDefinedProperty(PropertyName As String, Value As Object) As Boolean
             Select Case PropertyName
-                Case s_PROPNAME_StartupObjectOrUri
+                Case PROPNAME_StartupObjectOrUri
                     SetStartupObjectOrUriValueIntoStorage(CType(Value, StartupObjectOrUri))
 
-                Case s_PROPNAME_ShutDownMode
+                Case PROPNAME_ShutDownMode
                     SetShutdownModeIntoStorage(CType(Value, String))
 
-                Case s_PROPNAME_UseApplicationFramework
+                Case PROPNAME_UseApplicationFramework
                     SetUseApplicationFrameworkIntoStorage(CType(Value, TriState))
 
                 Case Else
@@ -1647,7 +1647,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         End Function
 
         Private Function GetExpectedApplicationEventsFileName(appDotXamlFilename As String) As String
-            Return appDotXamlFilename & s_VB_EXTENSION
+            Return appDotXamlFilename & VB_EXTENSION
         End Function
 
         Private Function CreateApplicationEventsFile(parent As ProjectItem) As ProjectItem
@@ -1663,7 +1663,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
 
             'Now find the item that was added (for some reason, AddFromTemplate won't return this
             '  to us).
-            Dim newProjectItem As ProjectItem = FindDependentFile(parent, s_VB_EXTENSION)
+            Dim newProjectItem As ProjectItem = FindDependentFile(parent, VB_EXTENSION)
             If newProjectItem Is Nothing Then
                 Throw New PropertyPageException(My.Resources.Designer.PPG_Unexpected)
             End If
@@ -1682,7 +1682,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
                 Dim appXamlProjectItem As ProjectItem = FindApplicationXamlProjectItem(True)
 
                 'Look for a dependent .vb file, this should be the normal case
-                Dim dependentVBItem As ProjectItem = FindDependentFile(appXamlProjectItem, s_VB_EXTENSION)
+                Dim dependentVBItem As ProjectItem = FindDependentFile(appXamlProjectItem, VB_EXTENSION)
 
                 If dependentVBItem Is Nothing Then
                     'If none, then also look for a file with the same name as the Application.xaml file (+ .vb) in either the
@@ -1844,7 +1844,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
 #Region "XBAP projects"
 
         Private Function IsXBAP() As Boolean
-            Dim pcd As PropertyControlData = GetPropertyControlData(s_PROPID_HostInBrowser)
+            Dim pcd As PropertyControlData = GetPropertyControlData(PROPID_HostInBrowser)
             If pcd.IsSpecialValue Then
                 'HostInBrowser property not available.  This shouldn't happen except in
                 '  unit tests.

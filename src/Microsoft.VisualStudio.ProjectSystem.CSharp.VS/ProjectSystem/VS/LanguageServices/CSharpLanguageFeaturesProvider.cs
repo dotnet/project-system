@@ -59,7 +59,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         {
             Requires.NotNullOrEmpty(name, nameof(name));
 
-            var identifier = string.Concat(name.Select(c => IsValidIdentifierChar(c) ? c : '_'));
+            string identifier = string.Concat(name.Select(c => IsValidIdentifierChar(c) ? c : '_'));
             if (!IsValidFirstIdentifierChar(identifier[0]))
             {
                 identifier = '_' + identifier;
@@ -122,13 +122,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 
         private static bool IsValidIdentifierChar(char c)
         {
-            var category = CharUnicodeInfo.GetUnicodeCategory(c);
+            UnicodeCategory category = CharUnicodeInfo.GetUnicodeCategory(c);
             return s_identifierCharCategories.Contains(category);
         }
 
         private static bool IsValidFirstIdentifierChar(char c)
         {
-            var category = CharUnicodeInfo.GetUnicodeCategory(c);
+            UnicodeCategory category = CharUnicodeInfo.GetUnicodeCategory(c);
             return s_firstIdentifierCharCategories.Contains(category);
         }
     }

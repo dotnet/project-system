@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 'This is the advanced compiler options page for VB only.
 
@@ -94,7 +94,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Format baseaddress value into VB hex notation
         ''' </summary>
-        Private Function ToHexAddress(BaseAddress As UInt64) As String
+        Private Function ToHexAddress(BaseAddress As ULong) As String
             Debug.Assert(BaseAddress >= 0 AndAlso BaseAddress <= UInteger.MaxValue, "Invalid baseaddress value")
 
             Return "&H" & String.Format("{0:X8}", CUInt(BaseAddress))

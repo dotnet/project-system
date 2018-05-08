@@ -7,11 +7,15 @@ namespace Microsoft.Build.Construction
 {
     internal static class ProjectRootElementFactory
     {
-        public static ProjectRootElement Create(string xml = "<Project/>")
+        public static ProjectRootElement Create(string xml = null)
         {
-            var reader = XmlReader.Create(new StringReader(xml));
+            if (string.IsNullOrEmpty(xml))
+                xml = "<Project/>";
 
-            return ProjectRootElement.Create(reader);
+            using (var reader = XmlReader.Create(new StringReader(xml)))
+            {
+                return ProjectRootElement.Create(reader);
+            }
         }
     }
 }

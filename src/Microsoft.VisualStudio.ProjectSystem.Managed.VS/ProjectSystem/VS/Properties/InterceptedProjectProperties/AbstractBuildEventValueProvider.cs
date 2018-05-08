@@ -15,11 +15,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
 
         protected AbstractBuildEventValueProvider(
             IProjectLockService projectLockService,
-            UnconfiguredProject unconfiguredProject,
+            UnconfiguredProject project,
             AbstractBuildEventHelper helper)
         {
             _projectLockService = projectLockService;
-            _unconfiguredProject = unconfiguredProject;
+            _unconfiguredProject = project;
             _helper = helper;
         }
 
@@ -27,9 +27,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
             string evaluatedPropertyValue,
             IProjectProperties defaultProperties)
         {
-            using (var access = await _projectLockService.ReadLockAsync())
+            using (ProjectLockReleaser access = await _projectLockService.ReadLockAsync())
             {
-                var projectXml = await access.GetProjectXmlAsync(_unconfiguredProject.FullPath).ConfigureAwait(true);
+                Microsoft.Build.Construction.ProjectRootElement projectXml = await access.GetProjectXmlAsync(_unconfiguredProject.FullPath).ConfigureAwait(true);
                 return await _helper.GetPropertyAsync(projectXml, defaultProperties).ConfigureAwait(true);
             }
         }
@@ -39,9 +39,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
             IProjectProperties defaultProperties,
             IReadOnlyDictionary<string, string> dimensionalConditions = null)
         {
-            using (var access = await _projectLockService.WriteLockAsync())
+            using (ProjectWriteLockReleaser access = await _projectLockService.WriteLockAsync())
             {
-                var projectXml = await access.GetProjectXmlAsync(_unconfiguredProject.FullPath).ConfigureAwait(true);
+                Microsoft.Build.Construction.ProjectRootElement projectXml = await access.GetProjectXmlAsync(_unconfiguredProject.FullPath).ConfigureAwait(true);
                 await _helper.SetPropertyAsync(unevaluatedPropertyValue, defaultProperties, projectXml).ConfigureAwait(true);
             }
 

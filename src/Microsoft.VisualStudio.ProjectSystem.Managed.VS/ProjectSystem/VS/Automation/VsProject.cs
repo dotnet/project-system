@@ -38,11 +38,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             ActiveConfiguredProject<ProjectProperties> projectProperties,
             UnconfiguredProject project)
         {
-            Requires.NotNull(vsProject, nameof(vsProject));
-            Requires.NotNull(threadingService, nameof(threadingService));
-            Requires.NotNull(projectProperties, nameof(projectProperties));
-            Requires.NotNull(project, nameof(project));
-
             _vsProject = vsProject;
             _threadingService = threadingService;
             _projectProperties = projectProperties;
@@ -75,7 +70,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         {
             get
             {
-                var imports = ImportsImpl.FirstOrDefault();
+                Lazy<Imports, IOrderPrecedenceMetadataView> imports = ImportsImpl.FirstOrDefault();
                 if (imports != null)
                 {
                     return imports.Value;
@@ -91,7 +86,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         {
             get
             {
-                var vsprojectevent = VSProjectEventsImpl.FirstOrDefault();
+                Lazy<VSProjectEvents, IOrderPrecedenceMetadataView> vsprojectevent = VSProjectEventsImpl.FirstOrDefault();
                 if (vsprojectevent != null)
                 {
                     return vsprojectevent.Value;

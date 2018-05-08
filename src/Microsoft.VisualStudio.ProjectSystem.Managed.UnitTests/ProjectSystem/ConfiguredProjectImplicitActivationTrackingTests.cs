@@ -233,7 +233,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var configurationGroups = IConfigurationGroupFactory.CreateFromConfigurationNames(configurations);
             await source.SendAndCompleteAsync(configurationGroups, service.TargetBlock);
 
-            Assert.True(result.IsCompleted);
+            Assert.True(result.Status == TaskStatus.RanToCompletion);
         }
 
         [Theory]                           // Active configs                                                         Current

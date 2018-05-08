@@ -20,7 +20,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
     {
         private class ViewModelData
         {
-            public TestUnconfiguredPropertyProvider UnconfiguredProvider { get; set; }
             public IList<ILaunchProfile> Profiles { get; set; }
             public ILaunchSettingsProvider ProfileProvider { get; set; }
             public ILaunchSettings LaunchProfiles { get; set; }
@@ -33,10 +32,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             // Setup the debug profiles
             var mockSourceBlock = new Mock<IReceivableSourceBlock<ILaunchSettings>>();
             var mockProfiles = new Mock<ILaunchSettings>();
-            var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: @"C:\Foo\foo.proj");
+            var project = UnconfiguredProjectFactory.Create(filePath: @"C:\Foo\foo.proj");
 
             data.FirstSnapshotComplete = new TaskCompletionSource<bool>();
-            var viewModel = new Mock<DebugPageViewModel>(data.FirstSnapshotComplete, unconfiguredProject);
+            var viewModel = new Mock<DebugPageViewModel>(data.FirstSnapshotComplete, project);
 
             mockSourceBlock.Setup(m => m.LinkTo(It.IsAny<ITargetBlock<ILaunchSettings>>(), It.IsAny<DataflowLinkOptions>())).Callback
                 (
@@ -74,8 +73,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         [Fact]
         public void DebugPageViewModel_UICommands()
         {
-            var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: @"C:\Foo\foo.proj");
-            var viewModel = new DebugPageViewModel(null, unconfiguredProject);
+            var project = UnconfiguredProjectFactory.Create(filePath: @"C:\Foo\foo.proj");
+            var viewModel = new DebugPageViewModel(null, project);
 
             Assert.IsType<Utilities.DelegateCommand>(viewModel.BrowseDirectoryCommand);
             Assert.IsType<Utilities.DelegateCommand>(viewModel.BrowseExecutableCommand);
@@ -86,12 +85,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         [Fact]
         public async Task DebugPageViewModel_NoProfiles()
         {
-            var unconfiguredProvider = new TestUnconfiguredPropertyProvider();
             var profiles = new List<ILaunchProfile>();
 
             var viewModelData = new ViewModelData()
             {
-                UnconfiguredProvider = unconfiguredProvider,
                 Profiles = profiles,
             };
 
@@ -110,7 +107,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         [Fact]
         public async Task DebugPageViewModel_PropertyChange()
         {
-            var unconfiguredProvider = new TestUnconfiguredPropertyProvider();
             var profiles = new List<ILaunchProfile>()
             {
                 {new LaunchProfile() {Name="p1", CommandName="test", DoNotPersist = true}}
@@ -118,7 +114,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
             var viewModelData = new ViewModelData()
             {
-                UnconfiguredProvider = unconfiguredProvider,
                 Profiles = profiles,
                 UIProviders = new List<Lazy<ILaunchSettingsUIProvider, IOrderPrecedenceMetadataView>>()
                 {

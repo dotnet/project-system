@@ -19,9 +19,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
         [ImportingConstructor]
         public ProjectRootImageProjectTreePropertiesProvider(IProjectCapabilitiesService capabilities, [Import(typeof(ProjectImageProviderAggregator))]IProjectImageProvider imageProvider)
         {
-            Requires.NotNull(capabilities, nameof(capabilities));
-            Requires.NotNull(imageProvider, nameof(imageProvider));
-
             _capabilities = capabilities;
             _imageProvider = imageProvider;
         }

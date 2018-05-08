@@ -54,7 +54,7 @@ namespace Microsoft.VisualStudio.Telemetry
         {
             var builder = new StringBuilder();
 
-            foreach (var target in _targets.Values
+            foreach (TargetRecord target in _targets.Values
                 .Where(v => v.Elapsed != TimeSpan.Zero)
                 .OrderByDescending(v => v.Elapsed)
                 .Take(10))
@@ -65,7 +65,7 @@ namespace Microsoft.VisualStudio.Telemetry
                 builder.Append(';');
             }
 
-            var targetResults = builder.ToString();
+            string targetResults = builder.ToString();
 
             _telemetryService.PostProperties("DesignTimeBuildComplete", new[]
             {

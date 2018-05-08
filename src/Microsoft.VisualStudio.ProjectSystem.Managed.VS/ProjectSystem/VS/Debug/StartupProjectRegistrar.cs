@@ -2,149 +2,141 @@
 
 using System;
 using System.ComponentModel.Composition;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.Shell.Interop;
 
+using AsyncServiceProvider = Microsoft.VisualStudio.Shell.AsyncServiceProvider;
+using IAsyncServiceProvider = Microsoft.VisualStudio.Shell.IAsyncServiceProvider;
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 {
     /// <summary>
-    /// <see cref="StartupProjectRegistrar"/> is responsible for adding or removing a project from the Startup list
-    /// depending on whether the active configuration of the a project is debuggable or not.
+    ///     Responsible for adding or removing the project from the startup list based on whether the project
+    ///     is debuggable or not.
     /// </summary>
-    internal class StartupProjectRegistrar : OnceInitializedOnceDisposed
+    internal class StartupProjectRegistrar : OnceInitializedOnceDisposedAsync
     {
+        private readonly IAsyncServiceProvider _serviceProvider;
         private readonly IProjectThreadingService _threadingService;
-        private readonly IActiveConfiguredProjectSubscriptionService _activeConfiguredProjectSubscriptionService;
+        private readonly ISafeProjectGuidService _projectGuidService;
+        private readonly IActiveConfiguredProjectSubscriptionService _projectSubscriptionService;
         private readonly ActiveConfiguredProject<DebuggerLaunchProviders> _launchProviders;
-        private readonly IVsService<IVsStartupProjectsListService> _startupProjectsListService;
-        private Guid _guid = Guid.Empty;
-        private IDisposable _evaluationSubscriptionLink;
-        private bool _isDebuggable;
+        private IVsStartupProjectsListService _startupProjectsListService;
+        private Guid _projectGuid;
+#pragma warning disable CA2213 // OnceInitializedOnceDisposedAsync are not tracked corretly by the IDisposeable analyzer
+        private IDisposable _subscription;
+#pragma warning restore CA2213
 
         [ImportingConstructor]
         public StartupProjectRegistrar(
-            IVsService<SVsStartupProjectsListService, IVsStartupProjectsListService> startupProjectsListService,
+            UnconfiguredProject project,
             IProjectThreadingService threadingService,
-            IActiveConfiguredProjectSubscriptionService activeConfiguredProjectSubscriptionService,
+            ISafeProjectGuidService projectGuidService,
+            IActiveConfiguredProjectSubscriptionService projectSubscriptionService,
             ActiveConfiguredProject<DebuggerLaunchProviders> launchProviders)
+            : this(project, AsyncServiceProvider.GlobalProvider, threadingService, projectGuidService, projectSubscriptionService, launchProviders)
         {
-            Requires.NotNull(startupProjectsListService, nameof(startupProjectsListService));
-            Requires.NotNull(threadingService, nameof(threadingService));
-            Requires.NotNull(activeConfiguredProjectSubscriptionService, nameof(activeConfiguredProjectSubscriptionService));
-            Requires.NotNull(launchProviders, nameof(launchProviders));
+        }
 
-            _startupProjectsListService = startupProjectsListService;
+        public StartupProjectRegistrar(
+            UnconfiguredProject project,
+            IAsyncServiceProvider serviceProvider,
+            IProjectThreadingService threadingService,
+            ISafeProjectGuidService projectGuidService,
+            IActiveConfiguredProjectSubscriptionService projectSubscriptionService,
+            ActiveConfiguredProject<DebuggerLaunchProviders> launchProviders)
+        : base(threadingService.JoinableTaskContext)
+        {
+            _serviceProvider = serviceProvider;
             _threadingService = threadingService;
-            _activeConfiguredProjectSubscriptionService = activeConfiguredProjectSubscriptionService;
+            _projectGuidService = projectGuidService;
+            _projectSubscriptionService = projectSubscriptionService;
             _launchProviders = launchProviders;
         }
 
         [ProjectAutoLoad(startAfter: ProjectLoadCheckpoint.ProjectFactoryCompleted)]
         [AppliesTo(ProjectCapability.DotNet)]
-        internal Task Load()
+        public Task InitializeAsync()
         {
-            EnsureInitialized();
+            return InitializeAsync(CancellationToken.None);
+        }
+
+        protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
+        {
+            _projectGuid = await _projectGuidService.GetProjectGuidAsync()
+                                                    .ConfigureAwait(false);
+
+            Assumes.False(_projectGuid == Guid.Empty);
+
+            _startupProjectsListService = (IVsStartupProjectsListService)await _serviceProvider.GetServiceAsync(typeof(SVsStartupProjectsListService))
+                                                                                               .ConfigureAwait(false);
+
+            Assumes.Present(_startupProjectsListService);
+
+            _subscription = _projectSubscriptionService.ProjectRuleSource.SourceBlock.LinkTo(
+                target: new ActionBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(OnProjectChangedAsync),
+                suppressVersionOnlyUpdates: true,
+                linkOptions: new DataflowLinkOptions() { PropagateCompletion = true });
+        }
+
+        protected override Task DisposeCoreAsync(bool initialized)
+        {
+            if (initialized)
+            {
+                _subscription?.Dispose();
+            }
+
             return Task.CompletedTask;
         }
 
-        protected override void Dispose(bool disposing)
+        internal async Task OnProjectChangedAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e = null)
         {
-            if (disposing)
+            bool isDebuggable = await _launchProviders.Value.IsDebuggableAsync()
+                                                            .ConfigureAwait(false);
+
+            if (isDebuggable)
             {
-                _evaluationSubscriptionLink?.Dispose();
+                // If we're already registered, the service no-ops
+                _startupProjectsListService.AddProject(ref _projectGuid);
+            }
+            else
+            {
+                // If we're already unregistered, the service no-ops
+                _startupProjectsListService.RemoveProject(ref _projectGuid);
             }
         }
 
-        protected override void Initialize()
-        {
-            var watchedEvaluationRules = Empty.OrdinalIgnoreCaseStringSet.Add(ConfigurationGeneral.SchemaName);
-            var evaluationBlock = new ActionBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(ConfigurationGeneralRuleBlock_ChangedAsync);
-            _evaluationSubscriptionLink = _activeConfiguredProjectSubscriptionService.ProjectRuleSource.SourceBlock
-                                            .LinkTo(target: evaluationBlock, ruleNames: watchedEvaluationRules, suppressVersionOnlyUpdates: true);
-        }
-
-        internal async Task ConfigurationGeneralRuleBlock_ChangedAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e)
-        {
-            IProjectChangeDescription projectChange = e.Value.ProjectChanges[ConfigurationGeneral.SchemaName];
-
-            if (projectChange.Difference.ChangedProperties.Contains(ConfigurationGeneral.ProjectGuidProperty))
-            {
-                if (Guid.TryParse(projectChange.After.Properties[ConfigurationGeneral.ProjectGuidProperty], out Guid result))
-                {
-                    _guid = result;
-                    await AddOrRemoveProjectFromStartupProjectListAsync(initialize: true).ConfigureAwait(false);
-                }
-
-                return;
-            }
-
-            if (_guid == Guid.Empty)
-            {
-                return;
-            }
-
-            /* Currently  we watch for the change in the OutputType to check if a project is debuggable.
-               There are other cases where the OutputType will remain the same and still the ability to debuggable a project could change
-               For eg: A project's OutputType could be a Lib and an execution entry point could be added or removed
-               Tracking bug: https://github.com/dotnet/roslyn-project-system/issues/455
-               */
-            if (projectChange.Difference.ChangedProperties.Contains(ConfigurationGeneral.OutputTypeProperty))
-            {
-                await AddOrRemoveProjectFromStartupProjectListAsync().ConfigureAwait(false);
-            }
-        }
-
-        private async Task AddOrRemoveProjectFromStartupProjectListAsync(bool initialize = false)
-        {
-            bool isDebuggable = await IsDebuggableAsync().ConfigureAwait(false);
-            await _threadingService.SwitchToUIThread();
-
-            if (initialize || isDebuggable != _isDebuggable)
-            {
-                _isDebuggable = isDebuggable;
-                if (isDebuggable)
-                {
-                    _startupProjectsListService.Value.AddProject(ref _guid);
-                }
-                else
-                {
-                    _startupProjectsListService.Value.RemoveProject(ref _guid);
-                }
-            }
-        }
-
-        private async Task<bool> IsDebuggableAsync()
-        {
-            foreach (var provider in _launchProviders.Value.Debuggers)
-            {
-                if (await provider.Value.CanLaunchAsync(DebugLaunchOptions.DesignTimeExpressionEvaluation)
-                                        .ConfigureAwait(false))
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        // Creating a class which provides the LaunchProviders is a workaround because importing ActiveConfiguredProject
-        // with 2 arguments does not work.
         [Export]
         internal class DebuggerLaunchProviders
         {
             [ImportingConstructor]
             public DebuggerLaunchProviders(ConfiguredProject project)
             {
-                Debuggers = new OrderPrecedenceImportCollection<IDebugLaunchProvider, IDebugLaunchProviderMetadataView>(projectCapabilityCheckProvider: project);
+                Debuggers = new OrderPrecedenceImportCollection<IDebugLaunchProvider>(projectCapabilityCheckProvider: project);
             }
 
             [ImportMany]
-            public OrderPrecedenceImportCollection<IDebugLaunchProvider, IDebugLaunchProviderMetadataView> Debuggers
+            public OrderPrecedenceImportCollection<IDebugLaunchProvider> Debuggers
             {
                 get;
+            }
+
+            public async Task<bool> IsDebuggableAsync()
+            {
+                foreach (Lazy<IDebugLaunchProvider> provider in Debuggers)
+                {
+                    if (await provider.Value.CanLaunchAsync(DebugLaunchOptions.DesignTimeExpressionEvaluation)
+                                            .ConfigureAwait(false))
+                    {
+                        return true;
+                    }
+                }
+
+                return false;
             }
         }
     }

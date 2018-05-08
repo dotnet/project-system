@@ -49,8 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         /// </summary>
         public static void QueryStatusHandler(object sender, EventArgs e)
         {
-            var command = sender as DebugFrameworkPropertyMenuTextUpdater;
-            if (command == null)
+            if (!(sender is DebugFrameworkPropertyMenuTextUpdater command))
             {
                 return;
             }
@@ -60,7 +59,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 
         public void QueryStatus()
         {
-            var activeDebugFramework = StartupProjectHelper.GetExportFromSingleDotNetStartupProject<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles);
+            IActiveDebugFrameworkServices activeDebugFramework = StartupProjectHelper.GetExportFromSingleDotNetStartupProject<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles);
             if (activeDebugFramework != null)
             {
                 string activeFramework = null;
@@ -99,7 +98,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         /// </summary>
         protected virtual void ExecuteSynchronously(Func<Task> asyncFunction)
         {
+#pragma warning disable VSTHRD102 // Only wrapped for test purposes
             ThreadHelper.JoinableTaskFactory.Run(async () =>
+#pragma warning restore VSTHRD102
             {
                 await asyncFunction().ConfigureAwait(false);
             });

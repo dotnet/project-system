@@ -12,6 +12,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     internal static class IProjectSubscriptionUpdateFactory
     {
+        public static IProjectVersionedValue<IProjectSubscriptionUpdate> CreateEmptyVersionedValue()
+        {
+            return IProjectVersionedValueFactory<IProjectSubscriptionUpdate>.Create(Mock.Of<IProjectSubscriptionUpdate>());
+        }
+
         public static IProjectSubscriptionUpdate Create()
         {
             return Mock.Of<IProjectSubscriptionUpdate>();

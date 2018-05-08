@@ -89,8 +89,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 
                 myHierarchy = (IVsHierarchy)_projectHostProvider.UnconfiguredProjectHostObject.ActiveIntellisenseProjectHostObject;
 
-                var oleServiceProvider = _serviceProvider.GetService(typeof(IOLEServiceProvider)) as IOLEServiceProvider;
-                if (oleServiceProvider == null)
+                if (!(_serviceProvider.GetService(typeof(IOLEServiceProvider)) is IOLEServiceProvider oleServiceProvider))
                 {
                     return;
                 }
@@ -111,10 +110,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 
         public async Task<Guid?> GetLanguageServiceId()
         {
-            var properties = await _projectVsServices.ActiveConfiguredProjectProperties.GetConfigurationGeneralPropertiesAsync()
+            ConfigurationGeneral properties = await _projectVsServices.ActiveConfiguredProjectProperties.GetConfigurationGeneralPropertiesAsync()
                                                                                        .ConfigureAwait(false);
 
-            var languageServiceIdString = (string)await properties.LanguageServiceId.GetValueAsync()
+            string languageServiceIdString = (string)await properties.LanguageServiceId.GetValueAsync()
                                                                                     .ConfigureAwait(false);
             if (string.IsNullOrEmpty(languageServiceIdString))
                 return null;

@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.Telemetry
         {
             IImmutableSet<ILogger> loggers = ImmutableHashSet<ILogger>.Empty;
 
-            if (properties.TryGetValue("DesignTimeBuild", out var designTimeBuildValue) &&
+            if (properties.TryGetValue("DesignTimeBuild", out string designTimeBuildValue) &&
                 string.Equals(designTimeBuildValue, "true", StringComparison.OrdinalIgnoreCase))
             {
                 loggers = loggers.Add(new DesignTimeTelemetryLogger(TelemetryService));

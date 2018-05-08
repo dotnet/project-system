@@ -1,37 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="pt-BR" original="../UpToDateCheckInput.xaml">
-    <body>
-      <trans-unit id="Rule|UpToDateCheckInput|DisplayName">
-        <source>Up-to-date check input</source>
-        <target state="translated">Entrada da verificação atualizada</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="Rule|UpToDateCheckInput|Description">
-        <source>File Properties</source>
-        <target state="translated">Propriedades do Arquivo</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="Category|Advanced|DisplayName">
-        <source>Advanced</source>
-        <target state="translated">Avançado</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="Category|Misc|DisplayName">
-        <source>Misc</source>
-        <target state="translated">Diversos</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|FullPath|DisplayName">
-        <source>Full Path</source>
-        <target state="translated">Caminho Completo</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|FullPath|Description">
-        <source>Location of the file.</source>
-        <target state="translated">Localização do arquivo.</target>
-        <note />
-      </trans-unit>
-    </body>
+    <body />
   </file>
 </xliff>

@@ -9,22 +9,21 @@ using System.Threading.Tasks.Dataflow;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
 {
     [Export(typeof(VisualBasicNamespaceImportsList))]
+    [AppliesTo(ProjectCapability.VisualBasic)]
     internal class VisualBasicNamespaceImportsList : OnceInitializedOnceDisposed
     {
         private readonly IActiveConfiguredProjectSubscriptionService _activeConfiguredProjectSubscriptionService;
 
-        private object _lock = new object();
+        private readonly object _lock = new object();
         private List<string> _list;
         private IDisposable _namespaceImportSubscriptionLink;
 
-        private static ImmutableHashSet<string> s_namespaceImportRule = Empty.OrdinalIgnoreCaseStringSet
+        private static readonly ImmutableHashSet<string> s_namespaceImportRule = Empty.OrdinalIgnoreCaseStringSet
             .Add(NamespaceImport.SchemaName);
 
         [ImportingConstructor]
         public VisualBasicNamespaceImportsList(IActiveConfiguredProjectSubscriptionService activeConfiguredProjectSubscriptionService)
         {
-            Requires.NotNull(activeConfiguredProjectSubscriptionService, nameof(activeConfiguredProjectSubscriptionService));
-
             _activeConfiguredProjectSubscriptionService = activeConfiguredProjectSubscriptionService;
         }
 
@@ -72,7 +71,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             {
                 lock (_lock)
                 {
-                    var sortedItems = projectChange.After.Items.Keys.OrderBy(s => s, StringComparer.OrdinalIgnoreCase);
+                    IOrderedEnumerable<string> sortedItems = projectChange.After.Items.Keys.OrderBy(s => s, StringComparer.OrdinalIgnoreCase);
                     int newListCount = sortedItems.Count();
                     int oldListCount = _list.Count;
 

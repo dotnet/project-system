@@ -36,10 +36,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Logging
         }
 
         [Theory]
-        [InlineData(0,          "")]
-        [InlineData(1,          "    ")]
-        [InlineData(2,          "        ")]
-        [InlineData(4,          "                ")]
+        [InlineData(0, "")]
+        [InlineData(1, "    ")]
+        [InlineData(2, "        ")]
+        [InlineData(4, "                ")]
         public void BeginBatch_IndentLevel_AppendsIndentToWriteLine(int indentLevel, string expected)
         {
             var logger = new ProjectLogger();

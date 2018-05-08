@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Option Strict On
 Option Explicit On
@@ -72,8 +72,8 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' (from "My Extensions" property page).
         ''' </summary>
         Public Sub AddExtensionsFromPropPage()
-            Dim addExtensionsDialog As New AddMyExtensionsDialog( _
-                _VBPackage, _extensibilitySettings.GetExtensionTemplates(ProjectTypeID, _project))
+            Dim addExtensionsDialog As New AddMyExtensionsDialog(
+                _vbPackage, _extensibilitySettings.GetExtensionTemplates(ProjectTypeID, _project))
             If addExtensionsDialog.ShowDialog() = DialogResult.OK Then
                 _excludedTemplates = addExtensionsDialog.ExtensionTemplatesToAdd
                 Try
@@ -162,7 +162,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             Debug.Assert(projectHierarchy IsNot Nothing, "projectHierarchy Is Nothing")
             Debug.Assert(extensibilitySettings IsNot Nothing, "extensibilitySettings Is Nothing")
 
-            _VBPackage = vbPackage
+            _vbPackage = vbPackage
             _project = project
             _projectHierarchy = projectHierarchy
             _extensibilitySettings = extensibilitySettings
@@ -220,14 +220,14 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' Adding / removing extensions at the same time of the events will lead to 
         ''' compiler and MSBuild errors.
         ''' </summary>
-        Private Sub HandleReferenceChanged( _
+        Private Sub HandleReferenceChanged(
                 changeType As AddRemoveAction, assemblyFullName As String)
             Debug.Assert(Not StringIsNullEmptyOrBlank(assemblyFullName), "assemblyFullName is NULL!")
-            Debug.Assert(String.Equals(NormalizeAssemblyFullName(assemblyFullName), assemblyFullName, _
+            Debug.Assert(String.Equals(NormalizeAssemblyFullName(assemblyFullName), assemblyFullName,
                 StringComparison.OrdinalIgnoreCase), "assemblyFullName not normalized!")
-            Debug.Assert(_pendingAssemblyChangesList Is Nothing OrElse _pendingAssemblyChangesList.Count > 0, _
+            Debug.Assert(_pendingAssemblyChangesList Is Nothing OrElse _pendingAssemblyChangesList.Count > 0,
                 "m_AssemblyActionList in in valid state!")
-            Debug.Assert(changeType = AddRemoveAction.Add OrElse changeType = AddRemoveAction.Remove, _
+            Debug.Assert(changeType = AddRemoveAction.Add OrElse changeType = AddRemoveAction.Remove,
                 "Invalid changeType!")
 
             Dim pendingChangesExist As Boolean = _pendingAssemblyChangesList IsNot Nothing
@@ -248,7 +248,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' </summary>
         Private Sub HandleReferenceAdded(assemblyFullName As String)
             Debug.Assert(Not StringIsNullEmptyOrBlank(assemblyFullName), "assemblyFullName is NULL!")
-            Debug.Assert(String.Equals(NormalizeAssemblyFullName(assemblyFullName), assemblyFullName, _
+            Debug.Assert(String.Equals(NormalizeAssemblyFullName(assemblyFullName), assemblyFullName,
                 StringComparison.OrdinalIgnoreCase), "assemblyFullName not normalized!")
 
             Dim addActivity As New AssemblyChange(assemblyFullName, AddRemoveAction.Add)
@@ -259,7 +259,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             End If
 
             ' Check if the assembly has any extension templates associated with it.
-            Dim extensionTemplates As List(Of MyExtensionTemplate) = _
+            Dim extensionTemplates As List(Of MyExtensionTemplate) =
                 _extensibilitySettings.GetExtensionTemplates(ProjectTypeID, _project, assemblyFullName)
             ' Check the list of templates being added directly from My Extension property page.
             ' These should be excluded from adding again due to references being added.
@@ -278,10 +278,10 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             ' Prompt the user if neccessary.
             Dim addExtensions As Boolean = True
             Dim assemblyOption As AssemblyOption = _extensibilitySettings.GetAssemblyAutoAdd(assemblyFullName)
-            If assemblyOption = assemblyOption.Prompt Then
-                Dim addExtensionDialog As AssemblyOptionDialog = _
-                    AssemblyOptionDialog.GetAssemblyOptionDialog( _
-                    assemblyFullName, _VBPackage, extensionTemplates, AddRemoveAction.Add)
+            If assemblyOption = AssemblyOption.Prompt Then
+                Dim addExtensionDialog As AssemblyOptionDialog =
+                    AssemblyOptionDialog.GetAssemblyOptionDialog(
+                    assemblyFullName, _vbPackage, extensionTemplates, AddRemoveAction.Add)
                 addExtensions = (addExtensionDialog.ShowDialog() = DialogResult.Yes)
                 If addExtensionDialog.OptionChecked Then
                     _extensibilitySettings.SetAssemblyAutoAdd(assemblyFullName, addExtensions)
@@ -306,7 +306,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' </summary>
         Private Sub HandleReferenceRemoved(assemblyFullName As String)
             Debug.Assert(Not StringIsNullEmptyOrBlank(assemblyFullName), "assemblyFullName is NULL!")
-            Debug.Assert(String.Equals(NormalizeAssemblyFullName(assemblyFullName), assemblyFullName, _
+            Debug.Assert(String.Equals(NormalizeAssemblyFullName(assemblyFullName), assemblyFullName,
                 StringComparison.OrdinalIgnoreCase), "assemblyFullName not normalized!")
 
             Dim removeActivity As New AssemblyChange(assemblyFullName, AddRemoveAction.Remove)
@@ -319,11 +319,11 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             ' Check the pending assembly changes list, find the index of existing remove activity (if any) 
             ' and existing add activity (if any)
             If _pendingAssemblyChangesList IsNot Nothing Then
-                Debug.Assert(_pendingAssemblyChangesList.IndexOf(removeActivity) = _
-                    _pendingAssemblyChangesList.LastIndexOf(removeActivity), _
+                Debug.Assert(_pendingAssemblyChangesList.IndexOf(removeActivity) =
+                    _pendingAssemblyChangesList.LastIndexOf(removeActivity),
                     "m_PendingAssemblyChangesList should contain 1 instance of remove activity!")
-                Debug.Assert(_pendingAssemblyChangesList.IndexOf(addActivity) = _
-                    _pendingAssemblyChangesList.LastIndexOf(addActivity), _
+                Debug.Assert(_pendingAssemblyChangesList.IndexOf(addActivity) =
+                    _pendingAssemblyChangesList.LastIndexOf(addActivity),
                     "m_PendingAssemblyChangesList should contain 1 instance of add activity!")
 
                 previousRemoveActivityIndex = _pendingAssemblyChangesList.IndexOf(removeActivity)
@@ -332,7 +332,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
 
             If previousAddActivityIndex > 0 Then
                 ' If assembly action list contains "Add Foo", continue to ask for remove of templates.
-                Debug.Assert(previousRemoveActivityIndex < previousAddActivityIndex, _
+                Debug.Assert(previousRemoveActivityIndex < previousAddActivityIndex,
                     "m_PendingAssemblyChangesList should not have Add Foo continue by Remove Foo!")
             ElseIf previousRemoveActivityIndex > 0 Then
                 ' If assembly action list does not contain "Add Foo" but contains "Remove Foo", no op.
@@ -349,7 +349,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             ' Either there's a pending "Add Foo" activity or some project items to remove. Prompt if neccessary.
             Dim removeExtensions As Boolean = True
             Dim assemblyOption As AssemblyOption = _extensibilitySettings.GetAssemblyAutoRemove(assemblyFullName)
-            If assemblyOption = assemblyOption.Prompt Then
+            If assemblyOption = AssemblyOption.Prompt Then
                 Dim itemList As IList = Nothing
                 If previousAddActivityIndex > 0 Then
                     itemList = _pendingAssemblyChangesList(previousAddActivityIndex).ExtensionTemplates
@@ -357,9 +357,9 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
                     itemList = projectItemGroupsToRemove
                 End If
 
-                Dim removeExtensionDialog As AssemblyOptionDialog = _
-                    AssemblyOptionDialog.GetAssemblyOptionDialog( _
-                    assemblyFullName, _VBPackage, itemList, AddRemoveAction.Remove)
+                Dim removeExtensionDialog As AssemblyOptionDialog =
+                    AssemblyOptionDialog.GetAssemblyOptionDialog(
+                    assemblyFullName, _vbPackage, itemList, AddRemoveAction.Remove)
                 removeExtensions = (removeExtensionDialog.ShowDialog() = DialogResult.Yes)
                 If removeExtensionDialog.OptionChecked Then
                     _extensibilitySettings.SetAssemblyAutoRemove(assemblyFullName, removeExtensions)
@@ -412,7 +412,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' <summary>
         ''' Add the given extension project item templates to the current project.
         ''' </summary>
-        Private Sub AddTemplates(extensionTemplates As List(Of MyExtensionTemplate), _
+        Private Sub AddTemplates(extensionTemplates As List(Of MyExtensionTemplate),
                 extensionsAddedSB As StringBuilder)
             Debug.Assert(extensionTemplates IsNot Nothing AndAlso extensionTemplates.Count > 0, "Invalid extensionTemplates!")
             Debug.Assert(extensionsAddedSB IsNot Nothing, "Invalid extensionsAddedSB!")
@@ -423,15 +423,15 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
                 For Each extensionTemplate As MyExtensionTemplate In extensionTemplates
 
                     ' If extension already exists in project, prompt user for replacing.
-                    Dim existingExtProjItemGroup As MyExtensionProjectItemGroup = _
+                    Dim existingExtProjItemGroup As MyExtensionProjectItemGroup =
                         _projectSettings.GetExtensionProjectItemGroup(extensionTemplate.ID)
                     If existingExtProjItemGroup IsNot Nothing Then
-                        Dim replaceExtension As DialogResult = DesignerMessageBox.Show(_VBPackage, _
-                            String.Format(Res.ExtensionExists_Message, _
-                                existingExtProjItemGroup.ExtensionVersion.ToString(), _
-                                extensionTemplate.DisplayName, _
-                                extensionTemplate.Version.ToString()), _
-                            Res.ExtensionExists_Title, _
+                        Dim replaceExtension As DialogResult = DesignerMessageBox.Show(_vbPackage,
+                            String.Format(Res.ExtensionExists_Message,
+                                existingExtProjItemGroup.ExtensionVersion.ToString(),
+                                extensionTemplate.DisplayName,
+                                extensionTemplate.Version.ToString()),
+                            Res.ExtensionExists_Title,
                             MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1)
                         If replaceExtension = DialogResult.No Then
                             Continue For
@@ -516,7 +516,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
 #End Region
 
         ' Service provider, current project, project hierarchy and solution.
-        Private _VBPackage As VBPackage
+        Private ReadOnly _vbPackage As VBPackage
         Private _project As Project
         Private _projectHierarchy As IVsHierarchy
         Private _projectTypeID As String
@@ -544,9 +544,9 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         Private Class AssemblyChange
             Public Sub New(assemblyName As String, actionType As AddRemoveAction)
                 Debug.Assert(Not StringIsNullEmptyOrBlank(assemblyName), "NULL assemblyName!")
-                Debug.Assert(String.Equals(NormalizeAssemblyFullName(assemblyName), assemblyName, _
+                Debug.Assert(String.Equals(NormalizeAssemblyFullName(assemblyName), assemblyName,
                     StringComparison.OrdinalIgnoreCase), "assemblyName not normalized!")
-                Debug.Assert(actionType = AddRemoveAction.Add Or actionType = AddRemoveAction.Remove, _
+                Debug.Assert(actionType = AddRemoveAction.Add Or actionType = AddRemoveAction.Remove,
                     "Invalid actionType!")
 
                 _assemblyName = assemblyName

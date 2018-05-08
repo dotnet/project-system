@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.ComponentModel
 Imports System.Diagnostics.CodeAnalysis
@@ -16,7 +16,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private _ignoreLostFocus As Boolean
         Private _appConfigError As Boolean
         Private _frameworkVersionNumber As UInteger
-        Private Const s_requiredFrameworkVersion As UInteger = &H30005
+        Private Const RequiredFrameworkVersion As UInteger = &H30005
 
         Public Sub New()
             InitializeComponent()
@@ -46,7 +46,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     CurrentAppConfigDocument = newDoc
                     If Not _appConfigError Then
                         'If the application is targetting earlier than .NET Framework 3.5 or a client subset of .NET Framework, then disable this tab.
-                        If _frameworkVersionNumber < s_requiredFrameworkVersion OrElse IsClientFrameworkSubset(ProjectHierarchy) Then
+                        If _frameworkVersionNumber < RequiredFrameworkVersion OrElse IsClientFrameworkSubset(ProjectHierarchy) Then
                             SetControlsEnabledProperty(False)
                             EnableApplicationServices.Enabled = False
                         Else
@@ -78,7 +78,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             HelpLabel.LinkArea = New LinkArea(nonlabelText.Length, labelText.Length)
         End Sub
 
-        Private Sub EnableApplicationServices_CheckedChanged(sender As System.Object, e As EventArgs) Handles EnableApplicationServices.CheckedChanged
+        Private Sub EnableApplicationServices_CheckedChanged(sender As Object, e As EventArgs) Handles EnableApplicationServices.CheckedChanged
             If _ignoreCheckedChanged Then
                 _ignoreCheckedChanged = False
                 Exit Sub
@@ -89,7 +89,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             'DevDiv Bugs 88577, If the user isn't targetting V3.5 or above, bring up
             'an error stating that the functionality is only available for 3.5 or greater.
             'Also, uncheck the checkbox
-            If EnableApplicationServices.Checked AndAlso _frameworkVersionNumber < s_requiredFrameworkVersion Then
+            If EnableApplicationServices.Checked AndAlso _frameworkVersionNumber < RequiredFrameworkVersion Then
                 DesignerFramework.DesignerMessageBox.Show(ServiceProvider, My.Resources.Designer.PPG_Services_VersionWarning, Nothing, MessageBoxButtons.OK, MessageBoxIcon.Warning)
                 _ignoreCheckedChanged = True
                 EnableApplicationServices.Checked = False
@@ -315,7 +315,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Sub
 
-        Private Sub Loaded(sender As System.Object, e As EventArgs) Handles Me.Load
+        Private Sub Loaded(sender As Object, e As EventArgs) Handles Me.Load
             _frameworkVersionNumber = GetProjectTargetFrameworkVersion(ProjectHierarchy)
             EnsureXmlUpToDate()
         End Sub
@@ -335,17 +335,17 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End Try
         End Sub
 
-        Private Sub HelpLabel_LinkClicked(sender As System.Object, e As LinkLabelLinkClickedEventArgs) Handles HelpLabel.LinkClicked
+        Private Sub HelpLabel_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles HelpLabel.LinkClicked
             InvokeHelp()
         End Sub
 
-        Private Sub ValidateWhenHidden(sender As System.Object, e As EventArgs) Handles Me.VisibleChanged
+        Private Sub ValidateWhenHidden(sender As Object, e As EventArgs) Handles Me.VisibleChanged
             If Not Visible Then
                 Validate()
             End If
         End Sub
 
-        Private Sub ValidateWhenLostFocus(sender As System.Object, e As EventArgs) Handles AuthenticationServiceUrl.LostFocus, CustomCredentialProviderType.LostFocus, RolesServiceUrl.LostFocus, WebSettingsUrl.LostFocus
+        Private Sub ValidateWhenLostFocus(sender As Object, e As EventArgs) Handles AuthenticationServiceUrl.LostFocus, CustomCredentialProviderType.LostFocus, RolesServiceUrl.LostFocus, WebSettingsUrl.LostFocus
             Validate()
         End Sub
 

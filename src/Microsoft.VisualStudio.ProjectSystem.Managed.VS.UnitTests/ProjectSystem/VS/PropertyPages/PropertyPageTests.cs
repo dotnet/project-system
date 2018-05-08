@@ -3,14 +3,13 @@
 using System;
 
 using Microsoft.VisualStudio.OLE.Interop;
-using Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages;
 
 using Moq;
 using Moq.Protected;
 
 using Xunit;
 
-namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test.PropertyPages
+namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 {
     [Trait("UnitTest", "ProjectSystem")]
     public class PropertyPageTests
@@ -22,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test.PropertyPages
 
             var page = new Mock<PropertyPage>(false);
             page.Protected().Setup<string>("PropertyPageName").Returns("MyPage");
-            PROPPAGEINFO[] pageInfoArray = new PROPPAGEINFO[1];
+            var pageInfoArray = new PROPPAGEINFO[1];
             page.Object.GetPageInfo(pageInfoArray);
             page.Object.Help(string.Empty);
 
@@ -40,9 +39,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test.PropertyPages
         {
             Castle.DynamicProxy.Generators.AttributesToAvoidReplicating.Add(typeof(System.Security.Permissions.UIPermissionAttribute));
 
-            RECT[] rect = new RECT[] { new RECT() { left = 25, top = 25 } };
-            var page = new Mock<PropertyPage>(false);
-            page.CallBase = true;
+            var rect = new RECT[] { new RECT() { left = 25, top = 25 } };
+            var page = new Mock<PropertyPage>(false)
+            {
+                CallBase = true
+            };
             page.Object.Move(rect);
 
             Assert.Equal(rect[0].left, page.Object.Location.X);
@@ -71,8 +72,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test.PropertyPages
         {
             Castle.DynamicProxy.Generators.AttributesToAvoidReplicating.Add(typeof(System.Security.Permissions.UIPermissionAttribute));
 
-            var page = new Mock<PropertyPage>(false);
-            page.CallBase = true;
+            var page = new Mock<PropertyPage>(false)
+            {
+                CallBase = true
+            };
 
             page.Object.Move(x);
         }

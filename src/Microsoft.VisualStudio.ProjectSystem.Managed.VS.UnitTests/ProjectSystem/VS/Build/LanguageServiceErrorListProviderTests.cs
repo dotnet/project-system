@@ -7,8 +7,6 @@ using Microsoft.Build.Framework;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 using Microsoft.VisualStudio.Shell.Interop;
 
-using Moq;
-
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
@@ -16,27 +14,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
     [Trait("UnitTest", "ProjectSystem")]
     public class LanguageServiceErrorListProviderTests
     {
-        [Fact]
-        public void Constructor_NullAsUnconfiguedProject_ThrowsArgumentNull()
-        {
-            var host = Mock.Of<ILanguageServiceHost>();
-
-            Assert.Throws<ArgumentNullException>("unconfiguredProject", () =>
-            {
-                new LanguageServiceErrorListProvider((UnconfiguredProject)null, host);
-            });
-        }
-
-        [Fact]
-        public void Constructor_NullAsHost_ThrowsArgumentNull()
-        {
-            var project = UnconfiguredProjectFactory.Create();
-            Assert.Throws<ArgumentNullException>("host", () =>
-            {
-                new LanguageServiceErrorListProvider(project, (ILanguageServiceHost)null);
-            });
-        }
-
         [Fact]
         public void SuspendRefresh_DoesNotThrow()
         {
@@ -58,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
 
             var result = provider.ClearAllAsync();
 
-            Assert.True(result.IsCompleted);
+            Assert.True(result.Status == TaskStatus.RanToCompletion);
         }
 
         [Fact]
@@ -68,7 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
 
             var result = provider.ClearMessageFromTargetAsync("targetName");
 
-            Assert.True(result.IsCompleted);
+            Assert.True(result.Status == TaskStatus.RanToCompletion);
         }
 
         [Fact]
@@ -352,8 +329,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
 
             var provider = CreateInstance(host);
 
-            var args = new BuildErrorEventArgs(null, "Code", file, 0, 0, 0, 0, "ErrorMessage", "HelpKeyword", "Sender");
-            args.ProjectFile = projectFile;
+            var args = new BuildErrorEventArgs(null, "Code", file, 0, 0, 0, 0, "ErrorMessage", "HelpKeyword", "Sender")
+            {
+                ProjectFile = projectFile
+            };
             await provider.AddMessageAsync(new TargetGeneratedError("Test", args));
 
             Assert.Equal(expectedFileName, fileNameResult);

@@ -9,7 +9,7 @@ using Microsoft.Build.Construction;
 
 using Xunit;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS
+namespace Microsoft.VisualStudio.ProjectSystem
 {
     [Trait("UnitTest", "ProjectSystem")]
     public class ProjectReloadInterceptorTests
@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         [InlineData(null, "invalid target frameworks", null, null)]
         [InlineData(null, null, "netcoreapp1.0", "net45;netcoreapp1.0")]
         [InlineData("netcoreapp1.0", "net45;netcoreapp1.0", null, null)]
-        public void Test_ProjectNeedsReload(string oldTargetFramework, string oldTargetFrameworks, string newTargetFramework, string newTargetFrameworks)
+        public void ProjectNeedsReload(string oldTargetFramework, string oldTargetFrameworks, string newTargetFramework, string newTargetFrameworks)
         {
             var oldProperties = CreatePropertiesCollection(oldTargetFramework, oldTargetFrameworks);
             var newProperties = CreatePropertiesCollection(newTargetFramework, newTargetFrameworks);
@@ -53,7 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         [InlineData(null, "net45", null, "net45;netcoreapp1.0")]
         [InlineData("invalid;target;framework", null, "net46", null)]
         [InlineData(null, "invalid target frameworks", null, "net45;netcoreapp1.0")]
-        public void Test_ProjectDoesntNeedReload(string oldTargetFramework, string oldTargetFrameworks, string newTargetFramework, string newTargetFrameworks)
+        public void ProjectDoesntNeedReload(string oldTargetFramework, string oldTargetFrameworks, string newTargetFramework, string newTargetFrameworks)
         {
             var oldProperties = CreatePropertiesCollection(oldTargetFramework, oldTargetFrameworks);
             var newProperties = CreatePropertiesCollection(newTargetFramework, newTargetFrameworks);

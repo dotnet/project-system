@@ -32,6 +32,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             }
         }
 
+        /// <summary>
+        /// Internal for testing.
+        /// </summary>
+        internal TargetedDependenciesSnapshot(IDictionary<string, IDependency> dependenciesWorld, IEnumerable<IDependency> topLevelDependencies)
+        {
+            DependenciesWorld = ImmutableStringDictionary<IDependency>.EmptyOrdinalIgnoreCase.AddRange(dependenciesWorld);
+            ImmutableHashSet<IDependency> dependencies = ImmutableHashSet<IDependency>.Empty;
+            foreach (IDependency d in topLevelDependencies)
+            {
+                dependencies = dependencies.Add(d);
+            }
+            TopLevelDependencies = dependencies;
+        }
+
         public string ProjectPath { get; }
 
         public ITargetFramework TargetFramework { get; }
@@ -42,7 +56,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             = ImmutableHashSet<IDependency>.Empty;
 
         public ImmutableDictionary<string, IDependency> DependenciesWorld { get; private set; }
-            = ImmutableDictionary<string, IDependency>.Empty;
+            = ImmutableStringDictionary<IDependency>.EmptyOrdinalIgnoreCase;
 
         private readonly object _snapshotLock = new object();
 
@@ -96,7 +110,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 if (!_dependenciesChildrenMap.TryGetValue(dependency.Id, out IList<IDependency> children))
                 {
                     children = new List<IDependency>();
-                    foreach (var id in dependency.DependencyIDs)
+                    foreach (string id in dependency.DependencyIDs)
                     {
                         if (TryToFindDependency(id, out IDependency child))
                         {
@@ -113,14 +127,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
         private bool FindUnresolvedDependenciesRecursive(IDependency dependency)
         {
-            var result = false;
+            bool unresolved = false;
+
             if (dependency.DependencyIDs.Count > 0)
             {
-                foreach (var child in GetDependencyChildren(dependency))
+                foreach (IDependency child in GetDependencyChildren(dependency))
                 {
                     if (!child.Resolved)
                     {
-                        result = true;
+                        unresolved = true;
+                        break;
+                    }
+
+                    // If the dependency is already in the child map, it is resolved
+                    // Checking here will prevent a stack overflow due to rechecking the same dependencies
+                    if (_dependenciesChildrenMap.ContainsKey(child.Id))
+                    {
+                        unresolved = false;
                         break;
                     }
 
@@ -131,14 +154,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
                     if (depthFirstResult)
                     {
-                        result = true;
+                        unresolved = true;
                         break;
                     }
                 }
             }
 
-            _unresolvedDescendantsMap[dependency.Id] = result;
-            return result;
+            _unresolvedDescendantsMap[dependency.Id] = unresolved;
+            return unresolved;
         }
 
         private bool TryToFindDependency(string id, out IDependency dependency)
@@ -157,17 +180,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             IEnumerable<IProjectDependenciesSubTreeProvider> subTreeProviders,
             HashSet<string> projectItemSpecs)
         {
-            var worldBuilder = ImmutableDictionary.CreateBuilder<string, IDependency>(
-                                    StringComparer.OrdinalIgnoreCase);
-            worldBuilder.AddRange(DependenciesWorld);
-            var topLevelBuilder = ImmutableHashSet.CreateBuilder<IDependency>();
-            topLevelBuilder.AddRange(TopLevelDependencies);
+            var worldBuilder = DependenciesWorld.ToBuilder();
+            var topLevelBuilder = TopLevelDependencies.ToBuilder();
 
-            var anyChanges = false;
+            bool anyChanges = false;
 
-            foreach (var removed in changes.RemovedNodes)
+            foreach (IDependencyModel removed in changes.RemovedNodes)
             {
-                var targetedId = Dependency.GetID(TargetFramework, removed.ProviderType, removed.Id);
+                string targetedId = Dependency.GetID(TargetFramework, removed.ProviderType, removed.Id);
                 if (!worldBuilder.TryGetValue(targetedId, out IDependency dependency))
                 {
                     continue;
@@ -175,7 +195,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
                 if (snapshotFilters != null)
                 {
-                    foreach (var filter in snapshotFilters)
+                    foreach (IDependenciesSnapshotFilter filter in snapshotFilters)
                     {
                         dependency = filter.BeforeRemove(
                             ProjectPath, TargetFramework, dependency, worldBuilder, topLevelBuilder, out bool filterAnyChanges);
@@ -200,15 +220,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 topLevelBuilder.Remove(dependency);
             }
 
-            var subTreeProvidersMap = GetSubTreeProviderMap(subTreeProviders);
+            Dictionary<string, IProjectDependenciesSubTreeProvider> subTreeProvidersMap = GetSubTreeProviderMap(subTreeProviders);
 
-            foreach (var added in changes.AddedNodes)
+            foreach (IDependencyModel added in changes.AddedNodes)
             {
                 IDependency newDependency = new Dependency(added, TargetFramework, ProjectPath);
 
                 if (snapshotFilters != null)
                 {
-                    foreach (var filter in snapshotFilters)
+                    foreach (IDependenciesSnapshotFilter filter in snapshotFilters)
                     {
                         newDependency = filter.BeforeAdd(
                             ProjectPath,
@@ -255,7 +275,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
         private void ConstructTopLevelDependenciesByPathMap()
         {
-            foreach (var topLevelDependency in TopLevelDependencies)
+            foreach (IDependency topLevelDependency in TopLevelDependencies)
             {
                 if (!string.IsNullOrEmpty(topLevelDependency.Path))
                 {
@@ -289,7 +309,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 StringComparer.OrdinalIgnoreCase);
             if (subTreeProviders != null)
             {
-                foreach (var provider in subTreeProviders)
+                foreach (IProjectDependenciesSubTreeProvider provider in subTreeProviders)
                 {
                     subTreeProvidersMap[provider.ProviderType] = provider;
                 }

@@ -14,10 +14,10 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         Inherits CustomViewProvider
 
         Private _view As Control
-        Private _linkText As String
+        Private ReadOnly _linkText As String
         Private WithEvents _designerView As ApplicationDesignerView
         Private _designerPanel As ApplicationDesignerPanel
-        Private _specialFileId As Integer
+        Private ReadOnly _specialFileId As Integer
 
 
         ''' <summary>
@@ -154,7 +154,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
     Public NotInheritable Class SpecialFileCustomDocumentMonikerProvider
         Inherits CustomDocumentMonikerProvider
 
-        Private _specialFileId As Integer
+        Private ReadOnly _specialFileId As Integer
         Private _designerView As ApplicationDesignerView
 
         ''' <summary>

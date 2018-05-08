@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Option Explicit On
 Option Strict On
@@ -144,8 +144,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 #Region "ISerialization implementation"
 
             'Serialization keys for ISerializable
-            Private Const s_KEY_STATE As String = "State"
-            Private Const s_KEY_OBJECTNAMES As String = "ObjectNames"
+            Private Const KEY_STATE As String = "State"
+            Private Const KEY_OBJECTNAMES As String = "ObjectNames"
 
             ''' <summary>
             '''     Implements the save part of ISerializable.
@@ -155,7 +155,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' <param name="context">Serialization context</param>
             ''' <remarks></remarks>
             Private Sub GetObjectData(info As SerializationInfo, context As StreamingContext) Implements ISerializable.GetObjectData
-                info.AddValue(s_KEY_STATE, _serializedState)
+                info.AddValue(KEY_STATE, _serializedState)
 
                 Trace("Serialized store (GetObjectData)")
             End Sub
@@ -169,7 +169,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' <param name="Context">Serialization context</param>
             ''' <remarks></remarks>
             Private Sub New(Info As SerializationInfo, Context As StreamingContext)
-                _serializedState = DirectCast(Info.GetValue(s_KEY_STATE, GetType(ArrayList)), ArrayList)
+                _serializedState = DirectCast(Info.GetValue(KEY_STATE, GetType(ArrayList)), ArrayList)
 
                 Trace("Deserialized store from a stream (constructor)")
             End Sub
@@ -440,7 +440,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 'Backing for public properties
                 Private _entireObject As Boolean
                 Private _propertiesToSerialize As ArrayList 'Of PropertyDescriptor
-                Private _resource As Resource
+                Private ReadOnly _resource As Resource
 
 
 
@@ -540,17 +540,17 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Private NotInheritable Class SerializedResourceOrProperty
 
                 'The name of the resource from which this was serialized.
-                Private _resourceName As String
+                Private ReadOnly _resourceName As String
 
                 'The name of the property which was serialized (if it's a property)
-                Private _propertyName As String 'Nothing if entire object
+                Private ReadOnly _propertyName As String 'Nothing if entire object
 
                 'The name of the value type for this resource (needed to create a
                 '  new resource if necessary)
-                Private _resourceValueTypeName As String
+                Private ReadOnly _resourceValueTypeName As String
 
                 'The serialized property (if m_PropertyName <> "") or Resource instance
-                Private _serializedValue As Byte()
+                Private ReadOnly _serializedValue As Byte()
 
 
 

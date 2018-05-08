@@ -44,8 +44,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
             if (dependency.Flags.Contains(DependencyTreeFlags.SdkSubTreeNodeFlags))
             {
                 // find package with the same name
-                var packageModelId = dependency.Name;
-                var packageId = Dependency.GetID(targetFramework, PackageRuleHandler.ProviderTypeString, packageModelId);
+                string packageModelId = dependency.Name;
+                string packageId = Dependency.GetID(targetFramework, PackageRuleHandler.ProviderTypeString, packageModelId);
 
                 if (worldBuilder.TryGetValue(packageId, out IDependency package) && package.Resolved)
                 {
@@ -58,8 +58,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
             else if (dependency.Flags.Contains(DependencyTreeFlags.PackageNodeFlags) && dependency.Resolved)
             {
                 // find sdk with the same name
-                var sdkModelId = dependency.Name;
-                var sdkId = Dependency.GetID(targetFramework, SdkRuleHandler.ProviderTypeString, sdkModelId);
+                string sdkModelId = dependency.Name;
+                string sdkId = Dependency.GetID(targetFramework, SdkRuleHandler.ProviderTypeString, sdkModelId);
 
                 if (worldBuilder.TryGetValue(sdkId, out IDependency sdk))
                 {
@@ -95,8 +95,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
             if (dependency.Flags.Contains(DependencyTreeFlags.PackageNodeFlags))
             {
                 // find sdk with the same name and clean dependencyIDs
-                var sdkModelId = dependency.Name;
-                var sdkId = Dependency.GetID(targetFramework, SdkRuleHandler.ProviderTypeString, sdkModelId);
+                string sdkModelId = dependency.Name;
+                string sdkId = Dependency.GetID(targetFramework, SdkRuleHandler.ProviderTypeString, sdkModelId);
 
                 if (worldBuilder.TryGetValue(sdkId, out IDependency sdk))
                 {

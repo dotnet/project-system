@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         }
 
         [Import]
-        public UnconfiguredProject UnconfiguredProject // Put ourselves in the UnconfiguredProject scope
+        public UnconfiguredProject Project // Put ourselves in the UnconfiguredProject scope
         {
             get;
             set;

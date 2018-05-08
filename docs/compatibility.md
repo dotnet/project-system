@@ -2,6 +2,8 @@
 
 The following is a list of known compability issues and behavioral differences between the legacy project system and the new project system.
 
+For a list of feature differences; see [Feature Comparison](feature-comparison.md).
+
 ## Builds
 
 ### Design-time builds are run out-of-process.
@@ -17,6 +19,8 @@ Design-time build errors and warnings appear in the Error List alongside a norma
 
 ### Design-time builds might run targets in the same build
 For performance reasons, the new project system will group and run multiple targets together in the same build which might result in different behavior for targets that have incomplete or inaccurate target dependencies.
+
+## Configurations
 
 ### Configurations are inferred differently
 To keep the project file simple, configurations are inferred differently. More details [here](configurations.md)

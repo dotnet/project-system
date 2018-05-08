@@ -68,6 +68,11 @@ def imageName = "latest-dev15-3"
     def newJob = createJob(platform, configName, osName, imageName, isPR, manualTrigger, altTriggerPhrase)
 
     newJob.with {
+      wrappers {
+        credentialsBinding {
+          string("CODECOV_TOKEN", "CODECOV_TOKEN_DOTNET_PROJECT_SYSTEM")
+        }
+      }
       steps {
         batchFile(".\\build\\CIBuild.cmd -configuration ${configName} -prepareMachine")
       }
@@ -85,6 +90,12 @@ def imageName = "latest-dev15-3"
     def newJob = createJob(platform, configName, osName, imageName, isPR, manualTrigger, altTriggerPhrase)
 
     newJob.with {
+      disabled()
+      wrappers {
+        credentialsBinding {
+          string("CODECOV_TOKEN", "CODECOV_TOKEN_DOTNET_PROJECT_SYSTEM")
+        }
+      }
       steps {
         batchFile(".\\build\\VSIBuild.cmd -configuration ${configName} -prepareMachine")
       }

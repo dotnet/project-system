@@ -116,7 +116,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         Friend WithEvents buttonYes As Windows.Forms.Button
         Friend WithEvents checkBoxOption As DesignerFramework.WrapCheckBox
         Friend WithEvents buttonNo As Windows.Forms.Button
-        Private _components As IContainer
+        Private ReadOnly _components As IContainer
 
         Private Sub InitializeComponent()
             Dim resources As ComponentResourceManager = New ComponentResourceManager(GetType(AssemblyOptionDialog))

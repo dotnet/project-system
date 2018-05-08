@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.Text
 Imports System.Windows.Forms
@@ -10,8 +10,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
     Friend NotInheritable Class BuildEventCommandLineDialog
         Inherits Form
 
-        Private Shared m_DefaultInstance As BuildEventCommandLineDialog
-        Private Shared m_SyncObject As New Object
+        Private Shared s_defaultInstance As BuildEventCommandLineDialog
+        Private Shared s_syncObject As New Object
         Private m_CommandLine As String
         Private m_Tokens() As String
         Private m_Values() As String
@@ -108,18 +108,18 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End Set
         End Property
 
-        Private Sub OKButton_Click(sender As System.Object, e As EventArgs) Handles OKButton.Click
+        Private Sub OKButton_Click(sender As Object, e As EventArgs) Handles OKButton.Click
             '// Store the command line
             m_CommandLine = CommandLine.Text
 
             Close()
         End Sub
 
-        Private Sub CancelButton_Click(sender As System.Object, e As EventArgs) Handles Cancel_Button.Click
+        Private Sub CancelButton_Click(sender As Object, e As EventArgs) Handles Cancel_Button.Click
             Close()
         End Sub
 
-        Private Sub UpdateDialog_HelpButtonClicked(sender As System.Object, e As System.ComponentModel.CancelEventArgs) Handles MyBase.HelpButtonClicked
+        Private Sub UpdateDialog_HelpButtonClicked(sender As Object, e As System.ComponentModel.CancelEventArgs) Handles MyBase.HelpButtonClicked
             InvokeHelp()
             e.Cancel = True
         End Sub
@@ -139,7 +139,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return True
         End Function
 
-        Private Sub HideMacrosButton_Click(sender As System.Object, e As EventArgs) Handles HideMacrosButton.Click
+        Private Sub HideMacrosButton_Click(sender As Object, e As EventArgs) Handles HideMacrosButton.Click
             ShowCollapsedForm()
         End Sub
 
@@ -147,7 +147,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             ShowExpandedForm()
         End Sub
 
-        Private Sub BuildEventCommandLineDialog_Load(sender As System.Object, e As EventArgs) Handles MyBase.Load
+        Private Sub BuildEventCommandLineDialog_Load(sender As Object, e As EventArgs) Handles MyBase.Load
             InitializeControlLocations()
 
             '// Never let them resize to something smaller than the default form size
@@ -185,11 +185,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return True
         End Function
 
-        Private Sub InsertButton_Click(sender As System.Object, e As EventArgs) Handles InsertButton.Click
+        Private Sub InsertButton_Click(sender As Object, e As EventArgs) Handles InsertButton.Click
             AddCurrentMacroToCommandLine()
         End Sub
 
-        Private Sub TokenList_SelectedIndexChanged(sender As System.Object, e As EventArgs) Handles TokenList.SelectedIndexChanged
+        Private Sub TokenList_SelectedIndexChanged(sender As Object, e As EventArgs) Handles TokenList.SelectedIndexChanged
             SetInsertButtonEnableState()
         End Sub
 
@@ -233,7 +233,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Sub
 
-        Private Sub BuildEventCommandLineDialog_HelpRequested(sender As System.Object, hlpevent As HelpEventArgs) Handles MyBase.HelpRequested
+        Private Sub BuildEventCommandLineDialog_HelpRequested(sender As Object, hlpevent As HelpEventArgs) Handles MyBase.HelpRequested
             InvokeHelp()
         End Sub
 

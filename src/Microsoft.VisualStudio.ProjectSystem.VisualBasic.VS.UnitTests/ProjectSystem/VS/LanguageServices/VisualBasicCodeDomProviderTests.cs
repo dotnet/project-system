@@ -19,9 +19,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             var unconfiguedProject = UnconfiguredProjectFactory.Create();
             var provider = CreateInstance();
 
-            provider.UnconfiguredProject = unconfiguedProject;
+            provider.Project = unconfiguedProject;
 
-            Assert.Same(unconfiguedProject, provider.UnconfiguredProject);
+            Assert.Same(unconfiguedProject, provider.Project);
         }
 
         private static VisualBasicCodeDomProvider CreateInstance()

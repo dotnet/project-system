@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading.Tasks;
@@ -33,9 +34,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         {
             // It is important that we return the frameworks in the order they are specified in the project to ensure the default is set
             // correctly. 
-            var props = await _commonProjectServices.ActiveConfiguredProjectProperties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(false);
+            ConfigurationGeneral props = await _commonProjectServices.ActiveConfiguredProjectProperties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(false);
 
-            var targetFrameworks = (string)await props.TargetFrameworks.GetValueAsync().ConfigureAwait(false);
+            string targetFrameworks = (string)await props.TargetFrameworks.GetValueAsync().ConfigureAwait(false);
 
             if (!string.IsNullOrWhiteSpace(targetFrameworks))
             {
@@ -49,7 +50,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// </summary>
         public async Task SetActiveDebuggingFrameworkPropertyAsync(string activeFramework)
         {
-            var props = await _commonProjectServices.ActiveConfiguredProjectProperties.GetProjectDebuggerPropertiesAsync().ConfigureAwait(false);
+            ProjectDebugger props = await _commonProjectServices.ActiveConfiguredProjectProperties.GetProjectDebuggerPropertiesAsync().ConfigureAwait(false);
             await props.ActiveDebugFramework.SetValueAsync(activeFramework).ConfigureAwait(true);
         }
 
@@ -58,8 +59,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// </summary>
         public async Task<string> GetActiveDebuggingFrameworkPropertyAsync()
         {
-            var props = await _commonProjectServices.ActiveConfiguredProjectProperties.GetProjectDebuggerPropertiesAsync().ConfigureAwait(false);
-            var activeValue = await props.ActiveDebugFramework.GetValueAsync().ConfigureAwait(true) as string;
+            ProjectDebugger props = await _commonProjectServices.ActiveConfiguredProjectProperties.GetProjectDebuggerPropertiesAsync().ConfigureAwait(false);
+            string activeValue = await props.ActiveDebugFramework.GetValueAsync().ConfigureAwait(true) as string;
             return activeValue;
         }
 
@@ -69,7 +70,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         public async Task<ConfiguredProject> GetConfiguredProjectForActiveFrameworkAsync()
         {
 #pragma warning disable CS0618 // Type or member is obsolete
-            var configProjects = await _activeConfiguredProjectsProvider.GetActiveConfiguredProjectsMapAsync().ConfigureAwait(false);
+            ImmutableDictionary<string, ConfiguredProject> configProjects = await _activeConfiguredProjectsProvider.GetActiveConfiguredProjectsMapAsync().ConfigureAwait(false);
 #pragma warning restore CS0618 // Type or member is obsolete
 
             // If there is only one we are done
@@ -78,7 +79,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 return configProjects.First().Value;
             }
 
-            var activeFramework = await GetActiveDebuggingFrameworkPropertyAsync().ConfigureAwait(false);
+            string activeFramework = await GetActiveDebuggingFrameworkPropertyAsync().ConfigureAwait(false);
             if (!string.IsNullOrWhiteSpace(activeFramework))
             {
                 if (configProjects.TryGetValue(activeFramework, out ConfiguredProject configuredProject))
@@ -89,7 +90,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             // We can't just select the first one. If activeFramework is not set we must pick the first one as defined by the 
             // targetFrameworks property. So we need the order as returned by GetProjectFrameworks()
-            var frameworks = await GetProjectFrameworksAsync().ConfigureAwait(false);
+            List<string> frameworks = await GetProjectFrameworksAsync().ConfigureAwait(false);
             if (frameworks != null && frameworks.Count > 0)
             {
                 if (configProjects.TryGetValue(frameworks[0], out ConfiguredProject configuredProject))

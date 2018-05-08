@@ -13,11 +13,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
     internal abstract class TreeViewProviderBase : IDependenciesTreeViewProvider
     {
-        public TreeViewProviderBase(UnconfiguredProject unconfiguredProject)
+        public TreeViewProviderBase(UnconfiguredProject project)
         {
             ProjectTreePropertiesProviders = new OrderPrecedenceImportCollection<IProjectTreePropertiesProvider>(
                             ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesLast,
-                            projectCapabilityCheckProvider: unconfiguredProject);
+                            projectCapabilityCheckProvider: project);
         }
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                         IProjectTreeCustomizablePropertyContext context,
                         ReferencesProjectTreeCustomizablePropertyValues values)
         {
-            foreach (var provider in ProjectTreePropertiesProviders.ExtensionValues())
+            foreach (IProjectTreePropertiesProvider provider in ProjectTreePropertiesProviders.ExtensionValues())
             {
                 provider.CalculatePropertyValues(context, values);
             }

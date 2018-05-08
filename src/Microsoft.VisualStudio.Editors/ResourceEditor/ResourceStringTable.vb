@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Option Explicit On
 Option Strict On
@@ -24,7 +24,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Friend Const COLUMN_VALUE As Integer = 2
         Friend Const COLUMN_COMMENT As Integer = 3
 
-        Private Const s_ROW_BORDER_HEIGHT As Integer = 2
+        Private Const ROW_BORDER_HEIGHT As Integer = 2
 
         'A list of all Resource entries that are displayed in this string table (with the exception
         '  of the uncommitted resource, if any)
@@ -37,7 +37,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private _resourceFile As ResourceFile
 
         'True if this is the first time the grid is being populated.
-        Private _firstTimeShowingStringTable As Boolean = True
+        Private ReadOnly _firstTimeShowingStringTable As Boolean = True
 
         'A Resource which is created when the user starts entering data, but
         '  hasn't committed any of that data yet.
@@ -58,20 +58,20 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
         'Default column width percentages for each column.  Yes, this adds up to more than 100%
         '  if the type column is visible, but that's okay.
-        Private Const s_defaultColumnWidthPercentage_Name As Integer = 20
-        Private Const s_defaultColumnWidthPercentage_Type As Integer = 25
-        Private Const s_defaultColumnWidthPercentage_Value As Integer = 50
-        Private Const s_defaultColumnWidthPercentage_Comment As Integer = 30
+        Private Const DefaultColumnWidthPercentage_Name As Integer = 20
+        Private Const DefaultColumnWidthPercentage_Type As Integer = 25
+        Private Const DefaultColumnWidthPercentage_Value As Integer = 50
+        Private Const DefaultColumnWidthPercentage_Comment As Integer = 30
 
         'Minimum scrolling widths
-        Private Const s_columnMinScrollingWidth_Name As Integer = 100
-        Private Const s_columnMinScrollingWidth_Type As Integer = 60
-        Private Const s_columnMinScrollingWidth_Value As Integer = 150
-        Private Const s_columnMinScrollingWidth_Comment As Integer = 80
+        Private Const ColumnMinScrollingWidth_Name As Integer = 100
+        Private Const ColumnMinScrollingWidth_Type As Integer = 60
+        Private Const ColumnMinScrollingWidth_Value As Integer = 150
+        Private Const ColumnMinScrollingWidth_Comment As Integer = 80
 
         'The error glyphs don't show up if the row height is below the glyph size.  We don't want that
         '  to happen, so restrict the minimum height.
-        Private Const s_rowMinimumHeight As Integer = 20
+        Private Const RowMinimumHeight As Integer = 20
 
         ' Current sorter
         Private _sorter As StringTableSorter
@@ -218,12 +218,12 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ' ==== Name Column
 
             Dim ColumnWidth As Integer
-            ColumnWidth = DpiHelper.LogicalToDeviceUnitsX(s_columnMinScrollingWidth_Name)
+            ColumnWidth = DpiHelper.LogicalToDeviceUnitsX(ColumnMinScrollingWidth_Name)
             Dim NameColumn As New DataGridViewTextBoxColumn
             With NameColumn
                 .AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
                 .CellTemplate = New ResourceStringTextBoxCell()
-                .FillWeight = s_defaultColumnWidthPercentage_Name
+                .FillWeight = DefaultColumnWidthPercentage_Name
                 .MinimumWidth = ColumnWidth
                 .Name = My.Resources.Designer.RSE_ResourceNameColumn
                 .Width = ColumnWidth
@@ -234,12 +234,12 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             ' ==== Type Column
 
-            ColumnWidth = DpiHelper.LogicalToDeviceUnitsX(s_columnMinScrollingWidth_Type)
+            ColumnWidth = DpiHelper.LogicalToDeviceUnitsX(ColumnMinScrollingWidth_Type)
             Dim TypeColumn As New DataGridViewTextBoxColumn
             With TypeColumn
                 .AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
                 .CellTemplate = New ResourceStringTextBoxCell()
-                .FillWeight = s_defaultColumnWidthPercentage_Type
+                .FillWeight = DefaultColumnWidthPercentage_Type
                 .MinimumWidth = ColumnWidth
                 .Name = My.Resources.Designer.RSE_TypeColumn
                 .ReadOnly = True 'Can't modify the Type column - just for info
@@ -254,12 +254,12 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             '... By specifying DataGridViewTextBoxColumn here, we're indicating that user-added rows
             '      (i.e., through the "new row" at the bottom of the DataGridView) will be of type
             '      ResourceStringTextBoxCell.
-            ColumnWidth = DpiHelper.LogicalToDeviceUnitsX(s_columnMinScrollingWidth_Value)
+            ColumnWidth = DpiHelper.LogicalToDeviceUnitsX(ColumnMinScrollingWidth_Value)
             Dim ValueColumn As New DataGridViewTextBoxColumn
             With ValueColumn
                 .AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
                 .CellTemplate = New ResourceStringTextBoxCell()
-                .FillWeight = s_defaultColumnWidthPercentage_Value
+                .FillWeight = DefaultColumnWidthPercentage_Value
                 .MinimumWidth = ColumnWidth
                 .Name = My.Resources.Designer.RSE_ResourceColumn
                 .Width = ColumnWidth
@@ -269,12 +269,12 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Columns.Add(ValueColumn)
 
             ' ==== Comment Column
-            ColumnWidth = DpiHelper.LogicalToDeviceUnitsX(s_columnMinScrollingWidth_Comment)
+            ColumnWidth = DpiHelper.LogicalToDeviceUnitsX(ColumnMinScrollingWidth_Comment)
             Dim CommentColumn As New DataGridViewTextBoxColumn
             With CommentColumn
                 .AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
                 .CellTemplate = New ResourceStringTextBoxCell()
-                .FillWeight = s_defaultColumnWidthPercentage_Comment
+                .FillWeight = DefaultColumnWidthPercentage_Comment
                 .MinimumWidth = ColumnWidth
                 .Name = My.Resources.Designer.RSE_CommentColumn
                 .Width = ColumnWidth
@@ -368,7 +368,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             'The error glyphs don't show up if the row height is below the glyph size.  We don't want that
             '  to happen, so restrict the minimum height.
-            NewRow.MinimumHeight = Math.Max(DpiHelper.LogicalToDeviceUnitsY(s_rowMinimumHeight), Font.Height + DpiHelper.LogicalToDeviceUnitsY(s_ROW_BORDER_HEIGHT))
+            NewRow.MinimumHeight = Math.Max(DpiHelper.LogicalToDeviceUnitsY(RowMinimumHeight), Font.Height + DpiHelper.LogicalToDeviceUnitsY(ROW_BORDER_HEIGHT))
 
             'Build up the new row (with blank values) cell by cell
 
@@ -1173,7 +1173,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             '  show up at all.
             'See CreateNewResourceRow().  Currently you can't create a row for OnNewRowNeeded, there's
             '  supposed to be a template row to be able to use for this later in m3, if needed.
-            e.Row.MinimumHeight = Math.Max(DpiHelper.LogicalToDeviceUnitsY(s_rowMinimumHeight), Font.Height + DpiHelper.LogicalToDeviceUnitsY(s_ROW_BORDER_HEIGHT))
+            e.Row.MinimumHeight = Math.Max(DpiHelper.LogicalToDeviceUnitsY(RowMinimumHeight), Font.Height + DpiHelper.LogicalToDeviceUnitsY(ROW_BORDER_HEIGHT))
 
             If ResourceFile Is Nothing Then
                 Debug.Fail("No resource file")

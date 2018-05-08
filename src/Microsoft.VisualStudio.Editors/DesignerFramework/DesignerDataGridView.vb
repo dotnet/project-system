@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Option Strict On
 Option Explicit On
@@ -32,19 +32,19 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         Public Event CellClickBeginEdit(sender As Object, e As System.ComponentModel.CancelEventArgs)
 
         'Backing property fields
-        Private _DFAutoSizeColumnWidths As Boolean
-        Private _columnMinimumScrollingWidths() As Integer
+        Private ReadOnly _dfAutoSizeColumnWidths As Boolean
+        Private ReadOnly _columnMinimumScrollingWidths() As Integer
 
         'Current percentage of the total width of the control that each column takes up, as a decimal
         '  between 0 and 1.0
-        Private _columnWidthPercentages() As Double
+        Private ReadOnly _columnWidthPercentages() As Double
 
         'True iff we are changing a column's width programmatically
-        Private _columnWidthChangingProgrammatically As Boolean
+        Private ReadOnly _columnWidthChangingProgrammatically As Boolean
 
         'True iff the last time the control resized, we weren't able to contract all of the column
         '  widths to the proper values because we hit at least one column's minimum scrolling width.
-        Private _currentGridSizeTooSmall As Boolean
+        Private ReadOnly _currentGridSizeTooSmall As Boolean
 
         ' In the multiple selection mode, we shouldn't enter editMode automatically
         Private _inMultiSelectionMode As Boolean

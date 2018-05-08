@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.ComponentModel.Design
 
@@ -20,7 +20,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         Friend Const ApplicationScopeName As String = "Application"
         Friend Const UserScopeName As String = "User"
         Friend Const CultureInvariantDefaultProfileName As String = "(Default)"
-        Private Const s_specialClassName As String = "MySettings"
+        Private Const SpecialClassName As String = "MySettings"
 
         ' Our view
         Private _settingsDesignerViewProperty As SettingsDesignerView
@@ -223,7 +223,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                         End If
 
                         If Settings.UseSpecialClassName Then
-                            Return s_specialClassName
+                            Return SpecialClassName
                         End If
                     Catch ex As Exception When Common.ReportWithoutCrash(ex, String.Format("Failed to crack open {0} to determine if we were supposed to use the ""Special"" settings class name", FullPath), NameOf(SettingsDesigner))
                     End Try

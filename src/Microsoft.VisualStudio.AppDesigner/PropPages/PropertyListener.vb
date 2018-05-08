@@ -25,7 +25,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private _propPage As PropPageUserControlBase 'The property page to notify when a property changes
 
 #If DEBUG Then
-        Private _debugSourceName As String 'For debugging purposes: name of the properties object that is being listened to
+        Private ReadOnly _debugSourceName As String 'For debugging purposes: name of the properties object that is being listened to
 #End If
 
         ''' <summary>

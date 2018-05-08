@@ -57,10 +57,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         public void SetProjectFilePathAndDisplayName(string projectFilePath, string displayName)
         {
             // Update the project file path and display name for all the inner project contexts.
-            foreach (var innerProjectContextKvp in _configuredProjectContextsByTargetFramework)
+            foreach (KeyValuePair<string, IWorkspaceProjectContext> innerProjectContextKvp in _configuredProjectContextsByTargetFramework)
             {
-                var targetFramework = innerProjectContextKvp.Key;
-                var innerProjectContext = innerProjectContextKvp.Value;
+                string targetFramework = innerProjectContextKvp.Key;
+                IWorkspaceProjectContext innerProjectContext = innerProjectContextKvp.Value;
 
                 // For cross targeting projects, we ensure that the display name is unique per every target framework.
                 innerProjectContext.DisplayName = IsCrossTargeting ? $"{displayName}({targetFramework})" : displayName;
@@ -72,7 +72,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         {
             if (projectConfiguration.IsCrossTargeting())
             {
-                var targetFramework = projectConfiguration.Dimensions[ConfigurationGeneral.TargetFrameworkProperty];
+                string targetFramework = projectConfiguration.Dimensions[ConfigurationGeneral.TargetFrameworkProperty];
                 isActiveConfiguration = string.Equals(targetFramework, _activeTargetFramework);
                 return _configuredProjectContextsByTargetFramework.TryGetValue(targetFramework, out IWorkspaceProjectContext projectContext) ?
                     projectContext :
@@ -99,7 +99,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             Assumes.True(activeProjectConfiguration.IsCrossTargeting());
             Assumes.True(knownProjectConfigurations.All(c => c.IsCrossTargeting()));
 
-            var activeTargetFramework = activeProjectConfiguration.Dimensions[ConfigurationGeneral.TargetFrameworkProperty];
+            string activeTargetFramework = activeProjectConfiguration.Dimensions[ConfigurationGeneral.TargetFrameworkProperty];
             if (!string.Equals(activeTargetFramework, _activeTargetFramework))
             {
                 // Active target framework is different.
@@ -113,7 +113,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 return false;
             }
 
-            foreach (var targetFramework in targetFrameworks)
+            foreach (string targetFramework in targetFrameworks)
             {
                 if (!_configuredProjectContextsByTargetFramework.ContainsKey(targetFramework))
                 {
@@ -132,7 +132,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             // Dispose the inner project contexts.
             var disposedContexts = new List<IWorkspaceProjectContext>();
-            foreach (var innerProjectContext in InnerProjectContexts)
+            foreach (IWorkspaceProjectContext innerProjectContext in InnerProjectContexts)
             {
                 if (shouldDisposeInnerContext(innerProjectContext))
                 {

@@ -21,9 +21,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             IProjectThreadingService threadingService,
             UnconfiguredProject project)
         {
-            Requires.NotNull(threadingService, nameof(threadingService));
-            Requires.NotNull(project, nameof(project));
-
             _threadingService = threadingService;
             SyntaxFactsServicesImpl = new OrderPrecedenceImportCollection<ISyntaxFactsService>(projectCapabilityCheckProvider: project);
         }

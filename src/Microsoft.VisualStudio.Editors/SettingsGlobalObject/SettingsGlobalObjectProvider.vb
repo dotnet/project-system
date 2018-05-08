@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports EnvDTE
 Imports Microsoft.VisualStudio.Editors.Interop
@@ -1175,8 +1175,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         Implements VSDesignerPackage.IRefreshSettingsObject
 
         Private _provider As SettingsGlobalObjectProvider
-        Private _item As ProjectItem
-        Private _hierarchy As IVsHierarchy
+        Private ReadOnly _item As ProjectItem
+        Private ReadOnly _hierarchy As IVsHierarchy
         Private _itemid As UInteger
         Private _typeResolver As ITypeResolutionService
         Private _docData As DocData
@@ -1185,7 +1185,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         Private _namespace As String
         Private _className As String
         Private _ignoreDocLock As Boolean
-        Private _fileName As String
+        Private ReadOnly _fileName As String
         Private _valueCache As SettingsValueCache
         Private _typeCache As SettingsTypeCache
 
@@ -2227,7 +2227,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             ''' <param name="args"></param>
             ''' <returns></returns>
             ''' <remarks></remarks>
-            Public Overrides Function InvokeConstructor(ctor As ConstructorInfo, args As System.Object()) As Object
+            Public Overrides Function InvokeConstructor(ctor As ConstructorInfo, args As Object()) As Object
 
 #If DEBUG Then
                 Debug.WriteLineIf(SettingsGlobalObjectProvider.GlobalSettings.TraceVerbose, "SettingsFileTypeImplementor.InvokeConstructor(" & CStr(_globalObject._className) & ")...")
@@ -2248,7 +2248,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             ''' <param name="value"></param>
             ''' <param name="args"></param>
             ''' <remarks></remarks>
-            Public Overrides Sub SetPropertyValue(prop As PropertyInfo, instance As Object, value As Object, args As System.Object())
+            Public Overrides Sub SetPropertyValue(prop As PropertyInfo, instance As Object, value As Object, args As Object())
 
                 Debug.Assert(prop IsNot Nothing, "bad property passed to SetPropertyValue")
                 If (prop Is Nothing) Then
@@ -2328,7 +2328,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         Private Class ConcreteApplicationSettings
             Inherits ApplicationSettingsBase
 
-            Private _globalObject As SettingsFileGlobalObject
+            Private ReadOnly _globalObject As SettingsFileGlobalObject
             Private _properties As SettingsPropertyCollection
 
             ''' <summary>
@@ -2567,8 +2567,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         Private Class SettingsGlobalObjectValueAttribute
             Inherits Attribute
 
-            Private _globalObject As SettingsFileGlobalObject
-            Private _propertyName As String
+            Private ReadOnly _globalObject As SettingsFileGlobalObject
+            Private ReadOnly _propertyName As String
 
             ''' <summary>
             ''' constructor that takes the params to store

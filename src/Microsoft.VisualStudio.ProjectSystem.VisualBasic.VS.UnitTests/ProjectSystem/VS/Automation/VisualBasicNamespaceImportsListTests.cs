@@ -14,15 +14,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
     public class VisualBasicNamespaceImportsListTests
     {
         [Fact]
-        public void Constructor_NullAsActiveConfiguredProjectSubscriptionServices_ThrowsArgumentNull()
-        {
-            Assert.Throws<ArgumentNullException>("activeConfiguredProjectSubscriptionService", () =>
-            {
-                new VisualBasicNamespaceImportsList((IActiveConfiguredProjectSubscriptionService)null);
-            });
-        }
-
-        [Fact]
         public void Constructor_NotNull()
         {
             var list = new VisualBasicNamespaceImportsList(Mock.Of<IActiveConfiguredProjectSubscriptionService>());

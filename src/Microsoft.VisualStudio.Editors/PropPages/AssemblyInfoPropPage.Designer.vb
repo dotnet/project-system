@@ -253,7 +253,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             '
             'NeutralLanguageComboBox
             '
-            Me.NeutralLanguageComboBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Append
+            Me.NeutralLanguageComboBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend
             Me.NeutralLanguageComboBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems
             resources.ApplyResources(Me.NeutralLanguageComboBox, "NeutralLanguageComboBox")
             Me.NeutralLanguageComboBox.FormattingEnabled = True

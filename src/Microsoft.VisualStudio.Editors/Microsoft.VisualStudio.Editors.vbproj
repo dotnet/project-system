@@ -1,13 +1,13 @@
 ﻿<!-- Copyright (c)  Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
 <Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="..\VisualStudioDesigner.props"/>
+  <Import Project="..\VisualStudioDesigner.props" />
   <PropertyGroup>
     <Prefer32Bit>false</Prefer32Bit>
     <StrongNameKeyId>Microsoft</StrongNameKeyId>
-
+    <TargetFramework>net46</TargetFramework>
     <!-- TODO: Function/Property doesn't return a value on all code paths (https://github.com/dotnet/project-system/issues/2592) -->
     <NoWarn>$(NoWarn);42353;42355;42105</NoWarn>
-    
+
     <!-- Nuget -->
     <IsPackable>true</IsPackable>
     <Description>Implementation of some designers and project property page editors in VisualStudio.</Description>

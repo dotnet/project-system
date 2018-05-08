@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Option Strict On
 Option Explicit On
@@ -146,7 +146,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
 #Region "Neutral Language Combobox"
 
-        Private _neutralLanguageNoneText As String = My.Resources.Designer.PPG_NeutralLanguage_None 'Text for "None" in the neutral language combobox (stored in case thread language changes)
+        Private ReadOnly s_neutralLanguageNoneText As String = My.Resources.Designer.PPG_NeutralLanguage_None 'Text for "None" in the neutral language combobox (stored in case thread language changes)
 
         ''' <summary>
         ''' Populate the neutral language combobox with cultures
@@ -158,10 +158,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             If NeutralLanguageComboBox.Items.Count = 0 Then
                 Using New WaitCursor
                     'First, the "None" entry
-                    NeutralLanguageComboBox.Items.Add(_neutralLanguageNoneText)
+                    NeutralLanguageComboBox.Items.Add(s_neutralLanguageNoneText)
 
                     'Followed by all possible cultures
-                    Dim AllCultures As CultureInfo() = CultureInfo.GetCultures(CultureTypes.NeutralCultures Or CultureTypes.SpecificCultures Or CultureTypes.InstalledWin32Cultures)
+                    Dim AllCultures As IEnumerable(Of CultureInfo) = CultureInfo.GetCultures(CultureTypes.NeutralCultures Or CultureTypes.SpecificCultures Or CultureTypes.InstalledWin32Cultures).
+                                                                   OrderBy(Function(language) language.DisplayName)
                     For Each Culture As CultureInfo In AllCultures
                         NeutralLanguageComboBox.Items.Add(Culture.DisplayName)
                     Next
@@ -184,7 +185,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Dim LanguageAbbrev As String = CStr(value)
                 Dim Culture As CultureInfo = Nothing
                 If LanguageAbbrev = "" Then
-                    SelectedText = _neutralLanguageNoneText
+                    SelectedText = s_neutralLanguageNoneText
                 Else
                     Try
                         Culture = CultureInfo.GetCultureInfo(LanguageAbbrev)
@@ -213,7 +214,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 value = NeutralLanguageComboBox.Text
             Else
                 Dim DisplayName As String = DirectCast(NeutralLanguageComboBox.SelectedItem, String)
-                If DisplayName = "" OrElse DisplayName.Equals(_neutralLanguageNoneText, StringComparison.CurrentCultureIgnoreCase) Then
+                If DisplayName = "" OrElse DisplayName.Equals(s_neutralLanguageNoneText, StringComparison.CurrentCultureIgnoreCase) Then
                     '"None"
                     value = ""
                 Else

@@ -37,16 +37,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                 return null;
             }
 
-            string baseIntermediatePath = null;
+            string msbuildProjectExtensionsPath = null;
             string originalTargetFrameworks = null;
             var targetFrameworks = new TargetFrameworks();
             var toolReferences = new ReferenceItems();
 
             foreach (IProjectVersionedValue<IProjectSubscriptionUpdate> update in updates)
             {
-                var nugetRestoreChanges = update.Value.ProjectChanges[NuGetRestore.SchemaName];
-                baseIntermediatePath = baseIntermediatePath ??
-                    nugetRestoreChanges.After.Properties[NuGetRestore.BaseIntermediateOutputPathProperty];
+                IProjectChangeDescription nugetRestoreChanges = update.Value.ProjectChanges[NuGetRestore.SchemaName];
+                msbuildProjectExtensionsPath = msbuildProjectExtensionsPath ??
+                    nugetRestoreChanges.After.Properties[NuGetRestore.MSBuildProjectExtensionsPathProperty];
                 originalTargetFrameworks = originalTargetFrameworks ??
                     nugetRestoreChanges.After.Properties[NuGetRestore.TargetFrameworksProperty];
                 bool noTargetFramework =
@@ -61,8 +61,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
                 if (!targetFrameworks.Contains(targetFramework))
                 {
-                    var projectReferencesChanges = update.Value.ProjectChanges[ProjectReference.SchemaName];
-                    var packageReferencesChanges = update.Value.ProjectChanges[PackageReference.SchemaName];
+                    IProjectChangeDescription projectReferencesChanges = update.Value.ProjectChanges[ProjectReference.SchemaName];
+                    IProjectChangeDescription packageReferencesChanges = update.Value.ProjectChanges[PackageReference.SchemaName];
 
                     targetFrameworks.Add(new TargetFrameworkInfo
                     {
@@ -73,8 +73,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                     });
                 }
 
-                var toolReferencesChanges = update.Value.ProjectChanges[DotNetCliToolReference.SchemaName];
-                foreach (var item in toolReferencesChanges.After.Items)
+                IProjectChangeDescription toolReferencesChanges = update.Value.ProjectChanges[DotNetCliToolReference.SchemaName];
+                foreach (KeyValuePair<string, IImmutableDictionary<string, string>> item in toolReferencesChanges.After.Items)
                 {
                     if (!toolReferences.Contains(item.Key))
                     {
@@ -87,7 +87,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             return targetFrameworks.Any()
                 ? new ProjectRestoreInfo
                 {
-                    BaseIntermediatePath = baseIntermediatePath,
+                    // NOTE: We pass MSBuildProjectExtensionsPath as BaseIntermediatePath instead of using
+                    // BaseIntermediateOutputPath. This is because NuGet switched from using BaseIntermediateOutputPath
+                    // to MSBuildProjectExtensionsPath, since the value of BaseIntermediateOutputPath is often set too
+                    // late (after *.g.props files would need to have been imported from it). Instead of modifying the
+                    // IVsProjectRestoreInfo interface or introducing something like IVsProjectRestoreInfo with an
+                    // MSBuildProjectExtensionsPath property, we opted to leave the interface the same but change the
+                    // meaning of its BaseIntermediatePath proprtey. See
+                    // https://github.com/dotnet/project-system/issues/3466for for details.
+                    BaseIntermediatePath = msbuildProjectExtensionsPath,
                     OriginalTargetFrameworks = originalTargetFrameworks,
                     TargetFrameworks = targetFrameworks,
                     ToolReferences = toolReferences
@@ -126,13 +134,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             IImmutableDictionary<string, IImmutableDictionary<string, string>> projectReferenceItems,
             UnconfiguredProject project)
         {
-            var referenceItems = GetReferences(projectReferenceItems);
+            IVsReferenceItems referenceItems = GetReferences(projectReferenceItems);
 
             // compute project file full path property for each reference
             foreach (ReferenceItem item in referenceItems)
             {
-                var definingProjectDirectory = item.Properties.Item(DefiningProjectDirectoryProperty);
-                var projectFileFullPath = definingProjectDirectory != null
+                IVsReferenceProperty definingProjectDirectory = item.Properties.Item(DefiningProjectDirectoryProperty);
+                string projectFileFullPath = definingProjectDirectory != null
                     ? MakeRooted(definingProjectDirectory.Value, item.Name)
                     : project.MakeRooted(item.Name);
 

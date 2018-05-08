@@ -129,7 +129,7 @@ namespace Microsoft.VisualStudio.IO
 
         public string GetTempDirectoryOrFileName()
         {
-            var fileNameWithoutPath = Path.GetRandomFileName();
+            string fileNameWithoutPath = Path.GetRandomFileName();
 
             return Path.Combine(Path.GetTempPath(), fileNameWithoutPath);
         }

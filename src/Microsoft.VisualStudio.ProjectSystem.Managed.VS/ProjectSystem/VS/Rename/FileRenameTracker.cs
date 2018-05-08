@@ -9,6 +9,7 @@
 // </summary>
 //--------------------------------------------------------------------------------------------
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.IO;
@@ -34,12 +35,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
         [ImportingConstructor]
         public FileRenameTracker(IUnconfiguredProjectVsServices projectVsServices, VisualStudioWorkspace visualStudioWorkspace, IEnvironmentOptions environmentOptions, IUserNotificationServices userNotificationServices, IRoslynServices roslynServices)
         {
-            Requires.NotNull(projectVsServices, nameof(projectVsServices));
-            Requires.NotNull(visualStudioWorkspace, nameof(visualStudioWorkspace));
-            Requires.NotNull(environmentOptions, nameof(environmentOptions));
-            Requires.NotNull(userNotificationServices, nameof(userNotificationServices));
-            Requires.NotNull(roslynServices, nameof(roslynServices));
-
             _projectVsServices = projectVsServices;
             _visualStudioWorkspace = visualStudioWorkspace;
             _environmentOptions = environmentOptions;
@@ -49,13 +44,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 
         public Task HintedAsync(IImmutableDictionary<Guid, IImmutableSet<IProjectChangeHint>> hints)
         {
-            var files = hints[ProjectChangeFileSystemEntityRenameHint.RenamedFile];
+            IImmutableSet<IProjectChangeHint> files = hints[ProjectChangeFileSystemEntityRenameHint.RenamedFile];
             if (files.Count == 1)
             {
                 var hint = (IProjectChangeFileRenameHint)files.First();
                 if (!hint.ChangeAlreadyOccurred)
                 {
-                    var kvp = hint.RenamedFiles.First();
+                    KeyValuePair<string, string> kvp = hint.RenamedFiles.First();
                     ScheduleRename(kvp.Key, kvp.Value);
                 }
             }
@@ -76,7 +71,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                 return;
             }
 
-            var myProject = _visualStudioWorkspace
+            CodeAnalysis.Project myProject = _visualStudioWorkspace
                  .CurrentSolution
                  .Projects.Where(p => StringComparers.Paths.Equals(p.FilePath, _projectVsServices.Project.FullPath))
                  .FirstOrDefault();

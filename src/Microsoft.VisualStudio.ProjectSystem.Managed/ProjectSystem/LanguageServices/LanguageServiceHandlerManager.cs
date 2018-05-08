@@ -21,11 +21,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         [ImportingConstructor]
         public LanguageServiceHandlerManager(UnconfiguredProject project, ICommandLineParserService commandLineParser, IContextHandlerProvider handlerProvider, IProjectLogger logger)
         {
-            Requires.NotNull(project, nameof(project));
-            Requires.NotNull(commandLineParser, nameof(commandLineParser));
-            Requires.NotNull(handlerProvider, nameof(handlerProvider));
-            Requires.NotNull(logger, nameof(logger));
-
             _project = project;
             _commandLineParser = commandLineParser;
             _handlerProvider = handlerProvider;
@@ -64,7 +59,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             {
                 WriteHeader(logger, update, version, RuleHandlerType.Evaluation, isActiveContext);
 
-                foreach (var handler in handlers)
+                foreach ((IEvaluationHandler handler, string evaluationRuleName) handler in handlers)
                 {
                     string ruleName = handler.evaluationRuleName;
 
@@ -145,7 +140,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             return new string[] { CompilerCommandLineArgs.SchemaName };
         }
 
-        private void ProcessDesignTimeBuildFailure(IProjectChangeDescription projectChange, IWorkspaceProjectContext context, IProjectLogger logger)
+        private static void ProcessDesignTimeBuildFailure(IProjectChangeDescription projectChange, IWorkspaceProjectContext context, IProjectLogger logger)
         {
             // If 'CompileDesignTime' didn't run due to a preceeding failed target, or a failure in itself, CPS will send us an empty IProjectChangeDescription
             // that represents as if 'CompileDesignTime' ran but returned zero results.
@@ -178,7 +173,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             BuildOptions addedItems = _commandLineParser.Parse(projectChange.Difference.AddedItems);
             BuildOptions removedItems = _commandLineParser.Parse(projectChange.Difference.RemovedItems);
 
-            foreach (var handler in handlers)
+            foreach (ICommandLineHandler handler in handlers)
             {
                 handler.Handle(version, addedItems, removedItems, isActiveContext, logger);
             }

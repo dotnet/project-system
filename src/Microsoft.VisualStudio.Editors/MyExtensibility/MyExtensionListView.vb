@@ -69,13 +69,13 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
 
         Private _menuCommandService As IMenuCommandService
 
-        Private _menuCommandAddExtension As New MenuCommand( _
+        Private ReadOnly _menuCommandAddExtension As New MenuCommand( _
             New EventHandler(AddressOf AddExtension_Click), _
             Constants.MenuConstants.CommandIDMyEXTENSIONAddExtension)
         Private _menuCommandRemoveExtension As New MenuCommand( _
             New EventHandler(AddressOf RemoveExtension_Click), _
             Constants.MenuConstants.CommandIDMyEXTENSIONRemoveExtension)
-        Private _menuCommands() As MenuCommand = _
+        Private ReadOnly _menuCommands() As MenuCommand = _
             {_menuCommandAddExtension, _menuCommandRemoveExtension}
     End Class
 End Namespace

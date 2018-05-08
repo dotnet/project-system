@@ -289,7 +289,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <param name="hierarchy"></param>
         ''' <returns>true if it is a venus project</returns>
         ''' <remarks></remarks>
-        Friend Shared Function IsVenusProject(hierarchy As IVsHierarchy) As [Boolean]
+        Friend Shared Function IsVenusProject(hierarchy As IVsHierarchy) As Boolean
 
             If hierarchy Is Nothing Then
                 Return False
@@ -318,7 +318,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <param name="hierarchy"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Friend Shared Function IsSilverLightProject(hierarchy As IVsHierarchy) As [Boolean]
+        Friend Shared Function IsSilverLightProject(hierarchy As IVsHierarchy) As Boolean
             Const SilverLightProjectGuid As String = "{A1591282-1198-4647-A2B1-27E5FF5F6F3B}"
 
             If hierarchy Is Nothing Then
@@ -371,7 +371,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <param name="hierarchy"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Friend Shared Function IsWebProject(hierarchy As IVsHierarchy) As [Boolean]
+        Friend Shared Function IsWebProject(hierarchy As IVsHierarchy) As Boolean
             Const WebAppProjectGuid As String = "{349c5851-65df-11da-9384-00065b846f21}"
 
             If hierarchy Is Nothing Then
@@ -660,7 +660,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
             ' Control that we are going to set the font on (if any)
             Private _control As Control
 
-            Private _serviceProvider As IServiceProvider
+            Private ReadOnly _serviceProvider As IServiceProvider
 
             ''' <summary>
             ''' Create a new instance...

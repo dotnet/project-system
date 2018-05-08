@@ -16,11 +16,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         private static PostBuildEventValueProvider.PostBuildEventHelper systemUnderTest =
             new PostBuildEventValueProvider.PostBuildEventHelper();
 
-        private static IProjectProperties emptyProjectProperties =
+        private static readonly IProjectProperties emptyProjectProperties =
             IProjectPropertiesFactory.MockWithProperty(string.Empty).Object;
 
         [Fact]
-        public static async Task GetPropertyTest_AllTargetsPresent()
+        public static async Task GetPropertyAsync_AllTargetsPresent()
         {
             var root = @"
 <Project Sdk=""Microsoft.NET.Sdk"">
@@ -45,7 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         }
 
         [Fact]
-        public static async Task GetPropertyTest_PostBuildTargetPresent()
+        public static async Task GetPropertyAsync_PostBuildTargetPresent()
         {
             var root = @"
 <Project Sdk=""Microsoft.NET.Sdk"">
@@ -66,7 +66,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         }
 
         [Fact]
-        public static async Task GetPropertyTest_PostBuildTargetPresent_LowerCase()
+        public static async Task GetPropertyAsync_PostBuildTargetPresent_LowerCase()
         {
             var root = @"
 <Project Sdk=""Microsoft.NET.Sdk"">
@@ -87,7 +87,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         }
 
         [Fact]
-        public static async Task GetPropertyTest_NoTargetsPresent()
+        public static async Task GetPropertyAsync_NoTargetsPresent()
         {
             var root = @"
 <Project Sdk=""Microsoft.NET.Sdk"">
@@ -104,7 +104,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         }
 
         [Fact]
-        public static async Task GetPropertyTest_ExistingProperties()
+        public static async Task GetPropertyAsync_ExistingProperties()
         {
             var root = @"
 <Project Sdk=""Microsoft.NET.Sdk"">
@@ -125,7 +125,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         }
 
         [Fact]
-        public static async Task GetPropertyTest_WrongTargetName()
+        public static async Task GetPropertyAsync_WrongTargetName()
         {
             var root = @"
 <Project Sdk=""Microsoft.NET.Sdk"">
@@ -144,7 +144,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         }
 
         [Fact]
-        public static async Task GetPropertyTest_WrongExec()
+        public static async Task GetPropertyAsync_WrongExec()
         {
             var root = @"
 <Project Sdk=""Microsoft.NET.Sdk"">
@@ -163,7 +163,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         }
 
         [Fact]
-        public static async Task SetPropertyTest_NoTargetsPresent()
+        public static async Task SetPropertyAsync_NoTargetsPresent()
         {
             var root = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
@@ -188,7 +188,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         }
 
         [Fact]
-        public static async Task SetPropertyTest_TargetPresent()
+        public static async Task SetPropertyAsync_TargetPresent()
         {
             var root = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
@@ -216,7 +216,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         }
 
         [Fact]
-        public static async Task SetPropertyTest_TargetPresent_LowerCase()
+        public static async Task SetPropertyAsync_TargetPresent_LowerCase()
         {
             var root = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
@@ -244,7 +244,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         }
 
         [Fact]
-        public static async Task SetPropertyTest_TargetPresent_NoTasks()
+        public static async Task SetPropertyAsync_TargetPresent_NoTasks()
         {
             var root = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
@@ -273,7 +273,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         }
 
         [Fact]
-        public static async Task SetPropertyTest_TargetPresent_NoTasks_Removal()
+        public static async Task SetPropertyAsync_TargetPresent_NoTasks_Removal()
         {
             var root = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
@@ -308,7 +308,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         }
 
         [Fact]
-        public static async Task SetPropertyTest_TargetPresent_MultipleTasks()
+        public static async Task SetPropertyAsync_TargetPresent_MultipleTasks()
         {
             var root = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
@@ -338,7 +338,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         }
 
         [Fact]
-        public static async Task SetPropertyTest_DoNotRemoveTarget_EmptyString()
+        public static async Task SetPropertyAsync_DoNotRemoveTarget_EmptyString()
         {
             var root = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
@@ -368,7 +368,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         }
 
         [Fact]
-        public static async Task SetPropertyTest_RemoveTarget_EmptyString()
+        public static async Task SetPropertyAsync_RemoveTarget_EmptyString()
         {
             var root = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
@@ -393,7 +393,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         }
 
         [Fact]
-        public static async Task SetPropertyTest_RemoveTarget_WhitespaceCharacter()
+        public static async Task SetPropertyAsync_RemoveTarget_WhitespaceCharacter()
         {
             var root = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
@@ -418,7 +418,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         }
 
         [Fact]
-        public static async Task SetPropertyTest_RemoveTarget_TabCharacter()
+        public static async Task SetPropertyAsync_RemoveTarget_TabCharacter()
         {
             var root = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
@@ -443,7 +443,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         }
 
         [Fact]
-        public static async Task SetPropertyTest_DoNotRemoveTarget_NewlineCharacter()
+        public static async Task SetPropertyAsync_DoNotRemoveTarget_NewlineCharacter()
         {
             var root = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
@@ -471,7 +471,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         }
 
         [Fact]
-        public static async Task SetPropertyTest_TargetNameCollision()
+        public static async Task SetPropertyAsync_TargetNameCollision()
         {
             var root = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
@@ -500,7 +500,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         }
 
         [Fact]
-        public static async Task SetPropertyTest_TargetNameCollision02()
+        public static async Task SetPropertyAsync_TargetNameCollision02()
         {
             var root = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
@@ -534,7 +534,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         }
 
         [Fact]
-        public static async Task SetPropertyTest_TargetNameCollision_LowerCase()
+        public static async Task SetPropertyAsync_TargetNameCollision_LowerCase()
         {
             var root = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
@@ -568,7 +568,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         }
 
         [Fact]
-        public static async Task SetPropertyTest_ExistingProperties()
+        public static async Task SetPropertyAsync_ExistingProperties()
         {
             var root = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
@@ -589,7 +589,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         }
 
         [Fact]
-        public static async Task SetPropertyTest_RemoveExistingProperties()
+        public static async Task SetPropertyAsync_RemoveExistingProperties()
         {
             var root = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
@@ -609,7 +609,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         }
 
         [Fact]
-        public static async Task SetPropertyTest_WrongTargetName()
+        public static async Task SetPropertyAsync_WrongTargetName()
         {
             var root = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>

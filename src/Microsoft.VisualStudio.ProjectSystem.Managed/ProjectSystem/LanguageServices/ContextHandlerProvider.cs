@@ -21,8 +21,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         [ImportingConstructor]
         public ContextHandlerProvider(UnconfiguredProject project)
         {
-            Requires.NotNull(project, nameof(project));
-
             _project = project;
         }
 
@@ -58,10 +56,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
         private Handlers CreateHandlers(IWorkspaceProjectContext context)
         {
-            var evaluationHandlers = ImmutableArray.CreateBuilder<(IEvaluationHandler handler, string evaluationRuleName)>(s_handlerFactories.Length);
-            var commandLineHandlers = ImmutableArray.CreateBuilder<ICommandLineHandler>(s_handlerFactories.Length);
+            ImmutableArray<(IEvaluationHandler handler, string evaluationRuleName)>.Builder evaluationHandlers = ImmutableArray.CreateBuilder<(IEvaluationHandler handler, string evaluationRuleName)>(s_handlerFactories.Length);
+            ImmutableArray<ICommandLineHandler>.Builder commandLineHandlers = ImmutableArray.CreateBuilder<ICommandLineHandler>(s_handlerFactories.Length);
 
-            foreach (var factory in s_handlerFactories)
+            foreach ((HandlerFactory factory, string evaluationRuleName) factory in s_handlerFactories)
             {
                 object handler = factory.factory(_project, context);
 

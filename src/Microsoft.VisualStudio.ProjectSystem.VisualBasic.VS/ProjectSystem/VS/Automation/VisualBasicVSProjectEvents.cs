@@ -18,9 +18,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             [Import(ExportContractNames.VsTypes.CpsVSProject)] VSLangProj.VSProject vsProject,
             UnconfiguredProject project)
         {
-            Requires.NotNull(vsProject, nameof(vsProject));
-            Requires.NotNull(project, nameof(project));
-
             _vsProject = vsProject;
             ImportsEventsImpl = new OrderPrecedenceImportCollection<ImportsEvents>(projectCapabilityCheckProvider: project);
         }

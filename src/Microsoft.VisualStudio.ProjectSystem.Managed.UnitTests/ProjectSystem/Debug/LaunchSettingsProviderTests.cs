@@ -39,11 +39,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             };
 
             var specialFilesManager = ActiveConfiguredProjectFactory.ImplementValue(() => AppDesignerFolderSpecialFileProviderFactory.ImplementGetFile(appDesignerFolder));
-            var unconfiguredProject = UnconfiguredProjectFactory.Create(null, null, @"c:\test\Project1\Project1.csproj");
-            var properties = ProjectPropertiesFactory.Create(unconfiguredProject, new[] { debuggerData });
-            var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(unconfiguredProject, null, new IProjectThreadingServiceMock(), null, properties);
+            var project = UnconfiguredProjectFactory.Create(null, null, @"c:\test\Project1\Project1.csproj");
+            var properties = ProjectPropertiesFactory.Create(project, new[] { debuggerData });
+            var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(project, null, new IProjectThreadingServiceMock(), null, properties);
             var projectServices = IUnconfiguredProjectServicesFactory.Create(IProjectAsynchronousTasksServiceFactory.Create());
-            var provider = new LaunchSettingsUnderTest(unconfiguredProject, projectServices, fileSystem ?? new IFileSystemMock(), commonServices, null, specialFilesManager);
+            var provider = new LaunchSettingsUnderTest(project, projectServices, fileSystem ?? new IFileSystemMock(), commonServices, null, specialFilesManager);
             return provider;
         }
 
@@ -400,7 +400,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                         SSLPort = 44301
                     }
                 };
-                return ImmutableDictionary<string, object>.Empty.Add("iisSettings", iisSettings);
+                return ImmutableStringDictionary<object>.EmptyOrdinal.Add("iisSettings", iisSettings);
             });
 
             await provider.SaveSettingsToDiskAsyncTest(testSettings.Object);
@@ -524,7 +524,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                         SSLPort = 44301
                     }
                 };
-                return ImmutableDictionary<string, object>.Empty.Add("iisSettings", iisSettings);
+                return ImmutableStringDictionary<object>.EmptyOrdinal.Add("iisSettings", iisSettings);
             });
 
             await provider.UpdateAndSaveSettingsAsync(testSettings.Object).ConfigureAwait(true);
@@ -562,7 +562,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 return profiles.ToImmutableList();
             });
 
-            testSettings.Setup(m => m.GlobalSettings).Returns(() => ImmutableDictionary<string, object>.Empty);
+            testSettings.Setup(m => m.GlobalSettings).Returns(() => ImmutableStringDictionary<object>.EmptyOrdinal);
 
             await provider.UpdateAndSaveSettingsAsync(testSettings.Object).ConfigureAwait(true);
 
@@ -706,7 +706,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             // Set the serialization provider
             SetJsonSerializationProviders(provider);
 
-            var globalSettings = ImmutableDictionary<string, object>.Empty.Add("test", new LaunchProfile());
+            var globalSettings = ImmutableStringDictionary<object>.EmptyOrdinal.Add("test", new LaunchProfile());
 
             var testSettings = new Mock<ILaunchSettings>();
             testSettings.Setup(m => m.GlobalSettings).Returns(globalSettings);
@@ -739,7 +739,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             // Set the serialization provider
             SetJsonSerializationProviders(provider);
 
-            var globalSettings = ImmutableDictionary<string, object>.Empty
+            var globalSettings = ImmutableStringDictionary<object>.EmptyOrdinal
                                                     .Add("test", new LaunchProfile())
                                                     .Add("iisSettings", new IISSettingsData() { DoNotPersist = existingIsInMemory });
 
@@ -770,7 +770,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             // Set the serialization provider
             SetJsonSerializationProviders(provider);
 
-            var globalSettings = ImmutableDictionary<string, object>.Empty.Add("test", new LaunchProfile());
+            var globalSettings = ImmutableStringDictionary<object>.EmptyOrdinal.Add("test", new LaunchProfile());
 
             var testSettings = new Mock<ILaunchSettings>();
             testSettings.Setup(m => m.GlobalSettings).Returns(globalSettings);
@@ -796,7 +796,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             // Set the serialization provider
             SetJsonSerializationProviders(provider);
 
-            var globalSettings = ImmutableDictionary<string, object>.Empty
+            var globalSettings = ImmutableStringDictionary<object>.EmptyOrdinal
                                                     .Add("test", new LaunchProfile())
                                                     .Add("iisSettings", new IISSettingsData());
 
@@ -816,7 +816,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             Assert.False(provider.CurrentSnapshot.GlobalSettings.TryGetValue("iisSettings", out object updatedSettings));
         }
 
-        private string JsonString1 = @"{
+        private readonly string JsonString1 = @"{
   ""profiles"": {
   ""IIS Express"":
     {
@@ -851,7 +851,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     }
   }
 }";
-        private string JsonStringWithWebSettings = @"{
+        private readonly string JsonStringWithWebSettings = @"{
   ""iisSettings"": {
     ""windowsAuthentication"": true,
     ""anonymousAuthentication"": false,
@@ -871,7 +871,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     }
   }
 }";
-        private string BadJsonString = @"{
+        private readonly string BadJsonString = @"{
   ""profiles"": {
     {
       ""name"": ""IIS Express"",
@@ -890,10 +890,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     internal class LaunchSettingsUnderTest : LaunchSettingsProvider
     {
         // ECan pass null for all and a default will be crewated
-        public LaunchSettingsUnderTest(UnconfiguredProject unconfiguredProject, IUnconfiguredProjectServices projectServices,
+        public LaunchSettingsUnderTest(UnconfiguredProject project, IUnconfiguredProjectServices projectServices,
                                       IFileSystem fileSystem, IUnconfiguredProjectCommonServices commonProjectServices,
                                       IActiveConfiguredProjectSubscriptionService projectSubscriptionService, ActiveConfiguredProject<AppDesignerFolderSpecialFileProvider> appDesignerFolderSpecialFileProvider)
-          : base(unconfiguredProject, projectServices, fileSystem, commonProjectServices, projectSubscriptionService, appDesignerFolderSpecialFileProvider)
+          : base(project, projectServices, fileSystem, commonProjectServices, projectSubscriptionService, appDesignerFolderSpecialFileProvider)
         {
             // Block the code from setting up one on the real file system. Since we block, it we need to set up the fileChange scheduler manually
             FileWatcher = new SimpleFileWatcher();

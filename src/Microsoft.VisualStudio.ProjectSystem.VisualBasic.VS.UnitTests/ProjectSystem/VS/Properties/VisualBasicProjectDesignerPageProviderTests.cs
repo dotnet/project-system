@@ -55,7 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 
         private static VisualBasicProjectDesignerPageProvider CreateInstance(params string[] capabilities)
         {
-            Func<string, bool> containsCapability = c => capabilities.Contains(c);
+            bool containsCapability(string c) => capabilities.Contains(c);
             var capabilitiesService = IProjectCapabilitiesServiceFactory.ImplementsContains(containsCapability);
             return new VisualBasicProjectDesignerPageProvider(capabilitiesService);
         }

@@ -8,7 +8,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
         public static ObservableList<NameValuePair> CreateList(this IDictionary<string, string> dictionary)
         {
             var list = new ObservableList<NameValuePair>();
-            foreach (var kvp in dictionary)
+            foreach (KeyValuePair<string, string> kvp in dictionary)
             {
                 list.Add(new NameValuePair(kvp.Key, kvp.Value, list));
             }
@@ -18,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
         public static IDictionary<string, string> CreateDictionary(this ObservableList<NameValuePair> list)
         {
             var dictionary = new Dictionary<string, string>();
-            foreach (var ev in list)
+            foreach (NameValuePair ev in list)
             {
                 dictionary.Add(ev.Name, ev.Value);
             }

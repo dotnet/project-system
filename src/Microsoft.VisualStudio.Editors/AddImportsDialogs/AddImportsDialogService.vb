@@ -7,7 +7,7 @@ Namespace Microsoft.VisualStudio.Editors.AddImports
         Implements IVBAddImportsDialogService
 
         ' Package Service Provider
-        Private _serviceProvider As IServiceProvider
+        Private ReadOnly _serviceProvider As IServiceProvider
 
         ''' <summary>
         ''' Constructor

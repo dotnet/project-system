@@ -21,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
             // We don't use System.IO.Path.IsPathRooted because it doesn't support
             // URIs, and because it returns true for paths like "\dir\file", which is
             // relative to whatever drive we're talking about.
-            return Uri.TryCreate(path, UriKind.Absolute, out var result);
+            return Uri.TryCreate(path, UriKind.Absolute, out Uri result);
         }
 
         /// <summary>

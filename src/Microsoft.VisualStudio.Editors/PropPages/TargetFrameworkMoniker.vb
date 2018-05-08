@@ -15,12 +15,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Stores the target framework moniker
         ''' </summary>
-        Private _moniker As String
+        Private ReadOnly _moniker As String
 
         ''' <summary>
         ''' Stores the display name of the target framework moniker
         ''' </summary>
-        Private _displayName As String
+        Private ReadOnly _displayName As String
 
         ''' <summary>
         ''' Constructor that uses the target framework moniker and display name provided by DTAR

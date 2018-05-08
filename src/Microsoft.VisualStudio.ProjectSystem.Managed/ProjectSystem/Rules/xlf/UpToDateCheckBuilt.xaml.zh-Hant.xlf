@@ -2,21 +2,6 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="zh-Hant" original="../UpToDateCheckBuilt.xaml">
     <body>
-      <trans-unit id="Rule|UpToDateCheckBuilt|DisplayName">
-        <source>Up-to-date check built artifact</source>
-        <target state="translated">最新狀態檢查已建置的成品</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="Rule|UpToDateCheckBuilt|Description">
-        <source>File Properties</source>
-        <target state="translated">檔案屬性</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|Identity|Description">
-        <source>The item specified in the Include attribute.</source>
-        <target state="translated">Include 屬性中指定的項目。</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|Original|Description">
         <source>If set, specifies that this built output comes from this source file.</source>
         <target state="translated">如有設定，會指定這個建置輸出來自這個來源檔案。</target>

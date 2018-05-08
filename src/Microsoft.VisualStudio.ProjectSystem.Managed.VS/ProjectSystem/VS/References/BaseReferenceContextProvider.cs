@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
         /// <summary>
         /// Lazy instance of the next handler in the chain.
         /// </summary>
-        private Lazy<Lazy<IVsReferenceManagerUserAsync, IVsReferenceManagerUserComponentMetadataView>> _nextHandler;
+        private readonly Lazy<Lazy<IVsReferenceManagerUserAsync, IVsReferenceManagerUserComponentMetadataView>> _nextHandler;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BaseReferenceContextProvider"/> class.
@@ -30,8 +30,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
             _nextHandler = new Lazy<Lazy<IVsReferenceManagerUserAsync, IVsReferenceManagerUserComponentMetadataView>>(() =>
             {
                 Type provider = GetType();
-                var order = provider.GetCustomAttribute<OrderAttribute>();
-                var user = provider.GetCustomAttribute<ExportIVsReferenceManagerUserAsyncAttribute>();
+                OrderAttribute order = provider.GetCustomAttribute<OrderAttribute>();
+                ExportIVsReferenceManagerUserAsyncAttribute user = provider.GetCustomAttribute<ExportIVsReferenceManagerUserAsyncAttribute>();
                 return VsReferenceManagerUsers.FirstOrDefault(
                         export =>
                             export.Metadata.OrderPrecedence < order.OrderPrecedence &&

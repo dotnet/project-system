@@ -1,27 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.-->
-<Rule
-    Name="UpToDateCheckOutput"
-    DisplayName="Up-to-date check output"
-    PageTemplate="generic"
-    Description="File Properties"
-    xmlns="http://schemas.microsoft.com/build/2009/properties">
+<Rule Name="UpToDateCheckOutput" xmlns="http://schemas.microsoft.com/build/2009/properties">
     <Rule.DataSource>
-        <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" ItemType="UpToDateCheckOutput" SourceOfDefaultValue="AfterContext" />
+        <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" 
+                    SourceType="TargetResults" MSBuildTarget="CollectUpToDateCheckOutputDesignTime"/>
     </Rule.DataSource>
-    <Rule.Categories>
-        <Category Name="Advanced" DisplayName="Advanced" />
-        <Category Name="Misc" DisplayName="Misc" />
-    </Rule.Categories>
-
-    <StringProperty
-      Name="FullPath"
-      DisplayName="Full Path"
-      ReadOnly="true"
-      Category="Misc"
-      Description="Location of the file.">
-        <StringProperty.DataSource>
-            <DataSource Persistence="Intrinsic" ItemType="UpToDateCheckOutput" PersistedName="FullPath" SourceOfDefaultValue="AfterContext" />
-        </StringProperty.DataSource>
-    </StringProperty>
+    <BoolProperty Name="Visible" Visible="False" ReadOnly="True" />
 </Rule>

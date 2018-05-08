@@ -50,7 +50,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
                 && resultDependency.Flags.Contains(DependencyTreeFlags.ProjectNodeFlags)
                 && !resultDependency.Flags.Contains(DependencyTreeFlags.SharedProjectFlags))
             {
-                var snapshot = GetSnapshot(projectPath, resultDependency);
+                ITargetedDependenciesSnapshot snapshot = GetSnapshot(projectPath, resultDependency);
                 if (snapshot != null && snapshot.HasUnresolvedDependency)
                 {
                     filterAnyChanges = true;
@@ -63,19 +63,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
 
         private ITargetedDependenciesSnapshot GetSnapshot(string projectPath, IDependency dependency)
         {
-            var snapshotProvider = AggregateSnapshotProvider.GetSnapshotProvider(dependency.FullPath);
+            IDependenciesSnapshotProvider snapshotProvider = AggregateSnapshotProvider.GetSnapshotProvider(dependency.FullPath);
             if (snapshotProvider == null)
             {
                 return null;
             }
 
-            var snapshot = snapshotProvider.CurrentSnapshot;
+            IDependenciesSnapshot snapshot = snapshotProvider.CurrentSnapshot;
             if (snapshot == null)
             {
                 return null;
             }
 
-            var targetFramework = TargetFrameworkProvider.GetNearestFramework(
+            ITargetFramework targetFramework = TargetFrameworkProvider.GetNearestFramework(
                                     dependency.TargetFramework, snapshot.Targets.Keys);
             if (targetFramework == null)
             {

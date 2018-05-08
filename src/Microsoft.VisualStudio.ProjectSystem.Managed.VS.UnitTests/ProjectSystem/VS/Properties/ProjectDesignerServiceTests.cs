@@ -16,30 +16,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
     [Trait("UnitTest", "ProjectSystem")]
     public class ProjectDesignerServiceTests
     {
-        [Fact]
-        public void Constructor_NullAsProjectVsServices_ThrowsArgumentNull()
-        {
-            var vsProjectDesignerPageService = IVsProjectDesignerPageServiceFactory.Create();
-
-            Assert.Throws<ArgumentNullException>("projectVsServices", () =>
-            {
-
-                new ProjectDesignerService((IUnconfiguredProjectVsServices)null, vsProjectDesignerPageService);
-            });
-        }
-
-        [Fact]
-        public void Constructor_NullAsVsProjectDesignerPageService_ThrowsArgumentNull()
-        {
-            var projectVsServices = IUnconfiguredProjectVsServicesFactory.Create();
-
-            Assert.Throws<ArgumentNullException>("vsProjectDesignerPageService", () =>
-            {
-
-                new ProjectDesignerService(projectVsServices, (IVsProjectDesignerPageService)null);
-            });
-        }
-
         [Theory]
         [InlineData(true)]
         [InlineData(false)]
@@ -198,11 +174,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             await designerService.ShowProjectDesignerAsync();
 
             Assert.Equal(1, callCount);
-        }
-
-        private static ProjectDesignerService CreateInstance(IUnconfiguredProjectVsServices projectVsServices)
-        {
-            return CreateInstance(projectVsServices, (IVsProjectDesignerPageService)null);
         }
 
         private static ProjectDesignerService CreateInstance(IVsProjectDesignerPageService vsProjectDesignerPageService)

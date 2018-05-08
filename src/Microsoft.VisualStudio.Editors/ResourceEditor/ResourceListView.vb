@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Option Explicit On
 Option Strict On
@@ -43,38 +43,38 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
         'The width of the selection border that we draw around thumbnails in the "Thumbnails"
         '  view.
-        Private Const s_defaultSelectionBorderWidth As Integer = 2
+        Private Const DefaultSelectionBorderWidth As Integer = 2
 
         'The width of the non-selected border around thumbnails in the "Thumbnails" view.
-        Private Const s_defaultBorderWidth As Integer = 1
+        Private Const DefaultBorderWidth As Integer = 1
 
         'The width/height of images in "Thumbnails" view (not including the borders).
-        Private Const s_defaultLargeImageWidthHeight As Integer = 96
+        Private Const DefaultLargeImageWidthHeight As Integer = 96
 
         'The width/height of images in the smaller views ("icons", "details").  No border is used
         '  in these cases.
-        Private Const s_defaultSmallImageWidthHeight As Integer = 20
+        Private Const DefaultSmallImageWidthHeight As Integer = 20
 
         ' The above settings scaled up for High DPI
-        Private _selectionBorderWidth As Integer = DpiHelper.LogicalToDeviceUnitsX(s_defaultSelectionBorderWidth)
-        Private _borderWidth As Integer = DpiHelper.LogicalToDeviceUnitsX(s_defaultBorderWidth)
-        Private _largeImageWidthHeight As Integer = DpiHelper.LogicalToDeviceUnitsX(s_defaultLargeImageWidthHeight)
-        Private _smallImageWidthHeight As Integer = DpiHelper.LogicalToDeviceUnitsX(s_defaultSmallImageWidthHeight)
+        Private ReadOnly _selectionBorderWidth As Integer = DpiHelper.LogicalToDeviceUnitsX(DefaultSelectionBorderWidth)
+        Private ReadOnly _borderWidth As Integer = DpiHelper.LogicalToDeviceUnitsX(DefaultBorderWidth)
+        Private ReadOnly _largeImageWidthHeight As Integer = DpiHelper.LogicalToDeviceUnitsX(DefaultLargeImageWidthHeight)
+        Private ReadOnly _smallImageWidthHeight As Integer = DpiHelper.LogicalToDeviceUnitsX(DefaultSmallImageWidthHeight)
 
         'The default column width for the "Name" column in "Details" view
-        Private Const s_defaultColumnWidthName As Integer = 150 'Includes the size of the thumbnail icon
+        Private Const DefaultColumnWidthName As Integer = 150 'Includes the size of the thumbnail icon
 
         'The default column width for the "Filename" column in "Details" view
-        Private Const s_defaultColumnWidthFilename As Integer = 300
+        Private Const DefaultColumnWidthFilename As Integer = 300
 
         'The default column width for the "Image Type" column in "Details" view
-        Private Const s_defaultColumnWidthImageType As Integer = 150
+        Private Const DefaultColumnWidthImageType As Integer = 150
 
         'The default column width for the "Size" column in "Details" view
-        Private Const s_defaultColumnWidthSize As Integer = 60
+        Private Const DefaultColumnWidthSize As Integer = 60
 
         'The default column width for the "Comment" column in "Details" view
-        Private Const s_defaultColumnWidthComment As Integer = 300
+        Private Const DefaultColumnWidthComment As Integer = 300
 
         'If this is turned on, attempted retrieval of listview items will simply return
         '  a blank entry.  This is useful when the resourc editor is being disposed of.
@@ -84,19 +84,19 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private _resourceFile As ResourceFile
 
         'The index to the reserved error glyph at the beginning of the imagelist.
-        Private Const s_IMAGELIST_INDEX_ERROR As Integer = 0
+        Private Const IMAGELIST_INDEX_ERROR As Integer = 0
 
         'The index to the reserved SortUp glyph at the beginning of the imagelist.
-        Private Const s_IMAGELIST_INDEX_SORT_UP As Integer = 1
+        Private Const IMAGELIST_INDEX_SORT_UP As Integer = 1
 
         'The index to the reserved SortDown glyph at the beginning of the imagelist.
-        Private Const s_IMAGELIST_INDEX_SORT_DOWN As Integer = 2
+        Private Const IMAGELIST_INDEX_SORT_DOWN As Integer = 2
 
         ' The index means we haven't loaded the image yet
-        Private Const s_IMAGELIST_INDEX_NEED_LOAD As Integer = -1
+        Private Const IMAGELIST_INDEX_NEED_LOAD As Integer = -1
 
         'The index into the state imagelist for the (small) error glyph
-        Private Const s_STATEIMAGELIST_INDEX_ERROR As Integer = 0
+        Private Const STATEIMAGELIST_INDEX_ERROR As Integer = 0
 
         'If true, and label editing fails validation, no messagebox will be shown, it
         '  will just fail silently.
@@ -125,7 +125,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private _onIdleEnabled As Boolean
 
         ' Detail View Column Count
-        Private Const s_DETAIL_VIEW_COLUMN_COUNT As Integer = 5
+        Private Const DETAIL_VIEW_COLUMN_COUNT As Integer = 5
 
 
 #End Region
@@ -329,11 +329,11 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             If Not _columnInitialized Then
 
-                Columns.Add(My.Resources.Designer.RSE_DetailsCol_Name, DpiHelper.LogicalToDeviceUnitsX(s_defaultColumnWidthName), HorizontalAlignment.Left)
-                Columns.Add(My.Resources.Designer.RSE_DetailsCol_Filename, DpiHelper.LogicalToDeviceUnitsX(s_defaultColumnWidthFilename), HorizontalAlignment.Left)
-                Columns.Add(My.Resources.Designer.RSE_DetailsCol_ImageType, DpiHelper.LogicalToDeviceUnitsX(s_defaultColumnWidthImageType), HorizontalAlignment.Left)
-                Columns.Add(My.Resources.Designer.RSE_DetailsCol_Size, DpiHelper.LogicalToDeviceUnitsX(s_defaultColumnWidthSize), HorizontalAlignment.Left)
-                Columns.Add(My.Resources.Designer.RSE_DetailsCol_Comment, DpiHelper.LogicalToDeviceUnitsX(s_defaultColumnWidthComment), HorizontalAlignment.Left)
+                Columns.Add(My.Resources.Designer.RSE_DetailsCol_Name, DpiHelper.LogicalToDeviceUnitsX(DefaultColumnWidthName), HorizontalAlignment.Left)
+                Columns.Add(My.Resources.Designer.RSE_DetailsCol_Filename, DpiHelper.LogicalToDeviceUnitsX(DefaultColumnWidthFilename), HorizontalAlignment.Left)
+                Columns.Add(My.Resources.Designer.RSE_DetailsCol_ImageType, DpiHelper.LogicalToDeviceUnitsX(DefaultColumnWidthImageType), HorizontalAlignment.Left)
+                Columns.Add(My.Resources.Designer.RSE_DetailsCol_Size, DpiHelper.LogicalToDeviceUnitsX(DefaultColumnWidthSize), HorizontalAlignment.Left)
+                Columns.Add(My.Resources.Designer.RSE_DetailsCol_Comment, DpiHelper.LogicalToDeviceUnitsX(DefaultColumnWidthComment), HorizontalAlignment.Left)
 
                 _columnInitialized = True
             End If
@@ -432,7 +432,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End If
 
             ' Clear old column header sort indicator
-            For columnIndex As Integer = 0 To s_DETAIL_VIEW_COLUMN_COUNT - 1
+            For columnIndex As Integer = 0 To DETAIL_VIEW_COLUMN_COUNT - 1
                 ClearColumnSortImage(columnIndex)
             Next
 
@@ -704,9 +704,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     .fmt = Interop.win.HDF_STRING Or Interop.win.HDF_IMAGE Or Interop.win.HDF_BITMAP_ON_RIGHT
 
                     If inReverseOrder Then
-                        .iImage = s_IMAGELIST_INDEX_SORT_DOWN
+                        .iImage = IMAGELIST_INDEX_SORT_DOWN
                     Else
-                        .iImage = s_IMAGELIST_INDEX_SORT_UP
+                        .iImage = IMAGELIST_INDEX_SORT_UP
                     End If
                 End With
 
@@ -758,9 +758,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             If _thumbnailImageList IsNot Nothing Then
 
                 ' Update sort indicator...
-                _thumbnailImageList.Images.Item(s_IMAGELIST_INDEX_SORT_UP) = MapBitmapColor(ParentView.CachedResources.SortUpGlyph, Color.Black,
+                _thumbnailImageList.Images.Item(IMAGELIST_INDEX_SORT_UP) = MapBitmapColor(ParentView.CachedResources.SortUpGlyph, Color.Black,
                                                                                        Common.ShellUtil.GetVSColor(Shell.Interop.__VSSYSCOLOREX3.VSCOLOR_GRAYTEXT, SystemColors.GrayText, UseVSTheme:=False))
-                _thumbnailImageList.Images.Item(s_IMAGELIST_INDEX_SORT_DOWN) = MapBitmapColor(ParentView.CachedResources.SortDownGlyph, Color.Black,
+                _thumbnailImageList.Images.Item(IMAGELIST_INDEX_SORT_DOWN) = MapBitmapColor(ParentView.CachedResources.SortDownGlyph, Color.Black,
                                                                                              Common.ShellUtil.GetVSColor(Shell.Interop.__VSSYSCOLOREX3.VSCOLOR_GRAYTEXT, SystemColors.GrayText, UseVSTheme:=False))
 
                 ' Reset column header sort indicator
@@ -932,7 +932,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                             If itemRectangle.IntersectsWith(ClientRectangle) Then
                                 Dim Resource As Resource = GetResourceFromVirtualIndex(i)
                                 If Resource IsNot Nothing AndAlso Not _thumbnailCache.IsThumbnailInCache(Resource) Then
-                                    If GetThumbnailIndex(Resource, False) <> s_IMAGELIST_INDEX_NEED_LOAD Then
+                                    If GetThumbnailIndex(Resource, False) <> IMAGELIST_INDEX_NEED_LOAD Then
                                         Invalidate(itemRectangle)
                                     End If
                                     Exit Sub
@@ -1002,7 +1002,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             '  thumbnail.
             Dim ImageListIndex As Integer = GetThumbnailIndex(Resource, True)
 
-            If ImageListIndex = s_IMAGELIST_INDEX_NEED_LOAD Then
+            If ImageListIndex = IMAGELIST_INDEX_NEED_LOAD Then
                 ' Delay load the image...
                 DelayLoadingValue = True
                 If e.ItemIndex >= _imageStartIndex AndAlso e.ItemIndex <= _imageEndIndex Then
@@ -1023,7 +1023,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             If ResourceFile.ResourceHasTasks(Resource) Then
                 'This resource has some task list items.  Need to set its state to
                 '  show the error glyph.
-                e.Item.StateImageIndex = s_STATEIMAGELIST_INDEX_ERROR
+                e.Item.StateImageIndex = STATEIMAGELIST_INDEX_ERROR
             End If
 
             'We also need to fill in the sub items (the additional columns in a details view)
@@ -1132,7 +1132,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Dim ThumbnailSourceImage As Image
             Dim IsSharedImage As Boolean = Resource.ResourceTypeEditor.IsImageForThumbnailShared
             If Not IsSharedImage AndAlso AllowDelayLoading Then
-                Return s_IMAGELIST_INDEX_NEED_LOAD
+                Return IMAGELIST_INDEX_NEED_LOAD
             Else
                 Try
                     ThumbnailSourceImage = Resource.ResourceTypeEditor.GetImageForThumbnail(Resource, BackColor)
@@ -1181,7 +1181,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 If Thumbnail Is Nothing Then
                     'We'd prefer not to use this, but since CreateThumbnail isn't working, we have no choice.  Trouble is,
                     '  every call to GetThumbnailIndex() will retry to create the thumbnail.  But now we have no choice.
-                    Return s_IMAGELIST_INDEX_ERROR
+                    Return IMAGELIST_INDEX_ERROR
                 ElseIf IsSharedImage Then
                     Index = _thumbnailCache.Add(ThumbnailSourceImage, Thumbnail, True)
                     _thumbnailCache.ReuseSharedImage(Resource, Index)
@@ -1293,9 +1293,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
         Private Declare Auto Function SendMessage Lib "User32" (hWnd As IntPtr, msg As Integer, wParam As Integer, ByRef lParam As LVITEM) As IntPtr
 
-        Private Const s_LVIF_STATE As Integer = &H8
-        Private Const s_LVIS_SELECTED As Integer = &H2
-        Private Const s_LVM_SETITEMSTATE As Integer = (&H1000 + 43)
+        Private Const LVIF_STATE As Integer = &H8
+        Private Const LVIS_SELECTED As Integer = &H2
+        Private Const LVM_SETITEMSTATE As Integer = (&H1000 + 43)
 
 
         Private Sub SetItemState(index As Integer, state As Integer, mask As Integer)
@@ -1306,10 +1306,10 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             If Handle <> IntPtr.Zero Then
                 Dim lvi As New LVITEM
-                lvi.mask = s_LVIF_STATE
+                lvi.mask = LVIF_STATE
                 lvi.state = state
                 lvi.stateMask = mask
-                SendMessage(Handle, s_LVM_SETITEMSTATE, index, lvi)
+                SendMessage(Handle, LVM_SETITEMSTATE, index, lvi)
             End If
         End Sub
 
@@ -1320,9 +1320,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End If
 
             If Selected Then
-                SetItemState(ResourceIndex, s_LVIS_SELECTED, s_LVIS_SELECTED)
+                SetItemState(ResourceIndex, LVIS_SELECTED, LVIS_SELECTED)
             Else
-                SetItemState(ResourceIndex, 0, s_LVIS_SELECTED)
+                SetItemState(ResourceIndex, 0, LVIS_SELECTED)
             End If
         End Sub
 

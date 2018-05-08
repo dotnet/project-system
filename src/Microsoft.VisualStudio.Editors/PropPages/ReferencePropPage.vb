@@ -27,12 +27,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Implements ISelectionContainer
         Implements IVsWCFReferenceEvents
 
-        Private Const s_REFCOLUMN_NAME As Integer = 0
-        Private Const s_REFCOLUMN_TYPE As Integer = 1
-        Private Const s_REFCOLUMN_VERSION As Integer = 2
-        Private Const s_REFCOLUMN_COPYLOCAL As Integer = 3
-        Private Const s_REFCOLUMN_PATH As Integer = 4
-        Private Const s_REFCOLUMN_MAX As Integer = 4
+        Private Const REFCOLUMN_NAME As Integer = 0
+        Private Const REFCOLUMN_TYPE As Integer = 1
+        Private Const REFCOLUMN_VERSION As Integer = 2
+        Private Const REFCOLUMN_COPYLOCAL As Integer = 3
+        Private Const REFCOLUMN_PATH As Integer = 4
+        Private Const REFCOLUMN_MAX As Integer = 4
 
         Friend WithEvents AddUserImportButton As Button
         Friend WithEvents UpdateUserImportButton As Button
@@ -1291,7 +1291,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
 
-        Private Sub UnusedReferences_Click(sender As System.Object, e As EventArgs) Handles UnusedReferences.Click
+        Private Sub UnusedReferences_Click(sender As Object, e As EventArgs) Handles UnusedReferences.Click
             ' Take a snapshot of the user imports...
             Dim ImportsSnapshot As IDictionary(Of String, Boolean) = GetUserDefinedImportsSnapshot()
 
@@ -1551,33 +1551,33 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Dim _handle As IntPtr = ReferenceList.Handle
 
             ' By default size all columns by size of column header text
-            Dim AutoSizeMethod As Integer() = New Integer(s_REFCOLUMN_MAX) {NativeMethods.LVSCW_AUTOSIZE_USEHEADER, NativeMethods.LVSCW_AUTOSIZE_USEHEADER, NativeMethods.LVSCW_AUTOSIZE_USEHEADER, NativeMethods.LVSCW_AUTOSIZE_USEHEADER, NativeMethods.LVSCW_AUTOSIZE_USEHEADER}
+            Dim AutoSizeMethod As Integer() = New Integer(REFCOLUMN_MAX) {NativeMethods.LVSCW_AUTOSIZE_USEHEADER, NativeMethods.LVSCW_AUTOSIZE_USEHEADER, NativeMethods.LVSCW_AUTOSIZE_USEHEADER, NativeMethods.LVSCW_AUTOSIZE_USEHEADER, NativeMethods.LVSCW_AUTOSIZE_USEHEADER}
 
             If ReferenceList.Items.Count > 0 Then
                 ' If there are elements in the listview, size the name, version, and path columns by item text if not empty
                 With ReferenceList.Items(0)
                     ' For the first column, if not offset, check the .text property, otherwise check the subitems
                     If (ColOffset = 0 AndAlso .Text <> "") OrElse
-                        (ColOffset > 0 AndAlso .SubItems(s_REFCOLUMN_NAME + ColOffset).Text <> "") Then
-                        AutoSizeMethod(s_REFCOLUMN_NAME) = NativeMethods.LVSCW_AUTOSIZE
+                        (ColOffset > 0 AndAlso .SubItems(REFCOLUMN_NAME + ColOffset).Text <> "") Then
+                        AutoSizeMethod(REFCOLUMN_NAME) = NativeMethods.LVSCW_AUTOSIZE
                     End If
 
-                    If (.SubItems.Count > s_REFCOLUMN_VERSION + ColOffset AndAlso .SubItems(s_REFCOLUMN_VERSION + ColOffset).Text <> "") Then
-                        AutoSizeMethod(s_REFCOLUMN_VERSION) = NativeMethods.LVSCW_AUTOSIZE
+                    If (.SubItems.Count > REFCOLUMN_VERSION + ColOffset AndAlso .SubItems(REFCOLUMN_VERSION + ColOffset).Text <> "") Then
+                        AutoSizeMethod(REFCOLUMN_VERSION) = NativeMethods.LVSCW_AUTOSIZE
                     End If
 
-                    If (.SubItems.Count > s_REFCOLUMN_PATH + ColOffset AndAlso .SubItems(s_REFCOLUMN_PATH + ColOffset).Text <> "") Then
-                        AutoSizeMethod(s_REFCOLUMN_PATH) = NativeMethods.LVSCW_AUTOSIZE
+                    If (.SubItems.Count > REFCOLUMN_PATH + ColOffset AndAlso .SubItems(REFCOLUMN_PATH + ColOffset).Text <> "") Then
+                        AutoSizeMethod(REFCOLUMN_PATH) = NativeMethods.LVSCW_AUTOSIZE
                     End If
                 End With
             End If
 
             ' Do actual sizing
-            NativeMethods.SendMessage(New HandleRef(owner, _handle), NativeMethods.LVM_SETCOLUMNWIDTH, s_REFCOLUMN_NAME + ColOffset, AutoSizeMethod(s_REFCOLUMN_NAME))
-            NativeMethods.SendMessage(New HandleRef(owner, _handle), NativeMethods.LVM_SETCOLUMNWIDTH, s_REFCOLUMN_TYPE + ColOffset, AutoSizeMethod(s_REFCOLUMN_TYPE))
-            NativeMethods.SendMessage(New HandleRef(owner, _handle), NativeMethods.LVM_SETCOLUMNWIDTH, s_REFCOLUMN_VERSION + ColOffset, AutoSizeMethod(s_REFCOLUMN_VERSION))
-            NativeMethods.SendMessage(New HandleRef(owner, _handle), NativeMethods.LVM_SETCOLUMNWIDTH, s_REFCOLUMN_COPYLOCAL + ColOffset, AutoSizeMethod(s_REFCOLUMN_COPYLOCAL))
-            NativeMethods.SendMessage(New HandleRef(owner, _handle), NativeMethods.LVM_SETCOLUMNWIDTH, s_REFCOLUMN_PATH + ColOffset, AutoSizeMethod(s_REFCOLUMN_PATH))
+            NativeMethods.SendMessage(New HandleRef(owner, _handle), NativeMethods.LVM_SETCOLUMNWIDTH, REFCOLUMN_NAME + ColOffset, AutoSizeMethod(REFCOLUMN_NAME))
+            NativeMethods.SendMessage(New HandleRef(owner, _handle), NativeMethods.LVM_SETCOLUMNWIDTH, REFCOLUMN_TYPE + ColOffset, AutoSizeMethod(REFCOLUMN_TYPE))
+            NativeMethods.SendMessage(New HandleRef(owner, _handle), NativeMethods.LVM_SETCOLUMNWIDTH, REFCOLUMN_VERSION + ColOffset, AutoSizeMethod(REFCOLUMN_VERSION))
+            NativeMethods.SendMessage(New HandleRef(owner, _handle), NativeMethods.LVM_SETCOLUMNWIDTH, REFCOLUMN_COPYLOCAL + ColOffset, AutoSizeMethod(REFCOLUMN_COPYLOCAL))
+            NativeMethods.SendMessage(New HandleRef(owner, _handle), NativeMethods.LVM_SETCOLUMNWIDTH, REFCOLUMN_PATH + ColOffset, AutoSizeMethod(REFCOLUMN_PATH))
         End Sub
 
         Protected Overrides Function GetF1HelpKeyword() As String
@@ -1596,7 +1596,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub AddUserImportButton_Click(sender As System.Object, e As EventArgs) Handles AddUserImportButton.Click
+        Private Sub AddUserImportButton_Click(sender As Object, e As EventArgs) Handles AddUserImportButton.Click
             Debug.Assert(UserImportTextBox.Text.Trim().Length > 0, "Why was the AddUserImportButton enabled when the UserImport text was empty?")
             ' Get the current list
             Dim CurrentImports As String() = GetCurrentImports()
@@ -1637,7 +1637,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub ImportList_SelectedIndexChanged(sender As System.Object, e As EventArgs) Handles ImportList.SelectedIndexChanged
+        Private Sub ImportList_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ImportList.SelectedIndexChanged
 
             If Not _hidingImportListSelectedItem Then
                 _importListSelectedItem = Nothing
@@ -1653,7 +1653,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub UpdateUserImportButton_Click(sender As System.Object, e As EventArgs) Handles UpdateUserImportButton.Click
+        Private Sub UpdateUserImportButton_Click(sender As Object, e As EventArgs) Handles UpdateUserImportButton.Click
 
             Debug.Assert(ImportList.SelectedItems.Count <= 1 AndAlso
                         ImportListSelectedItem IsNot Nothing AndAlso
@@ -1935,10 +1935,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''  We record Reference/WebReferenc changes with the same class. But only one of the Reference and WebReference property contains value, while the other one contains Nothing
         ''' </Summary>
         Private Class ReferenceUpdateItem
-            Private _updateType As ReferenceUpdateType
-            Private _reference As VSLangProj.Reference
-            Private _webReference As EnvDTE.ProjectItem
-            Private _serviceReference As IVsWCFReferenceGroup
+            Private ReadOnly _updateType As ReferenceUpdateType
+            Private ReadOnly _reference As VSLangProj.Reference
+            Private ReadOnly _webReference As EnvDTE.ProjectItem
+            Private ReadOnly _serviceReference As IVsWCFReferenceGroup
 
             Friend Sub New(updateType As ReferenceUpdateType, reference As VSLangProj.Reference)
                 _updateType = updateType
@@ -2267,17 +2267,17 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 #Enable Warning CA1067 ' Override Object.Equals(object) when implementing IEquatable<T>
         Implements IEquatable(Of ImportIdentity)
 
-        Private Const s_aliasGroupName As String = "Alias"
-        Private Const s_aliasGroup As String = "(?<" & s_aliasGroupName & ">[^=""'\s]+)"
+        Private Const AliasGroupName As String = "Alias"
+        Private Const AliasGroup As String = "(?<" & AliasGroupName & ">[^=""'\s]+)"
 
         ' Regular expression for parsing XML imports statement (<xmlns[:Alias]='url'>).
         Private Shared s_xmlImportRegex As New Regex(
-            "^\s*\<\s*[xX][mM][lL][nN][sS]\s*(:\s*" & s_aliasGroup & ")?\s*=\s*(""[^""]*""|'[^']*')\s*\>\s*$",
+            "^\s*\<\s*[xX][mM][lL][nN][sS]\s*(:\s*" & AliasGroup & ")?\s*=\s*(""[^""]*""|'[^']*')\s*\>\s*$",
             RegexOptions.Compiled)
 
         ' Regular expression for parsing VB alias imports statement (Alias=Namespace).
         Private Shared s_vbImportRegex As New Regex(
-            "^\s*" & s_aliasGroup & "\s*=\s*.*$",
+            "^\s*" & AliasGroup & "\s*=\s*.*$",
             RegexOptions.Compiled)
 
         ' Kind of import - VB regular, VB Alias, xmlns.
@@ -2307,14 +2307,14 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             If m.Success Then
                 ' If succeeded, set identity to the alias (namespace).
                 _kind = ImportKind.XmlNamespace
-                _identity = m.Groups(s_aliasGroupName).Value
+                _identity = m.Groups(AliasGroupName).Value
             Else
                 ' If failed, match against VB alias import syntax.
                 m = s_vbImportRegex.Match(import)
                 If m.Success Then
                     ' If succeeded, use alias as identity.
                     _kind = ImportKind.VBAlias
-                    _identity = m.Groups(s_aliasGroupName).Value
+                    _identity = m.Groups(AliasGroupName).Value
                 Else
                     ' Otherwise use the whole import string as identity (namespace or invalid syntax).
                     _kind = ImportKind.VBNamespace

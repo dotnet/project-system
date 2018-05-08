@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Linq;
@@ -28,8 +29,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             private readonly IActiveConfigurationGroupService _activeConfigurationGroupService;
             private readonly IActiveConfiguredProjectSubscriptionService _activeConfiguredProjectSubscriptionService;
             private readonly IProjectLogger _logger;
+#pragma warning disable CA2213 // OnceInitializedOnceDisposedAsync are not tracked corretly by the IDisposeable analyzer
             private IDisposable _configurationsSubscription;
             private DisposableBag _designTimeBuildSubscriptionLink;
+#pragma warning restore CA2213
 
             private static ImmutableHashSet<string> s_designTimeBuildWatchedRules = Empty.OrdinalIgnoreCaseStringSet
                 .Add(NuGetRestore.SchemaName)
@@ -96,11 +99,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                     // The SyncLink will only publish data when the versions of the sources match. There is a problem with that.
                     // The sources have some version components that will make this impossible to match across TFMs. We introduce a 
                     // intermediate block here that will remove those version components so that the synclink can actually sync versions. 
-                    var sourceBlocks = e.Value.Select(
+                    IEnumerable<ProjectDataSources.SourceBlockAndLink<IProjectValueVersions>> sourceBlocks = e.Value.Select(
                         cp =>
                         {
-                            var sourceBlock = cp.Services.ProjectSubscription.JointRuleSource.SourceBlock;
-                            var versionDropper = CreateVersionDropperBlock();
+                            IReceivableSourceBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>> sourceBlock = cp.Services.ProjectSubscription.JointRuleSource.SourceBlock;
+                            IPropagatorBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>, IProjectVersionedValue<IProjectSubscriptionUpdate>> versionDropper = CreateVersionDropperBlock();
                             disposableBag.AddDisposable(sourceBlock.LinkTo(versionDropper, sourceLinkOptions));
                             return versionDropper.SyncLinkOptions<IProjectValueVersions>(sourceLinkOptions);
                         });
@@ -110,7 +113,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
                     var targetLinkOptions = new DataflowLinkOptions { PropagateCompletion = true };
 
-                    var sourceBlocksAndCapabilitiesOptions = sourceBlocks.ToImmutableList()
+                    ImmutableList<ProjectDataSources.SourceBlockAndLink<IProjectValueVersions>> sourceBlocksAndCapabilitiesOptions = sourceBlocks.ToImmutableList()
                         .Insert(0, _projectVsServices.Project.Capabilities.SourceBlock.SyncLinkOptions<IProjectValueVersions>());
 
                     disposableBag.AddDisposable(ProjectDataSources.SyncLinkTo(sourceBlocksAndCapabilitiesOptions, target, targetLinkOptions));
@@ -201,19 +204,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                 }
             }
 
-            private void LogTargetFrameworks(IProjectLoggerBatch logger, TargetFrameworks targetFrameworks)
+            private static void LogTargetFrameworks(IProjectLoggerBatch logger, TargetFrameworks targetFrameworks)
             {
                 logger.WriteLine($"Target Frameworks ({targetFrameworks.Count})");
                 logger.IndentLevel++;
 
-                foreach (var tf in targetFrameworks)
+                foreach (IVsTargetFrameworkInfo tf in targetFrameworks)
                 {
                     LogTargetFramework(logger, tf as TargetFrameworkInfo);
                 }
                 logger.IndentLevel--;
             }
 
-            private void LogTargetFramework(IProjectLoggerBatch logger, TargetFrameworkInfo targetFrameworkInfo)
+            private static void LogTargetFramework(IProjectLoggerBatch logger, TargetFrameworkInfo targetFrameworkInfo)
             {
                 logger.WriteLine(targetFrameworkInfo.TargetFrameworkMoniker);
                 logger.IndentLevel++;
@@ -225,21 +228,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                 logger.IndentLevel--;
             }
 
-            private void LogProperties(IProjectLoggerBatch logger, string heading, ProjectProperties projectProperties)
+            private static void LogProperties(IProjectLoggerBatch logger, string heading, ProjectProperties projectProperties)
             {
-                var properties = projectProperties.Cast<ProjectProperty>()
+                IEnumerable<string> properties = projectProperties.Cast<ProjectProperty>()
                         .Select(prop => $"{prop.Name}:{prop.Value}");
                 logger.WriteLine($"{heading} -- ({string.Join(" | ", properties)})");
             }
 
-            private void LogReferenceItems(IProjectLoggerBatch logger, string heading, ReferenceItems references)
+            private static void LogReferenceItems(IProjectLoggerBatch logger, string heading, ReferenceItems references)
             {
                 logger.WriteLine(heading);
                 logger.IndentLevel++;
 
-                foreach (var reference in references)
+                foreach (IVsReferenceItem reference in references)
                 {
-                    var properties = reference.Properties.Cast<ReferenceProperty>()
+                    IEnumerable<string> properties = reference.Properties.Cast<ReferenceProperty>()
                         .Select(prop => $"{prop.Name}:{prop.Value}");
                     logger.WriteLine($"{reference.Name} -- ({string.Join(" | ", properties)})");
                 }

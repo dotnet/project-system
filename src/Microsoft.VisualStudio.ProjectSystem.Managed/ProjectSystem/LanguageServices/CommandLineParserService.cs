@@ -14,8 +14,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         [ImportingConstructor]
         public CommandLineParserService(UnconfiguredProject project)
         {
-            Requires.NotNull(project, nameof(project));
-
             _project = project;
             CommandLineParsers = new OrderPrecedenceImportCollection<IParseBuildOptions>(projectCapabilityCheckProvider: project);
         }
@@ -34,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             if (parser == null)
                 throw new InvalidOperationException();
 
-            var buildOptions = parser.Value.Parse(arguments, _project.FullPath);
+            BuildOptions buildOptions = parser.Value.Parse(arguments, _project.FullPath);
 
             return buildOptions;
         }

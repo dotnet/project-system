@@ -35,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 
             if (dependenciesIDs != null && dependenciesIDs.Any())
             {
-                DependencyIDs = ImmutableList<string>.Empty.AddRange(dependenciesIDs);
+                DependencyIDs = ImmutableList.CreateRange(dependenciesIDs);
             }
         }
 

@@ -57,7 +57,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             if (dependenciesWorld != null)
             {
                 mock.Setup(x => x.DependenciesWorld)
-                    .Returns(ImmutableDictionary<string, IDependency>.Empty.AddRange(dependenciesWorld));
+                    .Returns(ImmutableStringDictionary<IDependency>.EmptyOrdinalIgnoreCase.AddRange(dependenciesWorld));
             }
 
             if (hasUnresolvedDependency != null && hasUnresolvedDependency.HasValue)

@@ -34,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             // If user added or removed TargetFramework/TargetFrameworks property, then force a full project reload.
             (bool hasTargetFramework, bool hasTargetFrameworks) = ComputeProjectTargets(oldProperties);
-            var newTargets = ComputeProjectTargets(newProperties);
+            (bool hasTargetFramework, bool hasTargetFrameworks) newTargets = ComputeProjectTargets(newProperties);
 
             return hasTargetFramework != newTargets.hasTargetFramework || hasTargetFrameworks != newTargets.hasTargetFrameworks;
         }
@@ -43,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             (bool hasTargetFramework, bool hasTargetFrameworks) targets = (false, false);
 
-            foreach (var property in properties)
+            foreach (ProjectPropertyElement property in properties)
             {
                 if (property.Name.Equals(ConfigurationGeneral.TargetFrameworkProperty, StringComparison.OrdinalIgnoreCase))
                 {

@@ -172,8 +172,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            string parameterString = parameter as string;
-            if (parameterString == null)
+            if (!(parameter is string parameterString))
                 return DependencyProperty.UnsetValue;
 
             if (Enum.IsDefined(value.GetType(), value) == false)
@@ -186,8 +185,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            string parameterString = parameter as string;
-            if (parameterString == null || value.Equals(false))
+            if (!(parameter is string parameterString) || value.Equals(false))
                 return DependencyProperty.UnsetValue;
 
             return Enum.Parse(targetType, parameterString);
@@ -282,12 +280,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
             if (values.Length >= 3)
             {
                 var textBlock = values[0] as TextBlock;
-                var format = values[1] as string;
-                var tokens = Tokenizer.ParseTokens(format);
+                string format = values[1] as string;
+                List<Token> tokens = Tokenizer.ParseTokens(format);
                 int hyperLinkIndex = 0;
                 for (int i = 2; i < values.Length; i++)
                 {
-                    var token = tokens.FirstOrDefault((p) => string.Equals(p.Value as string, "{" + hyperLinkIndex + "}"));
+                    Token token = tokens.FirstOrDefault((p) => string.Equals(p.Value as string, "{" + hyperLinkIndex + "}"));
                     if (token != null)
                     {
                         token.Value = values[i];
@@ -297,7 +295,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
                 }
 
                 textBlock.Inlines.Clear();
-                foreach (var token in tokens)
+                foreach (Token token in tokens)
                 {
                     if (token.Value is Hyperlink)
                     {
@@ -330,8 +328,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
             public static List<Token> ParseTokens(string format)
             {
                 var tokens = new List<Token>();
-                var strings = Regex.Split(format, @"({\d+})");
-                foreach (var str in strings)
+                string[] strings = Regex.Split(format, @"({\d+})");
+                foreach (string str in strings)
                 {
                     tokens.Add(new Token() { Value = str });
                 }

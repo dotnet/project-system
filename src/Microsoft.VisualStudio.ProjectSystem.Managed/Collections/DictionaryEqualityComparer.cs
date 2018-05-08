@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.Collections
         /// <summary>
         /// Backing field for the <see cref="Instance"/> static property.
         /// </summary>
-        private static DictionaryEqualityComparer<TKey, TValue> s_defaultInstance = new DictionaryEqualityComparer<TKey, TValue>();
+        private static readonly DictionaryEqualityComparer<TKey, TValue> s_defaultInstance = new DictionaryEqualityComparer<TKey, TValue>();
 
         /// <summary>
         /// Initializes a new instance of the DictionaryEqualityComparer class.
@@ -52,7 +52,7 @@ namespace Microsoft.VisualStudio.Collections
             IEqualityComparer<TValue> valueComparer = concreteDictionary1 != null ? concreteDictionary1.ValueComparer : EqualityComparer<TValue>.Default;
             if (obj != null)
             {
-                foreach (var pair in obj)
+                foreach (KeyValuePair<TKey, TValue> pair in obj)
                 {
                     hashCode += keyComparer.GetHashCode(pair.Key) + valueComparer.GetHashCode(pair.Value);
                 }

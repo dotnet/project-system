@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
     {
         private readonly object _gate = new object();
         private readonly IUnconfiguredProjectCommonServices _commonServices;
-        private readonly IProjectAsyncLoadDashboard _asyncLoadDashboard;
+        private readonly IUnconfiguredProjectTasksService _tasksService;
         private readonly ITaskScheduler _taskScheduler;
         private readonly List<AggregateCrossTargetProjectContext> _contexts = new List<AggregateCrossTargetProjectContext>();
         private readonly IActiveConfiguredProjectsProvider _activeConfiguredProjectsProvider;
@@ -32,19 +32,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         [ImportingConstructor]
         public AggregateCrossTargetProjectContextProvider(
             IUnconfiguredProjectCommonServices commonServices,
-            IProjectAsyncLoadDashboard asyncLoadDashboard,
+            IUnconfiguredProjectTasksService tasksService,
             ITaskScheduler taskScheduler,
             IActiveConfiguredProjectsProvider activeConfiguredProjectsProvider,
             ITargetFrameworkProvider targetFrameworkProvider)
         {
-            Requires.NotNull(commonServices, nameof(commonServices));
-            Requires.NotNull(asyncLoadDashboard, nameof(asyncLoadDashboard));
-            Requires.NotNull(taskScheduler, nameof(taskScheduler));
-            Requires.NotNull(activeConfiguredProjectsProvider, nameof(activeConfiguredProjectsProvider));
-            Requires.NotNull(targetFrameworkProvider, nameof(targetFrameworkProvider));
-
             _commonServices = commonServices;
-            _asyncLoadDashboard = asyncLoadDashboard;
+            _tasksService = tasksService;
             _taskScheduler = taskScheduler;
             _activeConfiguredProjectsProvider = activeConfiguredProjectsProvider;
             _targetFrameworkProvider = targetFrameworkProvider;
@@ -54,7 +48,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         {
             EnsureInitialized();
 
-            var context = await CreateProjectContextAsyncCore().ConfigureAwait(false);
+            AggregateCrossTargetProjectContext context = await CreateProjectContextAsyncCore().ConfigureAwait(false);
             if (context == null)
             {
                 return null;
@@ -64,7 +58,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             {
                 // There's a race here, by the time we've created the project context,
                 // the project could have been renamed, handle this.
-                var projectData = GetProjectData();
+                ProjectData projectData = GetProjectData();
 
                 context.SetProjectFilePathAndDisplayName(projectData.FullPath, projectData.DisplayName);
                 _contexts.Add(context);
@@ -94,7 +88,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             await _commonServices.ThreadingService.SwitchToUIThread();
 
             // We don't want to dispose the inner workspace contexts that are still being used by other active aggregate contexts.
-            Func<ITargetedProjectContext, bool> shouldDisposeInnerContext = c => !usedProjectContexts.Contains(c);
+            bool shouldDisposeInnerContext(ITargetedProjectContext c) => !usedProjectContexts.Contains(c);
 
             context.Dispose(shouldDisposeInnerContext);
         }
@@ -110,15 +104,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             }
 
             var unusedConfiguredProjects = new HashSet<ConfiguredProject>(_configuredProjectContextsMap.Keys);
-            foreach (var context in _contexts)
+            foreach (AggregateCrossTargetProjectContext context in _contexts)
             {
-                foreach (var configuredProject in context.InnerConfiguredProjects)
+                foreach (ConfiguredProject configuredProject in context.InnerConfiguredProjects)
                 {
                     unusedConfiguredProjects.Remove(configuredProject);
                 }
             }
 
-            foreach (var configuredProject in unusedConfiguredProjects)
+            foreach (ConfiguredProject configuredProject in unusedConfiguredProjects)
             {
                 _configuredProjectContextsMap.Remove(configuredProject);
             }
@@ -146,9 +140,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         {
             lock (_gate)
             {
-                var projectData = GetProjectData();
+                ProjectData projectData = GetProjectData();
 
-                foreach (var context in _contexts)
+                foreach (AggregateCrossTargetProjectContext context in _contexts)
                 {
                     context.SetProjectFilePathAndDisplayName(projectData.FullPath, projectData.DisplayName);
                 }
@@ -203,59 +197,53 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
         private async Task<AggregateCrossTargetProjectContext> CreateProjectContextAsyncCore()
         {
-            // Don't initialize until the project has been loaded into the IDE and available in Solution Explorer
-            await _asyncLoadDashboard.ProjectLoadedInHostWithCancellation(_commonServices.Project).ConfigureAwait(false);
+            var projectData = GetProjectData();
 
-            return await _taskScheduler.RunAsync(TaskSchedulerPriority.UIThreadBackgroundPriority, async () =>
-            {
-                var projectData = GetProjectData();
-
-                // Get the set of active configured projects ignoring target framework.
+            // Get the set of active configured projects ignoring target framework.
 #pragma warning disable CS0618 // Type or member is obsolete
-                var configuredProjectsMap = await _activeConfiguredProjectsProvider.GetActiveConfiguredProjectsMapAsync().ConfigureAwait(true);
+            ImmutableDictionary<string, ConfiguredProject> configuredProjectsMap = await _activeConfiguredProjectsProvider.GetActiveConfiguredProjectsMapAsync().ConfigureAwait(true);
 #pragma warning restore CS0618 // Type or member is obsolete
-                var activeProjectConfiguration = _commonServices.ActiveConfiguredProject.ProjectConfiguration;
-                var innerProjectContextsBuilder = ImmutableDictionary.CreateBuilder<ITargetFramework, ITargetedProjectContext>();
-                var activeTargetFramework = TargetFramework.Empty;
+            ProjectConfiguration activeProjectConfiguration = _commonServices.ActiveConfiguredProject.ProjectConfiguration;
+            ImmutableDictionary<ITargetFramework, ITargetedProjectContext>.Builder innerProjectContextsBuilder = ImmutableDictionary.CreateBuilder<ITargetFramework, ITargetedProjectContext>();
+            ITargetFramework activeTargetFramework = TargetFramework.Empty;
 
-                foreach (var kvp in configuredProjectsMap)
+            foreach (KeyValuePair<string, ConfiguredProject> kvp in configuredProjectsMap)
+            {
+                ConfiguredProject configuredProject = kvp.Value;
+                ProjectProperties projectProperties = configuredProject.Services.ExportProvider.GetExportedValue<ProjectProperties>();
+                ConfigurationGeneral configurationGeneralProperties = await projectProperties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(true);
+                ITargetFramework targetFramework = await GetTargetFrameworkAsync(kvp.Key, configurationGeneralProperties).ConfigureAwait(false);
+
+                if (!TryGetConfiguredProjectState(configuredProject, out ITargetedProjectContext targetedProjectContext))
                 {
-                    var configuredProject = kvp.Value;
-                    var projectProperties = configuredProject.Services.ExportProvider.GetExportedValue<ProjectProperties>();
-                    var configurationGeneralProperties = await projectProperties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(true);
-                    var targetFramework = await GetTargetFrameworkAsync(kvp.Key, configurationGeneralProperties).ConfigureAwait(false);
+                    // Get the target path for the configured project.
+                    string targetPath = (string)await configurationGeneralProperties.TargetPath.GetValueAsync().ConfigureAwait(true);
+                    string displayName = GetDisplayName(configuredProject, projectData, targetFramework.FullName);
 
-                    if (!TryGetConfiguredProjectState(configuredProject, out ITargetedProjectContext targetedProjectContext))
+                    targetedProjectContext = new TargetedProjectContext(targetFramework, projectData.FullPath, displayName, targetPath)
                     {
-                        // Get the target path for the configured project.
-                        var targetPath = (string)await configurationGeneralProperties.TargetPath.GetValueAsync().ConfigureAwait(true);
-                        var displayName = GetDisplayName(configuredProject, projectData, targetFramework.FullName);
-
-                        targetedProjectContext = new TargetedProjectContext(targetFramework, projectData.FullPath, displayName, targetPath)
-                        {
-                            // By default, set "LastDesignTimeBuildSucceeded = false" until first design time 
-                            // build succeeds for this project.
-                            LastDesignTimeBuildSucceeded = false
-                        };
-                        AddConfiguredProjectState(configuredProject, targetedProjectContext);
-                    }
-
-                    innerProjectContextsBuilder.Add(targetFramework, targetedProjectContext);
-
-                    if (activeTargetFramework.Equals(TargetFramework.Empty) &&
-                        configuredProject.ProjectConfiguration.Equals(activeProjectConfiguration))
-                    {
-                        activeTargetFramework = targetFramework;
-                    }
+                        // By default, set "LastDesignTimeBuildSucceeded = false" until first design time 
+                        // build succeeds for this project.
+                        LastDesignTimeBuildSucceeded = false
+                    };
+                    AddConfiguredProjectState(configuredProject, targetedProjectContext);
                 }
 
-                var isCrossTargeting = !(configuredProjectsMap.Count == 1 && string.IsNullOrEmpty(configuredProjectsMap.First().Key));
-                return new AggregateCrossTargetProjectContext(isCrossTargeting,
-                                                              innerProjectContextsBuilder.ToImmutable(),
-                                                              configuredProjectsMap,
-                                                              activeTargetFramework,
-                                                              _targetFrameworkProvider);
-            });
+                innerProjectContextsBuilder.Add(targetFramework, targetedProjectContext);
+
+                if (activeTargetFramework.Equals(TargetFramework.Empty) &&
+                    configuredProject.ProjectConfiguration.Equals(activeProjectConfiguration))
+                {
+                    activeTargetFramework = targetFramework;
+                }
+            }
+
+            bool isCrossTargeting = !(configuredProjectsMap.Count == 1 && string.IsNullOrEmpty(configuredProjectsMap.First().Key));
+            return new AggregateCrossTargetProjectContext(isCrossTargeting,
+                                                            innerProjectContextsBuilder.ToImmutable(),
+                                                            configuredProjectsMap,
+                                                            activeTargetFramework,
+                                                            _targetFrameworkProvider);
         }
 
         private async Task<ITargetFramework> GetTargetFrameworkAsync(
@@ -264,7 +252,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         {
             if (string.IsNullOrEmpty(shortOrFullName))
             {
-                var targetObject = await configurationGeneralProperties.TargetFramework.GetValueAsync().ConfigureAwait(false);
+                object targetObject = await configurationGeneralProperties.TargetFramework.GetValueAsync().ConfigureAwait(false);
                 if (targetObject == null)
                 {
                     return TargetFramework.Empty;

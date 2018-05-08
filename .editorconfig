@@ -14,6 +14,9 @@ indent_size = 4
 insert_final_newline = true
 charset = utf-8-bom
 
+[*.ps1]
+indent_size = 2
+
 # Xml project files
 [*.{csproj,vbproj,vcxproj,vcxproj.filters,proj,projitems,shproj}]
 indent_size = 2
@@ -24,6 +27,9 @@ indent_size = 2
 
 # JSON files
 [*.json]
+indent_size = 2
+
+[*.groovy]
 indent_size = 2
 
 # Dotnet code style settings:
@@ -142,3 +148,8 @@ csharp_new_line_before_catch = true
 csharp_new_line_before_finally = true
 csharp_new_line_before_members_in_object_initializers = true
 csharp_new_line_before_members_in_anonymous_types = true
+
+[src/*Tests/**/*.cs]
+# We allow usage of "var" inside tests as it reduces churn as we remove/rename types
+csharp_style_var_for_built_in_types = true:none
+csharp_style_var_elsewhere = true:none

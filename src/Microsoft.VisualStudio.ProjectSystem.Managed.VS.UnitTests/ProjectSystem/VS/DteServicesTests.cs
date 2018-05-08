@@ -17,28 +17,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     public class DteServicesTests
     {
         [Fact]
-        public void Constructor_NullAsServiceProvider_ThrowsArgumentNull()
-        {
-            var projectVsServices = IUnconfiguredProjectVsServicesFactory.Create();
-
-            Assert.Throws<ArgumentNullException>("serviceProvider", () =>
-            {
-                new DteServices((IServiceProvider)null, projectVsServices);
-            });
-        }
-
-        [Fact]
-        public void Constructor_NullAsProjectVsServices_ThrowsArgumentNull()
-        {
-            var serviceProvider = SVsServiceProviderFactory.Create();
-
-            Assert.Throws<ArgumentNullException>("projectVsServices", () =>
-            {
-                new DteServices(serviceProvider, (IUnconfiguredProjectVsServices)null);
-            });
-        }
-
-        [Fact]
         public void DTE_WhenNotOnUIThread_Throws()
         {
             var threadingService = IProjectThreadingServiceFactory.ImplementVerifyOnUIThread(() => { throw new InvalidOperationException(); });

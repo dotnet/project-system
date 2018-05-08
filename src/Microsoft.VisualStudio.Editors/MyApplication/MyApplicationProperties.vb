@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+ï»¿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports Microsoft.VisualStudio.Editors.Common
 Imports Microsoft.VisualStudio.Editors.Common.Utils
@@ -260,14 +260,14 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         Friend Const Const_MyType_Custom As String = "Custom"
 
         'Constants for property change notifications
-        Private Const s_PROPNAME_CustomSubMain As String = "CustomSubMain"
-        Private Const s_PROPNAME_MainForm As String = "MainForm"
-        Private Const s_PROPNAME_SingleInstance As String = "SingleInstance"
-        Private Const s_PROPNAME_ShutdownMode As String = "ShutdownMode"
-        Private Const s_PROPNAME_EnableVisualStyles As String = "EnableVisualStyles"
-        Private Const s_PROPNAME_SaveMySettingsOnExit As String = "SaveMySettingsOnExit"
-        Private Const s_PROPNAME_AuthenticationMode As String = "AuthenticationMode"
-        Private Const s_PROPNAME_SplashScreen As String = "SplashScreen"
+        Private Const PROPNAME_CustomSubMain As String = "CustomSubMain"
+        Private Const PROPNAME_MainForm As String = "MainForm"
+        Private Const PROPNAME_SingleInstance As String = "SingleInstance"
+        Private Const PROPNAME_ShutdownMode As String = "ShutdownMode"
+        Private Const PROPNAME_EnableVisualStyles As String = "EnableVisualStyles"
+        Private Const PROPNAME_SaveMySettingsOnExit As String = "SaveMySettingsOnExit"
+        Private Const PROPNAME_AuthenticationMode As String = "AuthenticationMode"
+        Private Const PROPNAME_SplashScreen As String = "SplashScreen"
 
         Private _projectHierarchy As IVsHierarchy
         Private WithEvents _myAppDocData As DocData 'The DocData which backs the MyApplication.myapp file
@@ -277,24 +277,24 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         Private _myAppData As MyApplicationData
 
         'The filename for the XML file where we store the MyApplication properties
-        Private Const s_const_MyApplicationFileName As String = "Application.myapp"
-        Private Const s_const_MyApplicationFileName_B1Compat As String = "MyApplication.myapp" 'Old (Beta 1) name for this file to remain backwards compatible
+        Private Const Const_MyApplicationFileName As String = "Application.myapp"
+        Private Const Const_MyApplicationFileName_B1Compat As String = "MyApplication.myapp" 'Old (Beta 1) name for this file to remain backwards compatible
 
         Private _myAppFileName As String 'The actual file for the XML file that we found and are using (*not* including the path)
 
-        Private Const s_const_MyApplicationEntryPoint As String = "My.MyApplication"
+        Private Const Const_MyApplicationEntryPoint As String = "My.MyApplication"
 
         'The name of the file where users hook up My events
-        Private Const s_const_MyEventsFileName As String = "ApplicationEvents.vb"
-        Private Const s_const_MyEventsFileName_B2Compat As String = "Application.vb"
-        Private Const s_const_MyEventsFileName_B1Compat As String = "MyEvents.vb" 'Old (Beta 1) name for this file to remain backwards compatible
+        Private Const Const_MyEventsFileName As String = "ApplicationEvents.vb"
+        Private Const Const_MyEventsFileName_B2Compat As String = "Application.vb"
+        Private Const Const_MyEventsFileName_B1Compat As String = "MyEvents.vb" 'Old (Beta 1) name for this file to remain backwards compatible
 
         'The relevant project property names
-        Private Const s_PROJECTPROPERTY_CUSTOMTOOL As String = "CustomTool"
-        Private Const s_PROJECTPROPERTY_CUSTOMTOOLNAMESPACE As String = "CustomToolNamespace"
+        Private Const PROJECTPROPERTY_CUSTOMTOOL As String = "CustomTool"
+        Private Const PROJECTPROPERTY_CUSTOMTOOLNAMESPACE As String = "CustomToolNamespace"
 
         'The custom tool name to use for the default resx file in VB projects
-        Private Const s_MYAPPCUSTOMTOOL As String = "MyApplicationCodeGenerator"
+        Private Const MYAPPCUSTOMTOOL As String = "MyApplicationCodeGenerator"
 
         ''' <summary>
         ''' Constructor.
@@ -332,14 +332,14 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             _projectDesignerProjectItem = GetProjectItemForProjectDesigner(ProjectHierarchy)
 
             'Determine the filename for the .myapp file
-            _myAppFileName = s_const_MyApplicationFileName
+            _myAppFileName = Const_MyApplicationFileName
 
             'BEGIN Beta 1 Backwards compatibility
             If Not File.Exists(MyAppFileNameWithPath) Then
-                Dim FileNameCompat As String = Path.Combine(ProjectDesignerProjectItem.FileNames(1), s_const_MyApplicationFileName_B1Compat)
+                Dim FileNameCompat As String = Path.Combine(ProjectDesignerProjectItem.FileNames(1), Const_MyApplicationFileName_B1Compat)
                 If File.Exists(FileNameCompat) Then
                     'The new version of the filename does not exist, but the old one does - use it instead
-                    _myAppFileName = s_const_MyApplicationFileName_B1Compat
+                    _myAppFileName = Const_MyApplicationFileName_B1Compat
                     Debug.Assert(File.Exists(MyAppFileNameWithPath), "Huh?")
                 End If
             End If
@@ -481,7 +481,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                     RunCustomTool()
 
                     'Notify users of property change
-                    OnPropertyChanged(s_PROPNAME_CustomSubMain)
+                    OnPropertyChanged(PROPNAME_CustomSubMain)
                 End If
             End Set
         End Property
@@ -520,7 +520,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                 Return NothingToEmptyString(_myAppData.MainFormNoRootNS)
             End Get
             Set(value As String)
-                If System.String.CompareOrdinal(NothingToEmptyString(_myAppData.MainFormNoRootNS), NothingToEmptyString(value)) <> 0 Then
+                If String.CompareOrdinal(NothingToEmptyString(_myAppData.MainFormNoRootNS), NothingToEmptyString(value)) <> 0 Then
                     CheckOutDocData()
                     _myAppData.MainFormNoRootNS = EmptyStringToNothing(value)
                     FlushToDocData()
@@ -530,7 +530,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                     RunCustomTool()
 
                     'Notify users of property change
-                    OnPropertyChanged(s_PROPNAME_MainForm)
+                    OnPropertyChanged(PROPNAME_MainForm)
                 End If
             End Set
         End Property
@@ -546,7 +546,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                     FlushToDocData()
 
                     'Notify users of property change
-                    OnPropertyChanged(s_PROPNAME_SingleInstance)
+                    OnPropertyChanged(PROPNAME_SingleInstance)
                 End If
             End Set
         End Property
@@ -558,7 +558,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             Set(value As Integer)
                 Select Case value
                     Case _
-                    ApplicationServices.ShutdownMode.AfterMainFormCloses, _
+                    ApplicationServices.ShutdownMode.AfterMainFormCloses,
                     ApplicationServices.ShutdownMode.AfterAllFormsClose
                         'Valid - continue
                     Case Else
@@ -571,7 +571,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                     FlushToDocData()
 
                     'Notify users of property change
-                    OnPropertyChanged(s_PROPNAME_ShutdownMode)
+                    OnPropertyChanged(PROPNAME_ShutdownMode)
                 End If
             End Set
         End Property
@@ -587,7 +587,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                     FlushToDocData()
 
                     'Notify users of property change
-                    OnPropertyChanged(s_PROPNAME_EnableVisualStyles)
+                    OnPropertyChanged(PROPNAME_EnableVisualStyles)
                 End If
             End Set
         End Property
@@ -603,7 +603,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                     FlushToDocData()
 
                     'Notify users of property change
-                    OnPropertyChanged(s_PROPNAME_SaveMySettingsOnExit)
+                    OnPropertyChanged(PROPNAME_SaveMySettingsOnExit)
                 End If
             End Set
         End Property
@@ -615,7 +615,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             Set(value As Integer)
                 Select Case value
                     Case _
-                    ApplicationServices.AuthenticationMode.Windows, _
+                    ApplicationServices.AuthenticationMode.Windows,
                     ApplicationServices.AuthenticationMode.ApplicationDefined
                         'Valid - continue
                     Case Else
@@ -628,7 +628,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                     FlushToDocData()
 
                     'Notify users of property change
-                    OnPropertyChanged(s_PROPNAME_AuthenticationMode)
+                    OnPropertyChanged(PROPNAME_AuthenticationMode)
                 End If
             End Set
         End Property
@@ -665,7 +665,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                 Return NothingToEmptyString(_myAppData.SplashScreenNoRootNS)
             End Get
             Set(value As String)
-                If System.String.CompareOrdinal(NothingToEmptyString(_myAppData.SplashScreenNoRootNS), NothingToEmptyString(value)) <> 0 Then
+                If String.CompareOrdinal(NothingToEmptyString(_myAppData.SplashScreenNoRootNS), NothingToEmptyString(value)) <> 0 Then
                     CheckOutDocData()
                     _myAppData.SplashScreenNoRootNS = EmptyStringToNothing(value)
                     FlushToDocData()
@@ -675,7 +675,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                     RunCustomTool()
 
                     'Notify users of property change
-                    OnPropertyChanged(s_PROPNAME_SplashScreen)
+                    OnPropertyChanged(PROPNAME_SplashScreen)
                 End If
             End Set
         End Property
@@ -729,7 +729,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                 Item = AddFileToProject(ProjectDesignerProjectItem.ProjectItems, MyAppFileNameWithPath, False)
 
                 'Make sure the custom tool for the MyApplication data file is set correctly
-                SetCustomTool(Item, s_MYAPPCUSTOMTOOL)
+                SetCustomTool(Item, MYAPPCUSTOMTOOL)
 
                 'BuildAction should be None so the file doesn't get published
                 SetBuildAction(Item, VSLangProj.prjBuildAction.prjBuildActionNone)
@@ -870,8 +870,8 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' </summary>
         ''' <remarks>Caller is responsible for catching exceptions</remarks>
         Private Sub SetCustomTool(ProjectItem As ProjectItem, Value As String)
-            Dim ToolProperty As [Property] = GetProjectItemProperty(ProjectItem, s_PROJECTPROPERTY_CUSTOMTOOL)
-            Dim NamespaceProperty As [Property] = GetProjectItemProperty(ProjectItem, s_PROJECTPROPERTY_CUSTOMTOOLNAMESPACE)
+            Dim ToolProperty As [Property] = GetProjectItemProperty(ProjectItem, PROJECTPROPERTY_CUSTOMTOOL)
+            Dim NamespaceProperty As [Property] = GetProjectItemProperty(ProjectItem, PROJECTPROPERTY_CUSTOMTOOLNAMESPACE)
 
             Try
                 If ToolProperty Is Nothing Then
@@ -1000,18 +1000,18 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
 
             'Search for the Application.vb (used to be MyEvents.vb) file
             Dim FileIsNew As Boolean
-            Dim MyEventsProjectItem As ProjectItem = QueryProjectItems(ProjectDesignerProjectItem.ProjectItems, s_const_MyEventsFileName)
+            Dim MyEventsProjectItem As ProjectItem = QueryProjectItems(ProjectDesignerProjectItem.ProjectItems, Const_MyEventsFileName)
             If MyEventsProjectItem Is Nothing Then
                 'The file doesn't exist in the My Application folder.  Let's also look in the root folder, in case the user
                 '  moved it there.
-                MyEventsProjectItem = QueryProjectItems(ProjectDesignerProjectItem.ContainingProject.ProjectItems, s_const_MyEventsFileName)
+                MyEventsProjectItem = QueryProjectItems(ProjectDesignerProjectItem.ContainingProject.ProjectItems, Const_MyEventsFileName)
 
                 'BEGIN Beta 2 Backwards compatibility
                 If MyEventsProjectItem Is Nothing Then
                     'Could not find the file with the new, expected name.  Also search for the old name in both places
-                    MyEventsProjectItem = QueryProjectItems(ProjectDesignerProjectItem.ProjectItems, s_const_MyEventsFileName_B2Compat)
+                    MyEventsProjectItem = QueryProjectItems(ProjectDesignerProjectItem.ProjectItems, Const_MyEventsFileName_B2Compat)
                     If MyEventsProjectItem Is Nothing Then
-                        MyEventsProjectItem = QueryProjectItems(ProjectDesignerProjectItem.ContainingProject.ProjectItems, s_const_MyEventsFileName_B2Compat)
+                        MyEventsProjectItem = QueryProjectItems(ProjectDesignerProjectItem.ContainingProject.ProjectItems, Const_MyEventsFileName_B2Compat)
                     End If
                 End If
                 'END Beta 2 Backwards compatibility
@@ -1019,9 +1019,9 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                 'BEGIN Beta 1 Backwards compatibility
                 If MyEventsProjectItem Is Nothing Then
                     'Could not find the file with the new, expected name.  Also search for the old name in both places
-                    MyEventsProjectItem = QueryProjectItems(ProjectDesignerProjectItem.ProjectItems, s_const_MyEventsFileName_B1Compat)
+                    MyEventsProjectItem = QueryProjectItems(ProjectDesignerProjectItem.ProjectItems, Const_MyEventsFileName_B1Compat)
                     If MyEventsProjectItem Is Nothing Then
-                        MyEventsProjectItem = QueryProjectItems(ProjectDesignerProjectItem.ContainingProject.ProjectItems, s_const_MyEventsFileName_B1Compat)
+                        MyEventsProjectItem = QueryProjectItems(ProjectDesignerProjectItem.ContainingProject.ProjectItems, Const_MyEventsFileName_B1Compat)
                     End If
                 End If
                 'END Beta 1 Backwards compatibility
@@ -1042,7 +1042,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                         Return
                     End If
 
-                    MyEventsProjectItem = CreateNewMyEventsFile(ProjectDesignerProjectItem.ContainingProject.ProjectItems, s_const_MyEventsFileName, Const_MyEventsNamespace, Const_MyEventsClassName)
+                    MyEventsProjectItem = CreateNewMyEventsFile(ProjectDesignerProjectItem.ContainingProject.ProjectItems, Const_MyEventsFileName, Const_MyEventsNamespace, Const_MyEventsClassName)
                     FileIsNew = True
                 End If
             End If
@@ -1252,42 +1252,42 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         Private Sub FireChangeNotificationsForNewValues(OldValues As MyApplicationData, NewValues As MyApplicationData)
             'AuthenticationMode
             If OldValues.AuthenticationMode <> NewValues.AuthenticationMode Then
-                OnPropertyChanged(s_PROPNAME_AuthenticationMode)
+                OnPropertyChanged(PROPNAME_AuthenticationMode)
             End If
 
             'CustomSubMain
             If OldValues.MySubMain <> NewValues.MySubMain Then
-                OnPropertyChanged(s_PROPNAME_CustomSubMain)
+                OnPropertyChanged(PROPNAME_CustomSubMain)
             End If
 
             'EnableVisualStyles
             If OldValues.EnableVisualStyles <> NewValues.EnableVisualStyles Then
-                OnPropertyChanged(s_PROPNAME_EnableVisualStyles)
+                OnPropertyChanged(PROPNAME_EnableVisualStyles)
             End If
 
             'MainForm
             If Not StringPropertyValuesEqual(OldValues.MainFormNoRootNS, NewValues.MainFormNoRootNS) Then
-                OnPropertyChanged(s_PROPNAME_MainForm)
+                OnPropertyChanged(PROPNAME_MainForm)
             End If
 
             'SaveMySettingsOnExit
             If OldValues.SaveMySettingsOnExit <> NewValues.SaveMySettingsOnExit Then
-                OnPropertyChanged(s_PROPNAME_SaveMySettingsOnExit)
+                OnPropertyChanged(PROPNAME_SaveMySettingsOnExit)
             End If
 
             'ShutdownMode
             If OldValues.ShutdownMode <> NewValues.ShutdownMode Then
-                OnPropertyChanged(s_PROPNAME_ShutdownMode)
+                OnPropertyChanged(PROPNAME_ShutdownMode)
             End If
 
             'SingleInstance
             If OldValues.SingleInstance <> NewValues.SingleInstance Then
-                OnPropertyChanged(s_PROPNAME_SingleInstance)
+                OnPropertyChanged(PROPNAME_SingleInstance)
             End If
 
             'SplashScreen
             If Not StringPropertyValuesEqual(OldValues.SplashScreenNoRootNS, NewValues.SplashScreenNoRootNS) Then
-                OnPropertyChanged(s_PROPNAME_SplashScreen)
+                OnPropertyChanged(PROPNAME_SplashScreen)
             End If
 
         End Sub
@@ -1359,10 +1359,10 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         '
         '  Application Type      ->  MyType
         '  -------------------       ------
-        '  Windows Application   ->  “WindowsForms” or "WindowsFormsWithCustomSubMain"
-        '  Windows Class Library ->  “Windows”
-        '  Console Application   ->  “Console”
-        '  Windows Service       ->  “Console”
+        '  Windows Application   ->  â€œWindowsFormsâ€ or "WindowsFormsWithCustomSubMain"
+        '  Windows Class Library ->  â€œWindowsâ€
+        '  Console Application   ->  â€œConsoleâ€
+        '  Windows Service       ->  â€œConsoleâ€
         '  Web Control Library   ->  "WebControl"
         '
 

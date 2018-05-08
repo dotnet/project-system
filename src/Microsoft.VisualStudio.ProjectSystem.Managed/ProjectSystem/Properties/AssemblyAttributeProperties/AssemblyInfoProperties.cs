@@ -44,8 +44,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             Workspace workspace,
             IProjectThreadingService threadingService)
         {
-            var builder = ImmutableDictionary.CreateBuilder<string, SourceAssemblyAttributePropertyValueProvider>();
-            foreach (var kvp in AssemblyPropertyInfoMap)
+            ImmutableDictionary<string, SourceAssemblyAttributePropertyValueProvider>.Builder builder = ImmutableDictionary.CreateBuilder<string, SourceAssemblyAttributePropertyValueProvider>();
+            foreach (KeyValuePair<string, (string attributeName, string generatePropertyInProjectFileName)> kvp in AssemblyPropertyInfoMap)
             {
                 var provider = new SourceAssemblyAttributePropertyValueProvider(kvp.Value.attributeName, getActiveProjectId, workspace, threadingService);
                 builder.Add(kvp.Key, provider);
@@ -119,7 +119,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             // Generate property in project file only if:
             // 1. "GenerateAssemblyInfo" is true AND
             // 2. "GenerateXXX" for this specific property is true.
-            var propertyValue = await base.GetEvaluatedPropertyValueAsync("GenerateAssemblyInfo").ConfigureAwait(true);
+            string propertyValue = await base.GetEvaluatedPropertyValueAsync("GenerateAssemblyInfo").ConfigureAwait(true);
             if (!bool.TryParse(propertyValue, out bool value) || !value)
             {
                 return false;

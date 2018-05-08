@@ -34,8 +34,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             ppvm.Setup(m => m.Initialize()).Returns(new Task(() => { }));
             ppvm.CallBase = true;
 
-            var ppc = new Mock<PropertyPageControl>(MockBehavior.Loose);
-            ppc.CallBase = true;
+            var ppc = new Mock<PropertyPageControl>(MockBehavior.Loose)
+            {
+                CallBase = true
+            };
 
             ppc.Object.InitializePropertyPage(ppvm.Object);
             ppc.Object.IsDirty = true;

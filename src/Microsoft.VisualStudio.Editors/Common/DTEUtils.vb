@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports EnvDTE
 Imports Microsoft.VisualStudio.Shell.Interop
@@ -18,8 +18,8 @@ Namespace Microsoft.VisualStudio.Editors.Common
         Public Const PROJECTPROPERTY_CUSTOMTOOL As String = "CustomTool"
         Public Const PROJECTPROPERTY_CUSTOMTOOLNAMESPACE As String = "CustomToolNamespace"
 
-        Private Const s_PROJECTPROPERTY_MSBUILD_ITEMTYPE As String = "ItemType"
-        Private Const s_PROJECTPROPERTY_BUILDACTION As String = "BuildAction"
+        Private Const PROJECTPROPERTY_MSBUILD_ITEMTYPE As String = "ItemType"
+        Private Const PROJECTPROPERTY_BUILDACTION As String = "BuildAction"
 
         ''' <summary>
         ''' This is a shared class - disallow instantation.
@@ -239,7 +239,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <param name="Item">The ProjectItem on which to set the property</param>
         ''' <remarks></remarks>
         Public Shared Sub SetBuildAction(Item As ProjectItem, BuildAction As VSLangProj.prjBuildAction)
-            Dim BuildActionProperty As [Property] = GetProjectItemProperty(Item, s_PROJECTPROPERTY_BUILDACTION)
+            Dim BuildActionProperty As [Property] = GetProjectItemProperty(Item, PROJECTPROPERTY_BUILDACTION)
             If BuildActionProperty IsNot Nothing Then
                 BuildActionProperty.Value = BuildAction
             End If
@@ -252,7 +252,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <param name="Item">The ProjectItem on which to set the property</param>
         ''' <remarks></remarks>
         Public Shared Function GetBuildAction(Item As ProjectItem) As VSLangProj.prjBuildAction
-            Dim BuildActionProperty As [Property] = GetProjectItemProperty(Item, s_PROJECTPROPERTY_BUILDACTION)
+            Dim BuildActionProperty As [Property] = GetProjectItemProperty(Item, PROJECTPROPERTY_BUILDACTION)
             If BuildActionProperty IsNot Nothing Then
                 Return CType(BuildActionProperty.Value, VSLangProj.prjBuildAction)
             End If
@@ -271,7 +271,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' </remarks>
         Public Shared Sub SetBuildActionAsString(item As ProjectItem, buildAction As String)
 
-            Dim BuildActionProperty As [Property] = GetProjectItemProperty(item, s_PROJECTPROPERTY_MSBUILD_ITEMTYPE)
+            Dim BuildActionProperty As [Property] = GetProjectItemProperty(item, PROJECTPROPERTY_MSBUILD_ITEMTYPE)
             If BuildActionProperty IsNot Nothing Then
                 BuildActionProperty.Value = buildAction
             End If
@@ -284,7 +284,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <param name="Item">The ProjectItem on which to set the property</param>
         ''' <remarks></remarks>
         Public Shared Function GetBuildActionAsString(Item As ProjectItem) As String
-            Dim BuildActionProperty As [Property] = GetProjectItemProperty(Item, s_PROJECTPROPERTY_MSBUILD_ITEMTYPE)
+            Dim BuildActionProperty As [Property] = GetProjectItemProperty(Item, PROJECTPROPERTY_MSBUILD_ITEMTYPE)
             If BuildActionProperty IsNot Nothing Then
                 Return CType(BuildActionProperty.Value, String)
             End If

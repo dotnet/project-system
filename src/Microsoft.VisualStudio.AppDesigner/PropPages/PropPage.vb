@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.ComponentModel.Design
 Imports Common = Microsoft.VisualStudio.Editors.AppDesCommon
@@ -98,17 +98,17 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Implements IVsDocDataContainer
 #End If
 
-        Private _formType As Type
+        Private ReadOnly _formType As Type
         Private _propPage As Control
         Private _pageSite As IPropertyPageSite
-        Private _isDirty As Boolean
-        Private Const s_SW_HIDE As Integer = 0
+        Private ReadOnly _isDirty As Boolean
+        Private Const SW_HIDE As Integer = 0
         Private _size As Drawing.Size
         Private _defaultSize As Drawing.Size
         Private _docString As String
         Private _helpFile As String
         Private _helpContext As UInteger
-        Private _title As String
+        Private ReadOnly _title As String
         Private _objects As Object()
         Private _prevParent As IntPtr
         Private _dispidFocus As Integer
@@ -503,7 +503,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             ' if we're in native, show/hide our secret scrolling panel too
             ' See Create(hWnd) for more info on where that comes from
-            If nCmdShow <> s_SW_HIDE Then
+            If nCmdShow <> SW_HIDE Then
                 If _hostedInNative Then
                     _propPage.Parent.Show()
                 End If

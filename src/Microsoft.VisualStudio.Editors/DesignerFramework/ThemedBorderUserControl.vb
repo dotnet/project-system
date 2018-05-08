@@ -7,8 +7,8 @@ Imports System.Windows.Forms.VisualStyles
 Namespace Microsoft.VisualStudio.Editors.DesignerFramework
     Friend Class ThemedBorderUserControl
         Private _borderPen As Pen
-        Private Const s_WS_EX_CLIENTEDGE As Integer = &H200
-        Private Const s_WS_BORDER As Integer = &H800000
+        Private Const WS_EX_CLIENTEDGE As Integer = &H200
+        Private Const WS_BORDER As Integer = &H800000
 
         Public Sub New()
             _borderPen = New Pen(VisualStyleInformation.TextControlBorder)
@@ -17,15 +17,15 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         Protected Overrides ReadOnly Property CreateParams() As CreateParams
             Get
                 Dim cp As CreateParams = MyBase.CreateParams
-                cp.ExStyle = cp.ExStyle And Not s_WS_EX_CLIENTEDGE
-                cp.Style = cp.Style And Not s_WS_BORDER
+                cp.ExStyle = cp.ExStyle And Not WS_EX_CLIENTEDGE
+                cp.Style = cp.Style And Not WS_BORDER
                 If Not UseVisualStyles Then
 
                     Select Case BorderStyle
                         Case BorderStyle.Fixed3D
-                            cp.ExStyle = cp.ExStyle Or s_WS_EX_CLIENTEDGE
+                            cp.ExStyle = cp.ExStyle Or WS_EX_CLIENTEDGE
                         Case BorderStyle.FixedSingle
-                            cp.Style = cp.Style Or s_WS_BORDER
+                            cp.Style = cp.Style Or WS_BORDER
                     End Select
                 End If
                 Return cp

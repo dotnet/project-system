@@ -1,6 +1,9 @@
-﻿using System;
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using System.Linq;
 using System.Threading.Tasks;
 
 using Microsoft.Build.Framework.XamlTypes;
@@ -15,21 +18,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     [AppliesTo(ProjectCapability.DotNet)]
     internal class SupportedTargetFrameworksEnumProvider : IDynamicEnumValuesProvider
     {
-        private readonly IProjectXmlAccessor _projectXmlAccessor;
+        private readonly IProjectAccessor _projectAccessor;
         private readonly ConfiguredProject _configuredProject;
 
         [ImportingConstructor]
-        public SupportedTargetFrameworksEnumProvider(IProjectXmlAccessor projectXmlAccessor, ConfiguredProject configuredProject)
+        public SupportedTargetFrameworksEnumProvider(IProjectAccessor projectAccessor, ConfiguredProject configuredProject)
         {
-            Requires.NotNull(projectXmlAccessor, nameof(projectXmlAccessor));
-            Requires.NotNull(configuredProject, nameof(configuredProject));
-            _projectXmlAccessor = projectXmlAccessor;
+            _projectAccessor = projectAccessor;
             _configuredProject = configuredProject;
         }
 
         public Task<IDynamicEnumValuesGenerator> GetProviderAsync(IList<NameValuePair> options)
         {
-            return Task.FromResult<IDynamicEnumValuesGenerator>(new SupportedTargetFrameworksEnumValuesGenerator(_projectXmlAccessor, _configuredProject));
+            return Task.FromResult<IDynamicEnumValuesGenerator>(new SupportedTargetFrameworksEnumValuesGenerator(_projectAccessor, _configuredProject));
         }
 
         internal class SupportedTargetFrameworksEnumValuesGenerator : IDynamicEnumValuesGenerator
@@ -37,29 +38,29 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             private const string SupportedTargetFrameworkItemName = "SupportedTargetFramework";
             private const string DisplayNameMetadataName = "DisplayName";
 
-            private readonly IProjectXmlAccessor _projectXmlAccessor;
+            private readonly IProjectAccessor _projectAccessor;
             private readonly ConfiguredProject _configuredProject;
 
-            public SupportedTargetFrameworksEnumValuesGenerator(IProjectXmlAccessor projectXmlAccessor, ConfiguredProject configuredProject)
+            public SupportedTargetFrameworksEnumValuesGenerator(IProjectAccessor projectAccessor, ConfiguredProject configuredProject)
             {
-                _projectXmlAccessor = projectXmlAccessor;
+                _projectAccessor = projectAccessor;
                 _configuredProject = configuredProject;
             }
 
             public bool AllowCustomValues => false;
 
-            public async Task<ICollection<IEnumValue>> GetListedValuesAsync()
+            public Task<ICollection<IEnumValue>> GetListedValuesAsync()
             {
-                var enumValues = new List<IEnumValue>();
-                var items = await _projectXmlAccessor.GetItems(_configuredProject, itemType: SupportedTargetFrameworkItemName, metadataName: DisplayNameMetadataName).ConfigureAwait(false);
-
-                foreach ((string evaluatedInclude, string metadataValue) in items)
+                return _projectAccessor.OpenProjectForReadAsync(_configuredProject, project =>
                 {
-                    var val = new PageEnumValue(new EnumValue { Name = evaluatedInclude, DisplayName = metadataValue });
-                    enumValues.Add(val);
-                }
-
-                return enumValues;
+                    return (ICollection<IEnumValue>)project.GetItems(itemType: SupportedTargetFrameworkItemName)
+                                                           .Select(i => new PageEnumValue(new EnumValue
+                                                           {
+                                                               Name = i.EvaluatedInclude,
+                                                               DisplayName = i.GetMetadataValue(DisplayNameMetadataName)
+                                                           }))
+                                                           .ToArray<IEnumValue>();
+                });
             }
 
             /// <summary>
