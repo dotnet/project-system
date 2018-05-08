@@ -801,8 +801,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
                                 ' Checkout the file if necessary...
                                 If ParentResourceFile IsNot Nothing Then
-                                    Dim filesToCheckOut As New List(Of String)
-                                    filesToCheckOut.Add(NewFilePath)
+                                    Dim filesToCheckOut As New List(Of String) From {
+                                        NewFilePath
+                                    }
                                     DesignerFramework.SourceCodeControlManager.QueryEditableFiles(ParentResourceFile.ServiceProvider, filesToCheckOut, True, False)
                                 End If
 
@@ -2245,14 +2246,14 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Dim HashKey As Object = ValueTypeName & "|" & ResourceTypeEditor.GetType.AssemblyQualifiedName
 
             If Not s_propertyDescriptorCollectionHash.ContainsKey(HashKey) Then
-                Dim PropertyDescriptorArrayList As New ArrayList
-
                 'Register properties: Name, Comment, Filename, Type, Persistence
                 'These are all the same no matter what kind of resource value we're looking at
-                PropertyDescriptorArrayList.Add(s_propertyDescriptor_Name)
-                PropertyDescriptorArrayList.Add(s_propertyDescriptor_Comment)
-                PropertyDescriptorArrayList.Add(s_propertyDescriptor_Filename_ReadOnly)
-                PropertyDescriptorArrayList.Add(s_propertyDescriptor_Type)
+                Dim PropertyDescriptorArrayList As New ArrayList From {
+                    s_propertyDescriptor_Name,
+                    s_propertyDescriptor_Comment,
+                    s_propertyDescriptor_Filename_ReadOnly,
+                    s_propertyDescriptor_Type
+                }
 
                 '"Encoding" property
                 If ResourceTypeEditor.Equals(ResourceTypeEditors.TextFile) Then

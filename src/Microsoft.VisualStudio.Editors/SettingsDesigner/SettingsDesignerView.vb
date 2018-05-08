@@ -166,14 +166,15 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             _settingsGridView.Columns(ScopeColumnNo).HeaderText = My.Resources.Designer.SD_GridViewScopeColumnHeaderText
             _settingsGridView.Columns(ScopeColumnNo).CellTemplate = New DesignerDataGridView.EditOnClickDataGridViewComboBoxCell()
 
-            Dim TypeEditorCol As New DataGridViewUITypeEditorColumn
-            TypeEditorCol.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
-            TypeEditorCol.FillWeight = 100.0!
-            TypeEditorCol.HeaderText = My.Resources.Designer.SD_GridViewValueColumnHeaderText
-            TypeEditorCol.MinimumWidth = DpiHelper.LogicalToDeviceUnitsX(SystemInformation.VerticalScrollBarWidth + 2) ' Add 2 for left/right borders...
-            TypeEditorCol.Resizable = DataGridViewTriState.True
-            TypeEditorCol.SortMode = DataGridViewColumnSortMode.Automatic
-            TypeEditorCol.Width = DpiHelper.LogicalToDeviceUnitsX(200)
+            Dim TypeEditorCol As New DataGridViewUITypeEditorColumn With {
+                .AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
+                .FillWeight = 100.0!,
+                .HeaderText = My.Resources.Designer.SD_GridViewValueColumnHeaderText,
+                .MinimumWidth = DpiHelper.LogicalToDeviceUnitsX(SystemInformation.VerticalScrollBarWidth + 2), ' Add 2 for left/right borders...
+                .Resizable = DataGridViewTriState.True,
+                .SortMode = DataGridViewColumnSortMode.Automatic,
+                .Width = DpiHelper.LogicalToDeviceUnitsX(200)
+            }
             _settingsGridView.Columns.Add(TypeEditorCol)
 
 
@@ -187,9 +188,10 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             SetLinkLabelText()
 
             _settingsGridView.ColumnHeadersHeight = _settingsGridView.Rows(0).GetPreferredHeight(0, DataGridViewAutoSizeRowMode.AllCells, False)
-            _toolbarPanel = New DesignerToolbarPanel
-            _toolbarPanel.Name = "ToolbarPanel"
-            _toolbarPanel.Text = "ToolbarPanel"
+            _toolbarPanel = New DesignerToolbarPanel With {
+                .Name = "ToolbarPanel",
+                .Text = "ToolbarPanel"
+            }
             _settingsTableLayoutPanel.Controls.Add(_toolbarPanel, 0, 0)
             _settingsTableLayoutPanel.ResumeLayout()
             ResumeLayout()
@@ -1270,8 +1272,9 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                                     AndAlso Settings IsNot Nothing _
                                     AndAlso Settings.Site IsNot Nothing _
                                 Then
-                                    Dim files As New List(Of String)
-                                    files.Add(DesignerLoader.ProjectItem.ContainingProject.FullName)
+                                    Dim files As New List(Of String) From {
+                                        DesignerLoader.ProjectItem.ContainingProject.FullName
+                                    }
                                     If Not SourceCodeControlManager.QueryEditableFiles(Settings.Site, files, False, False) Then
                                         e.Cancel = True
                                     End If
@@ -1558,19 +1561,18 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
             InThisMethod = True
             Try
-                _menuCommands = New ArrayList
-                _menuCommands.Add(New DesignerMenuCommand(Designer, Constants.MenuConstants.CommandIDCOMMONEditCell, AddressOf MenuEditCell, AddressOf MenuEditCellEnableHandler,
-                    AlwaysCheckStatus:=True))
-                _menuCommands.Add(New DesignerMenuCommand(Designer, Constants.MenuConstants.CommandIDCOMMONAddRow, AddressOf MenuAddSetting, AddressOf MenuAddSettingEnableHandler, CommandText:=My.Resources.Designer.SD_MNU_AddSettingText))
-                _menuCommands.Add(New DesignerMenuCommand(Designer, Constants.MenuConstants.CommandIDCOMMONRemoveRow, AddressOf MenuRemove, AddressOf MenuRemoveEnableHandler,
-                    AlwaysCheckStatus:=True, CommandText:=My.Resources.Designer.SD_MNU_RemoveSettingText))
-
-                _menuCommands.Add(New DesignerMenuCommand(Designer, Constants.MenuConstants.CommandIDSettingsDesignerViewCode, AddressOf MenuViewCode, AddressOf MenuViewCodeEnableHandler))
-                _menuCommands.Add(New DesignerMenuCommand(Designer, Constants.MenuConstants.CommandIDSettingsDesignerSynchronize, AddressOf MenuSynchronizeUserConfig, AddressOf MenuSynchronizeUserConfigEnableHandler))
-                _menuCommands.Add(New DesignerMenuCommand(Designer, Constants.MenuConstants.CommandIDSettingsDesignerLoadWebSettings, AddressOf MenuLoadWebSettingsFromAppConfig, AddressOf MenuLoadWebSettingsFromAppConfigEnableHandler, AlwaysCheckStatus:=True))
-                _menuCommands.Add(New DesignerMenuCommand(Designer, Constants.MenuConstants.CommandIDVSStd2kECMD_CANCEL, AddressOf MenuCancelEdit, AddressOf MenuCancelEditEnableHandler))
-
-                _menuCommands.Add(New DesignerMenuCommand(Designer, Constants.MenuConstants.CommandIDVSStd97cmdidViewCode, AddressOf MenuViewCode, AddressOf MenuViewCodeEnableHandler))
+                _menuCommands = New ArrayList From {
+                    New DesignerMenuCommand(Designer, Constants.MenuConstants.CommandIDCOMMONEditCell, AddressOf MenuEditCell, AddressOf MenuEditCellEnableHandler,
+                    AlwaysCheckStatus:=True),
+                    New DesignerMenuCommand(Designer, Constants.MenuConstants.CommandIDCOMMONAddRow, AddressOf MenuAddSetting, AddressOf MenuAddSettingEnableHandler, CommandText:=My.Resources.Designer.SD_MNU_AddSettingText),
+                    New DesignerMenuCommand(Designer, Constants.MenuConstants.CommandIDCOMMONRemoveRow, AddressOf MenuRemove, AddressOf MenuRemoveEnableHandler,
+                    AlwaysCheckStatus:=True, CommandText:=My.Resources.Designer.SD_MNU_RemoveSettingText),
+                    New DesignerMenuCommand(Designer, Constants.MenuConstants.CommandIDSettingsDesignerViewCode, AddressOf MenuViewCode, AddressOf MenuViewCodeEnableHandler),
+                    New DesignerMenuCommand(Designer, Constants.MenuConstants.CommandIDSettingsDesignerSynchronize, AddressOf MenuSynchronizeUserConfig, AddressOf MenuSynchronizeUserConfigEnableHandler),
+                    New DesignerMenuCommand(Designer, Constants.MenuConstants.CommandIDSettingsDesignerLoadWebSettings, AddressOf MenuLoadWebSettingsFromAppConfig, AddressOf MenuLoadWebSettingsFromAppConfigEnableHandler, AlwaysCheckStatus:=True),
+                    New DesignerMenuCommand(Designer, Constants.MenuConstants.CommandIDVSStd2kECMD_CANCEL, AddressOf MenuCancelEdit, AddressOf MenuCancelEditEnableHandler),
+                    New DesignerMenuCommand(Designer, Constants.MenuConstants.CommandIDVSStd97cmdidViewCode, AddressOf MenuViewCode, AddressOf MenuViewCodeEnableHandler)
+                }
                 'Delete
                 '
                 'We don't actually have a Delete command (the AddressOf MenuRemove is a dummy, since DesignerMenuCommand wants something

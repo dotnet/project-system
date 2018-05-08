@@ -1791,8 +1791,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                                 Dim group As Integer = FindControlGroup(returnControl)
                                 If delayValidationGroup < 0 Then
                                     delayValidationGroup = group
-                                    delayValidationQueue = New ArrayList()
-                                    delayValidationQueue.Add(_controlData)
+                                    delayValidationQueue = New ArrayList From {
+                                        _controlData
+                                    }
                                 ElseIf delayValidationGroup <> group Then
                                     delayValidationOK = False
                                 Else
@@ -3163,8 +3164,9 @@ NextControl:
 
             Dim Dialog As PropPageHostDialog = GetPropPageHostDialog(Page)
             If Dialog Is Nothing Then
-                Dialog = New PropPageHostDialog(ServiceProvider, F1Keyword)
-                Dialog.PropPage = Page
+                Dialog = New PropPageHostDialog(ServiceProvider, F1Keyword) With {
+                    .PropPage = Page
+                }
             End If
 
             Dialog.Text = Title

@@ -735,39 +735,32 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             InThisMethod = True
             Try
-                _menuCommands = New ArrayList
-
-                'Play
-                _menuCommands.Add(New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDResXPlay, AddressOf MenuPlay, AddressOf MenuPlayEnabledHandler,
-                    AlwaysCheckStatus:=True))
-
-                'Open/Open With...
-                _menuCommands.Add(New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDVSStd97Open, AddressOf MenuOpen, AddressOf MenuOpenOpenWithEnabledHandler,
-                    AlwaysCheckStatus:=True))
-                _menuCommands.Add(New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDVSStd97OpenWith, AddressOf MenuOpenWith, AddressOf MenuOpenOpenWithEnabledHandler,
-                    AlwaysCheckStatus:=True))
-
-                'Cut/Copy/Paste/Remove/Rename
-                _menuCommands.Add(New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDVSStd97cmdidCut, AddressOf MenuCut, AddressOf MenuCutEnabledHandler,
-                    AlwaysCheckStatus:=True))
-                _menuCommands.Add(New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDVSStd97cmdidCopy, AddressOf MenuCopy, AddressOf MenuCopyEnabledHandler,
-                    AlwaysCheckStatus:=True))
-                _menuCommands.Add(New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDVSStd97cmdidPaste, AddressOf MenuPaste, AddressOf MenuPasteEnabledHandler,
-                    AlwaysCheckStatus:=True))
-                _menuCommands.Add(New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDVSStd97cmdidRemove, AddressOf MenuRemove, AddressOf MenuRemoveEnabledHandler,
+                _menuCommands = New ArrayList From {
+                    New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDResXPlay, AddressOf MenuPlay, AddressOf MenuPlayEnabledHandler,
+                    AlwaysCheckStatus:=True),
+                    New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDVSStd97Open, AddressOf MenuOpen, AddressOf MenuOpenOpenWithEnabledHandler,
+                    AlwaysCheckStatus:=True),
+                    New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDVSStd97OpenWith, AddressOf MenuOpenWith, AddressOf MenuOpenOpenWithEnabledHandler,
+                    AlwaysCheckStatus:=True),
+                    New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDVSStd97cmdidCut, AddressOf MenuCut, AddressOf MenuCutEnabledHandler,
+                    AlwaysCheckStatus:=True),
+                    New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDVSStd97cmdidCopy, AddressOf MenuCopy, AddressOf MenuCopyEnabledHandler,
+                    AlwaysCheckStatus:=True),
+                    New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDVSStd97cmdidPaste, AddressOf MenuPaste, AddressOf MenuPasteEnabledHandler,
+                    AlwaysCheckStatus:=True),
+                    New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDVSStd97cmdidRemove, AddressOf MenuRemove, AddressOf MenuRemoveEnabledHandler,
                     CommandVisibleHandler:=AddressOf MenuRemoveVisibleHandler,
-                    AlwaysCheckStatus:=True))
-                _menuCommands.Add(New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDCOMMONRemoveRow, AddressOf MenuRemoveRow, AddressOf MenuRemoveRowEnabledHandler,
-                    AlwaysCheckStatus:=True))
-                _menuCommands.Add(New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDVSStd97cmdidRename, AddressOf MenuRename, AddressOf MenuRenameEnabledHandler,
-                    AlwaysCheckStatus:=True))
-                _menuCommands.Add(New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDVSStd97cmdidEditLabel, AddressOf MenuEditLabel, AddressOf MenuEditLabelEnabledHandler,
-                    AlwaysCheckStatus:=True))
+                    AlwaysCheckStatus:=True),
+                    New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDCOMMONRemoveRow, AddressOf MenuRemoveRow, AddressOf MenuRemoveRowEnabledHandler,
+                    AlwaysCheckStatus:=True),
+                    New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDVSStd97cmdidRename, AddressOf MenuRename, AddressOf MenuRenameEnabledHandler,
+                    AlwaysCheckStatus:=True),
+                    New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDVSStd97cmdidEditLabel, AddressOf MenuEditLabel, AddressOf MenuEditLabelEnabledHandler,
+                    AlwaysCheckStatus:=True),
+                    New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDVSStd97cmdidSelectAll, AddressOf MenuSelectAll, AddressOf MenuSelectAllEnableHandler)
+                }
 
-                'Select All
-                _menuCommands.Add(New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDVSStd97cmdidSelectAll, AddressOf MenuSelectAll, AddressOf MenuSelectAllEnableHandler))
-
-                'Add menu items
+                    'Add menu items
                 If isEditingResWFile Then
                     ' Only 'Add Default Resource' is allowed resw files
                     _menuCommands.Add(New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDRESXAddDefaultResource, AddressOf ButtonFixedAdd_Click, AddressOf MenuAddEnabledHandler))
@@ -828,11 +821,12 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     AlwaysCheckStatus:=True))
 
                 'Edit cell -- leave it here because of VB profile...
-                Dim EditCellCommand As DesignerMenuCommand = New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDCOMMONEditCell, AddressOf MenuEditLabel)
                 'We don't actually want "Edit" to be visible in the menus.  We simply want to be able to have something to bind the F2 key to
                 '  so that pressing F2 in the string table starts editing (the shell seems to steal this key from the grid).  So make it
                 '  invisible
-                EditCellCommand.Visible = False
+                Dim EditCellCommand As DesignerMenuCommand = New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDCOMMONEditCell, AddressOf MenuEditLabel) With {
+                    .Visible = False
+                }
                 _menuCommands.Add(EditCellCommand)
 
                 _menuCommands.Add(New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDRESXGenericRemove, AddressOf MenuGenericRemove, AddressOf MenuGenericRemoveEnabledHandler,
@@ -872,9 +866,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Category.Display.StringTable,
                 New DesignerMenuCommand(Nothing, Constants.MenuConstants.CommandIDRESXResTypeStrings, AddressOf MenuResourceTypeStrings),
                 AddressOf ButtonAdd_NewString_Click,
-                ResourceTypeEditors.String
-                )
-            _categoryStrings.AllowNewEntriesInStringTable = True
+                ResourceTypeEditors.String) With {
+                .AllowNewEntriesInStringTable = True
+                }
             _categories.Add(_categoryStrings)
 
             _categoryImages = New Category(
@@ -882,9 +876,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Category.Display.ListView,
                 New DesignerMenuCommand(Nothing, Constants.MenuConstants.CommandIDRESXResTypeImages, AddressOf MenuResourceTypeImages),
                 AddressOf ButtonAdd_NewImage_BMP_Click,
-                ResourceTypeEditors.Bitmap
-                )
-            _categoryImages.ResourceView = ResourceListView.ResourceView.Thumbnail
+                ResourceTypeEditors.Bitmap) With {
+                .ResourceView = ResourceListView.ResourceView.Thumbnail
+                }
             _categories.Add(_categoryImages)
 
             If PropertyPages.VSProductSKU.IsExpress() Then
@@ -912,8 +906,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Category.Display.ListView,
                 New DesignerMenuCommand(Nothing, Constants.MenuConstants.CommandIDRESXResTypeAudio, AddressOf MenuResourceTypeAudio),
                 AddressOf ButtonAdd_ExistingFile_Click,
-                ResourceTypeEditors.Audio)
-            _categoryAudio.ResourceView = ResourceListView.ResourceView.Thumbnail
+                ResourceTypeEditors.Audio) With {
+                .ResourceView = ResourceListView.ResourceView.Thumbnail
+                }
             _categories.Add(_categoryAudio)
 
             _categoryFiles = New Category(
@@ -922,8 +917,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 New DesignerMenuCommand(Nothing, Constants.MenuConstants.CommandIDRESXResTypeFiles, AddressOf MenuResourceTypeFiles),
                 AddressOf ButtonAdd_ExistingFile_Click,
                 ResourceTypeEditors.TextFile,
-                ResourceTypeEditors.BinaryFile)
-            _categoryFiles.ResourceView = ResourceListView.ResourceView.Thumbnail
+                ResourceTypeEditors.BinaryFile) With {
+                .ResourceView = ResourceListView.ResourceView.Thumbnail
+                }
             _categories.Add(_categoryFiles)
 
             _categoryOther = New Category(
@@ -933,8 +929,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Nothing,
                 ResourceTypeEditors.NonStringConvertible,
                 ResourceTypeEditors.StringConvertible,
-                ResourceTypeEditors.Nothing)
-            _categoryOther.ShowTypeColumnInStringTable = True
+                ResourceTypeEditors.Nothing) With {
+                .ShowTypeColumnInStringTable = True
+                }
             _categories.Add(_categoryOther)
         End Sub
 

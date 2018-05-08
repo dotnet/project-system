@@ -367,8 +367,9 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                     AndAlso ProjectItem.ContainingProject.FullName <> "" _
                 Then
                     ' Check out the project file...
-                    Dim filesToCheckOut As New List(Of String)(1)
-                    filesToCheckOut.Add(ProjectItem.ContainingProject.FullName)
+                    Dim filesToCheckOut As New List(Of String)(1) From {
+                        ProjectItem.ContainingProject.FullName
+                    }
                     DesignerFramework.SourceCodeControlManager.QueryEditableFiles(_serviceProvider, filesToCheckOut, True, False)
                 End If
             End If
