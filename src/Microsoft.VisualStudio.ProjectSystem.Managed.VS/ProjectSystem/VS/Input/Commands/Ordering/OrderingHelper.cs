@@ -189,7 +189,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         }
 
         /// <summary>
-        /// Get project item elements based on the project tree.
+        /// Get project item elements based on the project tree. Will not include elements that are not associated with the given project.
         /// Project tree can be a folder or item.
         /// </summary>
         public static ImmutableArray<ProjectItemElement> GetItemElements(Project project, IProjectTree projectTree, ImmutableArray<string> excludeIncludes)
@@ -197,45 +197,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
             Requires.NotNull(project, nameof(project));
             Requires.NotNull(projectTree, nameof(projectTree));
 
-            var includes = GetEvaluatedIncludes(projectTree).Except(excludeIncludes, StringComparer.OrdinalIgnoreCase).ToImmutableArray();
-            return GetItemElements(project, includes);
-        }
-
-        /// <summary>
-        /// Determines if we are moving up or down files or folders.
-        /// </summary>
-        private enum MoveAction { Above = 0, Below = 1 }
-
-        private static ImmutableArray<ProjectItemElement> GetItemElements(Project project, ImmutableArray<string> includes)
-        {
-            var elements = ImmutableArray.CreateBuilder<ProjectItemElement>();
-
-            foreach (var include in includes)
-            {
-                // GetItemsByEvaluatedInclude is efficient and uses a MultiDictionary underneath.
-                //     It uses this: new MultiDictionary<string, ProjectItem>(StringComparer.OrdinalIgnoreCase);
-                var item = project.GetItemsByEvaluatedInclude(include).FirstOrDefault();
-
-                // We only care about adding one item associated with the evaluated include.
-                if (item?.Xml is ProjectItemElement element)
-                {
-                    elements.Add(element);
-                }
-            }
-
-            return elements.ToImmutable();
-        }
-
-        /// <summary>
-        /// Gets a read-only collection with the evaluated includes associated with a project tree.
-        /// Evaluated includes will be in order by their display order.
-        /// </summary>
-        private static IEnumerable<string> GetEvaluatedIncludes(IProjectTree projectTree)
-        {
             var treeQueue = new Queue<IProjectTree>();
 
             var hashSet = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-            var includes = new SortedList<int, string>();
+            var includes = new SortedList<int, ProjectItemElement>();
 
             treeQueue.Enqueue(projectTree);
 
@@ -246,12 +211,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
 
                 if (tree is IProjectItemTree2 tree2 && IsValidDisplayOrder(tree2.DisplayOrder))
                 {
+                    var include = tree2.Item.ItemName;
                     // Technically it is possible to have more than one of the same item names.
                     // We only want to add one of them.
                     // Sanity check
-                    if (hashSet.Add(tree2.Item.ItemName))
+                    if (hashSet.Add(include))
                     {
-                        includes.Add(tree2.DisplayOrder, tree2.Item.ItemName);
+                        // GetItemsByEvaluatedInclude is efficient and uses a MultiDictionary underneath.
+                        //     It uses this: new MultiDictionary<string, ProjectItem>(StringComparer.OrdinalIgnoreCase);
+                        var item = project.GetItemsByEvaluatedInclude(include).FirstOrDefault();
+
+                        // We only care about adding one item associated with the evaluated include.
+                        // Also check to make sure we use an element that is in the same project file.
+                        if (item?.Xml is ProjectItemElement element && element.ContainingProject.ProjectFileLocation == project.ProjectFileLocation)
+                        {
+                            includes.Add(tree2.DisplayOrder, element);
+                        }
                     }
                 }
 
@@ -264,8 +239,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
                 }
             }
 
-            return includes.Select(x => x.Value);
+            return includes.Select(x => x.Value).ToImmutableArray();
         }
+
+        /// <summary>
+        /// Determines if we are moving up or down files or folders.
+        /// </summary>
+        private enum MoveAction { Above = 0, Below = 1 }
 
         /// <summary>
         /// Checks to see if the display order is valid.
