@@ -735,39 +735,32 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             InThisMethod = True
             Try
-                _menuCommands = New ArrayList
-
-                'Play
-                _menuCommands.Add(New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDResXPlay, AddressOf MenuPlay, AddressOf MenuPlayEnabledHandler,
-                    AlwaysCheckStatus:=True))
-
-                'Open/Open With...
-                _menuCommands.Add(New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDVSStd97Open, AddressOf MenuOpen, AddressOf MenuOpenOpenWithEnabledHandler,
-                    AlwaysCheckStatus:=True))
-                _menuCommands.Add(New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDVSStd97OpenWith, AddressOf MenuOpenWith, AddressOf MenuOpenOpenWithEnabledHandler,
-                    AlwaysCheckStatus:=True))
-
-                'Cut/Copy/Paste/Remove/Rename
-                _menuCommands.Add(New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDVSStd97cmdidCut, AddressOf MenuCut, AddressOf MenuCutEnabledHandler,
-                    AlwaysCheckStatus:=True))
-                _menuCommands.Add(New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDVSStd97cmdidCopy, AddressOf MenuCopy, AddressOf MenuCopyEnabledHandler,
-                    AlwaysCheckStatus:=True))
-                _menuCommands.Add(New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDVSStd97cmdidPaste, AddressOf MenuPaste, AddressOf MenuPasteEnabledHandler,
-                    AlwaysCheckStatus:=True))
-                _menuCommands.Add(New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDVSStd97cmdidRemove, AddressOf MenuRemove, AddressOf MenuRemoveEnabledHandler,
+                _menuCommands = New ArrayList From {
+                    New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDResXPlay, AddressOf MenuPlay, AddressOf MenuPlayEnabledHandler,
+                    AlwaysCheckStatus:=True),
+                    New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDVSStd97Open, AddressOf MenuOpen, AddressOf MenuOpenOpenWithEnabledHandler,
+                    AlwaysCheckStatus:=True),
+                    New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDVSStd97OpenWith, AddressOf MenuOpenWith, AddressOf MenuOpenOpenWithEnabledHandler,
+                    AlwaysCheckStatus:=True),
+                    New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDVSStd97cmdidCut, AddressOf MenuCut, AddressOf MenuCutEnabledHandler,
+                    AlwaysCheckStatus:=True),
+                    New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDVSStd97cmdidCopy, AddressOf MenuCopy, AddressOf MenuCopyEnabledHandler,
+                    AlwaysCheckStatus:=True),
+                    New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDVSStd97cmdidPaste, AddressOf MenuPaste, AddressOf MenuPasteEnabledHandler,
+                    AlwaysCheckStatus:=True),
+                    New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDVSStd97cmdidRemove, AddressOf MenuRemove, AddressOf MenuRemoveEnabledHandler,
                     CommandVisibleHandler:=AddressOf MenuRemoveVisibleHandler,
-                    AlwaysCheckStatus:=True))
-                _menuCommands.Add(New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDCOMMONRemoveRow, AddressOf MenuRemoveRow, AddressOf MenuRemoveRowEnabledHandler,
-                    AlwaysCheckStatus:=True))
-                _menuCommands.Add(New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDVSStd97cmdidRename, AddressOf MenuRename, AddressOf MenuRenameEnabledHandler,
-                    AlwaysCheckStatus:=True))
-                _menuCommands.Add(New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDVSStd97cmdidEditLabel, AddressOf MenuEditLabel, AddressOf MenuEditLabelEnabledHandler,
-                    AlwaysCheckStatus:=True))
+                    AlwaysCheckStatus:=True),
+                    New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDCOMMONRemoveRow, AddressOf MenuRemoveRow, AddressOf MenuRemoveRowEnabledHandler,
+                    AlwaysCheckStatus:=True),
+                    New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDVSStd97cmdidRename, AddressOf MenuRename, AddressOf MenuRenameEnabledHandler,
+                    AlwaysCheckStatus:=True),
+                    New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDVSStd97cmdidEditLabel, AddressOf MenuEditLabel, AddressOf MenuEditLabelEnabledHandler,
+                    AlwaysCheckStatus:=True),
+                    New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDVSStd97cmdidSelectAll, AddressOf MenuSelectAll, AddressOf MenuSelectAllEnableHandler)
+                }
 
-                'Select All
-                _menuCommands.Add(New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDVSStd97cmdidSelectAll, AddressOf MenuSelectAll, AddressOf MenuSelectAllEnableHandler))
-
-                'Add menu items
+                    'Add menu items
                 If isEditingResWFile Then
                     ' Only 'Add Default Resource' is allowed resw files
                     _menuCommands.Add(New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDRESXAddDefaultResource, AddressOf ButtonFixedAdd_Click, AddressOf MenuAddEnabledHandler))

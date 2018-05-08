@@ -1791,8 +1791,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                                 Dim group As Integer = FindControlGroup(returnControl)
                                 If delayValidationGroup < 0 Then
                                     delayValidationGroup = group
-                                    delayValidationQueue = New ArrayList()
-                                    delayValidationQueue.Add(_controlData)
+                                    delayValidationQueue = New ArrayList From {
+                                        _controlData
+                                    }
                                 ElseIf delayValidationGroup <> group Then
                                     delayValidationOK = False
                                 Else

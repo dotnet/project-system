@@ -1270,8 +1270,9 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                                     AndAlso Settings IsNot Nothing _
                                     AndAlso Settings.Site IsNot Nothing _
                                 Then
-                                    Dim files As New List(Of String)
-                                    files.Add(DesignerLoader.ProjectItem.ContainingProject.FullName)
+                                    Dim files As New List(Of String) From {
+                                        DesignerLoader.ProjectItem.ContainingProject.FullName
+                                    }
                                     If Not SourceCodeControlManager.QueryEditableFiles(Settings.Site, files, False, False) Then
                                         e.Cancel = True
                                     End If
@@ -1558,19 +1559,18 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
             InThisMethod = True
             Try
-                _menuCommands = New ArrayList
-                _menuCommands.Add(New DesignerMenuCommand(Designer, Constants.MenuConstants.CommandIDCOMMONEditCell, AddressOf MenuEditCell, AddressOf MenuEditCellEnableHandler,
-                    AlwaysCheckStatus:=True))
-                _menuCommands.Add(New DesignerMenuCommand(Designer, Constants.MenuConstants.CommandIDCOMMONAddRow, AddressOf MenuAddSetting, AddressOf MenuAddSettingEnableHandler, CommandText:=My.Resources.Designer.SD_MNU_AddSettingText))
-                _menuCommands.Add(New DesignerMenuCommand(Designer, Constants.MenuConstants.CommandIDCOMMONRemoveRow, AddressOf MenuRemove, AddressOf MenuRemoveEnableHandler,
-                    AlwaysCheckStatus:=True, CommandText:=My.Resources.Designer.SD_MNU_RemoveSettingText))
-
-                _menuCommands.Add(New DesignerMenuCommand(Designer, Constants.MenuConstants.CommandIDSettingsDesignerViewCode, AddressOf MenuViewCode, AddressOf MenuViewCodeEnableHandler))
-                _menuCommands.Add(New DesignerMenuCommand(Designer, Constants.MenuConstants.CommandIDSettingsDesignerSynchronize, AddressOf MenuSynchronizeUserConfig, AddressOf MenuSynchronizeUserConfigEnableHandler))
-                _menuCommands.Add(New DesignerMenuCommand(Designer, Constants.MenuConstants.CommandIDSettingsDesignerLoadWebSettings, AddressOf MenuLoadWebSettingsFromAppConfig, AddressOf MenuLoadWebSettingsFromAppConfigEnableHandler, AlwaysCheckStatus:=True))
-                _menuCommands.Add(New DesignerMenuCommand(Designer, Constants.MenuConstants.CommandIDVSStd2kECMD_CANCEL, AddressOf MenuCancelEdit, AddressOf MenuCancelEditEnableHandler))
-
-                _menuCommands.Add(New DesignerMenuCommand(Designer, Constants.MenuConstants.CommandIDVSStd97cmdidViewCode, AddressOf MenuViewCode, AddressOf MenuViewCodeEnableHandler))
+                _menuCommands = New ArrayList From {
+                    New DesignerMenuCommand(Designer, Constants.MenuConstants.CommandIDCOMMONEditCell, AddressOf MenuEditCell, AddressOf MenuEditCellEnableHandler,
+                    AlwaysCheckStatus:=True),
+                    New DesignerMenuCommand(Designer, Constants.MenuConstants.CommandIDCOMMONAddRow, AddressOf MenuAddSetting, AddressOf MenuAddSettingEnableHandler, CommandText:=My.Resources.Designer.SD_MNU_AddSettingText),
+                    New DesignerMenuCommand(Designer, Constants.MenuConstants.CommandIDCOMMONRemoveRow, AddressOf MenuRemove, AddressOf MenuRemoveEnableHandler,
+                    AlwaysCheckStatus:=True, CommandText:=My.Resources.Designer.SD_MNU_RemoveSettingText),
+                    New DesignerMenuCommand(Designer, Constants.MenuConstants.CommandIDSettingsDesignerViewCode, AddressOf MenuViewCode, AddressOf MenuViewCodeEnableHandler),
+                    New DesignerMenuCommand(Designer, Constants.MenuConstants.CommandIDSettingsDesignerSynchronize, AddressOf MenuSynchronizeUserConfig, AddressOf MenuSynchronizeUserConfigEnableHandler),
+                    New DesignerMenuCommand(Designer, Constants.MenuConstants.CommandIDSettingsDesignerLoadWebSettings, AddressOf MenuLoadWebSettingsFromAppConfig, AddressOf MenuLoadWebSettingsFromAppConfigEnableHandler, AlwaysCheckStatus:=True),
+                    New DesignerMenuCommand(Designer, Constants.MenuConstants.CommandIDVSStd2kECMD_CANCEL, AddressOf MenuCancelEdit, AddressOf MenuCancelEditEnableHandler),
+                    New DesignerMenuCommand(Designer, Constants.MenuConstants.CommandIDVSStd97cmdidViewCode, AddressOf MenuViewCode, AddressOf MenuViewCodeEnableHandler)
+                }
                 'Delete
                 '
                 'We don't actually have a Delete command (the AddressOf MenuRemove is a dummy, since DesignerMenuCommand wants something

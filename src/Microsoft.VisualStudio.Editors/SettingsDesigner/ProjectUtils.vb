@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports Microsoft.VisualStudio.Shell.Interop
 Imports System.CodeDom
@@ -680,10 +680,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
 
             ' Generate a series of statements to add to the constructor
             Dim thisExpr As New CodeThisReferenceExpression()
-            Dim stmts As New CodeStatementCollection()
-            stmts.Add(New CodeCommentStatement(My.Resources.Designer.SD_CODEGENCMT_HOWTO_ATTACHEVTS))
-            stmts.Add(New CodeAttachEventStatement(thisExpr, SettingChangingEventName, New CodeMethodReferenceExpression(thisExpr, SettingChangingEventHandlerName)))
-            stmts.Add(New CodeAttachEventStatement(thisExpr, SettingsSavingEventName, New CodeMethodReferenceExpression(thisExpr, SettingsSavingEventHandlerName)))
+            Dim stmts As New CodeStatementCollection From {
+                New CodeCommentStatement(My.Resources.Designer.SD_CODEGENCMT_HOWTO_ATTACHEVTS),
+                New CodeAttachEventStatement(thisExpr, SettingChangingEventName, New CodeMethodReferenceExpression(thisExpr, SettingChangingEventHandlerName)),
+                New CodeAttachEventStatement(thisExpr, SettingsSavingEventName, New CodeMethodReferenceExpression(thisExpr, SettingsSavingEventHandlerName))
+            }
 
             For Each stmt As CodeStatement In stmts
                 constr.Statements.Add(CommentStatement(stmt, generator, True))
