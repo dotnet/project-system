@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.ComponentModel.Design
 Imports Microsoft.VisualStudio.Shell.Interop
@@ -24,7 +24,7 @@ Namespace Microsoft.VisualStudio.Editors
     Public Class VBPackageUtils
 
         Private Shared s_editorsPackage As IVBPackage
-        Public Delegate Function getServiceDelegate(ServiceType As Type) As Object
+        Public Delegate Function GetServiceDelegate(ServiceType As Type) As Object
         ''' <summary>
         ''' 
         ''' </summary>
@@ -32,7 +32,7 @@ Namespace Microsoft.VisualStudio.Editors
         ''' <value></value>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Shared ReadOnly Property PackageInstance(GetService As getServiceDelegate) As IVBPackage
+        Public Shared ReadOnly Property PackageInstance(GetService As GetServiceDelegate) As IVBPackage
             Get
                 If s_editorsPackage Is Nothing Then
                     Dim shell As IVsShell = DirectCast(GetService(GetType(IVsShell)), IVsShell)
