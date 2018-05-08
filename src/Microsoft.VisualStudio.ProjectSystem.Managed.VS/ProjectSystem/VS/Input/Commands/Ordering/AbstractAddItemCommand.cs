@@ -2,6 +2,7 @@
 
 using System;
 using System.Threading.Tasks;
+using Microsoft.Build.Evaluation;
 using Microsoft.VisualStudio.ProjectSystem.Input;
 using Microsoft.VisualStudio.Shell;
 using Task = System.Threading.Tasks.Task;
@@ -14,25 +15,33 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         private readonly IUnconfiguredProjectVsServices _projectVsServices;
         private readonly SVsServiceProvider _serviceProvider;
         private readonly OrderAddItemHintReceiver _orderAddItemHintReceiver;
+        private readonly ConfiguredProject _configuredProject;
+        private readonly IProjectAccessor _accessor;
 
         public AbstractAddItemCommand(
             IPhysicalProjectTree projectTree, 
             IUnconfiguredProjectVsServices projectVsServices, 
             SVsServiceProvider serviceProvider,
-            OrderAddItemHintReceiver orderAddItemHintReceiver)
+            OrderAddItemHintReceiver orderAddItemHintReceiver,
+            ConfiguredProject configuredProject, 
+            IProjectAccessor accessor)
         {
             Requires.NotNull(projectTree, nameof(projectTree));
             Requires.NotNull(projectVsServices, nameof(projectVsServices));
             Requires.NotNull(serviceProvider, nameof(serviceProvider));
             Requires.NotNull(orderAddItemHintReceiver, nameof(orderAddItemHintReceiver));
+            Requires.NotNull(configuredProject, nameof(configuredProject));
+            Requires.NotNull(accessor, nameof(_accessor));
 
             _projectTree = projectTree;
             _projectVsServices = projectVsServices;
             _serviceProvider = serviceProvider;
             _orderAddItemHintReceiver = orderAddItemHintReceiver;
+            _configuredProject = configuredProject;
+            _accessor = accessor;
         }
 
-        protected abstract bool CanAdd(IProjectTree target);
+        protected abstract bool CanAdd(Project project, IProjectTree target);
 
         protected abstract Task OnAddingNodesAsync(IProjectTree nodeToAddTo);
 
@@ -46,15 +55,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
             return HACK_AddItemHelper.ShowAddExistingFilesDialogAsync(_projectTree, _projectVsServices, _serviceProvider, target);
         }
 
-        protected override Task<CommandStatusResult> GetCommandStatusAsync(IProjectTree node, bool focused, string commandText, CommandStatus progressiveStatus)
+        protected override async Task<CommandStatusResult> GetCommandStatusAsync(IProjectTree node, bool focused, string commandText, CommandStatus progressiveStatus)
         {
-            if (_projectTree.NodeCanHaveAdditions(GetNodeToAddTo(node)) && CanAdd(node))
+            var canAdd = false;
+
+            await _accessor.OpenProjectForWriteAsync(_configuredProject, project => canAdd = CanAdd(project, node)).ConfigureAwait(false);
+
+            if (_projectTree.NodeCanHaveAdditions(GetNodeToAddTo(node)) && canAdd)
             {
-                return GetCommandStatusResult.Handled(commandText, CommandStatus.Enabled);
+                return await GetCommandStatusResult.Handled(commandText, CommandStatus.Enabled).ConfigureAwait(false);
             }
             else
             {
-                return GetCommandStatusResult.Unhandled;
+                return await GetCommandStatusResult.Unhandled.ConfigureAwait(false);
             }
         }
 

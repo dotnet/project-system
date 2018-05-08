@@ -10,26 +10,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
 {
     [ProjectCommand(ManagedProjectSystemPackage.ManagedProjectSystemOrderCommandSet, ManagedProjectSystemPackage.AddNewItemAboveCmdId)]
     [AppliesTo(ProjectCapability.SortByDisplayOrder)]
-    internal class AddNewItemAboveCommand : AbstractAddItemCommand
+    internal class AddNewItemAboveCommand : AbstractAddItemAboveBelowCommand
     {
         [ImportingConstructor]
         public AddNewItemAboveCommand(
             IPhysicalProjectTree projectTree,
             IUnconfiguredProjectVsServices projectVsServices,
             SVsServiceProvider serviceProvider,
-            OrderAddItemHintReceiver orderAddItemHintReceiver) :
-            base(projectTree, projectVsServices, serviceProvider, orderAddItemHintReceiver)
+            OrderAddItemHintReceiver orderAddItemHintReceiver,
+            ConfiguredProject configuredProject,
+            IProjectAccessor accessor) :
+            base(projectTree, projectVsServices, serviceProvider, orderAddItemHintReceiver, configuredProject, accessor)
         {
         }
 
         protected override Task OnAddingNodesAsync(IProjectTree nodeToAddTo)
         {
             return ShowAddNewFileDialogAsync(nodeToAddTo);
-        }
-
-        protected override bool CanAdd(IProjectTree target)
-        {
-            return OrderingHelper.HasValidDisplayOrder(target);
         }
 
         protected override OrderingMoveAction Action => OrderingMoveAction.MoveAbove;

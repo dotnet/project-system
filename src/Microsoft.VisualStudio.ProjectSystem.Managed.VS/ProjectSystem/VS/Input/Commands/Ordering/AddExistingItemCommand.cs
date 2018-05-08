@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.ComponentModel.Composition;
+using Microsoft.Build.Evaluation;
 using Microsoft.VisualStudio.Input;
 using Microsoft.VisualStudio.ProjectSystem.Input;
 using Microsoft.VisualStudio.Shell;
@@ -17,9 +18,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         public AddExistingItemCommand(
             IPhysicalProjectTree projectTree, 
             IUnconfiguredProjectVsServices projectVsServices, 
-            SVsServiceProvider serviceProvider, 
-            OrderAddItemHintReceiver orderAddItemHintReceiver) : 
-            base(projectTree, projectVsServices, serviceProvider, orderAddItemHintReceiver)
+            SVsServiceProvider serviceProvider,
+            OrderAddItemHintReceiver orderAddItemHintReceiver,
+            ConfiguredProject configuredProject,
+            IProjectAccessor accessor) :
+            base(projectTree, projectVsServices, serviceProvider, orderAddItemHintReceiver, configuredProject, accessor)
         {
         }
 
@@ -28,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
             return ShowAddExistingFilesDialogAsync(nodeToAddTo);
         }
 
-        protected override bool CanAdd(IProjectTree target)
+        protected override bool CanAdd(Project project, IProjectTree target)
         {
             return true;
         }
