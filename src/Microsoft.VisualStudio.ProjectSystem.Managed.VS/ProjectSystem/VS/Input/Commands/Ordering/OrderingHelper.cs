@@ -88,7 +88,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         {
             Requires.NotNull(projectTree, nameof(projectTree));
 
-            return GetSiblingByMoveAction(project, projectTree, MoveAction.Above) != null;
+            return TryGetSiblingByMoveAction(project, projectTree, MoveAction.Above) != null;
         }
 
         /// <summary>
@@ -109,7 +109,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         {
             Requires.NotNull(projectTree, nameof(projectTree));
 
-            return GetSiblingByMoveAction(project, projectTree, MoveAction.Below) != null;
+            return TryGetSiblingByMoveAction(project, projectTree, MoveAction.Below) != null;
         }
 
         /// <summary>
@@ -339,7 +339,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         /// <summary>
         /// Gets a sibling of the given project tree based on the move action. Can return null.
         /// </summary>
-        private static IProjectTree GetSiblingByMoveAction(Project project, IProjectTree projectTree, MoveAction moveAction)
+        private static IProjectTree TryGetSiblingByMoveAction(Project project, IProjectTree projectTree, MoveAction moveAction)
         {
             switch (moveAction)
             {
@@ -469,7 +469,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         private static bool TryMove(Project project, IProjectTree projectTree, MoveAction moveAction)
         {
             // Determine what sibling we want to look at based on if we are moving up or down.
-            var sibling = GetSiblingByMoveAction(project, projectTree, moveAction);
+            var sibling = TryGetSiblingByMoveAction(project, projectTree, moveAction);
+            if (sibling == null)
+            {
+                return false;
+            }
             return TryMove(project, projectTree, sibling, moveAction);
         }
 
