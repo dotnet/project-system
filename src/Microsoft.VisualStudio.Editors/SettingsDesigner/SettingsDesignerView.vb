@@ -166,14 +166,15 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             _settingsGridView.Columns(ScopeColumnNo).HeaderText = My.Resources.Designer.SD_GridViewScopeColumnHeaderText
             _settingsGridView.Columns(ScopeColumnNo).CellTemplate = New DesignerDataGridView.EditOnClickDataGridViewComboBoxCell()
 
-            Dim TypeEditorCol As New DataGridViewUITypeEditorColumn
-            TypeEditorCol.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
-            TypeEditorCol.FillWeight = 100.0!
-            TypeEditorCol.HeaderText = My.Resources.Designer.SD_GridViewValueColumnHeaderText
-            TypeEditorCol.MinimumWidth = DpiHelper.LogicalToDeviceUnitsX(SystemInformation.VerticalScrollBarWidth + 2) ' Add 2 for left/right borders...
-            TypeEditorCol.Resizable = DataGridViewTriState.True
-            TypeEditorCol.SortMode = DataGridViewColumnSortMode.Automatic
-            TypeEditorCol.Width = DpiHelper.LogicalToDeviceUnitsX(200)
+            Dim TypeEditorCol As New DataGridViewUITypeEditorColumn With {
+                .AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
+                .FillWeight = 100.0!,
+                .HeaderText = My.Resources.Designer.SD_GridViewValueColumnHeaderText,
+                .MinimumWidth = DpiHelper.LogicalToDeviceUnitsX(SystemInformation.VerticalScrollBarWidth + 2), ' Add 2 for left/right borders...
+                .Resizable = DataGridViewTriState.True,
+                .SortMode = DataGridViewColumnSortMode.Automatic,
+                .Width = DpiHelper.LogicalToDeviceUnitsX(200)
+            }
             _settingsGridView.Columns.Add(TypeEditorCol)
 
 
@@ -187,9 +188,10 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             SetLinkLabelText()
 
             _settingsGridView.ColumnHeadersHeight = _settingsGridView.Rows(0).GetPreferredHeight(0, DataGridViewAutoSizeRowMode.AllCells, False)
-            _toolbarPanel = New DesignerToolbarPanel
-            _toolbarPanel.Name = "ToolbarPanel"
-            _toolbarPanel.Text = "ToolbarPanel"
+            _toolbarPanel = New DesignerToolbarPanel With {
+                .Name = "ToolbarPanel",
+                .Text = "ToolbarPanel"
+            }
             _settingsTableLayoutPanel.Controls.Add(_toolbarPanel, 0, 0)
             _settingsTableLayoutPanel.ResumeLayout()
             ResumeLayout()

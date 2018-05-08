@@ -3164,8 +3164,9 @@ NextControl:
 
             Dim Dialog As PropPageHostDialog = GetPropPageHostDialog(Page)
             If Dialog Is Nothing Then
-                Dialog = New PropPageHostDialog(ServiceProvider, F1Keyword)
-                Dialog.PropPage = Page
+                Dialog = New PropPageHostDialog(ServiceProvider, F1Keyword) With {
+                    .PropPage = Page
+                }
             End If
 
             Dialog.Text = Title

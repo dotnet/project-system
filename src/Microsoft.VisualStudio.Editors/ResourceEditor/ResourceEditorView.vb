@@ -821,11 +821,12 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     AlwaysCheckStatus:=True))
 
                 'Edit cell -- leave it here because of VB profile...
-                Dim EditCellCommand As DesignerMenuCommand = New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDCOMMONEditCell, AddressOf MenuEditLabel)
                 'We don't actually want "Edit" to be visible in the menus.  We simply want to be able to have something to bind the F2 key to
                 '  so that pressing F2 in the string table starts editing (the shell seems to steal this key from the grid).  So make it
                 '  invisible
-                EditCellCommand.Visible = False
+                Dim EditCellCommand As DesignerMenuCommand = New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDCOMMONEditCell, AddressOf MenuEditLabel) With {
+                    .Visible = False
+                }
                 _menuCommands.Add(EditCellCommand)
 
                 _menuCommands.Add(New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDRESXGenericRemove, AddressOf MenuGenericRemove, AddressOf MenuGenericRemoveEnabledHandler,
@@ -865,9 +866,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Category.Display.StringTable,
                 New DesignerMenuCommand(Nothing, Constants.MenuConstants.CommandIDRESXResTypeStrings, AddressOf MenuResourceTypeStrings),
                 AddressOf ButtonAdd_NewString_Click,
-                ResourceTypeEditors.String
-                )
-            _categoryStrings.AllowNewEntriesInStringTable = True
+                ResourceTypeEditors.String) With {
+                .AllowNewEntriesInStringTable = True
+                }
             _categories.Add(_categoryStrings)
 
             _categoryImages = New Category(
@@ -875,9 +876,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Category.Display.ListView,
                 New DesignerMenuCommand(Nothing, Constants.MenuConstants.CommandIDRESXResTypeImages, AddressOf MenuResourceTypeImages),
                 AddressOf ButtonAdd_NewImage_BMP_Click,
-                ResourceTypeEditors.Bitmap
-                )
-            _categoryImages.ResourceView = ResourceListView.ResourceView.Thumbnail
+                ResourceTypeEditors.Bitmap) With {
+                .ResourceView = ResourceListView.ResourceView.Thumbnail
+                }
             _categories.Add(_categoryImages)
 
             If PropertyPages.VSProductSKU.IsExpress() Then
@@ -905,8 +906,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Category.Display.ListView,
                 New DesignerMenuCommand(Nothing, Constants.MenuConstants.CommandIDRESXResTypeAudio, AddressOf MenuResourceTypeAudio),
                 AddressOf ButtonAdd_ExistingFile_Click,
-                ResourceTypeEditors.Audio)
-            _categoryAudio.ResourceView = ResourceListView.ResourceView.Thumbnail
+                ResourceTypeEditors.Audio) With {
+                .ResourceView = ResourceListView.ResourceView.Thumbnail
+                }
             _categories.Add(_categoryAudio)
 
             _categoryFiles = New Category(
@@ -915,8 +917,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 New DesignerMenuCommand(Nothing, Constants.MenuConstants.CommandIDRESXResTypeFiles, AddressOf MenuResourceTypeFiles),
                 AddressOf ButtonAdd_ExistingFile_Click,
                 ResourceTypeEditors.TextFile,
-                ResourceTypeEditors.BinaryFile)
-            _categoryFiles.ResourceView = ResourceListView.ResourceView.Thumbnail
+                ResourceTypeEditors.BinaryFile) With {
+                .ResourceView = ResourceListView.ResourceView.Thumbnail
+                }
             _categories.Add(_categoryFiles)
 
             _categoryOther = New Category(
@@ -926,8 +929,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Nothing,
                 ResourceTypeEditors.NonStringConvertible,
                 ResourceTypeEditors.StringConvertible,
-                ResourceTypeEditors.Nothing)
-            _categoryOther.ShowTypeColumnInStringTable = True
+                ResourceTypeEditors.Nothing) With {
+                .ShowTypeColumnInStringTable = True
+                }
             _categories.Add(_categoryOther)
         End Sub
 

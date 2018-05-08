@@ -334,10 +334,10 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
                     End If
                 End If
 
-                Dim ExtendingType As New CodeTypeDeclaration(cc2.Name)
-
-                ExtendingType.TypeAttributes = CodeModelToCodeDomTypeAttributes(cc2)
-                ExtendingType.IsPartial = True
+                Dim ExtendingType As New CodeTypeDeclaration(cc2.Name) With {
+                    .TypeAttributes = CodeModelToCodeDomTypeAttributes(cc2),
+                    .IsPartial = True
+                }
 
                 ExtendingType.Comments.Add(New CodeCommentStatement(My.Resources.Designer.SD_CODEGENCMT_COMMON1))
                 ExtendingType.Comments.Add(New CodeCommentStatement(My.Resources.Designer.SD_CODEGENCMT_COMMON2))
@@ -675,8 +675,9 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
             Const SettingsSavingEventHandlerName As String = "SettingsSavingEventHandler"
 
             ' Add constructor
-            Dim constr As New CodeConstructor()
-            constr.Attributes = MemberAttributes.Public
+            Dim constr As New CodeConstructor With {
+                .Attributes = MemberAttributes.Public
+            }
 
             ' Generate a series of statements to add to the constructor
             Dim thisExpr As New CodeThisReferenceExpression()
@@ -692,16 +693,18 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
 
             ' Add stubs for settingschanging/settingssaving event handlers
             Dim senderParam As New CodeParameterDeclarationExpression(GetType(Object), "sender")
-            Dim changingStub As New CodeMemberMethod()
-            changingStub.Name = SettingChangingEventHandlerName
-            changingStub.ReturnType = Nothing
+            Dim changingStub As New CodeMemberMethod With {
+                .Name = SettingChangingEventHandlerName,
+                .ReturnType = Nothing
+            }
             changingStub.Parameters.Add(senderParam)
             changingStub.Parameters.Add(New CodeParameterDeclarationExpression(GetType(Configuration.SettingChangingEventArgs), "e"))
             changingStub.Statements.Add(New CodeCommentStatement(My.Resources.Designer.SD_CODEGENCMT_HANDLE_CHANGING))
 
-            Dim savingStub As New CodeMemberMethod()
-            savingStub.Name = SettingsSavingEventHandlerName
-            savingStub.ReturnType = Nothing
+            Dim savingStub As New CodeMemberMethod With {
+                .Name = SettingsSavingEventHandlerName,
+                .ReturnType = Nothing
+            }
             savingStub.Parameters.Add(senderParam)
             savingStub.Parameters.Add(New CodeParameterDeclarationExpression(GetType(ComponentModel.CancelEventArgs), "e"))
             savingStub.Statements.Add(New CodeCommentStatement(My.Resources.Designer.SD_CODEGENCMT_HANDLE_SAVING))
