@@ -55,6 +55,14 @@
   </PropertyGroup>
 
   <!-- Project Capabilities -->
+
+  <!-- Capabilities shared between shared projects & binary-producing projects.  -->
+  <ItemGroup>
+    <ProjectCapability Include=".NET" />
+  </ItemGroup>
+
+  <!-- Capabilities for binary producing projects -->
+  
   <ItemGroup Condition="'$(DefineCommonManagedCapabilities)' == 'true'">
     <ProjectCapability Include="UseFileGlobs"/>
 
