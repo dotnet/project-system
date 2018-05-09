@@ -24,7 +24,9 @@ Namespace Microsoft.VisualStudio.Editors
     Public Class VBPackageUtils
 
         Private Shared s_editorsPackage As IVBPackage
-        Public Delegate Function GetServiceDelegate(ServiceType As Type) As Object
+#Disable Warning IDE1006 ' Naming Styles (Compat)
+        Public Delegate Function getServiceDelegate(ServiceType As Type) As Object
+#Enable Warning IDE1006 ' Naming Styles
         ''' <summary>
         ''' 
         ''' </summary>
@@ -32,7 +34,7 @@ Namespace Microsoft.VisualStudio.Editors
         ''' <value></value>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Shared ReadOnly Property PackageInstance(GetService As GetServiceDelegate) As IVBPackage
+        Public Shared ReadOnly Property PackageInstance(GetService As getServiceDelegate) As IVBPackage
             Get
                 If s_editorsPackage Is Nothing Then
                     Dim shell As IVsShell = DirectCast(GetService(GetType(IVsShell)), IVsShell)
