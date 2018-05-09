@@ -216,7 +216,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
         Private WithEvents _projectService As MyExtensibilityProjectService = Nothing
-        Private _comparer As ListViewComparer
+        Private ReadOnly _comparer As ListViewComparer
 #End If
 
 #Region "Windows Form Designer generated code"
