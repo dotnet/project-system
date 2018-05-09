@@ -4177,19 +4177,19 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 ' If we can't check out the resource file, do not pop up any dialog...
                 RootDesigner.DesignerLoader.ManualCheckOut()
 
-                Dim resxItemId As UInteger = GetVsItemId()
+                Dim resourcePathAndName As String = RootDesigner.GetResXFileNameAndPath()
                 Dim projectGuid As Guid = VBPackage.Instance.ProjectGUID(GetVsHierarchy())
                 Dim addExistingFilePath As String = String.Empty
-                Dim resxDictionary As Dictionary(Of UInteger, String) = Nothing
+                Dim resxDictionary As Dictionary(Of String, String) = Nothing
 
                 If VBPackage.Instance.StickyProjectResourcePaths.TryGetValue(projectGuid, resxDictionary) Then
-                    If Not resxDictionary.TryGetValue(resxItemId, addExistingFilePath) Then
+                    If Not resxDictionary.TryGetValue(resourcePathAndName, addExistingFilePath) Then
                         addExistingFilePath = ResourceFile.BasePath
                     End If
                 Else
                     addExistingFilePath = ResourceFile.BasePath
-                    resxDictionary = New Dictionary(Of UInteger, String)
-                    resxDictionary.Item(resxItemId) = addExistingFilePath
+                    resxDictionary = New Dictionary(Of String, String)
+                    resxDictionary.Item(resourcePathAndName) = addExistingFilePath
                     VBPackage.Instance.StickyProjectResourcePaths.Item(projectGuid) = resxDictionary
                 End If
 
@@ -4201,7 +4201,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 End If
 
                 ' BUGFIX: Dev11#35824: Save the directory where the user add existing resource file for the next time.
-                resxDictionary.Item(resxItemId) = Path.GetDirectoryName(CType(FilesToAdd(0), String))
+                resxDictionary.Item(resourcePathAndName) = Path.GetDirectoryName(CType(FilesToAdd(0), String))
 
                 '... and them them as resources.
                 'NOTE: we update the existing item as bug 382459 said.

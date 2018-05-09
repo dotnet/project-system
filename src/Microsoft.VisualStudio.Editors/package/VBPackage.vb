@@ -46,9 +46,9 @@ Namespace Microsoft.VisualStudio.Editors
         Private _lastViewedProjectDesignerTab As Dictionary(Of Guid, Byte)
 
         'Resource File Sticky Paths per project
-        Private _stickyProjectResourcePaths As Dictionary(Of Guid, Dictionary(Of UInteger, String))
+        Private _stickyProjectResourcePaths As Dictionary(Of Guid, Dictionary(Of String, String))
 
-        Public ReadOnly Property StickyProjectResourcePaths() As Dictionary(Of Guid, Dictionary(Of UInteger, String))
+        Public ReadOnly Property StickyProjectResourcePaths() As Dictionary(Of Guid, Dictionary(Of String, String))
             Get
                 Return _stickyProjectResourcePaths
             End Get
@@ -59,7 +59,7 @@ Namespace Microsoft.VisualStudio.Editors
         ''' </summary>
         ''' <remarks></remarks>
         Public Sub New()
-            _stickyProjectResourcePaths = New Dictionary(Of Guid, Dictionary(Of UInteger, String))
+            _stickyProjectResourcePaths = New Dictionary(Of Guid, Dictionary(Of String, String))
 
             ' Make sure we persist this 
             AddOptionKey(s_projectDesignerSUOKey)
