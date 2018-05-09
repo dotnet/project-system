@@ -253,7 +253,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 End Select
 
                 If processedDelayRefreshMessage Then
-                    Internal.Performance.CodeMarkers.Instance.CodeMarker(Internal.Performance.RoslynCodeMarkerEvent.perfMSVSEditorsReferencePagePostponedUIRefreshDone)
+                    Internal.Performance.CodeMarkers.Instance.CodeMarker(Internal.Performance.RoslynCodeMarkerEvent.PerfMSVSEditorsReferencePagePostponedUIRefreshDone)
                 End If
             Catch ex As COMException
                 ' The message pump in the background compiler could process our pending message, and when the compiler is running, we would get E_PENDING failure
@@ -358,8 +358,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             Dim lvi As ListViewItem
 
-            lvi = New ListViewItem(webRef.Name)
-            lvi.Tag = refObject
+            lvi = New ListViewItem(webRef.Name) With {
+                .Tag = refObject
+            }
 
             lvi.SubItems.Add("WEB") 'Type
             lvi.SubItems.Add("") ' Version
@@ -382,8 +383,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             Dim lvi As ListViewItem
 
-            lvi = New ListViewItem(serviceReference.[Namespace])
-            lvi.Tag = serviceReference
+            lvi = New ListViewItem(serviceReference.[Namespace]) With {
+                .Tag = serviceReference
+            }
 
             lvi.SubItems.Add("SERVICE") 'Type
             lvi.SubItems.Add("") ' Version
@@ -1124,7 +1126,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         PopulateReferenceList()
                         PopulateImportsList(True)
 
-                        Internal.Performance.CodeMarkers.Instance.CodeMarker(Internal.Performance.RoslynCodeMarkerEvent.perfMSVSEditorsReferencePageWCFAdded)
+                        Internal.Performance.CodeMarkers.Instance.CodeMarker(Internal.Performance.RoslynCodeMarkerEvent.PerfMSVSEditorsReferencePageWCFAdded)
                     End If
                 Catch ex As Exception When ReportWithoutCrash(ex, NameOf(serviceReferenceToolStripMenuItem_Click), NameOf(ReferencePropPage))
                     If Not IsCheckoutCanceledException(ex) Then

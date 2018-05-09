@@ -275,10 +275,10 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             Dim xmlDocument As New XmlDocument()
             Try
                 fileStream = New FileStream(_settingsFilePath, FileMode.Open, FileAccess.Read, FileShare.Read)
-                xmlReader = New XmlTextReader(fileStream)
-
                 ' Required by Fxcop rule CA3054 - DoNotAllowDTDXmlTextReader
-                xmlReader.DtdProcessing = DtdProcessing.Prohibit
+                xmlReader = New XmlTextReader(fileStream) With {
+                    .DtdProcessing = DtdProcessing.Prohibit
+                }
                 While Not xmlReader.EOF
                     Dim xmlNode As XmlNode = xmlDocument.ReadNode(xmlReader)
                     xmlDocument.AppendChild(xmlNode)
@@ -329,10 +329,10 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             Dim xmlWriter As XmlTextWriter = Nothing
             Try
                 fileStream = New FileStream(_settingsFilePath, FileMode.Create, FileAccess.Write, FileShare.None)
-                xmlWriter = New XmlTextWriter(fileStream, Encoding.UTF8)
-
-                xmlWriter.Formatting = Formatting.Indented
-                xmlWriter.Indentation = 2
+                xmlWriter = New XmlTextWriter(fileStream, Encoding.UTF8) With {
+                    .Formatting = Formatting.Indented,
+                    .Indentation = 2
+                }
 
                 xmlWriter.WriteStartDocument()
                 xmlWriter.WriteStartElement(MY_EXTENSIONS_ELEMENT, MY_EXTENSIONS_ELEMENT_NAMESPACE)

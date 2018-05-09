@@ -454,8 +454,9 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             SetDialogFont()
 
             Dim menuCommands As New ArrayList()
-            Dim cutCmd As New DesignerMenuCommand(_rootDesigner, Constants.MenuConstants.CommandIDVSStd97cmdidCut, AddressOf DisabledMenuCommandHandler)
-            cutCmd.Enabled = False
+            Dim cutCmd As New DesignerMenuCommand(_rootDesigner, Constants.MenuConstants.CommandIDVSStd97cmdidCut, AddressOf DisabledMenuCommandHandler) With {
+                .Enabled = False
+            }
             menuCommands.Add(cutCmd)
 
             _rootDesigner.RegisterMenuCommands(menuCommands)

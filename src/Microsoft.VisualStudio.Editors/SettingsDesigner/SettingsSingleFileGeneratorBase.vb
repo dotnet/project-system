@@ -279,11 +279,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             ' Create the strongly typed settings class
             ' VsWhidbey 234144, Make sure this is a valid class name
             '
-            generatedType = New CodeTypeDeclaration(SettingsDesigner.GeneratedClassName(Hierarchy, VSITEMID.NIL, Settings, FilePath))
-
             ' pick up the default visibility
             '
-            generatedType.TypeAttributes = GeneratedClassVisibility
+            generatedType = New CodeTypeDeclaration(SettingsDesigner.GeneratedClassName(Hierarchy, VSITEMID.NIL, Settings, FilePath)) With {
+                .TypeAttributes = GeneratedClassVisibility
+            }
 
             ' Set the base class
             '
@@ -389,12 +389,13 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             '
             '   Public Shared ReadOnly Property [Default]() As Settings
             '
-            Dim CodeProperty As New CodeMemberProperty
-            CodeProperty.Attributes = MemberAttributes.Public Or MemberAttributes.Static
-            CodeProperty.Name = DefaultInstancePropertyName
-            CodeProperty.Type = SettingsClassTypeReference
-            CodeProperty.HasGet = True
-            CodeProperty.HasSet = False
+            Dim CodeProperty As New CodeMemberProperty With {
+                .Attributes = MemberAttributes.Public Or MemberAttributes.Static,
+                .Name = DefaultInstancePropertyName,
+                .Type = SettingsClassTypeReference,
+                .HasGet = True,
+                .HasSet = False
+            }
 
             ' We should hook up the My.Application.Shutdown event if told to auto save the 
             ' settings (only applicable for the main settings file & only applicable for VB)
@@ -419,9 +420,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
                 ' Add the AddHandler call that hooks My.Application.Shutdown inside the default-instance getter
                 '
-                Dim AutoSaveSnippet As New CodeSnippetExpression()
-
-                AutoSaveSnippet.Value =
+                Dim AutoSaveSnippet As New CodeSnippetExpression With {
+                    .Value =
                     Environment.NewLine &
                     MyTypeWinFormsDefineConstant_If & Environment.NewLine &
                     "               If Not " & AddedHandlerFieldName & " Then" & Environment.NewLine &
@@ -433,6 +433,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                     "                    End SyncLock" & Environment.NewLine &
                     "                End If" & Environment.NewLine &
                     MyTypeWinFormsDefineConstant_EndIf
+                }
 
                 CodeProperty.GetStatements.Add(AutoSaveSnippet)
             End If
@@ -441,8 +442,9 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             '
             '   Return defaultInstance
             '
-            Dim ValueReference As New CodeFieldReferenceExpression()
-            ValueReference.FieldName = DefaultInstanceFieldName
+            Dim ValueReference As New CodeFieldReferenceExpression With {
+                .FieldName = DefaultInstanceFieldName
+            }
             CodeProperty.GetStatements.Add(New CodeMethodReturnStatement(ValueReference))
 
             ' And last, add the property to the class we're generating
@@ -458,13 +460,15 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         '@ <returns></returns>
         '@ <remarks></remarks>
         Private Shared Function CodeDomPropertyFromSettingInstance(TypeNameResolver As SettingTypeNameResolutionService, Instance As DesignTimeSettingInstance, IsDesignTime As Boolean, GenerateProgress As IVsGeneratorProgress) As CodeMemberProperty
-            Dim CodeProperty As New CodeMemberProperty
-            CodeProperty.Attributes = SettingsPropertyVisibility
-            CodeProperty.Name = Instance.Name
+            Dim CodeProperty As New CodeMemberProperty With {
+                .Attributes = SettingsPropertyVisibility,
+                .Name = Instance.Name
+            }
             Dim fxTypeName As String = TypeNameResolver.PersistedSettingTypeNameToFxTypeName(Instance.SettingTypeName)
 
-            CodeProperty.Type = New CodeTypeReference(fxTypeName)
-            CodeProperty.Type.Options = CodeTypeReferenceOptions.GlobalReference
+            CodeProperty.Type = New CodeTypeReference(fxTypeName) With {
+                .Options = CodeTypeReferenceOptions.GlobalReference
+            }
 
             CodeProperty.HasGet = True
             CodeProperty.GetStatements.AddRange(GenerateGetterStatements(Instance, CodeProperty.Type))
@@ -692,8 +696,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             '    Private Shared addedHandler As Boolean
             ' #End If
             '
-            Dim AutoSaveCode As New CodeSnippetTypeMember()
-            AutoSaveCode.Text =
+            Dim AutoSaveCode As New CodeSnippetTypeMember With {
+                .Text =
                 String.Format(HideAutoSaveRegionBegin, My.Resources.Designer.SD_SFG_AutoSaveRegionText) & Environment.NewLine &
                 MyTypeWinFormsDefineConstant_If & Environment.NewLine &
                 "    Private Shared " & AddedHandlerFieldName & " As Boolean" & Environment.NewLine &
@@ -708,6 +712,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 "    End Sub" & Environment.NewLine &
                 MyTypeWinFormsDefineConstant_EndIf & Environment.NewLine &
                 HideAutoSaveRegionEnd
+            }
 
             GeneratedType.Members.Add(AutoSaveCode)
 
@@ -717,13 +722,15 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
             ' Create a property named Settings
             '
-            Dim SettingProperty As New CodeMemberProperty
-            SettingProperty.Name = MySettingsPropertyName
-            SettingProperty.HasGet = True
-            SettingProperty.HasSet = False
+            Dim SettingProperty As New CodeMemberProperty With {
+                .Name = MySettingsPropertyName,
+                .HasGet = True,
+                .HasSet = False
+            }
 
-            Dim fullTypeReference As CodeTypeReference = New CodeTypeReference(GetFullTypeName(projectRootNamespace, defaultNamespace, GeneratedType.Name))
-            fullTypeReference.Options = CodeTypeReferenceOptions.GlobalReference
+            Dim fullTypeReference As CodeTypeReference = New CodeTypeReference(GetFullTypeName(projectRootNamespace, defaultNamespace, GeneratedType.Name)) With {
+                .Options = CodeTypeReferenceOptions.GlobalReference
+            }
             SettingProperty.Type = fullTypeReference
             SettingProperty.Attributes = MemberAttributes.Assembly Or MemberAttributes.Final
 
@@ -921,8 +928,9 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <returns></returns>
         ''' <remarks></remarks>
         Private Shared Function CreateGlobalCodeTypeReference(type As Type) As CodeTypeReference
-            Dim ctr As New CodeTypeReference(type)
-            ctr.Options = CodeTypeReferenceOptions.GlobalReference
+            Dim ctr As New CodeTypeReference(type) With {
+                .Options = CodeTypeReferenceOptions.GlobalReference
+            }
             Return ctr
         End Function
 

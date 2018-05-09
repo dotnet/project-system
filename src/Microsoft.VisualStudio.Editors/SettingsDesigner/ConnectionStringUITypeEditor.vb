@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.drawing.Design
 Imports Microsoft.VisualStudio.Data.Core
@@ -146,9 +146,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                     If (dataConnectionDialog.SaveSelection) Then
                         dataConnectionDialog.SaveSourceSelection()
                     End If
-                    Dim newValue As New SerializableConnectionString
-                    newValue.ProviderName = GetInvariantProviderNameFromGuid(providerMapper, dataConnectionDialog.SelectedProvider)
-                    newValue.ConnectionString = GetConnectionString(ServiceProvider, dataConnectionDialog, Not containedSensitiveData)
+
+                    Dim newValue As New SerializableConnectionString With {
+                        .ProviderName = GetInvariantProviderNameFromGuid(providerMapper, dataConnectionDialog.SelectedProvider),
+                        .ConnectionString = GetConnectionString(ServiceProvider, dataConnectionDialog, Not containedSensitiveData)
+                    }
                     If dteProj IsNot Nothing AndAlso connectionStringConverter IsNot Nothing Then
                         ' Go back to the runtime representation of the string...
                         newValue.ConnectionString = connectionStringConverter.ToRunTime(dteProj, newValue.ConnectionString, newValue.ProviderName)

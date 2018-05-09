@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.ComponentModel
 Imports System.Drawing
@@ -182,8 +182,9 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
             ' Draw the formatted value
             If formattedValue IsNot Nothing Then
-                Dim sf As New StringFormat
-                sf.LineAlignment = StringAlignment.Center
+                Dim sf As New StringFormat With {
+                    .LineAlignment = StringAlignment.Center
+                }
                 Using ForeColorBrush As New SolidBrush(DrawForeColor)
                     graphics.DrawString(formattedValue.ToString(), cellStyle.Font, ForeColorBrush, StringBounds, sf)
                 End Using

@@ -79,19 +79,23 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
                     'StartupObject must be kept at the end of the list because it depends on the initialization of "OutputType" values
                     Dim datalist As List(Of PropertyControlData) = New List(Of PropertyControlData)
-                    Dim data As PropertyControlData = New PropertyControlData(VsProjPropId.VBPROJPROPID_AssemblyName, "AssemblyName", AssemblyName, New Control() {AssemblyNameLabel})
-                    data.DisplayPropertyName = My.Resources.Designer.PPG_Property_AssemblyName
+                    Dim data As PropertyControlData = New PropertyControlData(VsProjPropId.VBPROJPROPID_AssemblyName, "AssemblyName", AssemblyName, New Control() {AssemblyNameLabel}) With {
+                        .DisplayPropertyName = My.Resources.Designer.PPG_Property_AssemblyName
+                    }
                     datalist.Add(data)
-                    data = New PropertyControlData(VsProjPropId.VBPROJPROPID_DefaultNamespace, Const_DefaultNamespace, RootNamespaceTextBox, New Control() {RootNamespaceLabel})
-                    data.DisplayPropertyName = My.Resources.Designer.PPG_Property_RootNamespace
+                    data = New PropertyControlData(VsProjPropId.VBPROJPROPID_DefaultNamespace, Const_DefaultNamespace, RootNamespaceTextBox, New Control() {RootNamespaceLabel}) With {
+                        .DisplayPropertyName = My.Resources.Designer.PPG_Property_RootNamespace
+                    }
                     datalist.Add(data)
-                    data = New PropertyControlData(VsProjPropId.VBPROJPROPID_ApplicationIcon, "ApplicationIcon", ApplicationIcon, AddressOf ApplicationIconSet, AddressOf ApplicationIconGet, ControlDataFlags.UserHandledEvents, New Control() {AppIconImage, AppIconBrowse, IconRadioButton, ApplicationIconLabel})
-                    data.DisplayPropertyName = My.Resources.Designer.PPG_Property_ApplicationIcon
+                    data = New PropertyControlData(VsProjPropId.VBPROJPROPID_ApplicationIcon, "ApplicationIcon", ApplicationIcon, AddressOf ApplicationIconSet, AddressOf ApplicationIconGet, ControlDataFlags.UserHandledEvents, New Control() {AppIconImage, AppIconBrowse, IconRadioButton, ApplicationIconLabel}) With {
+                        .DisplayPropertyName = My.Resources.Designer.PPG_Property_ApplicationIcon
+                    }
                     datalist.Add(data)
                     data = New PropertyControlData(VsProjPropId110.VBPROJPROPID_OutputTypeEx, Const_OutputTypeEx, OutputType, AddressOf OutputTypeSet, AddressOf OutputTypeGet, ControlDataFlags.UserHandledEvents, New Control() {OutputTypeLabel})
                     datalist.Add(data)
-                    data = New PropertyControlData(VsProjPropId.VBPROJPROPID_StartupObject, "StartupObject", StartupObject, AddressOf StartupObjectSet, AddressOf StartupObjectGet, ControlDataFlags.UserHandledEvents, New Control() {StartupObjectLabel})
-                    data.DisplayPropertyName = My.Resources.Designer.PPG_Property_StartupObject
+                    data = New PropertyControlData(VsProjPropId.VBPROJPROPID_StartupObject, "StartupObject", StartupObject, AddressOf StartupObjectSet, AddressOf StartupObjectGet, ControlDataFlags.UserHandledEvents, New Control() {StartupObjectLabel}) With {
+                        .DisplayPropertyName = My.Resources.Designer.PPG_Property_StartupObject
+                    }
                     datalist.Add(data)
                     data = New PropertyControlData(VsProjPropId80.VBPROJPROPID_Win32ResourceFile, "Win32ResourceFile", Win32ResourceFile, AddressOf Win32ResourceSet, AddressOf Win32ResourceGet, ControlDataFlags.None, New Control() {Win32ResourceFileBrowse, Win32ResourceRadioButton})
                     datalist.Add(data)

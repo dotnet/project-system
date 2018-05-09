@@ -603,8 +603,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     'This is the first notification we've seen - create a timer to track the
                     '  delay.
                     Debug.WriteLineIf(Switches.RSEFileWatcher.TraceVerbose, "        Enabling timer delay of " & DelayInMilliseconds & "ms.")
-                    _timer = New Timer
-                    _timer.Interval = DelayInMilliseconds
+                    _timer = New Timer With {
+                        .Interval = DelayInMilliseconds
+                    }
                 Else
                     'We already have a timer, so that means we're in the delay stage of
                     '  a previous notification of the same event.  We'll reset the timer

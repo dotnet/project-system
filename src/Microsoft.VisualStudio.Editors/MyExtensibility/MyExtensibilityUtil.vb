@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Option Strict On
 Option Explicit On
@@ -76,9 +76,10 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             End If
             Try
                 Dim inputAsmName As New AssemblyName(assemblyFullName)
-                Dim outputAsmName As New AssemblyName()
-                outputAsmName.Name = inputAsmName.Name
-                outputAsmName.Version = inputAsmName.Version
+                Dim outputAsmName As New AssemblyName With {
+                    .Name = inputAsmName.Name,
+                    .Version = inputAsmName.Version
+                }
                 Return outputAsmName.FullName
             Catch ex As Exception When ReportWithoutCrash(ex, NameOf(NormalizeAssemblyFullName), NameOf(MyExtensibilityUtil))
                 Return Nothing

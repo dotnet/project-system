@@ -356,8 +356,9 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             Else
                 'The .myapp file doesn't exist.  Just use default properties.  Don't force create the .myapp file until
                 '  a property is changed that forces us to write to it.
-                _myAppData = New MyApplicationData()
-                _myAppData.IsDirty = False
+                _myAppData = New MyApplicationData With {
+                    .IsDirty = False
+                }
             End If
         End Sub
 

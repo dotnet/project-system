@@ -1378,10 +1378,10 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             '
             ScrubCompileUnit(ccu)
 
-            Dim builder As New VirtualTypeBuilder()
-
-            builder.BaseType = GetType(ApplicationSettingsBase)
-            builder.Implementor = New SettingsFileTypeImplementor(Me)
+            Dim builder As New VirtualTypeBuilder With {
+                .BaseType = GetType(ApplicationSettingsBase),
+                .Implementor = New SettingsFileTypeImplementor(Me)
+            }
 
             ' We have to make sure that the type resolver is referencing the assembly where the applicationsettingsbase
             ' is defined, otherwise bad things will happen when you try to build the virtual type.
@@ -1578,7 +1578,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
 #If DEBUG Then
                     Debug.WriteLineIf(SettingsGlobalObjectProvider.GlobalSettings.TraceVerbose, "SettingsFileGlobalObject.LoadSettings(" & CStr(_className) & ") -- editLocks=" & editLocks & ", readLocks=" & readLocks & "...")
 #End If
-                Catch Ex As Exception When Common.ReportWithoutCrash(ex, "Failed to get document info for document", NameOf(SettingsGlobalObjectProvider))
+                Catch Ex As Exception When Common.ReportWithoutCrash(Ex, "Failed to get document info for document", NameOf(SettingsGlobalObjectProvider))
                     Throw
                 End Try
 
@@ -1911,7 +1911,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                 Try
                     Dim projSpecialFiles As IVsProjectSpecialFiles = TryCast(_hierarchy, IVsProjectSpecialFiles)
                     Debug.Assert(projSpecialFiles IsNot Nothing, "Failed to get IVsProjectSpecialFiles from hierarchy!")
-                    VSErrorHandler.ThrowOnFailure( _
+                    VSErrorHandler.ThrowOnFailure(
                         projSpecialFiles.GetFile(__PSFFILEID.PSFFILEID_AppConfig, CUInt(__PSFFLAGS.PSFF_FullPath), appConfigItemid, AppConfigFileName))
                     If appConfigItemid = VSITEMID.NIL Then
                         ' If the file didn't exist in the project, we should save it
@@ -1919,8 +1919,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                     Else
                         ' The the file *is* in the project, we only save it if we can't find the associated
                         ' docdata in the RDT...
-                        VSErrorHandler.ThrowOnFailure( _
-                            _provider.RunningDocTable.FindAndLockDocument(rdtLockType, AppConfigFileName, appConfigHier, appConfigItemid, pAppConfigUnkDocData, appConfigCookie) _
+                        VSErrorHandler.ThrowOnFailure(
+                            _provider.RunningDocTable.FindAndLockDocument(rdtLockType, AppConfigFileName, appConfigHier, appConfigItemid, pAppConfigUnkDocData, appConfigCookie)
                             )
                         '... and the way we decide that is by checking the returned native docdata
                         shouldSaveAppConfig = (pAppConfigUnkDocData = IntPtr.Zero)
@@ -1940,13 +1940,13 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                         Using appConfigDocData
                             Using appConfigChangeMarker As IDisposable = appConfigDocData.CreateChangeMarker()
                                 ' let's serialize the contents of this guy...
-                                AppConfigSerializer.Serialize(Settings, _
-                                                            _typeCache, _
-                                                            _valueCache, _
-                                                            GeneratedClassName, _
-                                                            GeneratedNamespace, _
-                                                            appConfigDocData, _
-                                                            _hierarchy, _
+                                AppConfigSerializer.Serialize(Settings,
+                                                            _typeCache,
+                                                            _valueCache,
+                                                            GeneratedClassName,
+                                                            GeneratedNamespace,
+                                                            appConfigDocData,
+                                                            _hierarchy,
                                                             True)
                                 If shouldSaveAppConfig Then
                                     If appConfigItemid = VSITEMID.NIL OrElse appConfigCookie = 0 Then
@@ -2018,7 +2018,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         ''' This class is the code serializer for SettingsFile global object.
         ''' </summary>
         ''' <remarks></remarks>
-        <Serializable()> _
+        <Serializable()>
         Private NotInheritable Class SettingsFileCodeDomSerializer
             Inherits CodeDomSerializer
 
@@ -2204,8 +2204,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                                         ' DesignerSerializerAttribute  
                                         '
                                         If (attributes(GetType(SettingsGlobalObjectValueAttribute)) Is Nothing OrElse attributes(GetType(DesignTimeVisibleAttribute)) Is Nothing) Then
-                                            TypeDescriptor.AddAttributes(value, _
-                                                                        New DesignTimeVisibleAttribute(False), _
+                                            TypeDescriptor.AddAttributes(value,
+                                                                        New DesignTimeVisibleAttribute(False),
                                                                         New SettingsGlobalObjectValueAttribute(_globalObject, setting.Name))
                                         End If
                                     End If
@@ -2324,7 +2324,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         ''' 
         ''' </summary>
         ''' <remarks></remarks>
-        <Serializable()> _
+        <Serializable()>
         Private Class ConcreteApplicationSettings
             Inherits ApplicationSettingsBase
 
@@ -2403,8 +2403,9 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
 #End If
                 For Each instance As DesignTimeSettingInstance In globalObject.Settings
                     Dim prop As SettingsProperty
-                    prop = New SettingsProperty(instance.Name)
-                    prop.PropertyType = globalObject.ResolveType(instance.SettingTypeName)
+                    prop = New SettingsProperty(instance.Name) With {
+                        .PropertyType = globalObject.ResolveType(instance.SettingTypeName)
+                    }
                     Add(prop)
                 Next
                 Debug.Assert(globalObject IsNot Nothing, "")

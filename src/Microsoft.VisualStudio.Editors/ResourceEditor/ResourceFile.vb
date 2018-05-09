@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Option Explicit On
 Option Strict On
@@ -888,8 +888,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             If _resxService IsNot Nothing Then
                 ResXWriter = _resxService.GetResXResourceWriter(TextWriter, _basePath)
             Else
-                Dim r As New ResXResourceWriter(TextWriter, AddressOf TypeNameConverter)
-                r.BasePath = _basePath
+                Dim r As New ResXResourceWriter(TextWriter, AddressOf TypeNameConverter) With {
+                    .BasePath = _basePath
+                }
 
                 ResXWriter = r
             End If

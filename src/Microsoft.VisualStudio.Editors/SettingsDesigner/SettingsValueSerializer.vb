@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.ComponentModel
 Imports System.Configuration
@@ -22,9 +22,10 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 Return serializedValue
             End If
 
-            Dim Prop As New SettingsProperty("") ' We don't care about the name for the setting.... 
-            Prop.ThrowOnErrorDeserializing = True
-            Prop.PropertyType = ValueType
+            Dim Prop As New SettingsProperty("") With {
+                .ThrowOnErrorDeserializing = True,
+                .PropertyType = ValueType
+            } ' We don't care about the name for the setting.... 
             Dim propVal As New SettingsPropertyValue(Prop)
             If ValueType IsNot Nothing Then
                 Try
@@ -68,9 +69,10 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
             ' Yet again we have some special handling for connection strings...
             If ValueType Is GetType(VSDesigner.VSDesignerPackage.SerializableConnectionString) AndAlso serializedValue <> "" Then
-                Dim scs As New VSDesigner.VSDesignerPackage.SerializableConnectionString
-                scs.ConnectionString = serializedValue
-                scs.ProviderName = ""
+                Dim scs As New VSDesigner.VSDesignerPackage.SerializableConnectionString With {
+                    .ConnectionString = serializedValue,
+                    .ProviderName = ""
+                }
                 Return scs
             End If
 

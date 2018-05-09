@@ -67,8 +67,9 @@ Namespace Microsoft.VisualStudio.Editors.XmlToSchema
                     Return
                 End If
 
-                Dim inputForm As New InputXmlForm(acitveProject, savePath, fileName)
-                inputForm.ServiceProvider = Common.ShellUtil.GetServiceProvider(dte)
+                Dim inputForm As New InputXmlForm(acitveProject, savePath, fileName) With {
+                    .ServiceProvider = Common.ShellUtil.GetServiceProvider(dte)
+                }
                 Dim uiService As IUIService = CType(inputForm.ServiceProvider.GetService(GetType(IUIService)), IUIService)
                 uiService.ShowDialog(inputForm)
 

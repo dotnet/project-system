@@ -182,13 +182,15 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                         childView.Dispose()
                     End If
 
-                    childView = New ErrorControl()
-                    childView.Text = My.Resources.Designer.GetString(My.Resources.Designer.APPDES_ErrorLoading_Msg, message)
+                    childView = New ErrorControl With {
+                        .Text = My.Resources.Designer.GetString(My.Resources.Designer.APPDES_ErrorLoading_Msg, message)
+                    }
                 End Try
 
                 If (childView Is Nothing) Then
-                    childView = New ErrorControl()
-                    childView.Text = My.Resources.Designer.GetString(My.Resources.Designer.APPDES_ErrorLoading_Msg, "")
+                    childView = New ErrorControl With {
+                        .Text = My.Resources.Designer.GetString(My.Resources.Designer.APPDES_ErrorLoading_Msg, "")
+                    }
                 End If
 
                 'If we haven't added the viewChild to m_View yet, do so now.
@@ -247,7 +249,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         Public Function ActivateLogicalView(ByRef rguidLogicalView As Guid) As Integer Implements IVsMultiViewDocumentView.ActivateLogicalView
             Common.Switches.TracePDFocus(TraceLevel.Warning, "CodeMarker: perfMSVSEditorsActivateLogicalViewStart")
             Common.Switches.TracePDPerf("CodeMarker: perfMSVSEditorsActivateLogicalViewStart")
-            CodeMarkers.Instance.CodeMarker(RoslynCodeMarkerEvent.perfMSVSEditorsActivateLogicalViewStart)
+            CodeMarkers.Instance.CodeMarker(RoslynCodeMarkerEvent.PerfMSVSEditorsActivateLogicalViewStart)
 
             If AppDesignerView Is Nothing Then
                 PopulateView(rguidLogicalView)
@@ -261,7 +263,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 End If
             End If
 
-            CodeMarkers.Instance.CodeMarker(RoslynCodeMarkerEvent.perfMSVSEditorsActivateLogicalViewEnd)
+            CodeMarkers.Instance.CodeMarker(RoslynCodeMarkerEvent.PerfMSVSEditorsActivateLogicalViewEnd)
             Common.Switches.TracePDFocus(TraceLevel.Warning, "CodeMarker: perfMSVSEditorsActivateLogicalViewEnd")
             Common.Switches.TracePDPerf("CodeMarker: perfMSVSEditorsActivateLogicalViewEnd")
         End Function

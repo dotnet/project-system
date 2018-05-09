@@ -506,8 +506,9 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 End If
             End If
 
-            _sourceCodeControlManager = New SourceCodeControlManager(ServiceProvider, Hierarchy)
-            _sourceCodeControlManager.ManagedFiles = FilesToCheckOut
+            _sourceCodeControlManager = New SourceCodeControlManager(ServiceProvider, Hierarchy) With {
+                .ManagedFiles = FilesToCheckOut
+            }
         End Sub
 
         Public Overrides Sub BeginLoad(host As IDesignerLoaderHost)

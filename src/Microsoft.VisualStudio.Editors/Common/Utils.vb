@@ -206,12 +206,13 @@ Namespace Microsoft.VisualStudio.Editors.Common
 
         Public Function GetImageFromImageService(imageMoniker As ImageMoniker, width As Integer, height As Integer, background As Color) As Image
             If (ImageService IsNot Nothing) Then
-                Dim attributes As New Imaging.Interop.ImageAttributes
-                attributes.StructSize = Marshal.SizeOf(GetType(Imaging.Interop.ImageAttributes))
-                attributes.ImageType = CType(_UIImageType.IT_Bitmap, UInteger)
-                attributes.Format = CType(_UIDataFormat.DF_WinForms, UInteger)
-                attributes.LogicalWidth = width
-                attributes.LogicalHeight = width
+                Dim attributes As New Imaging.Interop.ImageAttributes With {
+                    .StructSize = Marshal.SizeOf(GetType(Imaging.Interop.ImageAttributes)),
+                    .ImageType = CType(_UIImageType.IT_Bitmap, UInteger),
+                    .Format = CType(_UIDataFormat.DF_WinForms, UInteger),
+                    .LogicalWidth = width,
+                    .LogicalHeight = width
+                }
 
                 Dim backgroundValue As UInteger = ConvertColorToUInteger(background)
                 attributes.Background = backgroundValue
@@ -1033,9 +1034,10 @@ Namespace Microsoft.VisualStudio.Editors.Common
                     Dim r As Rectangle = New Rectangle(New Point(0, 0), size)
                     Dim colorMaps As ColorMap() = New ColorMap(0) {}
 
-                    colorMaps(0) = New ColorMap
-                    colorMaps(0).OldColor = originalColor
-                    colorMaps(0).NewColor = newColor
+                    colorMaps(0) = New ColorMap With {
+                        .OldColor = originalColor,
+                        .NewColor = newColor
+                    }
 
                     Dim imageAttributes As Drawing.Imaging.ImageAttributes = New Drawing.Imaging.ImageAttributes()
                     imageAttributes.SetRemapTable(colorMaps, ColorAdjustType.Bitmap)
