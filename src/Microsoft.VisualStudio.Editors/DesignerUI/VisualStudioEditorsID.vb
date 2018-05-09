@@ -92,45 +92,43 @@ Namespace Microsoft.VisualStudio.Editors
 
 
             'Some common stuff
-            Private Shared ReadOnly s_CMDSETID_StandardCommandSet97 As New Guid("5efc7975-14bc-11cf-9b2b-00aa00573819")
-            Private Shared ReadOnly s_CMDSETID_StandardCommandSet2K As New Guid("1496A755-94DE-11D0-8C3F-00C04FC2AAE2")
-            Public Shared ReadOnly guidVSStd97 As Guid = s_CMDSETID_StandardCommandSet97
-            Public Shared ReadOnly guidVSStd2K As Guid = s_CMDSETID_StandardCommandSet2K
+            Public Shared ReadOnly GuidVSStd97 As New Guid("5efc7975-14bc-11cf-9b2b-00aa00573819")
+            Public Shared ReadOnly GuidVSStd2K As New Guid("1496A755-94DE-11D0-8C3F-00C04FC2AAE2")
             Private Const CmdIdCopy As Integer = 15
-            Public Const cmdidCut As Integer = 16
+            Public Const CmdIdCut As Integer = 16
             Private Const CmdIdDelete As Integer = 17
-            Public Const cmdidRedo As Integer = 29
-            Public Const cmdidMultiLevelRedo As Integer = 30
-            Public Const cmdidMultiLevelRedoList As Integer = 299
-            Public Const cmdidUndo As Integer = 43
-            Public Const cmdidMultiLevelUndo As Integer = 44
-            Public Const cmdidMultiLevelUndoList As Integer = 299
+            Public Const CmdIdRedo As Integer = 29
+            Public Const CmdIdMultiLevelRedo As Integer = 30
+            Public Const CmdIdMultiLevelRedoList As Integer = 299
+            Public Const CmdIdUndo As Integer = 43
+            Public Const CmdIdMultiLevelUndo As Integer = 44
+            Public Const CmdIdMultiLevelUndoList As Integer = 299
             Private Const CmdIdRemove As Integer = 168
             Private Const CmdIdPaste As Integer = 26
             Private Const CmdIdOpen As Integer = 261
             Private Const CmdIdOpenWith As Integer = 199
             Private Const CmdIdRename As Integer = 150
             Private Const CmdIdSelectAll As Integer = 31
-            Public Const cmdidFileClose As Integer = 223
-            Public Const cmdidSave As Integer = 110
-            Public Const cmdidSaveAs As Integer = 111
-            Public Const cmdidSaveProjectItemAs As Integer = 226
-            Public Const cmdidSaveProjectItem As Integer = 331
-            Public Const cmdidViewCode As Integer = 333
-            Public Const cmdidEditLabel As Integer = 338
+            Public Const CmdIdFileClose As Integer = 223
+            Public Const CmdIdSave As Integer = 110
+            Public Const CmdIdSaveAs As Integer = 111
+            Public Const CmdIdSaveProjectItemAs As Integer = 226
+            Public Const CmdIdSaveProjectItem As Integer = 331
+            Public Const CmdIdViewCode As Integer = 333
+            Public Const CmdIdEditLabel As Integer = 338
             Public Const ECMD_CANCEL As Integer = 103
 
 
-            Public Shared ReadOnly CommandIDVSStd97cmdidCut As New CommandID(guidVSStd97, cmdidCut)
-            Public Shared ReadOnly CommandIDVSStd97cmdidCopy As New CommandID(guidVSStd97, CmdIdCopy)
-            Public Shared ReadOnly CommandIDVSStd97cmdidPaste As New CommandID(guidVSStd97, CmdIdPaste)
-            Public Shared ReadOnly CommandIDVSStd97cmdidDelete As New CommandID(guidVSStd97, CmdIdDelete)
-            Public Shared ReadOnly CommandIDVSStd97cmdidRemove As New CommandID(guidVSStd97, CmdIdRemove)
-            Public Shared ReadOnly CommandIDVSStd97cmdidRename As New CommandID(guidVSStd97, CmdIdRename)
-            Public Shared ReadOnly CommandIDVSStd97cmdidSelectAll As New CommandID(guidVSStd97, CmdIdSelectAll)
-            Public Shared ReadOnly CommandIDVSStd97cmdidEditLabel As New CommandID(guidVSStd97, cmdidEditLabel)
-            Public Shared ReadOnly CommandIDVSStd97cmdidViewCode As New CommandID(guidVSStd97, cmdidViewCode)
-            Public Shared ReadOnly CommandIDVSStd2kECMD_CANCEL As New CommandID(guidVSStd2K, ECMD_CANCEL)
+            Public Shared ReadOnly CommandIDVSStd97cmdidCut As New CommandID(GuidVSStd97, CmdIdCut)
+            Public Shared ReadOnly CommandIDVSStd97cmdidCopy As New CommandID(GuidVSStd97, CmdIdCopy)
+            Public Shared ReadOnly CommandIDVSStd97cmdidPaste As New CommandID(GuidVSStd97, CmdIdPaste)
+            Public Shared ReadOnly CommandIDVSStd97cmdidDelete As New CommandID(GuidVSStd97, CmdIdDelete)
+            Public Shared ReadOnly CommandIDVSStd97cmdidRemove As New CommandID(GuidVSStd97, CmdIdRemove)
+            Public Shared ReadOnly CommandIDVSStd97cmdidRename As New CommandID(GuidVSStd97, CmdIdRename)
+            Public Shared ReadOnly CommandIDVSStd97cmdidSelectAll As New CommandID(GuidVSStd97, CmdIdSelectAll)
+            Public Shared ReadOnly CommandIDVSStd97cmdidEditLabel As New CommandID(GuidVSStd97, CmdIdEditLabel)
+            Public Shared ReadOnly CommandIDVSStd97cmdidViewCode As New CommandID(GuidVSStd97, CmdIdViewCode)
+            Public Shared ReadOnly CommandIDVSStd2kECMD_CANCEL As New CommandID(GuidVSStd2K, ECMD_CANCEL)
 
             ' GUID constants.
             Private Shared ReadOnly s_GUID_RESX_CommandID As New Guid("66BD4C1D-3401-4bcc-A942-E4990827E6F7")
@@ -149,8 +147,8 @@ Namespace Microsoft.VisualStudio.Editors
             Private Shared ReadOnly s_GUID_MS_VS_Editors_CommandId As New Guid("E4B9BB05-1963-4774-8CFC-518359E3FCE3")
 
             ' Command ID = GUID + cmdid.
-            Public Shared ReadOnly CommandIDVSStd97Open As New CommandID(guidVSStd97, CmdIdOpen)
-            Public Shared ReadOnly CommandIDVSStd97OpenWith As New CommandID(guidVSStd97, CmdIdOpenWith)
+            Public Shared ReadOnly CommandIDVSStd97Open As New CommandID(GuidVSStd97, CmdIdOpen)
+            Public Shared ReadOnly CommandIDVSStd97OpenWith As New CommandID(GuidVSStd97, CmdIdOpenWith)
             Public Shared ReadOnly CommandIDResXImport As New CommandID(s_GUID_RESX_CommandID, CmdIdRESXImport)
             Public Shared ReadOnly CommandIDResXExport As New CommandID(s_GUID_RESX_CommandID, CmdIdRESXExport)
             Public Shared ReadOnly CommandIDResXPlay As New CommandID(s_GUID_RESX_CommandID, CmdIdRESXPlay)

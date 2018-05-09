@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Option Strict On
 Option Explicit On
@@ -23,7 +23,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         '  the Modify property.  We let it manage our DocData as its "primary" (in this case, only)
         '  doc data.  It will automatically track changes and handle check-in/check-out (see the
         '  Modifyi property).
-        Protected m_DocDataService As DesignerDocDataService
+        Protected DocDataService As DesignerDocDataService
 
         'Window events from the DTE that we can hook up to
         Protected WithEvents m_WindowEvents As EnvDTE.WindowEvents
@@ -333,9 +333,9 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         Protected Overridable Overloads Sub Dispose(Disposing As Boolean)
             If Disposing Then
                 Disconnect()
-                If m_DocDataService IsNot Nothing Then
-                    m_DocDataService.Dispose()
-                    m_DocDataService = Nothing
+                If DocDataService IsNot Nothing Then
+                    DocDataService.Dispose()
+                    DocDataService = Nothing
                 End If
                 If m_DocData IsNot Nothing Then
                     m_DocData.Dispose()
@@ -428,8 +428,8 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             '  We pass it our punkDocData, and it wraps it with a new DocData class.  This DocData
             '  class is accessible as PrimaryDocData (in our case, it's the only doc data that the
             '  DesignerDocDataService instance will be handling).
-            m_DocDataService = New DesignerDocDataService(LoaderHost, _vsHierarchy, _projectItemid, _punkDocData)
-            m_DocData = m_DocDataService.PrimaryDocData
+            DocDataService = New DesignerDocDataService(LoaderHost, _vsHierarchy, _projectItemid, _punkDocData)
+            m_DocData = DocDataService.PrimaryDocData
 
             Dim WindowPaneProviderSvc As Shell.Design.WindowPaneProviderService = GetWindowPaneProviderService()
             If WindowPaneProviderSvc IsNot Nothing Then

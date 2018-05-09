@@ -620,7 +620,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <remarks></remarks>
         Private Sub OnBroadcastMessageEventsHelperBroadcastMessage(msg As UInteger, wParam As IntPtr, lParam As IntPtr) Handles _broadcastMessageEventsHelper.BroadcastMessage
             Select Case msg
-                Case AppDesInterop.win.WM_PALETTECHANGED, AppDesInterop.win.WM_SYSCOLORCHANGE, AppDesInterop.win.WM_THEMECHANGED
+                Case AppDesInterop.Win32Constant.WM_PALETTECHANGED, AppDesInterop.Win32Constant.WM_SYSCOLORCHANGE, AppDesInterop.Win32Constant.WM_THEMECHANGED
                     OnThemeChanged()
             End Select
         End Sub

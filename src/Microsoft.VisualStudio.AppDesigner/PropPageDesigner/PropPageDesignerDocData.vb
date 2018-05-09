@@ -1,9 +1,9 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.Runtime.InteropServices
 Imports Microsoft.VisualStudio.Shell.Interop
 Imports Microsoft.VisualStudio.TextManager.Interop
-Imports win = Microsoft.VisualStudio.Editors.AppDesInterop.win
+Imports Win32Constant = Microsoft.VisualStudio.Editors.AppDesInterop.Win32Constant
 Imports Microsoft.VisualStudio.Editors.AppDesInterop
 
 Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
@@ -15,7 +15,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
     ''' The Application Designer does not have a physical file for persistance 
     ''' since it uses the project system directly.  We use this to prevent VS looking for a file
     '''</remarks>
-    <ComSourceInterfaces(GetType(IVsTextBufferDataEvents))> _
+    <ComSourceInterfaces(GetType(IVsTextBufferDataEvents))>
     Public NotInheritable Class PropPageDesignerDocData
         Implements IDisposable
         Implements IVsUserData
@@ -84,7 +84,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 Try
                     Dim guidTemp As Guid = GetType(IVsTextStream).GUID
                     Dim objPtr As IntPtr = IntPtr.Zero
-                    VSErrorHandler.ThrowOnFailure(localRegistry.CreateInstance(GetType(VsTextBufferClass).GUID, Nothing, guidTemp, win.CLSCTX_INPROC_SERVER, objPtr))
+                    VSErrorHandler.ThrowOnFailure(localRegistry.CreateInstance(GetType(VsTextBufferClass).GUID, Nothing, guidTemp, Win32Constant.CLSCTX_INPROC_SERVER, objPtr))
 
                     If Not objPtr.Equals(IntPtr.Zero) Then
                         _vsTextBuffer = CType(Marshal.GetObjectForIUnknown(objPtr), IVsTextStream)

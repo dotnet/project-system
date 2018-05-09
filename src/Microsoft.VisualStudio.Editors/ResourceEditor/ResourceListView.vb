@@ -570,9 +570,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
                 Dim HR As New HandleRef(Me, Handle)
                 If Interop.NativeMethods.IsWindowUnicode(Handle) Then
-                    Interop.NativeMethods.SendMessage(HR, Interop.win.LVM_EDITLABELW, Index, 0)
+                    Interop.NativeMethods.SendMessage(HR, Interop.Win32Constant.LVM_EDITLABELW, Index, 0)
                 Else
-                    Interop.NativeMethods.SendMessage(HR, Interop.win.LVM_EDITLABELA, Index, 0)
+                    Interop.NativeMethods.SendMessage(HR, Interop.Win32Constant.LVM_EDITLABELA, Index, 0)
                 End If
             End If
         End Sub
@@ -695,13 +695,13 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <remarks></remarks>
         Private Sub SetColumnSortImage(columnIndex As Integer, inReverseOrder As Boolean)
             Dim headerHandle As IntPtr
-            headerHandle = Interop.NativeMethods.SendMessage(Handle, Interop.win.LVM_GETHEADER, IntPtr.Zero, IntPtr.Zero)
+            headerHandle = Interop.NativeMethods.SendMessage(Handle, Interop.Win32Constant.LVM_GETHEADER, IntPtr.Zero, IntPtr.Zero)
             If headerHandle <> IntPtr.Zero Then
                 ' Use Win32 API to set the image to the column header object
                 Dim headItem As New Interop.HDITEM2
                 With headItem
-                    .mask = Interop.win.HDI_IMAGE Or Interop.win.HDI_FORMAT
-                    .fmt = Interop.win.HDF_STRING Or Interop.win.HDF_IMAGE Or Interop.win.HDF_BITMAP_ON_RIGHT
+                    .mask = Interop.Win32Constant.HDI_IMAGE Or Interop.Win32Constant.HDI_FORMAT
+                    .fmt = Interop.Win32Constant.HDF_STRING Or Interop.Win32Constant.HDF_IMAGE Or Interop.Win32Constant.HDF_BITMAP_ON_RIGHT
 
                     If inReverseOrder Then
                         .iImage = IMAGELIST_INDEX_SORT_DOWN
@@ -713,7 +713,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Dim hdPtr As IntPtr = Marshal.AllocCoTaskMem(Marshal.SizeOf(headItem))
                 Try
                     Marshal.StructureToPtr(headItem, hdPtr, False)
-                    Interop.NativeMethods.SendMessage(headerHandle, Interop.win.HDM_SETITEMW, CType(columnIndex, IntPtr), hdPtr)
+                    Interop.NativeMethods.SendMessage(headerHandle, Interop.Win32Constant.HDM_SETITEMW, CType(columnIndex, IntPtr), hdPtr)
                 Finally
                     Marshal.FreeCoTaskMem(hdPtr)
                 End Try
@@ -727,19 +727,19 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <remarks></remarks>
         Private Sub ClearColumnSortImage(columnIndex As Integer)
             Dim headerHandle As IntPtr
-            headerHandle = Interop.NativeMethods.SendMessage(Handle, Interop.win.LVM_GETHEADER, IntPtr.Zero, IntPtr.Zero)
+            headerHandle = Interop.NativeMethods.SendMessage(Handle, Interop.Win32Constant.LVM_GETHEADER, IntPtr.Zero, IntPtr.Zero)
             If headerHandle <> IntPtr.Zero Then
                 ' Use Win32 API to remove the image to the column header object
                 Dim headItem As New Interop.HDITEM2
                 With headItem
-                    .mask = Interop.win.HDI_FORMAT
-                    .fmt = Interop.win.HDF_STRING
+                    .mask = Interop.Win32Constant.HDI_FORMAT
+                    .fmt = Interop.Win32Constant.HDF_STRING
                 End With
 
                 Dim hdPtr As IntPtr = Marshal.AllocCoTaskMem(Marshal.SizeOf(headItem))
                 Try
                     Marshal.StructureToPtr(headItem, hdPtr, False)
-                    Interop.NativeMethods.SendMessage(headerHandle, Interop.win.HDM_SETITEMW, CType(columnIndex, IntPtr), hdPtr)
+                    Interop.NativeMethods.SendMessage(headerHandle, Interop.Win32Constant.HDM_SETITEMW, CType(columnIndex, IntPtr), hdPtr)
                 Finally
                     Marshal.FreeCoTaskMem(hdPtr)
                 End Try
@@ -1274,8 +1274,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         End Sub
 
 #If True Then 'CONSIDER rewriting now that virtualized listview has way to select/deselect
-        <StructLayout(LayoutKind.Sequential, Pack:=1, CharSet:=CharSet.Auto)> _
+        <StructLayout(LayoutKind.Sequential, Pack:=1, CharSet:=CharSet.Auto)>
         Private Structure LVITEM
+#Disable Warning IDE1006 ' Naming Styles
             Public mask As Integer
             Public iItem As Integer
             Public iSubItem As Integer
@@ -1289,6 +1290,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Public iGroupId As Integer
             Public cColumns As Integer
             Public puColumns As IntPtr
+#Enable Warning IDE1006 ' Naming Styles
         End Structure
 
         Private Declare Auto Function SendMessage Lib "User32" (hWnd As IntPtr, msg As Integer, wParam As Integer, ByRef lParam As LVITEM) As IntPtr

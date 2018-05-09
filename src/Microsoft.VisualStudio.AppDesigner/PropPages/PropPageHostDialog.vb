@@ -12,8 +12,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private _propPage As PropPageUserControlBase
         Public WithEvents Cancel As Button
         Public WithEvents OK As Button
+#Disable Warning IDE1006 ' Naming Styles (Compat)
         Public WithEvents okCancelTableLayoutPanel As TableLayoutPanel
         Public WithEvents overArchingTableLayoutPanel As TableLayoutPanel
+#Enable Warning IDE1006 ' Naming Styles
         Private _firstFocusHandled As Boolean
 
         ''' <summary>

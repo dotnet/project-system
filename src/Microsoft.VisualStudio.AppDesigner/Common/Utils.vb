@@ -249,7 +249,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         Public Function IsCheckoutCanceledException(ex As Exception) As Boolean
             If (TypeOf ex Is CheckoutException AndAlso ex.Equals(CheckoutException.Canceled)) _
                 OrElse
-                (TypeOf ex Is COMException AndAlso DirectCast(ex, COMException).ErrorCode = AppDesInterop.win.OLE_E_PROMPTSAVECANCELLED) _
+                (TypeOf ex Is COMException AndAlso DirectCast(ex, COMException).ErrorCode = AppDesInterop.Win32Constant.OLE_E_PROMPTSAVECANCELLED) _
             Then
                 Return True
             End If
@@ -343,7 +343,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         Public Function IsScreenReaderRunning() As Boolean
             Dim pvParam As IntPtr = Marshal.AllocCoTaskMem(4)
             Try
-                If AppDesInterop.NativeMethods.SystemParametersInfo(AppDesInterop.win.SPI_GETSCREENREADER, 0, pvParam, 0) <> 0 Then
+                If AppDesInterop.NativeMethods.SystemParametersInfo(AppDesInterop.Win32Constant.SPI_GETSCREENREADER, 0, pvParam, 0) <> 0 Then
                     Dim result As Integer = Marshal.ReadInt32(pvParam)
                     Return result <> 0
                 End If
@@ -476,9 +476,9 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
 
             Filter = GetNativeFilter(Filter)
 
-            Dim MaxPathName As Integer = AppDesInterop.win.MAX_PATH + 1
+            Dim MaxPathName As Integer = AppDesInterop.Win32Constant.MAX_PATH + 1
             If MutiSelect Then
-                MaxPathName = (AppDesInterop.win.MAX_PATH + 1) * VSDPLMAXFILES
+                MaxPathName = (AppDesInterop.Win32Constant.MAX_PATH + 1) * VSDPLMAXFILES
             End If
 
             Dim vsOpenFileName As Interop.VSOPENFILENAMEW()
@@ -535,7 +535,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
                         fileNames.Add(path)
                     End If
                 ElseIf NeedThrowError Then
-                    If hr = AppDesInterop.win.OLE_E_PROMPTSAVECANCELLED Then
+                    If hr = AppDesInterop.Win32Constant.OLE_E_PROMPTSAVECANCELLED Then
                         'We shouldn't thrown error, if User cancelled out of dialog
                     Else
                         VSErrorHandler.ThrowOnFailure(hr)

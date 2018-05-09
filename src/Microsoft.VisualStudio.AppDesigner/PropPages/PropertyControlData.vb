@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.ComponentModel.Design
 Imports System.Windows.Forms
@@ -62,11 +62,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Public AssociatedControls As Control()
 
         Protected Flags As ControlDataFlags
+#Disable Warning IDE1006 ' Naming Styles (Compat)
         Protected m_Initializing As Boolean
         Protected m_FormControl As Control
         Protected m_PropPage As PropPageUserControlBase
-
         Protected m_isCommitingChange As Boolean
+#Enable Warning IDE1006 ' Naming Styles
 
         'Used by PropertyDescriptorSetValue to know whether or not the 
         '  OnValueChanged event fired on the property descriptor
@@ -524,7 +525,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <value></value>
         ''' <remarks></remarks>
-        <DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)> _
+        <DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)>
         Public Shared ReadOnly Property MissingProperty() As Object
             Get
                 'Note: what is referred to here as "missing" is simply that a flavor's implementation
@@ -550,7 +551,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <value></value>
         ''' <remarks></remarks>
-        <DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)> _
+        <DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)>
         Public Shared ReadOnly Property Indeterminate() As Object
             Get
                 Return s_indeterminateValue
@@ -646,7 +647,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <remarks></remarks>
         Public ReadOnly Property AllInitialValues() As Object()
             Get
-                Debug.Assert(_allInitialValues Is Nothing OrElse _allInitialValues.Length = RawPropertiesObjects.Length AndAlso _allInitialValues.Length = ExtendedPropertiesObjects.Length, _
+                Debug.Assert(_allInitialValues Is Nothing OrElse _allInitialValues.Length = RawPropertiesObjects.Length AndAlso _allInitialValues.Length = ExtendedPropertiesObjects.Length,
                     "AllInitialValues should always be the same length as the array returned by RawPropertiesObjects and ExtendedPropertiesObjects")
                 Return _allInitialValues
             End Get
@@ -708,7 +709,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
             Debug.Assert(AllInitialValues IsNot Nothing OrElse InitialValue IsNot Indeterminate)
             Debug.Assert(AllInitialValues Is Nothing _
-                OrElse (AllInitialValues.Length = RawPropertiesObjects.Length AndAlso AllInitialValues.Length = ExtendedPropertiesObjects.Length), _
+                OrElse (AllInitialValues.Length = RawPropertiesObjects.Length AndAlso AllInitialValues.Length = ExtendedPropertiesObjects.Length),
                 "AllInitialValues should always be the same length as the array returned by RawPropertiesObjects and ExtendedPropertiesObjects")
 
             _initialValue = InitialValue

@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Option Explicit On
 Option Strict On
@@ -445,9 +445,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     Return False
                 End If
 
-                If wFormatTag <> Interop.win.WAVE_FORMAT_PCM _
-                    AndAlso wFormatTag <> Interop.win.WAVE_FORMAT_ADPCM _
-                    AndAlso wFormatTag <> Interop.win.WAVE_FORMAT_IEEE_FLOAT _
+                If wFormatTag <> Interop.Win32Constant.WAVE_FORMAT_PCM _
+                    AndAlso wFormatTag <> Interop.Win32Constant.WAVE_FORMAT_ADPCM _
+                    AndAlso wFormatTag <> Interop.Win32Constant.WAVE_FORMAT_IEEE_FLOAT _
                 Then
                     'Sound format not supported by Fx
                     Return False

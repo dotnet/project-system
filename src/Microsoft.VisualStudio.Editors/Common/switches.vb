@@ -373,15 +373,15 @@ Namespace Microsoft.VisualStudio.Editors.Common
             Dim str As New System.Text.StringBuilder()
             Dim MsgType As String = Nothing
             Select Case msg.Msg
-                Case win.WM_KEYDOWN
+                Case Win32Constant.WM_KEYDOWN
                     MsgType = "WM_KEYDOWN"
-                Case AppDesInterop.win.WM_KEYUP
+                Case AppDesInterop.Win32Constant.WM_KEYUP
                     MsgType = "WM_KEYUP"
-                Case win.WM_SETFOCUS
+                Case Win32Constant.WM_SETFOCUS
                     MsgType = "WM_SETFOCUS"
-                Case win.WM_CHAR
+                Case Win32Constant.WM_CHAR
                     MsgType = "WM_CHAR"
-                Case win.WM_SYSCHAR
+                Case Win32Constant.WM_SYSCHAR
                     MsgType = "WM_SYSCHAR"
 
                 Case Else

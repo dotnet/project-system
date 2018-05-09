@@ -87,7 +87,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         Protected Overrides Sub WndProc(ByRef m As Message)
             ' We only handle the context menu specially.
             Select Case m.Msg
-                Case Interop.win.WM_CONTEXTMENU
+                Case Interop.Win32Constant.WM_CONTEXTMENU
                     Debug.WriteLineIf(Switches.DFContextMenu.TraceVerbose, "WM_CONTEXTMENU")
                     Dim EventArgs As MouseEventArgs = DesignUtil.GetContextMenuMouseEventArgs(Me, m)
                     RaiseEvent ContextMenuShow(Me, EventArgs)

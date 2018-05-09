@@ -31,9 +31,10 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         Private _pageHostingPanelLastSize As Drawing.Size
         Private _windowFrameLastSize As Drawing.Size
         Private _windowFrameShown As Boolean 'True iff ShowWindowFrame() has been called
+#Disable Warning IDE1006 ' Naming Styles (Compat)
         Public m_Debug_cWindowFrameShow As Integer = 0 '# of times the window frame has been shown
         Public m_Debug_cWindowFrameBoundsUpdated As Integer = 0 '# of times the window frame bounds have been changed
-
+#Enable Warning IDE1006 ' Naming Styles
         Private _windowFrameNotifyCookie As UInteger
 
         ' Avoid recursive calls to close (we sometimes try to close our parent view,

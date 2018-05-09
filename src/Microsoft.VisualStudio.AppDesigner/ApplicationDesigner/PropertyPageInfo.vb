@@ -173,7 +173,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
                 Dim ObjectPtr As IntPtr
 
-                VSErrorHandler.ThrowOnFailure(LocalRegistry.CreateInstance(_guid, Nothing, NativeMethods.IID_IUnknown, win.CLSCTX_INPROC_SERVER, ObjectPtr))
+                VSErrorHandler.ThrowOnFailure(LocalRegistry.CreateInstance(_guid, Nothing, NativeMethods.IID_IUnknown, Win32Constant.CLSCTX_INPROC_SERVER, ObjectPtr))
                 Try
                     PageObject = Marshal.GetObjectForIUnknown(ObjectPtr)
                 Finally
