@@ -483,7 +483,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
             return project.AllEvaluatedItems
                 // We are excluding folder elements until CPS allows empty folders to be part of the order; when they do, we can omit checking the item type for "Folder".
                 // Related changes will also need to happen in TryMoveElementsToTop when CPS allows empty folders in ordering.
-                .Where(x => !previousIncludes.Contains(x.EvaluatedInclude, StringComparer.OrdinalIgnoreCase) && !x.ItemType.Equals("Folder", StringComparison.OrdinalIgnoreCase))
+                // Don't choose items that were imported. Most likely won't happen on added elements, but just in case for sanity.
+                .Where(x => !previousIncludes.Contains(x.EvaluatedInclude, StringComparer.OrdinalIgnoreCase) && !x.ItemType.Equals("Folder", StringComparison.OrdinalIgnoreCase) && !x.IsImported)
                 .Select(x => x.Xml)
                 .ToImmutableArray();
         }
