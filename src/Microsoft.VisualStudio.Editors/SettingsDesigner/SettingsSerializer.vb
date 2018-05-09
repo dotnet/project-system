@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.IO
 Imports System.Xml
@@ -114,8 +114,9 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             ' CONSIDER, should I throw here to prevent the designer loader from blowing up / loading only part
             ' of the file and clobber it on the next write
 
-            Dim xmlReader As XmlTextReader = New XmlTextReader(Reader)
-            xmlReader.Normalization = False
+            Dim xmlReader As XmlTextReader = New XmlTextReader(Reader) With {
+                .Normalization = False
+            }
 
             XmlDoc.Load(xmlReader)
 
@@ -187,8 +188,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 If Not Settings.IsValidName(newSettingName) Then
                     Throw New SettingsSerializerException(My.Resources.Designer.GetString(My.Resources.Designer.SD_ERR_InvalidIdentifier_1Arg, nameAttr.Value))
                 End If
-                Dim Instance As DesignTimeSettingInstance = Settings.AddNew(typeAttr.Value, _
-                                                                            newSettingName, _
+                Dim Instance As DesignTimeSettingInstance = Settings.AddNew(typeAttr.Value,
+                                                                            newSettingName,
                                                                             True)
                 If scopeAttr.Value.Equals(SettingsDesigner.ApplicationScopeName, StringComparison.Ordinal) Then
                     Instance.SetScope(DesignTimeSettingInstance.SettingScope.Application)
@@ -247,9 +248,10 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             ' Gotta store the namespace here in case it changes from under us!
             Settings.PersistedNamespace = GeneratedClassNameSpace
 
-            Dim SettingsWriter As New XmlTextWriter(Writer)
-            SettingsWriter.Formatting = Formatting.Indented
-            SettingsWriter.Indentation = 2
+            Dim SettingsWriter As New XmlTextWriter(Writer) With {
+                .Formatting = Formatting.Indented,
+                .Indentation = 2
+            }
             ' NOTE, VsWhidbey 294747, Can I assume UTF-8 encoding? Nope, it seems that the DocDataTextWriter uses
             ' Unicode.Default! Probably should file a bug / change request for this... gotta make 100%
             ' sure what encoding is actually used first!

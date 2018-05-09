@@ -103,12 +103,13 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' </summary>
         ''' <remarks></remarks>
         Private Sub Initialize()
-            _hostingPanel = New Panel()
-            _hostingPanel.Visible = True
-            _hostingPanel.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Bottom Or AnchorStyles.Right
-            _hostingPanel.AutoScroll = True
-            _hostingPanel.Text = "HostingPanel" 'For debugging
-            _hostingPanel.AccessibleName = My.Resources.Designer.APPDES_HostingPanelName
+            _hostingPanel = New Panel With {
+                .Visible = True,
+                .Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Bottom Or AnchorStyles.Right,
+                .AutoScroll = True,
+                .Text = "HostingPanel", 'For debugging
+                .AccessibleName = My.Resources.Designer.APPDES_HostingPanelName
+            }
 
             'Add any initialization after the InitializeComponent() call
             '
@@ -336,9 +337,10 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             SuspendLayout()
             Dim newIndex As Integer
             Try
-                Dim Button As New ProjectDesignerTabButton()
-                Button.Text = Title
-                Button.Name = AutomationName
+                Dim Button As New ProjectDesignerTabButton With {
+                    .Text = Title,
+                    .Name = AutomationName
+                }
                 _buttonCollection.Add(Button)
                 newIndex = _buttonCollection.Count - 1
                 Controls.Add(Button)

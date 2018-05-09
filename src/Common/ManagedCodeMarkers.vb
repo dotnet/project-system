@@ -247,13 +247,13 @@ Namespace Microsoft.Internal.Performance
     ' This type name was originally defined in the VSO first.
     Friend Enum RoslynCodeMarkerEvent
 
-        perfMSVSEditorsShowTabBegin = 8400
-        perfMSVSEditorsShowTabEnd = 8401
-        perfMSVSEditorsActivateLogicalViewStart = 8402
-        perfMSVSEditorsActivateLogicalViewEnd = 8403
+        PerfMSVSEditorsShowTabBegin = 8400
+        PerfMSVSEditorsShowTabEnd = 8401
+        PerfMSVSEditorsActivateLogicalViewStart = 8402
+        PerfMSVSEditorsActivateLogicalViewEnd = 8403
 
-        perfMSVSEditorsReferencePageWCFAdded = 8413
-        perfMSVSEditorsReferencePagePostponedUIRefreshDone = 8414
+        PerfMSVSEditorsReferencePageWCFAdded = 8413
+        PerfMSVSEditorsReferencePagePostponedUIRefreshDone = 8414
     End Enum
 
 End Namespace

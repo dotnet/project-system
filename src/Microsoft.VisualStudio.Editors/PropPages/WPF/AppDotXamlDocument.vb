@@ -471,8 +471,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
             End If
 
             Dim sb As New StringBuilder()
-            Dim settings As New XmlWriterSettings
-            settings.ConformanceLevel = ConformanceLevel.Fragment
+            Dim settings As New XmlWriterSettings With {
+                .ConformanceLevel = ConformanceLevel.Fragment
+            }
             Dim xmlWriter As XmlWriter = XmlWriter.Create(sb, settings)
             xmlWriter.WriteString(value)
             xmlWriter.Close()
@@ -498,8 +499,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
             'Make as content of an element
             Dim xml As String = "<a>" & value & "</a>"
             Dim stringReader As New StringReader(xml)
-            Dim settings As New XmlReaderSettings
-            settings.ConformanceLevel = ConformanceLevel.Fragment
+            Dim settings As New XmlReaderSettings With {
+                .ConformanceLevel = ConformanceLevel.Fragment
+            }
             Dim xmlReader As XmlReader = XmlReader.Create(stringReader, settings)
             xmlReader.ReadToFollowing("a")
 
@@ -536,10 +538,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         Private Function CreateXmlTextReader() As XmlTextReader
             Debug.Assert(_debugBufferLockCount > 0, "Should be using BufferLock!")
             Dim stringReader As New StringReader(GetAllText())
-            Dim xmlTextReader As XmlTextReader = New XmlTextReader(stringReader)
-
             ' Required by Fxcop rule CA3054 - DoNotAllowDTDXmlTextReader
-            xmlTextReader.DtdProcessing = DtdProcessing.Prohibit
+            Dim xmlTextReader As XmlTextReader = New XmlTextReader(stringReader) With {
+                .DtdProcessing = DtdProcessing.Prohibit
+            }
             Return xmlTextReader
         End Function
 

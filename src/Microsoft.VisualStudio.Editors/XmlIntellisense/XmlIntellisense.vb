@@ -120,12 +120,13 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
         '   Initialize the class.
         '--------------------------------------------------------------------------
         Friend Sub New(Container As IServiceContainer, SchemaService As XmlSchemaService, ProjectGuid As Guid)
-            _data = New XmlIntellisenseSchemasData()
-            _data.Container = Container
-            _data.SchemaService = SchemaService
-            _data.ProjectGuid = ProjectGuid
-            _data.CompilationLevel = CompilationLevel
-            _data.SchemasFound = 0
+            _data = New XmlIntellisenseSchemasData With {
+                .Container = Container,
+                .SchemaService = SchemaService,
+                .ProjectGuid = ProjectGuid,
+                .CompilationLevel = CompilationLevel,
+                .SchemasFound = 0
+            }
 
             ' Get VS project
             Dim Solution As IVsSolution = DirectCast(Container.GetService(GetType(IVsSolution)), IVsSolution)
@@ -518,8 +519,9 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
         End Sub
 
         Public Shared Function AnyElement() As XmlIntellisenseMember
-            Dim Member As XmlIntellisenseMember = New XmlIntellisenseMember(XmlQualifiedName.Empty, Flags.IsElement)
-            Member.Children = s_any
+            Dim Member As XmlIntellisenseMember = New XmlIntellisenseMember(XmlQualifiedName.Empty, Flags.IsElement) With {
+                .Children = s_any
+            }
             Return Member
         End Function
 

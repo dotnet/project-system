@@ -174,10 +174,10 @@ Namespace Microsoft.VisualStudio.Editors.XmlToSchema
         End Sub
 
         Private Function GetXmlTextReaderWithDtdProcessingProhibited(element As String) As XmlTextReader
-            Dim reader As XmlTextReader = New XmlTextReader(element)
-
             ' Required by Fxcop rule CA3054 - DoNotAllowDTDXmlTextReader
-            reader.DtdProcessing = DtdProcessing.Prohibit
+            Dim reader As XmlTextReader = New XmlTextReader(element) With {
+                .DtdProcessing = DtdProcessing.Prohibit
+            }
         End Function
 
         Private Sub _listViewKeyPress(o As Object, e As KeyEventArgs) Handles _listView.KeyDown

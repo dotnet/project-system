@@ -364,11 +364,11 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <returns></returns>
         ''' <remarks></remarks>
         Private Function CreateNewResourceRow() As DataGridViewRow
-            Dim NewRow As New DataGridViewRow
-
             'The error glyphs don't show up if the row height is below the glyph size.  We don't want that
             '  to happen, so restrict the minimum height.
-            NewRow.MinimumHeight = Math.Max(DpiHelper.LogicalToDeviceUnitsY(RowMinimumHeight), Font.Height + DpiHelper.LogicalToDeviceUnitsY(ROW_BORDER_HEIGHT))
+            Dim NewRow As New DataGridViewRow With {
+                .MinimumHeight = Math.Max(DpiHelper.LogicalToDeviceUnitsY(RowMinimumHeight), Font.Height + DpiHelper.LogicalToDeviceUnitsY(ROW_BORDER_HEIGHT))
+            }
 
             'Build up the new row (with blank values) cell by cell
 

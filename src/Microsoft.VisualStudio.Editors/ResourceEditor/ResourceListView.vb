@@ -453,9 +453,10 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End If
 
             'Set up the state imagelist (for displaying error glyphs next to the listview items)
-            _stateImageList = New ImageList()
-            _stateImageList.ColorDepth = ColorDepth.Depth8Bit
-            _stateImageList.ImageSize = ParentView.CachedResources.ErrorGlyphState.Size
+            _stateImageList = New ImageList With {
+                .ColorDepth = ColorDepth.Depth8Bit,
+                .ImageSize = ParentView.CachedResources.ErrorGlyphState.Size
+            }
             _stateImageList.Images.Add(ParentView.CachedResources.ErrorGlyphState)
             StateImageList = _stateImageList
 
@@ -1016,10 +1017,10 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End If
 
             'Create the base ListViewItem with the name and image index
-            e.Item = New ListViewItem(Resource.Name, ImageListIndex)
-
             'Fill in any error information, if this resource has task list items
-            e.Item.ToolTipText = ResourceFile.GetResourceTaskMessages(Resource)
+            e.Item = New ListViewItem(Resource.Name, ImageListIndex) With {
+                .ToolTipText = ResourceFile.GetResourceTaskMessages(Resource)
+            }
             If ResourceFile.ResourceHasTasks(Resource) Then
                 'This resource has some task list items.  Need to set its state to
                 '  show the error glyph.
@@ -1307,10 +1308,11 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End If
 
             If Handle <> IntPtr.Zero Then
-                Dim lvi As New LVITEM
-                lvi.mask = LVIF_STATE
-                lvi.state = state
-                lvi.stateMask = mask
+                Dim lvi As New LVITEM With {
+                    .mask = LVIF_STATE,
+                    .state = state,
+                    .stateMask = mask
+                }
                 SendMessage(Handle, LVM_SETITEMSTATE, index, lvi)
             End If
         End Sub

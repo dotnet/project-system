@@ -142,21 +142,25 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     datalist.Add(data)
                     data = New PropertyControlData(MyAppDISPIDs.CustomSubMain, Const_CustomSubMain, UseApplicationFrameworkCheckBox, AddressOf CustomSubMainSet, AddressOf CustomSubMainGet, ControlDataFlags.UserPersisted Or ControlDataFlags.UserHandledEvents Or ControlDataFlags.PersistedInVBMyAppFile)
                     datalist.Add(data)
-                    data = New PropertyControlData(VsProjPropId.VBPROJPROPID_RootNamespace, Const_RootNamespace, RootNamespaceTextBox, New Control() {RootNamespaceLabel})
-                    data.DisplayPropertyName = My.Resources.Designer.PPG_Property_RootNamespace
+                    data = New PropertyControlData(VsProjPropId.VBPROJPROPID_RootNamespace, Const_RootNamespace, RootNamespaceTextBox, New Control() {RootNamespaceLabel}) With {
+                        .DisplayPropertyName = My.Resources.Designer.PPG_Property_RootNamespace
+                    }
                     datalist.Add(data)
                     data = New PropertyControlData(VsProjPropId110.VBPROJPROPID_OutputTypeEx, Const_OutputTypeEx, Nothing, AddressOf OutputTypeSet, AddressOf OutputTypeGet, ControlDataFlags.None, ControlsThatDependOnOutputTypeProperty)
                     datalist.Add(data)
                     data = New PropertyControlData(MyAppDISPIDs.MainForm, Const_MainFormNoRootNS, MainFormTextboxNoRootNS, AddressOf MainFormNoRootNSSet, Nothing, ControlDataFlags.UserPersisted Or ControlDataFlags.PersistedInVBMyAppFile)
                     datalist.Add(data)
-                    data = New PropertyControlData(VsProjPropId.VBPROJPROPID_StartupObject, Const_StartupObject, StartupObjectComboBox, AddressOf StartupObjectSet, AddressOf StartupObjectGet, ControlDataFlags.UserHandledEvents, ControlsThatDependOnStartupObjectProperty)
-                    data.DisplayPropertyName = My.Resources.Designer.PPG_Property_StartupObject
+                    data = New PropertyControlData(VsProjPropId.VBPROJPROPID_StartupObject, Const_StartupObject, StartupObjectComboBox, AddressOf StartupObjectSet, AddressOf StartupObjectGet, ControlDataFlags.UserHandledEvents, ControlsThatDependOnStartupObjectProperty) With {
+                        .DisplayPropertyName = My.Resources.Designer.PPG_Property_StartupObject
+                    }
                     datalist.Add(data)
-                    data = New PropertyControlData(VsProjPropId.VBPROJPROPID_AssemblyName, "AssemblyName", AssemblyNameTextBox, New Control() {AssemblyNameLabel})
-                    data.DisplayPropertyName = My.Resources.Designer.PPG_Property_AssemblyName
+                    data = New PropertyControlData(VsProjPropId.VBPROJPROPID_AssemblyName, "AssemblyName", AssemblyNameTextBox, New Control() {AssemblyNameLabel}) With {
+                        .DisplayPropertyName = My.Resources.Designer.PPG_Property_AssemblyName
+                    }
                     datalist.Add(data)
-                    data = New PropertyControlData(VsProjPropId.VBPROJPROPID_ApplicationIcon, "ApplicationIcon", IconCombobox, AddressOf ApplicationIconSet, AddressOf ApplicationIconGet, ControlDataFlags.UserHandledEvents, New Control() {IconLabel, IconPicturebox})
-                    data.DisplayPropertyName = My.Resources.Designer.PPG_Property_ApplicationIcon
+                    data = New PropertyControlData(VsProjPropId.VBPROJPROPID_ApplicationIcon, "ApplicationIcon", IconCombobox, AddressOf ApplicationIconSet, AddressOf ApplicationIconGet, ControlDataFlags.UserHandledEvents, New Control() {IconLabel, IconPicturebox}) With {
+                        .DisplayPropertyName = My.Resources.Designer.PPG_Property_ApplicationIcon
+                    }
                     datalist.Add(data)
                     data = New PropertyControlData(VBProjPropId.VBPROJPROPID_MyType, Const_MyType, Nothing, AddressOf MyTypeSet, AddressOf MyTypeGet)
                     datalist.Add(data)

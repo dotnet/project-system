@@ -565,10 +565,11 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             '
             ' m_toolbarPanel
             '
-            _toolbarPanel = New DesignerToolbarPanel()
-            _toolbarPanel.Dock = DockStyle.Top
-            _toolbarPanel.Name = "ToolbarPanel"
-            _toolbarPanel.Text = "ToolbarPanel"
+            _toolbarPanel = New DesignerToolbarPanel With {
+                .Dock = DockStyle.Top,
+                .Name = "ToolbarPanel",
+                .Text = "ToolbarPanel"
+            }
             '
             'ResourceEditorView
             '
