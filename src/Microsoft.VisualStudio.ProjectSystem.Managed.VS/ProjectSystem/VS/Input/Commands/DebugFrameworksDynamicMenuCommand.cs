@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Design;
 
-using Microsoft.VisualStudio.Packaging;
+using Microsoft.VisualStudio.Input;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.Shell;
 
@@ -25,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 
         [ImportingConstructor]
         public DebugFrameworksDynamicMenuCommand(IStartupProjectHelper startupProjectHelper)
-          : base(new CommandID(new Guid(ManagedProjectSystemPackage.ManagedProjectSystemCommandSet), ManagedProjectSystemPackage.DebugFrameworksCmdId), MaxFrameworks)
+          : base(new CommandID(new Guid(CommandGroup.ManagedProjectSystem), ManagedProjectSystemCommandId.DebugFrameworks), MaxFrameworks)
         {
             StartupProjectHelper = startupProjectHelper;
         }
