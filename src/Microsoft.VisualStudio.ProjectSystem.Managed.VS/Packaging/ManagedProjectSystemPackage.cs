@@ -47,8 +47,6 @@ namespace Microsoft.VisualStudio.Packaging
         public const int MoveUpCmdId = 0x3002;
         public const int MoveDownCmdId = 0x3007;
 
-        public const string SolutionExplorerGuid = "{3AE79031-E1BC-11D0-8F78-00A0C9110057}";
-
         public const string DefaultCapabilities = ProjectCapability.AppDesigner + "; " +
                                                   ProjectCapability.EditAndContinue + "; " +
                                                   ProjectCapability.HandlesOwnReload + "; " +
