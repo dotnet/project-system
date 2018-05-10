@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System;
 using System.ComponentModel.Composition;
 
 using Microsoft.VisualStudio.Shell.Interop;
@@ -13,14 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
     [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp)]
     internal class BuildMacroInfo : IVsBuildMacroInfo
     {
-        /// <summary>
-        /// Project threading service.
-        /// </summary>
         private readonly IProjectThreadingService _threadingService;
-
-        /// <summary>
-        /// Project components for the configuration being evaluated.
-        /// </summary>
         private readonly ActiveConfiguredProject<ConfiguredProject> _configuredProject;
 
         /// <summary>
