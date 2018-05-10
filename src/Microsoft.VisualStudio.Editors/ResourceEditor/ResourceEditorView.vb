@@ -4180,17 +4180,17 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Dim resourcePathAndName As String = RootDesigner.GetResXFileNameAndPath()
                 Dim projectGuid As Guid = VBPackage.Instance.ProjectGUID(GetVsHierarchy())
                 Dim addExistingFilePath As String = String.Empty
-                Dim resxDictionary As Dictionary(Of String, String) = Nothing
+                Dim resxFileToAddExistingBasePath As Dictionary(Of String, String) = Nothing
 
-                If VBPackage.Instance.StickyProjectResourcePaths.TryGetValue(projectGuid, resxDictionary) Then
-                    If Not resxDictionary.TryGetValue(resourcePathAndName, addExistingFilePath) Then
+                If VBPackage.Instance.StickyProjectResourcePaths.TryGetValue(projectGuid, resxFileToAddExistingBasePath) Then
+                    If Not resxFileToAddExistingBasePath.TryGetValue(resourcePathAndName, addExistingFilePath) Then
                         addExistingFilePath = ResourceFile.BasePath
                     End If
                 Else
                     addExistingFilePath = ResourceFile.BasePath
-                    resxDictionary = New Dictionary(Of String, String)
-                    resxDictionary.Item(resourcePathAndName) = addExistingFilePath
-                    VBPackage.Instance.StickyProjectResourcePaths.Item(projectGuid) = resxDictionary
+                    resxFileToAddExistingBasePath = New Dictionary(Of String, String)
+                    resxFileToAddExistingBasePath.Item(resourcePathAndName) = addExistingFilePath
+                    VBPackage.Instance.StickyProjectResourcePaths.Item(projectGuid) = resxFileToAddExistingBasePath
                 End If
 
                 'Ask the user to point to the file(s) to add
@@ -4201,7 +4201,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 End If
 
                 ' BUGFIX: Dev11#35824: Save the directory where the user add existing resource file for the next time.
-                resxDictionary.Item(resourcePathAndName) = Path.GetDirectoryName(CType(FilesToAdd(0), String))
+                resxFileToAddExistingBasePath.Item(resourcePathAndName) = Path.GetDirectoryName(CType(FilesToAdd(0), String))
 
                 '... and them them as resources.
                 'NOTE: we update the existing item as bug 382459 said.

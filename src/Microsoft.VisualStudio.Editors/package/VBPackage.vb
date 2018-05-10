@@ -45,21 +45,13 @@ Namespace Microsoft.VisualStudio.Editors
         ' Map between unique project GUID and the last viewed tab in the project designer...
         Private _lastViewedProjectDesignerTab As Dictionary(Of Guid, Byte)
 
-        'Resource File Sticky Paths per project
-        Private _stickyProjectResourcePaths As Dictionary(Of Guid, Dictionary(Of String, String))
-
-        Public ReadOnly Property StickyProjectResourcePaths() As Dictionary(Of Guid, Dictionary(Of String, String))
-            Get
-                Return _stickyProjectResourcePaths
-            End Get
-        End Property
+        Public ReadOnly Property StickyProjectResourcePaths() As New Dictionary(Of Guid, Dictionary(Of String, String))
 
         ''' <summary>
         ''' Constructor
         ''' </summary>
         ''' <remarks></remarks>
         Public Sub New()
-            _stickyProjectResourcePaths = New Dictionary(Of Guid, Dictionary(Of String, String))
 
             ' Make sure we persist this 
             AddOptionKey(s_projectDesignerSUOKey)
@@ -427,7 +419,7 @@ Namespace Microsoft.VisualStudio.Editors
             Public Function OnAfterCloseSolution(pUnkReserved As Object) As Integer Implements IVsSolutionEvents.OnAfterCloseSolution
                 SettingsDesigner.SettingsDesigner.DeleteFilesAndDirectories(_filesToCleanUp, Nothing)
                 _filesToCleanUp.Clear()
-                Instance._stickyProjectResourcePaths.Clear()
+                Instance.StickyProjectResourcePaths.Clear()
                 Return Interop.NativeMethods.S_OK
             End Function
 
