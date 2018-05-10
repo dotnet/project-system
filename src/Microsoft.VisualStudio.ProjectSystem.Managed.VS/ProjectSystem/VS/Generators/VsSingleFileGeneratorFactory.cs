@@ -9,7 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
 {
     [ExportProjectNodeComService(typeof(IVsSingleFileGeneratorFactory))]
     [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp)]
-    internal class SingleFileGeneratorFactoryAggregator : IVsSingleFileGeneratorFactory, IDisposable
+    internal class VsSingleFileGeneratorFactory : IVsSingleFileGeneratorFactory, IDisposable
     {
         // Constants for the generator information registry keys
         private const string CLSIDKey = "CLSID";
@@ -21,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
         private IVsUnconfiguredProjectIntegrationService _projectIntegrationService;
 
         [ImportingConstructor]
-        public SingleFileGeneratorFactoryAggregator(
+        public VsSingleFileGeneratorFactory(
             [Import(typeof(SVsServiceProvider))] IServiceProvider serviceProvider,
             IVsUnconfiguredProjectIntegrationService projectIntegrationService)
         {

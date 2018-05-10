@@ -9,7 +9,7 @@ using Xunit;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
 {
     [Trait("UnitTest", "ProjectSystem")]
-    public class SingleFileGeneratorFactoryAggregatorTests
+    public class VsSingleFileGeneratorFactoryTests
     {
         public static Guid PackageGuid = Guid.Parse("860A27C0-B665-47F3-BC12-637E16A1050A");
 
@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
         [InlineData(1, 0, 1)]
         [InlineData(0, 1, 0)]
         [InlineData(2, 3, 4)]
-        public void SingleFileGeneratorFactoryAggregator_GivenValidRegistry_RetrievesData(int designTimeSource, int sharedDesignTimeSource, int compileFlag)
+        public void VsSingleFileGeneratorFactory_GivenValidRegistry_RetrievesData(int designTimeSource, int sharedDesignTimeSource, int compileFlag)
         {
             UnitTestHelper.IsRunningUnitTests = true;
             var manager = CreateManager(true, designTimeSource, sharedDesignTimeSource, compileFlag);
@@ -27,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
 
             var integrationService = IVsUnconfiguredProjectIntegrationServiceFactory.ImplementProjectTypeGuid(PackageGuid);
 
-            var aggregator = new SingleFileGeneratorFactoryAggregator(serviceProvider, integrationService);
+            var aggregator = new VsSingleFileGeneratorFactory(serviceProvider, integrationService);
 
             Assert.Equal(VSConstants.S_OK,
                 aggregator.GetGeneratorInformation("ResXCodeFileGenerator", out int actualDesignTime, out int actualSharedDesignTime, out int actualCompileFlag, out Guid actualGuid));
@@ -39,14 +39,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
         }
 
         [Fact]
-        public void SingleFileGeneratorFactoryAggregator_GivenValidRegistry_OptionalParamsAreOptional()
+        public void VsSingleFileGeneratorFactory_GivenValidRegistry_OptionalParamsAreOptional()
         {
             UnitTestHelper.IsRunningUnitTests = true;
             var manager = CreateManager();
             var serviceProvider = IServiceProviderFactory.ImplementGetService(type => manager);
             var integrationService = IVsUnconfiguredProjectIntegrationServiceFactory.ImplementProjectTypeGuid(PackageGuid);
 
-            var aggregator = new SingleFileGeneratorFactoryAggregator(serviceProvider, integrationService);
+            var aggregator = new VsSingleFileGeneratorFactory(serviceProvider, integrationService);
 
             Assert.Equal(VSConstants.S_OK,
                 aggregator.GetGeneratorInformation("ResXCodeFileGenerator", out int actualDesignTime, out int actualSharedDesignTime, out int actualCompileFlag, out Guid actualGuid));
@@ -58,35 +58,35 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
         }
 
         [Fact]
-        public void SingleFileGeneratorFactoryAggregator_NoClsid_ReturnsFail()
+        public void VsSingleFileGeneratorFactory_NoClsid_ReturnsFail()
         {
             UnitTestHelper.IsRunningUnitTests = true;
             var manager = CreateManagerForPath($"Generators\\{PackageGuid.ToString("B").ToUpper()}\\ResXCodeFileGenerator");
             var serviceProvider = IServiceProviderFactory.ImplementGetService(type => manager);
             var integrationService = IVsUnconfiguredProjectIntegrationServiceFactory.ImplementProjectTypeGuid(PackageGuid);
 
-            var aggregator = new SingleFileGeneratorFactoryAggregator(serviceProvider, integrationService);
+            var aggregator = new VsSingleFileGeneratorFactory(serviceProvider, integrationService);
 
             Assert.Equal(VSConstants.E_FAIL,
                 aggregator.GetGeneratorInformation("ResXCodeFileGenerator", out int actualDesignTime, out int actualSharedDesignTime, out int actualCompileFlag, out Guid actualGuid));
         }
 
         [Fact]
-        public void SingleFileGeneratorFactoryAggregator_NoGeneratorId_ReturnsFail()
+        public void VsSingleFileGeneratorFactory_NoGeneratorId_ReturnsFail()
         {
             UnitTestHelper.IsRunningUnitTests = true;
             var manager = CreateManagerForPath($"Generators\\{PackageGuid.ToString("B").ToUpper()}");
             var serviceProvider = IServiceProviderFactory.ImplementGetService(type => manager);
             var integrationService = IVsUnconfiguredProjectIntegrationServiceFactory.ImplementProjectTypeGuid(PackageGuid);
 
-            var aggregator = new SingleFileGeneratorFactoryAggregator(serviceProvider, integrationService);
+            var aggregator = new VsSingleFileGeneratorFactory(serviceProvider, integrationService);
 
             Assert.Equal(VSConstants.E_FAIL,
                 aggregator.GetGeneratorInformation("ResXCodeFileGenerator", out int actualDesignTime, out int actualSharedDesignTime, out int actualCompileFlag, out Guid actualGuid));
         }
 
         [Fact]
-        public void SingleFileGeneratorFactoryAggregator_NoPackage_ReturnsFail()
+        public void VsSingleFileGeneratorFactory_NoPackage_ReturnsFail()
         {
             UnitTestHelper.IsRunningUnitTests = true;
             var manager = CreateManagerForPath($"Generators");
@@ -94,14 +94,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
 
             var integrationService = IVsUnconfiguredProjectIntegrationServiceFactory.ImplementProjectTypeGuid(PackageGuid);
 
-            var aggregator = new SingleFileGeneratorFactoryAggregator(serviceProvider, integrationService);
+            var aggregator = new VsSingleFileGeneratorFactory(serviceProvider, integrationService);
 
             Assert.Equal(VSConstants.E_FAIL,
                 aggregator.GetGeneratorInformation("ResXCodeFileGenerator", out int actualDesignTime, out int actualSharedDesignTime, out int actualCompileFlag, out Guid actualGuid));
         }
 
         [Fact]
-        public void SingleFileGeneratorFactoryAggregator_NoGenerators_ReturnsFail()
+        public void VsSingleFileGeneratorFactory_NoGenerators_ReturnsFail()
         {
             UnitTestHelper.IsRunningUnitTests = true;
             var manager = CreateManagerForPath("");
@@ -109,7 +109,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
 
             var integrationService = IVsUnconfiguredProjectIntegrationServiceFactory.ImplementProjectTypeGuid(PackageGuid);
 
-            var aggregator = new SingleFileGeneratorFactoryAggregator(serviceProvider, integrationService);
+            var aggregator = new VsSingleFileGeneratorFactory(serviceProvider, integrationService);
 
             Assert.Equal(VSConstants.E_FAIL,
                 aggregator.GetGeneratorInformation("ResXCodeFileGenerator", out int actualDesignTime, out int actualSharedDesignTime, out int actualCompileFlag, out Guid actualGuid));
@@ -159,9 +159,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
             };
         }
 
-        private static SingleFileGeneratorFactoryAggregator CreateInstance()
+        private static VsSingleFileGeneratorFactory CreateInstance()
         {
-            return new SingleFileGeneratorFactoryAggregator(IServiceProviderFactory.Create(), IVsUnconfiguredProjectIntegrationServiceFactory.Create());
+            return new VsSingleFileGeneratorFactory(IServiceProviderFactory.Create(), IVsUnconfiguredProjectIntegrationServiceFactory.Create());
         }
     }
 }
