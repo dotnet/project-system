@@ -2,14 +2,14 @@
 
 using System.ComponentModel.Composition;
 
-using Microsoft.VisualStudio.Packaging;
+using Microsoft.VisualStudio.Input;
 using Microsoft.VisualStudio.ProjectSystem.Build;
 using Microsoft.VisualStudio.ProjectSystem.Input;
 using Microsoft.VisualStudio.Shell;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 {
-    [ProjectCommand(ManagedProjectSystemPackage.ManagedProjectSystemCommandSet, ManagedProjectSystemPackage.GenerateNuGetPackageProjectContextMenuCmdId)]
+    [ProjectCommand(CommandGroup.ManagedProjectSystem, ManagedProjectSystemCommandId.GenerateNuGetPackageProjectContextMenu)]
     [AppliesTo(ProjectCapability.Pack)]
     internal class GenerateNuGetPackageProjectContextMenuCommand : AbstractGenerateNuGetPackageCommand
     {
