@@ -12,10 +12,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
     /// </summary>
     [ExportProjectNodeComService((typeof(IVsBuildMacroInfo)))]
     [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp)]
-    internal class BuildMacroInfo : IVsBuildMacroInfo
+    internal class BuildMacroInfo : IVsBuildMacroInfo, IDisposable
     {
-        private readonly IProjectThreadingService _threadingService;
-        private readonly ActiveConfiguredProject<ConfiguredProject> _configuredProject;
+        private IProjectThreadingService _threadingService;
+        private ActiveConfiguredProject<ConfiguredProject> _configuredProject;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BuildMacroInfo"/> class.
@@ -39,6 +39,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// <returns>If the method succeeds, it returns S_OK. If it fails, it returns an error code.</returns>
         public int GetBuildMacroValue(string bstrBuildMacroName, out string pbstrBuildMacroValue)
         {
+            if (_configuredProject == null)
+            {
+                pbstrBuildMacroValue = null;
+                return HResult.Unexpected;
+            }
+
             pbstrBuildMacroValue = null;
             ProjectSystem.Properties.IProjectProperties commonProperties = _configuredProject.Value.Services.ProjectPropertiesProvider.GetCommonProperties();
             pbstrBuildMacroValue = _threadingService.ExecuteSynchronously(() => commonProperties.GetEvaluatedPropertyValueAsync(bstrBuildMacroName));
@@ -52,6 +58,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             {
                 return VSConstants.S_OK;
             }
+        }
+
+        public void Dispose()
+        {
+            // Important for ProjectNodeComServices to null out fields to reduce the amount 
+            // of data we leak when extensions incorrectly holds onto the IVsHierarchy.
+            _threadingService = null;
+            _configuredProject = null;
         }
     }
 }
