@@ -75,13 +75,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
             if (prgAssemblySpecs == null || cAssembliesToResolve == 0 || prgResolvedAssemblyPaths == null || cAssembliesToResolve != prgAssemblySpecs.Length || cAssembliesToResolve != prgResolvedAssemblyPaths.Length)
             {
                 pcResolvedAssemblyPaths = 0;
-                return VSConstants.E_INVALIDARG;
+                return HResult.InvalidArg;
             }
 
             if (!TryParseAssemblyNames(prgAssemblySpecs, out AssemblyName[] assemblyNames))
             {
                 pcResolvedAssemblyPaths = 0;
-                return VSConstants.E_INVALIDARG;
+                return HResult.InvalidArg;
             }
 
             if (_projectVsServices == null)
