@@ -26,8 +26,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             Assert.Equal(expectedValue, macroValue);
         }
 
-        private static BuildMacroInfo CreateInstance(ConfiguredProject configuredProject)
+        [Fact]
+        public void GetBuildMacroValue_WhenDisposed_ReturnsUnexpected()
         {
+            var buildMacroInfo = CreateInstance();
+            buildMacroInfo.Dispose();
+
+            var result = buildMacroInfo.GetBuildMacroValue("Macro", out _);
+
+            Assert.Equal(VSConstants.E_UNEXPECTED, result);
+        }
+
+        private static BuildMacroInfo CreateInstance(ConfiguredProject configuredProject = null)
+        {
+            configuredProject = configuredProject ?? ConfiguredProjectFactory.Create();
+
             var threadingService = IProjectThreadingServiceFactory.Create();
 
             return new BuildMacroInfo(ActiveConfiguredProjectFactory.ImplementValue(() => configuredProject), threadingService);
