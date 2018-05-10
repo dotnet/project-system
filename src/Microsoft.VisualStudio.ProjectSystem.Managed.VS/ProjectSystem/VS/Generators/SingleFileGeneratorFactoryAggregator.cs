@@ -9,7 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
 {
     [ExportProjectNodeComService(typeof(IVsSingleFileGeneratorFactory))]
     [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp)]
-    internal class SingleFileGeneratorFactoryAggregator : IVsSingleFileGeneratorFactory
+    internal class SingleFileGeneratorFactoryAggregator : IVsSingleFileGeneratorFactory, IDisposable
     {
         // Constants for the generator information registry keys
         private const string CLSIDKey = "CLSID";
@@ -17,8 +17,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
         private const string SharedDesignTimeSourceKey = "GeneratesSharedDesignTimeSource";
         private const string DesignTimeCompilationFlagKey = "UseDesignTimeCompilationFlag";
 
-        private readonly IServiceProvider _serviceProvider;
-        private readonly IVsUnconfiguredProjectIntegrationService _projectIntegrationService;
+        private IServiceProvider _serviceProvider;
+        private IVsUnconfiguredProjectIntegrationService _projectIntegrationService;
 
         [ImportingConstructor]
         public SingleFileGeneratorFactoryAggregator(
@@ -56,6 +56,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
             if (wszProgId == null || string.IsNullOrWhiteSpace(wszProgId))
             {
                 return VSConstants.E_INVALIDARG;
+            }
+
+            if (_projectIntegrationService == null)
+            {
+                return HResult.Unexpected;
             }
 
             // Get the guid of the project
@@ -116,6 +121,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
             pbUseTempPEFlag = pbUseTempPEFlag == 1 ? 1 : 0;
 
             return VSConstants.S_OK;
+        }
+
+        public void Dispose()
+        {
+            // Important for ProjectNodeComServices to null out fields to reduce the amount 
+            // of data we leak when extensions incorrectly holds onto the IVsHierarchy.
+            _serviceProvider = null;
+            _projectIntegrationService = null;
         }
     }
 }
