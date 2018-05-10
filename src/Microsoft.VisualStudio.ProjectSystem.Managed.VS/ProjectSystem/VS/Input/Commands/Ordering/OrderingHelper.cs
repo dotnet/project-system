@@ -132,6 +132,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
             Requires.NotNull(target, nameof(target));
 
             var referenceElement = TryGetReferenceElement(project, target, ImmutableArray<string>.Empty, MoveAction.Above);
+            if (referenceElement == null)
+            {
+                return false;
+            }
+
             return TryMoveElements(elements, referenceElement, MoveAction.Above);
         }
 
@@ -144,6 +149,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
             Requires.NotNull(target, nameof(target));
 
             var referenceElement = TryGetReferenceElement(project, target, ImmutableArray<string>.Empty, MoveAction.Below);
+            if (referenceElement == null)
+            {
+                return false;
+            }
+
             return TryMoveElements(elements, referenceElement, MoveAction.Below);
         }
 
@@ -155,31 +165,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
             Requires.NotNull(project, nameof(project));
             Requires.NotNull(target, nameof(target));
 
-            // Get the target's first child. We use that child as our reference to move.
-            var targetChild = GetChildren(target).FirstOrDefault();
+            var newTarget = target;
 
-            // If we didn't find a child and our target is an empty folder and not the project root, let's walk up the tree to find a new target child.
-            // Empty folders do not have a valid display order currently in CPS. If they ever do, we have to make changes to this.
-            if (targetChild == null && target.IsFolder && !target.Flags.Contains(ProjectTreeFlags.ProjectRoot))
+            // This is to handle adding files to empty folders since empty folders do not have a valid display order yet.
+            // We need to find a target up the tree that has a valid display order, because it most likely will have our reference element that we want.
+            while (!HasValidDisplayOrder(newTarget) && !newTarget.Flags.Contains(ProjectTreeFlags.ProjectRoot))
             {
-                var referenceTarget = target;
-                while (targetChild == null && !referenceTarget.Flags.Contains(ProjectTreeFlags.ProjectRoot))
-                {
-                    referenceTarget = referenceTarget.Parent;
-                    targetChild = GetChildren(referenceTarget).FirstOrDefault();
-                }
+                newTarget = newTarget.Parent;
             }
 
-            if (targetChild == null)
-            {
-                // The project is empty, we don't need to move anything.
-                return false;
-            }
-
-            // Make sure we exclude the moving elements when trying to find a reference element; this prevents us from choosing a reference element that is part of the moving elements.
-            var referenceElement = TryGetReferenceElement(project, targetChild, elements.Select(x => x.Include).ToImmutableArray(), MoveAction.Above);
-
-            // If we couldn't find a reference element, we can't move the elements and we don't need to.
+            var excludeIncludes = elements.Select(x => x.Include).ToImmutableArray();
+            var referenceElement = GetChildren(newTarget).Select(x => TryGetReferenceElement(project, x, excludeIncludes, MoveAction.Above)).FirstOrDefault(x => x != null);
             if (referenceElement == null)
             {
                 return false;
@@ -217,7 +213,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
                 var item = project.GetItemsByEvaluatedInclude(include).FirstOrDefault();
 
                 // We only care about adding one item associated with the evaluated include.
-                if (item?.Xml is ProjectItemElement element)
+                if (item?.Xml is ProjectItemElement element && !item.IsImported)
                 {
                     elements.Add(element);
                 }
@@ -487,7 +483,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
             return project.AllEvaluatedItems
                 // We are excluding folder elements until CPS allows empty folders to be part of the order; when they do, we can omit checking the item type for "Folder".
                 // Related changes will also need to happen in TryMoveElementsToTop when CPS allows empty folders in ordering.
-                .Where(x => !previousIncludes.Contains(x.EvaluatedInclude, StringComparer.OrdinalIgnoreCase) && !x.ItemType.Equals("Folder", StringComparison.OrdinalIgnoreCase))
+                // Don't choose items that were imported. Most likely won't happen on added elements, but just in case for sanity.
+                .Where(x => !previousIncludes.Contains(x.EvaluatedInclude, StringComparer.OrdinalIgnoreCase) && !x.ItemType.Equals("Folder", StringComparison.OrdinalIgnoreCase) && !x.IsImported)
                 .Select(x => x.Xml)
                 .ToImmutableArray();
         }
