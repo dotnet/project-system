@@ -19,13 +19,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             var configuredProjectServices = Mock.Of<IConfiguredProjectServices>(o =>
                 o.ProjectPropertiesProvider == propertiesProvider);
             var configuredProject = ConfiguredProjectFactory.Create(services: configuredProjectServices);
-            ActiveConfiguredProject<ConfiguredProject> activeConfiguredProject = ActiveConfiguredProjectFactory.ImplementValue(() => configuredProject);
-            var threadingService = IProjectThreadingServiceFactory.Create();
 
-            var buildMacroInfo = new BuildMacroInfo(activeConfiguredProject, threadingService);
+            var buildMacroInfo = CreateInstance(configuredProject);
             int retVal = buildMacroInfo.GetBuildMacroValue(macroName, out string macroValue);
             Assert.Equal(expectedRetVal, retVal);
             Assert.Equal(expectedValue, macroValue);
+        }
+
+        private static BuildMacroInfo CreateInstance(ConfiguredProject configuredProject)
+        {
+            var threadingService = IProjectThreadingServiceFactory.Create();
+
+            return new BuildMacroInfo(ActiveConfiguredProjectFactory.ImplementValue(() => configuredProject), threadingService);
         }
     }
 }
