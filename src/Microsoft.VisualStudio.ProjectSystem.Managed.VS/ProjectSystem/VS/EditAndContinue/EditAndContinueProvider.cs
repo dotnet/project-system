@@ -42,42 +42,42 @@ namespace Microsoft.VisualStudio.ProjectSystem.Managed.VS.EditAndContinue
         public int ENCRebuild(object in_pProgram, out object out_ppSnapshot)
         {
             out_ppSnapshot = null;
-            return VSConstants.E_NOTIMPL;
+            return HResult.NotImplemented;
         }
 
         public int BelongToProject(string in_szFileName, ENC_REASON in_ENCReason, int in_fOnContinue)
         {
-            return VSConstants.E_NOTIMPL;
+            return HResult.NotImplemented;
         }
 
         public int ENCComplete(int in_fENCSuccess)
         {
-            return VSConstants.E_NOTIMPL;
+            return HResult.NotImplemented;
         }
 
         public int CancelENC()
         {
-            return VSConstants.E_NOTIMPL;
+            return HResult.NotImplemented;
         }
 
         public int ENCRelink([In, MarshalAs(UnmanagedType.IUnknown)] object pENCRelinkInfo)
         {
-            return VSConstants.E_NOTIMPL;
+            return HResult.NotImplemented;
         }
 
         public int StartDebugging()
         {
-            return VSConstants.E_NOTIMPL;
+            return HResult.NotImplemented;
         }
 
         public int StopDebugging()
         {
-            return VSConstants.E_NOTIMPL;
+            return HResult.NotImplemented;
         }
 
         public int SetENCProjectBuildOption([In] ref Guid in_guidOption, [In, MarshalAs(UnmanagedType.LPWStr)] string in_szOptionValue)
         {
-            return VSConstants.E_NOTIMPL;
+            return HResult.NotImplemented;
         }
 
     }
