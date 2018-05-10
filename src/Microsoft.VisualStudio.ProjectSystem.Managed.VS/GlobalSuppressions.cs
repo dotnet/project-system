@@ -1,0 +1,1 @@
+﻿[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1063:Implement IDisposable Correctly", Justification = "https://github.com/dotnet/roslyn-analyzers/issues/1432", Scope = "member", Target = "~M:Microsoft.VisualStudio.ProjectSystem.Managed.VS.EditAndContinue.EditAndContinueProvider.Dispose")]

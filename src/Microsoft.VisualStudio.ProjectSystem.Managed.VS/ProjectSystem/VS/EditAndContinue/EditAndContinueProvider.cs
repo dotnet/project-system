@@ -12,12 +12,11 @@ using EncInterop = Microsoft.VisualStudio.LanguageServices.Implementation.EditAn
 
 namespace Microsoft.VisualStudio.ProjectSystem.Managed.VS.EditAndContinue
 {
-
     [ExportProjectNodeComService(typeof(IVsENCRebuildableProjectCfg))]
     [AppliesTo(ProjectCapability.EditAndContinue)]
-    internal class EditAndContinueProvider : IVsENCRebuildableProjectCfg
+    internal class EditAndContinueProvider : IVsENCRebuildableProjectCfg, IDisposable
     {
-        private readonly ILanguageServiceHost _host;
+        private ILanguageServiceHost _host;
 
         [ImportingConstructor]
         public EditAndContinueProvider(ILanguageServiceHost host)
@@ -80,5 +79,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Managed.VS.EditAndContinue
             return HResult.NotImplemented;
         }
 
+        public void Dispose()
+        {
+            // Important for ProjectNodeComServices to null out fields to reduce the amount 
+            // of data we leak when extensions someone incorrectly holds onto the IVsHierarchy.
+            _host = null;
+        }
     }
 }
