@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
         [InlineData(1, 0, 1)]
         [InlineData(0, 1, 0)]
         [InlineData(2, 3, 4)]
-        public void VsSingleFileGeneratorFactory_GivenValidRegistry_RetrievesData(int designTimeSource, int sharedDesignTimeSource, int compileFlag)
+        public void GetGeneratorInformation_GivenValidRegistry_RetrievesData(int designTimeSource, int sharedDesignTimeSource, int compileFlag)
         {
             UnitTestHelper.IsRunningUnitTests = true;
             var manager = CreateManager(true, designTimeSource, sharedDesignTimeSource, compileFlag);
@@ -39,7 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
         }
 
         [Fact]
-        public void VsSingleFileGeneratorFactory_GivenValidRegistry_OptionalParamsAreOptional()
+        public void GetGeneratorInformation_GivenValidRegistry_OptionalParamsAreOptional()
         {
             UnitTestHelper.IsRunningUnitTests = true;
             var manager = CreateManager();
@@ -58,7 +58,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
         }
 
         [Fact]
-        public void VsSingleFileGeneratorFactory_NoClsid_ReturnsFail()
+        public void GetGeneratorInformation_NoClsid_ReturnsFail()
         {
             UnitTestHelper.IsRunningUnitTests = true;
             var manager = IVsSettingsManagerFactory.Create($"Generators\\{PackageGuid.ToString("B").ToUpper()}\\ResXCodeFileGenerator");
@@ -72,7 +72,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
         }
 
         [Fact]
-        public void VsSingleFileGeneratorFactory_NoGeneratorId_ReturnsFail()
+        public void GetGeneratorInformation_NoGeneratorId_ReturnsFail()
         {
             UnitTestHelper.IsRunningUnitTests = true;
             var manager = IVsSettingsManagerFactory.Create($"Generators\\{PackageGuid.ToString("B").ToUpper()}");
@@ -86,7 +86,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
         }
 
         [Fact]
-        public void VsSingleFileGeneratorFactory_NoPackage_ReturnsFail()
+        public void GetGeneratorInformation_NoPackage_ReturnsFail()
         {
             UnitTestHelper.IsRunningUnitTests = true;
             var manager = IVsSettingsManagerFactory.Create($"Generators");
@@ -101,7 +101,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
         }
 
         [Fact]
-        public void VsSingleFileGeneratorFactory_NoGenerators_ReturnsFail()
+        public void GetGeneratorInformation_NoGenerators_ReturnsFail()
         {
             UnitTestHelper.IsRunningUnitTests = true;
             var manager = IVsSettingsManagerFactory.Create("");
