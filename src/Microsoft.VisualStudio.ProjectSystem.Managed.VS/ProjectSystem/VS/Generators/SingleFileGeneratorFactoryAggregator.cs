@@ -36,14 +36,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
             pbGeneratesSharedDesignTimeSource = 0;
             pbUseTempPEFlag = 0;
             ppGenerate = null;
-            return VSConstants.E_NOTIMPL;
+            return HResult.NotImplemented;
         }
 
         public int GetDefaultGenerator(string wszFilename, out string pbstrGenProgID)
         {
             // The only user in the project system does not call this method.
             pbstrGenProgID = null;
-            return VSConstants.E_NOTIMPL;
+            return HResult.NotImplemented;
         }
 
         public int GetGeneratorInformation(string wszProgId, out int pbGeneratesDesignTimeSource, out int pbGeneratesSharedDesignTimeSource, out int pbUseTempPEFlag, out Guid pguidGenerator)
@@ -55,7 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
 
             if (wszProgId == null || string.IsNullOrWhiteSpace(wszProgId))
             {
-                return VSConstants.E_INVALIDARG;
+                return HResult.InvalidArg;
             }
 
             if (_projectIntegrationService == null)
@@ -69,7 +69,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
 
             if (projectGuid.Equals(Guid.Empty))
             {
-                return VSConstants.E_FAIL;
+                return HResult.Fail;
             }
 
             IVsSettingsManager manager = _serviceProvider.GetService<IVsSettingsManager, SVsSettingsManager>();
@@ -88,7 +88,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
 
             if (exists != 1)
             {
-                return VSConstants.E_FAIL;
+                return HResult.Fail;
             }
 
             // The clsid value is the only required value. The other 3 are optional
@@ -99,7 +99,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
             }
             if (exists != 1)
             {
-                return VSConstants.E_FAIL;
+                return HResult.Fail;
             }
 
             hr = store.GetString(key, CLSIDKey, out string clsidString);
@@ -109,7 +109,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
             }
             if (string.IsNullOrWhiteSpace(clsidString) || !Guid.TryParse(clsidString, out pguidGenerator))
             {
-                return VSConstants.E_FAIL;
+                return HResult.Fail;
             }
 
             // Explicitly convert anything that's not 1 to 0. These aren't required keys, so we don't explicitly fail here.
@@ -120,7 +120,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
             store.GetIntOrDefault(key, DesignTimeCompilationFlagKey, 0, out pbUseTempPEFlag);
             pbUseTempPEFlag = pbUseTempPEFlag == 1 ? 1 : 0;
 
-            return VSConstants.S_OK;
+            return HResult.OK;
         }
 
         public void Dispose()
