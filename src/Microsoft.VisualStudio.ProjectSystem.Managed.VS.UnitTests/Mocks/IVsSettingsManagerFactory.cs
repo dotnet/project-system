@@ -3,39 +3,65 @@ using System.Collections.Generic;
 
 namespace Microsoft.VisualStudio.Shell.Interop
 {
-    internal class IVsSettingsManagerFactory : IVsSettingsManager
+    internal class IVsSettingsManagerFactory
     {
-        public IDictionary<uint, IVsSettingsStore> Stores { get; set; } = new Dictionary<uint, IVsSettingsStore>();
-
-        public int GetApplicationDataFolder(uint folder, out string folderPath)
+        public static IVsSettingsManager Create()
         {
-            throw new NotImplementedException();
+            return Create("");
         }
 
-        public int GetCollectionScopes(string collectionPath, out uint scopes)
+        public static IVsSettingsManager Create(string path, IDictionary<string, object> vals = null)
         {
-            throw new NotImplementedException();
+            var store = new IVsSettingsStoreTester
+            {
+                Keys = new Dictionary<string, IDictionary<string, object>>(StringComparer.OrdinalIgnoreCase)
+                {
+                    { path, vals ?? new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase) }
+                }
+            };
+            return new VsSettingsManger
+            {
+                Stores = new Dictionary<uint, IVsSettingsStore>
+                {
+                    { (uint)__VsSettingsScope.SettingsScope_Configuration, store }
+                }
+            };
         }
 
-        public int GetCommonExtensionsSearchPaths(uint paths, string[] commonExtensionsPaths, out uint actualPaths)
+        private class VsSettingsManger : IVsSettingsManager
         {
-            throw new NotImplementedException();
-        }
+            public IDictionary<uint, IVsSettingsStore> Stores { get; set; } = new Dictionary<uint, IVsSettingsStore>();
 
-        public int GetPropertyScopes(string collectionPath, string propertyName, out uint scopes)
-        {
-            throw new NotImplementedException();
-        }
+            public int GetApplicationDataFolder(uint folder, out string folderPath)
+            {
+                throw new NotImplementedException();
+            }
 
-        public int GetReadOnlySettingsStore(uint scope, out IVsSettingsStore store)
-        {
-            store = Stores[scope];
-            return Stores.ContainsKey(scope) ? VSConstants.S_OK : VSConstants.E_FAIL;
-        }
+            public int GetCollectionScopes(string collectionPath, out uint scopes)
+            {
+                throw new NotImplementedException();
+            }
 
-        public int GetWritableSettingsStore(uint scope, out IVsWritableSettingsStore writableStore)
-        {
-            throw new NotImplementedException();
+            public int GetCommonExtensionsSearchPaths(uint paths, string[] commonExtensionsPaths, out uint actualPaths)
+            {
+                throw new NotImplementedException();
+            }
+
+            public int GetPropertyScopes(string collectionPath, string propertyName, out uint scopes)
+            {
+                throw new NotImplementedException();
+            }
+
+            public int GetReadOnlySettingsStore(uint scope, out IVsSettingsStore store)
+            {
+                store = Stores[scope];
+                return Stores.ContainsKey(scope) ? VSConstants.S_OK : VSConstants.E_FAIL;
+            }
+
+            public int GetWritableSettingsStore(uint scope, out IVsWritableSettingsStore writableStore)
+            {
+                throw new NotImplementedException();
+            }
         }
     }
 }

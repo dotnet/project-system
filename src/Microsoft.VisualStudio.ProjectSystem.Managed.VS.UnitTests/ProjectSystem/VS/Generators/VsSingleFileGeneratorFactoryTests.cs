@@ -61,7 +61,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
         public void VsSingleFileGeneratorFactory_NoClsid_ReturnsFail()
         {
             UnitTestHelper.IsRunningUnitTests = true;
-            var manager = CreateManagerForPath($"Generators\\{PackageGuid.ToString("B").ToUpper()}\\ResXCodeFileGenerator");
+            var manager = IVsSettingsManagerFactory.Create($"Generators\\{PackageGuid.ToString("B").ToUpper()}\\ResXCodeFileGenerator");
             var serviceProvider = IServiceProviderFactory.ImplementGetService(type => manager);
             var integrationService = IVsUnconfiguredProjectIntegrationServiceFactory.ImplementProjectTypeGuid(PackageGuid);
 
@@ -75,7 +75,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
         public void VsSingleFileGeneratorFactory_NoGeneratorId_ReturnsFail()
         {
             UnitTestHelper.IsRunningUnitTests = true;
-            var manager = CreateManagerForPath($"Generators\\{PackageGuid.ToString("B").ToUpper()}");
+            var manager = IVsSettingsManagerFactory.Create($"Generators\\{PackageGuid.ToString("B").ToUpper()}");
             var serviceProvider = IServiceProviderFactory.ImplementGetService(type => manager);
             var integrationService = IVsUnconfiguredProjectIntegrationServiceFactory.ImplementProjectTypeGuid(PackageGuid);
 
@@ -89,7 +89,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
         public void VsSingleFileGeneratorFactory_NoPackage_ReturnsFail()
         {
             UnitTestHelper.IsRunningUnitTests = true;
-            var manager = CreateManagerForPath($"Generators");
+            var manager = IVsSettingsManagerFactory.Create($"Generators");
             var serviceProvider = IServiceProviderFactory.ImplementGetService(type => manager);
 
             var integrationService = IVsUnconfiguredProjectIntegrationServiceFactory.ImplementProjectTypeGuid(PackageGuid);
@@ -104,7 +104,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
         public void VsSingleFileGeneratorFactory_NoGenerators_ReturnsFail()
         {
             UnitTestHelper.IsRunningUnitTests = true;
-            var manager = CreateManagerForPath("");
+            var manager = IVsSettingsManagerFactory.Create("");
             var serviceProvider = IServiceProviderFactory.ImplementGetService(type => manager);
 
             var integrationService = IVsUnconfiguredProjectIntegrationServiceFactory.ImplementProjectTypeGuid(PackageGuid);
@@ -138,25 +138,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
                 vals["GeneratesSharedDesignTimeSource"] = sharedDesignTimeSource;
                 vals["UseDesignTimeCompilationFlag"] = compileFlag;
             }
-            return CreateManagerForPath($"Generators\\{PackageGuid.ToString("B").ToUpper()}\\ResXCodeFileGenerator", vals);
-        }
-
-        private IVsSettingsManager CreateManagerForPath(string path, IDictionary<string, object> vals = null)
-        {
-            var store = new IVsSettingsStoreTester
-            {
-                Keys = new Dictionary<string, IDictionary<string, object>>(StringComparer.OrdinalIgnoreCase)
-                {
-                    { path, vals ?? new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase) }
-                }
-            };
-            return new IVsSettingsManagerFactory
-            {
-                Stores = new Dictionary<uint, IVsSettingsStore>
-                {
-                    { (uint)__VsSettingsScope.SettingsScope_Configuration, store }
-                }
-            };
+            return IVsSettingsManagerFactory.Create($"Generators\\{PackageGuid.ToString("B").ToUpper()}\\ResXCodeFileGenerator", vals);
         }
 
         private static VsSingleFileGeneratorFactory CreateInstance()
