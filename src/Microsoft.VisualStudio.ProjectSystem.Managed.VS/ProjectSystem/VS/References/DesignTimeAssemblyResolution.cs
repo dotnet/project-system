@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
     [ExportVsProfferedProjectService(typeof(SVsDesignTimeAssemblyResolution))]
     [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp)]
     [Order(Order.Default)] // Before CPS's version
-    internal partial class DesignTimeAssemblyResolution : IVsDesignTimeAssemblyResolution
+    internal partial class DesignTimeAssemblyResolution : IVsDesignTimeAssemblyResolution, IDisposable
     {
         // NOTE: Unlike the legacy project system, this implementation does resolve only "framework" assemblies. In .NET Core and other project types, framework assemblies
         // are not treated specially - they just come through as normal references from packages. We also do not have a static registration of what assemblies would make up 
@@ -39,7 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
         // Ideally this would sit on a simple wrapper over the top of project subscription service, however, CPS's internal ReferencesHostBridge, which populates VSLangProj.References,
         // already does the work to listen to the project subscription for reference adds/removes/changes and makes sure to publish the results in sync with the solution tree.
         // We just use its results.
-        private readonly IUnconfiguredProjectVsServices _projectVsServices;
+        private IUnconfiguredProjectVsServices _projectVsServices;
 
         [ImportingConstructor]
         public DesignTimeAssemblyResolution(IUnconfiguredProjectVsServices projectVsServices)
@@ -61,6 +61,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
 
         public int GetTargetFramework(out string ppTargetFramework)
         {
+            if (_projectVsServices == null)
+            {
+                ppTargetFramework = null;
+                return HResult.Unexpected;
+            }
+
             return _projectVsServices.VsHierarchy.GetProperty(VsHierarchyPropID.TargetFrameworkMoniker, defaultValue: null, result: out ppTargetFramework);
         }
 
@@ -76,6 +82,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
             {
                 pcResolvedAssemblyPaths = 0;
                 return VSConstants.E_INVALIDARG;
+            }
+
+            if (_projectVsServices == null)
+            {
+                pcResolvedAssemblyPaths = 0;
+                return HResult.Unexpected;
             }
 
             pcResolvedAssemblyPaths = ResolveReferences(prgAssemblySpecs, assemblyNames, prgResolvedAssemblyPaths);
@@ -190,6 +202,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
             }
 
             return null;
+        }
+
+        public void Dispose()
+        {
+            // Important for ProjectNodeComServices to null out fields to reduce the amount 
+            // of data we leak when extensions incorrectly holds onto the IVsHierarchy.
+            _projectVsServices = null;
         }
     }
 }
