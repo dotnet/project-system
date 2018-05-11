@@ -21,7 +21,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
         [InlineData(2, 3, 4)]
         public void GetGeneratorInformation_GivenValidRegistry_RetrievesData(int designTimeSource, int sharedDesignTimeSource, int compileFlag)
         {
-            UnitTestHelper.IsRunningUnitTests = true;
             var manager = CreateManager(true, designTimeSource, sharedDesignTimeSource, compileFlag);
             var integrationService = IVsUnconfiguredProjectIntegrationServiceFactory.ImplementProjectTypeGuid(PackageGuid);
 
@@ -39,7 +38,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
         [Fact]
         public void GetGeneratorInformation_GivenValidRegistry_OptionalParamsAreOptional()
         {
-            UnitTestHelper.IsRunningUnitTests = true;
             var manager = CreateManager();
             var integrationService = IVsUnconfiguredProjectIntegrationServiceFactory.ImplementProjectTypeGuid(PackageGuid);
 
@@ -57,7 +55,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
         [Fact]
         public void GetGeneratorInformation_NoClsid_ReturnsFail()
         {
-            UnitTestHelper.IsRunningUnitTests = true;
             var manager = IVsSettingsManagerFactory.Create($"Generators\\{PackageGuid.ToString("B").ToUpper()}\\ResXCodeFileGenerator");
             var integrationService = IVsUnconfiguredProjectIntegrationServiceFactory.ImplementProjectTypeGuid(PackageGuid);
 
@@ -70,7 +67,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
         [Fact]
         public void GetGeneratorInformation_NoGeneratorId_ReturnsFail()
         {
-            UnitTestHelper.IsRunningUnitTests = true;
             var manager = IVsSettingsManagerFactory.Create($"Generators\\{PackageGuid.ToString("B").ToUpper()}");
             var integrationService = IVsUnconfiguredProjectIntegrationServiceFactory.ImplementProjectTypeGuid(PackageGuid);
 
@@ -83,7 +79,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
         [Fact]
         public void GetGeneratorInformation_NoPackage_ReturnsFail()
         {
-            UnitTestHelper.IsRunningUnitTests = true;
             var manager = IVsSettingsManagerFactory.Create($"Generators");
             
             var integrationService = IVsUnconfiguredProjectIntegrationServiceFactory.ImplementProjectTypeGuid(PackageGuid);
@@ -97,7 +92,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
         [Fact]
         public void GetGeneratorInformation_NoGenerators_ReturnsFail()
         {
-            UnitTestHelper.IsRunningUnitTests = true;
             var manager = IVsSettingsManagerFactory.Create("");
 
             var integrationService = IVsUnconfiguredProjectIntegrationServiceFactory.ImplementProjectTypeGuid(PackageGuid);

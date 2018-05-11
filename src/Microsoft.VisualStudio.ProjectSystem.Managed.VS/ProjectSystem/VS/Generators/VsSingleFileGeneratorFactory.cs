@@ -62,8 +62,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
                 return HResult.Unexpected;
             }
 
-            // Get the guid of the project
-            UIThreadHelper.VerifyOnUIThread();
             Guid projectGuid = _projectIntegrationService.ProjectTypeGuid;
 
             if (projectGuid.Equals(Guid.Empty))
