@@ -23,11 +23,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
         {
             UnitTestHelper.IsRunningUnitTests = true;
             var manager = CreateManager(true, designTimeSource, sharedDesignTimeSource, compileFlag);
-            var serviceProvider = IServiceProviderFactory.ImplementGetService(type => manager);
-
             var integrationService = IVsUnconfiguredProjectIntegrationServiceFactory.ImplementProjectTypeGuid(PackageGuid);
 
-            var aggregator = new VsSingleFileGeneratorFactory(serviceProvider, integrationService);
+            var aggregator = CreateInstance(manager, integrationService);
 
             Assert.Equal(VSConstants.S_OK,
                 aggregator.GetGeneratorInformation("ResXCodeFileGenerator", out int actualDesignTime, out int actualSharedDesignTime, out int actualCompileFlag, out Guid actualGuid));
@@ -43,10 +41,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
         {
             UnitTestHelper.IsRunningUnitTests = true;
             var manager = CreateManager();
-            var serviceProvider = IServiceProviderFactory.ImplementGetService(type => manager);
             var integrationService = IVsUnconfiguredProjectIntegrationServiceFactory.ImplementProjectTypeGuid(PackageGuid);
 
-            var aggregator = new VsSingleFileGeneratorFactory(serviceProvider, integrationService);
+            var aggregator = CreateInstance(manager, integrationService);
 
             Assert.Equal(VSConstants.S_OK,
                 aggregator.GetGeneratorInformation("ResXCodeFileGenerator", out int actualDesignTime, out int actualSharedDesignTime, out int actualCompileFlag, out Guid actualGuid));
@@ -62,10 +59,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
         {
             UnitTestHelper.IsRunningUnitTests = true;
             var manager = IVsSettingsManagerFactory.Create($"Generators\\{PackageGuid.ToString("B").ToUpper()}\\ResXCodeFileGenerator");
-            var serviceProvider = IServiceProviderFactory.ImplementGetService(type => manager);
             var integrationService = IVsUnconfiguredProjectIntegrationServiceFactory.ImplementProjectTypeGuid(PackageGuid);
 
-            var aggregator = new VsSingleFileGeneratorFactory(serviceProvider, integrationService);
+            var aggregator = CreateInstance(manager, integrationService);
 
             Assert.Equal(VSConstants.E_FAIL,
                 aggregator.GetGeneratorInformation("ResXCodeFileGenerator", out int actualDesignTime, out int actualSharedDesignTime, out int actualCompileFlag, out Guid actualGuid));
@@ -76,10 +72,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
         {
             UnitTestHelper.IsRunningUnitTests = true;
             var manager = IVsSettingsManagerFactory.Create($"Generators\\{PackageGuid.ToString("B").ToUpper()}");
-            var serviceProvider = IServiceProviderFactory.ImplementGetService(type => manager);
             var integrationService = IVsUnconfiguredProjectIntegrationServiceFactory.ImplementProjectTypeGuid(PackageGuid);
 
-            var aggregator = new VsSingleFileGeneratorFactory(serviceProvider, integrationService);
+            var aggregator = CreateInstance(manager, integrationService);
 
             Assert.Equal(VSConstants.E_FAIL,
                 aggregator.GetGeneratorInformation("ResXCodeFileGenerator", out int actualDesignTime, out int actualSharedDesignTime, out int actualCompileFlag, out Guid actualGuid));
@@ -90,11 +85,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
         {
             UnitTestHelper.IsRunningUnitTests = true;
             var manager = IVsSettingsManagerFactory.Create($"Generators");
-            var serviceProvider = IServiceProviderFactory.ImplementGetService(type => manager);
-
+            
             var integrationService = IVsUnconfiguredProjectIntegrationServiceFactory.ImplementProjectTypeGuid(PackageGuid);
 
-            var aggregator = new VsSingleFileGeneratorFactory(serviceProvider, integrationService);
+            var aggregator = CreateInstance(manager, integrationService);
 
             Assert.Equal(VSConstants.E_FAIL,
                 aggregator.GetGeneratorInformation("ResXCodeFileGenerator", out int actualDesignTime, out int actualSharedDesignTime, out int actualCompileFlag, out Guid actualGuid));
@@ -105,11 +99,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
         {
             UnitTestHelper.IsRunningUnitTests = true;
             var manager = IVsSettingsManagerFactory.Create("");
-            var serviceProvider = IServiceProviderFactory.ImplementGetService(type => manager);
 
             var integrationService = IVsUnconfiguredProjectIntegrationServiceFactory.ImplementProjectTypeGuid(PackageGuid);
 
-            var aggregator = new VsSingleFileGeneratorFactory(serviceProvider, integrationService);
+            var aggregator = CreateInstance(manager, integrationService);
 
             Assert.Equal(VSConstants.E_FAIL,
                 aggregator.GetGeneratorInformation("ResXCodeFileGenerator", out int actualDesignTime, out int actualSharedDesignTime, out int actualCompileFlag, out Guid actualGuid));
@@ -143,7 +136,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
 
         private static VsSingleFileGeneratorFactory CreateInstance()
         {
-            return new VsSingleFileGeneratorFactory(IServiceProviderFactory.Create(), IVsUnconfiguredProjectIntegrationServiceFactory.Create());
+            return CreateInstance(IVsSettingsManagerFactory.Create(), IVsUnconfiguredProjectIntegrationServiceFactory.Create());
+        }
+
+        private static VsSingleFileGeneratorFactory CreateInstance(IVsSettingsManager settingsManager, IVsUnconfiguredProjectIntegrationService vsUnconfiguredProjectIntegrationService)
+        {
+            settingsManager  = settingsManager ?? IVsSettingsManagerFactory.Create();
+            vsUnconfiguredProjectIntegrationService = vsUnconfiguredProjectIntegrationService ?? IVsUnconfiguredProjectIntegrationServiceFactory.Create();
+
+            var vsService = IVsServiceFactory.Create<SVsSettingsManager, IVsSettingsManager>(settingsManager);
+
+            return new VsSingleFileGeneratorFactory(vsService, vsUnconfiguredProjectIntegrationService);
         }
     }
 }

@@ -2,7 +2,6 @@
 using System.ComponentModel.Composition;
 
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
-using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
@@ -17,15 +16,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
         private const string SharedDesignTimeSourceKey = "GeneratesSharedDesignTimeSource";
         private const string DesignTimeCompilationFlagKey = "UseDesignTimeCompilationFlag";
 
-        private IServiceProvider _serviceProvider;
+        private IVsService<IVsSettingsManager> _settingsManager;
         private IVsUnconfiguredProjectIntegrationService _projectIntegrationService;
 
         [ImportingConstructor]
         public VsSingleFileGeneratorFactory(
-            [Import(typeof(SVsServiceProvider))] IServiceProvider serviceProvider,
+            IVsService<SVsSettingsManager, IVsSettingsManager> settingsManager,
             IVsUnconfiguredProjectIntegrationService projectIntegrationService)
         {
-            _serviceProvider = serviceProvider;
+            _settingsManager = settingsManager;
             _projectIntegrationService = projectIntegrationService;
         }
 
@@ -72,8 +71,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
                 return HResult.Fail;
             }
 
-            IVsSettingsManager manager = _serviceProvider.GetService<IVsSettingsManager, SVsSettingsManager>();
-            HResult hr = manager.GetReadOnlySettingsStore((uint)__VsSettingsScope.SettingsScope_Configuration, out IVsSettingsStore store);
+            HResult hr = _settingsManager.Value.GetReadOnlySettingsStore((uint)__VsSettingsScope.SettingsScope_Configuration, out IVsSettingsStore store);
             if (!hr.Succeeded)
             {
                 return hr;
@@ -127,7 +125,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
         {
             // Important for ProjectNodeComServices to null out fields to reduce the amount 
             // of data we leak when extensions incorrectly holds onto the IVsHierarchy.
-            _serviceProvider = null;
+            _settingsManager = null;
             _projectIntegrationService = null;
         }
     }
