@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.Drawing
 Imports System.Windows.Forms
@@ -42,11 +42,11 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         '   ErrorMessage: The text to display in the message box.
         '   HelpLink: Link to the help topic for this message box.
         '**************************************************************************
-        Friend Overloads Shared Sub ReportError(ServiceProvider As IServiceProvider, ErrorMessage As String, _
+        Friend Overloads Shared Sub ReportError(ServiceProvider As IServiceProvider, ErrorMessage As String,
                 HelpLink As String)
 
 
-            DesignerMessageBox.Show(ServiceProvider, ErrorMessage, GetDefaultCaption(ServiceProvider), _
+            DesignerMessageBox.Show(ServiceProvider, ErrorMessage, GetDefaultCaption(ServiceProvider),
                     MessageBoxButtons.OK, MessageBoxIcon.Error, HelpLink:=HelpLink)
         End Sub 'ReportError
 
@@ -60,7 +60,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         '   Message: The text to display in the message box.
         '**************************************************************************
         Friend Shared Sub ShowWarning(ServiceProvider As IServiceProvider, Message As String)
-            DesignerMessageBox.Show(ServiceProvider, Message, GetDefaultCaption(ServiceProvider), MessageBoxButtons.OK, _
+            DesignerMessageBox.Show(ServiceProvider, Message, GetDefaultCaption(ServiceProvider), MessageBoxButtons.OK,
                     MessageBoxIcon.Warning)
         End Sub 'ShowWarning
 
@@ -78,30 +78,9 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         'Returns:
         '   One of the DialogResult values.
         '**************************************************************************
-        Friend Overloads Shared Function ShowMessage(ServiceProvider As IServiceProvider, Message As String, _
+        Friend Overloads Shared Function ShowMessage(ServiceProvider As IServiceProvider, Message As String,
                 Caption As String, Buttons As MessageBoxButtons, Icon As MessageBoxIcon) As DialogResult
             Return DesignerMessageBox.Show(ServiceProvider, Message, Caption, Buttons, Icon)
-        End Function 'ShowMessage
-
-        '**************************************************************************
-        ';ShowMessage
-        '
-        'Summary:
-        '   Displays a message box with specified text, caption, buttons, icons and default button.
-        'Params:
-        '   ServiceProvider: The IServiceProvider, used to get devenv shell as the parent of the message box.
-        '   Message: The text to display in the message box.
-        '   Caption: The text to display in the title bar of the message box.
-        '   Buttons: One of the MessageBoxButtons values that specifies which buttons to display in the message box.
-        '   Icon: One of the MessageBoxIcon values that specifies which icon to display in the message box.
-        '   DefaultButton: One of the MessageBoxDefaultButton values that specifies the default button of the message box.
-        'Returns:
-        '   One of the DialogResult values.
-        '**************************************************************************
-        Friend Overloads Shared Function ShowMessage(ServiceProvider As IServiceProvider, Message As String, _
-                        Caption As String, Buttons As MessageBoxButtons, Icon As MessageBoxIcon, _
-                        DefaultButton As MessageBoxDefaultButton) As DialogResult
-            Return DesignerMessageBox.Show(ServiceProvider, Message, Caption, Buttons, Icon, DefaultButton)
         End Function 'ShowMessage
 
         ''' <summary>
@@ -291,14 +270,14 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             For Each ch As Char In chars
                 Dim uc As Globalization.UnicodeCategory = Char.GetUnicodeCategory(ch)
                 Select Case uc
-                    Case Globalization.UnicodeCategory.UppercaseLetter, _
-                        Globalization.UnicodeCategory.LowercaseLetter, _
-                        Globalization.UnicodeCategory.TitlecaseLetter, _
-                        Globalization.UnicodeCategory.ModifierLetter, _
-                        Globalization.UnicodeCategory.OtherLetter, _
-                        Globalization.UnicodeCategory.DecimalDigitNumber, _
-                        Globalization.UnicodeCategory.NonSpacingMark, _
-                        Globalization.UnicodeCategory.SpacingCombiningMark, _
+                    Case Globalization.UnicodeCategory.UppercaseLetter,
+                        Globalization.UnicodeCategory.LowercaseLetter,
+                        Globalization.UnicodeCategory.TitlecaseLetter,
+                        Globalization.UnicodeCategory.ModifierLetter,
+                        Globalization.UnicodeCategory.OtherLetter,
+                        Globalization.UnicodeCategory.DecimalDigitNumber,
+                        Globalization.UnicodeCategory.NonSpacingMark,
+                        Globalization.UnicodeCategory.SpacingCombiningMark,
                         Globalization.UnicodeCategory.ConnectorPunctuation
                         result.Append(ch)
                     Case Else
@@ -336,35 +315,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(GetEncoding), NameOf(DesignUtil))
             End Try
             Return System.Text.Encoding.Default
-        End Function
-
-        ''' <summary>
-        ''' Returns true is ClickOnce is available for this project
-        ''' </summary>
-        ''' <remarks></remarks>
-        Friend Shared Function IsClickOnceSupported(hier As IVsHierarchy) As Boolean
-            If Common.ShellUtil.IsWebProject(hier) Then
-                Return False
-            End If
-
-            Dim publishableServicePtr As IntPtr
-            Try
-                Dim cfgs(1) As IVsCfg
-                Common.ShellUtil.GetConfigProvider(hier).GetCfgs(1, cfgs)
-                Dim cgfs2 As IVsProjectCfg2 = TryCast(cfgs(0), IVsProjectCfg2)
-                cgfs2.get_CfgType(GetType(IVsPublishableProjectCfg).GUID, publishableServicePtr)
-                Dim publishableService As IVsPublishableProjectCfg = DirectCast(Marshal.GetObjectForIUnknown(publishableServicePtr), IVsPublishableProjectCfg)
-                Dim publishable(1) As Integer
-                Dim ready(1) As Integer
-                Dim hr As Integer = publishableService.QueryStartPublish(0, publishable, ready)
-                VSErrorHandler.ThrowOnFailure(hr)
-                Return CBool(publishable(0))
-            Finally
-                If Not publishableServicePtr.Equals(0) Then
-                    Marshal.Release(publishableServicePtr)
-                    publishableServicePtr = New IntPtr(0)
-                End If
-            End Try
         End Function
 
     End Class 'DesignUtil
