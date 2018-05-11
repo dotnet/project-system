@@ -311,60 +311,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
             Return False
         End Function
 
-
-        ''' <summary>
-        ''' Is this a Silver Light project
-        ''' </summary>
-        ''' <param name="hierarchy"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Friend Shared Function IsSilverLightProject(hierarchy As IVsHierarchy) As Boolean
-            Const SilverLightProjectGuid As String = "{A1591282-1198-4647-A2B1-27E5FF5F6F3B}"
-
-            If hierarchy Is Nothing Then
-                Return False
-            End If
-
-            Try
-                ' VS SilverLight Projects are traditional vb/c# apps, but 'flavored' to add functionality
-                ' for ASP.Net.  This flavoring is marked by adding a guid to the AggregateProjectType guids
-                ' Get the project type guid list
-                Dim guidList As New List(Of Guid)
-
-                Dim SLPGuid As New Guid(SilverLightProjectGuid)
-
-                Dim aggregatableProject As IVsAggregatableProject = TryCast(hierarchy, IVsAggregatableProject)
-                If aggregatableProject IsNot Nothing Then
-                    Dim guidStrings As String = Nothing
-                    '  The project guids string looks like "{Guid 1};{Guid 2};...{Guid n}" with Guid n the inner most
-                    aggregatableProject.GetAggregateProjectTypeGuids(guidStrings)
-
-                    For Each guidString As String In guidStrings.Split(New Char() {";"c})
-                        If guidString <> "" Then
-                            ' Insert Guid to the front
-                            Try
-                                Dim flavorGuid As New Guid(guidString)
-                                If SLPGuid.Equals(flavorGuid) Then
-                                    Return True
-                                End If
-                            Catch ex As Exception When ReportWithoutCrash(ex, $"We received a broken guid string from IVsAggregatableProject '{guidStrings}'", NameOf(ShellUtil))
-                            End Try
-                        End If
-                    Next
-                Else
-                    '  Should not happen, but if they decide to make this project type non-flavored.
-                    Dim typeGuid As Guid = Nothing
-                    VSErrorHandler.ThrowOnFailure(hierarchy.GetGuidProperty(VSITEMID.ROOT, __VSHPROPID.VSHPROPID_TypeGuid, typeGuid))
-                    If SLPGuid.Equals(typeGuid) Then
-                        Return True
-                    End If
-                End If
-            Catch ex As Exception When ReportWithoutCrash(ex, NameOf(IsSilverLightProject), NameOf(ShellUtil))
-                ' We failed. Assume that this isn't a web project...
-            End Try
-            Return False
-        End Function
-
         ''' <summary>
         ''' Is this a web (Venus WSP or WAP project)
         ''' </summary>
