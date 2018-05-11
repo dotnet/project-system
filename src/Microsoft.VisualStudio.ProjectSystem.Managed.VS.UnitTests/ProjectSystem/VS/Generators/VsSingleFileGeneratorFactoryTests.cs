@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 using Microsoft.VisualStudio.Shell.Interop;
 
 using Xunit;
@@ -80,7 +79,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
         public void GetGeneratorInformation_NoPackage_ReturnsFail()
         {
             var manager = IVsSettingsManagerFactory.Create($"Generators");
-            
             var integrationService = IVsUnconfiguredProjectIntegrationServiceFactory.ImplementProjectTypeGuid(PackageGuid);
 
             var factory = CreateInstance(manager, integrationService);
@@ -93,7 +91,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
         public void GetGeneratorInformation_NoGenerators_ReturnsFail()
         {
             var manager = IVsSettingsManagerFactory.Create("");
-
             var integrationService = IVsUnconfiguredProjectIntegrationServiceFactory.ImplementProjectTypeGuid(PackageGuid);
 
             var factory = CreateInstance(manager, integrationService);

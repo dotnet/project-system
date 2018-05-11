@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel.Composition;
 
-using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
