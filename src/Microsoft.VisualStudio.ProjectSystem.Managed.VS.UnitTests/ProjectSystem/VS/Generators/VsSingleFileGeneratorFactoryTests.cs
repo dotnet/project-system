@@ -24,10 +24,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
             var manager = CreateManager(true, designTimeSource, sharedDesignTimeSource, compileFlag);
             var integrationService = IVsUnconfiguredProjectIntegrationServiceFactory.ImplementProjectTypeGuid(PackageGuid);
 
-            var aggregator = CreateInstance(manager, integrationService);
+            var factory = CreateInstance(manager, integrationService);
 
             Assert.Equal(VSConstants.S_OK,
-                aggregator.GetGeneratorInformation("ResXCodeFileGenerator", out int actualDesignTime, out int actualSharedDesignTime, out int actualCompileFlag, out Guid actualGuid));
+                factory.GetGeneratorInformation("ResXCodeFileGenerator", out int actualDesignTime, out int actualSharedDesignTime, out int actualCompileFlag, out Guid actualGuid));
 
             Assert.Equal(designTimeSource == 1 ? 1 : 0, actualDesignTime);
             Assert.Equal(sharedDesignTimeSource == 1 ? 1 : 0, actualSharedDesignTime);
@@ -41,10 +41,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
             var manager = CreateManager();
             var integrationService = IVsUnconfiguredProjectIntegrationServiceFactory.ImplementProjectTypeGuid(PackageGuid);
 
-            var aggregator = CreateInstance(manager, integrationService);
+            var factory = CreateInstance(manager, integrationService);
 
             Assert.Equal(VSConstants.S_OK,
-                aggregator.GetGeneratorInformation("ResXCodeFileGenerator", out int actualDesignTime, out int actualSharedDesignTime, out int actualCompileFlag, out Guid actualGuid));
+                factory.GetGeneratorInformation("ResXCodeFileGenerator", out int actualDesignTime, out int actualSharedDesignTime, out int actualCompileFlag, out Guid actualGuid));
 
             Assert.Equal(0, actualDesignTime);
             Assert.Equal(0, actualSharedDesignTime);
@@ -58,10 +58,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
             var manager = IVsSettingsManagerFactory.Create($"Generators\\{PackageGuid.ToString("B").ToUpper()}\\ResXCodeFileGenerator");
             var integrationService = IVsUnconfiguredProjectIntegrationServiceFactory.ImplementProjectTypeGuid(PackageGuid);
 
-            var aggregator = CreateInstance(manager, integrationService);
+            var factory = CreateInstance(manager, integrationService);
 
             Assert.Equal(VSConstants.E_FAIL,
-                aggregator.GetGeneratorInformation("ResXCodeFileGenerator", out int actualDesignTime, out int actualSharedDesignTime, out int actualCompileFlag, out Guid actualGuid));
+                factory.GetGeneratorInformation("ResXCodeFileGenerator", out int actualDesignTime, out int actualSharedDesignTime, out int actualCompileFlag, out Guid actualGuid));
         }
 
         [Fact]
@@ -70,10 +70,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
             var manager = IVsSettingsManagerFactory.Create($"Generators\\{PackageGuid.ToString("B").ToUpper()}");
             var integrationService = IVsUnconfiguredProjectIntegrationServiceFactory.ImplementProjectTypeGuid(PackageGuid);
 
-            var aggregator = CreateInstance(manager, integrationService);
+            var factory = CreateInstance(manager, integrationService);
 
             Assert.Equal(VSConstants.E_FAIL,
-                aggregator.GetGeneratorInformation("ResXCodeFileGenerator", out int actualDesignTime, out int actualSharedDesignTime, out int actualCompileFlag, out Guid actualGuid));
+                factory.GetGeneratorInformation("ResXCodeFileGenerator", out int actualDesignTime, out int actualSharedDesignTime, out int actualCompileFlag, out Guid actualGuid));
         }
 
         [Fact]
@@ -83,10 +83,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
             
             var integrationService = IVsUnconfiguredProjectIntegrationServiceFactory.ImplementProjectTypeGuid(PackageGuid);
 
-            var aggregator = CreateInstance(manager, integrationService);
+            var factory = CreateInstance(manager, integrationService);
 
             Assert.Equal(VSConstants.E_FAIL,
-                aggregator.GetGeneratorInformation("ResXCodeFileGenerator", out int actualDesignTime, out int actualSharedDesignTime, out int actualCompileFlag, out Guid actualGuid));
+                factory.GetGeneratorInformation("ResXCodeFileGenerator", out int actualDesignTime, out int actualSharedDesignTime, out int actualCompileFlag, out Guid actualGuid));
         }
 
         [Fact]
@@ -96,19 +96,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
 
             var integrationService = IVsUnconfiguredProjectIntegrationServiceFactory.ImplementProjectTypeGuid(PackageGuid);
 
-            var aggregator = CreateInstance(manager, integrationService);
+            var factory = CreateInstance(manager, integrationService);
 
             Assert.Equal(VSConstants.E_FAIL,
-                aggregator.GetGeneratorInformation("ResXCodeFileGenerator", out int actualDesignTime, out int actualSharedDesignTime, out int actualCompileFlag, out Guid actualGuid));
+                factory.GetGeneratorInformation("ResXCodeFileGenerator", out int actualDesignTime, out int actualSharedDesignTime, out int actualCompileFlag, out Guid actualGuid));
         }
 
         [Fact]
         public void GetGeneratorInformation_WhenDisposed_ReturnsUnexpected()
         {
-            var aggregator = CreateInstance();
-            aggregator.Dispose();
+            var factory = CreateInstance();
+            factory.Dispose();
 
-            var result = aggregator.GetGeneratorInformation("Foo", out _, out _, out _, out _);
+            var result = factory.GetGeneratorInformation("Foo", out _, out _, out _, out _);
 
             Assert.Equal(VSConstants.E_UNEXPECTED, result);
         }
