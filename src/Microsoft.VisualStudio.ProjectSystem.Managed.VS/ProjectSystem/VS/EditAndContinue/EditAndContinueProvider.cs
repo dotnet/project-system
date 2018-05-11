@@ -5,7 +5,6 @@ using System.ComponentModel.Composition;
 using System.Runtime.InteropServices;
 
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
-using Microsoft.VisualStudio.ProjectSystem.VS;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.TextManager.Interop;
 
@@ -14,7 +13,7 @@ using IVsENCRebuildableProjectCfg2 = Microsoft.VisualStudio.LanguageServices.Imp
 using IVsENCRebuildableProjectCfg4 = Microsoft.VisualStudio.LanguageServices.Implementation.EditAndContinue.Interop.IVsENCRebuildableProjectCfg4;
 using ENC_BREAKSTATE_REASON = Microsoft.VisualStudio.LanguageServices.Implementation.EditAndContinue.Interop.ENC_BREAKSTATE_REASON;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Managed.VS.EditAndContinue
+namespace Microsoft.VisualStudio.ProjectSystem.VS.EditAndContinue
 {
     [ExportProjectNodeComService(typeof(IVsENCRebuildableProjectCfg), typeof(IVsENCRebuildableProjectCfg2), typeof(IVsENCRebuildableProjectCfg4))]
     [AppliesTo(ProjectCapability.EditAndContinue)]
