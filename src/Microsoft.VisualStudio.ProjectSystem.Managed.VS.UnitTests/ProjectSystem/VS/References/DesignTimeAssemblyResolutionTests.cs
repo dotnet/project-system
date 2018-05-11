@@ -61,6 +61,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
             Assert.Null(result);
         }
 
+        [Fact]
+        public void GetTargetFramework_WhenDisposed_ReturnUnexpected()
+        {
+            var resolution = CreateInstance();
+            resolution.Dispose();
+
+            var result = resolution.GetTargetFramework(out _);
+
+            Assert.Equal(VSConstants.E_UNEXPECTED, result);
+        }
+
         [Theory]
         [InlineData(null)]
         [InlineData("")]
@@ -258,6 +269,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
             Assert.Equal(0u, resolvedAssemblyPaths);
             Assert.Null(resolvedPaths[0].bstrOrigAssemblySpec);
             Assert.Null(resolvedPaths[0].bstrResolvedAssemblyPath);
+        }
+
+        [Fact]
+        public void ResolveAssemblyPathInTargetFx_WhenDisposed_ReturnUnexpected()
+        {
+            var resolution = CreateInstance();
+            resolution.Dispose();
+
+            var resolvedPaths = new VsResolvedAssemblyPath[1];
+            var result = resolution.ResolveAssemblyPathInTargetFx(new[] { "System" }, 1, new VsResolvedAssemblyPath[1], out _);
+
+            Assert.Equal(VSConstants.E_UNEXPECTED, result);
         }
 
         private static DesignTimeAssemblyResolution CreateInstance(params Reference[] references)
