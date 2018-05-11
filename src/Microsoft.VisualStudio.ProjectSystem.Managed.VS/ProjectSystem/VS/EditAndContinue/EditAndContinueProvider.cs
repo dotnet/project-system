@@ -28,49 +28,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Managed.VS.EditAndContinue
             _host = host;
         }
 
-        // NOTE: Managed ENC always calls through IVsENCRebuildableProjectCfg2/IVsENCRebuildableProjectCfg4.
-        // We implement IVsENCRebuildableProjectCfg as this used to sniff the project for EnC support.
-        public int ENCRebuild(object in_pProgram, out object out_ppSnapshot)
-        {
-            out_ppSnapshot = null;
-            return HResult.NotImplemented;
-        }
-
-        public int BelongToProject(string in_szFileName, ENC_REASON in_ENCReason, int in_fOnContinue)
-        {
-            return HResult.NotImplemented;
-        }
-
-        public int ENCComplete(int in_fENCSuccess)
-        {
-            return HResult.NotImplemented;
-        }
-
-        public int CancelENC()
-        {
-            return HResult.NotImplemented;
-        }
-
-        public int ENCRelink([In, MarshalAs(UnmanagedType.IUnknown)] object pENCRelinkInfo)
-        {
-            return HResult.NotImplemented;
-        }
-
-        public int StartDebugging()
-        {
-            return HResult.NotImplemented;
-        }
-
-        public int StopDebugging()
-        {
-            return HResult.NotImplemented;
-        }
-
-        public int SetENCProjectBuildOption([In] ref Guid in_guidOption, [In, MarshalAs(UnmanagedType.LPWStr)] string in_szOptionValue)
-        {
-            return HResult.NotImplemented;
-        }
-
         public int StartDebuggingPE()
         {
             if (_host?.HostSpecificEditAndContinueService is IVsENCRebuildableProjectCfg2 encProvider)
@@ -218,6 +175,49 @@ namespace Microsoft.VisualStudio.ProjectSystem.Managed.VS.EditAndContinue
             // Important for ProjectNodeComServices to null out fields to reduce the amount 
             // of data we leak when extensions incorrectly holds onto the IVsHierarchy.
             _host = null;
+        }
+
+        // NOTE: Managed ENC always calls through IVsENCRebuildableProjectCfg2/IVsENCRebuildableProjectCfg4.
+        // We implement IVsENCRebuildableProjectCfg as this used to sniff the project for EnC support.
+        int IVsENCRebuildableProjectCfg.ENCRebuild(object in_pProgram, out object out_ppSnapshot)
+        {
+            out_ppSnapshot = null;
+            return HResult.NotImplemented;
+        }
+
+        int IVsENCRebuildableProjectCfg.BelongToProject(string in_szFileName, ENC_REASON in_ENCReason, int in_fOnContinue)
+        {
+            return HResult.NotImplemented;
+        }
+
+        int IVsENCRebuildableProjectCfg.ENCComplete(int in_fENCSuccess)
+        {
+            return HResult.NotImplemented;
+        }
+
+        int IVsENCRebuildableProjectCfg.CancelENC()
+        {
+            return HResult.NotImplemented;
+        }
+
+        int IVsENCRebuildableProjectCfg.ENCRelink([In, MarshalAs(UnmanagedType.IUnknown)] object pENCRelinkInfo)
+        {
+            return HResult.NotImplemented;
+        }
+
+        int IVsENCRebuildableProjectCfg.StartDebugging()
+        {
+            return HResult.NotImplemented;
+        }
+
+        int IVsENCRebuildableProjectCfg.StopDebugging()
+        {
+            return HResult.NotImplemented;
+        }
+
+        int IVsENCRebuildableProjectCfg.SetENCProjectBuildOption([In] ref Guid in_guidOption, [In, MarshalAs(UnmanagedType.LPWStr)] string in_szOptionValue)
+        {
+            return HResult.NotImplemented;
         }
     }
 }
