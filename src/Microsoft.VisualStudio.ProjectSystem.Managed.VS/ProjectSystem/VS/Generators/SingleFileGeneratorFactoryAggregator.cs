@@ -9,7 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
 {
     [ExportProjectNodeComService(typeof(IVsSingleFileGeneratorFactory))]
     [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp)]
-    internal class SingleFileGeneratorFactoryAggregator : IVsSingleFileGeneratorFactory
+    internal class SingleFileGeneratorFactoryAggregator : IVsSingleFileGeneratorFactory, IDisposable
     {
         // Constants for the generator information registry keys
         private const string CLSIDKey = "CLSID";
@@ -17,16 +17,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
         private const string SharedDesignTimeSourceKey = "GeneratesSharedDesignTimeSource";
         private const string DesignTimeCompilationFlagKey = "UseDesignTimeCompilationFlag";
 
-        private readonly IServiceProvider _serviceProvider;
-        private readonly IVsUnconfiguredProjectIntegrationService _projectIntegrationService;
+        private IServiceProvider _serviceProvider;
+        private IVsUnconfiguredProjectIntegrationService _projectIntegrationService;
 
         [ImportingConstructor]
         public SingleFileGeneratorFactoryAggregator(
             [Import(typeof(SVsServiceProvider))] IServiceProvider serviceProvider,
             IVsUnconfiguredProjectIntegrationService projectIntegrationService)
         {
-            Requires.NotNull(serviceProvider, nameof(serviceProvider));
-            Requires.NotNull(projectIntegrationService, nameof(projectIntegrationService));
             _serviceProvider = serviceProvider;
             _projectIntegrationService = projectIntegrationService;
         }
@@ -38,14 +36,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
             pbGeneratesSharedDesignTimeSource = 0;
             pbUseTempPEFlag = 0;
             ppGenerate = null;
-            return VSConstants.E_NOTIMPL;
+            return HResult.NotImplemented;
         }
 
         public int GetDefaultGenerator(string wszFilename, out string pbstrGenProgID)
         {
             // The only user in the project system does not call this method.
             pbstrGenProgID = null;
-            return VSConstants.E_NOTIMPL;
+            return HResult.NotImplemented;
         }
 
         public int GetGeneratorInformation(string wszProgId, out int pbGeneratesDesignTimeSource, out int pbGeneratesSharedDesignTimeSource, out int pbUseTempPEFlag, out Guid pguidGenerator)
@@ -57,16 +55,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
 
             if (wszProgId == null || string.IsNullOrWhiteSpace(wszProgId))
             {
-                return VSConstants.E_INVALIDARG;
+                return HResult.InvalidArg;
+            }
+
+            if (_projectIntegrationService == null)
+            {
+                return HResult.Unexpected;
             }
 
             // Get the guid of the project
             UIThreadHelper.VerifyOnUIThread();
-            var projectGuid = _projectIntegrationService.ProjectTypeGuid;
+            Guid projectGuid = _projectIntegrationService.ProjectTypeGuid;
 
             if (projectGuid.Equals(Guid.Empty))
             {
-                return VSConstants.E_FAIL;
+                return HResult.Fail;
             }
 
             IVsSettingsManager manager = _serviceProvider.GetService<IVsSettingsManager, SVsSettingsManager>();
@@ -76,7 +79,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
                 return hr;
             }
 
-            var key = $"Generators\\{projectGuid.ToString("B")}\\{wszProgId}";
+            string key = $"Generators\\{projectGuid.ToString("B")}\\{wszProgId}";
             hr = store.CollectionExists(key, out int exists);
             if (!hr.Succeeded)
             {
@@ -85,7 +88,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
 
             if (exists != 1)
             {
-                return VSConstants.E_FAIL;
+                return HResult.Fail;
             }
 
             // The clsid value is the only required value. The other 3 are optional
@@ -96,7 +99,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
             }
             if (exists != 1)
             {
-                return VSConstants.E_FAIL;
+                return HResult.Fail;
             }
 
             hr = store.GetString(key, CLSIDKey, out string clsidString);
@@ -106,7 +109,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
             }
             if (string.IsNullOrWhiteSpace(clsidString) || !Guid.TryParse(clsidString, out pguidGenerator))
             {
-                return VSConstants.E_FAIL;
+                return HResult.Fail;
             }
 
             // Explicitly convert anything that's not 1 to 0. These aren't required keys, so we don't explicitly fail here.
@@ -117,7 +120,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
             store.GetIntOrDefault(key, DesignTimeCompilationFlagKey, 0, out pbUseTempPEFlag);
             pbUseTempPEFlag = pbUseTempPEFlag == 1 ? 1 : 0;
 
-            return VSConstants.S_OK;
+            return HResult.OK;
+        }
+
+        public void Dispose()
+        {
+            // Important for ProjectNodeComServices to null out fields to reduce the amount 
+            // of data we leak when extensions incorrectly holds onto the IVsHierarchy.
+            _serviceProvider = null;
+            _projectIntegrationService = null;
         }
     }
 }

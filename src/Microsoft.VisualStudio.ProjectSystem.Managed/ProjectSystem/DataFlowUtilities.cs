@@ -30,8 +30,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var context = ExecutionContext.Capture();
             return input =>
             {
-                var currentSynchronizationContext = SynchronizationContext.Current;
-                using (var copy = context.CreateCopy())
+                SynchronizationContext currentSynchronizationContext = SynchronizationContext.Current;
+                using (ExecutionContext copy = context.CreateCopy())
                 {
                     Task result = null;
                     ExecutionContext.Run(

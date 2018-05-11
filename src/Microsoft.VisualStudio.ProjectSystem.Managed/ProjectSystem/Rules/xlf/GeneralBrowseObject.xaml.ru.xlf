@@ -4,12 +4,12 @@
     <body>
       <trans-unit id="Rule|ConfigurationGeneralBrowseObject|DisplayName">
         <source>General</source>
-        <target state="translated">Общие</target>
+        <target state="needs-review-translation">Общие</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|ConfigurationGeneralBrowseObject|Description">
-        <source>General</source>
-        <target state="translated">Общие</target>
+        <source>Project Properties</source>
+        <target state="needs-review-translation">Общие</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|General|DisplayName">
@@ -98,8 +98,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|FileName|DisplayName">
-        <source>Project File</source>
-        <target state="translated">Файл проекта</target>
+        <source>File Name</source>
+        <target state="needs-review-translation">Файл проекта</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|FullPath|DisplayName">
@@ -240,6 +240,26 @@
       <trans-unit id="DynamicEnumProperty|StartupObject|DisplayName">
         <source>Type that contains the entry point</source>
         <target state="translated">Тип, содержащий точку входа</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|FileName|Description">
+        <source>Name of the project file.</source>
+        <target state="new">Name of the project file.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|FullPath|Description">
+        <source>Location of the project file.</source>
+        <target state="new">Location of the project file.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|FullProjectFileName|DisplayName">
+        <source>Full Path</source>
+        <target state="new">Full Path</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|FullProjectFileName|Description">
+        <source>Full name of the project file.</source>
+        <target state="new">Full name of the project file.</target>
         <note />
       </trans-unit>
     </body>

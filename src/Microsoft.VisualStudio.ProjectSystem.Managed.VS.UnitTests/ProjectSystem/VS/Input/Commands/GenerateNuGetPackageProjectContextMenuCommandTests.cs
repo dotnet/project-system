@@ -3,7 +3,7 @@
 using System.Collections.Immutable;
 using System.Threading.Tasks;
 
-using Microsoft.VisualStudio.Packaging;
+using Microsoft.VisualStudio.Input;
 using Microsoft.VisualStudio.ProjectSystem.Build;
 
 using Xunit;
@@ -13,15 +13,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
     [Trait("UnitTest", "ProjectSystem")]
     public class GenerateNuGetPackageProjectContextMenuCommandTests : AbstractGenerateNuGetPackageCommandTests
     {
-        internal override long GetCommandId() => ManagedProjectSystemPackage.GenerateNuGetPackageProjectContextMenuCmdId;
+        internal override long GetCommandId() => ManagedProjectSystemCommandId.GenerateNuGetPackageProjectContextMenu;
 
         internal override AbstractGenerateNuGetPackageCommand CreateInstanceCore(
-            UnconfiguredProject unconfiguredProject,
+            UnconfiguredProject project,
             IProjectThreadingService threadingService,
             Shell.SVsServiceProvider serviceProvider,
             GeneratePackageOnBuildPropertyProvider generatePackageOnBuildPropertyProvider)
         {
-            return new GenerateNuGetPackageProjectContextMenuCommand(unconfiguredProject, threadingService, serviceProvider, generatePackageOnBuildPropertyProvider);
+            return new GenerateNuGetPackageProjectContextMenuCommand(project, threadingService, serviceProvider, generatePackageOnBuildPropertyProvider);
         }
 
         [Fact]

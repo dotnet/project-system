@@ -21,9 +21,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
             ConfiguredProject configuredProject,
             IActiveConfiguredProjectProvider activeConfiguredProjectProvider)
         {
-            Requires.NotNull(configuredProject, nameof(configuredProject));
-            Requires.NotNull(activeConfiguredProjectProvider, nameof(activeConfiguredProjectProvider));
-
             _configuredProject = configuredProject;
             _activeConfiguredProjectProvider = activeConfiguredProjectProvider;
             _activationTask = new TaskCompletionSource<object>();
@@ -40,8 +37,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
         {
             lock (_configuredProject)
             {
-                var previouslyActive = _activationTask.Task.IsCompleted;
-                var nowActive = IsActive();
+                bool previouslyActive = _activationTask.Task.IsCompleted;
+                bool nowActive = IsActive();
                 if (previouslyActive)
                 {
                     if (!nowActive)

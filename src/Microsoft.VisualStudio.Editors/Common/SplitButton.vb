@@ -18,7 +18,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         Inherits Button
 
         Private _state As PushButtonState = PushButtonState.Normal
-        Private _pushButtonWidth As Integer = 14
+        Private ReadOnly _pushButtonWidth As Integer = 14
         Private _dropDownRectangle As New Rectangle
         Private _showCustomContextMenuWasHandled As Boolean
 

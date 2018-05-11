@@ -32,10 +32,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
             out bool filterAnyChanges)
         {
             filterAnyChanges = false;
-            var resultDependency = dependency;
+            IDependency resultDependency = dependency;
 
             IDependency matchingDependency = null;
-            foreach (var x in topLevelBuilder)
+            foreach (IDependency x in topLevelBuilder)
             {
                 if (!x.Id.Equals(dependency.Id, StringComparison.OrdinalIgnoreCase)
                      && x.ProviderType.Equals(dependency.ProviderType, StringComparison.OrdinalIgnoreCase)
@@ -48,11 +48,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
 
             // If found node with same caption, or if there were nodes with same caption but with Alias already applied
             // NOTE: Performance sensitive, so avoid formatting the Caption with parenthesis if it's possible to avoid it.
-            var shouldApplyAlias = matchingDependency != null;
+            bool shouldApplyAlias = matchingDependency != null;
             if (!shouldApplyAlias)
             {
-                var adjustedLength = dependency.Caption.Length + " (".Length;
-                foreach (var x in topLevelBuilder)
+                int adjustedLength = dependency.Caption.Length + " (".Length;
+                foreach (IDependency x in topLevelBuilder)
                 {
                     if (!x.Id.Equals(dependency.Id)
                          && x.ProviderType.Equals(dependency.ProviderType, StringComparison.OrdinalIgnoreCase)

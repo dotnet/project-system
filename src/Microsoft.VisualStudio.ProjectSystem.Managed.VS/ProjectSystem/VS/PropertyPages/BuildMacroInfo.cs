@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System;
 using System.ComponentModel.Composition;
 
 using Microsoft.VisualStudio.Shell.Interop;
@@ -11,17 +12,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
     /// </summary>
     [ExportProjectNodeComService((typeof(IVsBuildMacroInfo)))]
     [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp)]
-    internal class BuildMacroInfo : IVsBuildMacroInfo
+    internal class BuildMacroInfo : IVsBuildMacroInfo, IDisposable
     {
-        /// <summary>
-        /// Project threading service.
-        /// </summary>
-        private readonly IProjectThreadingService _threadingService;
-
-        /// <summary>
-        /// Project components for the configuration being evaluated.
-        /// </summary>
-        private readonly ActiveConfiguredProject<ConfiguredProject> _configuredProject;
+        private IProjectThreadingService _threadingService;
+        private ActiveConfiguredProject<ConfiguredProject> _configuredProject;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BuildMacroInfo"/> class.
@@ -45,8 +39,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// <returns>If the method succeeds, it returns S_OK. If it fails, it returns an error code.</returns>
         public int GetBuildMacroValue(string bstrBuildMacroName, out string pbstrBuildMacroValue)
         {
+            if (_configuredProject == null)
+            {
+                pbstrBuildMacroValue = null;
+                return HResult.Unexpected;
+            }
+
             pbstrBuildMacroValue = null;
-            var commonProperties = _configuredProject.Value.Services.ProjectPropertiesProvider.GetCommonProperties();
+            ProjectSystem.Properties.IProjectProperties commonProperties = _configuredProject.Value.Services.ProjectPropertiesProvider.GetCommonProperties();
             pbstrBuildMacroValue = _threadingService.ExecuteSynchronously(() => commonProperties.GetEvaluatedPropertyValueAsync(bstrBuildMacroName));
 
             if (pbstrBuildMacroValue == null)
@@ -58,6 +58,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             {
                 return VSConstants.S_OK;
             }
+        }
+
+        public void Dispose()
+        {
+            // Important for ProjectNodeComServices to null out fields to reduce the amount 
+            // of data we leak when extensions incorrectly holds onto the IVsHierarchy.
+            _threadingService = null;
+            _configuredProject = null;
         }
     }
 }

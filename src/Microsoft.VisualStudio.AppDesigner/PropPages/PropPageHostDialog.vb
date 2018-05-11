@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports Microsoft.VisualStudio.Editors.AppDesDesignerFramework
 Imports System.Windows.Forms
@@ -12,8 +12,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private _propPage As PropPageUserControlBase
         Public WithEvents Cancel As Button
         Public WithEvents OK As Button
+#Disable Warning IDE1006 ' Naming Styles (Compat)
         Public WithEvents okCancelTableLayoutPanel As TableLayoutPanel
         Public WithEvents overArchingTableLayoutPanel As TableLayoutPanel
+#Enable Warning IDE1006 ' Naming Styles
         Private _firstFocusHandled As Boolean
 
         ''' <summary>
@@ -240,7 +242,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Sub
 
-        Private Sub PropPageHostDialog_HelpButtonClicked(sender As System.Object, e As System.ComponentModel.CancelEventArgs) Handles MyBase.HelpButtonClicked
+        Private Sub PropPageHostDialog_HelpButtonClicked(sender As Object, e As System.ComponentModel.CancelEventArgs) Handles MyBase.HelpButtonClicked
             e.Cancel = True
             ShowHelp()
         End Sub

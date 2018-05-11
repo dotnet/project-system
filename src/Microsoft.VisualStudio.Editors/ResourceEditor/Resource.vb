@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Option Explicit On
 Option Strict On
@@ -83,8 +83,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Friend Class ResourcePersistenceModeEnumConverter
             Inherits EnumConverter
 
-            Private _linkedDisplayValue As String = My.Resources.Designer.RES_PersistenceMode_Linked
-            Private _embeddedDisplayValue As String = My.Resources.Designer.RES_PersistenceMode_Embeded
+            Private ReadOnly _linkedDisplayValue As String = My.Resources.Designer.RES_PersistenceMode_Linked
+            Private ReadOnly _embeddedDisplayValue As String = My.Resources.Designer.RES_PersistenceMode_Embeded
 
             ''' <summary>
             ''' </summary>
@@ -245,7 +245,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private _savedFileName As String
 
         ' Original Timestamp of the external file. We use this to check whether the file has been updated after we imported the data.
-        Private _originalFileTimeStamp As DateTime
+        Private _originalFileTimeStamp As Date
 
         ' Save the original order of the resource item, so we can preserve the original order.
         Private _orderID As Integer
@@ -424,7 +424,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End If
             SetTypeNameConverter(resourceFile)
             Debug.Assert(TypeResolutionContextProvider IsNot Nothing, "TypeResolutionContextProvider should have been provided - only general exception is deserialization, which does not go through this constructor")
-            Init(NewResXDataNode(Name, Comment, Value), Int32.MaxValue, TypeResolutionContextProvider)
+            Init(NewResXDataNode(Name, Comment, Value), Integer.MaxValue, TypeResolutionContextProvider)
             TryGuessFileEncoding()
         End Sub
 
@@ -445,7 +445,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             SetTypeNameConverter(resourceFile)
             'Leave TextFileEncoding as Nothing so that it will be guessed automatically.
-            Init(NewResXDataNode(Name, Comment, FileNameAndPath, ValueTypeName, Nothing), Int32.MaxValue, TypeResolutionContextProvider)
+            Init(NewResXDataNode(Name, Comment, FileNameAndPath, ValueTypeName, Nothing), Integer.MaxValue, TypeResolutionContextProvider)
             TryGuessFileEncoding()
         End Sub
 
@@ -472,7 +472,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="TypeResolutionContextProvider">An interface from which this resource can query for an ITypeResolutionService for resolving types inside the .resx file.
         '''   May be Nothing, but then it must be provided as soon as possible via SetTypeResolutionContext().</param>
         ''' <remarks></remarks>
-        Private Sub Init(ResXDataNode As ResXDataNode, Optional Order As Integer = Int32.MaxValue, Optional TypeResolutionContextProvider As ITypeResolutionContextProvider = Nothing)
+        Private Sub Init(ResXDataNode As ResXDataNode, Optional Order As Integer = Integer.MaxValue, Optional TypeResolutionContextProvider As ITypeResolutionContextProvider = Nothing)
             _resXDataNode = ResXDataNode
             _orderID = Order
 
@@ -769,11 +769,11 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                             Debug.Assert(_savedFileName <> "", "No original file name?")
                             If _savedFileName <> "" Then
                                 If File.Exists(_savedFileName) Then
-                                    Dim modifiedTime As DateTime
+                                    Dim modifiedTime As Date
                                     Try
                                         modifiedTime = File.GetLastWriteTimeUtc(_savedFileName)
                                     Catch ex As SystemException
-                                        modifiedTime = DateTime.UtcNow
+                                        modifiedTime = Date.UtcNow
                                     End Try
 
                                     If modifiedTime <> _originalFileTimeStamp AndAlso Not View.QueryUserToReplaceFiles(New String() {_savedFileName}) Then
@@ -801,8 +801,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
                                 ' Checkout the file if necessary...
                                 If ParentResourceFile IsNot Nothing Then
-                                    Dim filesToCheckOut As New List(Of String)
-                                    filesToCheckOut.Add(NewFilePath)
+                                    Dim filesToCheckOut As New List(Of String) From {
+                                        NewFilePath
+                                    }
                                     DesignerFramework.SourceCodeControlManager.QueryEditableFiles(ParentResourceFile.ServiceProvider, filesToCheckOut, True, False)
                                 End If
 
@@ -896,7 +897,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                         Try
                             _originalFileTimeStamp = File.GetLastWriteTimeUtc(_savedFileName)
                         Catch ex As SystemException
-                            _originalFileTimeStamp = DateTime.UtcNow
+                            _originalFileTimeStamp = Date.UtcNow
                         End Try
 
                         _resXDataNode = NewResXDataNode(Name, Comment, GetValue())
@@ -2245,14 +2246,14 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Dim HashKey As Object = ValueTypeName & "|" & ResourceTypeEditor.GetType.AssemblyQualifiedName
 
             If Not s_propertyDescriptorCollectionHash.ContainsKey(HashKey) Then
-                Dim PropertyDescriptorArrayList As New ArrayList
-
                 'Register properties: Name, Comment, Filename, Type, Persistence
                 'These are all the same no matter what kind of resource value we're looking at
-                PropertyDescriptorArrayList.Add(s_propertyDescriptor_Name)
-                PropertyDescriptorArrayList.Add(s_propertyDescriptor_Comment)
-                PropertyDescriptorArrayList.Add(s_propertyDescriptor_Filename_ReadOnly)
-                PropertyDescriptorArrayList.Add(s_propertyDescriptor_Type)
+                Dim PropertyDescriptorArrayList As New ArrayList From {
+                    s_propertyDescriptor_Name,
+                    s_propertyDescriptor_Comment,
+                    s_propertyDescriptor_Filename_ReadOnly,
+                    s_propertyDescriptor_Type
+                }
 
                 '"Encoding" property
                 If ResourceTypeEditor.Equals(ResourceTypeEditors.TextFile) Then
@@ -2425,9 +2426,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 #Region "ISerialization implementation"
 
         'Our key for the ResXDataNode in the serialization info.
-        Private Const s_SERIALIZATIONKEY_RESXDATANODE As String = "ResXDataNode"
-        Private Const s_SERIALIZATIONKEY_SAVEDFILENAME As String = "SavedFileName"
-        Private Const s_SERIALIZATIONKEY_ORIGINALFILETIMESTAMP As String = "OriginalFileTimeStamp"
+        Private Const SERIALIZATIONKEY_RESXDATANODE As String = "ResXDataNode"
+        Private Const SERIALIZATIONKEY_SAVEDFILENAME As String = "SavedFileName"
+        Private Const SERIALIZATIONKEY_ORIGINALFILETIMESTAMP As String = "OriginalFileTimeStamp"
 
 
         ''' <summary>
@@ -2439,9 +2440,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''See .NET Framework Developer's Guide, "Custom Serialization" for more information
         ''' </remarks>
         Private Sub New(Info As SerializationInfo, Context As StreamingContext)
-            Dim ResXDataNode As ResXDataNode = DirectCast(Info.GetValue(s_SERIALIZATIONKEY_RESXDATANODE, GetType(ResXDataNode)), ResXDataNode)
-            _savedFileName = Info.GetString(s_SERIALIZATIONKEY_SAVEDFILENAME)
-            _originalFileTimeStamp = Info.GetDateTime(s_SERIALIZATIONKEY_ORIGINALFILETIMESTAMP)
+            Dim ResXDataNode As ResXDataNode = DirectCast(Info.GetValue(SERIALIZATIONKEY_RESXDATANODE, GetType(ResXDataNode)), ResXDataNode)
+            _savedFileName = Info.GetString(SERIALIZATIONKEY_SAVEDFILENAME)
+            _originalFileTimeStamp = Info.GetDateTime(SERIALIZATIONKEY_ORIGINALFILETIMESTAMP)
 
             'Hook up TypeNameConverter for fileref object from deserializer
             If ResXDataNode.FileRef IsNot Nothing Then
@@ -2462,9 +2463,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''See .NET Framework Developer's Guide, "Custom Serialization" for more information
         ''' </remarks>
         Private Sub GetObjectData(Info As SerializationInfo, Context As StreamingContext) Implements ISerializable.GetObjectData
-            Info.AddValue(s_SERIALIZATIONKEY_RESXDATANODE, _resXDataNode)
-            Info.AddValue(s_SERIALIZATIONKEY_SAVEDFILENAME, VB.IIf(_savedFileName Is Nothing, "", _savedFileName))
-            Info.AddValue(s_SERIALIZATIONKEY_ORIGINALFILETIMESTAMP, _originalFileTimeStamp)
+            Info.AddValue(SERIALIZATIONKEY_RESXDATANODE, _resXDataNode)
+            Info.AddValue(SERIALIZATIONKEY_SAVEDFILENAME, VB.IIf(_savedFileName Is Nothing, "", _savedFileName))
+            Info.AddValue(SERIALIZATIONKEY_ORIGINALFILETIMESTAMP, _originalFileTimeStamp)
         End Sub
 
 #End Region

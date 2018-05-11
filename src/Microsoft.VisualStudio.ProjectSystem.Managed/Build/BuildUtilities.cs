@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
@@ -67,11 +68,11 @@ namespace Microsoft.VisualStudio.Build
         /// <returns>Collection of individual values in the property.</returns>
         public static ImmutableArray<string> GetPropertyValues(string propertyValue, char delimiter = ';')
         {
-            var values = propertyValue.Split(delimiter).Select(f => f.Trim());
+            IEnumerable<string> values = propertyValue.Split(delimiter).Select(f => f.Trim());
 
             // We need to ensure that we return values in the specified order.
-            var valuesBuilder = ImmutableArray.CreateBuilder<string>();
-            foreach (var value in values)
+            ImmutableArray<string>.Builder valuesBuilder = ImmutableArray.CreateBuilder<string>();
+            foreach (string value in values)
             {
                 if (!string.IsNullOrEmpty(value))
                 {
@@ -98,7 +99,7 @@ namespace Microsoft.VisualStudio.Build
 
             ProjectPropertyElement property = GetOrAddProperty(project, propertyName);
             var newValue = new StringBuilder();
-            foreach (var value in GetPropertyValues(evaluatedPropertyValue, delimiter))
+            foreach (string value in GetPropertyValues(evaluatedPropertyValue, delimiter))
             {
                 newValue.Append(value);
                 newValue.Append(delimiter);
@@ -126,7 +127,7 @@ namespace Microsoft.VisualStudio.Build
             Requires.NotNull(evaluatedPropertyValue, nameof(evaluatedPropertyValue));
             Requires.NotNullOrEmpty(propertyName, nameof(propertyName));
 
-            var property = GetOrAddProperty(project, propertyName);
+            ProjectPropertyElement property = GetOrAddProperty(project, propertyName);
             var newValue = new StringBuilder();
             bool valueFound = false;
             foreach (string value in GetPropertyValues(evaluatedPropertyValue, delimiter))
@@ -169,7 +170,7 @@ namespace Microsoft.VisualStudio.Build
             Requires.NotNull(evaluatedPropertyValue, nameof(evaluatedPropertyValue));
             Requires.NotNullOrEmpty(propertyName, nameof(propertyName));
 
-            var property = GetOrAddProperty(project, propertyName);
+            ProjectPropertyElement property = GetOrAddProperty(project, propertyName);
             var value = new StringBuilder();
             bool valueFound = false;
             foreach (string propertyValue in GetPropertyValues(evaluatedPropertyValue, delimiter))
@@ -203,7 +204,7 @@ namespace Microsoft.VisualStudio.Build
         public static ProjectPropertyElement GetOrAddProperty(ProjectRootElement project, string propertyName)
         {
             Requires.NotNull(project, "project");
-            var property = GetProperty(project, propertyName);
+            ProjectPropertyElement property = GetProperty(project, propertyName);
 
             if (property != null)
             {

@@ -70,7 +70,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub DialogQueryName_HelpButtonClicked(sender As System.Object, e As ComponentModel.CancelEventArgs) Handles MyBase.HelpButtonClicked
+        Private Sub DialogQueryName_HelpButtonClicked(sender As Object, e As ComponentModel.CancelEventArgs) Handles MyBase.HelpButtonClicked
             e.Cancel = True
             ShowHelp()
         End Sub

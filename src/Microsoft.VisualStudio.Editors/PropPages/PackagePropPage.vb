@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.ComponentModel
 Imports System.Windows.Forms
@@ -14,10 +14,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         'After 65535, the project system doesn't complain, and in theory any value is allowed as
         '  the string version of this, but after this value the numeric version of the file version
         '  no longer matches the string version.
-        Private Const s_maxFileVersionPartValue As UInteger = 65535
+        Private Const MaxFileVersionPartValue As UInteger = 65535
 
         'After 65535, the project system doesn't complain, but you get a compile error.
-        Private Const s_maxAssemblyVersionPartValue As UInteger = 65534
+        Private Const MaxAssemblyVersionPartValue As UInteger = 65534
 
         ''' <summary>
         ''' Customizable processing done before the class has populated controls in the ControlData array
@@ -108,7 +108,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <param name="Version">[Out] the resulting combined version string, if valid.</param>
         Private Sub ValidatePackageVersion(ByRef Version As String)
-            ValidateVersion(PackageVersion, s_maxFileVersionPartValue, My.Resources.Designer.PPG_Property_PackageVersion, False, Version)
+            ValidateVersion(PackageVersion, MaxFileVersionPartValue, My.Resources.Designer.PPG_Property_PackageVersion, False, Version)
         End Sub
 
         ''' <summary>
@@ -116,7 +116,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <param name="Version">[Out] the resulting combined version string, if valid.</param>
         Private Sub ValidateAssemblyVersion(ByRef Version As String)
-            ValidateVersion(_assemblyVersionTextBoxes, s_maxAssemblyVersionPartValue, My.Resources.Designer.PPG_Property_AssemblyVersion, True, Version)
+            ValidateVersion(_assemblyVersionTextBoxes, MaxAssemblyVersionPartValue, My.Resources.Designer.PPG_Property_AssemblyVersion, True, Version)
         End Sub
 
         ''' <summary>
@@ -124,7 +124,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <param name="Version">[Out] the resulting combined version string, if valid.</param>
         Private Sub ValidateAssemblyFileVersion(ByRef Version As String)
-            ValidateVersion(_fileVersionTextBoxes, s_maxFileVersionPartValue, My.Resources.Designer.PPG_Property_AssemblyFileVersion, False, Version)
+            ValidateVersion(_fileVersionTextBoxes, MaxFileVersionPartValue, My.Resources.Designer.PPG_Property_AssemblyFileVersion, False, Version)
         End Sub
 
         Private Sub AssemblyVersionLayoutPanel_TextChanged(sender As Object, e As EventArgs) Handles AssemblyVersionMajorTextBox.TextChanged, AssemblyVersionMinorTextBox.TextChanged, AssemblyVersionBuildTextBox.TextChanged, AssemblyVersionRevisionTextBox.TextChanged
@@ -211,11 +211,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     datalist.Add(data)
                     data = New PropertyControlData(118, "NeutralLanguage", NeutralLanguageComboBox, AddressOf NeutralLanguageSet, AddressOf NeutralLanguageGet, ControlDataFlags.None, New Control() {NeutralLanguageLabel})
                     datalist.Add(data)
-                    data = New PropertyControlData(119, "AssemblyVersion", AssemblyVersionLayoutPanel, AddressOf VersionSet, AddressOf VersionGet, ControlDataFlags.None, New Control() {AssemblyVersionLabel})
-                    data.DisplayPropertyName = My.Resources.Designer.PPG_Property_AssemblyVersion
+                    data = New PropertyControlData(119, "AssemblyVersion", AssemblyVersionLayoutPanel, AddressOf VersionSet, AddressOf VersionGet, ControlDataFlags.None, New Control() {AssemblyVersionLabel}) With {
+                        .DisplayPropertyName = My.Resources.Designer.PPG_Property_AssemblyVersion
+                    }
                     datalist.Add(data)
-                    data = New PropertyControlData(120, "FileVersion", FileVersionLayoutPanel, AddressOf VersionSet, AddressOf VersionGet, ControlDataFlags.None, New Control() {AssemblyFileVersionLabel})
-                    data.DisplayPropertyName = My.Resources.Designer.PPG_Property_AssemblyFileVersion
+                    data = New PropertyControlData(120, "FileVersion", FileVersionLayoutPanel, AddressOf VersionSet, AddressOf VersionGet, ControlDataFlags.None, New Control() {AssemblyFileVersionLabel}) With {
+                        .DisplayPropertyName = My.Resources.Designer.PPG_Property_AssemblyFileVersion
+                    }
                     datalist.Add(data)
                     m_ControlData = datalist.ToArray()
                 End If

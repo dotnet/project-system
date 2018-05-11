@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     internal sealed class NewProjectInitializationProvider : INewProjectInitializationProvider, IProjectCreationState
     {
         [ImportingConstructor]
-        internal NewProjectInitializationProvider(UnconfiguredProject unconfiguredProject)
+        internal NewProjectInitializationProvider(UnconfiguredProject project)
         {
         }
 

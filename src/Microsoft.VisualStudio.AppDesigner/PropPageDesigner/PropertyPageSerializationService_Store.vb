@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.ComponentModel
 Imports System.ComponentModel.Design
@@ -103,8 +103,8 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 #Region "ISerialization implementation"
 
             'Serialization keys for ISerializable
-            Private Const s_KEY_STATE As String = "State"
-            Private Const s_KEY_OBJECTNAMES As String = "ObjectNames"
+            Private Const KEY_STATE As String = "State"
+            Private Const KEY_OBJECTNAMES As String = "ObjectNames"
 
             ''' <summary>
             '''     Implements the save part of ISerializable.
@@ -114,7 +114,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             ''' <param name="context">Serialization context</param>
             ''' <remarks></remarks>
             Private Sub GetObjectData(info As SerializationInfo, context As StreamingContext) Implements ISerializable.GetObjectData
-                info.AddValue(s_KEY_STATE, _serializedState)
+                info.AddValue(KEY_STATE, _serializedState)
             End Sub
 
 
@@ -126,7 +126,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             ''' <param name="Context">Serialization context</param>
             ''' <remarks></remarks>
             Private Sub New(Info As SerializationInfo, Context As StreamingContext)
-                _serializedState = DirectCast(Info.GetValue(s_KEY_STATE, GetType(ArrayList)), ArrayList)
+                _serializedState = DirectCast(Info.GetValue(KEY_STATE, GetType(ArrayList)), ArrayList)
             End Sub
 
 #End Region
@@ -350,7 +350,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 
             End Function
 
-            Private Const s_const_Configuration As String = "{Configuration}"
+            Private Const Const_Configuration As String = "{Configuration}"
 
             Private Sub SetProperty(component As Component, PropertyName As String, Value As Object)
                 Dim View As PropPageDesignerView
@@ -380,7 +380,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 'Backing for public properties
                 Private _isEntireObject As Boolean
                 Private _propertiesToSerialize As ArrayList 'Of PropertyDescriptor
-                Private _component As PropPageDesignerRootComponent
+                Private ReadOnly _component As PropPageDesignerRootComponent
 
 
 
@@ -480,13 +480,13 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             Private NotInheritable Class SerializedProperty
 
                 'The name of the component from which this was serialized.
-                Private _componentName As String
+                Private ReadOnly _componentName As String
 
                 'The name of the property which was serialized (if it's a property)
-                Private _propertyName As String 'Nothing if entire object
+                Private ReadOnly _propertyName As String 'Nothing if entire object
 
                 'The serialized property (if m_PropertyName <> "") or Component instance
-                Private _serializedValue As Byte()
+                Private ReadOnly _serializedValue As Byte()
 
 
 

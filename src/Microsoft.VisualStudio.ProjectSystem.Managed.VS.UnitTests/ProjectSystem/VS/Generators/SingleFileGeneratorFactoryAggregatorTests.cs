@@ -115,6 +115,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
                 aggregator.GetGeneratorInformation("ResXCodeFileGenerator", out int actualDesignTime, out int actualSharedDesignTime, out int actualCompileFlag, out Guid actualGuid));
         }
 
+        [Fact]
+        public void GetGeneratorInformation_WhenDisposed_ReturnsUnexpected()
+        {
+            var aggregator = CreateInstance();
+            aggregator.Dispose();
+
+            var result = aggregator.GetGeneratorInformation("Foo", out _, out _, out _, out _);
+
+            Assert.Equal(VSConstants.E_UNEXPECTED, result);
+        }
+
         private IVsSettingsManager CreateManager(bool useProperties = false, int designTimeSource = 0, int sharedDesignTimeSource = 0, int compileFlag = 0)
         {
             var vals = new Dictionary<string, object>
@@ -146,6 +157,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
                     { (uint)__VsSettingsScope.SettingsScope_Configuration, store }
                 }
             };
+        }
+
+        private static SingleFileGeneratorFactoryAggregator CreateInstance()
+        {
+            return new SingleFileGeneratorFactoryAggregator(IServiceProviderFactory.Create(), IVsUnconfiguredProjectIntegrationServiceFactory.Create());
         }
     }
 }

@@ -103,7 +103,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             {
                 get
                 {
-                    var root = this;
+                    MutableProjectTree root = this;
                     while (root.Parent != null)
                     {
                         root = root.Parent;
@@ -293,9 +293,10 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 newTree.DisplayOrder = DisplayOrder;
                 newTree.ItemName = ItemName;
 
-                var projectPropertiesContext = new MutableProjectPropertiesContext();
-
-                projectPropertiesContext.ItemName = ItemName;
+                var projectPropertiesContext = new MutableProjectPropertiesContext
+                {
+                    ItemName = ItemName
+                };
 
                 newItemTree.Item = projectPropertiesContext;
 

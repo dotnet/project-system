@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Option Strict On
 Option Explicit On
@@ -42,7 +42,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
                     xmlDocument.Load(reader)
                 End Using
 
-                Dim extensionNodes As XmlNodeList = xmlDocument.GetElementsByTagName(s_MY_EXTENSION_TEMPLATE_ELEMENT_NAME)
+                Dim extensionNodes As XmlNodeList = xmlDocument.GetElementsByTagName(MY_EXTENSION_TEMPLATE_ELEMENT_NAME)
                 If extensionNodes.Count <= 0 Then
                     Return Nothing
                 End If
@@ -59,14 +59,14 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
                     Return Nothing
                 End If
 
-                templateID = GetAttributeValue(extensionElement, s_ID_ATTRIBUTE_NAME)
-                Dim templateVersionString As String = GetAttributeValue(extensionElement, s_VERSION_ATTRIBUTE_NAME)
+                templateID = GetAttributeValue(extensionElement, ID_ATTRIBUTE_NAME)
+                Dim templateVersionString As String = GetAttributeValue(extensionElement, VERSION_ATTRIBUTE_NAME)
                 If StringIsNullEmptyOrBlank(templateVersionString) Then
                     Return Nothing
                 End If
                 templateVersion = GetVersion(templateVersionString)
-                assemblyFullName = NormalizeAssemblyFullName( _
-                    GetAttributeValue(extensionElement, s_ASM_FULLNAME_ATTRIBUTE_NAME))
+                assemblyFullName = NormalizeAssemblyFullName(
+                    GetAttributeValue(extensionElement, ASM_FULLNAME_ATTRIBUTE_NAME))
 
             Catch ex As XmlException ' Only ignore load or parse error in the XML.
                 Return Nothing
@@ -90,7 +90,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
 
         Public ReadOnly Property ID() As String
             Get
-                Return _ID
+                Return _id
             End Get
         End Property
 
@@ -113,7 +113,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         Public ReadOnly Property DisplayName() As String Implements INamedDescribedObject.DisplayName
             Get
                 If StringIsNullEmptyOrBlank(_template.Name) Then
-                    Return _ID
+                    Return _id
                 Else
                     Return _template.Name.Trim()
                 End If
@@ -146,8 +146,8 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' <summary>
         ''' Private constructor to avoid create this class directly.
         ''' </summary>
-        Private Sub New( _
-                id As String, version As Version, _
+        Private Sub New(
+                id As String, version As Version,
                 template As Template, assemblyFullName As String)
 
             Debug.Assert(Not StringIsNullEmptyOrBlank(id), "Invalid id!")
@@ -156,21 +156,21 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             Debug.Assert(Not StringIsNullEmptyOrBlank(template.FilePath), "Invalid template.FilePath!")
 
             _assemblyFullName = assemblyFullName
-            _ID = id
+            _id = id
             _version = version
             _template = template
         End Sub
 
-        Private _ID As String ' Extension ID
-        Private _version As Version ' Extension version
+        Private ReadOnly _id As String ' Extension ID
+        Private ReadOnly _version As Version ' Extension version
         Private _template As Template ' VSCore Template file.
-        Private _assemblyFullName As String ' Full name of the triggering assembly.
+        Private ReadOnly _assemblyFullName As String ' Full name of the triggering assembly.
 
         ' Element and attribute names for extension template information in template's custom data.
-        Private Const s_MY_EXTENSION_TEMPLATE_ELEMENT_NAME As String = "VBMyExtensionTemplate"
-        Private Const s_ID_ATTRIBUTE_NAME As String = "ID"
-        Private Const s_VERSION_ATTRIBUTE_NAME As String = "Version"
-        Private Const s_ASM_FULLNAME_ATTRIBUTE_NAME As String = "AssemblyFullName"
+        Private Const MY_EXTENSION_TEMPLATE_ELEMENT_NAME As String = "VBMyExtensionTemplate"
+        Private Const ID_ATTRIBUTE_NAME As String = "ID"
+        Private Const VERSION_ATTRIBUTE_NAME As String = "Version"
+        Private Const ASM_FULLNAME_ATTRIBUTE_NAME As String = "AssemblyFullName"
     End Class
 
 End Namespace

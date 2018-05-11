@@ -18,8 +18,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         [ImportingConstructor]
         public UserNotificationServices(SVsServiceProvider serviceProvider, IProjectThreadingService threadingService)
         {
-            Requires.NotNull(serviceProvider, nameof(serviceProvider));
-            Requires.NotNull(threadingService, nameof(threadingService));
             _serviceProvider = serviceProvider;
             _threadingService = threadingService;
         }
@@ -29,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             _threadingService.VerifyOnUIThread();
             if (!VsShellUtilities.IsInAutomationFunction(_serviceProvider))
             {
-                var result = VsShellUtilities.ShowMessageBox(_serviceProvider, message, null, OLEMSGICON.OLEMSGICON_QUERY,
+                int result = VsShellUtilities.ShowMessageBox(_serviceProvider, message, null, OLEMSGICON.OLEMSGICON_QUERY,
                              OLEMSGBUTTON.OLEMSGBUTTON_YESNO, OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
                 if (result == (int)VSConstants.MessageBoxResult.IDNO)
                 {
@@ -44,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             _threadingService.VerifyOnUIThread();
             if (!VsShellUtilities.IsInAutomationFunction(_serviceProvider))
             {
-                var result = VsShellUtilities.ShowMessageBox(_serviceProvider, failureMessage, null, OLEMSGICON.OLEMSGICON_WARNING,
+                int result = VsShellUtilities.ShowMessageBox(_serviceProvider, failureMessage, null, OLEMSGICON.OLEMSGICON_WARNING,
                                OLEMSGBUTTON.OLEMSGBUTTON_OK, OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
             }
         }
@@ -57,9 +55,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             _threadingService.VerifyOnUIThread();
 
-            var vsUIShell = _serviceProvider.GetService<IVsUIShell, SVsUIShell>();
+            IVsUIShell vsUIShell = _serviceProvider.GetService<IVsUIShell, SVsUIShell>();
 
-            var result = vsUIShell.ReportErrorInfo(hr);
+            int result = vsUIShell.ReportErrorInfo(hr);
         }
 
         /// <summary>

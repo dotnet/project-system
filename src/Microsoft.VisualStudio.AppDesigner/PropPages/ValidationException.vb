@@ -11,7 +11,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
     Friend Class ValidationException
         Inherits ApplicationException
 
-        Private _validationResult As ValidationResult
+        Private ReadOnly _validationResult As ValidationResult
         Private _control As Control
 
         Public Sub New(result As ValidationResult, message As String, Optional control As Control = Nothing, Optional InnerException As Exception = Nothing)

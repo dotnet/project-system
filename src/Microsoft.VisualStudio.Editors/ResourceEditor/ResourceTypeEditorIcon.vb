@@ -19,7 +19,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Public Const EXT_ICO As String = ".ico"
 
         'All common file extensions handled by this resource type editor
-        Private _extensions() As String = {EXT_ICO}
+        Private ReadOnly _extensions() As String = {EXT_ICO}
 
 
 

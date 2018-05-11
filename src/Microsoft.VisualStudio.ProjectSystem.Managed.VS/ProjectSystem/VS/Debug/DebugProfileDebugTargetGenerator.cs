@@ -35,16 +35,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
         [ImportingConstructor]
         public DebugProfileDebugTargetGenerator(
-            UnconfiguredProject unconfiguredProject,
+            UnconfiguredProject project,
             ILaunchSettingsProvider launchSettingProvider,
             IProjectThreadingService threadingService)
-            : base(unconfiguredProject.Services)
+            : base(project.Services)
         {
             LaunchSettingProvider = launchSettingProvider;
             ProjectThreadingService = threadingService;
         }
 
-        private NamedIdentity _dataSourceKey = new NamedIdentity();
+        private readonly NamedIdentity _dataSourceKey = new NamedIdentity();
         public override NamedIdentity DataSourceKey
         {
             get { return _dataSourceKey; }
@@ -87,7 +87,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                     // Compute the new enum values from the profile provider
                     var generatedResult = DebugProfileEnumValuesGenerator.GetEnumeratorEnumValues(update).ToImmutableList();
                     _dataSourceVersion++;
-                    var dataSources = ImmutableDictionary<NamedIdentity, IComparable>.Empty.Add(DataSourceKey, DataSourceVersion);
+                    ImmutableDictionary<NamedIdentity, IComparable> dataSources = ImmutableDictionary<NamedIdentity, IComparable>.Empty.Add(DataSourceKey, DataSourceVersion);
                     return new ProjectVersionedValue<IReadOnlyList<IEnumValue>>(generatedResult, dataSources);
                 });
 

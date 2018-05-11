@@ -110,8 +110,8 @@ Namespace Microsoft.VisualStudio.Editors.XmlToSchema
         Protected Overrides Sub WndProc(ByRef m As Message)
             Try
                 Select Case (m.Msg)
-                    Case Interop.win.WM_SYSCOMMAND
-                        If CInt(m.WParam) = Interop.win.SC_CONTEXTHELP Then
+                    Case Interop.Win32Constant.WM_SYSCOMMAND
+                        If CInt(m.WParam) = Interop.Win32Constant.SC_CONTEXTHELP Then
                             ShowHelp()
                         Else
                             MyBase.WndProc(m)

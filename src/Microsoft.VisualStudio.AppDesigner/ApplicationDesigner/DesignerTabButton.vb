@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports Common = Microsoft.VisualStudio.Editors.AppDesCommon
 Imports System.Drawing
@@ -156,7 +156,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                     If keyCode <> Keys.Tab OrElse (keyData And Keys.Control) <> Keys.Control Then                                   ' Don't process if Ctrl+Tab, but do Process for Ctrl+Up and Ctrl+Down
                         Dim parent As ProjectDesignerTabControl = ParentTabControl
                         If parent IsNot Nothing Then
-                            Dim nextIndex As Int32 = ButtonIndex
+                            Dim nextIndex As Integer = ButtonIndex
                             If (keyCode = Keys.Tab AndAlso (keyData And Keys.Shift) = Keys.Shift) OrElse keyCode = Keys.Up Then     ' Process if Shift+Tab or Up
                                 nextIndex -= 1
                                 If nextIndex < 0 Then

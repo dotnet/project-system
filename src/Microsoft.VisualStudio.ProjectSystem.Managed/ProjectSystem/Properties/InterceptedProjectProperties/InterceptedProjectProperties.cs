@@ -28,10 +28,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         {
             Requires.NotNullOrEmpty(valueProviders, nameof(valueProviders));
 
-            var builder = ImmutableDictionary.CreateBuilder<string, Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>>(StringComparer.OrdinalIgnoreCase);
-            foreach (var valueProvider in valueProviders)
+            ImmutableDictionary<string, Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>>.Builder builder = ImmutableDictionary.CreateBuilder<string, Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>>(StringComparer.OrdinalIgnoreCase);
+            foreach (Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata> valueProvider in valueProviders)
             {
-                var propertyName = valueProvider.Metadata.PropertyName;
+                string propertyName = valueProvider.Metadata.PropertyName;
 
                 // CONSIDER: Allow duplicate intercepting property value providers for same property name.
                 Requires.Argument(!builder.ContainsKey(propertyName), nameof(valueProviders), "Duplicate property value providers for same property name");
@@ -44,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         public override async Task<string> GetEvaluatedPropertyValueAsync(string propertyName)
         {
-            var evaluatedProperty = await base.GetEvaluatedPropertyValueAsync(propertyName);
+            string evaluatedProperty = await base.GetEvaluatedPropertyValueAsync(propertyName);
             if (_valueProviders.TryGetValue(propertyName, out Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata> valueProvider))
             {
                 evaluatedProperty = await valueProvider.Value.OnGetEvaluatedPropertyValueAsync(evaluatedProperty, DelegatedProperties);
@@ -55,7 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         public override async Task<string> GetUnevaluatedPropertyValueAsync(string propertyName)
         {
-            var unevaluatedProperty = await base.GetUnevaluatedPropertyValueAsync(propertyName);
+            string unevaluatedProperty = await base.GetUnevaluatedPropertyValueAsync(propertyName);
             if (_valueProviders.TryGetValue(propertyName, out Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata> valueProvider))
             {
                 unevaluatedProperty = await valueProvider.Value.OnGetUnevaluatedPropertyValueAsync(unevaluatedProperty, DelegatedProperties);

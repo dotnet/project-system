@@ -40,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             return base.PreProcessMessage(ref msg);
         }
 
-        private bool ShouldRouteCommandBackToVS(Guid cmdGuid, uint cmdId, bool translated, bool startsMultiKeyChord)
+        private static bool ShouldRouteCommandBackToVS(Guid cmdGuid, uint cmdId, bool translated, bool startsMultiKeyChord)
         {
             //Any command that wasn't translated by TranslateAccelleratorEx or has no VS handler in global scope should be routed to WPF
             if (!translated || cmdGuid == Guid.Empty)

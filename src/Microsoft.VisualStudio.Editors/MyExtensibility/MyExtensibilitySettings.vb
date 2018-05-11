@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Option Strict On
 Option Explicit On
@@ -29,7 +29,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' </summary>
         Public Sub New(folderPath As String)
             Try ' Attempt to construct the setting file path. Ignore ArgumentException.
-                _settingsFilePath = Path.Combine(folderPath, s_ASM_SETTINGS_FILE_NAME)
+                _settingsFilePath = Path.Combine(folderPath, ASM_SETTINGS_FILE_NAME)
             Catch ex As ArgumentException
             End Try
 
@@ -238,7 +238,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
 
             Dim templatesWithCustomData As Templates = Nothing
             Try
-                templatesWithCustomData = solution3.GetProjectItemTemplates(projectTypeID, s_CUSTOM_DATA_SIGNATURE)
+                templatesWithCustomData = solution3.GetProjectItemTemplates(projectTypeID, CUSTOM_DATA_SIGNATURE)
             Catch ex As Exception When ReportWithoutCrash(ex, NameOf(InitializeProjectKindSettings), NameOf(MyExtensibilitySettings))
                 ' Ignore exceptions.
             End Try
@@ -275,10 +275,10 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             Dim xmlDocument As New XmlDocument()
             Try
                 fileStream = New FileStream(_settingsFilePath, FileMode.Open, FileAccess.Read, FileShare.Read)
-                xmlReader = New XmlTextReader(fileStream)
-
                 ' Required by Fxcop rule CA3054 - DoNotAllowDTDXmlTextReader
-                xmlReader.DtdProcessing = DtdProcessing.Prohibit
+                xmlReader = New XmlTextReader(fileStream) With {
+                    .DtdProcessing = DtdProcessing.Prohibit
+                }
                 While Not xmlReader.EOF
                     Dim xmlNode As XmlNode = xmlDocument.ReadNode(xmlReader)
                     xmlDocument.AppendChild(xmlNode)
@@ -302,18 +302,18 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             For Each childNode As XmlNode In xmlElement.ChildNodes
                 Dim assemblyElement As XmlElement = TryCast(childNode, XmlElement)
                 If assemblyElement Is Nothing OrElse
-                        Not StringEquals(assemblyElement.LocalName, s_ASSEMBLY_ELEMENT) Then
+                        Not StringEquals(assemblyElement.LocalName, ASSEMBLY_ELEMENT) Then
                     Continue For
                 End If
 
                 Dim assemblyFullName As String = NormalizeAssemblyFullName(
-                    GetAttributeValue(assemblyElement, s_ASSEMBLY_FULLNAME_ATTRIBUTE))
+                    GetAttributeValue(assemblyElement, ASSEMBLY_FULLNAME_ATTRIBUTE))
                 If StringIsNullEmptyOrBlank(assemblyFullName) OrElse _autoOptions.ContainsKey(assemblyFullName) Then
                     Continue For
                 End If
 
-                Dim autoAdd As AssemblyOption = ReadAssemblyOptionAttribute(assemblyElement, s_ASSEMBLY_AUTOADD_ATTRIBUTE)
-                Dim autoRemove As AssemblyOption = ReadAssemblyOptionAttribute(assemblyElement, s_ASSEMBLY_AUTOREMOVE_ATTRIBUTE)
+                Dim autoAdd As AssemblyOption = ReadAssemblyOptionAttribute(assemblyElement, ASSEMBLY_AUTOADD_ATTRIBUTE)
+                Dim autoRemove As AssemblyOption = ReadAssemblyOptionAttribute(assemblyElement, ASSEMBLY_AUTOREMOVE_ATTRIBUTE)
 
                 _autoOptions.Add(assemblyFullName, New AssemblyAutoOption(autoAdd, autoRemove))
             Next
@@ -329,19 +329,19 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             Dim xmlWriter As XmlTextWriter = Nothing
             Try
                 fileStream = New FileStream(_settingsFilePath, FileMode.Create, FileAccess.Write, FileShare.None)
-                xmlWriter = New XmlTextWriter(fileStream, Encoding.UTF8)
-
-                xmlWriter.Formatting = Formatting.Indented
-                xmlWriter.Indentation = 2
+                xmlWriter = New XmlTextWriter(fileStream, Encoding.UTF8) With {
+                    .Formatting = Formatting.Indented,
+                    .Indentation = 2
+                }
 
                 xmlWriter.WriteStartDocument()
-                xmlWriter.WriteStartElement(s_MY_EXTENSIONS_ELEMENT, s_MY_EXTENSIONS_ELEMENT_NAMESPACE)
+                xmlWriter.WriteStartElement(MY_EXTENSIONS_ELEMENT, MY_EXTENSIONS_ELEMENT_NAMESPACE)
 
                 For Each entry As KeyValuePair(Of String, AssemblyAutoOption) In _autoOptions
-                    xmlWriter.WriteStartElement(s_ASSEMBLY_ELEMENT)
-                    xmlWriter.WriteAttributeString(s_ASSEMBLY_FULLNAME_ATTRIBUTE, entry.Key)
-                    WriteAssemblyOptionAttribute(xmlWriter, s_ASSEMBLY_AUTOADD_ATTRIBUTE, entry.Value.AutoAdd)
-                    WriteAssemblyOptionAttribute(xmlWriter, s_ASSEMBLY_AUTOREMOVE_ATTRIBUTE, entry.Value.AutoRemove)
+                    xmlWriter.WriteStartElement(ASSEMBLY_ELEMENT)
+                    xmlWriter.WriteAttributeString(ASSEMBLY_FULLNAME_ATTRIBUTE, entry.Key)
+                    WriteAssemblyOptionAttribute(xmlWriter, ASSEMBLY_AUTOADD_ATTRIBUTE, entry.Value.AutoAdd)
+                    WriteAssemblyOptionAttribute(xmlWriter, ASSEMBLY_AUTOREMOVE_ATTRIBUTE, entry.Value.AutoRemove)
                     xmlWriter.WriteEndElement()
                 Next
 
@@ -477,16 +477,16 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         Private Shared s_assemblyOptionConverter As TypeConverter
 
         ' Custom data signature in .vstemplate file
-        Private Const s_CUSTOM_DATA_SIGNATURE As String = "Microsoft.VisualBasic.MyExtension"
+        Private Const CUSTOM_DATA_SIGNATURE As String = "Microsoft.VisualBasic.MyExtension"
         ' File name, element / attribute names for triggering assemblies settings.
-        Private Const s_ASM_SETTINGS_FILE_NAME As String = "VBMyExtensionSettings.xml"
-        Private Const s_MY_EXTENSIONS_ELEMENT As String = "VBMyExtensions"
-        Private Const s_MY_EXTENSIONS_ELEMENT_NAMESPACE As String = _
+        Private Const ASM_SETTINGS_FILE_NAME As String = "VBMyExtensionSettings.xml"
+        Private Const MY_EXTENSIONS_ELEMENT As String = "VBMyExtensions"
+        Private Const MY_EXTENSIONS_ELEMENT_NAMESPACE As String =
             "urn:schemas-microsoft-com:xml-msvbmyextensions"
-        Private Const s_ASSEMBLY_ELEMENT As String = "Assembly"
-        Private Const s_ASSEMBLY_FULLNAME_ATTRIBUTE As String = "FullName"
-        Private Const s_ASSEMBLY_AUTOADD_ATTRIBUTE As String = "AutoAdd"
-        Private Const s_ASSEMBLY_AUTOREMOVE_ATTRIBUTE As String = "AutoRemove"
+        Private Const ASSEMBLY_ELEMENT As String = "Assembly"
+        Private Const ASSEMBLY_FULLNAME_ATTRIBUTE As String = "FullName"
+        Private Const ASSEMBLY_AUTOADD_ATTRIBUTE As String = "AutoAdd"
+        Private Const ASSEMBLY_AUTOREMOVE_ATTRIBUTE As String = "AutoRemove"
 
     End Class
 End Namespace

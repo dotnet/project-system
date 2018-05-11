@@ -1,4 +1,4 @@
-Imports System.ComponentModel
+﻿Imports System.ComponentModel
 Imports System.IO
 Imports System.Windows.Forms
 Imports Microsoft.VisualStudio.Editors.Common
@@ -22,17 +22,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Protected Const Const_ApplicationIcon As String = "ApplicationIcon"
         Protected Const Const_ApplicationManifest As String = "ApplicationManifest"
         Friend Const Const_TargetFrameworkMoniker As String = "TargetFrameworkMoniker"
-        Protected m_RootNamespace As String
-
-        Private m_OutputTypeDefaultValues As OutputTypeComboBoxValue()
-
         Protected Const INDEX_WINDOWSAPP As Integer = 0
         Protected Const INDEX_COMMANDLINEAPP As Integer = 1
         Protected Const INDEX_WINDOWSCLASSLIB As Integer = 2
-
-        Private m_StartupObject As String
-
-        Private m_controlGroup As Control()()
+        Private _rootNamespace As String
+        Private _outputTypeDefaultValues As OutputTypeComboBoxValue()
+        Private _controlGroup As Control()()
 
         Public Sub New()
             MyBase.New()
@@ -40,10 +35,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             'This call is required by the Windows Form Designer.
             InitializeComponent()
 
-            m_OutputTypeDefaultValues = New OutputTypeComboBoxValue(INDEX_WINDOWSCLASSLIB) {}
-            m_OutputTypeDefaultValues(INDEX_WINDOWSAPP) = New OutputTypeComboBoxValue(INDEX_WINDOWSAPP)
-            m_OutputTypeDefaultValues(INDEX_COMMANDLINEAPP) = New OutputTypeComboBoxValue(INDEX_COMMANDLINEAPP)
-            m_OutputTypeDefaultValues(INDEX_WINDOWSCLASSLIB) = New OutputTypeComboBoxValue(INDEX_WINDOWSCLASSLIB)
+            _outputTypeDefaultValues = New OutputTypeComboBoxValue(INDEX_WINDOWSCLASSLIB) {}
+            _outputTypeDefaultValues(INDEX_WINDOWSAPP) = New OutputTypeComboBoxValue(INDEX_WINDOWSAPP)
+            _outputTypeDefaultValues(INDEX_COMMANDLINEAPP) = New OutputTypeComboBoxValue(INDEX_COMMANDLINEAPP)
+            _outputTypeDefaultValues(INDEX_WINDOWSCLASSLIB) = New OutputTypeComboBoxValue(INDEX_WINDOWSCLASSLIB)
 
             'Add any initialization after the InitializeComponent() call
             AddChangeHandlers()
@@ -75,7 +70,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Get
                 If m_ControlData Is Nothing Then
 
-                    m_TargetFrameworkPropertyControlData = New TargetFrameworkPropertyControlData(
+                    TargetFrameworkPropertyControlData = New TargetFrameworkPropertyControlData(
                             VslangProj100.VsProjPropId100.VBPROJPROPID_TargetFrameworkMoniker, Const_TargetFrameworkMoniker,
                             TargetFramework,
                             AddressOf SetTargetFrameworkMoniker, AddressOf GetTargetFrameworkMoniker,
@@ -84,25 +79,29 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
                     'StartupObject must be kept at the end of the list because it depends on the initialization of "OutputType" values
                     Dim datalist As List(Of PropertyControlData) = New List(Of PropertyControlData)
-                    Dim data As PropertyControlData = New PropertyControlData(VsProjPropId.VBPROJPROPID_AssemblyName, "AssemblyName", AssemblyName, New Control() {AssemblyNameLabel})
-                    data.DisplayPropertyName = My.Resources.Designer.PPG_Property_AssemblyName
+                    Dim data As PropertyControlData = New PropertyControlData(VsProjPropId.VBPROJPROPID_AssemblyName, "AssemblyName", AssemblyName, New Control() {AssemblyNameLabel}) With {
+                        .DisplayPropertyName = My.Resources.Designer.PPG_Property_AssemblyName
+                    }
                     datalist.Add(data)
-                    data = New PropertyControlData(VsProjPropId.VBPROJPROPID_DefaultNamespace, Const_DefaultNamespace, RootNameSpace, New Control() {RootNamespaceLabel})
-                    data.DisplayPropertyName = My.Resources.Designer.PPG_Property_RootNamespace
+                    data = New PropertyControlData(VsProjPropId.VBPROJPROPID_DefaultNamespace, Const_DefaultNamespace, RootNamespaceTextBox, New Control() {RootNamespaceLabel}) With {
+                        .DisplayPropertyName = My.Resources.Designer.PPG_Property_RootNamespace
+                    }
                     datalist.Add(data)
-                    data = New PropertyControlData(VsProjPropId.VBPROJPROPID_ApplicationIcon, "ApplicationIcon", ApplicationIcon, AddressOf ApplicationIconSet, AddressOf ApplicationIconGet, ControlDataFlags.UserHandledEvents, New Control() {AppIconImage, AppIconBrowse, IconRadioButton, ApplicationIconLabel})
-                    data.DisplayPropertyName = My.Resources.Designer.PPG_Property_ApplicationIcon
+                    data = New PropertyControlData(VsProjPropId.VBPROJPROPID_ApplicationIcon, "ApplicationIcon", ApplicationIcon, AddressOf ApplicationIconSet, AddressOf ApplicationIconGet, ControlDataFlags.UserHandledEvents, New Control() {AppIconImage, AppIconBrowse, IconRadioButton, ApplicationIconLabel}) With {
+                        .DisplayPropertyName = My.Resources.Designer.PPG_Property_ApplicationIcon
+                    }
                     datalist.Add(data)
                     data = New PropertyControlData(VsProjPropId110.VBPROJPROPID_OutputTypeEx, Const_OutputTypeEx, OutputType, AddressOf OutputTypeSet, AddressOf OutputTypeGet, ControlDataFlags.UserHandledEvents, New Control() {OutputTypeLabel})
                     datalist.Add(data)
-                    data = New PropertyControlData(VsProjPropId.VBPROJPROPID_StartupObject, "StartupObject", StartupObject, AddressOf StartupObjectSet, AddressOf StartupObjectGet, ControlDataFlags.UserHandledEvents, New Control() {StartupObjectLabel})
-                    data.DisplayPropertyName = My.Resources.Designer.PPG_Property_StartupObject
+                    data = New PropertyControlData(VsProjPropId.VBPROJPROPID_StartupObject, "StartupObject", StartupObject, AddressOf StartupObjectSet, AddressOf StartupObjectGet, ControlDataFlags.UserHandledEvents, New Control() {StartupObjectLabel}) With {
+                        .DisplayPropertyName = My.Resources.Designer.PPG_Property_StartupObject
+                    }
                     datalist.Add(data)
                     data = New PropertyControlData(VsProjPropId80.VBPROJPROPID_Win32ResourceFile, "Win32ResourceFile", Win32ResourceFile, AddressOf Win32ResourceSet, AddressOf Win32ResourceGet, ControlDataFlags.None, New Control() {Win32ResourceFileBrowse, Win32ResourceRadioButton})
                     datalist.Add(data)
                     data = New PropertyControlData(VsProjPropId90.VBPROJPROPID_ApplicationManifest, "ApplicationManifest", ApplicationManifest, AddressOf ApplicationManifestSet, AddressOf ApplicationManifestGet, ControlDataFlags.UserHandledEvents, New Control() {ApplicationManifest, ApplicationManifestLabel})
                     datalist.Add(data)
-                    datalist.Add(m_TargetFrameworkPropertyControlData)
+                    datalist.Add(TargetFrameworkPropertyControlData)
                     m_ControlData = datalist.ToArray()
 
                 End If
@@ -112,12 +111,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Protected Overrides ReadOnly Property ValidationControlGroups() As Control()()
             Get
-                If m_controlGroup Is Nothing Then
-                    m_controlGroup = New Control()() {
+                If _controlGroup Is Nothing Then
+                    _controlGroup = New Control()() {
                         New Control() {IconRadioButton, Win32ResourceRadioButton, ApplicationIcon, ApplicationManifest, Win32ResourceFile, AppIconBrowse, Win32ResourceFileBrowse}
                         }
                 End If
-                Return m_controlGroup
+                Return _controlGroup
             End Get
         End Property
 
@@ -629,9 +628,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Else
                 'Append the RootNamespace to the startup object name
                 Dim StringValue As String = DirectCast(GetControlValue(Const_StartupObject), String)
-                m_RootNamespace = DirectCast(GetControlValue(Const_DefaultNamespace), String)
-                If m_RootNamespace <> "" AndAlso StringValue <> Const_SubMain Then
-                    value = m_RootNamespace & "." & StringValue
+                _rootNamespace = DirectCast(GetControlValue(Const_DefaultNamespace), String)
+                If _rootNamespace <> "" AndAlso StringValue <> Const_SubMain Then
+                    value = _rootNamespace & "." & StringValue
                 End If
             End If
             Return True
@@ -680,7 +679,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             ElseIf Not PopulateOutputTypeComboBoxFromProjectProperty(OutputType) Then
 
-                OutputType.Items.AddRange(m_OutputTypeDefaultValues)
+                OutputType.Items.AddRange(_outputTypeDefaultValues)
 
             End If
 
@@ -728,11 +727,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Dim root As String
             Dim RootLength As Integer
 
-            If m_RootNamespace Is Nothing Then
-                m_RootNamespace = Trim(TryCast(GetPropertyControlData(Const_DefaultNamespace).InitialValue, String)) 'TryCast because InitialValue will be an object if RootNamespace property not supported
+            If _rootNamespace Is Nothing Then
+                _rootNamespace = Trim(TryCast(GetPropertyControlData(Const_DefaultNamespace).InitialValue, String)) 'TryCast because InitialValue will be an object if RootNamespace property not supported
             End If
 
-            root = m_RootNamespace
+            root = _rootNamespace
 
             If root IsNot Nothing Then
                 'Append period for comparison check

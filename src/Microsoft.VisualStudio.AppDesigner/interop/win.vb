@@ -1,9 +1,9 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Namespace Microsoft.VisualStudio.Editors.AppDesInterop
 
-    <System.Runtime.InteropServices.ComVisible(False)> _
-    Public Class win
+    <System.Runtime.InteropServices.ComVisible(False)>
+    Public Class Win32Constant
         Public Const CLSCTX_INPROC_SERVER As Integer = &H1
         Public Const CLSCTX_INPROC_HANDLER As Integer = &H2
         Public Const CLSCTX_LOCAL_SERVER As Integer = &H4
@@ -78,7 +78,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesInterop
         Public Const WM_PALETTECHANGED As Integer = &H311
         Public Const WM_THEMECHANGED = &H31A
         Public Const WM_USER As Integer = &H400
- 
+
     End Class 'win
 
 End Namespace

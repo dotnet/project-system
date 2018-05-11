@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Option Strict On
 Option Explicit On
@@ -7,7 +7,6 @@ Imports System.Runtime.InteropServices
 Imports System.Xml
 Imports System.Xml.Schema
 Imports System.Threading
-Imports System.Threading.Tasks
 Imports System.ComponentModel.Design
 Imports Microsoft.VisualStudio.XmlEditor
 Imports Microsoft.VisualStudio.Shell.Interop
@@ -32,8 +31,8 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
     Friend NotInheritable Class XmlIntellisenseService
         Implements IXmlIntellisenseService
 
-        Private _container As IServiceContainer
-        Private _schemaService As XmlSchemaService
+        Private ReadOnly _container As IServiceContainer
+        Private ReadOnly _schemaService As XmlSchemaService
 
         '--------------------------------------------------------------------------
         ' New:
@@ -62,20 +61,20 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
     ' also rooting the owner XmlIntellisenseSchemas instance object. As a result, we can witness the lifetime of the owner XmlIntellisenseSchemas 
     ' instance object via its finalizer, and leverage that lifetime information to prevent leaks.
     Friend Class XmlIntellisenseSchemasData
-        Public m_Container As IServiceContainer
-        Public m_SchemaService As XmlSchemaService
-        Public m_ProjectGuid As Guid
-        Public m_Hierarchy As IVsHierarchy
-        Public m_SchemasCompiledEvent As ManualResetEvent
-        Public m_Builder As XmlSchemaSetBuilder
-        Public m_TargetNamespaces() As String
-        Public m_SchemaSet As XmlSchemaSet
-        Public m_IndexedMembers As IXmlIntellisenseMemberList
-        Public m_FirstErrorSource As String
-        Public m_ExcludeDirectories As Dictionary(Of Uri, Uri)
-        Public m_CompilationLevel As Integer
-        Public m_SchemasFound As Integer
-        Public m_SchemasCompilationCallBackDoneEvent As ManualResetEvent
+        Public Container As IServiceContainer
+        Public SchemaService As XmlSchemaService
+        Public ProjectGuid As Guid
+        Public Hierarchy As IVsHierarchy
+        Public SchemasCompiledEvent As ManualResetEvent
+        Public Builder As XmlSchemaSetBuilder
+        Public TargetNamespaces() As String
+        Public SchemaSet As XmlSchemaSet
+        Public IndexedMembers As IXmlIntellisenseMemberList
+        Public FirstErrorSource As String
+        Public ExcludeDirectories As Dictionary(Of Uri, Uri)
+        Public CompilationLevel As Integer
+        Public SchemasFound As Integer
+        Public SchemasCompilationCallBackDoneEvent As ManualResetEvent
         Private _ownerHasBeenFinalized As Boolean
 
         Public Sub New()
@@ -105,15 +104,15 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
     '   Methods on this class should only be called on the VS foreground
     '   thread.
     '--------------------------------------------------------------------------
-    <ClassInterface(ClassInterfaceType.None)> _
+    <ClassInterface(ClassInterfaceType.None)>
     Friend NotInheritable Class XmlIntellisenseSchemas
         Implements IXmlIntellisenseSchemas
 
-        Private Const s_maxPollInterval As Integer = 60 * 1000 ' 1 minutes
-        Private Const s_minPollInterval As Integer = 1000 ' 1 second
+        Private Const MaxPollInterval As Integer = 60 * 1000 ' 1 minutes
+        Private Const MinPollInterval As Integer = 1000 ' 1 second
 
         ' Number of calls into AsyncCompile prior to terminating inital compilation loop
-        Private Const s_compilationLevel As Integer = 2
+        Private Const CompilationLevel As Integer = 2
 
         Private _data As XmlIntellisenseSchemasData
         '--------------------------------------------------------------------------
@@ -121,20 +120,21 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
         '   Initialize the class.
         '--------------------------------------------------------------------------
         Friend Sub New(Container As IServiceContainer, SchemaService As XmlSchemaService, ProjectGuid As Guid)
-            _data = New XmlIntellisenseSchemasData()
-            _data.m_Container = Container
-            _data.m_SchemaService = SchemaService
-            _data.m_ProjectGuid = ProjectGuid
-            _data.m_CompilationLevel = s_compilationLevel
-            _data.m_SchemasFound = 0
+            _data = New XmlIntellisenseSchemasData With {
+                .Container = Container,
+                .SchemaService = SchemaService,
+                .ProjectGuid = ProjectGuid,
+                .CompilationLevel = CompilationLevel,
+                .SchemasFound = 0
+            }
 
             ' Get VS project
             Dim Solution As IVsSolution = DirectCast(Container.GetService(GetType(IVsSolution)), IVsSolution)
-            Solution.GetProjectOfGuid(ProjectGuid, _data.m_Hierarchy)
+            Solution.GetProjectOfGuid(ProjectGuid, _data.Hierarchy)
 
-            _data.m_SchemasCompiledEvent = New ManualResetEvent(True)
-            _data.m_SchemasCompilationCallBackDoneEvent = New ManualResetEvent(True)
-            _data.m_Builder = _data.m_SchemaService.CreateSchemaSetBuilder()
+            _data.SchemasCompiledEvent = New ManualResetEvent(True)
+            _data.SchemasCompilationCallBackDoneEvent = New ManualResetEvent(True)
+            _data.Builder = _data.SchemaService.CreateSchemaSetBuilder()
         End Sub
 
         Protected Overrides Sub Finalize()
@@ -157,13 +157,13 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
             Implements IXmlIntellisenseSchemas.AsyncCompile
 
             ' If event is signaled, then previous compilation is complete, so start another
-            If _data.m_SchemasCompilationCallBackDoneEvent.WaitOne(0, True) Then
+            If _data.SchemasCompilationCallBackDoneEvent.WaitOne(0, True) Then
 
                 ' Exclude schemas that were auto-generated by adding service references, as they can contain conflicts
                 Dim ExcludeDirectories As Dictionary(Of Uri, Uri) = Nothing
 
-                If TypeOf _data.m_Hierarchy Is IVsWCFMetadataStorageProvider Then
-                    Dim Storages As IVsEnumWCFMetadataStorages = DirectCast(_data.m_Hierarchy, IVsWCFMetadataStorageProvider).GetStorages()
+                If TypeOf _data.Hierarchy Is IVsWCFMetadataStorageProvider Then
+                    Dim Storages As IVsEnumWCFMetadataStorages = DirectCast(_data.Hierarchy, IVsWCFMetadataStorageProvider).GetStorages()
                     Dim Storage(1) As IVsWCFMetadataStorage
                     Dim ReturnCount As UInteger
 
@@ -180,16 +180,16 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
 
                 ' Publish the excluded schemas to a member variable so that the background thread can safely access it
                 ' It is important that this dictionary's content are immutable, since they will be accessed by the background thread
-                _data.m_ExcludeDirectories = ExcludeDirectories
+                _data.ExcludeDirectories = ExcludeDirectories
 
                 ' Reset event and start background thread
-                _data.m_SchemasCompilationCallBackDoneEvent.Reset()
+                _data.SchemasCompilationCallBackDoneEvent.Reset()
 
-                ThreadPool.QueueUserWorkItem(Sub() CompileCallback(_data))
+                ThreadPool.QueueUserWorkItem(Sub() CompileCallBack(_data))
             End If
 
-            If _data.m_CompilationLevel > 0 Then
-                _data.m_CompilationLevel -= 1
+            If _data.CompilationLevel > 0 Then
+                _data.CompilationLevel -= 1
             End If
         End Sub
 
@@ -207,7 +207,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
             Implements IXmlIntellisenseSchemas.CompiledEvent
 
             Get
-                Return _data.m_SchemasCompiledEvent.SafeWaitHandle.DangerousGetHandle()
+                Return _data.SchemasCompiledEvent.SafeWaitHandle.DangerousGetHandle()
             End Get
         End Property
 
@@ -222,7 +222,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
             Implements IXmlIntellisenseSchemas.TargetNamespaces
 
             Get
-                Return _data.m_TargetNamespaces
+                Return _data.TargetNamespaces
             End Get
         End Property
 
@@ -238,7 +238,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
             Implements IXmlIntellisenseSchemas.MemberList
 
             Get
-                Return _data.m_IndexedMembers
+                Return _data.IndexedMembers
             End Get
         End Property
 
@@ -253,29 +253,29 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
             Implements IXmlIntellisenseSchemas.FirstErrorSource
 
             Get
-                Return _data.m_FirstErrorSource
+                Return _data.FirstErrorSource
             End Get
         End Property
 
         Private Shared Async Sub CompileCallBack(data As XmlIntellisenseSchemasData)
             Dim ProjectSchemas As IList(Of XmlSchemaReference)
-            Dim pollInterval As Integer = s_minPollInterval
+            Dim pollInterval As Integer = MinPollInterval
             Dim iteration As Integer = 0
 
-            If data.m_CompilationLevel > 0 OrElse iteration = 0 Then
+            If data.CompilationLevel > 0 OrElse iteration = 0 Then
                 ' If owner was finalized, then end this polling loop, to prevent a leak
-                While (Not data.OwnerHasBeenFinalized()) And (data.m_CompilationLevel > 0 OrElse iteration = 0)
+                While (Not data.OwnerHasBeenFinalized()) And (data.CompilationLevel > 0 OrElse iteration = 0)
                     ' Get all schemas in the current project
-                    ProjectSchemas = data.m_SchemaService.GetKnownSchemas(data.m_ProjectGuid)
+                    ProjectSchemas = data.SchemaService.GetKnownSchemas(data.ProjectGuid)
 
-                    If ProjectSchemas.Count <> data.m_SchemasFound OrElse iteration = 0 Then
-                        data.m_SchemasFound = ProjectSchemas.Count
+                    If ProjectSchemas.Count <> data.SchemasFound OrElse iteration = 0 Then
+                        data.SchemasFound = ProjectSchemas.Count
                         Compile(ProjectSchemas, data)
                     Else
                         pollInterval = pollInterval * 2
 
-                        If pollInterval > s_maxPollInterval Then
-                            pollInterval = s_maxPollInterval
+                        If pollInterval > MaxPollInterval Then
+                            pollInterval = MaxPollInterval
                         End If
                     End If
 
@@ -283,9 +283,9 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
                     iteration += 1
                 End While
             Else
-                Compile(data.m_SchemaService.GetKnownSchemas(data.m_ProjectGuid), data)
+                Compile(data.SchemaService.GetKnownSchemas(data.ProjectGuid), data)
             End If
-            data.m_SchemasCompilationCallBackDoneEvent.Set()
+            data.SchemasCompilationCallBackDoneEvent.Set()
         End Sub
 
         '--------------------------------------------------------------------------
@@ -293,24 +293,24 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
         '   Called from CompileCallback when schemas need to be compiled
         '--------------------------------------------------------------------------
         Private Shared Sub Compile(ProjectSchemas As IList(Of XmlSchemaReference), data As XmlIntellisenseSchemasData)
-            Dim ExcludeDirectories As Dictionary(Of Uri, Uri) = data.m_ExcludeDirectories
+            Dim ExcludeDirectories As Dictionary(Of Uri, Uri) = data.ExcludeDirectories
 
             ' Now signal that we are not done with compilation yet
-            data.m_SchemasCompiledEvent.Reset()
+            data.SchemasCompiledEvent.Reset()
 
             ' Include all schemas in the current project in the schema set except those in excluded directories
-            data.m_Builder.Sources.Clear()
+            data.Builder.Sources.Clear()
             For Each Source As XmlSchemaReference In ProjectSchemas
-                If data.m_ExcludeDirectories IsNot Nothing AndAlso Source.Location.IsFile Then
+                If data.ExcludeDirectories IsNot Nothing AndAlso Source.Location.IsFile Then
                     Dim ResultUri As Uri = Nothing
-                    If Uri.TryCreate(Path.GetDirectoryName(Source.Location.LocalPath), UriKind.Absolute, ResultUri) AndAlso _
-                       data.m_ExcludeDirectories.ContainsKey(ResultUri) Then
+                    If Uri.TryCreate(Path.GetDirectoryName(Source.Location.LocalPath), UriKind.Absolute, ResultUri) AndAlso
+                       data.ExcludeDirectories.ContainsKey(ResultUri) Then
 
                         Continue For
                     End If
                 End If
 
-                data.m_Builder.Sources.Add(Source)
+                data.Builder.Sources.Add(Source)
             Next
 
             ' Add all schemas from the schema cache as candidates (i.e. schemas which will be used to resolve dangling Tns references in the sources)
@@ -318,11 +318,11 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
             '            data.m_Builder.Candidates = data.m_SchemaService.GetKnownSchemas(XmlSchemaService.GUID_SchemaCache)
 
             ' Compile the schema set
-            data.m_Builder.Compile()
+            data.Builder.Compile()
 
             ' Save the first non-warning XmlSchemaReferenceException, if there is one
             Dim FirstErrorSource As String = Nothing
-            For Each EachError As Exception In data.m_Builder.Errors
+            For Each EachError As Exception In data.Builder.Errors
 
                 ' Ignore warnings
                 If EachError.Data("SchemaServices.Warning") Is Nothing Then
@@ -340,21 +340,21 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
                     End If
                 End If
             Next
-            data.m_FirstErrorSource = FirstErrorSource
+            data.FirstErrorSource = FirstErrorSource
 
             ' If the schema set is unchanged, then no need to rebuild index over it
-            If data.m_SchemaSet IsNot data.m_Builder.CompiledSet Then
-                data.m_SchemaSet = data.m_Builder.CompiledSet
+            If data.SchemaSet IsNot data.Builder.CompiledSet Then
+                data.SchemaSet = data.Builder.CompiledSet
 
                 ' Do not build index or collect target namespaces if any errors occurred
                 If FirstErrorSource Is Nothing Then
                     ' Save the target namespaces of all the result schemas
                     Dim UniqueNamespaces As Dictionary(Of String, String) = New Dictionary(Of String, String)
-                    Dim ResolvedSet As IList(Of XmlSchemaReference) = data.m_Builder.ResolvedSet
+                    Dim ResolvedSet As IList(Of XmlSchemaReference) = data.Builder.ResolvedSet
 
                     If ResolvedSet.Count = 0 Then
                         Dim TargetNamespaces(-1) As String
-                        data.m_TargetNamespaces = TargetNamespaces
+                        data.TargetNamespaces = TargetNamespaces
                     Else
                         For Index As Integer = 0 To ResolvedSet.Count - 1
                             UniqueNamespaces(ResolvedSet(Index).TargetNamespace) = ResolvedSet(Index).TargetNamespace
@@ -363,19 +363,19 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
                         Dim TargetNamespaces(UniqueNamespaces.Count) As String
                         UniqueNamespaces.Values.CopyTo(TargetNamespaces, 0)
 
-                        data.m_TargetNamespaces = TargetNamespaces
+                        data.TargetNamespaces = TargetNamespaces
                     End If
 
                     ' Build the index
-                    data.m_IndexedMembers = New IndexedMembers(data.m_SchemaSet, UniqueNamespaces).All
+                    data.IndexedMembers = New IndexedMembers(data.SchemaSet, UniqueNamespaces).All
                 Else
-                    data.m_IndexedMembers = Nothing
-                    data.m_TargetNamespaces = Nothing
+                    data.IndexedMembers = Nothing
+                    data.TargetNamespaces = Nothing
                 End If
             End If
 
             ' Now notify any listener that compilation is complete
-            data.m_SchemasCompiledEvent.Set()
+            data.SchemasCompiledEvent.Set()
 
         End Sub
 
@@ -388,7 +388,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
         Public ReadOnly Property IsEmpty() As <MarshalAs(UnmanagedType.Bool)> Boolean _
             Implements IXmlIntellisenseSchemas.IsEmpty
             Get
-                Return _data.m_SchemaSet Is Nothing OrElse _data.m_SchemaSet.Count = 0
+                Return _data.SchemaSet Is Nothing OrElse _data.SchemaSet.Count = 0
             End Get
         End Property
 
@@ -398,26 +398,26 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
         '
         '   Shows element in XSD browser given namespace and local name.
         '--------------------------------------------------------------------------
-        Public Sub ShowInXmlSchemaExplorer( _
-            <[In](), MarshalAs(UnmanagedType.BStr)> NamespaceName As String, _
-            <[In](), MarshalAs(UnmanagedType.BStr)> LocalName As String, _
-            <MarshalAs(UnmanagedType.Bool)> ByRef ElementFound As Boolean, _
+        Public Sub ShowInXmlSchemaExplorer(
+            <[In](), MarshalAs(UnmanagedType.BStr)> NamespaceName As String,
+            <[In](), MarshalAs(UnmanagedType.BStr)> LocalName As String,
+            <MarshalAs(UnmanagedType.Bool)> ByRef ElementFound As Boolean,
             <MarshalAs(UnmanagedType.Bool)> ByRef NamespaceFound As Boolean) _
             Implements IXmlIntellisenseSchemas.ShowInXmlSchemaExplorer
 
             ElementFound = False
             NamespaceFound = False
 
-            If _data.m_SchemaSet Is Nothing OrElse _data.m_IndexedMembers Is Nothing Then Return
+            If _data.SchemaSet Is Nothing OrElse _data.IndexedMembers Is Nothing Then Return
 
             ' Find the XmlSchemaElement based on NamespaceName and LocalName provided.
             Dim element As XmlSchemaElement = Nothing
-            Dim ns As Linq.XNamespace = Nothing
+            Dim ns As XNamespace = Nothing
             If NamespaceName Is Nothing Then
                 NamespaceName = String.Empty
             End If
             If LocalName IsNot Nothing Then
-                Dim elements As IXmlIntellisenseMemberList = _data.m_IndexedMembers.ElementsByName(NamespaceName, LocalName)
+                Dim elements As IXmlIntellisenseMemberList = _data.IndexedMembers.ElementsByName(NamespaceName, LocalName)
                 If elements IsNot Nothing Then
                     Dim enumerator As IXmlIntellisenseMemberEnumerator = elements.GetEnumerator()
                     If enumerator IsNot Nothing Then
@@ -433,7 +433,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
                 Try
                     ' Get 'ns' even if 'element' is found. Testhook wants
                     ' to know if namespace can be found
-                    ns = Linq.XNamespace.Get(NamespaceName)
+                    ns = XNamespace.Get(NamespaceName)
                     NamespaceFound = ns IsNot Nothing
                 Catch
                     ' ignore any exception coming from there
@@ -446,7 +446,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
             End If
 
             ' Get hold of VsShell service.
-            Dim vsShell As IVsShell = TryCast(_data.m_Container.GetService(GetType(SVsShell)), IVsShell)
+            Dim vsShell As IVsShell = TryCast(_data.Container.GetService(GetType(SVsShell)), IVsShell)
             If vsShell IsNot Nothing Then
                 ' Make sure XSD designer package is loaded.
                 Dim xsdDesignerPackageGuid As New Guid("20AAF8FA-14C0-4897-8CA0-4D861E2B1212")
@@ -455,15 +455,15 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
                     ' Get hold of IXmlSchemaDesignerService
                     Dim packageSP As IServiceProvider = TryCast(package, IServiceProvider)
                     If packageSP IsNot Nothing Then
-                        Dim service As IXmlSchemaDesignerService = TryCast( _
-                            packageSP.GetService(GetType(IXmlSchemaDesignerService)), _
+                        Dim service As IXmlSchemaDesignerService = TryCast(
+                            packageSP.GetService(GetType(IXmlSchemaDesignerService)),
                             IXmlSchemaDesignerService)
                         If service IsNot Nothing Then
                             ' Call the service to show the element or the namespace (whichever is not null).
                             If ns IsNot Nothing Then
-                                service.AssociateSet(_data.m_SchemaSet, ns)
+                                service.AssociateSet(_data.SchemaSet, ns)
                             Else
-                                service.AssociateSet(_data.m_SchemaSet, element)
+                                service.AssociateSet(_data.SchemaSet, element)
                             End If
                         End If
                     End If
@@ -493,7 +493,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
     '   Class which represents a list of Xml intellisense member results, in
     '   the form of element and attribute declarations.
     '--------------------------------------------------------------------------
-    <ClassInterface(ClassInterfaceType.None)> _
+    <ClassInterface(ClassInterfaceType.None)>
     Friend Class XmlIntellisenseMember
         Implements IXmlIntellisenseMember
 
@@ -501,7 +501,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
         Private _children As XmlIntellisenseMember
         Private _nextMember As XmlIntellisenseMember
         Private _flags As Flags
-        Private _element As XmlSchemaElement
+        Private ReadOnly _element As XmlSchemaElement
 
         Private Shared s_any As XmlIntellisenseMember
 
@@ -519,8 +519,9 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
         End Sub
 
         Public Shared Function AnyElement() As XmlIntellisenseMember
-            Dim Member As XmlIntellisenseMember = New XmlIntellisenseMember(XmlQualifiedName.Empty, Flags.IsElement)
-            Member.Children = s_any
+            Dim Member As XmlIntellisenseMember = New XmlIntellisenseMember(XmlQualifiedName.Empty, Flags.IsElement) With {
+                .Children = s_any
+            }
             Return Member
         End Function
 
@@ -618,15 +619,15 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
     '   in a particular schema set, indexed by name and namespace for fast
     '   query access.
     '--------------------------------------------------------------------------
-    <ClassInterface(ClassInterfaceType.None)> _
+    <ClassInterface(ClassInterfaceType.None)>
     Friend Class IndexedMembers
         Private _targetNamespaces As Dictionary(Of String, String)
         Private _indexedByNamespace As Dictionary(Of String, List(Of XmlIntellisenseMember))
         Private _indexedByName As Dictionary(Of XmlQualifiedName, Object)
-        Private _all As XmlIntellisenseMemberList
-        Private _document As XmlIntellisenseMemberList
-        Private _roots As XmlIntellisenseMemberList
-        Private _elements As XmlIntellisenseMemberList
+        Private ReadOnly _all As XmlIntellisenseMemberList
+        Private ReadOnly _document As XmlIntellisenseMemberList
+        Private ReadOnly _roots As XmlIntellisenseMemberList
+        Private ReadOnly _elements As XmlIntellisenseMemberList
 
         Private Shared ReadOnly s_anyElement As XmlIntellisenseMember = XmlIntellisenseMember.AnyElement()
         Private Shared ReadOnly s_anyAttribute As XmlIntellisenseMember = XmlIntellisenseMember.AnyAttribute()
@@ -895,13 +896,13 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
     '   3. An axis having only a namespace part always propagates Any members
     '      in its input set.
     '--------------------------------------------------------------------------
-    <ClassInterface(ClassInterfaceType.None)> _
+    <ClassInterface(ClassInterfaceType.None)>
     Friend Class XmlIntellisenseMemberList
         Implements IXmlIntellisenseMemberList, IEnumerable(Of XmlIntellisenseMember)
 
         Private _allMembers As IndexedMembers
         Private _previousStep As XmlIntellisenseMemberList
-        Private _axis As Axis
+        Private ReadOnly _axis As Axis
         Private _name As XmlQualifiedName
         Private _members As IEnumerable(Of XmlIntellisenseMember)
 

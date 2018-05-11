@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.ComponentModel
 Imports System.ComponentModel.Design
@@ -226,8 +226,8 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         Private _rootDesigner As PropPageDesignerRootDesigner
         Private _projectHierarchy As IVsHierarchy
 
-        Private _UIShellService As IVsUIShell
-        Private _UIShell5Service As IVsUIShell5
+        Private _uiShellService As IVsUIShell
+        Private _uiShell5Service As IVsUIShell5
 
         ' The ConfigurationState object from the project designer.  This is shared among all the prop page designers
         '   for this project designer.
@@ -306,7 +306,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         'resulting from the #if DEBUG
         Private Shared s_propPageDesignerViewCount As Integer = 0
         Private Shared s_instanceCount As Integer
-        Private _myInstanceCount As Integer
+        Private ReadOnly _myInstanceCount As Integer
 #End If
 
         ''' <summary>
@@ -346,15 +346,15 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <remarks></remarks>
         Private ReadOnly Property VsUIShellService() As IVsUIShell
             Get
-                If (_UIShellService Is Nothing) Then
+                If (_uiShellService Is Nothing) Then
                     If VBPackageInstance IsNot Nothing Then
-                        _UIShellService = TryCast(VBPackageInstance.GetService(GetType(IVsUIShell)), IVsUIShell)
+                        _uiShellService = TryCast(VBPackageInstance.GetService(GetType(IVsUIShell)), IVsUIShell)
                     Else
-                        _UIShellService = TryCast(GetService(GetType(IVsUIShell)), IVsUIShell)
+                        _uiShellService = TryCast(GetService(GetType(IVsUIShell)), IVsUIShell)
                     End If
                 End If
 
-                Return _UIShellService
+                Return _uiShellService
             End Get
         End Property
 
@@ -364,23 +364,23 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <remarks></remarks>
         Private ReadOnly Property VsUIShell5Service() As IVsUIShell5
             Get
-                If (_UIShell5Service Is Nothing) Then
+                If (_uiShell5Service Is Nothing) Then
                     Dim VsUiShell As IVsUIShell = VsUIShellService
                     If VsUiShell IsNot Nothing Then
-                        _UIShell5Service = TryCast(VsUiShell, IVsUIShell5)
+                        _uiShell5Service = TryCast(VsUiShell, IVsUIShell5)
                     End If
                 End If
 
-                Return _UIShell5Service
+                Return _uiShell5Service
             End Get
         End Property
 
 
-        Private _DTEProject As EnvDTE.Project
+        Private _dteProject As EnvDTE.Project
 
         Public ReadOnly Property DTEProject() As EnvDTE.Project
             Get
-                Return _DTEProject
+                Return _dteProject
             End Get
         End Property
 
@@ -434,14 +434,14 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <param name="IsConfigPage"></param>
         ''' <remarks></remarks>
         Public Sub Init(DTEProject As EnvDTE.Project, PropPage As OleInterop.IPropertyPage, PropPageSite As PropertyPageSite, Hierarchy As IVsHierarchy, IsConfigPage As Boolean)
-            Debug.Assert(_DTEProject Is Nothing, "Init() called twice?")
+            Debug.Assert(_dteProject Is Nothing, "Init() called twice?")
 
             Debug.Assert(DTEProject IsNot Nothing, "DTEProject is Nothing")
             Debug.Assert(PropPage IsNot Nothing)
             Debug.Assert(PropPageSite IsNot Nothing)
             Debug.Assert(Hierarchy IsNot Nothing)
 
-            _DTEProject = DTEProject
+            _dteProject = DTEProject
             _loadedPage = PropPage
             _loadedPageSite = PropPageSite
             _projectHierarchy = Hierarchy
@@ -454,8 +454,9 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             SetDialogFont()
 
             Dim menuCommands As New ArrayList()
-            Dim cutCmd As New DesignerMenuCommand(_rootDesigner, Constants.MenuConstants.CommandIDVSStd97cmdidCut, AddressOf DisabledMenuCommandHandler)
-            cutCmd.Enabled = False
+            Dim cutCmd As New DesignerMenuCommand(_rootDesigner, Constants.MenuConstants.CommandIDVSStd97cmdidCut, AddressOf DisabledMenuCommandHandler) With {
+                .Enabled = False
+            }
             menuCommands.Add(cutCmd)
 
             _rootDesigner.RegisterMenuCommands(menuCommands)
@@ -572,7 +573,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <remarks></remarks>
         Private Sub OnBroadcastMessageEventsHelperBroadcastMessage(msg As UInteger, wParam As IntPtr, lParam As IntPtr) Handles _broadcastMessageEventsHelper.BroadcastMessage
             Select Case msg
-                Case win.WM_PALETTECHANGED, win.WM_SYSCOLORCHANGE, win.WM_THEMECHANGED
+                Case Win32Constant.WM_PALETTECHANGED, Win32Constant.WM_SYSCOLORCHANGE, Win32Constant.WM_THEMECHANGED
                     OnThemeChanged()
             End Select
         End Sub
@@ -928,13 +929,13 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <param name="HelpLink">The help link</param>
         ''' <returns>One of the DialogResult values</returns>
         ''' <remarks></remarks>
-        Public Function DsMsgBox(Message As String, _
-                Buttons As MessageBoxButtons, _
-                Icon As MessageBoxIcon, _
-                Optional DefaultButton As MessageBoxDefaultButton = MessageBoxDefaultButton.Button1, _
+        Public Function DsMsgBox(Message As String,
+                Buttons As MessageBoxButtons,
+                Icon As MessageBoxIcon,
+                Optional DefaultButton As MessageBoxDefaultButton = MessageBoxDefaultButton.Button1,
                 Optional HelpLink As String = Nothing) As DialogResult
 
-            Return DesignerMessageBox.Show(_rootDesigner, Message, _messageBoxCaption, _
+            Return DesignerMessageBox.Show(_rootDesigner, Message, _messageBoxCaption,
                 Buttons, Icon, DefaultButton, HelpLink)
         End Function
 
@@ -1133,7 +1134,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <remarks></remarks>
         Private Function GetSelectedConfigItem() As ConfigurationState.DropdownItem
             Debug.Assert(ConfigurationComboBox.SelectedIndex >= 0)
-            Debug.Assert(ConfigurationComboBox.Items.Count = _configurationState.ConfigurationDropdownEntries.Length, _
+            Debug.Assert(ConfigurationComboBox.Items.Count = _configurationState.ConfigurationDropdownEntries.Length,
                 "The combobox is not in sync")
             Dim ConfigItem As ConfigurationState.DropdownItem = _configurationState.ConfigurationDropdownEntries(ConfigurationComboBox.SelectedIndex)
             Debug.Assert(ConfigItem IsNot Nothing)
@@ -1148,7 +1149,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <remarks></remarks>
         Private Function GetSelectedPlatformItem() As ConfigurationState.DropdownItem
             Debug.Assert(PlatformComboBox.SelectedIndex >= 0)
-            Debug.Assert(PlatformComboBox.Items.Count = _configurationState.PlatformDropdownEntries.Length, _
+            Debug.Assert(PlatformComboBox.Items.Count = _configurationState.PlatformDropdownEntries.Length,
                 "The combobox is not in sync")
             Dim PlatformItem As ConfigurationState.DropdownItem = _configurationState.PlatformDropdownEntries(PlatformComboBox.SelectedIndex)
             Debug.Assert(PlatformItem IsNot Nothing)
@@ -1350,7 +1351,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                             '  have tried to call the multi-value undo stuff in this case, but if it does happen, let's tolerate 
                             '  it by reverting to single-value undo behavior.  MultipleValues will have already asserted in this case, so 
                             '  we don't need to unless this assumption is wrong.
-                            Debug.Assert(Objects IsNot Nothing AndAlso Objects.Length = 1 AndAlso Not TypeOf Objects(0) Is IVsCfg, _
+                            Debug.Assert(Objects IsNot Nothing AndAlso Objects.Length = 1 AndAlso Not TypeOf Objects(0) Is IVsCfg,
                                 "Unexpected exception in MultipleValues constructor.  Reverting to single-value undo/redo.")
                         End Try
                     Else
@@ -1358,7 +1359,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                     End If
                 Else
                     Switches.TracePDUndo("  Not a Config page, no multi-value undo.")
-                    Debug.Assert(Not PropPageUndo.SupportsMultipleValueUndo(PropertyName), _
+                    Debug.Assert(Not PropPageUndo.SupportsMultipleValueUndo(PropertyName),
                         "A property on a config-independent page supports multiple-value undo/redo.  That means the page contains a config-dependent property.  And that doesn't seem right, does it?" _
                         & vbCrLf & "PropertyName = " & PropertyName)
                 End If
@@ -1466,9 +1467,9 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             Dim SelectAllConfigs As Boolean = (MultiValues.SelectedConfigName = "")
             Dim SelectAllPlatforms As Boolean = (MultiValues.SelectedPlatformName = "")
 
-            _configurationState.ChangeSelection( _
-                MultiValues.SelectedConfigName, IIf(SelectAllConfigs, ConfigurationState.SelectionTypes.All, ConfigurationState.SelectionTypes.Normal), _
-                MultiValues.SelectedPlatformName, IIf(SelectAllPlatforms, ConfigurationState.SelectionTypes.All, ConfigurationState.SelectionTypes.Normal), _
+            _configurationState.ChangeSelection(
+                MultiValues.SelectedConfigName, IIf(SelectAllConfigs, ConfigurationState.SelectionTypes.All, ConfigurationState.SelectionTypes.Normal),
+                MultiValues.SelectedPlatformName, IIf(SelectAllPlatforms, ConfigurationState.SelectionTypes.All, ConfigurationState.SelectionTypes.Normal),
                 PreferExactMatch:=False, FireNotifications:=True)
         End Sub
 
@@ -1603,7 +1604,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                         Dim msg As OleInterop.MSG() = {New OleInterop.MSG}
                         With msg(0)
                             .hwnd = PropertyPageHwnd
-                            .message = win.WM_SYSCHAR
+                            .message = Win32Constant.WM_SYSCHAR
                             .wParam = New IntPtr(AscW(charCode))
                         End With
                         If _loadedPage.TranslateAccelerator(msg) = NativeMethods.S_OK Then
@@ -1642,7 +1643,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 Return IntPtr.Zero
             End If
 
-            Return NativeMethods.GetWindow(PropertyPagePanel.Handle, win.GW_CHILD)
+            Return NativeMethods.GetWindow(PropertyPagePanel.Handle, Win32Constant.GW_CHILD)
         End Function
 
 
@@ -1699,7 +1700,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <remarks></remarks>
         Protected Overrides Sub WndProc(ByRef m As Message)
             Dim isSetFocusMessage As Boolean = False
-            If m.Msg = win.WM_SETFOCUS Then
+            If m.Msg = Win32Constant.WM_SETFOCUS Then
                 isSetFocusMessage = True
             End If
 
@@ -1887,7 +1888,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             If _isNativeHostedPropertyPage Then
                 'Since PropertyPagePanel has no child controls that WinForms knows about, we need to
                 '  manually forward focus to the child.
-                NativeMethods.SetFocus(NativeMethods.GetWindow(PropertyPagePanel.Handle, win.GW_CHILD))
+                NativeMethods.SetFocus(NativeMethods.GetWindow(PropertyPagePanel.Handle, Win32Constant.GW_CHILD))
             End If
         End Sub
 

@@ -35,16 +35,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Extensibility
                 throw new ArgumentNullException(nameof(projectFilePath));
             }
 
-            var projectService = _projectServiceAccessor.GetProjectService();
+            IProjectService projectService = _projectServiceAccessor.GetProjectService();
             if (projectService == null)
             {
                 return null;
             }
 
-            var unconfiguredProject = projectService.LoadedUnconfiguredProjects
+            UnconfiguredProject project = projectService.LoadedUnconfiguredProjects
                                                     .FirstOrDefault(x => x.FullPath.Equals(projectFilePath,
                                                                             StringComparison.OrdinalIgnoreCase));
-            return unconfiguredProject?.Services.ExportProvider.GetExportedValueOrDefault<T>();
+            return project?.Services.ExportProvider.GetExportedValueOrDefault<T>();
         }
     }
 }

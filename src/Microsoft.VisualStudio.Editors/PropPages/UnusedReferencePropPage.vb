@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports Microsoft.VisualStudio.Editors.Common
 Imports Microsoft.VisualStudio.Editors.Interop
@@ -12,7 +12,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Inherits PropPageUserControlBase
 
         ' Rate to poll compiler for unused references in milliseconds 
-        Private Const s_pollingRate As Integer = 500
+        Private Const PollingRate As Integer = 500
 
         ' Whether we have generated the list
         Private _unusedReferenceListReady As Boolean
@@ -313,8 +313,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private Sub BeginGetUnusedRefs()
 
             ' Get a new timer
-            _getUnusedRefsTimer = New Timer
-            _getUnusedRefsTimer.Interval = s_pollingRate
+            _getUnusedRefsTimer = New Timer With {
+                .Interval = PollingRate
+            }
             AddHandler _getUnusedRefsTimer.Tick, AddressOf OnGetUnusedRefsTimerTick
 
             _lastStatus = ReferenceUsageResult.ReferenceUsageUnknown

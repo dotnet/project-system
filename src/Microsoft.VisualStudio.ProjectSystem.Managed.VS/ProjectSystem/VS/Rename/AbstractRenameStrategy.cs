@@ -39,7 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             }
 
             await _threadingService.SwitchToUIThread();
-            var userNeedPrompt = _environmentOptions.GetOption("Environment", "ProjectsAndSolution", "PromptForRenameSymbol", false);
+            bool userNeedPrompt = _environmentOptions.GetOption("Environment", "ProjectsAndSolution", "PromptForRenameSymbol", false);
             if (userNeedPrompt)
             {
                 string renamePromptMessage = string.Format(CultureInfo.CurrentCulture, VSResources.RenameSymbolPrompt, oldFileName);
@@ -52,13 +52,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             return _userConfirmedRename;
         }
 
-        protected Document GetDocument(Project project, string filePath) =>
+        protected static Document GetDocument(Project project, string filePath) =>
             (from d in project.Documents where StringComparers.Paths.Equals(d.FilePath, filePath) select d).FirstOrDefault();
 
-        protected async Task<SyntaxNode> GetRootNode(Document newDocument) =>
+        protected static async Task<SyntaxNode> GetRootNode(Document newDocument) =>
             await newDocument.GetSyntaxRootAsync().ConfigureAwait(false);
 
-        protected bool HasMatchingSyntaxNode(SemanticModel model, SyntaxNode syntaxNode, string name, bool isCaseSensitive)
+        protected static bool HasMatchingSyntaxNode(SemanticModel model, SyntaxNode syntaxNode, string name, bool isCaseSensitive)
         {
             if (model.GetDeclaredSymbol(syntaxNode) is INamedTypeSymbol symbol &&
                 (symbol.TypeKind == TypeKind.Class ||

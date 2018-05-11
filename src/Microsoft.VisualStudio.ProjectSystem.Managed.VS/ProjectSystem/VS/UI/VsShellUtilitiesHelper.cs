@@ -54,7 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
         {
             await _threadingService.SwitchToUIThread();
 
-            var shell = serviceProvider.GetService<IVsShell, SVsShell>();
+            IVsShell shell = serviceProvider.GetService<IVsShell, SVsShell>();
             if (ErrorHandler.Succeeded(shell.GetProperty((int)__VSSPROPID4.VSSPROPID_LocalAppDataDir, out object objDataFolder)) && objDataFolder is string appDataFolder)
             {
                 return appDataFolder;

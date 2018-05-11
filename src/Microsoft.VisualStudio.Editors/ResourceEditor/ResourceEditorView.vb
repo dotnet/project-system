@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Option Strict On
 Option Explicit On
@@ -55,7 +55,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
         'Indicates whether the UI has actually been initialized yet (useful because many events fire during
         '  form load, and we may not be ready to handle them  yet)
-        Private _UIInitialized As Boolean
+        Private _uiInitialized As Boolean
 
         'The set of categories handled by this instance of the resource editor.
         Private _categories As New CategoryCollection
@@ -135,11 +135,11 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private _registryRoot As String
 
         ' Pad around the stringTable/ListView
-        Private Const s_DESIGNER_PADDING As Integer = 14
-        Private Const s_DESIGNER_PADDING_TOP As Integer = 23
+        Private Const DESIGNER_PADDING As Integer = 14
+        Private Const DESIGNER_PADDING_TOP As Integer = 23
 
         ' the seperator character to save multiple extensions in one string
-        Private Const s_SAFE_EXTENSION_SEPERATOR As Char = "|"c
+        Private Const SAFE_EXTENSION_SEPERATOR As Char = "|"c
 
 #End Region
 
@@ -157,10 +157,10 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private Shared s_defaultAssemblyReferences() As AssemblyName =
             {
                 GetType(CodeDom.MemberAttributes).Assembly.GetName(),
-                GetType(System.Int32).Assembly.GetName(),
+                GetType(Integer).Assembly.GetName(),
                  GetType(Bitmap).Assembly.GetName(),
                 GetType(Form).Assembly.GetName(),
-                GetType(System.Data.DataSet).Assembly.GetName()
+                GetType(DataSet).Assembly.GetName()
             }
 
 
@@ -273,18 +273,18 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Friend Class ResourceEditorAccessModifierCombobox
             Inherits AccessModifierCombobox
 
-            Private _isInDevice20Project As Boolean
-            Private Const s_framework_2_0 As Integer = 2
+            Private ReadOnly _isInDevice20Project As Boolean
+            Private Const Framework_2_0 As Integer = 2
 
             Public Sub New(useVbMyResXCodeGenerator As Boolean, allowNoCodeGeneration As Boolean, rootDesigner As BaseRootDesigner, serviceProvider As IServiceProvider, projectItem As ProjectItem, namespaceToOverrideIfCustomToolIsEmpty As String)
                 MyBase.New(rootDesigner, serviceProvider, projectItem, namespaceToOverrideIfCustomToolIsEmpty)
 
                 _isInDevice20Project = IsInDevice20Project(rootDesigner)
 
-                AddCodeGeneratorEntry(AccessModifierConverter.Access.Friend, IIf(useVbMyResXCodeGenerator, s_VBMYCUSTOMTOOL, s_STANDARDCUSTOMTOOL))
+                AddCodeGeneratorEntry(AccessModifierConverter.Access.Friend, IIf(useVbMyResXCodeGenerator, VBMYCUSTOMTOOL, STANDARDCUSTOMTOOL))
                 If Not _isInDevice20Project Then
                     ' public generator is not supported in Device 2.0 projects
-                    AddCodeGeneratorEntry(AccessModifierConverter.Access.Public, IIf(useVbMyResXCodeGenerator, s_VBMYCUSTOMTOOLPUBLIC, s_STANDARDCUSTOMTOOLPUBLIC))
+                    AddCodeGeneratorEntry(AccessModifierConverter.Access.Public, IIf(useVbMyResXCodeGenerator, VBMYCUSTOMTOOLPUBLIC, STANDARDCUSTOMTOOLPUBLIC))
                 End If
 
                 If allowNoCodeGeneration Then
@@ -296,10 +296,10 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 'Ensure we don't disable the Access Modifier combobox just because the custom tool is set to the
                 '  My.Resources version of the custom tool when the standard version was expected, or vice versa.
                 '  This way all the resx generators are recognized.
-                AddRecognizedCustomToolValue(s_VBMYCUSTOMTOOL)
-                AddRecognizedCustomToolValue(s_VBMYCUSTOMTOOLPUBLIC)
-                AddRecognizedCustomToolValue(s_STANDARDCUSTOMTOOL)
-                AddRecognizedCustomToolValue(s_STANDARDCUSTOMTOOLPUBLIC)
+                AddRecognizedCustomToolValue(VBMYCUSTOMTOOL)
+                AddRecognizedCustomToolValue(VBMYCUSTOMTOOLPUBLIC)
+                AddRecognizedCustomToolValue(STANDARDCUSTOMTOOL)
+                AddRecognizedCustomToolValue(STANDARDCUSTOMTOOLPUBLIC)
             End Sub
 
             Public Shadows Function GetMenuCommandsToRegister() As ICollection
@@ -326,7 +326,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                         Try
                             Dim frameworkVersionNumber As UInteger = GetProjectTargetFrameworkVersion(hierarchy)
                             Dim majorVersionNumber As UInteger = frameworkVersionNumber >> 16
-                            Return majorVersionNumber <= s_framework_2_0
+                            Return majorVersionNumber <= Framework_2_0
                         Catch ex As NotSupportedException
                         Catch ex As NotImplementedException
                         End Try
@@ -565,10 +565,11 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             '
             ' m_toolbarPanel
             '
-            _toolbarPanel = New DesignerToolbarPanel()
-            _toolbarPanel.Dock = DockStyle.Top
-            _toolbarPanel.Name = "ToolbarPanel"
-            _toolbarPanel.Text = "ToolbarPanel"
+            _toolbarPanel = New DesignerToolbarPanel With {
+                .Dock = DockStyle.Top,
+                .Name = "ToolbarPanel",
+                .Text = "ToolbarPanel"
+            }
             '
             'ResourceEditorView
             '
@@ -598,7 +599,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private Sub InitializeUI(ServiceProvider As IServiceProvider)
             AllowDrop = True
             StringTable.RowHeadersWidth = DpiHelper.LogicalToDeviceUnitsX(35)
-            _UIInitialized = True
+            _uiInitialized = True
         End Sub
 
 
@@ -679,7 +680,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     RootDesigner,
                     RootDesigner,
                     GetResXProjectItem(),
-                    IIf(IsVBProject(GetProject()), s_CUSTOMTOOLNAMESPACE, Nothing))
+                    IIf(IsVBProject(GetProject()), CUSTOMTOOLNAMESPACE, Nothing))
             End If
 
             'Add our menus (can't do that until we know the root designer)
@@ -735,39 +736,32 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             InThisMethod = True
             Try
-                _menuCommands = New ArrayList
-
-                'Play
-                _menuCommands.Add(New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDResXPlay, AddressOf MenuPlay, AddressOf MenuPlayEnabledHandler,
-                    AlwaysCheckStatus:=True))
-
-                'Open/Open With...
-                _menuCommands.Add(New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDVSStd97Open, AddressOf MenuOpen, AddressOf MenuOpenOpenWithEnabledHandler,
-                    AlwaysCheckStatus:=True))
-                _menuCommands.Add(New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDVSStd97OpenWith, AddressOf MenuOpenWith, AddressOf MenuOpenOpenWithEnabledHandler,
-                    AlwaysCheckStatus:=True))
-
-                'Cut/Copy/Paste/Remove/Rename
-                _menuCommands.Add(New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDVSStd97cmdidCut, AddressOf MenuCut, AddressOf MenuCutEnabledHandler,
-                    AlwaysCheckStatus:=True))
-                _menuCommands.Add(New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDVSStd97cmdidCopy, AddressOf MenuCopy, AddressOf MenuCopyEnabledHandler,
-                    AlwaysCheckStatus:=True))
-                _menuCommands.Add(New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDVSStd97cmdidPaste, AddressOf MenuPaste, AddressOf MenuPasteEnabledHandler,
-                    AlwaysCheckStatus:=True))
-                _menuCommands.Add(New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDVSStd97cmdidRemove, AddressOf MenuRemove, AddressOf MenuRemoveEnabledHandler,
+                _menuCommands = New ArrayList From {
+                    New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDResXPlay, AddressOf MenuPlay, AddressOf MenuPlayEnabledHandler,
+                    AlwaysCheckStatus:=True),
+                    New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDVSStd97Open, AddressOf MenuOpen, AddressOf MenuOpenOpenWithEnabledHandler,
+                    AlwaysCheckStatus:=True),
+                    New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDVSStd97OpenWith, AddressOf MenuOpenWith, AddressOf MenuOpenOpenWithEnabledHandler,
+                    AlwaysCheckStatus:=True),
+                    New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDVSStd97cmdidCut, AddressOf MenuCut, AddressOf MenuCutEnabledHandler,
+                    AlwaysCheckStatus:=True),
+                    New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDVSStd97cmdidCopy, AddressOf MenuCopy, AddressOf MenuCopyEnabledHandler,
+                    AlwaysCheckStatus:=True),
+                    New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDVSStd97cmdidPaste, AddressOf MenuPaste, AddressOf MenuPasteEnabledHandler,
+                    AlwaysCheckStatus:=True),
+                    New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDVSStd97cmdidRemove, AddressOf MenuRemove, AddressOf MenuRemoveEnabledHandler,
                     CommandVisibleHandler:=AddressOf MenuRemoveVisibleHandler,
-                    AlwaysCheckStatus:=True))
-                _menuCommands.Add(New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDCOMMONRemoveRow, AddressOf MenuRemoveRow, AddressOf MenuRemoveRowEnabledHandler,
-                    AlwaysCheckStatus:=True))
-                _menuCommands.Add(New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDVSStd97cmdidRename, AddressOf MenuRename, AddressOf MenuRenameEnabledHandler,
-                    AlwaysCheckStatus:=True))
-                _menuCommands.Add(New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDVSStd97cmdidEditLabel, AddressOf MenuEditLabel, AddressOf MenuEditLabelEnabledHandler,
-                    AlwaysCheckStatus:=True))
+                    AlwaysCheckStatus:=True),
+                    New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDCOMMONRemoveRow, AddressOf MenuRemoveRow, AddressOf MenuRemoveRowEnabledHandler,
+                    AlwaysCheckStatus:=True),
+                    New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDVSStd97cmdidRename, AddressOf MenuRename, AddressOf MenuRenameEnabledHandler,
+                    AlwaysCheckStatus:=True),
+                    New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDVSStd97cmdidEditLabel, AddressOf MenuEditLabel, AddressOf MenuEditLabelEnabledHandler,
+                    AlwaysCheckStatus:=True),
+                    New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDVSStd97cmdidSelectAll, AddressOf MenuSelectAll, AddressOf MenuSelectAllEnableHandler)
+                }
 
-                'Select All
-                _menuCommands.Add(New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDVSStd97cmdidSelectAll, AddressOf MenuSelectAll, AddressOf MenuSelectAllEnableHandler))
-
-                'Add menu items
+                    'Add menu items
                 If isEditingResWFile Then
                     ' Only 'Add Default Resource' is allowed resw files
                     _menuCommands.Add(New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDRESXAddDefaultResource, AddressOf ButtonFixedAdd_Click, AddressOf MenuAddEnabledHandler))
@@ -828,11 +822,12 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     AlwaysCheckStatus:=True))
 
                 'Edit cell -- leave it here because of VB profile...
-                Dim EditCellCommand As DesignerMenuCommand = New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDCOMMONEditCell, AddressOf MenuEditLabel)
                 'We don't actually want "Edit" to be visible in the menus.  We simply want to be able to have something to bind the F2 key to
                 '  so that pressing F2 in the string table starts editing (the shell seems to steal this key from the grid).  So make it
                 '  invisible
-                EditCellCommand.Visible = False
+                Dim EditCellCommand As DesignerMenuCommand = New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDCOMMONEditCell, AddressOf MenuEditLabel) With {
+                    .Visible = False
+                }
                 _menuCommands.Add(EditCellCommand)
 
                 _menuCommands.Add(New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDRESXGenericRemove, AddressOf MenuGenericRemove, AddressOf MenuGenericRemoveEnabledHandler,
@@ -872,9 +867,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Category.Display.StringTable,
                 New DesignerMenuCommand(Nothing, Constants.MenuConstants.CommandIDRESXResTypeStrings, AddressOf MenuResourceTypeStrings),
                 AddressOf ButtonAdd_NewString_Click,
-                ResourceTypeEditors.String
-                )
-            _categoryStrings.AllowNewEntriesInStringTable = True
+                ResourceTypeEditors.String) With {
+                .AllowNewEntriesInStringTable = True
+                }
             _categories.Add(_categoryStrings)
 
             _categoryImages = New Category(
@@ -882,9 +877,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Category.Display.ListView,
                 New DesignerMenuCommand(Nothing, Constants.MenuConstants.CommandIDRESXResTypeImages, AddressOf MenuResourceTypeImages),
                 AddressOf ButtonAdd_NewImage_BMP_Click,
-                ResourceTypeEditors.Bitmap
-                )
-            _categoryImages.ResourceView = ResourceListView.ResourceView.Thumbnail
+                ResourceTypeEditors.Bitmap) With {
+                .ResourceView = ResourceListView.ResourceView.Thumbnail
+                }
             _categories.Add(_categoryImages)
 
             If PropertyPages.VSProductSKU.IsExpress() Then
@@ -912,8 +907,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Category.Display.ListView,
                 New DesignerMenuCommand(Nothing, Constants.MenuConstants.CommandIDRESXResTypeAudio, AddressOf MenuResourceTypeAudio),
                 AddressOf ButtonAdd_ExistingFile_Click,
-                ResourceTypeEditors.Audio)
-            _categoryAudio.ResourceView = ResourceListView.ResourceView.Thumbnail
+                ResourceTypeEditors.Audio) With {
+                .ResourceView = ResourceListView.ResourceView.Thumbnail
+                }
             _categories.Add(_categoryAudio)
 
             _categoryFiles = New Category(
@@ -922,8 +918,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 New DesignerMenuCommand(Nothing, Constants.MenuConstants.CommandIDRESXResTypeFiles, AddressOf MenuResourceTypeFiles),
                 AddressOf ButtonAdd_ExistingFile_Click,
                 ResourceTypeEditors.TextFile,
-                ResourceTypeEditors.BinaryFile)
-            _categoryFiles.ResourceView = ResourceListView.ResourceView.Thumbnail
+                ResourceTypeEditors.BinaryFile) With {
+                .ResourceView = ResourceListView.ResourceView.Thumbnail
+                }
             _categories.Add(_categoryFiles)
 
             _categoryOther = New Category(
@@ -933,8 +930,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Nothing,
                 ResourceTypeEditors.NonStringConvertible,
                 ResourceTypeEditors.StringConvertible,
-                ResourceTypeEditors.Nothing)
-            _categoryOther.ShowTypeColumnInStringTable = True
+                ResourceTypeEditors.Nothing) With {
+                .ShowTypeColumnInStringTable = True
+                }
             _categories.Add(_categoryOther)
         End Sub
 
@@ -971,8 +969,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Try
                 'String table and resource listview
                 ' We leave some white space around them
-                StringTable.Location = New Point(s_DESIGNER_PADDING, _toolbarPanel.Bottom + s_DESIGNER_PADDING_TOP)
-                StringTable.Size = New Size(Width - 2 * s_DESIGNER_PADDING, Height - _toolbarPanel.Height - s_DESIGNER_PADDING - s_DESIGNER_PADDING_TOP)
+                StringTable.Location = New Point(DESIGNER_PADDING, _toolbarPanel.Bottom + DESIGNER_PADDING_TOP)
+                StringTable.Size = New Size(Width - 2 * DESIGNER_PADDING, Height - _toolbarPanel.Height - DESIGNER_PADDING - DESIGNER_PADDING_TOP)
                 _resourceListView.Location = StringTable.Location
                 _resourceListView.Size = StringTable.Size
             Finally
@@ -989,7 +987,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="lParam"></param>
         ''' <remarks></remarks>
         Public Function OnBroadcastMessage(msg As UInteger, wParam As IntPtr, lParam As IntPtr) As Integer Implements IVsBroadcastMessageEvents.OnBroadcastMessage
-            If msg = Editors.Interop.win.WM_SETTINGCHANGE Then
+            If msg = Editors.Interop.Win32Constant.WM_SETTINGCHANGE Then
                 If RootDesigner IsNot Nothing Then
                     SetFonts(RootDesigner)
                 End If
@@ -2611,11 +2609,11 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
         'This drag/drop format is used by reference-based projects (e.g., C++), where the items in a project are a reference to a file elsewhere on
         '  disk.  The project item is not actually stored in the project itself.
-        Private Const s_CF_VSREFPROJECTITEMS As String = "CF_VSREFPROJECTITEMS"
+        Private Const CF_VSREFPROJECTITEMS As String = "CF_VSREFPROJECTITEMS"
 
         'This drag/drop format is used by storage-based projects (e.g., C#, VB, J#), where the items in a project are generally stored in the project's
         '  directories rather than simply being references.
-        Private Const s_CF_VSSTGPROJECTITEMS As String = "CF_VSSTGPROJECTITEMS"
+        Private Const CF_VSSTGPROJECTITEMS As String = "CF_VSSTGPROJECTITEMS"
 
         'Comma-separated values (Excel and other apps)
         Private ReadOnly _CF_CSV As String = DataFormats.CommaSeparatedValue
@@ -2635,7 +2633,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         <Serializable()>
         Private NotInheritable Class ResourcesDataFormat
             'List of resources
-            Private _resources() As Resource
+            Private ReadOnly _resources() As Resource
 
             ''' <summary>
             ''' Constructor
@@ -2892,7 +2890,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             '2) Project explorer drag/drop format (copy only)
             If CopyAllowed AndAlso
-                    (Data.GetDataPresent(s_CF_VSREFPROJECTITEMS) OrElse Data.GetDataPresent(s_CF_VSSTGPROJECTITEMS)) Then
+                    (Data.GetDataPresent(CF_VSREFPROJECTITEMS) OrElse Data.GetDataPresent(CF_VSSTGPROJECTITEMS)) Then
                 ActualEffect = DragDropEffects.Copy
                 ActualFormat = ResourceEditorDataFormats.SolutionExplorer 'Note that we don't care if it was CF_VSSTGPROJECTITEMS or CF_VSREFPROJECTITEMS
                 Return True
@@ -3059,9 +3057,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <remarks>Caller must catch exceptions and display error message</remarks>
         Private Sub DragDropPasteFromSolutionExplorer(Data As IDataObject, CopyFileIfExists As Boolean)
             'Look for either CF_VSREFPROJECTITEMS or CF_VSSTGPROJECTITEMS
-            Dim DataStream As Stream = DirectCast(Data.GetData(s_CF_VSREFPROJECTITEMS), Stream)
+            Dim DataStream As Stream = DirectCast(Data.GetData(CF_VSREFPROJECTITEMS), Stream)
             If DataStream Is Nothing Then
-                DataStream = DirectCast(Data.GetData(s_CF_VSSTGPROJECTITEMS), Stream)
+                DataStream = DirectCast(Data.GetData(CF_VSSTGPROJECTITEMS), Stream)
             End If
 
             If DataStream IsNot Nothing Then
@@ -3528,7 +3526,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                         ' Check the registry setting, which remembers a list of extensions that the customer told us not to pop up a warning dialog again...
                         Dim extraSafeExtensions As String = SafeExtensions
                         If Not String.IsNullOrEmpty(extraSafeExtensions) Then
-                            Dim extensions As String() = extraSafeExtensions.Split(New Char() {s_SAFE_EXTENSION_SEPERATOR})
+                            Dim extensions As String() = extraSafeExtensions.Split(New Char() {SAFE_EXTENSION_SEPERATOR})
                             For Each safeExtension As String In extensions
                                 If String.Equals(fileExtension, safeExtension, StringComparison.OrdinalIgnoreCase) Then
                                     isSafe = True
@@ -3549,7 +3547,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                                     If String.IsNullOrEmpty(extraSafeExtensions) Then
                                         extraSafeExtensions = fileExtension
                                     Else
-                                        extraSafeExtensions = extraSafeExtensions & s_SAFE_EXTENSION_SEPERATOR & fileExtension
+                                        extraSafeExtensions = extraSafeExtensions & SAFE_EXTENSION_SEPERATOR & fileExtension
                                     End If
                                     SafeExtensions = extraSafeExtensions
                                 End If
@@ -3583,7 +3581,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 VSErrorHandler.ThrowOnFailure(OpenDocumentService.OpenDocumentViaProject(ResourceFullPathTolerant, OpenLogView, ServiceProvider, Hierarchy, ItemId, WindowFrame))
             Catch ex As Exception When ReportWithoutCrash(ex, NameOf(EditOrOpenWith), NameOf(ResourceEditorView))
                 If TypeOf ex Is COMException Then
-                    If CType(ex, COMException).ErrorCode = win.OLE_E_PROMPTSAVECANCELLED Then
+                    If CType(ex, COMException).ErrorCode = Win32Constant.OLE_E_PROMPTSAVECANCELLED Then
                         'We get this error when the user cancels the Open With dialog.  Obviously, we ignore this error and cancel.
                         Exit Sub
                     End If
@@ -4636,7 +4634,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 End If
 
                 Return CType(fileNames.ToArray(GetType(String)), String())
-            Catch ex As COMException When ex.ErrorCode = NativeMethods.HRESULT_FROM_WIN32(win.FNERR_BUFFERTOOSMALL)
+            Catch ex As COMException When ex.ErrorCode = NativeMethods.HRESULT_FROM_WIN32(Win32Constant.FNERR_BUFFERTOOSMALL)
                 ' We didn't provide enough buffer for file names. It passes the limitation of the designer.
                 Throw NewException(My.Resources.Designer.RSE_Err_MaxFilesLimitation, HelpIDs.Err_MaxFilesLimitation, ex)
             End Try
@@ -4840,12 +4838,12 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
         Friend NotInheritable Class CachedResourcesForView
 
-            Private _errorGlyphLarge As Image
-            Private _errorGlyphSmall As Image
-            Private _errorGlyphState As Image
-            Private _sortUpGlyph As Image
-            Private _sortDownGlyph As Image
-            Private _backgroundColor As Color
+            Private ReadOnly _errorGlyphLarge As Image
+            Private ReadOnly _errorGlyphSmall As Image
+            Private ReadOnly _errorGlyphState As Image
+            Private ReadOnly _sortUpGlyph As Image
+            Private ReadOnly _sortDownGlyph As Image
+            Private ReadOnly _backgroundColor As Color
 
             ''' <summary>
             ''' Constructor
@@ -5111,18 +5109,18 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     'The user is currently editing text in the string table.  Take over UNDO/REDO execution from the
                     '  shell and hand it to the textbox instead.
 
-                    If CommandGroupGuid.Equals(Constants.MenuConstants.guidVSStd97) Then
+                    If CommandGroupGuid.Equals(Constants.MenuConstants.GuidVSStd97) Then
                         Select Case CommandId
-                            Case Constants.MenuConstants.cmdidUndo
+                            Case Constants.MenuConstants.CmdIdUndo
                                 'UNDO/REDO.  Send EM_UNDO to the textbox
                                 'The textbox doesn't actually support REDO, but we don't want the shell to 
                                 '  grab it, either.  The textbox's UNDO is single-layer, which means pressing
                                 '  CTRL+Z first does an UNDO, then a REDO.  So we'll do the same for both
                                 '  undo and redo - send EM_UNDO.
                                 Dim TextBoxHandleRef As New HandleRef(EditingTextBox, EditingTextBox.Handle)
-                                NativeMethods.SendMessage(TextBoxHandleRef, win.EM_UNDO, 0, 0)
+                                NativeMethods.SendMessage(TextBoxHandleRef, Win32Constant.EM_UNDO, 0, 0)
                                 Handled = True
-                            Case Constants.MenuConstants.cmdidRedo
+                            Case Constants.MenuConstants.CmdIdRedo
                                 Handled = True
                         End Select
                     End If
@@ -5139,15 +5137,15 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
 
         'The custom tool name to use for stand-alone resx files.
-        Private Const s_STANDARDCUSTOMTOOL As String = "ResXFileCodeGenerator"
-        Private Const s_STANDARDCUSTOMTOOLPUBLIC As String = "PublicResXFileCodeGenerator"
+        Private Const STANDARDCUSTOMTOOL As String = "ResXFileCodeGenerator"
+        Private Const STANDARDCUSTOMTOOLPUBLIC As String = "PublicResXFileCodeGenerator"
 
         'The custom tool name to use for the default resx file in VB projects
-        Private Const s_VBMYCUSTOMTOOL As String = "VbMyResourcesResXFileCodeGenerator"
-        Private Const s_VBMYCUSTOMTOOLPUBLIC As String = "PublicVbMyResourcesResXFileCodeGenerator"
+        Private Const VBMYCUSTOMTOOL As String = "VbMyResourcesResXFileCodeGenerator"
+        Private Const VBMYCUSTOMTOOLPUBLIC As String = "PublicVbMyResourcesResXFileCodeGenerator"
 
         'The namespace to use
-        Private Const s_CUSTOMTOOLNAMESPACE As String = "My.Resources"
+        Private Const CUSTOMTOOLNAMESPACE As String = "My.Resources"
 
 
         ''' <summary>
@@ -5173,7 +5171,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Return False
             Catch ex As NotImplementedException
                 Return False
-            Catch ex As COMException When ex.ErrorCode = win.DISP_E_MEMBERNOTFOUND OrElse ex.ErrorCode = win.OLECMDERR_E_NOTSUPPORTED
+            Catch ex As COMException When ex.ErrorCode = Win32Constant.DISP_E_MEMBERNOTFOUND OrElse ex.ErrorCode = Win32Constant.OLECMDERR_E_NOTSUPPORTED
                 'Ignore this, if the project does not support this (like SmartPhone project)...
                 Return False
             Catch ex As Exception When ReportWithoutCrash(ex, NameOf(IsDefaultResXFile), NameOf(ResourceEditorView))
@@ -5299,9 +5297,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             If Not String.IsNullOrEmpty(GeneratedClassName) Then
                 'Find the code element for the generated class
                 Dim FindSettingClassFilter As New SettingsDesigner.ProjectUtils.KnownClassName(GeneratedClassName, SettingsDesigner.ProjectUtils.ClassOrModule.Either)
-                Dim GeneratedClassCodeElement As CodeElement = SettingsDesigner.ProjectUtils.FindElement(ProjItem, _
-                                                                ExpandChildElements:=False, _
-                                                                ExpandChildItems:=True, _
+                Dim GeneratedClassCodeElement As CodeElement = SettingsDesigner.ProjectUtils.FindElement(ProjItem,
+                                                                ExpandChildElements:=False,
+                                                                ExpandChildItems:=True,
                                                                 Filter:=FindSettingClassFilter)
 
                 If GeneratedClassCodeElement Is Nothing Then
@@ -5399,10 +5397,10 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Dim ItemId As UInteger = GetVsItemId()
             Dim UsingVbMyCustomTool As Boolean
 
-            If CurrentCustomTool.Equals(s_STANDARDCUSTOMTOOL, StringComparison.OrdinalIgnoreCase) Then
+            If CurrentCustomTool.Equals(STANDARDCUSTOMTOOL, StringComparison.OrdinalIgnoreCase) Then
                 'This uses our standard single file generator.  We know how it works, so we can go ahead and
                 '  attempt a rename.
-            ElseIf CurrentCustomTool.Equals(s_VBMYCUSTOMTOOL, StringComparison.OrdinalIgnoreCase) Then
+            ElseIf CurrentCustomTool.Equals(VBMYCUSTOMTOOL, StringComparison.OrdinalIgnoreCase) Then
                 'This uses our special My.VB file generator.  We can attempt a rename.
                 UsingVbMyCustomTool = True
             Else

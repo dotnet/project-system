@@ -195,7 +195,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             // other reason, that our state of the world remains consistent
             if (!_paths.Contains(fullPath))
             {
-                var itemMetadata = metadata.GetValueOrDefault(includePath, ImmutableStringDictionary<string>.EmptyOrdinal);
+                IImmutableDictionary<string, string> itemMetadata = metadata.GetValueOrDefault(includePath, ImmutableStringDictionary<string>.EmptyOrdinal);
                 AddToContext(fullPath, itemMetadata, isActiveContext, logger);
                 bool added = _paths.Add(fullPath);
                 Assumes.True(added);
@@ -217,7 +217,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             return designTimeDifference;
         }
 
-        private IProjectChangeDiff ResolveConflicts(IProjectChangeDiff evaluationDifferences, IProjectChangeDiff designTimeDifferences)
+        private static IProjectChangeDiff ResolveConflicts(IProjectChangeDiff evaluationDifferences, IProjectChangeDiff designTimeDifferences)
         {
             // Remove added items that were removed by later evaluations, and vice versa
             IImmutableSet<string> added = designTimeDifferences.AddedItems.Except(evaluationDifferences.RemovedItems);
@@ -251,7 +251,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             _evaluations.Enqueue(new VersionedProjectChangeDiff(version, evaluationDifference));
         }
 
-        private IProjectChangeDiff NormalizeDifferences(IProjectChangeDiff difference)
+        private static IProjectChangeDiff NormalizeDifferences(IProjectChangeDiff difference)
         {
             // Optimize for common case
             if (difference.RenamedItems.Count == 0)

@@ -1,6 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System;
+using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -20,16 +20,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
         [ImportingConstructor]
         public DebugTokenReplacer(IUnconfiguredProjectCommonServices unconnfiguredServices, IEnvironmentHelper environmentHelper,
-                                  IActiveDebugFrameworkServices activeDebugFrameworkService)
+                                  IActiveDebugFrameworkServices activeDebugFrameworkService, IProjectAccessor projectAccessor)
         {
             UnconfiguredServices = unconnfiguredServices;
             EnvironmentHelper = environmentHelper;
             ActiveDebugFrameworkService = activeDebugFrameworkService;
+            ProjectAccessor = projectAccessor;
         }
 
         private IUnconfiguredProjectCommonServices UnconfiguredServices { get; }
         private IEnvironmentHelper EnvironmentHelper { get; }
         private IActiveDebugFrameworkServices ActiveDebugFrameworkService { get; }
+        private IProjectAccessor ProjectAccessor { get; }
 
         // Regular expression string to extract $(sometoken) elements from a string
         private static Regex s_matchTokenRegex = new Regex(@"(\$\((?<token>[^\)]+)\))", RegexOptions.IgnoreCase);
@@ -65,7 +67,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             // Since Env variables are an immutable dictionary they are a little messy to update.
             if (resolvedProfile.EnvironmentVariables != null)
             {
-                foreach (var kvp in resolvedProfile.EnvironmentVariables)
+                foreach (KeyValuePair<string, string> kvp in resolvedProfile.EnvironmentVariables)
                 {
                     resolvedProfile.EnvironmentVariables = resolvedProfile.EnvironmentVariables.SetItem(kvp.Key, await ReplaceTokensInStringAsync(kvp.Value, true).ConfigureAwait(false));
                 }
@@ -73,7 +75,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             if (resolvedProfile.OtherSettings != null)
             {
-                foreach (var kvp in resolvedProfile.OtherSettings)
+                foreach (KeyValuePair<string, object> kvp in resolvedProfile.OtherSettings)
                 {
                     if (kvp.Value is string)
                     {
@@ -91,85 +93,41 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// is true, they are expanded first before replacement happens. If the rawString is null or empty
         /// it is returned as is.
         /// </summary>
-        public async Task<string> ReplaceTokensInStringAsync(string rawString, bool expandEnvironmentVars)
+        public Task<string> ReplaceTokensInStringAsync(string rawString, bool expandEnvironmentVars)
         {
             if (string.IsNullOrWhiteSpace(rawString))
             {
+                return Task.FromResult(rawString);
+            }
+
+            string expandedString = expandEnvironmentVars? EnvironmentHelper.ExpandEnvironmentVariables(rawString) : rawString;
+
+            return ReplaceMSBuildTokensInStringAsync(expandedString);
+        }
+
+        private async Task<string> ReplaceMSBuildTokensInStringAsync(string rawString)
+        {
+            MatchCollection matches = s_matchTokenRegex.Matches(rawString);
+            if (matches.Count == 0)
                 return rawString;
-            }
 
-            string updatedString = expandEnvironmentVars ? EnvironmentHelper.ExpandEnvironmentVariables(rawString) : rawString;
+            ConfiguredProject configuredProject = await ActiveDebugFrameworkService.GetConfiguredProjectForActiveFrameworkAsync()
+                                                                                   .ConfigureAwait(true);
 
-            var matches = s_matchTokenRegex.Matches(updatedString);
-            if (matches.Count > 0)
+            return await ProjectAccessor.OpenProjectForReadAsync(configuredProject, project =>
             {
-                using (var access = await AccessProject().ConfigureAwait(true))
+                string expandedString = rawString;
+
+                // For each token we try to get a replacement value.
+                foreach (Match match in matches)
                 {
-                    var project = await access.GetProjectAsync().ConfigureAwait(true);
-
-                    // For each token we try to get a replacement value.
-                    foreach (Match match in matches)
-                    {
-                        // Resovlve with msbuild. It will return the empty string if not found
-                        updatedString = updatedString.Replace(match.Value, project.ExpandString(match.Value));
-                    }
+                    // Resolve with msbuild. It will return the empty string if not found
+                    expandedString = expandedString.Replace(match.Value, project.ExpandString(match.Value));
                 }
-            }
-            return updatedString;
-        }
 
-        /// <summary>
-        /// This is here to support unit tests which can derive from this class and return their own 
-        /// instance of IProjectReadAccess
-        /// </summary>
-        protected virtual async Task<IProjectReadAccess> AccessProject()
-        {
-            var activeDebuggingConfiguredProject = await ActiveDebugFrameworkService.GetConfiguredProjectForActiveFrameworkAsync().ConfigureAwait(true);
+                return expandedString;
 
-            return new ProjectReadAccessor(UnconfiguredServices.ProjectLockService, activeDebuggingConfiguredProject);
-        }
-    }
-
-    /// <summary>
-    /// Mocking the Project Lock system is very difficult due to internal constructors in CPS. This interface
-    /// and class abstracts getting the lock and accessing the project
-    /// </summary>
-    internal interface IProjectReadAccess : IDisposable
-    {
-        Task<Microsoft.Build.Evaluation.Project> GetProjectAsync();
-    }
-
-    internal sealed class ProjectReadAccessor : IProjectReadAccess
-    {
-        private IProjectLockService ProjectLockService { get; set; }
-        private ConfiguredProject ConfiguredProject { get; set; }
-        private ProjectLockReleaser? Access { get; set; }
-
-        public ProjectReadAccessor(IProjectLockService lockService, ConfiguredProject configuredProject)
-        {
-            ProjectLockService = lockService;
-            ConfiguredProject = configuredProject;
-        }
-
-        public async Task<Microsoft.Build.Evaluation.Project> GetProjectAsync()
-        {
-            // If we already have access we can just use it to get an instance of the project
-            if (Access == null)
-            {
-                Access = await ProjectLockService.ReadLockAsync();
-
-            }
-
-            return await Access.Value.GetProjectAsync(ConfiguredProject).ConfigureAwait(false);
-        }
-
-        public void Dispose()
-        {
-            if (Access != null)
-            {
-                Access.Value.Dispose();
-                Access = null;
-            }
+            }).ConfigureAwait(true);
         }
     }
 }

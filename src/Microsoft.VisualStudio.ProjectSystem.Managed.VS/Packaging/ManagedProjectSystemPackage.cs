@@ -18,11 +18,11 @@ namespace Microsoft.VisualStudio.Packaging
 {
     [Guid(PackageGuid)]
     [PackageRegistration(AllowsBackgroundLoading = true, RegisterUsing = RegistrationMethod.CodeBase, UseManagedResourcesOnly = true)]
-    [ProvideAutoLoad(ActivationContextGuid)]
+    [ProvideAutoLoad(ActivationContextGuid, PackageAutoLoadFlags.BackgroundLoad)]
     [ProvideUIContextRule(ActivationContextGuid, "Load Managed Project Package",
         "dotnetcore",
         new string[] { "dotnetcore" },
-        new string[] { "SolutionHasProjectCapability:(CSharp | VB) & CPS" }
+        new string[] { "SolutionHasProjectCapability:.NET & CPS" }
         )]
 
     [ProvideMenuResource("Menus.ctmenu", 3)]
@@ -30,24 +30,7 @@ namespace Microsoft.VisualStudio.Packaging
     {
         public const string ActivationContextGuid = "E7DF1626-44DD-4E8C-A8A0-92EAB6DDC16E";
         public const string PackageGuid = "A4F9D880-9492-4072-8BF3-2B5EEEDC9E68";
-        public const string ManagedProjectSystemCommandSet = "{568ABDF7-D522-474D-9EED-34B5E5095BA5}";
-        public const long GenerateNuGetPackageProjectContextMenuCmdId = 0x2000;
-        public const long GenerateNuGetPackageTopLevelBuildCmdId = 0x2001;
-        public const int DebugTargetMenuDebugFrameworkMenu = 0x3000;
-        public const int DebugFrameworksCmdId = 0x3050;
 
-        public const string ManagedProjectSystemOrderCommandSet = "{6C4806E9-034E-4B64-99DE-29A6F837B993}";
-        public const int AddNewItemAboveCmdId = 0x2002;
-        public const int AddExistingItemAboveCmdId = 0x2003;
-        public const int AddNewItemBelowCmdId = 0x2004;
-        public const int AddExistingItemBelowCmdId = 0x2005;
-
-        // The guid and values are from the old F# project system, don't change them.
-        public const string FSharpProjectCmdSet = "{75AC5611-A912-4195-8A65-457AE17416FB}";
-        public const int MoveUpCmdId = 0x3002;
-        public const int MoveDownCmdId = 0x3007;
-
-        public const string SolutionExplorerGuid = "{3AE79031-E1BC-11D0-8F78-00A0C9110057}";
 
         public const string DefaultCapabilities = ProjectCapability.AppDesigner + "; " +
                                                   ProjectCapability.EditAndContinue + "; " +
@@ -70,12 +53,12 @@ namespace Microsoft.VisualStudio.Packaging
 
             var componentModel = (IComponentModel)(await GetServiceAsync(typeof(SComponentModel)).ConfigureAwait(true));
             ICompositionService compositionService = componentModel.DefaultCompositionService;
-            var debugFrameworksCmd = componentModel.DefaultExportProvider.GetExport<DebugFrameworksDynamicMenuCommand>();
+            Lazy<DebugFrameworksDynamicMenuCommand> debugFrameworksCmd = componentModel.DefaultExportProvider.GetExport<DebugFrameworksDynamicMenuCommand>();
 
             var mcs = (await GetServiceAsync(typeof(IMenuCommandService)).ConfigureAwait(true)) as OleMenuCommandService;
             mcs.AddCommand(debugFrameworksCmd.Value);
 
-            var debugFrameworksMenuTextUpdater = componentModel.DefaultExportProvider.GetExport<DebugFrameworkPropertyMenuTextUpdater>();
+            Lazy<DebugFrameworkPropertyMenuTextUpdater> debugFrameworksMenuTextUpdater = componentModel.DefaultExportProvider.GetExport<DebugFrameworkPropertyMenuTextUpdater>();
             mcs.AddCommand(debugFrameworksMenuTextUpdater.Value);
 
             // Need to use the CPS export provider to get the dotnet compatibility detector

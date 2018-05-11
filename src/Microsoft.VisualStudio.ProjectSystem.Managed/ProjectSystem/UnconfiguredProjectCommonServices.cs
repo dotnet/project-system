@@ -23,13 +23,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
                                                  ActiveConfiguredProject<ConfiguredProject> activeConfiguredProject, ActiveConfiguredProject<ProjectProperties> activeConfiguredProjectProperties,
                                                  Lazy<IProjectLockService> projectLockService)
         {
-            Requires.NotNull(project, nameof(project));
-            Requires.NotNull(projectTree, nameof(projectTree));
-            Requires.NotNull(threadingService, nameof(threadingService));
-            Requires.NotNull(activeConfiguredProject, nameof(activeConfiguredProject));
-            Requires.NotNull(activeConfiguredProjectProperties, nameof(activeConfiguredProjectProperties));
-            Requires.NotNull(projectLockService, nameof(projectLockService));
-
             _project = project;
             _projectTree = projectTree;
             _threadingService = threadingService;

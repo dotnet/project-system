@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.ComponentModel
 Imports System.ComponentModel.Design
@@ -24,7 +24,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '  issues using it, so instead the pages have separate UI's, and 
         '  controls which have the same function between the two pages can
         '  be identified and shared here
-        Protected Friend Class CommonControls
+        Protected Friend Class CommonPageControls
             Public IconCombobox As ComboBox
             Public IconLabel As Label
             Public IconPicturebox As PictureBox
@@ -38,10 +38,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Me.IconPicturebox = IconPicturebox
             End Sub
         End Class
-        Protected Friend m_CommonControls As CommonControls
+        Protected Friend CommonControls As CommonPageControls
 #End Region
 
-        Protected m_IconBrowseText As String
+        Protected IconBrowseText As String
 
         'Property names
         Protected Const Const_ApplicationIcon As String = "ApplicationIcon"
@@ -56,7 +56,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             InitializeComponent()
 
-            m_IconBrowseText = My.Resources.Designer.PPG_BrowseText
+            IconBrowseText = My.Resources.Designer.PPG_BrowseText
         End Sub
 
 #Region "Icon combobox"
@@ -68,7 +68,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''   and so may be appropriate for page initialization).</param>
         ''' <remarks></remarks>
         Protected Overloads Sub PopulateIconList(FindIconsInProject As Boolean)
-            PopulateIconList(FindIconsInProject, m_CommonControls.IconCombobox, CType(GetControlValueNative(Const_ApplicationIcon), String))
+            PopulateIconList(FindIconsInProject, CommonControls.IconCombobox, CType(GetControlValueNative(Const_ApplicationIcon), String))
         End Sub
 
 
@@ -89,7 +89,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             'Now add the <browse> entry
             If ProjectProperties.OutputType <> VSLangProj.prjOutputType.prjOutputTypeLibrary Then
-                ApplicationIconCombobox.Items.Add(m_IconBrowseText)
+                ApplicationIconCombobox.Items.Add(IconBrowseText)
             End If
         End Sub
 
@@ -98,7 +98,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <remarks></remarks>
         Protected Overridable Sub EnableIconComboBox(Enable As Boolean)
-            EnableControl(m_CommonControls.IconCombobox, Enable)
+            EnableControl(CommonControls.IconCombobox, Enable)
             UpdateIconImage(False)
         End Sub
 
@@ -120,7 +120,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <remarks></remarks>
         Protected Overloads Sub UpdateIconImage(AddToProject As Boolean)
-            UpdateIconImage(m_CommonControls.IconCombobox, m_CommonControls.IconPicturebox, AddToProject)
+            UpdateIconImage(CommonControls.IconCombobox, CommonControls.IconPicturebox, AddToProject)
         End Sub
 
 
@@ -129,7 +129,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         Protected Function ApplicationIconSet(control As Control, prop As PropertyDescriptor, value As Object) As Boolean
             If PropertyControlData.IsSpecialValue(value) Then
-                m_CommonControls.IconCombobox.SelectedIndex = -1
+                CommonControls.IconCombobox.SelectedIndex = -1
             Else
                 Dim IconText As String = CStr(value) 'Relative path to the icon
                 Debug.Assert(Not IconEntryIsSpecial(IconText))
@@ -137,11 +137,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     IconText = m_DefaultIconText
                 End If
 
-                Dim index As Integer = m_CommonControls.IconCombobox.Items.IndexOf(IconText)
+                Dim index As Integer = CommonControls.IconCombobox.Items.IndexOf(IconText)
                 If index = -1 Then
-                    index = m_CommonControls.IconCombobox.Items.Add(IconText)
+                    index = CommonControls.IconCombobox.Items.Add(IconText)
                 End If
-                m_CommonControls.IconCombobox.SelectedIndex = index
+                CommonControls.IconCombobox.SelectedIndex = index
                 UpdateIconImage(AddToProject:=False)
             End If
 
@@ -186,7 +186,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
             Dim ItemText As String = TryCast(IconCombobox.SelectedItem, String)
             If IconEntryIsBrowse(ItemText) Then
-                BrowseForAppIcon(IconCombobox, m_CommonControls.IconPicturebox)
+                BrowseForAppIcon(IconCombobox, CommonControls.IconPicturebox)
             Else
                 UpdateIconImage(True)
                 SetDirty(VsProjPropId.VBPROJPROPID_ApplicationIcon, True)
@@ -198,7 +198,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Returns true if the text is the special "Browse" text for the icon combobox
         ''' </summary>
         Protected Overrides Function IconEntryIsBrowse(EntryText As String) As Boolean
-            Return EntryText IsNot Nothing AndAlso EntryText.Equals(m_IconBrowseText, StringComparison.OrdinalIgnoreCase)
+            Return EntryText IsNot Nothing AndAlso EntryText.Equals(IconBrowseText, StringComparison.OrdinalIgnoreCase)
         End Function
 
 #End Region
@@ -321,10 +321,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         Protected Class ApplicationTypeInfo
 
-            Private _applicationType As ApplicationTypes
-            Private _displayName As String
-            Private _name As String 'Non-localized name
-            Private _supportedInExpress As Boolean
+            Private ReadOnly _applicationType As ApplicationTypes
+            Private ReadOnly _displayName As String
+            Private ReadOnly _name As String 'Non-localized name
+            Private ReadOnly _supportedInExpress As Boolean
 
             ' Basic references need to be added to the project when the user changed the type of the application.
             '  We should maintain it to be the same as the list in the project templates.
@@ -443,7 +443,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
                 ' Non-localized name to match
                 Private _names As New Dictionary(Of String, Boolean)
-                Private _mustBeSupportedInExpressSKUs As Boolean
+                Private ReadOnly _mustBeSupportedInExpressSKUs As Boolean
 
                 ''' <summary>
                 ''' Create a new filter predicate
@@ -474,7 +474,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             ''' Does a given ApplicationTypeInfo instance have the same application type as I was constructed with?
             ''' </summary>
             Private Class AppTypePredicate
-                Private _appTypeToFind As ApplicationTypes
+                Private ReadOnly _appTypeToFind As ApplicationTypes
 
                 Friend Sub New(appType As ApplicationTypes)
                     _appTypeToFind = appType
@@ -495,8 +495,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 #End Region
 
 #Region "View UAC Settings"
-        Protected Const prjApplicationManifest_Default As String = "DefaultManifest"
-        Protected Const prjApplicationManifest_NoManifest As String = "NoManifest"
+        Protected Const ApplicationManifest_Default As String = "DefaultManifest"
+        Protected Const ApplicationManifest_NoManifest As String = "NoManifest"
 
         ''' <summary>
         ''' Enables or disables the UAC Settings button, depending on whether we're in a class
@@ -551,8 +551,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     '   add a new manifest to the project file if we find that the property value is the special "no manifest"
                     '   value.
                     '
-                    If String.Equals(ApplicationManifest, prjApplicationManifest_NoManifest, StringComparison.Ordinal) Then
-                        ApplicationManifest = prjApplicationManifest_Default
+                    If String.Equals(ApplicationManifest, ApplicationManifest_NoManifest, StringComparison.Ordinal) Then
+                        ApplicationManifest = ApplicationManifest_Default
                     End If
 
                     Debug.Assert(ProjectHierarchy IsNot Nothing, "Hierarchy is nothing...")
@@ -569,7 +569,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     '   a manifest in it, and we should try to add one.
                     ' otherwise, the project already has one and we should use that document.
                     '
-                    If String.Equals(ApplicationManifest, prjApplicationManifest_Default, StringComparison.Ordinal) Then
+                    If String.Equals(ApplicationManifest, ApplicationManifest_Default, StringComparison.Ordinal) Then
                         ' this will call ProjectSpecialFiles to find an app.manifest, creating one if it does not already
                         '   exist. note that "find" may actually find one without setting our ApplicationManifest property.
                         '
@@ -587,7 +587,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         MkDocument = ApplicationManifest
                     End If
 
-                    If String.Equals(ApplicationManifest, prjApplicationManifest_Default, StringComparison.Ordinal) Then
+                    If String.Equals(ApplicationManifest, ApplicationManifest_Default, StringComparison.Ordinal) Then
 
                         ' If the project was upgraded from Whidbey and app.manifest exists in the project already then
                         ' ApplicationManifest would not be set by default and thus remain "DefaultManifest".

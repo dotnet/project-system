@@ -22,11 +22,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             IProjectPropertiesProvider delegatedProvider,
             IProjectInstancePropertiesProvider instanceProvider,
             IEnumerable<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>> interceptingValueProviders,
-            UnconfiguredProject unconfiguredProject,
+            UnconfiguredProject project,
             Func<ProjectId> getActiveProjectId,
             Workspace workspace,
             IProjectThreadingService threadingService)
-            : base(delegatedProvider, instanceProvider, unconfiguredProject)
+            : base(delegatedProvider, instanceProvider, project)
         {
             Requires.NotNull(interceptingValueProviders, nameof(interceptingValueProviders));
             Requires.NotNull(getActiveProjectId, nameof(getActiveProjectId));
@@ -44,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// </summary>
         public override IProjectProperties GetProperties(string file, string itemType, string item)
         {
-            var delegatedProperties = base.GetProperties(file, itemType, item);
+            IProjectProperties delegatedProperties = base.GetProperties(file, itemType, item);
             IProjectProperties assemblyInfoProperties = new AssemblyInfoProperties(delegatedProperties, _getActiveProjectId, _workspace, _threadingService);
             return _interceptingValueProviders.IsDefaultOrEmpty ?
                 assemblyInfoProperties :

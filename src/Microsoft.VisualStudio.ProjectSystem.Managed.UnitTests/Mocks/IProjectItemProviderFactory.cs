@@ -25,8 +25,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
                    var parentFolder = Path.GetDirectoryName(path);
                    var newSubTree = ProjectTreeParser.Parse($@"{fileName}, FilePath: ""{path}""");
 
-                    // Find the node that has the parent folder and add the new node as a child.
-                    foreach (var node in inputTree.GetSelfAndDescendentsBreadthFirst())
+                   // Find the node that has the parent folder and add the new node as a child.
+                   foreach (var node in inputTree.GetSelfAndDescendentsBreadthFirst())
                    {
                        string nodeFolderPath = node.IsFolder ? node.FilePath : Path.GetDirectoryName(node.FilePath);
                        if (nodeFolderPath.TrimEnd(Path.DirectorySeparatorChar).Equals(parentFolder))

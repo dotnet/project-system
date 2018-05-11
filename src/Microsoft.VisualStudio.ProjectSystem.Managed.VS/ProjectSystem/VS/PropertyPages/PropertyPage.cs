@@ -154,13 +154,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         ///--------------------------------------------------------------------------------------------
         public void GetPageInfo(PROPPAGEINFO[] pPageInfo)
         {
-            var info = new PROPPAGEINFO();
-
-            info.cb = (uint)Marshal.SizeOf(typeof(PROPPAGEINFO));
-            info.dwHelpContext = 0;
-            info.pszDocString = null;
-            info.pszHelpFile = null;
-            info.pszTitle = PropertyPageName;
+            var info = new PROPPAGEINFO
+            {
+                cb = (uint)Marshal.SizeOf(typeof(PROPPAGEINFO)),
+                dwHelpContext = 0,
+                pszDocString = null,
+                pszHelpFile = null,
+                pszTitle = PropertyPageName
+            };
             // set the size to 0 so the host doesn't use scroll bars
             // we want to do that within our own container.
             info.SIZE.cx = 0;
@@ -197,7 +198,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         public new void Move(RECT[] pRect)
         {
             if (pRect == null || pRect.Length <= 0)
-                throw new ArgumentNullException("pRect");
+                throw new ArgumentNullException(nameof(pRect));
 
             RECT r = pRect[0];
 
@@ -302,7 +303,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 if (_debugger != null)
                 {
                     _debugger.AdviseDebuggerEvents(this, out _debuggerCookie);
-                    DBGMODE[] dbgMode = new DBGMODE[1];
+                    var dbgMode = new DBGMODE[1];
                     _debugger.GetMode(dbgMode);
                     ((IVsDebuggerEvents)this).OnModeChange(dbgMode[0]);
                 }
@@ -315,7 +316,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// </summary>
         internal virtual UnconfiguredProject GetUnconfiguredProject(IVsHierarchy hier)
         {
-            var provider = GetExport<IProjectExportProvider>(hier);
+            IProjectExportProvider provider = GetExport<IProjectExportProvider>(hier);
             return provider.GetExport<UnconfiguredProject>(hier.GetDTEProject().FileName);
         }
 
@@ -324,9 +325,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// </summary>
         internal static T GetExport<T>(IVsHierarchy hier)
         {
-            System.IServiceProvider sp = new Shell.ServiceProvider((OLE.Interop.IServiceProvider)hier.GetDTEProject().DTE);
-            IComponentModel compMode = sp.GetService<IComponentModel, SComponentModel>();
-            return compMode.DefaultExportProvider.GetExport<T>().Value;
+            using (var sp = new Shell.ServiceProvider((OLE.Interop.IServiceProvider)hier.GetDTEProject().DTE))
+            {
+                IComponentModel compMode = sp.GetService<IComponentModel, SComponentModel>();
+                return compMode.DefaultExportProvider.GetExport<T>().Value;
+            }
         }
 
         ///--------------------------------------------------------------------------------------------
@@ -362,7 +365,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             }
 
             if (ppunk.Length < cObjects)
-                throw new ArgumentOutOfRangeException("cObjects");
+                throw new ArgumentOutOfRangeException(nameof(cObjects));
 
             var configurations = new List<string>();
             // Look for an IVsBrowseObject

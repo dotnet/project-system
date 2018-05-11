@@ -12,28 +12,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
     public class ProjectRootImageProjectTreeModifierTests
     {
         [Fact]
-        public void Constructor_NullAsCapabilities_ThrowsArgumentNull()
-        {
-            var imageProvider = IProjectImageProviderFactory.Create();
-
-            Assert.Throws<ArgumentNullException>("capabilities", () =>
-            {
-                new ProjectRootImageProjectTreePropertiesProvider((IProjectCapabilitiesService)null, imageProvider);
-            });
-        }
-
-        [Fact]
-        public void Constructor_NullAsImageProvider_ThrowsArgumentNull()
-        {
-            var capabilities = IProjectCapabilitiesServiceFactory.Create();
-
-            Assert.Throws<ArgumentNullException>("imageProvider", () =>
-            {
-                new ProjectRootImageProjectTreePropertiesProvider(capabilities, (IProjectImageProvider)null);
-            });
-        }
-
-        [Fact]
         public void CalculatePropertyValues_NullAsPropertyContext_ThrowsArgumentNull()
         {
             var propertyValues = IProjectTreeCustomizablePropertyValuesFactory.Create();

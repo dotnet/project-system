@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.Drawing
 Imports System.Runtime.InteropServices
@@ -25,7 +25,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         Inherits WindowPaneProviderService
 
         ' True if the toolbox should be supported
-        Private _supportToolbox As Boolean
+        Private ReadOnly _supportToolbox As Boolean
 
 
         ''' <summary>
@@ -63,7 +63,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
             Private _host As IDesignerHost
 
             ' True if toolbox support is to be enabled for this window pane
-            Private _supportToolbox As Boolean
+            Private ReadOnly _supportToolbox As Boolean
 
 
             ''' <summary>
@@ -406,16 +406,18 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
                         message = loadError.ToString()
                     End If
 
-                    Dim errors As ArrayList = New ArrayList()
-                    errors.Add(message)
+                    Dim errors As ArrayList = New ArrayList From {
+                        message
+                    }
                     viewChild = New ErrorControl(errors)
                     _loadError = True
                 End Try
 
                 If (viewChild Is Nothing) Then
                     Dim er As String = My.Resources.Designer.DFX_WindowPane_UnknownError
-                    Dim errors As ArrayList = New ArrayList()
-                    errors.Add(er)
+                    Dim errors As ArrayList = New ArrayList From {
+                        er
+                    }
                     viewChild = New ErrorControl(errors)
                 End If
 

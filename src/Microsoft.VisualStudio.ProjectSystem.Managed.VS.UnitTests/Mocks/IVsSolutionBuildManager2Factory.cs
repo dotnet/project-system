@@ -21,7 +21,7 @@ namespace Microsoft.VisualStudio.Shell.Interop
 
             if (hierarchyToBuild != null)
             {
-                Func<int> onBuildStartedWithReturn = () =>
+                int onBuildStartedWithReturn()
                 {
                     solutionEventsListener.UpdateSolution_Begin(It.IsAny<int>());
 
@@ -35,7 +35,7 @@ namespace Microsoft.VisualStudio.Shell.Interop
                     }
 
                     return VSConstants.S_OK;
-                };
+                }
 
                 uint dwFlags = (uint)(VSSOLNBUILDUPDATEFLAGS.SBF_SUPPRESS_SAVEBEFOREBUILD_QUERY | VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_BUILD);
                 buildManager.Setup(b => b.StartSimpleUpdateProjectConfiguration(hierarchyToBuild, It.IsAny<IVsHierarchy>(), It.IsAny<string>(), dwFlags, It.IsAny<uint>(), It.IsAny<int>()))

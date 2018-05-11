@@ -18,7 +18,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         Private _hierarchy As IVsHierarchy
         Private _itemId As UInteger
         Private _rootDesigner As PropPageDesignerRootDesigner
-        Private _name As String = "PropPageDesignerRootComponent"
+        Private ReadOnly _name As String = "PropPageDesignerRootComponent"
 
         Public ReadOnly Property Name() As String
             Get

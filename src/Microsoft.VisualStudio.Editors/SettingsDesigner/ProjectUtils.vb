@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports Microsoft.VisualStudio.Shell.Interop
 Imports System.CodeDom
@@ -334,10 +334,10 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
                     End If
                 End If
 
-                Dim ExtendingType As New CodeTypeDeclaration(cc2.Name)
-
-                ExtendingType.TypeAttributes = CodeModelToCodeDomTypeAttributes(cc2)
-                ExtendingType.IsPartial = True
+                Dim ExtendingType As New CodeTypeDeclaration(cc2.Name) With {
+                    .TypeAttributes = CodeModelToCodeDomTypeAttributes(cc2),
+                    .IsPartial = True
+                }
 
                 ExtendingType.Comments.Add(New CodeCommentStatement(My.Resources.Designer.SD_CODEGENCMT_COMMON1))
                 ExtendingType.Comments.Add(New CodeCommentStatement(My.Resources.Designer.SD_CODEGENCMT_COMMON2))
@@ -384,7 +384,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
             Implements IFindFilter
 
             Private _className As String
-            Private _classOrModule As ClassOrModule
+            Private ReadOnly _classOrModule As ClassOrModule
 
             Friend Sub New(ClassName As String, Optional ClassOrModule As ClassOrModule = ClassOrModule.ClassOnly)
                 _className = ClassName
@@ -456,7 +456,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
             Implements IFindFilter
 
             Private _containtingClass As EnvDTE.CodeElement
-            Private _propertyName As String
+            Private ReadOnly _propertyName As String
 
             Public Sub New(ContainingClass As EnvDTE.CodeElement, PropertyName As String)
                 If ContainingClass Is Nothing Then
@@ -514,7 +514,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
             Implements IFindFilter
 
             Private _containtingClass As EnvDTE.CodeElement
-            Private _functionName As String
+            Private ReadOnly _functionName As String
 
             Public Sub New(ContainingClass As EnvDTE.CodeElement, FunctionName As String)
                 If ContainingClass Is Nothing Then
@@ -675,15 +675,17 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
             Const SettingsSavingEventHandlerName As String = "SettingsSavingEventHandler"
 
             ' Add constructor
-            Dim constr As New CodeConstructor()
-            constr.Attributes = MemberAttributes.Public
+            Dim constr As New CodeConstructor With {
+                .Attributes = MemberAttributes.Public
+            }
 
             ' Generate a series of statements to add to the constructor
             Dim thisExpr As New CodeThisReferenceExpression()
-            Dim stmts As New CodeStatementCollection()
-            stmts.Add(New CodeCommentStatement(My.Resources.Designer.SD_CODEGENCMT_HOWTO_ATTACHEVTS))
-            stmts.Add(New CodeAttachEventStatement(thisExpr, SettingChangingEventName, New CodeMethodReferenceExpression(thisExpr, SettingChangingEventHandlerName)))
-            stmts.Add(New CodeAttachEventStatement(thisExpr, SettingsSavingEventName, New CodeMethodReferenceExpression(thisExpr, SettingsSavingEventHandlerName)))
+            Dim stmts As New CodeStatementCollection From {
+                New CodeCommentStatement(My.Resources.Designer.SD_CODEGENCMT_HOWTO_ATTACHEVTS),
+                New CodeAttachEventStatement(thisExpr, SettingChangingEventName, New CodeMethodReferenceExpression(thisExpr, SettingChangingEventHandlerName)),
+                New CodeAttachEventStatement(thisExpr, SettingsSavingEventName, New CodeMethodReferenceExpression(thisExpr, SettingsSavingEventHandlerName))
+            }
 
             For Each stmt As CodeStatement In stmts
                 constr.Statements.Add(CommentStatement(stmt, generator, True))
@@ -691,16 +693,18 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
 
             ' Add stubs for settingschanging/settingssaving event handlers
             Dim senderParam As New CodeParameterDeclarationExpression(GetType(Object), "sender")
-            Dim changingStub As New CodeMemberMethod()
-            changingStub.Name = SettingChangingEventHandlerName
-            changingStub.ReturnType = Nothing
+            Dim changingStub As New CodeMemberMethod With {
+                .Name = SettingChangingEventHandlerName,
+                .ReturnType = Nothing
+            }
             changingStub.Parameters.Add(senderParam)
             changingStub.Parameters.Add(New CodeParameterDeclarationExpression(GetType(Configuration.SettingChangingEventArgs), "e"))
             changingStub.Statements.Add(New CodeCommentStatement(My.Resources.Designer.SD_CODEGENCMT_HANDLE_CHANGING))
 
-            Dim savingStub As New CodeMemberMethod()
-            savingStub.Name = SettingsSavingEventHandlerName
-            savingStub.ReturnType = Nothing
+            Dim savingStub As New CodeMemberMethod With {
+                .Name = SettingsSavingEventHandlerName,
+                .ReturnType = Nothing
+            }
             savingStub.Parameters.Add(senderParam)
             savingStub.Parameters.Add(New CodeParameterDeclarationExpression(GetType(ComponentModel.CancelEventArgs), "e"))
             savingStub.Statements.Add(New CodeCommentStatement(My.Resources.Designer.SD_CODEGENCMT_HANDLE_SAVING))

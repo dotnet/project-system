@@ -38,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
         /// </summary>
         private static string GetDisplayPath(UnconfiguredProject project, ProjectItemIdentity item)
         {
-            var linkPath = item.LinkPath;
+            string linkPath = item.LinkPath;
 
             if (!string.IsNullOrWhiteSpace(linkPath))
             {
@@ -55,17 +55,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
         /// </summary>
         private static Dictionary<string, int> CreateOrderedMap(UnconfiguredProject project, IReadOnlyCollection<ProjectItemIdentity> orderedItems)
         {
-            var displayOrder = 1;
+            int displayOrder = 1;
             var orderedMap = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
 
-            foreach (var item in orderedItems)
+            foreach (ProjectItemIdentity item in orderedItems)
             {
-                var displayPath = GetDisplayPath(project, item);
-                var folders = GetPathFolders(displayPath);
+                string displayPath = GetDisplayPath(project, item);
+                string[] folders = GetPathFolders(displayPath);
 
                 // We need assign the display order to folders first before the file.
                 // These folders could be physical or virtual. Virtual coming from link paths.
-                foreach (var folder in folders)
+                foreach (string folder in folders)
                 {
                     // Folders are special. 
                     // FIXME: Due to the lack of metadata/info from property context 
@@ -82,7 +82,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
                     }
                 }
 
-                var fullPath = project.MakeRooted(item.EvaluatedInclude);
+                string fullPath = project.MakeRooted(item.EvaluatedInclude);
 
                 // We uniquely identify a file by its fullpath.
                 if (!orderedMap.ContainsKey(fullPath))
@@ -108,7 +108,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
                 return _orderedMap.TryGetValue(propertyContext.ItemName, out displayOrder);
             }
 
-            return propertyContext.Metadata.TryGetValue(FullPathProperty, out var fullPath) &&
+            return propertyContext.Metadata.TryGetValue(FullPathProperty, out string fullPath) &&
                 _orderedMap.TryGetValue(fullPath, out displayOrder);
         }
 
@@ -125,7 +125,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
             if (propertyValues is IProjectTreeCustomizablePropertyValues2 propertyValues2)
             {
                 // assign display order to folders and items that appear in order map
-                if (TryGetDisplayOrder(propertyContext, out var displayOrder))
+                if (TryGetDisplayOrder(propertyContext, out int displayOrder))
                 {
                     // sometimes these items temporarily have null item type. Ignore these cases
                     if (propertyContext.ItemType != null)

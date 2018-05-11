@@ -46,9 +46,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             IDependenciesSnapshot snapshot,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            var originalTree = dependenciesTree;
+            IProjectTree originalTree = dependenciesTree;
             var currentTopLevelNodes = new List<IProjectTree>();
-            Func<IProjectTree, IEnumerable<IProjectTree>, IProjectTree> rememberNewNodes = (rootNode, currentNodes) =>
+            IProjectTree rememberNewNodes(IProjectTree rootNode, IEnumerable<IProjectTree> currentNodes)
             {
                 if (currentNodes != null)
                 {
@@ -56,11 +56,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 }
 
                 return rootNode;
-            };
+            }
 
             if (snapshot.Targets.Where(x => !x.Key.Equals(TargetFramework.Any)).Count() == 1)
             {
-                foreach (var target in snapshot.Targets)
+                foreach (KeyValuePair<ITargetFramework, ITargetedDependenciesSnapshot> target in snapshot.Targets)
                 {
                     if (cancellationToken.IsCancellationRequested)
                     {
@@ -77,7 +77,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             }
             else
             {
-                foreach (var target in snapshot.Targets)
+                foreach (KeyValuePair<ITargetFramework, ITargetedDependenciesSnapshot> target in snapshot.Targets)
                 {
                     if (cancellationToken.IsCancellationRequested)
                     {
@@ -94,9 +94,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     }
                     else
                     {
-                        var node = dependenciesTree.FindNodeByCaption(target.Key.FriendlyName);
-                        var shouldAddTargetNode = node == null;
-                        var targetViewModel = ViewModelFactory.CreateTargetViewModel(target.Value);
+                        IProjectTree node = dependenciesTree.FindNodeByCaption(target.Key.FriendlyName);
+                        bool shouldAddTargetNode = node == null;
+                        IDependencyViewModel targetViewModel = ViewModelFactory.CreateTargetViewModel(target.Value);
 
                         node = CreateOrUpdateNode(node,
                                                   targetViewModel,
@@ -122,7 +122,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             dependenciesTree = CleanupOldNodes(dependenciesTree, currentTopLevelNodes);
 
             // now update root Dependencies node status
-            var rootIcon = ViewModelFactory.GetDependenciesRootIcon(snapshot.HasUnresolvedDependency).ToProjectSystemType();
+            ProjectImageMoniker rootIcon = ViewModelFactory.GetDependenciesRootIcon(snapshot.HasUnresolvedDependency).ToProjectSystemType();
             return dependenciesTree.SetProperties(icon: rootIcon, expandedIcon: rootIcon);
         }
 
@@ -151,7 +151,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             return FindByPathInternal(dependenciesNode, path);
         }
 
-        private IProjectTree FindByPathInternal(IProjectTree root, string path)
+        private static IProjectTree FindByPathInternal(IProjectTree root, string path)
         {
             foreach (IProjectTree node in root.GetSelfAndDescendentsBreadthFirst())
             {
@@ -175,7 +175,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             var currentNodes = new List<IProjectTree>();
             var grouppedByProviderType = new Dictionary<string, List<IDependency>>(StringComparer.OrdinalIgnoreCase);
-            foreach (var dependency in targetedSnapshot.TopLevelDependencies)
+            foreach (IDependency dependency in targetedSnapshot.TopLevelDependencies)
             {
                 if (!dependency.Visible)
                 {
@@ -198,15 +198,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 dependencies.Add(dependency);
             }
 
-            var isActiveTarget = targetedSnapshot.TargetFramework.Equals(activeTarget);
-            foreach (var dependencyGroup in grouppedByProviderType)
+            bool isActiveTarget = targetedSnapshot.TargetFramework.Equals(activeTarget);
+            foreach (KeyValuePair<string, List<IDependency>> dependencyGroup in grouppedByProviderType)
             {
-                var subTreeViewModel = ViewModelFactory.CreateRootViewModel(
+                IDependencyViewModel subTreeViewModel = ViewModelFactory.CreateRootViewModel(
                     dependencyGroup.Key, targetedSnapshot.CheckForUnresolvedDependencies(dependencyGroup.Key));
-                var subTreeNode = rootNode.FindNodeByCaption(subTreeViewModel.Caption);
-                var isNewSubTreeNode = subTreeNode == null;
+                IProjectTree subTreeNode = rootNode.FindNodeByCaption(subTreeViewModel.Caption);
+                bool isNewSubTreeNode = subTreeNode == null;
 
-                var excludedFlags = ProjectTreeFlags.Empty;
+                ProjectTreeFlags excludedFlags = ProjectTreeFlags.Empty;
                 if (targetedSnapshot.TargetFramework.Equals(TargetFramework.Any))
                 {
                     excludedFlags = ProjectTreeFlags.Create(ProjectTreeFlags.Common.BubbleUp);
@@ -254,10 +254,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             bool shouldCleanup)
         {
             var currentNodes = new List<IProjectTree>();
-            foreach (var dependency in dependencies)
+            foreach (IDependency dependency in dependencies)
             {
-                var dependencyNode = rootNode.FindNodeByCaption(dependency.Caption);
-                var isNewDependencyNode = dependencyNode == null;
+                IProjectTree dependencyNode = rootNode.FindNodeByCaption(dependency.Caption);
+                bool isNewDependencyNode = dependencyNode == null;
 
                 if (!isNewDependencyNode
                     && dependency.Flags.Contains(DependencyTreeFlags.SupportsHierarchy))
@@ -297,9 +297,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// <summary>
         /// Removes nodes that don't exist anymore
         /// </summary>
-        private IProjectTree CleanupOldNodes(IProjectTree rootNode, IEnumerable<IProjectTree> currentNodes)
+        private static IProjectTree CleanupOldNodes(IProjectTree rootNode, IEnumerable<IProjectTree> currentNodes)
         {
-            foreach (var nodeToRemove in rootNode.Children.Except(currentNodes))
+            foreach (IProjectTree nodeToRemove in rootNode.Children.Except(currentNodes))
             {
                 rootNode = rootNode.Remove(nodeToRemove);
             }
@@ -366,10 +366,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 // For IProjectTree remove ProjectTreeFlags.Common.Reference flag, otherwise CPS would fail to 
                 // map this node to graph node and GraphProvider would be never called. 
                 // Only IProjectItemTree can have this flag
-                var flags = FilterFlags(viewModel.Flags.Except(DependencyTreeFlags.BaseReferenceFlags),
+                ProjectTreeFlags flags = FilterFlags(viewModel.Flags.Except(DependencyTreeFlags.BaseReferenceFlags),
                                         additionalFlags,
                                         excludedFlags);
-                var filePath = (viewModel.OriginalModel != null && viewModel.OriginalModel.TopLevel && viewModel.OriginalModel.Resolved)
+                string filePath = (viewModel.OriginalModel != null && viewModel.OriginalModel.TopLevel && viewModel.OriginalModel.Resolved)
                                 ? viewModel.OriginalModel.GetTopLevelId()
                                 : viewModel.FilePath;
 
@@ -402,8 +402,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             if (node == null)
             {
-                var flags = FilterFlags(viewModel.Flags, additionalFlags, excludedFlags);
-                var filePath = (viewModel.OriginalModel != null && viewModel.OriginalModel.TopLevel && viewModel.OriginalModel.Resolved)
+                ProjectTreeFlags flags = FilterFlags(viewModel.Flags, additionalFlags, excludedFlags);
+                string filePath = (viewModel.OriginalModel != null && viewModel.OriginalModel.TopLevel && viewModel.OriginalModel.Resolved)
                                     ? viewModel.OriginalModel.GetTopLevelId()
                                     : viewModel.FilePath;
 
@@ -436,7 +436,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             IDependencyViewModel viewModel,
             IRule rule)
         {
-            var updatedNodeParentContext = GetCustomPropertyContext(node.Parent);
+            ProjectTreeCustomizablePropertyContext updatedNodeParentContext = GetCustomPropertyContext(node.Parent);
             var updatedValues = new ReferencesProjectTreeCustomizablePropertyValues
             {
                 Caption = viewModel.Caption,
@@ -454,7 +454,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     expandedIcon: viewModel.ExpandedIcon.ToProjectSystemType());
         }
 
-        private ProjectTreeFlags FilterFlags(
+        private static ProjectTreeFlags FilterFlags(
             ProjectTreeFlags flags,
             ProjectTreeFlags? additionalFlags,
             ProjectTreeFlags? excludedFlags)

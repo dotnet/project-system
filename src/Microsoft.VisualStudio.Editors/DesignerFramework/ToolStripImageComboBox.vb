@@ -4,13 +4,6 @@ Option Explicit On
 Option Strict On
 Option Compare Binary
 
-Imports System.Math
-Imports System
-Imports System.ComponentModel
-Imports System.Diagnostics
-Imports System.Drawing
-Imports System.Windows.Forms
-
 Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
 #If False Then 'Not currently needed

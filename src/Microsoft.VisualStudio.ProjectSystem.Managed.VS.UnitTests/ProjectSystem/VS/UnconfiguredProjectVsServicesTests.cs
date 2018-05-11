@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System;
 
 using Microsoft.VisualStudio.Shell.Interop;
 
@@ -11,17 +10,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     [Trait("UnitTest", "ProjectSystem")]
     public class UnconfiguredProjectVsServicesTests
     {
-        [Fact]
-        public void Constructor_NullAsCommonSevices_ThrowsArgumentNull()
-        {
-            var project = UnconfiguredProjectFactory.Create();
-
-            Assert.Throws<ArgumentNullException>("commonServices", () =>
-            {
-                new UnconfiguredProjectVsServices((IUnconfiguredProjectCommonServices)null);
-            });
-        }
-
         [Fact]
         public void Constructor_ValueAsUnconfiguedProject_SetsVsHierarchyToHostObject()
         {

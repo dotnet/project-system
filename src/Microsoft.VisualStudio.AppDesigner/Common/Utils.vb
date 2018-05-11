@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.ComponentModel.Design
 Imports System.Drawing
@@ -22,7 +22,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         Public VBPackageInstance As IVBPackage = Nothing
 
         ' The maximal amount of files that can be added at one shot. (copied from other VS features)
-        Private Const s_VSDPLMAXFILES As Integer = 200
+        Private Const VSDPLMAXFILES As Integer = 200
 
         'Property page GUIDs.  These are used only for sorting the tabs in the project designer, and for providing a
         '  unique ID for SQM.  Both cases are optional (we handle getting property pages with GUIDs we don't recognize).
@@ -248,8 +248,8 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <remarks></remarks>
         Public Function IsCheckoutCanceledException(ex As Exception) As Boolean
             If (TypeOf ex Is CheckoutException AndAlso ex.Equals(CheckoutException.Canceled)) _
-                OrElse _
-                (TypeOf ex Is COMException AndAlso DirectCast(ex, COMException).ErrorCode = AppDesInterop.win.OLE_E_PROMPTSAVECANCELLED) _
+                OrElse
+                (TypeOf ex Is COMException AndAlso DirectCast(ex, COMException).ErrorCode = AppDesInterop.Win32Constant.OLE_E_PROMPTSAVECANCELLED) _
             Then
                 Return True
             End If
@@ -343,7 +343,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         Public Function IsScreenReaderRunning() As Boolean
             Dim pvParam As IntPtr = Marshal.AllocCoTaskMem(4)
             Try
-                If AppDesInterop.NativeMethods.SystemParametersInfo(AppDesInterop.win.SPI_GETSCREENREADER, 0, pvParam, 0) <> 0 Then
+                If AppDesInterop.NativeMethods.SystemParametersInfo(AppDesInterop.Win32Constant.SPI_GETSCREENREADER, 0, pvParam, 0) <> 0 Then
                     Dim result As Integer = Marshal.ReadInt32(pvParam)
                     Return result <> 0
                 End If
@@ -458,13 +458,13 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <param name="NeedThrowError">Throw error when the dialog fails unexpectedly</param>
         ''' <returns>a collection of files</returns>
         ''' <remarks></remarks>
-        Public Function GetFilesViaBrowse(ServiceProvider As IServiceProvider, ParentWindow As IntPtr, _
-                InitialDirectory As String, DialogTitle As String, _
-                Filter As String, FilterIndex As UInteger, MutiSelect As Boolean, _
-                Optional DefaultFileName As String = Nothing, _
+        Public Function GetFilesViaBrowse(ServiceProvider As IServiceProvider, ParentWindow As IntPtr,
+                InitialDirectory As String, DialogTitle As String,
+                Filter As String, FilterIndex As UInteger, MutiSelect As Boolean,
+                Optional DefaultFileName As String = Nothing,
                 Optional NeedThrowError As Boolean = False) As ArrayList
 
-            Dim uishell As Interop.IVsUIShell = _
+            Dim uishell As Interop.IVsUIShell =
                 CType(ServiceProvider.GetService(GetType(Interop.IVsUIShell)), Interop.IVsUIShell)
 
             Dim fileNames As New ArrayList()
@@ -476,9 +476,9 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
 
             Filter = GetNativeFilter(Filter)
 
-            Dim MaxPathName As Integer = AppDesInterop.win.MAX_PATH + 1
+            Dim MaxPathName As Integer = AppDesInterop.Win32Constant.MAX_PATH + 1
             If MutiSelect Then
-                MaxPathName = (AppDesInterop.win.MAX_PATH + 1) * s_VSDPLMAXFILES
+                MaxPathName = (AppDesInterop.Win32Constant.MAX_PATH + 1) * VSDPLMAXFILES
             End If
 
             Dim vsOpenFileName As Interop.VSOPENFILENAMEW()
@@ -535,7 +535,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
                         fileNames.Add(path)
                     End If
                 ElseIf NeedThrowError Then
-                    If hr = AppDesInterop.win.OLE_E_PROMPTSAVECANCELLED Then
+                    If hr = AppDesInterop.Win32Constant.OLE_E_PROMPTSAVECANCELLED Then
                         'We shouldn't thrown error, if User cancelled out of dialog
                     Else
                         VSErrorHandler.ThrowOnFailure(hr)

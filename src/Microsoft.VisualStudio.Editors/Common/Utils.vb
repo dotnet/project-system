@@ -28,7 +28,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
 
 
         ' The maximal amount of files that can be added at one shot. (copied from other VS features)
-        Private Const s_VSDPLMAXFILES As Integer = 200
+        Private Const VSDPLMAXFILES As Integer = 200
 
         Private s_imageService As IVsImageService2
 
@@ -206,12 +206,13 @@ Namespace Microsoft.VisualStudio.Editors.Common
 
         Public Function GetImageFromImageService(imageMoniker As ImageMoniker, width As Integer, height As Integer, background As Color) As Image
             If (ImageService IsNot Nothing) Then
-                Dim attributes As New Imaging.Interop.ImageAttributes
-                attributes.StructSize = Marshal.SizeOf(GetType(Imaging.Interop.ImageAttributes))
-                attributes.ImageType = CType(_UIImageType.IT_Bitmap, UInteger)
-                attributes.Format = CType(_UIDataFormat.DF_WinForms, UInteger)
-                attributes.LogicalWidth = width
-                attributes.LogicalHeight = width
+                Dim attributes As New Imaging.Interop.ImageAttributes With {
+                    .StructSize = Marshal.SizeOf(GetType(Imaging.Interop.ImageAttributes)),
+                    .ImageType = CType(_UIImageType.IT_Bitmap, UInteger),
+                    .Format = CType(_UIDataFormat.DF_WinForms, UInteger),
+                    .LogicalWidth = width,
+                    .LogicalHeight = width
+                }
 
                 Dim backgroundValue As UInteger = ConvertColorToUInteger(background)
                 attributes.Background = backgroundValue
@@ -348,7 +349,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         Public Function IsCheckoutCanceledException(ex As Exception) As Boolean
             If (TypeOf ex Is CheckoutException AndAlso ex.Equals(CheckoutException.Canceled)) _
                 OrElse
-                (TypeOf ex Is COMException AndAlso DirectCast(ex, COMException).ErrorCode = win.OLE_E_PROMPTSAVECANCELLED) _
+                (TypeOf ex Is COMException AndAlso DirectCast(ex, COMException).ErrorCode = Win32Constant.OLE_E_PROMPTSAVECANCELLED) _
             Then
                 Return True
             End If
@@ -698,9 +699,9 @@ Namespace Microsoft.VisualStudio.Editors.Common
 
             Filter = GetNativeFilter(Filter)
 
-            Dim MaxPathName As Integer = win.MAX_PATH + 1
+            Dim MaxPathName As Integer = Win32Constant.MAX_PATH + 1
             If MutiSelect Then
-                MaxPathName = (win.MAX_PATH + 1) * s_VSDPLMAXFILES
+                MaxPathName = (Win32Constant.MAX_PATH + 1) * VSDPLMAXFILES
             End If
 
             Dim vsOpenFileName As VSOPENFILENAMEW()
@@ -757,7 +758,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
                         fileNames.Add(path)
                     End If
                 ElseIf NeedThrowError Then
-                    If hr = win.OLE_E_PROMPTSAVECANCELLED Then
+                    If hr = Win32Constant.OLE_E_PROMPTSAVECANCELLED Then
                         'We shouldn't thrown error, if User cancelled out of dialog
                     Else
                         VSErrorHandler.ThrowOnFailure(hr)
@@ -1007,7 +1008,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         Friend Function IsScreenReaderRunning() As Boolean
             Dim pvParam As IntPtr = Marshal.AllocCoTaskMem(4)
             Try
-                If NativeMethods.SystemParametersInfo(win.SPI_GETSCREENREADER, 0, pvParam, 0) <> 0 Then
+                If NativeMethods.SystemParametersInfo(Win32Constant.SPI_GETSCREENREADER, 0, pvParam, 0) <> 0 Then
                     Dim result As Integer = Marshal.ReadInt32(pvParam)
                     Return result <> 0
                 End If
@@ -1033,9 +1034,10 @@ Namespace Microsoft.VisualStudio.Editors.Common
                     Dim r As Rectangle = New Rectangle(New Point(0, 0), size)
                     Dim colorMaps As ColorMap() = New ColorMap(0) {}
 
-                    colorMaps(0) = New ColorMap
-                    colorMaps(0).OldColor = originalColor
-                    colorMaps(0).NewColor = newColor
+                    colorMaps(0) = New ColorMap With {
+                        .OldColor = originalColor,
+                        .NewColor = newColor
+                    }
 
                     Dim imageAttributes As Drawing.Imaging.ImageAttributes = New Drawing.Imaging.ImageAttributes()
                     imageAttributes.SetRemapTable(colorMaps, ColorAdjustType.Bitmap)

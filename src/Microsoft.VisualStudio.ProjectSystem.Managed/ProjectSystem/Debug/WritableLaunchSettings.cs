@@ -21,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         {
             if (settings.Profiles != null)
             {
-                foreach (var profile in settings.Profiles)
+                foreach (ILaunchProfile profile in settings.Profiles)
                 {
                     Profiles.Add(new WritableLaunchProfile(profile));
                 }
@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             // ICloneable that is used, otherwise, it is serialized back to json, and a new object rehydrated from that
             if (settings.GlobalSettings != null)
             {
-                foreach (var kvp in settings.GlobalSettings)
+                foreach (KeyValuePair<string, object> kvp in settings.GlobalSettings)
                 {
                     if (kvp.Value is ICloneable clonableObject)
                     {

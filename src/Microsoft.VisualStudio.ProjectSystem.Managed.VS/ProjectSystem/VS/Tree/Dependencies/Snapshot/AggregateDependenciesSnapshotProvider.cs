@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
     [AppliesTo(ProjectCapability.DependenciesTree)]
     internal class AggregateDependenciesSnapshotProvider : IAggregateDependenciesSnapshotProvider
     {
-        private object _snapshotProvidersLock = new object();
+        private readonly object _snapshotProvidersLock = new object();
 
         [ImportingConstructor]
         public AggregateDependenciesSnapshotProvider(IProjectExportProvider projectExportProvider)
@@ -75,7 +75,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         /// </summary>
         internal void OnSnapshotProviderUnloading(object sender, SnapshotProviderUnloadingEventArgs e)
         {
-            var snapshotProvider = e.SnapshotProvider;
+            IDependenciesSnapshotProvider snapshotProvider = e.SnapshotProvider;
             if (snapshotProvider == null)
             {
                 return;

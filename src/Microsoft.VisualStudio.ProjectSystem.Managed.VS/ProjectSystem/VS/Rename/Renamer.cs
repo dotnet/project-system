@@ -70,22 +70,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             if (_docAdded && _docRemoved && _docChanged)
             {
                 _workspace.WorkspaceChanged -= OnWorkspaceChangedAsync;
-                var myNewProject = _workspace.CurrentSolution.Projects.Where(p => StringComparers.Paths.Equals(p.FilePath, _project.FilePath)).FirstOrDefault();
+                Project myNewProject = _workspace.CurrentSolution.Projects.Where(p => StringComparers.Paths.Equals(p.FilePath, _project.FilePath)).FirstOrDefault();
                 await RenameAsync(myNewProject).ConfigureAwait(false);
             }
         }
 
         public async Task RenameAsync(Project project)
         {
-            var isCaseSensitive = await IsCompilationCaseSensitiveAsync(project).ConfigureAwait(false);
-            var renameStrategy = GetStrategy(project, isCaseSensitive);
+            bool isCaseSensitive = await IsCompilationCaseSensitiveAsync(project).ConfigureAwait(false);
+            IRenameStrategy renameStrategy = GetStrategy(project, isCaseSensitive);
             if (renameStrategy != null)
                 await renameStrategy.RenameAsync(project, _oldFilePath, _newFilePath, isCaseSensitive).ConfigureAwait(false);
         }
 
         private IRenameStrategy GetStrategy(Project project, bool isCaseSensitive)
         {
-            IRenameStrategy[] strategies = new IRenameStrategy[] {
+            var strategies = new IRenameStrategy[] {
                 new SimpleRenameStrategy(_threadingService, _userNotificationServices, _environmentOptions, _roslynServices)
             };
 
@@ -94,8 +94,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 
         private static async Task<bool> IsCompilationCaseSensitiveAsync(Project project)
         {
-            var isCaseSensitive = false;
-            var compilation = await project.GetCompilationAsync().ConfigureAwait(false);
+            bool isCaseSensitive = false;
+            Compilation compilation = await project.GetCompilationAsync().ConfigureAwait(false);
             if (compilation != null)
             {
                 isCaseSensitive = compilation.IsCaseSensitive;

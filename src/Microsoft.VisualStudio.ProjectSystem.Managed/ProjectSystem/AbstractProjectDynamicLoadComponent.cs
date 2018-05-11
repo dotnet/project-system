@@ -14,7 +14,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
     internal abstract partial class AbstractProjectDynamicLoadComponent : OnceInitializedOnceDisposedAsync, IProjectDynamicLoadComponent
     {
         private readonly object _lock = new object();
+#pragma warning disable CA2213 // OnceInitializedOnceDisposedAsync are not tracked corretly by the IDisposeable analyzer
         private AbstractProjectDynamicLoadInstance _instance;
+#pragma warning restore CA2213
 
         protected AbstractProjectDynamicLoadComponent(JoinableTaskContextNode joinableTaskContextNode)
             : base(joinableTaskContextNode)

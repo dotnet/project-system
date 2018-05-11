@@ -1,4 +1,6 @@
-﻿using System;
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
@@ -22,9 +24,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         [ImportingConstructor]
         public SupportedTargetFrameworksEnumProvider(IProjectAccessor projectAccessor, ConfiguredProject configuredProject)
         {
-            Requires.NotNull(projectAccessor, nameof(projectAccessor));
-            Requires.NotNull(configuredProject, nameof(configuredProject));
-
             _projectAccessor = projectAccessor;
             _configuredProject = configuredProject;
         }
@@ -55,8 +54,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 return _projectAccessor.OpenProjectForReadAsync(_configuredProject, project =>
                 {
                     return (ICollection<IEnumValue>)project.GetItems(itemType: SupportedTargetFrameworkItemName)
-                                                           .Select(i => new PageEnumValue(new EnumValue { Name = i.EvaluatedInclude,
-                                                                                                          DisplayName = i.GetMetadataValue(DisplayNameMetadataName)}))
+                                                           .Select(i => new PageEnumValue(new EnumValue
+                                                           {
+                                                               Name = i.EvaluatedInclude,
+                                                               DisplayName = i.GetMetadataValue(DisplayNameMetadataName)
+                                                           }))
                                                            .ToArray<IEnumValue>();
                 });
             }

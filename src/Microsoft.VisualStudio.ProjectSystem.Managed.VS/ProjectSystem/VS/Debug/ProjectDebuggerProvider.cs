@@ -115,7 +115,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         {
             // Get the active debug profile (timeout of 5s, though in reality is should never take this long as even in error conditions
             // a snapshot is produced).
-            var currentProfiles = await LaunchSettingsProvider.WaitForFirstSnapshot(5000).ConfigureAwait(false);
+            ILaunchSettings currentProfiles = await LaunchSettingsProvider.WaitForFirstSnapshot(5000).ConfigureAwait(false);
             ILaunchProfile activeProfile = currentProfiles?.ActiveProfile;
 
             // Should have a profile
@@ -125,7 +125,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             }
 
             // Now find the DebugTargets provider for this profile
-            var launchProvider = GetLaunchTargetsProvider(activeProfile) ??
+            IDebugProfileLaunchTargetsProvider launchProvider = GetLaunchTargetsProvider(activeProfile) ??
                 throw new Exception(string.Format(VSResources.DontKnowHowToRunProfile, activeProfile.Name));
 
             IReadOnlyList<IDebugLaunchSettings> launchSettings;
@@ -148,7 +148,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         public IDebugProfileLaunchTargetsProvider GetLaunchTargetsProvider(ILaunchProfile profile)
         {
             // We search through the imports in order to find the one which supports the profile
-            foreach (var provider in ProfileLaunchTargetsProviders)
+            foreach (Lazy<IDebugProfileLaunchTargetsProvider, IOrderPrecedenceMetadataView> provider in ProfileLaunchTargetsProviders)
             {
                 if (provider.Value.SupportsProfile(profile))
                 {
@@ -164,11 +164,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// </summary>
         public override async Task LaunchAsync(DebugLaunchOptions launchOptions)
         {
-            var targets = await QueryDebugTargetsInternalAsync(launchOptions, fromDebugLaunch: true).ConfigureAwait(false);
+            IReadOnlyList<IDebugLaunchSettings> targets = await QueryDebugTargetsInternalAsync(launchOptions, fromDebugLaunch: true).ConfigureAwait(false);
 
             ILaunchProfile activeProfile = LaunchSettingsProvider.ActiveProfile;
 
-            var targetProfile = GetLaunchTargetsProvider(activeProfile);
+            IDebugProfileLaunchTargetsProvider targetProfile = GetLaunchTargetsProvider(activeProfile);
             if (targetProfile != null)
             {
                 await targetProfile.OnBeforeLaunchAsync(launchOptions, activeProfile).ConfigureAwait(false);
@@ -206,7 +206,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             finally
             {
                 // Free up the memory allocated to the (mostly) managed debugger structure.
-                foreach (var nativeStruct in launchSettingsNative)
+                foreach (VsDebugTargetInfo4 nativeStruct in launchSettingsNative)
                 {
                     FreeVsDebugTargetInfoStruct(nativeStruct);
                 }
@@ -219,21 +219,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// <returns>The native struct.</returns>
         internal static VsDebugTargetInfo4 GetDebuggerStruct4(IDebugLaunchSettings info)
         {
-            var debugInfo = new VsDebugTargetInfo4();
+            var debugInfo = new VsDebugTargetInfo4
+            {
+                // **Begin common section -- keep this in sync with GetDebuggerStruct**
+                dlo = (uint)info.LaunchOperation,
+                LaunchFlags = (uint)info.LaunchOptions,
+                bstrRemoteMachine = info.RemoteMachine,
+                bstrArg = info.Arguments,
+                bstrCurDir = info.CurrentDirectory,
+                bstrExe = info.Executable,
 
-            // **Begin common section -- keep this in sync with GetDebuggerStruct**
-            debugInfo.dlo = (uint)info.LaunchOperation;
-            debugInfo.LaunchFlags = (uint)info.LaunchOptions;
-            debugInfo.bstrRemoteMachine = info.RemoteMachine;
-            debugInfo.bstrArg = info.Arguments;
-            debugInfo.bstrCurDir = info.CurrentDirectory;
-            debugInfo.bstrExe = info.Executable;
+                bstrEnv = GetSerializedEnvironmentString(info.Environment),
+                guidLaunchDebugEngine = info.LaunchDebugEngineGuid
+            };
 
-            debugInfo.bstrEnv = GetSerializedEnvironmentString(info.Environment);
-            debugInfo.guidLaunchDebugEngine = info.LaunchDebugEngineGuid;
-
-            var guids = new List<Guid>(1);
-            guids.Add(info.LaunchDebugEngineGuid);
+            var guids = new List<Guid>(1)
+            {
+                info.LaunchDebugEngineGuid
+            };
             if (info.AdditionalDebugEngines != null)
             {
                 guids.AddRange(info.AdditionalDebugEngines);
@@ -305,7 +308,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             // Collect all the variables as a null delimited list of key=value pairs.
             var result = new StringBuilder();
-            foreach (var pair in environment)
+            foreach (KeyValuePair<string, string> pair in environment)
             {
                 result.Append(pair.Key);
                 result.Append('=');

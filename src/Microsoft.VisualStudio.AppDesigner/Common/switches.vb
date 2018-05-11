@@ -1,7 +1,10 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+#If DEBUG Then
 Imports System.Text
 Imports Microsoft.VisualStudio.Editors.AppDesInterop
+#End If
+
 Imports Microsoft.VisualStudio.Editors.PropertyPages
 
 Namespace Microsoft.VisualStudio.Editors.AppDesCommon
@@ -371,15 +374,15 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
             Dim str As New StringBuilder()
             Dim MsgType As String = Nothing
             Select Case msg.Msg
-                Case win.WM_KEYDOWN
+                Case Win32Constant.WM_KEYDOWN
                     MsgType = "WM_KEYDOWN"
-                Case win.WM_KEYUP
+                Case Win32Constant.WM_KEYUP
                     MsgType = "WM_KEYUP"
-                Case win.WM_SETFOCUS
+                Case Win32Constant.WM_SETFOCUS
                     MsgType = "WM_SETFOCUS"
-                Case win.WM_CHAR
+                Case Win32Constant.WM_CHAR
                     MsgType = "WM_CHAR"
-                Case win.WM_SYSCHAR
+                Case Win32Constant.WM_SYSCHAR
                     MsgType = "WM_SYSCHAR"
 
                 Case Else

@@ -14,9 +14,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = true)]
     internal sealed class RemoteCodeGeneratorRegistrationAttribute : RegistrationAttribute
     {
-        private string _contextGuid;
+        private readonly string _contextGuid;
         private Guid _generatorGuid;
-        private string _generatorName;
+        private readonly string _generatorName;
         private string _generatorRegKeyName;
         private bool _generatesDesignTimeSource = false;
         private bool _generatesSharedDesignTimeSource = false;

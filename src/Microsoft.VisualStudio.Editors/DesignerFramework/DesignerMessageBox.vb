@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports Microsoft.VisualStudio.Shell.Interop
 Imports System.Windows.Forms
@@ -16,7 +16,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
     ' This class is converted from <DD>\wizard\vsdesigner\designer\microsoft\vsdesigner\VSDMessageBox.cs.
     Friend Class DesignerMessageBox
 
-        Private Const s_maxErrorMessageLength As Integer = 600
+        Private Const MaxErrorMessageLength As Integer = 600
 
         '= FRIEND =============================================================
 
@@ -28,10 +28,10 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="Caption">The text to display in the title bar of the message box.</param>
         ''' <param name="HelpLink">Link to the help topic for this message box.</param>
         ''' <remarks></remarks>
-        Friend Shared Function Show(RootDesigner As BaseRootDesigner, Message As String, _
-                Caption As String, Buttons As MessageBoxButtons, Icon As MessageBoxIcon, _
-                Optional DefaultButton As MessageBoxDefaultButton = MessageBoxDefaultButton.Button1, _
-                Optional HelpLink As String = Nothing _
+        Friend Shared Function Show(RootDesigner As BaseRootDesigner, Message As String,
+                Caption As String, Buttons As MessageBoxButtons, Icon As MessageBoxIcon,
+                Optional DefaultButton As MessageBoxDefaultButton = MessageBoxDefaultButton.Button1,
+                Optional HelpLink As String = Nothing
         ) As DialogResult
             Return Show(DirectCast(RootDesigner, IServiceProvider), Message, Caption, Buttons, Icon, DefaultButton, HelpLink)
         End Function 'Show
@@ -45,7 +45,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="Caption">The text to display in the title bar of the message box.</param>
         ''' <param name="HelpLink">Link to the help topic for this message box.</param>
         ''' <remarks></remarks>
-        Friend Shared Sub Show(ServiceProvider As IServiceProvider, ex As Exception, _
+        Friend Shared Sub Show(ServiceProvider As IServiceProvider, ex As Exception,
                 Caption As String, Optional HelpLink As String = Nothing)
             Show(ServiceProvider, Nothing, ex, Caption, HelpLink)
         End Sub
@@ -62,7 +62,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <remarks>
         ''' The exception's message will be on a second line after errorMessage.
         ''' </remarks>
-        Friend Shared Sub Show(ServiceProvider As IServiceProvider, Message As String, ex As Exception, _
+        Friend Shared Sub Show(ServiceProvider As IServiceProvider, Message As String, ex As Exception,
                 Caption As String, Optional HelpLink As String = Nothing)
 
             If ex Is Nothing Then
@@ -94,8 +94,8 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 End If
 
                 ' limit the length of message to prevent a bad layout.
-                If Message.Length > s_maxErrorMessageLength Then
-                    Message = Message.Substring(0, s_maxErrorMessageLength)
+                If Message.Length > MaxErrorMessageLength Then
+                    Message = Message.Substring(0, MaxErrorMessageLength)
                 End If
             Else
                 Debug.Assert(Message <> "")

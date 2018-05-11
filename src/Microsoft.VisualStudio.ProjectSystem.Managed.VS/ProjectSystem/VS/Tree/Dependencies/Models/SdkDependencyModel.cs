@@ -40,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             UnresolvedExpandedIcon = UnresolvedIcon;
             Version = properties != null && properties.ContainsKey(ProjectItemMetadata.Version)
                         ? properties[ProjectItemMetadata.Version] : string.Empty;
-            var baseCaption = Path.Split(CommonConstants.CommaDelimiter, StringSplitOptions.RemoveEmptyEntries)
+            string baseCaption = Path.Split(CommonConstants.CommaDelimiter, StringSplitOptions.RemoveEmptyEntries)
                                 .FirstOrDefault();
             Caption = string.IsNullOrEmpty(Version) ? baseCaption : $"{baseCaption} ({Version})";
         }

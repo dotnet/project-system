@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.Text
 Imports System.Windows.Forms
@@ -10,16 +10,16 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
     Friend NotInheritable Class BuildEventCommandLineDialog
         Inherits Form
 
-        Private Shared m_DefaultInstance As BuildEventCommandLineDialog
-        Private Shared m_SyncObject As New Object
-        Private m_CommandLine As String
-        Private m_Tokens() As String
-        Private m_Values() As String
-        Private m_DTE As EnvDTE.DTE
-        Private m_serviceProvider As IServiceProvider
-        Private m_Page As PropPageUserControlBase
-        Private m_szIntialFormSize As Size
-        Private m_helpTopic As String
+        Private Shared s_defaultInstance As BuildEventCommandLineDialog
+        Private Shared s_syncObject As New Object
+        Private _eventCommandLine As String
+        Private _tokens() As String
+        Private _values() As String
+        Private _dte As EnvDTE.DTE
+        Private _serviceProvider As IServiceProvider
+        Private _page As PropPageUserControlBase
+        Private _initialFormSize As Size
+        Private _helpTopic As String
 
         Public Sub New()
             MyBase.New()
@@ -43,83 +43,83 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Function
 
         Public Function SetTokensAndValues(Tokens() As String, Values() As String) As Boolean
-            m_Tokens = Tokens
-            m_Values = Values
+            _tokens = Tokens
+            _values = Values
 
             Return ParseAndPopulateTokens()
         End Function
 
         Public WriteOnly Property DTE() As EnvDTE.DTE
             Set(Value As EnvDTE.DTE)
-                m_DTE = Value
+                _dte = Value
             End Set
         End Property
 
         Public WriteOnly Property Page() As PropPageUserControlBase
             Set(Value As PropPageUserControlBase)
-                m_Page = Value
+                _page = Value
             End Set
         End Property
 
         Public Property EventCommandLine() As String
             Get
-                Return m_CommandLine
+                Return _eventCommandLine
             End Get
             Set(Value As String)
-                m_CommandLine = Value
-                CommandLine.Text = m_CommandLine
+                _eventCommandLine = Value
+                CommandLine.Text = _eventCommandLine
 
                 CommandLine.Focus()
                 CommandLine.SelectedText = ""
-                CommandLine.SelectionStart = Len(m_CommandLine)
+                CommandLine.SelectionStart = Len(_eventCommandLine)
                 CommandLine.SelectionLength = 0
             End Set
         End Property
 
         Public Property HelpTopic() As String
             Get
-                If m_helpTopic Is Nothing Then
-                    If m_Page IsNot Nothing AndAlso m_Page.IsVBProject() Then
-                        m_helpTopic = HelpKeywords.VBProjPropBuildEventsBuilder
+                If _helpTopic Is Nothing Then
+                    If _page IsNot Nothing AndAlso _page.IsVBProject() Then
+                        _helpTopic = HelpKeywords.VBProjPropBuildEventsBuilder
                     Else
-                        m_helpTopic = HelpKeywords.CSProjPropBuildEventsBuilder
+                        _helpTopic = HelpKeywords.CSProjPropBuildEventsBuilder
                     End If
                 End If
 
-                Return m_helpTopic
+                Return _helpTopic
             End Get
             Set(value As String)
-                m_helpTopic = value
+                _helpTopic = value
             End Set
         End Property
 
         Private Property ServiceProvider() As IServiceProvider
             Get
-                If m_serviceProvider Is Nothing AndAlso m_DTE IsNot Nothing Then
-                    Dim isp As OLE.Interop.IServiceProvider = CType(m_DTE, OLE.Interop.IServiceProvider)
+                If _serviceProvider Is Nothing AndAlso _dte IsNot Nothing Then
+                    Dim isp As OLE.Interop.IServiceProvider = CType(_dte, OLE.Interop.IServiceProvider)
                     If isp IsNot Nothing Then
-                        m_serviceProvider = New Shell.ServiceProvider(isp)
+                        _serviceProvider = New Shell.ServiceProvider(isp)
                     End If
                 End If
-                Return m_serviceProvider
+                Return _serviceProvider
             End Get
             Set(value As IServiceProvider)
-                m_serviceProvider = value
+                _serviceProvider = value
             End Set
         End Property
 
-        Private Sub OKButton_Click(sender As System.Object, e As EventArgs) Handles OKButton.Click
+        Private Sub OKButton_Click(sender As Object, e As EventArgs) Handles OKButton.Click
             '// Store the command line
-            m_CommandLine = CommandLine.Text
+            _eventCommandLine = CommandLine.Text
 
             Close()
         End Sub
 
-        Private Sub CancelButton_Click(sender As System.Object, e As EventArgs) Handles Cancel_Button.Click
+        Private Sub CancelButton_Click(sender As Object, e As EventArgs) Handles Cancel_Button.Click
             Close()
         End Sub
 
-        Private Sub UpdateDialog_HelpButtonClicked(sender As System.Object, e As System.ComponentModel.CancelEventArgs) Handles MyBase.HelpButtonClicked
+        Private Sub UpdateDialog_HelpButtonClicked(sender As Object, e As System.ComponentModel.CancelEventArgs) Handles MyBase.HelpButtonClicked
             InvokeHelp()
             e.Cancel = True
         End Sub
@@ -129,17 +129,17 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Dim i As Integer
             Dim NameItem As ListViewItem
 
-            For i = 0 To m_Tokens.Length - 1
-                NameItem = New ListViewItem(m_Tokens(i))
+            For i = 0 To _tokens.Length - 1
+                NameItem = New ListViewItem(_tokens(i))
 
-                NameItem.SubItems.Add(m_Values(i))
+                NameItem.SubItems.Add(_values(i))
                 TokenList.Items.Add(NameItem)
             Next
 
             Return True
         End Function
 
-        Private Sub HideMacrosButton_Click(sender As System.Object, e As EventArgs) Handles HideMacrosButton.Click
+        Private Sub HideMacrosButton_Click(sender As Object, e As EventArgs) Handles HideMacrosButton.Click
             ShowCollapsedForm()
         End Sub
 
@@ -147,7 +147,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             ShowExpandedForm()
         End Sub
 
-        Private Sub BuildEventCommandLineDialog_Load(sender As System.Object, e As EventArgs) Handles MyBase.Load
+        Private Sub BuildEventCommandLineDialog_Load(sender As Object, e As EventArgs) Handles MyBase.Load
             InitializeControlLocations()
 
             '// Never let them resize to something smaller than the default form size
@@ -185,11 +185,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return True
         End Function
 
-        Private Sub InsertButton_Click(sender As System.Object, e As EventArgs) Handles InsertButton.Click
+        Private Sub InsertButton_Click(sender As Object, e As EventArgs) Handles InsertButton.Click
             AddCurrentMacroToCommandLine()
         End Sub
 
-        Private Sub TokenList_SelectedIndexChanged(sender As System.Object, e As EventArgs) Handles TokenList.SelectedIndexChanged
+        Private Sub TokenList_SelectedIndexChanged(sender As Object, e As EventArgs) Handles TokenList.SelectedIndexChanged
             SetInsertButtonEnableState()
         End Sub
 
@@ -215,8 +215,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Function
 
         Private Sub InvokeHelp()
-            If Not IsNothing(m_Page) Then
-                m_Page.Help(HelpTopic)
+            If Not IsNothing(_page) Then
+                _page.Help(HelpTopic)
             Else
                 ' NOTE: the m_Page is nothing for deploy project, we need keep those code ...
                 Try
@@ -233,7 +233,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Sub
 
-        Private Sub BuildEventCommandLineDialog_HelpRequested(sender As System.Object, hlpevent As HelpEventArgs) Handles MyBase.HelpRequested
+        Private Sub BuildEventCommandLineDialog_HelpRequested(sender As Object, hlpevent As HelpEventArgs) Handles MyBase.HelpRequested
             InvokeHelp()
         End Sub
 

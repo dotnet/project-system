@@ -35,7 +35,7 @@ namespace Microsoft.VisualStudio.Packaging
         protected override System.Threading.Tasks.Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {
             _projectSelectorService = this.GetService<IVsRegisterProjectSelector, SVsRegisterProjectTypes>();
-            var selectorGuid = typeof(FSharpProjectSelector).GUID;
+            Guid selectorGuid = typeof(FSharpProjectSelector).GUID;
             _projectSelectorService.RegisterProjectSelector(ref selectorGuid, new FSharpProjectSelector(), out _projectSelectorCookie);
 
             return base.InitializeAsync(cancellationToken, progress);

@@ -45,7 +45,7 @@ Use the `DesignTimeBuild` (CPS-based projects) and `BuildingProject` (legacy pro
 
 ``` XML
   <Target Name="AddAdditionalReferences" BeforeTargets="ResolveAssemblyReferences">
-     <PropertyGroup Condition="'$(DesignTimeBuild)' == 'true' OR '$(BuildingProject)' != 'true'">
+     <PropertyGroup Condition="$(DesignTimeBuild) == true OR $(BuildingProject) != true">
          <_AvoidExpensiveCalculation>true</_AvoidExpensiveCalculation>
      </PropertyGroup>
 

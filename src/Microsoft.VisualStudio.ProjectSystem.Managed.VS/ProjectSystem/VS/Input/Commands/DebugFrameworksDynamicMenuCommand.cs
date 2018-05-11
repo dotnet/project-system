@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Design;
 
-using Microsoft.VisualStudio.Packaging;
+using Microsoft.VisualStudio.Input;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.Shell;
 
@@ -25,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 
         [ImportingConstructor]
         public DebugFrameworksDynamicMenuCommand(IStartupProjectHelper startupProjectHelper)
-          : base(new CommandID(new Guid(ManagedProjectSystemPackage.ManagedProjectSystemCommandSet), ManagedProjectSystemPackage.DebugFrameworksCmdId), MaxFrameworks)
+          : base(new CommandID(new Guid(CommandGroup.ManagedProjectSystem), ManagedProjectSystemCommandId.DebugFrameworks), MaxFrameworks)
         {
             StartupProjectHelper = startupProjectHelper;
         }
@@ -38,12 +38,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         public override bool ExecCommand(int cmdIndex, EventArgs e)
         {
             bool handled = false;
-            var activeDebugFramework = StartupProjectHelper.GetExportFromSingleDotNetStartupProject<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles);
+            IActiveDebugFrameworkServices activeDebugFramework = StartupProjectHelper.GetExportFromSingleDotNetStartupProject<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles);
             if (activeDebugFramework != null)
             {
                 ExecuteSynchronously(async () =>
                 {
-                    var frameworks = await activeDebugFramework.GetProjectFrameworksAsync().ConfigureAwait(false);
+                    List<string> frameworks = await activeDebugFramework.GetProjectFrameworksAsync().ConfigureAwait(false);
                     if (frameworks != null && cmdIndex >= 0 && cmdIndex < frameworks.Count)
                     {
                         await activeDebugFramework.SetActiveDebuggingFrameworkPropertyAsync(frameworks[cmdIndex]).ConfigureAwait(false);
@@ -61,7 +61,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         /// </summary>       
         public override bool QueryStatusCommand(int cmdIndex, EventArgs e)
         {
-            var activeDebugFramework = StartupProjectHelper.GetExportFromSingleDotNetStartupProject<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles);
+            IActiveDebugFrameworkServices activeDebugFramework = StartupProjectHelper.GetExportFromSingleDotNetStartupProject<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles);
             if (activeDebugFramework != null)
             {
                 // See if this project supports at least two runtimes
@@ -106,7 +106,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         /// </summary>
         protected virtual void ExecuteSynchronously(Func<Task> asyncFunction)
         {
+#pragma warning disable VSTHRD102 // Only wrapped for test purposes
             ThreadHelper.JoinableTaskFactory.Run(async () =>
+#pragma warning restore VSTHRD102 
             {
                 await asyncFunction().ConfigureAwait(false);
             });

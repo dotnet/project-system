@@ -8,9 +8,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
     {
         public static IEnumerable<IDependency> GetFlatTopLevelDependencies(this IDependenciesSnapshot self)
         {
-            foreach (var targetedSnapshot in self.Targets.Values)
+            foreach (ITargetedDependenciesSnapshot targetedSnapshot in self.Targets.Values)
             {
-                foreach (var dependency in targetedSnapshot.TopLevelDependencies)
+                foreach (IDependency dependency in targetedSnapshot.TopLevelDependencies)
                 {
                     yield return dependency;
                 }

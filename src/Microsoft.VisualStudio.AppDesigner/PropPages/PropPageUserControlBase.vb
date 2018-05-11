@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports Common = Microsoft.VisualStudio.Editors.AppDesCommon
 Imports Microsoft.VisualStudio.ManagedInterfaces.ProjectDesigner
@@ -34,7 +34,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
 #Region " Windows Form Designer generated code "
 
-        Private _UIShell5Service As IVsUIShell5
+        Private _uiShell5Service As IVsUIShell5
 
         Public Sub New()
             Me.New(Nothing)
@@ -164,6 +164,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Me.Source = Source
             End Sub
         End Class
+#Disable Warning IDE1006 ' Naming Styles (Compat)
 
         'True iff the property page is currently in initialization code
         Public m_fInsideInit As Boolean
@@ -195,22 +196,26 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '  associated PropertyControlData, as it may override the set of objects to use.
         Public m_ExtendedObjects As Object()
 
-        'The DTE object associated with the objects passed to SetObjects.  If there is none, this is Nothing.
-        Private _DTE As EnvDTE.DTE
-
-        'The EnvDTE.Project object associated with the objects passed to SetObjects.  If there is none, this is Nothing.
-        Private _DTEProject As EnvDTE.Project
-
-        ' Hook up to build events so we can enable/disable the property 
-        ' page while building
-        Private WithEvents _buildEvents As EnvDTE.BuildEvents
-
         'A collection of (extended) property descriptors which have been collected from the project itself.  These
         '  properties were *not* passed in to us through SetObjects, and are not configuration-dependent.  Some 
         '  configuration-dependent pages need to display certain non-configuration properties, which can be
         '  found in this collection.  Note that for a non-configuration page, this set of property descriptors
         '  will be the same as the set that was passed in to us through SetObjects.
         Public m_CommonPropertyDescriptors As PropertyDescriptorCollection
+
+        Protected m_ScalingCompleted As Boolean
+
+#Enable Warning IDE1006 ' Naming Styles
+
+        'The DTE object associated with the objects passed to SetObjects.  If there is none, this is Nothing.
+        Private _dte As EnvDTE.DTE
+
+        'The EnvDTE.Project object associated with the objects passed to SetObjects.  If there is none, this is Nothing.
+        Private _dteProject As EnvDTE.Project
+
+        ' Hook up to build events so we can enable/disable the property 
+        ' page while building
+        Private WithEvents _buildEvents As EnvDTE.BuildEvents
 
         'The ProjectProperties object from a VSLangProj-based project (VB, C#, J#).  Used for querying
         '  common project properties in these types of projects.  Note that this object was *not* passed
@@ -236,14 +241,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         'True iff multiple projects are currently selected
         Private _multiProjectSelect As Boolean
 
-        Private _UIShellService As IVsUIShell
-        Private _UIShell2Service As IVsUIShell2
+        Private _uiShellService As IVsUIShell
+        Private _uiShell2Service As IVsUIShell2
 
         Private Shared s_runningPropertyPages As New ArrayList
 
         'Child property pages that have been shown are cached here
         Private _childPages As New Dictionary(Of Type, PropPageUserControlBase)
-        Protected m_ScalingCompleted As Boolean
 
         Private _pageRequiresScaling As Boolean = True
 
@@ -280,7 +284,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private _suspendPropertyChangeListeningDispIds As New List(Of Integer)
 
         'DISPID_UNKNOWN
-        Public DISPID_UNKNOWN As Integer = Interop.win.DISPID_UNKNOWN
+        Public DISPID_UNKNOWN As Integer = Interop.Win32Constant.DISPID_UNKNOWN
 
         'Cookie for use with IVsShell.{Advise,Unadvise}BroadcastMessages
         Private _cookieBroadcastMessages As UInteger
@@ -496,9 +500,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     Return _projectPropertiesObject
                 Else
                     'C++ projects.
-                    If _DTEProject IsNot Nothing Then
-                        Debug.Assert(_DTEProject.Object IsNot Nothing)
-                        Return _DTEProject.Object
+                    If _dteProject IsNot Nothing Then
+                        Debug.Assert(_dteProject.Object IsNot Nothing)
+                        Return _dteProject.Object
                     Else
                         Return Nothing 'This is possible if we've already been cleaned up
                     End If
@@ -786,7 +790,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         <DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)>
         Protected ReadOnly Property DTE() As EnvDTE.DTE
             Get
-                Return _DTE
+                Return _dte
             End Get
         End Property
 
@@ -798,7 +802,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         <DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)>
         Public ReadOnly Property DTEProject() As EnvDTE.Project
             Get
-                Return _DTEProject
+                Return _dteProject
             End Get
         End Property
 
@@ -1043,8 +1047,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             DisconnectBroadcastMessages()
             DisconnectBuildEvents()
 
-            _DTEProject = Nothing
-            _DTE = Nothing
+            _dteProject = Nothing
+            _dte = Nothing
             _projectPropertiesObject = Nothing
             _serviceProvider = Nothing
             _site = Nothing
@@ -1270,8 +1274,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 ' DTE
                 ' ExtensibilityObjects
                 '
-                _DTE = Nothing
-                _DTEProject = Nothing
+                _dte = Nothing
+                _dteProject = Nothing
 
                 Dim Hier As IVsHierarchy = Nothing
                 Dim ItemId As UInteger
@@ -1300,16 +1304,16 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 hr = Hier.GetProperty(VSITEMID.ROOT, __VSHPROPID.VSHPROPID_ExtObject, obj)
 
                 If TypeOf obj Is EnvDTE.Project Then
-                    _DTEProject = CType(obj, EnvDTE.Project)
-                    _DTE = _DTEProject.DTE
+                    _dteProject = CType(obj, EnvDTE.Project)
+                    _dte = _dteProject.DTE
                 End If
 
                 hr = Hier.GetProperty(VSITEMID.ROOT, __VSHPROPID.VSHPROPID_BrowseObject, obj)
                 If TypeOf obj Is VSLangProj.ProjectProperties Then
                     _projectPropertiesObject = CType(obj, VSLangProj.ProjectProperties)
-                ElseIf _DTEProject IsNot Nothing Then
-                    If TypeOf _DTEProject.Object Is VSLangProj.ProjectProperties Then
-                        _projectPropertiesObject = CType(_DTEProject.Object, VSLangProj.ProjectProperties)
+                ElseIf _dteProject IsNot Nothing Then
+                    If TypeOf _dteProject.Object Is VSLangProj.ProjectProperties Then
+                        _projectPropertiesObject = CType(_dteProject.Object, VSLangProj.ProjectProperties)
                     Else
                         'Must be a C++ project - CommonPropertiesObject will return m_DTEProject.Object
                         _projectPropertiesObject = Nothing
@@ -1787,8 +1791,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                                 Dim group As Integer = FindControlGroup(returnControl)
                                 If delayValidationGroup < 0 Then
                                     delayValidationGroup = group
-                                    delayValidationQueue = New ArrayList()
-                                    delayValidationQueue.Add(_controlData)
+                                    delayValidationQueue = New ArrayList From {
+                                        _controlData
+                                    }
                                 ElseIf delayValidationGroup <> group Then
                                     delayValidationOK = False
                                 Else
@@ -2970,10 +2975,10 @@ NextControl:
         DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)>
         Protected ReadOnly Property VsUIShellService() As IVsUIShell
             Get
-                If (_UIShellService Is Nothing) Then
-                    _UIShellService = CType(ServiceProvider.GetService(GetType(IVsUIShell)), IVsUIShell)
+                If (_uiShellService Is Nothing) Then
+                    _uiShellService = CType(ServiceProvider.GetService(GetType(IVsUIShell)), IVsUIShell)
                 End If
-                Return _UIShellService
+                Return _uiShellService
             End Get
         End Property
 
@@ -2986,7 +2991,7 @@ NextControl:
         DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)>
         Protected ReadOnly Property VsUIShell2Service() As IVsUIShell2
             Get
-                If (_UIShell2Service Is Nothing) Then
+                If (_uiShell2Service Is Nothing) Then
                     Dim VsUiShell As IVsUIShell = Nothing
                     If Common.VBPackageInstance IsNot Nothing Then
                         VsUiShell = TryCast(Common.VBPackageInstance.GetService(GetType(IVsUIShell)), IVsUIShell)
@@ -2994,10 +2999,10 @@ NextControl:
                         VsUiShell = TryCast(ServiceProvider.GetService(GetType(IVsUIShell)), IVsUIShell)
                     End If
                     If VsUiShell IsNot Nothing Then
-                        _UIShell2Service = TryCast(VsUiShell, IVsUIShell2)
+                        _uiShell2Service = TryCast(VsUiShell, IVsUIShell2)
                     End If
                 End If
-                Return _UIShell2Service
+                Return _uiShell2Service
             End Get
         End Property
 
@@ -3008,7 +3013,7 @@ NextControl:
         ''' <remarks></remarks>
         Protected ReadOnly Property VsUIShell5Service() As IVsUIShell5
             Get
-                If (_UIShell5Service Is Nothing) Then
+                If (_uiShell5Service Is Nothing) Then
                     Dim VsUiShell As IVsUIShell = Nothing
                     If Common.VBPackageInstance IsNot Nothing Then
                         VsUiShell = TryCast(Common.VBPackageInstance.GetService(GetType(IVsUIShell)), IVsUIShell)
@@ -3016,10 +3021,10 @@ NextControl:
                         VsUiShell = TryCast(ServiceProvider.GetService(GetType(IVsUIShell)), IVsUIShell)
                     End If
                     If VsUiShell IsNot Nothing Then
-                        _UIShell5Service = TryCast(VsUiShell, IVsUIShell5)
+                        _uiShell5Service = TryCast(VsUiShell, IVsUIShell5)
                     End If
                 End If
-                Return _UIShell5Service
+                Return _uiShell5Service
             End Get
         End Property
 
@@ -3159,8 +3164,9 @@ NextControl:
 
             Dim Dialog As PropPageHostDialog = GetPropPageHostDialog(Page)
             If Dialog Is Nothing Then
-                Dialog = New PropPageHostDialog(ServiceProvider, F1Keyword)
-                Dialog.PropPage = Page
+                Dialog = New PropPageHostDialog(ServiceProvider, F1Keyword) With {
+                    .PropPage = Page
+                }
             End If
 
             Dialog.Text = Title
@@ -3438,9 +3444,9 @@ NextControl:
         ''' </remarks>
         Protected ReadOnly Property ProjectKind() As String
             Get
-                Debug.Assert(_DTEProject IsNot Nothing, "Can't get ProjectKind because DTEProject not available")
-                If _DTEProject IsNot Nothing Then
-                    Return _DTEProject.Kind
+                Debug.Assert(_dteProject IsNot Nothing, "Can't get ProjectKind because DTEProject not available")
+                If _dteProject IsNot Nothing Then
+                    Return _dteProject.Kind
                 Else
                     Return String.Empty
                 End If
@@ -3454,9 +3460,9 @@ NextControl:
         ''' <value></value>
         Protected ReadOnly Property ProjectLanguage() As String
             Get
-                Debug.Assert(_DTEProject IsNot Nothing, "Can't get ProjectLanguage because DTEProject not available")
-                If _DTEProject IsNot Nothing Then
-                    Dim codeModel As EnvDTE.CodeModel = _DTEProject.CodeModel
+                Debug.Assert(_dteProject IsNot Nothing, "Can't get ProjectLanguage because DTEProject not available")
+                If _dteProject IsNot Nothing Then
+                    Dim codeModel As EnvDTE.CodeModel = _dteProject.CodeModel
                     If codeModel IsNot Nothing Then
                         Return codeModel.Language
                     End If
@@ -3812,12 +3818,12 @@ NextControl:
         ''' <returns></returns>
         ''' <remarks></remarks>
         Private Function OnBroadcastMessage(msg As UInteger, wParam As IntPtr, lParam As IntPtr) As Integer Implements IVsBroadcastMessageEvents.OnBroadcastMessage
-            If msg = Interop.win.WM_SETTINGCHANGE Then
+            If msg = Interop.Win32Constant.WM_SETTINGCHANGE Then
                 If IsHandleCreated Then
                     m_ScalingCompleted = False
                     SetDialogFont(PageRequiresScaling)
                 End If
-            ElseIf msg = Interop.win.WM_PALETTECHANGED OrElse msg = Interop.win.WM_SYSCOLORCHANGE OrElse msg = Interop.win.WM_THEMECHANGED Then
+            ElseIf msg = Interop.Win32Constant.WM_PALETTECHANGED OrElse msg = Interop.Win32Constant.WM_SYSCOLORCHANGE OrElse msg = Interop.Win32Constant.WM_THEMECHANGED Then
                 OnThemeChanged()
             End If
         End Function
@@ -4218,8 +4224,8 @@ NextControl:
         ''' <remarks></remarks>
         Private Sub ConnectBuildEvents()
             If DisableOnBuild Then
-                If _DTE IsNot Nothing Then
-                    _buildEvents = _DTE.Events.BuildEvents
+                If _dte IsNot Nothing Then
+                    _buildEvents = _dte.Events.BuildEvents
                     ' We only hook up build events if we have to...
                     Dim monSel As IVsMonitorSelection = DirectCast(GetServiceFromPropertyPageSite(GetType(IVsMonitorSelection)), IVsMonitorSelection)
 
@@ -4396,9 +4402,9 @@ NextControl:
             Common.Switches.TracePDProperties(TraceLevel.Verbose, "OnExternalPropertyChanged(DISPID=" & DISPID & ", Source=" & Source.ToString() & ")")
             'Go through all the properties on the page to see if any match the DISPID that changed.
             For Each Data As PropertyControlData In ControlData
-                If Data.DispId = DISPID OrElse DISPID = Interop.win.DISPID_UNKNOWN Then
+                If Data.DispId = DISPID OrElse DISPID = Interop.Win32Constant.DISPID_UNKNOWN Then
                     OnExternalPropertyChanged(Data, Source)
-                    If DISPID <> Interop.win.DISPID_UNKNOWN Then
+                    If DISPID <> Interop.Win32Constant.DISPID_UNKNOWN Then
                         'If the DISPID was a specific value, we only have one specific property to update, otherwise
                         '  we need to continue for all properties.
                         Return

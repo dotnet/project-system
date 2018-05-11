@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.ComponentModel
 Imports System.Runtime.InteropServices
@@ -24,24 +24,24 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         Private _serviceProvider As ServiceProvider
 
 
-        Private Const s_addedHandlerFieldName As String = "addedHandler"
-        Private Const s_addedHandlerLockObjectFieldName As String = "addedHandlerLockObject"
-        Private Const s_autoSaveSubName As String = "AutoSaveSettings"
+        Private Const AddedHandlerFieldName As String = "addedHandler"
+        Private Const AddedHandlerLockObjectFieldName As String = "addedHandlerLockObject"
+        Private Const AutoSaveSubName As String = "AutoSaveSettings"
         Friend Const DefaultInstanceFieldName As String = "defaultInstance"
         Friend Const DefaultInstancePropertyName As String = "Default"
 
         Friend Const MyNamespaceName As String = "My"
-        Private Const s_mySettingsModuleName As String = "MySettingsProperty"
-        Private Const s_mySettingsPropertyName As String = "Settings"
+        Private Const MySettingsModuleName As String = "MySettingsProperty"
+        Private Const MySettingsPropertyName As String = "Settings"
 
-        Private Const s_myTypeWinFormsDefineConstant_If As String = "#If _MyType = ""WindowsForms"" Then"
-        Private Const s_myTypeWinFormsDefineConstant_EndIf As String = "#End If"
+        Private Const MyTypeWinFormsDefineConstant_If As String = "#If _MyType = ""WindowsForms"" Then"
+        Private Const MyTypeWinFormsDefineConstant_EndIf As String = "#End If"
 
-        Private Const s_hideAutoSaveRegionBegin As String = "#Region ""{0}"""
-        Private Const s_hideAutoSaveRegionEnd As String = "#End Region"
+        Private Const HideAutoSaveRegionBegin As String = "#Region ""{0}"""
+        Private Const HideAutoSaveRegionEnd As String = "#End Region"
 
-        Private Const s_docCommentSummaryStart As String = "<summary>"
-        Private Const s_docCommentSummaryEnd As String = "</summary>"
+        Private Const DocCommentSummaryStart As String = "<summary>"
+        Private Const DocCommentSummaryEnd As String = "</summary>"
 
         Friend Const DesignerGeneratedFileSuffix As String = ".Designer"
 
@@ -164,16 +164,16 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 ' then get the CodeCompileUnit for this .settings file
                 '
                 Dim generatedClass As CodeTypeDeclaration = Nothing
-                Dim CompileUnit As CodeCompileUnit = Create(DirectCast(GetService(GetType(IVsHierarchy)), IVsHierarchy), _
-                                                            Settings, _
-                                                            wszDefaultNamespace, _
-                                                            wszInputFilePath, _
-                                                            False, _
-                                                            pGenerateProgress, _
-                                                            typeAttrs, _
-                                                            CodeDomProvider.Supports(GeneratorSupport.TryCatchStatements), _
-                                                            shouldGenerateMyStuff, _
-                                                            projectRootNamespace, _
+                Dim CompileUnit As CodeCompileUnit = Create(DirectCast(GetService(GetType(IVsHierarchy)), IVsHierarchy),
+                                                            Settings,
+                                                            wszDefaultNamespace,
+                                                            wszInputFilePath,
+                                                            False,
+                                                            pGenerateProgress,
+                                                            typeAttrs,
+                                                            CodeDomProvider.Supports(GeneratorSupport.TryCatchStatements),
+                                                            shouldGenerateMyStuff,
+                                                            projectRootNamespace,
                                                             generatedClass)
 
                 ' For VB, we need to add Option Strict ON, Option Explicit ON plus check whether or not we
@@ -279,11 +279,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             ' Create the strongly typed settings class
             ' VsWhidbey 234144, Make sure this is a valid class name
             '
-            generatedType = New CodeTypeDeclaration(SettingsDesigner.GeneratedClassName(Hierarchy, VSITEMID.NIL, Settings, FilePath))
-
             ' pick up the default visibility
             '
-            generatedType.TypeAttributes = GeneratedClassVisibility
+            generatedType = New CodeTypeDeclaration(SettingsDesigner.GeneratedClassName(Hierarchy, VSITEMID.NIL, Settings, FilePath)) With {
+                .TypeAttributes = GeneratedClassVisibility
+            }
 
             ' Set the base class
             '
@@ -389,12 +389,13 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             '
             '   Public Shared ReadOnly Property [Default]() As Settings
             '
-            Dim CodeProperty As New CodeMemberProperty
-            CodeProperty.Attributes = MemberAttributes.Public Or MemberAttributes.Static
-            CodeProperty.Name = DefaultInstancePropertyName
-            CodeProperty.Type = SettingsClassTypeReference
-            CodeProperty.HasGet = True
-            CodeProperty.HasSet = False
+            Dim CodeProperty As New CodeMemberProperty With {
+                .Attributes = MemberAttributes.Public Or MemberAttributes.Static,
+                .Name = DefaultInstancePropertyName,
+                .Type = SettingsClassTypeReference,
+                .HasGet = True,
+                .HasSet = False
+            }
 
             ' We should hook up the My.Application.Shutdown event if told to auto save the 
             ' settings (only applicable for the main settings file & only applicable for VB)
@@ -419,20 +420,20 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
                 ' Add the AddHandler call that hooks My.Application.Shutdown inside the default-instance getter
                 '
-                Dim AutoSaveSnippet As New CodeSnippetExpression()
-
-                AutoSaveSnippet.Value =
+                Dim AutoSaveSnippet As New CodeSnippetExpression With {
+                    .Value =
                     Environment.NewLine &
-                    s_myTypeWinFormsDefineConstant_If & Environment.NewLine &
-                    "               If Not " & s_addedHandlerFieldName & " Then" & Environment.NewLine &
-                    "                    SyncLock " & s_addedHandlerLockObjectFieldName & Environment.NewLine &
-                    "                        If Not " & s_addedHandlerFieldName & " Then" & Environment.NewLine &
-                    "                            AddHandler My.Application.Shutdown, AddressOf " & s_autoSaveSubName & Environment.NewLine &
-                    "                            " & s_addedHandlerFieldName & " = True" & Environment.NewLine &
+                    MyTypeWinFormsDefineConstant_If & Environment.NewLine &
+                    "               If Not " & AddedHandlerFieldName & " Then" & Environment.NewLine &
+                    "                    SyncLock " & AddedHandlerLockObjectFieldName & Environment.NewLine &
+                    "                        If Not " & AddedHandlerFieldName & " Then" & Environment.NewLine &
+                    "                            AddHandler My.Application.Shutdown, AddressOf " & AutoSaveSubName & Environment.NewLine &
+                    "                            " & AddedHandlerFieldName & " = True" & Environment.NewLine &
                     "                        End If" & Environment.NewLine &
                     "                    End SyncLock" & Environment.NewLine &
                     "                End If" & Environment.NewLine &
-                    s_myTypeWinFormsDefineConstant_EndIf
+                    MyTypeWinFormsDefineConstant_EndIf
+                }
 
                 CodeProperty.GetStatements.Add(AutoSaveSnippet)
             End If
@@ -441,8 +442,9 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             '
             '   Return defaultInstance
             '
-            Dim ValueReference As New CodeFieldReferenceExpression()
-            ValueReference.FieldName = DefaultInstanceFieldName
+            Dim ValueReference As New CodeFieldReferenceExpression With {
+                .FieldName = DefaultInstanceFieldName
+            }
             CodeProperty.GetStatements.Add(New CodeMethodReturnStatement(ValueReference))
 
             ' And last, add the property to the class we're generating
@@ -458,13 +460,15 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         '@ <returns></returns>
         '@ <remarks></remarks>
         Private Shared Function CodeDomPropertyFromSettingInstance(TypeNameResolver As SettingTypeNameResolutionService, Instance As DesignTimeSettingInstance, IsDesignTime As Boolean, GenerateProgress As IVsGeneratorProgress) As CodeMemberProperty
-            Dim CodeProperty As New CodeMemberProperty
-            CodeProperty.Attributes = SettingsPropertyVisibility
-            CodeProperty.Name = Instance.Name
+            Dim CodeProperty As New CodeMemberProperty With {
+                .Attributes = SettingsPropertyVisibility,
+                .Name = Instance.Name
+            }
             Dim fxTypeName As String = TypeNameResolver.PersistedSettingTypeNameToFxTypeName(Instance.SettingTypeName)
 
-            CodeProperty.Type = New CodeTypeReference(fxTypeName)
-            CodeProperty.Type.Options = CodeTypeReferenceOptions.GlobalReference
+            CodeProperty.Type = New CodeTypeReference(fxTypeName) With {
+                .Options = CodeTypeReferenceOptions.GlobalReference
+            }
 
             CodeProperty.HasGet = True
             CodeProperty.GetStatements.AddRange(GenerateGetterStatements(Instance, CodeProperty.Type))
@@ -499,9 +503,9 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 attr.Arguments.Add(New CodeAttributeArgument(New CodePrimitiveExpression(Instance.Description)))
                 CodeProperty.CustomAttributes.Add(attr)
 
-                CodeProperty.Comments.Add(New CodeCommentStatement(s_docCommentSummaryStart, True))
+                CodeProperty.Comments.Add(New CodeCommentStatement(DocCommentSummaryStart, True))
                 CodeProperty.Comments.Add(New CodeCommentStatement(Security.SecurityElement.Escape(Instance.Description), True))
-                CodeProperty.Comments.Add(New CodeCommentStatement(s_docCommentSummaryEnd, True))
+                CodeProperty.Comments.Add(New CodeCommentStatement(DocCommentSummaryEnd, True))
             End If
 
             ' Add DebuggerNonUserCode attribute
@@ -692,22 +696,23 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             '    Private Shared addedHandler As Boolean
             ' #End If
             '
-            Dim AutoSaveCode As New CodeSnippetTypeMember()
-            AutoSaveCode.Text =
-                String.Format(s_hideAutoSaveRegionBegin, My.Resources.Designer.SD_SFG_AutoSaveRegionText) & Environment.NewLine &
-                s_myTypeWinFormsDefineConstant_If & Environment.NewLine &
-                "    Private Shared " & s_addedHandlerFieldName & " As Boolean" & Environment.NewLine &
+            Dim AutoSaveCode As New CodeSnippetTypeMember With {
+                .Text =
+                String.Format(HideAutoSaveRegionBegin, My.Resources.Designer.SD_SFG_AutoSaveRegionText) & Environment.NewLine &
+                MyTypeWinFormsDefineConstant_If & Environment.NewLine &
+                "    Private Shared " & AddedHandlerFieldName & " As Boolean" & Environment.NewLine &
                 Environment.NewLine &
-                "    Private Shared " & s_addedHandlerLockObjectFieldName & " As New Object" & Environment.NewLine &
+                "    Private Shared " & AddedHandlerLockObjectFieldName & " As New Object" & Environment.NewLine &
                 Environment.NewLine &
                 "    <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(), Global.System.ComponentModel.EditorBrowsableAttribute(Global.System.ComponentModel.EditorBrowsableState.Advanced)> _" & Environment.NewLine &
-                "    Private Shared Sub " & s_autoSaveSubName & "(sender As Global.System.Object, e As Global.System.EventArgs)" & Environment.NewLine &
+                "    Private Shared Sub " & AutoSaveSubName & "(sender As Global.System.Object, e As Global.System.EventArgs)" & Environment.NewLine &
                 "        If My.Application.SaveMySettingsOnExit Then" & Environment.NewLine &
-                "            " & MyNamespaceName & "." & s_mySettingsPropertyName & ".Save()" & Environment.NewLine &
+                "            " & MyNamespaceName & "." & MySettingsPropertyName & ".Save()" & Environment.NewLine &
                 "        End If" & Environment.NewLine &
                 "    End Sub" & Environment.NewLine &
-                s_myTypeWinFormsDefineConstant_EndIf & Environment.NewLine &
-                s_hideAutoSaveRegionEnd
+                MyTypeWinFormsDefineConstant_EndIf & Environment.NewLine &
+                HideAutoSaveRegionEnd
+            }
 
             GeneratedType.Members.Add(AutoSaveCode)
 
@@ -717,13 +722,15 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
             ' Create a property named Settings
             '
-            Dim SettingProperty As New CodeMemberProperty
-            SettingProperty.Name = s_mySettingsPropertyName
-            SettingProperty.HasGet = True
-            SettingProperty.HasSet = False
+            Dim SettingProperty As New CodeMemberProperty With {
+                .Name = MySettingsPropertyName,
+                .HasGet = True,
+                .HasSet = False
+            }
 
-            Dim fullTypeReference As CodeTypeReference = New CodeTypeReference(GetFullTypeName(projectRootNamespace, defaultNamespace, GeneratedType.Name))
-            fullTypeReference.Options = CodeTypeReferenceOptions.GlobalReference
+            Dim fullTypeReference As CodeTypeReference = New CodeTypeReference(GetFullTypeName(projectRootNamespace, defaultNamespace, GeneratedType.Name)) With {
+                .Options = CodeTypeReferenceOptions.GlobalReference
+            }
             SettingProperty.Type = fullTypeReference
             SettingProperty.Attributes = MemberAttributes.Assembly Or MemberAttributes.Final
 
@@ -750,7 +757,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             '    Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute()>  _
             '   Module MySettingsProperty
             '        
-            Dim ModuleDecl As New CodeTypeDeclaration(s_mySettingsModuleName)
+            Dim ModuleDecl As New CodeTypeDeclaration(MySettingsModuleName)
             ModuleDecl.UserData("Module") = True
             ModuleDecl.TypeAttributes = TypeAttributes.Sealed Or TypeAttributes.NestedAssembly
             ModuleDecl.CustomAttributes.Add(New CodeAttributeDeclaration(CreateGlobalCodeTypeReference(GetType(HideModuleNameAttribute))))
@@ -921,8 +928,9 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <returns></returns>
         ''' <remarks></remarks>
         Private Shared Function CreateGlobalCodeTypeReference(type As Type) As CodeTypeReference
-            Dim ctr As New CodeTypeReference(type)
-            ctr.Options = CodeTypeReferenceOptions.GlobalReference
+            Dim ctr As New CodeTypeReference(type) With {
+                .Options = CodeTypeReferenceOptions.GlobalReference
+            }
             Return ctr
         End Function
 

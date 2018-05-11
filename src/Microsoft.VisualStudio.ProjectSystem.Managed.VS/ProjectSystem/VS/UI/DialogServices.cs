@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
         public MultiChoiceMsgBoxResult ShowMultiChoiceMsgBox(string dialogTitle, string errorText, string[] buttons)
         {
             var dlg = new MultiChoiceMsgBox(dialogTitle, errorText, buttons);
-            var result = dlg.ShowModal();
+            bool? result = dlg.ShowModal();
             if (result == true)
             {
                 return dlg.SelectedAction;
@@ -38,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
         public bool DontShowAgainMessageBox(string caption, string message, string checkboxText, bool initialStateOfCheckbox, string learnMoreText, string learnMoreUrl)
         {
             var dlg = new DontShowAgainMessageBox(caption, message, checkboxText, initialStateOfCheckbox, learnMoreText, learnMoreUrl, _userNotificationServices);
-            var result = dlg.ShowModal();
+            bool? result = dlg.ShowModal();
             if (result == true)
             {
                 return dlg.CheckboxState;

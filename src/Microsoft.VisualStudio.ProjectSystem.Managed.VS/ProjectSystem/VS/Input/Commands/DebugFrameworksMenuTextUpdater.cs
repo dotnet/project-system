@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Design;
 
-using Microsoft.VisualStudio.Packaging;
+using Microsoft.VisualStudio.Input;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.Shell;
 
@@ -24,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         public DebugFrameworkPropertyMenuTextUpdater(IStartupProjectHelper startupProjectHelper)
                 : base(ExecHandler, delegate
                 { }, QueryStatusHandler,
-                      new CommandID(new Guid(ManagedProjectSystemPackage.ManagedProjectSystemCommandSet), ManagedProjectSystemPackage.DebugTargetMenuDebugFrameworkMenu))
+                      new CommandID(new Guid(CommandGroup.ManagedProjectSystem), ManagedProjectSystemCommandId.DebugTargetMenuDebugFrameworkMenu))
         {
             StartupProjectHelper = startupProjectHelper;
         }
@@ -59,7 +59,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 
         public void QueryStatus()
         {
-            var activeDebugFramework = StartupProjectHelper.GetExportFromSingleDotNetStartupProject<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles);
+            IActiveDebugFrameworkServices activeDebugFramework = StartupProjectHelper.GetExportFromSingleDotNetStartupProject<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles);
             if (activeDebugFramework != null)
             {
                 string activeFramework = null;
@@ -98,7 +98,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         /// </summary>
         protected virtual void ExecuteSynchronously(Func<Task> asyncFunction)
         {
+#pragma warning disable VSTHRD102 // Only wrapped for test purposes
             ThreadHelper.JoinableTaskFactory.Run(async () =>
+#pragma warning restore VSTHRD102
             {
                 await asyncFunction().ConfigureAwait(false);
             });

@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading;
@@ -15,7 +16,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 {
     internal abstract class CrossTargetSubscriptionHostBase : OnceInitializedOnceDisposedAsync, ICrossTargetSubscriptionsHost
     {
+#pragma warning disable CA2213 // OnceInitializedOnceDisposedAsync are not tracked corretly by the IDisposeable analyzer
         private readonly SemaphoreSlim _gate = new SemaphoreSlim(initialCount: 1);
+#pragma warning restore CA2213
         private readonly IUnconfiguredProjectCommonServices _commonServices;
         private readonly Lazy<IAggregateCrossTargetProjectContextProvider> _contextProvider;
         private readonly IProjectAsynchronousTasksService _tasksService;
@@ -25,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         private readonly IUnconfiguredProjectTasksService _unconfiguredProjectTasksService;
         private readonly object _linksLock = new object();
         private readonly List<IDisposable> _evaluationSubscriptionLinks;
-        private object _initializationLock = new object();
+        private readonly object _initializationLock = new object();
         private bool _isInitialized;
 
         /// <summary>
@@ -91,7 +94,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                 SubscribeToConfiguredProject(_activeConfiguredProjectSubscriptionService,
                     new ActionBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(e => OnProjectChangedAsync(e, RuleHandlerType.Evaluation)));
 
-                foreach (var subscriber in Subscribers)
+                foreach (Lazy<ICrossTargetSubscriber> subscriber in Subscribers)
                 {
                     await subscriber.Value.InitializeSubscriberAsync(this, _activeConfiguredProjectSubscriptionService)
                                           .ConfigureAwait(false);
@@ -157,12 +160,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
         private async Task UpdateProjectContextAndSubscriptionsAsync()
         {
-            var previousProjectContext = await ExecuteWithinLockAsync(() =>
+            AggregateCrossTargetProjectContext previousProjectContext = await ExecuteWithinLockAsync(() =>
             {
                 return Task.FromResult(_currentAggregateProjectContext);
             }).ConfigureAwait(false);
 
-            var newProjectContext = await UpdateProjectContextAsync().ConfigureAwait(false);
+            AggregateCrossTargetProjectContext newProjectContext = await UpdateProjectContextAsync().ConfigureAwait(false);
             if (previousProjectContext != newProjectContext)
             {
                 // Dispose existing subscriptions.
@@ -189,11 +192,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                     // For non-cross targeting projects, we can use the current project context if the TargetFramework hasn't changed.
                     // For cross-targeting projects, we need to verify that the current project context matches latest frameworks targeted by the project.
                     // If not, we create a new one and dispose the current one.
-                    var projectProperties = await _commonServices.ActiveConfiguredProjectProperties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(false);
+                    ConfigurationGeneral projectProperties = await _commonServices.ActiveConfiguredProjectProperties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(false);
 
                     if (!_currentAggregateProjectContext.IsCrossTargeting)
                     {
-                        var newTargetFramework = _targetFrameworkProvider.GetTargetFramework((string)await projectProperties.TargetFramework.GetValueAsync().ConfigureAwait(false));
+                        ITargetFramework newTargetFramework = _targetFrameworkProvider.GetTargetFramework((string)await projectProperties.TargetFramework.GetValueAsync().ConfigureAwait(false));
                         if (_currentAggregateProjectContext.ActiveProjectContext.TargetFramework.Equals(newTargetFramework))
                         {
                             return _currentAggregateProjectContext;
@@ -201,11 +204,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                     }
                     else
                     {
-                        var targetFrameworks = (string)await projectProperties.TargetFrameworks.GetValueAsync().ConfigureAwait(false);
+                        string targetFrameworks = (string)await projectProperties.TargetFrameworks.GetValueAsync().ConfigureAwait(false);
 
                         // Check if the current project context is up-to-date for the current active and known project configurations.
-                        var activeProjectConfiguration = _commonServices.ActiveConfiguredProject.ProjectConfiguration;
-                        var knownProjectConfigurations = await _commonServices.Project.Services.ProjectConfigurationsService.GetKnownProjectConfigurationsAsync().ConfigureAwait(false);
+                        ProjectConfiguration activeProjectConfiguration = _commonServices.ActiveConfiguredProject.ProjectConfiguration;
+                        IImmutableSet<ProjectConfiguration> knownProjectConfigurations = await _commonServices.Project.Services.ProjectConfigurationsService.GetKnownProjectConfigurationsAsync().ConfigureAwait(false);
                         if (knownProjectConfigurations.All(c => c.IsCrossTargeting()) &&
                             _currentAggregateProjectContext.HasMatchingTargetFrameworks(activeProjectConfiguration, knownProjectConfigurations))
                         {
@@ -239,9 +242,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         {
             await _contextProvider.Value.ReleaseProjectContextAsync(projectContext).ConfigureAwait(false);
 
-            foreach (var innerContext in projectContext.DisposedInnerProjectContexts)
+            foreach (ITargetedProjectContext innerContext in projectContext.DisposedInnerProjectContexts)
             {
-                foreach (var subscriber in Subscribers)
+                foreach (Lazy<ICrossTargetSubscriber> subscriber in Subscribers)
                 {
                     await subscriber.Value.OnContextReleasedAsync(innerContext).ConfigureAwait(false);
                 }
@@ -258,14 +261,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             {
                 lock (_linksLock)
                 {
-                    foreach (var configuredProject in newProjectContext.InnerConfiguredProjects)
+                    foreach (ConfiguredProject configuredProject in newProjectContext.InnerConfiguredProjects)
                     {
                         SubscribeToConfiguredProject(configuredProject.Services.ProjectSubscription,
                             new ActionBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(
                                               e => OnProjectChangedCoreAsync(e, RuleHandlerType.Evaluation)));
                     }
 
-                    foreach (var subscriber in Subscribers)
+                    foreach (Lazy<ICrossTargetSubscriber> subscriber in Subscribers)
                     {
                         subscriber.Value.AddSubscriptionsAsync(newProjectContext);
                     }
@@ -285,7 +288,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                     suppressVersionOnlyUpdates: true));
         }
 
-        private bool HasTargetFrameworksChanged(IProjectVersionedValue<IProjectSubscriptionUpdate> e)
+        private static bool HasTargetFrameworksChanged(IProjectVersionedValue<IProjectSubscriptionUpdate> e)
         {
             // remember actual property value and compare
             return e.Value.ProjectChanges.TryGetValue(
@@ -314,12 +317,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         {
             lock (_linksLock)
             {
-                foreach (var subscriber in Subscribers)
+                foreach (Lazy<ICrossTargetSubscriber> subscriber in Subscribers)
                 {
                     subscriber.Value.ReleaseSubscriptionsAsync();
                 }
 
-                foreach (var link in _evaluationSubscriptionLinks)
+                foreach (IDisposable link in _evaluationSubscriptionLinks)
                 {
                     link.Dispose();
                 }

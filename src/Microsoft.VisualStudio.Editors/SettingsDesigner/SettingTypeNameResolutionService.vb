@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
     ''' <summary>
@@ -31,21 +31,21 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         Private _fxTypeNameToLanguageSpecific As Dictionary(Of String, String)
 
         ' Is the current language case-sensitive?
-        Private _caseSensitive As Boolean
+        Private ReadOnly _caseSensitive As Boolean
 
 #End Region
 
-        Public Sub New(languageGuid As System.String, Optional caseSensitive As Boolean = True)
+        Public Sub New(languageGuid As String, Optional caseSensitive As Boolean = True)
             Dim language As Language
             Select Case languageGuid
                 Case EnvDTE.CodeModelLanguageConstants.vsCMLanguageCSharp
-                    language = language.CSharp
+                    language = Language.CSharp
                 Case EnvDTE.CodeModelLanguageConstants.vsCMLanguageVB
-                    language = language.VB
+                    language = Language.VB
                 Case EnvDTE80.CodeModelLanguageConstants2.vsCMLanguageJSharp
-                    language = language.JSharp
+                    language = Language.JSharp
                 Case Else
-                    language = language.UNKNOWN
+                    language = Language.UNKNOWN
             End Select
 
             _caseSensitive = caseSensitive
@@ -59,7 +59,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
             _languageSpecificToFxTypeName = New Dictionary(Of String, String)(16, comparer)
             _fxTypeNameToLanguageSpecific = New Dictionary(Of String, String)(16, comparer)
-            If language <> language.UNKNOWN Then
+            If language <> Language.UNKNOWN Then
                 ' add language specific type names for C#, VB, J# respectively
                 AddEntry((GetType(Boolean).FullName), New String() {"bool", "Boolean", "boolean"}(language))
                 AddEntry((GetType(Byte).FullName), New String() {"byte", "Byte", "byte"}(language))
@@ -75,7 +75,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 AddEntry((GetType(UInteger).FullName), New String() {"uint", "UInteger", Nothing}(language))
                 AddEntry((GetType(ULong).FullName), New String() {"ulong", "ULong", Nothing}(language))
                 AddEntry((GetType(String).FullName), New String() {"string", "String", "String"}(language))
-                AddEntry((GetType(System.DateTime).FullName), New String() {Nothing, "Date", Nothing}(language))
+                AddEntry((GetType(Date).FullName), New String() {Nothing, "Date", Nothing}(language))
             End If
         End Sub
 

@@ -24,9 +24,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
         [ImportingConstructor]
         public AppDesignerFolderSpecialFileProvider(Lazy<IPhysicalProjectTree> projectTree, ProjectProperties properties)
         {
-            Requires.NotNull(projectTree, nameof(projectTree));
-            Requires.NotNull(properties, nameof(properties));
-
             _projectTree = projectTree;
             _properties = properties;
         }

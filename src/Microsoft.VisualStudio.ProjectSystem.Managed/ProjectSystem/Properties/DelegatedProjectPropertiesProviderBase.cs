@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// <summary>
         /// Gets the unconfigured project
         /// </summary>
-        protected readonly UnconfiguredProject UnconfiguredProject;
+        protected readonly UnconfiguredProject Project;
 
         /// <summary>
         /// The Project Properties Provider that is delegated to for most operations
@@ -31,35 +31,35 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// <summary>
         /// Construct using the provider that should be delegated to for most operations
         /// </summary>
-        public DelegatedProjectPropertiesProviderBase(IProjectPropertiesProvider provider, IProjectInstancePropertiesProvider instanceProvider, UnconfiguredProject unconfiguredProject)
+        public DelegatedProjectPropertiesProviderBase(IProjectPropertiesProvider provider, IProjectInstancePropertiesProvider instanceProvider, UnconfiguredProject project)
         {
             Requires.NotNull(provider, nameof(provider));
             Requires.NotNull(instanceProvider, nameof(instanceProvider));
-            Requires.NotNull(unconfiguredProject, nameof(unconfiguredProject));
+            Requires.NotNull(project, nameof(project));
 
             DelegatedProvider = provider;
             DelegatedInstanceProvider = instanceProvider;
-            UnconfiguredProject = unconfiguredProject;
+            Project = project;
         }
 
-        public virtual string DefaultProjectPath => UnconfiguredProject.FullPath;
+        public virtual string DefaultProjectPath => Project.FullPath;
 
         public event AsyncEventHandler<ProjectPropertyChangedEventArgs> ProjectPropertyChanged
         {
             add { DelegatedProvider.ProjectPropertyChanged += value; }
-            remove { DelegatedProvider.ProjectPropertyChanged += value; }
+            remove { DelegatedProvider.ProjectPropertyChanged -= value; }
         }
 
         public event AsyncEventHandler<ProjectPropertyChangedEventArgs> ProjectPropertyChangedOnWriter
         {
             add { DelegatedProvider.ProjectPropertyChangedOnWriter += value; }
-            remove { DelegatedProvider.ProjectPropertyChangedOnWriter += value; }
+            remove { DelegatedProvider.ProjectPropertyChangedOnWriter -= value; }
         }
 
         public event AsyncEventHandler<ProjectPropertyChangedEventArgs> ProjectPropertyChanging
         {
             add { DelegatedProvider.ProjectPropertyChanging += value; }
-            remove { DelegatedProvider.ProjectPropertyChanging += value; }
+            remove { DelegatedProvider.ProjectPropertyChanging -= value; }
         }
 
         public virtual IProjectProperties GetCommonProperties()

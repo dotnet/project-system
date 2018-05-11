@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports Common = Microsoft.VisualStudio.Editors.AppDesCommon
 Imports Microsoft.VisualStudio.Shell.Interop
@@ -30,13 +30,13 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         Private _serviceProvider As IServiceProvider
 
         'Backs up the VsUIShellService property
-        Private _UIShellService As IVsUIShell
+        Private _uiShellService As IVsUIShell
 
         'Backs up the VsUIShell2Service property
-        Private _UIShell2Service As IVsUIShell2
+        Private _uiShell2Service As IVsUIShell2
 
         'Backs up the VsUIShell5Service property
-        Private _UIShell5Service As IVsUIShell5
+        Private _uiShell5Service As IVsUIShell5
 
         ''' <summary>
         '''  Listen for font/color changes from the shell
@@ -103,12 +103,13 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' </summary>
         ''' <remarks></remarks>
         Private Sub Initialize()
-            _hostingPanel = New Panel()
-            _hostingPanel.Visible = True
-            _hostingPanel.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Bottom Or AnchorStyles.Right
-            _hostingPanel.AutoScroll = True
-            _hostingPanel.Text = "HostingPanel" 'For debugging
-            _hostingPanel.AccessibleName = My.Resources.Designer.APPDES_HostingPanelName
+            _hostingPanel = New Panel With {
+                .Visible = True,
+                .Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Bottom Or AnchorStyles.Right,
+                .AutoScroll = True,
+                .Text = "HostingPanel", 'For debugging
+                .AccessibleName = My.Resources.Designer.APPDES_HostingPanelName
+            }
 
             'Add any initialization after the InitializeComponent() call
             '
@@ -168,43 +169,43 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
         Protected ReadOnly Property VsUIShellService As IVsUIShell
             Get
-                If (_UIShellService Is Nothing) Then
+                If (_uiShellService Is Nothing) Then
                     If Common.VBPackageInstance IsNot Nothing Then
-                        _UIShellService = TryCast(Common.VBPackageInstance.GetService(GetType(IVsUIShell)), IVsUIShell)
+                        _uiShellService = TryCast(Common.VBPackageInstance.GetService(GetType(IVsUIShell)), IVsUIShell)
                     ElseIf ServiceProvider IsNot Nothing Then
-                        _UIShellService = TryCast(ServiceProvider.GetService(GetType(IVsUIShell)), IVsUIShell)
+                        _uiShellService = TryCast(ServiceProvider.GetService(GetType(IVsUIShell)), IVsUIShell)
                     End If
                 End If
 
-                Return _UIShellService
+                Return _uiShellService
             End Get
         End Property
 
         Protected ReadOnly Property VsUIShell2Service As IVsUIShell2
             Get
-                If (_UIShell2Service Is Nothing) Then
+                If (_uiShell2Service Is Nothing) Then
                     Dim VsUIShell = VsUIShellService
 
                     If (VsUIShell IsNot Nothing) Then
-                        _UIShell2Service = TryCast(VsUIShell, IVsUIShell2)
+                        _uiShell2Service = TryCast(VsUIShell, IVsUIShell2)
                     End If
                 End If
 
-                Return _UIShell2Service
+                Return _uiShell2Service
             End Get
         End Property
 
         Protected ReadOnly Property VsUIShell5Service As IVsUIShell5
             Get
-                If (_UIShell5Service Is Nothing) Then
+                If (_uiShell5Service Is Nothing) Then
                     Dim VsUIShell = VsUIShellService
 
                     If (VsUIShell IsNot Nothing) Then
-                        _UIShell5Service = TryCast(VsUIShell, IVsUIShell5)
+                        _uiShell5Service = TryCast(VsUIShell, IVsUIShell5)
                     End If
                 End If
 
-                Return _UIShell5Service
+                Return _uiShell5Service
             End Get
         End Property
 
@@ -336,9 +337,10 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             SuspendLayout()
             Dim newIndex As Integer
             Try
-                Dim Button As New ProjectDesignerTabButton()
-                Button.Text = Title
-                Button.Name = AutomationName
+                Dim Button As New ProjectDesignerTabButton With {
+                    .Text = Title,
+                    .Name = AutomationName
+                }
                 _buttonCollection.Add(Button)
                 newIndex = _buttonCollection.Count - 1
                 Controls.Add(Button)
@@ -620,7 +622,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <remarks></remarks>
         Private Sub OnBroadcastMessageEventsHelperBroadcastMessage(msg As UInteger, wParam As IntPtr, lParam As IntPtr) Handles _broadcastMessageEventsHelper.BroadcastMessage
             Select Case msg
-                Case AppDesInterop.win.WM_PALETTECHANGED, AppDesInterop.win.WM_SYSCOLORCHANGE, AppDesInterop.win.WM_THEMECHANGED
+                Case AppDesInterop.Win32Constant.WM_PALETTECHANGED, AppDesInterop.Win32Constant.WM_SYSCOLORCHANGE, AppDesInterop.Win32Constant.WM_THEMECHANGED
                     OnThemeChanged()
             End Select
         End Sub

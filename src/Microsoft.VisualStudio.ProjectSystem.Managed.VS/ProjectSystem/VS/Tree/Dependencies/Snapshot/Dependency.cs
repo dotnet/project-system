@@ -21,8 +21,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         private static ConcurrentBag<StringBuilder> s_builderPool = new ConcurrentBag<StringBuilder>();
 
         // These priorities are for graph nodes only and are used to group graph nodes 
-        // appropriatelly in order groups predefined order instead of alphabetically.
-        // Order is not changed for top dependency nodes only for grpah hierarchies.
+        // appropriately in order groups predefined order instead of alphabetically.
+        // Order is not changed for top dependency nodes only for graph hierarchies.
         public const int DiagnosticsErrorNodePriority = 100;
         public const int DiagnosticsWarningNodePriority = 101;
         public const int UnresolvedReferenceNodePriority = 110;
@@ -89,8 +89,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             }
             else
             {
-                var normalizedDependencyIDs = ImmutableList.CreateBuilder<string>();
-                foreach (var id in dependencyModel.DependencyIDs)
+                ImmutableList<string>.Builder normalizedDependencyIDs = ImmutableList.CreateBuilder<string>();
+                foreach (string id in dependencyModel.DependencyIDs)
                 {
                     normalizedDependencyIDs.Add(GetID(TargetFramework, ProviderType, id));
                 }
@@ -121,7 +121,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         /// Id unique for a particular provider. We append target framework and provider type to it, 
         /// to get a unique id for the whole snapshot.
         /// </summary>
-        private string _modelId;
+        private readonly string _modelId;
         private string _id;
         private readonly string _containingProjectPath;
         private string _fullPath;
@@ -168,7 +168,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 // Thus always set predefined itemType for all custom nodes.
                 // TODO: generate specific xaml rule for generic Dependency nodes
                 // tracking issue: https://github.com/dotnet/roslyn-project-system/issues/1102
-                var isGenericNodeType = Flags.Contains(DependencyTreeFlags.GenericDependencyFlags);
+                bool isGenericNodeType = Flags.Contains(DependencyTreeFlags.GenericDependencyFlags);
                 return isGenericNodeType ? _schemaItemType : Folder.PrimaryDataSourceItemType;
             }
             protected set
@@ -315,7 +315,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
         private static string GetAlias(IDependency dependency)
         {
-            var path = dependency.OriginalItemSpec ?? dependency.Path;
+            string path = dependency.OriginalItemSpec ?? dependency.Path;
             if (string.IsNullOrEmpty(path) || path.Equals(dependency.Caption, StringComparison.OrdinalIgnoreCase))
             {
                 return dependency.Caption;

@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.ComponentModel
 Imports System.Runtime.InteropServices
@@ -29,7 +29,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         Private _codeDomProvider As CodeDomProvider
         Private _serviceProvider As ServiceProvider
 
-        Private Const s_myNamespaceName As String = "My"
+        Private Const MyNamespaceName As String = "My"
         Friend Const SingleFileGeneratorName As String = "MyApplicationCodeGenerator"
 
         ''' <summary>
@@ -143,7 +143,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
 
             ' Create a new namespace to put our class in
             '
-            Dim MyNamespace As New CodeDom.CodeNamespace(s_myNamespaceName)
+            Dim MyNamespace As New CodeDom.CodeNamespace(MyNamespaceName)
 
             'MySubMain will be set to indicate a WindowsApplication sans MY, or non-WindowsApplication type
             If MyApplication.MySubMain AndAlso MyApplicationProperties.IsMySubMainSupported(DirectCast(GetService(GetType(IVsHierarchy)), IVsHierarchy)) Then
@@ -179,8 +179,9 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                 '    <Global.System.Diagnostics.DebuggerStepThrough()> _
                 '    Public Sub New()
                 '
-                Dim Constructor As CodeConstructor = New CodeConstructor()
-                Constructor.Attributes = MemberAttributes.Public
+                Dim Constructor As CodeConstructor = New CodeConstructor With {
+                    .Attributes = MemberAttributes.Public
+                }
                 AddAttribute(Constructor, DebuggerStepThroughAttribute, True)
 
                 'Add AuthenticationMode.Windows as an argument to the MyBase.New() call
@@ -254,10 +255,11 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                             Throw New ArgumentException(errorMsg)
                         End If
                     Else
-                        Dim OnCreateMainForm As New CodeMemberMethod()
-                        OnCreateMainForm.Attributes = MemberAttributes.Override Or MemberAttributes.Family
-                        OnCreateMainForm.ReturnType = Nothing
-                        OnCreateMainForm.Name = "OnCreateMainForm"
+                        Dim OnCreateMainForm As New CodeMemberMethod With {
+                            .Attributes = MemberAttributes.Override Or MemberAttributes.Family,
+                            .ReturnType = Nothing,
+                            .Name = "OnCreateMainForm"
+                        }
                         AddAttribute(OnCreateMainForm, DebuggerStepThroughAttribute, True)
                         AddDefaultFormAssignment(OnCreateMainForm, "MainForm", ProjectRootNamespace, MyApplication.MainFormNoRootNS)
                         GeneratedType.Members.Add(OnCreateMainForm)
@@ -286,10 +288,11 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                             Throw New ArgumentException(errorMsg)
                         End If
                     Else
-                        Dim OnCreateSplashScreen As New CodeMemberMethod()
-                        OnCreateSplashScreen.Attributes = MemberAttributes.Override Or MemberAttributes.Family
-                        OnCreateSplashScreen.ReturnType = Nothing
-                        OnCreateSplashScreen.Name = "OnCreateSplashScreen"
+                        Dim OnCreateSplashScreen As New CodeMemberMethod With {
+                            .Attributes = MemberAttributes.Override Or MemberAttributes.Family,
+                            .ReturnType = Nothing,
+                            .Name = "OnCreateSplashScreen"
+                        }
                         AddAttribute(OnCreateSplashScreen, DebuggerStepThroughAttribute, True)
                         AddDefaultFormAssignment(OnCreateSplashScreen, "SplashScreen", ProjectRootNamespace, MyApplication.SplashScreenNoRootNS)
                         GeneratedType.Members.Add(OnCreateSplashScreen)
@@ -329,30 +332,34 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ' Adds a statement to 'Method' in the form of ' FieldName = Expression ' 
         Private Shared Sub AddFieldAssignment(Method As CodeMemberMethod, FieldName As String, Expression As CodeExpression)
             Dim Statement As CodeAssignStatement
-            Statement = New CodeAssignStatement()
-            Statement.Left = New CodeFieldReferenceExpression(New CodeThisReferenceExpression(), FieldName)
-            Statement.Right = Expression
+            Statement = New CodeAssignStatement With {
+                .Left = New CodeFieldReferenceExpression(New CodeThisReferenceExpression(), FieldName),
+                .Right = Expression
+            }
             Method.Statements.Add(Statement)
         End Sub
 
         ' Adds a statement to 'Method' in the form of ' FieldName = Value ' 
         Private Shared Sub AddFieldPrimitiveAssignment(Method As CodeMemberMethod, FieldName As String, Value As Object)
             Dim Statement As CodeAssignStatement
-            Statement = New CodeAssignStatement()
-            Statement.Left = New CodeFieldReferenceExpression(New CodeThisReferenceExpression(), FieldName)
-            Statement.Right = New CodePrimitiveExpression(Value)
+            Statement = New CodeAssignStatement With {
+                .Left = New CodeFieldReferenceExpression(New CodeThisReferenceExpression(), FieldName),
+                .Right = New CodePrimitiveExpression(Value)
+            }
             Method.Statements.Add(Statement)
         End Sub
 
         ' Adds a statement to 'Method' in the form of ' FieldName = EnumType.EnumField ' 
         Private Shared Sub AddFieldAssignment(Method As CodeMemberMethod, FieldName As String, EnumType As Type, EnumFieldName As String)
             Dim Statement As CodeAssignStatement
-            Statement = New CodeAssignStatement()
-            Statement.Left = New CodeFieldReferenceExpression(New CodeThisReferenceExpression(), FieldName)
+            Statement = New CodeAssignStatement With {
+                .Left = New CodeFieldReferenceExpression(New CodeThisReferenceExpression(), FieldName)
+            }
 
             Dim TypeRef As CodeTypeReference
-            TypeRef = New CodeTypeReference(EnumType)
-            TypeRef.Options = CodeTypeReferenceOptions.GlobalReference
+            TypeRef = New CodeTypeReference(EnumType) With {
+                .Options = CodeTypeReferenceOptions.GlobalReference
+            }
 
             Dim value1 As New CodeFieldReferenceExpression(New CodeTypeReferenceExpression(TypeRef), EnumFieldName)
             Statement.Right = value1

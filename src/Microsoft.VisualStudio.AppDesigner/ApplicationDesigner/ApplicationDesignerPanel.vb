@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.Runtime.InteropServices
 Imports System.Windows.Forms
@@ -31,9 +31,10 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         Private _pageHostingPanelLastSize As Drawing.Size
         Private _windowFrameLastSize As Drawing.Size
         Private _windowFrameShown As Boolean 'True iff ShowWindowFrame() has been called
+#Disable Warning IDE1006 ' Naming Styles (Compat)
         Public m_Debug_cWindowFrameShow As Integer = 0 '# of times the window frame has been shown
         Public m_Debug_cWindowFrameBoundsUpdated As Integer = 0 '# of times the window frame bounds have been changed
-
+#Enable Warning IDE1006 ' Naming Styles
         Private _windowFrameNotifyCookie As UInteger
 
         ' Avoid recursive calls to close (we sometimes try to close our parent view,
@@ -49,7 +50,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         Private _hierarchy As IVsHierarchy
         Private _itemId As UInteger
         Private _docCookie As UInteger
-        Private _ownerCaption As String
+        Private ReadOnly _ownerCaption As String
         Private _docData As Object
         'The DocView for the designer, if we were able to retrieve it (if we understood the designer type).  This would
         '  be a PropPageDesignerView for our hosted property pages, ResourceEditorView for the resource editor, etc.

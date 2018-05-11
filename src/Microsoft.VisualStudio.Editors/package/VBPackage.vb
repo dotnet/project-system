@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.Runtime.InteropServices
 Imports System.ComponentModel.Design
@@ -35,12 +35,12 @@ Namespace Microsoft.VisualStudio.Editors
         Private _permissionSetService As VBAttributeEditor.PermissionSetService
         Private _xmlIntellisenseService As XmlIntellisense.XmlIntellisenseService
         Private _buildEventCommandLineDialogService As PropertyPages.BuildEventCommandLineDialogService
-        Private _VBReferenceChangedService As VBRefChangedSvc.VBReferenceChangedService
+        Private _vbReferenceChangedService As VBRefChangedSvc.VBReferenceChangedService
         Private _resourceEditorRefactorNotify As ResourceEditor.ResourceEditorRefactorNotify
         Private _userConfigCleaner As UserConfigCleaner
         Private _addImportsDialogService As AddImports.AddImportsDialogService
 
-        Private Const s_projectDesignerSUOKey As String = "ProjectDesigner"
+        Private Const ProjectDesignerSUOKey As String = "ProjectDesigner"
 
         ' Map between unique project GUID and the last viewed tab in the project designer...
         Private _lastViewedProjectDesignerTab As Dictionary(Of Guid, Byte)
@@ -51,7 +51,7 @@ Namespace Microsoft.VisualStudio.Editors
         ''' <remarks></remarks>
         Public Sub New()
             ' Make sure we persist this 
-            AddOptionKey(s_projectDesignerSUOKey)
+            AddOptionKey(ProjectDesignerSUOKey)
         End Sub
 
         ''' <summary>
@@ -59,8 +59,8 @@ Namespace Microsoft.VisualStudio.Editors
         ''' </summary>
         ''' <remarks></remarks>
         Protected Overrides Sub Initialize()
-            Debug.Assert(s_Instance Is Nothing, "VBPackage initialized multiple times?")
-            s_Instance = Me
+            Debug.Assert(s_instance Is Nothing, "VBPackage initialized multiple times?")
+            s_instance = Me
             MyBase.Initialize()
 
             'Register editor factories
@@ -172,11 +172,11 @@ Namespace Microsoft.VisualStudio.Editors
 
             ' Lazy-init VBReferenceChangedService and return the cached service.
             If serviceType Is GetType(VBRefChangedSvc.Interop.IVbReferenceChangedService) Then
-                If _VBReferenceChangedService Is Nothing Then
-                    _VBReferenceChangedService = New VBRefChangedSvc.VBReferenceChangedService()
+                If _vbReferenceChangedService Is Nothing Then
+                    _vbReferenceChangedService = New VBRefChangedSvc.VBReferenceChangedService()
                 End If
 
-                Return _VBReferenceChangedService
+                Return _vbReferenceChangedService
             End If
 
             Debug.Fail("VBPackage was requested to create a package it has no knowledge about: " & serviceType.ToString())
@@ -219,11 +219,11 @@ Namespace Microsoft.VisualStudio.Editors
             MyBase.Dispose(disposing)
         End Sub
 
-        Protected Shared s_Instance As VBPackage
+        Private Shared s_instance As VBPackage
 
         Public Shared ReadOnly Property Instance() As VBPackage
             Get
-                Return s_Instance
+                Return s_instance
             End Get
         End Property
 
@@ -242,7 +242,7 @@ Namespace Microsoft.VisualStudio.Editors
         ''' <param name="stream">Stream to read from</param>
         ''' <remarks></remarks>
         Protected Overrides Sub OnLoadOptions(key As String, stream As IO.Stream)
-            If String.Equals(key, s_projectDesignerSUOKey, StringComparison.Ordinal) Then
+            If String.Equals(key, ProjectDesignerSUOKey, StringComparison.Ordinal) Then
                 Dim reader As New IO.BinaryReader(stream)
                 Dim buf(15) As Byte ' Space enough for a GUID - 16 bytes...
                 Try
@@ -269,7 +269,7 @@ Namespace Microsoft.VisualStudio.Editors
         ''' <param name="stream">Stream to read data from</param>
         ''' <remarks></remarks>
         Protected Overrides Sub OnSaveOptions(key As String, stream As IO.Stream)
-            If String.Equals(key, s_projectDesignerSUOKey, StringComparison.Ordinal) Then
+            If String.Equals(key, ProjectDesignerSUOKey, StringComparison.Ordinal) Then
                 ' This is the project designer's last active tab
                 If _lastViewedProjectDesignerTab IsNot Nothing Then
                     Dim hier As IVsHierarchy = Nothing

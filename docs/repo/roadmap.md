@@ -5,8 +5,7 @@ The first release of the project system ("15.0") was heavily focused on supporti
 |Release|Branches|Description|
 |-------|--------|--------|
 |[15.0.x](https://github.com/dotnet/roslyn-project-system/milestone/4)|[15.0.x](https://github.com/dotnet/roslyn-project-system/tree/dev15.0.x)|Impactful bugs, crashes and hangs that block _major_ scenarios.
-|[15.4](https://github.com/dotnet/project-system/milestone/17)|[15.4.x](https://github.com/dotnet/project-system/tree/dev15.4.x)|Impactful bugs, crashes and hangs that block _major_ scenarios.
-|[15.5](https://github.com/dotnet/project-system/milestone/16)|[15.5.x](https://github.com/dotnet/project-system/tree/dev15.5.x)|Impactful bugs, crashes and hangs that block _major_ scenarios.
-|[15.6](https://github.com/dotnet/project-system/milestone/19)|[master](https://github.com/dotnet/roslyn-project-system/tree/master)|All non-breaking feature work, focusing on performance, crashes, hangs and reliability bugs.
-|[16.0](https://github.com/dotnet/roslyn-project-system/milestone/12)|none|[Feature parity](https://github.com/dotnet/project-system/issues?q=is%3Aopen+is%3Aissue+label%3AParity-VSLangProj) with the legacy project system, support for WinForms, WPF and ASP.NET.
+|[15.7](https://github.com/dotnet/project-system/milestone/20)|[15.7.x](https://github.com/dotnet/roslyn-project-system/tree/dev15.7.x)|Impactful bugs, crashes and hangs that block _major_ scenarios.
+|[15.8](https://github.com/dotnet/project-system/milestone/20)|[master](https://github.com/dotnet/roslyn-project-system/tree/master)|All feature work, focusing on performance, crashes, hangs and reliability bugs.
+|[16.0](https://github.com/dotnet/roslyn-project-system/milestone/12)|none|[Feature parity](https://github.com/dotnet/project-system/issues?q=is%3Aopen+is%3Aissue+label%3AParity-VSLangProj) with the legacy project system, support for .NET Core 3.0, WinForms & WPF.
 |[Unknown](https://github.com/dotnet/roslyn-project-system/milestone/5)|none|Uncommitted features.

@@ -109,7 +109,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             if (_solutionCookie != VSConstants.VSCOOKIE_NIL)
             {
-                var solution = _serviceProvider.GetService<IVsSolution, SVsSolution>();
+                IVsSolution solution = _serviceProvider.GetService<IVsSolution, SVsSolution>();
                 if (solution != null)
                 {
                     Verify.HResult(solution.UnadviseSolutionEvents(_solutionCookie));
@@ -136,7 +136,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
                         // We need to check if this project has been newly created. Our projects will implement IProjectCreationState -we can 
                         // skip any that don't
-                        var projectCreationState = project.Services.ExportProvider.GetExportedValueOrDefault<IProjectCreationState>();
+                        IProjectCreationState projectCreationState = project.Services.ExportProvider.GetExportedValueOrDefault<IProjectCreationState>();
                         if (projectCreationState != null && !projectCreationState.WasNewlyCreated)
                         {
                             CompatibilityLevel compatLevel = await GetProjectCompatibilityAsync(project, compatData).ConfigureAwait(false);
@@ -177,7 +177,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 CompatibilityLevel finalCompatLevel = CompatibilityLevel.Recommended;
                 IProjectService projectService = _projectServiceAccessor.Value.GetProjectService();
                 IEnumerable<UnconfiguredProject> projects = projectService.LoadedUnconfiguredProjects;
-                foreach (var project in projects)
+                foreach (UnconfiguredProject project in projects)
                 {
                     // Track the most severe compatibility level
                     CompatibilityLevel compatLevel = await GetProjectCompatibilityAsync(project, compatDataToUse).ConfigureAwait(false);
@@ -228,7 +228,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
                     if (!suppressPrompt)
                     {
-                        var msg = string.Format(compatData.OpenSupportedMessage, compatData.SupportedVersion.Major, compatData.SupportedVersion.Minor);
+                        string msg = string.Format(compatData.OpenSupportedMessage, compatData.SupportedVersion.Major, compatData.SupportedVersion.Minor);
                         suppressPrompt = _dialogServices.Value.DontShowAgainMessageBox(caption, msg, VSResources.DontShowAgain, false, VSResources.LearnMore, SupportedLearnMoreFwlink);
                         if (suppressPrompt && settingsManager != null)
                         {
@@ -253,7 +253,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             }
         }
 
-        private async Task<CompatibilityLevel> GetProjectCompatibilityAsync(UnconfiguredProject project, VersionCompatibilityData compatData)
+        private static async Task<CompatibilityLevel> GetProjectCompatibilityAsync(UnconfiguredProject project, VersionCompatibilityData compatData)
         {
             if (project.Capabilities.AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp))
             {
@@ -272,7 +272,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                         IImmutableSet<IUnresolvedPackageReference> pkgReferences = await project.Services.ActiveConfiguredProjectProvider.ActiveConfiguredProject.Services.PackageReferences.GetUnresolvedReferencesAsync().ConfigureAwait(false);
 
                         // Look through the package references
-                        foreach (var pkgRef in pkgReferences)
+                        foreach (IUnresolvedPackageReference pkgRef in pkgReferences)
                         {
                             if (string.Equals(pkgRef.EvaluatedInclude, "Microsoft.AspNetCore.All", StringComparison.OrdinalIgnoreCase) ||
                                 string.Equals(pkgRef.EvaluatedInclude, "Microsoft.AspNetCore", StringComparison.OrdinalIgnoreCase))
@@ -304,7 +304,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// <summary>
         /// Compares the passed in version to the compatibility data to determine the compat level
         /// </summary>
-        private CompatibilityLevel GetCompatibilityLevelFromVersion(Version version, VersionCompatibilityData compatData)
+        private static CompatibilityLevel GetCompatibilityLevelFromVersion(Version version, VersionCompatibilityData compatData)
         {
             // Omly compare major, minor. The presence of build with change the comparison. ie: 2.0 != 2.0.0
             if (version.Build != -1)

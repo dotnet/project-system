@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Generic;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
@@ -35,10 +36,10 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 return projectConfiguration1.Equals(projectConfiguration2);
             }
 
-            foreach (var dimensionKvp in projectConfiguration1.Dimensions)
+            foreach (KeyValuePair<string, string> dimensionKvp in projectConfiguration1.Dimensions)
             {
-                var dimensionName = dimensionKvp.Key;
-                var dimensionValue = dimensionKvp.Value;
+                string dimensionName = dimensionKvp.Key;
+                string dimensionValue = dimensionKvp.Value;
 
                 // Ignore the TargetFramework.
                 if (StringComparers.ConfigurationDimensionNames.Equals(dimensionName, ConfigurationGeneral.TargetFrameworkProperty))

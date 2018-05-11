@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.ComponentModel
 Imports Microsoft.VisualStudio.Editors.PropertyPages
@@ -81,14 +81,14 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         Private _generateDefaultValueInCode As Boolean = True
 
 #Region "Cached property descriptors with this instance as the owner"
-        Private _generateDefaultValueInCodePropertyDescriptor As New GenerateDefaultValueInCodePropertyDescriptor(Me)
-        Private _namePropertyDescriptor As New NamePropertyDescriptor(Me)
-        Private _descriptionPropertyDescriptor As New DescriptionPropertyDescriptor(Me)
-        Private _providerPropertyDescriptor As New ProviderPropertyDescriptor(Me)
-        Private _roamingPropertyDescriptor As New RoamingPropertyDescriptor(Me)
-        Private _scopePropertyDescriptor As New ScopePropertyDescriptor(Me)
-        Private _serializedValuePropertyDescriptor As New SerializedValuePropertyDescriptor(Me)
-        Private _settingTypeNamePropertyDescriptor As New SettingTypeNamePropertyDescriptor(Me)
+        Private ReadOnly _generateDefaultValueInCodePropertyDescriptor As New GenerateDefaultValueInCodePropertyDescriptor(Me)
+        Private ReadOnly _namePropertyDescriptor As New NamePropertyDescriptor(Me)
+        Private ReadOnly _descriptionPropertyDescriptor As New DescriptionPropertyDescriptor(Me)
+        Private ReadOnly _providerPropertyDescriptor As New ProviderPropertyDescriptor(Me)
+        Private ReadOnly _roamingPropertyDescriptor As New RoamingPropertyDescriptor(Me)
+        Private ReadOnly _scopePropertyDescriptor As New ScopePropertyDescriptor(Me)
+        Private ReadOnly _serializedValuePropertyDescriptor As New SerializedValuePropertyDescriptor(Me)
+        Private ReadOnly _settingTypeNamePropertyDescriptor As New SettingTypeNamePropertyDescriptor(Me)
 #End Region
 
         Public Sub New()
@@ -175,7 +175,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         Private MustInherit Class DesignTimeSettingInstanceCustomPropertyDescriptorBase
             Inherits PropertyDescriptor
 
-            Private _owner As DesignTimeSettingInstance
+            Private ReadOnly _owner As DesignTimeSettingInstance
 
             Public Sub New(owner As DesignTimeSettingInstance, name As String)
                 MyBase.New(name, Array.Empty(Of Attribute))
@@ -600,7 +600,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
             Public Overrides ReadOnly Property PropertyType() As Type
                 Get
-                    Return GetType(System.String)
+                    Return GetType(String)
                 End Get
             End Property
 
@@ -1110,38 +1110,38 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
 #Region "ISerializable implementation"
 
-        Private Const s_SERIALIZATION_DESCRIPTION As String = "Description"
-        Private Const s_SERIALIZATION_GENERATE_DEFAULT_VALUE_IN_CODE As String = "GenerateDefaultValueInCode"
-        Private Const s_SERIALIZATION_IS_ROAMING As String = "Roaming"
-        Private Const s_SERIALIZATION_NAME As String = "Name"
-        Private Const s_SERIALIZATION_PROVIDER As String = "Provider"
-        Private Const s_SERIALIZATION_TYPE As String = "SerializedType"
-        Private Const s_SERIALIZATION_VALUE As String = "SerializedValue"
-        Private Const s_SERIALIZATION_SCOPE As String = "Scope"
+        Private Const SERIALIZATION_DESCRIPTION As String = "Description"
+        Private Const SERIALIZATION_GENERATE_DEFAULT_VALUE_IN_CODE As String = "GenerateDefaultValueInCode"
+        Private Const SERIALIZATION_IS_ROAMING As String = "Roaming"
+        Private Const SERIALIZATION_NAME As String = "Name"
+        Private Const SERIALIZATION_PROVIDER As String = "Provider"
+        Private Const SERIALIZATION_TYPE As String = "SerializedType"
+        Private Const SERIALIZATION_VALUE As String = "SerializedValue"
+        Private Const SERIALIZATION_SCOPE As String = "Scope"
 
         'See .NET Framework Developer's Guide, "Custom Serialization" for more information
         Protected Sub New(Info As System.Runtime.Serialization.SerializationInfo, Context As System.Runtime.Serialization.StreamingContext)
-            _description = Info.GetString(s_SERIALIZATION_DESCRIPTION)
-            _generateDefaultValueInCode = Info.GetBoolean(s_SERIALIZATION_GENERATE_DEFAULT_VALUE_IN_CODE)
-            _name = Info.GetString(s_SERIALIZATION_NAME)
-            _roaming = Info.GetBoolean(s_SERIALIZATION_IS_ROAMING)
-            _provider = Info.GetString(s_SERIALIZATION_PROVIDER)
-            _settingTypeName = Info.GetString(s_SERIALIZATION_TYPE)
-            _serializedValue = Info.GetString(s_SERIALIZATION_VALUE)
-            _settingScope = CType(Info.GetInt32(s_SERIALIZATION_SCOPE), SettingScope)
+            _description = Info.GetString(SERIALIZATION_DESCRIPTION)
+            _generateDefaultValueInCode = Info.GetBoolean(SERIALIZATION_GENERATE_DEFAULT_VALUE_IN_CODE)
+            _name = Info.GetString(SERIALIZATION_NAME)
+            _roaming = Info.GetBoolean(SERIALIZATION_IS_ROAMING)
+            _provider = Info.GetString(SERIALIZATION_PROVIDER)
+            _settingTypeName = Info.GetString(SERIALIZATION_TYPE)
+            _serializedValue = Info.GetString(SERIALIZATION_VALUE)
+            _settingScope = CType(Info.GetInt32(SERIALIZATION_SCOPE), SettingScope)
         End Sub
 
 
-        <Security.Permissions.SecurityPermission(Security.Permissions.SecurityAction.Demand, SerializationFormatter:=True)> _
+        <Security.Permissions.SecurityPermission(Security.Permissions.SecurityAction.Demand, SerializationFormatter:=True)>
         Private Sub GetObjectData(Info As System.Runtime.Serialization.SerializationInfo, Context As System.Runtime.Serialization.StreamingContext) Implements System.Runtime.Serialization.ISerializable.GetObjectData
-            Info.AddValue(s_SERIALIZATION_DESCRIPTION, _description)
-            Info.AddValue(s_SERIALIZATION_GENERATE_DEFAULT_VALUE_IN_CODE, _generateDefaultValueInCode)
-            Info.AddValue(s_SERIALIZATION_NAME, _name)
-            Info.AddValue(s_SERIALIZATION_IS_ROAMING, _roaming)
-            Info.AddValue(s_SERIALIZATION_PROVIDER, _provider)
-            Info.AddValue(s_SERIALIZATION_TYPE, _settingTypeName)
-            Info.AddValue(s_SERIALIZATION_VALUE, _serializedValue)
-            Info.AddValue(s_SERIALIZATION_SCOPE, CType(_settingScope, Integer))
+            Info.AddValue(SERIALIZATION_DESCRIPTION, _description)
+            Info.AddValue(SERIALIZATION_GENERATE_DEFAULT_VALUE_IN_CODE, _generateDefaultValueInCode)
+            Info.AddValue(SERIALIZATION_NAME, _name)
+            Info.AddValue(SERIALIZATION_IS_ROAMING, _roaming)
+            Info.AddValue(SERIALIZATION_PROVIDER, _provider)
+            Info.AddValue(SERIALIZATION_TYPE, _settingTypeName)
+            Info.AddValue(SERIALIZATION_VALUE, _serializedValue)
+            Info.AddValue(SERIALIZATION_SCOPE, CType(_settingScope, Integer))
         End Sub
 
 #End Region

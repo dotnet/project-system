@@ -24,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 
         public Task<IReadOnlyCollection<IPageMetadata>> GetPagesAsync()
         {
-            var builder = ImmutableArray.CreateBuilder<IPageMetadata>();
+            ImmutableArray<IPageMetadata>.Builder builder = ImmutableArray.CreateBuilder<IPageMetadata>();
             builder.Add(FSharpProjectDesignerPage.Application);
             builder.Add(FSharpProjectDesignerPage.Build);
             builder.Add(FSharpProjectDesignerPage.BuildEvents);

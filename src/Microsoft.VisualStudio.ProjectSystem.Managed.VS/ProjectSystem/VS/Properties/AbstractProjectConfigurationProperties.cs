@@ -28,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             {
                 return _threadingService.ExecuteSynchronously(async () =>
                 {
-                    var browseObjectProperties = await _projectProperties.GetConfiguredBrowseObjectPropertiesAsync().ConfigureAwait(true);
+                    ConfiguredBrowseObject browseObjectProperties = await _projectProperties.GetConfiguredBrowseObjectPropertiesAsync().ConfigureAwait(true);
                     return await browseObjectProperties.LangVersion.GetEvaluatedValueAtEndAsync().ConfigureAwait(true);
                 });
             }
@@ -37,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             {
                 _threadingService.ExecuteSynchronously(async () =>
                 {
-                    var browseObjectProperties = await _projectProperties.GetConfiguredBrowseObjectPropertiesAsync().ConfigureAwait(true);
+                    ConfiguredBrowseObject browseObjectProperties = await _projectProperties.GetConfiguredBrowseObjectPropertiesAsync().ConfigureAwait(true);
                     await browseObjectProperties.LangVersion.SetValueAsync(value).ConfigureAwait(true);
                 });
             }
@@ -49,7 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             {
                 return _threadingService.ExecuteSynchronously(async () =>
                 {
-                    var browseObjectProperties = await _projectProperties.GetConfiguredBrowseObjectPropertiesAsync().ConfigureAwait(true);
+                    ConfiguredBrowseObject browseObjectProperties = await _projectProperties.GetConfiguredBrowseObjectPropertiesAsync().ConfigureAwait(true);
                     return await browseObjectProperties.CodeAnalysisRuleSet.GetEvaluatedValueAtEndAsync().ConfigureAwait(true);
                 });
             }
@@ -58,7 +58,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             {
                 _threadingService.ExecuteSynchronously(async () =>
                 {
-                    var browseObjectProperties = await _projectProperties.GetConfiguredBrowseObjectPropertiesAsync().ConfigureAwait(true);
+                    ConfiguredBrowseObject browseObjectProperties = await _projectProperties.GetConfiguredBrowseObjectPropertiesAsync().ConfigureAwait(true);
                     await browseObjectProperties.CodeAnalysisRuleSet.SetValueAsync(value).ConfigureAwait(true);
                 });
             }
@@ -70,7 +70,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             {
                 return _threadingService.ExecuteSynchronously(async () =>
                 {
-                    var browseObjectProperties = await _projectProperties.GetConfiguredBrowseObjectPropertiesAsync().ConfigureAwait(true);
+                    ConfiguredBrowseObject browseObjectProperties = await _projectProperties.GetConfiguredBrowseObjectPropertiesAsync().ConfigureAwait(true);
                     return await browseObjectProperties.OutputPath.GetEvaluatedValueAtEndAsync().ConfigureAwait(true);
                 });
             }
@@ -79,7 +79,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             {
                 _threadingService.ExecuteSynchronously(async () =>
                 {
-                    var browseObjectProperties = await _projectProperties.GetConfiguredBrowseObjectPropertiesAsync().ConfigureAwait(true);
+                    ConfiguredBrowseObject browseObjectProperties = await _projectProperties.GetConfiguredBrowseObjectPropertiesAsync().ConfigureAwait(true);
                     await browseObjectProperties.OutputPath.SetValueAsync(value).ConfigureAwait(true);
                 });
             }
@@ -137,6 +137,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         public string CodeAnalysisModuleSuppressionsFile { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
         public bool UseVSHostingProcess { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
         public sgenGenerationOption GenerateSerializationAssemblies { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+#pragma warning disable CA1822 // Mark members as static
         public bool CodeAnalysisIgnoreGeneratedCode { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
         public bool CodeAnalysisOverrideRuleVisibilities { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
         public string CodeAnalysisDictionaries { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
@@ -147,5 +148,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         public bool CodeAnalysisIgnoreBuiltInRules { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
         public bool CodeAnalysisFailOnMissingRules { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
         public bool Prefer32Bit { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+#pragma warning restore CA1822 // Mark members as static
     }
 }

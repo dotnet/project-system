@@ -11,7 +11,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ' Type -> Serialized value -> Deserialized value
         Private _cachedSettingValues As New Dictionary(Of Type, Dictionary(Of String, Object))
 
-        Private _culture As Globalization.CultureInfo
+        Private ReadOnly _culture As Globalization.CultureInfo
 
         Public Sub New(culture As Globalization.CultureInfo)
             _culture = culture

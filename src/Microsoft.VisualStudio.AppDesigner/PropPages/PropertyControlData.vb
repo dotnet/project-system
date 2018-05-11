@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.ComponentModel.Design
 Imports System.Windows.Forms
@@ -31,12 +31,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         'For properties which do not correspond to project properties (user-persisted), any unique integer can be used, but it is
         '  best to keep them out of the range of properties implemented by the project system (the VB, C# and J# projects use integers
         '  above 10000).
-        Private _dispId As Integer 'A numeric id for this property
+        Private ReadOnly _dispId As Integer 'A numeric id for this property
 
         'The name of the property in the project system's extensibility.  The name must match the project's property because properties 
         '  are looked up by name (not DISPID).  This allows project flavors to hide one property and add another with the same name but
         '  a different DISPID in order to "override" a property.
-        Private _propertyName As String
+        Private ReadOnly _propertyName As String
 
         'Localized name for UI (used for Undo/Redo units, for example)
         Public DisplayPropertyName As String
@@ -62,15 +62,16 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Public AssociatedControls As Control()
 
         Protected Flags As ControlDataFlags
+#Disable Warning IDE1006 ' Naming Styles (Compat)
         Protected m_Initializing As Boolean
         Protected m_FormControl As Control
         Protected m_PropPage As PropPageUserControlBase
-
         Protected m_isCommitingChange As Boolean
+#Enable Warning IDE1006 ' Naming Styles
 
         'Used by PropertyDescriptorSetValue to know whether or not the 
         '  OnValueChanged event fired on the property descriptor
-        Private _onValueChangedWasFired As Boolean
+        Private ReadOnly _onValueChangedWasFired As Boolean
 
         'True if the controls associated with this property can be enabled/disabled
         '  (will be false e.g. if the property is hidden or read-only)
@@ -524,7 +525,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <value></value>
         ''' <remarks></remarks>
-        <DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)> _
+        <DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)>
         Public Shared ReadOnly Property MissingProperty() As Object
             Get
                 'Note: what is referred to here as "missing" is simply that a flavor's implementation
@@ -550,7 +551,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <value></value>
         ''' <remarks></remarks>
-        <DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)> _
+        <DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)>
         Public Shared ReadOnly Property Indeterminate() As Object
             Get
                 Return s_indeterminateValue
@@ -646,7 +647,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <remarks></remarks>
         Public ReadOnly Property AllInitialValues() As Object()
             Get
-                Debug.Assert(_allInitialValues Is Nothing OrElse _allInitialValues.Length = RawPropertiesObjects.Length AndAlso _allInitialValues.Length = ExtendedPropertiesObjects.Length, _
+                Debug.Assert(_allInitialValues Is Nothing OrElse _allInitialValues.Length = RawPropertiesObjects.Length AndAlso _allInitialValues.Length = ExtendedPropertiesObjects.Length,
                     "AllInitialValues should always be the same length as the array returned by RawPropertiesObjects and ExtendedPropertiesObjects")
                 Return _allInitialValues
             End Get
@@ -708,7 +709,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
             Debug.Assert(AllInitialValues IsNot Nothing OrElse InitialValue IsNot Indeterminate)
             Debug.Assert(AllInitialValues Is Nothing _
-                OrElse (AllInitialValues.Length = RawPropertiesObjects.Length AndAlso AllInitialValues.Length = ExtendedPropertiesObjects.Length), _
+                OrElse (AllInitialValues.Length = RawPropertiesObjects.Length AndAlso AllInitialValues.Length = ExtendedPropertiesObjects.Length),
                 "AllInitialValues should always be the same length as the array returned by RawPropertiesObjects and ExtendedPropertiesObjects")
 
             _initialValue = InitialValue

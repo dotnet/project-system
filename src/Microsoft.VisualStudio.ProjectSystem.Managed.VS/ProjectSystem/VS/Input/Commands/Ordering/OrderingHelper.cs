@@ -29,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
             {
                 // We do a sanity re-evaluation to absolutely ensure changes were met.
                 project.ReevaluateIfNecessary();
-                var addedElements = GetAddedItemElements(previousIncludes, project);
+                ImmutableArray<ProjectItemElement> addedElements = GetAddedItemElements(previousIncludes, project);
 
                 switch (action)
                 {
@@ -204,13 +204,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
 
         private static ImmutableArray<ProjectItemElement> GetItemElements(Project project, ImmutableArray<string> includes)
         {
-            var elements = ImmutableArray.CreateBuilder<ProjectItemElement>();
+            ImmutableArray<ProjectItemElement>.Builder elements = ImmutableArray.CreateBuilder<ProjectItemElement>();
 
-            foreach (var include in includes)
+            foreach (string include in includes)
             {
                 // GetItemsByEvaluatedInclude is efficient and uses a MultiDictionary underneath.
                 //     It uses this: new MultiDictionary<string, ProjectItem>(StringComparer.OrdinalIgnoreCase);
-                var item = project.GetItemsByEvaluatedInclude(include).FirstOrDefault();
+                ProjectItem item = project.GetItemsByEvaluatedInclude(include).FirstOrDefault();
 
                 // We only care about adding one item associated with the evaluated include.
                 if (item?.Xml is ProjectItemElement element && !item.IsImported)
@@ -238,7 +238,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
             // The queue is how we process each project tree.
             while (treeQueue.Count > 0)
             {
-                var tree = treeQueue.Dequeue();
+                IProjectTree tree = treeQueue.Dequeue();
 
                 if (tree is IProjectItemTree2 tree2 && IsValidDisplayOrder(tree2.DisplayOrder))
                 {
@@ -253,7 +253,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
 
                 if (tree.IsFolder || tree.Flags.HasFlag(ProjectTreeFlags.Common.ProjectRoot))
                 {
-                    foreach (var childTree in tree.Children)
+                    foreach (IProjectTree childTree in tree.Children)
                     {
                         treeQueue.Enqueue(childTree);
                     }
@@ -288,18 +288,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         /// <returns>a sibling</returns>
         private static IProjectTree2 GetSiblingByDisplayOrder(IProjectTree projectTree, Func<int, ImmutableArray<IProjectTree>, IProjectTree2> returnSibling)
         {
-            var parent = projectTree.Parent;
-            var displayOrder = GetDisplayOrder(projectTree);
+            IProjectTree parent = projectTree.Parent;
+            int displayOrder = GetDisplayOrder(projectTree);
             if (!IsValidDisplayOrder(displayOrder) || parent == null)
             {
                 return null;
             }
 
-            var orderedChildren = GetChildren(parent);
+            ImmutableArray<IProjectTree> orderedChildren = GetChildren(parent);
 
-            for (var i = 0; i < orderedChildren.Length; ++i)
+            for (int i = 0; i < orderedChildren.Length; ++i)
             {
-                var sibling = orderedChildren[i];
+                IProjectTree sibling = orderedChildren[i];
                 if (GetDisplayOrder(sibling) == displayOrder)
                 {
                     return returnSibling(i, orderedChildren);
@@ -385,21 +385,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         {
             Requires.NotNull(referenceElement, nameof(referenceElement));
 
-            var parent = referenceElement.Parent;
+            ProjectElementContainer parent = referenceElement.Parent;
             if (parent == null || !elements.Any())
             {
                 return false;
             }
 
             // Sanity check
-            var didAllElementsMove = true;
+            bool didAllElementsMove = true;
 
             switch (moveAction)
             {
                 case MoveAction.Above:
-                    foreach (var element in elements)
+                    foreach (ProjectItemElement element in elements)
                     {
-                        var elementParent = element.Parent;
+                        ProjectElementContainer elementParent = element.Parent;
                         if (elementParent != null)
                         {
                             elementParent.RemoveChild(element);
@@ -415,11 +415,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
                 case MoveAction.Below:
                     // Iterate in reverse order when we are wanting to move elements down.
                     // If we didn't do this, the end result would be the moved elements are reversed.
-                    for (var i = elements.Length - 1; i >= 0; --i)
+                    for (int i = elements.Length - 1; i >= 0; --i)
                     {
-                        var element = elements[i];
+                        ProjectItemElement element = elements[i];
 
-                        var elementParent = element.Parent;
+                        ProjectElementContainer elementParent = element.Parent;
                         if (elementParent != null)
                         {
                             elementParent.RemoveChild(element);
@@ -455,11 +455,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
             if (referenceProjectTree != null)
             {
                 // The reference element is the element for which moved items will be above or below it.
-                var referenceElement = TryGetReferenceElement(project, referenceProjectTree, ImmutableArray<string>.Empty, moveAction);
+                ProjectItemElement referenceElement = TryGetReferenceElement(project, referenceProjectTree, ImmutableArray<string>.Empty, moveAction);
 
                 if (referenceElement != null)
                 {
-                    var elements = GetItemElements(project, projectTree, ImmutableArray<string>.Empty);
+                    ImmutableArray<ProjectItemElement> elements = GetItemElements(project, projectTree, ImmutableArray<string>.Empty);
                     return TryMoveElements(elements, referenceElement, moveAction);
                 }
             }
@@ -474,7 +474,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         private static bool TryMove(Project project, IProjectTree projectTree, MoveAction moveAction)
         {
             // Determine what sibling we want to look at based on if we are moving up or down.
-            var sibling = GetSiblingByMoveAction(projectTree, moveAction);
+            IProjectTree sibling = GetSiblingByMoveAction(projectTree, moveAction);
             return TryMove(project, projectTree, sibling, moveAction);
         }
 

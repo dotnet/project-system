@@ -26,11 +26,11 @@ namespace Microsoft.VisualStudio.Threading.Tasks
                 int num = i;
                 tasks.Add(sequencer.ExecuteTask(async () =>
                 {
-                    Func<Task> func = async () =>
+                    async Task func()
                     {
                         await Task.Delay(1).ConfigureAwait(false);
                         sequences.Add(num);
-                    };
+                    }
                     await func().ConfigureAwait(false);
                 }));
             }
@@ -55,14 +55,14 @@ namespace Microsoft.VisualStudio.Threading.Tasks
                 int num = i;
                 tasks.Add(sequencer.ExecuteTask(async () =>
                 {
-                    Func<Task> func = async () =>
+                    async Task func()
                     {
                         await sequencer.ExecuteTask(async () =>
                         {
                             await Task.Delay(1).ConfigureAwait(false);
                             sequences.Add(num);
                         });
-                    };
+                    }
                     await func().ConfigureAwait(false);
                 }));
             }
@@ -94,10 +94,10 @@ namespace Microsoft.VisualStudio.Threading.Tasks
                 int num = i;
                 tasks.Add(sequencer.ExecuteTask(async () =>
                 {
-                    Func<Task> func = async () =>
+                    async Task func()
                     {
                         await Task.Delay(100).ConfigureAwait(false);
-                    };
+                    }
                     await func().ConfigureAwait(false);
                 }));
             }

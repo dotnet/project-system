@@ -55,14 +55,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
         {
             snapshot = null;
 
-            var projectPath = inputGraphNode.Id.GetValue(CodeGraphNodeIdName.Assembly);
+            string projectPath = inputGraphNode.Id.GetValue(CodeGraphNodeIdName.Assembly);
             if (string.IsNullOrEmpty(projectPath))
             {
                 return null;
             }
 
-            var projectFolder = Path.GetDirectoryName(projectPath);
-            var id = inputGraphNode.GetValue<string>(DependenciesGraphSchema.DependencyIdProperty);
+            string projectFolder = Path.GetDirectoryName(projectPath);
+            string id = inputGraphNode.GetValue<string>(DependenciesGraphSchema.DependencyIdProperty);
             if (id == null)
             {
                 // this is top level node and it contains full path 
@@ -106,7 +106,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
 
         protected IDependenciesSnapshot GetSnapshot(string projectPath)
         {
-            var snapshotProvider = AggregateSnapshotProvider.GetSnapshotProvider(projectPath);
+            IDependenciesSnapshotProvider snapshotProvider = AggregateSnapshotProvider.GetSnapshotProvider(projectPath);
             return snapshotProvider?.CurrentSnapshot;
         }
     }

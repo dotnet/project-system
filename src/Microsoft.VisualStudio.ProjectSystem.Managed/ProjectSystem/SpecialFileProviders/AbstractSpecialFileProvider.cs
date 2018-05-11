@@ -148,7 +148,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
         /// <summary>
         /// Find a file with the given filename within the given node.
         /// </summary>
-        private IProjectTree FindFileWithinNode(IProjectTree parentNode, string fileName)
+        private static IProjectTree FindFileWithinNode(IProjectTree parentNode, string fileName)
         {
             parentNode.TryFindImmediateChild(fileName, out IProjectTree fileNode);
 
@@ -206,8 +206,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
         {
             IProjectTree rootNode = await GetParentFolderAsync(createIfNotExists: true).ConfigureAwait(false);
 
-            var parentPath = _projectTree.TreeProvider.GetRootedAddNewItemDirectory(rootNode);
-            var specialFilePath = Path.Combine(parentPath, specialFileName);
+            string parentPath = _projectTree.TreeProvider.GetRootedAddNewItemDirectory(rootNode);
+            string specialFilePath = Path.Combine(parentPath, specialFileName);
 
             // If we can create the file from the template do it, otherwise just create an empty file.
             if (_templateFileCreationService != null)

@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Option Explicit On
 Option Strict On
@@ -24,7 +24,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private _encoding As Encoding
 
         'Key for serialization
-        Private Const s_KEY_NAME As String = "Name"
+        Private Const KEY_NAME As String = "Name"
 
 
         ''' <summary>
@@ -44,7 +44,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="context"></param>
         ''' <remarks></remarks>
         Private Sub New(info As SerializationInfo, context As StreamingContext)
-            Dim EncodingName As String = info.GetString(s_KEY_NAME)
+            Dim EncodingName As String = info.GetString(KEY_NAME)
             If EncodingName <> "" Then
                 _encoding = Encoding.GetEncoding(EncodingName)
             End If
@@ -89,9 +89,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <remarks></remarks>
         Private Sub GetObjectData(info As SerializationInfo, context As StreamingContext) Implements ISerializable.GetObjectData
             If _encoding IsNot Nothing Then
-                info.AddValue(s_KEY_NAME, _encoding.WebName)
+                info.AddValue(KEY_NAME, _encoding.WebName)
             Else
-                info.AddValue(s_KEY_NAME, "")
+                info.AddValue(KEY_NAME, "")
             End If
         End Sub
     End Class

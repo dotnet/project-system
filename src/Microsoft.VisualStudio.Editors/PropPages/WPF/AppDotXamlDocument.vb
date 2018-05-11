@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.IO
 Imports System.Runtime.InteropServices
@@ -172,11 +172,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' <remarks></remarks>
         <DebuggerDisplay("{ActualDefinitionText}, Value={UnescapedValue}")> _
         Friend MustInherit Class XamlProperty
-            Protected m_vsTextLines As IVsTextLines
-            Private _definitionIncludesQuotes As Boolean
-            Private _unescapedValue As String 'Unescaped, translated value of the property from the XmlReader
-            Private _startLocation As Location
-            Private _endLocationPlusOne As Location 'Points to the index *after* the last character in the range, just like IVsTextLines expects
+            Protected VsTextLines As IVsTextLines
+            Private ReadOnly _definitionIncludesQuotes As Boolean
+            Private ReadOnly _unescapedValue As String 'Unescaped, translated value of the property from the XmlReader
+            Private ReadOnly _startLocation As Location
+            Private ReadOnly _endLocationPlusOne As Location 'Points to the index *after* the last character in the range, just like IVsTextLines expects
 
 
             Public Sub New(vsTextLines As IVsTextLines, startLocation As Location, endLocation As Location, unescapedValue As String, definitionIncludesQuotes As Boolean)
@@ -196,7 +196,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
                 _startLocation = startLocation
                 _endLocationPlusOne = endLocation
                 _unescapedValue = unescapedValue
-                m_vsTextLines = vsTextLines
+                Me.VsTextLines = vsTextLines
                 _definitionIncludesQuotes = definitionIncludesQuotes
             End Sub
 
@@ -211,7 +211,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
             Public Overridable ReadOnly Property ActualDefinitionText() As String
                 Get
                     Dim buffer As String = Nothing
-                    ErrorHandler.ThrowOnFailure(m_vsTextLines.GetLineText(DefinitionStart.LineIndex, DefinitionStart.CharIndex, DefinitionEndPlusOne.LineIndex, DefinitionEndPlusOne.CharIndex, buffer))
+                    ErrorHandler.ThrowOnFailure(VsTextLines.GetLineText(DefinitionStart.LineIndex, DefinitionStart.CharIndex, DefinitionEndPlusOne.LineIndex, DefinitionEndPlusOne.CharIndex, buffer))
                     Return buffer
                 End Get
             End Property
@@ -299,7 +299,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
             '  e.g. <Application.StartupUri/>
 
 
-            Private _fullyQualifiedPropertyName As String
+            Private ReadOnly _fullyQualifiedPropertyName As String
 
             ''' <summary>
             ''' Constructor.
@@ -351,9 +351,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
 
 #End Region
 
-        Private Const s_ELEMENT_APPLICATION As String = "Application"
-        Private Const s_PROPERTY_STARTUPURI As String = "StartupUri"
-        Private Const s_PROPERTY_SHUTDOWNMODE As String = "ShutdownMode"
+        Private Const ELEMENT_APPLICATION As String = "Application"
+        Private Const PROPERTY_STARTUPURI As String = "StartupUri"
+        Private Const PROPERTY_SHUTDOWNMODE As String = "ShutdownMode"
 
         'A pointer to the text buffer as IVsTextLines
         Private _vsTextLines As IVsTextLines
@@ -471,8 +471,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
             End If
 
             Dim sb As New StringBuilder()
-            Dim settings As New XmlWriterSettings
-            settings.ConformanceLevel = ConformanceLevel.Fragment
+            Dim settings As New XmlWriterSettings With {
+                .ConformanceLevel = ConformanceLevel.Fragment
+            }
             Dim xmlWriter As XmlWriter = XmlWriter.Create(sb, settings)
             xmlWriter.WriteString(value)
             xmlWriter.Close()
@@ -498,8 +499,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
             'Make as content of an element
             Dim xml As String = "<a>" & value & "</a>"
             Dim stringReader As New StringReader(xml)
-            Dim settings As New XmlReaderSettings
-            settings.ConformanceLevel = ConformanceLevel.Fragment
+            Dim settings As New XmlReaderSettings With {
+                .ConformanceLevel = ConformanceLevel.Fragment
+            }
             Dim xmlReader As XmlReader = XmlReader.Create(stringReader, settings)
             xmlReader.ReadToFollowing("a")
 
@@ -517,12 +519,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' <remarks></remarks>
         Public Shared Sub MoveToApplicationRootElement(reader As XmlTextReader)
             'XAML files must have only one root element.  For app.xaml, it must be "Application"
-            If reader.MoveToContent() = XmlNodeType.Element And reader.Name = s_ELEMENT_APPLICATION Then
+            If reader.MoveToContent() = XmlNodeType.Element And reader.Name = ELEMENT_APPLICATION Then
                 'Okay
                 Return
             End If
 
-            Throw New XamlReadWriteException(My.Resources.Designer.GetString(My.Resources.Designer.PPG_WPFApp_Xaml_CouldntFindRootElement, s_ELEMENT_APPLICATION))
+            Throw New XamlReadWriteException(My.Resources.Designer.GetString(My.Resources.Designer.PPG_WPFApp_Xaml_CouldntFindRootElement, ELEMENT_APPLICATION))
         End Sub
 
 #Region "CreateXmlTextReader"
@@ -536,10 +538,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         Private Function CreateXmlTextReader() As XmlTextReader
             Debug.Assert(_debugBufferLockCount > 0, "Should be using BufferLock!")
             Dim stringReader As New StringReader(GetAllText())
-            Dim xmlTextReader As xmlTextReader = New xmlTextReader(stringReader)
-
             ' Required by Fxcop rule CA3054 - DoNotAllowDTDXmlTextReader
-            xmlTextReader.DtdProcessing = DtdProcessing.Prohibit
+            Dim xmlTextReader As XmlTextReader = New XmlTextReader(stringReader) With {
+                .DtdProcessing = DtdProcessing.Prohibit
+            }
             Return xmlTextReader
         End Function
 
@@ -579,8 +581,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
             Const DoubleQuote As Char = """"c
             While index < line.Length
                 'Find the next character of interest
-                index = line.IndexOfAny( _
-                    New Char() {SingleQuote, DoubleQuote, "/"c, ">"c}, _
+                index = line.IndexOfAny(
+                    New Char() {SingleQuote, DoubleQuote, "/"c, ">"c},
                     index)
                 If index < 0 Then
                     Return -1
@@ -590,8 +592,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
                 Select Case characterOfInterest
                     Case SingleQuote, DoubleQuote
                         'We have a string.  Skip past it.
-                        Dim closingQuote As Integer = line.IndexOf( _
-                            characterOfInterest, _
+                        Dim closingQuote As Integer = line.IndexOf(
+                            characterOfInterest,
                             index + 1)
                         If closingQuote < 0 Then
                             'String not terminated.
@@ -671,9 +673,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' <remarks></remarks>
         Public Function FindApplicationPropertyInXaml(reader As XmlTextReader, propertyName As String) As XamlProperty
             MoveToApplicationRootElement(reader)
-            Dim prop As XamlProperty = FindPropertyAsAttributeInCurrentElement(reader, s_ELEMENT_APPLICATION, propertyName)
+            Dim prop As XamlProperty = FindPropertyAsAttributeInCurrentElement(reader, ELEMENT_APPLICATION, propertyName)
             If prop Is Nothing Then
-                prop = FindPropertyAsChildElementInCurrentElement(reader, s_ELEMENT_APPLICATION, propertyName)
+                prop = FindPropertyAsChildElementInCurrentElement(reader, ELEMENT_APPLICATION, propertyName)
             End If
 
             Return prop
@@ -810,8 +812,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
 
                     'The reader is now right after the empty element tag
                     Dim elementTagEndPlusOne As New Location(reader)
-                    Return New XamlPropertyInPropertyElementSyntaxWithEmptyTag( _
-                        _vsTextLines, fullyQualifiedPropertyName, _
+                    Return New XamlPropertyInPropertyElementSyntaxWithEmptyTag(
+                        _vsTextLines, fullyQualifiedPropertyName,
                         elementTagStart, elementTagEndPlusOne)
                 Else
                     Dim valueStart As Location
@@ -957,9 +959,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
 
             Dim bstrNewText As IntPtr = Marshal.StringToBSTR(newText)
             Try
-                ErrorHandler.ThrowOnFailure(_vsTextLines.ReplaceLines( _
-                    sourceStart.LineIndex, sourceStart.CharIndex, _
-                    sourceEnd.LineIndex, sourceEnd.CharIndex, _
+                ErrorHandler.ThrowOnFailure(_vsTextLines.ReplaceLines(
+                    sourceStart.LineIndex, sourceStart.CharIndex,
+                    sourceEnd.LineIndex, sourceEnd.CharIndex,
                     bstrNewText, newText.Length, Nothing))
             Finally
                 Marshal.FreeBSTR(bstrNewText)
@@ -1014,7 +1016,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' <returns></returns>
         ''' <remarks></remarks>
         Public Function GetStartupUri() As String
-            Return GetApplicationPropertyValue(s_PROPERTY_STARTUPURI)
+            Return GetApplicationPropertyValue(PROPERTY_STARTUPURI)
         End Function
 
         ''' <summary>
@@ -1023,7 +1025,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' </summary>
         ''' <remarks></remarks>
         Public Sub SetStartupUri(value As String)
-            SetApplicationPropertyValue(s_PROPERTY_STARTUPURI, value)
+            SetApplicationPropertyValue(PROPERTY_STARTUPURI, value)
         End Sub
 
 #End Region
@@ -1037,7 +1039,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' <returns></returns>
         ''' <remarks></remarks>
         Public Function GetShutdownMode() As String
-            Return GetApplicationPropertyValue(s_PROPERTY_SHUTDOWNMODE)
+            Return GetApplicationPropertyValue(PROPERTY_SHUTDOWNMODE)
         End Function
 
         ''' <summary>
@@ -1046,7 +1048,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' </summary>
         ''' <remarks></remarks>
         Public Sub SetShutdownMode(value As String)
-            SetApplicationPropertyValue(s_PROPERTY_SHUTDOWNMODE, value)
+            SetApplicationPropertyValue(PROPERTY_SHUTDOWNMODE, value)
         End Sub
 
 #End Region
@@ -1059,8 +1061,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' <param name="location"></param>
         ''' <remarks></remarks>
         Private Sub ThrowUnexpectedFormatException(location As Location)
-            Throw New XamlReadWriteException( _
-                My.Resources.Designer.GetString(My.Resources.Designer.PPG_WPFApp_Xaml_UnexpectedFormat_2Args, _
+            Throw New XamlReadWriteException(
+                My.Resources.Designer.GetString(My.Resources.Designer.PPG_WPFApp_Xaml_UnexpectedFormat_2Args,
                     CStr(location.LineIndex + 1), CStr(location.CharIndex + 1)))
         End Sub
 

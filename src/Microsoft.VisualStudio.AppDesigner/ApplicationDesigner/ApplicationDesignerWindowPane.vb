@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.Runtime.InteropServices
 Imports Microsoft.Internal.Performance
@@ -25,11 +25,11 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         'The main view (the ApplicationDesignerView will be a child of this control)
         Private _view As ApplicationDesignerWindowPaneControl
 
-        Private _host As IDesignerHost
+        Private ReadOnly _host As IDesignerHost
         Private _viewHelper As CmdTargetHelper
-        Private _UIShellService As IVsUIShell
-        Private _UIShell2Service As IVsUIShell2
-        Private _UIShell5Service As IVsUIShell5
+        Private _uiShellService As IVsUIShell
+        Private _uiShell2Service As IVsUIShell2
+        Private _uiShell5Service As IVsUIShell5
 
         Private WithEvents _broadcastMessageEventsHelper As Common.ShellUtil.BroadcastMessageEventsHelper
 
@@ -123,7 +123,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
         Private Sub OnBroadcastMessageEventsHelperBroadcastMessage(msg As UInteger, wParam As IntPtr, lParam As IntPtr) Handles _broadcastMessageEventsHelper.BroadcastMessage
             Select Case msg
-                Case win.WM_PALETTECHANGED, win.WM_SYSCOLORCHANGE, win.WM_THEMECHANGED
+                Case Win32Constant.WM_PALETTECHANGED, Win32Constant.WM_SYSCOLORCHANGE, Win32Constant.WM_THEMECHANGED
                     OnThemeChanged()
             End Select
         End Sub
@@ -182,13 +182,15 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                         childView.Dispose()
                     End If
 
-                    childView = New ErrorControl()
-                    childView.Text = My.Resources.Designer.GetString(My.Resources.Designer.APPDES_ErrorLoading_Msg, message)
+                    childView = New ErrorControl With {
+                        .Text = My.Resources.Designer.GetString(My.Resources.Designer.APPDES_ErrorLoading_Msg, message)
+                    }
                 End Try
 
                 If (childView Is Nothing) Then
-                    childView = New ErrorControl()
-                    childView.Text = My.Resources.Designer.GetString(My.Resources.Designer.APPDES_ErrorLoading_Msg, "")
+                    childView = New ErrorControl With {
+                        .Text = My.Resources.Designer.GetString(My.Resources.Designer.APPDES_ErrorLoading_Msg, "")
+                    }
                 End If
 
                 'If we haven't added the viewChild to m_View yet, do so now.
@@ -247,7 +249,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         Public Function ActivateLogicalView(ByRef rguidLogicalView As Guid) As Integer Implements IVsMultiViewDocumentView.ActivateLogicalView
             Common.Switches.TracePDFocus(TraceLevel.Warning, "CodeMarker: perfMSVSEditorsActivateLogicalViewStart")
             Common.Switches.TracePDPerf("CodeMarker: perfMSVSEditorsActivateLogicalViewStart")
-            CodeMarkers.Instance.CodeMarker(RoslynCodeMarkerEvent.perfMSVSEditorsActivateLogicalViewStart)
+            CodeMarkers.Instance.CodeMarker(RoslynCodeMarkerEvent.PerfMSVSEditorsActivateLogicalViewStart)
 
             If AppDesignerView Is Nothing Then
                 PopulateView(rguidLogicalView)
@@ -261,7 +263,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 End If
             End If
 
-            CodeMarkers.Instance.CodeMarker(RoslynCodeMarkerEvent.perfMSVSEditorsActivateLogicalViewEnd)
+            CodeMarkers.Instance.CodeMarker(RoslynCodeMarkerEvent.PerfMSVSEditorsActivateLogicalViewEnd)
             Common.Switches.TracePDFocus(TraceLevel.Warning, "CodeMarker: perfMSVSEditorsActivateLogicalViewEnd")
             Common.Switches.TracePDPerf("CodeMarker: perfMSVSEditorsActivateLogicalViewEnd")
         End Function
@@ -466,15 +468,15 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <remarks></remarks>
         Public ReadOnly Property VsUIShellService() As IVsUIShell
             Get
-                If (_UIShellService Is Nothing) Then
+                If (_uiShellService Is Nothing) Then
                     If Common.VBPackageInstance IsNot Nothing Then
-                        _UIShellService = TryCast(Common.VBPackageInstance.GetService(GetType(IVsUIShell)), IVsUIShell)
+                        _uiShellService = TryCast(Common.VBPackageInstance.GetService(GetType(IVsUIShell)), IVsUIShell)
                     Else
-                        _UIShellService = TryCast(GetService(GetType(IVsUIShell)), IVsUIShell)
+                        _uiShellService = TryCast(GetService(GetType(IVsUIShell)), IVsUIShell)
                     End If
                 End If
 
-                Return _UIShellService
+                Return _uiShellService
             End Get
         End Property
 
@@ -484,14 +486,14 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <remarks></remarks>
         Public ReadOnly Property VsUIShell2Service() As IVsUIShell2
             Get
-                If (_UIShell2Service Is Nothing) Then
+                If (_uiShell2Service Is Nothing) Then
                     Dim VsUiShell As IVsUIShell = VsUIShellService
                     If VsUiShell IsNot Nothing Then
-                        _UIShell2Service = TryCast(VsUiShell, IVsUIShell2)
+                        _uiShell2Service = TryCast(VsUiShell, IVsUIShell2)
                     End If
                 End If
 
-                Return _UIShell2Service
+                Return _uiShell2Service
             End Get
         End Property
 
@@ -501,14 +503,14 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <remarks></remarks>
         Public ReadOnly Property VsUIShell5Service() As IVsUIShell5
             Get
-                If (_UIShell5Service Is Nothing) Then
+                If (_uiShell5Service Is Nothing) Then
                     Dim VsUiShell As IVsUIShell = VsUIShellService
                     If VsUiShell IsNot Nothing Then
-                        _UIShell5Service = TryCast(VsUiShell, IVsUIShell5)
+                        _uiShell5Service = TryCast(VsUiShell, IVsUIShell5)
                     End If
                 End If
 
-                Return _UIShell5Service
+                Return _uiShell5Service
             End Get
         End Property
 
@@ -579,9 +581,9 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                     ' disposedView.  After we're done calling base.Dispose()
                     ' will take care of our own stuff.
                     '
-                    _UIShellService = Nothing
-                    _UIShell2Service = Nothing
-                    _UIShell5Service = Nothing
+                    _uiShellService = Nothing
+                    _uiShell2Service = Nothing
+                    _uiShell5Service = Nothing
                     _view = Nothing
                     Dim DesSurface As DesignSurface = Surface
                     If (DesSurface IsNot Nothing) Then

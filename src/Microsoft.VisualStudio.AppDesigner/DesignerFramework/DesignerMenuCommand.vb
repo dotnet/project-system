@@ -171,10 +171,10 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         End Sub 'UpdateStatus
 
         Private _rootDesigner As BaseRootDesigner ' Pointer to the RootDesigner allowing refreshing all menu commands.
-        Private _commandEnabledHandler As CheckCommandStatusHandler ' Handler to check if the command should be enabled.
-        Private _commandCheckedHandler As CheckCommandStatusHandler ' Handler to check if the command should be checked.
-        Private _commandVisibleHandler As CheckCommandStatusHandler ' Handler to check if the command should be hidden.
-        Private _alwaysCheckStatus As Boolean ' True to always check the status of the command after every call. False otherwise.
+        Private ReadOnly _commandEnabledHandler As CheckCommandStatusHandler ' Handler to check if the command should be enabled.
+        Private ReadOnly _commandCheckedHandler As CheckCommandStatusHandler ' Handler to check if the command should be checked.
+        Private ReadOnly _commandVisibleHandler As CheckCommandStatusHandler ' Handler to check if the command should be hidden.
+        Private ReadOnly _alwaysCheckStatus As Boolean ' True to always check the status of the command after every call. False otherwise.
         Private _statusValid As Boolean ' Whether the status of the command is still valid.
     End Class 'DesignerMenuCommand
 

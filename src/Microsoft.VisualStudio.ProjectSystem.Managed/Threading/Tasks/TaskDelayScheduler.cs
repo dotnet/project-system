@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.Threading.Tasks
     /// </summary>
     internal sealed class TaskDelayScheduler : ITaskDelayScheduler
     {
-        private object _syncObject = new object();
+        private readonly object _syncObject = new object();
         private readonly IProjectThreadingService _threadingService;
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace Microsoft.VisualStudio.Threading.Tasks
                 ClearPendingUpdates(cancel: true);
 
                 PendingUpdateTokenSource = CancellationTokenSource.CreateLinkedTokenSource(OriginalSourceToken);
-                var token = PendingUpdateTokenSource.Token;
+                CancellationToken token = PendingUpdateTokenSource.Token;
 
                 // We want to return a joinable task so wrap the function
                 LatestScheduledTask = _threadingService.JoinableTaskFactory.RunAsync(async () =>
@@ -124,7 +124,7 @@ namespace Microsoft.VisualStudio.Threading.Tasks
                     {
                         PendingUpdateTokenSource.Cancel();
                     }
-                    var cts = PendingUpdateTokenSource;
+                    CancellationTokenSource cts = PendingUpdateTokenSource;
                     PendingUpdateTokenSource = null;
                     cts.Dispose();
                 }

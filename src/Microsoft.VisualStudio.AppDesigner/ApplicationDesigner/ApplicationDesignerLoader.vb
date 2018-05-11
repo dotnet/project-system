@@ -1,14 +1,19 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.ComponentModel.Design
 Imports System.ComponentModel.Design.Serialization
 Imports System.Diagnostics.CodeAnalysis
+
+#If DEBUG Then
 Imports System.Drawing
 Imports System.Text
 Imports System.Windows.Forms
+#End If
+
 Imports Microsoft.VisualStudio.Shell.Design
 Imports Microsoft.VisualStudio.Shell.Design.Serialization
 Imports Microsoft.VisualStudio.Shell.Interop
+
 Imports Common = Microsoft.VisualStudio.Editors.AppDesCommon
 
 Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
@@ -27,7 +32,9 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         '  the Modify property.  We let it manage our DocData as its "primary" (in this case, only)
         '  doc data.  It will automatically track changes and handle check-in/check-out (see the
         '  Modifyi property).
+#Disable Warning IDE1006 ' Naming Styles (Compat)
         Protected m_DocDataService As DesignerDocDataService
+#Enable Warning IDE1006 ' Naming Styles
 
         Private _punkDocData As Object
 

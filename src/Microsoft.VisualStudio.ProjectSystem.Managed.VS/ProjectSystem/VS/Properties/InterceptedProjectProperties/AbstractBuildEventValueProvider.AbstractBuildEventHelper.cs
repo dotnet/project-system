@@ -36,7 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
             public async Task<string> GetPropertyAsync(ProjectRootElement projectXml, IProjectProperties defaultProperties)
             {
                 // check if value already exists
-                var unevaluatedPropertyValue = await defaultProperties.GetUnevaluatedPropertyValueAsync(BuildEvent).ConfigureAwait(true);
+                string unevaluatedPropertyValue = await defaultProperties.GetUnevaluatedPropertyValueAsync(BuildEvent).ConfigureAwait(true);
                 if (unevaluatedPropertyValue != null)
                 {
                     return unevaluatedPropertyValue;
@@ -76,7 +76,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
                     return null;
                 }
 
-                if (execTask.Parameters.TryGetValue(Command, out var commandText))
+                if (execTask.Parameters.TryGetValue(Command, out string commandText))
                 {
                     return commandText;
                 }
@@ -86,7 +86,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
 
             private async Task<bool> TrySetPropertyAsync(string unevaluatedPropertyValue, IProjectProperties defaultProperties, ProjectRootElement projectXml)
             {
-                var currentValue = await defaultProperties.GetUnevaluatedPropertyValueAsync(BuildEvent).ConfigureAwait(true);
+                string currentValue = await defaultProperties.GetUnevaluatedPropertyValueAsync(BuildEvent).ConfigureAwait(true);
                 if (currentValue == null)
                 {
                     return false;
@@ -108,7 +108,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
 
             private (bool success, ProjectTaskElement execTask) FindExecTaskInTargets(ProjectRootElement projectXml)
             {
-                var execTask = projectXml.Targets
+                ProjectTaskElement execTask = projectXml.Targets
                                     .Where(target =>
                                         StringComparer.OrdinalIgnoreCase.Compare(GetTarget(target), BuildEvent) == 0 &&
                                         StringComparer.OrdinalIgnoreCase.Compare(target.Name, TargetName) == 0)
@@ -120,7 +120,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
 
             private (bool success, ProjectTargetElement target) FindTargetToRemove(ProjectRootElement projectXml)
             {
-                var foundTarget = projectXml.Targets
+                ProjectTargetElement foundTarget = projectXml.Targets
                                         .Where(target =>
                                             StringComparer.OrdinalIgnoreCase.Compare(GetTarget(target), BuildEvent) == 0 &&
                                             StringComparer.OrdinalIgnoreCase.Compare(target.Name, TargetName) == 0 &&
@@ -133,7 +133,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
 
             private void SetParameter(ProjectRootElement projectXml, string unevaluatedPropertyValue)
             {
-                var result = FindExecTaskInTargets(projectXml);
+                (bool success, ProjectTaskElement execTask) result = FindExecTaskInTargets(projectXml);
 
                 if (result.success == true)
                 {
@@ -141,14 +141,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
                 }
                 else
                 {
-                    var target = projectXml.AddTarget(TargetName);
+                    ProjectTargetElement target = projectXml.AddTarget(TargetName);
                     SetTargetDependencies(target);
-                    var execTask = target.AddTask(ExecTask);
+                    ProjectTaskElement execTask = target.AddTask(ExecTask);
                     SetExecParameter(execTask, unevaluatedPropertyValue);
                 }
             }
 
-            private void SetExecParameter(ProjectTaskElement execTask, string unevaluatedPropertyValue)
+            private static void SetExecParameter(ProjectTaskElement execTask, string unevaluatedPropertyValue)
                 => execTask.SetParameter(Command, unevaluatedPropertyValue);
         }
     }
