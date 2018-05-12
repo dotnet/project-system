@@ -255,7 +255,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         private static async Task<CompatibilityLevel> GetProjectCompatibilityAsync(UnconfiguredProject project, VersionCompatibilityData compatData)
         {
-            if (project.Capabilities.AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp + " & " + ProjectCapability.PackageReferences))
+            if (project.Capabilities.AppliesTo($"({ProjectCapability.CSharpOrVisualBasicOrFSharp}) & ({ProjectCapability.PackageReferences})"))
             {
                 IProjectProperties properties = project.Services.ActiveConfiguredProjectProvider.ActiveConfiguredProject.Services.ProjectPropertiesProvider.GetCommonProperties();
                 string tfm = await properties.GetEvaluatedPropertyValueAsync("TargetFrameworkMoniker").ConfigureAwait(false);
