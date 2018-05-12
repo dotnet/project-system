@@ -4169,24 +4169,37 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Dim Filter As String = GetFileDialogFilterForCategories(_categories, _currentCategory, FilterIndex)
             Dim UserCanceled As Boolean
 
-            'Last location that the user chose to add existing resource.
-            Static StickyAddExistingFilePath As String
-
             CommitPendingChanges()
 
             Try
                 ' If we can't check out the resource file, do not pop up any dialog...
                 RootDesigner.DesignerLoader.ManualCheckOut()
 
+                Dim resourcePathAndName As String = RootDesigner.GetResXFileNameAndPath()
+                Dim projectGuid As Guid = VBPackage.Instance.ProjectGUID(GetVsHierarchy())
+                Dim addExistingFilePath As String = String.Empty
+                Dim resxFileToAddExistingBasePath As Dictionary(Of String, String) = Nothing
+
+                If VBPackage.Instance.StickyProjectResourcePaths.TryGetValue(projectGuid, resxFileToAddExistingBasePath) Then
+                    If Not resxFileToAddExistingBasePath.TryGetValue(resourcePathAndName, addExistingFilePath) Then
+                        addExistingFilePath = ResourceFile.BasePath
+                    End If
+                Else
+                    addExistingFilePath = ResourceFile.BasePath
+                    resxFileToAddExistingBasePath = New Dictionary(Of String, String)
+                    resxFileToAddExistingBasePath.Item(resourcePathAndName) = addExistingFilePath
+                    VBPackage.Instance.StickyProjectResourcePaths.Item(projectGuid) = resxFileToAddExistingBasePath
+                End If
+
                 'Ask the user to point to the file(s) to add
-                Dim FilesToAdd() As String = ShowOpenFileDialog(UserCanceled, Title, Filter, FilterIndex, MultiSelect:=True, DefaultPath:=StickyAddExistingFilePath)
+                Dim FilesToAdd() As String = ShowOpenFileDialog(UserCanceled, Title, Filter, FilterIndex, MultiSelect:=True, DefaultPath:=addExistingFilePath)
 
                 If UserCanceled OrElse FilesToAdd Is Nothing OrElse FilesToAdd.Length = 0 Then
                     Exit Sub
                 End If
 
                 ' BUGFIX: Dev11#35824: Save the directory where the user add existing resource file for the next time.
-                StickyAddExistingFilePath = Path.GetDirectoryName(CType(FilesToAdd(0), String))
+                resxFileToAddExistingBasePath.Item(resourcePathAndName) = Path.GetDirectoryName(CType(FilesToAdd(0), String))
 
                 '... and them them as resources.
                 'NOTE: we update the existing item as bug 382459 said.

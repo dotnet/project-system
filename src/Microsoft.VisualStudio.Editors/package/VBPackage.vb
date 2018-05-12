@@ -45,11 +45,14 @@ Namespace Microsoft.VisualStudio.Editors
         ' Map between unique project GUID and the last viewed tab in the project designer...
         Private _lastViewedProjectDesignerTab As Dictionary(Of Guid, Byte)
 
+        Public ReadOnly Property StickyProjectResourcePaths() As New Dictionary(Of Guid, Dictionary(Of String, String))
+
         ''' <summary>
         ''' Constructor
         ''' </summary>
         ''' <remarks></remarks>
         Public Sub New()
+
             ' Make sure we persist this 
             AddOptionKey(ProjectDesignerSUOKey)
         End Sub
@@ -304,7 +307,7 @@ Namespace Microsoft.VisualStudio.Editors
         ''' <param name="hierarchy"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function ProjectGUID(hierarchy As IVsHierarchy) As Guid
+        Public Function ProjectGUID(hierarchy As IVsHierarchy) As Guid
             Dim projGuid As Guid = Guid.Empty
             Try
                 If hierarchy IsNot Nothing Then
@@ -416,6 +419,7 @@ Namespace Microsoft.VisualStudio.Editors
             Public Function OnAfterCloseSolution(pUnkReserved As Object) As Integer Implements IVsSolutionEvents.OnAfterCloseSolution
                 SettingsDesigner.SettingsDesigner.DeleteFilesAndDirectories(_filesToCleanUp, Nothing)
                 _filesToCleanUp.Clear()
+                Instance.StickyProjectResourcePaths.Clear()
                 Return Interop.NativeMethods.S_OK
             End Function
 
@@ -475,10 +479,12 @@ Namespace Microsoft.VisualStudio.Editors
             End Function
 
             Public Function OnBeforeCloseProject(pHierarchy As IVsHierarchy, fRemoved As Integer) As Integer Implements IVsSolutionEvents.OnBeforeCloseProject
+                Instance.StickyProjectResourcePaths.Remove(Instance.ProjectGUID(pHierarchy))
                 Return Interop.NativeMethods.S_OK
             End Function
 
             Public Function OnBeforeUnloadProject(pRealHierarchy As IVsHierarchy, pStubHierarchy As IVsHierarchy) As Integer Implements IVsSolutionEvents.OnBeforeUnloadProject
+                Instance.StickyProjectResourcePaths.Remove(Instance.ProjectGUID(pRealHierarchy))
                 Return Interop.NativeMethods.S_OK
             End Function
 
