@@ -79,7 +79,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             {
                 if (_id == null)
                 {
-                    _id = $"{OriginalItemSpec}\\{Version}".TrimEnd(Delimiter.BackSlashDelimiter);
+                    _id = $"{OriginalItemSpec}\\{Version}".TrimEnd(Delimiter.BackSlash);
                 }
 
                 return _id;

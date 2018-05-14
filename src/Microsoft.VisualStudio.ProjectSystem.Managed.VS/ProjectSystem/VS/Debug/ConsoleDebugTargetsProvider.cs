@@ -383,7 +383,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 return null;
             }
 
-            string[] paths = pathEnv.Split(Delimiter.SemicolonDelimiter, StringSplitOptions.RemoveEmptyEntries);
+            string[] paths = pathEnv.Split(Delimiter.Semicolon, StringSplitOptions.RemoveEmptyEntries);
             foreach (string path in paths)
             {
                 // We don't want one bad path entry to derail the search

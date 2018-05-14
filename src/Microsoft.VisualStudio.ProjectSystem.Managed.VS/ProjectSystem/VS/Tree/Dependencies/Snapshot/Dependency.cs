@@ -351,7 +351,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 sb.Append(targetFramework.ShortName).Append('\\');
                 sb.Append(providerType).Append('\\');
                 sb.Append(Normalize(modelId));
-                sb.TrimEnd(Delimiter.BackSlashDelimiter);
+                sb.TrimEnd(Delimiter.BackSlash);
                 return sb.ToString();
             }
             finally
