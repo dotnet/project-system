@@ -2,9 +2,12 @@
 
 using System.IO;
 
-namespace Microsoft.VisualStudio.ProjectSystem
+namespace Microsoft.VisualStudio
 {
-    internal static class CommonConstants
+    /// <summary>
+    ///     Contains commonly-used delimiters used for splitting <see cref="String"/> instances.
+    /// </summary>
+    internal static class Delimiter
     {
         /// <summary>
         /// Single, static instance of an array that contains a comma ',', which is used to split strings.

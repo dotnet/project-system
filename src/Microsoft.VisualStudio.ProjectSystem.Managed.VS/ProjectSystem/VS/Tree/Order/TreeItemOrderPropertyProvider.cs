@@ -25,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
 
         private static string[] GetPathComponents(string evaluatedInclude)
         {
-            return evaluatedInclude.Split(CommonConstants.PathSeparators, StringSplitOptions.RemoveEmptyEntries);
+            return evaluatedInclude.Split(Delimiter.PathSeparators, StringSplitOptions.RemoveEmptyEntries);
         }
 
         private static string[] GetPathFolders(string path)
