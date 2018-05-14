@@ -23,7 +23,6 @@ namespace Microsoft.VisualStudio.Packaging
         public const string ProjectTypeGuid = "6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705";
         public const string LegacyProjectTypeGuid = "F2A71F9B-5D33-465A-A702-920D77279786";
         public const string PackageGuid = "a724c878-e8fd-4feb-b537-60baba7eda83";
-        private const string ProjectTypeGuidFormatted = "{" + ProjectTypeGuid + "}";
 
         private IVsRegisterProjectSelector _projectSelectorService;
         private uint _projectSelectorCookie;
