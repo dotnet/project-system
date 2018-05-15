@@ -72,11 +72,6 @@
         <target state="translated">關閉</target>
         <note />
       </trans-unit>
-      <trans-unit id="EnumProperty|LanguageVersion|DisplayName">
-        <source>Language version</source>
-        <target state="translated">語言版本</target>
-        <note />
-      </trans-unit>
       <trans-unit id="EnumProperty|ErrorReport|DisplayName">
         <source>Error report</source>
         <target state="translated">錯誤報告</target>
@@ -232,14 +227,19 @@
         <target state="translated">當組建更新專案輸出時</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|LangVersion|DisplayName">
-        <source>CSharp Language Version</source>
-        <target state="translated">CSharp 語言版本</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|CodeAnalysisRuleSet|DisplayName">
         <source> Code Analysis Rule set</source>
         <target state="translated"> 程式碼分析規則集</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|LanguageVersion|DisplayName">
+        <source>Language version</source>
+        <target state="new">Language version</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|LangVersion|DisplayName">
+        <source>Language version</source>
+        <target state="new">Language version</target>
         <note />
       </trans-unit>
     </body>

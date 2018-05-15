@@ -43,9 +43,14 @@
   <!-- Advanced Build Page Properties -->
   <EnumProperty Name="LanguageVersion" DisplayName="Language version" Visible="False">
     <EnumProperty.DataSource>
-      <DataSource Persistence="ProjectFile" PersistedName="LangVersion" SourceOfDefaultValue="AfterContext"/>
+      <DataSource Persistence="ProjectFile" PersistedName="LangVersion" SourceOfDefaultValue="AfterContext" HasConfigurationCondition="False" />
     </EnumProperty.DataSource>
   </EnumProperty>
+  <StringProperty Name="LangVersion" DisplayName="Language version" Visible="False" >
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFile" SourceOfDefaultValue="AfterContext" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
   <EnumProperty Name="ErrorReport" DisplayName="Error report" Visible="False"/>
   <EnumProperty Name="DebugInfo" DisplayName="Debug Info" Visible="False">
     <EnumProperty.DataSource>
@@ -124,8 +129,6 @@
     <EnumValue Name="OnOutputUpdated" DisplayName="When the build updates the project output" />
   </EnumProperty>
 
-  <!-- CSharp Project Configuration Properties-->
-  <StringProperty Name="LangVersion" DisplayName="CSharp Language Version" Visible="False"/>
   <StringProperty Name="CodeAnalysisRuleSet" DisplayName=" Code Analysis Rule set" Visible="False"/>
 
   <!-- F# specific properties-->
