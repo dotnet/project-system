@@ -2,10 +2,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
     <VSTemplate Include="XUnitTest.vstemplate">
-      <OutputSubPath>.NET Core</OutputSubPath>
+      <OutputSubPath>Test</OutputSubPath>
     </VSTemplate>
     <VSTemplate Include="MSTest.vstemplate">
-      <OutputSubPath>.NET Core</OutputSubPath>
+      <OutputSubPath>Test</OutputSubPath>
     </VSTemplate>
   </ItemGroup>
 </Project>
