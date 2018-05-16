@@ -72,11 +72,6 @@
         <target state="translated">Aus</target>
         <note />
       </trans-unit>
-      <trans-unit id="EnumProperty|LanguageVersion|DisplayName">
-        <source>Language version</source>
-        <target state="translated">Sprachversion</target>
-        <note />
-      </trans-unit>
       <trans-unit id="EnumProperty|ErrorReport|DisplayName">
         <source>Error report</source>
         <target state="translated">Fehlerbericht</target>
@@ -232,14 +227,19 @@
         <target state="translated">Bei der Aktualisierung der Projektausgabe während der Erstellung</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|LangVersion|DisplayName">
-        <source>CSharp Language Version</source>
-        <target state="translated">CSharp-Sprachversion</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|CodeAnalysisRuleSet|DisplayName">
         <source> Code Analysis Rule set</source>
         <target state="translated"> Codeanalyseregel festgelegt</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|LanguageVersion|DisplayName">
+        <source>Language version</source>
+        <target state="new">Language version</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|LangVersion|DisplayName">
+        <source>Language version</source>
+        <target state="new">Language version</target>
         <note />
       </trans-unit>
     </body>
