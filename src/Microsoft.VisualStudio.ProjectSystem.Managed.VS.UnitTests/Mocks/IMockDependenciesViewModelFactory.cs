@@ -29,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             if (getDependenciesRootIcon != null && getDependenciesRootIcon.HasValue)
             {
-                mock.Setup(x => x.GetDependenciesRootIcon(It.IsAny<bool>())).Returns(getDependenciesRootIcon.Value);
+                mock.Setup(x => x.GetDependenciesRootIcon()).Returns(getDependenciesRootIcon.Value);
             }
 
             if (createRootViewModel != null)

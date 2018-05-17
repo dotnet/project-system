@@ -88,8 +88,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var project = UnconfiguredProjectFactory.Create();
             var factory = new DependenciesViewModelFactory(project);
 
-            Assert.Equal(ManagedImageMonikers.ReferenceGroup, factory.GetDependenciesRootIcon(hasUnresolvedDependencies: false));
-            Assert.Equal(ManagedImageMonikers.ReferenceGroupWarning, factory.GetDependenciesRootIcon(hasUnresolvedDependencies: true));
+            Assert.Equal(ManagedImageMonikers.ReferenceGroup, factory.GetDependenciesRootIcon());
         }
 
         private class TestableDependenciesViewModelFactory : DependenciesViewModelFactory

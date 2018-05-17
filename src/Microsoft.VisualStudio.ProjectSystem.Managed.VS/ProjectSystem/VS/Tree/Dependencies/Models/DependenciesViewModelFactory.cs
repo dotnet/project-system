@@ -38,11 +38,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             return dependencyModel.ToViewModel(hasUnresolvedDependency);
         }
 
-        public ImageMoniker GetDependenciesRootIcon(bool hasUnresolvedDependencies)
+        public ImageMoniker GetDependenciesRootIcon()
         {
-            return hasUnresolvedDependencies
-                ? ManagedImageMonikers.ReferenceGroupWarning
-                : ManagedImageMonikers.ReferenceGroup;
+            return ManagedImageMonikers.ReferenceGroup;
         }
 
         private IProjectDependenciesSubTreeProvider GetProvider(string providerType)
