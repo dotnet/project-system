@@ -35,13 +35,13 @@ static addGithubTrigger(def job, def isPR, def branchName, def jobName, def manu
 static addXUnitDotNETResults(def job, def configName) {
   def resultFilePattern = "**/artifacts/${configName}/TestResults/*.xml"
   def skipIfNoTestFiles = false
-    
+
   Utilities.addXUnitDotNETResults(job, resultFilePattern, skipIfNoTestFiles)
 }
 
 def createJob(def platform, def configName, def osName, def imageName, def isPR, def manualTrigger, def altTriggerPhrase) {
   def projectName = GithubProject
-  def branchName = GithubBranchName  
+  def branchName = GithubBranchName
   def jobName = "${platform}_${configName}"
   def newJob = job(Utilities.getFullJobName(projectName, jobName, isPR))
 
@@ -60,7 +60,7 @@ def imageName = "latest-dev15-3"
 
 [true, false].each { isPR ->
   ["debug", "release"].each { configName ->
-    
+
     def platform = "windows"
     def manualTrigger = false
     def altTriggerPhrase = ""
@@ -82,11 +82,43 @@ def imageName = "latest-dev15-3"
 
 [true, false].each { isPR ->
   ["debug", "release"].each { configName ->
-    
+
+    def platform = "windows_spanish"
+    def manualTrigger = false
+    def altTriggerPhrase = ""
+
+    def projectName = GithubProject
+    def branchName = GithubBranchName
+    def jobName = "${platform}_${configName}"
+    def newJob = job(Utilities.getFullJobName(projectName, jobName, isPR))
+
+    Utilities.standardJobSetup(newJob, projectName, isPR, "*/${branchName}")
+
+    addGithubTrigger(newJob, isPR, branchName, jobName, manualTrigger, altTriggerPhrase)
+    addArchival(newJob, configName)
+    addXUnitDotNETResults(newJob, configName)
+    Utilities.setMachineAffinity(newJob, 'Windows.10.Amd64.ClientRS3.ES.Open')
+
+    newJob.with {
+      wrappers {
+        credentialsBinding {
+          string("CODECOV_TOKEN", "CODECOV_TOKEN_DOTNET_PROJECT_SYSTEM")
+        }
+      }
+      steps {
+        batchFile(".\\build\\CIBuild.cmd -configuration ${configName} -prepareMachine")
+      }
+    }
+  }
+}
+
+[true, false].each { isPR ->
+  ["debug", "release"].each { configName ->
+
     def platform = "windows_integration"
     def manualTrigger = true
     def altTriggerPhrase = "vsi"
-    
+
     def newJob = createJob(platform, configName, osName, imageName, isPR, manualTrigger, altTriggerPhrase)
 
     newJob.with {
