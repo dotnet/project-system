@@ -6,6 +6,8 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Properties;
 
 using VSLangProj;
 
+using BCLDebug = System.Diagnostics.Debug;
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
 {
     [Export(typeof(IExtenderCATIDProvider))]
@@ -42,11 +44,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
                 case ExtendeeObject.ReferenceBrowseObject:
                     return PrjBrowseObjectCATID.prjCATIDCSharpReferenceBrowseObject;
 
+                default:
                 case ExtendeeObject.FileBrowseObject:
+                    BCLDebug.Assert(extendee == ExtendeeObject.FileBrowseObject);
                     return PrjBrowseObjectCATID.prjCATIDCSharpFileBrowseObject;
             }
-
-            return null;
         }
     }
 }
