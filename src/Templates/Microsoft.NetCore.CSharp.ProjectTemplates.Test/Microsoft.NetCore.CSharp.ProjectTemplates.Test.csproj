@@ -4,8 +4,14 @@
     <VSTemplate Include="XUnitTest.vstemplate">
       <OutputSubPath>.NET Core</OutputSubPath>
     </VSTemplate>
+    <VSTemplate Include="XUnitTest.vstemplate">
+      <OutputSubPath>Test</OutputSubPath>
+    </VSTemplate>
     <VSTemplate Include="MSTest.vstemplate">
       <OutputSubPath>.NET Core</OutputSubPath>
+    </VSTemplate>
+    <VSTemplate Include="MSTest.vstemplate">
+      <OutputSubPath>Test</OutputSubPath>
     </VSTemplate>
   </ItemGroup>
 </Project>
