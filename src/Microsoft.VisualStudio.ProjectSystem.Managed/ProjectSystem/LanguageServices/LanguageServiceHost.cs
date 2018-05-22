@@ -262,8 +262,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             // We need to process the update within a lock to ensure that we do not release this context during processing.
             // TODO: Enable concurrent execution of updates themselves, i.e. two separate invocations of HandleAsync
             //       should be able to run concurrently.
-            await ExecuteWithinLockAsync(() =>
+            await ExecuteWithinLockAsync(async () =>
             {
+                if (!WorkspaceSupportsBatchingAndFreeThreadedInitialization())
+                {
+                    await _commonServices.ThreadingService.SwitchToUIThread();
+                }
+
                 // Get the inner workspace project context to update for this change.
                 IWorkspaceProjectContext projectContextToUpdate = _currentAggregateProjectContext.GetInnerProjectContext(update.Value.ProjectConfiguration, out bool isActiveContext);
                 if (projectContextToUpdate == null)
@@ -273,6 +278,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
                 _languageServiceHandlerManager.Handle(update, handlerType, projectContextToUpdate, isActiveContext);
             }).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Roslyn is working on supporting free-threaded initialization.
+        /// in order to support a smooth transition, we decide whether to serialize
+        /// based on whether a particular member that was added at the same time exists.
+        /// </summary>
+        /// <returns><see langword="true"/> if the workspace supports batching.</returns>
+        internal static bool WorkspaceSupportsBatchingAndFreeThreadedInitialization()
+        {
+            return typeof(IWorkspaceProjectContext).GetMethod("StartBatch") != null &&
+                   typeof(IWorkspaceProjectContext).GetMethod("EndBatch") != null;
         }
 
         private static bool HasTargetFrameworksChanged(IProjectVersionedValue<IProjectSubscriptionUpdate> e)

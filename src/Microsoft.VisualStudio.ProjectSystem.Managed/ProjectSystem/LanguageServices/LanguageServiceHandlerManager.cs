@@ -85,11 +85,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                     IProjectChangeDescription projectChange = update.Value.ProjectChanges[ruleName];
                     if (projectChange.Difference.AnyChanges)
                     {
-                        _currentHandlerTask = _currentHandlerTask.ContinueWith(
-                            _ => handler.handler.Handle(version, projectChange, isActiveContext, logger),
-                            CancellationToken.None,
-                            TaskContinuationOptions.None,
-                            TaskScheduler.Default);
+                        EnqueueWork(_ => handler.handler.Handle(version, projectChange, isActiveContext, logger));
                     }
                     else
                     {
@@ -121,19 +117,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 // If nothing changed (even another failed design-time build), don't do anything
                 if (projectChange.Difference.AnyChanges)
                 {
-                    _currentHandlerTask = _currentHandlerTask.ContinueWith(
-                        _ => ProcessOptions(projectChange, context, logger),
-                        CancellationToken.None,
-                        TaskContinuationOptions.None,
-                        TaskScheduler.Default);
-
+                    EnqueueWork(_ => ProcessOptions(projectChange, context, logger));
                     ProcessItems(version, projectChange, context, isActiveContext, logger);
-
-                    _currentHandlerTask = _currentHandlerTask.ContinueWith(
-                        _ => ProcessDesignTimeBuildFailure(projectChange, context, logger),
-                        CancellationToken.None,
-                        TaskContinuationOptions.None,
-                        TaskScheduler.Default);
+                    EnqueueWork(_ => ProcessDesignTimeBuildFailure(projectChange, context, logger));
                 }
                 else
                 {
@@ -206,14 +192,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             foreach (ICommandLineHandler handler in handlers)
             {
+                EnqueueWork(_ => handler.Handle(version, addedItems, removedItems, isActiveContext, logger));
+            }
+
+            CommandLineNotifications.FirstOrDefault()?.Value.Invoke(context.BinOutputPath, addedItems, removedItems);
+        }
+
+        private void EnqueueWork(Action<Task> action)
+        {
+            if (LanguageServiceHost.WorkspaceSupportsBatchingAndFreeThreadedInitialization())
+            {
                 _currentHandlerTask = _currentHandlerTask.ContinueWith(
-                    _ => handler.Handle(version, addedItems, removedItems, isActiveContext, logger),
+                    action,
                     CancellationToken.None,
                     TaskContinuationOptions.None,
                     TaskScheduler.Default);
             }
-
-            CommandLineNotifications.FirstOrDefault()?.Value.Invoke(context.BinOutputPath, addedItems, removedItems);
+            else
+            {
+                // If not, we assume that the LanguageServiceHost has serialized us onto the UI
+                // thread already.
+                action(Task.CompletedTask);
+            }
         }
 
         private void WriteHeader(IProjectLoggerBatch logger, IProjectVersionedValue<IProjectSubscriptionUpdate> update, IComparable version, RuleHandlerType source, bool isActiveContext)
