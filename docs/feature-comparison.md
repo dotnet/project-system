@@ -51,13 +51,13 @@ Generate NuGet package on build                                             |   
 Add Service Reference                                                       | ●        | 
 Add Web Reference                                                           | ●        | 
 Add Data Source                                                             | ●        | 
-"Initialize Interactive Window with Project"                               | ●        | ● (15.8) | Only when targeting .NET Framework.
-Class Diagrams                                                              | ●        | ● (15.8) |
+"Initialize Interactive Window with Project"                               | ●        | ● (15.8 Preview 3) | Only when targeting .NET Framework.
+Class Diagrams                                                              | ●        | ● (15.8 Preview 3) |
 Code Analysis                                                               | ●        | 
-Code Metrics                                                                | ●        | ● (15.8) | Only when targeting .NET Framework.
-Code Clones                                                                 | ●        | ● (15.8) | 
+Code Metrics                                                                | ●        | ● (15.8 Preview 3) | Only when targeting .NET Framework.
+Code Clones                                                                 | ●        | ● (15.8 Preview 3) | 
 Fakes                                                                       | ●        | 
 T4 Templates                                                                | ●        | 
 Zero Impact Projects ("Save new projects when created")                     | ●        | 
 Simplified configurations ("Show advanced build configurations")            | ●        | 
-[Automation Extenders](https://msdn.microsoft.com/en-us/library/0y92k2w2.aspx)| ●        | ● (15.8) | 
+[Automation Extenders](https://msdn.microsoft.com/en-us/library/0y92k2w2.aspx)| ●        | ● (15.8 Preview 3) | 
