@@ -51,7 +51,7 @@ Generate NuGet package on build                                             |   
 Add Service Reference                                                       | ●        | 
 Add Web Reference                                                           | ●        | 
 Add Data Source                                                             | ●        | 
-"Initialize Interactive Windows with Project"                               | ●        | ● (15.8) | Only when targeting .NET Framework.
+"Initialize Interactive Window with Project"                               | ●        | ● (15.8) | Only when targeting .NET Framework.
 Class Diagrams                                                              | ●        | ● (15.8) |
 Code Analysis                                                               | ●        | 
 Code Metrics                                                                | ●        | ● (15.8) | Only when targeting .NET Framework.
