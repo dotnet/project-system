@@ -60,3 +60,4 @@ Fakes                                                                       | �
 T4 Templates                                                                | ●        | 
 Zero Impact Projects ("Save new projects when created")                     | ●        | 
 Simplified configurations ("Show advanced build configurations")            | ●        | 
+[Automation Extenders](https://msdn.microsoft.com/en-us/library/0y92k2w2.aspx)| ●        | ● (15.8) | 
