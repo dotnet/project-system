@@ -36,7 +36,7 @@ ClickOnce Publish                                                           | �
 Globbing support                                                            |          | ●    | `<Compile Include="*.cs" />`
 Simplified project format                                                   |          | ●    | `<Project Sdk="Microsoft.Net.Sdk">`
 Simplified configuration syntax                                             |          | ●    | `<Configurations>Debug;Release<Configurations>;<Platforms>AnyCPU;x64</Platforms>`
-Implicit configuration syntax                                               | ●        |      | `<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">`
+Implicit configuration syntax                                               | ●        |      | `<PropertyGroup Condition="'$(Configuration)\|$(Platform)' == 'Debug\|AnyCPU'">`
 Edit project XML while loaded                                               |          | ●
 Automatically reload project file with no prompts                           |          | ●
 Automatically reload targets files                                          |          | ●
