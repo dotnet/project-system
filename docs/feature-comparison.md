@@ -52,7 +52,7 @@ Add Service Reference                                                       | �
 Add Web Reference                                                           | ●        | 
 Add Data Source                                                             | ●        | 
 "Initialize Interactive Windows with Project"                               | ●        | ● (15.8) | Only when targeting .NET Framework.
-Class Diagrams                                                              | ●        | ◖
+Class Diagrams                                                              | ●        | ● (15.8) |
 Code Analysis                                                               | ●        | 
 Code Metrics                                                                | ●        | ● (15.8) | Only when targeting .NET Framework.
 Code Clones                                                                 | ●        | ● (15.8) | 
