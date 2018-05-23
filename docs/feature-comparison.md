@@ -43,7 +43,7 @@ Automatically refresh Solution Explorer to reflect file system              |   
 Show items included in imports (.targets/.props)                            |          | ●
 **Dependencies**|
 Auto-restore packages on load and external edit                             |          | ● 
-PackageReference support                                                    | ◖       | ● | Legacy does not reload package targets file without VS restart. Also does not support using MSBuild properties in name, version and metadata.
+PackageReference support                                                    | ◖        | ● | Legacy does not reload package targets file without VS restart. Also does not support using MSBuild properties in name, version and metadata.
 Dependency node showing package/project graph                               |          | ● 
 Transitive ProjectReference                                                 |          | ●
 Generate NuGet package on build                                             |          | ● 
@@ -51,10 +51,11 @@ Generate NuGet package on build                                             |   
 Add Service Reference                                                       | ●        | 
 Add Web Reference                                                           | ●        | 
 Add Data Source                                                             | ●        | 
-"Initialize Interactive Windows with Project"                               | ●        | 
+"Initialize Interactive Windows with Project"                               | ●        | ● (15.8) | Only when targeting .NET Framework.
 Class Diagrams                                                              | ●        | ◖
 Code Analysis                                                               | ●        | 
-Code Metrics                                                                | ●        | 
+Code Metrics                                                                | ●        | ● (15.8) | Only when targeting .NET Framework.
+Code Clones                                                                 | ●        | ● (15.8) | 
 Fakes                                                                       | ●        | 
 T4 Templates                                                                | ●        | 
 Zero Impact Projects ("Save new projects when created")                     | ●        | 
