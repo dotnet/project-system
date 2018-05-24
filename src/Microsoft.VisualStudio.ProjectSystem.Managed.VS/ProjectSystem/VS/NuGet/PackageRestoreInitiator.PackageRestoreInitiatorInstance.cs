@@ -29,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             private readonly IActiveConfigurationGroupService _activeConfigurationGroupService;
             private readonly IActiveConfiguredProjectSubscriptionService _activeConfiguredProjectSubscriptionService;
             private readonly IProjectLogger _logger;
-#pragma warning disable CA2213 // OnceInitializedOnceDisposedAsync are not tracked corretly by the IDisposeable analyzer
+#pragma warning disable CA2213 // OnceInitializedOnceDisposedAsync are not tracked correctly by the IDisposeable analyzer
             private IDisposable _configurationsSubscription;
             private DisposableBag _designTimeBuildSubscriptionLink;
 #pragma warning restore CA2213
@@ -41,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                 .Add(DotNetCliToolReference.SchemaName);
 
             // Remove the ConfiguredProjectIdentity key because it is unique to each configured project - so it won't match across projects by design.
-            // Remove the ConfiguredProjectVersion key because each configuredproject manages it's own version and generally they don't match. 
+            // Remove the ConfiguredProjectVersion key because each ConfiguredProject manages it's own version and generally they don't match. 
             private readonly static ImmutableArray<NamedIdentity> s_keysToDrop = ImmutableArray.Create(ProjectDataSources.ConfiguredProjectIdentity, ProjectDataSources.ConfiguredProjectVersion);
 
             [ImportingConstructor]

@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+Ôªø' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Option Strict On
 Option Explicit On
@@ -33,21 +33,21 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
     '''     editor factory base.  Be sure to give each new editor factory class a different guid.
     '''
     '''     Provides basic editor factory functionality for a specific designer.  Must be inherited for each 
-    '''     designer type supported.  By default, only a single entry in the Open WithÖ dialog box is shown by 
-    '''     the shell for each editor factoryó-therefore, in general there should be one editor factory per entry 
-    '''     in the Open WithÖ dialog.  There is one exception to thisóa single designer can be made via the registry 
-    '''     to have multiple entries in the Open With dialog for multiple views or encodings (e.g., ìText Editorî, 
-    '''     ìText Editor with Encodingî).
+    '''     designer type supported.  By default, only a single entry in the Open With‚Ä¶ dialog box is shown by 
+    '''     the shell for each editor factory‚Äî-therefore, in general there should be one editor factory per entry 
+    '''     in the Open With‚Ä¶ dialog.  There is one exception to this‚Äîa single designer can be made via the registry 
+    '''     to have multiple entries in the Open With dialog for multiple views or encodings (e.g., ‚ÄúText Editor‚Äù, 
+    '''     ‚ÄúText Editor with Encoding‚Äù).
     '''
     '''     ADDING A NEW DESIGNER TO THIS ASSEMBLY (this may not be all the steps required, but it'''s a start):
     '''
-    '''     1) Add an editor factoryó-inherit from BaseEditorFactory
+    '''     1) Add an editor factory‚Äî-inherit from BaseEditorFactory
     '''           a. Add a GUID attribute to the class
     '''           b. Override EditorGuide to return this GUID
     '''           c. Add registration for the file extension in the .vbgpp file (and also VBPackage, but that information
     '''                 is currently unused but might be used in the future by RegPkg), and have it point to this GUID
     '''           d. In Sub New, call MyBase.New() with the type of your designer loader class (see next step)
-    '''     2) Add a designer loaderó-inherit from BaseDesignerLoader
+    '''     2) Add a designer loader‚Äî-inherit from BaseDesignerLoader
     '''           a. Override HandleLoad() to implement depersisting your data
     '''           b. Override HandleFlush() to implement persisting your data
     '''           c. Override GetBaseComponentClassName
@@ -108,7 +108,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             Try
                 Dim GuidTemp As Guid = GetType(IVsTextStream).GUID
                 Dim ObjPtr As IntPtr = IntPtr.Zero
-                VSErrorHandler.ThrowOnFailure(LocalRegistry.CreateInstance(GetType(VsTextBufferClass).GUID, Nothing, GuidTemp, Interop.win.CLSCTX_INPROC_SERVER, ObjPtr))
+                VSErrorHandler.ThrowOnFailure(LocalRegistry.CreateInstance(GetType(VsTextBufferClass).GUID, Nothing, GuidTemp, Interop.Win32Constant.CLSCTX_INPROC_SERVER, ObjPtr))
 
                 If Not ObjPtr.Equals(IntPtr.Zero) Then
                     TextStreamInstance = CType(Marshal.GetObjectForIUnknown(ObjPtr), IVsTextStream)

@@ -32,7 +32,9 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         '  the Modify property.  We let it manage our DocData as its "primary" (in this case, only)
         '  doc data.  It will automatically track changes and handle check-in/check-out (see the
         '  Modifyi property).
+#Disable Warning IDE1006 ' Naming Styles (Compat)
         Protected m_DocDataService As DesignerDocDataService
+#Enable Warning IDE1006 ' Naming Styles
 
         Private _punkDocData As Object
 

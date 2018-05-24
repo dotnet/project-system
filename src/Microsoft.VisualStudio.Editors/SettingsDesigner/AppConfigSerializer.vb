@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.IO
 Imports System.Windows.Forms.Design
@@ -78,9 +78,10 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 Dim settingType As Type = typeCache.GetSettingType(Instance.SettingTypeName)
                 ' We need a name and a type to be able to serialize this guy... unless it is a connection string, of course!
                 If Instance.Name <> "" AndAlso settingType IsNot Nothing AndAlso settingType IsNot GetType(SerializableConnectionString) Then
-                    Dim NewProp As New SettingsProperty(Instance.Name)
-                    NewProp.PropertyType = settingType
-                    NewProp.SerializeAs = ConfigHelperService.GetSerializeAs(settingType)
+                    Dim NewProp As New SettingsProperty(Instance.Name) With {
+                        .PropertyType = settingType,
+                        .SerializeAs = ConfigHelperService.GetSerializeAs(settingType)
+                    }
                     If Instance.Scope = DesignTimeSettingInstance.SettingScope.Application Then
                         AppScopedSettingProps.Add(NewProp)
                     Else
@@ -92,23 +93,25 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             ' Deserialize conenction strings
             '
             ' First, we ask the config helper to read all the connection strings....
-            Dim DeserializedConnectionStrings As ConnectionStringSettingsCollection = _
+            Dim DeserializedConnectionStrings As ConnectionStringSettingsCollection =
                 ConfigHelperService.ReadConnectionStrings(AppConfigDocData.Name, AppConfigDocData, SectionName)
 
             ' Deserialize "normal" app scoped and user scoped settings
-            Dim configFileMap As New ExeConfigurationFileMap
-            configFileMap.ExeConfigFilename = AppConfigDocData.Name
-            Dim DeserializedAppScopedSettingValues As SettingsPropertyValueCollection = _
+            Dim configFileMap As New ExeConfigurationFileMap With {
+                .ExeConfigFilename = AppConfigDocData.Name
+            }
+            Dim DeserializedAppScopedSettingValues As SettingsPropertyValueCollection =
                 ConfigHelperService.ReadSettings(configFileMap, ConfigurationUserLevel.None, AppConfigDocData, SectionName, False, AppScopedSettingProps)
-            Dim DeserializedUserScopedSettingValues As SettingsPropertyValueCollection = _
+            Dim DeserializedUserScopedSettingValues As SettingsPropertyValueCollection =
                 ConfigHelperService.ReadSettings(configFileMap, ConfigurationUserLevel.None, AppConfigDocData, SectionName, True, UserScopedSettingProps)
 
             Dim valueSerializer As New SettingsValueSerializer()
 
             ' Then we go through each read setting to see if we have to add/change the setting
             For Each cs As ConnectionStringSettings In DeserializedConnectionStrings
-                Dim scs As New SerializableConnectionString
-                scs.ConnectionString = cs.ConnectionString
+                Dim scs As New SerializableConnectionString With {
+                    .ConnectionString = cs.ConnectionString
+                }
                 If cs.ProviderName <> "" Then
                     scs.ProviderName = cs.ProviderName
                 End If
@@ -199,7 +202,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
                 Try
                     VSErrorHandler.ThrowOnFailure(ProjSpecialFiles.GetFile(__PSFFILEID.PSFFILEID_AppConfig, Flags, AppConfigItemId, AppConfigFileName))
-                Catch ex As System.Runtime.InteropServices.COMException When ex.ErrorCode = Interop.win.OLE_E_PROMPTSAVECANCELLED
+                Catch ex As System.Runtime.InteropServices.COMException When ex.ErrorCode = Interop.Win32Constant.OLE_E_PROMPTSAVECANCELLED
                     Throw New ComponentModel.Design.CheckoutException(My.Resources.Designer.DFX_UnableToCheckout, ex)
                 Catch ex As Exception When Not TypeOf ex Is ComponentModel.Design.CheckoutException
                     ' VsWhidbey 224145, ProjSpecialFiles.GetFile(create:=true) fails on vbexpress sku
@@ -320,11 +323,13 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                             ExistingConnectionStringSettings.Add(conStringSetting)
                         End If
                     Else
-                        Dim Prop As New SettingsProperty(Instance.Name)
-                        Prop.PropertyType = settingType
+                        Dim Prop As New SettingsProperty(Instance.Name) With {
+                            .PropertyType = settingType
+                        }
                         Prop.SerializeAs = ConfigHelperService.GetSerializeAs(Prop.PropertyType)
-                        Dim PropVal As New SettingsPropertyValue(Prop)
-                        PropVal.SerializedValue = Instance.SerializedValue
+                        Dim PropVal As New SettingsPropertyValue(Prop) With {
+                            .SerializedValue = Instance.SerializedValue
+                        }
                         If Instance.Scope = DesignTimeSettingInstance.SettingScope.Application Then
                             ExistingApplicationScopedSettings.Add(PropVal)
                         Else
@@ -335,9 +340,9 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Next
 
             ' Let us populate the settings with values from app.config file 
-            Dim configFileMap As New ExeConfigurationFileMap
-
-            configFileMap.ExeConfigFilename = AppConfigDocData.Name
+            Dim configFileMap As New ExeConfigurationFileMap With {
+                .ExeConfigFilename = AppConfigDocData.Name
+            }
             ConfigHelperService.WriteConnectionStrings(AppConfigDocData.Name, AppConfigDocData, SectionName, ExistingConnectionStringSettings)
             ConfigHelperService.WriteSettings(configFileMap, ConfigurationUserLevel.None, AppConfigDocData, SectionName, True, ExistingUserScopedSettings)
             ConfigHelperService.WriteSettings(configFileMap, ConfigurationUserLevel.None, AppConfigDocData, SectionName, False, ExistingApplicationScopedSettings)
@@ -466,14 +471,15 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <returns></returns>
         ''' <remarks></remarks>
         Private Shared Function LoadAppConfigDocument(Reader As TextReader) As XmlDocument
-            Dim AppConfigXmlDoc As New XmlDocument()
-            AppConfigXmlDoc.PreserveWhitespace = False
+            Dim AppConfigXmlDoc As New XmlDocument With {
+                .PreserveWhitespace = False
+            }
             ' Load App.Config into XML Doc
-            Dim XmlAppConfigReader As New XmlTextReader(Reader)
-
             ' Required by Fxcop rule CA3054 - DoNotAllowDTDXmlTextReader
-            XmlAppConfigReader.DtdProcessing = DtdProcessing.Prohibit
-            XmlAppConfigReader.WhitespaceHandling = WhitespaceHandling.All
+            Dim XmlAppConfigReader As New XmlTextReader(Reader) With {
+                .DtdProcessing = DtdProcessing.Prohibit,
+                .WhitespaceHandling = WhitespaceHandling.All
+            }
             AppConfigXmlDoc.Load(XmlAppConfigReader)
             Return AppConfigXmlDoc
         End Function

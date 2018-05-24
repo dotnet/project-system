@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 #Const WINFORMEDITOR = False ' Set to True to open in WinForm Editor. Remember to set it back.
 
@@ -89,9 +89,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             InitializeComponent()
 
             ' Support sorting.
-            _comparer = New ListViewComparer()
-            _comparer.SortColumn = 0
-            _comparer.Sorting = SortOrder.Ascending
+            _comparer = New ListViewComparer With {
+                .SortColumn = 0,
+                .Sorting = SortOrder.Ascending
+            }
             listViewExtensions.ListViewItemSorter = _comparer
             listViewExtensions.Sorting = SortOrder.Ascending
 
@@ -167,8 +168,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 As ListViewItem
             Debug.Assert(extensionProjectFile IsNot Nothing)
 
-            Dim listItem As New ListViewItem(extensionProjectFile.DisplayName)
-            listItem.Tag = extensionProjectFile
+            Dim listItem As New ListViewItem(extensionProjectFile.DisplayName) With {
+                .Tag = extensionProjectFile
+            }
             listItem.SubItems.Add(extensionProjectFile.ExtensionVersion.ToString())
             listItem.SubItems.Add(extensionProjectFile.ExtensionDescription)
 
@@ -214,7 +216,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
         Private WithEvents _projectService As MyExtensibilityProjectService = Nothing
-        Private _comparer As ListViewComparer
+        Private ReadOnly _comparer As ListViewComparer
 #End If
 
 #Region "Windows Form Designer generated code"

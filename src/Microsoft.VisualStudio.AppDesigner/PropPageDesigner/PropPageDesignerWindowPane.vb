@@ -1,8 +1,8 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.Runtime.InteropServices
 Imports Microsoft.VisualStudio.Editors.AppDesInterop
-Imports win = Microsoft.VisualStudio.Editors.AppDesInterop.win
+Imports Win32Constant = Microsoft.VisualStudio.Editors.AppDesInterop.Win32Constant
 Imports Common = Microsoft.VisualStudio.Editors.AppDesCommon
 Imports System.Windows.Forms
 Imports System.ComponentModel.Design
@@ -22,7 +22,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <param name="surface"></param>
         ''' <remarks></remarks>
         Public Sub New(surface As DesignSurface)
-            MyBase.New(surface, SupportToolBox:=False)
+            MyBase.New(surface, SupportToolbox:=False)
         End Sub
 
 
@@ -76,7 +76,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                         Common.Switches.TracePDMessageRouting(TraceLevel.Info, "  ... Property page did not handle the message", m)
 
                         Select Case m.Msg
-                            Case win.WM_KEYDOWN
+                            Case Win32Constant.WM_KEYDOWN
                                 Dim ShiftIsDown As Boolean = (Control.ModifierKeys And Keys.Shift) <> 0
                                 Dim ControlIsDown As Boolean = (Control.ModifierKeys And Keys.Control) <> 0
 
@@ -93,7 +93,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                                     Dim WantsTab As Boolean = False
                                     Dim FocusedHwnd As IntPtr = NativeMethods.GetFocus()
                                     If Not FocusedHwnd.Equals(IntPtr.Zero) Then
-                                        WantsTab = (NativeMethods.SendMessage(New HandleRef(Me, FocusedHwnd), win.WM_GETDLGCODE, 0, 0).ToInt32() And win.DLGC_WANTTAB) <> 0
+                                        WantsTab = (NativeMethods.SendMessage(New HandleRef(Me, FocusedHwnd), Win32Constant.WM_GETDLGCODE, 0, 0).ToInt32() And Win32Constant.DLGC_WANTTAB) <> 0
 
                                         'Not all WinForms controls respond correctly to WM_GETDLGCODE.
                                         '  One way to figure this out would be Control.FromChildHandle().IsInputKey, but
@@ -126,7 +126,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 
                                     'We hit the last tabbable control in the property page designer, set focus to the first (or last)
                                     '  control in the property page itself.
-                                    Dim PropPageDesignerHwnd As IntPtr = NativeMethods.GetWindow(View.Handle, win.GW_CHILD)
+                                    Dim PropPageDesignerHwnd As IntPtr = NativeMethods.GetWindow(View.Handle, Win32Constant.GW_CHILD)
                                     'Dim NextTabStop As IntPtr
 
                                     Dim PPDView As PropPageDesignerView = GetPropPageDesignerView()
@@ -146,7 +146,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 
                                     Return True
                                 End If
-                            Case win.WM_SYSCHAR
+                            Case Win32Constant.WM_SYSCHAR
                                 'The property page didn't handle the message.  Allow the property page designer to check if
                                 '  it's one of its accelerators.
                                 Dim PPDView As PropPageDesignerView = GetPropPageDesignerView()
@@ -172,11 +172,11 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                     .lParam = m.LParam
                 End With
 
-                If m.Msg = win.WM_KEYDOWN AndAlso KeyCode = Keys.Escape AndAlso Not PropPageHwnd.Equals(IntPtr.Zero) Then
+                If m.Msg = Win32Constant.WM_KEYDOWN AndAlso KeyCode = Keys.Escape AndAlso Not PropPageHwnd.Equals(IntPtr.Zero) Then
                     If NativeMethods.IsDialogMessage(New HandleRef(Me, PropPageHwnd), msg) Then
                         Return True
                     End If
-                ElseIf m.Msg = win.WM_SYSKEYDOWN Then
+                ElseIf m.Msg = Win32Constant.WM_SYSKEYDOWN Then
                     'Here, we have to translate accelerators instead of letting shell handle them. Otherwise the shell menus
                     'will handle the accelerator first if we have a duplicate accelerator. See Dev10 bug 818320.
                     'We must never handle messages in three cases: if this is a VK_MENU, which means the user just pressed alt

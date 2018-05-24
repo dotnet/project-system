@@ -1,9 +1,9 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Namespace Microsoft.VisualStudio.Editors.Interop
 
-    <System.Runtime.InteropServices.ComVisible(False)> _
-    Friend Class win
+    <System.Runtime.InteropServices.ComVisible(False)>
+    Friend Class Win32Constant
         Friend Const CLSCTX_INPROC_SERVER As Integer = &H1
         Friend Const CLSCTX_INPROC_HANDLER As Integer = &H2
         Friend Const CLSCTX_LOCAL_SERVER As Integer = &H4

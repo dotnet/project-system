@@ -72,11 +72,6 @@
         <target state="translated">해제</target>
         <note />
       </trans-unit>
-      <trans-unit id="EnumProperty|LanguageVersion|DisplayName">
-        <source>Language version</source>
-        <target state="translated">언어 버전</target>
-        <note />
-      </trans-unit>
       <trans-unit id="EnumProperty|ErrorReport|DisplayName">
         <source>Error report</source>
         <target state="translated">오류 보고서</target>
@@ -232,14 +227,19 @@
         <target state="translated">빌드에서 프로젝트 출력을 업데이트한 경우</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|LangVersion|DisplayName">
-        <source>CSharp Language Version</source>
-        <target state="translated">CSharp 언어 버전</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|CodeAnalysisRuleSet|DisplayName">
         <source> Code Analysis Rule set</source>
         <target state="translated"> 코드 분석 규칙 집합</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|LanguageVersion|DisplayName">
+        <source>Language version</source>
+        <target state="new">Language version</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|LangVersion|DisplayName">
+        <source>Language version</source>
+        <target state="new">Language version</target>
         <note />
       </trans-unit>
     </body>

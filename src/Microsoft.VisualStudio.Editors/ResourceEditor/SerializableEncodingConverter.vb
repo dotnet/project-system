@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Option Explicit On
 Option Strict On
@@ -156,9 +156,10 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Next
 
                 'Build up the full list
-                Dim AllEncodings As New ArrayList
-                AllEncodings.Add("") 'default
-                AllEncodings.Add(CurrentCodePageEncoding.WebName)
+                Dim AllEncodings As New ArrayList From {
+                    "", 'default
+                    CurrentCodePageEncoding.WebName
+                }
                 AllEncodings.AddRange(SortedUnicodeEncodings.Values)
                 AllEncodings.AddRange(SortedEncodings.Values)
 

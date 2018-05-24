@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Option Explicit On
 Option Strict On
@@ -124,15 +124,15 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <remarks></remarks>
         Private Shared Function GetManifestResourceList() As ListDictionary
             If s_manifestResourceList Is Nothing Then
-                s_manifestResourceList = New ListDictionary(StringComparer.OrdinalIgnoreCase)
-
-                s_manifestResourceList.Add(EXT_BMP, "BlankBmp")
-                s_manifestResourceList.Add(EXT_GIF, "BlankGif")
-                s_manifestResourceList.Add(EXT_JPEG, "BlankJpeg")
-                s_manifestResourceList.Add(EXT_JPG, "BlankJpeg")
-                s_manifestResourceList.Add(EXT_PNG, "BlankPng")
-                s_manifestResourceList.Add(EXT_TIF, "BlankTiff")
-                s_manifestResourceList.Add(EXT_TIFF, "BlankTiff")
+                s_manifestResourceList = New ListDictionary(StringComparer.OrdinalIgnoreCase) From {
+                    {EXT_BMP, "BlankBmp"},
+                    {EXT_GIF, "BlankGif"},
+                    {EXT_JPEG, "BlankJpeg"},
+                    {EXT_JPG, "BlankJpeg"},
+                    {EXT_PNG, "BlankPng"},
+                    {EXT_TIF, "BlankTiff"},
+                    {EXT_TIFF, "BlankTiff"}
+                }
             End If
             Return s_manifestResourceList
         End Function

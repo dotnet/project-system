@@ -5,6 +5,8 @@ Imports Microsoft.VisualStudio.OLE.Interop
 Imports ComTypes = System.Runtime.InteropServices.ComTypes
 Imports System.Windows.Forms
 
+#Disable Warning IDE1006 ' Naming Styles
+
 Namespace Microsoft.VisualStudio.Editors.AppDesInterop
     <ComVisible(False)> _
     Friend NotInheritable Class NativeMethods
@@ -50,7 +52,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesInterop
 
         Public Shared Function HRESULT_FROM_WIN32(x As Integer) As Integer
             If x <> 0 Then
-                Return (x And &HFFFF) Or (win.FACILITY_WIN32 * &H10000) Or &H80000000
+                Return (x And &HFFFF) Or (Win32Constant.FACILITY_WIN32 * &H10000) Or &H80000000
             Else
                 Return 0
             End If
@@ -363,7 +365,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesInterop
 
         <StructLayout(LayoutKind.Sequential, CharSet:=CharSet.Auto)>
         Public Structure TVITEM
-#Disable Warning IDE1006 ' Naming Styles
             Public item_mask As Integer
             Public item_hItem As IntPtr
             Public item_state As Integer
@@ -374,7 +375,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesInterop
             Public item_iSelectedImage As Integer
             Public item_cChildren As Integer
             Public item_lParam As IntPtr
-#Enable Warning IDE1006 ' Naming Styles
         End Structure
 
         <DllImport("user32")> _

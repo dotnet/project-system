@@ -503,7 +503,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             _dialog.Activate()
             While _dialog.Visible
                 Application.DoEvents()
-                Interop.NativeMethods.MsgWaitForMultipleObjects(0, IntPtr.Zero, True, 250, Interop.win.QS_ALLINPUT)
+                Interop.NativeMethods.MsgWaitForMultipleObjects(0, IntPtr.Zero, True, 250, Interop.Win32Constant.QS_ALLINPUT)
             End While
             RemoveHandler control.SizeChanged, AddressOf DropDownHolderSizeChanged
         End Sub
@@ -578,14 +578,15 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 Get
                     Dim BaseParams As CreateParams = MyBase.CreateParams
 
-                    Dim Params As New CreateParams
-                    Params.ClassStyle = 0
-                    Params.Style = Constants.WS_VISIBLE Or Constants.WS_POPUP Or Constants.WS_BORDER
-                    Params.ExStyle = Constants.WS_EX_TOPMOST Or Constants.WS_EX_TOOLWINDOW
-                    Params.Height = Height
-                    Params.Width = Width
-                    Params.X = Left
-                    Params.Y = Top
+                    Dim Params As New CreateParams With {
+                        .ClassStyle = 0,
+                        .Style = Constants.WS_VISIBLE Or Constants.WS_POPUP Or Constants.WS_BORDER,
+                        .ExStyle = Constants.WS_EX_TOPMOST Or Constants.WS_EX_TOOLWINDOW,
+                        .Height = Height,
+                        .Width = Width,
+                        .X = Left,
+                        .Y = Top
+                    }
                     Return Params
                 End Get
             End Property

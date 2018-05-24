@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.ComponentModel.Design
 Imports Microsoft.VisualStudio.Shell.Interop
@@ -24,7 +24,9 @@ Namespace Microsoft.VisualStudio.Editors
     Public Class VBPackageUtils
 
         Private Shared s_editorsPackage As IVBPackage
+#Disable Warning IDE1006 ' Naming Styles (Compat)
         Public Delegate Function getServiceDelegate(ServiceType As Type) As Object
+#Enable Warning IDE1006 ' Naming Styles
         ''' <summary>
         ''' 
         ''' </summary>

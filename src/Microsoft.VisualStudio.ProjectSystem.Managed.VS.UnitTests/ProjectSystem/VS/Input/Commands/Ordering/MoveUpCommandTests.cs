@@ -3,7 +3,7 @@
 using System.Collections.Immutable;
 using System.Threading.Tasks;
 
-using Microsoft.VisualStudio.Packaging;
+using Microsoft.VisualStudio.Input;
 
 using Xunit;
 
@@ -167,7 +167,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.fsproj""
             Assert.False(result.Status.HasFlag(CommandStatus.Enabled));
         }
 
-        override internal long GetCommandId() => ManagedProjectSystemPackage.MoveUpCmdId;
+        override internal long GetCommandId() => FSharpProjectCommandId.MoveUp;
 
         override internal AbstractMoveCommand CreateInstance(IPhysicalProjectTree projectTree, Shell.SVsServiceProvider serviceProvider, ConfiguredProject configuredProject, IProjectAccessor accessor)
         {

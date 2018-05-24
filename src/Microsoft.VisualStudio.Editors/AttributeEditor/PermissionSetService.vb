@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Option Strict On
 Option Explicit On
@@ -81,8 +81,9 @@ Namespace Microsoft.VisualStudio.Editors.VBAttributeEditor
 
                 If (strManifestFileName IsNot Nothing) AndAlso (strManifestFileName.Length > 0) Then
 
-                    Dim manifestInfo As New TrustInfo
-                    manifestInfo.PreserveFullTrustPermissionSet = True
+                    Dim manifestInfo As New TrustInfo With {
+                        .PreserveFullTrustPermissionSet = True
+                    }
 
                     Try
                         Using appManifestDocData As New DocData(_serviceProvider, strManifestFileName)

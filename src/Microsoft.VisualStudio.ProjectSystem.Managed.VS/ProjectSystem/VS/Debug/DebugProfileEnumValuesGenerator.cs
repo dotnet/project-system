@@ -76,12 +76,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             var result = new Collection<IEnumValue>(
             (
                 from profile in profiles.Profiles
-                let value = new EnumValue { Name = profile.Name, DisplayName = profile.Name }
+                let value = new EnumValue { Name = profile.Name, DisplayName = EscapeMnemonics(profile.Name) }
                 select ((IEnumValue)new PageEnumValue(value))).ToList()
             );
 
             return result;
+        }
 
+        private static string EscapeMnemonics(string text)
+        {
+            return text?.Replace("&", "&&");
         }
     }
 }

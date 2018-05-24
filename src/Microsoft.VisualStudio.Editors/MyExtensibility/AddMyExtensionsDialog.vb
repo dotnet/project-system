@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Option Strict On
 Option Explicit On
@@ -48,9 +48,10 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
                 Next
             End If
 
-            _comparer = New ListViewComparer()
-            _comparer.SortColumn = 0
-            _comparer.Sorting = SortOrder.Ascending
+            _comparer = New ListViewComparer With {
+                .SortColumn = 0,
+                .Sorting = SortOrder.Ascending
+            }
             listViewExtensions.ListViewItemSorter = _comparer
             listViewExtensions.Sorting = _comparer.Sorting
             listViewExtensions.Sort()
@@ -94,7 +95,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' <summary>
         ''' Click handler for the Help button. DevDiv Bugs 69458.
         ''' </summary>
-        Private Sub AddMyExtensionDialog_HelpButtonClicked( _
+        Private Sub AddMyExtensionDialog_HelpButtonClicked(
                 sender As Object, e As CancelEventArgs) _
                 Handles MyBase.HelpButtonClicked
             e.Cancel = True
@@ -135,12 +136,13 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' <summary>
         ''' Return a ListViewItem for the given extension template.
         ''' </summary>
-        Private Shared Function ExtensionTemplateToListViewItem( _
+        Private Shared Function ExtensionTemplateToListViewItem(
                 extensionTemplate As MyExtensionTemplate) As ListViewItem
             Debug.Assert(extensionTemplate IsNot Nothing, "extensionTemplate is NULL!")
 
-            Dim item As New ListViewItem(extensionTemplate.DisplayName)
-            item.Tag = extensionTemplate
+            Dim item As New ListViewItem(extensionTemplate.DisplayName) With {
+                .Tag = extensionTemplate
+            }
             item.SubItems.Add(extensionTemplate.Version.ToString())
             item.SubItems.Add(extensionTemplate.Description)
             Return item

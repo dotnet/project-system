@@ -39,9 +39,10 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End If
 
             'Add any initialization after the InitializeComponent() call
-            _typeTreeView = New TypeTV
-            _typeTreeView.AccessibleName = My.Resources.Designer.SD_SelectATypeTreeView_AccessibleName
-            _typeTreeView.Dock = DockStyle.Fill
+            _typeTreeView = New TypeTV With {
+                .AccessibleName = My.Resources.Designer.SD_SelectATypeTreeView_AccessibleName,
+                .Dock = DockStyle.Fill
+            }
             AddHandler _typeTreeView.AfterSelect, AddressOf TypeTreeViewAfterSelectHandler
             AddHandler _typeTreeView.BeforeExpand, AddressOf TypeTreeViewBeforeExpandHandler
             _treeViewPanel.Controls.Add(_typeTreeView)
@@ -368,7 +369,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <returns></returns>
         ''' <remarks></remarks>
         Private Function NormalizeTypeName(displayName As String) As String
-            Dim typeNameResolutionService As SettingTypeNameResolutionService = _
+            Dim typeNameResolutionService As SettingTypeNameResolutionService =
                 DirectCast(GetService(GetType(SettingTypeNameResolutionService)), SettingTypeNameResolutionService)
 
             Debug.Assert(typeNameResolutionService IsNot Nothing, "The settingsdesignerloader should have added a typenameresolutioncomponent service!")
@@ -454,9 +455,10 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
             Public Sub AddAssemblyNode(assemblyName As String)
                 If Not String.IsNullOrEmpty(assemblyName) AndAlso Not Nodes.ContainsKey(assemblyName) Then
-                    Dim asNode As TypeTVNode = New TypeTVNode(NodeType.ASSEMBLY_NODE)
-                    asNode.Text = assemblyName
-                    asNode.Name = assemblyName
+                    Dim asNode As TypeTVNode = New TypeTVNode(NodeType.ASSEMBLY_NODE) With {
+                        .Text = assemblyName,
+                        .Name = assemblyName
+                    }
                     Nodes.Add(asNode)
                     asNode.AddDummyNode()
                 End If
@@ -473,17 +475,19 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                     Dim nsNode As TypeTVNode
 
                     If Not nodes.ContainsKey(nsName) Then
-                        nsNode = New TypeTVNode(NodeType.NAMESPACE_NODE)
-                        nsNode.Text = nsName
-                        nsNode.Name = nsName
+                        nsNode = New TypeTVNode(NodeType.NAMESPACE_NODE) With {
+                            .Text = nsName,
+                            .Name = nsName
+                        }
                         nodes.Add(nsNode)
                     Else
                         nsNode = DirectCast(nodes(nsName), TypeTVNode)
                     End If
                     If Not String.IsNullOrEmpty(typName) AndAlso Not nsNode.Nodes.ContainsKey(typName) Then
-                        Dim typNode As TypeTVNode = New TypeTVNode(NodeType.TYPE_NODE)
-                        typNode.Text = typName
-                        typNode.Name = typName
+                        Dim typNode As TypeTVNode = New TypeTVNode(NodeType.TYPE_NODE) With {
+                            .Text = typName,
+                            .Name = typName
+                        }
                         nsNode.Nodes.Add(typNode)
                     End If
                 End If

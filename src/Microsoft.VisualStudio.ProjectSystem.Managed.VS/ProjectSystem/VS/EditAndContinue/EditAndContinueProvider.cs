@@ -5,19 +5,21 @@ using System.ComponentModel.Composition;
 using System.Runtime.InteropServices;
 
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
-using Microsoft.VisualStudio.ProjectSystem.VS;
 using Microsoft.VisualStudio.Shell.Interop;
+using Microsoft.VisualStudio.TextManager.Interop;
 
-using EncInterop = Microsoft.VisualStudio.LanguageServices.Implementation.EditAndContinue.Interop;
+// We use the version of IVsENCRebuildableProjectCfg2/IVsENCRebuildableProjectCfg4 from Roslyn because the one in the SDK is defined wrong
+using IVsENCRebuildableProjectCfg2 = Microsoft.VisualStudio.LanguageServices.Implementation.EditAndContinue.Interop.IVsENCRebuildableProjectCfg2;
+using IVsENCRebuildableProjectCfg4 = Microsoft.VisualStudio.LanguageServices.Implementation.EditAndContinue.Interop.IVsENCRebuildableProjectCfg4;
+using ENC_BREAKSTATE_REASON = Microsoft.VisualStudio.LanguageServices.Implementation.EditAndContinue.Interop.ENC_BREAKSTATE_REASON;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Managed.VS.EditAndContinue
+namespace Microsoft.VisualStudio.ProjectSystem.VS.EditAndContinue
 {
-
-    [ExportProjectNodeComService(typeof(IVsENCRebuildableProjectCfg))]
+    [ExportProjectNodeComService(typeof(IVsENCRebuildableProjectCfg), typeof(IVsENCRebuildableProjectCfg2), typeof(IVsENCRebuildableProjectCfg4))]
     [AppliesTo(ProjectCapability.EditAndContinue)]
-    internal class EditAndContinueProvider : IVsENCRebuildableProjectCfg
+    internal class EditAndContinueProvider : IVsENCRebuildableProjectCfg, IVsENCRebuildableProjectCfg2, IVsENCRebuildableProjectCfg4, IDisposable
     {
-        private readonly ILanguageServiceHost _host;
+        private ILanguageServiceHost _host;
 
         [ImportingConstructor]
         public EditAndContinueProvider(ILanguageServiceHost host)
@@ -25,60 +27,196 @@ namespace Microsoft.VisualStudio.ProjectSystem.Managed.VS.EditAndContinue
             _host = host;
         }
 
-        // AbstractProject implements IVsENCRebuildableProjectCfg2 and IVsENCRebuildableProjectCfg4 only
-        [ExportProjectNodeComService(typeof(EncInterop.IVsENCRebuildableProjectCfg2), typeof(EncInterop.IVsENCRebuildableProjectCfg4))]
-        [AppliesTo(ProjectCapability.EditAndContinue)]
-        internal object EditAndContinueService
+        public int StartDebuggingPE()
         {
-            get
+            if (_host?.HostSpecificEditAndContinueService is IVsENCRebuildableProjectCfg2 encProvider)
             {
-                return _host.HostSpecificEditAndContinueService;
+                return encProvider.StartDebuggingPE();
             }
+
+            return HResult.Unexpected;
         }
 
-        // Managed ENC always uses IVsENCRebuildableProjectCfg2.
-        // Although we don't implement the methods of IVsENCRebuildableProjectCfg, it is important that we implement the interface and return VSConstants.E_NOTIMPL.
-        // This is how the EncManager recognizes the project system that supports EnC.
-        public int ENCRebuild(object in_pProgram, out object out_ppSnapshot)
+        public int EnterBreakStateOnPE(ENC_BREAKSTATE_REASON encBreakReason, ENC_ACTIVE_STATEMENT[] pActiveStatements, uint cActiveStatements)
+        {
+            if (_host?.HostSpecificEditAndContinueService is IVsENCRebuildableProjectCfg2 encProvider)
+            {
+                return encProvider.EnterBreakStateOnPE(encBreakReason, pActiveStatements, cActiveStatements);
+            }
+
+            return HResult.Unexpected;
+        }
+
+        public int BuildForEnc(object pUpdatePE)
+        {
+            if (_host?.HostSpecificEditAndContinueService is IVsENCRebuildableProjectCfg2 encProvider)
+            {
+                return encProvider.BuildForEnc(pUpdatePE);
+            }
+
+            return HResult.Unexpected;
+        }
+
+        public int ExitBreakStateOnPE()
+        {
+            if (_host?.HostSpecificEditAndContinueService is IVsENCRebuildableProjectCfg2 encProvider)
+            {
+                return encProvider.ExitBreakStateOnPE();
+            }
+
+            return HResult.Unexpected;
+        }
+
+        public int StopDebuggingPE()
+        {
+            if (_host?.HostSpecificEditAndContinueService is IVsENCRebuildableProjectCfg2 encProvider)
+            {
+                return encProvider.StopDebuggingPE();
+            }
+
+            return HResult.Unexpected;
+        }
+
+        public int GetENCBuildState(ENC_BUILD_STATE[] pENCBuildState)
+        {
+            if (_host?.HostSpecificEditAndContinueService is IVsENCRebuildableProjectCfg2 encProvider)
+            {
+                return encProvider.GetENCBuildState(pENCBuildState);
+            }
+
+            return HResult.Unexpected;
+        }
+
+        public int GetCurrentActiveStatementPosition(uint id, TextSpan[] ptsNewPosition)
+        {
+            if (_host?.HostSpecificEditAndContinueService is IVsENCRebuildableProjectCfg2 encProvider)
+            {
+                return encProvider.GetCurrentActiveStatementPosition(id, ptsNewPosition);
+            }
+
+            return HResult.Unexpected;
+        }
+
+        public int GetPEidentity(Guid[] pMVID, string[] pbstrPEName)
+        {
+            if (_host?.HostSpecificEditAndContinueService is IVsENCRebuildableProjectCfg2 encProvider)
+            {
+                return encProvider.GetPEidentity(pMVID, pbstrPEName);
+            }
+
+            return HResult.Unexpected;
+        }
+
+        public int GetExceptionSpanCount(out uint pcExceptionSpan)
+        {
+            if (_host?.HostSpecificEditAndContinueService is IVsENCRebuildableProjectCfg2 encProvider)
+            {
+                return encProvider.GetExceptionSpanCount(out pcExceptionSpan);
+            }
+
+            pcExceptionSpan = 0;
+            return HResult.Unexpected;
+        }
+
+        public int GetExceptionSpans(uint celt, ENC_EXCEPTION_SPAN[] rgelt, ref uint pceltFetched)
+        {
+            if (_host?.HostSpecificEditAndContinueService is IVsENCRebuildableProjectCfg2 encProvider)
+            {
+                return encProvider.GetExceptionSpans(celt, rgelt, pceltFetched);
+            }
+
+            return HResult.Unexpected;
+        }
+
+        public int GetCurrentExceptionSpanPosition(uint id, TextSpan[] ptsNewPosition)
+        {
+            if (_host?.HostSpecificEditAndContinueService is IVsENCRebuildableProjectCfg2 encProvider)
+            {
+                return encProvider.GetCurrentExceptionSpanPosition(id, ptsNewPosition);
+            }
+
+            return HResult.Unexpected;
+        }
+
+        public int EncApplySucceeded(int hrApplyResult)
+        {
+            if (_host?.HostSpecificEditAndContinueService is IVsENCRebuildableProjectCfg2 encProvider)
+            {
+                return encProvider.EncApplySucceeded(hrApplyResult);
+            }
+
+            return HResult.Unexpected;
+        }
+
+        public int GetPEBuildTimeStamp(OLE.Interop.FILETIME[] pTimeStamp)
+        {
+            if (_host?.HostSpecificEditAndContinueService is IVsENCRebuildableProjectCfg2 encProvider)
+            {
+                return encProvider.GetPEBuildTimeStamp(pTimeStamp);
+            }
+
+            return HResult.Unexpected;
+        }
+
+        public int HasCustomMetadataEmitter(out bool value)
+        {
+            if (_host?.HostSpecificEditAndContinueService is IVsENCRebuildableProjectCfg4 encProvider)
+            {
+                return encProvider.HasCustomMetadataEmitter(out value);
+            }
+
+            value = false;
+            return HResult.Unexpected;
+        }
+
+        public void Dispose()
+        {
+            // Important for ProjectNodeComServices to null out fields to reduce the amount 
+            // of data we leak when extensions incorrectly holds onto the IVsHierarchy.
+            _host = null;
+        }
+
+        // NOTE: Managed ENC always calls through IVsENCRebuildableProjectCfg2/IVsENCRebuildableProjectCfg4.
+        // We implement IVsENCRebuildableProjectCfg as this used to sniff the project for EnC support.
+        int IVsENCRebuildableProjectCfg.ENCRebuild(object in_pProgram, out object out_ppSnapshot)
         {
             out_ppSnapshot = null;
-            return VSConstants.E_NOTIMPL;
+            return HResult.NotImplemented;
         }
 
-        public int BelongToProject(string in_szFileName, ENC_REASON in_ENCReason, int in_fOnContinue)
+        int IVsENCRebuildableProjectCfg.BelongToProject(string in_szFileName, ENC_REASON in_ENCReason, int in_fOnContinue)
         {
-            return VSConstants.E_NOTIMPL;
+            return HResult.NotImplemented;
         }
 
-        public int ENCComplete(int in_fENCSuccess)
+        int IVsENCRebuildableProjectCfg.ENCComplete(int in_fENCSuccess)
         {
-            return VSConstants.E_NOTIMPL;
+            return HResult.NotImplemented;
         }
 
-        public int CancelENC()
+        int IVsENCRebuildableProjectCfg.CancelENC()
         {
-            return VSConstants.E_NOTIMPL;
+            return HResult.NotImplemented;
         }
 
-        public int ENCRelink([In, MarshalAs(UnmanagedType.IUnknown)] object pENCRelinkInfo)
+        int IVsENCRebuildableProjectCfg.ENCRelink([In, MarshalAs(UnmanagedType.IUnknown)] object pENCRelinkInfo)
         {
-            return VSConstants.E_NOTIMPL;
+            return HResult.NotImplemented;
         }
 
-        public int StartDebugging()
+        int IVsENCRebuildableProjectCfg.StartDebugging()
         {
-            return VSConstants.E_NOTIMPL;
+            return HResult.NotImplemented;
         }
 
-        public int StopDebugging()
+        int IVsENCRebuildableProjectCfg.StopDebugging()
         {
-            return VSConstants.E_NOTIMPL;
+            return HResult.NotImplemented;
         }
 
-        public int SetENCProjectBuildOption([In] ref Guid in_guidOption, [In, MarshalAs(UnmanagedType.LPWStr)] string in_szOptionValue)
+        int IVsENCRebuildableProjectCfg.SetENCProjectBuildOption([In] ref Guid in_guidOption, [In, MarshalAs(UnmanagedType.LPWStr)] string in_szOptionValue)
         {
-            return VSConstants.E_NOTIMPL;
+            return HResult.NotImplemented;
         }
-
     }
 }

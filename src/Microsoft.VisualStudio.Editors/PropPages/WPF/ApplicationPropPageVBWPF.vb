@@ -161,13 +161,15 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
 
                     'StartupObject.  
                     'StartupObjectOrUri must be kept after OutputType because it depends on the initialization of "OutputType" values
-                    data = New PropertyControlData(VsProjPropId.VBPROJPROPID_StartupObject, Const_StartupObject, Nothing, ControlDataFlags.Hidden)
-                    data.DisplayPropertyName = My.Resources.Designer.PPG_Property_StartupObject
+                    data = New PropertyControlData(VsProjPropId.VBPROJPROPID_StartupObject, Const_StartupObject, Nothing, ControlDataFlags.Hidden) With {
+                        .DisplayPropertyName = My.Resources.Designer.PPG_Property_StartupObject
+                    }
                     list.Add(data)
 
                     'RootNamespace
-                    data = New PropertyControlData(VsProjPropId.VBPROJPROPID_RootNamespace, Const_RootNamespace, RootNamespaceTextBox, New Control() {RootNamespaceLabel})
-                    data.DisplayPropertyName = My.Resources.Designer.PPG_Property_RootNamespace
+                    data = New PropertyControlData(VsProjPropId.VBPROJPROPID_RootNamespace, Const_RootNamespace, RootNamespaceTextBox, New Control() {RootNamespaceLabel}) With {
+                        .DisplayPropertyName = My.Resources.Designer.PPG_Property_RootNamespace
+                    }
                     list.Add(data)
 
                     'OutputType
@@ -190,13 +192,15 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
                         ControlsThatDependOnStartupObjectOrUriProperty))
 
                     'AssemblyName
-                    data = New PropertyControlData(VsProjPropId.VBPROJPROPID_AssemblyName, "AssemblyName", AssemblyNameTextBox, New Control() {AssemblyNameLabel})
-                    data.DisplayPropertyName = My.Resources.Designer.PPG_Property_AssemblyName
+                    data = New PropertyControlData(VsProjPropId.VBPROJPROPID_AssemblyName, "AssemblyName", AssemblyNameTextBox, New Control() {AssemblyNameLabel}) With {
+                        .DisplayPropertyName = My.Resources.Designer.PPG_Property_AssemblyName
+                    }
                     list.Add(data)
 
                     'ApplicationIcon
-                    data = New PropertyControlData(VsProjPropId.VBPROJPROPID_ApplicationIcon, "ApplicationIcon", IconCombobox, AddressOf ApplicationIconSet, AddressOf ApplicationIconGet, ControlDataFlags.UserHandledEvents, New Control() {IconLabel, IconPicturebox})
-                    data.DisplayPropertyName = My.Resources.Designer.PPG_Property_ApplicationIcon
+                    data = New PropertyControlData(VsProjPropId.VBPROJPROPID_ApplicationIcon, "ApplicationIcon", IconCombobox, AddressOf ApplicationIconSet, AddressOf ApplicationIconGet, ControlDataFlags.UserHandledEvents, New Control() {IconLabel, IconPicturebox}) With {
+                        .DisplayPropertyName = My.Resources.Designer.PPG_Property_ApplicationIcon
+                    }
                     list.Add(data)
 
                     'ShutdownMode (user-defined)
@@ -252,7 +256,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' </summary>
         ''' <remarks></remarks>
         Private Sub SetCommonControls()
-            m_CommonControls = New CommonControls(
+            CommonControls = New CommonPageControls(
                 IconCombobox, IconLabel, IconPicturebox)
         End Sub
 
@@ -404,7 +408,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' <remarks></remarks>
         Protected Overrides Sub EnableIconComboBox(Enable As Boolean)
             'Icon combobox shouldn't be enabled for XBAP projects
-            EnableControl(m_CommonControls.IconCombobox, Enable AndAlso Not IsXBAP())
+            EnableControl(CommonControls.IconCombobox, Enable AndAlso Not IsXBAP())
             UpdateIconImage(False)
         End Sub
 
@@ -1741,8 +1745,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
 
             SuspendLayout()
             overarchingTableLayoutPanel.Visible = False
-            _pageErrorControl = New AppDotXamlErrorControl(message)
-            _pageErrorControl.Dock = DockStyle.Fill
+            _pageErrorControl = New AppDotXamlErrorControl(message) With {
+                .Dock = DockStyle.Fill
+            }
             Controls.Add(_pageErrorControl)
             _pageErrorControl.BringToFront()
             _pageErrorControl.Visible = True
@@ -1832,7 +1837,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         Protected Overrides Sub WndProc(ByRef m As Message)
             MyBase.WndProc(m)
 
-            If m.Msg = Interop.win.WM_SETFOCUS Then
+            If m.Msg = Interop.Win32Constant.WM_SETFOCUS Then
                 If _docDataHasChanged Then
                     BeginInvoke(New MethodInvoker(AddressOf RetryPageLoad))
                 End If

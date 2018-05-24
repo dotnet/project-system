@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Design;
 
-using Microsoft.VisualStudio.Packaging;
+using Microsoft.VisualStudio.Input;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.Shell;
 
@@ -24,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         public DebugFrameworkPropertyMenuTextUpdater(IStartupProjectHelper startupProjectHelper)
                 : base(ExecHandler, delegate
                 { }, QueryStatusHandler,
-                      new CommandID(new Guid(ManagedProjectSystemPackage.ManagedProjectSystemCommandSet), ManagedProjectSystemPackage.DebugTargetMenuDebugFrameworkMenu))
+                      new CommandID(new Guid(CommandGroup.ManagedProjectSystem), ManagedProjectSystemCommandId.DebugTargetMenuDebugFrameworkMenu))
         {
             StartupProjectHelper = startupProjectHelper;
         }

@@ -211,11 +211,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     datalist.Add(data)
                     data = New PropertyControlData(118, "NeutralLanguage", NeutralLanguageComboBox, AddressOf NeutralLanguageSet, AddressOf NeutralLanguageGet, ControlDataFlags.None, New Control() {NeutralLanguageLabel})
                     datalist.Add(data)
-                    data = New PropertyControlData(119, "AssemblyVersion", AssemblyVersionLayoutPanel, AddressOf VersionSet, AddressOf VersionGet, ControlDataFlags.None, New Control() {AssemblyVersionLabel})
-                    data.DisplayPropertyName = My.Resources.Designer.PPG_Property_AssemblyVersion
+                    data = New PropertyControlData(119, "AssemblyVersion", AssemblyVersionLayoutPanel, AddressOf VersionSet, AddressOf VersionGet, ControlDataFlags.None, New Control() {AssemblyVersionLabel}) With {
+                        .DisplayPropertyName = My.Resources.Designer.PPG_Property_AssemblyVersion
+                    }
                     datalist.Add(data)
-                    data = New PropertyControlData(120, "FileVersion", FileVersionLayoutPanel, AddressOf VersionSet, AddressOf VersionGet, ControlDataFlags.None, New Control() {AssemblyFileVersionLabel})
-                    data.DisplayPropertyName = My.Resources.Designer.PPG_Property_AssemblyFileVersion
+                    data = New PropertyControlData(120, "FileVersion", FileVersionLayoutPanel, AddressOf VersionSet, AddressOf VersionGet, ControlDataFlags.None, New Control() {AssemblyFileVersionLabel}) With {
+                        .DisplayPropertyName = My.Resources.Designer.PPG_Property_AssemblyFileVersion
+                    }
                     datalist.Add(data)
                     m_ControlData = datalist.ToArray()
                 End If

@@ -313,8 +313,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private Sub BeginGetUnusedRefs()
 
             ' Get a new timer
-            _getUnusedRefsTimer = New Timer
-            _getUnusedRefsTimer.Interval = PollingRate
+            _getUnusedRefsTimer = New Timer With {
+                .Interval = PollingRate
+            }
             AddHandler _getUnusedRefsTimer.Tick, AddressOf OnGetUnusedRefsTimerTick
 
             _lastStatus = ReferenceUsageResult.ReferenceUsageUnknown

@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.ComponentModel
 Imports System.Windows.Forms
@@ -62,19 +62,22 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     Dim datalist As List(Of PropertyControlData) = New List(Of PropertyControlData)
                     Dim data As PropertyControlData
 
-                    data = New PropertyControlData(VsProjPropId.VBPROJPROPID_StartURL, "StartURL", StartURL, ControlDataFlags.PersistedInProjectUserFile)
-                    data.DisplayPropertyName = My.Resources.Designer.PPG_Property_StartURL
+                    data = New PropertyControlData(VsProjPropId.VBPROJPROPID_StartURL, "StartURL", StartURL, ControlDataFlags.PersistedInProjectUserFile) With {
+                        .DisplayPropertyName = My.Resources.Designer.PPG_Property_StartURL
+                    }
                     datalist.Add(data)
 
                     data = New PropertyControlData(VsProjPropId.VBPROJPROPID_StartArguments, "StartArguments", StartArguments, ControlDataFlags.PersistedInProjectUserFile, New Control() {CommandLineArgsLabel})
                     datalist.Add(data)
 
-                    data = New PropertyControlData(VsProjPropId.VBPROJPROPID_StartWorkingDirectory, "StartWorkingDirectory", StartWorkingDirectory, ControlDataFlags.PersistedInProjectUserFile, New Control() {StartWorkingDirectoryBrowse, WorkingDirLabel})
-                    data.DisplayPropertyName = My.Resources.Designer.PPG_Property_StartWorkingDirectory
+                    data = New PropertyControlData(VsProjPropId.VBPROJPROPID_StartWorkingDirectory, "StartWorkingDirectory", StartWorkingDirectory, ControlDataFlags.PersistedInProjectUserFile, New Control() {StartWorkingDirectoryBrowse, WorkingDirLabel}) With {
+                        .DisplayPropertyName = My.Resources.Designer.PPG_Property_StartWorkingDirectory
+                    }
                     datalist.Add(data)
 
-                    data = New PropertyControlData(VsProjPropId.VBPROJPROPID_StartProgram, "StartProgram", StartProgram, ControlDataFlags.PersistedInProjectUserFile)
-                    data.DisplayPropertyName = My.Resources.Designer.PPG_Property_StartProgram
+                    data = New PropertyControlData(VsProjPropId.VBPROJPROPID_StartProgram, "StartProgram", StartProgram, ControlDataFlags.PersistedInProjectUserFile) With {
+                        .DisplayPropertyName = My.Resources.Designer.PPG_Property_StartProgram
+                    }
                     datalist.Add(data)
 
                     data = New PropertyControlData(VsProjPropId.VBPROJPROPID_StartAction, "StartAction", Nothing,
@@ -88,8 +91,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     data = New PropertyControlData(VsProjPropId.VBPROJPROPID_EnableUnmanagedDebugging, "EnableUnmanagedDebugging", EnableUnmanagedDebugging, ControlDataFlags.PersistedInProjectUserFile)
                     datalist.Add(data)
 
-                    data = New PropertyControlData(VsProjPropId.VBPROJPROPID_RemoteDebugMachine, "RemoteDebugMachine", RemoteDebugMachine, ControlDataFlags.PersistedInProjectUserFile)
-                    data.DisplayPropertyName = My.Resources.Designer.PPG_Property_RemoteDebugMachine
+                    data = New PropertyControlData(VsProjPropId.VBPROJPROPID_RemoteDebugMachine, "RemoteDebugMachine", RemoteDebugMachine, ControlDataFlags.PersistedInProjectUserFile) With {
+                        .DisplayPropertyName = My.Resources.Designer.PPG_Property_RemoteDebugMachine
+                    }
                     datalist.Add(data)
 
                     data = New PropertyControlData(VsProjPropId.VBPROJPROPID_RemoteDebugEnabled, "RemoteDebugEnabled", RemoteDebugEnabled, ControlDataFlags.PersistedInProjectUserFile)

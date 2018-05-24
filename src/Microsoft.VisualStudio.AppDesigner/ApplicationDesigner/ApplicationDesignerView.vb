@@ -1024,7 +1024,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 Common.Switches.TracePDPerfBegin("ApplicationDesignerView.ShowTab")
                 Common.Switches.TracePDFocus(TraceLevel.Error, "CodeMarker: perfMSVSEditorsShowTabBegin")
                 Common.Switches.TracePDPerf("CodeMarker: perfMSVSEditorsShowTabBegin")
-                CodeMarkers.Instance.CodeMarker(RoslynCodeMarkerEvent.perfMSVSEditorsShowTabBegin)
+                CodeMarkers.Instance.CodeMarker(RoslynCodeMarkerEvent.PerfMSVSEditorsShowTabBegin)
 
                 Dim NewCurrentPanel As ApplicationDesignerPanel = _designerPanels(Index)
                 Dim ErrorMessage As String = Nothing
@@ -1164,7 +1164,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 'We may have opened a new page, need to verify all dirty states
                 DelayRefreshDirtyIndicators()
 
-                CodeMarkers.Instance.CodeMarker(RoslynCodeMarkerEvent.perfMSVSEditorsShowTabEnd)
+                CodeMarkers.Instance.CodeMarker(RoslynCodeMarkerEvent.PerfMSVSEditorsShowTabEnd)
                 Common.Switches.TracePDFocus(TraceLevel.Error, "CodeMarker: perfMSVSEditorsShowTabEnd")
                 Common.Switches.TracePDPerf("CodeMarker: perfMSVSEditorsShowTabEnd")
                 Common.Switches.TracePDPerfEnd("ApplicationDesignerView.ShowTab")
@@ -1266,7 +1266,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="m"></param>
         ''' <remarks></remarks>
         Protected Overrides Sub WndProc(ByRef m As Message)
-            If m.Msg = win.WM_SETFOCUS AndAlso Not _isInPanelWindowFrameShow Then 'in MDI mode this can get hit recursively
+            If m.Msg = Win32Constant.WM_SETFOCUS AndAlso Not _isInPanelWindowFrameShow Then 'in MDI mode this can get hit recursively
                 'We need to intercept WM_SETFOCUS on the project designer to keep WinForms from setting focus to the
                 '  current control (one of the tab buttons).  Instead, we want to keep the tab buttons from getting
                 '  focus (unless they're clicked on directly), and instead activate the current page directly.

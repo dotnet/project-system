@@ -99,7 +99,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
         /// <summary>
         /// Priority specifies node's order among it's peers. Default is 0 and it means node will 
-        /// be positioned according it's name in alphabethical order. If it is not 0, then node is 
+        /// be positioned according it's name in alphabetical order. If it is not 0, then node is 
         /// positioned after all nodes having lower priority. 
         /// Note: This is property is in effect only for graph nodes.
         /// </summary>

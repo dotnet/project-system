@@ -17,10 +17,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
     public class DebugProfileEnumValuesGenerator_Tests
     {
         private List<ILaunchProfile> _profiles = new List<ILaunchProfile>() {
-            {new LaunchProfile() {Name="Profile1", LaunchBrowser=true}},
+            {new LaunchProfile() { Name="Profile1", LaunchBrowser=true}},
             {new LaunchProfile() { Name = "MyCommand"} },
             {new LaunchProfile() { Name = "Foo"} },
-            {new LaunchProfile() {Name="Bar"} }
+            {new LaunchProfile() { Name="Bar"} },
+            {new LaunchProfile() { Name="Foo & Bar"} }
+
         };
 
         [Fact]
@@ -40,11 +42,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             var generator =
                 new DebugProfileEnumValuesGenerator(moqProfileProvider.Object, threadingService);
             ICollection<IEnumValue> results = await generator.GetListedValuesAsync();
-            Assert.True(results.Count == 4);
+            Assert.True(results.Count == 5);
             Assert.True(results.ElementAt(0).Name == "Profile1" && results.ElementAt(0).DisplayName == "Profile1");
             Assert.True(results.ElementAt(1).Name == "MyCommand" && results.ElementAt(1).DisplayName == "MyCommand");
             Assert.True(results.ElementAt(2).Name == "Foo" && results.ElementAt(2).DisplayName == "Foo");
             Assert.True(results.ElementAt(3).Name == "Bar" && results.ElementAt(3).DisplayName == "Bar");
+            Assert.True(results.ElementAt(4).Name == "Foo & Bar" && results.ElementAt(4).DisplayName == "Foo && Bar");
         }
 
         [Fact]

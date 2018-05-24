@@ -651,10 +651,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     ' in order to have scroll bars properly appear in large fonts, wrap
                     ' the page in a usercontrol (since it supports AutoScroll) that won't
                     ' scale with fonts. Move(rect) will set the proper size.
-                    Dim sizingParent As New UserControl()
-                    sizingParent.AutoScaleMode = AutoScaleMode.None
-                    sizingParent.AutoScroll = True
-                    sizingParent.Text = "SizingParent" 'For debugging purposes (Spy++)
+                    Dim sizingParent As New UserControl With {
+                        .AutoScaleMode = AutoScaleMode.None,
+                        .AutoScroll = True,
+                        .Text = "SizingParent" 'For debugging purposes (Spy++)
+                        }
                     _propPage.Parent = sizingParent
                     NativeMethods.SetParent(sizingParent.Handle, hWndParent)
                     _wasSetParentCalled = True

@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.Drawing
 Imports System.Windows.Forms
@@ -42,67 +42,13 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         '   ErrorMessage: The text to display in the message box.
         '   HelpLink: Link to the help topic for this message box.
         '**************************************************************************
-        Public Overloads Shared Sub ReportError(ServiceProvider As IServiceProvider, ErrorMessage As String, _
+        Public Overloads Shared Sub ReportError(ServiceProvider As IServiceProvider, ErrorMessage As String,
                 HelpLink As String)
 
 
-            DesignerMessageBox.Show(ServiceProvider, ErrorMessage, GetDefaultCaption(ServiceProvider), _
+            DesignerMessageBox.Show(ServiceProvider, ErrorMessage, GetDefaultCaption(ServiceProvider),
                     MessageBoxButtons.OK, MessageBoxIcon.Error, HelpLink:=HelpLink)
         End Sub 'ReportError
-
-        '**************************************************************************
-        ';ShowWarning
-        '
-        'Summary:
-        '   Displays a warning message box with the specified error message.
-        'Params:
-        '   ServiceProvider: The IServiceProvider, used to get devenv shell as the parent of the message box.
-        '   Message: The text to display in the message box.
-        '**************************************************************************
-        Public Shared Sub ShowWarning(ServiceProvider As IServiceProvider, Message As String)
-            DesignerMessageBox.Show(ServiceProvider, Message, GetDefaultCaption(ServiceProvider), MessageBoxButtons.OK, _
-                    MessageBoxIcon.Warning)
-        End Sub 'ShowWarning
-
-        '**************************************************************************
-        ';ShowMessage
-        '
-        'Summary:
-        '   Displays a message box with specified text, caption, buttons and icon.
-        'Params:
-        '   ServiceProvider: The IServiceProvider, used to get devenv shell as the parent of the message box.
-        '   Message: The text to display in the message box.
-        '   Caption: The text to display in the title bar of the message box.
-        '   Buttons: One of the MessageBoxButtons values that specifies which buttons to display in the message box.
-        '   Icon: One of the MessageBoxIcon values that specifies which icon to display in the message box.
-        'Returns:
-        '   One of the DialogResult values.
-        '**************************************************************************
-        Public Overloads Shared Function ShowMessage(ServiceProvider As IServiceProvider, Message As String, _
-                Caption As String, Buttons As MessageBoxButtons, Icon As MessageBoxIcon) As DialogResult
-            Return DesignerMessageBox.Show(ServiceProvider, Message, Caption, Buttons, Icon)
-        End Function 'ShowMessage
-
-        '**************************************************************************
-        ';ShowMessage
-        '
-        'Summary:
-        '   Displays a message box with specified text, caption, buttons, icons and default button.
-        'Params:
-        '   ServiceProvider: The IServiceProvider, used to get devenv shell as the parent of the message box.
-        '   Message: The text to display in the message box.
-        '   Caption: The text to display in the title bar of the message box.
-        '   Buttons: One of the MessageBoxButtons values that specifies which buttons to display in the message box.
-        '   Icon: One of the MessageBoxIcon values that specifies which icon to display in the message box.
-        '   DefaultButton: One of the MessageBoxDefaultButton values that specifies the default button of the message box.
-        'Returns:
-        '   One of the DialogResult values.
-        '**************************************************************************
-        Public Overloads Shared Function ShowMessage(ServiceProvider As IServiceProvider, Message As String, _
-                        Caption As String, Buttons As MessageBoxButtons, Icon As MessageBoxIcon, _
-                        DefaultButton As MessageBoxDefaultButton) As DialogResult
-            Return DesignerMessageBox.Show(ServiceProvider, Message, Caption, Buttons, Icon, DefaultButton)
-        End Function 'ShowMessage
 
         ''' <summary>
         ''' Get the default caption from IVsUIShell, or fall back to localized resource
@@ -196,176 +142,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
                 End If
             Next ChildControl
         End Sub 'SetFontStyles
-
-
-        ''' <summary>
-        ''' Gets the signed hi word of an IntPtr
-        ''' </summary>
-        ''' <param name="Number">The IntPtr to get the word from</param>
-        ''' <returns>The signed hi word</returns>
-        ''' <remarks></remarks>
-        Public Shared Function SignedHiWord(Number As IntPtr) As Integer
-            Return (CType(Number, Integer) >> 16) And &HFFFF
-        End Function
-
-
-        ''' <summary>
-        ''' Gets the signed lo word of an IntPtr
-        ''' </summary>
-        ''' <param name="Number">The IntPtr to get the word from</param>
-        ''' <returns>The signed lo word</returns>
-        ''' <remarks></remarks>
-        Public Shared Function SignedLoWord(Number As IntPtr) As Integer
-            Return (CType(Number, Integer) And &HFFFF)
-        End Function
-
-
-        ''' <summary>
-        ''' Calculate the event args for raising the context menu show event for a control.
-        ''' </summary>
-        ''' <param name="m">Window's message.</param>
-        ''' <returns>The context event args to use for raising the event.</returns>
-        ''' <remarks></remarks>
-        Public Shared Function GetContextMenuMouseEventArgs(Control As Control, ByRef m As Message) As MouseEventArgs
-            Dim x As Integer = SignedLoWord(m.LParam)
-            Dim y As Integer = SignedHiWord(m.LParam)
-
-            ' Shift-F10 or Context Menu keyboard key will result in LParam being -1.
-            If m.LParam.ToInt64 = -1 Then
-                Dim p As Point = Cursor.Position
-                x = p.X
-                y = p.Y
-            End If
-
-            'CONSIDER: If mouse is not in client area, don't show the context menu. 
-            Return New MouseEventArgs(MouseButtons.Right, 1, x, y, 0)
-        End Function
-
-        ''' <summary>
-        ''' Generate a valid language independent namespace name. Differs from GenerateValidLanguageIndependentIdentifier
-        ''' by allowing "." embedded in the string and zero length strings...
-        ''' </summary>
-        ''' <param name="value"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Public Shared Function GenerateValidLanguageIndependentNamespace(value As String) As String
-            If value = "" Then
-                Return value
-            Else
-                Dim subStrings() As String = value.Split(New Char() {"."c})
-                For index As Integer = 0 To subStrings.Length - 1
-                    subStrings(index) = GenerateValidLanguageIndependentIdentifier(subStrings(index))
-                Next
-                Return String.Join(".", subStrings)
-            End If
-        End Function
-
-        ''' <summary>
-        ''' Generate a valid language independent identifier from the given string value
-        ''' </summary>
-        ''' <param name="value"></param>
-        ''' <returns></returns>
-        ''' <remarks>Will throw an ArgumentException if it fails</remarks>
-        Public Shared Function GenerateValidLanguageIndependentIdentifier(value As String) As String
-            Const replacementChar As Char = "_"c
-
-            If CodeDom.Compiler.CodeGenerator.IsValidLanguageIndependentIdentifier(value) Then
-                Return value
-            End If
-
-            Dim chars() As Char = value.ToCharArray()
-
-            If chars.Length = 0 Then
-                Throw AppDesCommon.CreateArgumentException("value")
-            End If
-
-            Dim result As New System.Text.StringBuilder
-
-            ' First char cannot be a number
-            If (Char.GetUnicodeCategory(chars(0)) = System.Globalization.UnicodeCategory.DecimalDigitNumber) Then
-                result.Append(replacementChar)
-            End If
-
-            ' each char must be Lu, Ll, Lt, Lm, Lo, Nd, Mn, Mc, Pc
-            ' 
-            For Each ch As Char In chars
-                Dim uc As Globalization.UnicodeCategory = Char.GetUnicodeCategory(ch)
-                Select Case uc
-                    Case Globalization.UnicodeCategory.UppercaseLetter, _
-                        Globalization.UnicodeCategory.LowercaseLetter, _
-                        Globalization.UnicodeCategory.TitlecaseLetter, _
-                        Globalization.UnicodeCategory.ModifierLetter, _
-                        Globalization.UnicodeCategory.OtherLetter, _
-                        Globalization.UnicodeCategory.DecimalDigitNumber, _
-                        Globalization.UnicodeCategory.NonSpacingMark, _
-                        Globalization.UnicodeCategory.SpacingCombiningMark, _
-                        Globalization.UnicodeCategory.ConnectorPunctuation
-                        result.Append(ch)
-                    Case Else
-                        result.Append(replacementChar)
-                End Select
-            Next ch
-
-            Dim cleanIdentifier As String = result.ToString()
-            If Not CodeDom.Compiler.CodeGenerator.IsValidLanguageIndependentIdentifier(cleanIdentifier) Then
-                Debug.Fail(String.Format("Failed to clean up identifier '{0}'", cleanIdentifier))
-                Throw AppDesCommon.CreateArgumentException("value")
-            End If
-
-            Return cleanIdentifier
-        End Function
-
-        ''' <summary>
-        ''' Try to get the encoding used by a DocData
-        ''' </summary>
-        ''' <param name="dd"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Public Shared Function GetEncoding(dd As Shell.Design.Serialization.DocData) As System.Text.Encoding
-            ' Try to get the encoding of the textbuffer that we are going to write to...
-            Try
-                Static GUID_VsBufferEncodingVSTFF As New Guid("{16417F39-A6B7-4c90-89FA-770D2C60440B}")
-                Dim oEncoding As Object = Nothing
-                Dim userData As TextManager.Interop.IVsUserData = TryCast(dd.Buffer, TextManager.Interop.IVsUserData)
-                If userData IsNot Nothing Then
-                    VSErrorHandler.ThrowOnFailure(userData.GetData(GUID_VsBufferEncodingVSTFF, oEncoding))
-                    If oEncoding IsNot Nothing Then
-                        Return System.Text.Encoding.GetEncoding(CInt(oEncoding) And TextManager.Interop.__VSTFF.VSTFF_CPMASK)
-                    End If
-                End If
-            Catch ex As Exception
-            End Try
-            Return System.Text.Encoding.Default
-        End Function
-
-        ''' <summary>
-        ''' Returns true is ClickOnce is available for this project
-        ''' </summary>
-        ''' <remarks></remarks>
-        Public Shared Function IsClickOnceSupported(hier As IVsHierarchy) As Boolean
-            If AppDesCommon.ShellUtil.IsWebProject(hier) Then
-                Return False
-            End If
-
-            Dim publishableServicePtr As IntPtr
-            Try
-                Dim cfgs(1) As IVsCfg
-                AppDesCommon.ShellUtil.GetConfigProvider(hier).GetCfgs(1, cfgs)
-                Dim cgfs2 As IVsProjectCfg2 = TryCast(cfgs(0), IVsProjectCfg2)
-                cgfs2.get_CfgType(GetType(IVsPublishableProjectCfg).GUID, publishableServicePtr)
-                Dim publishableService As IVsPublishableProjectCfg = DirectCast(Marshal.GetObjectForIUnknown(publishableServicePtr), IVsPublishableProjectCfg)
-                Dim publishable(1) As Integer
-                Dim ready(1) As Integer
-                Dim hr As Integer = publishableService.QueryStartPublish(0, publishable, ready)
-                VSErrorHandler.ThrowOnFailure(hr)
-                Return CBool(publishable(0))
-            Finally
-                If Not publishableServicePtr.Equals(0) Then
-                    Marshal.Release(publishableServicePtr)
-                    publishableServicePtr = New IntPtr(0)
-                End If
-            End Try
-        End Function
 
     End Class 'DesignUtil
 
