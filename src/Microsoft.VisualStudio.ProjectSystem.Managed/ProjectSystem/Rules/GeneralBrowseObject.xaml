@@ -6,6 +6,7 @@
   PageTemplate="generic"
   Description="Project Properties"
   OverrideMode= "Replace"
+  PropertyPagesHidden="true"
   xmlns="http://schemas.microsoft.com/build/2009/properties">
 
     <Rule.Categories>
