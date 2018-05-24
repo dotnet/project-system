@@ -38,8 +38,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
     {
         [ImportingConstructor]
         public DependenciesGraphProvider(IAggregateDependenciesSnapshotProvider aggregateSnapshotProvider,
-                                         [Import(typeof(SAsyncServiceProvider))]IAsyncServiceProvider serviceProvider)
-            : base(new JoinableTaskContextNode(ThreadHelper.JoinableTaskContext))
+                                         [Import(typeof(SAsyncServiceProvider))]IAsyncServiceProvider serviceProvider,
+                                         JoinableTaskContext joinableTaskContext)
+            : base(new JoinableTaskContextNode(joinableTaskContext))
         {
             AggregateSnapshotProvider = aggregateSnapshotProvider;
             ServiceProvider = serviceProvider;
