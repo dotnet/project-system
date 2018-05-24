@@ -17,7 +17,6 @@ namespace Microsoft.VisualStudio.Packaging
 {
     [Guid(PackageGuid)]
     [PackageRegistration(AllowsBackgroundLoading = true, RegisterUsing = RegistrationMethod.CodeBase, UseManagedResourcesOnly = true)]
-    [DplOptOutRegistration(ProjectTypeGuid, true)]
     internal class FSharpProjectSystemPackage : AsyncPackage
     {
         public const string ProjectTypeGuid = "6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705";
