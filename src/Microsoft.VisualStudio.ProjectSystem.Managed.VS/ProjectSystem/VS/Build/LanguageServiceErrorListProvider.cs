@@ -14,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
     ///     An implementation of <see cref="IVsErrorListProvider"/> that delegates onto the language
     ///     service so that it de-dup warnings and errors between IntelliSense and build.
     /// </summary>
-    [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharpLanguageService)]
+    [AppliesTo(ProjectCapability.DotNetLanguageService)]
     [Export(typeof(IVsErrorListProvider))]
     [Order(Order.Default)]
     internal partial class LanguageServiceErrorListProvider : IVsErrorListProvider

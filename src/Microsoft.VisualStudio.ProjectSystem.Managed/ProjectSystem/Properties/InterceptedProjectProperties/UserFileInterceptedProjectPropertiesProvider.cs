@@ -9,7 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     [Export("UserFileWithInterception", typeof(IProjectInstancePropertiesProvider))]
     [Export(typeof(IProjectInstancePropertiesProvider))]
     [ExportMetadata("Name", "UserFileWithInterception")]
-    [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp)]
+    [AppliesTo(ProjectCapability.DotNet)]
     internal class UserFileInterceptedProjectPropertiesProvider : InterceptedProjectPropertiesProviderBase
     {
         private const string UserSuffix = ".user";
