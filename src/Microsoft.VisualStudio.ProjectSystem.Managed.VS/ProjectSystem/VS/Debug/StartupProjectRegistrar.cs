@@ -34,17 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         [ImportingConstructor]
         public StartupProjectRegistrar(
             UnconfiguredProject project,
-            IProjectThreadingService threadingService,
-            ISafeProjectGuidService projectGuidService,
-            IActiveConfiguredProjectSubscriptionService projectSubscriptionService,
-            ActiveConfiguredProject<DebuggerLaunchProviders> launchProviders)
-            : this(project, AsyncServiceProvider.GlobalProvider, threadingService, projectGuidService, projectSubscriptionService, launchProviders)
-        {
-        }
-
-        public StartupProjectRegistrar(
-            UnconfiguredProject project,
-            IAsyncServiceProvider serviceProvider,
+            [Import(typeof(SAsyncServiceProvider))]IAsyncServiceProvider serviceProvider,
             IProjectThreadingService threadingService,
             ISafeProjectGuidService projectGuidService,
             IActiveConfiguredProjectSubscriptionService projectSubscriptionService,
