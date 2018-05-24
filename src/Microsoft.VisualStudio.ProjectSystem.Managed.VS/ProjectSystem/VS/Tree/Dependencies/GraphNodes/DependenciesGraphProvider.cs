@@ -37,17 +37,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
     internal class DependenciesGraphProvider : OnceInitializedOnceDisposedAsync, IGraphProvider, IDependenciesGraphBuilder
     {
         [ImportingConstructor]
-        public DependenciesGraphProvider(IAggregateDependenciesSnapshotProvider aggregateSnapshotProvider)
-            : this(aggregateSnapshotProvider,
-                   AsyncServiceProvider.GlobalProvider,
-                   new JoinableTaskContextNode(ThreadHelper.JoinableTaskContext))
-        {
-        }
-
         public DependenciesGraphProvider(IAggregateDependenciesSnapshotProvider aggregateSnapshotProvider,
-                                         IAsyncServiceProvider serviceProvider,
-                                         JoinableTaskContextNode joinableTaskContextNode)
-            : base(joinableTaskContextNode)
+                                         [Import(typeof(SAsyncServiceProvider))]IAsyncServiceProvider serviceProvider,
+                                         JoinableTaskContext joinableTaskContext)
+            : base(new JoinableTaskContextNode(joinableTaskContext))
         {
             AggregateSnapshotProvider = aggregateSnapshotProvider;
             ServiceProvider = serviceProvider;

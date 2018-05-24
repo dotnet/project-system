@@ -47,22 +47,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
         [ImportingConstructor]
         public ProjectAssetFileWatcher(
+            [Import(typeof(SAsyncServiceProvider))]IAsyncServiceProvider asyncServiceProvider,
             [Import(ContractNames.ProjectTreeProviders.FileSystemDirectoryTree)] IProjectTreeProvider fileSystemTreeProvider,
-            IUnconfiguredProjectCommonServices projectServices,
-            IUnconfiguredProjectTasksService projectTasksService,
-            IActiveConfiguredProjectSubscriptionService activeConfiguredProjectSubscriptionService)
-            : this(
-                  AsyncServiceProvider.GlobalProvider,
-                  fileSystemTreeProvider,
-                  projectServices,
-                  projectTasksService,
-                  activeConfiguredProjectSubscriptionService)
-        {
-        }
-
-        public ProjectAssetFileWatcher(
-            IAsyncServiceProvider asyncServiceProvider,
-            IProjectTreeProvider fileSystemTreeProvider,
             IUnconfiguredProjectCommonServices projectServices,
             IUnconfiguredProjectTasksService projectTasksService,
             IActiveConfiguredProjectSubscriptionService activeConfiguredProjectSubscriptionService)
