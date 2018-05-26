@@ -18,7 +18,13 @@
   </Rule.DataSource>
 
   <!-- Build Page Properties -->
-  <StringProperty Name="DefineConstants" DisplayName="Define Constants" Visible="False"/>
+  <StringProperty Name="DefineConstants" DisplayName="Define Constants" Visible="False">
+    <StringProperty.DataSource>
+      <!-- We mark BeforeContext to avoid picking up implicit framework defines to avoid #2720. -->
+      <DataSource Persistence="ProjectFile" HasConfigurationCondition="True" SourceOfDefaultValue="BeforeContext"/>
+    </StringProperty.DataSource>
+  </StringProperty>
+  
   <EnumProperty Name="PlatformTarget" DisplayName="Platform Target" Visible="False"/>
   <BoolProperty Name="Prefer32Bit" DisplayName="Prefer 32Bit" Visible="False"/>
   <BoolProperty Name="AllowUnsafeBlocks"  Default="False"  DisplayName="Allow unsafe code" Visible="False"/>
