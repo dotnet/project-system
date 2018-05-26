@@ -29,6 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             private readonly IActiveConfigurationGroupService _activeConfigurationGroupService;
             private readonly IActiveConfiguredProjectSubscriptionService _activeConfiguredProjectSubscriptionService;
             private readonly IProjectLogger _logger;
+            private bool _isFirstNomination = true;
 #pragma warning disable CA2213 // OnceInitializedOnceDisposedAsync are not tracked correctly by the IDisposeable analyzer
             private IDisposable _configurationsSubscription;
             private DisposableBag _designTimeBuildSubscriptionLink;
@@ -143,7 +144,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
             private void NominateProject(ImmutableList<IProjectValueVersions> sources)
             {
-                IVsProjectRestoreInfo projectRestoreInfo = ProjectRestoreInfoBuilder.Build(sources, _projectVsServices.Project);
+                IVsProjectRestoreInfo projectRestoreInfo = ProjectRestoreInfoBuilder.Build(sources, _projectVsServices.Project, _isFirstNomination);
+                _isFirstNomination = false;
 
                 if (projectRestoreInfo != null)
                 {
