@@ -45,7 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         protected override async Task<bool> TryHandleCommandAsync(IProjectTree node, bool focused, long commandExecuteOptions, IntPtr variantArgIn, IntPtr variantArgOut)
         {
             bool didMove = false;
-                
+
             await _accessor.OpenProjectForWriteAsync(_configuredProject, project => didMove = TryMove(project, node)).ConfigureAwait(false);
 
             if (didMove)

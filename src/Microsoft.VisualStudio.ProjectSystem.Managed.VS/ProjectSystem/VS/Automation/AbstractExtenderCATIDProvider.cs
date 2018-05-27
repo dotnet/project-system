@@ -42,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
                 case ExtenderCATIDType.HierarchyConfigurationBrowseObject:                      // IVsHierarchy.GetProperty(VSHPROPID_CfgBrowseObjectCATID)
                 case ExtenderCATIDType.ProjectConfigurationBrowseObject:                        // EnvDTE.Configuration.Properties
                     return GetExtenderCATID(ExtendeeObject.ConfigurationBrowseObject);
-                 
+
                 case ExtenderCATIDType.AutomationProjectItem:                                   // EnvDTE.ProjectItem
                     return GetExtenderCATID(ExtendeeObject.ProjectItem);
 

@@ -264,9 +264,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     // Find the import that is included in the evaluation of the specified ConfiguredProject that
                     // imports the project file whose full path matches the specified one.
                     IEnumerable<ResolvedImport> matchingImports = from import in project.Imports
-                                          where import.ImportingElement.ContainingProject == projectXml
-                                          where PathHelper.IsSamePath(import.ImportedProject.FullPath, sharedFilePath)
-                                          select import;
+                                                                  where import.ImportingElement.ContainingProject == projectXml
+                                                                  where PathHelper.IsSamePath(import.ImportedProject.FullPath, sharedFilePath)
+                                                                  select import;
                     foreach (ResolvedImport importToRemove in matchingImports)
                     {
                         ProjectImportElement importingElementToRemove = importToRemove.ImportingElement;

@@ -18,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         public AddExistingItemBelowCommand(
             IPhysicalProjectTree projectTree,
             IUnconfiguredProjectVsServices projectVsServices,
-            SVsServiceProvider serviceProvider, 
+            SVsServiceProvider serviceProvider,
             OrderAddItemHintReceiver orderAddItemHintReceiver) :
             base(projectTree, projectVsServices, serviceProvider, orderAddItemHintReceiver)
         {

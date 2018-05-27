@@ -29,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             _loadedInHostListener = loadedInHostListener;
         }
 
-        [ProjectAutoLoad(completeBy:ProjectLoadCheckpoint.ProjectFactoryCompleted)]
+        [ProjectAutoLoad(completeBy: ProjectLoadCheckpoint.ProjectFactoryCompleted)]
         [AppliesTo(ProjectCapability.DotNet)]
         public Task OnProjectFactoryCompleted()
         {
