@@ -17,16 +17,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         private const string ProjectFileFullPathProperty = "ProjectFileFullPath";
 
         internal static IVsProjectRestoreInfo Build(IEnumerable<IProjectValueVersions> updates,
-            UnconfiguredProject project, bool isFirstRun = false)
+            UnconfiguredProject project)
         {
             Requires.NotNull(updates, nameof(updates));
             Requires.NotNull(project, nameof(project));
 
-            return Build(updates.Cast<IProjectVersionedValue<IProjectSubscriptionUpdate>>(), project, isFirstRun);
+            return Build(updates.Cast<IProjectVersionedValue<IProjectSubscriptionUpdate>>(), project);
         }
 
         internal static IVsProjectRestoreInfo Build(IEnumerable<IProjectVersionedValue<IProjectSubscriptionUpdate>> updates,
-            UnconfiguredProject project, bool isFirstRun = false)
+            UnconfiguredProject project)
         {
             Requires.NotNull(updates, nameof(updates));
             Requires.NotNull(project, nameof(project));
@@ -67,7 +67,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                     bool evaluationSucceeded = projectReferencesChanges.After.IsEvaluationSucceeded() && 
                                                packageReferencesChanges.After.IsEvaluationSucceeded();
 
-                    if (isFirstRun && !evaluationSucceeded)
+                    if (!evaluationSucceeded)
                     {
                         // skip NuGet Restore for this target framework
                         TraceUtilities.TraceWarning($"Skipping Restore for {targetFramework} because of failed initial evaluation");
