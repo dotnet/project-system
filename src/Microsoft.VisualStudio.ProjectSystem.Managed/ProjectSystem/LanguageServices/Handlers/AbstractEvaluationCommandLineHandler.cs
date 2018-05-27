@@ -239,7 +239,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
                 VersionedProjectChangeDiff evaluation = _evaluations.Peek();
                 if (!evaluation.Version.IsEarlierThanOrEqualTo(version))
                     break;
-                
+
                 _evaluations.Dequeue();
             }
         }

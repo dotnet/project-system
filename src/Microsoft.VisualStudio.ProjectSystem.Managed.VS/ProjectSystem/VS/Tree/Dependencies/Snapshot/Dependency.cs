@@ -15,7 +15,7 @@ using Microsoft.VisualStudio.Text;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
-    [DebuggerDisplay("{" + nameof(Id) +",nq}")]
+    [DebuggerDisplay("{" + nameof(Id) + ",nq}")]
     internal class Dependency : IDependency
     {
         private static ConcurrentBag<StringBuilder> s_builderPool = new ConcurrentBag<StringBuilder>();

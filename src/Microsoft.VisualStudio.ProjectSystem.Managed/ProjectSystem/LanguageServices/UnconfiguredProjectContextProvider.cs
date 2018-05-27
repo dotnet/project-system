@@ -218,34 +218,34 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             // TODO: https://github.com/dotnet/roslyn-project-system/issues/353
             await _commonServices.ThreadingService.SwitchToUIThread();
 
-                ProjectData projectData = GetProjectData();
+            ProjectData projectData = GetProjectData();
 
             // Get the set of active configured projects ignoring target framework.
 #pragma warning disable CS0618 // Type or member is obsolete
-                ImmutableDictionary<string, ConfiguredProject> configuredProjectsMap = await _activeConfiguredProjectsProvider.GetActiveConfiguredProjectsMapAsync().ConfigureAwait(true);
+            ImmutableDictionary<string, ConfiguredProject> configuredProjectsMap = await _activeConfiguredProjectsProvider.GetActiveConfiguredProjectsMapAsync().ConfigureAwait(true);
 #pragma warning restore CS0618 // Type or member is obsolete
 
-                // Get the unconfigured project host object (shared host object).
-                var configuredProjectsToRemove = new HashSet<ConfiguredProject>(_configuredProjectHostObjectsMap.Keys);
-                ProjectConfiguration activeProjectConfiguration = _commonServices.ActiveConfiguredProject.ProjectConfiguration;
+            // Get the unconfigured project host object (shared host object).
+            var configuredProjectsToRemove = new HashSet<ConfiguredProject>(_configuredProjectHostObjectsMap.Keys);
+            ProjectConfiguration activeProjectConfiguration = _commonServices.ActiveConfiguredProject.ProjectConfiguration;
 
-                ImmutableDictionary<string, IWorkspaceProjectContext>.Builder innerProjectContextsBuilder = ImmutableDictionary.CreateBuilder<string, IWorkspaceProjectContext>();
-                string activeTargetFramework = string.Empty;
-                IConfiguredProjectHostObject activeIntellisenseProjectHostObject = null;
+            ImmutableDictionary<string, IWorkspaceProjectContext>.Builder innerProjectContextsBuilder = ImmutableDictionary.CreateBuilder<string, IWorkspaceProjectContext>();
+            string activeTargetFramework = string.Empty;
+            IConfiguredProjectHostObject activeIntellisenseProjectHostObject = null;
 
-                foreach (KeyValuePair<string, ConfiguredProject> kvp in configuredProjectsMap)
+            foreach (KeyValuePair<string, ConfiguredProject> kvp in configuredProjectsMap)
+            {
+                string targetFramework = kvp.Key;
+                ConfiguredProject configuredProject = kvp.Value;
+                if (!TryGetConfiguredProjectState(configuredProject, out IWorkspaceProjectContext workspaceProjectContext, out IConfiguredProjectHostObject configuredProjectHostObject))
                 {
-                    string targetFramework = kvp.Key;
-                    ConfiguredProject configuredProject = kvp.Value;
-                    if (!TryGetConfiguredProjectState(configuredProject, out IWorkspaceProjectContext workspaceProjectContext, out IConfiguredProjectHostObject configuredProjectHostObject))
-                    {
-                        // Get the target path for the configured project.
-                        ProjectProperties projectProperties = configuredProject.Services.ExportProvider.GetExportedValue<ProjectProperties>();
-                        ConfigurationGeneral configurationGeneralProperties = await projectProperties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(true);
-                        targetPath = (string)await configurationGeneralProperties.TargetPath.GetValueAsync().ConfigureAwait(true);
-                        string targetFrameworkMoniker = (string)await configurationGeneralProperties.TargetFrameworkMoniker.GetValueAsync().ConfigureAwait(true);
-                        string displayName = GetDisplayName(configuredProject, projectData, targetFramework);
-                        configuredProjectHostObject = _projectHostProvider.GetConfiguredProjectHostObject(_unconfiguredProjectHostObject, displayName, targetFrameworkMoniker);
+                    // Get the target path for the configured project.
+                    ProjectProperties projectProperties = configuredProject.Services.ExportProvider.GetExportedValue<ProjectProperties>();
+                    ConfigurationGeneral configurationGeneralProperties = await projectProperties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(true);
+                    targetPath = (string)await configurationGeneralProperties.TargetPath.GetValueAsync().ConfigureAwait(true);
+                    string targetFrameworkMoniker = (string)await configurationGeneralProperties.TargetFrameworkMoniker.GetValueAsync().ConfigureAwait(true);
+                    string displayName = GetDisplayName(configuredProject, projectData, targetFramework);
+                    configuredProjectHostObject = _projectHostProvider.GetConfiguredProjectHostObject(_unconfiguredProjectHostObject, displayName, targetFrameworkMoniker);
 
                     // TODO: https://github.com/dotnet/roslyn-project-system/issues/353
                     await _commonServices.ThreadingService.SwitchToUIThread();

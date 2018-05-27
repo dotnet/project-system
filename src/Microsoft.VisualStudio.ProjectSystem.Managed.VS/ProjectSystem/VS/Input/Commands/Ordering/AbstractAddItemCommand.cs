@@ -16,8 +16,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         private readonly OrderAddItemHintReceiver _orderAddItemHintReceiver;
 
         public AbstractAddItemCommand(
-            IPhysicalProjectTree projectTree, 
-            IUnconfiguredProjectVsServices projectVsServices, 
+            IPhysicalProjectTree projectTree,
+            IUnconfiguredProjectVsServices projectVsServices,
             SVsServiceProvider serviceProvider,
             OrderAddItemHintReceiver orderAddItemHintReceiver)
         {
