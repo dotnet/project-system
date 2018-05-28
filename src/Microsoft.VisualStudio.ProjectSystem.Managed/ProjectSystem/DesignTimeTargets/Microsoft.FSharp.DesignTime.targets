@@ -17,6 +17,7 @@
     <LanguageServiceId Condition="'$(LanguageServiceId)'==''">{BC6DD5A5-D4D6-4DAB-A00D-A51242DBAF1B}</LanguageServiceId>
     <TemplateLanguage Condition="'$(TemplateLanguage)' == ''">FSharp</TemplateLanguage>
     <AddItemTemplatesGuid Condition="'$(AddItemTemplatesGuid)' == ''">{F2A71F9B-5D33-465A-A702-920D77279786}</AddItemTemplatesGuid>
+    <GeneratorsTypeGuid Condition="'$(GeneratorsTypeGuid)' == ''">{F2A71F9B-5D33-465A-A702-920D77279786}</GeneratorsTypeGuid>
   </PropertyGroup>
 
   <ItemGroup>

@@ -17,6 +17,7 @@
     <LanguageServiceId Condition="'$(LanguageServiceId)'==''">{E34ACDC0-BAAE-11D0-88BF-00A0C9110049}</LanguageServiceId>
     <TemplateLanguage Condition="'$(TemplateLanguage)' == ''">VisualBasic</TemplateLanguage>
     <AddItemTemplatesGuid Condition="'$(AddItemTemplatesGuid)' == ''">{F184B08F-C81C-45F6-A57F-5ABD9991F28F}</AddItemTemplatesGuid>
+    <GeneratorsTypeGuid Condition="'$(GeneratorsTypeGuid)' == ''">{164B10B9-B200-11d0-8C61-00A0C91E29D5}</GeneratorsTypeGuid>
 
     <!-- Turn off rules and capabilities that are defined in MSBuild so that we can import our own below -->
     <DefineVisualBasicItemSchemas>false</DefineVisualBasicItemSchemas>
