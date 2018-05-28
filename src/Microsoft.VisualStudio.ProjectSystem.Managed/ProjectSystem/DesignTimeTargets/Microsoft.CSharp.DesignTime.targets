@@ -17,6 +17,7 @@
     <LanguageServiceId Condition="'$(LanguageServiceId)'==''">{694DD9B6-B865-4C5B-AD85-86356E9C88DC}</LanguageServiceId>
     <TemplateLanguage Condition="'$(TemplateLanguage)' == ''">CSharp</TemplateLanguage>
     <AddItemTemplatesGuid Condition="'$(AddItemTemplatesGuid)' == ''">{FAE04EC0-301F-11d3-BF4B-00C04F79EFBC}</AddItemTemplatesGuid>
+    <CmdUIContextGuid Condition="'$(CmdUIContextGuid)' == ''">{FAE04EC1-301F-11d3-BF4B-00C04F79EFBC}</CmdUIContextGuid>
     <GeneratorsTypeGuid Condition="'$(GeneratorsTypeGuid)' == ''">{FAE04EC1-301F-11d3-BF4B-00C04F79EFBC}</GeneratorsTypeGuid>
   
     <!-- Turn off rules and capabilities that are defined in MSBuild so that we can import our own below -->
