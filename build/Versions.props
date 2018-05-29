@@ -91,7 +91,7 @@
     <XUnitAnalyzersVersion>0.8.0</XUnitAnalyzersVersion>
   </PropertyGroup>
 
-  <PropertyGroup>
+    <PropertyGroup>
     <RestoreSources>
       $(RestoreSources);
       https://vside.myget.org/F/devcore/api/v3/index.json;
