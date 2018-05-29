@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.26811.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A50EC328-5D30-4624-98AD-B649461DB772}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProjectSystemSetup", "src\ProjectSystemSetup\ProjectSystemSetup.csproj", "{9FBD7EF2-9449-486D-9FDD-FA56160AA8BB}"
+EndProject
 Project("{778DAE3C-4631-46EA-AA77-85C1314464D9}") = "Microsoft.VisualStudio.AppDesigner", "src\Microsoft.VisualStudio.AppDesigner\Microsoft.VisualStudio.AppDesigner.vbproj", "{19725D6F-4690-412B-934A-FC48D752B802}"
 EndProject
 Project("{778DAE3C-4631-46EA-AA77-85C1314464D9}") = "Microsoft.VisualStudio.Editors", "src\Microsoft.VisualStudio.Editors\Microsoft.VisualStudio.Editors.vbproj", "{CD6E5D00-7B0B-442D-9F5D-EAEC1A71838A}"
@@ -32,8 +34,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS", "src\Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS\Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS.csproj", "{15DCB34C-B628-49B8-B472-BBA65A0AB6A5}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS.UnitTests", "src\Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS.UnitTests\Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS.UnitTests.csproj", "{2F58FC7F-85D9-427A-84F0-A6AA741E5BBA}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProjectSystemSetup", "src\ProjectSystemSetup\ProjectSystemSetup.csproj", "{9FBD7EF2-9449-486D-9FDD-FA56160AA8BB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VisualStudioEditorsSetup", "src\VisualStudioEditorsSetup\VisualStudioEditorsSetup.csproj", "{49705330-A4F5-47EA-BB10-3B783CE91AEA}"
 EndProject
