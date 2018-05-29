@@ -34,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         /// <exception cref="ArgumentNullException">
         ///     <paramref name="treeService"/> is <see langword="null"/>.
         /// </exception>
-        public static Task<IProjectTreeServiceState> PublishTreeAsync(this IProjectTreeService treeService, IImmutableDictionary<NamedIdentity, IProjectVersionRequirement> minimumRequiredDataSourceVersions, bool blockDuringLoadingTree, CancellationToken cancellationToken = default(CancellationToken))
+        public static Task<IProjectTreeServiceState> PublishTreeAsync(this IProjectTreeService treeService, IImmutableDictionary<NamedIdentity, IProjectVersionRequirement> minimumRequiredDataSourceVersions, bool blockDuringLoadingTree, CancellationToken cancellationToken = default)
         {
             Requires.NotNull(treeService, nameof(treeService));
 

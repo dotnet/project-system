@@ -164,7 +164,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
                 return true;
             }
 
-            result = default(ErrorListDetails);
+            result = default;
             return false;
         }
     }

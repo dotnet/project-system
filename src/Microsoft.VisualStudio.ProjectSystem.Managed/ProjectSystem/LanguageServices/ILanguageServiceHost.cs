@@ -50,6 +50,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         /// </summary>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task InitializeAsync(CancellationToken cancellationToken = default(CancellationToken));
+        Task InitializeAsync(CancellationToken cancellationToken = default);
     }
 }

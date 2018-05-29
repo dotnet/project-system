@@ -25,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         Task<IProjectTree> BuildTreeAsync(
             IProjectTree dependenciesTree,
             IDependenciesSnapshot snapshot,
-            CancellationToken cancellationToken = default(CancellationToken));
+            CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Finds node by path in current dependencies view hierarchy.

@@ -572,7 +572,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             return true;
         }
 
-        public async Task<bool> IsUpToDateAsync(BuildAction buildAction, TextWriter logWriter, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<bool> IsUpToDateAsync(BuildAction buildAction, TextWriter logWriter, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
@@ -646,7 +646,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             return isUpToDate;
         }
 
-        public async Task<bool> IsUpToDateCheckEnabledAsync(CancellationToken cancellationToken = default(CancellationToken)) =>
+        public async Task<bool> IsUpToDateCheckEnabledAsync(CancellationToken cancellationToken = default) =>
             await _projectSystemOptions.GetIsFastUpToDateCheckEnabledAsync().ConfigureAwait(false);
     }
 }
