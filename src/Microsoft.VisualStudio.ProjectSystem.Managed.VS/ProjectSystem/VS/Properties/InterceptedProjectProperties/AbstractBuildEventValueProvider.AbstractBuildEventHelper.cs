@@ -115,7 +115,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
                                     .SelectMany(target => target.Tasks)
                                     .Where(task => StringComparer.OrdinalIgnoreCase.Compare(task.Name, ExecTask) == 0)
                                     .FirstOrDefault();
-                return (success: execTask != null, execTask: execTask);
+                return (success: execTask != null, execTask);
             }
 
             private (bool success, ProjectTargetElement target) FindTargetToRemove(ProjectRootElement projectXml)
