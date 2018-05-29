@@ -42,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// <remarks>
         ///     NOTE: To avoid deadlocks, do not call arbitrary services or asynchronous code within <paramref name="action"/>.
         /// </remarks>
-        Task<TResult> OpenProjectXmlForReadAsync<TResult>(UnconfiguredProject project, Func<ProjectRootElement, TResult> action, CancellationToken cancellationToken = default(CancellationToken));
+        Task<TResult> OpenProjectXmlForReadAsync<TResult>(UnconfiguredProject project, Func<ProjectRootElement, TResult> action, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     Opens the MSBuild project construction model for the specified project, passing it to the specified action for reading, with the option to upgrade for writing.
@@ -69,7 +69,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// <remarks>
         ///     NOTE: To avoid deadlocks, do not call arbitrary services or asynchronous code other than <see cref="OpenProjectXmlForWriteAsync(UnconfiguredProject, Action{ProjectRootElement}, CancellationToken)"/> within <paramref name="action"/>.
         /// </remarks>
-        Task OpenProjectXmlForUpgradeableReadAsync(UnconfiguredProject project, Func<ProjectRootElement, CancellationToken, Task> action, CancellationToken cancellationToken = default(CancellationToken));
+        Task OpenProjectXmlForUpgradeableReadAsync(UnconfiguredProject project, Func<ProjectRootElement, CancellationToken, Task> action, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     Opens the MSBuild project construction model for the specified project, passing it to the specified action for writing.
@@ -96,7 +96,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// <remarks>
         ///     NOTE: To avoid deadlocks, do not call arbitrary services or asynchronous code within <paramref name="action"/>.
         /// </remarks>
-        Task OpenProjectXmlForWriteAsync(UnconfiguredProject project, Action<ProjectRootElement> action, CancellationToken cancellationToken = default(CancellationToken));
+        Task OpenProjectXmlForWriteAsync(UnconfiguredProject project, Action<ProjectRootElement> action, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     Opens the MSBuild project evaluation model for the specified project, passing it to the specified action for reading.
@@ -123,7 +123,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// <remarks>
         ///     NOTE: To avoid deadlocks, do not call arbitrary services or asynchronous code within <paramref name="action"/>.
         /// </remarks>
-        Task<TResult> OpenProjectForReadAsync<TResult>(ConfiguredProject project, Func<Project, TResult> action, CancellationToken cancellationToken = default(CancellationToken));
+        Task<TResult> OpenProjectForReadAsync<TResult>(ConfiguredProject project, Func<Project, TResult> action, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     Opens the MSBuild project evaluation model for the specified project, passing it to the specified action for writing.
@@ -150,6 +150,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// <remarks>
         ///     NOTE: To avoid deadlocks, do not call arbitrary services or asynchronous code within <paramref name="action"/>.
         /// </remarks>
-        Task OpenProjectForWriteAsync(ConfiguredProject project, Action<Project> action, CancellationToken cancellationToken = default(CancellationToken));
+        Task OpenProjectForWriteAsync(ConfiguredProject project, Action<Project> action, CancellationToken cancellationToken = default);
     }
 }

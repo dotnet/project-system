@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
         {
         }
 
-        public virtual async Task<string> GetFileAsync(SpecialFiles fileId, SpecialFileFlags flags, CancellationToken cancellationToken = default(CancellationToken))
+        public virtual async Task<string> GetFileAsync(SpecialFiles fileId, SpecialFileFlags flags, CancellationToken cancellationToken = default)
         {
             // Make sure at least have a tree before we start searching it
             await _projectTree.Value.TreeService.PublishAnyNonLoadingTreeAsync(cancellationToken)
