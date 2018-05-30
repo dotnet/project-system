@@ -42,6 +42,7 @@
     <MicrosoftVisualStudioTextManagerInterop10Version>10.0.30319</MicrosoftVisualStudioTextManagerInterop10Version>
     <MicrosoftVisualStudioTextManagerInterop12Version>12.0.30110</MicrosoftVisualStudioTextManagerInterop12Version>
     <MicrosoftVisualStudioTextManagerInterop121DesignTimeVersion>12.1.30328</MicrosoftVisualStudioTextManagerInterop121DesignTimeVersion>
+    <MicrosoftVisualStudioSetupConfigurationVersion>1.16.30</MicrosoftVisualStudioSetupConfigurationVersion>
     <MicrosoftVisualStudioShell15Version>15.0.26606</MicrosoftVisualStudioShell15Version>
     <MicrosoftVisualStudioShellDesignVersion>15.0.26606</MicrosoftVisualStudioShellDesignVersion>
     <MicrosoftVisualStudioShellFrameworkVersion>15.0.26606</MicrosoftVisualStudioShellFrameworkVersion>
