@@ -4,7 +4,7 @@ Option Strict Off
 
 Imports System.IO
 Imports System.Runtime.InteropServices
-Imports System.Text.RegularExpressions
+Imports Microsoft.VisualStudio.Editors.Common.Utils
 Imports Microsoft.VisualStudio.Settings
 Imports Microsoft.VisualStudio.Setup.Configuration
 Imports Microsoft.VisualStudio.Shell.Interop
@@ -15,14 +15,12 @@ Namespace Microsoft.VisualStudio.Editors.OptionPages
         Private Class SVsSettingsPersistenceManager
         End Class
 
-        Private Const PreviewChannelPattern As String = "VisualStudio\.[0-9]+\.Preview/"
         Private Const UsePreviewSdkMarkerFileName As String = "sdk.txt"
         Private Const FastUpToDateEnabledSettingKey As String = "ManagedProjectSystem\FastUpToDateCheckEnabled"
         Private Const FastUpToDateLogLevelSettingKey As String = "ManagedProjectSystem\FastUpToDateLogLevel"
         Private Const UsePreviewSdkSettingKey As String = "ManagedProjectSystem\UsePreviewSdk"
 
         Private ReadOnly _settingsManager As ISettingsManager
-        Private ReadOnly _shell As IVsShell
         Private ReadOnly _localAppData As String
         Private ReadOnly _isPreview As Boolean
 
@@ -67,16 +65,18 @@ Namespace Microsoft.VisualStudio.Editors.OptionPages
             End Get
             Set
                 _settingsManager.SetValueAsync(UsePreviewSdkSettingKey, Value, isMachineLocal:=False)
+
                 UpdateSdkMarkerFile(Value)
+                TelemetryLogger.LogUsePreviewSdkEvent(Value, _isPreview)
             End Set
         End Property
 
         Public Sub New(serviceProvider As IServiceProvider)
             _settingsManager = CType(serviceProvider.GetService(GetType(SVsSettingsPersistenceManager)), ISettingsManager)
-            _shell = CType(serviceProvider.GetService(GetType(SVsShell)), IVsShell)
+            Dim shell = CType(serviceProvider.GetService(GetType(SVsShell)), IVsShell)
 
             Dim oPath As Object = Nothing
-            If (Not VSErrorHandler.Failed(_shell.GetProperty(__VSSPROPID4.VSSPROPID_LocalAppDataDir, oPath))) And
+            If (Not VSErrorHandler.Failed(shell.GetProperty(__VSSPROPID4.VSSPROPID_LocalAppDataDir, oPath))) And
                 (oPath IsNot Nothing) And
                 (TypeOf oPath Is String) Then
                 _localAppData = CType(oPath, String)
@@ -87,44 +87,15 @@ Namespace Microsoft.VisualStudio.Editors.OptionPages
 
         ''' <summary>
         ''' Uses VS setup API, to determine if current VS instance came from Preview channel or not.
-        ''' Note: we depend here on channel manifest format. If it changes, we could be broken. There is
-        ''' an integration test in WTE repo to be executed in nightly vendors' runs to protect form manifest 
-        ''' format changes.
         ''' </summary>
         ''' <returns></returns>
         Private Function IsPreview() As Boolean
             Dim vsSetupConfig = New SetupConfiguration()
-            Dim installedInstances As List(Of ISetupInstance) = New List(Of ISetupInstance)()
-            Dim installationPath As Object = Nothing
+            Dim setupInstance = vsSetupConfig.GetInstanceForCurrentProcess()
+            Dim setupInstanceCatalog = CType(setupInstance, ISetupInstanceCatalog)
 
-            If (Not VSErrorHandler.Failed(_shell.GetProperty(__VSSPROPID.VSSPROPID_InstallDirectory, installationPath))) AndAlso
-                (installationPath IsNot Nothing) AndAlso
-                (TypeOf installationPath Is String) AndAlso
-                (Not String.IsNullOrEmpty(installationPath)) Then
-
-                Dim instances = vsSetupConfig.EnumAllInstances()
-                Dim foundInstance As ISetupInstance2 = Nothing
-                Dim instanceBuffer() As ISetupInstance = New ISetupInstance(0) {}
-                Dim fetched As Integer
-
-                Do
-                    fetched = 0
-                    instances.Next(1, instanceBuffer, fetched)
-
-                    If ((fetched > 0) AndAlso
-                        installationPath.StartsWith(instanceBuffer(0).GetInstallationPath() + "\", StringComparison.OrdinalIgnoreCase)) Then
-                        foundInstance = CType(instanceBuffer(0), ISetupInstance2)
-                    End If
-                Loop While ((fetched > 0) And (foundInstance Is Nothing))
-
-                If (foundInstance IsNot Nothing) Then
-                    ' Manifest takes form of: "VisualStudio.15.Preview/15.8.0-pre.2.0+27714.3000.d15.8stg"
-                    Dim channelManifest = foundInstance.GetProperties().GetValue("channelManifestId").ToString()
-                    Return Regex.IsMatch(channelManifest, PreviewChannelPattern, RegexOptions.IgnoreCase)
-                End If
-            End If
-
-            Return False
+            ' Release: false. Others: true.
+            Return setupInstanceCatalog.IsPrerelease()
         End Function
 
         ''' <summary>
