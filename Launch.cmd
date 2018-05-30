@@ -1,3 +1,5 @@
+@echo off
+
 REM Assumes that your current working directory is the git repository root
 set VisualStudioXamlRulesDir=%cd%\artifacts\Debug\VSSetup\Rules\
 set VisualBasicDesignTimeTargetsPath=%VisualStudioXamlRulesDir%Microsoft.VisualBasic.DesignTime.targets
