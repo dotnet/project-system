@@ -4,4 +4,4 @@ set VisualBasicDesignTimeTargetsPath=%VisualStudioXamlRulesDir%Microsoft.VisualB
 set FSharpDesignTimeTargetsPath=%VisualStudioXamlRulesDir%Microsoft.FSharp.DesignTime.targets
 set CSharpDesignTimeTargetsPath=%VisualStudioXamlRulesDir%Microsoft.CSharp.DesignTime.targets
 
-devenv /rootsuffix ProjectSystem
+devenv /rootsuffix Exp

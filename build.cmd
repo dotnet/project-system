@@ -48,7 +48,7 @@ echo   Build options:
 echo     /restore-only           Restore dependencies only
 echo     /skiptests              Does not run unit tests
 echo     /diagnostic             Turns on logging to a binlog
-echo     /rootsuffix             Visual Studio hive to deploy VSIX extensions to (default is ProjectSystem)
+echo     /rootsuffix             Visual Studio hive to deploy VSIX extensions to (default is Exp)
 echo     /no-deploy-extension    Does not deploy VSIX extensions when building the solution
 echo     /integrationtests       Runs integration tests
 goto :eof
