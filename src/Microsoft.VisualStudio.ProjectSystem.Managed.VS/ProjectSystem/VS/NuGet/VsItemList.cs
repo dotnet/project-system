@@ -53,7 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                 }
             }
 
-            value = default(T);
+            value = default;
             return false;
         }
     }

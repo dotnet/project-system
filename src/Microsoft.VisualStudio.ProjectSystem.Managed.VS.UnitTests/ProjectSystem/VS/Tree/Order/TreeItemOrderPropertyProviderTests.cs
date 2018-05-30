@@ -258,7 +258,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
             string itemName = null,
             string itemType = null,
             bool isFolder = false,
-            ProjectTreeFlags flags = default(ProjectTreeFlags),
+            ProjectTreeFlags flags = default,
             IImmutableDictionary<string, string> metadata = null)
             => IProjectTreeCustomizablePropertyContextFactory.Implement(
                 itemName: itemName,

@@ -206,8 +206,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             ProjectTreeFlags? flags = null,
             string schemaName = null,
             IImmutableList<string> dependencyIDs = null,
-            ImageMoniker icon = default(ImageMoniker),
-            ImageMoniker expandedIcon = default(ImageMoniker),
+            ImageMoniker icon = default,
+            ImageMoniker expandedIcon = default,
             bool? isImplicit = null)
         {
             var clone = new Dependency(this, _modelId);
