@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             ProjectImageMoniker icon = null,
             ProjectImageMoniker expandedIcon = null,
             bool visible = true,
-            ProjectTreeFlags? flags = default(ProjectTreeFlags?))
+            ProjectTreeFlags? flags = default)
         {
             return new TestProjectTree()
             {
@@ -42,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             ProjectImageMoniker icon = null,
             ProjectImageMoniker expandedIcon = null,
             bool visible = true,
-            ProjectTreeFlags? flags = default(ProjectTreeFlags?))
+            ProjectTreeFlags? flags = default)
         {
             return new TestProjectTree()
             {

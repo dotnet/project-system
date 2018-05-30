@@ -44,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         public override async Task<IProjectTree> BuildTreeAsync(
             IProjectTree dependenciesTree,
             IDependenciesSnapshot snapshot,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             IProjectTree originalTree = dependenciesTree;
             var currentTopLevelNodes = new List<IProjectTree>();
