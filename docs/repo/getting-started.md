@@ -33,8 +33,7 @@ From the command-line, after you've run `build.cmd`, you can launch a Visual Stu
 To start debugging:
 
 1. Open __ProjectSystem.sln__
-2. Right-click on the __ProjectSystemSetup__ project, and choose __Set As Startup Project__
-3. Press _F5_
+2. Press _F5_
 
 If this is your first launch of the project system, or _ProjectSystem_ experimental instance, press _CTRL+F5_ to pre-prime and avoid a _long_ start up time.
 
