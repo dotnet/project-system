@@ -37,11 +37,6 @@
         <target state="new">Use previews of the .NET Core SDK</target>
         <note />
       </trans-unit>
-      <trans-unit id="General_Sdk_Title">
-        <source>SDK</source>
-        <target state="new">SDK</target>
-        <note />
-      </trans-unit>
     </body>
   </file>
 </xliff>

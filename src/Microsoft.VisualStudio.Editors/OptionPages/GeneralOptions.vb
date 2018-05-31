@@ -72,14 +72,14 @@ Namespace Microsoft.VisualStudio.Editors.OptionPages
         End Property
 
         Public Sub New(serviceProvider As IServiceProvider)
-            _settingsManager = CType(serviceProvider.GetService(GetType(SVsSettingsPersistenceManager)), ISettingsManager)
-            Dim shell = CType(serviceProvider.GetService(GetType(SVsShell)), IVsShell)
+            _settingsManager = DirectCast(serviceProvider.GetService(GetType(SVsSettingsPersistenceManager)), ISettingsManager)
+            Dim shell = DirectCast(serviceProvider.GetService(GetType(SVsShell)), IVsShell)
 
             Dim oPath As Object = Nothing
             If (Not VSErrorHandler.Failed(shell.GetProperty(__VSSPROPID4.VSSPROPID_LocalAppDataDir, oPath))) And
                 (oPath IsNot Nothing) And
                 (TypeOf oPath Is String) Then
-                _localAppData = CType(oPath, String)
+                _localAppData = DirectCast(oPath, String)
             End If
 
             _isPreview = IsPreview()
@@ -92,7 +92,7 @@ Namespace Microsoft.VisualStudio.Editors.OptionPages
         Private Function IsPreview() As Boolean
             Dim vsSetupConfig = New SetupConfiguration()
             Dim setupInstance = vsSetupConfig.GetInstanceForCurrentProcess()
-            Dim setupInstanceCatalog = CType(setupInstance, ISetupInstanceCatalog)
+            Dim setupInstanceCatalog = DirectCast(setupInstance, ISetupInstanceCatalog)
 
             ' Release: false. Others: true.
             Return setupInstanceCatalog.IsPrerelease()
@@ -115,7 +115,7 @@ Namespace Microsoft.VisualStudio.Editors.OptionPages
                 Try
                     File.WriteAllText(sdkTxtPath, $"UsePreviews={usePreviews}")
                     attempts = 0
-                Catch ex As IOException
+                Catch ex As Exception
                     attempts = attempts - 1
                 End Try
             Loop

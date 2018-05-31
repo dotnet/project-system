@@ -135,9 +135,6 @@
   <data name="General_FastUpToDateCheck_Title" xml:space="preserve">
     <value>Up to Date Checks</value>
   </data>
-  <data name="General_Sdk_Title" xml:space="preserve">
-    <value>SDK</value>
-  </data>
   <data name="General_UsePreviewSdk" xml:space="preserve">
     <value>Use previews of the .NET Core SDK</value>
   </data>
