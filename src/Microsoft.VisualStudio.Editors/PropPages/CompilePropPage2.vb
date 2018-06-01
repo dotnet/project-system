@@ -1311,20 +1311,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             MyBase.PreApplyPageChanges()
         End Sub
 
-        ''' <summary>
-        ''' Check if the path is a trusted path or not
-        ''' </summary>
-        ''' <param name="path"></param>
-        ''' <returns></returns>
-        ''' <remarks>
-        ''' This code was ported from langutil.cpp (function LuCheckSecurityLevel)
-        ''' If that code ever changes, we've gotta update this as well...
-        ''' </remarks>
-        Private Function CheckPath(path As String) As Boolean
+        Friend Shared Function GetSecurityZoneOfFile(path As String, serviceProvider As Shell.ServiceProvider) As Security.SecurityZone
             If path Is Nothing Then
                 Throw New ArgumentNullException("path")
             End If
-
 
             If Not IO.Path.IsPathRooted(path) Then
                 Throw Common.CreateArgumentException("path")
@@ -1337,7 +1327,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             ' We've got to get a fresh instance of the InternetSecurityManager, since it seems that the instance we
             ' can get from our ServiceProvider can't Map URLs to zones...
-            Dim localReg As ILocalRegistry2 = TryCast(ServiceProvider.GetService(GetType(ILocalRegistry)), ILocalRegistry2)
+            Dim localReg As ILocalRegistry2 = TryCast(serviceProvider.GetService(GetType(ILocalRegistry)), ILocalRegistry2)
             If localReg IsNot Nothing Then
                 Dim ObjectPtr As IntPtr = IntPtr.Zero
                 Try
@@ -1362,12 +1352,27 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             If VSErrorHandler.Failed(hr) Then
                 ' If we can't map the absolute path to a zone, we silently fail...
-                Return True
+                Return Security.SecurityZone.NoZone
             End If
 
+            Return CType(zone, Security.SecurityZone)
+        End Function
+
+        ''' <summary>
+        ''' Check if the path is a trusted path or not
+        ''' </summary>
+        ''' <param name="path"></param>
+        ''' <returns></returns>
+        ''' <remarks>
+        ''' This code was ported from langutil.cpp (function LuCheckSecurityLevel)
+        ''' If that code ever changes, we've gotta update this as well...
+        ''' </remarks>
+        Private Function CheckPath(path As String) As Boolean
+            Dim zone As Security.SecurityZone = GetSecurityZoneOfFile(path, ServiceProvider)
+
             Dim folderEvidence As Security.Policy.Evidence = New Security.Policy.Evidence()
-            folderEvidence.AddHostEvidence(New Security.Policy.Url("file:///" & absPath))
-            folderEvidence.AddHostEvidence(New Security.Policy.Zone(CType(zone, Security.SecurityZone)))
+            folderEvidence.AddHostEvidence(New Security.Policy.Url("file:///" & IO.Path.GetFullPath(path)))
+            folderEvidence.AddHostEvidence(New Security.Policy.Zone(zone))
             Dim folderPSet As Security.PermissionSet = Security.SecurityManager.GetStandardSandbox(folderEvidence)
 
             ' Get permission set that is granted to local code running on the local machine.
@@ -1385,7 +1390,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Return False
             End If
         End Function
-
 
         ''' <summary>
         ''' Set the drop-down width of comboboxes with user-handled events so they'll fit their contents
