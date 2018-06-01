@@ -10,7 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 {
     [Export]
     [Export(typeof(IUnconfiguredProjectTasksService))]
-    [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp)]
+    [AppliesTo(ProjectCapability.DotNet)]
     internal class UnconfiguredProjectTasksService : IUnconfiguredProjectTasksService
     {
         private readonly IProjectAsynchronousTasksService _tasksService;
@@ -29,8 +29,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
             _loadedInHostListener = loadedInHostListener;
         }
 
-        [ProjectAutoLoad(completeBy:ProjectLoadCheckpoint.ProjectFactoryCompleted)]
-        [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp)]
+        [ProjectAutoLoad(completeBy: ProjectLoadCheckpoint.ProjectFactoryCompleted)]
+        [AppliesTo(ProjectCapability.DotNet)]
         public Task OnProjectFactoryCompleted()
         {
             return _loadedInHostListener.StartListeningAsync();

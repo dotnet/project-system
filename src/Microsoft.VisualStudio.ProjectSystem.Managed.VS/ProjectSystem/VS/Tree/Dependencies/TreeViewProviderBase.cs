@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         public abstract Task<IProjectTree> BuildTreeAsync(
             IProjectTree dependenciesTree,
             IDependenciesSnapshot snapshot,
-            CancellationToken cancellationToken = default(CancellationToken));
+            CancellationToken cancellationToken = default);
 
         public abstract IProjectTree FindByPath(IProjectTree root, string path);
 
@@ -40,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             return new ProjectTreeCustomizablePropertyContext
             {
                 ExistsOnDisk = false,
-                ParentNodeFlags = parent?.Flags ?? default(ProjectTreeFlags)
+                ParentNodeFlags = parent?.Flags ?? default
             };
         }
 

@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     /// read from the SDK's SupportTargetFramework items.
     /// </summary>
     [ExportDynamicEnumValuesProvider("SupportedTargetFrameworksEnumProvider")]
-    [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp)]
+    [AppliesTo(ProjectCapability.DotNet)]
     internal class SupportedTargetFrameworksEnumProvider : IDynamicEnumValuesProvider
     {
         private readonly IProjectAccessor _projectAccessor;

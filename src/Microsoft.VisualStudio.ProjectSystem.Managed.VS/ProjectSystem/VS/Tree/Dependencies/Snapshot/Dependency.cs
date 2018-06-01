@@ -15,7 +15,7 @@ using Microsoft.VisualStudio.Text;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
-    [DebuggerDisplay("{" + nameof(Id) +",nq}")]
+    [DebuggerDisplay("{" + nameof(Id) + ",nq}")]
     internal class Dependency : IDependency
     {
         private static ConcurrentBag<StringBuilder> s_builderPool = new ConcurrentBag<StringBuilder>();
@@ -206,8 +206,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             ProjectTreeFlags? flags = null,
             string schemaName = null,
             IImmutableList<string> dependencyIDs = null,
-            ImageMoniker icon = default(ImageMoniker),
-            ImageMoniker expandedIcon = default(ImageMoniker),
+            ImageMoniker icon = default,
+            ImageMoniker expandedIcon = default,
             bool? isImplicit = null)
         {
             var clone = new Dependency(this, _modelId);
@@ -351,7 +351,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 sb.Append(targetFramework.ShortName).Append('\\');
                 sb.Append(providerType).Append('\\');
                 sb.Append(Normalize(modelId));
-                sb.TrimEnd(CommonConstants.BackSlashDelimiter);
+                sb.TrimEnd(Delimiter.BackSlash);
                 return sb.ToString();
             }
             finally

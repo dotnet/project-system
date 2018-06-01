@@ -15,10 +15,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
     {
         [ImportingConstructor]
         public AddExistingItemCommand(
-            IPhysicalProjectTree projectTree, 
-            IUnconfiguredProjectVsServices projectVsServices, 
-            SVsServiceProvider serviceProvider, 
-            OrderAddItemHintReceiver orderAddItemHintReceiver) : 
+            IPhysicalProjectTree projectTree,
+            IUnconfiguredProjectVsServices projectVsServices,
+            SVsServiceProvider serviceProvider,
+            OrderAddItemHintReceiver orderAddItemHintReceiver) :
             base(projectTree, projectVsServices, serviceProvider, orderAddItemHintReceiver)
         {
         }

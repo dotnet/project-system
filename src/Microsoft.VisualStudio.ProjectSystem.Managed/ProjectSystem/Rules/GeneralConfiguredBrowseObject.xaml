@@ -6,6 +6,7 @@
   PageTemplate="generic"
   Description="General"
   OverrideMode= "Replace"
+  PropertyPagesHidden="true"
   xmlns="http://schemas.microsoft.com/build/2009/properties">
 
   <Rule.Categories>
@@ -17,7 +18,13 @@
   </Rule.DataSource>
 
   <!-- Build Page Properties -->
-  <StringProperty Name="DefineConstants" DisplayName="Define Constants" Visible="False"/>
+  <StringProperty Name="DefineConstants" DisplayName="Define Constants" Visible="False">
+    <StringProperty.DataSource>
+      <!-- We mark BeforeContext to avoid picking up implicit framework defines to avoid #2720. -->
+      <DataSource Persistence="ProjectFile" HasConfigurationCondition="True" SourceOfDefaultValue="BeforeContext"/>
+    </StringProperty.DataSource>
+  </StringProperty>
+  
   <EnumProperty Name="PlatformTarget" DisplayName="Platform Target" Visible="False"/>
   <BoolProperty Name="Prefer32Bit" DisplayName="Prefer 32Bit" Visible="False"/>
   <BoolProperty Name="AllowUnsafeBlocks"  Default="False"  DisplayName="Allow unsafe code" Visible="False"/>
@@ -29,7 +36,12 @@
       <DataSource Persistence="ProjectFile" PersistedName="WarningsAsErrors" />
     </StringProperty.DataSource>
   </StringProperty>
-  <StringProperty Name="OutputPath" DisplayName="Output Path" Visible="False"/>
+  <StringProperty Name="OutputPath" DisplayName="Output Path" Visible="False">
+    <StringProperty.DataSource>
+      <!-- We mark BeforeContext to avoid picking up implicit output appending to avoid #2177. -->
+      <DataSource Persistence="ProjectFile" HasConfigurationCondition="True" SourceOfDefaultValue="BeforeContext"/>
+    </StringProperty.DataSource>
+  </StringProperty>
   <StringProperty Name="DocumentationFile" DisplayName="Documentation file" Visible="False"/>
   <EnumProperty Name="GenerateSerializationAssemblies" DisplayName="Generate serialization assemblies" Visible="False">
     <EnumValue Name="Auto" DisplayName="Auto" IsDefault="True" />
@@ -43,9 +55,14 @@
   <!-- Advanced Build Page Properties -->
   <EnumProperty Name="LanguageVersion" DisplayName="Language version" Visible="False">
     <EnumProperty.DataSource>
-      <DataSource Persistence="ProjectFile" PersistedName="LangVersion" SourceOfDefaultValue="AfterContext"/>
+      <DataSource Persistence="ProjectFile" PersistedName="LangVersion" SourceOfDefaultValue="AfterContext" HasConfigurationCondition="False" />
     </EnumProperty.DataSource>
   </EnumProperty>
+  <StringProperty Name="LangVersion" DisplayName="Language version" Visible="False" >
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFile" SourceOfDefaultValue="AfterContext" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
   <EnumProperty Name="ErrorReport" DisplayName="Error report" Visible="False"/>
   <EnumProperty Name="DebugInfo" DisplayName="Debug Info" Visible="False">
     <EnumProperty.DataSource>
@@ -124,8 +141,6 @@
     <EnumValue Name="OnOutputUpdated" DisplayName="When the build updates the project output" />
   </EnumProperty>
 
-  <!-- CSharp Project Configuration Properties-->
-  <StringProperty Name="LangVersion" DisplayName="CSharp Language Version" Visible="False"/>
   <StringProperty Name="CodeAnalysisRuleSet" DisplayName=" Code Analysis Rule set" Visible="False"/>
 
   <!-- F# specific properties-->

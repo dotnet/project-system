@@ -4,12 +4,12 @@
     <body>
       <trans-unit id="Rule|ConfigurationGeneralBrowseObject|DisplayName">
         <source>General</source>
-        <target state="needs-review-translation">Genel</target>
+        <target state="translated">Genel</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|ConfigurationGeneralBrowseObject|Description">
         <source>Project Properties</source>
-        <target state="needs-review-translation">Genel</target>
+        <target state="translated">Proje Özellikleri</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|General|DisplayName">
@@ -99,7 +99,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|FileName|DisplayName">
         <source>File Name</source>
-        <target state="needs-review-translation">Proje Dosyası</target>
+        <target state="translated">Dosya Adı</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|FullPath|DisplayName">
@@ -244,22 +244,22 @@
       </trans-unit>
       <trans-unit id="StringProperty|FileName|Description">
         <source>Name of the project file.</source>
-        <target state="new">Name of the project file.</target>
+        <target state="translated">Proje dosyasının adı.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|FullPath|Description">
         <source>Location of the project file.</source>
-        <target state="new">Location of the project file.</target>
+        <target state="translated">Proje dosyasının konumu.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|FullProjectFileName|DisplayName">
         <source>Full Path</source>
-        <target state="new">Full Path</target>
+        <target state="translated">Tam Yol</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|FullProjectFileName|Description">
         <source>Full name of the project file.</source>
-        <target state="new">Full name of the project file.</target>
+        <target state="translated">Proje dosyasının tam adı.</target>
         <note />
       </trans-unit>
     </body>

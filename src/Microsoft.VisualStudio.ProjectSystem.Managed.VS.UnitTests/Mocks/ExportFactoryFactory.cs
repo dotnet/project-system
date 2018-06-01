@@ -4,7 +4,7 @@ namespace System.ComponentModel.Composition
 {
     internal static class ExportFactoryFactory
     {
-        public static ExportFactory<T> CreateInstance<T>() => new ExportFactory<T>(() => new Tuple<T, Action>(default(T), () => { }));
+        public static ExportFactory<T> CreateInstance<T>() => new ExportFactory<T>(() => new Tuple<T, Action>(default, () => { }));
 
         public static ExportFactory<T> ImplementCreateValue<T>(Func<T> factory)
         {

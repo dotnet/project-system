@@ -32,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             ProjectImageMoniker icon = null,
             ProjectImageMoniker expandedIcon = null,
             bool visible = true,
-            ProjectTreeFlags? flags = default(ProjectTreeFlags?));
+            ProjectTreeFlags? flags = default);
 
         /// <summary>
         /// Creates IProjectTree - a generic CPS tree node.
@@ -52,7 +52,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             ProjectImageMoniker icon = null,
             ProjectImageMoniker expandedIcon = null,
             bool visible = true,
-            ProjectTreeFlags? flags = default(ProjectTreeFlags?));
+            ProjectTreeFlags? flags = default);
 
         /// <summary>
         /// Gets an IRule to attach to a project item, which would be used to 

@@ -82,7 +82,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
         ///      Force-create in app-designer folder unless that file is not created there by default.
         ///      In that case create under the root node.
         /// </summary>
-        public async Task<string> GetFileAsync(SpecialFiles fileId, SpecialFileFlags flags, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<string> GetFileAsync(SpecialFiles fileId, SpecialFileFlags flags, CancellationToken cancellationToken = default)
         {
             // Search for the file in the app designer and root folders.
             IProjectTree specialFileNode = await FindFileAsync(Name).ConfigureAwait(false);

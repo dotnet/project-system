@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             string itemName = null,
             string itemType = null,
             bool isFolder = false,
-            ProjectTreeFlags flags = default(ProjectTreeFlags),
+            ProjectTreeFlags flags = default,
             IImmutableDictionary<string, string> metadata = null)
         {
             var mock = new Mock<IProjectTreeCustomizablePropertyContext>();

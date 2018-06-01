@@ -22,23 +22,49 @@ __NOTE:__ To workaround a bug preventing Visual Studio from restoring this repro
 
 ## Debugging/Deploying
 
-By default when you build inside Visual Studio or the command-line, the project system and other binaries gets deployed to the _ProjectSystem_ experimental instance of Visual Studio. They are setup so that they _override_ any binaries that come with Visual Studio.
+By default when you build inside Visual Studio or the command-line, the project system and other binaries gets deployed to the _Exp_ experimental instance of Visual Studio. They will automatically _override_ any binaries that come with Visual Studio.
 
 ### Command-line
 
-From the command-line, after you've run `build.cmd`, you can launch a Visual Studio instance with your recently built bits by running `launch.cmd`
+From the command-line, after you've run `build.cmd`, you can launch a Visual Studio instance with your recently built bits by running `launch.cmd`.
 
 ### Visual Studio
 
 To start debugging:
 
 1. Open __ProjectSystem.sln__
-2. Right-click on the __ProjectSystemSetup__ project, and choose __Set As Startup Project__
-3. Press _F5_
+2. Press _F5_
 
 If this is your first launch of the project system, or _ProjectSystem_ experimental instance, press _CTRL+F5_ to pre-prime and avoid a _long_ start up time.
 
 For tips, see [Debugging Tips](debugging-tips.md)
+
+### Deploying to a different hive
+
+When testing inconjunction with other repositories, it's handy to be able to deploy to the same hive so that you can test them together.
+
+Both Visual Studio and command-line respect the `ROOTSUFFIX` environment variable:
+
+```
+set ROOTSUFFIX=RoslynDev
+
+> build.cmd
+> launch.cmd
+```
+
+```
+set ROOTSUFFIX=RoslynDev
+
+devenv ProjectSystem.sln
+```
+
+Also, both `build.cmd` and `launch.cmd` provide a `/rootsuffix` switch:
+
+``` 
+> build.cmd /rootsuffix RoslynDev
+> launch.cmd /rootsuffix RoslynDev
+```
+
 
 ## Testing 
 

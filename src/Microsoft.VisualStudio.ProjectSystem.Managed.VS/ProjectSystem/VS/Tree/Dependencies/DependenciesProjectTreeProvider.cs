@@ -264,9 +264,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     // Find the import that is included in the evaluation of the specified ConfiguredProject that
                     // imports the project file whose full path matches the specified one.
                     IEnumerable<ResolvedImport> matchingImports = from import in project.Imports
-                                          where import.ImportingElement.ContainingProject == projectXml
-                                          where PathHelper.IsSamePath(import.ImportedProject.FullPath, sharedFilePath)
-                                          select import;
+                                                                  where import.ImportingElement.ContainingProject == projectXml
+                                                                  where PathHelper.IsSamePath(import.ImportedProject.FullPath, sharedFilePath)
+                                                                  select import;
                     foreach (ResolvedImport importToRemove in matchingImports)
                     {
                         ProjectImportElement importingElementToRemove = importToRemove.ImportingElement;
@@ -545,7 +545,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             ProjectImageMoniker icon = null,
             ProjectImageMoniker expandedIcon = null,
             bool visible = true,
-            ProjectTreeFlags? flags = default(ProjectTreeFlags?))
+            ProjectTreeFlags? flags = default)
         {
             // Note that all the parameters are specified so we can force this call to an
             // overload of NewTree available prior to 15.5 versions of CPS. Once a 15.5 build
@@ -570,7 +570,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             ProjectImageMoniker icon = null,
             ProjectImageMoniker expandedIcon = null,
             bool visible = true,
-            ProjectTreeFlags? flags = default(ProjectTreeFlags?))
+            ProjectTreeFlags? flags = default)
         {
             return NewTree(
                 caption: caption,

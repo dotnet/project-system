@@ -14,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     /// Providers a wrapper around the what is considered the active debugging framework.
     /// </summary>
     [Export(typeof(IActiveDebugFrameworkServices))]
-    [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp)]
+    [AppliesTo(ProjectCapability.DotNet)]
     internal class ActiveDebugFrameworkServices : IActiveDebugFrameworkServices
     {
         private readonly IActiveConfiguredProjectsProvider _activeConfiguredProjectsProvider;

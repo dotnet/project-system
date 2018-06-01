@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
     ///     Provides publishable project config for projects that support click once publishing.
     /// </summary>
     [Export(typeof(IPublishProvider))]
-    [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp)]
+    [AppliesTo(ProjectCapability.DotNet)]
     internal class PublishableProjectConfigProvider : IPublishProvider
     {
         public Task<bool> IsPublishSupportedAsync()

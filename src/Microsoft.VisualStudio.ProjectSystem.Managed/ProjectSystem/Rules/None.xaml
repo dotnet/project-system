@@ -5,6 +5,7 @@
   DisplayName="General"
   PageTemplate="generic"
   Description="File Properties"
+  PropertyPagesHidden="true"
   xmlns="http://schemas.microsoft.com/build/2009/properties">
   <Rule.DataSource>
     <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" ItemType="None" SourceOfDefaultValue="AfterContext" />

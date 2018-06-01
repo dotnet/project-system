@@ -9,5 +9,5 @@ namespace System.Collections.Immutable
 
         public static readonly ImmutableDictionary<string, TValue> EmptyOrdinalIgnoreCase
             = ImmutableDictionary<string, TValue>.Empty.WithComparers(StringComparer.OrdinalIgnoreCase);
-        }
+    }
 }

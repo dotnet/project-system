@@ -4,12 +4,12 @@
     <body>
       <trans-unit id="Rule|ConfigurationGeneralBrowseObject|DisplayName">
         <source>General</source>
-        <target state="needs-review-translation">일반</target>
+        <target state="translated">일반</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|ConfigurationGeneralBrowseObject|Description">
         <source>Project Properties</source>
-        <target state="needs-review-translation">일반</target>
+        <target state="translated">프로젝트 속성</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|General|DisplayName">
@@ -99,7 +99,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|FileName|DisplayName">
         <source>File Name</source>
-        <target state="needs-review-translation">프로젝트 파일</target>
+        <target state="translated">파일 이름</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|FullPath|DisplayName">
@@ -244,22 +244,22 @@
       </trans-unit>
       <trans-unit id="StringProperty|FileName|Description">
         <source>Name of the project file.</source>
-        <target state="new">Name of the project file.</target>
+        <target state="translated">프로젝트 파일의 이름입니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|FullPath|Description">
         <source>Location of the project file.</source>
-        <target state="new">Location of the project file.</target>
+        <target state="translated">프로젝트 파일의 위치입니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|FullProjectFileName|DisplayName">
         <source>Full Path</source>
-        <target state="new">Full Path</target>
+        <target state="translated">전체 경로</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|FullProjectFileName|Description">
         <source>Full name of the project file.</source>
-        <target state="new">Full name of the project file.</target>
+        <target state="translated">프로젝트 파일의 전체 이름입니다.</target>
         <note />
       </trans-unit>
     </body>

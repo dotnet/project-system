@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.References
     ///     same behavior, inside and outside of Visual Studio.
     /// </remarks>
     [Export(typeof(IValidProjectReferenceChecker))]
-    [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp)]
+    [AppliesTo(ProjectCapability.DotNet)]
     [Order(Order.Default)] // Before the default checker, which delegates onto normal P-2-P rules
     internal class AlwaysAllowValidProjectReferenceChecker : IValidProjectReferenceChecker
     {

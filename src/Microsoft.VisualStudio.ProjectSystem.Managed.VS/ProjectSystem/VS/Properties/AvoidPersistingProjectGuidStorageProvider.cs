@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
     ///     project GUID property to the project file if isn't already present in the file.
     /// </summary>
     [Export(typeof(IProjectGuidStorageProvider))]
-    [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp)]
+    [AppliesTo(ProjectCapability.DotNet)]
     [Order(Order.Default)]
     internal class AvoidPersistingProjectGuidStorageProvider : IProjectGuidStorageProvider
     {

@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         public virtual T ToActualModel()
         {
-            return default(T);
+            return default;
         }
     }
 

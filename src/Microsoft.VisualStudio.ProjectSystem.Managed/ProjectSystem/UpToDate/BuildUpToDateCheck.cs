@@ -16,7 +16,7 @@ using Microsoft.VisualStudio.Telemetry;
 
 namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 {
-    [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp + "+ !" + ProjectCapabilities.SharedAssetsProject)]
+    [AppliesTo(ProjectCapability.DotNet + "+ !" + ProjectCapabilities.SharedAssetsProject)]
     [Export(typeof(IBuildUpToDateCheckProvider))]
     [ExportMetadata("BeforeDrainCriticalTasks", true)]
     internal sealed class BuildUpToDateCheck : OnceInitializedOnceDisposed, IBuildUpToDateCheckProvider
@@ -92,7 +92,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         /// Called on project load.
         /// </summary>
         [ConfiguredProjectAutoLoad]
-        [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp + "+ !" + ProjectCapabilities.SharedAssetsProject)]
+        [AppliesTo(ProjectCapability.DotNet + "+ !" + ProjectCapabilities.SharedAssetsProject)]
         internal void Load()
         {
             EnsureInitialized();
@@ -572,7 +572,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             return true;
         }
 
-        public async Task<bool> IsUpToDateAsync(BuildAction buildAction, TextWriter logWriter, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<bool> IsUpToDateAsync(BuildAction buildAction, TextWriter logWriter, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
@@ -646,7 +646,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             return isUpToDate;
         }
 
-        public async Task<bool> IsUpToDateCheckEnabledAsync(CancellationToken cancellationToken = default(CancellationToken)) =>
+        public async Task<bool> IsUpToDateCheckEnabledAsync(CancellationToken cancellationToken = default) =>
             await _projectSystemOptions.GetIsFastUpToDateCheckEnabledAsync().ConfigureAwait(false);
     }
 }

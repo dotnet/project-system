@@ -36,6 +36,7 @@ ClickOnce Publish                                                           | �
 Globbing support                                                            |          | ●    | `<Compile Include="*.cs" />`
 Simplified project format                                                   |          | ●    | `<Project Sdk="Microsoft.Net.Sdk">`
 Simplified configuration syntax                                             |          | ●    | `<Configurations>Debug;Release<Configurations>;<Platforms>AnyCPU;x64</Platforms>`
+Implicit configuration syntax                                               | ●        |      | `<PropertyGroup Condition="'$(Configuration)\|$(Platform)' == 'Debug\|AnyCPU'">`
 Edit project XML while loaded                                               |          | ●
 Automatically reload project file with no prompts                           |          | ●
 Automatically reload targets files                                          |          | ●
@@ -43,7 +44,7 @@ Automatically refresh Solution Explorer to reflect file system              |   
 Show items included in imports (.targets/.props)                            |          | ●
 **Dependencies**|
 Auto-restore packages on load and external edit                             |          | ● 
-PackageReference support                                                    | ◖       | ● | Legacy does not reload package targets file without VS restart. Also does not support using MSBuild properties in name, version and metadata.
+PackageReference support                                                    | ◖        | ● | Legacy does not reload package targets file without VS restart. Also does not support using MSBuild properties in name, version and metadata.
 Dependency node showing package/project graph                               |          | ● 
 Transitive ProjectReference                                                 |          | ●
 Generate NuGet package on build                                             |          | ● 
@@ -51,11 +52,13 @@ Generate NuGet package on build                                             |   
 Add Service Reference                                                       | ●        | 
 Add Web Reference                                                           | ●        | 
 Add Data Source                                                             | ●        | 
-"Initialize Interactive Windows with Project"                               | ●        | 
-Class Diagrams                                                              | ●        | ◖
+"Initialize Interactive Window with Project"                               | ●        | ● (15.8 Preview 3) | Only when targeting .NET Framework.
+Class Diagrams                                                              | ●        | ● (15.8 Preview 3) |
 Code Analysis                                                               | ●        | 
-Code Metrics                                                                | ●        | 
+Code Metrics                                                                | ●        | ● (15.8 Preview 3) | Only when targeting .NET Framework.
+Code Clones                                                                 | ●        | ● (15.8 Preview 3) | 
 Fakes                                                                       | ●        | 
 T4 Templates                                                                | ●        | 
 Zero Impact Projects ("Save new projects when created")                     | ●        | 
 Simplified configurations ("Show advanced build configurations")            | ●        | 
+[Automation Extenders](https://msdn.microsoft.com/en-us/library/0y92k2w2.aspx)| ●        | ● (15.8 Preview 3) | 

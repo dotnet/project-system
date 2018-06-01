@@ -16,7 +16,7 @@ using Task = System.Threading.Tasks.Task;
 namespace Microsoft.VisualStudio.Telemetry
 {
     [Export(typeof(IBuildLoggerProviderAsync))]
-    [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp)]
+    [AppliesTo(ProjectCapability.DotNet)]
     internal sealed class DesignTimeTelemetryLoggerProvider : IBuildLoggerProviderAsync
     {
         [Import]

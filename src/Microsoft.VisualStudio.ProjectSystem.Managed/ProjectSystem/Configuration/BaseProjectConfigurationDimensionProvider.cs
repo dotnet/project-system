@@ -46,7 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         {
             get;
         }
-        
+
         public IProjectAccessor ProjectAccessor
         {
             get;
@@ -166,7 +166,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
                 return evaluatedProject.GetProperty(propertyName ?? PropertyName)?.EvaluatedValue;
             }).ConfigureAwait(false);
         }
-        
+
         private async Task<string> FindDefaultValueFromDimensionPropertyAsync(UnconfiguredProject project)
         {
             string values = await FindDimensionPropertyAsync(project).ConfigureAwait(false);
