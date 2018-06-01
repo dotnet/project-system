@@ -1814,7 +1814,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Return False
             End If
 
-            Dim zone As Security.SecurityZone = PropertyPages.CompilePropPage2.GetSecurityZoneOfFile(resxFilePath, Shell.ServiceProvider.GlobalProvider)
+            Dim zone As Security.SecurityZone = GetSecurityZoneOfFile(resxFilePath, Shell.ServiceProvider.GlobalProvider)
             If zone < Security.SecurityZone.Internet Then
                 Return False
             End If
