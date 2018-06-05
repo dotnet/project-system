@@ -868,8 +868,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Public Sub ReadResources(resourceFileName As String, allBufferText As String)
 
             If IsDangerous(resourceFileName, allBufferText) Then
-                ' NOTE: Not localized because we're shipping in a hotfix and don't have facility to ship localized resources.
-                View.DsMsgBox("Unable to load '" & resourceFileName & "' because it is not trusted.", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                View.DsMsgBox(String.Format(My.Resources.Designer.BlockedResx, resourceFileName), MessageBoxButtons.OK, MessageBoxIcon.Error)
                 Return
             End If
 
