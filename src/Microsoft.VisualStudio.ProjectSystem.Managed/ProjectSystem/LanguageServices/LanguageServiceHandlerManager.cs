@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
@@ -14,6 +15,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     [Export]
     internal class LanguageServiceHandlerManager
     {
+        private static readonly Dictionary<(Type, string), MethodInfo> s_cachedReflectionMethods = new Dictionary<(Type, string), MethodInfo>();
+
         private readonly UnconfiguredProject _project;
         private readonly ICommandLineParserService _commandLineParser;
         private readonly IContextHandlerProvider _handlerProvider;
@@ -62,7 +65,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
         private static void InvokeMethodIfFound(object o, string methodName)
         {
-            var method = o.GetType().GetMethod(methodName);
+            (Type type, string methodName) key = (o.GetType(), methodName);
+            if (!s_cachedReflectionMethods.TryGetValue(key, out MethodInfo method))
+            {
+                method = o.GetType().GetMethod(methodName);
+                s_cachedReflectionMethods[key] = method;
+            }
+
             method?.Invoke(o, null);
         }
 
@@ -200,7 +209,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
         private void EnqueueWork(Action<Task> action)
         {
-            if (LanguageServiceHost.WorkspaceSupportsBatchingAndFreeThreadedInitialization())
+            if (LanguageServiceHost.WorkspaceSupportsBatchingAndFreeThreadedInitialization)
             {
                 _currentHandlerTask = _currentHandlerTask.ContinueWith(
                     action,

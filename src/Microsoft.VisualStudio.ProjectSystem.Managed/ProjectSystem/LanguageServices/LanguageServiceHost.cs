@@ -35,6 +35,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         private readonly List<IDisposable> _designTimeBuildSubscriptionLinks;
         private readonly HashSet<ProjectConfiguration> _projectConfigurationsWithSubscriptions;
 
+        private static readonly Lazy<bool> s_workspaceSupportsBatchingAndFreeThreadedInitialization = new Lazy<bool>(
+            () => typeof(IWorkspaceProjectContext).GetMethod("StartBatch") != null &&
+                  typeof(IWorkspaceProjectContext).GetMethod("EndBatch") != null);
+
         /// <summary>
         /// Current AggregateWorkspaceProjectContext - accesses to this field must be done with a lock on <see cref="_gate"/>.
         /// Note that at any given time, we can have only a single non-disposed aggregate project context.
@@ -264,7 +268,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             //       should be able to run concurrently.
             await ExecuteWithinLockAsync(async () =>
             {
-                if (!WorkspaceSupportsBatchingAndFreeThreadedInitialization())
+                if (!WorkspaceSupportsBatchingAndFreeThreadedInitialization)
                 {
                     await _commonServices.ThreadingService.SwitchToUIThread();
                 }
@@ -285,12 +289,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         /// in order to support a smooth transition, we decide whether to serialize
         /// based on whether a particular member that was added at the same time exists.
         /// </summary>
-        /// <returns><see langword="true"/> if the workspace supports batching.</returns>
-        internal static bool WorkspaceSupportsBatchingAndFreeThreadedInitialization()
-        {
-            return typeof(IWorkspaceProjectContext).GetMethod("StartBatch") != null &&
-                   typeof(IWorkspaceProjectContext).GetMethod("EndBatch") != null;
-        }
+        /// <value><see langword="true"/> if the workspace supports batching.</value>
+        internal static bool WorkspaceSupportsBatchingAndFreeThreadedInitialization
+            => s_workspaceSupportsBatchingAndFreeThreadedInitialization.Value;
 
         private static bool HasTargetFrameworksChanged(IProjectVersionedValue<IProjectSubscriptionUpdate> e)
         {
