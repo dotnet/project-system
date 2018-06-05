@@ -44,5 +44,13 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             return UnloadAsync();
         }
+
+        protected override Task DisposeCoreAsync(bool initialized)
+        {
+            _activationTracking.ImplicitlyActivated -= OnImplicitlyActivated;
+            _activationTracking.ImplicitlyDeactivated -= OnImplicitlyDeactivated;
+
+            return base.DisposeCoreAsync(initialized);
+        }
     }
 }
