@@ -85,6 +85,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             }
         }
 
+        public string PlatformTarget
+        {
+            get
+            {
+                return _threadingService.ExecuteSynchronously(async () =>
+                {
+                    ConfiguredBrowseObject browseObjectProperties = await _projectProperties.GetConfiguredBrowseObjectPropertiesAsync().ConfigureAwait(true);
+                    return await browseObjectProperties.PlatformTarget.GetEvaluatedValueAtEndAsync().ConfigureAwait(true);
+                });
+            }
+            set
+            {
+                _threadingService.ExecuteSynchronously(async () =>
+                {
+                    ConfiguredBrowseObject browseObjectProperties = await _projectProperties.GetConfiguredBrowseObjectPropertiesAsync().ConfigureAwait(true);
+                    await browseObjectProperties.PlatformTarget.SetValueAsync(value).ConfigureAwait(true);
+                });
+            }
+        }
+
         public object ExtenderNames => null;
         public string __id => throw new System.NotImplementedException();
         public bool DebugSymbols { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
@@ -125,7 +145,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         public string NoWarn { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
         public bool NoStdLib { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
         public string DebugInfo { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-        public string PlatformTarget { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
         public string TreatSpecificWarningsAsErrors { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
         public bool RunCodeAnalysis { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
         public string CodeAnalysisLogFile { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
