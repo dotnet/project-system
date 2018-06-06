@@ -47,6 +47,13 @@
         </IntProperty.DataSource>
     </IntProperty>
     <StringProperty Name="OutputName" Visible="False" />
+
+    <StringProperty Name="OutputFileName" ReadOnly="True" Visible="False">
+      <StringProperty.DataSource>
+        <DataSource Persistence="ProjectFile" PersistedName="TargetFileName" SourceOfDefaultValue="AfterContext" />
+      </StringProperty.DataSource>
+    </StringProperty>
+  
     <!-- This property is used to provide the value of OutputType through BrowseObject, which is used by Property pages-->
     <IntProperty Name="OutputType" DisplayName="Output Type" Visible="False">
         <IntProperty.DataSource>

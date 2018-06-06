@@ -94,6 +94,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             }
         }
 
+        public string OutputFileName
+        {
+            get
+            {
+                return _threadingService.ExecuteSynchronously(async () =>
+                {
+                    ConfigurationGeneralBrowseObject configurationGeneralProperties = await ProjectProperties.GetConfigurationGeneralBrowseObjectPropertiesAsync().ConfigureAwait(true);
+                    return await configurationGeneralProperties.OutputFileName.GetEvaluatedValueAtEndAsync().ConfigureAwait(true);
+                });
+            }
+        }
+
         public string ExtenderCATID => null;
 
         public string AbsoluteProjectDirectory
@@ -163,8 +175,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         public prjOptionStrict OptionStrict { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public string ReferencePath { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
-        public string OutputFileName => throw new NotImplementedException();
 
         public prjOptionExplicit OptionExplicit { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 

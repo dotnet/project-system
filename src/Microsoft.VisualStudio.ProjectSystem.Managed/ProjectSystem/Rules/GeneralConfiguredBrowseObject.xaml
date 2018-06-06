@@ -26,6 +26,13 @@
   </StringProperty>
   
   <EnumProperty Name="PlatformTarget" DisplayName="Platform Target" Visible="False"/>
+  
+  <StringProperty Name="IntermediatePath" Visible="false">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="IntermediateOutputPath" HasConfigurationCondition="True" SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
+
   <BoolProperty Name="Prefer32Bit" DisplayName="Prefer 32Bit" Visible="False"/>
   <BoolProperty Name="AllowUnsafeBlocks"  Default="False"  DisplayName="Allow unsafe code" Visible="False"/>
   <BoolProperty Name="Optimize" DisplayName="Optimize" Visible="False"/>
