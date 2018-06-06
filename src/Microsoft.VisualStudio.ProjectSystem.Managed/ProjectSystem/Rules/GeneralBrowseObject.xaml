@@ -50,7 +50,7 @@
 
     <StringProperty Name="OutputFileName" ReadOnly="True" Visible="False">
       <StringProperty.DataSource>
-        <DataSource PersistedName="TargetFileName" Persistence="ProjectFile" SourceOfDefaultValue="AfterContext" />
+        <DataSource Persistence="ProjectFile" PersistedName="TargetFileName" SourceOfDefaultValue="AfterContext" />
       </StringProperty.DataSource>
     </StringProperty>
   
