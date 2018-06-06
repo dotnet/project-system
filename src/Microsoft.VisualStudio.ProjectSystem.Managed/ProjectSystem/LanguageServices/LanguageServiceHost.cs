@@ -21,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     [AppliesTo(ProjectCapability.DotNetLanguageService)]
     internal partial class LanguageServiceHost : OnceInitializedOnceDisposedAsync, ILanguageServiceHost
     {
-#pragma warning disable CA2213 // OnceInitializedOnceDisposedAsync are not tracked corretly by the IDisposeable analyzer
+#pragma warning disable CA2213 // OnceInitializedOnceDisposedAsync are not tracked correctly by the IDisposeable analyzer
         private readonly SemaphoreSlim _gate = new SemaphoreSlim(initialCount: 1);
 #pragma warning restore CA2213
         private readonly IUnconfiguredProjectCommonServices _commonServices;
@@ -34,6 +34,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         private readonly List<IDisposable> _evaluationSubscriptionLinks;
         private readonly List<IDisposable> _designTimeBuildSubscriptionLinks;
         private readonly HashSet<ProjectConfiguration> _projectConfigurationsWithSubscriptions;
+
+        private static readonly Lazy<bool> s_workspaceSupportsBatchingAndFreeThreadedInitialization = new Lazy<bool>(
+            () => typeof(IWorkspaceProjectContext).GetMethod("StartBatch") != null &&
+                  typeof(IWorkspaceProjectContext).GetMethod("EndBatch") != null);
 
         /// <summary>
         /// Current AggregateWorkspaceProjectContext - accesses to this field must be done with a lock on <see cref="_gate"/>.
@@ -138,6 +142,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         private Task ExecuteWithinLockAsync(Func<Task> task)
         {
             return _gate.ExecuteWithinLockAsync(JoinableCollection, JoinableFactory, task);
+        }
+
+        private Task ExecuteWithinLockAsync(Action action)
+        {
+            return _gate.ExecuteWithinLockAsync(JoinableCollection, JoinableFactory, action);
         }
 
         /// <summary>
@@ -255,12 +264,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         private async Task HandleAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> update, RuleHandlerType handlerType)
         {
             // We need to process the update within a lock to ensure that we do not release this context during processing.
-            // TODO: Enable concurrent execution of updates themeselves, i.e. two separate invocations of HandleAsync
+            // TODO: Enable concurrent execution of updates themselves, i.e. two separate invocations of HandleAsync
             //       should be able to run concurrently.
             await ExecuteWithinLockAsync(async () =>
             {
-                // TODO: https://github.com/dotnet/roslyn-project-system/issues/353
-                await _commonServices.ThreadingService.SwitchToUIThread();
+                if (!WorkspaceSupportsBatchingAndFreeThreadedInitialization)
+                {
+                    await _commonServices.ThreadingService.SwitchToUIThread();
+                }
 
                 // Get the inner workspace project context to update for this change.
                 IWorkspaceProjectContext projectContextToUpdate = _currentAggregateProjectContext.GetInnerProjectContext(update.Value.ProjectConfiguration, out bool isActiveContext);
@@ -272,6 +283,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 _languageServiceHandlerManager.Handle(update, handlerType, projectContextToUpdate, isActiveContext);
             }).ConfigureAwait(false);
         }
+
+        /// <summary>
+        /// Roslyn is working on supporting free-threaded initialization.
+        /// in order to support a smooth transition, we decide whether to serialize
+        /// based on whether a particular member that was added at the same time exists.
+        /// </summary>
+        /// <value><see langword="true"/> if the workspace supports batching.</value>
+        internal static bool WorkspaceSupportsBatchingAndFreeThreadedInitialization
+            => s_workspaceSupportsBatchingAndFreeThreadedInitialization.Value;
 
         private static bool HasTargetFrameworksChanged(IProjectVersionedValue<IProjectSubscriptionUpdate> e)
         {

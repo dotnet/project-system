@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
-
+using System.Reflection;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.Logging;
 
@@ -13,6 +13,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     [Export]
     internal class LanguageServiceHandlerManager
     {
+        private static readonly Dictionary<(Type, string), MethodInfo> s_cachedReflectionMethods = new Dictionary<(Type, string), MethodInfo>();
+
         private readonly UnconfiguredProject _project;
         private readonly ICommandLineParserService _commandLineParser;
         private readonly IContextHandlerProvider _handlerProvider;
@@ -39,14 +41,34 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             Requires.NotNull(update, nameof(update));
             Requires.NotNull(context, nameof(context));
 
-            if (handlerType == RuleHandlerType.Evaluation)
+            try
             {
-                HandleEvaluation(update, context, isActiveContext);
+                InvokeMethodIfFound(context, "StartBatch");
+                if (handlerType == RuleHandlerType.Evaluation)
+                {
+                    HandleEvaluation(update, context, isActiveContext);
+                }
+                else
+                {
+                    HandleDesignTime(update, context, isActiveContext);
+                }
             }
-            else
+            finally
             {
-                HandleDesignTime(update, context, isActiveContext);
+                InvokeMethodIfFound(context, "EndBatch");
             }
+        }
+
+        private static void InvokeMethodIfFound(object o, string methodName)
+        {
+            (Type type, string methodName) key = (o.GetType(), methodName);
+            if (!s_cachedReflectionMethods.TryGetValue(key, out MethodInfo method))
+            {
+                method = o.GetType().GetMethod(methodName);
+                s_cachedReflectionMethods[key] = method;
+            }
+
+            method?.Invoke(o, null);
         }
 
         private void HandleEvaluation(IProjectVersionedValue<IProjectSubscriptionUpdate> update, IWorkspaceProjectContext context, bool isActiveContext)
@@ -142,7 +164,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
         private static void ProcessDesignTimeBuildFailure(IProjectChangeDescription projectChange, IWorkspaceProjectContext context, IProjectLogger logger)
         {
-            // If 'CompileDesignTime' didn't run due to a preceeding failed target, or a failure in itself, CPS will send us an empty IProjectChangeDescription
+            // If 'CompileDesignTime' didn't run due to a preceding failed target, or a failure in itself, CPS will send us an empty IProjectChangeDescription
             // that represents as if 'CompileDesignTime' ran but returned zero results.
             //
             // We still forward those 'removes' of references, sources, etc onto Roslyn to avoid duplicate/incorrect results when the next
@@ -219,7 +241,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         {
             if (succeeded)
             {
-                logger.WriteLine("Last design-time build suceeeded, turning semantic errors back on.");
+                logger.WriteLine("Last design-time build succeeded, turning semantic errors back on.");
             }
             else
             {
