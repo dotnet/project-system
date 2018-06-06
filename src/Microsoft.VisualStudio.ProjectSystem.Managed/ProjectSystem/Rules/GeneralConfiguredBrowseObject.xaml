@@ -29,7 +29,7 @@
   
   <StringProperty Name="IntermediatePath" Visible="false">
     <StringProperty.DataSource>
-      <DataSource Persistence="ProjectFile" PersistedName="IntermediateOutputPath" HasConfigurationCondition="True" />
+      <DataSource Persistence="ProjectFile" PersistedName="IntermediateOutputPath" HasConfigurationCondition="True" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
 
