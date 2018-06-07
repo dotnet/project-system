@@ -244,12 +244,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
                     ConfigurationGeneral configurationGeneralProperties = await projectProperties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(true);
                     targetPath = (string)await configurationGeneralProperties.TargetPath.GetValueAsync().ConfigureAwait(true);
                     string targetFrameworkMoniker = (string)await configurationGeneralProperties.TargetFrameworkMoniker.GetValueAsync().ConfigureAwait(true);
-                    string displayName = GetDisplayName(configuredProject, projectData, targetFramework);
-                    configuredProjectHostObject = _projectHostProvider.GetConfiguredProjectHostObject(_unconfiguredProjectHostObject, workspaceProjectContextId:displayName, targetFrameworkMoniker);
+                    string workspaceProjectContextId = GetWorkspaceContextId(configuredProject);
+                    configuredProjectHostObject = _projectHostProvider.GetConfiguredProjectHostObject(_unconfiguredProjectHostObject, workspaceProjectContextId, targetFrameworkMoniker);
 
                     // TODO: https://github.com/dotnet/roslyn-project-system/issues/353
                     await _commonServices.ThreadingService.SwitchToUIThread();
-                    workspaceProjectContext = _contextFactory.Value.CreateProjectContext(languageName, displayName, projectData.FullPath, projectGuid, configuredProjectHostObject, targetPath);
+
+                    // NOTE: Despite CreateProjectContext taking a "displayName"; it's actually sets both "WorkspaceProjectContextId", "DisplayName", and default "AssemblyName".
+                    // Unlike the latter properties, we cannot change WorkspaceProjectContextId once set, so we pass it as the display name.
+                    workspaceProjectContext = _contextFactory.Value.CreateProjectContext(languageName, workspaceProjectContextId, projectData.FullPath, projectGuid, configuredProjectHostObject, targetPath);
+                    workspaceProjectContext.DisplayName = GetDisplayName(configuredProject, projectData, targetFramework);
 
                     // By default, set "LastDesignTimeBuildSucceeded = false" to turn off diagnostics until first design time build succeeds for this project.
                     workspaceProjectContext.LastDesignTimeBuildSucceeded = false;
@@ -269,6 +273,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             _unconfiguredProjectHostObject.ActiveIntellisenseProjectHostObject = activeIntellisenseProjectHostObject;
 
             return new AggregateWorkspaceProjectContext(innerProjectContextsBuilder.ToImmutable(), configuredProjectsMap, activeTargetFramework, _unconfiguredProjectHostObject);
+        }
+
+        private static string GetWorkspaceContextId(ConfiguredProject configuredProject)
+        {
+            // WorkspaceContextId must be unique across the entire solution, therefore as we fire up a workspace context 
+            // per implicitly active config, we factor in both the full path of the project + the name of the config.
+            //
+            // NOTE: Roslyn also uses this name as the default "AssemblyName" until we explicitly set it, so we need to make 
+            // sure it doesn't contain any invalid path characters.
+            //
+            // For example:
+            //      C:\Project\Project.csproj (Debug|AnyCPU)
+            //      C:\Project\MultiTarget.csproj (Debug|AnyCPU|net45)
+
+            return $"{configuredProject.UnconfiguredProject.FullPath} ({configuredProject.ProjectConfiguration.Name.Replace("|", "_")})";
         }
 
         private static string GetDisplayName(ConfiguredProject configuredProject, ProjectData projectData, string targetFramework)
