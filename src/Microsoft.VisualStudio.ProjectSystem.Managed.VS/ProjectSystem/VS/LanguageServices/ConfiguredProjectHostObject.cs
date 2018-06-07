@@ -11,23 +11,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
     internal sealed class ConfiguredProjectHostObject : AbstractHostObject, IConfiguredProjectHostObject
     {
         private readonly UnconfiguredProjectHostObject _unconfiguredProjectHostObject;
-        private readonly string _projectDisplayName;
+        private readonly string _workspaceProjectContextId;
         private readonly string _targetFrameworkMoniker;
 
-        public ConfiguredProjectHostObject(UnconfiguredProjectHostObject unconfiguredProjectHostObject, string projectDisplayName, string targetFrameworkMoniker)
+        public ConfiguredProjectHostObject(UnconfiguredProjectHostObject unconfiguredProjectHostObject, string workspaceProjectContextId, string targetFrameworkMoniker)
             : base(innerHierarchy: unconfiguredProjectHostObject, innerVsProject: unconfiguredProjectHostObject)
         {
             Requires.NotNull(unconfiguredProjectHostObject, nameof(unconfiguredProjectHostObject));
-            Requires.NotNullOrEmpty(projectDisplayName, nameof(projectDisplayName));
+            Requires.NotNullOrEmpty(workspaceProjectContextId, nameof(workspaceProjectContextId));
             Requires.NotNull(targetFrameworkMoniker, nameof(targetFrameworkMoniker));
 
             _unconfiguredProjectHostObject = unconfiguredProjectHostObject;
-            _projectDisplayName = projectDisplayName;
+            _workspaceProjectContextId = workspaceProjectContextId;
             _targetFrameworkMoniker = targetFrameworkMoniker;
         }
 
-        public string ProjectDisplayName => _projectDisplayName;
-        public override string ActiveIntellisenseProjectDisplayName => _unconfiguredProjectHostObject.ActiveIntellisenseProjectDisplayName;
+        public string WorkspaceProjectContextId => _workspaceProjectContextId;
+        public override string ActiveWorkspaceProjectContextId => _unconfiguredProjectHostObject.ActiveWorkspaceProjectContextId;
 
         #region IVsHierarchy overrides
 

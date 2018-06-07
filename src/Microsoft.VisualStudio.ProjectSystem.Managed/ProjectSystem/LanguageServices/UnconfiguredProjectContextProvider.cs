@@ -245,7 +245,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
                     targetPath = (string)await configurationGeneralProperties.TargetPath.GetValueAsync().ConfigureAwait(true);
                     string targetFrameworkMoniker = (string)await configurationGeneralProperties.TargetFrameworkMoniker.GetValueAsync().ConfigureAwait(true);
                     string displayName = GetDisplayName(configuredProject, projectData, targetFramework);
-                    configuredProjectHostObject = _projectHostProvider.GetConfiguredProjectHostObject(_unconfiguredProjectHostObject, displayName, targetFrameworkMoniker);
+                    configuredProjectHostObject = _projectHostProvider.GetConfiguredProjectHostObject(_unconfiguredProjectHostObject, workspaceProjectContextId:displayName, targetFrameworkMoniker);
 
                     // TODO: https://github.com/dotnet/roslyn-project-system/issues/353
                     await _commonServices.ThreadingService.SwitchToUIThread();

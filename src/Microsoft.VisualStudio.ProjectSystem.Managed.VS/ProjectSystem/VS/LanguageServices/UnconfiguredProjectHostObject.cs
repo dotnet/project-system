@@ -21,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         }
 
         public IConfiguredProjectHostObject ActiveIntellisenseProjectHostObject { get; set; }
-        public override string ActiveIntellisenseProjectDisplayName => ActiveIntellisenseProjectHostObject?.ProjectDisplayName;
+        public override string ActiveWorkspaceProjectContextId => ActiveIntellisenseProjectHostObject?.WorkspaceProjectContextId;
         public bool DisposingConfiguredProjectHostObjects { get; set; }
 
         public void PushPendingIntellisenseProjectHostObjectUpdates()
@@ -56,7 +56,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
                 switch (propid)
                 {
                     case (int)__VSHPROPID8.VSHPROPID_ActiveIntellisenseProjectContext:
-                        pvar = ActiveIntellisenseProjectDisplayName;
+                        pvar = ActiveWorkspaceProjectContextId;
                         return VSConstants.S_OK;
 
                     case (int)__VSHPROPID7.VSHPROPID_SharedItemContextHierarchy:
