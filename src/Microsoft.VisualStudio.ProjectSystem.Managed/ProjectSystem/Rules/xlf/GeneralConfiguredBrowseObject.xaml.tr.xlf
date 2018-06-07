@@ -234,12 +234,12 @@
       </trans-unit>
       <trans-unit id="EnumProperty|LanguageVersion|DisplayName">
         <source>Language version</source>
-        <target state="new">Language version</target>
+        <target state="translated">Dil sürümü</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|LangVersion|DisplayName">
         <source>Language version</source>
-        <target state="new">Language version</target>
+        <target state="translated">Dil sürümü</target>
         <note />
       </trans-unit>
     </body>
