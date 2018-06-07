@@ -83,8 +83,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
                 usedProjectContexts = _configuredProjectContextsMap.Values.ToImmutableHashSet();
             }
 
-            // TODO: https://github.com/dotnet/roslyn-project-system/issues/353
-            await _commonServices.ThreadingService.SwitchToUIThread();
+            if (!LanguageServiceHost.WorkspaceSupportsBatchingAndFreeThreadedInitialization)
+            {
+                await _commonServices.ThreadingService.SwitchToUIThread();
+            }
 
             // We don't want to dispose the inner workspace contexts that are still being used by other active aggregate contexts.
             bool shouldDisposeInnerContext(IWorkspaceProjectContext c) => !usedProjectContexts.Contains(c);
@@ -214,15 +216,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             if (string.IsNullOrEmpty(targetPath))
                 return null;
 
-
-            // TODO: https://github.com/dotnet/roslyn-project-system/issues/353
-            await _commonServices.ThreadingService.SwitchToUIThread();
+            bool continueOnCapturedContext = false;
+            if (!LanguageServiceHost.WorkspaceSupportsBatchingAndFreeThreadedInitialization)
+            {
+                continueOnCapturedContext = true;
+                await _commonServices.ThreadingService.SwitchToUIThread();
+            }
 
             ProjectData projectData = GetProjectData();
 
             // Get the set of active configured projects ignoring target framework.
 #pragma warning disable CS0618 // Type or member is obsolete
-            ImmutableDictionary<string, ConfiguredProject> configuredProjectsMap = await _activeConfiguredProjectsProvider.GetActiveConfiguredProjectsMapAsync().ConfigureAwait(true);
+            ImmutableDictionary<string, ConfiguredProject> configuredProjectsMap = await _activeConfiguredProjectsProvider.GetActiveConfiguredProjectsMapAsync().ConfigureAwait(continueOnCapturedContext);
 #pragma warning restore CS0618 // Type or member is obsolete
 
             // Get the unconfigured project host object (shared host object).
@@ -241,14 +246,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
                 {
                     // Get the target path for the configured project.
                     ProjectProperties projectProperties = configuredProject.Services.ExportProvider.GetExportedValue<ProjectProperties>();
-                    ConfigurationGeneral configurationGeneralProperties = await projectProperties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(true);
-                    targetPath = (string)await configurationGeneralProperties.TargetPath.GetValueAsync().ConfigureAwait(true);
-                    string targetFrameworkMoniker = (string)await configurationGeneralProperties.TargetFrameworkMoniker.GetValueAsync().ConfigureAwait(true);
+                    ConfigurationGeneral configurationGeneralProperties = await projectProperties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(continueOnCapturedContext);
+                    targetPath = (string)await configurationGeneralProperties.TargetPath.GetValueAsync().ConfigureAwait(continueOnCapturedContext);
+                    string targetFrameworkMoniker = (string)await configurationGeneralProperties.TargetFrameworkMoniker.GetValueAsync().ConfigureAwait(continueOnCapturedContext);
                     string workspaceProjectContextId = GetWorkspaceContextId(configuredProject);
                     configuredProjectHostObject = _projectHostProvider.GetConfiguredProjectHostObject(_unconfiguredProjectHostObject, workspaceProjectContextId, targetFrameworkMoniker);
-
-                    // TODO: https://github.com/dotnet/roslyn-project-system/issues/353
-                    await _commonServices.ThreadingService.SwitchToUIThread();
 
                     // NOTE: Despite CreateProjectContext taking a "displayName"; it's actually sets both "WorkspaceProjectContextId", "DisplayName", and default "AssemblyName".
                     // Unlike the latter properties, we cannot change WorkspaceProjectContextId once set, so we pass it as the display name.

@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
+using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 using Microsoft.VisualStudio.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
@@ -84,8 +85,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                 usedProjectContexts = _configuredProjectContextsMap.Values.ToImmutableHashSet();
             }
 
-            // TODO: https://github.com/dotnet/roslyn-project-system/issues/353
-            await _commonServices.ThreadingService.SwitchToUIThread();
+            if (!LanguageServiceHost.WorkspaceSupportsBatchingAndFreeThreadedInitialization)
+            {
+                await _commonServices.ThreadingService.SwitchToUIThread();
+            }
 
             // We don't want to dispose the inner workspace contexts that are still being used by other active aggregate contexts.
             bool shouldDisposeInnerContext(ITargetedProjectContext c) => !usedProjectContexts.Contains(c);
