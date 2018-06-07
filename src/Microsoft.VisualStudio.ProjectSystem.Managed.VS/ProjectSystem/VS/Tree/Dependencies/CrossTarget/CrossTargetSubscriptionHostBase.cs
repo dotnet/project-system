@@ -255,8 +255,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         {
             Requires.NotNull(newProjectContext, nameof(newProjectContext));
 
-            await _commonServices.ThreadingService.SwitchToUIThread();
-
             await _tasksService.LoadedProjectAsync(() =>
             {
                 lock (_linksLock)

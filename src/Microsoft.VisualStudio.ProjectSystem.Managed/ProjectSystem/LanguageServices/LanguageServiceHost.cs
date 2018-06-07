@@ -159,8 +159,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             AggregateWorkspaceProjectContext previousContextToDispose = null;
             return await ExecuteWithinLockAsync(async () =>
             {
-                await _commonServices.ThreadingService.SwitchToUIThread();
-
                 string newTargetFramework = null;
                 ConfigurationGeneral projectProperties = await _commonServices.ActiveConfiguredProjectProperties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(false);
 
@@ -233,7 +231,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         {
             Requires.NotNull(newProjectContext, nameof(newProjectContext));
 
-            await _commonServices.ThreadingService.SwitchToUIThread();
             await _tasksService.LoadedProjectAsync(() =>
             {
                 IEnumerable<string> watchedEvaluationRules = _languageServiceHandlerManager.GetWatchedRules(RuleHandlerType.Evaluation);
