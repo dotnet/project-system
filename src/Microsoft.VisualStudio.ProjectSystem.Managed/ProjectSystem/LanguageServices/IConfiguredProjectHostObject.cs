@@ -8,8 +8,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     internal interface IConfiguredProjectHostObject
     {
         /// <summary>
-        /// Display name for the configured project.
+        ///     Gets a value containing a unique identifier of the <see cref="ConfiguredProject"/> instance's
+        ///     <see cref="IWorkspaceProjectContext"/>.
         /// </summary>
-        string ProjectDisplayName { get; }
+        string WorkspaceProjectContextId { get; }
     }
 }

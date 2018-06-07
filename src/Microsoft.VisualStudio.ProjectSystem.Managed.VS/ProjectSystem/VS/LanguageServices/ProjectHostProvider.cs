@@ -17,9 +17,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 
         public IUnconfiguredProjectHostObject UnconfiguredProjectHostObject { get; }
 
-        public IConfiguredProjectHostObject GetConfiguredProjectHostObject(IUnconfiguredProjectHostObject unconfiguredProjectHostObject, string projectDisplayName, string targetFrameworkMoniker)
+        public IConfiguredProjectHostObject GetConfiguredProjectHostObject(IUnconfiguredProjectHostObject unconfiguredProjectHostObject, string workspaceProjectContextId, string targetFrameworkMoniker)
         {
-            return new ConfiguredProjectHostObject((UnconfiguredProjectHostObject)unconfiguredProjectHostObject, projectDisplayName, targetFrameworkMoniker);
+            return new ConfiguredProjectHostObject((UnconfiguredProjectHostObject)unconfiguredProjectHostObject, workspaceProjectContextId, targetFrameworkMoniker);
         }
     }
 }

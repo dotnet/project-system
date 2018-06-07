@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 
         protected IVsHierarchy InnerHierarchy { get; }
         protected IVsProject4 InnerVsProject { get; }
-        public abstract string ActiveIntellisenseProjectDisplayName { get; }
+        public abstract string ActiveWorkspaceProjectContextId { get; }
 
         #region IVsHierarchy members
 
@@ -126,7 +126,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 
         public int GetProjectName(uint itemid, out string pbstrProjectName)
         {
-            pbstrProjectName = ActiveIntellisenseProjectDisplayName;
+            pbstrProjectName = ActiveWorkspaceProjectContextId;
             return VSConstants.S_OK;
         }
 
