@@ -50,6 +50,11 @@
             <DataSource Persistence="ProjectFileWithInterception" PersistedName="TargetFrameworkMonikers" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext"/>
         </StringProperty.DataSource>
     </StringProperty>
+    <BoolProperty Name="AutoGenerateBindingRedirects" DisplayName="Auto-Generate Binding Redirects">
+        <BoolProperty.DataSource>
+            <DataSource Persistence="ProjectFile" PersistedName="AutoGenerateBindingRedirects" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+        </BoolProperty.DataSource>
+    </BoolProperty>
     <BoolProperty Name="DisableFastUpToDateCheck" DisplayName="Disable Fast Up To Date Check">
         <BoolProperty.DataSource>
             <DataSource Persistence="ProjectFile" PersistedName="DisableFastUpToDateCheck" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />

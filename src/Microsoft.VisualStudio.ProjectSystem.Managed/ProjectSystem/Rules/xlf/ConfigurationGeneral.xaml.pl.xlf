@@ -152,6 +152,11 @@
         <target state="translated">Wyłącz szybkie testy aktualności</target>
         <note />
       </trans-unit>
+      <trans-unit id="BoolProperty|AutoGenerateBindingRedirects|DisplayName">
+        <source>Auto-Generate Binding Redirects</source>
+        <target state="new">Auto-Generate Binding Redirects</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>

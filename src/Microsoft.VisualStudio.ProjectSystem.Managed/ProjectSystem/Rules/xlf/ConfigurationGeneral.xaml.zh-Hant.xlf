@@ -152,6 +152,11 @@
         <target state="translated">停用快速最新版檢查</target>
         <note />
       </trans-unit>
+      <trans-unit id="BoolProperty|AutoGenerateBindingRedirects|DisplayName">
+        <source>Auto-Generate Binding Redirects</source>
+        <target state="new">Auto-Generate Binding Redirects</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>
