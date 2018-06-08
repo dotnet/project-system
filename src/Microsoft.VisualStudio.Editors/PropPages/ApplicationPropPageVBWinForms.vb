@@ -178,6 +178,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     datalist.Add(data)
                     data = New PropertyControlData(VsProjPropId90.VBPROJPROPID_ApplicationManifest, "ApplicationManifest", Nothing, ControlDataFlags.Hidden)
                     datalist.Add(data)
+                    data = New PropertyControlData(17100, "AutoGenerateBindingRedirects", AutoGenerateBindingRedirectsCheckBox)
+                    datalist.Add(data)
 
                     TargetFrameworkPropertyControlData = New TargetFrameworkPropertyControlData(
                             VsProjPropId100.VBPROJPROPID_TargetFrameworkMoniker,
@@ -189,9 +191,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                             New Control() {TargetFrameworkLabel})
 
                     datalist.Add(TargetFrameworkPropertyControlData)
-
-                    data = New PropertyControlData(17100, "AutoGenerateBindingRedirects", AutoGenerateBindingRedirectsCheckBox)
-                    datalist.Add(data)
 
                     m_ControlData = datalist.ToArray()
                 End If

@@ -228,6 +228,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
                     ' ApplicationManifest - added simply to enable flavoring visibility of the button
                     list.Add(New PropertyControlData(VsProjPropId90.VBPROJPROPID_ApplicationManifest, "ApplicationManifest", Nothing, ControlDataFlags.Hidden))
 
+                    'AutoGenerateBindingRedirects
+                    data = New PropertyControlData(17100, "AutoGenerateBindingRedirects", AutoGenerateBindingRedirectsCheckBox)
+                    list.Add(data)
+
                     TargetFrameworkPropertyControlData = New TargetFrameworkPropertyControlData(
                         VsProjPropId100.VBPROJPROPID_TargetFrameworkMoniker,
                         ApplicationPropPage.Const_TargetFrameworkMoniker,
@@ -239,9 +243,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
 
                     list.Add(TargetFrameworkPropertyControlData)
 
-                    'AutoGenerateBindingRedirects
-                    data = New PropertyControlData(17100, "AutoGenerateBindingRedirects", AutoGenerateBindingRedirectsCheckBox)
-                    list.Add(data)
+
 
                     m_ControlData = list.ToArray()
                 End If
