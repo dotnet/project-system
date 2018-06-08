@@ -87,6 +87,11 @@
         <target state="translated">Windows 应用程序框架属性</target>
         <note />
       </trans-unit>
+      <trans-unit id="AutoGenerateBindingRedirectsCheckBox.Text">
+        <source>Auto-generate &amp;binding redirects</source>
+        <target state="new">Auto-generate &amp;binding redirects</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>

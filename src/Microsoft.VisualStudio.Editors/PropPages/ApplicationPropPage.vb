@@ -101,6 +101,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     datalist.Add(data)
                     data = New PropertyControlData(VsProjPropId90.VBPROJPROPID_ApplicationManifest, "ApplicationManifest", ApplicationManifest, AddressOf ApplicationManifestSet, AddressOf ApplicationManifestGet, ControlDataFlags.UserHandledEvents, New Control() {ApplicationManifest, ApplicationManifestLabel})
                     datalist.Add(data)
+                    data = New PropertyControlData(17100, "AutoGenerateBindingRedirects", AutoGenerateBindingRedirects)
+                    datalist.Add(data)
                     datalist.Add(TargetFrameworkPropertyControlData)
                     m_ControlData = datalist.ToArray()
 

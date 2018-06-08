@@ -239,6 +239,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
 
                     list.Add(TargetFrameworkPropertyControlData)
 
+                    'AutoGenerateBindingRedirects
+                    data = New PropertyControlData(17100, "AutoGenerateBindingRedirects", AutoGenerateBindingRedirectsCheckBox)
+                    list.Add(data)
+
                     m_ControlData = list.ToArray()
                 End If
 

@@ -190,6 +190,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
                     datalist.Add(TargetFrameworkPropertyControlData)
 
+                    data = New PropertyControlData(17100, "AutoGenerateBindingRedirects", AutoGenerateBindingRedirectsCheckBox)
+                    datalist.Add(data)
+
                     m_ControlData = datalist.ToArray()
                 End If
                 Return m_ControlData

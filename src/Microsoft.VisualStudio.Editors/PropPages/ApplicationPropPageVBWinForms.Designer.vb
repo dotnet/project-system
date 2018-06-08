@@ -12,6 +12,7 @@
         Friend WithEvents RootNamespaceTextBox As System.Windows.Forms.TextBox
         Friend WithEvents TargetFrameworkLabel As System.Windows.Forms.Label
         Friend WithEvents TargetFrameworkComboBox As System.Windows.Forms.ComboBox
+        Friend WithEvents AutoGenerateBindingRedirectsCheckBox As System.Windows.Forms.CheckBox
         Friend WithEvents ApplicationTypeLabel As System.Windows.Forms.Label
         Friend WithEvents ApplicationTypeComboBox As System.Windows.Forms.ComboBox
         Friend WithEvents AssemblyInfoButton As System.Windows.Forms.Button
@@ -45,6 +46,7 @@
             Me.RootNamespaceTextBox = New System.Windows.Forms.TextBox
             Me.TargetFrameworkLabel = New System.Windows.Forms.Label
             Me.TargetFrameworkComboBox = New System.Windows.Forms.ComboBox
+            Me.AutoGenerateBindingRedirectsCheckBox = New System.Windows.Forms.CheckBox
             Me.StartupObjectComboBox = New System.Windows.Forms.ComboBox
             Me.StartupObjectLabel = New System.Windows.Forms.Label
             Me.ApplicationTypeLabel = New System.Windows.Forms.Label
@@ -88,13 +90,14 @@
             Me.TopHalfLayoutPanel.Controls.Add(Me.TargetFrameworkComboBox, 0, 3)
             Me.TopHalfLayoutPanel.Controls.Add(Me.ApplicationTypeLabel, 1, 2)
             Me.TopHalfLayoutPanel.Controls.Add(Me.ApplicationTypeComboBox, 1, 3)
-            Me.TopHalfLayoutPanel.Controls.Add(Me.StartupObjectComboBox, 0, 5)
-            Me.TopHalfLayoutPanel.Controls.Add(Me.StartupObjectLabel, 0, 4)
-            Me.TopHalfLayoutPanel.Controls.Add(Me.IconLabel, 1, 4)
-            Me.TopHalfLayoutPanel.Controls.Add(Me.IconPicturebox, 2, 5)
-            Me.TopHalfLayoutPanel.Controls.Add(Me.IconCombobox, 1, 5)
-            Me.TopHalfLayoutPanel.Controls.Add(Me.UseApplicationFrameworkCheckBox, 0, 7)
-            Me.TopHalfLayoutPanel.Controls.Add(Me.TableLayoutPanel1, 0, 6)
+            Me.TopHalfLayoutPanel.Controls.Add(Me.AutoGenerateBindingRedirectsCheckBox, 0, 4)
+            Me.TopHalfLayoutPanel.Controls.Add(Me.StartupObjectComboBox, 0, 6)
+            Me.TopHalfLayoutPanel.Controls.Add(Me.StartupObjectLabel, 0, 5)
+            Me.TopHalfLayoutPanel.Controls.Add(Me.IconLabel, 1, 5)
+            Me.TopHalfLayoutPanel.Controls.Add(Me.IconPicturebox, 2, 6)
+            Me.TopHalfLayoutPanel.Controls.Add(Me.IconCombobox, 1, 6)
+            Me.TopHalfLayoutPanel.Controls.Add(Me.UseApplicationFrameworkCheckBox, 0, 8)
+            Me.TopHalfLayoutPanel.Controls.Add(Me.TableLayoutPanel1, 0, 7)
             Me.TopHalfLayoutPanel.Name = "TopHalfLayoutPanel"
             '
             'AssemblyNameLabel
@@ -129,6 +132,12 @@
             Me.TargetFrameworkComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
             Me.TargetFrameworkComboBox.FormattingEnabled = True
             Me.TargetFrameworkComboBox.Name = "TargetFrameworkComboBox"
+            '
+            'AutoGenerateBindingRedirectsCheckBox
+            '
+            resources.ApplyResources(Me.AutoGenerateBindingRedirectsCheckBox, "AutoGenerateBindingRedirectsCheckBox")
+            Me.TopHalfLayoutPanel.SetColumnSpan(Me.AutoGenerateBindingRedirectsCheckBox, 2)
+            Me.AutoGenerateBindingRedirectsCheckBox.Name = "AutoGenerateBindingRedirectsCheckBox"
             '
             'StartupObjectComboBox
             '
