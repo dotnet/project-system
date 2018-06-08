@@ -6,11 +6,11 @@
     <PublishOutputToSymStore>false</PublishOutputToSymStore>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.VisualStudio.IntegrationTest.Utilities" Version="$(MicrosoftVisualStudioIntegrationTestUtilitiesVersion)" />
-    <PackageReference Include="Microsoft.VisualStudio.LanguageServices" Version="$(MicrosoftVisualStudioLanguageServicesVersion)" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="$(MicrosoftNETTestSdkVersion)" />
-    <PackageReference Include="xunit" Version="$(XUnitVersion)" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="$(XUnitRunnerVisualStudioVersion)" />
-    <PackageReference Include="xunit.runner.console" Version="$(XUnitVersion)" />
+    <PackageReference Include="Microsoft.VisualStudio.IntegrationTest.Utilities" />
+    <PackageReference Include="Microsoft.VisualStudio.LanguageServices" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio" />
+    <PackageReference Include="xunit.runner.console" />
   </ItemGroup>
 </Project>

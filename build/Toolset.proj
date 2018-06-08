@@ -9,11 +9,11 @@
     <RestoreSources>https://api.nuget.org/v3/index.json;https://dotnet.myget.org/F/roslyn-tools/api/v3/index.json;https://dotnet.myget.org/F/symreader-converter/api/v3/index.json</RestoreSources>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="RoslynTools.RepoToolset" Version="$(RoslynToolsRepoToolsetVersion)" />
-    <PackageReference Include="RoslynTools.VsixExpInstaller" Version="$(RoslynToolsVsixExpInstallerVersion)" />
-    <PackageReference Include="Codecov" Version="$(CodecovVersion)" />
-    <PackageReference Include="OpenCover" Version="$(OpenCoverVersion)" />
-    <PackageReference Include="Microsoft.DiaSymReader.Pdb2Pdb" Version="$(MicrosoftDiaSymReaderPdb2PdbVersion)" />
+    <PackageReference Include="RoslynTools.RepoToolset" />
+    <PackageReference Include="RoslynTools.VsixExpInstaller" />
+    <PackageReference Include="Codecov" />
+    <PackageReference Include="OpenCover" />
+    <PackageReference Include="Microsoft.DiaSymReader.Pdb2Pdb" />
   </ItemGroup>
 
   <PropertyGroup>
@@ -61,4 +61,6 @@
     
     <Message Text="Done deploying VSIXes." Importance="high" />
   </Target>
+
+  <Import Project="..\Directory.Build.targets" />
 </Project>
