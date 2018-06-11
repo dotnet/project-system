@@ -4,6 +4,7 @@ Imports System.Windows.Forms
 Imports Microsoft.VisualStudio.Editors.Common
 Imports Microsoft.VisualStudio.Shell
 Imports VSLangProj110
+Imports VSLangProj158
 Imports VSLangProj80
 Imports VslangProj90
 
@@ -101,7 +102,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     datalist.Add(data)
                     data = New PropertyControlData(VsProjPropId90.VBPROJPROPID_ApplicationManifest, "ApplicationManifest", ApplicationManifest, AddressOf ApplicationManifestSet, AddressOf ApplicationManifestGet, ControlDataFlags.UserHandledEvents, New Control() {ApplicationManifest, ApplicationManifestLabel})
                     datalist.Add(data)
-                    data = New PropertyControlData(17100, "AutoGenerateBindingRedirects", AutoGenerateBindingRedirects)
+                    data = New PropertyControlData(VsProjPropId158.VBPROJPROPID_AutoGenerateBindingRedirects, "AutoGenerateBindingRedirects", AutoGenerateBindingRedirects)
                     datalist.Add(data)
                     datalist.Add(TargetFrameworkPropertyControlData)
                     m_ControlData = datalist.ToArray()

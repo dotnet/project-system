@@ -6,6 +6,7 @@
     <PackageReference Include="VSLangProj90" Version="9.0.30729" />
     <PackageReference Include="VSLangProj100" Version="10.0.30319" />
     <PackageReference Include="VSLangProj110" Version="11.0.61030" />
+    <PackageReference Include="VSLangProj158" Version="15.8.0" />
     
     <PackageReference Include="EnvDTE" Version="8.0.1" />
     <PackageReference Include="EnvDTE80" Version="8.0.1" />
