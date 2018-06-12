@@ -120,6 +120,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             }
         }
 
+        public bool AutoGenerateBindingRedirects
+        {
+            get
+            {
+                return _threadingService.ExecuteSynchronously(async () =>
+                {
+                    ConfigurationGeneralBrowseObject configurationGeneralProperties = await ProjectProperties.GetConfigurationGeneralBrowseObjectPropertiesAsync().ConfigureAwait(true);
+                    object value = await configurationGeneralProperties.AutoGenerateBindingRedirects.GetValueAsync().ConfigureAwait(true);
+                    return bool.Parse((string)value);
+                });
+            }
+
+            set
+            {
+                _threadingService.ExecuteSynchronously(async () =>
+                {
+                    ConfigurationGeneralBrowseObject configurationGeneralProperties = await ProjectProperties.GetConfigurationGeneralBrowseObjectPropertiesAsync().ConfigureAwait(true);
+                    await configurationGeneralProperties.AutoGenerateBindingRedirects.SetValueAsync(value).ConfigureAwait(true);
+                });
+            }
+        }
+
         public string __id => throw new NotImplementedException();
 
         public object __project => throw new NotImplementedException();
