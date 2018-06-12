@@ -1051,7 +1051,7 @@
     <value>14, 128</value>
   </data>
   <data name="AutoGenerateBindingRedirects.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 6, 3, 0</value>
+    <value>0, 6, 3, 0</value>
   </data>
   <data name="AutoGenerateBindingRedirects.Size" type="System.Drawing.Size, System.Drawing">
     <value>142, 17</value>
