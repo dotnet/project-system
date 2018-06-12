@@ -47,6 +47,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
         public void ApplyDesignTime(IProjectVersionedValue<IProjectSubscriptionUpdate> update, bool isActiveContext)
         {
+            // TODO: Prevent overlap
+
             Requires.NotNull(update, nameof(update));
 
             if (!IsInitialized)
@@ -69,6 +71,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
         public void ApplyEvaluation(IProjectVersionedValue<IProjectSubscriptionUpdate> update, bool isActiveContext)
         {
+            // TODO: Prevent overlap
+
             Requires.NotNull(update, nameof(update));
 
             if (!IsInitialized)

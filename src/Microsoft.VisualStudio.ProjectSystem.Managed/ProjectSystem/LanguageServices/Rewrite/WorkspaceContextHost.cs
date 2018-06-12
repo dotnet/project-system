@@ -16,32 +16,30 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     internal partial class WorkspaceContextHost : AbstractImplicitlyActiveComponent
     {
         private readonly ConfiguredProject _project;
-        private readonly IUnconfiguredProjectCommonServices _projectServices;
+        private readonly IProjectThreadingService _threadingService;
         private readonly IProjectSubscriptionService _projectSubscriptionService;
-        private readonly ISafeProjectGuidService _projectGuidService;
-        private readonly Lazy<IWorkspaceProjectContextFactory> _workspaceProjectContextFactory;
+        private readonly Lazy<WorkspaceProjectContextCreator> _workspaceProjectContextCreator;
         private readonly ExportFactory<IApplyChangesToWorkspaceContext> _applyChangesToWorkspaceContextFactory;
 
         [ImportingConstructor]
         public WorkspaceContextHost(ConfiguredProject project,
                                     IUnconfiguredProjectCommonServices projectServices,
+                                    IProjectThreadingService threadingService,
                                     IProjectSubscriptionService projectSubscriptionService,
                                     IConfiguredProjectImplicitActivationTracking activationTracking,
-                                    ISafeProjectGuidService projectGuidService,
-                                    Lazy<IWorkspaceProjectContextFactory> workspaceProjectContextFactory,
+                                    Lazy<WorkspaceProjectContextCreator> workspaceProjectContextCreator,
                                     ExportFactory<IApplyChangesToWorkspaceContext> applyChangesToWorkspaceContextFactory)
             : base(activationTracking, projectServices.ThreadingService.JoinableTaskContext)
         {
             _project = project;
-            _projectServices = projectServices;
+            _threadingService = threadingService;
             _projectSubscriptionService = projectSubscriptionService;
-            _projectGuidService = projectGuidService;
-            _workspaceProjectContextFactory = workspaceProjectContextFactory;
+            _workspaceProjectContextCreator = workspaceProjectContextCreator;
             _applyChangesToWorkspaceContextFactory = applyChangesToWorkspaceContextFactory;
         }
 
         [ConfiguredProjectAutoLoad]
-        [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharpLanguageService)]
+        [AppliesTo(ProjectCapability.DotNetLanguageService)]
         public Task InitializeAsync()
         {
             return InitializeAsync(CancellationToken.None);
@@ -49,7 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
         protected override AbstractProjectDynamicLoadInstance CreateInstance()
         {
-            return new WorkspaceContextHostInstance(_project, _projectServices, _projectSubscriptionService, _projectGuidService, _workspaceProjectContextFactory, _applyChangesToWorkspaceContextFactory);
+            return new WorkspaceContextHostInstance(_project, _projectSubscriptionService, _threadingService, _workspaceProjectContextCreator, _applyChangesToWorkspaceContextFactory);
         }
     }
 }
