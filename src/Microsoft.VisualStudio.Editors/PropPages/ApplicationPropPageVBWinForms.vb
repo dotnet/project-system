@@ -1,15 +1,16 @@
 ﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+Imports System.ComponentModel
+Imports System.Windows.Forms
 Imports Microsoft.VisualBasic.ApplicationServices
 Imports Microsoft.VisualStudio.Editors.Common
 Imports Microsoft.VisualStudio.Editors.MyApplication
-Imports System.Windows.Forms
-Imports System.ComponentModel
+Imports Microsoft.VisualStudio.Shell
 Imports Microsoft.VisualStudio.Shell.Interop
+Imports VSLangProj110
+Imports VSLangProj158
 Imports VSLangProj80
 Imports VslangProj90
-Imports VSLangProj110
-Imports Microsoft.VisualStudio.Shell
 
 Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
@@ -177,6 +178,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     data = New PropertyControlData(MyAppDISPIDs.SaveMySettingsOnExit, Const_SaveMySettingsOnExit, SaveMySettingsCheckbox, ControlDataFlags.UserPersisted Or ControlDataFlags.PersistedInVBMyAppFile)
                     datalist.Add(data)
                     data = New PropertyControlData(VsProjPropId90.VBPROJPROPID_ApplicationManifest, "ApplicationManifest", Nothing, ControlDataFlags.Hidden)
+                    datalist.Add(data)
+                    data = New PropertyControlData(VsProjPropId158.VBPROJPROPID_AutoGenerateBindingRedirects, "AutoGenerateBindingRedirects", AutoGenerateBindingRedirectsCheckBox)
                     datalist.Add(data)
 
                     TargetFrameworkPropertyControlData = New TargetFrameworkPropertyControlData(
