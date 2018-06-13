@@ -339,6 +339,39 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 throw new Exception(VSResources.NoRunCommandSpecifiedInProject);
             }
 
+            // If the working directory is relative, it will be relative to the project root so make it a full path
+            if (!string.IsNullOrWhiteSpace(runWorkingDirectory) && !Path.IsPathRooted(runWorkingDirectory))
+            {
+                runWorkingDirectory = Path.Combine(Path.GetDirectoryName(Project.FullPath), runWorkingDirectory);
+            }
+
+            return new Tuple<string, string, string>(runCommand, runArguments, runWorkingDirectory);
+        }
+
+        private async Task<string> GetTargetCommandAsync(IProjectProperties properties)
+        {
+            // First try "RunCommand" property
+            string runCommand = await GetRunCommandAsync(properties).ConfigureAwait(false);
+                        
+            if (string.IsNullOrEmpty(runCommand))
+            {
+                // Otherwise, fall back to "TargetPath"
+                runCommand = await properties.GetEvaluatedPropertyValueAsync(ConfigurationGeneral.TargetPathProperty)
+                                             .ConfigureAwait(false);
+            }
+
+            return runCommand;
+        }
+
+
+        private async Task<string> GetRunCommandAsync(IProjectProperties properties)
+        {
+            string runCommand = await properties.GetEvaluatedPropertyValueAsync("RunCommand")
+                                                .ConfigureAwait(false);
+
+            if (string.IsNullOrEmpty(runCommand))
+                return null;
+
             // If dotnet.exe is used runCommand returns just "dotnet". The debugger is going to require a full path so we need to append the .exe
             // extension.
             if (!runCommand.EndsWith(".exe", StringComparison.OrdinalIgnoreCase))
@@ -356,28 +389,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 }
             }
 
-            // If the working directory is relative, it will be relative to the project root so make it a full path
-            if (!string.IsNullOrWhiteSpace(runWorkingDirectory) && !Path.IsPathRooted(runWorkingDirectory))
-            {
-                runWorkingDirectory = Path.Combine(Path.GetDirectoryName(Project.FullPath), runWorkingDirectory);
-            }
-            return new Tuple<string, string, string>(runCommand, runArguments, runWorkingDirectory);
-        }
-
-        private static async Task<string> GetTargetCommandAsync(IProjectProperties properties)
-        {
-            string runCommand = await properties.GetEvaluatedPropertyValueAsync("RunCommand")
-                                                .ConfigureAwait(false);
-
-            if (string.IsNullOrEmpty(runCommand))
-            {
-                runCommand = await properties.GetEvaluatedPropertyValueAsync(ConfigurationGeneral.TargetPathProperty)
-                                             .ConfigureAwait(false);
-            }
-
             return runCommand;
         }
-
 
         private static async Task<string> GetOutputDirectoryAsync(ConfiguredProject configuredProject)
         {
