@@ -141,7 +141,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         }
 
         [Fact]
-        public async Task QueryDebugTargets_ProjectProfileAsyncF5()
+        public async Task QueryDebugTargetsAsync_ProjectProfileAsyncF5()
         {
             var debugger = GetDebugTargetsProvider();
 
@@ -159,7 +159,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         }
 
         [Fact]
-        public async Task QueryDebugTargets_ProjectProfileAsyncF5_NativeDebugging()
+        public async Task QueryDebugTargetsAsync_ProjectProfileAsyncF5_NativeDebugging()
         {
             var debugger = GetDebugTargetsProvider();
 
@@ -184,7 +184,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         }
 
         [Fact]
-        public async Task QueryDebugTargets_ProjectProfileAsyncCtrlF5()
+        public async Task QueryDebugTargetsAsync_ProjectProfileAsyncCtrlF5()
         {
             var debugger = GetDebugTargetsProvider();
 
@@ -203,7 +203,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         }
 
         [Fact]
-        public async Task QueryDebugTargets_ProjectProfileAsyncProfile()
+        public async Task QueryDebugTargetsAsync_ProjectProfileAsyncProfile()
         {
             var debugger = GetDebugTargetsProvider();
 
@@ -217,7 +217,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         }
 
         [Fact]
-        public async Task QueryDebugTargets_ExeProfileAsyncF5()
+        public async Task QueryDebugTargetsAsync_ExeProfileAsyncF5()
         {
             var debugger = GetDebugTargetsProvider();
 
@@ -231,7 +231,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         }
 
         [Fact]
-        public async Task QueryDebugTargets_ExeProfileAsyncCtrlF5()
+        public async Task QueryDebugTargetsAsync_ExeProfileAsyncCtrlF5()
         {
             var debugger = GetDebugTargetsProvider();
 
@@ -253,7 +253,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         [InlineData(@"bin\")]
         [InlineData(@"doesntExist\")]
         [InlineData(null)]
-        public async Task QueryDebugTargets_ExeProfileAsyncExeRelativeNoWorkingDir(string outdir)
+        public async Task QueryDebugTargetsAsync_ExeProfileAsyncExeRelativeNoWorkingDir(string outdir)
         {
             var properties = new Dictionary<string, string>() {
                     {"RunCommand", @"dotnet"},
@@ -286,7 +286,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         [Theory]
         [InlineData(@"c:\WorkingDir")]
         [InlineData(@"\WorkingDir")]
-        public async Task QueryDebugTargets_ExeProfileAsyncExeRelativeToWorkingDir(string workingDir)
+        public async Task QueryDebugTargetsAsync_ExeProfileAsyncExeRelativeToWorkingDir(string workingDir)
         {
             var debugger = GetDebugTargetsProvider();
 
@@ -302,7 +302,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         }
 
         [Fact]
-        public async Task QueryDebugTargets_ExeProfileAsyncExeRelativeToWorkingDir_AlternateSlash()
+        public async Task QueryDebugTargetsAsync_ExeProfileAsyncExeRelativeToWorkingDir_AlternateSlash()
         {
             var debugger = GetDebugTargetsProvider();
 
@@ -319,7 +319,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         [Theory]
         [InlineData("dotnet")]
         [InlineData("dotnet.exe")]
-        public async Task QueryDebugTargets_ExeProfileExeRelativeToPath(string exeName)
+        public async Task QueryDebugTargetsAsync_ExeProfileExeRelativeToPath(string exeName)
         {
             var debugger = GetDebugTargetsProvider();
 
@@ -333,7 +333,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         [Theory]
         [InlineData("myexe")]
         [InlineData("myexe.exe")]
-        public async Task QueryDebugTargets_ExeProfileExeRelativeToCurrentDirectory(string exeName)
+        public async Task QueryDebugTargetsAsync_ExeProfileExeRelativeToCurrentDirectory(string exeName)
         {
             var debugger = GetDebugTargetsProvider();
             _mockFS.WriteAllText(@"c:\CurrentDirectory\myexe.exe", string.Empty);
@@ -347,7 +347,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         }
 
         [Fact]
-        public async Task QueryDebugTargets_ExeProfileExeIsRootedWithNoDrive()
+        public async Task QueryDebugTargetsAsync_ExeProfileExeIsRootedWithNoDrive()
         {
             var debugger = GetDebugTargetsProvider();
             _mockFS.WriteAllText(@"e:\myexe.exe", string.Empty);
