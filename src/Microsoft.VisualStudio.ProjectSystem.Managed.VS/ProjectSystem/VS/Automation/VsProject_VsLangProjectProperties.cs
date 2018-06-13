@@ -128,7 +128,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
                 {
                     ConfigurationGeneralBrowseObject configurationGeneralProperties = await ProjectProperties.GetConfigurationGeneralBrowseObjectPropertiesAsync().ConfigureAwait(true);
                     object value = await configurationGeneralProperties.AutoGenerateBindingRedirects.GetValueAsync().ConfigureAwait(true);
-                    return bool.Parse((string)value);
+                    return ((bool?)value).GetValueOrDefault();
                 });
             }
 
