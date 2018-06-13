@@ -359,6 +359,64 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         }
 
         [Fact]
+        public async Task QueryDebugTargetsAsync_WhenLibraryWithRunCommand_ReturnsRunCommand()
+        {
+            var properties = new Dictionary<string, string>() {
+                {"RunCommand", @"C:\dotnet.exe"},
+                {"TargetFrameworkIdentifier", @".NETFramework" }
+                };
+
+            _mockFS.WriteAllText(@"C:\dotnet.exe", string.Empty);
+
+            var debugger = GetDebugTargetsProvider("Library", properties);
+
+            var activeProfile = new LaunchProfile() { Name = "Name", CommandName = "Project" };
+
+            var targets = await debugger.QueryDebugTargetsAsync(0, activeProfile);
+
+            Assert.Single(targets);
+            Assert.Equal(@"C:\dotnet.exe", targets[0].Executable);
+        }
+
+        [Fact]
+        public async Task QueryDebugTargetsAsync_WhenLibraryWithoutRunCommand_ReturnsTargetPath()
+        { 
+            var properties = new Dictionary<string, string>() {
+                {"TargetPath", @"C:\library.dll"},
+                {"TargetFrameworkIdentifier", @".NETFramework" }
+                };
+
+            _mockFS.WriteAllText(@"C:\library.dll", string.Empty);
+
+            var debugger = GetDebugTargetsProvider("Library", properties);
+
+            var activeProfile = new LaunchProfile() { Name = "Name", CommandName = "Project" };
+
+            var targets = await debugger.QueryDebugTargetsAsync(0, activeProfile);
+
+            Assert.Single(targets);
+            Assert.Equal(@"C:\library.dll", targets[0].Executable);
+        }
+
+        [Fact]
+        public async Task QueryDebugTargetsForDebugLaunchAsync_WhenLibrary_Throws()
+        {
+            var properties = new Dictionary<string, string>() {
+                {"TargetPath", @"C:\library.dll"},
+                {"TargetFrameworkIdentifier", @".NETFramework" }
+                };
+
+            var debugger = GetDebugTargetsProvider("Library", properties);
+
+            var activeProfile = new LaunchProfile() { Name = "Name", CommandName = "Project" };
+
+            await Assert.ThrowsAsync<Exception>(() =>
+            {
+                return debugger.QueryDebugTargetsForDebugLaunchAsync(0, activeProfile);
+            });
+        }
+
+        [Fact]
         public void ValidateSettings_WhenNoExe_Throws()
         {
             string executable = null;
