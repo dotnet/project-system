@@ -34,8 +34,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             _mockFS.CreateDirectory(@"c:\test\Project\bin\");
             _mockFS.WriteAllText(@"c:\program files\dotnet\dotnet.exe", "");
 
-            var activeProfile = new LaunchProfile() { Name = "MyApplication", CommandLineArgs = "--someArgs", ExecutablePath = @"c:\test\Project\someapp.exe" };
-
             _mockEnvironment.Setup(s => s.GetEnvironmentVariable("Path")).Returns(() => _Path);
 
             var project = UnconfiguredProjectFactory.Create(null, null, _ProjectFile);
