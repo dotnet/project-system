@@ -24,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
     [Export(typeof(IDebugProfileLaunchTargetsProvider))]
     [AppliesTo(ProjectCapability.LaunchProfiles)]
     [Order(Order.Default)] // The higher the number the higher priority and we want this one last
-    internal class ConsoleDebugTargetsProvider : IDebugProfileLaunchTargetsProvider
+    internal class ConsoleDebugTargetsProvider : IDebugProfileLaunchTargetsProvider, IDebugProfileLaunchTargetsProvider2
     {
         private static readonly char[] s_escapedChars = new[] { '^', '<', '>', '&' };
 
@@ -94,11 +94,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             return StringComparers.PropertyValues.Equals(outputType.Name, ConfigurationGeneral.OutputTypeValues.Library);
         }
 
+        public Task<IReadOnlyList<IDebugLaunchSettings>> QueryDebugTargetsForDebugLaunchAsync(DebugLaunchOptions launchOptions, ILaunchProfile activeProfile)
+        {
+            return QueryDebugTargetsAsync(launchOptions, activeProfile, forDebugLaunch: true);
+        }
+
         /// <summary>
         /// This is called on F5/Ctrl-F5 to return the list of debug targets.What we return depends on the type
         /// of project.
         /// </summary>
-        public async Task<IReadOnlyList<IDebugLaunchSettings>> QueryDebugTargetsAsync(DebugLaunchOptions launchOptions, ILaunchProfile activeProfile)
+        public Task<IReadOnlyList<IDebugLaunchSettings>> QueryDebugTargetsAsync(DebugLaunchOptions launchOptions, ILaunchProfile activeProfile)
+        {
+            return QueryDebugTargetsAsync(launchOptions, activeProfile, forDebugLaunch: false);
+        }
+
+        private async Task<IReadOnlyList<IDebugLaunchSettings>> QueryDebugTargetsAsync(DebugLaunchOptions launchOptions, ILaunchProfile activeProfile, bool forDebugLaunch)
         {
             var launchSettings = new List<DebugLaunchSettings>();
 
@@ -111,7 +121,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                     IsRunProjectCommand(resolvedProfile) &&
                     (launchOptions & (DebugLaunchOptions.NoDebug | DebugLaunchOptions.Profiling)) == DebugLaunchOptions.NoDebug;
 
-            DebugLaunchSettings consoleTarget = await GetConsoleTargetForProfile(resolvedProfile, launchOptions, useCmdShell).ConfigureAwait(false);
+            DebugLaunchSettings consoleTarget = await GetConsoleTargetForProfile(resolvedProfile, launchOptions, useCmdShell, forDebugLaunch).ConfigureAwait(false);
 
             launchSettings.Add(consoleTarget);
 
@@ -171,7 +181,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// of project.
         /// </summary>
         private async Task<DebugLaunchSettings> GetConsoleTargetForProfile(ILaunchProfile resolvedProfile, DebugLaunchOptions launchOptions,
-                                                                           bool useCmdShell)
+                                                                           bool useCmdShell, bool forDebugLaunch)
         {
             var settings = new DebugLaunchSettings(launchOptions);
 
@@ -204,8 +214,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             // Is this profile just running the project? If so we ignore the exe
             if (IsRunProjectCommand(resolvedProfile))
             {
-                // Can't run a class library directly
-                if (await GetIsClassLibraryAsync().ConfigureAwait(false))
+                // If we're launching for debug purposes, prevent someone F5'ing a class library
+                if (forDebugLaunch && await GetIsClassLibraryAsync().ConfigureAwait(false))
                 {
                     throw new Exception(VSResources.ProjectNotRunnableDirectly);
                 }
@@ -320,7 +330,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         {
             IProjectProperties properties = configuredProject.Services.ProjectPropertiesProvider.GetCommonProperties();
 
-            string runCommand = await properties.GetEvaluatedPropertyValueAsync("RunCommand").ConfigureAwait(false);
+            string runCommand = await GetTargetCommandAsync(properties).ConfigureAwait(false);
             string runWorkingDirectory = await properties.GetEvaluatedPropertyValueAsync("RunWorkingDirectory").ConfigureAwait(false);
             string runArguments = await properties.GetEvaluatedPropertyValueAsync("RunArguments").ConfigureAwait(false);
 
@@ -354,6 +364,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             return new Tuple<string, string, string>(runCommand, runArguments, runWorkingDirectory);
         }
 
+        private static async Task<string> GetTargetCommandAsync(IProjectProperties properties)
+        {
+            string runCommand = await properties.GetEvaluatedPropertyValueAsync("RunCommand")
+                                                .ConfigureAwait(false);
+
+            if (string.IsNullOrEmpty(runCommand))
+            {
+                runCommand = await properties.GetEvaluatedPropertyValueAsync(ConfigurationGeneral.TargetPathProperty)
+                                             .ConfigureAwait(false);
+            }
+
+            return runCommand;
+        }
+
+
         private static async Task<string> GetOutputDirectoryAsync(ConfiguredProject configuredProject)
         {
             IProjectProperties properties = configuredProject.Services.ProjectPropertiesProvider.GetCommonProperties();
@@ -361,7 +386,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             return outdir;
         }
-
         private static async Task<Guid> GetDebuggingEngineAsync(ConfiguredProject configuredProject)
         {
             IProjectProperties properties = configuredProject.Services.ProjectPropertiesProvider.GetCommonProperties();
