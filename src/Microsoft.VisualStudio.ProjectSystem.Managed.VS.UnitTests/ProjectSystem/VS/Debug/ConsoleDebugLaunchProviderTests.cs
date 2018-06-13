@@ -64,15 +64,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             var delegateProvider = IProjectPropertiesProviderFactory.Create(null, delegatePropertiesMock.Object);
 
-            IConfiguredProjectServices configuredProjectServices = Mock.Of<IConfiguredProjectServices>(o =>
+            var configuredProjectServices = Mock.Of<IConfiguredProjectServices>(o =>
                 o.ProjectPropertiesProvider == delegateProvider);
 
-            ConfiguredProject configuredProject = Mock.Of<ConfiguredProject>(o =>
+            var configuredProject = Mock.Of<ConfiguredProject>(o =>
                 o.UnconfiguredProject == project &&
                 o.Services == configuredProjectServices);
             _mockTokenReplace.Setup(s => s.ReplaceTokensInProfileAsync(It.IsAny<ILaunchProfile>())).Returns<ILaunchProfile>(p => Task.FromResult(p));
 
-            IActiveDebugFrameworkServices activeDebugFramework = Mock.Of<IActiveDebugFrameworkServices>(o =>
+            var activeDebugFramework = Mock.Of<IActiveDebugFrameworkServices>(o =>
                o.GetConfiguredProjectForActiveFrameworkAsync() == Task.FromResult(configuredProject));
             var debugProvider = new ConsoleDebugTargetsProvider(
                                             configuredProject,
