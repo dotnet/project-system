@@ -198,6 +198,9 @@ csharp_space_after_semicolon_in_for_statement = true
 csharp_preserve_single_line_statements = true
 csharp_preserve_single_line_blocks = true
 
+# Code block
+csharp_prefer_braces = false:none
+
 [src/*Tests/**/*.cs]
 # We allow usage of "var" inside tests as it reduces churn as we remove/rename types
 csharp_style_var_for_built_in_types = true:none
