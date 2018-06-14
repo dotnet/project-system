@@ -1,17 +1,18 @@
 ﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+Imports System.ComponentModel
+Imports System.Runtime.InteropServices
+Imports System.Windows.Forms
+Imports EnvDTE
 Imports Microsoft.VisualStudio.Editors.Common
 Imports Microsoft.VisualStudio.Editors.MyApplication
-Imports System.Windows.Forms
-Imports System.Runtime.InteropServices
-Imports System.ComponentModel
-Imports Microsoft.VisualStudio.Shell.Interop
 Imports Microsoft.VisualStudio.Shell.Design.Serialization
-Imports EnvDTE
+Imports Microsoft.VisualStudio.Shell.Interop
+Imports Microsoft.VisualStudio.TextManager.Interop
+Imports VslangProj100
+Imports VSLangProj158
 Imports VSLangProj80
 Imports VslangProj90
-Imports VslangProj100
-Imports Microsoft.VisualStudio.TextManager.Interop
 
 Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
 
@@ -228,6 +229,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
                     ' ApplicationManifest - added simply to enable flavoring visibility of the button
                     list.Add(New PropertyControlData(VsProjPropId90.VBPROJPROPID_ApplicationManifest, "ApplicationManifest", Nothing, ControlDataFlags.Hidden))
 
+                    'AutoGenerateBindingRedirects
+                    data = New PropertyControlData(VsProjPropId158.VBPROJPROPID_AutoGenerateBindingRedirects, "AutoGenerateBindingRedirects", AutoGenerateBindingRedirectsCheckBox)
+                    list.Add(data)
+
                     TargetFrameworkPropertyControlData = New TargetFrameworkPropertyControlData(
                         VsProjPropId100.VBPROJPROPID_TargetFrameworkMoniker,
                         ApplicationPropPage.Const_TargetFrameworkMoniker,
@@ -238,6 +243,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
                         New Control() {TargetFrameworkLabel})
 
                     list.Add(TargetFrameworkPropertyControlData)
+
+
 
                     m_ControlData = list.ToArray()
                 End If

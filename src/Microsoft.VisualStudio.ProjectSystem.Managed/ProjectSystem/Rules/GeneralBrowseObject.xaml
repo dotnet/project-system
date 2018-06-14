@@ -53,7 +53,13 @@
         <DataSource Persistence="ProjectFile" PersistedName="TargetFileName" SourceOfDefaultValue="AfterContext" />
       </StringProperty.DataSource>
     </StringProperty>
-  
+
+    <BoolProperty Name="AutoGenerateBindingRedirects" DisplayName="Auto-Generate Binding Redirects">
+        <BoolProperty.DataSource>
+            <DataSource Persistence="ProjectFile" PersistedName="AutoGenerateBindingRedirects" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+        </BoolProperty.DataSource>
+    </BoolProperty>
+
     <!-- This property is used to provide the value of OutputType through BrowseObject, which is used by Property pages-->
     <IntProperty Name="OutputType" DisplayName="Output Type" Visible="False">
         <IntProperty.DataSource>

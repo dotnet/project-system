@@ -10,6 +10,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         Friend WithEvents RootNamespaceTextBox As System.Windows.Forms.TextBox
         Friend WithEvents TargetFrameworkLabel As System.Windows.Forms.Label
         Friend WithEvents TargetFrameworkComboBox As System.Windows.Forms.ComboBox
+        Friend WithEvents AutoGenerateBindingRedirectsCheckBox As System.Windows.Forms.CheckBox
         Friend WithEvents ApplicationTypeLabel As System.Windows.Forms.Label
         Friend WithEvents ApplicationTypeComboBox As System.Windows.Forms.ComboBox
         Friend WithEvents AssemblyInfoButton As System.Windows.Forms.Button
@@ -43,6 +44,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
             Me.RootNamespaceTextBox = New System.Windows.Forms.TextBox
             Me.TargetFrameworkLabel = New System.Windows.Forms.Label
             Me.TargetFrameworkComboBox = New System.Windows.Forms.ComboBox
+            Me.AutoGenerateBindingRedirectsCheckBox = New System.Windows.Forms.CheckBox
             Me.StartupObjectOrUriComboBox = New System.Windows.Forms.ComboBox
             Me.StartupObjectOrUriLabel = New System.Windows.Forms.Label
             Me.ApplicationTypeLabel = New System.Windows.Forms.Label
@@ -69,7 +71,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
             'TopHalfLayoutPanel
             '
             resources.ApplyResources(Me.TopHalfLayoutPanel, "TopHalfLayoutPanel")
-            Me.TopHalfLayoutPanel.Controls.Add(Me.ButtonsLayoutPanel, 0, 6)
+            Me.TopHalfLayoutPanel.Controls.Add(Me.ButtonsLayoutPanel, 0, 7)
             Me.TopHalfLayoutPanel.Controls.Add(Me.AssemblyNameLabel, 0, 0)
             Me.TopHalfLayoutPanel.Controls.Add(Me.AssemblyNameTextBox, 0, 1)
             Me.TopHalfLayoutPanel.Controls.Add(Me.RootNamespaceLabel, 1, 0)
@@ -78,12 +80,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
             Me.TopHalfLayoutPanel.Controls.Add(Me.TargetFrameworkComboBox, 0, 3)
             Me.TopHalfLayoutPanel.Controls.Add(Me.ApplicationTypeLabel, 1, 2)
             Me.TopHalfLayoutPanel.Controls.Add(Me.ApplicationTypeComboBox, 1, 3)
-            Me.TopHalfLayoutPanel.Controls.Add(Me.StartupObjectOrUriComboBox, 0, 5)
-            Me.TopHalfLayoutPanel.Controls.Add(Me.StartupObjectOrUriLabel, 0, 4)
-            Me.TopHalfLayoutPanel.Controls.Add(Me.UseApplicationFrameworkCheckBox, 0, 7)
-            Me.TopHalfLayoutPanel.Controls.Add(Me.IconLabel, 1, 4)
-            Me.TopHalfLayoutPanel.Controls.Add(Me.IconPicturebox, 2, 5)
-            Me.TopHalfLayoutPanel.Controls.Add(Me.IconCombobox, 1, 5)
+            Me.TopHalfLayoutPanel.Controls.Add(Me.AutoGenerateBindingRedirectsCheckBox, 0, 4)
+            Me.TopHalfLayoutPanel.Controls.Add(Me.StartupObjectOrUriComboBox, 0, 6)
+            Me.TopHalfLayoutPanel.Controls.Add(Me.StartupObjectOrUriLabel, 0, 5)
+            Me.TopHalfLayoutPanel.Controls.Add(Me.UseApplicationFrameworkCheckBox, 0, 8)
+            Me.TopHalfLayoutPanel.Controls.Add(Me.IconLabel, 1, 5)
+            Me.TopHalfLayoutPanel.Controls.Add(Me.IconPicturebox, 2, 6)
+            Me.TopHalfLayoutPanel.Controls.Add(Me.IconCombobox, 1, 6)
             Me.TopHalfLayoutPanel.Name = "TopHalfLayoutPanel"
             '
             'ButtonsLayoutPanel
@@ -137,6 +140,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
             Me.TargetFrameworkComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
             Me.TargetFrameworkComboBox.FormattingEnabled = True
             Me.TargetFrameworkComboBox.Name = "TargetFrameworkComboBox"
+            '
+            'AutoGenerateBindingRedirectsCheckBox
+            '
+            resources.ApplyResources(Me.AutoGenerateBindingRedirectsCheckBox, "AutoGenerateBindingRedirectsCheckBox")
+            Me.TopHalfLayoutPanel.SetColumnSpan(Me.AutoGenerateBindingRedirectsCheckBox, 2)
+            Me.AutoGenerateBindingRedirectsCheckBox.Name = "AutoGenerateBindingRedirectsCheckBox"
             '
             'StartupObjectOrUriComboBox
             '

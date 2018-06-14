@@ -29,6 +29,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Friend WithEvents TopHalfLayoutPanel As System.Windows.Forms.TableLayoutPanel
         Friend WithEvents TargetFramework As System.Windows.Forms.ComboBox
         Friend WithEvents TargetFrameworkLabel As System.Windows.Forms.Label
+        Friend WithEvents AutoGenerateBindingRedirects As System.Windows.Forms.CheckBox
         Friend WithEvents overarchingLayoutPanel As System.Windows.Forms.TableLayoutPanel
         Friend WithEvents ManifestExplanationLabel As System.Windows.Forms.TextBox
         Friend WithEvents iconTableLayoutPanel As System.Windows.Forms.TableLayoutPanel
@@ -47,6 +48,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Me.AssemblyInfoButton = New System.Windows.Forms.Button()
             Me.TargetFrameworkLabel = New System.Windows.Forms.Label()
             Me.TargetFramework = New System.Windows.Forms.ComboBox()
+            Me.AutoGenerateBindingRedirects = New System.Windows.Forms.CheckBox()
             Me.ResourcesGroupBox = New System.Windows.Forms.GroupBox()
             Me.iconTableLayoutPanel = New System.Windows.Forms.TableLayoutPanel()
             Me.ResourcesLabel = New System.Windows.Forms.Label()
@@ -83,6 +85,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Me.TopHalfLayoutPanel.Controls.Add(Me.AssemblyInfoButton, 1, 7)
             Me.TopHalfLayoutPanel.Controls.Add(Me.TargetFrameworkLabel, 0, 2)
             Me.TopHalfLayoutPanel.Controls.Add(Me.TargetFramework, 0, 3)
+            Me.TopHalfLayoutPanel.Controls.Add(Me.AutoGenerateBindingRedirects, 0, 4)
             Me.TopHalfLayoutPanel.Name = "TopHalfLayoutPanel"
             '
             'AssemblyNameLabel
@@ -147,6 +150,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Me.TargetFramework.FormattingEnabled = True
             Me.TargetFramework.Name = "TargetFramework"
             Me.TargetFramework.Sorted = True
+            '
+            'AutoGenerateBindingRedirects
+            resources.ApplyResources(Me.AutoGenerateBindingRedirects, "AutoGenerateBindingRedirects")
+            Me.AutoGenerateBindingRedirects.Name = "AutoGenerateBindingRedirects"
+            '
             '
             'ResourcesGroupBox
             '

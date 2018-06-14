@@ -82,6 +82,11 @@
         <target state="translated">Поиск значка</target>
         <note />
       </trans-unit>
+      <trans-unit id="AutoGenerateBindingRedirects.Text">
+        <source>&amp;Auto-generate binding redirects</source>
+        <target state="new">&amp;Auto-generate binding redirects</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>

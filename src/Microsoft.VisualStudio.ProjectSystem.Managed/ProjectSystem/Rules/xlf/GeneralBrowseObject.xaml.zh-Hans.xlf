@@ -262,6 +262,11 @@
         <target state="translated">项目文件的全名。</target>
         <note />
       </trans-unit>
+      <trans-unit id="BoolProperty|AutoGenerateBindingRedirects|DisplayName">
+        <source>Auto-Generate Binding Redirects</source>
+        <target state="new">Auto-Generate Binding Redirects</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>
