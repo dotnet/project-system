@@ -80,18 +80,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             return Task.CompletedTask;
         }
 
-        private async Task<bool> GetIsClassLibraryAsync()
+        private Task<bool> IsClassLibraryAsync()
+        {
+            return IsOutputTypeAsync(ConfigurationGeneral.OutputTypeValues.Library);
+        }
+
+        private Task<bool> IsConsoleAppAsync()
+        {
+            return IsOutputTypeAsync(ConfigurationGeneral.OutputTypeValues.Exe);
+        }
+
+        private async Task<bool> IsOutputTypeAsync(string outputType)
         {
             // Used by default Windows debugger to figure out whether to add an extra
             // pause to end of window when CTRL+F5'ing a console application
             ConfigurationGeneral configuration = await Properties.GetConfigurationGeneralPropertiesAsync()
-                                                 .ConfigureAwait(false);
+                                                                 .ConfigureAwait(false);
 
 
-            var outputType = (IEnumValue)await configuration.OutputType.GetValueAsync()
-                                                                      .ConfigureAwait(false);
+            var actualOutputType = (IEnumValue)await configuration.OutputType.GetValueAsync()
+                                                                             .ConfigureAwait(false);
 
-            return StringComparers.PropertyValues.Equals(outputType.Name, ConfigurationGeneral.OutputTypeValues.Library);
+            return StringComparers.PropertyValues.Equals(actualOutputType.Name, outputType);
         }
 
         public Task<IReadOnlyList<IDebugLaunchSettings>> QueryDebugTargetsForDebugLaunchAsync(DebugLaunchOptions launchOptions, ILaunchProfile activeProfile)
@@ -115,11 +125,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             // Resolve the tokens in the profile
             ILaunchProfile resolvedProfile = await TokenReplacer.ReplaceTokensInProfileAsync(activeProfile).ConfigureAwait(false);
 
-            // For "run project", we want to launch the process via the command shell when not debugging, except when this debug session is being
-            // launched for profiling.
+            // For "run project", we want to launch the process if it's a console app via the command shell when 
+            // not debugging, except when this debug session is being launched for profiling.
             bool useCmdShell =
                     IsRunProjectCommand(resolvedProfile) &&
-                    (launchOptions & (DebugLaunchOptions.NoDebug | DebugLaunchOptions.Profiling)) == DebugLaunchOptions.NoDebug;
+                    (launchOptions & (DebugLaunchOptions.NoDebug | DebugLaunchOptions.Profiling)) == DebugLaunchOptions.NoDebug &&
+                    await IsConsoleAppAsync().ConfigureAwait(false);
 
             DebugLaunchSettings consoleTarget = await GetConsoleTargetForProfile(resolvedProfile, launchOptions, useCmdShell, validateSettings).ConfigureAwait(false);
 
@@ -215,7 +226,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             if (IsRunProjectCommand(resolvedProfile))
             {
                 // If we're launching for debug purposes, prevent someone F5'ing a class library
-                if (validateSettings && await GetIsClassLibraryAsync().ConfigureAwait(false))
+                if (validateSettings && await IsClassLibraryAsync().ConfigureAwait(false))
                 {
                     throw new Exception(VSResources.ProjectNotRunnableDirectly);
                 }
