@@ -290,8 +290,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 }
             }
 
-            // Now validate the executable path and working directory exist
-            ValidateSettings(executable, workingDir, resolvedProfile.Name);
+            if (forDebugLaunch)
+            {
+                ValidateSettings(executable, workingDir, resolvedProfile.Name);
+            }
+
             GetExeAndArguments(useCmdShell, executable, arguments, out string finalExecutable, out string finalArguments);
 
             // Apply environment variables.
