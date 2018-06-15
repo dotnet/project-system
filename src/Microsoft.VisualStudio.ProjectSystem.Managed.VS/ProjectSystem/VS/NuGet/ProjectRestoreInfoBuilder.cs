@@ -64,6 +64,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                     IProjectChangeDescription projectReferencesChanges = update.Value.ProjectChanges[ProjectReference.SchemaName];
                     IProjectChangeDescription packageReferencesChanges = update.Value.ProjectChanges[PackageReference.SchemaName];
 
+                    bool evaluationSucceeded = projectReferencesChanges.After.IsEvaluationSucceeded() && 
+                                               packageReferencesChanges.After.IsEvaluationSucceeded();
+
+                    if (!evaluationSucceeded)
+                    {
+                        // skip NuGet Restore for this target framework
+                        TraceUtilities.TraceWarning($"Skipping Restore for {targetFramework} because of failed initial evaluation");
+                        continue;
+                    }
+
                     targetFrameworks.Add(new TargetFrameworkInfo
                     {
                         TargetFrameworkMoniker = targetFramework,
