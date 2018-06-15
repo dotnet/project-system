@@ -96,7 +96,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
         public Task<IReadOnlyList<IDebugLaunchSettings>> QueryDebugTargetsForDebugLaunchAsync(DebugLaunchOptions launchOptions, ILaunchProfile activeProfile)
         {
-            return QueryDebugTargetsAsync(launchOptions, activeProfile, forDebugLaunch: true);
+            return QueryDebugTargetsAsync(launchOptions, activeProfile, validateSettings: true);
         }
 
         /// <summary>
@@ -105,10 +105,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// </summary>
         public Task<IReadOnlyList<IDebugLaunchSettings>> QueryDebugTargetsAsync(DebugLaunchOptions launchOptions, ILaunchProfile activeProfile)
         {
-            return QueryDebugTargetsAsync(launchOptions, activeProfile, forDebugLaunch: false);
+            return QueryDebugTargetsAsync(launchOptions, activeProfile, validateSettings: false);
         }
 
-        private async Task<IReadOnlyList<IDebugLaunchSettings>> QueryDebugTargetsAsync(DebugLaunchOptions launchOptions, ILaunchProfile activeProfile, bool forDebugLaunch)
+        private async Task<IReadOnlyList<IDebugLaunchSettings>> QueryDebugTargetsAsync(DebugLaunchOptions launchOptions, ILaunchProfile activeProfile, bool validateSettings)
         {
             var launchSettings = new List<DebugLaunchSettings>();
 
@@ -121,7 +121,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                     IsRunProjectCommand(resolvedProfile) &&
                     (launchOptions & (DebugLaunchOptions.NoDebug | DebugLaunchOptions.Profiling)) == DebugLaunchOptions.NoDebug;
 
-            DebugLaunchSettings consoleTarget = await GetConsoleTargetForProfile(resolvedProfile, launchOptions, useCmdShell, forDebugLaunch).ConfigureAwait(false);
+            DebugLaunchSettings consoleTarget = await GetConsoleTargetForProfile(resolvedProfile, launchOptions, useCmdShell, validateSettings).ConfigureAwait(false);
 
             launchSettings.Add(consoleTarget);
 
@@ -181,7 +181,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// of project.
         /// </summary>
         private async Task<DebugLaunchSettings> GetConsoleTargetForProfile(ILaunchProfile resolvedProfile, DebugLaunchOptions launchOptions,
-                                                                           bool useCmdShell, bool forDebugLaunch)
+                                                                           bool useCmdShell, bool validateSettings)
         {
             var settings = new DebugLaunchSettings(launchOptions);
 
@@ -215,7 +215,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             if (IsRunProjectCommand(resolvedProfile))
             {
                 // If we're launching for debug purposes, prevent someone F5'ing a class library
-                if (forDebugLaunch && await GetIsClassLibraryAsync().ConfigureAwait(false))
+                if (validateSettings && await GetIsClassLibraryAsync().ConfigureAwait(false))
                 {
                     throw new Exception(VSResources.ProjectNotRunnableDirectly);
                 }
@@ -290,7 +290,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 }
             }
 
-            if (forDebugLaunch)
+            if (validateSettings)
             {
                 ValidateSettings(executable, workingDir, resolvedProfile.Name);
             }

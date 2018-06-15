@@ -366,8 +366,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 {"TargetFrameworkIdentifier", @".NETFramework" }
                 };
 
-            _mockFS.WriteAllText(@"C:\dotnet.exe", string.Empty);
-
             var debugger = GetDebugTargetsProvider("Library", properties);
 
             var activeProfile = new LaunchProfile() { Name = "Name", CommandName = "Project" };
@@ -386,8 +384,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 {"TargetFrameworkIdentifier", @".NETFramework" }
                 };
 
-            _mockFS.WriteAllText(@"C:\library.dll", string.Empty);
-
             var debugger = GetDebugTargetsProvider("Library", properties);
 
             var activeProfile = new LaunchProfile() { Name = "Name", CommandName = "Project" };
@@ -399,12 +395,32 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         }
 
         [Fact]
+        public async Task QueryDebugTargetsAsync_WhenLibraryWithoutRunCommand_DoesNotManipulateTargetPath()
+        {
+            var properties = new Dictionary<string, string>() {
+                {"TargetPath", @"library.dll"},
+                {"TargetFrameworkIdentifier", @".NETFramework" }
+                };
+
+            var debugger = GetDebugTargetsProvider("Library", properties);
+
+            var activeProfile = new LaunchProfile() { Name = "Name", CommandName = "Project" };
+
+            var targets = await debugger.QueryDebugTargetsAsync(0, activeProfile);
+
+            Assert.Single(targets);
+            Assert.Equal(@"library.dll", targets[0].Executable);
+        }
+
+        [Fact]
         public async Task QueryDebugTargetsForDebugLaunchAsync_WhenLibrary_Throws()
         {
             var properties = new Dictionary<string, string>() {
                 {"TargetPath", @"C:\library.dll"},
                 {"TargetFrameworkIdentifier", @".NETFramework" }
                 };
+
+            _mockFS.WriteAllText(@"C:\library.dll", string.Empty);
 
             var debugger = GetDebugTargetsProvider("Library", properties);
 
