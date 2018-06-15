@@ -1,6 +1,6 @@
 ﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-Imports System.drawing.Design
+Imports System.Drawing.Design
 Imports Microsoft.VisualStudio.Data.Core
 Imports Microsoft.VisualStudio.Data.Services
 Imports Microsoft.VisualStudio.Data.Services.SupportEntities
@@ -57,7 +57,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End If
 
             Dim providerMapper As IDTAdoDotNetProviderMapper = DirectCast(ServiceProvider.GetService(GetType(IDTAdoDotNetProviderMapper)), IDTAdoDotNetProviderMapper)
-            If providermapper Is Nothing Then
+            If providerMapper Is Nothing Then
                 Debug.Fail("Couldn't get the IDTAdoDotNetProviderMapper service from our provider")
                 Return oValue
             End If
@@ -74,7 +74,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             ' should be a no-op, so we should be safe if we just try to get hold of the required services
             ' and give it a try...
             Dim dteProj As EnvDTE.Project = Nothing
-            Dim connectionStringConverter As IConnectionStringConverterService = _
+            Dim connectionStringConverter As IConnectionStringConverterService =
                 DirectCast(ServiceProvider.GetService(GetType(IConnectionStringConverterService)), IConnectionStringConverterService)
             If connectionStringConverter IsNot Nothing Then
                 ' The SettingsDesignerLoader should have added the project item as a service in case someone needs to 
@@ -300,7 +300,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 Return providerGuid.ToString()
             End If
 
-            Dim invariantName As String = providerMapper.MapGuidToInvariantName(providerGuid)
+            Dim invariantName As String = ProviderMapper.MapGuidToInvariantName(providerGuid)
             If invariantName Is Nothing Or invariantName = "" Then
                 Debug.Fail(String.Format("{0} is not an ADO.NET provider", providerGuid))
                 Return providerGuid.ToString()
@@ -310,12 +310,12 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         End Function
 
         Private Shared Function GetGuidFromInvariantProviderName(ProviderMapper As IDTAdoDotNetProviderMapper, providerName As String, ConnectionString As String, EncryptedString As Boolean) As Guid
-            If providerMapper Is Nothing Then
+            If ProviderMapper Is Nothing Then
                 Debug.Fail("Failed to get a IDTAdoDotNetProviderMapper")
                 Return Guid.Empty
             End If
 
-            Dim providerGuid as Guid = providerMapper.MapInvariantNameToGuid(providerName, connectionString, encryptedString)
+            Dim providerGuid As Guid = ProviderMapper.MapInvariantNameToGuid(providerName, ConnectionString, EncryptedString)
             If providerGuid.Equals(Guid.Empty) Then
                 Debug.Fail(String.Format("Couldn't find GUID for provider {0}", providerName))
                 Try

@@ -87,8 +87,8 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         '''      FALSE otherwise.</param>
         ''' <remarks>Child root designers call this method to register their own menu commands. 
         '''      See ResourceEditorRootDesigner.</remarks>
-        Friend Sub RegisterMenuCommands(MenuCommands As ArrayList, _
-                Optional KeepRegisteredMenuCommands As Boolean = True, _
+        Friend Sub RegisterMenuCommands(MenuCommands As ArrayList,
+                Optional KeepRegisteredMenuCommands As Boolean = True,
                 Optional AddCommonMenuCommands As Boolean = True)
             ' Clear the list of menu commands if specified.
             If Not KeepRegisteredMenuCommands Then

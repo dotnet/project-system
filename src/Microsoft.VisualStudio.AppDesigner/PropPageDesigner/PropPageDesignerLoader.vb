@@ -31,9 +31,9 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             'Add our ComponentSerializationService so that the basic desiger will give us automatic Undo/Redo
             Dim SerializationService As New PropertyPageSerializationService(LoaderHost)
             LoaderHost.AddService(GetType(ComponentSerializationService), SerializationService)
-            LoaderHost.AddService(GetType(Shell.Design.WindowPaneProviderService), _
+            LoaderHost.AddService(GetType(Shell.Design.WindowPaneProviderService),
                 New DeferrableWindowPaneProviderService(LoaderHost))
-            Debug.Assert(GetService(GetType(ComponentSerializationService)) IsNot Nothing, _
+            Debug.Assert(GetService(GetType(ComponentSerializationService)) IsNot Nothing,
                 "We just made the ComponentSerializationService service available.  Why isn't it there?")
         End Sub
 

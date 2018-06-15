@@ -453,8 +453,8 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         '''     when searching for a "Normal" selection type.</param>
         ''' <returns>The new index into the ExistingItems array of the found item.</returns>
         ''' <remarks></remarks>
-        Private Function FindItemToSelect(ExistingItems() As DropdownItem, CurrentIndex As Integer, DesiredName As String, DesiredSelectionType As SelectionTypes, _
-            PreferExactMatch As Boolean _
+        Private Function FindItemToSelect(ExistingItems() As DropdownItem, CurrentIndex As Integer, DesiredName As String, DesiredSelectionType As SelectionTypes,
+            PreferExactMatch As Boolean
         ) As Integer
             If DesiredSelectionType = SelectionTypes.All Then
                 'All configurations or platforms

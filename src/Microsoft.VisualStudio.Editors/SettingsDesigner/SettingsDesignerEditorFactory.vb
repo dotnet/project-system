@@ -11,7 +11,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
     ''' The editor factory for the settings designer
     ''' </summary>
     ''' <remarks></remarks>
-    <Guid(SettingsDesignerEditorFactory.EditorGuidString)> _
+    <Guid(SettingsDesignerEditorFactory.EditorGuidString)>
     Friend NotInheritable Class SettingsDesignerEditorFactory
         Inherits DesignerFramework.BaseEditorFactory
 

@@ -5,17 +5,17 @@ Imports System.Windows.Forms
 
 Namespace Microsoft.VisualStudio.Editors.XmlToSchema
 
-    <HelpKeyword("vb.XmlToSchemaWizard")> _
+    <HelpKeyword("vb.XmlToSchemaWizard")>
     Friend NotInheritable Class PasteXmlDialog
         Private _xml As XElement
         Public ReadOnly Property Xml() As XElement
-            <DebuggerStepThrough()> _
+            <DebuggerStepThrough()>
             Get
                 Return _xml
             End Get
         End Property
 
-        <System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")> _
+        <System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")>
         Protected Overrides Sub OnClosing(e As System.ComponentModel.CancelEventArgs)
             If Me.DialogResult = DialogResult.OK Then
                 Try

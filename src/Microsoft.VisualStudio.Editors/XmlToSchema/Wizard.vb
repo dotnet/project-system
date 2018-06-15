@@ -22,10 +22,10 @@ Namespace Microsoft.VisualStudio.Editors.XmlToSchema
         Public Sub RunFinished() Implements IWizard.RunFinished
         End Sub
 
-        <System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")> _
-        Public Sub RunStarted(automationObject As Object, _
-                              replacementsDictionary As Dictionary(Of String, String), _
-                              runKind As WizardRunKind, _
+        <System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")>
+        Public Sub RunStarted(automationObject As Object,
+                              replacementsDictionary As Dictionary(Of String, String),
+                              runKind As WizardRunKind,
                               customParams() As Object) Implements IWizard.RunStarted
             If automationObject Is Nothing OrElse replacementsDictionary Is Nothing Then
                 Return

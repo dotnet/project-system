@@ -11,7 +11,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 
     'This class is private to PropertyPageSerializationService
 
-    Public Partial Class PropertyPageSerializationService
+    Partial Public Class PropertyPageSerializationService
 
         ''' <summary>
         '''  Class which provides a storage for serialization data.
@@ -29,7 +29,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         '''      interface to avoid confusion.  The IDisposable pattern is provided 
         '''      for languages that support a "using" syntax like C# and VB .NET.
         '''</remarks>
-        <Serializable()> _
+        <Serializable()>
         Private NotInheritable Class PropertyPageSerializationStore
             Inherits Serialization.SerializationStore
             Implements ISerializable
@@ -476,7 +476,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             ''' Stores a single binary serialized Component instance or Component property value
             ''' </summary>
             ''' <remarks></remarks>
-            <Serializable()> _
+            <Serializable()>
             Private NotInheritable Class SerializedProperty
 
                 'The name of the component from which this was serialized.

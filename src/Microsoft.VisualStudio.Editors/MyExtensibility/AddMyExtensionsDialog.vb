@@ -33,7 +33,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' <summary>
         ''' Construct the dialog with the given service provider and extension templates list.
         ''' </summary>
-        Public Sub New(serviceProvider As IServiceProvider, _
+        Public Sub New(serviceProvider As IServiceProvider,
                 extensionTemplates As List(Of MyExtensionTemplate))
             MyBase.New(serviceProvider)
             InitializeComponent()

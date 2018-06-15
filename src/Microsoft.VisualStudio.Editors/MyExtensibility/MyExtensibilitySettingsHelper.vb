@@ -5,7 +5,7 @@ Option Explicit On
 
 Namespace Microsoft.VisualStudio.Editors.MyExtensibility
 
-    Friend Partial Class MyExtensibilitySettings
+    Partial Friend Class MyExtensibilitySettings
 
         ''' ;AssemblyAutoOption
         ''' <summary>

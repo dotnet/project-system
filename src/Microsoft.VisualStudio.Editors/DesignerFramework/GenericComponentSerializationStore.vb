@@ -2,13 +2,13 @@
 
 Imports System.ComponentModel
 Imports System.ComponentModel.Design.Serialization
-Imports System.io
+Imports System.IO
 Imports System.Runtime.Serialization
 Imports System.Runtime.Serialization.Formatters.Binary
 
 Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
-    <Serializable> _
+    <Serializable>
     Friend NotInheritable Class GenericComponentSerializationStore
         Inherits SerializationStore
         Implements ISerializable
@@ -38,11 +38,11 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
         ' default impl of abstract base member.  see serialization store for details.
         '	
-        public readonly Overrides property Errors() as ICollection
+        Public Overrides ReadOnly Property Errors() As ICollection
             Get
                 Return Array.Empty(Of Object)
-            End get
-        end property
+            End Get
+        End Property
 
 
         ''' <summary>
@@ -344,7 +344,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         '''   its properties)
         ''' </summary>
         ''' <remarks></remarks>
-        <Serializable()> _
+        <Serializable()>
         Protected Class ObjectData
 
             'Backing for public properties
@@ -450,7 +450,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         '''   its properties)
         ''' </summary>
         ''' <remarks></remarks>
-        <Serializable()> _
+        <Serializable()>
         Private Class SerializedObjectData
 
             'Backing for public properties

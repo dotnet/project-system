@@ -9,7 +9,6 @@ using System.Threading.Tasks.Dataflow;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.Shell.Interop;
 
-using AsyncServiceProvider = Microsoft.VisualStudio.Shell.AsyncServiceProvider;
 using IAsyncServiceProvider = Microsoft.VisualStudio.Shell.IAsyncServiceProvider;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug

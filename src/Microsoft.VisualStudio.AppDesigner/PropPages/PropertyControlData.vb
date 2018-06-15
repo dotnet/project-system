@@ -14,7 +14,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
     ''' Class that provides basic read/write of property values to/from the project system
     ''' </summary>
     ''' <remarks></remarks>
-    <DebuggerDisplay("{PropertyName}, InitialValue={InitialValue}, IsDirty={IsDirty}")> _
+    <DebuggerDisplay("{PropertyName}, InitialValue={InitialValue}, IsDirty={IsDirty}")>
     Public Class PropertyControlData
 
         Private Shared ReadOnly s_indeterminateValue As Object = New Object

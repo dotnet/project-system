@@ -9,9 +9,9 @@ using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.TextManager.Interop;
 
 // We use the version of IVsENCRebuildableProjectCfg2/IVsENCRebuildableProjectCfg4 from Roslyn because the one in the SDK is defined wrong
+using ENC_BREAKSTATE_REASON = Microsoft.VisualStudio.LanguageServices.Implementation.EditAndContinue.Interop.ENC_BREAKSTATE_REASON;
 using IVsENCRebuildableProjectCfg2 = Microsoft.VisualStudio.LanguageServices.Implementation.EditAndContinue.Interop.IVsENCRebuildableProjectCfg2;
 using IVsENCRebuildableProjectCfg4 = Microsoft.VisualStudio.LanguageServices.Implementation.EditAndContinue.Interop.IVsENCRebuildableProjectCfg4;
-using ENC_BREAKSTATE_REASON = Microsoft.VisualStudio.LanguageServices.Implementation.EditAndContinue.Interop.ENC_BREAKSTATE_REASON;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.EditAndContinue
 {

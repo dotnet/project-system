@@ -299,8 +299,8 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' </summary>
         Public Shared Function FindProjectItem(projectItems As ProjectItems, fileName As String) As ProjectItem
             For Each projectItem As ProjectItem In projectItems
-                If projectItem.Kind.Equals( _
-                    EnvDTE.Constants.vsProjectItemKindPhysicalFile, StringComparison.OrdinalIgnoreCase) AndAlso _
+                If projectItem.Kind.Equals(
+                    EnvDTE.Constants.vsProjectItemKindPhysicalFile, StringComparison.OrdinalIgnoreCase) AndAlso
                     projectItem.FileCount > 0 Then
 
                     Dim itemFileName As String = Path.GetFileName(projectItem.FileNames(1))

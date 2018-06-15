@@ -11,7 +11,7 @@ Namespace Microsoft.VisualStudio.Editors.Package
     '''   be happening).
     ''' </summary>
     ''' <remarks></remarks>
-    <Serializable()> _
+    <Serializable()>
     Friend Class InternalException
         Inherits ApplicationException
 
@@ -63,7 +63,7 @@ Namespace Microsoft.VisualStudio.Editors.Package
         ''' <param name="info"></param>
         ''' <param name="context"></param>
         ''' <remarks></remarks>
-        <EditorBrowsable(EditorBrowsableState.Advanced)> _
+        <EditorBrowsable(EditorBrowsableState.Advanced)>
         Protected Sub New(info As System.Runtime.Serialization.SerializationInfo, context As System.Runtime.Serialization.StreamingContext)
             MyBase.New(info, context)
         End Sub

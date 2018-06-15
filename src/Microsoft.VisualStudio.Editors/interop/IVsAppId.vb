@@ -4,10 +4,10 @@ Imports System.Runtime.InteropServices
 
 Namespace Microsoft.VisualStudio.Editors.Interop
 
-    <ComVisible(False), _
-    ComImport(), _
-    Guid("1EAA526A-0898-11d3-B868-00C04F79F802"), _
-    InterfaceType(ComInterfaceType.InterfaceIsIUnknown)> _
+    <ComVisible(False),
+    ComImport(),
+    Guid("1EAA526A-0898-11d3-B868-00C04F79F802"),
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown)>
     Friend Interface IVsAppId
 
         ' HRESULT SetSite([in] IServiceProvider *pSP);
@@ -15,18 +15,18 @@ Namespace Microsoft.VisualStudio.Editors.Interop
 
         ' HRESULT GetProperty([in] VSAPROPID propid,
         '                     [out] VARIANT *pvar);
-        <PreserveSig()> _
-        Function GetProperty(propid As Integer, _
+        <PreserveSig()>
+        Function GetProperty(propid As Integer,
                          <Out(), MarshalAs(UnmanagedType.Struct)> ByRef pvar As Object) As Integer
 
         ' HRESULT SetProperty([in] VSAPROPID propid,
         '                     [in] VARIANT var);
-        Sub SetProperty(propid As Integer, _
+        Sub SetProperty(propid As Integer,
                          <[In](), MarshalAs(UnmanagedType.Struct)> var As Object)
 
         ' HRESULT GetGuidProperty([in] VSAPROPID propid,
         '                         [out] GUID *pguid);
-        Sub GetGuidProperty(propid As Integer, _
+        Sub GetGuidProperty(propid As Integer,
                              <Out()> ByRef pguid As Guid)
 
         ' HRESULT SetGuidProperty([in] VSAPROPID propid,

@@ -211,7 +211,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="keyData"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        <Security.Permissions.UIPermission(Security.Permissions.SecurityAction.LinkDemand, Window:=Security.Permissions.UIPermissionWindow.AllWindows)> _
+        <Security.Permissions.UIPermission(Security.Permissions.SecurityAction.LinkDemand, Window:=Security.Permissions.UIPermissionWindow.AllWindows)>
         Protected Overrides Function ProcessDialogKey(keyData As Keys) As Boolean
             Const CtrlD0 As Keys = Keys.D0 Or Keys.Control
 

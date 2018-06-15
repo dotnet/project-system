@@ -47,8 +47,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <returns></returns>
         ''' <remarks></remarks>
         Protected Overrides Function GetFormattedValue(value As Object, rowIndex As Integer, ByRef cellStyle As DataGridViewCellStyle, valueTypeConverter As TypeConverter, formattedValueTypeConverter As TypeConverter, context As DataGridViewDataErrorContexts) As Object
-            If (context And DataGridViewDataErrorContexts.Display) <> 0 AndAlso _
-                value IsNot Nothing AndAlso _
+            If (context And DataGridViewDataErrorContexts.Display) <> 0 AndAlso
+                value IsNot Nothing AndAlso
                 value.GetType().Equals(GetType(VSDesigner.VSDesignerPackage.SerializableConnectionString)) Then
                 'Begin
                 Return DirectCast(value, VSDesigner.VSDesignerPackage.SerializableConnectionString).ConnectionString
@@ -78,9 +78,9 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="formattedTypeConverter"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Overrides Function ParseFormattedValue(FormattedValue As Object, _
-                                                 CellStyle As DataGridViewCellStyle, _
-                                                 valueTypeConverter As TypeConverter, _
+        Public Overrides Function ParseFormattedValue(FormattedValue As Object,
+                                                 CellStyle As DataGridViewCellStyle,
+                                                 valueTypeConverter As TypeConverter,
                                                  formattedTypeConverter As TypeConverter) As Object
             If Not TypeOf FormattedValue Is String Then
                 Debug.Fail("Unknown formatted value type!")
@@ -107,7 +107,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             If parsedValue Is Nothing AndAlso StrFormattedValue <> "" Then
                 Throw New FormatException()
             End If
-            Return parsedvalue
+            Return parsedValue
         End Function
 
         ''' <summary>
@@ -220,11 +220,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
         Public Overrides Function KeyEntersEditMode(e As KeyEventArgs) As Boolean
             ' This code was copied from the DataGridViewTextBoxCell 
-            If (((Char.IsLetterOrDigit(ChrW(e.KeyCode)) AndAlso Not (e.KeyCode >= Keys.F1 AndAlso e.KeyCode <= Keys.F24)) OrElse _
-                 (e.KeyCode >= Keys.NumPad0 AndAlso e.KeyCode <= Keys.Divide) OrElse _
-                 (e.KeyCode >= Keys.OemSemicolon AndAlso e.KeyCode <= Keys.Oem102) OrElse _
-                 (e.KeyCode = Keys.Space AndAlso Not e.Shift)) AndAlso _
-                Not e.Alt AndAlso _
+            If (((Char.IsLetterOrDigit(ChrW(e.KeyCode)) AndAlso Not (e.KeyCode >= Keys.F1 AndAlso e.KeyCode <= Keys.F24)) OrElse
+                 (e.KeyCode >= Keys.NumPad0 AndAlso e.KeyCode <= Keys.Divide) OrElse
+                 (e.KeyCode >= Keys.OemSemicolon AndAlso e.KeyCode <= Keys.Oem102) OrElse
+                 (e.KeyCode = Keys.Space AndAlso Not e.Shift)) AndAlso
+                Not e.Alt AndAlso
                 Not e.Control) _
             Then
                 Return True

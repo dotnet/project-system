@@ -333,7 +333,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
                 If _versionIndependentList IsNot Nothing AndAlso _versionIndependentList.Contains(item) Then
                     _versionIndependentList.Remove(item)
                 End If
-                If _versionDependentDictionary IsNot Nothing AndAlso _
+                If _versionDependentDictionary IsNot Nothing AndAlso
                         _versionDependentDictionary.Values IsNot Nothing Then
                     For Each itemList As List(Of Y) In _versionDependentDictionary.Values
                         If itemList.Contains(item) Then

@@ -12,7 +12,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
     ''' a property with the appropriate attributes in the generated file.
     ''' </summary>
     ''' <remarks></remarks>
-    <Serializable()> _
+    <Serializable()>
     Friend Class DesignTimeSettingInstance
         Inherits Component
         Implements ICustomTypeDescriptor, System.Runtime.Serialization.ISerializable
@@ -21,7 +21,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' Application or user scoped setting?
         ''' </summary>
         ''' <remarks></remarks>
-        <TypeConverter(GetType(ScopeConverter))> _
+        <TypeConverter(GetType(ScopeConverter))>
         Friend Enum SettingScope
             ' Don't use zero in the enum since that hides CType(NULL, SettingScope) 
             ' issues...
@@ -137,14 +137,14 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         End Function
 
         Private Function GetProperties(attributes() As Attribute) As PropertyDescriptorCollection Implements ICustomTypeDescriptor.GetProperties
-            Return New PropertyDescriptorCollection(New PropertyDescriptor() { _
-                                                            _namePropertyDescriptor, _
-                                                            _roamingPropertyDescriptor, _
-                                                            _descriptionPropertyDescriptor, _
-                                                            _providerPropertyDescriptor, _
-                                                            _scopePropertyDescriptor, _
-                                                            _generateDefaultValueInCodePropertyDescriptor, _
-                                                            _settingTypeNamePropertyDescriptor, _
+            Return New PropertyDescriptorCollection(New PropertyDescriptor() {
+                                                            _namePropertyDescriptor,
+                                                            _roamingPropertyDescriptor,
+                                                            _descriptionPropertyDescriptor,
+                                                            _providerPropertyDescriptor,
+                                                            _scopePropertyDescriptor,
+                                                            _generateDefaultValueInCodePropertyDescriptor,
+                                                            _settingTypeNamePropertyDescriptor,
                                                             _serializedValuePropertyDescriptor})
         End Function
 
@@ -261,9 +261,9 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 Dim ccsvc As Design.IComponentChangeService = Nothing
                 Dim host As Design.IDesignerHost = Nothing
                 If instance IsNot Nothing AndAlso instance.Site IsNot Nothing Then
-                    ccsvc = DirectCast(instance.Site.GetService(GetType(Design.IComponentChangeService)), _
+                    ccsvc = DirectCast(instance.Site.GetService(GetType(Design.IComponentChangeService)),
                                         Design.IComponentChangeService)
-                    host = DirectCast(instance.Site.GetService(GetType(Design.IDesignerHost)), _
+                    host = DirectCast(instance.Site.GetService(GetType(Design.IDesignerHost)),
                                         Design.IDesignerHost)
                 End If
 

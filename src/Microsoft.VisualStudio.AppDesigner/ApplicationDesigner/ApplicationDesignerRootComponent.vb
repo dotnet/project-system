@@ -10,7 +10,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
     ''' This class represents the root component of the Application Designer.
     ''' </summary>
     ''' <remarks></remarks>
-    <Designer(GetType(ApplicationDesignerRootDesigner), GetType(IRootDesigner))> _
+    <Designer(GetType(ApplicationDesignerRootDesigner), GetType(IRootDesigner))>
     Public NotInheritable Class ApplicationDesignerRootComponent
         Inherits Component
 

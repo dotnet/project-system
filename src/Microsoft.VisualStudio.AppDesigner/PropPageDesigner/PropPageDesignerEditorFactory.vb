@@ -17,8 +17,8 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
     '   simply to create a new resource editor designer when requested by the
     '   shell.
     '**************************************************************************
-    <CLSCompliant(False), _
-    Guid("b270807c-d8c6-49eb-8ebe-8e8d566637a1")> _
+    <CLSCompliant(False),
+    Guid("b270807c-d8c6-49eb-8ebe-8e8d566637a1")>
     Public NotInheritable Class PropPageDesignerEditorFactory
         Implements IVsEditorFactory
 
@@ -59,16 +59,16 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <param name="CmdUIGuid">Returns guid for CMDUI</param>
         ''' <param name="Canceled">Returns True if user canceled</param>
         ''' <remarks></remarks>
-        Private Sub InternalCreateEditorInstance(VsCreateEditorFlags As UInteger, _
-                FileName As String, _
-                PhysicalView As String, _
-                Hierarchy As IVsHierarchy, _
-                ItemId As UInteger, _
-                ExistingDocData As Object, _
-                ByRef DocView As Object, _
-                ByRef DocData As Object, _
-                ByRef Caption As String, _
-                ByRef CmdUIGuid As Guid, _
+        Private Sub InternalCreateEditorInstance(VsCreateEditorFlags As UInteger,
+                FileName As String,
+                PhysicalView As String,
+                Hierarchy As IVsHierarchy,
+                ItemId As UInteger,
+                ExistingDocData As Object,
+                ByRef DocView As Object,
+                ByRef DocData As Object,
+                ByRef Caption As String,
+                ByRef CmdUIGuid As Guid,
                 ByRef Canceled As Boolean)
             Canceled = False
             CmdUIGuid = Guid.Empty
@@ -142,17 +142,17 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' Wrapper of COM interface which delegates to Internal
         ''' </summary>
         ''' <remarks></remarks>
-        Private Function IVsEditorFactory_CreateEditorInstance( _
-                vscreateeditorflags As UInteger, _
-                FileName As String, _
-                PhysicalView As String, _
-                Hierarchy As IVsHierarchy, _
-                Itemid As UInteger, _
-                ExistingDocDataPtr As IntPtr, _
-                ByRef DocViewPtr As IntPtr, _
-                ByRef DocDataPtr As IntPtr, _
-                ByRef Caption As String, _
-                ByRef CmdUIGuid As Guid, _
+        Private Function IVsEditorFactory_CreateEditorInstance(
+                vscreateeditorflags As UInteger,
+                FileName As String,
+                PhysicalView As String,
+                Hierarchy As IVsHierarchy,
+                Itemid As UInteger,
+                ExistingDocDataPtr As IntPtr,
+                ByRef DocViewPtr As IntPtr,
+                ByRef DocDataPtr As IntPtr,
+                ByRef Caption As String,
+                ByRef CmdUIGuid As Guid,
                 ByRef FCanceled As Integer) As Integer _
         Implements IVsEditorFactory.CreateEditorInstance
 
@@ -170,7 +170,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 
             Caption = Nothing
 
-            InternalCreateEditorInstance(vscreateeditorflags, FileName, PhysicalView, Hierarchy, Itemid, ExistingDocData, _
+            InternalCreateEditorInstance(vscreateeditorflags, FileName, PhysicalView, Hierarchy, Itemid, ExistingDocData,
                 DocView, DocData, Caption, CmdUIGuid, CanceledAsBoolean)
 
             If CanceledAsBoolean Then

@@ -20,8 +20,8 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' <summary>
         ''' fileName, extensionID and extensionVersion are required.
         ''' </summary>
-        Public Sub New( _
-                extensionID As String, extensionVersion As Version, _
+        Public Sub New(
+                extensionID As String, extensionVersion As Version,
                 extensionName As String, extensionDescription As String)
             Debug.Assert(Not StringIsNullEmptyOrBlank(extensionID), "Invalid extensionID!")
             Debug.Assert(extensionVersion IsNot Nothing, "Invalid extensionVersion!")

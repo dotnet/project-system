@@ -20,7 +20,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         '     Creates a new DeferrableWindowPaneProviderService.
         ' </devdoc>
         Public Sub New(provider As IServiceProvider, docData As DocData)
-            MyBase.new(provider, Nothing)
+            MyBase.New(provider, Nothing)
             _docData = docData
         End Sub
 

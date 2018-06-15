@@ -9,7 +9,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
     '@ Generator for strongly typed settings wrapper class
     '@ </summary>
     '@ <remarks></remarks>
-    <Guid("940f36b5-a42e-435e-8ef4-20b9d4801d22")> _
+    <Guid("940f36b5-a42e-435e-8ef4-20b9d4801d22")>
     Public Class PublicSettingsSingleFileGenerator
         Inherits SettingsSingleFileGeneratorBase
 

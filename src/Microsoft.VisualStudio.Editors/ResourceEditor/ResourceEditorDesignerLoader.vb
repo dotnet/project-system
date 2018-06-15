@@ -220,7 +220,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             'Add our ComponentSerializationService so that the basic desiger will give us automatic Undo/Redo
             Dim SerializationService As New ResourceSerializationService(LoaderHost)
             LoaderHost.AddService(GetType(ComponentSerializationService), SerializationService)
-            Debug.Assert(GetService(GetType(ComponentSerializationService)) IsNot Nothing, _
+            Debug.Assert(GetService(GetType(ComponentSerializationService)) IsNot Nothing,
                 "We just made the ComponentSerializationService service available.  Why isn't it there?")
 
             'Add our EditorState object to the host as a service.
@@ -229,7 +229,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             'Since the host is not recycled when the doc data is torn down during a reload, this 
             '  is a good place to persist this object.
             LoaderHost.AddService(GetType(ResourceEditorView.EditorState), New ResourceEditorView.EditorState)
-            Debug.Assert(GetService(GetType(ResourceEditorView.EditorState)) IsNot Nothing, _
+            Debug.Assert(GetService(GetType(ResourceEditorView.EditorState)) IsNot Nothing,
                 "We just made the EditorState service available.  Why isn't it there?")
         End Sub
 
@@ -291,7 +291,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <remarks>
         '''  See the comments in the base class...
         ''' </remarks>
-        <System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)> _
+        <System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>
         Friend Overrides Sub ManualCheckOut(ByRef ProjectReloaded As Boolean)
             Dim originalState As Boolean = _isTryingCheckOut
             _isTryingCheckOut = True
@@ -306,7 +306,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     If Designer IsNot Nothing Then
                         Dim ResourceView As ResourceEditorView = Designer.GetView()
                         ' We let the base class handle the read only mode
-                        If ResourceView IsNot Nothing AndAlso Not ResourceView.ReadOnlyMode AndAlso _
+                        If ResourceView IsNot Nothing AndAlso Not ResourceView.ReadOnlyMode AndAlso
                             _rootComponent.IsDependentFile AndAlso Not _allowToUpdateDependentFile Then
 
                             If ResourceView.DsMsgBox(My.Resources.Designer.RSE_Err_UpdateADependentFile, MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2, HelpIDs.Err_EditFormResx) = DialogResult.Yes Then

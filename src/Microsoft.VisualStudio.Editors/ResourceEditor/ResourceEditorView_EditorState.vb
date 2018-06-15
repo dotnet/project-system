@@ -8,7 +8,7 @@ Imports System.Drawing
 
 Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
-    Friend Partial Class ResourceEditorView
+    Partial Friend Class ResourceEditorView
 
         ''' <summary>
         ''' A class that contains the current editor state (current category, grid column widths, etc.).

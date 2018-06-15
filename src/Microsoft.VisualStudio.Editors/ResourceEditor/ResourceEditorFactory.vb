@@ -18,8 +18,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
     '''   shell.
     ''' </summary>
     ''' <remarks></remarks>
-    <CLSCompliant(False), _
-    Guid("ff4d6aca-9352-4a5f-821e-f4d6ebdcab11")> _
+    <CLSCompliant(False),
+    Guid("ff4d6aca-9352-4a5f-821e-f4d6ebdcab11")>
     Friend NotInheritable Class ResourceEditorFactory
         Inherits DesignerFramework.BaseEditorFactory
         Implements IVsTrackProjectDocumentsEvents2

@@ -340,8 +340,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                     {
                         if (newSnapshot.OtherSettings == null)
                         {
-                            newSnapshot.OtherSettings = new Dictionary<string, object>();
-                            newSnapshot.OtherSettings[kvp.Key] = kvp.Value;
+                            newSnapshot.OtherSettings = new Dictionary<string, object>
+                            {
+                                [kvp.Key] = kvp.Value
+                            };
                         }
                         else if (!newSnapshot.OtherSettings.TryGetValue(kvp.Key, out object existingValue))
                         {

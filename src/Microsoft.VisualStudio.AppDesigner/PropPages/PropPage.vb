@@ -39,7 +39,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
     ''' It is our internal equivalent of IPropertyPage2.
     ''' </summary>
     ''' <remarks></remarks>
-    <ComVisible(False)> _
+    <ComVisible(False)>
     Public Interface IPropertyPageInternal
         Sub Apply()
         Sub Help(HelpDir As String)
@@ -59,7 +59,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
     ''' It is our internal equivalent of IPropertyPageSite.
     ''' </summary>
     ''' <remarks></remarks>
-    <ComVisible(False)> _
+    <ComVisible(False)>
     Public Interface IPropertyPageSiteInternal
         Sub OnStatusChange(flags As PROPPAGESTATUS)
         Function GetLocaleID() As Integer
@@ -69,7 +69,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
     End Interface
 
 
-    <Flags(), ComVisible(False)> _
+    <Flags(), ComVisible(False)>
     Public Enum PROPPAGESTATUS
         Dirty = 1
         Validate = 2

@@ -84,7 +84,7 @@ Namespace Microsoft.VisualStudio.Editors
 
     End Class
 
-    <ComVisible(False)> _
+    <ComVisible(False)>
     Friend Enum VSITEMID As UInteger
         NIL = &HFFFFFFFFUI '-1
         ROOT = &HFFFFFFFEUI '-2

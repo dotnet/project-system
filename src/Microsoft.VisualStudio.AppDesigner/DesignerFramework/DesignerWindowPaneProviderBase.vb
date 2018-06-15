@@ -35,7 +35,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         ''' <param name="SupportToolbox"></param>
         ''' <remarks></remarks>
         Public Sub New(provider As IServiceProvider, SupportToolbox As Boolean)
-            MyBase.new(provider)
+            MyBase.New(provider)
             _supportToolbox = SupportToolbox
         End Sub
 

@@ -3,7 +3,7 @@
 Imports System.ComponentModel.Design
 
 Imports Microsoft.VisualStudio.Editors.Interop
-Imports Microsoft.VisualStudio.Shell.interop
+Imports Microsoft.VisualStudio.Shell.Interop
 
 Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
@@ -260,7 +260,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <returns></returns>
         ''' <remarks></remarks>
         Friend Shared Function IsDefaultSettingsFile(Hierarchy As IVsHierarchy, itemId As UInteger) As Boolean
-            If itemId = VSITEMID.NIL OrElse itemid = vsitemid.ROOT OrElse itemid = vsitemid.SELECTION Then
+            If itemId = VSITEMID.NIL OrElse itemId = VSITEMID.ROOT OrElse itemId = VSITEMID.SELECTION Then
                 Return False
             End If
 

@@ -154,7 +154,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
                     'Ignore any other fields
 
-                    Dim Resource As New Resource(view.ResourceFile, Name, Comment, Value, view)
+                    Dim Resource As New Resource(View.ResourceFile, Name, Comment, Value, View)
                     ResourceList.Add(Resource)
                 End While
 

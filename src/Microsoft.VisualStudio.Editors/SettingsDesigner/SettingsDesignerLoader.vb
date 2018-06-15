@@ -8,7 +8,7 @@ Imports Microsoft.VisualStudio.Editors.Interop
 Imports Microsoft.VisualStudio.Shell
 Imports Microsoft.VisualStudio.Shell.Design
 Imports Microsoft.VisualStudio.Shell.Interop
-Imports Microsoft.VisualStudio.Shell.design.serialization
+Imports Microsoft.VisualStudio.Shell.Design.Serialization
 
 Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
@@ -70,7 +70,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
             ' Add our dynamic type service...
             Dim typeDiscoveryService As ITypeDiscoveryService = Nothing
-            Dim dynamicTypeService As DynamicTypeService = _
+            Dim dynamicTypeService As DynamicTypeService =
                 DirectCast(_serviceProvider.GetService(GetType(DynamicTypeService)), DynamicTypeService)
             If dynamicTypeService IsNot Nothing Then
                 typeDiscoveryService = dynamicTypeService.GetTypeDiscoveryService(VsHierarchy, ProjectItemid)

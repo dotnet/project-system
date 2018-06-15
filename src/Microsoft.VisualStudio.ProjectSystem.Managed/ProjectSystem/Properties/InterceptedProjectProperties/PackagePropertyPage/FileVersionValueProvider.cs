@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Package
 
         protected override string PropertyName => FileVersionPropertyName;
 
-        protected async override Task<Version> GetDefaultVersionAsync(IProjectProperties defaultProperties)
+        protected override async Task<Version> GetDefaultVersionAsync(IProjectProperties defaultProperties)
         {
             // Default semantic/package version just has 3 fields, we need to append an additional Revision field with value "0".
             Version defaultVersion = await base.GetDefaultVersionAsync(defaultProperties).ConfigureAwait(true);

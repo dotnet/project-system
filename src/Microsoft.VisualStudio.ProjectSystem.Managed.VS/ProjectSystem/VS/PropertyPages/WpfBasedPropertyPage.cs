@@ -29,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
         protected abstract PropertyPageControl CreatePropertyPageControl();
 
-        protected async override Task OnSetObjects(bool isClosing)
+        protected override async Task OnSetObjects(bool isClosing)
         {
             if (isClosing)
             {
@@ -51,12 +51,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             _control.InitializePropertyPage(_viewModel);
         }
 
-        protected async override Task<int> OnApply()
+        protected override async Task<int> OnApply()
         {
             return await _control.Apply().ConfigureAwait(false);
         }
 
-        protected async override Task OnDeactivate()
+        protected override async Task OnDeactivate()
         {
             if (IsDirty)
             {
