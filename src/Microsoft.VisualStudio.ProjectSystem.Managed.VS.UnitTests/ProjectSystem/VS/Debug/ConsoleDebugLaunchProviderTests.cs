@@ -433,6 +433,46 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         }
 
         [Fact]
+        public async Task QueryDebugTargetsAsync_ConsoleAppLaunchWithNoDebugger_WrapsInCmd()
+        {
+            var properties = new Dictionary<string, string>() {
+                {"TargetPath", @"C:\ConsoleApp.exe"},
+                {"TargetFrameworkIdentifier", @".NETFramework" }
+                };
+
+            var debugger = GetDebugTargetsProvider("exe", properties);
+
+            var activeProfile = new LaunchProfile() { Name = "Name", CommandName = "Project" };
+
+            var result = await debugger.QueryDebugTargetsAsync(DebugLaunchOptions.NoDebug, activeProfile);
+
+            Assert.Single(result);
+            Assert.Contains("cmd.exe", result[0].Executable);
+        }
+
+        [Theory]
+        [InlineData("winexe")]
+        [InlineData("appcontainerexe")]
+        [InlineData("library")]
+        [InlineData("WinMDObj")]
+        public async Task QueryDebugTargetsAsync_NonConsoleAppLaunchWithNoDebugger_DoesNotWrapInCmd(string outputType)
+        {
+            var properties = new Dictionary<string, string>() {
+                {"TargetPath", @"C:\ConsoleApp.exe"},
+                {"TargetFrameworkIdentifier", @".NETFramework" }
+                };
+
+            var debugger = GetDebugTargetsProvider(outputType, properties);
+
+            var activeProfile = new LaunchProfile() { Name = "Name", CommandName = "Project" };
+
+            var result = await debugger.QueryDebugTargetsAsync(DebugLaunchOptions.NoDebug, activeProfile);
+
+            Assert.Single(result);
+            Assert.Equal(@"C:\ConsoleApp.exe", result[0].Executable);
+        }
+
+        [Fact]
         public void ValidateSettings_WhenNoExe_Throws()
         {
             string executable = null;
