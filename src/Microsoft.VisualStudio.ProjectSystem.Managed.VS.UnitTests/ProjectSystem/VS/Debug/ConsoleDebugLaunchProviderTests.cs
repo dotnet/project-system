@@ -34,8 +34,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             _mockFS.CreateDirectory(@"c:\test\Project\bin\");
             _mockFS.WriteAllText(@"c:\program files\dotnet\dotnet.exe", "");
 
-            var activeProfile = new LaunchProfile() { Name = "MyApplication", CommandLineArgs = "--someArgs", ExecutablePath = @"c:\test\Project\someapp.exe" };
-
             _mockEnvironment.Setup(s => s.GetEnvironmentVariable("Path")).Returns(() => _Path);
 
             var project = UnconfiguredProjectFactory.Create(null, null, _ProjectFile);
@@ -64,15 +62,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             var delegateProvider = IProjectPropertiesProviderFactory.Create(null, delegatePropertiesMock.Object);
 
-            IConfiguredProjectServices configuredProjectServices = Mock.Of<IConfiguredProjectServices>(o =>
+            var configuredProjectServices = Mock.Of<IConfiguredProjectServices>(o =>
                 o.ProjectPropertiesProvider == delegateProvider);
 
-            ConfiguredProject configuredProject = Mock.Of<ConfiguredProject>(o =>
+            var configuredProject = Mock.Of<ConfiguredProject>(o =>
                 o.UnconfiguredProject == project &&
                 o.Services == configuredProjectServices);
             _mockTokenReplace.Setup(s => s.ReplaceTokensInProfileAsync(It.IsAny<ILaunchProfile>())).Returns<ILaunchProfile>(p => Task.FromResult(p));
 
-            IActiveDebugFrameworkServices activeDebugFramework = Mock.Of<IActiveDebugFrameworkServices>(o =>
+            var activeDebugFramework = Mock.Of<IActiveDebugFrameworkServices>(o =>
                o.GetConfiguredProjectForActiveFrameworkAsync() == Task.FromResult(configuredProject));
             var debugProvider = new ConsoleDebugTargetsProvider(
                                             configuredProject,
@@ -141,7 +139,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         }
 
         [Fact]
-        public async Task QueryDebugTargets_ProjectProfileAsyncF5()
+        public async Task QueryDebugTargetsAsync_ProjectProfileAsyncF5()
         {
             var debugger = GetDebugTargetsProvider();
 
@@ -159,7 +157,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         }
 
         [Fact]
-        public async Task QueryDebugTargets_ProjectProfileAsyncF5_NativeDebugging()
+        public async Task QueryDebugTargetsAsync_ProjectProfileAsyncF5_NativeDebugging()
         {
             var debugger = GetDebugTargetsProvider();
 
@@ -184,7 +182,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         }
 
         [Fact]
-        public async Task QueryDebugTargets_ProjectProfileAsyncCtrlF5()
+        public async Task QueryDebugTargetsAsync_ProjectProfileAsyncCtrlF5()
         {
             var debugger = GetDebugTargetsProvider();
 
@@ -203,7 +201,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         }
 
         [Fact]
-        public async Task QueryDebugTargets_ProjectProfileAsyncProfile()
+        public async Task QueryDebugTargetsAsync_ProjectProfileAsyncProfile()
         {
             var debugger = GetDebugTargetsProvider();
 
@@ -217,7 +215,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         }
 
         [Fact]
-        public async Task QueryDebugTargets_ExeProfileAsyncF5()
+        public async Task QueryDebugTargetsAsync_ExeProfileAsyncF5()
         {
             var debugger = GetDebugTargetsProvider();
 
@@ -231,7 +229,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         }
 
         [Fact]
-        public async Task QueryDebugTargets_ExeProfileAsyncCtrlF5()
+        public async Task QueryDebugTargetsAsync_ExeProfileAsyncCtrlF5()
         {
             var debugger = GetDebugTargetsProvider();
 
@@ -253,7 +251,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         [InlineData(@"bin\")]
         [InlineData(@"doesntExist\")]
         [InlineData(null)]
-        public async Task QueryDebugTargets_ExeProfileAsyncExeRelativeNoWorkingDir(string outdir)
+        public async Task QueryDebugTargetsAsync_ExeProfileAsyncExeRelativeNoWorkingDir(string outdir)
         {
             var properties = new Dictionary<string, string>() {
                     {"RunCommand", @"dotnet"},
@@ -286,7 +284,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         [Theory]
         [InlineData(@"c:\WorkingDir")]
         [InlineData(@"\WorkingDir")]
-        public async Task QueryDebugTargets_ExeProfileAsyncExeRelativeToWorkingDir(string workingDir)
+        public async Task QueryDebugTargetsAsync_ExeProfileAsyncExeRelativeToWorkingDir(string workingDir)
         {
             var debugger = GetDebugTargetsProvider();
 
@@ -302,7 +300,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         }
 
         [Fact]
-        public async Task QueryDebugTargets_ExeProfileAsyncExeRelativeToWorkingDir_AlternateSlash()
+        public async Task QueryDebugTargetsAsync_ExeProfileAsyncExeRelativeToWorkingDir_AlternateSlash()
         {
             var debugger = GetDebugTargetsProvider();
 
@@ -319,7 +317,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         [Theory]
         [InlineData("dotnet")]
         [InlineData("dotnet.exe")]
-        public async Task QueryDebugTargets_ExeProfileExeRelativeToPath(string exeName)
+        public async Task QueryDebugTargetsAsync_ExeProfileExeRelativeToPath(string exeName)
         {
             var debugger = GetDebugTargetsProvider();
 
@@ -333,7 +331,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         [Theory]
         [InlineData("myexe")]
         [InlineData("myexe.exe")]
-        public async Task QueryDebugTargets_ExeProfileExeRelativeToCurrentDirectory(string exeName)
+        public async Task QueryDebugTargetsAsync_ExeProfileExeRelativeToCurrentDirectory(string exeName)
         {
             var debugger = GetDebugTargetsProvider();
             _mockFS.WriteAllText(@"c:\CurrentDirectory\myexe.exe", string.Empty);
@@ -347,7 +345,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         }
 
         [Fact]
-        public async Task QueryDebugTargets_ExeProfileExeIsRootedWithNoDrive()
+        public async Task QueryDebugTargetsAsync_ExeProfileExeIsRootedWithNoDrive()
         {
             var debugger = GetDebugTargetsProvider();
             _mockFS.WriteAllText(@"e:\myexe.exe", string.Empty);
@@ -358,6 +356,80 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             var targets = await debugger.QueryDebugTargetsAsync(0, activeProfile);
             Assert.Single(targets);
             Assert.Equal(@"e:\myexe.exe", targets[0].Executable);
+        }
+
+        [Fact]
+        public async Task QueryDebugTargetsAsync_WhenLibraryWithRunCommand_ReturnsRunCommand()
+        {
+            var properties = new Dictionary<string, string>() {
+                {"RunCommand", @"C:\dotnet.exe"},
+                {"TargetFrameworkIdentifier", @".NETFramework" }
+                };
+
+            var debugger = GetDebugTargetsProvider("Library", properties);
+
+            var activeProfile = new LaunchProfile() { Name = "Name", CommandName = "Project" };
+
+            var targets = await debugger.QueryDebugTargetsAsync(0, activeProfile);
+
+            Assert.Single(targets);
+            Assert.Equal(@"C:\dotnet.exe", targets[0].Executable);
+        }
+
+        [Fact]
+        public async Task QueryDebugTargetsAsync_WhenLibraryWithoutRunCommand_ReturnsTargetPath()
+        { 
+            var properties = new Dictionary<string, string>() {
+                {"TargetPath", @"C:\library.dll"},
+                {"TargetFrameworkIdentifier", @".NETFramework" }
+                };
+
+            var debugger = GetDebugTargetsProvider("Library", properties);
+
+            var activeProfile = new LaunchProfile() { Name = "Name", CommandName = "Project" };
+
+            var targets = await debugger.QueryDebugTargetsAsync(0, activeProfile);
+
+            Assert.Single(targets);
+            Assert.Equal(@"C:\library.dll", targets[0].Executable);
+        }
+
+        [Fact]
+        public async Task QueryDebugTargetsAsync_WhenLibraryWithoutRunCommand_DoesNotManipulateTargetPath()
+        {
+            var properties = new Dictionary<string, string>() {
+                {"TargetPath", @"library.dll"},
+                {"TargetFrameworkIdentifier", @".NETFramework" }
+                };
+
+            var debugger = GetDebugTargetsProvider("Library", properties);
+
+            var activeProfile = new LaunchProfile() { Name = "Name", CommandName = "Project" };
+
+            var targets = await debugger.QueryDebugTargetsAsync(0, activeProfile);
+
+            Assert.Single(targets);
+            Assert.Equal(@"library.dll", targets[0].Executable);
+        }
+
+        [Fact]
+        public async Task QueryDebugTargetsForDebugLaunchAsync_WhenLibrary_Throws()
+        {
+            var properties = new Dictionary<string, string>() {
+                {"TargetPath", @"C:\library.dll"},
+                {"TargetFrameworkIdentifier", @".NETFramework" }
+                };
+
+            _mockFS.WriteAllText(@"C:\library.dll", string.Empty);
+
+            var debugger = GetDebugTargetsProvider("Library", properties);
+
+            var activeProfile = new LaunchProfile() { Name = "Name", CommandName = "Project" };
+
+            await Assert.ThrowsAsync<Exception>(() =>
+            {
+                return debugger.QueryDebugTargetsForDebugLaunchAsync(0, activeProfile);
+            });
         }
 
         [Fact]
