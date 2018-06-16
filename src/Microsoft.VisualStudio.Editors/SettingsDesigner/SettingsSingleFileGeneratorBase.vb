@@ -69,10 +69,10 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End Get
         End Property
 
-        '@ <summary>
-        '@ Returns the default visibility of this properties
-        '@ </summary>
-        '@ <value>MemberAttributes indicating what visibility to make the generated properties.</value>
+        ''' <summary>
+        ''' Returns the default visibility of this properties
+        ''' </summary>
+        ''' <value>MemberAttributes indicating what visibility to make the generated properties.</value>
         Friend Overridable ReadOnly Property SettingsClassVisibility() As TypeAttributes
             Get
                 Return TypeAttributes.Sealed Or TypeAttributes.NestedAssembly
@@ -90,11 +90,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         End Sub
 
 #Region "IVsSingleFileGenerator implementation"
-        '@ <summary>
-        '@ Get the default extension for the generated class.
-        '@ </summary>
-        '@ <param name="pbstrDefaultExtension"></param>
-        '@ <remarks></remarks>
+        ''' <summary>
+        ''' Get the default extension for the generated class.
+        ''' </summary>
+        ''' <param name="pbstrDefaultExtension"></param>
+        ''' <remarks></remarks>
         Private Function DefaultExtension(ByRef pbstrDefaultExtension As String) As Integer Implements IVsSingleFileGenerator.DefaultExtension
             If CodeDomProvider IsNot Nothing Then
                 ' For some reason some the code providers seem to be inconsistent in the way that they 
@@ -110,16 +110,16 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End If
         End Function
 
-        '@ <summary>
-        '@ Generate a strongly typed wrapper for the contents of the setting path
-        '@ </summary>
-        '@ <param name="wszInputFilePath"></param>
-        '@ <param name="bstrInputFileContents"></param>
-        '@ <param name="wszDefaultNamespace"></param>
-        '@ <param name="rgbOutputFileContents"></param>
-        '@ <param name="pcbOutput"></param>
-        '@ <param name="pGenerateProgress"></param>
-        '@ <remarks></remarks>
+        ''' <summary>
+        ''' Generate a strongly typed wrapper for the contents of the setting path
+        ''' </summary>
+        ''' <param name="wszInputFilePath"></param>
+        ''' <param name="bstrInputFileContents"></param>
+        ''' <param name="wszDefaultNamespace"></param>
+        ''' <param name="rgbOutputFileContents"></param>
+        ''' <param name="pcbOutput"></param>
+        ''' <param name="pGenerateProgress"></param>
+        ''' <remarks></remarks>
         Private Function Generate(wszInputFilePath As String, bstrInputFileContents As String, wszDefaultNamespace As String, rgbOutputFileContents() As IntPtr, ByRef pcbOutput As UInteger, pGenerateProgress As IVsGeneratorProgress) As Integer Implements IVsSingleFileGenerator.Generate
 
 
@@ -452,13 +452,13 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             GeneratedType.Members.Add(CodeProperty)
         End Sub
 
-        '@ <summary>
-        '@ Given a setting instance, generate a CodeDomProperty
-        '@ </summary>
-        '@ <param name="Instance"></param>
-        '@ <param name="GenerateProgress"></param>
-        '@ <returns></returns>
-        '@ <remarks></remarks>
+        ''' <summary>
+        ''' Given a setting instance, generate a CodeDomProperty
+        ''' </summary>
+        ''' <param name="Instance"></param>
+        ''' <param name="GenerateProgress"></param>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
         Private Shared Function CodeDomPropertyFromSettingInstance(TypeNameResolver As SettingTypeNameResolutionService, Instance As DesignTimeSettingInstance, IsDesignTime As Boolean, GenerateProgress As IVsGeneratorProgress) As CodeMemberProperty
             Dim CodeProperty As New CodeMemberProperty With {
                 .Attributes = SettingsPropertyVisibility,
@@ -557,23 +557,23 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             CodeProperty.CustomAttributes.Add(SettingsManageabilityAttribute)
         End Sub
 
-        '@ <summary>
-        '@ Get the type of the class that our strongly typed wrapper class is supposed to inherit from
-        '@ </summary>
-        '@ <value></value>
-        '@ <remarks></remarks>
+        ''' <summary>
+        ''' Get the type of the class that our strongly typed wrapper class is supposed to inherit from
+        ''' </summary>
+        ''' <value></value>
+        ''' <remarks></remarks>
         Friend Shared ReadOnly Property SettingsBaseClass() As Type
             Get
                 Return GetType(Configuration.ApplicationSettingsBase)
             End Get
         End Property
 
-        '@ <summary>
-        '@ Generate CodeDomStatements to get a setting from our base class
-        '@ </summary>
-        '@ <param name="Instance"></param>
-        '@ <returns></returns>
-        '@ <remarks></remarks>
+        ''' <summary>
+        ''' Generate CodeDomStatements to get a setting from our base class
+        ''' </summary>
+        ''' <param name="Instance"></param>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
         Private Shared Function GenerateGetterStatements(Instance As DesignTimeSettingInstance, SettingType As CodeTypeReference) As CodeStatementCollection
             Dim Statements As New CodeStatementCollection
             Dim Parameters() As CodeExpression = {New CodePrimitiveExpression(Instance.Name)}
@@ -588,12 +588,12 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Return Statements
         End Function
 
-        '@ <summary>
-        '@ Generate statements to set a settings value
-        '@ </summary>
-        '@ <param name="Instance"></param>
-        '@ <returns></returns>
-        '@ <remarks></remarks>
+        ''' <summary>
+        ''' Generate statements to set a settings value
+        ''' </summary>
+        ''' <param name="Instance"></param>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
         Private Shared Function GenerateSetterStatements(Instance As DesignTimeSettingInstance) As CodeStatementCollection
             Dim Statements As New CodeStatementCollection
             Dim Parameters() As CodeExpression = {New CodePrimitiveExpression(Instance.Name)}
@@ -654,11 +654,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
         End Function
 
-        '@ <summary>
-        '@ Add required references to the project - currently only adding a reference to the settings base class assembly
-        '@ </summary>
-        '@ <param name="GenerateProgress"></param>
-        '@ <remarks></remarks>
+        ''' <summary>
+        ''' Add required references to the project - currently only adding a reference to the settings base class assembly
+        ''' </summary>
+        ''' <param name="GenerateProgress"></param>
+        ''' <remarks></remarks>
         Protected Overridable Sub AddRequiredReferences(GenerateProgress As IVsGeneratorProgress)
             Dim CurrentProjectItem As EnvDTE.ProjectItem = CType(GetService(GetType(EnvDTE.ProjectItem)), EnvDTE.ProjectItem)
             If CurrentProjectItem Is Nothing Then
@@ -845,12 +845,12 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Return rootNamespace
         End Function
 
-        '@ <summary>
-        '@ Is this the "default" settings file
-        '@ </summary>
-        '@ <param name="FilePath">Fully qualified path of file to check</param>
-        '@ <returns></returns>
-        '@ <remarks></remarks>
+        ''' <summary>
+        ''' Is this the "default" settings file
+        ''' </summary>
+        ''' <param name="FilePath">Fully qualified path of file to check</param>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
         Private Function IsDefaultSettingsFile(FilePath As String) As Boolean
             Dim Hierarchy As IVsHierarchy = DirectCast(GetService(GetType(IVsHierarchy)), IVsHierarchy)
             If Hierarchy Is Nothing Then
@@ -882,11 +882,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Return False
         End Function
 
-        '@ <summary>
-        '@ Demand-create a CodeDomProvider corresponding to my projects current language
-        '@ </summary>
-        '@ <value>A CodeDomProvider</value>
-        '@ <remarks></remarks>
+        ''' <summary>
+        ''' Demand-create a CodeDomProvider corresponding to my projects current language
+        ''' </summary>
+        ''' <value>A CodeDomProvider</value>
+        ''' <remarks></remarks>
         Private Property CodeDomProvider() As CodeDomProvider
             Get
                 If _codeDomProvider Is Nothing Then
@@ -906,11 +906,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End Set
         End Property
 
-        '@ <summary>
-        '@ Demand-create service provider from my site
-        '@ </summary>
-        '@ <value></value>
-        '@ <remarks></remarks>
+        ''' <summary>
+        ''' Demand-create service provider from my site
+        ''' </summary>
+        ''' <value></value>
+        ''' <remarks></remarks>
         Private ReadOnly Property ServiceProvider() As ServiceProvider
             Get
                 If _serviceProvider Is Nothing AndAlso _site IsNot Nothing Then
@@ -972,16 +972,16 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 #Region "IVsRefactorNotify Implementation"
         ' ******************* Implement IVsRefactorNotify *****************
 
-        '@ <summary>
-        '@ Called when a symbol is about to be renamed
-        '@ </summary>
-        '@ <param name="phier">hierarchy of the designer-owned item associated with the code-file that the language service changed</param>
-        '@ <param name="itemId">itemid of the designer-owned item associated with the code-file that the language service changed</param>
-        '@ <param name="cRQNames">count of RQNames passed in. This count can be greater than 1 when an overloaded symbol is being renamed</param>
-        '@ <param name="rglpszRQName">RQName-syntax string that identifies the symbol(s) renamed</param>
-        '@ <param name="lpszNewName">name that the symbol identified by rglpszRQName is being changed to</param>
-        '@ <param name="prgAdditionalCheckoutVSITEMIDS">array of VSITEMID's if the RefactorNotify implementor needs to check out additional files</param>
-        '@ <returns>error code</returns>
+        ''' <summary>
+        ''' Called when a symbol is about to be renamed
+        ''' </summary>
+        ''' <param name="phier">hierarchy of the designer-owned item associated with the code-file that the language service changed</param>
+        ''' <param name="itemId">itemid of the designer-owned item associated with the code-file that the language service changed</param>
+        ''' <param name="cRQNames">count of RQNames passed in. This count can be greater than 1 when an overloaded symbol is being renamed</param>
+        ''' <param name="rglpszRQName">RQName-syntax string that identifies the symbol(s) renamed</param>
+        ''' <param name="lpszNewName">name that the symbol identified by rglpszRQName is being changed to</param>
+        ''' <param name="prgAdditionalCheckoutVSITEMIDS">array of VSITEMID's if the RefactorNotify implementor needs to check out additional files</param>
+        ''' <returns>error code</returns>
         Private Function OnBeforeGlobalSymbolRenamed(phier As IVsHierarchy, itemId As UInteger, cRQNames As UInteger, rglpszRQName() As String, lpszNewName As String, ByRef prgAdditionalCheckoutVSITEMIDS As Array) As Integer Implements IVsRefactorNotify.OnBeforeGlobalSymbolRenamed
             prgAdditionalCheckoutVSITEMIDS = Nothing
 
@@ -1022,32 +1022,32 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End If
         End Function
 
-        '@ <summary>
-        '@ Called when a method is about to have its params reordered
-        '@ </summary>
-        '@ <param name="phier">hierarchy of the designer-owned item associated with the code-file that the language service changed</param>
-        '@ <param name="itemId">itemid of the designer-owned item associated with the code-file that the language service changed</param>
-        '@ <param name="cRQNames">count of RQNames passed in. This count can be greater than 1 when an overloaded symbol is being renamed</param>
-        '@ <param name="rglpszRQName">RQName-syntax string that identifies the symbol(s) renamed</param>
-        '@ <param name="lpszNewName">name that the symbol identified by rglpszRQName is being changed to</param>
-        '@ <returns>error code</returns>
+        ''' <summary>
+        ''' Called when a method is about to have its params reordered
+        ''' </summary>
+        ''' <param name="phier">hierarchy of the designer-owned item associated with the code-file that the language service changed</param>
+        ''' <param name="itemId">itemid of the designer-owned item associated with the code-file that the language service changed</param>
+        ''' <param name="cRQNames">count of RQNames passed in. This count can be greater than 1 when an overloaded symbol is being renamed</param>
+        ''' <param name="rglpszRQName">RQName-syntax string that identifies the symbol(s) renamed</param>
+        ''' <param name="lpszNewName">name that the symbol identified by rglpszRQName is being changed to</param>
+        ''' <returns>error code</returns>
         Private Function OnGlobalSymbolRenamed(phier As IVsHierarchy, itemId As UInteger, cRQNames As UInteger, rglpszRQName() As String, lpszNewName As String) As Integer Implements IVsRefactorNotify.OnGlobalSymbolRenamed
             'VSWhidbey #452759: Always return S_OK in OnGlobalSymbolRenamed.
             Return NativeMethods.S_OK
         End Function
 
-        '@ <summary>
-        '@ Called when a method is about to have params added
-        '@ </summary>
-        '@ <param name="phier">hierarchy of the designer-owned item associated with the code-file that the language service changed</param>
-        '@ <param name="itemId">itemid of the designer-owned item associated with the code-file that the language service changed</param>
-        '@ <param name="lpszRQName">RQName-syntax string that identifies the method on which params are being added</param>
-        '@ <param name="cParams">number of parameters in rgszRQTypeNames, rgszParamNames and rgszDefaultValues</param>
-        '@ <param name="rgszParamIndexes">the indexes of the new parameters</param>
-        '@ <param name="rgszRQTypeNames">RQName-syntax strings that identify the types of the new parameters</param>
-        '@ <param name="rgszParamNames">the names of the parameters</param>
-        '@ <param name="prgAdditionalCheckoutVSITEMIDS">array of VSITEMID's if the RefactorNotify implementor needs to check out additional files</param>
-        '@ <returns>error code</returns>
+        ''' <summary>
+        ''' Called when a method is about to have params added
+        ''' </summary>
+        ''' <param name="phier">hierarchy of the designer-owned item associated with the code-file that the language service changed</param>
+        ''' <param name="itemId">itemid of the designer-owned item associated with the code-file that the language service changed</param>
+        ''' <param name="lpszRQName">RQName-syntax string that identifies the method on which params are being added</param>
+        ''' <param name="cParams">number of parameters in rgszRQTypeNames, rgszParamNames and rgszDefaultValues</param>
+        ''' <param name="rgszParamIndexes">the indexes of the new parameters</param>
+        ''' <param name="rgszRQTypeNames">RQName-syntax strings that identify the types of the new parameters</param>
+        ''' <param name="rgszParamNames">the names of the parameters</param>
+        ''' <param name="prgAdditionalCheckoutVSITEMIDS">array of VSITEMID's if the RefactorNotify implementor needs to check out additional files</param>
+        ''' <returns>error code</returns>
         Private Function OnBeforeAddParams(phier As IVsHierarchy, itemId As UInteger, lpszRQName As String, cParams As UInteger, rgszParamIndexes() As UInteger, rgszRQTypeNames() As String, rgszParamNames() As String, ByRef prgAdditionalCheckoutVSITEMIDS As Array) As Integer Implements IVsRefactorNotify.OnBeforeAddParams
             prgAdditionalCheckoutVSITEMIDS = Nothing
             Common.SetErrorInfo(Common.ServiceProviderFromHierarchy(phier), NativeMethods.E_NOTIMPL, My.Resources.Designer.SD_ERR_ModifyParamsNotSupported)
@@ -1055,34 +1055,34 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Return NativeMethods.E_NOTIMPL
         End Function
 
-        '@ <summary>
-        '@ Called after a method has had params added
-        '@ </summary>
-        '@ <param name="phier">hierarchy of the designer-owned item associated with the code-file that the language service changed</param>
-        '@ <param name="itemId">itemid of the designer-owned item associated with the code-file that the language service changed</param>
-        '@ <param name="lpszRQName">RQName-syntax string that identifies the method on which params are being added</param>
-        '@ <param name="cParams">number of parameters in rgszRQTypeNames, rgszParamNames and rgszDefaultValues</param>
-        '@ <param name="rgszParamIndexes">the indexes of the new parameters</param>
-        '@ <param name="rgszRQTypeNames">RQName-syntax strings that identify the types of the new parameters</param>
-        '@ <param name="rgszParamNames">the names of the parameters</param>
-        '@ <param name="prgAdditionalCheckoutVSITEMIDS">array of VSITEMID's if the RefactorNotify implementor needs to check out additional files</param>
-        '@ <returns>error code</returns>
+        ''' <summary>
+        ''' Called after a method has had params added
+        ''' </summary>
+        ''' <param name="phier">hierarchy of the designer-owned item associated with the code-file that the language service changed</param>
+        ''' <param name="itemId">itemid of the designer-owned item associated with the code-file that the language service changed</param>
+        ''' <param name="lpszRQName">RQName-syntax string that identifies the method on which params are being added</param>
+        ''' <param name="cParams">number of parameters in rgszRQTypeNames, rgszParamNames and rgszDefaultValues</param>
+        ''' <param name="rgszParamIndexes">the indexes of the new parameters</param>
+        ''' <param name="rgszRQTypeNames">RQName-syntax strings that identify the types of the new parameters</param>
+        ''' <param name="rgszParamNames">the names of the parameters</param>
+        ''' <param name="prgAdditionalCheckoutVSITEMIDS">array of VSITEMID's if the RefactorNotify implementor needs to check out additional files</param>
+        ''' <returns>error code</returns>
         Private Function OnAddParams(phier As IVsHierarchy, itemId As UInteger, lpszRQName As String, cParams As UInteger, rgszParamIndexes() As UInteger, rgszRQTypeNames() As String, rgszParamNames() As String) As Integer Implements IVsRefactorNotify.OnAddParams
             Common.SetErrorInfo(Common.ServiceProviderFromHierarchy(phier), NativeMethods.E_NOTIMPL, My.Resources.Designer.SD_ERR_ModifyParamsNotSupported)
             ' Always return an error code to disable parameter modifications for generated code
             Return NativeMethods.E_NOTIMPL
         End Function
 
-        '@ <summary>
-        '@ Called when a method is about to have its params reordered
-        '@ </summary>
-        '@ <param name="phier">hierarchy of the designer-owned item associated with the code-file that the language service changed</param>
-        '@ <param name="itemId">itemid of the designer-owned item associated with the code-file that the language service changed</param>
-        '@ <param name="lpszRQName">RQName-syntax string that identifies the method whose params are being reordered</param>
-        '@ <param name="cParamIndexes">number of parameters in rgParamIndexes</param>
-        '@ <param name="rgParamIndexes">array of param indexes where the index in this array is the index to which the param is moving</param>
-        '@ <param name="prgAdditionalCheckoutVSITEMIDS">array of VSITEMID's if the RefactorNotify implementor needs to check out additional files</param>
-        '@ <returns>error code</returns>
+        ''' <summary>
+        ''' Called when a method is about to have its params reordered
+        ''' </summary>
+        ''' <param name="phier">hierarchy of the designer-owned item associated with the code-file that the language service changed</param>
+        ''' <param name="itemId">itemid of the designer-owned item associated with the code-file that the language service changed</param>
+        ''' <param name="lpszRQName">RQName-syntax string that identifies the method whose params are being reordered</param>
+        ''' <param name="cParamIndexes">number of parameters in rgParamIndexes</param>
+        ''' <param name="rgParamIndexes">array of param indexes where the index in this array is the index to which the param is moving</param>
+        ''' <param name="prgAdditionalCheckoutVSITEMIDS">array of VSITEMID's if the RefactorNotify implementor needs to check out additional files</param>
+        ''' <returns>error code</returns>
         Private Function OnBeforeReorderParams(phier As IVsHierarchy, itemId As UInteger, lpszRQName As String, cParamIndexes As UInteger, rgParamIndexes() As UInteger, ByRef prgAdditionalCheckoutVSITEMIDS As Array) As Integer Implements IVsRefactorNotify.OnBeforeReorderParams
             prgAdditionalCheckoutVSITEMIDS = Nothing
             Common.SetErrorInfo(Common.ServiceProviderFromHierarchy(phier), NativeMethods.E_NOTIMPL, My.Resources.Designer.SD_ERR_ModifyParamsNotSupported)
@@ -1090,31 +1090,31 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Return NativeMethods.E_NOTIMPL
         End Function
 
-        '@ <summary>
-        '@ Called after a method has had its params reordered
-        '@ </summary>
-        '@ <param name="phier">hierarchy of the designer-owned item associated with the code-file that the language service changed</param>
-        '@ <param name="itemId">itemid of the designer-owned item associated with the code-file that the language service changed</param>
-        '@ <param name="lpszRQName">RQName-syntax string that identifies the method whose params are being reordered</param>
-        '@ <param name="cParamIndexes">number of parameters in rgParamIndexes</param>
-        '@ <param name="rgParamIndexes">array of param indexes where the index in this array is the index to which the param is moving</param>
-        '@ <returns>error code</returns>
+        ''' <summary>
+        ''' Called after a method has had its params reordered
+        ''' </summary>
+        ''' <param name="phier">hierarchy of the designer-owned item associated with the code-file that the language service changed</param>
+        ''' <param name="itemId">itemid of the designer-owned item associated with the code-file that the language service changed</param>
+        ''' <param name="lpszRQName">RQName-syntax string that identifies the method whose params are being reordered</param>
+        ''' <param name="cParamIndexes">number of parameters in rgParamIndexes</param>
+        ''' <param name="rgParamIndexes">array of param indexes where the index in this array is the index to which the param is moving</param>
+        ''' <returns>error code</returns>
         Private Function OnReorderParams(phier As IVsHierarchy, itemId As UInteger, lpszRQName As String, cParamIndexes As UInteger, rgParamIndexes() As UInteger) As Integer Implements IVsRefactorNotify.OnReorderParams
             Common.SetErrorInfo(Common.ServiceProviderFromHierarchy(phier), NativeMethods.E_NOTIMPL, My.Resources.Designer.SD_ERR_ModifyParamsNotSupported)
             ' Always return an error code to disable parameter modifications for generated code
             Return NativeMethods.E_NOTIMPL
         End Function
 
-        '@ <summary>
-        '@ Called when a method is about to have some params removed
-        '@ </summary>
-        '@ <param name="phier">hierarchy of the designer-owned item associated with the code-file that the language service changed</param>
-        '@ <param name="itemId">itemid of the designer-owned item associated with the code-file that the language service changed</param>
-        '@ <param name="lpszRQName">RQName-syntax string that identifies the method whose params are being removed</param>
-        '@ <param name="cParamIndexes">number of parameters in rgParamIndexes</param>
-        '@ <param name="rgParamIndexes">array of param indexes where each value indicates the index of the parameter being removed</param>
-        '@ <param name="prgAdditionalCheckoutVSITEMIDS">array of VSITEMID's if the RefactorNotify implementor needs to check out additional files</param>
-        '@ <returns>error code</returns>
+        ''' <summary>
+        ''' Called when a method is about to have some params removed
+        ''' </summary>
+        ''' <param name="phier">hierarchy of the designer-owned item associated with the code-file that the language service changed</param>
+        ''' <param name="itemId">itemid of the designer-owned item associated with the code-file that the language service changed</param>
+        ''' <param name="lpszRQName">RQName-syntax string that identifies the method whose params are being removed</param>
+        ''' <param name="cParamIndexes">number of parameters in rgParamIndexes</param>
+        ''' <param name="rgParamIndexes">array of param indexes where each value indicates the index of the parameter being removed</param>
+        ''' <param name="prgAdditionalCheckoutVSITEMIDS">array of VSITEMID's if the RefactorNotify implementor needs to check out additional files</param>
+        ''' <returns>error code</returns>
         Private Function OnBeforeRemoveParams(phier As IVsHierarchy, itemId As UInteger, lpszRQName As String, cParamIndexes As UInteger, rgParamIndexes() As UInteger, ByRef prgAdditionalCheckoutVSITEMIDS As Array) As Integer Implements IVsRefactorNotify.OnBeforeRemoveParams
             prgAdditionalCheckoutVSITEMIDS = Nothing
             Common.SetErrorInfo(Common.ServiceProviderFromHierarchy(phier), NativeMethods.E_NOTIMPL, My.Resources.Designer.SD_ERR_ModifyParamsNotSupported)
@@ -1122,16 +1122,16 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Return NativeMethods.E_NOTIMPL
         End Function
 
-        '@ <summary>
-        '@ Called when a method is about to have some params removed
-        '@ </summary>
-        '@ <param name="phier">hierarchy of the designer-owned item associated with the code-file that the language service changed</param>
-        '@ <param name="itemId">itemid of the designer-owned item associated with the code-file that the language service changed</param>
-        '@ <param name="lpszRQName">RQName-syntax string that identifies the method whose params are being removed</param>
-        '@ <param name="cParamIndexes">number of parameters in rgParamIndexes</param>
-        '@ <param name="rgParamIndexes">array of param indexes where each value indicates the index of the parameter being removed</param>
-        '@ <param name="prgAdditionalCheckoutVSITEMIDS">array of VSITEMID's if the RefactorNotify implementor needs to check out additional files</param>
-        '@ <returns>error code</returns>
+        ''' <summary>
+        ''' Called when a method is about to have some params removed
+        ''' </summary>
+        ''' <param name="phier">hierarchy of the designer-owned item associated with the code-file that the language service changed</param>
+        ''' <param name="itemId">itemid of the designer-owned item associated with the code-file that the language service changed</param>
+        ''' <param name="lpszRQName">RQName-syntax string that identifies the method whose params are being removed</param>
+        ''' <param name="cParamIndexes">number of parameters in rgParamIndexes</param>
+        ''' <param name="rgParamIndexes">array of param indexes where each value indicates the index of the parameter being removed</param>
+        ''' <param name="prgAdditionalCheckoutVSITEMIDS">array of VSITEMID's if the RefactorNotify implementor needs to check out additional files</param>
+        ''' <returns>error code</returns>
         Private Function OnRemoveParams(phier As IVsHierarchy, itemId As UInteger, lpszRQName As String, cParamIndexes As UInteger, rgParamIndexes() As UInteger) As Integer Implements IVsRefactorNotify.OnRemoveParams
             Common.SetErrorInfo(Common.ServiceProviderFromHierarchy(phier), NativeMethods.E_NOTIMPL, My.Resources.Designer.SD_ERR_ModifyParamsNotSupported)
             ' Always return an error code to disable parameter modifications for generated code
@@ -1143,12 +1143,12 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
 #Region "IServiceProvider"
 
-        '@ <summary>
-        '@ I'm capable of providing services
-        '@ </summary>
-        '@ <param name="serviceType">The type of service requested</param>
-        '@ <returns>An instance of the service, or nothing if service not found</returns>
-        '@ <remarks></remarks>
+        ''' <summary>
+        ''' I'm capable of providing services
+        ''' </summary>
+        ''' <param name="serviceType">The type of service requested</param>
+        ''' <returns>An instance of the service, or nothing if service not found</returns>
+        ''' <remarks></remarks>
         Private Function GetService(serviceType As Type) As Object Implements System.IServiceProvider.GetService
             If ServiceProvider IsNot Nothing Then
                 Return ServiceProvider.GetService(serviceType)
