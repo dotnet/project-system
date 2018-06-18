@@ -8,8 +8,16 @@ using Microsoft.VisualStudio.ProjectSystem.VS;
 using Microsoft.VisualStudio.ProjectSystem.VS.Generators;
 using Microsoft.VisualStudio.Shell;
 
-// We register ourselves as a new CPS "project type", as well as setting ourselves as the prefered project type for the legacy VB project type.
-[assembly: ProjectTypeRegistration(projectTypeGuid: VisualBasicProjectSystemPackage.ProjectTypeGuid, displayName: "#1", displayProjectFileExtensions: "#2", defaultProjectExtension: "vbproj", language: "VisualBasic", resourcePackageGuid: VisualBasicProjectSystemPackage.PackageGuid, Capabilities = ManagedProjectSystemPackage.DefaultCapabilities + "; " + ProjectCapability.VisualBasic, DisableAsynchronousProjectTreeLoad = true)]
+// Register ourselves as a CPS project type
+[assembly: ProjectTypeRegistration(
+    projectTypeGuid: VisualBasicProjectSystemPackage.ProjectTypeGuid, 
+    displayName: "#1", 
+    displayProjectFileExtensions: "#2", 
+    defaultProjectExtension: "vbproj", 
+    language: "VisualBasic", 
+    resourcePackageGuid: VisualBasicProjectSystemPackage.PackageGuid, 
+    Capabilities = ManagedProjectSystemPackage.DefaultCapabilities + "; " + ProjectCapability.VisualBasic, 
+    DisableAsynchronousProjectTreeLoad = true)]
 
 namespace Microsoft.VisualStudio.Packaging
 {
