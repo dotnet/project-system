@@ -211,7 +211,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
                 '  is the best thing anyway, we shouldn't have to provide a caption (it changes
                 '  by installed SKU/product, for instance).
                 Dim Result As Integer
-                VSErrorHandler.ThrowOnFailure(VsUIShell.ShowMessageBox(0, Guid, Nothing, Message, HelpLink, 0, _
+                VSErrorHandler.ThrowOnFailure(VsUIShell.ShowMessageBox(0, Guid, Nothing, Message, HelpLink, 0,
                         OLEButtons, OLEDefaultButton, MessageBoxIconToOleIcon(Icon), CInt(False), Result))
                 Return CType(Result, DialogResult)
             Else

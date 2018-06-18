@@ -44,13 +44,13 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
 
             _serviceProvider = serviceProvider
 
-            _vsTrackProjectDocuments = TryCast(_serviceProvider.GetService(GetType(SVsTrackProjectDocuments)), _
+            _vsTrackProjectDocuments = TryCast(_serviceProvider.GetService(GetType(SVsTrackProjectDocuments)),
                 IVsTrackProjectDocuments2)
             If _vsTrackProjectDocuments Is Nothing Then
                 Throw New Exception("Could not get IVsTrackProjectDocuments2!")
             End If
 
-            ErrorHandler.ThrowOnFailure( _
+            ErrorHandler.ThrowOnFailure(
                 _vsTrackProjectDocuments.AdviseTrackProjectDocumentsEvents(Me, _vsTrackProjectDocumentsEventsCookie))
             Debug.Assert(_vsTrackProjectDocumentsEventsCookie <> 0)
         End Sub

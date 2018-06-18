@@ -207,7 +207,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
             Else
                 Dim result As Integer
                 Dim success As Integer
-                Dim txtManager As TextManager.Interop.IVsTextManager = _
+                Dim txtManager As TextManager.Interop.IVsTextManager =
                     TryCast(sp.GetService(GetType(TextManager.Interop.VsTextManagerClass)), TextManager.Interop.IVsTextManager)
 
                 If txtManager IsNot Nothing Then

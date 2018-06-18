@@ -973,9 +973,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <returns>The parent ProjectItem collection, or Nothing if not found.</returns>
         ''' <remarks></remarks>
         Private Shared Function FindProjectItemsForFolderPathHelper(ProjectItemsTree As ProjectItems, FullFolderPathToFind As String) As ProjectItems
-            Debug.Assert(FullFolderPathToFind.Equals(Path.GetFullPath(FullFolderPathToFind), StringComparison.OrdinalIgnoreCase), _
+            Debug.Assert(FullFolderPathToFind.Equals(Path.GetFullPath(FullFolderPathToFind), StringComparison.OrdinalIgnoreCase),
                 "FullFolderPathToFind should have already had Path.GetFullPath() called on it")
-            Debug.Assert(FullFolderPathToFind.Equals(EnsureBackslash(FullFolderPathToFind), StringComparison.OrdinalIgnoreCase), _
+            Debug.Assert(FullFolderPathToFind.Equals(EnsureBackslash(FullFolderPathToFind), StringComparison.OrdinalIgnoreCase),
                 "FullFolderPathToFind should have already had EnsureBackslash() called on it")
 
             If s_guid_vsProjectItemKindPhysicalFolder.Equals(New Guid(ProjectItemsTree.Kind)) Then

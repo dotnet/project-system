@@ -254,7 +254,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <remarks>Overloads Object.Equals to provide value semantics for equality.</remarks>
         <EditorBrowsable(EditorBrowsableState.Never)>
         Public NotOverridable Overrides Function Equals([Object] As Object) As Boolean
-            Return [Object].GetType Is [GetType]
+            Return [Object].GetType Is [GetType]()
         End Function
 
 

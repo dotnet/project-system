@@ -32,12 +32,12 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             End Set
         End Property
 
-        Private Sub MyExtensionListView_ContextMenuShow( _
+        Private Sub MyExtensionListView_ContextMenuShow(
                 sender As Object, e As MouseEventArgs) Handles Me.ContextMenuShow
 
             _menuCommandRemoveExtension.Enabled = SelectedItems.Count > 0
 
-            MenuCommandService.ShowContextMenu( _
+            MenuCommandService.ShowContextMenu(
                 Constants.MenuConstants.CommandIDMYEXTENSIONContextMenu, e.X, e.Y)
         End Sub
 
@@ -69,13 +69,13 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
 
         Private _menuCommandService As IMenuCommandService
 
-        Private ReadOnly _menuCommandAddExtension As New MenuCommand( _
-            New EventHandler(AddressOf AddExtension_Click), _
+        Private ReadOnly _menuCommandAddExtension As New MenuCommand(
+            New EventHandler(AddressOf AddExtension_Click),
             Constants.MenuConstants.CommandIDMyEXTENSIONAddExtension)
-        Private _menuCommandRemoveExtension As New MenuCommand( _
-            New EventHandler(AddressOf RemoveExtension_Click), _
+        Private _menuCommandRemoveExtension As New MenuCommand(
+            New EventHandler(AddressOf RemoveExtension_Click),
             Constants.MenuConstants.CommandIDMyEXTENSIONRemoveExtension)
-        Private ReadOnly _menuCommands() As MenuCommand = _
+        Private ReadOnly _menuCommands() As MenuCommand =
             {_menuCommandAddExtension, _menuCommandRemoveExtension}
     End Class
 End Namespace

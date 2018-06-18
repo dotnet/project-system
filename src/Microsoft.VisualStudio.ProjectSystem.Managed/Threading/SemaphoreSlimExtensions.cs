@@ -14,7 +14,7 @@ namespace Microsoft.VisualStudio.Threading
             return new SemaphoreDisposer(semaphore);
         }
 
-        public async static Task<SemaphoreDisposer> DisposableWaitAsync(this SemaphoreSlim semaphore, CancellationToken cancellationToken = default)
+        public static async Task<SemaphoreDisposer> DisposableWaitAsync(this SemaphoreSlim semaphore, CancellationToken cancellationToken = default)
         {
             await semaphore.WaitAsync(cancellationToken).ConfigureAwait(false);
             return new SemaphoreDisposer(semaphore);

@@ -375,7 +375,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             Debug.Assert(InsertAtEnd = (Index = ThumbnailCount + _reservedImagesCount))
             Debug.Assert(InsertAtEnd OrElse Index < ThumbnailCount + _reservedImagesCount, "Trying to return an image index that's not in the imagelist")
-            Debug.Assert(Not InsertAtEnd OrElse Index - _reservedImagesCount < EffectiveMaximumSuggestedCacheSize, _
+            Debug.Assert(Not InsertAtEnd OrElse Index - _reservedImagesCount < EffectiveMaximumSuggestedCacheSize,
                 "Trying to add an image to the end of the list past the suggested max cache size")
         End Sub
 
@@ -452,7 +452,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Dim MruIndex As Integer = Index + 1
             If MruIndex >= _mruList.Length Then
                 Return False
-            Else If (_mruList(MruIndex).PreviousIndex = 0 AndAlso _mruList(0).NextIndex <> MruIndex) Then
+            ElseIf (_mruList(MruIndex).PreviousIndex = 0 AndAlso _mruList(0).NextIndex <> MruIndex) Then
                 Debug.Assert(_mruList(MruIndex).NextIndex = 0)
                 Return False
             End If
@@ -463,7 +463,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Debug code that checks the integrity of the cache's data structures.
         ''' </summary>
         ''' <remarks></remarks>
-        <Conditional("DEBUG")> _
+        <Conditional("DEBUG")>
         Private Sub DebugCheckQueueInvariant()
             Dim count As Integer = 0
             Dim prev As Integer = _mruList(0).PreviousIndex

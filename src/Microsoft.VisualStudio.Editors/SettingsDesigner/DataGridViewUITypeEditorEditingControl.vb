@@ -235,8 +235,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 If _dataGridView.CurrentCellAddress.X = -1 OrElse _dataGridView.CurrentCellAddress.Y = -1 Then
                     Debug.Assert(_dataGridView.IsCurrentCellInEditMode, "Why did the value change when we aren't in edit mode!?")
                     _dataGridView.CurrentCell = _dataGridView.Rows(RowIndex).Cells(3)
-                    Debug.Assert(_dataGridView.CurrentCell IsNot Nothing AndAlso _
-                                 TypeOf _dataGridView.CurrentCell Is DataGridViewUITypeEditorCell, _
+                    Debug.Assert(_dataGridView.CurrentCell IsNot Nothing AndAlso
+                                 TypeOf _dataGridView.CurrentCell Is DataGridViewUITypeEditorCell,
                                  "Wrong cell type - was expecting a DataGridViewUITypeEditorCell")
                 End If
                 _dataGridView.NotifyCurrentCellDirty(ValueChanged)

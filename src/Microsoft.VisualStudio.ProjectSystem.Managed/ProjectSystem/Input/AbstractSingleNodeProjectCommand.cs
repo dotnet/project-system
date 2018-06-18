@@ -18,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Input
         {
         }
 
-        protected override sealed Task<CommandStatusResult> GetCommandStatusAsync(IImmutableSet<IProjectTree> nodes, bool focused, string commandText, CommandStatus progressiveStatus)
+        protected sealed override Task<CommandStatusResult> GetCommandStatusAsync(IImmutableSet<IProjectTree> nodes, bool focused, string commandText, CommandStatus progressiveStatus)
         {
             if (nodes.Count == 1)
             {
@@ -28,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Input
             return GetCommandStatusResult.Unhandled;
         }
 
-        protected override sealed Task<bool> TryHandleCommandAsync(IImmutableSet<IProjectTree> nodes, bool focused, long commandExecuteOptions, IntPtr variantArgIn, IntPtr variantArgOut)
+        protected sealed override Task<bool> TryHandleCommandAsync(IImmutableSet<IProjectTree> nodes, bool focused, long commandExecuteOptions, IntPtr variantArgIn, IntPtr variantArgOut)
         {
             if (nodes.Count == 1)
             {

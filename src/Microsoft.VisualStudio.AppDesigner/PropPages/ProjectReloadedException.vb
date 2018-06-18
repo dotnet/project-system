@@ -12,7 +12,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
     ''' <remarks>
     ''' This exception should not be allowed to bubble up to the user.
     ''' </remarks>
-    <Serializable()> _
+    <Serializable()>
     Public Class ProjectReloadedException
         Inherits Exception
 

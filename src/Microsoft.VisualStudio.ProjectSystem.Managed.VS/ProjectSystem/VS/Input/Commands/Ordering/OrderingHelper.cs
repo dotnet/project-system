@@ -1,10 +1,11 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
-using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Threading.Tasks;
+
 using Microsoft.Build.Construction;
 using Microsoft.Build.Evaluation;
 
@@ -131,7 +132,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
             Requires.NotNull(project, nameof(project));
             Requires.NotNull(target, nameof(target));
 
-            var referenceElement = TryGetReferenceElement(project, target, ImmutableArray<string>.Empty, MoveAction.Above);
+            ProjectItemElement referenceElement = TryGetReferenceElement(project, target, ImmutableArray<string>.Empty, MoveAction.Above);
             if (referenceElement == null)
             {
                 return false;
@@ -148,7 +149,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
             Requires.NotNull(project, nameof(project));
             Requires.NotNull(target, nameof(target));
 
-            var referenceElement = TryGetReferenceElement(project, target, ImmutableArray<string>.Empty, MoveAction.Below);
+            ProjectItemElement referenceElement = TryGetReferenceElement(project, target, ImmutableArray<string>.Empty, MoveAction.Below);
             if (referenceElement == null)
             {
                 return false;
@@ -165,7 +166,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
             Requires.NotNull(project, nameof(project));
             Requires.NotNull(target, nameof(target));
 
-            var newTarget = target;
+            IProjectTree newTarget = target;
 
             // This is to handle adding files to empty folders since empty folders do not have a valid display order yet.
             // We need to find a target up the tree that has a valid display order, because it most likely will have our reference element that we want.
@@ -175,7 +176,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
             }
 
             var excludeIncludes = elements.Select(x => x.Include).ToImmutableArray();
-            var referenceElement = GetChildren(newTarget).Select(x => TryGetReferenceElement(project, x, excludeIncludes, MoveAction.Above)).FirstOrDefault(x => x != null);
+            ProjectItemElement referenceElement = GetChildren(newTarget).Select(x => TryGetReferenceElement(project, x, excludeIncludes, MoveAction.Above)).FirstOrDefault(x => x != null);
             if (referenceElement == null)
             {
                 return false;

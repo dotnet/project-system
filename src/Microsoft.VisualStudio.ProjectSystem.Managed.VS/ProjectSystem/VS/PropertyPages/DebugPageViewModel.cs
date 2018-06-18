@@ -537,7 +537,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// Functions which actually does the save of the settings. Persists the changes to the launch settings
         /// file and configures IIS if needed.
         /// </summary>
-        public async virtual System.Threading.Tasks.Task SaveLaunchSettings()
+        public virtual async System.Threading.Tasks.Task SaveLaunchSettings()
         {
             ILaunchSettingsProvider provider = GetDebugProfileProvider();
             if (EnvironmentVariables != null && EnvironmentVariables.Count > 0 && SelectedDebugProfile != null)
@@ -748,7 +748,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// <summary>
         /// Called when then the user saves the form.
         /// </summary>
-        public async override Task<int> Save()
+        public override async Task<int> Save()
         {
             if (HasErrors)
             {

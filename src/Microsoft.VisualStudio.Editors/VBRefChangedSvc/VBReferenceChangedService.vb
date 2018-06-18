@@ -20,38 +20,38 @@ Namespace Microsoft.VisualStudio.Editors.VBRefChangedSvc
     ''' - Registration for this service is in SetupAuthoring\vb\registry\Microsoft.VisualStudio.Eidtors.vrg_33310.ddr
     '''   and Microsoft.VisualStudio.Editors.vbexpress.vrg_33310.ddr.
     ''' </remarks>
-    <CLSCompliant(False)> _
+    <CLSCompliant(False)>
     Friend Class VBReferenceChangedService
         Implements Interop.IVbReferenceChangedService
 
         Public Sub New()
         End Sub
 
-        Private Function ReferenceAdded( _
-            <[In](), MarshalAs(UnmanagedType.IUnknown)> pHierarchy As Object, _
-            <[In](), MarshalAs(UnmanagedType.BStr)> strAssemblyPath As String, _
-            <[In](), MarshalAs(UnmanagedType.BStr)> strAssemblyName As String, _
-            <[In](), MarshalAs(UnmanagedType.BStr)> strAssemblyVersion As String, _
-            <[In](), MarshalAs(UnmanagedType.BStr)> strAssemblyInfo As String _
+        Private Function ReferenceAdded(
+            <[In](), MarshalAs(UnmanagedType.IUnknown)> pHierarchy As Object,
+            <[In](), MarshalAs(UnmanagedType.BStr)> strAssemblyPath As String,
+            <[In](), MarshalAs(UnmanagedType.BStr)> strAssemblyName As String,
+            <[In](), MarshalAs(UnmanagedType.BStr)> strAssemblyVersion As String,
+            <[In](), MarshalAs(UnmanagedType.BStr)> strAssemblyInfo As String
         ) As Integer _
         Implements Interop.IVbReferenceChangedService.ReferenceAdded
 
-            MyExtensibility.MyExtensibilitySolutionService.Instance.ReferenceAdded( _
+            MyExtensibility.MyExtensibilitySolutionService.Instance.ReferenceAdded(
                 TryCast(pHierarchy, IVsHierarchy), strAssemblyInfo)
 
             Return NativeMethods.S_OK
         End Function
 
-        Private Function ReferenceRemoved( _
-            <[In](), MarshalAs(UnmanagedType.IUnknown)> pHierarchy As Object, _
-            <[In](), MarshalAs(UnmanagedType.BStr)> strAssemblyPath As String, _
-            <[In](), MarshalAs(UnmanagedType.BStr)> strAssemblyName As String, _
-            <[In](), MarshalAs(UnmanagedType.BStr)> strAssemblyVersion As String, _
-            <[In](), MarshalAs(UnmanagedType.BStr)> strAssemblyInfo As String _
+        Private Function ReferenceRemoved(
+            <[In](), MarshalAs(UnmanagedType.IUnknown)> pHierarchy As Object,
+            <[In](), MarshalAs(UnmanagedType.BStr)> strAssemblyPath As String,
+            <[In](), MarshalAs(UnmanagedType.BStr)> strAssemblyName As String,
+            <[In](), MarshalAs(UnmanagedType.BStr)> strAssemblyVersion As String,
+            <[In](), MarshalAs(UnmanagedType.BStr)> strAssemblyInfo As String
         ) As Integer _
         Implements Interop.IVbReferenceChangedService.ReferenceRemoved
 
-            MyExtensibility.MyExtensibilitySolutionService.Instance.ReferenceRemoved( _
+            MyExtensibility.MyExtensibilitySolutionService.Instance.ReferenceRemoved(
                 TryCast(pHierarchy, IVsHierarchy), strAssemblyInfo)
 
             Return NativeMethods.S_OK

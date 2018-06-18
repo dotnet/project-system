@@ -63,7 +63,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="CanReset">TRUE means the property should have a Reset option in the property browser. Otherwise FALSE.</param>
         ''' <param name="Attributes">Optional. An array of type Attribute containing the property's attributes.</param>
         ''' <remarks>Used by Resource class to describe itself.</remarks>
-        Public Sub New(Name As String, Type As Type, IsReadOnly As Boolean, _
+        Public Sub New(Name As String, Type As Type, IsReadOnly As Boolean,
                Optional CanReset As Boolean = False, Optional Attributes() As Attribute = Nothing)
             MyBase.New(Name, Attributes)
             _propertyType = Type

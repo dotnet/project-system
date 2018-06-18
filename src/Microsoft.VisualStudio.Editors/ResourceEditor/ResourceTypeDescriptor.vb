@@ -89,7 +89,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <remarks></remarks>
         Public Overrides Function GetClassName() As String
             ' CONSIDER: We should return Category here...
-            If _instance IsNot Nothing
+            If _instance IsNot Nothing Then
                 Dim typeName As String = _instance.FriendlyValueTypeName
                 Dim idx As Integer = typeName.LastIndexOf("."c)
                 If idx > 0 Then

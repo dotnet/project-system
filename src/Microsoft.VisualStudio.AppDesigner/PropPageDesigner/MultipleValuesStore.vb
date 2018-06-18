@@ -11,7 +11,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
     ''' "All Platforms" modes.
     ''' </summary>
     ''' <remarks></remarks>
-    <Serializable()> _
+    <Serializable()>
     Public Class MultipleValuesStore
 
         'Note: the sizes of these arrays are all the same
@@ -105,7 +105,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 
 
 
-        <Conditional("DEBUG")> _
+        <Conditional("DEBUG")>
         Public Sub DebugTrace(Message As String)
 #If DEBUG Then
             Debug.Assert(ConfigNames.Length = PlatformNames.Length AndAlso PlatformNames.Length = Values.Length)

@@ -69,7 +69,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="Message">The message to displaying, including optional formatting parameters "{0}" etc.</param>
         ''' <param name="FormatArguments">Arguments for "{0}", "{1}", etc.</param>
         ''' <remarks></remarks>
-        <Conditional("DEBUG")> _
+        <Conditional("DEBUG")>
         Public Shared Sub Trace(Message As String, ParamArray FormatArguments() As Object)
             Debug.WriteLineIf(Switches.RSEResourceSerializationService.TraceVerbose, "ResourceSerializationService: " & String.Format(Message, FormatArguments))
         End Sub

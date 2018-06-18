@@ -24,7 +24,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
     '''    UI is handled by the ResourceEditorRootDesigner.
     ''' </summary>
     ''' <remarks></remarks>
-    <Designer(GetType(ResourceEditorRootDesigner), GetType(IRootDesigner))> _
+    <Designer(GetType(ResourceEditorRootDesigner), GetType(IRootDesigner))>
     Friend NotInheritable Class ResourceEditorRootComponent
         Inherits Component
 
@@ -137,7 +137,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Return _resourceFileName
             End Get
             Set
-                _resourceFileName = value
+                _resourceFileName = Value
             End Set
         End Property
 

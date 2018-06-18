@@ -23,8 +23,8 @@ Namespace Microsoft.VisualStudio.Editors.XmlToSchema
         End Sub
 
         Public Function FilterException(ex As Exception) As Boolean
-            Return Not TypeOf ex Is AccessViolationException AndAlso _
-                   Not TypeOf ex Is StackOverflowException AndAlso _
+            Return Not TypeOf ex Is AccessViolationException AndAlso
+                   Not TypeOf ex Is StackOverflowException AndAlso
                    Not TypeOf ex Is OutOfMemoryException
         End Function
     End Module
@@ -81,7 +81,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlToSchema
             Return "vb.XmlToSchemaWizard"
         End Function
 
-        <SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")> _
+        <SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")>
         Private Sub ShowHelp()
             Try
                 Dim f1Word = GetF1Keyword()
@@ -105,8 +105,8 @@ Namespace Microsoft.VisualStudio.Editors.XmlToSchema
             hevent.Handled = True
         End Sub
 
-        <SecurityPermission(SecurityAction.LinkDemand, Flags:=SecurityPermissionFlag.UnmanagedCode)> _
-        <SecurityPermission(SecurityAction.InheritanceDemand, Flags:=SecurityPermissionFlag.UnmanagedCode)> _
+        <SecurityPermission(SecurityAction.LinkDemand, Flags:=SecurityPermissionFlag.UnmanagedCode)>
+        <SecurityPermission(SecurityAction.InheritanceDemand, Flags:=SecurityPermissionFlag.UnmanagedCode)>
         Protected Overrides Sub WndProc(ByRef m As Message)
             Try
                 Select Case (m.Msg)

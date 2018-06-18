@@ -58,18 +58,18 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
     ''' <remarks>
     ''' This interface is defined in vseditors.idl
     ''' </remarks>
-    <ComImport(), Guid("365cb21a-0f0f-47bc-9653-3c81e0e3f9d6"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)> _
+    <ComImport(), Guid("365cb21a-0f0f-47bc-9653-3c81e0e3f9d6"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)>
     Friend Interface IVsMyAppManager
-        <PreserveSig()> _
+        <PreserveSig()>
         Function Init(<[In]()> ProjectHierarchy As IVsHierarchy) As Integer 'Initialize the MyApplicationProperties object, etc.
 
-        <PreserveSig()> _
+        <PreserveSig()>
         Function GetProperties(<Out(), MarshalAs(UnmanagedType.IDispatch)> ByRef MyAppProps As Object) As Integer 'Get MyAppliationProperties object
 
-        <PreserveSig()> _
+        <PreserveSig()>
         Function Save() As Integer 'Save any MyApplicationProperties changes to disk (in MyApplication.myapp), if dirty
 
-        <PreserveSig()> _
+        <PreserveSig()>
         Function Close() As Integer 'Called by the project system upon closing a project.  Any unpersisted data at this point is discarded
     End Interface
 
@@ -98,7 +98,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
     ''' <remarks>
     ''' This interface is not currently exposed to the public, except via dispatch.
     ''' </remarks>
-    <ComVisible(True), Guid("6fec8bad-4bec-4447-a4ce-b48543a31165"), InterfaceType(ComInterfaceType.InterfaceIsDual)> _
+    <ComVisible(True), Guid("6fec8bad-4bec-4447-a4ce-b48543a31165"), InterfaceType(ComInterfaceType.InterfaceIsDual)>
     Public Interface IVsMyApplicationProperties
         <DispId(MyAppDISPIDs.CustomSubMain)> Property CustomSubMain() As Boolean
         <DispId(MyAppDISPIDs.MainForm)> Property MainForm() As String
@@ -130,7 +130,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
     ''' Our implementation of IVsMyAppManager
     ''' </summary>
     ''' <remarks></remarks>
-    <ComVisible(True), Guid("29255174-ccb9-434d-8489-dae5b912b1d3"), CLSCompliant(False)> _
+    <ComVisible(True), Guid("29255174-ccb9-434d-8489-dae5b912b1d3"), CLSCompliant(False)>
     Public NotInheritable Class MyApplicationManager
         Implements IVsMyAppManager
 
@@ -229,7 +229,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
     ''' Data is stored locally until instructed to persist
     ''' </summary>
     ''' <remarks>Class must be Public to marshal the IDispatch</remarks>
-    <ClassInterface(ClassInterfaceType.None)> _
+    <ClassInterface(ClassInterfaceType.None)>
     Public NotInheritable Class MyApplicationProperties
         Inherits MyApplicationPropertiesBase
         Implements IVsMyApplicationProperties

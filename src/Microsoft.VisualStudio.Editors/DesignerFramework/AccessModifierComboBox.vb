@@ -247,7 +247,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ''' The first command at the head of the queue, or NULL if no the queue is emty
             ''' </returns>
             ''' <remarks></remarks>
-            Protected Shared Function GetMenuCommandAtHeadOfInternalList(cmdId As CommandId) As DesignerMenuCommand
+            Protected Shared Function GetMenuCommandAtHeadOfInternalList(cmdId As CommandID) As DesignerMenuCommand
                 Dim list As LinkedList(Of DesignerMenuCommand) = Nothing
                 If (Not s_packageCommandForwarderLists.TryGetValue(cmdId, list)) OrElse list Is Nothing OrElse list.Count = 0 Then
                     Return Nothing
@@ -261,7 +261,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ''' If the command is in the list, but isn't the first command, we move it to the head of the list
             ''' </summary>
             ''' <remarks></remarks>
-            Protected Shared Sub AddMenuCommandForwarderToInternalList(cmdId As CommandId, command As DesignerMenuCommand)
+            Protected Shared Sub AddMenuCommandForwarderToInternalList(cmdId As CommandID, command As DesignerMenuCommand)
                 Dim list As LinkedList(Of DesignerMenuCommand) = Nothing
 
                 ' Demand create the list corresponding to this cmdId
@@ -282,7 +282,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ''' Remove a menu command forwarder from our internal LIFO queue. 
             ''' </summary>
             ''' <remarks></remarks>
-            Protected Shared Sub RemoveMenuCommandForwarderFromInternalList(cmdId As CommandId, command As DesignerMenuCommand)
+            Protected Shared Sub RemoveMenuCommandForwarderFromInternalList(cmdId As CommandID, command As DesignerMenuCommand)
                 Dim list As LinkedList(Of DesignerMenuCommand) = Nothing
                 If s_packageCommandForwarderLists.TryGetValue(cmdId, list) Then
                     list.Remove(command)
@@ -527,7 +527,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             Catch ex As Exception When ReportWithoutCrash(ex, "Failed to determine if the access modifier combobox should be enabled", NameOf(AccessModifierCombobox))
                 Throw
             End Try
-            Return shouldBeEnabled
+            Return ShouldBeEnabled()
         End Function
 
         ''' <summary>

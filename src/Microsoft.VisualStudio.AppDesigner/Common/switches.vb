@@ -307,7 +307,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <remarks></remarks>
         Public Shared PDSubSku As New EnumSwitch(Of VSProductSKU.VSASubSKUEdition)("PDSubSku", "Overrides the Sub-SKU edition value for the project designer")
 
-        Public Shared PDAddVBWPFApplicationPageToAllProjects As New BooleanSwitch("PDAddVBWPFApplicationPageToAllProjects", _
+        Public Shared PDAddVBWPFApplicationPageToAllProjects As New BooleanSwitch("PDAddVBWPFApplicationPageToAllProjects",
             "Add the VB WPF Application property page to all projects, even non-WPF projects.  This allows for debugging " _
             & "this page without the new WPF flavor")
 
@@ -427,7 +427,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
 #End If
         End Function
 
-        <Conditional("DEBUG")> _
+        <Conditional("DEBUG")>
         Public Shared Sub ResetTimeCode()
 #If DEBUG Then
             s_timeCodeStart = Now
@@ -498,7 +498,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <param name="Message"></param>
         ''' <param name="FormatArguments"></param>
         ''' <remarks></remarks>
-        <Conditional("DEBUG")> _
+        <Conditional("DEBUG")>
         Public Shared Sub TraceSCC(Message As String, ParamArray FormatArguments() As Object)
 #If DEBUG Then
             Trace.WriteLineIf(MSVBE_SCC.TraceVerbose, "MSVBE_SCC: " & Format(Message, FormatArguments))
@@ -511,7 +511,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <param name="Message"></param>
         ''' <param name="FormatArguments"></param>
         ''' <remarks></remarks>
-        <Conditional("DEBUG")> _
+        <Conditional("DEBUG")>
         Public Shared Sub TracePDFocus(Level As TraceLevel, Message As String, ParamArray FormatArguments() As Object)
 #If DEBUG Then
             Trace.WriteLineIf(PDFocus.Level >= Level, "PDFocus:" & vbTab & TimeCode() & Format(Message, FormatArguments))
@@ -524,7 +524,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <param name="Message"></param>
         ''' <param name="FormatArguments"></param>
         ''' <remarks></remarks>
-        <Conditional("DEBUG")> _
+        <Conditional("DEBUG")>
         Public Shared Sub TracePDUndo(Message As String, ParamArray FormatArguments() As Object)
 #If DEBUG Then
             Trace.WriteLineIf(PDUndo.TraceVerbose, "PDUndo: " & Format(Message, FormatArguments))
@@ -538,7 +538,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <param name="Message"></param>
         ''' <param name="FormatArguments"></param>
         ''' <remarks></remarks>
-        <Conditional("DEBUG")> _
+        <Conditional("DEBUG")>
         Public Shared Sub TracePDProperties(Level As TraceLevel, Message As String, ParamArray FormatArguments() As Object)
 #If DEBUG Then
             Trace.WriteLineIf(PDProperties.Level >= Level, "PDProperties: " & Format(Message, FormatArguments))
@@ -552,7 +552,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <param name="Message"></param>
         ''' <param name="FormatArguments"></param>
         ''' <remarks></remarks>
-        <Conditional("DEBUG")> _
+        <Conditional("DEBUG")>
         Public Shared Sub TracePDExtenders(Level As TraceLevel, Message As String, ParamArray FormatArguments() As Object)
 #If DEBUG Then
             Trace.WriteLineIf(PDExtenders.Level >= Level, "PDExtenders: " & Format(Message, FormatArguments))
@@ -566,14 +566,14 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <param name="Message"></param>
         ''' <param name="FormatArguments"></param>
         ''' <remarks></remarks>
-        <Conditional("DEBUG")> _
+        <Conditional("DEBUG")>
         Public Shared Sub TracePDConfigs(TraceLevel As TraceLevel, Message As String, ParamArray FormatArguments() As Object)
 #If DEBUG Then
             Trace.WriteLineIf(PDConfigs.Level >= TraceLevel, "PDConfigs: " & Format(Message, FormatArguments))
 #End If
         End Sub
 
-        <Conditional("DEBUG")> _
+        <Conditional("DEBUG")>
         Public Shared Sub TracePDConfigs(Message As String, ParamArray FormatArguments() As Object)
 #If DEBUG Then
             TracePDConfigs(TraceLevel.Verbose, Message, FormatArguments)
@@ -587,14 +587,14 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <param name="Message"></param>
         ''' <param name="FormatArguments"></param>
         ''' <remarks></remarks>
-        <Conditional("DEBUG")> _
+        <Conditional("DEBUG")>
         Public Shared Sub TracePDPerf(Message As String, ParamArray FormatArguments() As Object)
 #If DEBUG Then
             Trace.WriteLineIf(PDPerf.TraceInfo, "PDPerf:" & vbTab & TimeCode() & Format(Message, FormatArguments))
 #End If
         End Sub
 
-        <Conditional("DEBUG")> _
+        <Conditional("DEBUG")>
         Public Shared Sub TracePDPerfBegin(Message As String, ParamArray FormatArguments() As Object)
 #If DEBUG Then
             If PDPerf.TraceInfo Then
@@ -605,7 +605,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
 #End If
         End Sub
 
-        <Conditional("DEBUG")> _
+        <Conditional("DEBUG")>
         Public Shared Sub TracePDPerfEnd(Message As String, ParamArray FormatArguments() As Object)
 #If DEBUG Then
             If PDPerf.TraceInfo Then
@@ -616,7 +616,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
 #End If
         End Sub
 
-        <Conditional("DEBUG")> _
+        <Conditional("DEBUG")>
         Public Shared Sub TracePDPerf(e As Windows.Forms.LayoutEventArgs, Message As String, ParamArray FormatArguments() As Object)
 #If DEBUG Then
             TracePDPerf(Message, FormatArguments)
@@ -645,7 +645,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <param name="Message"></param>
         ''' <param name="FormatArguments"></param>
         ''' <remarks></remarks>
-        <Conditional("DEBUG")> _
+        <Conditional("DEBUG")>
         Public Shared Sub TracePDCmdTarget(TraceLevel As TraceLevel, Message As String, ParamArray FormatArguments() As Object)
 #If DEBUG Then
             Trace.WriteLineIf(PDCmdTarget.Level >= TraceLevel, "PDCmdTarget: " & Format(Message, FormatArguments))
@@ -660,7 +660,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <param name="Message"></param>
         ''' <param name="msg"></param>
         ''' <remarks></remarks>
-        <Conditional("DEBUG")> _
+        <Conditional("DEBUG")>
         Public Shared Sub TracePDMessageRouting(TraceLevel As TraceLevel, Message As String, msg As Windows.Forms.Message)
 #If DEBUG Then
             If PDMessageRouting.Level >= TraceLevel Then
@@ -679,7 +679,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <param name="TraceLevel"></param>
         ''' <param name="Message"></param>
         ''' <remarks></remarks>
-        <Conditional("DEBUG")> _
+        <Conditional("DEBUG")>
         Public Shared Sub TracePDMessageRouting(TraceLevel As TraceLevel, Message As String)
 #If DEBUG Then
             Trace.WriteLineIf(PDMessageRouting.Level >= TraceLevel, "PDMessageRouting: " & Message)
@@ -690,7 +690,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' Traces the access modifier combobox functionality
         ''' </summary>
         ''' <remarks></remarks>
-        <Conditional("DEBUG")> _
+        <Conditional("DEBUG")>
         Public Shared Sub TracePDAccessModifierCombobox(traceLevel As TraceLevel, message As String)
 #If DEBUG Then
             Trace.WriteLineIf(PDAccessModifierCombobox.Level >= traceLevel, "PDAccessModifierCombobox: " & message)
@@ -704,7 +704,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <param name="tracelevel"></param>
         ''' <param name="message"></param>
         ''' <remarks></remarks>
-        <Conditional("DEBUG")> _
+        <Conditional("DEBUG")>
         Public Overloads Shared Sub TraceSDSerializeSettings(tracelevel As TraceLevel, message As String)
 #If DEBUG Then
             Trace.WriteLineIf(SDSerializeSettings.Level >= tracelevel, message)
@@ -718,14 +718,14 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <param name="formatString"></param>
         ''' <param name="parameters"></param>
         ''' <remarks></remarks>
-        <Conditional("DEBUG")> _
+        <Conditional("DEBUG")>
         Public Overloads Shared Sub TraceSDSerializeSettings(tracelevel As TraceLevel, formatString As String, ParamArray parameters() As Object)
 #If DEBUG Then
             Trace.WriteLineIf(SDSerializeSettings.Level >= tracelevel, String.Format(formatString, parameters))
 #End If
         End Sub
 
-        <Conditional("DEBUG")> _
+        <Conditional("DEBUG")>
         Public Overloads Shared Sub TracePDLinqImports(tracelevel As TraceLevel, formatString As String, ParamArray parameters() As Object)
 #If DEBUG Then
             Trace.WriteLineIf(PDLinqImports.Level >= tracelevel, Format(formatString, parameters))
@@ -737,7 +737,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' </summary>
         ''' <param name="tracelevel"></param>
         ''' <remarks></remarks>
-        <Conditional("DEBUG")> _
+        <Conditional("DEBUG")>
         Public Overloads Shared Sub TraceWCFConfigFileChangeWatch(tracelevel As TraceLevel, formatString As String, ParamArray parameters() As Object)
 #If DEBUG Then
             Trace.WriteLineIf(WCF_Config_FileChangeWatch.Level >= tracelevel, String.Format(formatString, parameters))
@@ -751,7 +751,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <param name="tracelevel"></param>
         ''' <param name="message"></param>
         ''' <remarks></remarks>
-        <Conditional("DEBUG")> _
+        <Conditional("DEBUG")>
         Public Overloads Shared Sub TraceWCFConfigFileChangeWatch(tracelevel As TraceLevel, message As String)
 #If DEBUG Then
             Trace.WriteLineIf(WCF_Config_FileChangeWatch.Level >= tracelevel, message)
@@ -759,7 +759,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         End Sub
 
 
-        <Conditional("DEBUG")> _
+        <Conditional("DEBUG")>
         Public Shared Sub TracePDPerfBegin(e As Windows.Forms.LayoutEventArgs, Message As String, ParamArray FormatArguments() As Object)
 #If DEBUG Then
             TracePDPerfBegin(Message, FormatArguments)
@@ -767,7 +767,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
 #End If
         End Sub
 
-        <Conditional("DEBUG")> _
+        <Conditional("DEBUG")>
         Public Shared Sub TraceMyExtensibility(traceLevel As TraceLevel, message As String)
 #If DEBUG Then
             Trace.WriteLineIf(MyExtensibilityTraceSwitch.Level >= traceLevel, String.Format("MyExtensibility {0} {1}: ", Date.Now.ToLongDateString(), Date.Now.ToLongTimeString()))

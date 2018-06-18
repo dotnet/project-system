@@ -826,7 +826,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             ''' <param name="m"></param>
             ''' <returns></returns>
             ''' <remarks></remarks>
-            <Security.Permissions.SecurityPermission(Security.Permissions.SecurityAction.LinkDemand, Flags:=Security.Permissions.SecurityPermissionFlag.UnmanagedCode)> _
+            <Security.Permissions.SecurityPermission(Security.Permissions.SecurityAction.LinkDemand, Flags:=Security.Permissions.SecurityPermissionFlag.UnmanagedCode)>
             Protected Overrides Function ProcessKeyEventArgs(ByRef m As Message) As Boolean
                 Select Case CType(CInt(m.WParam), Keys)
                     Case Keys.Enter

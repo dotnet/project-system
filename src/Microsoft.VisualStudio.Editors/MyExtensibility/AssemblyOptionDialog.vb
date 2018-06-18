@@ -29,10 +29,10 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' <summary>
         ''' Shared method to return an instance of Add / Remove extension templates / code files dialog.
         ''' </summary>
-        Public Shared Function GetAssemblyOptionDialog( _
-                assemblyName As String, _
-                serviceProvider As IServiceProvider, _
-                objects As IList, _
+        Public Shared Function GetAssemblyOptionDialog(
+                assemblyName As String,
+                serviceProvider As IServiceProvider,
+                objects As IList,
                 extensionAction As AddRemoveAction) As AssemblyOptionDialog
 
             Debug.Assert(Not String.IsNullOrEmpty(assemblyName), "NULL or empty: assemblyName!")
@@ -69,7 +69,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         Private Sub New()
         End Sub
 
-        Private Sub New(serviceProvider As IServiceProvider, _
+        Private Sub New(serviceProvider As IServiceProvider,
                 objects As IList)
             MyBase.New(serviceProvider)
             InitializeComponent()
@@ -89,7 +89,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' <summary>
         ''' Click handler for the Help button. DevDiv Bugs 110807.
         ''' </summary>
-        Private Sub AssemblyOptionDialog_HelpButtonClicked( _
+        Private Sub AssemblyOptionDialog_HelpButtonClicked(
                 sender As Object, e As CancelEventArgs) _
                 Handles MyBase.HelpButtonClicked
             e.Cancel = True

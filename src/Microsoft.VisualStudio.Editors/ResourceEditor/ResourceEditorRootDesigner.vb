@@ -108,7 +108,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <value></value>
         ''' <remarks></remarks>
-        <EditorBrowsable(EditorBrowsableState.Never)> _
+        <EditorBrowsable(EditorBrowsableState.Never)>
         Friend Shadows ReadOnly Property Component() As ResourceEditorRootComponent
             Get
                 Return RootComponent
@@ -579,7 +579,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' - We search for the text and return an enum value to the shell to display the dialog box if not found, etc...
         ''' - We are responsible for selecting the found object and keeping track of where we are in the object list.
         ''' </remarks>
-        Private Function Find(pszSearch As String, grfOptions As UInteger, fResetStartPoint As Integer, _
+        Private Function Find(pszSearch As String, grfOptions As UInteger, fResetStartPoint As Integer,
                             pHelper As IVsFindHelper, ByRef pResult As UInteger) As Integer Implements IVsFindTarget.Find
             _findReplace.Find(pszSearch, grfOptions, fResetStartPoint, pHelper, pResult)
             Return NativeMethods.S_OK
@@ -603,7 +603,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''      to search for the next object. Therefore, at the beginning of Replace, we check to see Replace was clicked first.
         '''      If it's true, we don't do anything and let shell call our Find. The next time we will replace.
         ''' </remarks>
-        Private Function Replace(pszSearch As String, pszReplace As String, grfOptions As UInteger, _
+        Private Function Replace(pszSearch As String, pszReplace As String, grfOptions As UInteger,
                                 fResetStartPoint As Integer, pHelper As IVsFindHelper, ByRef pfReplaced As Integer) As Integer _
                                 Implements IVsFindTarget.Replace
             'We don't currently support replace.  NOP
@@ -729,7 +729,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         Private Sub ConnectBuildEvents()
             Dim dte As EnvDTE.DTE
-            DTE = CType(GetService(GetType(EnvDTE.DTE)), EnvDTE.DTE)
+            dte = CType(GetService(GetType(EnvDTE.DTE)), EnvDTE.DTE)
             If dte IsNot Nothing Then
                 _buildEvents = dte.Events.BuildEvents
             Else

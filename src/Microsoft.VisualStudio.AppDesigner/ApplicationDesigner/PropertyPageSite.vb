@@ -145,7 +145,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             Try
                 InsideOnStatusChange = True
                 ' If the page is dirty and 
-                If _isImmediateApply AndAlso _
+                If _isImmediateApply AndAlso
                     (dwFlags And PROPPAGESTATUS_VALIDATE) <> 0 Then
                     If _propPage.IsPageDirty() = NativeMethods.S_OK Then
                         Try

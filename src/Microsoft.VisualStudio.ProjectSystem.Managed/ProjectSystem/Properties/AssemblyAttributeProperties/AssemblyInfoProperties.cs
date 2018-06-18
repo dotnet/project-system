@@ -57,7 +57,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// <summary>
         /// Get the unevaluated property value.
         /// </summary>
-        public async override Task<string> GetUnevaluatedPropertyValueAsync(string propertyName)
+        public override async Task<string> GetUnevaluatedPropertyValueAsync(string propertyName)
         {
             if (_attributeValueProviderMap.ContainsKey(propertyName) &&
                 !await IsAssemblyInfoPropertyGeneratedByBuild(propertyName).ConfigureAwait(true))
@@ -71,7 +71,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// <summary>
         /// Get the value of a property.
         /// </summary>
-        public async override Task<string> GetEvaluatedPropertyValueAsync(string propertyName)
+        public override async Task<string> GetEvaluatedPropertyValueAsync(string propertyName)
         {
             if (_attributeValueProviderMap.ContainsKey(propertyName) &&
                 !await IsAssemblyInfoPropertyGeneratedByBuild(propertyName).ConfigureAwait(true))
@@ -98,7 +98,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// <summary>
         /// Set the value of a property.
         /// </summary>
-        public async override Task SetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IReadOnlyDictionary<string, string> dimensionalConditions = null)
+        public override async Task SetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IReadOnlyDictionary<string, string> dimensionalConditions = null)
         {
             if (_attributeValueProviderMap.ContainsKey(propertyName) &&
                 !await IsAssemblyInfoPropertyGeneratedByBuild(propertyName).ConfigureAwait(true))

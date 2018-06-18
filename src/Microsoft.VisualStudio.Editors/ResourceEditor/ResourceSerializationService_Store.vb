@@ -13,7 +13,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
     'This class is private to ResourceSerializationService
 
-    Friend Partial Class ResourceSerializationService
+    Partial Friend Class ResourceSerializationService
 
         ''' <summary>
         ''' Comments from the SerializationStore class which this derives from:
@@ -58,7 +58,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   an existing Resource instance.
         ''' </summary>
         ''' <remarks></remarks>
-        <Serializable()> _
+        <Serializable()>
         Private NotInheritable Class ResourceSerializationStore
             Inherits Design.Serialization.SerializationStore
             Implements ISerializable
@@ -536,7 +536,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' Stores a single binary serialized Resource instance or Resource property value
             ''' </summary>
             ''' <remarks></remarks>
-            <Serializable()> _
+            <Serializable()>
             Private NotInheritable Class SerializedResourceOrProperty
 
                 'The name of the resource from which this was serialized.

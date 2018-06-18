@@ -2,7 +2,7 @@
 
 Imports System.ComponentModel
 Imports System.ComponentModel.Design.Serialization
-Imports System.io
+Imports System.IO
 
 Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 

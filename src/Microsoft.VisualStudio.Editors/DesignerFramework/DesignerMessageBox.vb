@@ -116,10 +116,10 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="HelpLink">Link to the help topic for this message box.</param>
         ''' <param name="DefaultButton">One of the MessageBoxDefaultButton values that specifies the default button of the message box.</param>
         ''' <remarks></remarks>
-        Friend Shared Function Show(ServiceProvider As IServiceProvider, Message As String, _
-                Caption As String, Buttons As MessageBoxButtons, Icon As MessageBoxIcon, _
-                Optional DefaultButton As MessageBoxDefaultButton = MessageBoxDefaultButton.Button1, _
-                Optional HelpLink As String = Nothing _
+        Friend Shared Function Show(ServiceProvider As IServiceProvider, Message As String,
+                Caption As String, Buttons As MessageBoxButtons, Icon As MessageBoxIcon,
+                Optional DefaultButton As MessageBoxDefaultButton = MessageBoxDefaultButton.Button1,
+                Optional HelpLink As String = Nothing
         ) As DialogResult
             Return ShowHelper(ServiceProvider, Message, Caption, Buttons, Icon, DefaultButton, HelpLink)
         End Function 'Show
@@ -136,10 +136,10 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="HelpLink">Link to the help topic for this message box.</param>
         ''' <param name="DefaultButton">One of the MessageBoxDefaultButton values that specifies the default button of the message box.</param>
         ''' <remarks></remarks>
-        Private Shared Function ShowHelper(ServiceProvider As IServiceProvider, Message As String, _
-                Caption As String, Buttons As MessageBoxButtons, Icon As MessageBoxIcon, _
-                Optional DefaultButton As MessageBoxDefaultButton = MessageBoxDefaultButton.Button1, _
-                Optional HelpLink As String = Nothing _
+        Private Shared Function ShowHelper(ServiceProvider As IServiceProvider, Message As String,
+                Caption As String, Buttons As MessageBoxButtons, Icon As MessageBoxIcon,
+                Optional DefaultButton As MessageBoxDefaultButton = MessageBoxDefaultButton.Button1,
+                Optional HelpLink As String = Nothing
         ) As DialogResult
 
             If HelpLink = "" Then
@@ -187,8 +187,8 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         '   So instead of this we cut this feature. When no help is needed, a standard MessageBox will be shown 
         '   but parented using the service provider if available, the caption will also be shown normally.
         '**************************************************************************
-        Protected Shared Function ShowInternal(UIService As IUIService, VsUIShell As IVsUIShell, _
-                Message As String, Caption As String, Buttons As MessageBoxButtons, _
+        Protected Shared Function ShowInternal(UIService As IUIService, VsUIShell As IVsUIShell,
+                Message As String, Caption As String, Buttons As MessageBoxButtons,
                 Icon As MessageBoxIcon, DefaultButton As MessageBoxDefaultButton, HelpLink As String) _
         As DialogResult
             If VsUIShell IsNot Nothing Then
@@ -211,7 +211,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 '  is the best thing anyway, we shouldn't have to provide a caption (it changes
                 '  by installed SKU/product, for instance).
                 Dim Result As Integer
-                VSErrorHandler.ThrowOnFailure(VsUIShell.ShowMessageBox(0, Guid, Nothing, Message, HelpLink, 0, _
+                VSErrorHandler.ThrowOnFailure(VsUIShell.ShowMessageBox(0, Guid, Nothing, Message, HelpLink, 0,
                         OLEButtons, OLEDefaultButton, MessageBoxIconToOleIcon(Icon), CInt(False), Result))
                 Return CType(Result, DialogResult)
             Else

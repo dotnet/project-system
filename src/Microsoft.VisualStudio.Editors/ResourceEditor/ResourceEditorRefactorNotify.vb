@@ -17,8 +17,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
     '''   shell.
     ''' </summary>
     ''' <remarks></remarks>
-    <CLSCompliant(False), _
-    Guid("0407F754-C199-403e-B89B-1D8E1FF3DC79")> _
+    <CLSCompliant(False),
+    Guid("0407F754-C199-403e-B89B-1D8E1FF3DC79")>
     Friend NotInheritable Class ResourceEditorRefactorNotify
         Implements IVsRefactorNotify
 

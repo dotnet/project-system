@@ -137,7 +137,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             return AddInitialSubscriptionsAsync();
         }
 
-        protected async override Task InitializeCoreAsync(CancellationToken cancellationToken)
+        protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
         {
             await base.InitializeCoreAsync(cancellationToken).ConfigureAwait(false);
 

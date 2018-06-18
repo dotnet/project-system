@@ -73,8 +73,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     ThumbnailGraphics.FillRectangle(New SolidBrush(AlmostTransparent), ImageRect)
 
                     '... then the border
-                    ThumbnailGraphics.DrawRectangle(SystemPens.ButtonFace, _
-                        New Rectangle(SelectionBorderWidth, SelectionBorderWidth, _
+                    ThumbnailGraphics.DrawRectangle(SystemPens.ButtonFace,
+                        New Rectangle(SelectionBorderWidth, SelectionBorderWidth,
                         ThumbnailSize.Width - 2 * SelectionBorderWidth, ThumbnailSize.Height - 2 * SelectionBorderWidth))
 
                     '... then remove the area of both of these from the area the image will use.
@@ -91,12 +91,12 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Dim ScaledBitmapSize As Size = ScaleSizeProportionally(SourceImage.Size, ImageRect.Size, OnlyScaleDownward:=True)
 
                 'Center the image inside the given bounds
-                Dim CenteredBitmapRect As New Rectangle( _
-                    ImageRect.X + (ImageRect.Width - ScaledBitmapSize.Width) \ 2, _
-                    ImageRect.Y + (ImageRect.Height - ScaledBitmapSize.Height) \ 2, _
-                    ScaledBitmapSize.Width, _
+                Dim CenteredBitmapRect As New Rectangle(
+                    ImageRect.X + (ImageRect.Width - ScaledBitmapSize.Width) \ 2,
+                    ImageRect.Y + (ImageRect.Height - ScaledBitmapSize.Height) \ 2,
+                    ScaledBitmapSize.Width,
                     ScaledBitmapSize.Height)
-                Debug.Assert(Rectangle.Intersect(CenteredBitmapRect, ImageRect).Equals(CenteredBitmapRect), _
+                Debug.Assert(Rectangle.Intersect(CenteredBitmapRect, ImageRect).Equals(CenteredBitmapRect),
                     "CenteredBitmapRect should be entirely within ImageRect")
 
                 ThumbnailGraphics.DrawImage(SourceImage, CenteredBitmapRect)
@@ -135,7 +135,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             Dim ScaledSize As Size = New Size(CInt(Math.Floor(OriginalSize.Width * ActualScale)), CInt(Math.Floor(OriginalSize.Height * ActualScale)))
 
-            Debug.Assert(OnlyScaleDownward = True OrElse ScaledSize.Width = MaxScaledSize.Width OrElse ScaledSize.Height = MaxScaledSize.Height, _
+            Debug.Assert(OnlyScaleDownward = True OrElse ScaledSize.Width = MaxScaledSize.Width OrElse ScaledSize.Height = MaxScaledSize.Height,
                 "One of the measures should have been scaled to exactly the maximum requested size - rounding error?")
             Debug.Assert(ScaledSize.Width <= MaxScaledSize.Width AndAlso ScaledSize.Height <= MaxScaledSize.Height)
 
@@ -424,7 +424,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                             ' we are dealing w/ WAVEFORMATEX
                             ' do extra validation
                             Dim sizeOfWAVEFORMATEX As Integer = 18
-                            Dim cbSize As Short = BytesToInt16(Data(Position + 8 + sizeOfWAVEFORMATEX - 1), _
+                            Dim cbSize As Short = BytesToInt16(Data(Position + 8 + sizeOfWAVEFORMATEX - 1),
                                                         Data(Position + 8 + sizeOfWAVEFORMATEX - 2))
                             If cbSize + sizeOfWAVEFORMATEX <> ChunkSize Then
                                 'Invalid wave header

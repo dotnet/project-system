@@ -360,7 +360,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
             ''' <param name="SetFontInitially">If true, set the font of the provided control when this FontChangeMonitor is created</param>
             ''' <remarks></remarks>
             Public Sub New(sp As IServiceProvider, ctrl As Control, SetFontInitially As Boolean)
-                MyBase.new(sp)
+                MyBase.New(sp)
 
                 Debug.Assert(sp IsNot Nothing, "Why did we get a NULL service provider!?")
                 Debug.Assert(ctrl IsNot Nothing, "Why didn't we get a control to provide the dialog font for!?")

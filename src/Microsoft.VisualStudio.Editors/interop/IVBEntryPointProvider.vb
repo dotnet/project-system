@@ -4,9 +4,9 @@ Imports System.Runtime.InteropServices
 
 Namespace Microsoft.VisualStudio.Editors.Interop
 
-    <ComImport(), Guid("3EB048DA-F881-4a7f-A9D4-0258E19978AA"), _
-    InterfaceType(ComInterfaceType.InterfaceIsIUnknown), _
-    CLSCompliant(False)> _
+    <ComImport(), Guid("3EB048DA-F881-4a7f-A9D4-0258E19978AA"),
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
+    CLSCompliant(False)>
     Friend Interface IVBEntryPointProvider
         'Lists all Form classes with an entry point. If called with cItems = 0 and
         '  pcActualItems != NULL, GetEntryPointsList returns in pcActualItems the number
@@ -19,9 +19,9 @@ Namespace Microsoft.VisualStudio.Editors.Interop
         '                                       cItems As UInteger, _
         '                                      <MarshalAs(UnmanagedType.LPArray, arraysubtype:=UnmanagedType.BStr), [In](), Out()> ByRef c() As String, _
         '                                     <Out()> ByRef pcActualItems As UInteger) As Integer
-        Function GetFormEntryPointsList(<MarshalAs(UnmanagedType.IUnknown), [In]()> pHierarchy As Object, _
-                                        cItems As UInteger, _
-                                        <Out(), MarshalAs(UnmanagedType.LPArray)> bstrList As String(), _
+        Function GetFormEntryPointsList(<MarshalAs(UnmanagedType.IUnknown), [In]()> pHierarchy As Object,
+                                        cItems As UInteger,
+                                        <Out(), MarshalAs(UnmanagedType.LPArray)> bstrList As String(),
                                         <Out()> ByRef pcActualItems As UInteger) As Integer
 
     End Interface

@@ -55,7 +55,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
     '''          (inherits from ComponentDesigner and implements IRootDesigner) and a view (probably inherits from
     '''           UserControl or ControlContainer)
     ''' </remarks>
-    <CLSCompliant(False)> _
+    <CLSCompliant(False)>
     Friend MustInherit Class BaseEditorFactory
         Implements IVsEditorFactory, IDisposable
 

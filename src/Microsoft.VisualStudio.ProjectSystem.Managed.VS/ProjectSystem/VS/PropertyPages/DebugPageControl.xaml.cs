@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
     /// </summary>
     internal partial class DebugPageControl : PropertyPageControl
     {
-        bool _customControlLayoutUpdateRequired = false;
+        private bool _customControlLayoutUpdateRequired = false;
 
         public DebugPageControl()
         {
@@ -24,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             LayoutUpdated += DebugPageControl_LayoutUpdated;
         }
 
-        void DebugPageControlControl_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        private void DebugPageControlControl_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             if (e.OldValue != null && e.OldValue is DebugPageViewModel)
             {

@@ -24,8 +24,8 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
 #Region " Public methods "
         Public Event ExtensionChanged()
 
-        Public Shared Function CreateNew( _
-                projectService As MyExtensibilityProjectService, serviceProvider As IServiceProvider, _
+        Public Shared Function CreateNew(
+                projectService As MyExtensibilityProjectService, serviceProvider As IServiceProvider,
                 project As Project, projectHierarchy As IVsHierarchy) As MyExtensibilityProjectSettings
             If projectService Is Nothing Then
                 Return Nothing
@@ -44,7 +44,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
                 Return Nothing
             End If
 
-            Return New MyExtensibilityProjectSettings(projectService, serviceProvider, _
+            Return New MyExtensibilityProjectSettings(projectService, serviceProvider,
                 project, projectHierarchy, vsBuildPropertyStorage)
         End Function
 

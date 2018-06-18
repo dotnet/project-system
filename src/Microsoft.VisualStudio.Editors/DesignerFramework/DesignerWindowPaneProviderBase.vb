@@ -35,7 +35,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="SupportToolbox"></param>
         ''' <remarks></remarks>
         Friend Sub New(provider As IServiceProvider, SupportToolbox As Boolean)
-            MyBase.new(provider)
+            MyBase.New(provider)
             _supportToolbox = SupportToolbox
         End Sub
 
