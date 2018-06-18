@@ -4,9 +4,9 @@ Imports System.ComponentModel
 
 Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
-    ''' <Summary>
+    ''' <summary>
     '''  a sub class of DescriptionAttribute to help localizating the description...
-    ''' </Summary>
+    ''' </summary>
     <AttributeUsage(AttributeTargets.All)>
     Friend Class VBDescriptionAttribute
         Inherits DescriptionAttribute

@@ -1447,9 +1447,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 _reverseOrder = reverseOrder
             End Sub
 
-            ''' <Summary>
+            ''' <summary>
             ''' which column is used to sort the list 
-            ''' </Summary>
+            ''' </summary>
             Friend Property ColumnIndex() As Integer
                 Get
                     Return _columnIndex
@@ -1459,9 +1459,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 End Set
             End Property
 
-            ''' <Summary>
+            ''' <summary>
             ''' whether it is in reverseOrder
-            ''' </Summary>
+            ''' </summary>
             Friend Property InReverseOrder() As Boolean
                 Get
                     Return _reverseOrder
@@ -1471,9 +1471,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 End Set
             End Property
 
-            ''' <Summary>
+            ''' <summary>
             '''  Compare two list items
-            ''' </Summary>
+            ''' </summary>
             Public Function Compare(x As Object, y As Object) As Integer Implements IComparer.Compare
                 Dim ret As Integer = String.Compare(GetColumnValue(x, _columnIndex), GetColumnValue(y, _columnIndex), StringComparison.CurrentCultureIgnoreCase)
                 If ret = 0 AndAlso _columnIndex <> 0 Then
@@ -1485,9 +1485,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Return ret
             End Function
 
-            ''' <Summary>
+            ''' <summary>
             '''  Get String Value of one column
-            ''' </Summary>
+            ''' </summary>
             Private Function GetColumnValue(obj As Object, column As Integer) As String
                 If TypeOf obj Is Resource Then
                     Return GetDetailViewColumn(DirectCast(obj, Resource), column)
@@ -1500,20 +1500,20 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
         End Class
 
-        ''' <Summary>
+        ''' <summary>
         '''  We save the index range of the items, whose images are quired by the ResourceListView.
         '''  We usually save the information directly in m_ImageStartIndex and m_ImageEndIndex field in the ListView,
         '''  However, when we need load several blocks of them, we have to save the block we haven't processed in a stack.
         '''   This class is the record we push to the stack.
-        ''' </Summary>
+        ''' </summary>
         Private Class ImageCacheRequirement
             ' We should cache images from StartIndex to EndIndex (included)
             Public StartIndex As Integer
             Public EndIndex As Integer
 
-            ''' <Summary>
+            ''' <summary>
             ''' Constructor.
-            ''' </Summary>
+            ''' </summary>
             ''' <param name="StartIndex"></param>
             ''' <param name="EndIndex"></param>
             Public Sub New(StartIndex As Integer, EndIndex As Integer)

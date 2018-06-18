@@ -1,12 +1,12 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.ComponentModel
 
 Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
-    ''' <Summary>
+    ''' <summary>
     ''' A warp class to warp a Common object to a component, but still keep the right properties set to show on the property Grid
-    ''' </Summary>
+    ''' </summary>
     Friend Class ComponentWrapper
         Inherits Component
         Implements ICustomTypeDescriptor
@@ -17,9 +17,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             _currentObject = realObject
         End Sub
 
-        ''' <Summary>
+        ''' <summary>
         ''' the original object
-        ''' </Summary>
+        ''' </summary>
         Protected Friend Property CurrentObject() As Object
             Get
                 Return _currentObject
