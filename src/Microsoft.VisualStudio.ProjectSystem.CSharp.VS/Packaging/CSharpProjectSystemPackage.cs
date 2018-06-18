@@ -8,7 +8,6 @@ using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.Packaging;
 using Microsoft.VisualStudio.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.VS;
-using Microsoft.VisualStudio.ProjectSystem.VS.Generators;
 using Microsoft.VisualStudio.ProjectSystem.VS.Xproj;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
@@ -23,15 +22,11 @@ namespace Microsoft.VisualStudio.Packaging
     [Guid(PackageGuid)]
     [PackageRegistration(AllowsBackgroundLoading = true, RegisterUsing = RegistrationMethod.CodeBase, UseManagedResourcesOnly = true)]
     [ProvideProjectFactory(typeof(MigrateXprojProjectFactory), null, "#8", "xproj", "xproj", null)]
-    [ClassRegistration(DebugPropertyClassId, DebugPropertyClassInfo)]
     internal class CSharpProjectSystemPackage : AsyncPackage
     {
         public const string ProjectTypeGuid = "9A19103F-16F7-4668-BE54-9A1E7A4F7556";
         public const string LegacyProjectTypeGuid = "FAE04EC0-301F-11d3-BF4B-00C04F79EFBC";
         public const string PackageGuid = "860A27C0-B665-47F3-BC12-637E16A1050A";
-
-        private const string DebugPropertyClassId = "{0273C280-1882-4ED0-9308-52914672E3AA}";
-        private const string DebugPropertyClassInfo = "Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.DebugPropertyPage";
 
         private IVsProjectFactory _factory;
 

@@ -15,15 +15,11 @@ namespace Microsoft.VisualStudio.Packaging
 {
     [Guid("D15F5C78-D04F-45FD-AEA2-D7982D8FA429")]
     [PackageRegistration(AllowsBackgroundLoading = true, RegisterUsing = RegistrationMethod.CodeBase, UseManagedResourcesOnly = true)]
-    [ClassRegistration(DebugPropertyClassId, DebugPropertyClassInfo)]
     internal class VisualBasicProjectSystemPackage : AsyncPackage
     {
         public const string ProjectTypeGuid = "778DAE3C-4631-46EA-AA77-85C1314464D9";
         public const string LegacyProjectTypeGuid = "F184B08F-C81C-45F6-A57F-5ABD9991F28F";
         public const string PackageGuid = "D15F5C78-D04F-45FD-AEA2-D7982D8FA429";
-
-        private const string DebugPropertyClassId = "{0273C280-1882-4ED0-9308-52914672E3AA}";
-        private const string DebugPropertyClassInfo = "Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.DebugPropertyPage";
 
         public VisualBasicProjectSystemPackage()
         {
