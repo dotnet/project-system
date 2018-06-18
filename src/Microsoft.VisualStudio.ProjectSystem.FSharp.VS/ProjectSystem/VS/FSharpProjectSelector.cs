@@ -5,18 +5,16 @@ using System.Xml.Linq;
 using System.Xml.XPath;
 
 using Microsoft.VisualStudio.Packaging;
-using Microsoft.VisualStudio.ProjectSystem.VS.Generators;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     [ComVisible(true)]
-    [Guid(SelectorGuid)]
-    [ClassRegistration(SelectorGuid, AssemblyQualifiedSelectorTypeName)]
+    [Guid("E720DAD0-1854-47FC-93AF-E719B54B84E6")]
+    [ProvideObject(typeof(FSharpProjectSelector), RegisterUsing = RegistrationMethod.CodeBase)]
     public sealed class FSharpProjectSelector : IVsProjectSelector
     {
-        public const string SelectorGuid = "E720DAD0-1854-47FC-93AF-E719B54B84E6";
-        public const string AssemblyQualifiedSelectorTypeName = "Microsoft.VisualStudio.ProjectSystem.VS.FSharpProjectSelector, Microsoft.VisualStudio.ProjectSystem.FSharp.VS";
         private const string MSBuildXmlNamespace = "http://schemas.microsoft.com/developer/msbuild/2003";
 
         public void GetProjectFactoryGuid(Guid guidProjectType, string pszFilename, out Guid guidProjectFactory)
