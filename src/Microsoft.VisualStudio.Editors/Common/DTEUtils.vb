@@ -13,8 +13,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
     ''' <remarks></remarks>
     Friend NotInheritable Class DTEUtils
 
-
-        'The relevant project property names
         Public Const PROJECTPROPERTY_CUSTOMTOOL As String = "CustomTool"
         Public Const PROJECTPROPERTY_CUSTOMTOOLNAMESPACE As String = "CustomToolNamespace"
 
@@ -28,7 +26,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
         Private Sub New()
         End Sub
 
-
         ''' <summary>
         ''' Given a collection of ProjectItem ("ProjectItems"), queries it for the ProjectItem
         '''   of a given key.  If not found, returns Nothing.
@@ -40,19 +37,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
         Public Shared Function QueryProjectItems(ProjectItems As ProjectItems, Name As String) As ProjectItem
             Return ResourceEditor.ResourcesFolderService.QueryProjectItems(ProjectItems, Name)
         End Function
-
-
-        ''' <summary>
-        ''' Given a DTE project, return the directory on disk where templates for that project system
-        '''   are stored.
-        ''' </summary>
-        ''' <param name="Project">The project.</param>
-        ''' <returns>The full path of the templates directory for that project.</returns>
-        ''' <remarks></remarks>
-        Public Shared Function GetProjectTemplateDirectory(Project As Project) As String
-            Return Project.DTE.Solution.ProjectItemsTemplatePath(Project.Kind)
-        End Function
-
 
         ''' <summary>
         ''' Retrieves the directory name on disk for a ProjectItems collection.
@@ -76,25 +60,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
         End Function
 
         ''' <summary>
-        ''' Get the current EnvDTE.Project instance for the project associated with the ProjectUniqueName
-        ''' </summary>
-        ''' <remarks></remarks>
-        Friend Shared Function EnvDTEProjectFromProjectUniqueName(ProjectUniqueName As String) As Project
-
-            Dim SolutionService As IVsSolution = TryCast(Shell.Package.GetGlobalService(GetType(IVsSolution)), IVsSolution)
-
-            If SolutionService IsNot Nothing Then
-                Dim Hierarchy As IVsHierarchy = Nothing
-
-                If VSErrorHandler.Succeeded(SolutionService.GetProjectOfUniqueName(ProjectUniqueName, Hierarchy)) Then
-                    Return EnvDTEProject(Hierarchy)
-                End If
-            End If
-
-            Return Nothing
-        End Function
-
-        ''' <summary>
         ''' Get EnvDTE.ProjectItem from hierarchy and itemid
         ''' </summary>
         ''' <param name="VsHierarchy"></param>
@@ -107,7 +72,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
             Debug.Assert(ExtensibilityObject IsNot Nothing AndAlso TypeOf ExtensibilityObject Is ProjectItem)
             Return DirectCast(ExtensibilityObject, ProjectItem)
         End Function
-
 
         ''' <summary>
         ''' Finds all files within a given ProjectItem that contain the given extension
@@ -132,7 +96,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
             Return ResXFiles
         End Function
 
-
         ''' <summary>
         ''' Get the file name from a project item.
         ''' </summary>
@@ -154,7 +117,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
             Return ProjectItem.FileNames(1)
         End Function
 
-
         ''' <summary>
         ''' Retrieves the given project item's property, if it exists, else Nothing
         ''' </summary>
@@ -175,7 +137,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
             Return Nothing
         End Function
 
-
         ''' <summary>
         ''' Retrieves the given project's property, if it exists, else Nothing
         ''' </summary>
@@ -195,42 +156,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
 
             Return Nothing
         End Function
-
-
-        ''' <summary>
-        ''' Given a DTE project, returns the active IVsCfg configuration for it
-        ''' </summary>
-        ''' <param name="Project">The DTE project</param>
-        ''' <param name="VsCfgProvider">The IVsCfgProvider2 interface instance to look up the active configuration from</param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Public Shared Function GetActiveConfiguration(Project As Project, VsCfgProvider As IVsCfgProvider2) As IVsCfg
-            Dim VsCfg As IVsCfg = Nothing
-            With GetActiveDTEConfiguration(Project)
-                VSErrorHandler.ThrowOnFailure(VsCfgProvider.GetCfgOfName(.ConfigurationName, .PlatformName, VsCfg))
-            End With
-            Return VsCfg
-        End Function
-
-
-        ''' <summary>
-        ''' Given a DTE project, returns the active DTE configuration object for it
-        ''' </summary>
-        ''' <param name="Project">The DTE project</param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Public Shared Function GetActiveDTEConfiguration(Project As Project) As Configuration
-            Try
-                Return Project.ConfigurationManager.ActiveConfiguration
-            Catch ex As ArgumentException
-                'If there are no configurations defined in the project, this call can fail.  In that case, just return
-                '  the first config (there should be a single Debug configuration automatically defined and available).
-                Return Project.ConfigurationManager.Item(1) '1-indexed
-            Catch ex As Exception When ReportWithoutCrash(ex, "Unexpected exception trying to get the active configuration", NameOf(DTEUtils))
-                Return Project.ConfigurationManager.Item(1) '1-indexed
-            End Try
-        End Function
-
 
         ''' <summary>
         ''' Tries to set the Build Action property of the given project item to the given build action (enumation).  
