@@ -5,7 +5,6 @@ using System.Runtime.InteropServices;
 using Microsoft.VisualStudio.Packaging;
 using Microsoft.VisualStudio.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.VS;
-using Microsoft.VisualStudio.ProjectSystem.VS.Generators;
 using Microsoft.VisualStudio.Shell;
 
 // We register ourselves as a new CPS "project type", as well as setting ourselves as the prefered project type for the legacy VB project type.
