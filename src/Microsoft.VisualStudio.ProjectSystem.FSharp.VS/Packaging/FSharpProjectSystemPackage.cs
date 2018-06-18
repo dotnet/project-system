@@ -10,6 +10,8 @@ using Microsoft.VisualStudio.ProjectSystem.VS;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
+using Task = System.Threading.Tasks.Task;
+
 // We register ourselves as a new CPS "project type"
 [assembly: ProjectTypeRegistration(projectTypeGuid: FSharpProjectSystemPackage.ProjectTypeGuid, displayName: "#1", displayProjectFileExtensions: "#2", defaultProjectExtension: "fsproj", language: "FSharp", resourcePackageGuid: FSharpProjectSystemPackage.PackageGuid, Capabilities = ManagedProjectSystemPackage.DefaultCapabilities + "; " + ProjectCapability.FSharp + "; " + ProjectCapability.SortByDisplayOrder, DisableAsynchronousProjectTreeLoad = true)]
 
@@ -30,13 +32,16 @@ namespace Microsoft.VisualStudio.Packaging
         {
         }
 
-        protected override System.Threading.Tasks.Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
+        protected override async Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
             _projectSelectorService = this.GetService<IVsRegisterProjectSelector, SVsRegisterProjectTypes>();
             Guid selectorGuid = typeof(FSharpProjectSelector).GUID;
             _projectSelectorService.RegisterProjectSelector(ref selectorGuid, new FSharpProjectSelector(), out _projectSelectorCookie);
 
-            return base.InitializeAsync(cancellationToken, progress);
+            await base.InitializeAsync(cancellationToken, progress)
+                      .ConfigureAwait(true); // Avoid forced switch to thread-pool
         }
 
         protected override void Dispose(bool disposing)
