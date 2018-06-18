@@ -961,12 +961,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             SetComboBoxDropdownWidth(ApplicationManifest)
         End Sub
 
-        '@ <summary>
-        '@ 
-        '@ </summary>
-        '@ <param name="sender"></param>
-        '@ <param name="e"></param>
-        '@ <remarks></remarks>
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' <param name="sender"></param>
+        ''' <param name="e"></param>
+        ''' <remarks></remarks>
         Private Sub ApplicationManifest_LostFocus(sender As Object, e As EventArgs) Handles ApplicationManifest.LostFocus
             If m_fInsideInit Then
                 Return

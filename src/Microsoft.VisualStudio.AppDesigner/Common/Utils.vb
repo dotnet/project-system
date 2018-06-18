@@ -353,12 +353,12 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
             Return False
         End Function
 
-        '@ <summary>
-        '@ Sets error code and error message through IVsUIShell interface
-        '@ </summary>
-        '@ <param name="hr">error code</param>
-        '@ <param name="error message">error message</param>
-        '@ <returns></returns>
+        ''' <summary>
+        ''' Sets error code and error message through IVsUIShell interface
+        ''' </summary>
+        ''' <param name="hr">error code</param>
+        ''' <param name="error message">error message</param>
+        ''' <returns></returns>
         Public Sub SetErrorInfo(sp As ServiceProvider, hr As Integer, errorMessage As String)
             Dim vsUIShell As Interop.IVsUIShell = Nothing
 
@@ -549,11 +549,11 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         End Function
 
 
-        '@ <summary>
-        '@ Change the Filter String to the format we can use in IVsUIShell function
-        '@ </summary>
-        '@ <param name="Filter">file type filter</param>
-        '@ <returns>a native filter string</returns>
+        ''' <summary>
+        ''' Change the Filter String to the format we can use in IVsUIShell function
+        ''' </summary>
+        ''' <param name="Filter">file type filter</param>
+        ''' <returns>a native filter string</returns>
         Private Function GetNativeFilter(Filter As String) As String
             If Filter IsNot Nothing Then
                 Dim length As Integer = Filter.Length
@@ -571,11 +571,11 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
             Return Filter
         End Function
 
-        '@ <summary>
-        '@ Change the InitialDirectory path to the format we can use in IVsUIShell function
-        '@ </summary>
-        '@ <param name="InitialDirectory">The initial directory for the dialog.  Can be Nothing or empty.</param>
-        '@ <returns>a directory path</returns>
+        ''' <summary>
+        ''' Change the InitialDirectory path to the format we can use in IVsUIShell function
+        ''' </summary>
+        ''' <param name="InitialDirectory">The initial directory for the dialog.  Can be Nothing or empty.</param>
+        ''' <returns>a directory path</returns>
         Private Function NormalizeInitialDirectory(InitialDirectory As String) As String
             If InitialDirectory IsNot Nothing Then
                 InitialDirectory = Trim(InitialDirectory)
