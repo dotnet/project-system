@@ -5,10 +5,10 @@ Imports System.Reflection
 
 Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
-    '@ <summary>
-    '@ Generator for strongly typed settings wrapper class
-    '@ </summary>
-    '@ <remarks></remarks>
+    ''' <summary>
+    ''' Generator for strongly typed settings wrapper class
+    ''' </summary>
+    ''' <remarks></remarks>
     <Guid("940f36b5-a42e-435e-8ef4-20b9d4801d22")>
     Public Class PublicSettingsSingleFileGenerator
         Inherits SettingsSingleFileGeneratorBase

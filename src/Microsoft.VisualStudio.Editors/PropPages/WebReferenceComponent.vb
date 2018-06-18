@@ -5,9 +5,9 @@ Imports System.ComponentModel.Design
 
 Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
-    ''' <Summary>
+    ''' <summary>
     ''' This is the class we wrapped a web reference and pushed to the propertyGrid
-    ''' </Summary>
+    ''' </summary>
     Friend Class WebReferenceComponent
         Inherits Component
         Implements ICustomTypeDescriptor, IReferenceComponent, IUpdatableReferenceComponent
@@ -206,9 +206,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Dynamic
     End Enum
 
-    ''' <Summary>
+    ''' <summary>
     '''  a TypeConvert to localize the UrlBehavior property...
-    ''' </Summary>
+    ''' </summary>
     Friend Class UrlBehaviorTypeConverter
         Inherits TypeConverter
 

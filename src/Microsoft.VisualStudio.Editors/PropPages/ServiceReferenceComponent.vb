@@ -7,9 +7,9 @@ Imports Microsoft.VisualStudio.WCFReference.Interop
 
 Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
-    ''' <Summary>
+    ''' <summary>
     ''' This is the class we wrapped a WCF service reference and pushed to the propertyGrid
-    ''' </Summary>
+    ''' </summary>
     Friend Class ServiceReferenceComponent
         Inherits Component
         Implements ICustomTypeDescriptor, IReferenceComponent, IUpdatableReferenceComponent

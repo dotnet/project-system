@@ -771,11 +771,11 @@ Namespace Microsoft.VisualStudio.Editors.Common
             Return fileNames
         End Function
 
-        '@ <summary>
-        '@ Change the InitialDirectory path to the format we can use in IVsUIShell function
-        '@ </summary>
-        '@ <param name="InitialDirectory">The initial directory for the dialog.  Can be Nothing or empty.</param>
-        '@ <returns>a directory path</returns>
+        ''' <summary>
+        ''' Change the InitialDirectory path to the format we can use in IVsUIShell function
+        ''' </summary>
+        ''' <param name="InitialDirectory">The initial directory for the dialog.  Can be Nothing or empty.</param>
+        ''' <returns>a directory path</returns>
         Private Function NormalizeInitialDirectory(InitialDirectory As String) As String
             If InitialDirectory IsNot Nothing Then
                 InitialDirectory = Trim(InitialDirectory)
@@ -795,11 +795,11 @@ Namespace Microsoft.VisualStudio.Editors.Common
             Return InitialDirectory
         End Function
 
-        '@ <summary>
-        '@ Change the Filter String to the format we can use in IVsUIShell function
-        '@ </summary>
-        '@ <param name="Filter">file type filter</param>
-        '@ <returns>a native filter string</returns>
+        ''' <summary>
+        ''' Change the Filter String to the format we can use in IVsUIShell function
+        ''' </summary>
+        ''' <param name="Filter">file type filter</param>
+        ''' <returns>a native filter string</returns>
         Private Function GetNativeFilter(Filter As String) As String
             If Filter IsNot Nothing Then
                 Dim length As Integer = Filter.Length
@@ -817,18 +817,18 @@ Namespace Microsoft.VisualStudio.Editors.Common
             Return Filter
         End Function
 
-        '@ <summary>
-        '@ Browses to save a File.
-        '@ </summary>
-        '@ <param name="ServiceProvider">Service Provider</param>
-        '@ <param name="ParentWindow">Window Handle of the parent window</param>
-        '@ <param name="InitialDirectory">The initial directory for the dialog.  Can be Nothing or empty.</param>
-        '@ <param name="DialogTitle">The dialog title.</param>
-        '@ <param name="Filter">The filter string to use.</param>
-        '@ <param name="FilterIndex">The filter index to start out with.</param>
-        '@ <param name="DefaultFileName">The default file name.</param>
-        '@ <param name="OverwritePrompt">If true, Windows will ask the user to overwrite the file if it already exists.</param>
-        '@ <returns>The selected file/path, or Nothing if the user canceled.</returns>
+        ''' <summary>
+        ''' Browses to save a File.
+        ''' </summary>
+        ''' <param name="ServiceProvider">Service Provider</param>
+        ''' <param name="ParentWindow">Window Handle of the parent window</param>
+        ''' <param name="InitialDirectory">The initial directory for the dialog.  Can be Nothing or empty.</param>
+        ''' <param name="DialogTitle">The dialog title.</param>
+        ''' <param name="Filter">The filter string to use.</param>
+        ''' <param name="FilterIndex">The filter index to start out with.</param>
+        ''' <param name="DefaultFileName">The default file name.</param>
+        ''' <param name="OverwritePrompt">If true, Windows will ask the user to overwrite the file if it already exists.</param>
+        ''' <returns>The selected file/path, or Nothing if the user canceled.</returns>
         Friend Function GetNewFileNameViaBrowse(ServiceProvider As IServiceProvider, ParentWindow As IntPtr,
                 InitialDirectory As String, DialogTitle As String,
                 Filter As String, FilterIndex As UInteger,
@@ -1083,12 +1083,12 @@ Namespace Microsoft.VisualStudio.Editors.Common
             End If
         End Function
 
-        '@ <summary>
-        '@ Sets error code and error message through IVsUIShell interface
-        '@ </summary>
-        '@ <param name="hr">error code</param>
-        '@ <param name="error message">error message</param>
-        '@ <returns></returns>
+        ''' <summary>
+        ''' Sets error code and error message through IVsUIShell interface
+        ''' </summary>
+        ''' <param name="hr">error code</param>
+        ''' <param name="errorMessage">error message</param>
+        ''' <returns></returns>
         Public Sub SetErrorInfo(sp As ServiceProvider, hr As Integer, errorMessage As String)
             Dim vsUIShell As IVsUIShell = Nothing
 
@@ -1160,33 +1160,33 @@ Namespace Microsoft.VisualStudio.Editors.Common
             Return True
         End Function
 
-        '@ <summary>
-        '@ Validates whether it is a high-surrogate character
-        '@ </summary>
-        '@ <param name="ch">a character to check</param>
-        '@ <returns>True if it is a high-surrogate character</returns>
+        ''' <summary>
+        ''' Validates whether it is a high-surrogate character
+        ''' </summary>
+        ''' <param name="ch">a character to check</param>
+        ''' <returns>True if it is a high-surrogate character</returns>
         Public Function IsHighSurrogate(ch As Char) As Boolean
             Return AscW(ch) >= &HD800 AndAlso AscW(ch) <= &HDBFF
         End Function
 
-        '@ <summary>
-        '@ Validates whether it is a low-surrogate character
-        '@ </summary>
-        '@ <param name="ch">a character to check</param>
-        '@ <returns>True if it is a low-surrogate character</returns>
+        ''' <summary>
+        ''' Validates whether it is a low-surrogate character
+        ''' </summary>
+        ''' <param name="ch">a character to check</param>
+        ''' <returns>True if it is a low-surrogate character</returns>
         Public Function IsLowSurrogate(ch As Char) As Boolean
             Return AscW(ch) >= &HDC00 AndAlso AscW(ch) <= &HDFFF
         End Function
 
-        '@ <summary>
-        '@ Get the namespace for the generated file...
-        '@ </summary>
-        '@ <param name="Hierarchy"></param>
-        '@ <param name="ItemId"></param>
-        '@ <param name="IncludeRootNamespace"></param>
-        '@ <param name="SupportCustomToolNamespace"></param>
-        '@ <returns></returns>
-        '@ <remarks></remarks>
+        ''' <summary>
+        ''' Get the namespace for the generated file...
+        ''' </summary>
+        ''' <param name="Hierarchy"></param>
+        ''' <param name="ItemId"></param>
+        ''' <param name="IncludeRootNamespace"></param>
+        ''' <param name="SupportCustomToolNamespace"></param>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
         Friend Function GeneratedCodeNamespace(Hierarchy As IVsHierarchy, ItemId As UInteger, IncludeRootNamespace As Boolean, SupportCustomToolNamespace As Boolean) As String
             ' Try to get the root namespace property (if VB)
             Dim RootNamespace As String = ""

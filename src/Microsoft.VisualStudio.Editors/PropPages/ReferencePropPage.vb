@@ -124,10 +124,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End Get
         End Property
 
-        ''' <Summary>
+        ''' <summary>
         ''' The designer host of this page
         ''' NOTE: we currently get the designer host from the propertyPageDesignerView, it is a workaround. The right solution should be the parent page pass in the right serviceProvider when it creates/initializes this page
-        ''' </Summary>
+        ''' </summary>
         Private ReadOnly Property DesignerHost() As IDesignerHost
             Get
                 If _designerHost Is Nothing Then
@@ -164,10 +164,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End Get
         End Property
 
-        ''' <Summary>
+        ''' <summary>
         ''' ITrackSelection -- we are using this service to push objects to the propertyPage.
         '''  We should get this service from DesignerHost, but not other service provider. Each designer has its own ITrackSelection
-        ''' </Summary>
+        ''' </summary>
         Private ReadOnly Property TrackSelection() As ITrackSelection
             Get
                 If _trackSelection Is Nothing Then
@@ -1265,9 +1265,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             PushSelection()
         End Sub
 
-        ''' <Summary>
+        ''' <summary>
         '''  When the customer clicks a column header, we should sort the reference list
-        ''' </Summary>
+        ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         Private Sub ReferenceList_ColumnClick(sender As Object, e As ColumnClickEventArgs) Handles ReferenceList.ColumnClick
@@ -1931,11 +1931,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             ReferenceRemoved
         End Enum
 
-        ''' <Summary>
+        ''' <summary>
         ''' This is the structure we used to save information when we receive Reference/WebReference change event.
         ''' We save the changes in a collection, and do a batch process to update our UI later.
         '''  We record Reference/WebReferenc changes with the same class. But only one of the Reference and WebReference property contains value, while the other one contains Nothing
-        ''' </Summary>
+        ''' </summary>
         Private Class ReferenceUpdateItem
             Private ReadOnly _updateType As ReferenceUpdateType
             Private ReadOnly _reference As VSLangProj.Reference
@@ -1983,9 +1983,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Class
 #End Region
 
-        ''' <Summary>
+        ''' <summary>
         ''' We save information in a collection when we receive Reference change event.
-        ''' </Summary>
+        ''' </summary>
         Private Overloads Sub AddDelayUpdateItem(updateType As ReferenceUpdateType, reference As VSLangProj.Reference)
             If _delayUpdatingItems Is Nothing Then
                 _delayUpdatingItems = New Queue
@@ -1993,9 +1993,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             _delayUpdatingItems.Enqueue(New ReferenceUpdateItem(updateType, reference))
         End Sub
 
-        ''' <Summary>
+        ''' <summary>
         ''' We save information in a collection when we receive WebReference change event.
-        ''' </Summary>
+        ''' </summary>
         Private Overloads Sub AddDelayUpdateItem(updateType As ReferenceUpdateType, item As EnvDTE.ProjectItem)
             If _delayUpdatingItems Is Nothing Then
                 _delayUpdatingItems = New Queue
@@ -2003,9 +2003,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             _delayUpdatingItems.Enqueue(New ReferenceUpdateItem(updateType, item))
         End Sub
 
-        ''' <Summary>
+        ''' <summary>
         ''' We save information in a collection when we receive ServiceReference change event.
-        ''' </Summary>
+        ''' </summary>
         Private Overloads Sub AddDelayUpdateItem(updateType As ReferenceUpdateType, item As IVsWCFReferenceGroup)
             If _delayUpdatingItems Is Nothing Then
                 _delayUpdatingItems = New Queue
@@ -2013,12 +2013,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             _delayUpdatingItems.Enqueue(New ReferenceUpdateItem(updateType, item))
         End Sub
 
-        ''' <Summary>
+        ''' <summary>
         ''' We  save information in a collection when we receive Reference/WebReference change event.
         ''' We will do a batch process to update our UI later.
         '''  In some cases, we call ProcessDelayUpdateItems to do the process after we finish the UI action.
         ''' But in most case, we post a window message, and do the process later. It prevents us to access the object when it is not ready.
-        ''' </Summary>
+        ''' </summary>
         Private Sub ProcessDelayUpdateItems()
             If _delayUpdatingItems IsNot Nothing Then
                 Dim updateComponents As New ArrayList()
@@ -2130,9 +2130,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Sub
 
-        ''' <Summary>
+        ''' <summary>
         ''' This function will be called when the customer change the property on the propertyPage, we need update our UI as well...
-        ''' </Summary>
+        ''' </summary>
         Friend Sub OnWebReferencePropertyChanged(webReference As WebReferenceComponent)
             HoldSelectionChange(True)
             Try
