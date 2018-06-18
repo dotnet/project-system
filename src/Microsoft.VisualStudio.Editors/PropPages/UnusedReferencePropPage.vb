@@ -500,9 +500,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         End Sub
 
-        ''' <Summary>
+        ''' <summary>
         '''  When the customer clicks a column header, we should sort the reference list
-        ''' </Summary>
+        ''' </summary>
         ''' <param name="sender">Event args</param>
         ''' <param name="e">Event args</param>
         Private Sub OnUnusedRerenceListColumnClick(sender As Object, e As ColumnClickEventArgs) Handles UnusedReferenceList.ColumnClick
@@ -517,9 +517,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
 
-        ''' <Summary>
+        ''' <summary>
         '''  We need initialize the dialog when it pops up (everytime)
-        ''' </Summary>
+        ''' </summary>
         ''' <param name="sender">Event args</param>
         ''' <param name="e">Event args</param>
         Private Sub OnHostDialogShown(sender As Object, e As EventArgs) Handles _hostDialog.Shown

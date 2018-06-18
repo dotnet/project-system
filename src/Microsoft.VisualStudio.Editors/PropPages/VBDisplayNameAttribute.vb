@@ -4,9 +4,9 @@ Imports System.ComponentModel
 
 Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
-    ''' <Summary>
+    ''' <summary>
     '''  a sub class of DisplayNameAttribute to help localizating the property name...
-    ''' </Summary>
+    ''' </summary>
     <AttributeUsage(AttributeTargets.All)>
     Friend Class VBDisplayNameAttribute
         Inherits DisplayNameAttribute

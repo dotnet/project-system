@@ -2,9 +2,9 @@
 
 Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
-    ''' <Summary>
+    ''' <summary>
     ''' The component class to wrap the original reference object. We will push this object to the property grid
-    ''' </Summary>
+    ''' </summary>
     Friend Class ReferenceComponent
         Inherits ComponentWrapper
         Implements IComparable, IReferenceComponent
@@ -13,9 +13,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             MyBase.New(realObject)
         End Sub
 
-        ''' <Summary>
+        ''' <summary>
         ''' The original reference object in DTE.Project
-        ''' </Summary>
+        ''' </summary>
         Friend ReadOnly Property CodeReference() As VSLangProj.Reference
             Get
                 Return CType(CurrentObject, VSLangProj.Reference)
@@ -28,9 +28,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End Get
         End Property
 
-        ''' <Summary>
+        ''' <summary>
         ''' Remove the referece from the project...
-        ''' </Summary>
+        ''' </summary>
         Private Sub Remove() Implements IReferenceComponent.Remove
             CodeReference.Remove()
         End Sub

@@ -21,9 +21,9 @@ Namespace Microsoft.VisualStudio.Editors.Common
 
         Private _sorting As SortOrder = SortOrder.Ascending
 
-        ''' <Summary>
+        ''' <summary>
         '''  Which column should be used to sort the list. Start from 0
-        ''' </Summary>
+        ''' </summary>
         Public Property SortColumn() As Integer
             Get
                 Return _sortColumn
@@ -33,9 +33,9 @@ Namespace Microsoft.VisualStudio.Editors.Common
             End Set
         End Property
 
-        ''' <Summary>
+        ''' <summary>
         '''  which order, Ascending or Descending
-        ''' </Summary>
+        ''' </summary>
         Public Property Sorting() As SortOrder
             Get
                 Return _sorting
@@ -45,9 +45,9 @@ Namespace Microsoft.VisualStudio.Editors.Common
             End Set
         End Property
 
-        ''' <Summary>
+        ''' <summary>
         '''  Compare two list items
-        ''' </Summary>
+        ''' </summary>
         Public Function Compare(x As Object, y As Object) As Integer Implements IComparer.Compare
             Dim ret As Integer = String.Compare(GetColumnValue(x, _sortColumn), GetColumnValue(y, _sortColumn), StringComparison.OrdinalIgnoreCase)
             If ret = 0 AndAlso _sortColumn <> 0 Then
@@ -59,9 +59,9 @@ Namespace Microsoft.VisualStudio.Editors.Common
             Return ret
         End Function
 
-        ''' <Summary>
+        ''' <summary>
         '''  Get String Value of one column
-        ''' </Summary>
+        ''' </summary>
         Private Function GetColumnValue(obj As Object, column As Integer) As String
             If TypeOf obj Is ListViewItem Then
                 Dim listItem As ListViewItem = CType(obj, ListViewItem)

@@ -256,10 +256,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return True
         End Function
 
-        ''' <Summary>
+        ''' <summary>
         ''' We shadow the original ShowDialog, because the right way to show dialog in VS is to use the IUIService. So the font/size will be set correctly.
         ''' The caller should pass a valid serviceProvider here. The dialog also hold it to invoke the help system
-        ''' </Summary>
+        ''' </summary>
         Public Shadows Function ShowDialog(sp As IServiceProvider) As DialogResult
             If sp IsNot Nothing Then
                 ServiceProvider = sp
