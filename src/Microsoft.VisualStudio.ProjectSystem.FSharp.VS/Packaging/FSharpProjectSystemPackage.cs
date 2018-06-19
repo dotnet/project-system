@@ -34,7 +34,7 @@ namespace Microsoft.VisualStudio.Packaging
         public const string PackageGuid = "a724c878-e8fd-4feb-b537-60baba7eda83";
 
         private IVsRegisterProjectSelector _projectSelectorService;
-        private uint _projectSelectorCookie;
+        private uint _projectSelectorCookie = VSConstants.VSCOOKIE_NIL;
 
         public FSharpProjectSystemPackage()
         {
@@ -54,7 +54,12 @@ namespace Microsoft.VisualStudio.Packaging
 
         protected override void Dispose(bool disposing)
         {
-            _projectSelectorService.UnregisterProjectSelector(_projectSelectorCookie);
+            if (disposing && _projectSelectorCookie != VSConstants.VSCOOKIE_NIL)
+            {
+                _projectSelectorService?.UnregisterProjectSelector(_projectSelectorCookie);
+                _projectSelectorCookie = VSConstants.VSCOOKIE_NIL;
+            }
+
             base.Dispose(disposing);
         }
     }
