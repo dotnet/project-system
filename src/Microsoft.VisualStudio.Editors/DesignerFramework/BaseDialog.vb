@@ -35,7 +35,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <remarks>
         ''' Do not use this constructor in your code!
         ''' </remarks>
-        <EditorBrowsable(EditorBrowsableState.Never)> _
+        <EditorBrowsable(EditorBrowsableState.Never)>
         Public Sub New()
             Debug.Fail("You should use the constructor with a ServiceProvider paramemter")
         End Sub

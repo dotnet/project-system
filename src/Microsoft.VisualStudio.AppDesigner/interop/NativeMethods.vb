@@ -8,7 +8,7 @@ Imports System.Windows.Forms
 #Disable Warning IDE1006 ' Naming Styles
 
 Namespace Microsoft.VisualStudio.Editors.AppDesInterop
-    <ComVisible(False)> _
+    <ComVisible(False)>
     Friend NotInheritable Class NativeMethods
 
         Private Const VB_COMPILER_GUID As String = "019971d6-4685-11d2-b48a-0000f87572eb"
@@ -377,11 +377,11 @@ Namespace Microsoft.VisualStudio.Editors.AppDesInterop
             Public item_lParam As IntPtr
         End Structure
 
-        <DllImport("user32")> _
+        <DllImport("user32")>
         Public Shared Function GetComboBoxInfo(hwndCombo As IntPtr, ByRef info As COMBOBOXINFO) As Boolean
         End Function
 
-        <StructLayout(LayoutKind.Sequential)> _
+        <StructLayout(LayoutKind.Sequential)>
         Public Structure COMBOBOXINFO
             Public cbSize As Integer
             Public rcItem As RECT
@@ -397,7 +397,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesInterop
     '//
     '// ILangPropertyProvideBatchUpdate
     '//
-    <ComImport(), Guid("F8828A38-5208-4497-991A-F8034C8D5A69"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)> _
+    <ComImport(), Guid("F8828A38-5208-4497-991A-F8034C8D5A69"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)>
     Public Interface ILangPropertyProvideBatchUpdate
         Sub BeginBatch()
         Sub EndBatch()
@@ -405,10 +405,10 @@ Namespace Microsoft.VisualStudio.Editors.AppDesInterop
         Sub PushOptionsToCompiler(dispid As UInteger)
     End Interface
 
-    <ComImport()> _
-    <Guid("E5CB7A31-7512-11d2-89CE-0080C792E5D8")> _
-    <TypeLibType(TypeLibTypeFlags.FCanCreate)> _
-    <ClassInterface(ClassInterfaceType.None)> _
+    <ComImport()>
+    <Guid("E5CB7A31-7512-11d2-89CE-0080C792E5D8")>
+    <TypeLibType(TypeLibTypeFlags.FCanCreate)>
+    <ClassInterface(ClassInterfaceType.None)>
     Public Class CorMetaDataDispenser
     End Class
 

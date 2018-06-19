@@ -11,9 +11,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
     ''' <summary>
     ''' COM class for My Extensions property page.
     ''' </summary>
-    <Guid("F24459FC-E883-4A8E-9DA2-AEF684F0E1F4"), _
-    ComVisible(True), _
-    CLSCompliant(False)> _
+    <Guid("F24459FC-E883-4A8E-9DA2-AEF684F0E1F4"),
+    ComVisible(True),
+    CLSCompliant(False)>
     Public Class MyExtensibilityPropPageComClass
         Inherits VBPropPageBase
 

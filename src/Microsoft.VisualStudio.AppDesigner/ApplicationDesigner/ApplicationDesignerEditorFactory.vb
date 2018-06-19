@@ -17,8 +17,8 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
     '   simply to create a new resource editor designer when requested by the
     '   shell.
     '**************************************************************************
-    <CLSCompliant(False), _
-    Guid("04b8ab82-a572-4fef-95ce-5222444b6b64")> _
+    <CLSCompliant(False),
+    Guid("04b8ab82-a572-4fef-95ce-5222444b6b64")>
     Public NotInheritable Class ApplicationDesignerEditorFactory
         Implements IVsEditorFactory
 
@@ -163,17 +163,17 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' Wrapper of COM interface which delegates to Internal
         ''' </summary>
         ''' <remarks></remarks>
-        Private Function IVsEditorFactory_CreateEditorInstance( _
-                vscreateeditorflags As UInteger, _
-                FileName As String, _
-                PhysicalView As String, _
-                Hierarchy As IVsHierarchy, _
-                Itemid As UInteger, _
-                ExistingDocDataPtr As IntPtr, _
-                ByRef DocViewPtr As IntPtr, _
-                ByRef DocDataPtr As IntPtr, _
-                ByRef Caption As String, _
-                ByRef CmdUIGuid As Guid, _
+        Private Function IVsEditorFactory_CreateEditorInstance(
+                vscreateeditorflags As UInteger,
+                FileName As String,
+                PhysicalView As String,
+                Hierarchy As IVsHierarchy,
+                Itemid As UInteger,
+                ExistingDocDataPtr As IntPtr,
+                ByRef DocViewPtr As IntPtr,
+                ByRef DocDataPtr As IntPtr,
+                ByRef Caption As String,
+                ByRef CmdUIGuid As Guid,
                 ByRef pgrfCDW As Integer) As Integer _
         Implements IVsEditorFactory.CreateEditorInstance
 
@@ -190,7 +190,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
             Caption = Nothing
 
-            Dim hr As Integer = InternalCreateEditorInstance(vscreateeditorflags, FileName, PhysicalView, Hierarchy, Itemid, ExistingDocData, _
+            Dim hr As Integer = InternalCreateEditorInstance(vscreateeditorflags, FileName, PhysicalView, Hierarchy, Itemid, ExistingDocData,
                 DocView, DocData, Caption, CmdUIGuid, pgrfCDW)
             If NativeMethods.Failed(hr) Then
                 Return hr

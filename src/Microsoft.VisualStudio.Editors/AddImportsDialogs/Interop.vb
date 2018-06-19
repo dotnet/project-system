@@ -4,9 +4,9 @@ Imports System.Runtime.InteropServices
 
 Namespace Microsoft.VisualStudio.Editors.AddImports
 
-    <Guid("544D52A6-04C6-4771-863D-EFB1542C8025")> _
-    <InterfaceType(ComInterfaceType.InterfaceIsIUnknown)> _
-    <ComImport()> _
+    <Guid("544D52A6-04C6-4771-863D-EFB1542C8025")>
+    <InterfaceType(ComInterfaceType.InterfaceIsIUnknown)>
+    <ComImport()>
     Friend Interface IVBAddImportsDialogHelpCallback
         Sub InvokeHelp()
     End Interface
@@ -22,17 +22,17 @@ Namespace Microsoft.VisualStudio.Editors.AddImports
         AddImportsExtensionCollisionDialog = 2
     End Enum
 
-    <Guid("71CC3B66-3E89-45eb-BDDA-D6A5599F4C20")> _
-    <InterfaceType(ComInterfaceType.InterfaceIsIUnknown)> _
-    <ComImport()> _
+    <Guid("71CC3B66-3E89-45eb-BDDA-D6A5599F4C20")>
+    <InterfaceType(ComInterfaceType.InterfaceIsIUnknown)>
+    <ComImport()>
     Friend Interface IVBAddImportsDialogService
         Function ShowDialog _
-        ( _
-            [namespace] As String, _
-            identifier As String, _
-            minimallyQualifiedName as String, _
-            dialogType As AddImportsDialogType, _
-            helpCallBack As IVBAddImportsDialogHelpCallback _
+        (
+            [namespace] As String,
+            identifier As String,
+            minimallyQualifiedName As String,
+            dialogType As AddImportsDialogType,
+            helpCallBack As IVBAddImportsDialogHelpCallback
         ) As AddImportsResult
     End Interface
 End Namespace

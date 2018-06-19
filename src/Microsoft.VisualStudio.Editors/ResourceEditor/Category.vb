@@ -46,7 +46,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private _resourceView As ResourceListView.ResourceView = ResourceListView.ResourceView.Thumbnail
         Private _allowNewEntriesInStringTable As Boolean 'applies only to Display.StringTable
         Private _showTypeColumnInStringTable As Boolean 'applies only to Display.StringTable
-        Private ReadOnly _menuCommand as MenuCommand
+        Private ReadOnly _menuCommand As MenuCommand
         Private _addCommand As EventHandler
         Private _sorter As IComparer           ' how to sort resources in the category...
 
@@ -258,7 +258,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Return _sorter
             End Get
             Set
-                _sorter = value
+                _sorter = Value
             End Set
         End Property
 
@@ -280,7 +280,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         End Property
 
         Public Function Compare(Resource1 As Resource, Resource2 As Resource) As Integer
-            If _sorter IsNot Nothing
+            If _sorter IsNot Nothing Then
                 Return _sorter.Compare(Resource1, Resource2)
             Else
                 ' Name is the default order...

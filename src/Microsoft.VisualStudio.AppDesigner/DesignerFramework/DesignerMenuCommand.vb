@@ -109,12 +109,12 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         '   CommandText: If specified (and the TEXTMENUCHANGES flag is set for the command in the CTC file) you can 
         '       supplies your own text for the command. 
         '**************************************************************************
-        Public Sub New(RootDesigner As BaseRootDesigner, CommandID As CommandID, _
-                        CommandHandler As EventHandler, _
-                        Optional CommandEnabledHandler As CheckCommandStatusHandler = Nothing, _
-                        Optional CommandCheckedHandler As CheckCommandStatusHandler = Nothing, _
-                        Optional CommandVisibleHandler As CheckCommandStatusHandler = Nothing, _
-                        Optional AlwaysCheckStatus As Boolean = False, _
+        Public Sub New(RootDesigner As BaseRootDesigner, CommandID As CommandID,
+                        CommandHandler As EventHandler,
+                        Optional CommandEnabledHandler As CheckCommandStatusHandler = Nothing,
+                        Optional CommandCheckedHandler As CheckCommandStatusHandler = Nothing,
+                        Optional CommandVisibleHandler As CheckCommandStatusHandler = Nothing,
+                        Optional AlwaysCheckStatus As Boolean = False,
                         Optional CommandText As String = Nothing)
 
             MyBase.New(CommandHandler, CommandID)

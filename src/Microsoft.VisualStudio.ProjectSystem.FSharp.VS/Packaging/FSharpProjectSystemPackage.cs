@@ -12,8 +12,16 @@ using Microsoft.VisualStudio.Shell.Interop;
 
 using Task = System.Threading.Tasks.Task;
 
-// We register ourselves as a new CPS "project type"
-[assembly: ProjectTypeRegistration(projectTypeGuid: FSharpProjectSystemPackage.ProjectTypeGuid, displayName: "#1", displayProjectFileExtensions: "#2", defaultProjectExtension: "fsproj", language: "FSharp", resourcePackageGuid: FSharpProjectSystemPackage.PackageGuid, Capabilities = ManagedProjectSystemPackage.DefaultCapabilities + "; " + ProjectCapability.FSharp + "; " + ProjectCapability.SortByDisplayOrder, DisableAsynchronousProjectTreeLoad = true)]
+// Register ourselves as a CPS project type
+[assembly: ProjectTypeRegistration(
+    projectTypeGuid: FSharpProjectSystemPackage.ProjectTypeGuid, 
+    displayName: "#1", 
+    displayProjectFileExtensions: "#2", 
+    defaultProjectExtension: "fsproj", 
+    language: "FSharp", 
+    resourcePackageGuid: FSharpProjectSystemPackage.PackageGuid, 
+    Capabilities = ManagedProjectSystemPackage.DefaultCapabilities + "; " + ProjectCapability.FSharp + "; " + ProjectCapability.SortByDisplayOrder, 
+    DisableAsynchronousProjectTreeLoad = true)]
 
 namespace Microsoft.VisualStudio.Packaging
 {

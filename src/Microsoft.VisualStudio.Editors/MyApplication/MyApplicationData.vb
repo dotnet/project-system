@@ -2,7 +2,7 @@
 
 Namespace Microsoft.VisualStudio.Editors.MyApplication
 
-    <ComponentModel.EditorBrowsable(ComponentModel.EditorBrowsableState.Never)> _
+    <ComponentModel.EditorBrowsable(ComponentModel.EditorBrowsableState.Never)>
     Friend NotInheritable Class MyApplicationData
 
         Public Sub New()

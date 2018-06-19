@@ -32,7 +32,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <param name="Writer">Text writer on stream to serialize MyApplicationData to</param>
         ''' <remarks></remarks>
         Public Shared Sub Serialize(data As MyApplicationData, Writer As TextWriter)
-            Dim serializer As XmlSerializer = new MyApplicationDataSerializer()
+            Dim serializer As XmlSerializer = New MyApplicationDataSerializer()
             'New XmlSerializer(GetType(MyApplicationData))
             serializer.Serialize(Writer, data)
         End Sub

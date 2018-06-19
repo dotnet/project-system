@@ -10,7 +10,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
     ''' This class represents the root component of the Application Designer.
     ''' </summary>
     ''' <remarks></remarks>
-    <Designer(GetType(PropPageDesignerRootDesigner), GetType(IRootDesigner))> _
+    <Designer(GetType(PropPageDesignerRootDesigner), GetType(IRootDesigner))>
     Public NotInheritable Class PropPageDesignerRootComponent
         Inherits Component
 

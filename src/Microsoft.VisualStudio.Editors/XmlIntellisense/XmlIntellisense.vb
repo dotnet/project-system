@@ -27,7 +27,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
     '   Methods on this class should only be called on the VS foreground
     '   thread.
     '--------------------------------------------------------------------------
-    <ClassInterface(ClassInterfaceType.None)> _
+    <ClassInterface(ClassInterfaceType.None)>
     Friend NotInheritable Class XmlIntellisenseService
         Implements IXmlIntellisenseService
 
@@ -916,8 +916,8 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
         ' New:
         '   Initialize a list containing all possible declarations.
         '--------------------------------------------------------------------------
-        Public Sub New( _
-            AllMembers As IndexedMembers _
+        Public Sub New(
+            AllMembers As IndexedMembers
             )
 
             _allMembers = AllMembers
@@ -927,9 +927,9 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
         ' New:
         '   Initialize a list containing the specified members.
         '--------------------------------------------------------------------------
-        Public Sub New( _
-            AllMembers As IndexedMembers, _
-            Members As IEnumerable(Of XmlIntellisenseMember) _
+        Public Sub New(
+            AllMembers As IndexedMembers,
+            Members As IEnumerable(Of XmlIntellisenseMember)
             )
 
             _allMembers = AllMembers
@@ -941,11 +941,11 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
         '   Initialize a list containing declarations found by starting with a
         '   previous list and following the specified axis from that point.
         '--------------------------------------------------------------------------
-        Private Sub New( _
-            AllMembers As IndexedMembers, _
-            PreviousStep As XmlIntellisenseMemberList, _
-            AxisOfStep As Axis, _
-            NameOfStep As XmlQualifiedName _
+        Private Sub New(
+            AllMembers As IndexedMembers,
+            PreviousStep As XmlIntellisenseMemberList,
+            AxisOfStep As Axis,
+            NameOfStep As XmlQualifiedName
             )
 
             _allMembers = AllMembers
@@ -980,7 +980,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
 
                 If _previousStep Is Nothing Then
                     Debug.Fail("GetEnumerator() should never be called on the Document or All member lists (it is not implemented).")
-                Else If _previousStep Is _allMembers.All Then
+                ElseIf _previousStep Is _allMembers.All Then
                     ' Applying a query to the document root and all elements yields all matching members at any level
                     If _name.Name.Length = 0 Then
                         _allMembers.FindByNamespace(_name.Namespace, AddressOf MatchesType, Results)
@@ -996,7 +996,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
                             _allMembers.FindByName(_name, AddressOf MatchesType, Results)
                         End If
                     Else
-                        FindChildMatches(_previousStep._members, false, Results)
+                        FindChildMatches(_previousStep._members, False, Results)
                     End If
                 ElseIf _previousStep Is _allMembers.Document Then
                     ' Applying a descendant query to the document member yields all matching members at any level
@@ -1006,7 +1006,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
                         Else
                             _allMembers.FindByName(_name, AddressOf MatchesType, Results)
                         End If
-                    Else If _axis = Axis.Elements Then
+                    ElseIf _axis = Axis.Elements Then
                         If _name.Name.Length = 0 Then
                             _allMembers.FindRootsByNamespace(_name.Namespace, Results)
                         Else
@@ -1086,8 +1086,8 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
         ' ElementsByNamespace:
         '   Get child elements of this list having the specified namespace.
         '--------------------------------------------------------------------------
-        Public Function ElementsByNamespace( _
-            <[In](), MarshalAs(UnmanagedType.BStr)> NamespaceName As String _
+        Public Function ElementsByNamespace(
+            <[In](), MarshalAs(UnmanagedType.BStr)> NamespaceName As String
             ) As IXmlIntellisenseMemberList _
             Implements IXmlIntellisenseMemberList.ElementsByNamespace
 
@@ -1098,9 +1098,9 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
         ' ElementsByName:
         '   Get child elements of this list having the specified name.
         '--------------------------------------------------------------------------
-        Public Function ElementsByName( _
-            <[In](), MarshalAs(UnmanagedType.BStr)> NamespaceName As String, _
-            <[In](), MarshalAs(UnmanagedType.BStr)> LocalName As String _
+        Public Function ElementsByName(
+            <[In](), MarshalAs(UnmanagedType.BStr)> NamespaceName As String,
+            <[In](), MarshalAs(UnmanagedType.BStr)> LocalName As String
             ) As IXmlIntellisenseMemberList _
             Implements IXmlIntellisenseMemberList.ElementsByName
 
@@ -1111,8 +1111,8 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
         ' AttributesByNamespace:
         '   Get attributes of this list having the specified namespace.
         '--------------------------------------------------------------------------
-        Public Function AttributesByNamespace( _
-            <[In](), MarshalAs(UnmanagedType.BStr)> NamespaceName As String _
+        Public Function AttributesByNamespace(
+            <[In](), MarshalAs(UnmanagedType.BStr)> NamespaceName As String
             ) As IXmlIntellisenseMemberList _
             Implements IXmlIntellisenseMemberList.AttributesByNamespace
 
@@ -1123,9 +1123,9 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
         ' AttributesByName:
         '   Get attributes of this list having the specified name.
         '--------------------------------------------------------------------------
-        Public Function AttributesByName( _
-            <[In](), MarshalAs(UnmanagedType.BStr)> NamespaceName As String, _
-            <[In](), MarshalAs(UnmanagedType.BStr)> LocalName As String _
+        Public Function AttributesByName(
+            <[In](), MarshalAs(UnmanagedType.BStr)> NamespaceName As String,
+            <[In](), MarshalAs(UnmanagedType.BStr)> LocalName As String
             ) As IXmlIntellisenseMemberList _
             Implements IXmlIntellisenseMemberList.AttributesByName
 
@@ -1136,8 +1136,8 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
         ' DescendantsByNamespace:
         '   Get descendant elements of this list having the specified namespace.
         '--------------------------------------------------------------------------
-        Public Function DescendantsByNamespace( _
-            <[In](), MarshalAs(UnmanagedType.BStr)> NamespaceName As String _
+        Public Function DescendantsByNamespace(
+            <[In](), MarshalAs(UnmanagedType.BStr)> NamespaceName As String
             ) As IXmlIntellisenseMemberList _
             Implements IXmlIntellisenseMemberList.DescendantsByNamespace
 
@@ -1148,9 +1148,9 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
         ' DescendantsByName:
         '   Get descendant elements of this list having the specified name.
         '--------------------------------------------------------------------------
-        Public Function DescendantsByName( _
-            <[In](), MarshalAs(UnmanagedType.BStr)> NamespaceName As String, _
-            <[In](), MarshalAs(UnmanagedType.BStr)> LocalName As String _
+        Public Function DescendantsByName(
+            <[In](), MarshalAs(UnmanagedType.BStr)> NamespaceName As String,
+            <[In](), MarshalAs(UnmanagedType.BStr)> LocalName As String
             ) As IXmlIntellisenseMemberList _
             Implements IXmlIntellisenseMemberList.DescendantsByName
 
@@ -1240,7 +1240,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
 
             If Member IsNot Nothing Then
                 ' Insert first member into "checkUnique" set to ensure we don't cycle forever, and to ensure we don't add duplicate matches
-                If Not AddUnique(Member, CheckUnique)
+                If Not AddUnique(Member, CheckUnique) Then
                     Return
                 End If
 
@@ -1285,7 +1285,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
 
     End Class
 
-    <ClassInterface(ClassInterfaceType.None)> _
+    <ClassInterface(ClassInterfaceType.None)>
     Friend Class XmlIntellisenseMemberEnumerator
         Implements IXmlIntellisenseMemberEnumerator
 

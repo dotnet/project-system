@@ -13,7 +13,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
     'This file expands ResourcesFolderService with a few methods which are specific to the Resource Editor and
     '  do not need to be public to or ported for the Resource Picker.
 
-    Friend Partial Class ResourcesFolderService
+    Partial Friend Class ResourcesFolderService
 
         ''' <summary>
         ''' Attempts to add a file to the project according to the registered ResourcesFolderBehavior for this project.

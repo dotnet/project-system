@@ -19,8 +19,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
     [Order(Order.Default)]
     internal partial class LanguageServiceErrorListProvider : IVsErrorListProvider
     {
-        private readonly static Task<AddMessageResult> s_handledAndStopProcessing = Task.FromResult(AddMessageResult.HandledAndStopProcessing);
-        private readonly static Task<AddMessageResult> s_notHandled = Task.FromResult(AddMessageResult.NotHandled);
+        private static readonly Task<AddMessageResult> s_handledAndStopProcessing = Task.FromResult(AddMessageResult.HandledAndStopProcessing);
+        private static readonly Task<AddMessageResult> s_notHandled = Task.FromResult(AddMessageResult.NotHandled);
         private readonly ILanguageServiceHost _host;
         private IVsLanguageServiceBuildErrorReporter2 _languageServiceBuildErrorReporter;
 

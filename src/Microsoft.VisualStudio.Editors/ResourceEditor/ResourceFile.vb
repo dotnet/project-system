@@ -386,7 +386,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <returns></returns>
         ''' <remarks></remarks>
         Public Function GetUniqueName(NameFormat As String) As String
-            Debug.Assert(NameFormat.IndexOf("{") >= 0 AndAlso NameFormat.IndexOf("}") >= 2, _
+            Debug.Assert(NameFormat.IndexOf("{") >= 0 AndAlso NameFormat.IndexOf("}") >= 2,
                 "NameFormat must contain a replacement arg")
 
             Dim SuffixInteger As Integer = 1

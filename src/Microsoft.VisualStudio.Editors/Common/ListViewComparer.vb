@@ -29,7 +29,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 Return _sortColumn
             End Get
             Set(value As Integer)
-                _sortColumn = Value
+                _sortColumn = value
             End Set
         End Property
 
@@ -41,7 +41,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 Return _sorting
             End Get
             Set(value As SortOrder)
-                _sorting = Value
+                _sorting = value
             End Set
         End Property
 
@@ -72,7 +72,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
             Return String.Empty
         End Function
 
-        Public Shared Sub HandleColumnClick(listView As ListView, comparer As ListViewComparer, _
+        Public Shared Sub HandleColumnClick(listView As ListView, comparer As ListViewComparer,
                 e As ColumnClickEventArgs)
             Dim focusedItem As ListViewItem = listView.FocusedItem
 

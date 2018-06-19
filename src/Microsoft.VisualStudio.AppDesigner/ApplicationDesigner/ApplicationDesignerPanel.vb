@@ -142,7 +142,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         Public ReadOnly Property IsPropertyPage() As Boolean
             Get
                 Dim ReturnValue As Boolean = (_propertyPageInfo IsNot Nothing)
-                Debug.Assert(Not ReturnValue OrElse EditorGuid.Equals(GetType(PropPageDesigner.PropPageDesignerEditorFactory).GUID), _
+                Debug.Assert(Not ReturnValue OrElse EditorGuid.Equals(GetType(PropPageDesigner.PropPageDesignerEditorFactory).GUID),
                     "If it's a property page, the EditorGuid should be the PropPageDesigner's guid")
                 Return (_propertyPageInfo IsNot Nothing)
             End Get
@@ -1073,7 +1073,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         '''<summary>
         ''' Initilize layout...
         '''</summary>
-        <DebuggerStepThrough()> _
+        <DebuggerStepThrough()>
         Private Sub InitializeComponent()
             _pageHostingPanel = New Panel
             _pageNameLabel = New Label

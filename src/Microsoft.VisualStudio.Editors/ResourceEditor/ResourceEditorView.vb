@@ -761,7 +761,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDVSStd97cmdidSelectAll, AddressOf MenuSelectAll, AddressOf MenuSelectAllEnableHandler)
                 }
 
-                    'Add menu items
+                'Add menu items
                 If isEditingResWFile Then
                     ' Only 'Add Default Resource' is allowed resw files
                     _menuCommands.Add(New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDRESXAddDefaultResource, AddressOf ButtonFixedAdd_Click, AddressOf MenuAddEnabledHandler))

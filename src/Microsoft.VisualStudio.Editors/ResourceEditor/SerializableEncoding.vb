@@ -16,7 +16,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
     '''   System.Text.Encoding is not.
     ''' </summary>
     ''' <remarks></remarks>
-    <Serializable()> _
+    <Serializable()>
     Friend NotInheritable Class SerializableEncoding
         Implements ISerializable
 

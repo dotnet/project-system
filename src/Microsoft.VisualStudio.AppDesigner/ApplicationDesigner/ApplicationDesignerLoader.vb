@@ -182,7 +182,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                         Using g As Graphics = Graphics.FromHdc(hDC)
                             Dim rect As New Rectangle(100, Screen.PrimaryScreen.Bounds.Height - 30, Screen.PrimaryScreen.Bounds.Width - 100, 30)
                             g.FillRectangle(Brushes.White, rect)
-                            g.DrawString("Current Active Designer: " & _designerChangeCount & ": " & newDesigner, _
+                            g.DrawString("Current Active Designer: " & _designerChangeCount & ": " & newDesigner,
                                 New Font("Arial", 14, FontStyle.Bold, GraphicsUnit.Pixel), Brushes.Red, rect)
                         End Using
                     Finally

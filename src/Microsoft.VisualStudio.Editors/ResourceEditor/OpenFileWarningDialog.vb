@@ -81,7 +81,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         'NOTE: The following procedure is required by the Windows Form Designer
         'It can be modified using the Windows Form Designer.  
         'Do not modify it using the code editor.
-        <DebuggerStepThrough()> _
+        <DebuggerStepThrough()>
         Private Sub InitializeComponent()
             Dim resources As ComponentModel.ComponentResourceManager = New ComponentModel.ComponentResourceManager(GetType(OpenFileWarningDialog))
             dialogLayoutPanel = New Windows.Forms.TableLayoutPanel

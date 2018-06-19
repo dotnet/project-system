@@ -4,15 +4,15 @@ Imports System.Runtime.InteropServices
 
 Namespace Microsoft.VisualStudio.Editors.Interop
 
-    <ComImport(), ComVisible(False), Guid("79eac9ee-baf9-11ce-8c82-00aa004ba90b"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)> _
+    <ComImport(), ComVisible(False), Guid("79eac9ee-baf9-11ce-8c82-00aa004ba90b"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)>
     Friend Interface IInternetSecurityManager
         <PreserveSig()> Function SetSecuritySite() As Integer
         <PreserveSig()> Function GetSecuritySite() As Integer
         <PreserveSig()> Function MapUrlToZone(<[In](), MarshalAs(UnmanagedType.BStr)> url As String, <Out()> ByRef zone As Integer, <[In]()> flags As Integer) As Integer
         <PreserveSig()> Function GetSecurityId() As Integer
-        <PreserveSig()> Function ProcessUrlAction(url As String, action As Integer, _
-                <Out(), MarshalAs(UnmanagedType.LPArray, SizeParamIndex:=3)> policy() As Byte, _
-                cbPolicy As Integer, ByRef context As Byte, cbContext As Integer, _
+        <PreserveSig()> Function ProcessUrlAction(url As String, action As Integer,
+                <Out(), MarshalAs(UnmanagedType.LPArray, SizeParamIndex:=3)> policy() As Byte,
+                cbPolicy As Integer, ByRef context As Byte, cbContext As Integer,
                 flags As Integer, reserved As Integer) As Integer
         <PreserveSig()> Function QueryCustomPolicy() As Integer
         <PreserveSig()> Function SetZoneMapping() As Integer

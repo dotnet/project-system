@@ -82,7 +82,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="Message"></param>
         ''' <remarks></remarks>
-        <Conditional("DEBUG")> _
+        <Conditional("DEBUG")>
         Public Shared Sub Trace(Message As String)
             Debug.WriteLineIf(Switches.RSEFindReplace.TraceVerbose, "RSE Find/Replace: " & Message)
         End Sub
@@ -129,13 +129,13 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             If pgrfOptions IsNot Nothing Then
                 If HasView Then
-                    Options = _
-                        __VSFINDOPTIONS.FR_MatchCase Or _
-                        __VSFINDOPTIONS.FR_WholeWord Or _
-                        __VSFINDOPTIONS.FR_Backwards Or _
-                        __VSFINDOPTIONS.FR_Wildcard Or _
-                        __VSFINDOPTIONS.FR_RegExpr Or _
-                        __VSFINDOPTIONS.FR_Find Or _
+                    Options =
+                        __VSFINDOPTIONS.FR_MatchCase Or
+                        __VSFINDOPTIONS.FR_WholeWord Or
+                        __VSFINDOPTIONS.FR_Backwards Or
+                        __VSFINDOPTIONS.FR_Wildcard Or
+                        __VSFINDOPTIONS.FR_RegExpr Or
+                        __VSFINDOPTIONS.FR_Find Or
                         __VSFINDOPTIONS.FR_Document
 
                     If _lastSearchInSelection AndAlso _resourcesToSearch IsNot Nothing _
@@ -237,7 +237,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' - We search for the text and return an enum value to the shell to display the dialog box if not found, etc...
         ''' - We are responsible for selecting the found object and keeping track of where we are in the object list.
         ''' </remarks>
-        Public Sub Find(pszSearch As String, grfOptions As UInteger, fResetStartPoint As Integer, _
+        Public Sub Find(pszSearch As String, grfOptions As UInteger, fResetStartPoint As Integer,
                             pHelper As IVsFindHelper, ByRef pResult As UInteger)
             Dim FindReset As Boolean = (fResetStartPoint <> 0)
             Dim FindBackwards As Boolean = CheckFindOption(grfOptions, __VSFINDOPTIONS.FR_Backwards)
@@ -301,11 +301,11 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 '   2. FindReset is FALSE. (indicating this is not a start of a loop, 
                 '       since CurrentIndex = StartIndex at the start of a loop). AND
                 Dim VeryFirstSearch As Boolean = FindJustStarted
-                While VeryFirstSearch OrElse _
+                While VeryFirstSearch OrElse
                         Not (_currentIndex = _startIndex AndAlso _currentFieldInCurrentIndex = _startField)
                     VeryFirstSearch = False
 
-                    Debug.Assert(0 <= _currentIndex AndAlso _currentIndex < _resourcesToSearch.Length, _
+                    Debug.Assert(0 <= _currentIndex AndAlso _currentIndex < _resourcesToSearch.Length,
                         "m_FindCurrentIndex out of range!!!")
                     Debug.Assert(_resourcesToSearch(_currentIndex) IsNot Nothing, "Invalid resource!!!")
 
@@ -490,7 +490,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="Helper">The IVsFindHelper from VisualStudio</param>
         ''' <returns>TRUE if a match was found; otherwise, FALSE.</returns>
         ''' <remarks></remarks>
-        Private Function IsMatch(SearchPattern As String, SearchText As String, _
+        Private Function IsMatch(SearchPattern As String, SearchText As String,
                                     Helper As IVsFindHelper, grfFindOptions As UInteger) As Boolean
             If String.IsNullOrEmpty(SearchText) Then
                 Return False
@@ -502,7 +502,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Dim bstrReplaceText As String = Nothing
             Dim fFound As Integer = 0
             Dim charArray As Char() = SearchText.ToCharArray()
-            Dim textArray As UShort() = new UShort(charArray.Length - 1) {}
+            Dim textArray As UShort() = New UShort(charArray.Length - 1) {}
             charArray.CopyTo(textArray, 0)
             Dim hr As Integer = Helper.FindInText(SearchPattern, Nothing, grfFindOptions, CUInt(BufferFlags), CUInt(textArray.Length), textArray, iFound, cchFound, bstrReplaceText, fFound)
 

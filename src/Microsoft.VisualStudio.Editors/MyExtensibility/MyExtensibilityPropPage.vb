@@ -46,9 +46,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             _projectService = MyExtensibilitySolutionService.Instance.GetProjectService(ProjectHierarchy)
             Debug.Assert(_projectService IsNot Nothing)
 
-            Dim vsMenuService As IMenuCommandService = _
-                TryCast( _
-                MyExtensibilitySolutionService.Instance.GetService(GetType(IMenuCommandService)), _
+            Dim vsMenuService As IMenuCommandService =
+                TryCast(
+                MyExtensibilitySolutionService.Instance.GetService(GetType(IMenuCommandService)),
                 IMenuCommandService)
             Debug.Assert(vsMenuService IsNot Nothing, "Could not get vsMenuService!")
             listViewExtensions.MenuCommandService = vsMenuService
@@ -183,7 +183,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         Private Sub RefreshExtensionsList()
             listViewExtensions.Items.Clear()
-            Dim extProjItemGroups As List(Of MyExtensionProjectItemGroup) = _
+            Dim extProjItemGroups As List(Of MyExtensionProjectItemGroup) =
                 _projectService.GetExtensionProjectItemGroups()
             If extProjItemGroups IsNot Nothing Then
                 For Each extProjItemGroup As MyExtensionProjectItemGroup In extProjItemGroups

@@ -12,7 +12,7 @@ Imports System.ComponentModel.Design
 
 Namespace Microsoft.VisualStudio.Editors
 
-    Public Partial Class Constants
+    Partial Public Class Constants
         Friend NotInheritable Class MenuConstants
 
             ' Constants for menu command IDs and GUIDs. 

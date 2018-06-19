@@ -21,7 +21,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
     ''' Generator for strongly MyApplication class
     ''' </summary>
     ''' <remarks></remarks>
-    <Guid("4d35b437-4197-4241-8d24-8ac3ab6f0e0c")> _
+    <Guid("4d35b437-4197-4241-8d24-8ac3ab6f0e0c")>
     Public NotInheritable Class MyApplicationCodeGenerator
         Implements IVsSingleFileGenerator, IObjectWithSite, System.IServiceProvider, IVsRefactorNotify
 

@@ -7,7 +7,7 @@ Imports ComTypes = System.Runtime.InteropServices.ComTypes
 #Disable Warning IDE1006 ' Naming Styles
 
 Namespace Microsoft.VisualStudio.Editors.Interop
-    <ComVisible(False)> _
+    <ComVisible(False)>
     Friend NotInheritable Class NativeMethods
 
         Private Const VB_COMPILER_GUID As String = "019971d6-4685-11d2-b48a-0000f87572eb"
@@ -89,7 +89,7 @@ Namespace Microsoft.VisualStudio.Editors.Interop
         'Friend Const WM_SYSKEYDOWN As Integer = &H104
         'Friend Const WM_SYSKEYUP As Integer = &H105
         'Friend Const WM_SYSCHAR As Integer = &H106
-        Friend Const WM_SETREDRAW as Integer = &HB
+        Friend Const WM_SETREDRAW As Integer = &HB
         Friend Const LVM_SETCOLUMNWIDTH As Integer = (&H1000 + 30)
         Friend Const LVSCW_AUTOSIZE As Integer = -1
         Friend Const LVSCW_AUTOSIZE_USEHEADER As Integer = -2
@@ -249,18 +249,18 @@ Namespace Microsoft.VisualStudio.Editors.Interop
             AT_SIGNATURE = 2
         End Enum
 
-        <StructLayout(LayoutKind.Sequential)> _
+        <StructLayout(LayoutKind.Sequential)>
         Friend Structure CRYPTOAPI_BLOB
             Friend cbData As UInteger
             Friend pbData As IntPtr
         End Structure
 
 
-        <DllImport("crypt32.dll", CharSet:=CharSet.Unicode, SetLastError:=True)> _
+        <DllImport("crypt32.dll", CharSet:=CharSet.Unicode, SetLastError:=True)>
         Friend Shared Function PFXImportCertStore(<[In]> blob As IntPtr, <[In]> password As String, <[In]> flags As CryptFlags) As IntPtr
         End Function
 
-        <Flags> _
+        <Flags>
         Friend Enum CryptFlags
             ' Fields
             Exportable = 1
@@ -269,19 +269,19 @@ Namespace Microsoft.VisualStudio.Editors.Interop
             UserProtected = 2
         End Enum
 
-        <DllImport("crypt32.dll", SetLastError:=True)> _
+        <DllImport("crypt32.dll", SetLastError:=True)>
         Friend Shared Function CertEnumCertificatesInStore(<[In]> CertStore As IntPtr, <[In]> PrevCertContext As IntPtr) As IntPtr
         End Function
 
-        <DllImport("crypt32.dll", SetLastError:=True)> _
+        <DllImport("crypt32.dll", SetLastError:=True)>
         Friend Shared Function CryptAcquireCertificatePrivateKey(<[In]> CertContext As IntPtr, <[In]> flags As UInteger, <[In]> reserved As IntPtr, <[In], Out> ByRef CryptProv As IntPtr, <[In], Out> ByRef KeySpec As KeySpec, <[In], Out, MarshalAs(UnmanagedType.Bool)> ByRef CallerFreeProv As Boolean) As <MarshalAs(UnmanagedType.Bool)> Boolean
         End Function
 
-        <DllImport("advapi32.dll", SetLastError:=True)> _
+        <DllImport("advapi32.dll", SetLastError:=True)>
         Friend Shared Function CryptGetUserKey(<[In]> CryptProv As IntPtr, <[In]> KeySpec As KeySpec, <[In], Out> ByRef Key As IntPtr) As <MarshalAs(UnmanagedType.Bool)> Boolean
         End Function
 
-        <DllImport("advapi32.dll", SetLastError:=True)> _
+        <DllImport("advapi32.dll", SetLastError:=True)>
         Friend Shared Function CryptExportKey(<[In]> Key As IntPtr, <[In]> ExpKey As IntPtr, <[In]> type As BlobType, <[In]> Flags As UInteger, <[In]> Data As IntPtr, <[In], Out> ByRef DataLen As UInteger) As <MarshalAs(UnmanagedType.Bool)> Boolean
         End Function
 
@@ -296,24 +296,24 @@ Namespace Microsoft.VisualStudio.Editors.Interop
             SYMMETRICWRAPKEYBLOB = 11
         End Enum
 
-        <DllImport("advapi32.dll", SetLastError:=True)> _
+        <DllImport("advapi32.dll", SetLastError:=True)>
         Friend Shared Function CryptDestroyKey(hKey As IntPtr) As <MarshalAs(UnmanagedType.Bool)> Boolean
         End Function
 
-        <DllImport("advapi32.dll", SetLastError:=True)> _
+        <DllImport("advapi32.dll", SetLastError:=True)>
         Friend Shared Function CryptReleaseContext(<[In]> Prov As IntPtr, <[In]> Flags As UInteger) As <MarshalAs(UnmanagedType.Bool)> Boolean
         End Function
 
-        <DllImport("crypt32.dll", SetLastError:=True)> _
+        <DllImport("crypt32.dll", SetLastError:=True)>
         Friend Shared Function CertFreeCertificateContext(CertContext As IntPtr) As <MarshalAs(UnmanagedType.Bool)> Boolean
         End Function
 
-        <DllImport("crypt32.dll", SetLastError:=True)> _
+        <DllImport("crypt32.dll", SetLastError:=True)>
         Friend Shared Function CertCloseStore(<[In]> CertStore As IntPtr, Flags As CertStoreClose) As <MarshalAs(UnmanagedType.Bool)> Boolean
         End Function
 
 
-        <Flags> _
+        <Flags>
         Friend Enum CertStoreClose
             ' Fields
             CERT_CLOSE_STORE_CHECK_FLAG = 2
@@ -367,42 +367,42 @@ Namespace Microsoft.VisualStudio.Editors.Interop
                 Lib "user32" (hDlg As IntPtr, hCtl As IntPtr, bPrevious As Boolean) As IntPtr
 
 
-        <PreserveSig()> _
+        <PreserveSig()>
         Friend Declare Auto Function GetWindow Lib "user32" (Hwnd As IntPtr, uCmd As UInteger) As IntPtr
 
-        <PreserveSig()> _
+        <PreserveSig()>
         Friend Declare Auto Function DragQueryFile Lib "shell32" (hDrop As IntPtr, iFile As Integer, lpszFile As String, cch As Integer) As Integer
 
-        <PreserveSig()> _
+        <PreserveSig()>
         Friend Declare Function GetUserDefaultLCID Lib "kernel32" () As UInteger
 
-        <PreserveSig()> _
+        <PreserveSig()>
         Friend Declare Function GetTopWindow Lib "user32" (Hwnd As IntPtr) As IntPtr
 
-        <PreserveSig()> _
+        <PreserveSig()>
         Friend Declare Auto Function SetWindowLong Lib "user32" (hWnd As IntPtr, Index As Integer, Value As IntPtr) As IntPtr
-        <PreserveSig()> _
+        <PreserveSig()>
         Friend Declare Auto Function GetWindowLong Lib "user32" (Hwnd As IntPtr, Index As Integer) As IntPtr
 
         ' Windows theme
-        <PreserveSig()> _
+        <PreserveSig()>
         Friend Declare Auto Function SetWindowTheme Lib "uxtheme" (Hwnd As IntPtr, appName As String, subIdList As String) As Integer
 
-        <PreserveSig()> _
+        <PreserveSig()>
         Friend Declare Auto Function GetWindowText Lib "user32" (hWnd As IntPtr, lpString As String, nMaxCount As Integer) As Integer
 
-        <DllImport("user32", CharSet:=CharSet.Auto)> _
+        <DllImport("user32", CharSet:=CharSet.Auto)>
         Friend Shared Function GetWindowRect(hwnd As IntPtr, ByRef rect As RECT) As Integer
         End Function
 
         Friend Declare Function MoveWindow Lib "user32" _
-          (hWnd As IntPtr, _
-            x As Integer, y As Integer, _
-            nWidth As Integer, _
-            nHeight As Integer, _
+          (hWnd As IntPtr,
+            x As Integer, y As Integer,
+            nWidth As Integer,
+            nHeight As Integer,
             bRepaint As Integer) As Integer
 
-        <StructLayout(LayoutKind.Sequential)> _
+        <StructLayout(LayoutKind.Sequential)>
         Friend Structure RECT
             Public left As Integer
             Public top As Integer
@@ -410,10 +410,10 @@ Namespace Microsoft.VisualStudio.Editors.Interop
             Public bottom As Integer
         End Structure
 
-        <PreserveSig()> _
+        <PreserveSig()>
         Friend Declare Auto Function IsChild Lib "user32" (hWndParent As IntPtr, hWnd As IntPtr) As Boolean
 
-        <PreserveSig()> _
+        <PreserveSig()>
         Friend Declare Auto Function EnableWindow Lib "user32" (hWnd As IntPtr, bEnable As Boolean) As Boolean
 
         '<System.Runtime.InteropServices.PreserveSig()> _
@@ -423,10 +423,10 @@ Namespace Microsoft.VisualStudio.Editors.Interop
         'Friend Declare Auto Function SetWindowPos Lib "user32" (Hwnd As IntPtr, HwndInsertAfter As IntPtr, x As Integer, _
         '    y As Integer, cx As Integer, cy As Integer, flags As Integer) As Boolean
 
-        <PreserveSig()> _
+        <PreserveSig()>
         Friend Declare Auto Function SystemParametersInfo Lib "user32" (uiAction As UInteger, uiParam As UInteger, pvParam As IntPtr, fWinIni As UInteger) As Integer
 
-        <PreserveSig()> _
+        <PreserveSig()>
         Friend Declare Auto Function MsgWaitForMultipleObjects Lib "user32" (nCount As Integer, pHandles As IntPtr, fWaitAll As Boolean, dwMilliSeconds As Integer, dwWakeMask As Integer) As Integer
 
         Friend Const GWL_EXSTYLE As Integer = -20
@@ -456,11 +456,11 @@ Namespace Microsoft.VisualStudio.Editors.Interop
             Public item_lParam As IntPtr
         End Structure
 
-        <DllImport("user32")> _
+        <DllImport("user32")>
         Friend Shared Function GetComboBoxInfo(hwndCombo As IntPtr, ByRef info As COMBOBOXINFO) As Boolean
         End Function
 
-        <StructLayout(LayoutKind.Sequential)> _
+        <StructLayout(LayoutKind.Sequential)>
         Friend Structure COMBOBOXINFO
             Public cbSize As Integer
             Public rcItem As RECT
@@ -476,7 +476,7 @@ Namespace Microsoft.VisualStudio.Editors.Interop
     '//
     '// ILangPropertyProvideBatchUpdate
     '//
-    <ComImport(), Guid("F8828A38-5208-4497-991A-F8034C8D5A69"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)> _
+    <ComImport(), Guid("F8828A38-5208-4497-991A-F8034C8D5A69"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)>
     Friend Interface ILangPropertyProvideBatchUpdate
         Sub BeginBatch()
         Sub EndBatch()
@@ -484,24 +484,24 @@ Namespace Microsoft.VisualStudio.Editors.Interop
         Sub PushOptionsToCompiler(dispid As UInteger)
     End Interface
 
-    <ComImport()> _
-    <Guid("E5CB7A31-7512-11d2-89CE-0080C792E5D8")> _
-    <TypeLibType(TypeLibTypeFlags.FCanCreate)> _
-    <ClassInterface(ClassInterfaceType.None)> _
+    <ComImport()>
+    <Guid("E5CB7A31-7512-11d2-89CE-0080C792E5D8")>
+    <TypeLibType(TypeLibTypeFlags.FCanCreate)>
+    <ClassInterface(ClassInterfaceType.None)>
     Friend Class CorMetaDataDispenser
     End Class
 
-    <ComImport()> _
-    <Guid("809c652e-7396-11d2-9771-00a0c9b4d50c")> _
-    <InterfaceType(ComInterfaceType.InterfaceIsIUnknown)> _
-    <TypeLibType(TypeLibTypeFlags.FRestricted)> _
+    <ComImport()>
+    <Guid("809c652e-7396-11d2-9771-00a0c9b4d50c")>
+    <InterfaceType(ComInterfaceType.InterfaceIsIUnknown)>
+    <TypeLibType(TypeLibTypeFlags.FRestricted)>
     Friend Interface IMetaDataDispenser
         Function DefineScope(<[In]()> ByRef rclsid As Guid, <[In]()> dwCreateFlags As UInteger, <[In]()> ByRef riid As Guid) As <MarshalAs(UnmanagedType.Interface)> Object
         <PreserveSig()> Function OpenScope(<[In](), MarshalAs(UnmanagedType.LPWStr)> szScope As String, <[In]()> dwOpenFlags As UInteger, <[In]()> ByRef riid As Guid, <Out(), MarshalAs(UnmanagedType.Interface)> ByRef obj As Object) As Integer
         Function OpenScopeOnMemory(<[In]()> pData As IntPtr, <[In]()> cbData As UInteger, <[In]()> dwOpenFlags As UInteger, <[In]()> ByRef riid As Guid) As <MarshalAs(UnmanagedType.Interface)> Object
     End Interface
 
-    <StructLayout(LayoutKind.Sequential)> _
+    <StructLayout(LayoutKind.Sequential)>
     Friend Class HDITEM2
         Public mask As Integer = 0
         Public cxy As Integer = 0

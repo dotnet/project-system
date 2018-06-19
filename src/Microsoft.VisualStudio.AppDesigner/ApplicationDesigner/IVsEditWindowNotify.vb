@@ -8,7 +8,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
     '''  The interface was implemented by PropPageDesignerView, the appDesigner view will fire this event when the current designer is activated or deactivated...
     ''' </summary>
     ''' <remarks></remarks>
-    <ComVisible(False)> _
+    <ComVisible(False)>
     Public Interface IVsEditWindowNotify
         Sub OnActivated(activated As Boolean)
     End Interface

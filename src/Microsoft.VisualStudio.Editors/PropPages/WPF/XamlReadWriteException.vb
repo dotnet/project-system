@@ -4,7 +4,7 @@ Imports System.Runtime.Serialization
 
 Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
 
-    <Serializable()> _
+    <Serializable()>
     Friend Class XamlReadWriteException
         Inherits PropertyPageException
 

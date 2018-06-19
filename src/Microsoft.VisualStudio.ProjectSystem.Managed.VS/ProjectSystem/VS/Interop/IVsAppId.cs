@@ -43,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Interop
     }
 
     [Flags]
-    enum AppidLoadResult
+    internal enum AppidLoadResult
     {
         Failed = 0x0001,
         Allowed = 0x0002,

@@ -366,7 +366,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         {
             // First try "RunCommand" property
             string runCommand = await GetRunCommandAsync(properties).ConfigureAwait(false);
-                        
+
             if (string.IsNullOrEmpty(runCommand))
             {
                 // Otherwise, fall back to "TargetPath"

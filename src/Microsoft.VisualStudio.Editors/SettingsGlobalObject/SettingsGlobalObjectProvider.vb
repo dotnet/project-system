@@ -743,8 +743,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
 
 
             Dim hier As IVsHierarchy = Nothing
-            If Not IgnoreAppConfigChanges AndAlso _
-               ((attributes And (__VSRDTATTRIB.RDTA_DocDataReloaded Or __VSRDTATTRIB.RDTA_DocDataIsNotDirty)) <> 0) AndAlso _
+            If Not IgnoreAppConfigChanges AndAlso
+               ((attributes And (__VSRDTATTRIB.RDTA_DocDataReloaded Or __VSRDTATTRIB.RDTA_DocDataIsNotDirty)) <> 0) AndAlso
                IsDefaultAppConfigFile(docCookie, hier) _
             Then
 #If DEBUG Then
@@ -752,7 +752,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
 #End If
                 Debug.Assert(hier IsNot Nothing, "Why didn't we find a IVsHierarchy for the default app.config file?")
                 Dim goc As GlobalObjectCollection = Nothing
-                If _globalObjects.TryGetValue(Common.DTEUtils.EnvDTEProject(hier), _
+                If _globalObjects.TryGetValue(Common.DTEUtils.EnvDTEProject(hier),
                                                  goc) _
                 Then
                     For Each go As GlobalObject In goc

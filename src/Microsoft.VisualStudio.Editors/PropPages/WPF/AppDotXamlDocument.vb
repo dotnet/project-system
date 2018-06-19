@@ -170,7 +170,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' Represents a property value found in the XAML file.
         ''' </summary>
         ''' <remarks></remarks>
-        <DebuggerDisplay("{ActualDefinitionText}, Value={UnescapedValue}")> _
+        <DebuggerDisplay("{ActualDefinitionText}, Value={UnescapedValue}")>
         Friend MustInherit Class XamlProperty
             Protected VsTextLines As IVsTextLines
             Private ReadOnly _definitionIncludesQuotes As Boolean
@@ -264,7 +264,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' Represents a property that was found in the XAML file in attribute syntax
         ''' </summary>
         ''' <remarks></remarks>
-        <DebuggerDisplay("{ActualDefinitionText}, Value={UnescapedValue}")> _
+        <DebuggerDisplay("{ActualDefinitionText}, Value={UnescapedValue}")>
         Friend Class XamlPropertyInAttributeSyntax
             Inherits XamlProperty
 
@@ -278,7 +278,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' Represents a property that was found in property element syntax with a start and end tag.
         ''' </summary>
         ''' <remarks></remarks>
-        <DebuggerDisplay("{ActualDefinitionText}, Value={UnescapedValue}")> _
+        <DebuggerDisplay("{ActualDefinitionText}, Value={UnescapedValue}")>
         Friend Class XamlPropertyInPropertyElementSyntax
             Inherits XamlProperty
 
@@ -291,7 +291,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' Represents a property that was found in property element syntax with an empty tag.
         ''' </summary>
         ''' <remarks></remarks>
-        <DebuggerDisplay("{ActualDefinitionText}, Value={UnescapedValue}")> _
+        <DebuggerDisplay("{ActualDefinitionText}, Value={UnescapedValue}")>
         Friend Class XamlPropertyInPropertyElementSyntaxWithEmptyTag
             Inherits XamlPropertyInPropertyElementSyntax
 
@@ -313,7 +313,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
             '''   value - the element is an empty tag).
             ''' </remarks>
             Public Sub New(vsTextLines As IVsTextLines, fullyQualifiedPropertyName As String, elementStart As Location, elementEnd As Location)
-                MyBase.New(vsTextLines, elementStart, elementEnd, UnescapedValue:="")
+                MyBase.New(vsTextLines, elementStart, elementEnd, unescapedValue:="")
 
                 If fullyQualifiedPropertyName Is Nothing Then
                     Throw New ArgumentNullException("fullyQualifiedPropertyName")
@@ -338,7 +338,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
                 '  and the new value
                 Dim replaceStart As Location = DefinitionStart
                 Dim replaceEnd As Location = DefinitionEndPlusOne
-                Dim newText As String = _
+                Dim newText As String =
                     "<" & _fullyQualifiedPropertyName & ">" _
                     & EscapeXmlString(value) _
                     & "</" & _fullyQualifiedPropertyName & ">"

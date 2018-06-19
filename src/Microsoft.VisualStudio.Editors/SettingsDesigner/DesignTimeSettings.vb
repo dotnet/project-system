@@ -10,10 +10,10 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
     ''' available in a .Settings file.
     ''' </summary>
     ''' <remarks></remarks>
-    < _
-    Designer(GetType(SettingsDesigner), GetType(Design.IRootDesigner)), _
-    DesignerCategory("Designer") _
-    > _
+    <
+    Designer(GetType(SettingsDesigner), GetType(Design.IRootDesigner)),
+    DesignerCategory("Designer")
+    >
     Friend NotInheritable Class DesignTimeSettings
         Inherits Component
         Implements IEnumerable(Of DesignTimeSettingInstance)
@@ -38,7 +38,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Return IEnumerableOfDesignTimeSettingInstance_GetEnumerator()
         End Function
 
-        <Browsable(False)> _
+        <Browsable(False)>
         Public ReadOnly Property Count() As Integer
             Get
                 Return _settings.Count
@@ -82,7 +82,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Get
                 Dim codeProviderInstance As CodeDom.Compiler.CodeDomProvider = Nothing
 
-                Dim mdCodeDomProvider As Designer.Interfaces.IVSMDCodeDomProvider = TryCast(GetService(GetType(Designer.Interfaces.IVSMDCodeDomProvider)), _
+                Dim mdCodeDomProvider As Designer.Interfaces.IVSMDCodeDomProvider = TryCast(GetService(GetType(Designer.Interfaces.IVSMDCodeDomProvider)),
                                             Designer.Interfaces.IVSMDCodeDomProvider)
                 If mdCodeDomProvider IsNot Nothing Then
                     Try
@@ -306,8 +306,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             ' which in turn will make us try and remove the item again. By removing the item from
             ' our internal collection and guarding against doing this multiple times, we avoid the
             ' nasty stack overflow...
-            If _settings.Remove(instance) AndAlso _
-                instance.Site IsNot Nothing AndAlso _
+            If _settings.Remove(instance) AndAlso
+                instance.Site IsNot Nothing AndAlso
                 instance.Site.Container IsNot Nothing _
             Then
                 instance.Site.Container.Remove(instance)

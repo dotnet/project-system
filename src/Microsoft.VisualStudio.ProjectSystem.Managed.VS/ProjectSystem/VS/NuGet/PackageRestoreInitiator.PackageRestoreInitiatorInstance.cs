@@ -42,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
             // Remove the ConfiguredProjectIdentity key because it is unique to each configured project - so it won't match across projects by design.
             // Remove the ConfiguredProjectVersion key because each ConfiguredProject manages it's own version and generally they don't match. 
-            private readonly static ImmutableArray<NamedIdentity> s_keysToDrop = ImmutableArray.Create(ProjectDataSources.ConfiguredProjectIdentity, ProjectDataSources.ConfiguredProjectVersion);
+            private static readonly ImmutableArray<NamedIdentity> s_keysToDrop = ImmutableArray.Create(ProjectDataSources.ConfiguredProjectIdentity, ProjectDataSources.ConfiguredProjectVersion);
 
             [ImportingConstructor]
             public PackageRestoreInitiatorInstance(

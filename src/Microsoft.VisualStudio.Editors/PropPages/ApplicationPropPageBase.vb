@@ -16,7 +16,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
     '''   See comments in proppage.vb: "Application property pages (VB, C#, J#)"
     ''' </summary>
     ''' <remarks></remarks>
-    Public partial Class ApplicationPropPageBase
+    Partial Public Class ApplicationPropPageBase
         Inherits PropPageUserControlBase
 
         Private _lastIconImage As String

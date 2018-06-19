@@ -36,8 +36,8 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
 
 #Region "Public methods"
 
-        Public Shared Function CreateNew( _
-                vbPackage As VBPackage, project As Project, _
+        Public Shared Function CreateNew(
+                vbPackage As VBPackage, project As Project,
                 projectHierarchy As IVsHierarchy, extensibilitySettings As MyExtensibilitySettings) _
                 As MyExtensibilityProjectService
             If vbPackage Is Nothing Then
@@ -53,10 +53,10 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
                 Return Nothing
             End If
 
-            Dim projectService As New MyExtensibilityProjectService( _
+            Dim projectService As New MyExtensibilityProjectService(
                 vbPackage, project, projectHierarchy, extensibilitySettings)
 
-            Dim projectSettings As MyExtensibilityProjectSettings = MyExtensibilityProjectSettings.CreateNew( _
+            Dim projectSettings As MyExtensibilityProjectSettings = MyExtensibilityProjectSettings.CreateNew(
                 projectService, vbPackage, project, projectHierarchy)
             If projectSettings Is Nothing Then
                 Return Nothing

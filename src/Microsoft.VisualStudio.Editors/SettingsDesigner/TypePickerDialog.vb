@@ -33,7 +33,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             InitializeComponent()
 
             If Not s_previousSize.IsEmpty Then
-                Size = New Size(Math.Min(CInt(MinimumSize.Width * 1.5), s_previousSize.Width), _
+                Size = New Size(Math.Min(CInt(MinimumSize.Width * 1.5), s_previousSize.Width),
                                                   Math.Min(CInt(MinimumSize.Height * 1.5), s_previousSize.Height))
 
             End If

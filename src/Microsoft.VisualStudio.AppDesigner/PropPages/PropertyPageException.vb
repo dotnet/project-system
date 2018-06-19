@@ -10,7 +10,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
     '''   programmatically manipulated (although that of course is possible).
     ''' </summary>
     ''' <remarks></remarks>
-    <Serializable()> _
+    <Serializable()>
     Public Class PropertyPageException
         Inherits ApplicationException
 

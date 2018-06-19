@@ -57,7 +57,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <returns></returns>
         ''' <remarks></remarks>
         Public Overridable Function GetReferencedTypes(baseType As Type, shouldExcludeGlobalTypes As Boolean) As List(Of Type)
-            Dim dynamicTypeService As Shell.Design.DynamicTypeService = _
+            Dim dynamicTypeService As Shell.Design.DynamicTypeService =
                 DirectCast(_serviceProvider.GetService(GetType(Shell.Design.DynamicTypeService)), Shell.Design.DynamicTypeService)
 
             Dim trs As ComponentModel.Design.ITypeResolutionService = Nothing
