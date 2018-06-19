@@ -10,6 +10,8 @@ using Microsoft.VisualStudio.ProjectSystem.VS;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
+using Task = System.Threading.Tasks.Task;
+
 // Register ourselves as a CPS project type
 [assembly: ProjectTypeRegistration(
     projectTypeGuid: FSharpProjectSystemPackage.ProjectTypeGuid, 
@@ -32,24 +34,32 @@ namespace Microsoft.VisualStudio.Packaging
         public const string PackageGuid = "a724c878-e8fd-4feb-b537-60baba7eda83";
 
         private IVsRegisterProjectSelector _projectSelectorService;
-        private uint _projectSelectorCookie;
+        private uint _projectSelectorCookie = VSConstants.VSCOOKIE_NIL;
 
         public FSharpProjectSystemPackage()
         {
         }
 
-        protected override System.Threading.Tasks.Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
+        protected override async Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
+
             _projectSelectorService = this.GetService<IVsRegisterProjectSelector, SVsRegisterProjectTypes>();
             Guid selectorGuid = typeof(FSharpProjectSelector).GUID;
             _projectSelectorService.RegisterProjectSelector(ref selectorGuid, new FSharpProjectSelector(), out _projectSelectorCookie);
 
-            return base.InitializeAsync(cancellationToken, progress);
+            await base.InitializeAsync(cancellationToken, progress)
+                      .ConfigureAwait(true); // Avoid forced switch to thread-pool
         }
 
         protected override void Dispose(bool disposing)
         {
-            _projectSelectorService.UnregisterProjectSelector(_projectSelectorCookie);
+            if (disposing && _projectSelectorCookie != VSConstants.VSCOOKIE_NIL)
+            {
+                _projectSelectorService?.UnregisterProjectSelector(_projectSelectorCookie);
+                _projectSelectorCookie = VSConstants.VSCOOKIE_NIL;
+            }
+
             base.Dispose(disposing);
         }
     }
