@@ -1676,6 +1676,54 @@ Namespace Microsoft.VisualStudio.Editors.Common
             Return False
         End Function
 
+        Friend Function GetSecurityZoneOfFile(path As String, serviceProvider As ServiceProvider) As Security.SecurityZone
+            If path Is Nothing Then
+                Throw New ArgumentNullException("path")
+            End If
+
+            If Not IO.Path.IsPathRooted(path) Then
+                Throw CreateArgumentException("path")
+            End If
+
+            ' Some additional verification is done by Path.GetFullPath...
+            Dim absPath As String = IO.Path.GetFullPath(path)
+
+            Dim internetSecurityManager As IInternetSecurityManager = Nothing
+
+            ' We've got to get a fresh instance of the InternetSecurityManager, since it seems that the instance we
+            ' can get from our ServiceProvider can't Map URLs to zones...
+            Dim localReg As ILocalRegistry2 = TryCast(serviceProvider.GetService(GetType(ILocalRegistry)), ILocalRegistry2)
+            If localReg IsNot Nothing Then
+                Dim ObjectPtr As IntPtr = IntPtr.Zero
+                Try
+                    Static CLSID_InternetSecurityManager As New Guid("7b8a2d94-0ac9-11d1-896c-00c04fb6bfc4")
+                    VSErrorHandler.ThrowOnFailure(localReg.CreateInstance(CLSID_InternetSecurityManager, Nothing, NativeMethods.IID_IUnknown, win.CLSCTX_INPROC_SERVER, ObjectPtr))
+                    internetSecurityManager = TryCast(Marshal.GetObjectForIUnknown(ObjectPtr), IInternetSecurityManager)
+                Catch Ex As Exception When ReportWithoutCrash(Ex, "Failed to create Interop.IInternetSecurityManager", NameOf(Utils) & "." & NameOf(GetSecurityZoneOfFile))
+                Finally
+                    If ObjectPtr <> IntPtr.Zero Then
+                        Marshal.Release(ObjectPtr)
+                    End If
+                End Try
+            End If
+
+            If internetSecurityManager Is Nothing Then
+                Debug.Fail("Failed to create an InternetSecurityManager")
+                Throw New ApplicationException
+            End If
+
+            Dim zone As Integer
+            Dim hr As Integer = internetSecurityManager.MapUrlToZone(absPath, zone, 0)
+
+            If VSErrorHandler.Failed(hr) Then
+                ' If we can't map the absolute path to a zone, we silently fail...
+                Return Security.SecurityZone.NoZone
+            End If
+
+            Return CType(zone, Security.SecurityZone)
+        End Function
+
+
 #Region "Telemetry"
         Public Class TelemetryLogger
 
