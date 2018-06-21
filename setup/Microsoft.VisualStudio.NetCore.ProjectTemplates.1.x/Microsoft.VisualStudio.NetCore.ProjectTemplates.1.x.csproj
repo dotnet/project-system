@@ -3,6 +3,7 @@
   <PropertyGroup>
     <!-- VS Insertion -->
     <VisualStudioInsertionComponent>$(MSBuildProjectName)</VisualStudioInsertionComponent>
+    <ManifestBuildVersion>$(VsixVersion)</ManifestBuildVersion>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.DotNet.Common.ProjectTemplates.1.x" Version="$(MicrosoftDotNetProjectTemplatesVersion)" />

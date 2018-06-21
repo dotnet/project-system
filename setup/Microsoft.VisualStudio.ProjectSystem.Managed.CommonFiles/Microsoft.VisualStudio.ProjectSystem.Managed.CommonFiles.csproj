@@ -3,6 +3,7 @@
    <PropertyGroup>
     <!-- VS Insertion -->
     <VisualStudioInsertionComponent>Microsoft.VisualStudio.ProjectSystem.Managed</VisualStudioInsertionComponent>
+    <ManifestBuildVersion>$(VsixVersion)</ManifestBuildVersion>
   </PropertyGroup>
   <ItemGroup>
     <!-- Depend on projects producing XAML rules included in this Willow package -->

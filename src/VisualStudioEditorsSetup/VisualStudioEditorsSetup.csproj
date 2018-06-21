@@ -12,6 +12,7 @@
 
     <!-- VS Setup -->
     <VisualStudioInsertionComponent>Microsoft.VisualStudio.Editors</VisualStudioInsertionComponent>
+    <ManifestBuildVersion>$(VsixVersion)</ManifestBuildVersion>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Microsoft.VisualStudio.AppDesigner\Microsoft.VisualStudio.AppDesigner.vbproj">
