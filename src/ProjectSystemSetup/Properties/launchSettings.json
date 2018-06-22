@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "ProjectSystemSetup": {
+    "Start": {
       "commandName": "Executable",
       "executablePath": "$(DevEnvDir)devenv.exe",
       "commandLineArgs": "/rootsuffix $(VSSDKTargetPlatformRegRootSuffix) /log",
@@ -10,7 +10,7 @@
         "CSharpDesignTimeTargetsPath": "$(VisualStudioXamlRulesDir)Microsoft.CSharp.DesignTime.targets"
       }
     },
-    "ProjectSystemSetup (with native debugging)": {
+    "Start (with native debugging)": {
       "commandName": "Executable",
       "executablePath": "$(DevEnvDir)devenv.exe",
       "commandLineArgs": "/rootsuffix $(VSSDKTargetPlatformRegRootSuffix) /log",
@@ -21,7 +21,7 @@
       },
       "nativeDebugging": true
     },
-    "ProjectSystemSetup (with native debugging & bypassing NGEN images)": {
+    "Start (with native debugging & no NGEN images)": {
       "commandName": "Executable",
       "executablePath": "$(DevEnvDir)devenv.exe",
       "commandLineArgs": "/rootsuffix $(VSSDKTargetPlatformRegRootSuffix) /log",
