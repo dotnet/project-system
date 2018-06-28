@@ -6,7 +6,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 {
     [ExcludeFromCodeCoverage]
     [SuppressMessage("Style", "IDE0016:Use 'throw' expression")]
-    partial class Compile
+    internal partial class Compile
     {
     }
 }

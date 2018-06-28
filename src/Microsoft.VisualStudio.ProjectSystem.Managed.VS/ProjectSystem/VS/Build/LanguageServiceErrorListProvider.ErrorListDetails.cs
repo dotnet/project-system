@@ -7,7 +7,7 @@ using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
 {
-    partial class LanguageServiceErrorListProvider
+    internal partial class LanguageServiceErrorListProvider
     {
         /// <summary>
         /// Captures details from various types of MSBuild events.

@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.ProjectSystem.Properties;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
-    partial class ProjectTreeParser
+    internal partial class ProjectTreeParser
     {
         private class MutableProjectItemTree : MutableProjectTree, IProjectItemTree2
         {

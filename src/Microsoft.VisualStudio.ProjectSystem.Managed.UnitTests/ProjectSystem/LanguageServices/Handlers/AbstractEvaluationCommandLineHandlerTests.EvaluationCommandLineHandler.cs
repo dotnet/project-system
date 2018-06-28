@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.ProjectSystem.Logging;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 {
-    partial class AbstractEvaluationCommandLineHandlerTests
+    public partial class AbstractEvaluationCommandLineHandlerTests
     {
         private class EvaluationCommandLineHandler : AbstractEvaluationCommandLineHandler
         {
