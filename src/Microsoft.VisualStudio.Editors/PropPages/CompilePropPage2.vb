@@ -1311,6 +1311,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             MyBase.PreApplyPageChanges()
         End Sub
 
+
         ''' <summary>
         ''' Check if the path is a trusted path or not
         ''' </summary>
@@ -1321,53 +1322,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' If that code ever changes, we've gotta update this as well...
         ''' </remarks>
         Private Function CheckPath(path As String) As Boolean
-            If path Is Nothing Then
-                Throw New ArgumentNullException("path")
-            End If
-
-
-            If Not IO.Path.IsPathRooted(path) Then
-                Throw Common.CreateArgumentException("path")
-            End If
-
-            ' Some additional verification is done by Path.GetFullPath...
-            Dim absPath As String = IO.Path.GetFullPath(path)
-
-            Dim internetSecurityManager As Interop.IInternetSecurityManager = Nothing
-
-            ' We've got to get a fresh instance of the InternetSecurityManager, since it seems that the instance we
-            ' can get from our ServiceProvider can't Map URLs to zones...
-            Dim localReg As ILocalRegistry2 = TryCast(ServiceProvider.GetService(GetType(ILocalRegistry)), ILocalRegistry2)
-            If localReg IsNot Nothing Then
-                Dim ObjectPtr As IntPtr = IntPtr.Zero
-                Try
-                    Static CLSID_InternetSecurityManager As New Guid("7b8a2d94-0ac9-11d1-896c-00c04fb6bfc4")
-                    VSErrorHandler.ThrowOnFailure(localReg.CreateInstance(CLSID_InternetSecurityManager, Nothing, Interop.NativeMethods.IID_IUnknown, Interop.Win32Constant.CLSCTX_INPROC_SERVER, ObjectPtr))
-                    internetSecurityManager = TryCast(System.Runtime.InteropServices.Marshal.GetObjectForIUnknown(ObjectPtr), Interop.IInternetSecurityManager)
-                Catch Ex As Exception When Common.ReportWithoutCrash(Ex, "Failed to create Interop.IInternetSecurityManager", NameOf(CompilePropPage2))
-                Finally
-                    If ObjectPtr <> IntPtr.Zero Then
-                        System.Runtime.InteropServices.Marshal.Release(ObjectPtr)
-                    End If
-                End Try
-            End If
-
-            If internetSecurityManager Is Nothing Then
-                Debug.Fail("Failed to create an InternetSecurityManager")
-                Throw New ApplicationException
-            End If
-
-            Dim zone As Integer
-            Dim hr As Integer = internetSecurityManager.MapUrlToZone(absPath, zone, 0)
-
-            If VSErrorHandler.Failed(hr) Then
-                ' If we can't map the absolute path to a zone, we silently fail...
-                Return True
-            End If
+            Dim zone As Security.SecurityZone = Common.GetSecurityZoneOfFile(path, ServiceProvider)
 
             Dim folderEvidence As Security.Policy.Evidence = New Security.Policy.Evidence()
-            folderEvidence.AddHostEvidence(New Security.Policy.Url("file:///" & absPath))
-            folderEvidence.AddHostEvidence(New Security.Policy.Zone(CType(zone, Security.SecurityZone)))
+            folderEvidence.AddHostEvidence(New Security.Policy.Url("file:///" & IO.Path.GetFullPath(path)))
+            folderEvidence.AddHostEvidence(New Security.Policy.Zone(zone))
             Dim folderPSet As Security.PermissionSet = Security.SecurityManager.GetStandardSandbox(folderEvidence)
 
             ' Get permission set that is granted to local code running on the local machine.
@@ -1385,7 +1344,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Return False
             End If
         End Function
-
 
         ''' <summary>
         ''' Set the drop-down width of comboboxes with user-handled events so they'll fit their contents

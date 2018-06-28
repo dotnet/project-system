@@ -134,9 +134,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                         ' We want to show an empty designer when we open an empty resx file. The file could come from a V7.x projects
                         If Not String.IsNullOrEmpty(bufferText) Then
                             'CONSIDER: get DocDataBufferReader and pass that in to ReadResources directly instead of the additional overhead of calling GetAllBufferText, which turns a stream into a string, and then turning the string into a stream.
-                            Using Reader As StringReader = New StringReader(bufferText)
-                                ResourceFile.ReadResources(Reader)
-                            End Using
+                            ResourceFile.ReadResources(NewResourceEditorRoot.ResourceFileName, bufferText)
                         End If
 
                         'NOTE:  We should consider to restoer many view states before populating the designer surface...
