@@ -264,7 +264,7 @@
       </trans-unit>
       <trans-unit id="BoolProperty|AutoGenerateBindingRedirects|DisplayName">
         <source>Auto-Generate Binding Redirects</source>
-        <target state="new">Auto-Generate Binding Redirects</target>
+        <target state="translated">Автоматически создавать перенаправления привязок</target>
         <note />
       </trans-unit>
     </body>
