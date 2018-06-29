@@ -5,7 +5,7 @@ using System.Diagnostics;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 {
-    partial class AbstractEvaluationCommandLineHandler
+    internal partial class AbstractEvaluationCommandLineHandler
     {
         /// <summary>
         ///     Represents a set of differences made to a project along with a version.

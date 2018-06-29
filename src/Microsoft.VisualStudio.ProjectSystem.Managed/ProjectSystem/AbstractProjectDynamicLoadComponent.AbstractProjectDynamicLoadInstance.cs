@@ -7,7 +7,7 @@ using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
-    partial class AbstractProjectDynamicLoadComponent
+    internal partial class AbstractProjectDynamicLoadComponent
     {
         /// <summary>
         ///     Represents an instance that is automatically initialized when its parent

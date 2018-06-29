@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 {
     using TIdentityDictionary = IImmutableDictionary<NamedIdentity, IComparable>;
 
-    partial class PackageRestoreInitiator
+    internal partial class PackageRestoreInitiator
     {
         private class PackageRestoreInitiatorInstance : AbstractProjectDynamicLoadInstance
         {

@@ -6,7 +6,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 {
     [ExcludeFromCodeCoverage]
     [SuppressMessage("Style", "IDE0016:Use 'throw' expression")]
-    partial class ConfiguredBrowseObject
+    internal partial class ConfiguredBrowseObject
     {
     }
 }

@@ -5,7 +5,7 @@ using System.Threading;
 
 namespace Microsoft.VisualStudio.Threading
 {
-    partial class SemaphoreSlimExtensions
+    internal partial class SemaphoreSlimExtensions
     {
         internal struct SemaphoreDisposer : IDisposable
         {

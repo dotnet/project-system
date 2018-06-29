@@ -4,7 +4,7 @@ using System.Collections.Immutable;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
-    partial class ContextHandlerProvider
+    internal partial class ContextHandlerProvider
     {
         private class Handlers
         {

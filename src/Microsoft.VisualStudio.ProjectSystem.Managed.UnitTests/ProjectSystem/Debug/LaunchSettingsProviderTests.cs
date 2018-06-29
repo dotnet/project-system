@@ -58,8 +58,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 var mockSerializer = new Mock<ILaunchSettingsSerializationProvider>();
                 return mockSerializer.Object;
             }, mockIJsonSection.Object, true);
-            var settingsProviders = new OrderPrecedenceImportCollection<ILaunchSettingsSerializationProvider, IJsonSection>(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst, (UnconfiguredProject)null);
-            settingsProviders.Add(new Lazy<ILaunchSettingsSerializationProvider, IJsonSection>(() => lazyProvider.Value, mockIJsonSection.Object));
+            var settingsProviders = new OrderPrecedenceImportCollection<ILaunchSettingsSerializationProvider, IJsonSection>(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst, (UnconfiguredProject)null)
+            {
+                new Lazy<ILaunchSettingsSerializationProvider, IJsonSection>(() => lazyProvider.Value, mockIJsonSection.Object)
+            };
             provider.SetSettingsProviderCollection(settingsProviders);
 
         }

@@ -7,7 +7,7 @@ using Microsoft.VisualStudio.Text;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Logging
 {
-    partial class ProjectLoggerExtensions
+    internal partial class ProjectLoggerExtensions
     {
         private class ProjectLoggerBatch : IProjectLoggerBatch
         {

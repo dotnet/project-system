@@ -26,8 +26,7 @@ namespace Microsoft.VisualStudio.IO
 
         private Dictionary<string, FileData> _files = new Dictionary<string, FileData>(StringComparer.OrdinalIgnoreCase);
         private HashSet<string> _folders = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-
-        string _currentDirectory;
+        private string _currentDirectory;
 
         public Dictionary<string, FileData> Files { get => _files; }
 
