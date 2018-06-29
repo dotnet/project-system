@@ -96,34 +96,21 @@ namespace Microsoft.VisualStudio.Threading.Tasks
         }
 
         [Fact]
-        public void CancelPendingUpdates_PendingTasksAreCanceled()
+        public async Task CancelPendingUpdates_PendingTasksAreNotRun()
         {
-            var scheduler = new TaskDelayScheduler(TimeSpan.FromMilliseconds(50), new IProjectThreadingServiceMock(), CancellationToken.None);
+            var scheduler = new TaskDelayScheduler(TimeSpan.FromMilliseconds(500), new IProjectThreadingServiceMock(), CancellationToken.None);
 
             bool taskRan = false;
-            var task1 = scheduler.ScheduleAsyncTask((ct) =>
+            var task = scheduler.ScheduleAsyncTask((ct) =>
             {
                 taskRan = true;
-                int count = 50;
-                while (count != 0)
-                {
-                    ct.ThrowIfCancellationRequested();
-                    Thread.Sleep(20);
-                    --count;
-                }
                 return Task.CompletedTask;
             });
 
             scheduler.CancelPendingUpdates();
 
-            try
-            {
-                task1.Task.Wait();
-                Assert.False(taskRan);
-            }
-            catch (OperationCanceledException)
-            {
-            }
+            await task;
+            Assert.False(taskRan);
         }
     }
 }
