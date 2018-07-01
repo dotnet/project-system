@@ -84,7 +84,7 @@
       </trans-unit>
       <trans-unit id="AutoGenerateBindingRedirects.Text">
         <source>&amp;Auto-generate binding redirects</source>
-        <target state="new">&amp;Auto-generate binding redirects</target>
+        <target state="translated">自动生成绑定重定向(&amp;A)</target>
         <note />
       </trans-unit>
     </body>

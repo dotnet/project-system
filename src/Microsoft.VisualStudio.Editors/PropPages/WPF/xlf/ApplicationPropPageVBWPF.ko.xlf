@@ -69,7 +69,7 @@
       </trans-unit>
       <trans-unit id="AutoGenerateBindingRedirectsCheckBox.Text">
         <source>Auto-generate &amp;binding redirects</source>
-        <target state="new">Auto-generate &amp;binding redirects</target>
+        <target state="translated">바인딩 리디렉션 자동 생성(&amp;B)</target>
         <note />
       </trans-unit>
     </body>
