@@ -49,6 +49,16 @@ Namespace Microsoft.VisualStudio.Editors.OptionPages
 
             bindingExpression = UsePreviewSdk.SetBinding(ToggleButton.IsCheckedProperty, binding)
             AddBinding(bindingExpression)
+
+            binding = New Binding() With {
+                .Source = _generalOptions,
+                .Path = New Windows.PropertyPath(NameOf(GeneralOptions.CanChangeUsePreviewSdk)),
+                .UpdateSourceTrigger = UpdateSourceTrigger.Explicit
+            }
+
+            bindingExpression = UsePreviewSdk.SetBinding(IsEnabledProperty, binding)
+            AddBinding(bindingExpression)
+
         End Sub
     End Class
 End Namespace

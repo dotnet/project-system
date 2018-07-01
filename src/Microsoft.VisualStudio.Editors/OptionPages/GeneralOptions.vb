@@ -71,6 +71,12 @@ Namespace Microsoft.VisualStudio.Editors.OptionPages
             End Set
         End Property
 
+        Public ReadOnly Property CanChangeUsePreviewSdk As Boolean
+            Get
+                Return Not _isPreview
+            End Get
+        End Property
+
         Public Sub New(serviceProvider As IServiceProvider)
             _settingsManager = DirectCast(serviceProvider.GetService(GetType(SVsSettingsPersistenceManager)), ISettingsManager)
             Dim shell = DirectCast(serviceProvider.GetService(GetType(SVsShell)), IVsShell)
