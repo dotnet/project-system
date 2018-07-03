@@ -18,25 +18,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             private const string NameProperty = "Name";
             private const string VersionProperty = "Version";
 
-            private readonly IUnconfiguredProjectVsServices _projectVsServices;
+            private readonly ProjectProperties _projectProperties;
             private readonly ISafeProjectGuidService _projectGuidSevice;
             private readonly ITelemetryService _telemetryService;
 
             [ImportingConstructor]
             public SDKVersionTelemetryServiceInstance(
-                IUnconfiguredProjectVsServices projectVsServices,
+                ProjectProperties projectProperties,
                 ISafeProjectGuidService projectGuidSevice,
-                ITelemetryService telemetryService)
-                : base(projectVsServices.ThreadingService.JoinableTaskContext)
+                ITelemetryService telemetryService,
+                IProjectThreadingService projectThreadingService)
+                : base(projectThreadingService.JoinableTaskContext)
             {
-                _projectVsServices = projectVsServices;
+                _projectProperties = projectProperties;
                 _projectGuidSevice = projectGuidSevice;
                 _telemetryService = telemetryService;
             }
 
             protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
             {
-                ConfigurationGeneral projectProperties = await _projectVsServices.ActiveConfiguredProjectProperties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(false);
+                ConfigurationGeneral projectProperties = await _projectProperties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(false);
 
                 var name = (string)await projectProperties.SDKIdentifier.GetValueAsync().ConfigureAwait(false);
                 var version = (string)await projectProperties.SDKVersion.GetValueAsync().ConfigureAwait(false);

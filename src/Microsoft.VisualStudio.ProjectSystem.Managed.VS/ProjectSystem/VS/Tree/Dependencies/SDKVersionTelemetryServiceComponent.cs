@@ -8,27 +8,30 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     /// <summary>
     /// For maintaining light state about the SDK version used in a project
     /// </summary>
-    [Export(ExportContractNames.Scopes.ConfiguredProject, typeof(IProjectDynamicLoadComponent))]
+    [Export(ExportContractNames.Scopes.UnconfiguredProject, typeof(IProjectDynamicLoadComponent))]
     [AppliesTo(ProjectCapability.DotNet)]
     internal partial class SDKVersionTelemetryServiceComponent : AbstractProjectDynamicLoadComponent
     {
-        private readonly IUnconfiguredProjectVsServices _projectVsServices;
+        private readonly ProjectProperties _projectProperties;
         private readonly ITelemetryService _telemetryService;
+        private readonly IProjectThreadingService _projectThreadingService;
         private readonly ISafeProjectGuidService _projectGuidSevice;
 
         [ImportingConstructor]
         public SDKVersionTelemetryServiceComponent(
-            IUnconfiguredProjectVsServices projectVsServices,
+            ProjectProperties projectProperties,
             ISafeProjectGuidService projectGuidSevice,
-            ITelemetryService telemetryService)
-            : base(projectVsServices.ThreadingService.JoinableTaskContext)
+            ITelemetryService telemetryService,
+            IProjectThreadingService projectThreadingService)
+            : base(projectThreadingService.JoinableTaskContext)
         {
-            _projectVsServices = projectVsServices;
+            _projectProperties = projectProperties;
             _projectGuidSevice = projectGuidSevice;
             _telemetryService = telemetryService;
+            _projectThreadingService = projectThreadingService;
         }
 
         protected override AbstractProjectDynamicLoadInstance CreateInstance()
-            => new SDKVersionTelemetryServiceInstance(_projectVsServices, _projectGuidSevice, _telemetryService);
+            => new SDKVersionTelemetryServiceInstance(_projectProperties, _projectGuidSevice, _telemetryService, _projectThreadingService);
     }
 }
