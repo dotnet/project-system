@@ -23,6 +23,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
         }
 
+        public AbstractProjectDynamicLoadInstance Instance
+        {
+            get { return _instance; }
+        }
+
         public Task LoadAsync()
         {
             AbstractProjectDynamicLoadInstance instance;
