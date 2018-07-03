@@ -28,7 +28,14 @@ namespace Microsoft.VisualStudio.ProjectSystem
             get { return _instance; }
         }
 
-        public Task LoadAsync()
+        public async Task LoadAsync()
+        {
+            await InitializeAsync().ConfigureAwait(false);
+
+            await LoadCoreAsync().ConfigureAwait(false);
+        }
+
+        private Task LoadCoreAsync()
         {
             AbstractProjectDynamicLoadInstance instance;
             lock (_lock)
