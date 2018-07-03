@@ -19,59 +19,48 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             private const string VersionProperty = "Version";
 
             private readonly IUnconfiguredProjectVsServices _projectVsServices;
+            private readonly ISafeProjectGuidService _projectGuidSevice;
             private readonly ITelemetryService _telemetryService;
-            private string _projectId;
 
             [ImportingConstructor]
             public SDKVersionTelemetryServiceInstance(
                 IUnconfiguredProjectVsServices projectVsServices,
+                ISafeProjectGuidService projectGuidSevice,
                 ITelemetryService telemetryService)
                 : base(projectVsServices.ThreadingService.JoinableTaskContext)
             {
                 _projectVsServices = projectVsServices;
+                _projectGuidSevice = projectGuidSevice;
                 _telemetryService = telemetryService;
             }
 
             protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
             {
-                await _projectVsServices.ThreadingService.SwitchToUIThread();
                 ConfigurationGeneral projectProperties = await _projectVsServices.ActiveConfiguredProjectProperties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(false);
 
                 var name = (string)await projectProperties.SDKIdentifier.GetValueAsync().ConfigureAwait(false);
                 var version = (string)await projectProperties.SDKVersion.GetValueAsync().ConfigureAwait(false);
+                string projectId = await GetProjectIdAsync().ConfigureAwait(false);
 
-                if (_projectId == null)
-                {
-                    InitializeProjectId();
-                }
+                if (name == null || version == null || projectId == null)
+                    return;
 
                 _telemetryService.PostProperties(
                     FormattableString.Invariant($"{TelemetryEventName}"),
                     new List<(string, object)>
                     {
-                        (ProjectProperty, _projectId),
+                        (ProjectProperty, projectId),
                         (NameProperty, name),
                         (VersionProperty, version)
                     });
             }
 
-            protected override Task DisposeCoreAsync(bool initialized)
-            {
-                _projectId = null;
-                return Task.CompletedTask;
-            }
+            protected override Task DisposeCoreAsync(bool initialized) => Task.CompletedTask;
 
-            private void InitializeProjectId()
+            private async Task<string> GetProjectIdAsync()
             {
-                IProjectGuidService projectGuidService = _projectVsServices.Project.Services.ExportProvider.GetExportedValueOrDefault<IProjectGuidService>();
-                if (projectGuidService != null)
-                {
-                    _projectId = projectGuidService.ProjectGuid.ToString();
-                }
-                else
-                {
-                    _projectId = _telemetryService.HashValue(_projectVsServices.Project.FullPath);
-                }
+                Guid projectGuid = await _projectGuidSevice.GetProjectGuidAsync().ConfigureAwait(false);
+                return projectGuid == Guid.Empty ? null : projectGuid.ToString();
             }
         }
     }
