@@ -1,13 +1,13 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 
-using Microsoft.VisualStudio.Threading;
 using Microsoft.VisualStudio.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.ProjectSystem
@@ -24,8 +24,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
         private readonly ActionBlock<IProjectVersionedValue<IConfigurationGroup<ProjectConfiguration>>> _targetBlock;
         private TaskCompletionSource<object> _isImplicitlyActiveSource = new TaskCompletionSource<object>();
         private IDisposable _subscription;
-        private event AsyncEventHandler _implicitlyActivated;
-        private event AsyncEventHandler _implicitlyDeactivated;
 
         [ImportingConstructor]
         public ConfiguredProjectImplicitActivationTracking(ConfiguredProject project, IActiveConfigurationGroupService activeConfigurationGroupService, [Import(ExportContractNames.Scopes.ConfiguredProject)]IProjectAsynchronousTasksService tasksService)
@@ -34,34 +32,21 @@ namespace Microsoft.VisualStudio.ProjectSystem
             _activeConfigurationGroupService = activeConfigurationGroupService;
             _tasksService = tasksService;
             _targetBlock = new ActionBlock<IProjectVersionedValue<IConfigurationGroup<ProjectConfiguration>>>(OnActiveConfigurationsChanged);
+
+            ImplicitlyActiveServices = new OrderPrecedenceImportCollection<IImplicitlyActiveService>(projectCapabilityCheckProvider: project);
         }
 
-        public event AsyncEventHandler ImplicitlyActivated
+        [ImportMany]
+        public OrderPrecedenceImportCollection<IImplicitlyActiveService> ImplicitlyActiveServices
         {
-            add
-            {
-                EnsureInitialized();
-
-                _implicitlyActivated += value;
-            }
-            remove
-            {
-                _implicitlyActivated -= value;
-            }
+            get;
         }
 
-        public event AsyncEventHandler ImplicitlyDeactivated
+        [ConfiguredProjectAutoLoad]
+        [AppliesTo(ProjectCapability.DotNet)]
+        public void Load()
         {
-            add
-            {
-                EnsureInitialized();
-
-                _implicitlyDeactivated += value;
-            }
-            remove
-            {
-                _implicitlyDeactivated -= value;
-            }
+            EnsureInitialized();
         }
 
         public ITargetBlock<IProjectVersionedValue<IConfigurationGroup<ProjectConfiguration>>> TargetBlock => _targetBlock;
@@ -136,7 +121,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             _isImplicitlyActiveSource.TrySetResult(null);
 
-            return _implicitlyActivated.RaiseAsync(this, EventArgs.Empty);
+            IEnumerable<Task> tasks = ImplicitlyActiveServices.Select(c => c.Value.ActivateAsync());
+
+            return Task.WhenAll(tasks);
         }
 
         private Task OnImplicitlyDeactivated()
@@ -149,7 +136,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             _isImplicitlyActiveSource = source;
 
-            return _implicitlyDeactivated.RaiseAsync(this, EventArgs.Empty);
+            IEnumerable<Task> tasks = ImplicitlyActiveServices.Select(c => c.Value.DeactivateAsync());
+
+            return Task.WhenAll(tasks);
         }
 
         private void OnCanceled()
