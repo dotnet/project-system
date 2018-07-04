@@ -152,6 +152,11 @@
         <target state="translated">最新状態の高速チェックの無効化</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|NETCoreSdkVersion|Description">
+        <source>Represents the version of the dotnet sdk being used (if any).</source>
+        <target state="new">Represents the version of the dotnet sdk being used (if any).</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>
