@@ -14,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         ///     <see cref="IProjectDynamicLoadComponent"/> instance's capabilities requirements are 
         ///     satisfied, or disposed when they are not.
         /// </summary>
-        protected abstract class AbstractProjectDynamicLoadInstance : OnceInitializedOnceDisposedAsync
+        public abstract class AbstractProjectDynamicLoadInstance : OnceInitializedOnceDisposedAsync
         {
             protected AbstractProjectDynamicLoadInstance(JoinableTaskContextNode joinableTaskContextNode)
                 : base(joinableTaskContextNode)
