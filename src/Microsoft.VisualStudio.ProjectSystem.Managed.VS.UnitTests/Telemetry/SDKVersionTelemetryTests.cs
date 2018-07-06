@@ -83,6 +83,7 @@ namespace Microsoft.VisualStudio.Telemetry
             };
             await component.LoadAsync();
             await semaphore.WaitAsync();
+            await component.UnloadAsync();
             return (success, result);
         }
 
