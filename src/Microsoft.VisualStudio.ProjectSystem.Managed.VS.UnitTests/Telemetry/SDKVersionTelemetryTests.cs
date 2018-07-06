@@ -14,50 +14,8 @@ using static Microsoft.VisualStudio.Telemetry.ITelemetryServiceFactory;
 namespace Microsoft.VisualStudio.Telemetry
 {
     [Trait("UnitTest", "ProjectSystem")]
-    public class SDKVersionTelemetry
+    public class SDKVersionTelemetryTests
     {
-        [Fact(Skip = "Need to mock properties correctly")]
-        public static async Task TestCreateCoponentSDKVersionDefined()
-        {
-            var guid = Guid.NewGuid();
-            var version = "42.42.42.42";
-            var (success, result) = await CreateComponentAndGetResult(guid, version);
-            Assert.True(success);
-            Assert.Equal("SDKVersion", result.EventName);
-            Assert.Collection(result.Properties,
-                args =>
-                {
-                    Assert.Equal("Project", args.propertyName);
-                    Assert.Equal(guid.ToString(), args.propertyValue as string);
-                },
-                args =>
-                {
-                    Assert.Equal("NETCoreSdkVersion", args.propertyName);
-                    Assert.Equal(version, args.propertyValue);
-                });
-        }
-
-        [Fact(Skip = "Need to mock properties correctly")]
-        public static async Task TestCreateCoponentSDKVersionDefinedInvalidProjectGuid()
-        {
-            var guid = Guid.Empty;
-            var version = "42.42.42.42";
-            var (success, result) = await CreateComponentAndGetResult(guid, version);
-            Assert.False(success);
-            Assert.Equal("SDKVersion", result.EventName);
-            Assert.Collection(result.Properties,
-                args =>
-                {
-                    Assert.Equal("Project", args.propertyName);
-                    Assert.Equal(guid.ToString(), args.propertyValue as string);
-                },
-                args =>
-                {
-                    Assert.Equal("NETCoreSdkVersion", args.propertyName);
-                    Assert.Equal(version, args.propertyValue);
-                });
-        }
-
         [Fact]
         public static async Task TestCreateCoponentNoSDKVersionDefined()
         {
@@ -98,7 +56,7 @@ namespace Microsoft.VisualStudio.Telemetry
                 });
         }
 
-        private static async Task<(bool success, TelemetryParameters result)> CreateComponentAndGetResult(Guid guid, string version = null)
+        private static async Task<(bool success, TelemetryParameters result)> CreateComponentAndGetResult(Guid guid)
         {
             var semaphore = new SemaphoreSlim(0);
             bool success = false;
@@ -109,7 +67,7 @@ namespace Microsoft.VisualStudio.Telemetry
                 result = callParameters;
                 semaphore.Release();
             }
-            var component = CreateCoponent(guid, onTelemetryLogged, version);
+            var component = CreateCoponent(guid, onTelemetryLogged);
             component.OnNoSDKDetected += (s, e) =>
             {
                 result = new TelemetryParameters
@@ -128,9 +86,9 @@ namespace Microsoft.VisualStudio.Telemetry
             return (success, result);
         }
 
-        private static SDKVersionTelemetryServiceComponent CreateCoponent(Guid guid, Action<TelemetryParameters> onTelemetryLogged, string version)
+        private static SDKVersionTelemetryServiceComponent CreateCoponent(Guid guid, Action<TelemetryParameters> onTelemetryLogged)
         {
-            var projectProperties = CreateProjectProperties(version);
+            var projectProperties = CreateProjectProperties();
             var projectGuidSevice = CreateISafeProjectGuidService(guid);
             var telemetryService = CreateITelemetryService(onTelemetryLogged);
             var projectThreadingService = new IProjectThreadingServiceMock();
@@ -192,24 +150,6 @@ namespace Microsoft.VisualStudio.Telemetry
             return mock.Object;
         }
 
-        private static ProjectProperties CreateProjectProperties(string version)
-        {
-            if (version == null)
-            {
-                return ProjectPropertiesFactory.CreateEmpty();
-            }
-
-            var setValues = new List<object>();
-            var project = UnconfiguredProjectFactory.Create();
-            var data = new PropertyPageData()
-            {
-                Category = "General",
-                PropertyName = "NETCoreSdkVersion",
-                Value = version,
-                SetValues = setValues
-            };
-
-            return ProjectPropertiesFactory.Create(project, data);
-        }
+        private static ProjectProperties CreateProjectProperties() => ProjectPropertiesFactory.CreateEmpty();
     }
 }
