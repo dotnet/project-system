@@ -45,18 +45,6 @@ namespace Microsoft.VisualStudio.Telemetry
             var version = "42.42.42.42";
             var (success, result) = await CreateComponentAndGetResult(guid, version);
             Assert.False(success);
-            Assert.Equal("SDKVersion", result.EventName);
-            Assert.Collection(result.Properties,
-                args =>
-                {
-                    Assert.Equal("Project", args.propertyName);
-                    Assert.Null(args.propertyValue);
-                },
-                args =>
-                {
-                    Assert.Equal("NETCoreSdkVersion", args.propertyName);
-                    Assert.Equal(version, args.propertyValue);
-                });
         }
 
 
@@ -66,18 +54,6 @@ namespace Microsoft.VisualStudio.Telemetry
             var guid = Guid.NewGuid();
             var (success, result) = await CreateComponentAndGetResult(guid);
             Assert.False(success);
-            Assert.Equal("SDKVersion", result.EventName);
-            Assert.Collection(result.Properties,
-                args =>
-                {
-                    Assert.Equal("Project", args.propertyName);
-                    Assert.Equal(guid.ToString(), args.propertyValue as string);
-                },
-                args =>
-                {
-                    Assert.Equal("NETCoreSdkVersion", args.propertyName);
-                    Assert.Equal(string.Empty, args.propertyValue);
-                });
         }
 
         [Fact]
@@ -86,18 +62,6 @@ namespace Microsoft.VisualStudio.Telemetry
             var guid = Guid.Empty;
             var (success, result) = await CreateComponentAndGetResult(guid);
             Assert.False(success);
-            Assert.Equal("SDKVersion", result.EventName);
-            Assert.Collection(result.Properties,
-                args =>
-                {
-                    Assert.Equal("Project", args.propertyName);
-                    Assert.Null(args.propertyValue as string);
-                },
-                args =>
-                {
-                    Assert.Equal("NETCoreSdkVersion", args.propertyName);
-                    Assert.Equal(string.Empty, args.propertyValue);
-                });
         }
 
         private static async Task<(bool success, TelemetryParameters result)> CreateComponentAndGetResult(Guid guid, string version = null)
@@ -111,32 +75,23 @@ namespace Microsoft.VisualStudio.Telemetry
                 result = callParameters;
                 semaphore.Release();
             }
-            var component = CreateComponent(guid, onTelemetryLogged, version);
-            component.OnNoSDKDetected += (s, e) =>
-            {
-                result = new TelemetryParameters
-                {
-                    EventName = "SDKVersion",
-                    Properties = new List<(string, object)>
-                    {
-                        ("Project", e.ProjectGuid),
-                        ("NETCoreSdkVersion", e.Version)
-                    }
-                };
-                semaphore.Release();
-            };
+            var component = CreateComponent(guid, onTelemetryLogged, version, semaphore);
             await component.LoadAsync();
             await semaphore.WaitAsync();
             await component.UnloadAsync();
             return (success, result);
         }
 
-        private static SDKVersionTelemetryServiceComponent CreateComponent(Guid guid, Action<TelemetryParameters> onTelemetryLogged, string version)
+        private static SDKVersionTelemetryServiceComponent CreateComponent(Guid guid, Action<TelemetryParameters> onTelemetryLogged, string version, SemaphoreSlim semaphore)
         {
             var projectVsServices = CreateProjectServices(version);
             var projectGuidSevice = CreateISafeProjectGuidService(guid);
             var telemetryService = CreateITelemetryService(onTelemetryLogged);
-            var unconfiguredProjectTasksService = IUnconfiguredProjectTasksServiceFactory.ImplementLoadedProjectAsync(t => t());
+            var unconfiguredProjectTasksService = IUnconfiguredProjectTasksServiceFactory.ImplementLoadedProjectAsync(async t =>
+            {
+                await t();
+                semaphore.Release();
+            });
             return new SDKVersionTelemetryServiceComponent(
                 projectVsServices,
                 projectGuidSevice,

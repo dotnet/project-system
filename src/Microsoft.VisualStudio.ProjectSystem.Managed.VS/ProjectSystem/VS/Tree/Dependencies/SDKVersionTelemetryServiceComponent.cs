@@ -37,22 +37,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 _projectVsServices,
                 _projectGuidSevice,
                 _telemetryService,
-                _unconfiguredProjectTasksService,
-                args => OnNoSDKDetected?.Invoke(this, args));
-
-        // For testing only
-        internal event EventHandler<NoSDKDetectedEventArgs> OnNoSDKDetected;
-
-        internal class NoSDKDetectedEventArgs : EventArgs
-        {
-            public NoSDKDetectedEventArgs(string projectGuid, string version)
-            {
-                ProjectGuid = projectGuid;
-                Version = version;
-            }
-
-            public string ProjectGuid { get; }
-            public string Version { get; }
-        }
+                _unconfiguredProjectTasksService);
     }
 }

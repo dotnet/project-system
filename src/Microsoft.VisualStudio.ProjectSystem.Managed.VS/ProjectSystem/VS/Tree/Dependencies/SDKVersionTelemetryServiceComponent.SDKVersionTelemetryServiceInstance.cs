@@ -22,22 +22,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             private readonly ISafeProjectGuidService _projectGuidSevice;
             private readonly ITelemetryService _telemetryService;
             private readonly IUnconfiguredProjectTasksService _unconfiguredProjectTasksService;
-            private readonly Action<NoSDKDetectedEventArgs> _onNoSDKDetected;
 
             [ImportingConstructor]
             public SDKVersionTelemetryServiceInstance(
                 IUnconfiguredProjectVsServices projectVsServices,
                 ISafeProjectGuidService projectGuidSevice,
                 ITelemetryService telemetryService,
-                IUnconfiguredProjectTasksService unconfiguredProjectTasksService,
-                Action<NoSDKDetectedEventArgs> onNoSDKDetected)
+                IUnconfiguredProjectTasksService unconfiguredProjectTasksService)
                 : base(projectVsServices.ThreadingService.JoinableTaskContext)
             {
                 _projectVsServices = projectVsServices;
                 _projectGuidSevice = projectGuidSevice;
                 _telemetryService = telemetryService;
                 _unconfiguredProjectTasksService = unconfiguredProjectTasksService;
-                _onNoSDKDetected = onNoSDKDetected;
             }
 
             protected override Task InitializeCoreAsync(CancellationToken cancellationToken)
@@ -54,7 +51,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
                         if (string.IsNullOrEmpty(version) || string.IsNullOrEmpty(projectId))
                         {
-                            _onNoSDKDetected(new NoSDKDetectedEventArgs(projectId, version));
                             return;
                         }
 
