@@ -14,48 +14,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
     public class ConfiguredProjectImplicitActivationTrackingTests
     {
         [Fact]
-        public async Task ImplicitlyActivated_Add_WhenDisposed_ThrowsObjectDisposed()
-        {
-            var service = CreateInstance();
-            await service.DisposeAsync();
-
-            Assert.Throws<ObjectDisposedException>(() =>
-            {
-                service.ImplicitlyActivated += (object sender, EventArgs args) => { return Task.CompletedTask; };
-            });
-        }
-
-        [Fact]
-        public async Task ImplicitlyActivated_Remove_WhenDisposed_DoesNotThrow()
-        {
-            var service = CreateInstance();
-            await service.DisposeAsync();
-
-            service.ImplicitlyActivated -= (object sender, EventArgs args) => { return Task.CompletedTask; };
-        }
-
-        [Fact]
-        public async Task ImplicitlyDeactivated_Add_WhenDisposed_ThrowsObjectDisposed()
-        {
-            var service = CreateInstance();
-            await service.DisposeAsync();
-
-            Assert.Throws<ObjectDisposedException>(() =>
-            {
-                service.ImplicitlyDeactivated += (object sender, EventArgs args) => { return Task.CompletedTask; };
-            });
-        }
-
-        [Fact]
-        public async Task ImplicitlyDeactivated_Remove_WhenDisposed_DoesNotThrow()
-        {
-            var service = CreateInstance();
-            await service.DisposeAsync();
-
-            service.ImplicitlyDeactivated -= (object sender, EventArgs args) => { return Task.CompletedTask; };
-        }
-
-        [Fact]
         public async Task IsImplicitlyActive_WhenDisposed_ThrowsObjectDisposed()
         {
             var service = CreateInstance();
@@ -245,17 +203,19 @@ namespace Microsoft.VisualStudio.ProjectSystem
         [InlineData(new object[] { new[] { "Debug|x86|net46" },                                                      "Debug|x86|net46" })]
         [InlineData(new object[] { new[] { "Debug|x86|net46", "Release|x86|net46" },                                 "Debug|x86|net46" })]
         [InlineData(new object[] { new[] { "Debug|x86|net46", "Release|x86|net46", "Release|AnyCPU|net46" },         "Debug|x86|net46" })]
-        public async Task ImplicitlyActivated_WhenActiveConfigurationChangesAndMatches_Fires(string[] configurations, string currentConfiguration)
+        public async Task WhenActiveConfigurationChangesAndMatches_CallsActivateAsync(string[] configurations, string currentConfiguration)
         {
             var project = ConfiguredProjectFactory.ImplementProjectConfiguration(currentConfiguration);
             var service = CreateInstance(project, out ProjectValueDataSource<IConfigurationGroup<ProjectConfiguration>> source);
+            service.Load();
 
             int callCount = 0;
-            service.ImplicitlyActivated += (object sender, EventArgs e) =>
+            var implicitActiveService = IImplicitlyActiveServiceFactory.ImplementActivateAsync(() =>
             {
                 callCount++;
-                return Task.CompletedTask;
-            };
+            });
+
+            service.ImplicitlyActiveServices.Add(implicitActiveService);
 
             var configurationGroups = IConfigurationGroupFactory.CreateFromConfigurationNames(configurations);
             await source.SendAndCompleteAsync(configurationGroups, service.TargetBlock);
@@ -264,17 +224,19 @@ namespace Microsoft.VisualStudio.ProjectSystem
         }
 
         [Fact]
-        public async Task IsImplicitlyActive_WhenAccessedInImplicitlyActivatedHandler_ReturnsTrue()
+        public async Task IsImplicitlyActive_WhenAccessedInActivateAsync_ReturnsTrue()
         {
             var project = ConfiguredProjectFactory.ImplementProjectConfiguration("Debug|AnyCPU");
             var service = CreateInstance(project, out ProjectValueDataSource<IConfigurationGroup<ProjectConfiguration>> source);
+            service.Load();
 
             bool? result = null;
-            service.ImplicitlyActivated += (object sender, EventArgs e) =>
+            var implicitActiveService = IImplicitlyActiveServiceFactory.ImplementActivateAsync(() =>
             {
-                result = ((ConfiguredProjectImplicitActivationTracking)sender).IsImplicitlyActive;
-                return Task.CompletedTask;
-            };
+                result = service.IsImplicitlyActive;
+            });
+
+            service.ImplicitlyActiveServices.Add(implicitActiveService);
 
             var configurationGroups = IConfigurationGroupFactory.CreateFromConfigurationNames("Debug|AnyCPU");
             await source.SendAndCompleteAsync(configurationGroups, service.TargetBlock);
@@ -283,10 +245,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
         }
 
         [Fact]
-        public async Task IsImplicitlyActive_WhenAccessedInImplicitlyDeactivatedHandler_ReturnsFalse()
+        public async Task IsImplicitlyActive_WhenAccessedInDeactivateAsync_ReturnsFalse()
         {
             var project = ConfiguredProjectFactory.ImplementProjectConfiguration("Debug|AnyCPU");
             var service = CreateInstance(project, out ProjectValueDataSource<IConfigurationGroup<ProjectConfiguration>> source);
+            service.Load();
 
             Assert.False(service.IsImplicitlyActive);
 
@@ -297,11 +260,12 @@ namespace Microsoft.VisualStudio.ProjectSystem
             Assert.True(service.IsImplicitlyActive);
 
             bool? result = null;
-            service.ImplicitlyDeactivated += (object sender, EventArgs e) =>
+            var implicitActiveService = IImplicitlyActiveServiceFactory.ImplementDeactivateAsync(() =>
             {
-                result = ((ConfiguredProjectImplicitActivationTracking)sender).IsImplicitlyActive;
-                return Task.CompletedTask;
-            };
+                result = service.IsImplicitlyActive;
+            });
+
+            service.ImplicitlyActiveServices.Add(implicitActiveService);
 
             configurationGroups = IConfigurationGroupFactory.CreateFromConfigurationNames("Debug|x86");
             await source.SendAndCompleteAsync(configurationGroups, service.TargetBlock);
@@ -310,10 +274,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
         }
 
         [Fact]
-        public async Task ImplicitlyDeactivated_WhenActiveConfigurationChangesAndNoLongerMatches_Fires()
+        public async Task WhenActiveConfigurationChangesAndNoLongerMatches_CallsDeactivateAsync()
         {
             var project = ConfiguredProjectFactory.ImplementProjectConfiguration("Debug|AnyCPU");
             var service = CreateInstance(project, out ProjectValueDataSource<IConfigurationGroup<ProjectConfiguration>> source);
+            service.Load();
 
             Assert.False(service.IsImplicitlyActive);
 
@@ -324,11 +289,12 @@ namespace Microsoft.VisualStudio.ProjectSystem
             Assert.True(service.IsImplicitlyActive);
 
             int callCount = 0;
-            service.ImplicitlyDeactivated += (object sender, EventArgs e) =>
+            var implicitActiveService = IImplicitlyActiveServiceFactory.ImplementDeactivateAsync(() =>
             {
                 callCount++;
-                return Task.CompletedTask;
-            };
+            });
+
+            service.ImplicitlyActiveServices.Add(implicitActiveService);
 
             configurationGroups = IConfigurationGroupFactory.CreateFromConfigurationNames("Debug|x86");
             await source.SendAndCompleteAsync(configurationGroups, service.TargetBlock);
