@@ -18,21 +18,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             private const string NameProperty = "Name";
             private const string NETCoreSdkVersionProperty = "NETCoreSdkVersion";
 
-            private readonly ProjectProperties _projectProperties;
+            private readonly INETCoreSdkVersionProperty _sdkVersionProperty;
             private readonly ISafeProjectGuidService _projectGuidSevice;
             private readonly ITelemetryService _telemetryService;
             private readonly Action<NoSDKDetectedEventArgs> _onNoSDKDetected;
 
             [ImportingConstructor]
             public SDKVersionTelemetryServiceInstance(
-                ProjectProperties projectProperties,
+                INETCoreSdkVersionProperty sdkVersionProperty,
                 ISafeProjectGuidService projectGuidSevice,
                 ITelemetryService telemetryService,
                 IProjectThreadingService projectThreadingService,
                 Action<NoSDKDetectedEventArgs> onNoSDKDetected)
                 : base(projectThreadingService.JoinableTaskContext)
             {
-                _projectProperties = projectProperties;
+                _sdkVersionProperty = sdkVersionProperty;
                 _projectGuidSevice = projectGuidSevice;
                 _telemetryService = telemetryService;
                 _onNoSDKDetected = onNoSDKDetected;
@@ -43,9 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 // Do not block initialization on reporting the sdk version. It is possible to deadlock.
                 Task.Run(async () =>
                 {
-                    ConfigurationGeneral projectProperties = await _projectProperties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(false);
-                    Task<object> getValueTask = projectProperties?.NETCoreSdkVersion?.GetValueAsync();
-                    var version = getValueTask == null ? string.Empty : (string)await getValueTask.ConfigureAwait(false);
+                    string version = await _sdkVersionProperty.GetValueAsync().ConfigureAwait(false);
                     string projectId = await GetProjectIdAsync().ConfigureAwait(false);
 
                     if (string.IsNullOrEmpty(version) || string.IsNullOrEmpty(projectId))

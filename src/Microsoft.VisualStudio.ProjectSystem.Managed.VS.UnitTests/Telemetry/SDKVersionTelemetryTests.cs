@@ -17,6 +17,49 @@ namespace Microsoft.VisualStudio.Telemetry
     public class SDKVersionTelemetryTests
     {
         [Fact]
+        public static async Task TestCreateCoponentSDKVersionDefined()
+        {
+            var guid = Guid.NewGuid();
+            var version = "42.42.42.42";
+            var (success, result) = await CreateComponentAndGetResult(guid, version);
+            Assert.True(success);
+            Assert.Equal("SDKVersion", result.EventName);
+            Assert.Collection(result.Properties,
+                args =>
+                {
+                    Assert.Equal("Project", args.propertyName);
+                    Assert.Equal(guid.ToString(), args.propertyValue as string);
+                },
+                args =>
+                {
+                    Assert.Equal("NETCoreSdkVersion", args.propertyName);
+                    Assert.Equal(version, args.propertyValue);
+                });
+        }
+
+        [Fact]
+        public static async Task TestCreateCoponentSDKVersionDefinedInvalidProjectGuid()
+        {
+            var guid = Guid.Empty;
+            var version = "42.42.42.42";
+            var (success, result) = await CreateComponentAndGetResult(guid, version);
+            Assert.False(success);
+            Assert.Equal("SDKVersion", result.EventName);
+            Assert.Collection(result.Properties,
+                args =>
+                {
+                    Assert.Equal("Project", args.propertyName);
+                    Assert.Null(args.propertyValue);
+                },
+                args =>
+                {
+                    Assert.Equal("NETCoreSdkVersion", args.propertyName);
+                    Assert.Equal(version, args.propertyValue);
+                });
+        }
+
+
+        [Fact]
         public static async Task TestCreateCoponentNoSDKVersionDefined()
         {
             var guid = Guid.NewGuid();
@@ -32,7 +75,7 @@ namespace Microsoft.VisualStudio.Telemetry
                 args =>
                 {
                     Assert.Equal("NETCoreSdkVersion", args.propertyName);
-                    Assert.Equal(string.Empty, args.propertyValue);
+                    Assert.Null(args.propertyValue);
                 });
         }
 
@@ -52,11 +95,11 @@ namespace Microsoft.VisualStudio.Telemetry
                 args =>
                 {
                     Assert.Equal("NETCoreSdkVersion", args.propertyName);
-                    Assert.Equal(string.Empty, args.propertyValue);
+                    Assert.Null(args.propertyValue);
                 });
         }
 
-        private static async Task<(bool success, TelemetryParameters result)> CreateComponentAndGetResult(Guid guid)
+        private static async Task<(bool success, TelemetryParameters result)> CreateComponentAndGetResult(Guid guid, string version = null)
         {
             var semaphore = new SemaphoreSlim(0);
             bool success = false;
@@ -67,7 +110,7 @@ namespace Microsoft.VisualStudio.Telemetry
                 result = callParameters;
                 semaphore.Release();
             }
-            var component = CreateCoponent(guid, onTelemetryLogged);
+            var component = CreateCoponent(guid, onTelemetryLogged, version);
             component.OnNoSDKDetected += (s, e) =>
             {
                 result = new TelemetryParameters
@@ -87,9 +130,9 @@ namespace Microsoft.VisualStudio.Telemetry
             return (success, result);
         }
 
-        private static SDKVersionTelemetryServiceComponent CreateCoponent(Guid guid, Action<TelemetryParameters> onTelemetryLogged)
+        private static SDKVersionTelemetryServiceComponent CreateCoponent(Guid guid, Action<TelemetryParameters> onTelemetryLogged, string version)
         {
-            var projectProperties = CreateProjectProperties();
+            var projectProperties = CreateProjectProperties(version);
             var projectGuidSevice = CreateISafeProjectGuidService(guid);
             var telemetryService = CreateITelemetryService(onTelemetryLogged);
             var projectThreadingService = new IProjectThreadingServiceMock();
@@ -151,6 +194,13 @@ namespace Microsoft.VisualStudio.Telemetry
             return mock.Object;
         }
 
-        private static ProjectProperties CreateProjectProperties() => ProjectPropertiesFactory.CreateEmpty();
+        private static INETCoreSdkVersionProperty CreateProjectProperties(string version)
+        {
+            var mock = new Mock<INETCoreSdkVersionProperty>();
+            mock.Setup(s => s.GetValueAsync())
+                .ReturnsAsync(version);
+
+            return mock.Object;
+        }
     }
 }

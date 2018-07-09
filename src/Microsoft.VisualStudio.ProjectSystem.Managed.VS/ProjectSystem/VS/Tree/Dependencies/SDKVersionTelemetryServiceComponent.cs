@@ -13,20 +13,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     [AppliesTo(ProjectCapability.DotNet)]
     internal partial class SDKVersionTelemetryServiceComponent : AbstractProjectDynamicLoadComponent
     {
-        private readonly ProjectProperties _projectProperties;
+        private readonly INETCoreSdkVersionProperty _sdkVersionProperty;
         private readonly ITelemetryService _telemetryService;
         private readonly IProjectThreadingService _projectThreadingService;
         private readonly ISafeProjectGuidService _projectGuidSevice;
 
         [ImportingConstructor]
         public SDKVersionTelemetryServiceComponent(
-            ProjectProperties projectProperties,
+            INETCoreSdkVersionProperty sdkVersionProperty,
             ISafeProjectGuidService projectGuidSevice,
             ITelemetryService telemetryService,
             IProjectThreadingService projectThreadingService)
             : base(projectThreadingService.JoinableTaskContext)
         {
-            _projectProperties = projectProperties;
+            _sdkVersionProperty = sdkVersionProperty;
             _projectGuidSevice = projectGuidSevice;
             _telemetryService = telemetryService;
             _projectThreadingService = projectThreadingService;
@@ -34,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
         protected override AbstractProjectDynamicLoadInstance CreateInstance()
             => new SDKVersionTelemetryServiceInstance(
-                _projectProperties,
+                _sdkVersionProperty,
                 _projectGuidSevice,
                 _telemetryService,
                 _projectThreadingService,
