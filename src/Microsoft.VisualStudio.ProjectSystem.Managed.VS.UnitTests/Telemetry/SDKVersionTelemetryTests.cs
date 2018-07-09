@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.ProjectSystem;
+using Microsoft.VisualStudio.ProjectSystem.VS;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 using Moq;
 using Xunit;
@@ -75,7 +76,7 @@ namespace Microsoft.VisualStudio.Telemetry
                 args =>
                 {
                     Assert.Equal("NETCoreSdkVersion", args.propertyName);
-                    Assert.Null(args.propertyValue);
+                    Assert.Equal(string.Empty, args.propertyValue);
                 });
         }
 
@@ -95,7 +96,7 @@ namespace Microsoft.VisualStudio.Telemetry
                 args =>
                 {
                     Assert.Equal("NETCoreSdkVersion", args.propertyName);
-                    Assert.Null(args.propertyValue);
+                    Assert.Equal(string.Empty, args.propertyValue);
                 });
         }
 
@@ -110,7 +111,7 @@ namespace Microsoft.VisualStudio.Telemetry
                 result = callParameters;
                 semaphore.Release();
             }
-            var component = CreateCoponent(guid, onTelemetryLogged, version);
+            var component = CreateComponent(guid, onTelemetryLogged, version);
             component.OnNoSDKDetected += (s, e) =>
             {
                 result = new TelemetryParameters
@@ -130,75 +131,43 @@ namespace Microsoft.VisualStudio.Telemetry
             return (success, result);
         }
 
-        private static SDKVersionTelemetryServiceComponent CreateCoponent(Guid guid, Action<TelemetryParameters> onTelemetryLogged, string version)
+        private static SDKVersionTelemetryServiceComponent CreateComponent(Guid guid, Action<TelemetryParameters> onTelemetryLogged, string version)
         {
-            var projectProperties = CreateProjectProperties(version);
+            var projectVsServices = CreateProjectServices(version);
             var projectGuidSevice = CreateISafeProjectGuidService(guid);
             var telemetryService = CreateITelemetryService(onTelemetryLogged);
-            var projectThreadingService = new IProjectThreadingServiceMock();
+            var unconfiguredProjectTasksService = IUnconfiguredProjectTasksServiceFactory.ImplementLoadedProjectAsync(t => t());
             return new SDKVersionTelemetryServiceComponent(
-                projectProperties,
+                projectVsServices,
                 projectGuidSevice,
                 telemetryService,
-                projectThreadingService);
+                unconfiguredProjectTasksService);
         }
 
-        private static ITelemetryService CreateITelemetryService(Action<TelemetryParameters> onTelemetryLogged)
+        private static IUnconfiguredProjectVsServices CreateProjectServices(string version)
         {
-            var telemetryService = new Mock<ITelemetryService>();
+            var setValues = new List<object>();
+            var project = UnconfiguredProjectFactory.Create();
+            var data = new PropertyPageData()
+            {
+                Category = ConfigurationGeneral.SchemaName,
+                PropertyName = ConfigurationGeneral.NETCoreSdkVersionProperty,
+                Value = version ?? string.Empty,
+            };
 
-            telemetryService.Setup(t => t.PostEvent(It.IsAny<string>()))
-                .Callback((string name) =>
-                {
-                    var callParameters = new TelemetryParameters
-                    {
-                        EventName = name
-                    };
-                    onTelemetryLogged(callParameters);
-                });
+            var projectProperties = ProjectPropertiesFactory.Create(project, data);
+            var activeConfiguredProject = ActiveConfiguredProjectFactory.ImplementValue(() => projectProperties);
 
-            telemetryService.Setup(t => t.PostProperty(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<object>()))
-                .Callback((string e, string p, object v) =>
-                {
-                    var callParameters = new TelemetryParameters
-                    {
-                        EventName = e,
-                        Properties = new List<(string, object)>
-                        {
-                            (p, v)
-                        }
-                    };
-                    onTelemetryLogged(callParameters);
-                });
-
-            telemetryService.Setup(t => t.PostProperties(It.IsAny<string>(), It.IsAny<IEnumerable<(string propertyName, object propertyValue)>>()))
-                .Callback((string e, IEnumerable<(string propertyName, object propertyValue)> p) =>
-                {
-                    var callParameters = new TelemetryParameters
-                    {
-                        EventName = e,
-                        Properties = p
-                    };
-                    onTelemetryLogged(callParameters);
-                });
-
-            return telemetryService.Object;
+            return IUnconfiguredProjectVsServicesFactory.Implement(projectProperties: () => projectProperties);
         }
+
+        private static ITelemetryService CreateITelemetryService(Action<TelemetryParameters> onTelemetryLogged) => Create(onTelemetryLogged);
 
         private static ISafeProjectGuidService CreateISafeProjectGuidService(Guid guid)
         {
             var mock = new Mock<ISafeProjectGuidService>();
             mock.Setup(s => s.GetProjectGuidAsync())
                 .ReturnsAsync(guid);
-
-            return mock.Object;
-        }
-
-        private static INETCoreSdkVersionProperty CreateProjectProperties(string version)
-        {
-            var mock = new Mock<INETCoreSdkVersionProperty>();
-            mock.Setup(s => s.GetValueAsync())
-                .ReturnsAsync(version);
 
             return mock.Object;
         }

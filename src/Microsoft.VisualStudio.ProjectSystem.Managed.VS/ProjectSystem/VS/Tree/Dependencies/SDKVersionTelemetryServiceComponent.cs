@@ -9,35 +9,35 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     /// <summary>
     /// For maintaining light state about the SDK version used in a project
     /// </summary>
-    [Export(ExportContractNames.Scopes.ConfiguredProject, typeof(IProjectDynamicLoadComponent))]
+    [Export(ExportContractNames.Scopes.UnconfiguredProject, typeof(IProjectDynamicLoadComponent))]
     [AppliesTo(ProjectCapability.DotNet)]
     internal partial class SDKVersionTelemetryServiceComponent : AbstractProjectDynamicLoadComponent
     {
-        private readonly INETCoreSdkVersionProperty _sdkVersionProperty;
+        private readonly IUnconfiguredProjectVsServices _projectVsServices;
         private readonly ITelemetryService _telemetryService;
-        private readonly IProjectThreadingService _projectThreadingService;
         private readonly ISafeProjectGuidService _projectGuidSevice;
+        private readonly IUnconfiguredProjectTasksService _unconfiguredProjectTasksService;
 
         [ImportingConstructor]
         public SDKVersionTelemetryServiceComponent(
-            INETCoreSdkVersionProperty sdkVersionProperty,
+            IUnconfiguredProjectVsServices projectVsServices,
             ISafeProjectGuidService projectGuidSevice,
             ITelemetryService telemetryService,
-            IProjectThreadingService projectThreadingService)
-            : base(projectThreadingService.JoinableTaskContext)
+            IUnconfiguredProjectTasksService unconfiguredProjectTasksService)
+            : base(projectVsServices.ThreadingService.JoinableTaskContext)
         {
-            _sdkVersionProperty = sdkVersionProperty;
+            _projectVsServices = projectVsServices;
             _projectGuidSevice = projectGuidSevice;
             _telemetryService = telemetryService;
-            _projectThreadingService = projectThreadingService;
+            _unconfiguredProjectTasksService = unconfiguredProjectTasksService;
         }
 
         protected override AbstractProjectDynamicLoadInstance CreateInstance()
             => new SDKVersionTelemetryServiceInstance(
-                _sdkVersionProperty,
+                _projectVsServices,
                 _projectGuidSevice,
                 _telemetryService,
-                _projectThreadingService,
+                _unconfiguredProjectTasksService,
                 args => OnNoSDKDetected?.Invoke(this, args));
 
         // For testing only

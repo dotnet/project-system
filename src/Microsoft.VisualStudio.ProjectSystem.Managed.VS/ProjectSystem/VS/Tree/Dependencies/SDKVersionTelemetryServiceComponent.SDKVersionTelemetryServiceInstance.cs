@@ -18,23 +18,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             private const string NameProperty = "Name";
             private const string NETCoreSdkVersionProperty = "NETCoreSdkVersion";
 
-            private readonly INETCoreSdkVersionProperty _sdkVersionProperty;
+            private readonly IUnconfiguredProjectVsServices _projectVsServices;
             private readonly ISafeProjectGuidService _projectGuidSevice;
             private readonly ITelemetryService _telemetryService;
+            private readonly IUnconfiguredProjectTasksService _unconfiguredProjectTasksService;
             private readonly Action<NoSDKDetectedEventArgs> _onNoSDKDetected;
 
             [ImportingConstructor]
             public SDKVersionTelemetryServiceInstance(
-                INETCoreSdkVersionProperty sdkVersionProperty,
+                IUnconfiguredProjectVsServices projectVsServices,
                 ISafeProjectGuidService projectGuidSevice,
                 ITelemetryService telemetryService,
-                IProjectThreadingService projectThreadingService,
+                IUnconfiguredProjectTasksService unconfiguredProjectTasksService,
                 Action<NoSDKDetectedEventArgs> onNoSDKDetected)
-                : base(projectThreadingService.JoinableTaskContext)
+                : base(projectVsServices.ThreadingService.JoinableTaskContext)
             {
-                _sdkVersionProperty = sdkVersionProperty;
+                _projectVsServices = projectVsServices;
                 _projectGuidSevice = projectGuidSevice;
                 _telemetryService = telemetryService;
+                _unconfiguredProjectTasksService = unconfiguredProjectTasksService;
                 _onNoSDKDetected = onNoSDKDetected;
             }
 
@@ -43,22 +45,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 // Do not block initialization on reporting the sdk version. It is possible to deadlock.
                 Task.Run(async () =>
                 {
-                    string version = await _sdkVersionProperty.GetValueAsync().ConfigureAwait(false);
-                    string projectId = await GetProjectIdAsync().ConfigureAwait(false);
-
-                    if (string.IsNullOrEmpty(version) || string.IsNullOrEmpty(projectId))
+                    await _unconfiguredProjectTasksService.LoadedProjectAsync(async () =>
                     {
-                        _onNoSDKDetected(new NoSDKDetectedEventArgs(projectId, version));
-                        return;
-                    }
+                        ConfigurationGeneral projectProperties = await _projectVsServices.ActiveConfiguredProjectProperties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(false);
+                        Task<object> task = projectProperties?.NETCoreSdkVersion?.GetValueAsync();
+                        string version = task == null ? string.Empty : (string)await task.ConfigureAwait(false);
+                        string projectId = await GetProjectIdAsync().ConfigureAwait(false);
 
-                    _telemetryService.PostProperties(
-                        TelemetryEventName,
-                        new List<(string, object)>
+                        if (string.IsNullOrEmpty(version) || string.IsNullOrEmpty(projectId))
                         {
-                            (ProjectProperty, projectId),
-                            (NETCoreSdkVersionProperty, version)
-                        });
+                            _onNoSDKDetected(new NoSDKDetectedEventArgs(projectId, version));
+                            return;
+                        }
+
+                        _telemetryService.PostProperties(
+                            TelemetryEventName,
+                            new List<(string, object)>
+                            {
+                                (ProjectProperty, projectId),
+                                (NETCoreSdkVersionProperty, version)
+                            });
+                    }).ConfigureAwait(false);
                 });
 
                 return Task.CompletedTask;
