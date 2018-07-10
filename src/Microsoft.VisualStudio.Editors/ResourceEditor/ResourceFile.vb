@@ -13,7 +13,8 @@ Imports System.ComponentModel.Design
 Imports System.Resources
 Imports System.IO
 Imports System.Windows.Forms
-
+Imports Microsoft.Win32
+Imports System.Xml
 
 Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
@@ -93,6 +94,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private _inBatchAdding As Boolean
 
         Private _multiTargetService As MultiTargetService
+
+        Private ReadOnly _allowMOTW As Boolean = False
 #End Region
 
 
@@ -143,6 +146,15 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End If
 
             _mainThread = System.Threading.Thread.CurrentThread
+
+            Try
+                Dim allowUntrustedFiles As Object = Registry.GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\.NETFramework\SDK", "AllowProcessOfUntrustedResourceFiles", Nothing)
+                If TypeOf allowUntrustedFiles Is String Then
+                    _allowMOTW = DirectCast(allowUntrustedFiles, String).Equals("true", StringComparison.OrdinalIgnoreCase)
+                End If
+            Catch ex As Exception
+                ' Deliberately empty
+            End Try
         End Sub
 
 
@@ -849,22 +861,30 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
 
         ''' <summary>
-        ''' Reads resources from a TextReader on a resx file.
+        ''' Reads resources from a string (contents of a resx file).
         ''' </summary>
-        ''' <param name="TextReader">The TextReader to read from</param>
+        ''' <param name="allBufferText">The TextReader to read from</param>
         ''' <remarks></remarks>
-        Public Sub ReadResources(TextReader As TextReader)
-            Dim ResXReader As ResXResourceReader
-            Dim TypeResolutionService As ITypeResolutionService = View.GetTypeResolutionService()
-            If TypeResolutionService IsNot Nothing Then
-                ResXReader = New ResXResourceReader(TextReader, TypeResolutionService)
-            Else
-                ResXReader = New ResXResourceReader(TextReader, ResourceEditorView.GetDefaultAssemblyReferences())
-            End If
-            ResXReader.BasePath = _basePath
+        Public Sub ReadResources(resourceFileName As String, allBufferText As String)
 
-            ReadResources(ResXReader)
-            ResXReader.Close()
+            If IsDangerous(resourceFileName, allBufferText) Then
+                View.DsMsgBox(String.Format(My.Resources.Designer.BlockedResx, resourceFileName), MessageBoxButtons.OK, MessageBoxIcon.Error)
+                Return
+            End If
+
+            Using TextReader = New StringReader(allBufferText)
+                Dim ResXReader As ResXResourceReader
+                Dim TypeResolutionService As ITypeResolutionService = View.GetTypeResolutionService()
+                If TypeResolutionService IsNot Nothing Then
+                    ResXReader = New ResXResourceReader(TextReader, TypeResolutionService)
+                Else
+                    ResXReader = New ResXResourceReader(TextReader, ResourceEditorView.GetDefaultAssemblyReferences())
+                End If
+                ResXReader.BasePath = _basePath
+
+                ReadResources(ResXReader)
+                ResXReader.Close()
+            End Using
         End Sub
 
         Public Function TypeNameConverter(runtimeType As Type) As String
@@ -911,6 +931,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Debug.Assert(ResXReader IsNot Nothing, "ResXReader must exist!")
 
             _isLoadingResourceFile = True
+
             Try
                 Dim orderID As Integer = 0
                 Dim lastName As String = String.Empty
@@ -1789,6 +1810,51 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 End Try
             End If
         End Sub
+
+
+        Private Function IsDangerous(resxFilePath As String, allBufferText As String) As Boolean
+            If _allowMOTW Then
+                Return False
+            End If
+
+            Dim zone As Security.SecurityZone = GetSecurityZoneOfFile(resxFilePath, Shell.ServiceProvider.GlobalProvider)
+            If zone < Security.SecurityZone.Internet Then
+                Return False
+            End If
+
+            Dim dangerous As Boolean = False
+
+            Using textReader = New StringReader(allBufferText)
+                Using reader = New XmlTextReader(textReader)
+                    reader.DtdProcessing = DtdProcessing.Ignore
+                    reader.XmlResolver = Nothing
+                    Try
+                        While reader.Read()
+                            If reader.NodeType = XmlNodeType.Element Then
+                                Dim s As String = reader.LocalName
+
+                                ' We only want to parse data nodes,
+                                ' the mimetype attribute gives the serializer
+                                ' that's requested.
+                                If reader.LocalName.Equals("data") Then
+                                    If reader("mimetype") <> Nothing Then
+                                        dangerous = True
+                                    End If
+                                ElseIf reader.LocalName.Equals("metadata") Then
+                                    If reader("mimetype") <> Nothing Then
+                                        dangerous = True
+                                    End If
+                                End If
+                            End If
+                        End While
+                    Catch
+                        ' If we hit an error while parsing assume there's a dangerous type in this file.
+                        dangerous = True
+                    End Try
+                End Using
+            End Using
+            Return dangerous
+        End Function
 
 #End Region
 
