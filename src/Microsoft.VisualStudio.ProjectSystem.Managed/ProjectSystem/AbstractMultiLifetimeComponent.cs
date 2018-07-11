@@ -8,22 +8,22 @@ using Microsoft.VisualStudio.Threading;
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     /// <summary>
-    ///     An <see langword="abstract"/> base class that simplifies the lifetime of a
-    ///     <see cref="IProjectDynamicLoadComponent"/> implementation.
+    ///     An <see langword="abstract"/> base class that simplifies the lifetime of 
+    ///     a component that is loaded and unloaded multiple times.
     /// </summary>
-    internal abstract partial class AbstractProjectDynamicLoadComponent : OnceInitializedOnceDisposedAsync, IProjectDynamicLoadComponent
+    internal abstract partial class AbstractMultiLifetimeComponent : OnceInitializedOnceDisposedAsync, IProjectDynamicLoadComponent
     {
         private readonly object _lock = new object();
 #pragma warning disable CA2213 // OnceInitializedOnceDisposedAsync are not tracked correctly by the IDisposeable analyzer
-        private AbstractProjectDynamicLoadInstance _instance;
+        private AbstractMultiLifetimeInstance _instance;
 #pragma warning restore CA2213
 
-        protected AbstractProjectDynamicLoadComponent(JoinableTaskContextNode joinableTaskContextNode)
+        protected AbstractMultiLifetimeComponent(JoinableTaskContextNode joinableTaskContextNode)
             : base(joinableTaskContextNode)
         {
         }
 
-        public AbstractProjectDynamicLoadInstance Instance
+        public AbstractMultiLifetimeInstance Instance
         {
             get { return _instance; }
         }
@@ -37,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         private Task LoadCoreAsync()
         {
-            AbstractProjectDynamicLoadInstance instance;
+            AbstractMultiLifetimeInstance instance;
             lock (_lock)
             {
                 if (_instance == null)
@@ -53,7 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public Task UnloadAsync()
         {
-            AbstractProjectDynamicLoadInstance instance = null;
+            AbstractMultiLifetimeInstance instance = null;
 
             lock (_lock)
             {
@@ -83,8 +83,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
         }
 
         /// <summary>
-        ///     Creates a new instance of the underlying <see cref="AbstractProjectDynamicLoadInstance"/>.
+        ///     Creates a new instance of the underlying <see cref="AbstractMultiLifetimeInstance"/>.
         /// </summary>
-        protected abstract AbstractProjectDynamicLoadInstance CreateInstance();
+        protected abstract AbstractMultiLifetimeInstance CreateInstance();
     }
 }
