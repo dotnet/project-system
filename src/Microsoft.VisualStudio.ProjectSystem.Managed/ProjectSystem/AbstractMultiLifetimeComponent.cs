@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
     ///     An <see langword="abstract"/> base class that simplifies the lifetime of 
     ///     a component that is loaded and unloaded multiple times.
     /// </summary>
-    internal abstract partial class AbstractMultiLifetimeComponent : OnceInitializedOnceDisposedAsync, IProjectDynamicLoadComponent
+    internal abstract partial class AbstractMultiLifetimeComponent : OnceInitializedOnceDisposedAsync
     {
         private readonly object _lock = new object();
 #pragma warning disable CA2213 // OnceInitializedOnceDisposedAsync are not tracked correctly by the IDisposeable analyzer

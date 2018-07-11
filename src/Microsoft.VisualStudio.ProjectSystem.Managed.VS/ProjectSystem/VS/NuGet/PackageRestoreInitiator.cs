@@ -14,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
     /// </summary>
     [Export(ExportContractNames.Scopes.UnconfiguredProject, typeof(IProjectDynamicLoadComponent))]
     [AppliesTo(ProjectCapability.PackageReferences)]
-    internal partial class PackageRestoreInitiator : AbstractMultiLifetimeComponent
+    internal partial class PackageRestoreInitiator : AbstractMultiLifetimeComponent, IProjectDynamicLoadComponent
     {
         private readonly IUnconfiguredProjectVsServices _projectVsServices;
         private readonly IVsSolutionRestoreService _solutionRestoreService;
