@@ -248,11 +248,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             Dim frameworkName As New FrameworkName(currentTarget.Moniker)
 
-            If String.Compare(frameworkName.Identifier, ".NETStandard", StringComparison.Ordinal) = 0 OrElse
-               String.Compare(frameworkName.Identifier, ".NETCoreApp", StringComparison.Ordinal) = 0 Then
-                bindingRedirectsCheckBox.Visible = False
-            Else
+            If String.Compare(frameworkName.Identifier, ".NETFramework", StringComparison.Ordinal) = 0 Then
                 bindingRedirectsCheckBox.Visible = True
+            Else
+                bindingRedirectsCheckBox.Visible = False
             End If
 
         End Sub
