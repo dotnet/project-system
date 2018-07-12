@@ -18,7 +18,14 @@
     <MicrosoftDiaSymReaderPdb2PdbVersion>1.1.0-beta1-62624-01</MicrosoftDiaSymReaderPdb2PdbVersion>
     <OpenCoverVersion>4.6.519</OpenCoverVersion>
     <CodecovVersion>1.0.3</CodecovVersion>
-
+   
+    <!--
+      TODO:
+      Override SwixBuild version. We need newer SwixBuild than the one referenced by the current RepoToolset.
+      Remove once RepoToolset is updated to at least 1.0.0-beta2-63110-06 (https://github.com/dotnet/project-system/issues/3700).
+    -->
+    <MicroBuildPluginsSwixBuildVersion>1.0.422</MicroBuildPluginsSwixBuildVersion>
+    
     <!-- VS SDK -->
     <MicrosoftVisualStudioComponentModelHostVersion>15.0.26606</MicrosoftVisualStudioComponentModelHostVersion>
     <MicrosoftVisualStudioCoreUtilityVersion>15.0.26606</MicrosoftVisualStudioCoreUtilityVersion>
