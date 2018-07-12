@@ -2763,6 +2763,11 @@ Deseja atualizar o valor no arquivo .settings?</target>
         <target state="translated">Portátil</target>
         <note />
       </trans-unit>
+      <trans-unit id="BlockedResx">
+        <source>Unable to load '{0}' because it is not trusted.</source>
+        <target state="new">Unable to load '{0}' because it is not trusted.</target>
+        <note>{0} is resx file name that is blocked</note>
+      </trans-unit>
     </body>
   </file>
 </xliff>
