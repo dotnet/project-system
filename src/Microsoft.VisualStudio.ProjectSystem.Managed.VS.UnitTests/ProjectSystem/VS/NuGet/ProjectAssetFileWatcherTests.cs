@@ -44,7 +44,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""
 
             var watcher = new ProjectAssetFileWatcher(spMock,
                                                      IProjectTreeProviderFactory.Create(),
-                                                     IUnconfiguredProjectCommonServicesFactory.Create(threadingService: new IProjectThreadingServiceMock()),
+                                                     IUnconfiguredProjectCommonServicesFactory.Create(threadingService: IProjectThreadingServiceFactory.Create()),
                                                      tasksService,
                                                      IActiveConfiguredProjectSubscriptionServiceFactory.Create());
 
@@ -99,7 +99,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""
 
             var watcher = new ProjectAssetFileWatcher(spMock,
                                                      IProjectTreeProviderFactory.Create(),
-                                                     IUnconfiguredProjectCommonServicesFactory.Create(threadingService: new IProjectThreadingServiceMock()),
+                                                     IUnconfiguredProjectCommonServicesFactory.Create(threadingService: IProjectThreadingServiceFactory.Create()),
                                                      tasksService,
                                                      IActiveConfiguredProjectSubscriptionServiceFactory.Create());
             watcher.Load();
@@ -128,7 +128,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""
 
             var watcher = new ProjectAssetFileWatcher(spMock,
                                                      IProjectTreeProviderFactory.Create(),
-                                                     IUnconfiguredProjectCommonServicesFactory.Create(threadingService: new IProjectThreadingServiceMock()),
+                                                     IUnconfiguredProjectCommonServicesFactory.Create(threadingService: IProjectThreadingServiceFactory.Create()),
                                                      tasksService,
                                                      IActiveConfiguredProjectSubscriptionServiceFactory.Create());
 
