@@ -6,28 +6,28 @@ using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
-    internal class AbstractProjectDynamicLoadComponentFactory
+    internal class AbstractMultiLifetimeComponentFactory
     {
-        public static ProjectDynamicLoadComponent Create()
+        public static MultiLifetimeComponent Create()
         {
             var joinableTaskContextNode = JoinableTaskContextNodeFactory.Create();
 
-            return new ProjectDynamicLoadComponent(joinableTaskContextNode);
+            return new MultiLifetimeComponent(joinableTaskContextNode);
         }
 
-        public class ProjectDynamicLoadComponent : AbstractProjectDynamicLoadComponent
+        public class MultiLifetimeComponent : AbstractMultiLifetimeComponent
         {
             private readonly JoinableTaskContextNode _joinableTaskContextNode;
 
-            public ProjectDynamicLoadComponent(JoinableTaskContextNode joinableTaskContextNode) 
+            public MultiLifetimeComponent(JoinableTaskContextNode joinableTaskContextNode) 
                 : base(joinableTaskContextNode)
             {
                 _joinableTaskContextNode = joinableTaskContextNode;
             }
 
-            protected override AbstractProjectDynamicLoadInstance CreateInstance()
+            protected override AbstractMultiLifetimeInstance CreateInstance()
             {
-                return new ProjectDynamicLoadComponentInstance(_joinableTaskContextNode);
+                return new MultiLifetimeInstance(_joinableTaskContextNode);
             }
 
             public new bool IsInitialized
@@ -35,9 +35,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 get { return base.IsInitialized; }
             }
 
-            public class ProjectDynamicLoadComponentInstance : AbstractProjectDynamicLoadInstance
+            public class MultiLifetimeInstance : AbstractMultiLifetimeInstance
             {
-                public ProjectDynamicLoadComponentInstance(JoinableTaskContextNode joinableTaskContextNode) 
+                public MultiLifetimeInstance(JoinableTaskContextNode joinableTaskContextNode) 
                     : base(joinableTaskContextNode)
                 {
                 }
