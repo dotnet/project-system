@@ -13,6 +13,7 @@
 
     <!-- VS Insertion -->
     <VisualStudioInsertionComponent>Microsoft.VisualStudio.ProjectSystem.Managed</VisualStudioInsertionComponent>
+    <ManifestBuildVersion>$(VsixVersion)</ManifestBuildVersion>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="RoslynDependencies.ProjectSystem.OptimizationData" Version="$(RoslynDependenciesProjectSystemOptimizationDataVersion)" />

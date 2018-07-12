@@ -16,6 +16,7 @@
 
     <!-- VS Setup -->
     <VisualStudioInsertionComponent>Microsoft.VisualStudio.NetCore.ProjectTemplates</VisualStudioInsertionComponent>
+    <ManifestBuildVersion>$(VsixVersion)</ManifestBuildVersion>
   </PropertyGroup>
   <ItemGroup>
     <None Include="source.extension.vsixmanifest" />
