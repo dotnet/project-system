@@ -4,6 +4,13 @@
     <VersionBase Condition="'$(UseVisualStudioVersion)' != 'true'">2.9.0</VersionBase>
     <PreReleaseVersionLabel>beta2</PreReleaseVersionLabel>
 
+    <!-- 
+      15.8 specific workaround for a change to BUILD_BUILDNUMBER format that added two more digits. 
+      Any subsequent versions must have the same amount of digits to be considered higher.
+      Updates the version 20180102.03 to 20180102.0003.
+    -->
+    <BUILD_BUILDNUMBER Condition="$(BUILD_BUILDNUMBER.Length) == 11">$(BUILD_BUILDNUMBER.Insert(9, '00'))</BUILD_BUILDNUMBER>
+
     <!-- Opt-in repo features -->
     <UsingToolVSSDK>true</UsingToolVSSDK>
     <UsingToolIbcOptimization>true</UsingToolIbcOptimization>
@@ -18,7 +25,14 @@
     <MicrosoftDiaSymReaderPdb2PdbVersion>1.1.0-beta1-62624-01</MicrosoftDiaSymReaderPdb2PdbVersion>
     <OpenCoverVersion>4.6.519</OpenCoverVersion>
     <CodecovVersion>1.0.3</CodecovVersion>
-
+   
+    <!--
+      TODO:
+      Override SwixBuild version. We need newer SwixBuild than the one referenced by the current RepoToolset.
+      Remove once RepoToolset is updated to at least 1.0.0-beta2-63110-06 (https://github.com/dotnet/project-system/issues/3700).
+    -->
+    <MicroBuildPluginsSwixBuildVersion>1.0.422</MicroBuildPluginsSwixBuildVersion>
+    
     <!-- VS SDK -->
     <MicrosoftVisualStudioComponentModelHostVersion>15.0.26606</MicrosoftVisualStudioComponentModelHostVersion>
     <MicrosoftVisualStudioCoreUtilityVersion>15.0.26606</MicrosoftVisualStudioCoreUtilityVersion>
