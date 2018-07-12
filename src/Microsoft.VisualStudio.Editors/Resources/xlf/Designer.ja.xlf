@@ -1312,7 +1312,7 @@ Error:</source>
       </trans-unit>
       <trans-unit id="RSE_Err_RenameNotSupported">
         <source>The current object is auto-generated and only supports renaming through the Managed Resources Editor.</source>
-        <target state="translated">現在のオブジェクトは自動生成されていて、マネージ リソース エディターによる名前の変更のみサポートしています。</target>
+        <target state="translated">現在のオブジェクトは自動生成されていて、マネージド リソース エディターによる名前の変更のみサポートしています。</target>
         <note />
       </trans-unit>
       <trans-unit id="RSE_Err_CantFindResourceFile_1Arg">
@@ -1793,7 +1793,7 @@ CONSIDER: get this from CodeDom</note>
       </trans-unit>
       <trans-unit id="RSE_ResourceEditor">
         <source>Managed Resources Editor</source>
-        <target state="translated">マネージ リソース エディター</target>
+        <target state="translated">マネージド リソース エディター</target>
         <note />
       </trans-unit>
       <trans-unit id="RSE_DlgTitle_AddExisting">
@@ -2765,7 +2765,7 @@ app.config ファイルでの新しい値は '{1}' です
       </trans-unit>
       <trans-unit id="BlockedResx">
         <source>Unable to load '{0}' because it is not trusted.</source>
-        <target state="new">Unable to load '{0}' because it is not trusted.</target>
+        <target state="translated">'{0}' は信頼されていないため、読み込めません。</target>
         <note>{0} is resx file name that is blocked</note>
       </trans-unit>
     </body>

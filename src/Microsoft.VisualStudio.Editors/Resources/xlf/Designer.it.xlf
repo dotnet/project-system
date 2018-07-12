@@ -2765,7 +2765,7 @@ Aggiornare il valore nel file .settings?</target>
       </trans-unit>
       <trans-unit id="BlockedResx">
         <source>Unable to load '{0}' because it is not trusted.</source>
-        <target state="new">Unable to load '{0}' because it is not trusted.</target>
+        <target state="translated">Non è possibile caricare '{0}' perché non è attendibile.</target>
         <note>{0} is resx file name that is blocked</note>
       </trans-unit>
     </body>
