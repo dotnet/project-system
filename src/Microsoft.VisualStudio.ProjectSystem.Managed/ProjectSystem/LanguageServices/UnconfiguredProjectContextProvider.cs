@@ -6,8 +6,9 @@ using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
+
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
+using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 using Microsoft.VisualStudio.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
@@ -26,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         private readonly ITaskScheduler _taskScheduler;
         private readonly List<AggregateWorkspaceProjectContext> _contexts = new List<AggregateWorkspaceProjectContext>();
         private readonly IProjectHostProvider _projectHostProvider;
-        private readonly ActiveConfiguredProjectsProvider _activeConfiguredProjectsProvider;
+        private readonly IActiveConfiguredProjectsProvider _activeConfiguredProjectsProvider;
         private readonly IUnconfiguredProjectHostObject _unconfiguredProjectHostObject;
         private readonly Dictionary<ConfiguredProject, IWorkspaceProjectContext> _configuredProjectContextsMap = new Dictionary<ConfiguredProject, IWorkspaceProjectContext>();
         private readonly Dictionary<ConfiguredProject, IConfiguredProjectHostObject> _configuredProjectHostObjectsMap = new Dictionary<ConfiguredProject, IConfiguredProjectHostObject>();
@@ -37,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
                                                  IProjectAsyncLoadDashboard asyncLoadDashboard,
                                                  ITaskScheduler taskScheduler,
                                                  IProjectHostProvider projectHostProvider,
-                                                 ActiveConfiguredProjectsProvider activeConfiguredProjectsProvider)
+                                                 IActiveConfiguredProjectsProvider activeConfiguredProjectsProvider)
         {
             Requires.NotNull(commonServices, nameof(commonServices));
             Requires.NotNull(contextFactory, nameof(contextFactory));
@@ -52,8 +53,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             _taskScheduler = taskScheduler;
             _projectHostProvider = projectHostProvider;
             _activeConfiguredProjectsProvider = activeConfiguredProjectsProvider;
-
             _unconfiguredProjectHostObject = _projectHostProvider.UnconfiguredProjectHostObject;
+
+            ProjectGuidServices = new OrderPrecedenceImportCollection<IProjectGuidService>(projectCapabilityCheckProvider: commonServices.Project);
+        }
+
+        [ImportMany]
+        public OrderPrecedenceImportCollection<IProjectGuidService> ProjectGuidServices
+        {
+            get;
         }
 
         public async Task<AggregateWorkspaceProjectContext> CreateProjectContextAsync()
@@ -156,6 +164,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             return Task.CompletedTask;
         }
 
+        private Task<Guid> GetProjectGuidAsync()
+        {
+            if (ProjectGuidServices.FirstOrDefault()?.Value is IProjectGuidService2 projectGuidService)
+                return projectGuidService.GetProjectGuidAsync();
+
+            return Task.FromResult(Guid.Empty);
+        }
+
         // Returns the name that is the handshake between Roslyn and the csproj/vbproj
         private async Task<string> GetLanguageServiceName()
         {
@@ -164,15 +180,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 
             return (string)await properties.LanguageServiceName.GetValueAsync()
                                                                .ConfigureAwait(false);
-        }
-
-        private async Task<Guid> GetProjectGuidAsync()
-        {
-            ConfigurationGeneral properties = await _commonServices.ActiveConfiguredProjectProperties.GetConfigurationGeneralPropertiesAsync()
-                                                                                                     .ConfigureAwait(false);
-            Guid.TryParse((string)await properties.ProjectGuid.GetValueAsync().ConfigureAwait(false), out Guid guid);
-
-            return guid;
         }
 
         private async Task<string> GetTargetPathAsync()
@@ -187,7 +194,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         {
             string filePath = _commonServices.Project.FullPath;
 
-            return new ProjectData() {
+            return new ProjectData()
+            {
                 FullPath = filePath,
                 DisplayName = Path.GetFileNameWithoutExtension(filePath)
             };
@@ -225,24 +233,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             string languageName = await GetLanguageServiceName().ConfigureAwait(false);
             if (string.IsNullOrEmpty(languageName))
                 return null;
-            
+
             Guid projectGuid = await GetProjectGuidAsync().ConfigureAwait(false);
+
             string targetPath = await GetTargetPathAsync().ConfigureAwait(false);
             if (string.IsNullOrEmpty(targetPath))
                 return null;
 
             // Don't initialize until the project has been loaded into the IDE and available in Solution Explorer
-            await _asyncLoadDashboard.ProjectLoadedInHost.ConfigureAwait(false);
+            await _asyncLoadDashboard.ProjectLoadedInHostWithCancellation(_commonServices.Project).ConfigureAwait(false);
 
             // TODO: https://github.com/dotnet/roslyn-project-system/issues/353
-            return await _taskScheduler.RunAsync(TaskSchedulerPriority.UIThreadBackgroundPriority, async () => 
+            return await _taskScheduler.RunAsync(TaskSchedulerPriority.UIThreadBackgroundPriority, async () =>
             {
                 await _commonServices.ThreadingService.SwitchToUIThread();
 
                 var projectData = GetProjectData();
-                
+
                 // Get the set of active configured projects ignoring target framework.
+#pragma warning disable CS0618 // Type or member is obsolete
                 var configuredProjectsMap = await _activeConfiguredProjectsProvider.GetActiveConfiguredProjectsMapAsync().ConfigureAwait(true);
+#pragma warning restore CS0618 // Type or member is obsolete
 
                 // Get the unconfigured project host object (shared host object).
                 var configuredProjectsToRemove = new HashSet<ConfiguredProject>(_configuredProjectHostObjectsMap.Keys);
@@ -262,8 +273,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
                         var projectProperties = configuredProject.Services.ExportProvider.GetExportedValue<ProjectProperties>();
                         var configurationGeneralProperties = await projectProperties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(true);
                         targetPath = (string)await configurationGeneralProperties.TargetPath.GetValueAsync().ConfigureAwait(true);
+                        var targetFrameworkMoniker = (string)await configurationGeneralProperties.TargetFrameworkMoniker.GetValueAsync().ConfigureAwait(true);
                         var displayName = GetDisplayName(configuredProject, projectData, targetFramework);
-                        configuredProjectHostObject = _projectHostProvider.GetConfiguredProjectHostObject(_unconfiguredProjectHostObject, displayName);
+                        configuredProjectHostObject = _projectHostProvider.GetConfiguredProjectHostObject(_unconfiguredProjectHostObject, displayName, targetFrameworkMoniker);
 
                         // TODO: https://github.com/dotnet/roslyn-project-system/issues/353
                         await _commonServices.ThreadingService.SwitchToUIThread();
@@ -272,7 +284,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
                         // By default, set "LastDesignTimeBuildSucceeded = false" to turn off diagnostics until first design time build succeeds for this project.
                         workspaceProjectContext.LastDesignTimeBuildSucceeded = false;
 
-                        AddConfiguredProjectState(configuredProject, workspaceProjectContext, configuredProjectHostObject);                        
+                        AddConfiguredProjectState(configuredProject, workspaceProjectContext, configuredProjectHostObject);
                     }
 
                     innerProjectContextsBuilder.Add(targetFramework, workspaceProjectContext);
@@ -297,7 +309,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             //   (a) The display name is used in the editor project context combo box when opening source files that used by more than one inner projects.
             //   (b) Language service requires each active workspace project context in the current workspace to have a unique value for {ProjectFilePath, DisplayName}.
             return configuredProject.ProjectConfiguration.IsCrossTargeting() ?
-                $"{projectData.DisplayName}({targetFramework})" :
+                $"{projectData.DisplayName} ({targetFramework})" :
                 projectData.DisplayName;
         }
 

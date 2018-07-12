@@ -10,10 +10,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
     [Export(typeof(IPageMetadata))]
     internal partial class DebugPropertyPageMetaData : IPageMetadata
     {
-        bool IPageMetadata.HasConfigurationCondition { get {return false;} }
-        string IPageMetadata.Name { get {return DebugPropertyPage.PageName;} }
-        Guid IPageMetadata.PageGuid { get {return typeof(DebugPropertyPage).GUID;}}
-        int IPageMetadata.PageOrder { get {return 30;} }
+        bool IPageMetadata.HasConfigurationCondition { get { return false; } }
+        string IPageMetadata.Name { get { return DebugPropertyPage.PageName; } }
+        Guid IPageMetadata.PageGuid { get { return typeof(DebugPropertyPage).GUID; } }
+        int IPageMetadata.PageOrder { get { return 30; } }
     }
 
     [Guid("0273C280-1882-4ED0-9308-52914672E3AA")]
@@ -21,10 +21,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
     internal partial class DebugPropertyPage : WpfBasedPropertyPage
     {
 
-        internal static readonly string PageName = PropertyPageResources.DebugPropertyPageTitle; 
-        
+        internal static readonly string PageName = PropertyPageResources.DebugPropertyPageTitle;
+
         public DebugPropertyPage()
-        { 
+        {
         }
 
         protected override PropertyPageViewModel CreatePropertyPageViewModel()
@@ -45,7 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             }
         }
 
-       
+
     }
 }
 

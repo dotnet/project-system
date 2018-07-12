@@ -337,7 +337,7 @@
     <value>2</value>
   </data>
   <data name="FolderBrowse.Text">
-    <value xml:space="preserve">...</value>
+    <value xml:space="preserve">Browse...</value>
   </data>
   <data name="&gt;&gt;FolderBrowse.Name">
     <value xml:space="preserve">FolderBrowse</value>

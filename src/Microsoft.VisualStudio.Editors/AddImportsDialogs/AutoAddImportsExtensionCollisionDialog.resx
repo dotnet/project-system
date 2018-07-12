@@ -136,7 +136,7 @@
     <value>382, 1</value>
   </data>
   <data name="txtMain_.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
+    <value>0</value>
   </data>
   <data name="&gt;&gt;txtMain_.Name" xml:space="preserve">
     <value>txtMain_</value>
@@ -160,7 +160,7 @@
     <value>75, 23</value>
   </data>
   <data name="btnOk_.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="btnOk_.Text" xml:space="preserve">
     <value>OK</value>
@@ -187,7 +187,7 @@
     <value>75, 23</value>
   </data>
   <data name="btnCancel_.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="btnCancel_.Text" xml:space="preserve">
     <value>Cancel</value>

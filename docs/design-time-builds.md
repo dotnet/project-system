@@ -33,7 +33,7 @@ Targets that dynamically change references, source files or compilation options 
 If you've determined that your target needs to run in a design-time build, using the above table set `BeforeTargets` to the normal target equivalent of what you are contributing to the build. For example, if a target changes `<Reference>` items, then it should indicate that it runs _before_ `ResolveAssemblyReferences` target:
 
 ``` XML
-  <Target Name="AddAdditionalReferences" BeforeTargets="ResolveAssemblyReference">
+  <Target Name="AddAdditionalReferences" BeforeTargets="ResolveAssemblyReferences">
      ...
   </Target>
 ```
@@ -41,11 +41,11 @@ The `AddAdditionalReferences` target will run in both normal builds _and_ design
 
 ### Determining whether a target is run in a design-time build
 
-Use the `DesignTimeBuild` property to differentiate between when a target is run in a design-time build versus a normal build. This can be used to avoid expensive calculations or work that is only needed for a normal build.
+Use the `DesignTimeBuild` (CPS-based projects) and `BuildingProject` (legacy project system) properties to differentiate between when a target is run in a design-time build versus a normal build. This can be used to avoid expensive calculations or work that is only needed for a normal build.
 
 ``` XML
-  <Target Name="AddAdditionalReferences" BeforeTargets="ResolveAssemblyReference">
-     <PropertyGroup Condition="'$(DesignTimeBuild)' == 'true'">
+  <Target Name="AddAdditionalReferences" BeforeTargets="ResolveAssemblyReferences">
+     <PropertyGroup Condition="'$(DesignTimeBuild)' == 'true' OR '$(BuildingProject)' != 'true'">
          <_AvoidExpensiveCalculation>true</_AvoidExpensiveCalculation>
      </PropertyGroup>
 
@@ -78,7 +78,7 @@ The following are symptoms of a design-time build that is taking too long:
 
 You can force Visual Studio to show the results of a design-time build using the following instructions:
 
-#### Visual Studio 2015 or below:
+#### Visual Studio 2015 or below
 
 1. Delete the `.vs` directory that sits alongside the solution that is experiencing the problem
 2. Start a Developer Command Prompt for VS2015
@@ -87,22 +87,40 @@ You can force Visual Studio to show the results of a design-time build using the
 5. Open the solution
 6. Under %TEMP%, look for [RANDOMGUID].designtime.log files, these will contain the results of the design-time build. If running Visual Studio 2015 Update 2 or higher, the name of the project and design-time target that is being called will also be included in the file name.
 
-#### Visual Studio "15"
+#### Visual Studio 2017 (version 15.3 or earlier)
 
-In Visual Studio "15" there are two C# and Visual Basic project systems. By default, at the time of writing, the majority of projects continue to open in the same project system as previous versions of Visual Studio, and hence the instructions are the same as above.
+In Visual Studio 2017 there are two C# and Visual Basic project systems. By default the majority of projects (.NET Framework, UWP, etc) continue to open in the same project system as previous versions of Visual Studio, and hence the instructions are the same as above. 
 
-If, however, you know that your project opens in the new [project system](http://github.com/dotnet/roslyn-project-system), you can use the following steps to see the results of design-time builds:
+The new .NET Core and .NET Standard project types, however, open in the new [project system](http://github.com/dotnet/roslyn-project-system) and you can use the following steps to see the results of design-time builds:
 
-1. Under `HKEY_CURRENT_USER\SOFTWARE\Microsoft\VisualStudio\15.0\CPS`
-create a new DWORD (32-bit) value `Design-time Build Logging` and set it to `1`. If running inside other hives of Visual Studio, replace `15.0` with `15.0[Hive]`, where `[Hive]` is the name of the hive.
-
-2. Open the solution
+1. Close all instances of Visual Studio
+2. Download the following script: [DesignTimeBuildOutputPane.cmd](/docs/repo/content/DesignTimeBuildOutputPane.cmd?raw=true)
+3. From a elevated Visual Studio command-prompt, run the following:
+```
+DesignTimeBuildOutputPane.cmd enable
+```
+4. Open the solution in Visual Studio
 
 The results of the design time build will appear in a new category called __Build - Design-time__ in the __Output__ window. The verbosity of the category respects the same settings under __Tools__ -> __Options__ -> __Project and Solutions__ -> __Build and Run__ as normal builds.
 
+To turn off this pane:
+
+1. From a elevated Visual Studio command-prompt, run the following:
+```
+DesignTimeBuildOutputPane.cmd disable
+```
+
+#### Visual Studio 2017 (version 15.4 or later)
+
+1. Install the [Project System Tools](https://marketplace.visualstudio.com/items?itemName=VisualStudioProductTeam.ProjectSystemTools) extension
+2. In Visual Studio, choose the `View > Other Windows > Build Logging` menu item.
+3. Click on the "play" button.
+
+This will cause design time builds to show up in the build logging tool window. If you have the [MSBuild Binary and Structured Log Viewer](http://msbuildlog.com/) installed, you can double-click on a log to view it in the viewer, otherwise you can right-click and choose `Save As...` to save the log in the new [binary log format](https://github.com/Microsoft/msbuild/wiki/Binary-Log).
+
 ### Diagnosing why a design-time build is failing or taking too long
 
-After following the above instructions, open the resulting build log file or Output window (for the new new project system).
+After following the above instructions, open the resulting build log file or Output window (for the new project system).
 
 #### Failing design-time build
 For a failing build, look for errors at the end of the log:

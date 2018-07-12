@@ -56,7 +56,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Me.TableLayoutPanel1.SetColumnSpan(Me.HelpLabel, 2)
             Me.HelpLabel.Name = "HelpLabel"
             Me.HelpLabel.TabStop = True
-            Me.HelpLabel.SetThemedColor(VsUIShell5Service)
+            Me.HelpLabel.SetThemedColor(VsUIShell5Service, SupportsTheming)
             '
             'TableLayoutPanel1
             '

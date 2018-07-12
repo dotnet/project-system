@@ -1,12 +1,14 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+
 using Microsoft.VisualStudio.Shell;
+
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
 {
-    [ProjectSystemTrait]
+    [Trait("UnitTest", "ProjectSystem")]
     public class GeneratorExtensionRegistrationAttributeTests
     {
         private const string testGuid = "DB18C134-E0E3-4065-9079-2D6B00F4E639";
@@ -14,29 +16,29 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
         private const string testGuid3 = "CEE02EE1-D8DD-4D41-9D38-A23132643BA4";
 
         [Fact]
-        public void GeneratorExtensionRegistrationAttribute_NullAsExtension_ThrowsArgumentNull()
+        public void NullAsExtension_ThrowsArgumentNull()
         {
             Assert.Throws<ArgumentNullException>("extension", () => new GeneratorExtensionRegistrationAttribute(null, "ResXFileCodeGenerator", testGuid));
         }
 
 
         [Fact]
-        public void GeneratorExtensionRegistrationAttribute_NullAsGenerator_ThrowsArgumentNull()
+        public void NullAsGenerator_ThrowsArgumentNull()
         {
             Assert.Throws<ArgumentNullException>("generator", () => new GeneratorExtensionRegistrationAttribute(".resx", null, testGuid));
         }
 
         [Fact]
-        public void GeneratorExtensionRegistrationAttribute_NullAsContextGuid_ThrowsArgumentNull()
+        public void NullAsContextGuid_ThrowsArgumentNull()
         {
             Assert.Throws<ArgumentNullException>("contextGuid", () => new GeneratorExtensionRegistrationAttribute(".resx", "ResXFileCodeGenerator", null));
         }
 
         [Theory]
         [InlineData(".resx", "ResXCodeFileGenerator", testGuid)]
-        [InlineData(".resx",  "PublicResXCodeFileGenerator", testGuid2)]
+        [InlineData(".resx", "PublicResXCodeFileGenerator", testGuid2)]
         [InlineData(".tt", "TextTemplateFileGenerator", testGuid3)]
-        public void GeneratorExtensionRegistrationAttribute_ValidRegistration_CreatesCorrectKeys(string extension, string generator, string contextGuid)
+        public void ValidRegistration_CreatesCorrectKeys(string extension, string generator, string contextGuid)
         {
             var numTimesCreateKeyCalled = 0;
             var numTimesSetupValueCalled = 0;

@@ -2,12 +2,13 @@
 
 using System;
 using System.ComponentModel.Composition;
+
 using Microsoft.VisualStudio.IO;
 
 namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
 {
     [ExportSpecialFileProvider(SpecialFiles.AppSettings)]
-    [AppliesTo(ProjectCapability.CSharpOrVisualBasic + " & " + ProjectCapability.AppSettings)]
+    [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp + " & " + ProjectCapability.AppSettings)]
     internal class SettingsFileSpecialFileProvider : AbstractSpecialFileProvider
     {
         [ImportingConstructor]

@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
+
 using Microsoft.VisualStudio.ProjectSystem.Properties;
+
 using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem
@@ -31,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             IConfiguredProjectServices configuredProjectServices = Mock.Of<IConfiguredProjectServices>(o =>
                 o.PropertyPagesCatalog == propertyPagesCatalogProvider &&
-                o.AdditionalRuleDefinitions == ruleService);            
+                o.AdditionalRuleDefinitions == ruleService);
 
             var cfg = new StandardProjectConfiguration("Debug|" + "AnyCPU", Empty.PropertiesMap.SetItem("Configuration", "Debug").SetItem("Platform", "AnyCPU"));
             ConfiguredProject configuredProject = Mock.Of<ConfiguredProject>(o =>
@@ -44,13 +46,13 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         private static Dictionary<string, IRule> CreateCatalogLookup(PropertyPageData[] data)
         {
-            Dictionary<string, IRule> catalog = new Dictionary<string, IRule>();
+            var catalog = new Dictionary<string, IRule>();
 
             foreach (var category in data.GroupBy(p => p.Category))
             {
-                catalog.Add(category.Key, 
+                catalog.Add(category.Key,
                             CreateRule(
-                                    category.Select(property => CreateProperty(property.PropertyName, property.Value))));
+                                    category.Select(property => CreateProperty(property.PropertyName, property.Value, property.SetValues))));
             }
 
             return catalog;
@@ -74,11 +76,12 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             var catalog = new Mock<IPropertyPagesCatalog>();
             catalog.Setup(o => o.BindToContext(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
-                   .Returns((string schemaName, string file, string itemType, string itemName) => {
+                   .Returns((string schemaName, string file, string itemType, string itemName) =>
+                   {
 
                        rulesBySchemaName.TryGetValue(schemaName, out IRule rule);
                        return rule;
-                });
+                   });
 
             return catalog.Object;
         }
@@ -87,7 +90,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             var rule = new Mock<IRule>();
             rule.Setup(o => o.GetProperty(It.IsAny<string>()))
-                .Returns((string propertyName) => {
+                .Returns((string propertyName) =>
+                {
 
                     return properties.FirstOrDefault(p => p.Name == propertyName);
                 });
@@ -95,7 +99,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return rule.Object;
         }
 
-        private static IProperty CreateProperty(string name, object value)
+        private static IProperty CreateProperty(string name, object value, List<object> setValues = null)
         {
             var property = new Mock<IProperty>();
             property.SetupGet(o => o.Name)
@@ -106,6 +110,13 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             property.As<IEvaluatedProperty>().Setup(p => p.GetEvaluatedValueAtEndAsync()).ReturnsAsync(value.ToString());
             property.As<IEvaluatedProperty>().Setup(p => p.GetEvaluatedValueAsync()).ReturnsAsync(value.ToString());
+
+            if (setValues != null)
+            {
+                property.Setup(p => p.SetValueAsync(It.IsAny<object>()))
+                        .Callback<object>(obj => setValues.Add(obj))
+                        .ReturnsAsync(() => { });
+            }
 
             return property.Object;
         }

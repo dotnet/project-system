@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Immutable;
 using System.Threading.Tasks;
+
 using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Input
@@ -18,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Input
         {
             _commandIds = new Lazy<long[]>(() => GetCommandIds(this));
         }
-        
+
         public Task<CommandStatusResult> GetCommandStatusAsync(IImmutableSet<IProjectTree> nodes, long commandId, bool focused, string commandText, CommandStatus progressiveStatus)
         {
             Requires.NotNull(nodes, nameof(nodes));
@@ -51,7 +52,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Input
 
         private static long[] GetCommandIds(AbstractProjectCommand command)
         {
-            ProjectCommandAttribute attribute = (ProjectCommandAttribute)Attribute.GetCustomAttribute(command.GetType(), typeof(ProjectCommandAttribute));
+            var attribute = (ProjectCommandAttribute)Attribute.GetCustomAttribute(command.GetType(), typeof(ProjectCommandAttribute));
 
             // All ProjectCommand's should be marked with [ProjectCommandAttribute]
             Assumes.NotNull(attribute);

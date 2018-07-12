@@ -6,6 +6,7 @@ using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
+
 using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
@@ -33,10 +34,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         private IDisposable _debugProviderLink;
 
         [ImportingConstructor]
-        public DebugProfileDebugTargetGenerator(UnconfiguredProject unconfiguredProject, ILaunchSettingsProvider launchSettingProvider)
+        public DebugProfileDebugTargetGenerator(
+            UnconfiguredProject unconfiguredProject,
+            ILaunchSettingsProvider launchSettingProvider,
+            IProjectThreadingService threadingService)
             : base(unconfiguredProject.Services)
         {
             LaunchSettingProvider = launchSettingProvider;
+            ProjectThreadingService = threadingService;
         }
 
         private NamedIdentity _dataSourceKey = new NamedIdentity();
@@ -62,16 +67,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             }
         }
 
-        private ILaunchSettingsProvider LaunchSettingProvider{ get; }
+        private ILaunchSettingsProvider LaunchSettingProvider { get; }
+        private IProjectThreadingService ProjectThreadingService { get; }
 
 
         /// <summary>
         /// This provides access to the class which creates the list of debugger values..
         /// </summary>
         public Task<IDynamicEnumValuesGenerator> GetProviderAsync(IList<NameValuePair> options)
-        {
-            return Task.FromResult<IDynamicEnumValuesGenerator>(new DebugProfileEnumValuesGenerator(LaunchSettingProvider));
-        }
+            => Task.FromResult<IDynamicEnumValuesGenerator>(
+                new DebugProfileEnumValuesGenerator(LaunchSettingProvider, ProjectThreadingService));
 
 
         protected override void Initialize()
@@ -80,20 +85,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 update =>
                 {
                     // Compute the new enum values from the profile provider
-                   var generatedResult = DebugProfileEnumValuesGenerator.GetEnumeratorEnumValues(update).ToImmutableList();
+                    var generatedResult = DebugProfileEnumValuesGenerator.GetEnumeratorEnumValues(update).ToImmutableList();
                     _dataSourceVersion++;
                     var dataSources = ImmutableDictionary<NamedIdentity, IComparable>.Empty.Add(DataSourceKey, DataSourceVersion);
                     return new ProjectVersionedValue<IReadOnlyList<IEnumValue>>(generatedResult, dataSources);
                 });
 
             var broadcastBlock = new BroadcastBlock<IProjectVersionedValue<IReadOnlyList<IEnumValue>>>(b => b);
-            
-            _launchProfileProviderLink  = LaunchSettingProvider.SourceBlock.LinkTo(
+
+            _launchProfileProviderLink = LaunchSettingProvider.SourceBlock.LinkTo(
                 debugProfilesBlock,
                 linkOptions: new DataflowLinkOptions { PropagateCompletion = true });
 
             _debugProviderLink = debugProfilesBlock.LinkTo(broadcastBlock, new DataflowLinkOptions { PropagateCompletion = true });
-            
+
             _publicBlock = broadcastBlock.SafePublicize();
         }
 

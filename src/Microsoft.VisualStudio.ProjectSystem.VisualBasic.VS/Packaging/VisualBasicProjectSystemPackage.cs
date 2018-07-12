@@ -1,13 +1,15 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System.Runtime.InteropServices;
+
 using Microsoft.VisualStudio.Packaging;
+using Microsoft.VisualStudio.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.VS;
 using Microsoft.VisualStudio.ProjectSystem.VS.Generators;
 using Microsoft.VisualStudio.Shell;
-using System.Runtime.InteropServices;
 
 // We register ourselves as a new CPS "project type", as well as setting ourselves as the prefered project type for the legacy VB project type.
-[assembly: ProjectTypeRegistration(projectTypeGuid: VisualBasicProjectSystemPackage.ProjectTypeGuid, displayName: "#1", displayProjectFileExtensions: "#2", defaultProjectExtension: "vbproj", language: "VisualBasic", resourcePackageGuid: VisualBasicProjectSystemPackage.PackageGuid, Capabilities = ManagedProjectSystemPackage.DefaultCapabilities)]
+[assembly: ProjectTypeRegistration(projectTypeGuid: VisualBasicProjectSystemPackage.ProjectTypeGuid, displayName: "#1", displayProjectFileExtensions: "#2", defaultProjectExtension: "vbproj", language: "VisualBasic", resourcePackageGuid: VisualBasicProjectSystemPackage.PackageGuid, Capabilities = ManagedProjectSystemPackage.DefaultCapabilities + "; " + ProjectCapability.VisualBasic, DisableAsynchronousProjectTreeLoad = true)]
 
 namespace Microsoft.VisualStudio.Packaging
 {
@@ -38,6 +40,7 @@ namespace Microsoft.VisualStudio.Packaging
 
         private const string DebugPropertyClassId = "{0273C280-1882-4ED0-9308-52914672E3AA}";
         private const string DebugPropertyClassInfo = "Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.DebugPropertyPage";
+
         public VisualBasicProjectSystemPackage()
         {
         }

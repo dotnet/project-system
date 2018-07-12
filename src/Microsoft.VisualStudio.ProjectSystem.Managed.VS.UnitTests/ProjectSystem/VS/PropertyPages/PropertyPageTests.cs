@@ -1,23 +1,26 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+
 using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages;
+
 using Moq;
 using Moq.Protected;
+
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test.PropertyPages
 {
-    [ProjectSystemTrait]
+    [Trait("UnitTest", "ProjectSystem")]
     public class PropertyPageTests
     {
         [Fact]
-        public void PropertyPage_GetPageInfoAndHelp()
+        public void GetPageInfoAndHelp()
         {
             Castle.DynamicProxy.Generators.AttributesToAvoidReplicating.Add(typeof(System.Security.Permissions.UIPermissionAttribute));
 
-            Mock<PropertyPage> page = new Mock<PropertyPage>(false);
+            var page = new Mock<PropertyPage>(false);
             page.Protected().Setup<string>("PropertyPageName").Returns("MyPage");
             PROPPAGEINFO[] pageInfoArray = new PROPPAGEINFO[1];
             page.Object.GetPageInfo(pageInfoArray);
@@ -26,19 +29,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test.PropertyPages
             PROPPAGEINFO info = pageInfoArray[0];
             Assert.Equal("MyPage", info.pszTitle);
             Assert.Equal(0u, info.dwHelpContext);
-            Assert.Equal(info.pszDocString,null);
-            Assert.Equal(info.pszHelpFile,null);
+            Assert.Null(info.pszDocString);
+            Assert.Null(info.pszHelpFile);
             Assert.Equal(page.Object.Size.Width, info.SIZE.cx);
             Assert.Equal(page.Object.Size.Height, info.SIZE.cy);
         }
 
         [Fact]
-        public void PropertyPage_Move()
+        public void MoveTest()
         {
             Castle.DynamicProxy.Generators.AttributesToAvoidReplicating.Add(typeof(System.Security.Permissions.UIPermissionAttribute));
 
             RECT[] rect = new RECT[] { new RECT() { left = 25, top = 25 } };
-            Mock<PropertyPage> page = new Mock<PropertyPage>(false);
+            var page = new Mock<PropertyPage>(false);
             page.CallBase = true;
             page.Object.Move(rect);
 
@@ -47,7 +50,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test.PropertyPages
         }
 
         [Fact]
-        public void PropertyPage_MoveThrowsArgumentExceptionIfNullRect()
+        public void MoveThrowsArgumentExceptionIfNullRect()
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
@@ -56,7 +59,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test.PropertyPages
         }
 
         [Fact]
-        public void PropertyPage_MoveThrowsArgumentExceptionIfEmptyRect()
+        public void MoveThrowsArgumentExceptionIfEmptyRect()
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
@@ -68,7 +71,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test.PropertyPages
         {
             Castle.DynamicProxy.Generators.AttributesToAvoidReplicating.Add(typeof(System.Security.Permissions.UIPermissionAttribute));
 
-            Mock<PropertyPage> page = new Mock<PropertyPage>(false);
+            var page = new Mock<PropertyPage>(false);
             page.CallBase = true;
 
             page.Object.Move(x);

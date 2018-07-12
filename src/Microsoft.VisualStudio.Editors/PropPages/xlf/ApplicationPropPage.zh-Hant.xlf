@@ -1,8 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
-  <file datatype="xml" source-language="en" target-language="zh-Hant" original="src/Microsoft.VisualStudio.Editors/PropPages/ApplicationPropPage.resx">
+  <file datatype="xml" source-language="en" target-language="zh-Hant" original="../ApplicationPropPage.resx">
     <body>
-      <group id="src/Microsoft.VisualStudio.Editors/PropPages/ApplicationPropPage.resx" />
       <trans-unit id="AssemblyNameLabel.Text">
         <source>Assembly &amp;name:</source>
         <target state="translated">組件名稱(&amp;N):</target>
@@ -35,7 +34,7 @@
       </trans-unit>
       <trans-unit id="ResourcesLabel.Text">
         <source>Specify how application resources will be managed:</source>
-        <target state="translated">指定要如何管理應用程式資源: </target>
+        <target state="translated">指定要如何管理應用程式資源:</target>
         <note />
       </trans-unit>
       <trans-unit id="IconRadioButton.Text">
@@ -54,8 +53,8 @@
         <note />
       </trans-unit>
       <trans-unit id="AppIconBrowse.Text">
-        <source>...</source>
-        <target state="translated">...</target>
+        <source>Browse...</source>
+        <target state="translated">瀏覽...</target>
         <note />
       </trans-unit>
       <trans-unit id="ApplicationManifestLabel.Text">
@@ -69,13 +68,18 @@
         <note />
       </trans-unit>
       <trans-unit id="Win32ResourceFileBrowse.Text">
-        <source>...</source>
-        <target state="translated">...</target>
+        <source>Browse...</source>
+        <target state="translated">瀏覽...</target>
         <note />
       </trans-unit>
       <trans-unit id="ResourcesGroupBox.Text">
         <source>Resources</source>
         <target state="translated">資源</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="AppIconBrowse.AccessibleName">
+        <source>Browse for icon</source>
+        <target state="translated">瀏覽圖示</target>
         <note />
       </trans-unit>
     </body>

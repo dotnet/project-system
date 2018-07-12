@@ -4,6 +4,7 @@ using System;
 using System.Collections.Immutable;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
+
 using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem
@@ -42,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return mock.Object;
         }
 
-        public static IProjectTreeProvider Create(string addNewItemDirectoryReturn = null)
+        public static IProjectTreeProvider Create(string addNewItemDirectoryReturn = null, Func<IProjectTree, string, IProjectTree> findByPathAction = null)
         {
             var mock = new Mock<IProjectTreeProvider>();
 
@@ -54,7 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 .Returns<IProjectTree>(tree => tree.FilePath);
 
             mock.Setup(t => t.RemoveAsync(It.IsAny<IImmutableSet<IProjectTree>>(), It.IsAny<DeleteOptions>()))
-                .Returns<IImmutableSet<IProjectTree>, DeleteOptions>((nodes, options) => 
+                .Returns<IImmutableSet<IProjectTree>, DeleteOptions>((nodes, options) =>
                 {
                     foreach (var node in nodes)
                     {
@@ -64,6 +65,10 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 });
 
             mock.Setup(t => t.GetAddNewItemDirectory(It.IsAny<IProjectTree>())).Returns(addNewItemDirectoryReturn);
+
+            mock.Setup(p => p.FindByPath(It.IsAny<IProjectTree>(), It.IsAny<string>()))
+                .Returns(findByPathAction);
+
             return mock.Object;
         }
     }

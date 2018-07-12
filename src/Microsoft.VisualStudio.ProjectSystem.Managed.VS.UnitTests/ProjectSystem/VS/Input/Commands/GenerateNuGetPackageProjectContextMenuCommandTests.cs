@@ -2,13 +2,15 @@
 
 using System.Collections.Immutable;
 using System.Threading.Tasks;
+
 using Microsoft.VisualStudio.Packaging;
 using Microsoft.VisualStudio.ProjectSystem.Build;
+
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 {
-    [ProjectSystemTrait]
+    [Trait("UnitTest", "ProjectSystem")]
     public class GenerateNuGetPackageProjectContextMenuCommandTests : AbstractGenerateNuGetPackageCommandTests
     {
         internal override long GetCommandId() => ManagedProjectSystemPackage.GenerateNuGetPackageProjectContextMenuCmdId;

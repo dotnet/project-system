@@ -243,7 +243,9 @@ Namespace Microsoft.Internal.Performance
     End Structure
 #End If
 
-    Friend Enum CodeMarkerEvent
+    ' Renamed to RoslynCodeMarkerEvent from CodeMarkerEvent to avoid conflicts on the VS side when Editors dll is referenced there.
+    ' This type name was originally defined in the VSO first.
+    Friend Enum RoslynCodeMarkerEvent
 
         perfMSVSEditorsShowTabBegin = 8400
         perfMSVSEditorsShowTabEnd = 8401

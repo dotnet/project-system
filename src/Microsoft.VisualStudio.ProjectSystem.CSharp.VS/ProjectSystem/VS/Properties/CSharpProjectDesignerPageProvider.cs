@@ -35,7 +35,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
                 builder.Add(CSharpProjectDesignerPage.Package);
             }
 
-            builder.Add(CSharpProjectDesignerPage.Debug);
+            if (_capabilities.Contains(ProjectCapability.LaunchProfiles))
+            {
+                builder.Add(CSharpProjectDesignerPage.Debug);
+            }
+
             builder.Add(CSharpProjectDesignerPage.Signing);
 
             return Task.FromResult<IReadOnlyCollection<IPageMetadata>>(builder.ToImmutable());

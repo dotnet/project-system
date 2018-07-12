@@ -166,7 +166,7 @@
     <value>522, 230</value>
   </data>
   <data name="UnusedReferenceList.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>1</value>
   </data>
   <data name="&gt;&gt;UnusedReferenceList.Name">
     <value xml:space="preserve">UnusedReferenceList</value>
@@ -193,7 +193,7 @@
     <value>262, 13</value>
   </data>
   <data name="UnusedReferencesListLabel.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
+    <value>0</value>
   </data>
   <data name="UnusedReferencesListLabel.Text">
     <value xml:space="preserve">Clicking "Remove" will remove all checked references.</value>

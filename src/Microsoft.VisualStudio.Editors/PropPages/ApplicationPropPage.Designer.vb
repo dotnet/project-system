@@ -186,7 +186,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             '
             Me.ManifestExplanationLabel.BorderStyle = System.Windows.Forms.BorderStyle.None
             resources.ApplyResources(Me.ManifestExplanationLabel, "ManifestExplanationLabel")
-            Me.ManifestExplanationLabel.HideSelection = False
             Me.ManifestExplanationLabel.Name = "ManifestExplanationLabel"
             Me.ManifestExplanationLabel.ReadOnly = True
             '

@@ -460,7 +460,7 @@ You can modify the location of the authentication and Web settings services on t
     <value>409, 26</value>
   </data>
   <data name="TableLayoutPanel1.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
+    <value>0</value>
   </data>
   <data name="&gt;&gt;TableLayoutPanel1.Name" xml:space="preserve">
     <value>TableLayoutPanel1</value>
@@ -493,7 +493,7 @@ You can modify the location of the authentication and Web settings services on t
     <value>429, 224</value>
   </data>
   <data name="InnerTableLayoutPanel.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>0</value>
   </data>
   <data name="&gt;&gt;InnerTableLayoutPanel.Name" xml:space="preserve">
     <value>InnerTableLayoutPanel</value>

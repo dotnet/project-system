@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
+
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.Threading;
 
@@ -24,6 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         private readonly IProjectAsynchronousTasksService _tasksService;
         private readonly IActiveConfiguredProjectSubscriptionService _activeConfiguredProjectSubscriptionService;
         private readonly IActiveProjectConfigurationRefreshService _activeProjectConfigurationRefreshService;
+        private readonly LanguageServiceHandlerManager _languageServiceHandlerManager;
 
         private readonly List<IDisposable> _evaluationSubscriptionLinks;
         private readonly List<IDisposable> _designTimeBuildSubscriptionLinks;
@@ -41,26 +43,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         /// </summary>
         private string _currentTargetFramework;
 
+
         [ImportingConstructor]
         public LanguageServiceHost(IUnconfiguredProjectCommonServices commonServices,
                                    Lazy<IProjectContextProvider> contextProvider,
                                    [Import(ExportContractNames.Scopes.UnconfiguredProject)]IProjectAsynchronousTasksService tasksService,
                                    IActiveConfiguredProjectSubscriptionService activeConfiguredProjectSubscriptionService,
-                                   IActiveProjectConfigurationRefreshService activeProjectConfigurationRefreshService)
+                                   IActiveProjectConfigurationRefreshService activeProjectConfigurationRefreshService,
+                                   LanguageServiceHandlerManager languageServiceHandlerManager)
             : base(commonServices.ThreadingService.JoinableTaskContext)
         {
             Requires.NotNull(contextProvider, nameof(contextProvider));
             Requires.NotNull(tasksService, nameof(tasksService));
             Requires.NotNull(activeConfiguredProjectSubscriptionService, nameof(activeConfiguredProjectSubscriptionService));
             Requires.NotNull(activeProjectConfigurationRefreshService, nameof(activeProjectConfigurationRefreshService));
+            Requires.NotNull(languageServiceHandlerManager, nameof(languageServiceHandlerManager));
 
             _commonServices = commonServices;
             _contextProvider = contextProvider;
             _tasksService = tasksService;
             _activeConfiguredProjectSubscriptionService = activeConfiguredProjectSubscriptionService;
             _activeProjectConfigurationRefreshService = activeProjectConfigurationRefreshService;
-
-            Handlers = new OrderPrecedenceImportCollection<ILanguageServiceRuleHandler>(projectCapabilityCheckProvider: commonServices.Project);
+            _languageServiceHandlerManager = languageServiceHandlerManager;
             _evaluationSubscriptionLinks = new List<IDisposable>();
             _designTimeBuildSubscriptionLinks = new List<IDisposable>();
             _projectConfigurationsWithSubscriptions = new HashSet<ProjectConfiguration>();
@@ -72,37 +76,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
         public object HostSpecificEditAndContinueService => _currentAggregateProjectContext?.ENCProjectConfig;
 
-        [ImportMany]
-        public OrderPrecedenceImportCollection<ILanguageServiceRuleHandler> Handlers
-        {
-            get;
-        }
-
         [ProjectAutoLoad(ProjectLoadCheckpoint.ProjectFactoryCompleted)]
-        [AppliesTo(ProjectCapability.CSharpOrVisualBasicLanguageService)]
+        [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharpLanguageService)]
         private Task OnProjectFactoryCompletedAsync()
         {
-            using (_tasksService.LoadedProject())
-            {
-                var watchedEvaluationRules = GetWatchedRules(RuleHandlerType.Evaluation);
-                var watchedDesignTimeBuildRules = GetWatchedRules(RuleHandlerType.DesignTimeBuild);
-
-                _designTimeBuildSubscriptionLinks.Add(_activeConfiguredProjectSubscriptionService.JointRuleSource.SourceBlock.LinkTo(
-                  new ActionBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(e => OnProjectChangedAsync(e, RuleHandlerType.DesignTimeBuild)),
-                  ruleNames: watchedDesignTimeBuildRules.Union(watchedEvaluationRules), suppressVersionOnlyUpdates: true));
-
-                _evaluationSubscriptionLinks.Add(_activeConfiguredProjectSubscriptionService.ProjectRuleSource.SourceBlock.LinkTo(
-                    new ActionBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(e => OnProjectChangedAsync(e, RuleHandlerType.Evaluation)),
-                    ruleNames: watchedEvaluationRules, suppressVersionOnlyUpdates: true));
-
-                _projectConfigurationsWithSubscriptions.Add(_commonServices.ActiveConfiguredProject.ProjectConfiguration);
-            }
-
-            return Task.CompletedTask;
+            return InitializeAsync();
         }
 
         protected async override Task InitializeCoreAsync(CancellationToken cancellationToken)
         {
+            if (IsDisposing || IsDisposed)
+                return;
+
             // Don't initialize if we're unloading
             _tasksService.UnloadCancellationToken.ThrowIfCancellationRequested();
 
@@ -115,24 +100,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             return InitializeAsync(cancellationToken);
         }
 
-        private async Task OnProjectChangedAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e, RuleHandlerType handlerType)
+        private async Task OnProjectChangedCoreAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e, RuleHandlerType handlerType)
         {
             if (IsDisposing || IsDisposed)
                 return;
 
-            await InitializeAsync().ConfigureAwait(false);
-
-            await OnProjectChangedCoreAsync(e, handlerType).ConfigureAwait(false);
-        }
-
-        private async Task OnProjectChangedCoreAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e, RuleHandlerType handlerType)
-        {
             await _tasksService.LoadedProjectAsync(async () =>
             {
                 await HandleAsync(e, handlerType).ConfigureAwait(false);
             });
 
-            // If "TargetFramework" or "TargetFrameworks" property has changed, we need to refresh the project context and subscriptions.
+            // If "TargetFrameworks" property has changed, we need to refresh the project context and subscriptions.
             if (HasTargetFrameworksChanged(e))
             {
                 await UpdateProjectContextAndSubscriptionsAsync().ConfigureAwait(false);
@@ -151,34 +129,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             }
         }
 
-        private JoinableTask<T> ExecuteWithinLockAsync<T>(Func<Task<T>> task)
+        private Task<T> ExecuteWithinLockAsync<T>(Func<Task<T>> task)
         {
-            // We need to request the lock within a joinable task to ensure that if we are blocking the UI
-            // thread (i.e. when CPS is draining critical tasks on the UI thread and is waiting on this task),
-            // and the lock is already held by another task requesting UI thread access, we don't reach a deadlock.
-            return JoinableFactory.RunAsync(async delegate
-            {
-                using (JoinableCollection.Join())
-                using (await _gate.DisposableWaitAsync().ConfigureAwait(false))
-                {
-                    return await task().ConfigureAwait(false);
-                }
-            });
+            return _gate.ExecuteWithinLockAsync(JoinableCollection, JoinableFactory, task);
         }
 
-        private JoinableTask ExecuteWithinLockAsync(Func<Task> task)
+        private Task ExecuteWithinLockAsync(Func<Task> task)
         {
-            // We need to request the lock within a joinable task to ensure that if we are blocking the UI
-            // thread (i.e. when CPS is draining critical tasks on the UI thread and is waiting on this task),
-            // and the lock is already held by another task requesting UI thread access, we don't reach a deadlock.
-            return JoinableFactory.RunAsync(async delegate
-            {
-                using (JoinableCollection.Join())
-                using (await _gate.DisposableWaitAsync().ConfigureAwait(false))
-                {
-                    await task().ConfigureAwait(false);
-                }
-            });
+            return _gate.ExecuteWithinLockAsync(JoinableCollection, JoinableFactory, task);
         }
 
         /// <summary>
@@ -248,7 +206,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 }
 
                 return _currentAggregateProjectContext;
-            });
+            }).ConfigureAwait(false);
         }
 
         private async Task DisposeAggregateProjectContextAsync(AggregateWorkspaceProjectContext projectContext)
@@ -257,10 +215,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             foreach (var innerContext in projectContext.DisposedInnerProjectContexts)
             {
-                foreach (var handler in Handlers)
-                {
-                    await handler.Value.OnContextReleasedAsync(innerContext).ConfigureAwait(false);
-                }
+                _languageServiceHandlerManager.OnContextReleased(innerContext);
             }
         }
 
@@ -269,11 +224,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             Requires.NotNull(newProjectContext, nameof(newProjectContext));
 
             await _commonServices.ThreadingService.SwitchToUIThread();
-
-            using (_tasksService.LoadedProject())
+            await _tasksService.LoadedProjectAsync(() =>
             {
-                var watchedEvaluationRules = GetWatchedRules(RuleHandlerType.Evaluation);
-                var watchedDesignTimeBuildRules = GetWatchedRules(RuleHandlerType.DesignTimeBuild);
+                var watchedEvaluationRules = _languageServiceHandlerManager.GetWatchedRules(RuleHandlerType.Evaluation);
+                var watchedDesignTimeBuildRules = _languageServiceHandlerManager.GetWatchedRules(RuleHandlerType.DesignTimeBuild);
 
                 foreach (var configuredProject in newProjectContext.InnerConfiguredProjects)
                 {
@@ -284,7 +238,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
                     _designTimeBuildSubscriptionLinks.Add(configuredProject.Services.ProjectSubscription.JointRuleSource.SourceBlock.LinkTo(
                         new ActionBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(e => OnProjectChangedCoreAsync(e, RuleHandlerType.DesignTimeBuild)),
-                        ruleNames: watchedDesignTimeBuildRules.Union(watchedEvaluationRules), suppressVersionOnlyUpdates: true));
+                        ruleNames: watchedDesignTimeBuildRules, suppressVersionOnlyUpdates: true));
 
                     _evaluationSubscriptionLinks.Add(configuredProject.Services.ProjectSubscription.ProjectRuleSource.SourceBlock.LinkTo(
                         new ActionBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(e => OnProjectChangedCoreAsync(e, RuleHandlerType.Evaluation)),
@@ -292,17 +246,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
                     _projectConfigurationsWithSubscriptions.Add(configuredProject.ProjectConfiguration);
                 }
-            }
+
+                return Task.CompletedTask;
+            });
         }
 
         private async Task HandleAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> update, RuleHandlerType handlerType)
         {
-            var handlers = Handlers.Select(h => h.Value)
-                                   .Where(h => h.HandlerType == handlerType);
-
             // We need to process the update within a lock to ensure that we do not release this context during processing.
             // TODO: Enable concurrent execution of updates themeselves, i.e. two separate invocations of HandleAsync
-            //       should be able to run concurrently. 
+            //       should be able to run concurrently.
             await ExecuteWithinLockAsync(async () =>
             {
                 // TODO: https://github.com/dotnet/roslyn-project-system/issues/353
@@ -315,42 +268,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                     return;
                 }
 
-                // Broken design time builds sometimes cause updates with no project changes and sometimes cause updates with a project change that has no difference.
-                // We handle the former case here, and the latter case is handled in the CommandLineItemHandler.
-                if (update.Value.ProjectChanges.Count == 0)
-                {
-                    if (handlerType == RuleHandlerType.DesignTimeBuild)
-                    {
-                        projectContextToUpdate.LastDesignTimeBuildSucceeded = false;
-                    }
-
-                    return;
-                }
-
-                foreach (var handler in handlers)
-                {
-                    IProjectChangeDescription projectChange = update.Value.ProjectChanges[handler.RuleName];
-                    if (handler.ReceiveUpdatesWithEmptyProjectChange || projectChange.Difference.AnyChanges)
-                    {
-                        await handler.HandleAsync(update, projectChange, projectContextToUpdate, isActiveContext).ConfigureAwait(true);
-                    }
-                }
-            });
-        }
-
-        private IEnumerable<string> GetWatchedRules(RuleHandlerType handlerType)
-        {
-            return Handlers.Where(h => h.Value.HandlerType == handlerType)
-                           .Select(h => h.Value.RuleName)
-                           .Distinct(StringComparers.RuleNames)
-                           .ToArray();
+                _languageServiceHandlerManager.Handle(update, handlerType, projectContextToUpdate, isActiveContext);
+            }).ConfigureAwait(false);
         }
 
         private bool HasTargetFrameworksChanged(IProjectVersionedValue<IProjectSubscriptionUpdate> e)
         {
             return e.Value.ProjectChanges.TryGetValue(ConfigurationGeneral.SchemaName, out IProjectChangeDescription projectChange) &&
-                (projectChange.Difference.ChangedProperties.Contains(ConfigurationGeneral.TargetFrameworkProperty) ||
-                 projectChange.Difference.ChangedProperties.Contains(ConfigurationGeneral.TargetFrameworksProperty));
+                 projectChange.Difference.ChangedProperties.Contains(ConfigurationGeneral.TargetFrameworksProperty);
         }
 
         protected override async Task DisposeCoreAsync(bool initialized)
@@ -365,7 +290,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                     {
                         await _contextProvider.Value.ReleaseProjectContextAsync(_currentAggregateProjectContext).ConfigureAwait(false);
                     }
-                });
+                }).ConfigureAwait(false);
             }
         }
 

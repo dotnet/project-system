@@ -1,15 +1,19 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
-using Microsoft.VisualStudio.Shell.Interop;
-using Xunit;
+using System.Threading.Tasks;
+
 using Microsoft.Build.Framework;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
+using Microsoft.VisualStudio.Shell.Interop;
+
 using Moq;
+
+using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
 {
-    [ProjectSystemTrait]
+    [Trait("UnitTest", "ProjectSystem")]
     public class LanguageServiceErrorListProviderTests
     {
         [Fact]
@@ -17,7 +21,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         {
             var host = Mock.Of<ILanguageServiceHost>();
 
-            Assert.Throws<ArgumentNullException>("unconfiguredProject", () => {
+            Assert.Throws<ArgumentNullException>("unconfiguredProject", () =>
+            {
                 new LanguageServiceErrorListProvider((UnconfiguredProject)null, host);
             });
         }
@@ -26,7 +31,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         public void Constructor_NullAsHost_ThrowsArgumentNull()
         {
             var project = UnconfiguredProjectFactory.Create();
-            Assert.Throws<ArgumentNullException>("host", () => {
+            Assert.Throws<ArgumentNullException>("host", () =>
+            {
                 new LanguageServiceErrorListProvider(project, (ILanguageServiceHost)null);
             });
         }
@@ -66,7 +72,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         }
 
         [Fact]
-        public async void ClearAllAsync_WhenHostSpecificErrorReporter_CallsClearErrors()
+        public async Task ClearAllAsync_WhenHostSpecificErrorReporter_CallsClearErrors()
         {
             int callCount = 0;
             var reporter = IVsLanguageServiceBuildErrorReporter2Factory.ImplementClearErrors(() => { callCount++; return 0; });
@@ -83,17 +89,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
 
 
         [Fact]
-        public async void AddMessageAsync_NullAsTask_ThrowsArgumentNull()
+        public async Task AddMessageAsync_NullAsTask_ThrowsArgumentNull()
         {
             var provider = CreateInstance();
 
-            await Assert.ThrowsAsync<ArgumentNullException>("error", () => {
+            await Assert.ThrowsAsync<ArgumentNullException>("error", () =>
+            {
                 return provider.AddMessageAsync((TargetGeneratedError)null);
             });
         }
 
         [Fact]
-        public async void AddMessageAsync_WhenNoHostSpecificErrorReporter_ReturnsNotHandled()
+        public async Task AddMessageAsync_WhenNoHostSpecificErrorReporter_ReturnsNotHandled()
         {
             var provider = CreateInstance();
 
@@ -101,11 +108,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
 
             var result = await provider.AddMessageAsync(task);
 
-            Assert.Equal(result, AddMessageResult.NotHandled);
+            Assert.Equal(AddMessageResult.NotHandled, result);
         }
 
         [Fact]
-        public async void AddMessageAsync_UnrecognizedArgsAsTaskBuildEventArgs_ReturnsNotHandled()
+        public async Task AddMessageAsync_UnrecognizedArgsAsTaskBuildEventArgs_ReturnsNotHandled()
         {
             var provider = CreateInstance();
 
@@ -113,12 +120,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
 
             var result = await provider.AddMessageAsync(task);
 
-            Assert.Equal(result, AddMessageResult.NotHandled);
+            Assert.Equal(AddMessageResult.NotHandled, result);
         }
 
 
         [Fact]
-        public async void AddMessageAsync_ArgsWithNoCodeAsTask_ReturnsNotHandled()
+        public async Task AddMessageAsync_ArgsWithNoCodeAsTask_ReturnsNotHandled()
         {
             var provider = CreateInstance();
 
@@ -126,11 +133,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
 
             var result = await provider.AddMessageAsync(task);
 
-            Assert.Equal(result, AddMessageResult.NotHandled);
+            Assert.Equal(AddMessageResult.NotHandled, result);
         }
 
         [Fact]
-        public async void AddMessageAsync_WhenHostSpecificErrorReporterThrowsNotImplemented_ReturnsNotHandled()
+        public async Task AddMessageAsync_WhenHostSpecificErrorReporterThrowsNotImplemented_ReturnsNotHandled()
         {
             var reporter = IVsLanguageServiceBuildErrorReporter2Factory.ImplementReportError((string bstrErrorMessage, string bstrErrorId, VSTASKPRIORITY nPriority, int iLine, int iColumn, int iEndLine, int iEndColumn, string bstrFileName) =>
             {
@@ -143,11 +150,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
 
             var result = await provider.AddMessageAsync(task);
 
-            Assert.Equal(result, AddMessageResult.NotHandled);
+            Assert.Equal(AddMessageResult.NotHandled, result);
         }
 
         [Fact]
-        public async void AddMessageAsync_WhenHostSpecificErrorReporterThrows_Throws()
+        public async Task AddMessageAsync_WhenHostSpecificErrorReporterThrows_Throws()
         {
             var reporter = IVsLanguageServiceBuildErrorReporter2Factory.ImplementReportError((string bstrErrorMessage, string bstrErrorId, VSTASKPRIORITY nPriority, int iLine, int iColumn, int iEndLine, int iEndColumn, string bstrFileName) =>
             {
@@ -158,13 +165,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
             var provider = CreateInstance(host);
             var task = CreateDefaultTask();
 
-            await Assert.ThrowsAsync<Exception>(() => {
+            await Assert.ThrowsAsync<Exception>(() =>
+            {
                 return provider.AddMessageAsync(task);
             });
         }
 
         [Fact]
-        public async void AddMessageAsync_ReturnsHandledAndStopProcessing()
+        public async Task AddMessageAsync_ReturnsHandledAndStopProcessing()
         {
             var reporter = IVsLanguageServiceBuildErrorReporter2Factory.ImplementReportError((string bstrErrorMessage, string bstrErrorId, VSTASKPRIORITY nPriority, int iLine, int iColumn, int iEndLine, int iEndColumn, string bstrFileName) => { });
             var host = ILanguageServiceHostFactory.ImplementHostSpecificErrorReporter(() => reporter);
@@ -173,14 +181,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
 
             var result = await provider.AddMessageAsync(task);
 
-            Assert.Equal(result, AddMessageResult.HandledAndStopProcessing);
+            Assert.Equal(AddMessageResult.HandledAndStopProcessing, result);
         }
 
         [Fact]
-        public async void AddMessageAsync_WarningTaskAsTask_PassesTP_NORMALAsPriority()
+        public async Task AddMessageAsync_WarningTaskAsTask_PassesTP_NORMALAsPriority()
         {
             VSTASKPRIORITY? result = null;
-            var reporter = IVsLanguageServiceBuildErrorReporter2Factory.ImplementReportError((string bstrErrorMessage, string bstrErrorId, VSTASKPRIORITY nPriority, int iLine, int iColumn, int iEndLine, int iEndColumn, string bstrFileName) => {
+            var reporter = IVsLanguageServiceBuildErrorReporter2Factory.ImplementReportError((string bstrErrorMessage, string bstrErrorId, VSTASKPRIORITY nPriority, int iLine, int iColumn, int iEndLine, int iEndColumn, string bstrFileName) =>
+            {
                 result = nPriority;
             });
             var host = ILanguageServiceHostFactory.ImplementHostSpecificErrorReporter(() => reporter);
@@ -188,14 +197,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
 
             await provider.AddMessageAsync(new TargetGeneratedError("Test", new BuildWarningEventArgs(null, "Code", "File", 1, 1, 1, 1, "Message", "HelpKeyword", "Sender")));
 
-            Assert.Equal(result, VSTASKPRIORITY.TP_NORMAL);
+            Assert.Equal(VSTASKPRIORITY.TP_NORMAL, result);
         }
 
         [Fact]
-        public async void AddMessageAsync_ErrorTaskAsTask_PassesTP_HIGHAsPriority()
+        public async Task AddMessageAsync_ErrorTaskAsTask_PassesTP_HIGHAsPriority()
         {
             VSTASKPRIORITY? result = null;
-            var reporter = IVsLanguageServiceBuildErrorReporter2Factory.ImplementReportError((string bstrErrorMessage, string bstrErrorId, VSTASKPRIORITY nPriority, int iLine, int iColumn, int iEndLine, int iEndColumn, string bstrFileName) => {
+            var reporter = IVsLanguageServiceBuildErrorReporter2Factory.ImplementReportError((string bstrErrorMessage, string bstrErrorId, VSTASKPRIORITY nPriority, int iLine, int iColumn, int iEndLine, int iEndColumn, string bstrFileName) =>
+            {
                 result = nPriority;
             });
             var host = ILanguageServiceHostFactory.ImplementHostSpecificErrorReporter(() => reporter);
@@ -203,14 +213,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
 
             await provider.AddMessageAsync(new TargetGeneratedError("Test", new BuildErrorEventArgs(null, "Code", "File", 1, 1, 1, 1, "Message", "HelpKeyword", "Sender")));
 
-            Assert.Equal(result, VSTASKPRIORITY.TP_HIGH);
+            Assert.Equal(VSTASKPRIORITY.TP_HIGH, result);
         }
 
         [Fact]
-        public async void AddMessageAsync_CriticalBuildMessageTaskAsTask_PassesTP_LOWAsPriority()
+        public async Task AddMessageAsync_CriticalBuildMessageTaskAsTask_PassesTP_LOWAsPriority()
         {
             VSTASKPRIORITY? result = null;
-            var reporter = IVsLanguageServiceBuildErrorReporter2Factory.ImplementReportError((string bstrErrorMessage, string bstrErrorId, VSTASKPRIORITY nPriority, int iLine, int iColumn, int iEndLine, int iEndColumn, string bstrFileName) => {
+            var reporter = IVsLanguageServiceBuildErrorReporter2Factory.ImplementReportError((string bstrErrorMessage, string bstrErrorId, VSTASKPRIORITY nPriority, int iLine, int iColumn, int iEndLine, int iEndColumn, string bstrFileName) =>
+            {
                 result = nPriority;
             });
             var host = ILanguageServiceHostFactory.ImplementHostSpecificErrorReporter(() => reporter);
@@ -218,19 +229,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
 
             await provider.AddMessageAsync(new TargetGeneratedError("Test", new CriticalBuildMessageEventArgs(null, "Code", "File", 1, 1, 1, 1, "Message", "HelpKeyword", "Sender")));
 
-            Assert.Equal(result, VSTASKPRIORITY.TP_LOW);
+            Assert.Equal(VSTASKPRIORITY.TP_LOW, result);
         }
 
-        //          ErrorMessage                                    Code         
+        //          ErrorMessage                                    Code
         [Theory]
         [InlineData(null,                                           "A")]
         [InlineData("",                                             "0000")]
-        [InlineData(" ",                                            "1000")]          
-        [InlineData("This is an error message.",                    "CA1000")]       
+        [InlineData(" ",                                            "1000")]
+        [InlineData("This is an error message.",                    "CA1000")]
         [InlineData("This is an error message\r\n",                 "CS1000")]
         [InlineData("This is an error message.\r\n",                "BC1000")]
         [InlineData("This is an error message.\r\n.And another",    "BC1000\r\n")]
-        public async void AddMessageAsync_BuildErrorAsTask_CallsReportErrorSettingErrorMessageAndCode(string errorMessage, string code)
+        public async Task AddMessageAsync_BuildErrorAsTask_CallsReportErrorSettingErrorMessageAndCode(string errorMessage, string code)
         {
             string errorMessageResult = "NotSet";
             string errorIdResult = "NotSet";
@@ -261,7 +272,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         [InlineData(  10,          100,                     9,              99)]
         [InlineData( 100,           10,                    99,               9)]
         [InlineData( 100,          100,                    99,              99)]
-        public async void AddMessageAsync_BuildErrorAsTask_CallsReportErrorSettingLineAndColumnAdjustingBy1(int lineNumber, int columnNumber, int expectedLineNumber, int expectedColumnNumber)
+        public async Task AddMessageAsync_BuildErrorAsTask_CallsReportErrorSettingLineAndColumnAdjustingBy1(int lineNumber, int columnNumber, int expectedLineNumber, int expectedColumnNumber)
         {
             int? lineResult = null;
             int? columnResult = null;
@@ -293,7 +304,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         [InlineData( 100,          100,          100,           100,                           99,                  99)]
         [InlineData( 100,          100,          101,           102,                          100,                 101)]
         [InlineData( 100,          101,            1,             1,                           99,                 100)]       //  Roslyn's ProjectExternalErrorReporter throws if end is less than start
-        public async void AddMessageAsync_BuildErrorAsTask_CallsReportErrorSettingEndLineAndColumn(int lineNumber, int columnNumber, int endLineNumber, int endColumnNumber, int expectedEndLineNumber, int expectedEndColumnNumber)
+        public async Task AddMessageAsync_BuildErrorAsTask_CallsReportErrorSettingEndLineAndColumn(int lineNumber, int columnNumber, int endLineNumber, int endColumnNumber, int expectedEndLineNumber, int expectedEndColumnNumber)
         {
             int? endLineResult = null;
             int? endColumnResult = null;
@@ -314,7 +325,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         }
 
         //          File                                        ProjectFile                             ExpectedFileName
-        [Theory]                                                                                        
+        [Theory]
         [InlineData(null,                                       null,                                   @"")]
         [InlineData(@"",                                        @"",                                    @"")]
         [InlineData(@"Foo.txt",                                 @"",                                    @"")]                // Is this the right behavior?  See https://github.com/dotnet/roslyn-project-system/issues/146
@@ -329,7 +340,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         [InlineData(@"C:\Foo\..\MyProject.csproj",              @"C:\MyProject.csproj",                 @"C:\MyProject.csproj")]
         [InlineData(@"C:\Foo\Foo.txt",                          @"C:\Bar\MyProject.csproj",             @"C:\Foo\Foo.txt")]
         [InlineData(@"Foo.txt",                                 @"C:\Bar\MyProject.csproj",             @"C:\Bar\Foo.txt")]
-        public async void AddMessageAsync_BuildErrorAsTask_CallsReportErrorSettingFileName(string file, string projectFile, string expectedFileName)
+        public async Task AddMessageAsync_BuildErrorAsTask_CallsReportErrorSettingFileName(string file, string projectFile, string expectedFileName)
         {
             string fileNameResult = "NotSet";
             var reporter = IVsLanguageServiceBuildErrorReporter2Factory.ImplementReportError((string bstrErrorMessage, string bstrErrorId, VSTASKPRIORITY nPriority, int iLine, int iColumn, int iEndLine, int iEndColumn, string bstrFileName) =>
@@ -352,7 +363,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         {
             return new TargetGeneratedError("Test", new BuildErrorEventArgs(null, "Code", "File", 1, 1, 1, 1, "Message", "HelpKeyword", "Sender"));
         }
-        
+
         private static LanguageServiceErrorListProvider CreateInstance()
         {
             return CreateInstance(null);

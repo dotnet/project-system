@@ -1,12 +1,14 @@
 ﻿using System;
-using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
-using Xunit;
-using Microsoft.VisualStudio.Shell.Interop;
 using System.Collections.Generic;
+
+using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
+using Microsoft.VisualStudio.Shell.Interop;
+
+using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
 {
-    [ProjectSystemTrait]
+    [Trait("UnitTest", "ProjectSystem")]
     public class SingleFileGeneratorFactoryAggregatorTests
     {
         public static Guid PackageGuid = Guid.Parse("860A27C0-B665-47F3-BC12-637E16A1050A");
@@ -102,7 +104,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
         public void SingleFileGeneratorFactoryAggregator_NoGenerators_ReturnsFail()
         {
             UnitTestHelper.IsRunningUnitTests = true;
-             var manager = CreateManagerForPath("");
+            var manager = CreateManagerForPath("");
             var serviceProvider = IServiceProviderFactory.ImplementGetService(type => manager);
 
             var integrationService = IVsUnconfiguredProjectIntegrationServiceFactory.ImplementProjectTypeGuid(PackageGuid);

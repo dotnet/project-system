@@ -7,10 +7,14 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
+
 using EnvDTE;
+
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
+
 using VSLangProj;
+
 using VSLangProj80;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.References
@@ -20,8 +24,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
     /// </summary>
     [Export]
     [ExportVsProfferedProjectService(typeof(SVsDesignTimeAssemblyResolution))]
-    [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
-    [Order(1)] // Before CPS's version
+    [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp)]
+    [Order(Order.Default)] // Before CPS's version
     internal partial class DesignTimeAssemblyResolution : IVsDesignTimeAssemblyResolution
     {
         // NOTE: Unlike the legacy project system, this implementation does resolve only "framework" assemblies. In .NET Core and other project types, framework assemblies
@@ -48,8 +52,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
         // BUG (https://devdiv.visualstudio.com/DevDiv/_workitems?id=367916): VS MEF rejects a part marked 
         // with two Export/Metadata attributes where one is AllowMultiple=false
         [ExportProjectNodeComService(typeof(IVsDesignTimeAssemblyResolution))]  // Need to override CPS's version, which it implements on the project node as IVsDesignTimeAssemblyResolution
-        [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
-        [Order(1)] // Before CPS's version
+        [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp)]
+        [Order(Order.Default)] // Before CPS's version
         public IVsDesignTimeAssemblyResolution ComService
         {
             get { return this; }
@@ -90,9 +94,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
                 string resolvedPath = FindResolvedAssemblyPath(references, assemblyName[i]);
                 if (resolvedPath != null)
                 {
-                    assemblyPaths[resolvedReferencesCount] = new VsResolvedAssemblyPath() {
-                            bstrOrigAssemblySpec = originalNames[i],    // Note we use the original name, not the parsed name, as they could be different
-                            bstrResolvedAssemblyPath = resolvedPath
+                    assemblyPaths[resolvedReferencesCount] = new VsResolvedAssemblyPath()
+                    {
+                        bstrOrigAssemblySpec = originalNames[i],    // Note we use the original name, not the parsed name, as they could be different
+                        bstrResolvedAssemblyPath = resolvedPath
                     };
 
                     resolvedReferencesCount++;
@@ -134,7 +139,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
                 foreach (Reference3 reference in project.References.OfType<Reference3>())
                 {
                     // We only want resolved assembly references
-                    if (reference.Type == prjReferenceType.prjReferenceTypeAssembly && reference.Resolved)
+                    if (reference.RefType == (uint)__PROJECTREFERENCETYPE.PROJREFTYPE_ASSEMBLY && reference.Resolved)
                     {
                         resolvedReferences[reference.Name] = new ResolvedReference(reference.Path, TryParseVersionOrNull(reference.Version));
                     }

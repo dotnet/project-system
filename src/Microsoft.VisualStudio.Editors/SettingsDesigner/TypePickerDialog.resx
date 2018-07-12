@@ -229,7 +229,7 @@
     <value>156, 23</value>
   </data>
   <data name="okCancelTableLayoutPanel.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
+    <value>3</value>
   </data>
   <data name="&gt;&gt;okCancelTableLayoutPanel.Name">
     <value xml:space="preserve">okCancelTableLayoutPanel</value>
@@ -289,7 +289,7 @@
     <value>415, 259</value>
   </data>
   <data name="overarchingTableLayoutPanel.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
+    <value>0</value>
   </data>
   <data name="&gt;&gt;overarchingTableLayoutPanel.Name">
     <value xml:space="preserve">overarchingTableLayoutPanel</value>

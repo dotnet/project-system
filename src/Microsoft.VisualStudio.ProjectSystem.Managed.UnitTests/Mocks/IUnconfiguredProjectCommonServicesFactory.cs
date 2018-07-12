@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return mock.Object;
         }
 
-        public static IUnconfiguredProjectCommonServices Create(UnconfiguredProject project = null, IPhysicalProjectTree projectTree = null, IProjectThreadingService threadingService = null, 
+        public static IUnconfiguredProjectCommonServices Create(UnconfiguredProject project = null, IPhysicalProjectTree projectTree = null, IProjectThreadingService threadingService = null,
                                                                 ConfiguredProject configuredProject = null, ProjectProperties projectProperties = null,
                                                                 IProjectLockService projectLockService = null)
         {
@@ -44,6 +44,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
                     .Returns(projectLockService);
 
             return mock.Object;
+        }
+
+        public static IUnconfiguredProjectCommonServices ImplementProject(UnconfiguredProject project)
+        {
+            return Create(project: project);
         }
     }
 }

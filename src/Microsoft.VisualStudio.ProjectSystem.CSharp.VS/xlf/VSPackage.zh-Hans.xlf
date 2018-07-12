@@ -1,8 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
-  <file datatype="xml" source-language="en" target-language="zh-Hans" original="src/Microsoft.VisualStudio.ProjectSystem.CSharp.VS/VSPackage.resx">
+  <file datatype="xml" source-language="en" target-language="zh-Hans" original="../VSPackage.resx">
     <body>
-      <group id="src/Microsoft.VisualStudio.ProjectSystem.CSharp.VS/VSPackage.resx" />
       <trans-unit id="1">
         <source>C#</source>
         <target state="translated">C#</target>
@@ -59,8 +58,8 @@
         <note />
       </trans-unit>
       <trans-unit id="12">
-        <source>A project that contains xunit tests that can run on .NET Core on Windows, Linux and MacOS</source>
-        <target state="translated">包含 xunit 测试的项目，测试可在 Windows、Linux 和 MacOS 上的 .NET Core 上运行</target>
+        <source>A project that contains xUnit.net tests that can run on .NET Core on Windows, Linux and MacOS.</source>
+        <target state="translated">包含 xUnit.net 测试的项目，测试可在 Windows、Linux 和 MacOS 的 .NET Core 上运行</target>
         <note />
       </trans-unit>
     </body>

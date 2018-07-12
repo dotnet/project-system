@@ -1,16 +1,18 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 using System;
+
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Imaging
 {
-    [ProjectSystemTrait]
+    [Trait("UnitTest", "ProjectSystem")]
     public class ProjectImageProviderAggregatorTests
     {
         [Fact]
         public void Constructor_NullAsUnconfiguredProject_ThrowsArgumentNull()
         {
-            Assert.Throws<ArgumentNullException>("unconfiguredProject", () => {
+            Assert.Throws<ArgumentNullException>("unconfiguredProject", () =>
+            {
 
                 new ProjectImageProviderAggregator((UnconfiguredProject)null);
             });
@@ -21,7 +23,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Imaging
         {
             var aggregator = CreateInstance();
 
-            Assert.Throws<ArgumentNullException>("key", () => {
+            Assert.Throws<ArgumentNullException>("key", () =>
+            {
 
                 aggregator.GetProjectImage((string)null);
             });
@@ -32,7 +35,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Imaging
         {
             var aggregator = CreateInstance();
 
-            Assert.Throws<ArgumentException>("key", () => {
+            Assert.Throws<ArgumentException>("key", () =>
+            {
 
                 aggregator.GetProjectImage(string.Empty);
             });
@@ -65,7 +69,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Imaging
         [Fact]
         public void GetImageKey_SingleImageProviderReturningKey_ReturnsKey()
         {
-            ProjectImageMoniker moniker = new ProjectImageMoniker(Guid.NewGuid(), 0);
+            var moniker = new ProjectImageMoniker(Guid.NewGuid(), 0);
 
             var unconfiguredProject = UnconfiguredProjectFactory.Create(capabilities: new[] { "CSharp" });
             var provider = IProjectImageProviderFactory.ImplementGetProjectImage((key) => moniker);
@@ -81,8 +85,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Imaging
         [Fact]
         public void GetImageKey_ManyImageProviderReturningKey_ReturnsFirstByOrder()
         {
-            ProjectImageMoniker moniker1 = new ProjectImageMoniker(Guid.NewGuid(), 0);
-            ProjectImageMoniker moniker2 = new ProjectImageMoniker(Guid.NewGuid(), 0);
+            var moniker1 = new ProjectImageMoniker(Guid.NewGuid(), 0);
+            var moniker2 = new ProjectImageMoniker(Guid.NewGuid(), 0);
 
             var unconfiguredProject = UnconfiguredProjectFactory.Create(capabilities: new[] { "CSharp" });
             var provider1 = IProjectImageProviderFactory.ImplementGetProjectImage((key) => moniker1);
@@ -100,7 +104,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Imaging
         [Fact]
         public void GetImageKey_ManyImageProviders_ReturnsFirstThatReturnsKey()
         {
-            ProjectImageMoniker moniker = new ProjectImageMoniker(Guid.NewGuid(), 0);
+            var moniker = new ProjectImageMoniker(Guid.NewGuid(), 0);
 
             var unconfiguredProject = UnconfiguredProjectFactory.Create(capabilities: new[] { "CSharp" });
             var provider1 = IProjectImageProviderFactory.ImplementGetProjectImage((key) => null);

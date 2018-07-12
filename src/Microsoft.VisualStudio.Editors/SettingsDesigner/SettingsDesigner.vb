@@ -414,8 +414,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 Return
             End If
 
-            For Each directory As IO.DirectoryInfo In applicationRootDirectoryInfo.GetDirectories()
-                For Each file As IO.FileInfo In directory.GetFiles("user.config")
+            For Each directory As IO.DirectoryInfo In applicationRootDirectoryInfo.EnumerateDirectories()
+                For Each file As IO.FileInfo In directory.EnumerateFiles("user.config")
                     files.Add(file.FullName)
                 Next
             Next

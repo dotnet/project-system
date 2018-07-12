@@ -1,8 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
-  <file datatype="xml" source-language="en" target-language="cs" original="src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/VSResources.resx">
+  <file datatype="xml" source-language="en" target-language="cs" original="../VSResources.resx">
     <body>
-      <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/VSResources.resx" />
       <trans-unit id="ClassTemplateName">
         <source>Class</source>
         <target state="translated">Třída</target>
@@ -270,6 +269,41 @@ Pokud chcete projekt ladit, přidejte do řešení spustitelný projekt, který 
       <trans-unit id="XprojMigrationGeneralFailure">
         <source>Failed to migrate XProj project {0}. '{1}' exited with error code {2}.</source>
         <target state="translated">Nepovedlo se migrovat projekt XProj {0}. {1} se ukončil s kódem chyby {2}.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DebugFrameworkMenuText">
+        <source>Framework ({0})</source>
+        <target state="translated">Architektura ({0})</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="OutputWindowPaneTitle">
+        <source>Project</source>
+        <target state="translated">Projekt</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PartialSupportedDotNetCoreProject">
+        <source>Visual Studio 2017 version 15.7 or newer is recommended for .NET Core {0}.{1} projects.</source>
+        <target state="translated">Pro projekty .NET Core {0}.{1} se doporučuje Visual Studio 2017 verze 15.7 nebo novější.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="NotSupportedDotNetCoreProject">
+        <source>Projects targeting versions newer than .NET Core {0}.{1} are not supported by this version of Visual Studio.</source>
+        <target state="translated">Tato verze sady Visual Studio nepodporuje projekty, které cílí na verze novější než .NET Core {0}.{1}.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DontShowAgain">
+        <source>Don't show again</source>
+        <target state="translated">Znovu nezobrazovat</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="LearnMore">
+        <source>Learn more</source>
+        <target state="translated">Další informace</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="OKButtonText">
+        <source>OK</source>
+        <target state="translated">OK</target>
         <note />
       </trans-unit>
     </body>

@@ -4,9 +4,8 @@ using System;
 using System.ComponentModel.Composition;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Reflection;
-using Microsoft.VisualStudio.Shell.Interop;
+using System.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.References
 {
@@ -16,14 +15,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
     internal class BaseReferenceContextProvider : IVsReferenceManagerUserAsync
     {
         /// <summary>
-        /// Value used to override the CPS provider
-        /// </summary>
-        protected const int OverrideCPSProvider = 1;
-
-        /// <summary>
         /// Lazy instance of the next handler in the chain.
         /// </summary>
-        private Lazy<Lazy<IVsReferenceManagerUserAsync, IVsReferenceManagerUserComponentMetadataView>> nextHandler;
+        private Lazy<Lazy<IVsReferenceManagerUserAsync, IVsReferenceManagerUserComponentMetadataView>> _nextHandler;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BaseReferenceContextProvider"/> class.
@@ -33,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
         {
             ConfiguredProject = configuredProject;
             VsReferenceManagerUsers = new OrderPrecedenceImportCollection<IVsReferenceManagerUserAsync, IVsReferenceManagerUserComponentMetadataView>(projectCapabilityCheckProvider: configuredProject);
-            nextHandler = new Lazy<Lazy<IVsReferenceManagerUserAsync, IVsReferenceManagerUserComponentMetadataView>>(() =>
+            _nextHandler = new Lazy<Lazy<IVsReferenceManagerUserAsync, IVsReferenceManagerUserComponentMetadataView>>(() =>
             {
                 Type provider = GetType();
                 var order = provider.GetCustomAttribute<OrderAttribute>();
@@ -48,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
         /// <summary>
         /// Gets the next handler in the chain.
         /// </summary>
-        private IVsReferenceManagerUserAsync NextHandler => nextHandler?.Value?.Value;
+        private IVsReferenceManagerUserAsync NextHandler => _nextHandler?.Value?.Value;
 
         /// <summary>
         /// Gets the collection of reference provider contexts that can handle individual reference type operations.

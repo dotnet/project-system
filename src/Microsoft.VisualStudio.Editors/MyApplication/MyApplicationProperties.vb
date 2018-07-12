@@ -1210,7 +1210,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
 
             If MyAppProjectItem Is Nothing Then
                 Debug.Fail("MyAppProjectItem is Nothing")
-                Return New String() {}
+                Return Array.Empty(Of String)
             End If
 
             Dim MyAppFile As String = MyAppFileNameWithPath()
@@ -1347,11 +1347,11 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         '
         '  Application Type      -> Output Type
         '  ---------------------    -----------
-        '  Windows Application   -> winexe
-        '  Windows Class Library -> library
+        '  Windows Application   -> WinExe
+        '  Windows Class Library -> Library
         '  Console Application   -> exe
-        '  Windows Service       -> winexe
-        '  Web Control Library   -> library
+        '  Windows Service       -> WinExe
+        '  Web Control Library   -> Library
         '
 
         '

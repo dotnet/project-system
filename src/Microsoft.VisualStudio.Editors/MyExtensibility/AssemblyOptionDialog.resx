@@ -166,7 +166,7 @@
     <value>15, 14</value>
   </data>
   <data name="checkBoxOption.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+    <value>2</value>
   </data>
   <data name="&gt;&gt;checkBoxOption.Name" xml:space="preserve">
     <value>checkBoxOption</value>
@@ -277,7 +277,7 @@
     <value>322, 145</value>
   </data>
   <data name="listBoxItems.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>1</value>
   </data>
   <data name="&gt;&gt;listBoxItems.Name" xml:space="preserve">
     <value>listBoxItems</value>

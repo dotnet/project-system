@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+
 using Microsoft.VisualStudio.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.VS;
@@ -89,7 +90,7 @@ namespace Microsoft.VisualStudio.Shell.Interop
         {
             UIThreadHelper.VerifyOnUIThread();
 
-            IVsBrowseObjectContext context = hierarchy as IVsBrowseObjectContext;
+            var context = hierarchy as IVsBrowseObjectContext;
             if (context == null)
             {
                 EnvDTE.Project dteProject = hierarchy.GetDTEProject();
@@ -111,6 +112,19 @@ namespace Microsoft.VisualStudio.Shell.Interop
             if (ErrorHandler.Succeeded(hierarchy.GetProperty(VSConstants.VSITEMID_ROOT, (int)__VSHPROPID.VSHPROPID_ExtObject, out object extObject)))
             {
                 return extObject as EnvDTE.Project;
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Returns the path to the project file. Assumes the hierarchy implements IVsProject. Returns null on failure
+        /// </summary>
+        public static string GetProjectFilePath(this IVsHierarchy hierarchy)
+        {
+            if (ErrorHandler.Succeeded(((IVsProject)hierarchy).GetMkDocument(VSConstants.VSITEMID_ROOT, out string projectPath)))
+            {
+                return projectPath;
             }
 
             return null;

@@ -1,15 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
-  <file datatype="xml" source-language="en" target-language="zh-Hans" original="src/Microsoft.VisualStudio.Editors/PropPages/BuildEventsPropPage.resx">
+  <file datatype="xml" source-language="en" target-language="zh-Hans" original="../BuildEventsPropPage.resx">
     <body>
-      <group id="src/Microsoft.VisualStudio.Editors/PropPages/BuildEventsPropPage.resx" />
       <trans-unit id="lblPreBuildEventCommandLine.Text">
         <source>P&amp;re-build event command line:</source>
-        <target state="translated">预先生成事件命令行(&amp;R):</target>
+        <target state="translated">生成前事件命令行(&amp;R):</target>
         <note />
       </trans-unit>
       <trans-unit id="btnPreBuildBuilder.Text">
-        <source>Ed&amp;it Pre-build ...</source>
+        <source>Ed&amp;it Pre-build...</source>
         <target state="translated">编辑预先生成(&amp;I)...</target>
         <note />
       </trans-unit>
@@ -19,13 +18,13 @@
         <note />
       </trans-unit>
       <trans-unit id="btnPostBuildBuilder.Text">
-        <source>Edit Post-b&amp;uild ...</source>
+        <source>Edit Post-b&amp;uild...</source>
         <target state="translated">编辑后期生成(&amp;U)...</target>
         <note />
       </trans-unit>
       <trans-unit id="lblRunPostBuildEvent.Text">
         <source>Ru&amp;n the post-build event:</source>
-        <target state="translated">运行后期生成事件(&amp;N):</target>
+        <target state="translated">运行生成后事件(&amp;N):</target>
         <note />
       </trans-unit>
       <trans-unit id="cboRunPostBuildEvent.Items">

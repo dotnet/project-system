@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.ComponentModel.Composition;
+
 using Microsoft.VisualStudio.ProjectSystem.Imaging;
 
 namespace Microsoft.VisualStudio.ProjectSystem
@@ -9,7 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
     ///     Modifies the Solution Explorer tree image for the project root.
     /// </summary>
     [Export(typeof(IProjectTreePropertiesProvider))]
-    [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
+    [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp)]
     internal class ProjectRootImageProjectTreePropertiesProvider : IProjectTreePropertiesProvider
     {
         private readonly IProjectCapabilitiesService _capabilities;

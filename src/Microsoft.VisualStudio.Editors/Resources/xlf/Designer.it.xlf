@@ -1,8 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
-  <file datatype="xml" source-language="en" target-language="it" original="src/Microsoft.VisualStudio.Editors/Resources/Microsoft.VisualStudio.Editors.Designer.resx">
+  <file datatype="xml" source-language="en" target-language="it" original="../Designer.resx">
     <body>
-      <group id="src/Microsoft.VisualStudio.Editors/Resources/Microsoft.VisualStudio.Editors.Designer.resx" />
       <trans-unit id="CMN_AllFilesFilter">
         <source>All Files</source>
         <target state="translated">Tutti i file</target>
@@ -976,7 +975,7 @@ Errore:</target>
       </trans-unit>
       <trans-unit id="PropPage_UnusedReferenceRemoveButton">
         <source>&amp;Remove</source>
-        <target state="translated">Rimu&amp;ovi</target>
+        <target state="translated">&amp;Rimuovi</target>
         <note />
       </trans-unit>
       <trans-unit id="PropPage_UnusedReferenceNoUnusedReferences">
@@ -1555,7 +1554,7 @@ CONSIDER: get this from CodeDom</note>
       </trans-unit>
       <trans-unit id="RSE_Btn_Remove">
         <source>&amp;Remove</source>
-        <target state="translated">Rimu&amp;ovi</target>
+        <target state="translated">&amp;Rimuovi</target>
         <note>Add, Delete and Views button text in the main ToolStrip</note>
       </trans-unit>
       <trans-unit id="RSE_Btn_Views">
@@ -2717,6 +2716,51 @@ Aggiornare il valore nel file .settings?</target>
       <trans-unit id="PPG_Property_PackageVersion">
         <source>Package Version</source>
         <target state="translated">Versione del pacchetto</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PPG_AdvancedBuildSettings_ReportCompilerErrors_None">
+        <source>None</source>
+        <target state="translated">Nessuno</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PPG_AdvancedBuildSettings_ReportCompilerErrors_Prompt">
+        <source>Prompt</source>
+        <target state="translated">Chiedi conferma</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PPG_AdvancedBuildSettings_ReportCompilerErrors_Queue">
+        <source>Queue</source>
+        <target state="translated">Accoda</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PPG_AdvancedBuildSettings_ReportCompilerErrors_Send">
+        <source>Send</source>
+        <target state="translated">Invia</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PPG_AdvancedBuildSettings_DebugInfo_Embedded">
+        <source>Embedded</source>
+        <target state="translated">Incorporato</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PPG_AdvancedBuildSettings_DebugInfo_Full">
+        <source>Full</source>
+        <target state="translated">Completo</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PPG_AdvancedBuildSettings_DebugInfo_None">
+        <source>None</source>
+        <target state="translated">Nessuno</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PPG_AdvancedBuildSettings_DebugInfo_PdbOnly">
+        <source>Pdb-only</source>
+        <target state="translated">Solo PDB</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PPG_AdvancedBuildSettings_DebugInfo_Portable">
+        <source>Portable</source>
+        <target state="translated">Portabile</target>
         <note />
       </trans-unit>
     </body>

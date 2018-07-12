@@ -1,7 +1,9 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+
 using Microsoft.VisualStudio.TextManager.Interop;
+
 using Moq;
 
 namespace Microsoft.VisualStudio.Shell.Interop
@@ -24,7 +26,7 @@ namespace Microsoft.VisualStudio.Shell.Interop
             var mock = new Mock<IVsReportExternalErrors>();
 
             var reporter = mock.As<IVsLanguageServiceBuildErrorReporter2>();
-            reporter.Setup(r => r.ReportError2(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<VSTASKPRIORITY>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>(),  It.IsAny<int>(), It.IsAny<string>()))                
+            reporter.Setup(r => r.ReportError2(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<VSTASKPRIORITY>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>()))
                     .Callback(action);
 
             return reporter.Object;

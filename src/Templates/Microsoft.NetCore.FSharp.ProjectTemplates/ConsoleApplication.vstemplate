@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<VSTemplate Version="3.0.0" Type="ProjectGroup" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" xmlns:sdk="http://schemas.microsoft.com/developer/vstemplate-sdkextension/2010">
+  <TemplateData>
+    <Name Package="{860A27C0-B665-47F3-BC12-637E16A1050A}" ID="3"/>
+    <Description Package="{860A27C0-B665-47F3-BC12-637E16A1050A}" ID="4"/>
+    <Icon>ConsoleApplication.png</Icon>
+    <ProjectType>FSharp</ProjectType>
+    <SortOrder>12</SortOrder>
+    <NumberOfParentCategoriesToRollUp>1</NumberOfParentCategoriesToRollUp>
+    <TemplateID>Microsoft.FSharp.NETCore.ConsoleApplication</TemplateID>
+    <CreateNewFolder>true</CreateNewFolder>
+    <CreateInPlace>true</CreateInPlace>
+    <DefaultName>ConsoleApp</DefaultName>
+    <ProvideDefaultName>true</ProvideDefaultName>
+    <PromptForSaveOnCreation>true</PromptForSaveOnCreation>
+  </TemplateData>
+  <TemplateContent>
+    <ProjectCollection/>
+    <CustomParameters>
+      <CustomParameter Name="$language$" Value="F#" />
+      <CustomParameter Name="$uistyle$" Value="none" />
+      <CustomParameter Name="$groupid$" Value="Microsoft.Common.Console" />
+    </CustomParameters>
+  </TemplateContent>
+  <WizardExtension>
+    <Assembly>Microsoft.VisualStudio.TemplateEngine.Wizard, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</Assembly>
+    <FullClassName>Microsoft.VisualStudio.TemplateEngine.Wizard.TemplateEngineWizard</FullClassName>
+  </WizardExtension>
+</VSTemplate>

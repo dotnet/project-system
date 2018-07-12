@@ -1,8 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
-  <file datatype="xml" source-language="en" target-language="zh-Hans" original="src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/VSResources.resx">
+  <file datatype="xml" source-language="en" target-language="zh-Hans" original="../VSResources.resx">
     <body>
-      <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/VSResources.resx" />
       <trans-unit id="ClassTemplateName">
         <source>Class</source>
         <target state="translated">类</target>
@@ -270,6 +269,41 @@ In order to debug this project, add an executable project to this solution which
       <trans-unit id="XprojMigrationGeneralFailure">
         <source>Failed to migrate XProj project {0}. '{1}' exited with error code {2}.</source>
         <target state="translated">XProj 项目 {0} 迁移失败。“{1}”退出时出现错误代码 {2}。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DebugFrameworkMenuText">
+        <source>Framework ({0})</source>
+        <target state="translated">框架({0})</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="OutputWindowPaneTitle">
+        <source>Project</source>
+        <target state="translated">项目</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PartialSupportedDotNetCoreProject">
+        <source>Visual Studio 2017 version 15.7 or newer is recommended for .NET Core {0}.{1} projects.</source>
+        <target state="translated">.NET Core {0}.{1} 项目建议使用 Visual Studio 2017 版本 15.7 或更新版本。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="NotSupportedDotNetCoreProject">
+        <source>Projects targeting versions newer than .NET Core {0}.{1} are not supported by this version of Visual Studio.</source>
+        <target state="translated">此版 Visual Studio 不支持面向版本新于 .NET Core {0}.{1} 的项目。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DontShowAgain">
+        <source>Don't show again</source>
+        <target state="translated">不再显示</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="LearnMore">
+        <source>Learn more</source>
+        <target state="translated">了解详细信息</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="OKButtonText">
+        <source>OK</source>
+        <target state="translated">确定</target>
         <note />
       </trans-unit>
     </body>

@@ -38,15 +38,18 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
         ' Tab button foreground/background 
         Private _buttonForegroundColor As Color
-        Private _buttonBackgroundColor as Color
+        Private _buttonBackgroundColor As Color
+        Private _buttonBorderColor As Color
 
         ' Tab button selected foreground/background 
         Private _selectedButtonForegroundColor As Color
-        Private _selectedButtonBackgroundColor as Color
+        Private _selectedButtonBackgroundColor As Color
+        Private _selectedButtonBorderColor As Color
 
         ' Tab button hover foreground/background
         Private _hoverButtonForegroundColor As Color
-        Private _hoverButtonBackgroundColor as Color
+        Private _hoverButtonBackgroundColor As Color
+        Private _hoverButtonBorderColor As Color
 
 #End Region
 
@@ -56,18 +59,18 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         Private _controlBackgroundBrush As SolidBrush
 
         ' Tab button foreground/background 
-        Private _buttonBackgroundBrush as Brush
+        Private _buttonBackgroundBrush As Brush
+        Private _buttonBorderPen As Pen
 
         ' Tab button selected foreground/background 
-        Private _selectedButtonBackgroundBrush as Brush
+        Private _selectedButtonBackgroundBrush As Brush
+        Private _selectedButtonBorderPen As Pen
 
         ' Tab button hover foreground/background
-        Private _hoverButtonBackgroundBrush as Brush
+        Private _hoverButtonBackgroundBrush As Brush
+        Private _hoverButtonBorderPen As Pen
 
 #End Region
-
-        ' Category guid for project designer theme colors 
-        Private Shared ReadOnly s_projectDesignerThemeCategory As New Guid("ef1a2d2c-5d16-4ddb-8d04-79d0f6c1c56e")
 
         'The left X position for all tab buttons
         Private _buttonsLocationX As Integer
@@ -100,6 +103,9 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
         'The service provider to use.  May be Nothing
         Private _serviceProvider As IServiceProvider
+
+        Private _UIShellService As IVsUIShell
+        Private _UIShell5Service As IVsUIShell5
 
         'Backs the PreferredButtonInSwitchableSlot property
         Private _preferredButtonForSwitchableSlot As ProjectDesignerTabButton
@@ -156,22 +162,40 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         End Property
 
         ''' <summary>
+        ''' Attempts to obtain the IVsUIShell interface.
+        ''' </summary>
+        ''' <value>The IVsUIShell service if found, otherwise null</value>
+        ''' <remarks>Uses the publicly-obtained ServiceProvider property, if it was set.</remarks>
+        Private ReadOnly Property VsUIShellService() As IVsUIShell
+            Get
+                If (_UIShellService Is Nothing) Then
+                    If Common.VBPackageInstance IsNot Nothing Then
+                        _UIShellService = TryCast(Common.VBPackageInstance.GetService(GetType(IVsUIShell)), IVsUIShell)
+                    ElseIf ServiceProvider IsNot Nothing Then
+                        _UIShellService = TryCast(ServiceProvider.GetService(GetType(IVsUIShell)), IVsUIShell)
+                    End If
+                End If
+
+                Return _UIShellService
+            End Get
+        End Property
+
+        ''' <summary>
         ''' Attempts to obtain the IVsUIShell5 interface.
         ''' </summary>
         ''' <value>The IVsUIShell5 service if found, otherwise null</value>
         ''' <remarks>Uses the publicly-obtained ServiceProvider property, if it was set.</remarks>
         Private ReadOnly Property VsUIShell5Service() As IVsUIShell5
             Get
-                Dim sp As IServiceProvider = ServiceProvider
-                If sp IsNot Nothing Then
-                    Dim vsUiShell As IVsUIShell = TryCast(sp.GetService(GetType(IVsUIShell)), IVsUIShell)
-                    If vsUiShell IsNot Nothing Then
-                        Dim uIShell2Service As IVsUIShell5 = TryCast(vsUiShell, IVsUIShell5)
-                        Return uIShell2Service
+                If (_UIShell5Service Is Nothing) Then
+                    Dim VsUIShell = VsUIShellService
+
+                    If (VsUIShell IsNot Nothing) Then
+                        _UIShell5Service = TryCast(VsUIShell, IVsUIShell5)
                     End If
                 End If
 
-                Return Nothing
+                Return _UIShell5Service
             End Get
         End Property
 
@@ -228,22 +252,38 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 '  do the right thing when not hosted inside Visual Studio, and change according to the theme.
 
 
-                _controlBackgroundColor = Common.ShellUtil.GetDesignerThemeColor(VsUIShell, s_projectDesignerThemeCategory, "Background", __THEMEDCOLORTYPE.TCT_Background, SystemColors.Control)
+                _controlBackgroundColor = Common.ShellUtil.GetProjectDesignerThemeColor(VsUIShell, "Background", __THEMEDCOLORTYPE.TCT_Background, SystemColors.Window)
 
-                _buttonForegroundColor = Common.ShellUtil.GetDesignerThemeColor(VsUIShell, s_projectDesignerThemeCategory, "CategoryTab", __THEMEDCOLORTYPE.TCT_Foreground, SystemColors.ControlText)
-                _buttonBackgroundColor = Common.ShellUtil.GetDesignerThemeColor(VsUIShell, s_projectDesignerThemeCategory, "CategoryTab", __THEMEDCOLORTYPE.TCT_Background, SystemColors.Control)
+                _buttonForegroundColor = Common.ShellUtil.GetProjectDesignerThemeColor(VsUIShell, "CategoryTab", __THEMEDCOLORTYPE.TCT_Foreground, SystemColors.WindowText)
+                _buttonBackgroundColor = Common.ShellUtil.GetProjectDesignerThemeColor(VsUIShell, "CategoryTab", __THEMEDCOLORTYPE.TCT_Background, SystemColors.Window)
+                _buttonBorderColor = _buttonForegroundColor
 
-                _selectedButtonForegroundColor = Common.ShellUtil.GetDesignerThemeColor(VsUIShell, s_projectDesignerThemeCategory, "SelectedCategoryTab", __THEMEDCOLORTYPE.TCT_Foreground, SystemColors.HighlightText)
-                _selectedButtonBackgroundColor = Common.ShellUtil.GetDesignerThemeColor(VsUIShell, s_projectDesignerThemeCategory, "SelectedCategoryTab", __THEMEDCOLORTYPE.TCT_Background, SystemColors.Highlight)
+                _selectedButtonForegroundColor = Common.ShellUtil.GetProjectDesignerThemeColor(VsUIShell, "SelectedCategoryTab", __THEMEDCOLORTYPE.TCT_Foreground, SystemColors.HighlightText)
+                _selectedButtonBackgroundColor = Common.ShellUtil.GetProjectDesignerThemeColor(VsUIShell, "SelectedCategoryTab", __THEMEDCOLORTYPE.TCT_Background, SystemColors.Highlight)
+                _selectedButtonBorderColor = _selectedButtonForegroundColor
 
-                _hoverButtonForegroundColor = Common.ShellUtil.GetDesignerThemeColor(VsUIShell, s_projectDesignerThemeCategory, "MouseOverCategoryTab", __THEMEDCOLORTYPE.TCT_Foreground, SystemColors.HighlightText)
-                _hoverButtonBackgroundColor = Common.ShellUtil.GetDesignerThemeColor(VsUIShell, s_projectDesignerThemeCategory, "MouseOverCategoryTab", __THEMEDCOLORTYPE.TCT_Background, SystemColors.HotTrack)
+                _hoverButtonForegroundColor = Common.ShellUtil.GetProjectDesignerThemeColor(VsUIShell, "MouseOverCategoryTab", __THEMEDCOLORTYPE.TCT_Foreground, SystemColors.HighlightText)
+                _hoverButtonBackgroundColor = Common.ShellUtil.GetProjectDesignerThemeColor(VsUIShell, "MouseOverCategoryTab", __THEMEDCOLORTYPE.TCT_Background, SystemColors.HotTrack)
+                _hoverButtonBorderColor = _hoverButtonForegroundColor
 
                 'Get GDI objects
                 _controlBackgroundBrush = New SolidBrush(_controlBackgroundColor)
+
                 _buttonBackgroundBrush = New SolidBrush(_buttonBackgroundColor)
+                _buttonBorderPen = New Pen(_buttonBorderColor) With {
+                    .DashStyle = DashStyle.Dash
+                }
+
                 _selectedButtonBackgroundBrush = New SolidBrush(_selectedButtonBackgroundColor)
+                _selectedButtonBorderPen = New Pen(_selectedButtonBorderColor) With {
+                    .DashStyle = DashStyle.Dash
+                }
+
                 _hoverButtonBackgroundBrush = New SolidBrush(_hoverButtonBackgroundColor)
+                _hoverButtonBorderPen = New Pen(_buttonBorderColor) With {
+                    .DashStyle = DashStyle.Dash
+                }
+
 
                 If ForceUpdate Then
                     'Colors may have changed, need to update state.  Also, the gradient brushes are
@@ -516,13 +556,16 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
             Dim backgroundBrush As Brush = _buttonBackgroundBrush
             Dim foregroundColor As Color = _buttonForegroundColor ' TextRenderer.DrawText takes a color over a brush 
+            Dim borderPen As Pen = _buttonBorderPen
 
             If IsSelected Then
                 backgroundBrush = _selectedButtonBackgroundBrush
                 foregroundColor = _selectedButtonForegroundColor
-            Else If IsHovered Then
+                borderPen = _selectedButtonBorderPen
+            ElseIf IsHovered Then
                 backgroundBrush = _hoverButtonBackgroundBrush
                 foregroundColor = _hoverButtonForegroundColor
+                borderPen = _hoverButtonBorderPen
             End If
 
             Const TriangleWidth As Integer = 6
@@ -536,15 +579,14 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
             g.FillRectangle(backgroundBrush, New Rectangle(0, 0, triangleHorizontalStart, button.Height))
 
-
             ' Draw the "arrow" part of the tab button if the item is selected for hovered 
             If IsSelected Then
 
                 ' Create an array of points which describes the path of the triangle
                 Dim trainglePoints() As PointF =
                 {
-                    New PointF(triangleHorizontalStart - 1, triangleVerticalStart), _
-                    New PointF(button.Width, CSng(triangleVerticalStart) + CSng(TriangleHeight) / 2), _
+                    New PointF(triangleHorizontalStart - 1, triangleVerticalStart),
+                    New PointF(button.Width, CSng(triangleVerticalStart) + CSng(TriangleHeight) / 2),
                     New PointF(triangleHorizontalStart - 1, triangleVerticalStart + TriangleHeight)
                 }
 
@@ -564,6 +606,10 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                     g.SmoothingMode = previousSmoothingMode
 
                 End Using
+            End If
+
+            If button.DrawFocusCues Then
+                g.DrawRectangle(borderPen, New Rectangle(0, 0, triangleHorizontalStart, button.Height - 1))
             End If
 
             Dim textRect As New Rectangle(s_buttonTextLeftOffset, 0, button.Width - s_buttonTextLeftOffset, button.Height)

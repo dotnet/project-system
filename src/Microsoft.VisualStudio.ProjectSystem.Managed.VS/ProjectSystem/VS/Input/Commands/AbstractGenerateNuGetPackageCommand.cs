@@ -1,12 +1,13 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
-using System.Threading;
 using System.Threading.Tasks;
+
 using Microsoft.VisualStudio.ProjectSystem.Build;
 using Microsoft.VisualStudio.ProjectSystem.Input;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
+
 using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
@@ -33,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
             UnconfiguredProject = unconfiguredProject;
             _threadingService = threadingService;
             _serviceProvider = serviceProvider;
-            _generatePackageOnBuildPropertyProvider = generatePackageOnBuildPropertyProvider;            
+            _generatePackageOnBuildPropertyProvider = generatePackageOnBuildPropertyProvider;
         }
 
         protected UnconfiguredProject UnconfiguredProject { get; }
@@ -133,20 +134,36 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         #endregion
 
         #region IDisposable
+        private bool _disposedValue = false;
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposedValue)
+            {
+                if (disposing && _buildManager != null)
+                {
+                    // Build manager APIs require UI thread access.
+                    _threadingService.ExecuteSynchronously(async () =>
+                    {
+                        await _threadingService.SwitchToUIThread();
+
+                        if (_buildManager != null)
+                        {
+                            // Unregister solution build events.
+                            _buildManager.UnadviseUpdateSolutionEvents(_solutionEventsCookie);
+                            _buildManager = null;
+                        }
+                    });
+                }
+
+                _disposedValue = true;
+            }
+        }
+
         public void Dispose()
         {
-            // Build manager APIs require UI thread access.
-            _threadingService.ExecuteSynchronously(async() =>
-            {
-                await _threadingService.SwitchToUIThread();
-
-                if (_buildManager != null)
-                {
-                    // Unregister solution build events.
-                    _buildManager.UnadviseUpdateSolutionEvents(_solutionEventsCookie);
-                    _buildManager = null;
-                }
-            });
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
         #endregion
     }

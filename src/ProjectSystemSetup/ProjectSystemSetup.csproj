@@ -1,108 +1,75 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (c)  Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\..\build\Targets\VSL.Settings.targets" />
+﻿<!-- Copyright (c)  Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\VisualStudio.props"/>
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectTypeGuids>{82b43b9b-a64c-4715-b499-d71e9ca2bd60};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <ProjectGuid>{9FBD7EF2-9449-486D-9FDD-FA56160AA8BB}</ProjectGuid>
-    <OutputType>Library</OutputType>
     <RootNamespace>Microsoft.VisualStudio</RootNamespace>
     <AssemblyName>ProjectSystem</AssemblyName>
-    <GeneratePkgDefFile>true</GeneratePkgDefFile>
-    <VSSDKTargetPlatformRegRootSuffix>RoslynDev</VSSDKTargetPlatformRegRootSuffix>
+    <PublishOutputToSymStore>false</PublishOutputToSymStore>
+
+    <!-- VSIX -->
     <IncludeAssemblyInVSIXContainer>false</IncludeAssemblyInVSIXContainer>
-    <IncludeDebugSymbolsInVSIXContainer>false</IncludeDebugSymbolsInVSIXContainer>
-    <IncludeDebugSymbolsInLocalVSIXDeployment>false</IncludeDebugSymbolsInLocalVSIXDeployment>
-    <ImportVSSDKTargets>true</ImportVSSDKTargets>
-    <DeployExtension Condition="'$(DeployVsixExtension)' == 'false'">false</DeployExtension>
-    <RestorePackages>true</RestorePackages>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
-    <CopyBuildOutputToOutputDirectory>true</CopyBuildOutputToOutputDirectory>
-    <CopyOutputSymbolsToOutputDirectory>false</CopyOutputSymbolsToOutputDirectory>
-    <NoDocumentationFile>true</NoDocumentationFile>
-    <UseCommonOutputDirectory>true</UseCommonOutputDirectory>
-    <ProjectSystemLayer>VisualStudio</ProjectSystemLayer>
-    <ProducingSignedVsix>true</ProducingSignedVsix>
-    <IsProductComponent>true</IsProductComponent>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-  </PropertyGroup>
-  <PropertyGroup>
-    <!-- Debugging Settings (usually stored in .user project stored in project file to be available to everyone -->
-    <StartAction>Program</StartAction>
-    <StartProgram>$(DevEnvDir)devenv.exe</StartProgram>
-    <StartArguments>/rootsuffix RoslynDev /log</StartArguments>
-    <EnableUnmanagedDebugging>true</EnableUnmanagedDebugging>
+    <ExtensionInstallationRoot>Extensions</ExtensionInstallationRoot>
+    <ExtensionInstallationFolder>Microsoft\ManagedProjectSystem</ExtensionInstallationFolder>
+
+    <!-- VS Insertion -->
+    <VisualStudioInsertionComponent>Microsoft.VisualStudio.ProjectSystem.Managed</VisualStudioInsertionComponent>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="RoslynDependencies.ProjectSystem.OptimizationData" Version="$(RoslynDependenciesProjectSystemOptimizationDataVersion)" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.CSharp.VS\Microsoft.VisualStudio.ProjectSystem.CSharp.VS.csproj">
-      <Project>{765ef6eb-9f36-4d68-8c3d-9e11cd49e0bc}</Project>
       <Name>Microsoft.VisualStudio.ProjectSystem.CSharp.VS</Name>
-      <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup%3bBuiltProjectOutputGroupDependencies%3bGetCopyToOutputDirectoryItems%3bSatelliteDllsProjectOutputGroupWithFinalOutputPath%3bPkgdefProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
-      <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup%3b</IncludeOutputGroupsInVSIXLocalOnly>
-      <ForceIncludeInVSIX>true</ForceIncludeInVSIX>
-      <Private>True</Private>
+      <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup;GetCopyToOutputDirectoryItems;SatelliteDllsProjectOutputGroup;PkgdefProjectOutputGroup</IncludeOutputGroupsInVSIX>
+      <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup</IncludeOutputGroupsInVSIXLocalOnly>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.CSharp\Microsoft.VisualStudio.ProjectSystem.CSharp.csproj">
-      <Project>{7d150b7b-ce02-4cd4-8ec9-6a7c18727a36}</Project>
       <Name>Microsoft.VisualStudio.ProjectSystem.CSharp</Name>
-      <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup%3bSatelliteDllsProjectOutputGroupWithFinalOutputPath%3b</IncludeOutputGroupsInVSIX>
-      <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup%3b</IncludeOutputGroupsInVSIXLocalOnly>
-      <ForceIncludeInVSIX>true</ForceIncludeInVSIX>
-      <Private>True</Private>
+      <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup;GetCopyToOutputDirectoryItems;SatelliteDllsProjectOutputGroup</IncludeOutputGroupsInVSIX>
+      <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup</IncludeOutputGroupsInVSIXLocalOnly>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.FSharp.VS\Microsoft.VisualStudio.ProjectSystem.FSharp.VS.csproj">
+      <Name>Microsoft.VisualStudio.ProjectSystem.FSharp.VS</Name>
+      <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup;GetCopyToOutputDirectoryItems;SatelliteDllsProjectOutputGroup;PkgdefProjectOutputGroup</IncludeOutputGroupsInVSIX>
+      <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup</IncludeOutputGroupsInVSIXLocalOnly>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.FSharp\Microsoft.VisualStudio.ProjectSystem.FSharp.csproj">
+      <Name>Microsoft.VisualStudio.ProjectSystem.FSharp</Name>
+      <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup;GetCopyToOutputDirectoryItems;SatelliteDllsProjectOutputGroup</IncludeOutputGroupsInVSIX>
+      <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup</IncludeOutputGroupsInVSIXLocalOnly>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.Managed.VS\Microsoft.VisualStudio.ProjectSystem.Managed.VS.csproj">
-      <Project>{1c5666ea-24a4-4ec2-b8fb-faedf6b14697}</Project>
       <Name>Microsoft.VisualStudio.ProjectSystem.Managed.VS</Name>
-      <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup%3b</IncludeOutputGroupsInVSIXLocalOnly>
-      <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup%3bSatelliteDllsProjectOutputGroupWithFinalOutputPath%3bBuiltProjectOutputGroup%3bBuiltProjectOutputGroupDependencies%3bGetCopyToOutputDirectoryItems%3bPkgdefProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
-      <ForceIncludeInVSIX>true</ForceIncludeInVSIX>
-      <Private>True</Private>
+      <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup;GetCopyToOutputDirectoryItems;SatelliteDllsProjectOutputGroup;PkgdefProjectOutputGroup</IncludeOutputGroupsInVSIX>
+      <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup</IncludeOutputGroupsInVSIXLocalOnly>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.Managed\Microsoft.VisualStudio.ProjectSystem.Managed.csproj">
-      <Project>{6c6a41ce-72c5-4d77-8208-d01693f9bc88}</Project>
       <Name>Microsoft.VisualStudio.ProjectSystem.Managed</Name>
-      <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup%3bSatelliteDllsProjectOutputGroupWithFinalOutputPath%3b</IncludeOutputGroupsInVSIX>
-      <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup%3b</IncludeOutputGroupsInVSIXLocalOnly>
-      <ForceIncludeInVSIX>true</ForceIncludeInVSIX>
-      <Private>True</Private>
+      <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup;GetCopyToOutputDirectoryItems;SatelliteDllsProjectOutputGroup</IncludeOutputGroupsInVSIX>
+      <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup</IncludeOutputGroupsInVSIXLocalOnly>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS\Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS.csproj">
-      <Project>{15dcb34c-b628-49b8-b472-bba65a0ab6a5}</Project>
       <Name>Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS</Name>
-      <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup%3b</IncludeOutputGroupsInVSIXLocalOnly>
-      <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup%3bBuiltProjectOutputGroupDependencies%3bGetCopyToOutputDirectoryItems%3bSatelliteDllsProjectOutputGroupWithFinalOutputPath%3bPkgdefProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
-      <ForceIncludeInVSIX>true</ForceIncludeInVSIX>
-      <Private>True</Private>
+      <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup;GetCopyToOutputDirectoryItems;SatelliteDllsProjectOutputGroup;PkgdefProjectOutputGroup</IncludeOutputGroupsInVSIX>
+      <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup</IncludeOutputGroupsInVSIXLocalOnly>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.VisualBasic\Microsoft.VisualStudio.ProjectSystem.VisualBasic.csproj">
-      <Project>{04aa393a-48c2-424d-985c-77385a962019}</Project>
       <Name>Microsoft.VisualStudio.ProjectSystem.VisualBasic</Name>
-      <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup%3bSatelliteDllsProjectOutputGroupWithFinalOutputPath%3b</IncludeOutputGroupsInVSIX>
-      <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup%3b</IncludeOutputGroupsInVSIXLocalOnly>
-      <ForceIncludeInVSIX>true</ForceIncludeInVSIX>
-      <Private>True</Private>
+      <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup;GetCopyToOutputDirectoryItems;SatelliteDllsProjectOutputGroup</IncludeOutputGroupsInVSIX>
+      <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup</IncludeOutputGroupsInVSIXLocalOnly>
     </ProjectReference>
     <ProjectReference Include="..\VisualStudioEditorsSetup\VisualStudioEditorsSetup.csproj">
-      <Name>VisualStudioEditorsSetup</Name>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
       <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="project.json" />
-    <None Include="source.extension.vsixmanifest" />
-  </ItemGroup>
-  <ItemGroup>
+    <Content Include="ProjectSelectors.pkgdef">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
     <Compile Include="..\Common\ProvideBindingRedirectionAttribute.cs">
       <Link>ProvideBindingRedirectionAttribute.cs</Link>
     </Compile>
-    <Compile Include="AssemblyRedirects.cs" />
   </ItemGroup>
-  <Import Project="..\..\build\Targets\VSL.Imports.targets" />
 </Project>

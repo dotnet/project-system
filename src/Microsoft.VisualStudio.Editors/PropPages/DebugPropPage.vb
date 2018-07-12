@@ -19,6 +19,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             'Add any initialization after the InitializeComponent() call
             AddChangeHandlers()
+
+            'Opt out of page scaling since we're using AutoScaleMode
+            PageRequiresScaling = False
         End Sub
 
 

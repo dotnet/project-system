@@ -1,12 +1,14 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+
 using Microsoft.VisualStudio.ProjectSystem.Imaging;
+
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Imaging
 {
-    [ProjectSystemTrait]
+    [Trait("UnitTest", "ProjectSystem")]
     public class VisualBasicProjectImageProviderTests
     {
         [Fact]
@@ -20,7 +22,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Imaging
         {
             var provider = CreateInstance();
 
-            Assert.Throws<ArgumentNullException>("key", () => {
+            Assert.Throws<ArgumentNullException>("key", () =>
+            {
 
                 provider.GetProjectImage((string)null);
             });
@@ -32,7 +35,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Imaging
         {
             var provider = CreateInstance();
 
-            Assert.Throws<ArgumentException>("key", () => {
+            Assert.Throws<ArgumentException>("key", () =>
+            {
 
                 provider.GetProjectImage(string.Empty);
             });
@@ -52,7 +56,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Imaging
         [InlineData(ProjectImageKey.ProjectRoot)]
         [InlineData(ProjectImageKey.SharedProjectRoot)]
         [InlineData(ProjectImageKey.SharedItemsImportFile)]
-        [InlineData(ProjectImageKey.AppDesignerFolder)]
         public void GetProjectImage_RecognizedKeyAsKey_ReturnsNonNull(string key)
         {
             var provider = CreateInstance();

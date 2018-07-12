@@ -15,6 +15,9 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
     ''' <remarks></remarks>
     Friend NotInheritable Class ShellUtil
 
+        Public Shared ReadOnly ProjectDesignerThemeCategory As New Guid("ef1a2d2c-5d16-4ddb-8d04-79d0f6c1c56e")
+
+        Public Shared ReadOnly EnvironmentThemeCategory As New Guid("624ed9c3-bdfd-41fa-96c3-7c824ea32e3d")
 
         ''' <summary>
         ''' Gets a color from the shell's color service.  If for some reason this fails, returns the supplied
@@ -69,6 +72,14 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
 
             Debug.Fail("Unable to get color from the shell, using a predetermined default color instead." & vbCrLf & "Color Category = " & themeCategory.ToString() & ", Color Name = " & themeColorName & ", Color Type = " & colorType & ", Default Color = &h" & Hex(defaultColor.ToArgb))
             Return defaultColor
+        End Function
+
+        Public Shared Function GetEnvironmentThemeColor(uiShellService As IVsUIShell5, themeColorName As String, colorType As __THEMEDCOLORTYPE, defaultColor As Color) As Color
+            Return GetDesignerThemeColor(uiShellService, EnvironmentThemeCategory, themeColorName, colorType, defaultColor)
+        End Function
+
+        Public Shared Function GetProjectDesignerThemeColor(uiShellService As IVsUIShell5, themeColorName As String, colorType As __THEMEDCOLORTYPE, defaultColor As Color) As Color
+            Return GetDesignerThemeColor(uiShellService, ProjectDesignerThemeCategory, themeColorName, colorType, defaultColor)
         End Function
 
         Private Shared Function RGBAToColor(rgbaValue As UInteger) As Color

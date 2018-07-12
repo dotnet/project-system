@@ -132,7 +132,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 ' We failed to get the project output paths... 
             End Try
 
-            Return New String() {}
+            Return Array.Empty(Of String)
         End Function
 
         ''' <summary>

@@ -1,8 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
-  <file datatype="xml" source-language="en" target-language="ru" original="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/ConfigurationGeneral.xaml">
+  <file datatype="xml" source-language="en" target-language="ru" original="../ConfigurationGeneral.xaml">
     <body>
-      <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/ConfigurationGeneral.xaml" />
       <trans-unit id="Rule|ConfigurationGeneral|DisplayName">
         <source>General</source>
         <target state="translated">Общие</target>
@@ -73,16 +72,6 @@
         <target state="translated">Библиотека классов</target>
         <note />
       </trans-unit>
-      <trans-unit id="EnumValue|OutputType.exe|DisplayName">
-        <source>Console Application</source>
-        <target state="translated">Консольное приложение</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|OutputType.winexe|DisplayName">
-        <source>Windows Application</source>
-        <target state="translated">Приложение Windows</target>
-        <note />
-      </trans-unit>
       <trans-unit id="EnumValue|OutputType.AppContainerExe|DisplayName">
         <source>Windows Store app</source>
         <target state="translated">Приложение Магазина Windows</target>
@@ -136,6 +125,31 @@
       <trans-unit id="StringProperty|TemplateLanguage|Description">
         <source>Represent the language that is persisted in items and project templates</source>
         <target state="translated">Представляет язык, который сохраняется в элементах и шаблонах проектов</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|OutputType.Exe|DisplayName">
+        <source>Console Application</source>
+        <target state="translated">Консольное приложение</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|OutputType.WinExe|DisplayName">
+        <source>Windows Application</source>
+        <target state="translated">Приложение Windows</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|LanguageServiceId|Description">
+        <source>Represents the GUID of object that implements the language service for the project.</source>
+        <target state="translated">Представляет GUID объекта, который реализует языковую службу для проекта.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|TargetFrameworkMonikers|DisplayName">
+        <source>Target Framework Monikers</source>
+        <target state="translated">Моникеры целевой платформы</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|DisableFastUpToDateCheck|DisplayName">
+        <source>Disable Fast Up To Date Check</source>
+        <target state="translated">Отключить быструю проверку на актуальность</target>
         <note />
       </trans-unit>
     </body>

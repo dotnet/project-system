@@ -15,7 +15,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
         Private _view As Control
         Private _linkText As String
-        Private _designerView As ApplicationDesignerView
+        Private WithEvents _designerView As ApplicationDesignerView
         Private _designerPanel As ApplicationDesignerPanel
         Private _specialFileId As Integer
 
@@ -115,6 +115,13 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             If _view IsNot Nothing Then
                 _view.Dispose()
                 _view = Nothing
+            End If
+        End Sub
+
+        Private Sub DesignerView_ThemeChanged(sender As Object, args As EventArgs) Handles _designerView.ThemeChanged
+            If _view IsNot Nothing Then
+                Dim View As SpecialFileCustomView = CType(_view, SpecialFileCustomView)
+                View.LinkLabel.SetThemedColor(_designerPanel.VsUIShell5)
             End If
         End Sub
 

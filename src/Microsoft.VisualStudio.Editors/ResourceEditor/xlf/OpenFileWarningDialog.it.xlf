@@ -1,8 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
-  <file datatype="xml" source-language="en" target-language="it" original="src/Microsoft.VisualStudio.Editors/ResourceEditor/OpenFileWarningDialog.resx">
+  <file datatype="xml" source-language="en" target-language="it" original="../OpenFileWarningDialog.resx">
     <body>
-      <group id="src/Microsoft.VisualStudio.Editors/ResourceEditor/OpenFileWarningDialog.resx" />
       <trans-unit id="alwaysCheckCheckBox.Text">
         <source>&amp;Always ask before opening this file type.</source>
         <target state="translated">&amp;Avvisa sempre prima di aprire questo tipo di file.</target>
@@ -25,7 +24,7 @@
       </trans-unit>
       <trans-unit id="messageLabel2.Text">
         <source>Some files could contain malicious content.  You should only answer Yes if you trust the source of this file.</source>
-        <target state="translated">Alcuni file potrebbero includere contenuto dannoso.  Rispondere Sì solo se si ritiene attendibile l'origine del file.</target>
+        <target state="translated">Alcuni file potrebbero includere contenuto dannoso. Rispondere Sì solo se si ritiene attendibile l'origine del file.</target>
         <note />
       </trans-unit>
       <trans-unit id="$this.Text">

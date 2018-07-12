@@ -1397,7 +1397,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             builder.Properties.Add(SettingsSingleFileGeneratorBase.DefaultInstancePropertyName,
                                 GetType(Object),
                                 True,
-                                New Attribute() {},
+                                Array.Empty(Of Attribute),
                                 MethodAttributes.Public Or MethodAttributes.Static)
 
             Return builder.CreateType()
@@ -1411,7 +1411,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         ''' <remarks></remarks>
         Protected Overrides Function CreateInstance() As Object
 
-            Dim value As Object = TypeDescriptor.CreateInstance(DirectCast(_provider, IServiceProvider), GetObjectType(), New Type() {}, New Object() {})
+            Dim value As Object = TypeDescriptor.CreateInstance(DirectCast(_provider, IServiceProvider), GetObjectType(), Array.Empty(Of Type), Array.Empty(Of Object))
 
             TypeDescriptor.AddAttributes(value, New SettingsGlobalObjectValueAttribute(Me, Nothing))
 

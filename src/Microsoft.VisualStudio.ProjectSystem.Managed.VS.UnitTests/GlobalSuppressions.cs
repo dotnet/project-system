@@ -5,10 +5,3 @@
 // a specific target and scoped to a namespace, type, member, etc.
 
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>")]
-// BUG: https://github.com/dotnet/roslyn/issues/16028
-[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0018:Inline variable declaration", Justification = "<Pending>", Scope = "member", Target = "~M:Microsoft.VisualStudio.Shell.Interop.IVsHierarchyFactory.ImplementGetGuid(Microsoft.VisualStudio.Shell.Interop.IVsHierarchy,Microsoft.VisualStudio.Shell.VsHierarchyPropID,System.Int32)")]
-[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0018:Inline variable declaration", Justification = "<Pending>", Scope = "member", Target = "~M:Microsoft.VisualStudio.Shell.Interop.IVsHierarchyFactory.ImplementGetProperty(Microsoft.VisualStudio.Shell.Interop.IVsHierarchy,Microsoft.VisualStudio.Shell.VsHierarchyPropID,System.Int32)")]
-[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0018:Inline variable declaration", Justification = "<Pending>", Scope = "member", Target = "~M:Microsoft.VisualStudio.Shell.Interop.IVsHierarchyFactory.ImplementGetProperty(System.Int32)~Microsoft.VisualStudio.Shell.Interop.IVsHierarchy")]
-[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0018:Inline variable declaration", Justification = "<Pending>", Scope = "member", Target = "~M:Microsoft.VisualStudio.Shell.Interop.IVsProjectFactory.ImplementOpenItemWithSpecific(Microsoft.VisualStudio.Shell.Interop.IVsProject4,System.Guid,System.Guid,System.Int32)")]
-
-[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0018:Inline variable declaration", Justification = "<Pending>", Scope = "member", Target = "~M:Microsoft.VisualStudio.Shell.Interop.IVsProjectSpecialFilesFactory.ImplementGetFile(Microsoft.FuncWithOut{System.Int32,System.UInt32,System.UInt32,System.String,System.Int32})~Microsoft.VisualStudio.Shell.Interop.IVsProjectSpecialFiles")]

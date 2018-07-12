@@ -39,9 +39,9 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ' default impl of abstract base member.  see serialization store for details.
         '	
         public readonly Overrides property Errors() as ICollection
-            get
-                return new object(-1) {}
-            end get
+            Get
+                Return Array.Empty(Of Object)
+            End get
         end property
 
 
@@ -515,7 +515,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
             Friend Shared Function SerializeObject([Object] As Object) As Byte()
                 If [Object] Is Nothing Then
-                    Return New Byte() {}
+                    Return Array.Empty(Of Byte)
                 Else
                     Dim MemoryStream As New MemoryStream
                     Call (New BinaryFormatter()).Serialize(MemoryStream, [Object])

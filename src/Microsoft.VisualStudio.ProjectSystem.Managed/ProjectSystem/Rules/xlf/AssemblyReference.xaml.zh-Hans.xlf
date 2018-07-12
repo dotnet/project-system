@@ -1,16 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
-  <file datatype="xml" source-language="en" target-language="zh-Hans" original="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/AssemblyReference.xaml">
+  <file datatype="xml" source-language="en" target-language="zh-Hans" original="../AssemblyReference.xaml">
     <body>
-      <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/AssemblyReference.xaml" />
       <trans-unit id="Rule|AssemblyReference|DisplayName">
         <source>Assembly Reference</source>
         <target state="translated">程序集引用</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|AssemblyReference|Description">
-        <source>Assembly reference properties</source>
-        <target state="translated">程序集引用属性</target>
+        <source>Reference Properties</source>
+        <target state="translated">引用属性</target>
         <note />
       </trans-unit>
       <trans-unit id="StringListProperty|Aliases|DisplayName">
@@ -66,6 +65,36 @@
       <trans-unit id="StringProperty|ImageRuntime|Description">
         <source>The CLR runtime version targeted by this assembly.</source>
         <target state="translated">此程序集的目标 CLR 运行时版本。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Identity|DisplayName">
+        <source>Identity</source>
+        <target state="translated">标识</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Identity|Description">
+        <source>Security identity of the referenced assembly (see System.Reflection.Assembly.Evidence or System.Security.Policy.Evidence).</source>
+        <target state="translated">所引用程序集的安全标识(参见 System.Reflection.Assembly.Evidence 或 System.Security.Policy.Evidence)。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|ResolvedPath|DisplayName">
+        <source>Path</source>
+        <target state="translated">路径</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|ResolvedPath|Description">
+        <source>Location of the file being referenced.</source>
+        <target state="translated">所引用的文件的位置。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Version|DisplayName">
+        <source>Version</source>
+        <target state="translated">版本</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Version|Description">
+        <source>Version of reference.</source>
+        <target state="translated">引用的版本。</target>
         <note />
       </trans-unit>
     </body>

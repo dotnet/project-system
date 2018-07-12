@@ -5,24 +5,26 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Threading.Tasks;
 using System.Xml;
+
 using Microsoft.Build.Construction;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
+
 using Moq;
+
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
 
-    [ProjectSystemTrait]
+    [Trait("UnitTest", "ProjectSystem")]
     public class DebugTokenReplacerTests
     {
-        Dictionary<string, string> _envVars = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase) {
+        private Dictionary<string, string> _envVars = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase) {
             { "%env1%","envVariable1" },
             { "%env2%","envVariable2" },
             { "%env3%","$(msbuildProperty6)" }
         };
-        
-        Mock<IEnvironmentHelper> _envHelper = new Mock<IEnvironmentHelper>();
+        private Mock<IEnvironmentHelper> _envHelper = new Mock<IEnvironmentHelper>();
         public DebugTokenReplacerTests()
         {
             _envHelper.Setup(x => x.ExpandEnvironmentVariables(It.IsAny<string>())).Returns<string>((str) =>
@@ -36,12 +38,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         }
 
         [Fact]
-        public async Task DebugTokenReplacer_ReplaceTokensInProfileTests()
+        public async Task ReplaceTokensInProfileTests()
         {
             IUnconfiguredProjectCommonServices services = IUnconfiguredProjectCommonServicesFactory.Create();
 
+            IActiveDebugFrameworkServices activeDebugFramework = Mock.Of<IActiveDebugFrameworkServices>();
 
-            var replacer = new DebugTokenReplacerUnderTest(IUnconfiguredProjectCommonServicesFactory.Create(), _envHelper.Object);
+            var replacer = new DebugTokenReplacerUnderTest(IUnconfiguredProjectCommonServicesFactory.Create(), _envHelper.Object, activeDebugFramework);
 
             // Tests all the possible replacements. env3 tests that enviroment vars are resolved before msbuild tokens
             var launchProfile = new LaunchProfile()
@@ -53,8 +56,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 WorkingDirectory = "c:\\test\\%env3%",
                 LaunchBrowser = false,
                 LaunchUrl = "http://localhost:8080/$(unknownproperty)",
-                EnvironmentVariables = ImmutableDictionary<string, string>.Empty.Add("var1", "%env1%").Add("var2", "$(msbuildProperty3)"),
-                OtherSettings = ImmutableDictionary<string, object>.Empty.Add("setting1", "%env1%").Add("setting2", true),
+                EnvironmentVariables = ImmutableStringDictionary<string>.EmptyOrdinal.Add("var1", "%env1%").Add("var2", "$(msbuildProperty3)"),
+                OtherSettings = ImmutableStringDictionary<object>.EmptyOrdinal.Add("setting1", "%env1%").Add("setting2", true),
             };
 
             var resolvedProfile = await replacer.ReplaceTokensInProfileAsync(launchProfile);
@@ -64,15 +67,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             Assert.Equal("$(msbuildProperty2)", resolvedProfile.CommandName);
             Assert.Equal("envVariable1", resolvedProfile.CommandLineArgs);
             Assert.Equal("$(test this string", resolvedProfile.ExecutablePath);
-            Assert.Equal(false, resolvedProfile.LaunchBrowser);
+            Assert.False(resolvedProfile.LaunchBrowser);
             Assert.Equal("http://localhost:8080/", resolvedProfile.LaunchUrl);
             Assert.Equal("c:\\test\\Property6", resolvedProfile.WorkingDirectory);
             Assert.Equal("envVariable1", resolvedProfile.EnvironmentVariables["var1"]);
             Assert.Equal("Property3", resolvedProfile.EnvironmentVariables["var2"]);
             Assert.Equal("envVariable1", resolvedProfile.OtherSettings["setting1"]);
-            Assert.Equal(true, resolvedProfile.OtherSettings["setting2"]);
+            Assert.True((bool)resolvedProfile.OtherSettings["setting2"]);
         }
-        
+
         [Theory]
         [InlineData("this is msbuild: $(msbuildProperty5) %env1%",                      "this is msbuild: Property5 envVariable1",  true)]
         [InlineData("this is msbuild: $(msbuildProperty5) %env1%",                      "this is msbuild: Property5 %env1%",        false)]
@@ -81,11 +84,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         [InlineData("this is msbuild: %env3% $(msbuildProperty2) $(msbuildProperty3)",  "this is msbuild: Property6 Property2 Property3", true)]
         [InlineData(null, null, true)]
         [InlineData(" ", " ", true)]
-        public async Task DebugTokenReplacer_ReplaceTokensInStringTests(string input, string expected, bool expandEnvVars)
+        public async Task ReplaceTokensInStringTests(string input, string expected, bool expandEnvVars)
         {
             IUnconfiguredProjectCommonServices services = IUnconfiguredProjectCommonServicesFactory.Create();
 
-            var replacer = new DebugTokenReplacerUnderTest(IUnconfiguredProjectCommonServicesFactory.Create(), _envHelper.Object);
+            IActiveDebugFrameworkServices activeDebugFramework = Mock.Of<IActiveDebugFrameworkServices>();
+            var replacer = new DebugTokenReplacerUnderTest(IUnconfiguredProjectCommonServicesFactory.Create(), _envHelper.Object, activeDebugFramework);
 
             // Test msbuild vars
             string result = await replacer.ReplaceTokensInStringAsync(input, expandEnvVars);
@@ -95,27 +99,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
     internal class DebugTokenReplacerUnderTest : DebugTokenReplacer
     {
-        public DebugTokenReplacerUnderTest(IUnconfiguredProjectCommonServices commonServices, IEnvironmentHelper envHelper)
-            : base(commonServices, envHelper)
+        public DebugTokenReplacerUnderTest(IUnconfiguredProjectCommonServices commonServices, IEnvironmentHelper envHelper, IActiveDebugFrameworkServices debugFramework)
+            : base(commonServices, envHelper, debugFramework)
         {
 
         }
 
-        protected override IProjectReadAccess AccessProject()
+        protected override Task<IProjectReadAccess> AccessProject()
         {
-            return new TestProjectReadAccessor();
+            return Task.FromResult((IProjectReadAccess)new TestProjectReadAccessor());
         }
 
-        class TestProjectReadAccessor : IProjectReadAccess
+        private class TestProjectReadAccessor : IProjectReadAccess
         {
             public TestProjectReadAccessor() { }
-            public Task<Microsoft.Build.Evaluation.Project> GetProjectAsync() {return Task.FromResult(CreateMsBuildProject());}
+            public Task<Microsoft.Build.Evaluation.Project> GetProjectAsync() { return Task.FromResult(CreateMsBuildProject()); }
             public void Dispose() { }
 
             private Microsoft.Build.Evaluation.Project CreateMsBuildProject()
             {
                 // This is default. Can change it to match needs
-                string projectFile = 
+                string projectFile =
                 @"<?xml version=""1.0"" encoding=""utf-16""?><Project xmlns=""http://schemas.microsoft.com/developer/msbuild/2003"">
                 <PropertyGroup>
                     <msbuildProperty1>Property1</msbuildProperty1>
@@ -135,7 +139,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 };
                 using (var reader = XmlReader.Create(new System.IO.StringReader(projectFile), settings))
                 {
-                    ProjectRootElement importFile = ProjectRootElement.Create(reader); 
+                    var importFile = ProjectRootElement.Create(reader);
                     return new Microsoft.Build.Evaluation.Project(importFile);
                 }
             }

@@ -299,7 +299,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
             DisableControlsForXBAPProjects()
 
             ' Enable/disable the "View UAC Settings" button
-            EnableControl(ViewUACSettingsButton, UACSettingsButtonSupported(OutputTypeProperty))
+            EnableControl(ViewUACSettingsButton, UACSettingsButtonSupported(ProjectProperties.OutputType))
         End Sub
 
 #End Region
@@ -499,9 +499,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         '
         '  Application Type      -> Output Type
         '  ---------------------    -----------
-        '  Windows Application   -> winexe
-        '  Windows Class Library -> library
-        '  Console Application   -> exe
+        '  Windows Application   -> WinExe
+        '  Windows Class Library -> Library
+        '  Console Application   -> Exe
         '
 
         ''' <summary>

@@ -217,7 +217,7 @@
     <value>2</value>
   </data>
   <data name="btnPreBuildBuilder.Text" xml:space="preserve">
-    <value>Ed&amp;it Pre-build ...</value>
+    <value>Ed&amp;it Pre-build...</value>
   </data>
   <data name="&gt;&gt;btnPreBuildBuilder.Name" xml:space="preserve">
     <value>btnPreBuildBuilder</value>
@@ -328,7 +328,7 @@
     <value>5</value>
   </data>
   <data name="btnPostBuildBuilder.Text" xml:space="preserve">
-    <value>Edit Post-b&amp;uild ...</value>
+    <value>Edit Post-b&amp;uild...</value>
   </data>
   <data name="&gt;&gt;btnPostBuildBuilder.Name" xml:space="preserve">
     <value>btnPostBuildBuilder</value>
@@ -361,7 +361,7 @@
     <value>142, 13</value>
   </data>
   <data name="lblRunPostBuildEvent.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
+    <value>0</value>
   </data>
   <data name="lblRunPostBuildEvent.Text" xml:space="preserve">
     <value>Ru&amp;n the post-build event:</value>
@@ -400,7 +400,7 @@
     <value>272, 21</value>
   </data>
   <data name="cboRunPostBuildEvent.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
+    <value>1</value>
   </data>
   <data name="&gt;&gt;cboRunPostBuildEvent.Name" xml:space="preserve">
     <value>cboRunPostBuildEvent</value>
@@ -442,7 +442,7 @@
     <value>418, 33</value>
   </data>
   <data name="runPostBuildEventPanel.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
+    <value>6</value>
   </data>
   <data name="&gt;&gt;runPostBuildEventPanel.Name" xml:space="preserve">
     <value>runPostBuildEventPanel</value>

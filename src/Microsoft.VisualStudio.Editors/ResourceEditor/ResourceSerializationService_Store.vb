@@ -82,7 +82,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             '	
             Public Overrides ReadOnly Property Errors() As ICollection
                 Get
-                    Return New Object(-1) {}
+                    Return Array.Empty(Of Object)
                 End Get
             End Property
 

@@ -1,8 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
-  <file datatype="xml" source-language="en" target-language="pt-BR" original="src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/PropertyPages/PropertyPageResources.resx">
+  <file datatype="xml" source-language="en" target-language="pt-BR" original="../PropertyPageResources.resx">
     <body>
-      <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/PropertyPages/PropertyPageResources.resx" />
       <trans-unit id="AllFiles">
         <source>All files</source>
         <target state="translated">Todos os arquivos</target>
@@ -144,8 +143,8 @@
         <note />
       </trans-unit>
       <trans-unit id="LaunchURL">
-        <source>Launch URL:</source>
-        <target state="translated">Inicializar URL:</target>
+        <source>Launch browser:</source>
+        <target state="translated">Iniciar navegador:</target>
         <note />
       </trans-unit>
       <trans-unit id="NameHeader">
@@ -176,6 +175,21 @@
       <trans-unit id="WorkingDirectory">
         <source>Working directory:</source>
         <target state="translated">Diretório de trabalho:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CancelBtn">
+        <source>Cancel</source>
+        <target state="translated">Cancelar</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="OKBtn">
+        <source>OK</source>
+        <target state="translated">OK</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ProfileName">
+        <source>Profile name:</source>
+        <target state="translated">Nome de perfil:</target>
         <note />
       </trans-unit>
     </body>

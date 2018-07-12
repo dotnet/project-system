@@ -1,16 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
-  <file datatype="xml" source-language="en" target-language="pt-BR" original="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/ResolvedSdkReference.xaml">
+  <file datatype="xml" source-language="en" target-language="pt-BR" original="../ResolvedSdkReference.xaml">
     <body>
-      <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/ResolvedSdkReference.xaml" />
       <trans-unit id="Rule|ResolvedSdkReference|DisplayName">
         <source>Resolved SDK Reference</source>
         <target state="translated">Referência do SDK Resolvida</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|ResolvedSdkReference|Description">
-        <source>Resolved SDK reference</source>
-        <target state="translated">Referência do SDK resolvida</target>
+        <source>SDK Reference Properties</source>
+        <target state="translated">Propriedades da Referência do SDK</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|AppXLocation|DisplayName">
@@ -50,23 +49,23 @@
       </trans-unit>
       <trans-unit id="StringProperty|SDKRootFolder|DisplayName">
         <source>SDK Root</source>
-        <target state="new">SDK Root</target>
-        <note></note>
+        <target state="translated">Raiz do SDK</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Name|DisplayName">
         <source>Name</source>
-        <target state="new">Name</target>
-        <note></note>
+        <target state="translated">Nome</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Version|DisplayName">
         <source>Version</source>
-        <target state="new">Version</target>
-        <note></note>
+        <target state="translated">Versão</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|CopyPayloadToSubDirectory|DisplayName">
         <source>Copy Payload to Subdirectory</source>
-        <target state="new">Copy Payload to Subdirectory</target>
-        <note></note>
+        <target state="translated">Copiar Conteúdo para o Subdiretório</target>
+        <note />
       </trans-unit>
     </body>
   </file>

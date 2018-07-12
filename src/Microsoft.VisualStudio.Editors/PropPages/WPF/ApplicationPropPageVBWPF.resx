@@ -175,7 +175,7 @@
     <value>300, 35</value>
   </data>
   <data name="ButtonsLayoutPanel.TabIndex" type="System.Int32, mscorlib">
-    <value>12</value>
+    <value>13</value>
   </data>
   <data name="&gt;&gt;ButtonsLayoutPanel.Name" xml:space="preserve">
     <value>ButtonsLayoutPanel</value>
@@ -502,7 +502,7 @@
     <value>165, 17</value>
   </data>
   <data name="UseApplicationFrameworkCheckBox.TabIndex" type="System.Int32, mscorlib">
-    <value>13</value>
+    <value>14</value>
   </data>
   <data name="UseApplicationFrameworkCheckBox.Text" xml:space="preserve">
     <value>Enable application framewor&amp;k</value>
@@ -535,7 +535,7 @@
     <value>31, 13</value>
   </data>
   <data name="IconLabel.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
+    <value>10</value>
   </data>
   <data name="IconLabel.Text" xml:space="preserve">
     <value>&amp;Icon:</value>
@@ -568,7 +568,7 @@
     <value>CenterImage</value>
   </data>
   <data name="IconPicturebox.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+    <value>12</value>
   </data>
   <data name="&gt;&gt;IconPicturebox.Name" xml:space="preserve">
     <value>IconPicturebox</value>
@@ -595,7 +595,7 @@
     <value>215, 21</value>
   </data>
   <data name="IconCombobox.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
+    <value>11</value>
   </data>
   <data name="&gt;&gt;IconCombobox.Name" xml:space="preserve">
     <value>IconCombobox</value>

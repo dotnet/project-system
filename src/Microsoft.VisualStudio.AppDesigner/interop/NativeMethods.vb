@@ -216,7 +216,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesInterop
             Protected Overrides Sub Finalize()
 
 #If DEBUG Then
-                Debug.Assert(_cookie = 0, "We should never finalize an active connection point. (Interface = " & _eventInterface.FullName & "), allocating code (see stack) is responsible for unhooking the ConnectionPoint by calling Disconnect.  Hookup Stack =" & vbNewLine & _callStack)
+                Debug.Assert(_cookie = 0, "We should never finalize an active connection point. (Interface = " & _eventInterface?.FullName & "), allocating code (see stack) is responsible for unhooking the ConnectionPoint by calling Disconnect.  Hookup Stack =" & vbNewLine & _callStack)
 #End If
                 ' We can't call Disconnect here, because connectionPoint could be finalized earlier
                 MyBase.Finalize()

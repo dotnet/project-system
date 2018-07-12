@@ -6,11 +6,12 @@ using System.ComponentModel.Composition;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
-using ExportOrder = Microsoft.VisualStudio.ProjectSystem.OrderAttribute;
+
 using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
@@ -22,39 +23,45 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
     /// </summary>
     [Export(typeof(IDebugProfileLaunchTargetsProvider))]
     [AppliesTo(ProjectCapability.LaunchProfiles)]
-    [ExportOrder(10)] // The higher the number the higher priority and we want this one last
+    [Order(Order.Default)] // The higher the number the higher priority and we want this one last
     internal class ConsoleDebugTargetsProvider : IDebugProfileLaunchTargetsProvider
     {
-        private static readonly char[] EscapedChars = new[] { '^', '<', '>', '&' };
+        private static readonly char[] s_escapedChars = new[] { '^', '<', '>', '&' };
 
         [ImportingConstructor]
         public ConsoleDebugTargetsProvider(ConfiguredProject configuredProject,
                                            IDebugTokenReplacer tokenReplacer,
                                            IFileSystem fileSystem,
                                            IEnvironmentHelper environment,
+                                           IActiveDebugFrameworkServices activeDebugFramework,
                                            ProjectProperties properties)
         {
-            ConfiguredProject = configuredProject;
             TokenReplacer = tokenReplacer;
             TheFileSystem = fileSystem;
             TheEnvironment = environment;
+            ActiveDebugFramework = activeDebugFramework;
             Properties = properties;
+            UnconfiguredProject = configuredProject.UnconfiguredProject;
         }
 
-        private ConfiguredProject ConfiguredProject { get; }
         private IDebugTokenReplacer TokenReplacer { get; }
         private IFileSystem TheFileSystem { get; }
         private IEnvironmentHelper TheEnvironment { get; }
+        private IActiveDebugFrameworkServices ActiveDebugFramework { get; }
         private ProjectProperties Properties { get; }
+        private UnconfiguredProject UnconfiguredProject { get; }
+
+        private async Task<ConfiguredProject> GetConfiguredProjectForDebugAsync()
+        {
+            return await ActiveDebugFramework.GetConfiguredProjectForActiveFrameworkAsync().ConfigureAwait(false);
+        }
 
         /// <summary>
         /// This provider handles running the Project and empty commandName (this generally just runs the executable)
         /// </summary>
         public bool SupportsProfile(ILaunchProfile profile)
         {
-            return string.IsNullOrWhiteSpace(profile.CommandName) ||
-                profile.CommandName.Equals(LaunchSettingsProvider.RunProjectCommandName, StringComparison.OrdinalIgnoreCase) ||
-                profile.CommandName.Equals(LaunchSettingsProvider.RunExecutableCommandName, StringComparison.OrdinalIgnoreCase);
+            return string.IsNullOrWhiteSpace(profile.CommandName) || IsRunProjectCommand(profile) || IsRunExecutableCommand(profile);
         }
 
         /// <summary>
@@ -81,7 +88,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                                                  .ConfigureAwait(false);
 
 
-            IEnumValue outputType = (IEnumValue)await configuration.OutputType.GetValueAsync()
+            var outputType = (IEnumValue)await configuration.OutputType.GetValueAsync()
                                                                       .ConfigureAwait(false);
 
             return StringComparers.PropertyValues.Equals(outputType.Name, ConfigurationGeneral.OutputTypeValues.Library);
@@ -93,19 +100,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// </summary>
         public async Task<IReadOnlyList<IDebugLaunchSettings>> QueryDebugTargetsAsync(DebugLaunchOptions launchOptions, ILaunchProfile activeProfile)
         {
-
-            string projectFolder = Path.GetDirectoryName(ConfiguredProject.UnconfiguredProject.FullPath);
-
-            List<DebugLaunchSettings> launchSettings = new List<DebugLaunchSettings>();
-
-            var settings = new DebugLaunchSettings(launchOptions);
+            var launchSettings = new List<DebugLaunchSettings>();
 
             // Resolve the tokens in the profile
-            ILaunchProfile resolvedProfile = await TokenReplacer.ReplaceTokensInProfileAsync(activeProfile).ConfigureAwait(true);
+            ILaunchProfile resolvedProfile = await TokenReplacer.ReplaceTokensInProfileAsync(activeProfile).ConfigureAwait(false);
 
-            // We want to launch the process via the command shell when not debugging, except when this debug session is being launched for profiling.
-            bool useCmdShell = (launchOptions & (DebugLaunchOptions.NoDebug | DebugLaunchOptions.Profiling)) == DebugLaunchOptions.NoDebug;
-            var consoleTarget = await GetConsoleTargetForProfile(resolvedProfile, launchOptions, projectFolder, useCmdShell).ConfigureAwait(true);
+            // For "run project", we want to launch the process via the command shell when not debugging, except when this debug session is being
+            // launched for profiling.
+            bool useCmdShell =
+                    IsRunProjectCommand(resolvedProfile) &&
+                    (launchOptions & (DebugLaunchOptions.NoDebug | DebugLaunchOptions.Profiling)) == DebugLaunchOptions.NoDebug;
+
+            var consoleTarget = await GetConsoleTargetForProfile(resolvedProfile, launchOptions, useCmdShell).ConfigureAwait(false);
 
             launchSettings.Add(consoleTarget);
 
@@ -139,7 +145,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             if (useCmdShell)
             {
                 // Escape the characters ^<>& so that they are passed to the application rather than interpreted by cmd.exe.
-                string escapedArgs = EscapeString(debugArgs, EscapedChars);
+                string escapedArgs = EscapeString(debugArgs, s_escapedChars);
                 finalArguments = $"/c \"\"{debugExe}\" {escapedArgs} & pause\"";
                 finalExePath = Path.Combine(Environment.SystemDirectory, "cmd.exe");
             }
@@ -150,24 +156,53 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             }
         }
 
+        private static bool IsRunExecutableCommand(ILaunchProfile profile)
+        {
+            return string.Equals(profile.CommandName, LaunchSettingsProvider.RunExecutableCommandName, StringComparison.OrdinalIgnoreCase);
+        }
+
+        private static bool IsRunProjectCommand(ILaunchProfile profile)
+        {
+            return string.Equals(profile.CommandName, LaunchSettingsProvider.RunProjectCommandName, StringComparison.OrdinalIgnoreCase);
+        }
+
         /// <summary>
         /// This is called on F5 to return the list of debug targets. What we return depends on the type
         /// of project.
         /// </summary>
         private async Task<DebugLaunchSettings> GetConsoleTargetForProfile(ILaunchProfile resolvedProfile, DebugLaunchOptions launchOptions,
-                                                              string projectFolder, bool useCmdShell)
+                                                                           bool useCmdShell)
         {
             var settings = new DebugLaunchSettings(launchOptions);
 
             string executable, arguments;
-            string commandLineArguments = resolvedProfile.CommandLineArgs;
 
-            // If no working directory specified in the profile, we default to the one returned from GetRunnableProjectInformationAsync (if running
-            // the project), or the project folder.
-            string defaultWorkingDir = projectFolder;
+            string projectFolder = Path.GetDirectoryName(UnconfiguredProject.FullPath);
+            var configuredProject = await GetConfiguredProjectForDebugAsync().ConfigureAwait(false);
+
+            // If no working directory specified in the profile, we default to output directory. If for some reason the output directory
+            // is not specified, fall back to the project folder.
+            string defaultWorkingDir = await GetOutputDirectoryAsync(configuredProject).ConfigureAwait(false);
+            if (string.IsNullOrEmpty(defaultWorkingDir))
+            {
+                defaultWorkingDir = projectFolder;
+            }
+            else
+            {
+                if (!Path.IsPathRooted(defaultWorkingDir))
+                {
+                    defaultWorkingDir = TheFileSystem.GetFullPath(Path.Combine(projectFolder, defaultWorkingDir));
+                }
+
+                // If the directory at OutDir doesn't exist, fall back to the project folder
+                if (!TheFileSystem.DirectoryExists(defaultWorkingDir))
+                {
+                    defaultWorkingDir = projectFolder;
+                }
+            }
 
             // Is this profile just running the project? If so we ignore the exe
-            if (string.Equals(resolvedProfile.CommandName, LaunchSettingsProvider.RunProjectCommandName, StringComparison.OrdinalIgnoreCase))
+            if (IsRunProjectCommand(resolvedProfile))
             {
                 // Can't run a class library directly
                 if (await GetIsClassLibraryAsync().ConfigureAwait(false))
@@ -176,7 +211,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 }
 
                 // Get the executable to run, the arguments and the default working directory
-                var runData = await GetRunnableProjectInformationAsync().ConfigureAwait(false);
+                var runData = await GetRunnableProjectInformationAsync(configuredProject).ConfigureAwait(false);
                 executable = runData.Item1;
                 arguments = runData.Item2;
                 if (!string.IsNullOrWhiteSpace(runData.Item3))
@@ -203,30 +238,51 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             else
             {
                 // If the working directory is not rooted we assume it is relative to the project directory
-                if (Path.IsPathRooted(resolvedProfile.WorkingDirectory))
-                {
-                    workingDir = resolvedProfile.WorkingDirectory;
-                }
-                else
-                {
-                    workingDir = Path.GetFullPath(Path.Combine(projectFolder, resolvedProfile.WorkingDirectory));
-                }
+                workingDir = TheFileSystem.GetFullPath(Path.Combine(projectFolder, resolvedProfile.WorkingDirectory.Replace("/", "\\")));
             }
 
             // IF the executable is not rooted, we want to make is relative to the workingDir unless is doesn't contain
-            // any path elements. In that case we are going to assume it is on the path
+            // any path elements. In that case we are going to assume it is in the current directory of the VS process, or on
+            // the environment path. If we can't find it, we just launch it as before.
             if (!string.IsNullOrWhiteSpace(executable))
             {
-                if (!Path.IsPathRooted(executable) && executable.IndexOf(Path.DirectorySeparatorChar) != -1)
+                executable = executable.Replace("/", "\\");
+                if (Path.GetPathRoot(executable) == "\\")
                 {
-                    executable = Path.GetFullPath(Path.Combine(workingDir, executable));
+                    // Root of current drive
+                    executable = TheFileSystem.GetFullPath(executable);
+                }
+                else if (!Path.IsPathRooted(executable))
+                {
+                    if (executable.Contains("\\"))
+                    {
+                        // Combine with the working directory used by the profile
+                        executable = TheFileSystem.GetFullPath(Path.Combine(workingDir, executable));
+                    }
+                    else
+                    {
+                        // Try to resolve against the current working directory (for compat) and failing that, the environment path.
+                        var exeName = executable.EndsWith(".exe", StringComparison.OrdinalIgnoreCase) ? executable : executable + ".exe";
+                        var fullPath = TheFileSystem.GetFullPath(exeName);
+                        if (TheFileSystem.FileExists(fullPath))
+                        {
+                            executable = fullPath;
+                        }
+                        else
+                        {
+                            fullPath = GetFullPathOfExeFromEnvironmentPath(exeName);
+                            if (fullPath != null)
+                            {
+                                executable = fullPath;
+                            }
+                        }
+                    }
                 }
             }
 
             // Now validate the executable path and working directory exist
             ValidateSettings(executable, workingDir, resolvedProfile.Name);
             GetExeAndArguments(useCmdShell, executable, arguments, out string finalExecutable, out string finalArguments);
-
 
             // Apply environment variables.
             if (resolvedProfile.EnvironmentVariables != null && resolvedProfile.EnvironmentVariables.Count > 0)
@@ -241,8 +297,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             settings.Arguments = finalArguments;
             settings.CurrentDirectory = workingDir;
             settings.LaunchOperation = DebugLaunchOperation.CreateProcess;
-            settings.LaunchDebugEngineGuid = await GetDebuggingEngineAsync().ConfigureAwait(false);
-            settings.LaunchOptions = launchOptions | DebugLaunchOptions.StopDebuggingOnEnd;
+            settings.LaunchDebugEngineGuid = await GetDebuggingEngineAsync(configuredProject).ConfigureAwait(false);
+
+            if (resolvedProfile.NativeDebuggingIsEnabled())
+            {
+                settings.AdditionalDebugEngines.Add(DebuggerEngines.NativeOnlyEngine);
+            }
+
             if (settings.Environment.Count > 0)
             {
                 settings.LaunchOptions = settings.LaunchOptions | DebugLaunchOptions.MergeEnvironment;
@@ -255,9 +316,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// Queries properties from the project to get information on how to run the application. The returned Tuple contains:
         /// exeToRun, arguments, workingDir
         /// </summary>
-        private async Task<Tuple<string, string, string>> GetRunnableProjectInformationAsync()
+        private async Task<Tuple<string, string, string>> GetRunnableProjectInformationAsync(ConfiguredProject configuredProject)
         {
-            var properties = ConfiguredProject.Services.ProjectPropertiesProvider.GetCommonProperties();
+            var properties = configuredProject.Services.ProjectPropertiesProvider.GetCommonProperties();
 
             var runCommand = await properties.GetEvaluatedPropertyValueAsync("RunCommand").ConfigureAwait(false);
             var runWorkingDirectory = await properties.GetEvaluatedPropertyValueAsync("RunWorkingDirectory").ConfigureAwait(false);
@@ -288,14 +349,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             // If the working directory is relative, it will be relative to the project root so make it a full path
             if (!string.IsNullOrWhiteSpace(runWorkingDirectory) && !Path.IsPathRooted(runWorkingDirectory))
             {
-                runWorkingDirectory = Path.Combine(Path.GetDirectoryName(ConfiguredProject.UnconfiguredProject.FullPath), runWorkingDirectory);
+                runWorkingDirectory = Path.Combine(Path.GetDirectoryName(UnconfiguredProject.FullPath), runWorkingDirectory);
             }
             return new Tuple<string, string, string>(runCommand, runArguments, runWorkingDirectory);
         }
 
-        private async Task<Guid> GetDebuggingEngineAsync()
+        private async Task<string> GetOutputDirectoryAsync(ConfiguredProject configuredProject)
         {
-            var properties = ConfiguredProject.Services.ProjectPropertiesProvider.GetCommonProperties();
+            var properties = configuredProject.Services.ProjectPropertiesProvider.GetCommonProperties();
+            var outdir = await properties.GetEvaluatedPropertyValueAsync("OutDir").ConfigureAwait(false);
+
+            return outdir;
+        }
+
+        private async Task<Guid> GetDebuggingEngineAsync(ConfiguredProject configuredProject)
+        {
+            var properties = configuredProject.Services.ProjectPropertiesProvider.GetCommonProperties();
             var framework = await properties.GetEvaluatedPropertyValueAsync("TargetFrameworkIdentifier").ConfigureAwait(false);
 
             return ProjectDebuggerProvider.GetManagedDebugEngineForFramework(framework);
@@ -314,7 +383,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 return null;
             }
 
-            var paths = pathEnv.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+            var paths = pathEnv.Split(CommonConstants.SemicolonDelimiter, StringSplitOptions.RemoveEmptyEntries);
             foreach (var path in paths)
             {
                 // We don't want one bad path entry to derail the search
@@ -342,13 +411,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// <returns>The escaped string.</returns>
         internal static string EscapeString(string unescaped, char[] toEscape)
         {
-            if (string.IsNullOrWhiteSpace(unescaped)) return unescaped;
+            if (string.IsNullOrWhiteSpace(unescaped))
+                return unescaped;
 
             bool ShouldEscape(char c)
             {
                 foreach (var escapeChar in toEscape)
                 {
-                    if (escapeChar == c) return true;
+                    if (escapeChar == c)
+                        return true;
                 }
                 return false;
             }

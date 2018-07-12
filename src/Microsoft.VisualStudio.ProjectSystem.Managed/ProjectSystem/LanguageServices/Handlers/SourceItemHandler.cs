@@ -2,185 +2,117 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
+using System.Collections.Immutable;
+using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.CodeAnalysis;
+
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
+using Microsoft.VisualStudio.ProjectSystem.Logging;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 {
     /// <summary>
-    ///     Handles changes to sources files during project evaluations and changes to source files that are passed
+    ///     Handles changes to sources files during project evaluations and sources files that are passed
     ///     to the compiler during design-time builds.
     /// </summary>
-    [Export(typeof(ILanguageServiceCommandLineHandler))]
-    [Export(typeof(ILanguageServiceRuleHandler))]
-    [AppliesTo(ProjectCapability.CSharpOrVisualBasicLanguageService)]
-    internal class SourceItemHandler : AbstractLanguageServiceRuleHandler, ILanguageServiceCommandLineHandler
+    internal partial class SourceItemHandler : AbstractEvaluationCommandLineHandler, IEvaluationHandler, ICommandLineHandler
     {
-        // When a source file has been added/removed from a project, we'll receive notifications for it twice; once
-        // during project evaluation, and once during a design-time build. To prevent us from adding duplicate items 
-        // to the language service, we remember what sources files we've already added.
-        //
-        // We listen to both project evaluation and design-time builds ("command-line arguments") so that when
-        // a file is added to the project, we don't need to wait for a slow design-time build just to get useful 
-        // IntelliSense.
         private readonly UnconfiguredProject _project;
-        private readonly Dictionary<IWorkspaceProjectContext, HashSet<string>> _sourceFilesByContext = new Dictionary<IWorkspaceProjectContext, HashSet<string>>();
-        private readonly IPhysicalProjectTree _projectTree;
+        private readonly IWorkspaceProjectContext _context;
 
-        [ImportingConstructor]
-        public SourceItemHandler(UnconfiguredProject project, IPhysicalProjectTree projectTree)
+        public SourceItemHandler(UnconfiguredProject project, IWorkspaceProjectContext context)
+            : base(project)
         {
             Requires.NotNull(project, nameof(project));
-            Requires.NotNull(projectTree, nameof(projectTree));
+            Requires.NotNull(context, nameof(context));
 
             _project = project;
-            _projectTree = projectTree;
+            _context = context;
         }
 
-        public override string RuleName
+        public void Handle(IComparable version, IProjectChangeDescription projectChange, bool isActiveContext, IProjectLogger logger)
         {
-            get { return CSharp.SchemaName; }
+            Requires.NotNull(version, nameof(version));
+            Requires.NotNull(projectChange, nameof(projectChange));
+            Requires.NotNull(logger, nameof(logger));
+
+            ApplyEvaluationChanges(version, projectChange.Difference, projectChange.After.Items, isActiveContext, logger);
         }
 
-        public override RuleHandlerType HandlerType
+        public void Handle(IComparable version, BuildOptions added, BuildOptions removed, bool isActiveContext, IProjectLogger logger)
         {
-            get { return RuleHandlerType.Evaluation; }
-        }
-
-        public void Handle(CommandLineArguments added, CommandLineArguments removed, IWorkspaceProjectContext context, bool isActiveContext)
-        {
+            Requires.NotNull(version, nameof(version));
             Requires.NotNull(added, nameof(added));
             Requires.NotNull(removed, nameof(removed));
+            Requires.NotNull(logger, nameof(logger));
 
-            foreach (CommandLineSourceFile sourceFile in removed.SourceFiles)
-            {
-                RemoveSourceFile(sourceFile.Path, context);
-            }
+            IProjectChangeDiff difference = ConvertToProjectDiff(added, removed);
 
-            foreach (CommandLineSourceFile sourceFile in added.SourceFiles)
-            {
-                AddSourceFile(sourceFile.Path, context, isActiveContext);
-            }
+            ApplyDesignTimeChanges(version, difference, isActiveContext, logger);
         }
 
-        public override async Task HandleAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e, IProjectChangeDescription projectChange, IWorkspaceProjectContext context, bool isActiveContext)
+        protected override void AddToContext(string fullPath, IImmutableDictionary<string, string> metadata, bool isActiveContext, IProjectLogger logger)
         {
-            Requires.NotNull(e, nameof(e));
-            Requires.NotNull(projectChange, nameof(projectChange));
+            string[] folderNames = GetFolderNames(fullPath, metadata);
 
-            IProjectChangeDiff diff = projectChange.Difference;
-
-            foreach (string filePath in diff.RemovedItems)
-            {
-                RemoveSourceFile(filePath, context);
-            }
-
-            if (diff.AddedItems.Count > 0 || diff.RenamedItems.Count > 0 || diff.ChangedItems.Count > 0)
-            {
-                // Make sure the tree matches the same version of the evaluation that we're handling
-                IProjectTreeServiceState treeState = await PublishTreeAsync(e).ConfigureAwait(true); // TODO: https://github.com/dotnet/roslyn-project-system/issues/353
-
-                foreach (string filePath in diff.AddedItems)
-                {
-                    AddSourceFile(filePath, context, isActiveContext, treeState);
-                }
-
-                foreach (KeyValuePair<string, string> filePaths in diff.RenamedItems)
-                {
-                    RemoveSourceFile(filePaths.Key, context);
-                    AddSourceFile(filePaths.Value, context, isActiveContext, treeState);
-                }
-
-                foreach (string filePath in diff.ChangedItems)
-                {
-                    // We add and then remove ChangedItems to handle Linked metadata changes
-                    RemoveSourceFile(filePath, context);
-                    AddSourceFile(filePath, context, isActiveContext);
-                }
-            }
+            logger.WriteLine("Adding source file '{0}'", fullPath);
+            _context.AddSourceFile(fullPath, isInCurrentContext: isActiveContext, folderNames: folderNames);
         }
 
-        public override Task OnContextReleasedAsync(IWorkspaceProjectContext context)
+        protected override void RemoveFromContext(string fullPath, IProjectLogger logger)
         {
-            _sourceFilesByContext.Remove(context);
-            return Task.CompletedTask;
+            logger.WriteLine("Removing source file '{0}'", fullPath);
+            _context.RemoveSourceFile(fullPath);
         }
 
-        private void RemoveSourceFile(string fullPath, IWorkspaceProjectContext context)
-        {
-            fullPath = _project.MakeRooted(fullPath);
-
-            if (_sourceFilesByContext.TryGetValue(context, out HashSet<string> sourceFiles) && sourceFiles.Remove(fullPath))
-            {
-                context.RemoveSourceFile(fullPath);
-            }
-        }
-
-        private void AddSourceFile(string fullPath, IWorkspaceProjectContext context, bool isActiveContext, IProjectTreeServiceState state = null)
-        {
-            fullPath = _project.MakeRooted(fullPath);
-
-            if (!_sourceFilesByContext.TryGetValue(context, out HashSet<string> sourceFiles))
-            {
-                sourceFiles = new HashSet<string>(StringComparers.Paths);
-                _sourceFilesByContext.Add(context, sourceFiles);
-            }
-            else if (sourceFiles.Contains(fullPath))
-            {
-                return;
-            }
-
-            string[] folderNames = Array.Empty<string>();
-            if (state != null)  // We're looking at a generated file, which doesn't appear in a tree.
-            {
-                folderNames = GetFolders(fullPath, state).ToArray();
-            }
-
-            sourceFiles.Add(fullPath);
-            context.AddSourceFile(fullPath, folderNames: folderNames, isInCurrentContext: isActiveContext);
-        }
-
-        private IEnumerable<string> GetFolders(string fullPath, IProjectTreeServiceState state)
+        private string[] GetFolderNames(string fullPath, IImmutableDictionary<string, string> metadata)
         {
             // Roslyn wants the effective set of folders from the source up to, but not including the project 
             // root to handle the cases where linked files have a different path in the tree than what its path 
-            // on disk is. It uses these folders for things that create files alongside others, such as extract
-            // interface.
+            // on disk is. It uses these folders for code actions that create files alongside others, such as 
+            // extract interface.
 
-            IProjectTree tree = state.TreeProvider.FindByPath(state.Tree, fullPath);
-            if (tree == null)
-                yield break;    // We got a tree that is out-of-date than what our evaluation is based on
+            // First we check for a linked item, and we use its effective folder in 
+            // the tree, otherwise, we just use the parent folder of the file itself
+            string parentFolder = GetLinkedParentFolder(metadata);
+            if (parentFolder == null)
+                parentFolder = GetParentFolder(fullPath);
 
-            IProjectTree parent = tree;
-
-            do
+            // We now have a folder in the form of `Folder1\Folder2` relative to the
+            // project directory  split it up into individual path components
+            if (parentFolder.Length > 0)
             {
-                // Source files can be nested under other files
-                if (parent.IsFolder)
-                    yield return parent.Caption;
+                return parentFolder.Split(FileItemServices.PathSeparatorCharacters);
+            }
 
-                parent = parent.Parent;
-
-            } while (!parent.IsRoot());
+            return null;
         }
 
-        private Task<IProjectTreeServiceState> PublishTreeAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e)
+        private string GetLinkedParentFolder(IImmutableDictionary<string, string> metadata)
         {
-            try
-            {
-                // Make sure the tree matches the same version of the evaluation that we're handling
-                return _projectTree.TreeService.PublishTreeAsync(e.ToRequirements(), blockDuringLoadingTree: true);
-            }
-            catch (ActiveProjectConfigurationChangedException)
-            {
-                // Project configuration changed while we blocked waiting for the tree, instead of trying to match
-                // exactly the same version, just give up and publish the latest tree. Note, don't need to handle
-                // ActiveProjectConfigurationChangedException as it will retry if the configuration changed.
-                return _projectTree.TreeService.PublishLatestTreeAsync(blockDuringLoadingTree: true);
-            }
+            string linkFilePath = FileItemServices.GetLinkFilePath(metadata);
+            if (linkFilePath != null)
+                return Path.GetDirectoryName(linkFilePath);
+
+            return null;
+        }
+
+        private string GetParentFolder(string fullPath)
+        {
+            return Path.GetDirectoryName(_project.MakeRelative(fullPath));
+        }
+
+        private IProjectChangeDiff ConvertToProjectDiff(BuildOptions added, BuildOptions removed)
+        {
+            var addedSet = ImmutableHashSet.ToImmutableHashSet(GetFilePaths(added), StringComparers.Paths);
+            var removedSet = ImmutableHashSet.ToImmutableHashSet(GetFilePaths(removed), StringComparers.Paths);
+
+            return new ProjectChangeDiff(addedSet, removedSet);
+        }
+
+        private IEnumerable<string> GetFilePaths(BuildOptions options)
+        {
+            return options.SourceFiles.Select(f => _project.MakeRelative(f.Path));
         }
     }
 }

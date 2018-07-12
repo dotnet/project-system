@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
-using Moq;
 using System.Collections.Immutable;
+
+using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
@@ -12,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             mock.SetupGet(r => r.RuleName)
                 .Returns(ruleName);
 
-            var dictionary = ImmutableDictionary<string, string>.Empty.Add(propertyName, propertyValue);
+            var dictionary = ImmutableStringDictionary<string>.EmptyOrdinal.Add(propertyName, propertyValue);
 
             mock.SetupGet(r => r.Properties)
                 .Returns(dictionary);

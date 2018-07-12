@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System.Threading.Tasks;
+using Microsoft.VisualStudio.Threading;
+
 using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem
@@ -14,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             mock.Setup(s => s.CreateFileAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
                 .Returns<string, string, string>((templateFile, parentNode, specialFileName) =>
                 {
-                    return Task.FromResult(true);
+                    return TaskResult.True;
                 });
 
             return mock.Object;

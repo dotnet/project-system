@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+
 using Microsoft.VisualStudio.Collections;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
@@ -11,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     /// <summary>
     /// Represents one launch profile read from the launchSettings file.
     /// </summary>
-    internal class WritableLaunchProfile : IWritableLaunchProfile
+    internal class WritableLaunchProfile : IWritableLaunchProfile, IWritablePersistOption
     {
         public WritableLaunchProfile()
         {
@@ -22,17 +23,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             Name = profile.Name;
             ExecutablePath = profile.ExecutablePath;
             CommandName = profile.CommandName;
-            CommandLineArgs = profile.CommandLineArgs; 
+            CommandLineArgs = profile.CommandLineArgs;
             WorkingDirectory = profile.WorkingDirectory;
             LaunchBrowser = profile.LaunchBrowser;
             LaunchUrl = profile.LaunchUrl;
+            DoNotPersist = profile.IsInMemoryObject();
 
-            if(profile.EnvironmentVariables  != null)
+            if (profile.EnvironmentVariables != null)
             {
                 EnvironmentVariables = new Dictionary<string, string>(profile.EnvironmentVariables, StringComparer.Ordinal);
             }
 
-            if(profile.OtherSettings  != null)
+            if (profile.OtherSettings != null)
             {
                 OtherSettings = new Dictionary<string, object>(profile.OtherSettings, StringComparer.Ordinal);
             }
@@ -45,6 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         public string WorkingDirectory { get; set; }
         public bool LaunchBrowser { get; set; }
         public string LaunchUrl { get; set; }
+        public bool DoNotPersist { get; set; }
 
         public Dictionary<string, string> EnvironmentVariables { get; } = new Dictionary<string, string>(StringComparer.Ordinal);
 
@@ -83,7 +86,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 return false;
             }
 
-            return true;
+            // Compare in-memory states
+            return debugProfile1.IsInMemoryObject() == debugProfile2.IsInMemoryObject();
         }
     }
 }

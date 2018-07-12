@@ -53,7 +53,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             '
             SuspendLayout()
             AutoScroll = False
-            BackColor = Drawing.SystemColors.ControlLight
             Name = "ApplicationDesignerView"
             ResumeLayout(False)
             PerformLayout()
@@ -825,8 +824,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             '  adding the AppicationDesignerPanels, so that the final size of the HostingPanel is
             '  known.
             For i As Integer = 0 To _designerPanels.GetUpperBound(0)
-                Dim iTab As Integer = AddTab(_designerPanels(i).TabTitle, _designerPanels(i).TabAutomationName)
-                GetTabButton(iTab).TabStop = False 'Keep from setting focus to the tabs when they're clicked so we don't fire OnItemGotFocus
+                AddTab(_designerPanels(i).TabTitle, _designerPanels(i).TabAutomationName)
             Next
 
             'Now that all the tab titles have been figured out, we can go ahead and add all the 
@@ -949,7 +947,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                     End If
                 End Try
             End If
-            Return New Guid() {}
+            Return Array.Empty(Of Guid)
         End Function
 
         Private Sub SetSite(serviceProvider As IServiceProvider)
@@ -1000,7 +998,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="Index">Index of Designer panel to show</param>
         ''' <param name="ForceShow">Forces the Show code to go through, even if the current panel is the same as the one requested.</param>
         ''' <remarks></remarks>
-        Private Sub ShowTab(Index As Integer, Optional ForceShow As Boolean = False)
+        Private Sub ShowTab(Index As Integer, Optional ForceShow As Boolean = False, Optional ForceActivate As Boolean = False)
 
             Common.Switches.TracePDFocus(TraceLevel.Warning, "ApplicationDesignerView.ShowTab(" & Index & ")")
             If _inShowTab Then
@@ -1026,7 +1024,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 Common.Switches.TracePDPerfBegin("ApplicationDesignerView.ShowTab")
                 Common.Switches.TracePDFocus(TraceLevel.Error, "CodeMarker: perfMSVSEditorsShowTabBegin")
                 Common.Switches.TracePDPerf("CodeMarker: perfMSVSEditorsShowTabBegin")
-                CodeMarkers.Instance.CodeMarker(CodeMarkerEvent.perfMSVSEditorsShowTabBegin)
+                CodeMarkers.Instance.CodeMarker(RoslynCodeMarkerEvent.perfMSVSEditorsShowTabBegin)
 
                 Dim NewCurrentPanel As ApplicationDesignerPanel = _designerPanels(Index)
                 Dim ErrorMessage As String = Nothing
@@ -1101,6 +1099,17 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                             End If
 
                         End With
+                    ElseIf ForceActivate Then
+                        ' We need to reactivate the page to ensure that focus returns to the first control, as the user
+                        ' may have been using keyboard navigation to access the page and would otherwise be on the final
+                        ' control in the form again (putting them right back in the DesignerTabControl on next Tab).
+                        Dim PropPageView As PropPageDesigner.PropPageDesignerView
+                        PropPageView = TryCast(NewCurrentPanel.DocView, PropPageDesigner.PropPageDesignerView)
+                        If PropPageView IsNot Nothing Then
+                            PropPageView.ActivatePage(PropPageView.PropPage)
+                        Else
+                            'Must have had error loading
+                        End If
                     End If
                 Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(ShowTab), NameOf(ApplicationDesignerView))
                     ErrorMessage = Common.DebugMessageFromException(ex)
@@ -1119,7 +1128,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
 #If DEBUG Then
                     If NewCurrentPanel.CustomViewProvider IsNot Nothing Then
-                        'New panel has a custom view provider, so IVsWindowFrame.Show won’t have been called.
+                        'New panel has a custom view provider, so IVsWindowFrame.Show wonï¿½t have been called.
                     Else
                         If NewCurrentPanel.PropertyPageInfo IsNot Nothing AndAlso NewCurrentPanel.PropertyPageInfo.LoadException IsNot Nothing Then
                             'There was an error loading the page, so IVsWindowFrame.Show() would not have been called
@@ -1155,7 +1164,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 'We may have opened a new page, need to verify all dirty states
                 DelayRefreshDirtyIndicators()
 
-                CodeMarkers.Instance.CodeMarker(CodeMarkerEvent.perfMSVSEditorsShowTabEnd)
+                CodeMarkers.Instance.CodeMarker(RoslynCodeMarkerEvent.perfMSVSEditorsShowTabEnd)
                 Common.Switches.TracePDFocus(TraceLevel.Error, "CodeMarker: perfMSVSEditorsShowTabEnd")
                 Common.Switches.TracePDPerf("CodeMarker: perfMSVSEditorsShowTabEnd")
                 Common.Switches.TracePDPerfEnd("ApplicationDesignerView.ShowTab")
@@ -1229,14 +1238,25 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="item"></param>
         ''' <remarks></remarks>
         Public Overrides Sub OnItemClick(item As ProjectDesignerTabButton)
+            OnItemClick(item, reactivatePage:=False)
+        End Sub
+
+        Public Overrides Sub OnItemClick(item As ProjectDesignerTabButton, reactivatePage As Boolean)
             Common.Switches.TracePDFocus(TraceLevel.Warning, "ApplicationDesignerView.OnItemClick")
-            MyBase.OnItemClick(item)
-            ShowTab(SelectedIndex, ForceShow:=True)
+            MyBase.OnItemClick(item, reactivatePage)
+            ShowTab(SelectedIndex, ForceShow:=True, ForceActivate:=reactivatePage)
 
             ' we need set back the tab, if we failed to switch...
             If SelectedIndex <> _activePanelIndex Then
                 SelectedIndex = _activePanelIndex
             End If
+        End Sub
+
+        Protected Overrides Sub OnThemeChanged()
+            Dim VsUIShell5 = VsUIShell5Service
+            BackColor = Common.ShellUtil.GetProjectDesignerThemeColor(VsUIShell5, "Background", __THEMEDCOLORTYPE.TCT_Background, Drawing.SystemColors.Window)
+
+            MyBase.OnThemeChanged()
         End Sub
 
 

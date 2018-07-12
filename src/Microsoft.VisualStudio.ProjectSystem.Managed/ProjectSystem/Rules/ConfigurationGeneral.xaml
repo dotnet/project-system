@@ -50,6 +50,16 @@
             <DataSource Persistence="ProjectFileWithInterception" PersistedName="TargetFrameworkMoniker" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
         </StringProperty.DataSource>
     </StringProperty>
+    <StringProperty Name="TargetFrameworkMonikers" DisplayName="Target Framework Monikers" ReadOnly="True">
+        <StringProperty.DataSource>
+            <DataSource Persistence="ProjectFileWithInterception" PersistedName="TargetFrameworkMonikers" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext"/>
+        </StringProperty.DataSource>
+    </StringProperty>
+    <BoolProperty Name="DisableFastUpToDateCheck" DisplayName="Disable Fast Up To Date Check">
+        <BoolProperty.DataSource>
+            <DataSource Persistence="ProjectFile" PersistedName="DisableFastUpToDateCheck" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+        </BoolProperty.DataSource>
+    </BoolProperty>
 
     <StringProperty Name="TargetPath" />
     <StringProperty Name="DocumentationFile" DisplayName="XML doc comments file" />
@@ -65,14 +75,20 @@
     <StringProperty Name="BaseIntermediateOutputPath" />
     <EnumProperty Name="OutputType">
         <EnumValue Name="Library" DisplayName="Class Library" />
-        <EnumValue Name="exe" DisplayName="Console Application" />
-        <EnumValue Name="winexe" DisplayName="Windows Application" />
+        <EnumValue Name="Exe" DisplayName="Console Application" />
+        <EnumValue Name="WinExe" DisplayName="Windows Application" />
         <EnumValue Name="AppContainerExe" DisplayName="Windows Store app" />
         <EnumValue Name="WinMDObj" DisplayName="WinMD" />
+        <EnumProperty.DataSource>
+            <DataSource Persistence="ProjectFile" PersistedName="OutputType" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+        </EnumProperty.DataSource>
     </EnumProperty>
     <StringListProperty Name="AvailablePlatforms" Separator="," />
     <BoolProperty Name="Optimize" Description="Should compiler optimize output?" />
+    <!-- Same as MSBuildProjectDirectory but has a directory separator '\' appended at the end.-->
+    <StringProperty Name="ProjectDir" Visible="false"/>
     <StringProperty Name="MSBuildProjectDirectory" Visible="false"/>
+    <StringProperty Name="MSBuildProjectFullPath" Visible="false" />
     <StringProperty Name="DefaultPlatform" Visible="false" />
     <StringProperty Name="PackageAction" Visible="false" Description="The MSBuild target to use when packaging a project." />
     <StringProperty Name="DefaultContentType" Visible="false" Description="The default content type name to use when adding files." />
@@ -123,5 +139,6 @@
     <StringProperty Name="SharedProjectAppliesTo" Visible="False" Description="Capability match expression that at a minimum tests for the language of the Shared Project; used to filter Add Shared Project Reference choices."/>
     <BoolProperty Name="AlwaysUseNumericalSuffixInItemNames" Visible="False" Description="Indicates if names of newly added items should always be suffixed with a number." />  
     <StringProperty Name="LanguageServiceName" ReadOnly="True" Visible="False" Description="Represents the LanguageName that is passed to Roslyn" />
+    <StringProperty Name="LanguageServiceId" ReadOnly="True" Visible="False" Description="Represents the GUID of object that implements the language service for the project." />
     <StringProperty Name="TemplateLanguage" ReadOnly="True" Visible="False" Description="Represent the language that is persisted in items and project templates" />
 </Rule>

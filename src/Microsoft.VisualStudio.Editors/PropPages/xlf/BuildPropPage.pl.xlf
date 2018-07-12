@@ -1,8 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
-  <file datatype="xml" source-language="en" target-language="pl" original="src/Microsoft.VisualStudio.Editors/PropPages/BuildPropPage.resx">
+  <file datatype="xml" source-language="en" target-language="pl" original="../BuildPropPage.resx">
     <body>
-      <group id="src/Microsoft.VisualStudio.Editors/PropPages/BuildPropPage.resx" />
       <trans-unit id="lblConditionalCompilationSymbols.Text">
         <source>Conditional compilation s&amp;ymbols:</source>
         <target state="translated">S&amp;ymbole kompilacji warunkowej:</target>
@@ -120,7 +119,7 @@
       </trans-unit>
       <trans-unit id="lblPlatformTarget.Text">
         <source>Platform tar&amp;get:</source>
-        <target state="translated">Miejsce &amp;docelowe platformy:</target>
+        <target state="translated">Platforma doce&amp;lowa:</target>
         <note />
       </trans-unit>
       <trans-unit id="lblSGenOption.Text">

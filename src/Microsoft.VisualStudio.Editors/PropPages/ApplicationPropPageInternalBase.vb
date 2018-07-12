@@ -128,7 +128,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 ' TODO: Remove IsTargetFrameworksDefined check after issue #800 is resolved.
                 If (TargetFrameworksDefined() = False And vsFrameworkMultiTargeting IsNot Nothing) Then
 
-                    Dim supportedFrameworks As IEnumerable(Of TargetFrameworkMoniker) = TargetFrameworkMoniker.GetSupportedTargetFrameworkMonikers(vsFrameworkMultiTargeting, DTEProject)
+                    Dim supportedTargetFrameworksDescriptor = GetPropertyDescriptor("SupportedTargetFrameworks")
+                    Dim supportedFrameworks As IEnumerable(Of TargetFrameworkMoniker) = TargetFrameworkMoniker.GetSupportedTargetFrameworkMonikers(vsFrameworkMultiTargeting, DTEProject, supportedTargetFrameworksDescriptor)
 
                     For Each supportedFramework As TargetFrameworkMoniker In supportedFrameworks
                         targetFrameworkComboBox.Items.Add(supportedFramework)

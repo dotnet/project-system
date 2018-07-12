@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.ComponentModel.Composition;
+
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.ProjectSystem.Imaging;
 
@@ -30,9 +31,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Imaging
                 case ProjectImageKey.SharedItemsImportFile:
                 case ProjectImageKey.SharedProjectRoot:
                     return KnownMonikers.CSSharedProject.ToProjectSystemType();
-
-                case ProjectImageKey.AppDesignerFolder:
-                    return KnownMonikers.Property.ToProjectSystemType();
 
                 default:
                     return null;

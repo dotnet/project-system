@@ -127,7 +127,7 @@
     <value>xUnit Test Project (.NET Core)</value>
   </data>
   <data name="12" xml:space="preserve">
-    <value>A project that contains xunit tests that can run on .NET Core on Windows, Linux and MacOS</value>
+    <value>A project that contains xUnit.net tests that can run on .NET Core on Windows, Linux and MacOS.</value>
   </data>
   <data name="2" xml:space="preserve">
     <value>C# Project Files (*.csproj);*.csproj</value>

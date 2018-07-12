@@ -740,7 +740,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             helpKeywordAttr.Arguments.Add(New CodeAttributeArgument(New CodePrimitiveExpression(HelpIDs.MySettingsHelpKeyword)))
             SettingProperty.CustomAttributes.Add(helpKeywordAttr)
 
-            Dim MethodInvokeExpr As New CodeMethodInvokeExpression(New CodeTypeReferenceExpression(SettingProperty.Type), DefaultInstancePropertyName, New CodeExpression() {})
+            Dim MethodInvokeExpr As New CodeMethodInvokeExpression(New CodeTypeReferenceExpression(SettingProperty.Type), DefaultInstancePropertyName, Array.Empty(Of CodeExpression))
             SettingProperty.GetStatements.Add(New CodeMethodReturnStatement(MethodInvokeExpr))
 
             ' Create a Module

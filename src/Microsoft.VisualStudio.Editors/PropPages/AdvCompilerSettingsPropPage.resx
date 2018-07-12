@@ -169,7 +169,7 @@
     <value>182, 17</value>
   </data>
   <data name="RemoveIntegerChecks.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="RemoveIntegerChecks.Text" xml:space="preserve">
     <value>&amp;Remove integer overflow checks</value>
@@ -202,7 +202,7 @@
     <value>122, 17</value>
   </data>
   <data name="Optimize.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="Optimize.Text" xml:space="preserve">
     <value>&amp;Enable optimizations</value>
@@ -235,7 +235,7 @@
     <value>96, 13</value>
   </data>
   <data name="DllBaseLabel.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="DllBaseLabel.Text" xml:space="preserve">
     <value>DLL &amp;base address:</value>
@@ -265,7 +265,7 @@
     <value>310, 20</value>
   </data>
   <data name="DllBaseTextbox.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="&gt;&gt;DllBaseTextbox.Name" xml:space="preserve">
     <value>DllBaseTextbox</value>
@@ -295,7 +295,7 @@
     <value>142, 17</value>
   </data>
   <data name="DefineDebug.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
+    <value>8</value>
   </data>
   <data name="DefineDebug.Text" xml:space="preserve">
     <value>Define &amp;DEBUG constant</value>
@@ -328,7 +328,7 @@
     <value>140, 17</value>
   </data>
   <data name="DefineTrace.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
+    <value>9</value>
   </data>
   <data name="DefineTrace.Text" xml:space="preserve">
     <value>Define &amp;TRACE constant</value>
@@ -373,7 +373,7 @@
     <value>509, 21</value>
   </data>
   <data name="GenerateSerializationAssemblyComboBox.TabIndex" type="System.Int32, mscorlib">
-    <value>12</value>
+    <value>14</value>
   </data>
   <data name="&gt;&gt;GenerateSerializationAssemblyComboBox.Name" xml:space="preserve">
     <value>GenerateSerializationAssemblyComboBox</value>
@@ -400,7 +400,7 @@
     <value>509, 20</value>
   </data>
   <data name="DefineConstantsTextbox.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
+    <value>11</value>
   </data>
   <data name="&gt;&gt;DefineConstantsTextbox.Name" xml:space="preserve">
     <value>DefineConstantsTextbox</value>
@@ -430,7 +430,7 @@
     <value>165, 13</value>
   </data>
   <data name="GenerateSerializationAssembliesLabel.TabIndex" type="System.Int32, mscorlib">
-    <value>11</value>
+    <value>13</value>
   </data>
   <data name="GenerateSerializationAssembliesLabel.Text" xml:space="preserve">
     <value>Generate &amp;serialization assemblies:</value>
@@ -463,7 +463,7 @@
     <value>94, 13</value>
   </data>
   <data name="CustomConstantsLabel.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
+    <value>10</value>
   </data>
   <data name="CustomConstantsLabel.Text" xml:space="preserve">
     <value>&amp;Custom constants:</value>
@@ -526,7 +526,7 @@
     <value>523, 13</value>
   </data>
   <data name="compilationConstantsTableLayoutPanel.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
+    <value>7</value>
   </data>
   <data name="&gt;&gt;compilationConstantsTableLayoutPanel.Name" xml:space="preserve">
     <value>compilationConstantsTableLayoutPanel</value>
@@ -610,7 +610,7 @@
     <value>107, 13</value>
   </data>
   <data name="GenerateDebugInfoLabel.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="GenerateDebugInfoLabel.Text" xml:space="preserve">
     <value>&amp;Generate debug info:</value>
@@ -640,7 +640,7 @@
     <value>310, 21</value>
   </data>
   <data name="DebugInfoComboBox.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
+    <value>6</value>
   </data>
   <data name="&gt;&gt;DebugInfoComboBox.Name" xml:space="preserve">
     <value>DebugInfoComboBox</value>
@@ -694,7 +694,7 @@
     <value>308, 13</value>
   </data>
   <data name="CustomConstantsExampleLabel.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
+    <value>12</value>
   </data>
   <data name="CustomConstantsExampleLabel.Text" xml:space="preserve">
     <value>Example: Name1="Value1",Name2="Value2",Name3="Value3"</value>
@@ -832,7 +832,7 @@
     <value>14, 9, 3, 3</value>
   </data>
   <data name="CompileWithDotNetNative.TabIndex" type="System.Int32, mscorlib">
-    <value>11</value>
+    <value>15</value>
   </data>
   <data name="CompileWithDotNetNative.Text" xml:space="preserve">
     <value>Compile with .NET Native toolchain</value>
@@ -859,7 +859,7 @@
     <value>14, 9, 3, 3</value>
   </data>
   <data name="EnableGatekeeperAudit.TabIndex" type="System.Int32, mscorlib">
-    <value>12</value>
+    <value>16</value>
   </data>
   <data name="EnableGatekeeperAudit.Text" xml:space="preserve">
     <value>Enable static analysis for .NET Native</value>

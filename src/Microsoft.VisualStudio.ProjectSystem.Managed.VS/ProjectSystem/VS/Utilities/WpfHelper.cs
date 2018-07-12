@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
                 DataGridCellsPresenter presenter = GetVisualChild<DataGridCellsPresenter>(rowContainer);
 
                 // try to get the cell but it may possibly be virtualized
-                DataGridCell cell = (DataGridCell)presenter.ItemContainerGenerator.ContainerFromIndex(column);
+                var cell = (DataGridCell)presenter.ItemContainerGenerator.ContainerFromIndex(column);
                 if (cell == null)
                 {
                     // now try to bring into view and retreive the cell
@@ -30,7 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
 
         public static DataGridRow GetRow(DataGrid dataGrid, int index)
         {
-            DataGridRow row = (DataGridRow)dataGrid.ItemContainerGenerator.ContainerFromIndex(index);
+            var row = (DataGridRow)dataGrid.ItemContainerGenerator.ContainerFromIndex(index);
             if (row == null)
             {
                 // may be virtualized, bring into view and try again
@@ -42,11 +42,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
 
         public static T GetVisualChild<T>(Visual parent) where T : Visual
         {
-            T child = default(T);
+            var child = default(T);
             int numVisuals = VisualTreeHelper.GetChildrenCount(parent);
             for (int i = 0; i < numVisuals; i++)
             {
-                Visual v = (Visual)VisualTreeHelper.GetChild(parent, i);
+                var v = (Visual)VisualTreeHelper.GetChild(parent, i);
                 child = v as T;
                 if (child == null)
                 {

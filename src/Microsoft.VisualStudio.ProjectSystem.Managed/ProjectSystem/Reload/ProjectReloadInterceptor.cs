@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
+
 using Microsoft.Build.Construction;
 
 namespace Microsoft.VisualStudio.ProjectSystem
@@ -11,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
     /// C#/VB specific project reload interceptor.
     /// </summary>
     [Export(typeof(IProjectReloadInterceptor))]
-    [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
+    [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp)]
     internal sealed class ProjectReloadInterceptor : IProjectReloadInterceptor
     {
         [ImportingConstructor]
@@ -32,26 +33,26 @@ namespace Microsoft.VisualStudio.ProjectSystem
         private static bool NeedsForcedReload(ImmutableArray<ProjectPropertyElement> oldProperties, ImmutableArray<ProjectPropertyElement> newProperties)
         {
             // If user added or removed TargetFramework/TargetFrameworks property, then force a full project reload.
-            var oldTargets = ComputeProjectTargets(oldProperties);
+            (bool hasTargetFramework, bool hasTargetFrameworks) = ComputeProjectTargets(oldProperties);
             var newTargets = ComputeProjectTargets(newProperties);
 
-            return oldTargets.HasTargetFramework != newTargets.HasTargetFramework || oldTargets.HasTargetFrameworks != newTargets.HasTargetFrameworks;
+            return hasTargetFramework != newTargets.hasTargetFramework || hasTargetFrameworks != newTargets.hasTargetFrameworks;
         }
 
-        private static (bool HasTargetFramework, bool HasTargetFrameworks) ComputeProjectTargets(ImmutableArray<ProjectPropertyElement> properties)
+        private static (bool hasTargetFramework, bool hasTargetFrameworks) ComputeProjectTargets(ImmutableArray<ProjectPropertyElement> properties)
         {
-            (bool HasTargetFramework, bool HasTargetFrameworks) targets = (false, false);
+            (bool hasTargetFramework, bool hasTargetFrameworks) targets = (false, false);
 
             foreach (var property in properties)
             {
                 if (property.Name.Equals(ConfigurationGeneral.TargetFrameworkProperty, StringComparison.OrdinalIgnoreCase))
                 {
-                    targets.HasTargetFramework = true;
+                    targets.hasTargetFramework = true;
                 }
 
                 if (property.Name.Equals(ConfigurationGeneral.TargetFrameworksProperty, StringComparison.OrdinalIgnoreCase))
                 {
-                    targets.HasTargetFrameworks = true;
+                    targets.hasTargetFrameworks = true;
                 }
             }
 

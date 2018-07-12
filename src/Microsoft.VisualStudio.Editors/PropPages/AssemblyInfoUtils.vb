@@ -38,7 +38,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="Version">[Out] the resulting combined version string, if valid.</param>
         Public Sub ValidateVersion(VersionTextBox As Windows.Forms.TextBox, MaxVersionPartValue As UInteger, PropertyName As String, WildcardsAllowed As Boolean, ByRef version As String)
             ' Validate the semantic version prefix (i.e. "1.0.0" prefix of "1.0.0-beta1")
-            Dim CombinedVersion = Split(VersionTextBox.Text, Delimiter:="-")(0).TrimStart()
+            Dim CombinedVersion = Split(Split(VersionTextBox.Text, "+")(0), "-")(0).TrimStart()
             InternalParseVersion(CombinedVersion, PropertyName, MaxVersionPartValue, WildcardsAllowed, version)
         End Sub
 

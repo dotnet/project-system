@@ -2,8 +2,11 @@
 
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
+
 using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.Composition;
+using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
+
 using RoslynRenamer = Microsoft.CodeAnalysis.Rename;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
@@ -14,24 +17,44 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         private readonly IProjectThreadingService _threadingService;
 
         [ImportingConstructor]
-        public RoslynServices(IProjectThreadingService threadingService)
+        public RoslynServices(
+            IProjectThreadingService threadingService,
+            UnconfiguredProject project)
         {
             Requires.NotNull(threadingService, nameof(threadingService));
+            Requires.NotNull(project, nameof(project));
+
             _threadingService = threadingService;
+            SyntaxFactsServicesImpl = new OrderPrecedenceImportCollection<ISyntaxFactsService>(projectCapabilityCheckProvider: project);
         }
 
-        public async Task<Solution> RenameSymbolAsync(Solution solution, ISymbol symbol, string newName)
+        [ImportMany]
+        protected OrderPrecedenceImportCollection<ISyntaxFactsService> SyntaxFactsServicesImpl { get; }
+
+        private ISyntaxFactsService SyntaxFactsService
         {
-            var optionSet = solution.Workspace.Options;
-            return await RoslynRenamer.Renamer.RenameSymbolAsync(solution, symbol, newName, optionSet).ConfigureAwait(false);
+            get
+            {
+                return SyntaxFactsServicesImpl.FirstOrDefault()?.Value;
+            }
         }
-        
+
+        public Task<Solution> RenameSymbolAsync(Solution solution, ISymbol symbol, string newName)
+        {
+            return RoslynRenamer.Renamer.RenameSymbolAsync(solution, symbol, newName, solution.Workspace.Options);
+        }
+
         public bool ApplyChangesToSolution(Workspace ws, Solution renamedSolution)
         {
             _threadingService.VerifyOnUIThread();
 
             // Always make sure TryApplyChanges is called from an UI thread.
             return ws.TryApplyChanges(renamedSolution);
+        }
+
+        public bool IsValidIdentifier(string identifierName)
+        {
+            return SyntaxFactsService?.IsValidIdentifier(identifierName) ?? false;
         }
     }
 }

@@ -1,8 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
-  <file datatype="xml" source-language="en" target-language="pl" original="src/Microsoft.VisualStudio.Editors/PropPages/AdvBuildSettingsPropPage.resx">
+  <file datatype="xml" source-language="en" target-language="pl" original="../AdvBuildSettingsPropPage.resx">
     <body>
-      <group id="src/Microsoft.VisualStudio.Editors/PropPages/AdvBuildSettingsPropPage.resx" />
       <trans-unit id="lblLanguageVersion.Text">
         <source>&amp;Language version:</source>
         <target state="translated">&amp;Wersja językowa:</target>
@@ -66,6 +65,16 @@
       <trans-unit id="chkOverflow.Text">
         <source>Chec&amp;k for arithmetic overflow/underflow</source>
         <target state="translated">Sprawdza&amp;j przepełnienie/niedopełnienie dla operacji arytmetycznych</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CSharpLanguageVerison.Default">
+        <source>C# latest major version (default)</source>
+        <target state="translated">Najnowsza wersja główna środowiska C# (domyślna)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CSharpLanguageVerison.Latest">
+        <source>C# latest minor version (latest)</source>
+        <target state="translated">Najnowsza wersja pomocnicza środowiska C# (najnowsza)</target>
         <note />
       </trans-unit>
     </body>

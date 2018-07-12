@@ -181,7 +181,7 @@
     <value>81, 0</value>
   </data>
   <data name="ButtonCancel.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>1</value>
   </data>
   <data name="ButtonCancel.Text">
     <value xml:space="preserve">Cancel</value>
@@ -208,7 +208,7 @@
     <value>0, 0</value>
   </data>
   <data name="ButtonAdd.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>0</value>
   </data>
   <data name="ButtonAdd.Text">
     <value xml:space="preserve">&amp;Add</value>
@@ -244,7 +244,7 @@
     <value>156, 23</value>
   </data>
   <data name="addCancelTableLayoutPanel.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
+    <value>2</value>
   </data>
   <data name="&gt;&gt;addCancelTableLayoutPanel.Name">
     <value xml:space="preserve">addCancelTableLayoutPanel</value>
@@ -277,7 +277,7 @@
     <value>280, 75</value>
   </data>
   <data name="overarchingTableLayoutPanel.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
+    <value>0</value>
   </data>
   <data name="&gt;&gt;overarchingTableLayoutPanel.Name">
     <value xml:space="preserve">overarchingTableLayoutPanel</value>

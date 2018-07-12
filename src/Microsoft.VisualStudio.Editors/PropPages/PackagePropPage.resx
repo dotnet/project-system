@@ -805,7 +805,7 @@
     <value>53, 20</value>
   </data>
   <data name="AssemblyVersionRevisionTextBox.TabIndex" type="System.Int32, mscorlib">
-    <value>36</value>
+    <value>3</value>
   </data>
   <data name="&gt;&gt;AssemblyVersionRevisionTextBox.Name" xml:space="preserve">
     <value>AssemblyVersionRevisionTextBox</value>
@@ -829,7 +829,7 @@
     <value>51, 20</value>
   </data>
   <data name="AssemblyVersionBuildTextBox.TabIndex" type="System.Int32, mscorlib">
-    <value>35</value>
+    <value>2</value>
   </data>
   <data name="&gt;&gt;AssemblyVersionBuildTextBox.Name" xml:space="preserve">
     <value>AssemblyVersionBuildTextBox</value>
@@ -853,7 +853,7 @@
     <value>51, 20</value>
   </data>
   <data name="AssemblyVersionMinorTextBox.TabIndex" type="System.Int32, mscorlib">
-    <value>34</value>
+    <value>1</value>
   </data>
   <data name="&gt;&gt;AssemblyVersionMinorTextBox.Name" xml:space="preserve">
     <value>AssemblyVersionMinorTextBox</value>
@@ -877,7 +877,7 @@
     <value>51, 20</value>
   </data>
   <data name="AssemblyVersionMajorTextBox.TabIndex" type="System.Int32, mscorlib">
-    <value>33</value>
+    <value>0</value>
   </data>
   <data name="&gt;&gt;AssemblyVersionMajorTextBox.Name" xml:space="preserve">
     <value>AssemblyVersionMajorTextBox</value>
@@ -901,7 +901,7 @@
     <value>230, 26</value>
   </data>
   <data name="AssemblyVersionLayoutPanel.TabIndex" type="System.Int32, mscorlib">
-    <value>50</value>
+    <value>33</value>
   </data>
   <data name="&gt;&gt;AssemblyVersionLayoutPanel.Name" xml:space="preserve">
     <value>AssemblyVersionLayoutPanel</value>
@@ -931,7 +931,7 @@
     <value>53, 20</value>
   </data>
   <data name="FileVersionRevisionTextBox.TabIndex" type="System.Int32, mscorlib">
-    <value>41</value>
+    <value>3</value>
   </data>
   <data name="&gt;&gt;FileVersionRevisionTextBox.Name" xml:space="preserve">
     <value>FileVersionRevisionTextBox</value>
@@ -955,7 +955,7 @@
     <value>51, 20</value>
   </data>
   <data name="FileVersionBuildTextBox.TabIndex" type="System.Int32, mscorlib">
-    <value>40</value>
+    <value>2</value>
   </data>
   <data name="&gt;&gt;FileVersionBuildTextBox.Name" xml:space="preserve">
     <value>FileVersionBuildTextBox</value>
@@ -979,7 +979,7 @@
     <value>51, 20</value>
   </data>
   <data name="FileVersionMinorTextBox.TabIndex" type="System.Int32, mscorlib">
-    <value>39</value>
+    <value>1</value>
   </data>
   <data name="&gt;&gt;FileVersionMinorTextBox.Name" xml:space="preserve">
     <value>FileVersionMinorTextBox</value>
@@ -1003,7 +1003,7 @@
     <value>51, 20</value>
   </data>
   <data name="FileVersionMajorTextBox.TabIndex" type="System.Int32, mscorlib">
-    <value>38</value>
+    <value>0</value>
   </data>
   <data name="&gt;&gt;FileVersionMajorTextBox.Name" xml:space="preserve">
     <value>FileVersionMajorTextBox</value>
@@ -1027,7 +1027,7 @@
     <value>230, 25</value>
   </data>
   <data name="FileVersionLayoutPanel.TabIndex" type="System.Int32, mscorlib">
-    <value>51</value>
+    <value>35</value>
   </data>
   <data name="&gt;&gt;FileVersionLayoutPanel.Name" xml:space="preserve">
     <value>FileVersionLayoutPanel</value>
@@ -1366,7 +1366,7 @@
     <value>107, 13</value>
   </data>
   <data name="AssemblyFileVersionLabel.TabIndex" type="System.Int32, mscorlib">
-    <value>37</value>
+    <value>34</value>
   </data>
   <data name="AssemblyFileVersionLabel.Text" xml:space="preserve">
     <value>Assembly &amp;file version:</value>
@@ -1393,7 +1393,7 @@
     <value>786, 626</value>
   </data>
   <data name="TableLayoutPanel.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>0</value>
   </data>
   <data name="&gt;&gt;TableLayoutPanel.Name" xml:space="preserve">
     <value>TableLayoutPanel</value>

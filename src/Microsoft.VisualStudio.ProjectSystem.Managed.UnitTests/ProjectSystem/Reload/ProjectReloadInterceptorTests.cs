@@ -4,12 +4,14 @@ using System.Collections.Immutable;
 using System.IO;
 using System.Text;
 using System.Xml;
+
 using Microsoft.Build.Construction;
+
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
-    [ProjectSystemTrait]
+    [Trait("UnitTest", "ProjectSystem")]
     public class ProjectReloadInterceptorTests
     {
         [Theory]
@@ -69,7 +71,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             var projectFile = string.Format(projectFileFormat, targetFrameworkProperty, targetFrameworksProperty);
 
             using (Stream str = new MemoryStream(Encoding.UTF8.GetBytes(projectFile)))
-            using (XmlReader xr = XmlReader.Create(str))
+            using (var xr = XmlReader.Create(str))
             {
                 return ProjectRootElement.Create(xr).Properties.ToImmutableArray();
             }

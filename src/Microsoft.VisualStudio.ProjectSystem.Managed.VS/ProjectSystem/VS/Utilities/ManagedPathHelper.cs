@@ -37,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
 
             try
             {
-                return PathHelper.MakeRooted(PathHelper.EnsureTrailingSlash(basePath), path);
+                return PathHelper.MakeRooted(basePath, path);
             }
             catch (ArgumentException)
             {

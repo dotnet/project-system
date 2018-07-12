@@ -15,12 +15,27 @@ namespace Microsoft.VisualStudio
             get { return StringComparer.OrdinalIgnoreCase; }
         }
 
+        public static IEqualityComparer<string> PropertyNames
+        {
+            get { return StringComparer.OrdinalIgnoreCase; }
+        }
+
         public static IEqualityComparer<string> PropertyValues
         {
             get { return StringComparer.OrdinalIgnoreCase; }
         }
 
         public static IEqualityComparer<string> RuleNames
+        {
+            get { return StringComparer.OrdinalIgnoreCase; }
+        }
+
+        public static IEqualityComparer<string> ConfigurationDimensionNames
+        {
+            get { return StringComparer.Ordinal; }
+        }
+
+        public static IEqualityComparer<string> DependencyProviderTypes
         {
             get { return StringComparer.OrdinalIgnoreCase; }
         }

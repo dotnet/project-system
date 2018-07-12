@@ -5,7 +5,7 @@ is common enough to address in Escrow.  (Granted, sometimes this will be
 obvious "Open project, VS crashes" but in general, I need to understand how
 common a scenario is)
 
-**Bugs this fixes:**
+**Bugs this fixes:** 
 
 (either VSO or GitHub links)
 

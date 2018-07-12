@@ -3,17 +3,19 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+
 using Moq;
 using Moq.Protected;
+
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 {
-    [ProjectSystemTrait]
+    [Trait("UnitTest", "ProjectSystem")]
     public class PropertyPageControlTests
     {
         [Fact]
-        public void PropertyPageControl_Test()
+        public void Test()
         {
 
             var thread = new Thread(new ThreadStart(CallPropertyPageControl));
@@ -22,17 +24,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             thread.Start();
             thread.Join();
 
-         
+
         }
 
         private void CallPropertyPageControl()
         {
-            Mock<PropertyPageViewModel> ppvm = new Mock<PropertyPageViewModel>();
+            var ppvm = new Mock<PropertyPageViewModel>();
             ppvm.Setup(m => m.Save()).Returns(Task.FromResult(VSConstants.S_OK));
             ppvm.Setup(m => m.Initialize()).Returns(new Task(() => { }));
             ppvm.CallBase = true;
 
-            Mock<PropertyPageControl> ppc = new Mock<PropertyPageControl>(MockBehavior.Loose);
+            var ppc = new Mock<PropertyPageControl>(MockBehavior.Loose);
             ppc.CallBase = true;
 
             ppc.Object.InitializePropertyPage(ppvm.Object);

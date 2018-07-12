@@ -2,62 +2,52 @@
 
 using System;
 using System.Runtime.InteropServices;
+
+using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
+
 using Xunit;
 
 using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 {
-    [ProjectSystemTrait]
+    [Trait("UnitTest", "ProjectSystem")]
     public class ProjectDesignerServiceTests
     {
         [Fact]
         public void Constructor_NullAsProjectVsServices_ThrowsArgumentNull()
         {
-            Assert.Throws<ArgumentNullException>("projectVsServices", () => {
+            var vsProjectDesignerPageService = IVsProjectDesignerPageServiceFactory.Create();
 
-                new ProjectDesignerService((IUnconfiguredProjectVsServices)null);
+            Assert.Throws<ArgumentNullException>("projectVsServices", () =>
+            {
+
+                new ProjectDesignerService((IUnconfiguredProjectVsServices)null, vsProjectDesignerPageService);
             });
         }
 
         [Fact]
-        public void SupportsProjectDesigner_WhenHierarchyGetPropertyReturnsHResult_ThrowsCOMException()
+        public void Constructor_NullAsVsProjectDesignerPageService_ThrowsArgumentNull()
         {
-            var hierarchy = IVsHierarchyFactory.ImplementGetProperty(hr: VSConstants.E_FAIL);
-            var projectVsServices = IUnconfiguredProjectVsServicesFactory.Implement(() => hierarchy);
+            var projectVsServices = IUnconfiguredProjectVsServicesFactory.Create();
 
-            var designerService = CreateInstance(projectVsServices);
+            Assert.Throws<ArgumentNullException>("vsProjectDesignerPageService", () =>
+            {
 
-            Assert.Throws<COMException>(() => {
-
-                var result = designerService.SupportsProjectDesigner;
+                new ProjectDesignerService(projectVsServices, (IVsProjectDesignerPageService)null);
             });
-        }
-
-        [Fact]
-        public void SupportsProjectDesigner_WhenHierarchyGetPropertyReturnsMemberNotFound_IsFalse()
-        {
-            var hierarchy = IVsHierarchyFactory.ImplementGetProperty(hr: VSConstants.DISP_E_MEMBERNOTFOUND);
-            var projectVsServices = IUnconfiguredProjectVsServicesFactory.Implement(() => hierarchy);
-
-            var designerService = CreateInstance(projectVsServices);
-
-            var result = designerService.SupportsProjectDesigner;
-
-            Assert.False(result);
         }
 
         [Theory]
         [InlineData(true)]
         [InlineData(false)]
-        public void SupportsProjectDesigner_ReturnsResultOfHierarchyGetProperty(bool supportsProjectDesigner)
+        public void SupportsProjectDesigner_ReturnsResultIsProjectDesignerSupported(bool supportsProjectDesigner)
         {
-            var hierarchy = IVsHierarchyFactory.ImplementGetProperty(result: supportsProjectDesigner);
-            var projectVsServices = IUnconfiguredProjectVsServicesFactory.Implement(() => hierarchy);
+            var vsProjectDesignerPageService = IVsProjectDesignerPageServiceFactory.ImplementIsProjectDesignerSupported(() => supportsProjectDesigner);
 
-            var designerService = CreateInstance(projectVsServices);
+            var designerService = CreateInstance(vsProjectDesignerPageService);
 
             var result = designerService.SupportsProjectDesigner;
 
@@ -67,12 +57,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         [Fact]
         public void ShowProjectDesignerAsync_WhenSupportsProjectDesignerFalse_ThrowsInvalidOperation()
         {
-            var hierarchy = IVsHierarchyFactory.ImplementGetProperty(result: false);
-            var projectVsServices = IUnconfiguredProjectVsServicesFactory.Implement(() => hierarchy);
+            var vsProjectDesignerPageService = IVsProjectDesignerPageServiceFactory.ImplementIsProjectDesignerSupported(() => false);
 
-            var designerService = CreateInstance(projectVsServices);
+            var designerService = CreateInstance(vsProjectDesignerPageService);
 
-            Assert.Throws<InvalidOperationException>(() => {
+            Assert.Throws<InvalidOperationException>(() =>
+            {
 
                 designerService.ShowProjectDesignerAsync();
             });
@@ -81,81 +71,82 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         [Fact]
         public async Task ShowProjectDesignerAsync_WhenGetGuidPropertyForProjectDesignerEditorReturnsHResult_Throws()
         {
+            var vsProjectDesignerPageService = IVsProjectDesignerPageServiceFactory.ImplementIsProjectDesignerSupported(() => true);
+
             var hierarchy = IVsHierarchyFactory.Create();
-            hierarchy.ImplementGetProperty(VsHierarchyPropID.SupportsProjectDesigner, result: true);
             hierarchy.ImplementGetGuid(VsHierarchyPropID.ProjectDesignerEditor, VSConstants.E_FAIL);
 
             var projectVsServices = IUnconfiguredProjectVsServicesFactory.Implement(() => hierarchy);
 
-            var designerService = CreateInstance(projectVsServices);
+            var designerService = CreateInstance(projectVsServices, vsProjectDesignerPageService);
 
-#pragma warning disable RS0003 // Do not directly await a Task (see https://github.com/dotnet/roslyn/issues/6770)
-            await Assert.ThrowsAsync<COMException>(() => {
+            await Assert.ThrowsAsync<COMException>(() =>
+            {
 
                 return designerService.ShowProjectDesignerAsync();
             });
-#pragma warning restore RS0003 // Do not directly await a Task
         }
 
         [Fact]
         public async Task ShowProjectDesignerAsync_WhenProjectDesignerEditorReturnsHResult_Throws()
         {
+            var vsProjectDesignerPageService = IVsProjectDesignerPageServiceFactory.ImplementIsProjectDesignerSupported(() => true);
+
             var hierarchy = IVsHierarchyFactory.Create();
-            hierarchy.ImplementGetProperty(VsHierarchyPropID.SupportsProjectDesigner, result: true);
             hierarchy.ImplementGetGuid(VsHierarchyPropID.ProjectDesignerEditor, VSConstants.E_FAIL);
 
             var projectVsServices = IUnconfiguredProjectVsServicesFactory.Implement(() => hierarchy);
 
-            var designerService = CreateInstance(projectVsServices);
+            var designerService = CreateInstance(projectVsServices, vsProjectDesignerPageService);
 
-#pragma warning disable RS0003 // Do not directly await a Task (see https://github.com/dotnet/roslyn/issues/6770)
-            await Assert.ThrowsAsync<COMException>(() => {
+            await Assert.ThrowsAsync<COMException>(() =>
+            {
 
                 return designerService.ShowProjectDesignerAsync();
             });
-#pragma warning restore RS0003 // Do not directly await a Task
         }
 
         [Fact]
         public async Task ShowProjectDesignerAsync_WhenOpenItemWithSpecificEditorReturnsHResult_Throws()
         {
-            Guid editorGuid = Guid.NewGuid();
+            var vsProjectDesignerPageService = IVsProjectDesignerPageServiceFactory.ImplementIsProjectDesignerSupported(() => true);
+
+            var editorGuid = Guid.NewGuid();
 
             var hierarchy = IVsHierarchyFactory.Create();
-            hierarchy.ImplementGetProperty(VsHierarchyPropID.SupportsProjectDesigner, result: true);
             hierarchy.ImplementGetGuid(VsHierarchyPropID.ProjectDesignerEditor, result: editorGuid);
 
             var project = (IVsProject4)hierarchy;
             project.ImplementOpenItemWithSpecific(editorGuid, VSConstants.LOGVIEWID_Primary, VSConstants.E_FAIL);
 
-            var projectVsServices = IUnconfiguredProjectVsServicesFactory.Implement(() => hierarchy, ()=> project);
+            var projectVsServices = IUnconfiguredProjectVsServicesFactory.Implement(() => hierarchy, () => project);
 
-            var designerService = CreateInstance(projectVsServices);
+            var designerService = CreateInstance(projectVsServices, vsProjectDesignerPageService);
 
-#pragma warning disable RS0003 // Do not directly await a Task (see https://github.com/dotnet/roslyn/issues/6770)
-            await Assert.ThrowsAsync<COMException>(() => {
+            await Assert.ThrowsAsync<COMException>(() =>
+            {
 
                 return designerService.ShowProjectDesignerAsync();
             });
-#pragma warning restore RS0003 // Do not directly await a Task
         }
 
         [Fact]
         public Task ShowProjectDesignerAsync_WhenOpenedInExternalEditor_DoesNotAttemptToShowWindow()
         {   // OpenItemWithSpecific returns null frame when opened in external editor
 
-            Guid editorGuid = Guid.NewGuid();
+            var vsProjectDesignerPageService = IVsProjectDesignerPageServiceFactory.ImplementIsProjectDesignerSupported(() => true);
+
+            var editorGuid = Guid.NewGuid();
 
             var hierarchy = IVsHierarchyFactory.Create();
-            hierarchy.ImplementGetProperty(VsHierarchyPropID.SupportsProjectDesigner, result: true);
             hierarchy.ImplementGetGuid(VsHierarchyPropID.ProjectDesignerEditor, result: editorGuid);
 
             var project = (IVsProject4)hierarchy;
             project.ImplementOpenItemWithSpecific(editorGuid, VSConstants.LOGVIEWID_Primary, (IVsWindowFrame)null);
-               
+
             var projectVsServices = IUnconfiguredProjectVsServicesFactory.Implement(() => hierarchy, () => project);
 
-            var designerService = CreateInstance(projectVsServices);
+            var designerService = CreateInstance(projectVsServices, vsProjectDesignerPageService);
 
             return designerService.ShowProjectDesignerAsync();
         }
@@ -163,10 +154,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         [Fact]
         public async Task ShowProjectDesignerAsync_WhenWindowShowReturnsHResult_Throws()
         {
-            Guid editorGuid = Guid.NewGuid();
+            var vsProjectDesignerPageService = IVsProjectDesignerPageServiceFactory.ImplementIsProjectDesignerSupported(() => true);
+
+            var editorGuid = Guid.NewGuid();
 
             var hierarchy = IVsHierarchyFactory.Create();
-            hierarchy.ImplementGetProperty(VsHierarchyPropID.SupportsProjectDesigner, result: true);
             hierarchy.ImplementGetGuid(VsHierarchyPropID.ProjectDesignerEditor, result: editorGuid);
             var project = (IVsProject4)hierarchy;
 
@@ -175,23 +167,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 
             var projectVsServices = IUnconfiguredProjectVsServicesFactory.Implement(() => hierarchy, () => project);
 
-            var designerService = CreateInstance(projectVsServices);
+            var designerService = CreateInstance(projectVsServices, vsProjectDesignerPageService);
 
-#pragma warning disable RS0003 // Do not directly await a Task (see https://github.com/dotnet/roslyn/issues/6770)
-            await Assert.ThrowsAsync<COMException>(() => {
+            await Assert.ThrowsAsync<COMException>(() =>
+            {
 
                 return designerService.ShowProjectDesignerAsync();
             });
-#pragma warning restore RS0003 // Do not directly await a Task
         }
 
         [Fact]
         public async Task ShowProjectDesignerAsync_WhenOpenedInInternalEditor_ShowsWindow()
-        {   
-            Guid editorGuid = Guid.NewGuid();
-            
+        {
+            var vsProjectDesignerPageService = IVsProjectDesignerPageServiceFactory.ImplementIsProjectDesignerSupported(() => true);
+
+            var editorGuid = Guid.NewGuid();
+
             var hierarchy = IVsHierarchyFactory.Create();
-            hierarchy.ImplementGetProperty(VsHierarchyPropID.SupportsProjectDesigner, result: true);
             hierarchy.ImplementGetGuid(VsHierarchyPropID.ProjectDesignerEditor, result: editorGuid);
             var project = (IVsProject4)hierarchy;
 
@@ -201,18 +193,29 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 
             var projectVsServices = IUnconfiguredProjectVsServicesFactory.Implement(() => hierarchy, () => project);
 
-            var designerService = CreateInstance(projectVsServices);
+            var designerService = CreateInstance(projectVsServices, vsProjectDesignerPageService);
 
-#pragma warning disable RS0003 // Do not directly await a Task (see https://github.com/dotnet/roslyn/issues/6770)
             await designerService.ShowProjectDesignerAsync();
-#pragma warning restore RS0003 // Do not directly await a Task
 
             Assert.Equal(1, callCount);
         }
 
         private static ProjectDesignerService CreateInstance(IUnconfiguredProjectVsServices projectVsServices)
         {
-            return new ProjectDesignerService(projectVsServices);
+            return CreateInstance(projectVsServices, (IVsProjectDesignerPageService)null);
+        }
+
+        private static ProjectDesignerService CreateInstance(IVsProjectDesignerPageService vsProjectDesignerPageService)
+        {
+            return CreateInstance((IUnconfiguredProjectVsServices)null, vsProjectDesignerPageService);
+        }
+
+        private static ProjectDesignerService CreateInstance(IUnconfiguredProjectVsServices projectVsServices, IVsProjectDesignerPageService vsProjectDesignerPageService)
+        {
+            projectVsServices = projectVsServices ?? IUnconfiguredProjectVsServicesFactory.Create();
+            vsProjectDesignerPageService = vsProjectDesignerPageService ?? IVsProjectDesignerPageServiceFactory.Create();
+
+            return new ProjectDesignerService(projectVsServices, vsProjectDesignerPageService);
         }
     }
 }

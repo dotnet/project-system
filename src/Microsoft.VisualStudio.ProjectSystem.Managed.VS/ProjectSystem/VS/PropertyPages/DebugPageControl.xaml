@@ -71,7 +71,8 @@
                 MinHeight="23"
                 Margin="5,6,2,7"
                 ItemsSource="{Binding Path=LaunchProfiles, Mode=OneWay}"
-                SelectedValue="{Binding Path=SelectedDebugProfile}">
+                SelectedValue="{Binding Path=SelectedDebugProfile}"
+                AutomationProperties.Name="{x:Static Member=local:PropertyPageResources.Profile}">
                 <ComboBox.IsEnabled>
                     <MultiBinding Converter="{StaticResource MultiValueBoolToBoolAnd}">
                         <Binding Path="HasProfiles" Mode="OneWay"/>
@@ -130,7 +131,8 @@
                 SelectedValue="{Binding Path=SelectedLaunchType, Mode=TwoWay}"
                 DisplayMemberPath="Name"
                 IsReadOnly="True"
-                IsEditable="False">
+                IsEditable="False"
+                AutomationProperties.Name="{x:Static Member=local:PropertyPageResources.Launch}">
             </ComboBox>
             <Label 
                 Grid.Row="2"
@@ -152,7 +154,8 @@
                 VerticalContentAlignment="Center"
                 VerticalAlignment="Center"
                 Text="{Binding Path=ExecutablePath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                Visibility="{Binding Path=SupportsExecutable, Mode=OneWay, Converter={StaticResource visibilityConverter}}"/>
+                Visibility="{Binding Path=SupportsExecutable, Mode=OneWay, Converter={StaticResource visibilityConverter}}"
+                AutomationProperties.Name="{x:Static Member=local:PropertyPageResources.Executable}"/>
             <Button
                 Grid.Row="2"
                 Grid.Column="2"
@@ -190,7 +193,8 @@
                 VerticalAlignment="Center"
                 Text="{Binding Path=CommandLineArguments, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 IsEnabled="{Binding Path=IsProfileSelected, Mode=OneWay}"
-                Visibility="{Binding Path=SupportsArguments, Mode=OneWay, Converter={StaticResource visibilityConverter}}" />
+                Visibility="{Binding Path=SupportsArguments, Mode=OneWay, Converter={StaticResource visibilityConverter}}"
+                AutomationProperties.Name="{x:Static Member=local:PropertyPageResources.ApplicationArguments}"/>
             <Label 
                 Grid.Row="5"
                 x:Uid="workingDirectoryLabel"
@@ -211,7 +215,8 @@
                 Margin="5,8,2,7"
                 IsEnabled="{Binding Path=IsProfileSelected, Mode=OneWay}"
                 Visibility="{Binding Path=SupportsWorkingDirectory, Mode=OneWay, Converter={StaticResource visibilityConverter}}"
-                MinWidth="200"/>
+                MinWidth="200"
+                AutomationProperties.Name="{x:Static Member=local:PropertyPageResources.WorkingDirectory}"/>
             <Button
                 Grid.Row="5"
                 Grid.Column="2"
@@ -250,7 +255,8 @@
                 Text="{Binding Path=LaunchPage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 Visibility="{Binding Path=SupportsLaunchUrl, Mode=OneWay, Converter={StaticResource visibilityConverter}}"
                 MinWidth="200"
-                MinHeight="23">
+                MinHeight="23"
+                AutomationProperties.Name="{x:Static Member=local:PropertyPageResources.LaunchURL}">
                 <local:WatermarkTextBox.IsEnabled>
                     <MultiBinding Converter="{StaticResource MultiValueBoolToBoolAnd}">
                         <Binding Path="HasLaunchOption" Mode="OneWay"/>
@@ -292,11 +298,13 @@
                 ScrollViewer.VerticalScrollBarVisibility="Auto"
                 ScrollViewer.HorizontalScrollBarVisibility="Auto"
                 VirtualizingPanel.IsVirtualizing="False"
-                SelectionMode="Single">
+                SelectionMode="Single"
+                AutomationProperties.Name="{x:Static Member=local:PropertyPageResources.EnvironmentVariables}">
                 <DataGrid.CellStyle>
                     <Style TargetType="DataGridCell">
-                        <Setter Property="Margin" Value="0,0,-1,0"/>
-                        <Setter Property="BorderThickness" Value="0"/>
+                        <Setter Property="Margin" Value="0,0,-1,0" />
+                        <Setter Property="BorderThickness" Value="0" />
+                        <Setter Property="AutomationProperties.Name" Value="{Binding RelativeSource={RelativeSource Self}, Path=Column.Header}" />
                     </Style>
                 </DataGrid.CellStyle>
                 <DataGrid.Columns>
@@ -344,7 +352,6 @@
                             </DataTemplate>
                         </local:EnvironmentDataGridTemplateColumn.CellEditingTemplate>
                     </local:EnvironmentDataGridTemplateColumn>
-
                 </DataGrid.Columns>
             </DataGrid>
             <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Margin="6,20,0,0" Grid.Row="7" Grid.Column="2" 

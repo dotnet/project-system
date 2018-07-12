@@ -202,7 +202,7 @@
     <value>Launch:</value>
   </data>
   <data name="LaunchURL" xml:space="preserve">
-    <value>Launch URL:</value>
+    <value>Launch browser:</value>
   </data>
   <data name="NameHeader" xml:space="preserve">
     <value>Name</value>
@@ -221,5 +221,14 @@
   </data>
   <data name="WorkingDirectory" xml:space="preserve">
     <value>Working directory:</value>
+  </data>
+  <data name="CancelBtn" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="OKBtn" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="ProfileName" xml:space="preserve">
+    <value>Profile name:</value>
   </data>
 </root>

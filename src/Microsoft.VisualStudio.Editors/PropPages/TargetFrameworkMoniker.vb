@@ -3,6 +3,7 @@
 Imports EnvDTE
 Imports Microsoft.VisualStudio.Shell.Interop
 Imports System.Runtime.Versioning
+Imports System.ComponentModel
 
 Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
@@ -48,35 +49,41 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Function
 
         'TODO: Remove this hardcoded list (Refer Bug: #795)
-        Private Shared Function AddDotNetCoreFramework(prgSupportedFrameworks As Array) As Array
-            Dim supportedFrameworksList As List(Of String) = New List(Of String)
-            For Each moniker As String In prgSupportedFrameworks
-                supportedFrameworksList.Add(moniker)
-            Next
+        Private Shared Function AddDotNetCoreFramework(prgSupportedFrameworks As Array, supportedTargetFrameworksDescriptor As PropertyDescriptor) As Array
+            Dim _TypeConverter As TypeConverter = supportedTargetFrameworksDescriptor.Converter
+            If _TypeConverter IsNot Nothing Then
+                Dim supportedFrameworksList As List(Of String) = New List(Of String)
+                For Each moniker As String In prgSupportedFrameworks
+                    supportedFrameworksList.Add(moniker)
+                Next
 
-            supportedFrameworksList.Add(".NETCoreApp,Version=v1.0")
-            supportedFrameworksList.Add(".NETCoreApp,Version=v1.1")
-            supportedFrameworksList.Add(".NETStandard,Version=v1.0")
-            supportedFrameworksList.Add(".NETStandard,Version=v1.1")
-            supportedFrameworksList.Add(".NETStandard,Version=v1.2")
-            supportedFrameworksList.Add(".NETStandard,Version=v1.3")
-            supportedFrameworksList.Add(".NETStandard,Version=v1.4")
-            supportedFrameworksList.Add(".NETStandard,Version=v1.5")
-            supportedFrameworksList.Add(".NETStandard,Version=v1.6")
-            Return supportedFrameworksList.ToArray
+                For Each frameworkValue In _TypeConverter.GetStandardValues()
+                    Dim framework = CStr(frameworkValue)
+                    If framework IsNot Nothing Then
+                        supportedFrameworksList.Add(framework)
+                    End If
+                Next
 
+                Return supportedFrameworksList.ToArray
+            End If
+
+            Return prgSupportedFrameworks
         End Function
+
         ''' <summary>
         ''' Gets the supported target framework monikers from DTAR
         ''' </summary>
         ''' <param name="vsFrameworkMultiTargeting"></param>
         Public Shared Function GetSupportedTargetFrameworkMonikers(
             vsFrameworkMultiTargeting As IVsFrameworkMultiTargeting,
-            currentProject As Project) As IEnumerable(Of TargetFrameworkMoniker)
+            currentProject As Project,
+            supportedTargetFrameworksDescriptor As PropertyDescriptor) As IEnumerable(Of TargetFrameworkMoniker)
 
             Dim supportedFrameworksArray As Array = Nothing
             VSErrorHandler.ThrowOnFailure(vsFrameworkMultiTargeting.GetSupportedFrameworks(supportedFrameworksArray))
-            supportedFrameworksArray = AddDotNetCoreFramework(supportedFrameworksArray)
+            If supportedTargetFrameworksDescriptor IsNot Nothing Then
+                supportedFrameworksArray = AddDotNetCoreFramework(supportedFrameworksArray, supportedTargetFrameworksDescriptor)
+            End If
 
             Dim targetFrameworkMonikerProperty As [Property] = currentProject.Properties.Item(ApplicationPropPage.Const_TargetFrameworkMoniker)
             Dim currentTargetFrameworkMoniker As String = CStr(targetFrameworkMonikerProperty.Value)
@@ -124,7 +131,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
                         ' Use DTAR to get the display name corresponding to the moniker
                         Dim displayName As String = ""
-                        VSErrorHandler.ThrowOnFailure(vsFrameworkMultiTargeting.GetDisplayNameForTargetFx(moniker, displayName))
+                        If String.Compare(frameworkName.Identifier, ".NETStandard", StringComparison.Ordinal) = 0 OrElse
+                           String.Compare(frameworkName.Identifier, ".NETCoreApp", StringComparison.Ordinal) = 0 Then
+                            displayName = CStr(supportedTargetFrameworksDescriptor.Converter?.ConvertTo(moniker, GetType(String)))
+                        Else
+                            VSErrorHandler.ThrowOnFailure(vsFrameworkMultiTargeting.GetDisplayNameForTargetFx(moniker, displayName))
+                        End If
 
                         supportedTargetFrameworkMonikers.Add(New TargetFrameworkMoniker(moniker, displayName))
 

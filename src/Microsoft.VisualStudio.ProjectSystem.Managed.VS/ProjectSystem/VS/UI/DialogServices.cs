@@ -9,27 +9,42 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
     /// can be retrieved from this servcie. 
     /// </summary>
     [Export(typeof(IDialogServices))]
-    [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
+    [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp)]
     internal class DialogServices : IDialogServices
     {
         [ImportingConstructor]
-        public DialogServices(IProjectThreadingService threadHandling)
+        public DialogServices(IProjectThreadingService threadHandling, IUserNotificationServices userNotificationServices)
         {
             _threadHandling = threadHandling;
+            _userNotificationServices = userNotificationServices;
         }
 
         // Only here to provide scope
         private readonly IProjectThreadingService _threadHandling;
+        private readonly IUserNotificationServices _userNotificationServices;
 
         public MultiChoiceMsgBoxResult ShowMultiChoiceMsgBox(string dialogTitle, string errorText, string[] buttons)
-        { 
+        {
             var dlg = new MultiChoiceMsgBox(dialogTitle, errorText, buttons);
             var result = dlg.ShowModal();
-            if(result == true)
+            if (result == true)
             {
                 return dlg.SelectedAction;
             }
+
             return MultiChoiceMsgBoxResult.Cancel;
+        }
+
+        public bool DontShowAgainMessageBox(string caption, string message, string checkboxText, bool initialStateOfCheckbox, string learnMoreText, string learnMoreUrl)
+        {
+            var dlg = new DontShowAgainMessageBox(caption, message, checkboxText, initialStateOfCheckbox, learnMoreText, learnMoreUrl, _userNotificationServices);
+            var result = dlg.ShowModal();
+            if (result == true)
+            {
+                return dlg.CheckboxState;
+            }
+
+            return false;
         }
     }
 }

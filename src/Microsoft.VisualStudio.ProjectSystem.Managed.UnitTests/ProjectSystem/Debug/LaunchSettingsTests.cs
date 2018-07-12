@@ -1,11 +1,12 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Collections.Generic;
+
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
-    [ProjectSystemTrait]
+    [Trait("UnitTest", "ProjectSystem")]
     public class LaunchSettingsTests
     {
 
@@ -28,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             var settings = new LaunchSettings(profiles, null, null);
             Assert.True(settings.ActiveProfile.Name == "abc");
             Assert.Equal(profiles.Count, settings.Profiles.Count);
-            Assert.Equal(0, settings.GlobalSettings.Count);
+            Assert.Empty(settings.GlobalSettings);
 
             settings = new LaunchSettings(profiles, null, "ghi");
             Assert.True(settings.ActiveProfile.Name == "ghi");

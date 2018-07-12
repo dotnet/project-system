@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using Moq;
+
 using VSLangProj;
 
 namespace VSLangProj80
@@ -16,7 +17,7 @@ namespace VSLangProj80
             return mock.Object;
         }
 
-        public static Reference3 CreateAssemblyReference(string name, string version = null, string path = null, prjReferenceType referenceType = prjReferenceType.prjReferenceTypeAssembly)
+        public static Reference3 CreateAssemblyReference(string name, string version = null, string path = null, prjReferenceType type = prjReferenceType.prjReferenceTypeAssembly, __PROJECTREFERENCETYPE refType = __PROJECTREFERENCETYPE.PROJREFTYPE_ASSEMBLY)
         {
             var mock = new Mock<Reference3>();
             mock.SetupGet(r => r.Name)
@@ -32,9 +33,12 @@ namespace VSLangProj80
                 .Returns(path != null);
 
             mock.SetupGet(r => r.Type)
-                .Returns(referenceType);
+                .Returns(type);
 
-            return mock.Object;            
+            mock.SetupGet(r => r.RefType)
+              .Returns((uint)refType);
+
+            return mock.Object;
         }
     }
 }

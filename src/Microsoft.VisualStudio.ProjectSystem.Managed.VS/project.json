@@ -1,9 +1,0 @@
-﻿{
-  "frameworks": {
-    "net46": {}
-  },
-  "dependencies": {
-    "NuGet.SolutionRestoreManager.Interop": "4.0.0-rc-2024",
-    "NuGet.VisualStudio": "4.0.0-rc-2048"
-  }
-}

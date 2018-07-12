@@ -41,10 +41,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
             {
                 Button4Text = buttons[3];
             }
-            ButtonClickCommand = new RelayCommand((parameter) => {CloseDialog.Invoke(this, (MultiChoiceMsgBoxResult)(parameter)); });
+            ButtonClickCommand = new RelayCommand((parameter) => { CloseDialog.Invoke(this, (MultiChoiceMsgBoxResult)(parameter)); });
 
         }
-        
+
         public ICommand ButtonClickCommand { get; private set; }
 
         // Dialog needs to listen to this event to know when to close.
@@ -57,10 +57,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
         public string DialogTitle { get; }
         public string ErrorMsgText { get; }
 
-        public Visibility Button1Visibility { get {return Button1Text == null? Visibility.Collapsed: Visibility.Visible;} }
-        public Visibility Button2Visibility { get {return Button2Text == null? Visibility.Collapsed: Visibility.Visible;} }
-        public Visibility Button3Visibility { get {return Button3Text == null? Visibility.Collapsed: Visibility.Visible;} }
-        public Visibility Button4Visibility { get {return Button4Text == null? Visibility.Collapsed: Visibility.Visible;} }
+        public Visibility Button1Visibility { get { return Button1Text == null ? Visibility.Collapsed : Visibility.Visible; } }
+        public Visibility Button2Visibility { get { return Button2Text == null ? Visibility.Collapsed : Visibility.Visible; } }
+        public Visibility Button3Visibility { get { return Button3Text == null ? Visibility.Collapsed : Visibility.Visible; } }
+        public Visibility Button4Visibility { get { return Button4Text == null ? Visibility.Collapsed : Visibility.Visible; } }
 
     }
 }

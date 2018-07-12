@@ -1,0 +1,16 @@
+use vs
+
+package name=Microsoft.VisualStudio.NetCore.ProjectTemplates.1.x
+        version=$(Version)
+
+vs.localizedResources
+  vs.localizedResource language=en-us
+                       title="Microsoft VisualStudio Managed Project Templates NetCore 1.x"
+                       description="Microsoft VisualStudio Managed Project Templates for NetCore 1.x Projects"
+
+folder "InstallDir:Common7\IDE\Extensions\Microsoft\Dotnet"
+  file source="$(MSBuildProjectDirectory)\Templates.pkgdef"
+  
+folder "InstallDir:Common7\IDE\Extensions\Microsoft\Dotnet\Templates\NetCore\1.x"
+  file name="Microsoft.DotNet.Common.ProjectTemplates.1.x.1.0.0.nupkg" source="$(CommonTemplatesNupkg)"
+  file name="Microsoft.DotNet.Test.ProjectTemplates.1.x.1.0.0.nupkg" source="$(TestTemplatesNupkg)"

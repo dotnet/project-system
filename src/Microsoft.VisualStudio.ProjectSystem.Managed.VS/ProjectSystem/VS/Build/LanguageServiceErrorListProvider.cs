@@ -1,11 +1,12 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using Microsoft.Build.Framework;
-using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
-using Microsoft.VisualStudio.Shell.Interop;
 using System;
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
+
+using Microsoft.Build.Framework;
+using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
+using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
 {
@@ -13,13 +14,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
     ///     An implementation of <see cref="IVsErrorListProvider"/> that delegates onto the language
     ///     service so that it de-dup warnings and errors between IntelliSense and build.
     /// </summary>
-    [AppliesTo(ProjectCapability.CSharpOrVisualBasicLanguageService)]
+    [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharpLanguageService)]
     [Export(typeof(IVsErrorListProvider))]
-    [Order(1)] // One less than the CPS version of this class, until they've removed it
+    [Order(Order.Default)]
     internal partial class LanguageServiceErrorListProvider : IVsErrorListProvider
     {
-        private readonly static Task<AddMessageResult> HandledAndStopProcessing = Task.FromResult(AddMessageResult.HandledAndStopProcessing);
-        private readonly static Task<AddMessageResult> NotHandled = Task.FromResult(AddMessageResult.NotHandled);
+        private readonly static Task<AddMessageResult> s_handledAndStopProcessing = Task.FromResult(AddMessageResult.HandledAndStopProcessing);
+        private readonly static Task<AddMessageResult> s_notHandled = Task.FromResult(AddMessageResult.NotHandled);
         private readonly ILanguageServiceHost _host;
         private IVsLanguageServiceBuildErrorReporter2 _languageServiceBuildErrorReporter;
 
@@ -52,7 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
             // We only want to pass compiler, analyzers, etc to the language 
             // service, so we skip tasks that do not have a code
             if (!TryExtractErrorListDetails(error.BuildEventArgs, out ErrorListDetails details) || string.IsNullOrEmpty(details.Code))
-                return await NotHandled.ConfigureAwait(false);
+                return await s_notHandled.ConfigureAwait(false);
 
             InitializeBuildErrorReporter();
 
@@ -77,7 +78,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
                 }
             }
 
-            return handled ? await HandledAndStopProcessing.ConfigureAwait(false) : await NotHandled.ConfigureAwait(false);
+            return handled ? await s_handledAndStopProcessing.ConfigureAwait(false) : await s_notHandled.ConfigureAwait(false);
         }
 
         public Task ClearMessageFromTargetAsync(string targetName)
@@ -111,11 +112,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         /// <param name="result">The extracted details, or <c>null</c> if <paramref name="eventArgs"/> was <c>null</c> or of an unrecognized type.</param>
         internal static bool TryExtractErrorListDetails(BuildEventArgs eventArgs, out ErrorListDetails result)
         {
-            BuildErrorEventArgs errorMessage;
-            BuildWarningEventArgs warningMessage;
-            CriticalBuildMessageEventArgs criticalMessage;
 
-            if ((errorMessage = eventArgs as BuildErrorEventArgs) != null)
+            if (eventArgs is BuildErrorEventArgs errorMessage)
             {
                 result = new ErrorListDetails()
                 {
@@ -133,7 +131,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
                 return true;
             }
 
-            if ((warningMessage = eventArgs as BuildWarningEventArgs) != null)
+            if (eventArgs is BuildWarningEventArgs warningMessage)
             {
                 result = new ErrorListDetails()
                 {
@@ -151,7 +149,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
                 return true;
             }
 
-            if ((criticalMessage = eventArgs as CriticalBuildMessageEventArgs) != null)
+            if (eventArgs is CriticalBuildMessageEventArgs criticalMessage)
             {
                 result = new ErrorListDetails()
                 {

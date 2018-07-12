@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+
 using Microsoft.VisualStudio.Shell;
 
 namespace Microsoft.VisualStudio.ProjectSystem
@@ -10,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
     public class IServiceProviderMoq : SVsServiceProvider
     {
         // Usage. Create a new IServiceProviderMoq and add your service moqs to it.
-        private Dictionary<Type, object> Services = new Dictionary<Type,object>();
+        private Dictionary<Type, object> Services = new Dictionary<Type, object>();
 
         // Returns null if it can't get it
         public object GetService(Type serviceType)
@@ -23,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public void AddService(Type interfaceType, Type serviceType, object serviceMock)
         {
             Services.Add(serviceType, serviceMock);
-            if(serviceType != interfaceType)
+            if (serviceType != interfaceType)
             {
                 Services.Add(interfaceType, serviceMock);
             }

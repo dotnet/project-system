@@ -14,6 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
     ///     called "Properties" in C# and "My Project" in Visual Basic.
     /// </summary>
     [ExportSpecialFileProvider(SpecialFiles.AppDesigner)]
+    [Export(typeof(AppDesignerFolderSpecialFileProvider))]
     [AppliesTo(ProjectCapability.AppDesigner)]
     internal class AppDesignerFolderSpecialFileProvider : ISpecialFileProvider
     {
@@ -30,14 +31,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
             _properties = properties;
         }
 
-        public async Task<string> GetFileAsync(SpecialFiles fileId, SpecialFileFlags flags, CancellationToken cancellationToken = default(CancellationToken))
+        // For unit tests
+        protected AppDesignerFolderSpecialFileProvider()
         {
+        }
+
+        public virtual async Task<string> GetFileAsync(SpecialFiles fileId, SpecialFileFlags flags, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            // Make sure at least have a tree before we start searching it
+            await _projectTree.Value.TreeService.PublishAnyNonLoadingTreeAsync(cancellationToken)
+                                                .ConfigureAwait(false);
+
             string path = FindAppDesignerFolder();
             if (path == null)
-            {   
+            {
                 // Not found, let's find the default path and create it if needed
                 path = await GetDefaultAppDesignerFolderPathAsync().ConfigureAwait(false);
-                
+
                 if (path != null && (flags & SpecialFileFlags.CreateIfNotExist) == SpecialFileFlags.CreateIfNotExist)
                 {
                     await _projectTree.Value.TreeStorage.CreateFolderAsync(path)

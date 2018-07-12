@@ -142,7 +142,7 @@
     <value>75, 23</value>
   </data>
   <data name="InsertButton.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
+    <value>1</value>
   </data>
   <data name="InsertButton.Text" xml:space="preserve">
     <value>I&amp;nsert</value>
@@ -178,7 +178,7 @@
     <value>75, 23</value>
   </data>
   <data name="OKButton.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
+    <value>2</value>
   </data>
   <data name="OKButton.Text" xml:space="preserve">
     <value>OK</value>
@@ -214,7 +214,7 @@
     <value>75, 23</value>
   </data>
   <data name="Cancel_Button.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
+    <value>3</value>
   </data>
   <data name="Cancel_Button.Text" xml:space="preserve">
     <value>Cancel</value>
@@ -286,7 +286,7 @@
     <value>75, 23</value>
   </data>
   <data name="ShowMacrosButton.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>0</value>
   </data>
   <data name="ShowMacrosButton.Text" xml:space="preserve">
     <value>&amp;Macros &gt;&gt;</value>
@@ -325,7 +325,7 @@
     <value>75, 23</value>
   </data>
   <data name="HideMacrosButton.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>1</value>
   </data>
   <data name="HideMacrosButton.Text" xml:space="preserve">
     <value>&lt;&lt; &amp;Macros</value>
@@ -370,7 +370,7 @@
     <value>457, 142</value>
   </data>
   <data name="TokenList.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+    <value>0</value>
   </data>
   <data name="&gt;&gt;TokenList.Name" xml:space="preserve">
     <value>TokenList</value>
@@ -418,7 +418,7 @@
     <value>333, 233</value>
   </data>
   <data name="CommandLinePanel.TabIndex" type="System.Int32, mscorlib">
-    <value>15</value>
+    <value>0</value>
   </data>
   <data name="&gt;&gt;CommandLinePanel.Name" xml:space="preserve">
     <value>CommandLinePanel</value>
@@ -448,7 +448,7 @@
     <value>237, 52</value>
   </data>
   <data name="insertOkCancelTableLayoutPanel.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>2</value>
   </data>
   <data name="&gt;&gt;insertOkCancelTableLayoutPanel.Name" xml:space="preserve">
     <value>insertOkCancelTableLayoutPanel</value>

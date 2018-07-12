@@ -4,13 +4,13 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.Packaging
 {
-    [ProjectSystemTrait]
+    [Trait("UnitTest", "ProjectSystem")]
     public class CSharpProjectSystemPackageTests
     {
         [Fact]
         public void Constructor_DoesNotThrow()
         {
-            new CSharpProjectSystemPackage();            
+            new CSharpProjectSystemPackage();
         }
     }
 }

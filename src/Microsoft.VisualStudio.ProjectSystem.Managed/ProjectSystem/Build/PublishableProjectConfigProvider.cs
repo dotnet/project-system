@@ -5,19 +5,21 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
+using Microsoft.VisualStudio.Threading;
+
 namespace Microsoft.VisualStudio.ProjectSystem.Build
 {
     /// <summary>
     ///     Provides publishable project config for projects that support click once publishing.
     /// </summary>
     [Export(typeof(IPublishProvider))]
-    [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
+    [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp)]
     internal class PublishableProjectConfigProvider : IPublishProvider
     {
         public Task<bool> IsPublishSupportedAsync()
         {
             // No support for ClickOnce publishing for now.
-            return Task.FromResult(false);
+            return TaskResult.False;
         }
 
         public Task PublishAsync(CancellationToken cancellationToken, TextWriter outputPaneWriter)
@@ -28,7 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
 
         public Task<bool> ShowPublishPromptAsync()
         {
-            return Task.FromResult(false);
+            return TaskResult.False;
         }
     }
 }

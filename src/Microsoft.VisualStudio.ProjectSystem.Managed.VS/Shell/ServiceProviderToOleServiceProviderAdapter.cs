@@ -2,7 +2,9 @@
 
 using System;
 using System.Runtime.InteropServices;
+
 using Microsoft.VisualStudio.ProjectSystem.VS;
+
 using IOleServiceProvider = Microsoft.VisualStudio.OLE.Interop.IServiceProvider;
 
 namespace Microsoft.VisualStudio.Shell
@@ -25,8 +27,7 @@ namespace Microsoft.VisualStudio.Shell
         {
             ppvObject = IntPtr.Zero;
 
-            object service;
-            if (!TryGetService(guidService, out service))
+            if (!TryGetService(guidService, out object service))
             {
                 return HResult.NoInterface;
             }
@@ -38,7 +39,7 @@ namespace Microsoft.VisualStudio.Shell
         {
             service = null;
 
-            Type serviceType = Type.GetTypeFromCLSID(riid, throwOnError: true); // Should only throw on OOM according to MSDN
+            var serviceType = Type.GetTypeFromCLSID(riid, throwOnError: true); // Should only throw on OOM according to MSDN
 
             service = _serviceProvider.GetService(serviceType);
             if (service == null)

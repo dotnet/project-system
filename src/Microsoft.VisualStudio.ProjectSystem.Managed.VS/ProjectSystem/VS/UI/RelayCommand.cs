@@ -30,8 +30,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
             _canExecute = canExecute;
         }
 
-        readonly Action<object> _execute;
-        readonly Predicate<object> _canExecute;
+        private readonly Action<object> _execute;
+        private readonly Predicate<object> _canExecute;
 
         public void RequeryCanExecute()
         {

@@ -1,11 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
-  <file datatype="xml" source-language="en" target-language="tr" original="src/Microsoft.VisualStudio.Editors/PropPages/PackagePropPage.resx">
+  <file datatype="xml" source-language="en" target-language="tr" original="../PackagePropPage.resx">
     <body>
-      <group id="src/Microsoft.VisualStudio.Editors/PropPages/PackagePropPage.resx" />
       <trans-unit id="AssemblyVersionLabel.Text">
         <source>&amp;Assembly version:</source>
-        <target state="translated">&amp;Bütünleştirilmiş kod sürümü:</target>
+        <target state="translated">Bütünleştirilmiş k&amp;od sürümü:</target>
         <note />
       </trans-unit>
       <trans-unit id="CopyrightLabel.Text">
@@ -120,7 +119,7 @@
       </trans-unit>
       <trans-unit id="AuthorsLabel.Text">
         <source>&amp;Authors:</source>
-        <target state="translated">&amp;Yazanlar:</target>
+        <target state="translated">&amp;Yazarlar:</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyCompanyLabel.Text">

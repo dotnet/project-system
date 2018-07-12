@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+
 using Microsoft.VisualStudio.ComponentModelHost;
 using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
@@ -23,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         private bool _useJoinableTaskFactory = true;
         private IVsDebugger _debugger;
         private uint _debuggerCookie;
-        private bool isActivated = false;
+        private bool _isActivated = false;
         internal IProjectThreadingService _threadHandling;
 
         // WIN32 Constants
@@ -54,8 +55,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         }
 
         internal UnconfiguredProject UnconfiguredProject { get; set; }
-        
-        
+
+
         ///--------------------------------------------------------------------------------------------
         /// <summary>
         /// Property. Gets or sets whether the page is dirty. Dirty status is pushed to owner property sheet
@@ -112,7 +113,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             // any changes that happen during initialization
             Win32Methods.SetParent(Handle, hWndParent);
             ResumeLayout();
-            isActivated = true;
+            _isActivated = true;
 
         }
 
@@ -135,13 +136,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         ///--------------------------------------------------------------------------------------------
         public void Deactivate()
         {
-            if (isActivated)
+            if (_isActivated)
             {
                 WaitForAsync(OnDeactivate);
                 UnadviseDebugger();
             }
 
-            isActivated = false;
+            _isActivated = false;
             Dispose(true);
         }
 
@@ -153,7 +154,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         ///--------------------------------------------------------------------------------------------
         public void GetPageInfo(PROPPAGEINFO[] pPageInfo)
         {
-            PROPPAGEINFO info = new PROPPAGEINFO();
+            var info = new PROPPAGEINFO();
 
             info.cb = (uint)Marshal.SizeOf(typeof(PROPPAGEINFO));
             info.dwHelpContext = 0;
@@ -179,7 +180,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             return;
         }
 
-        
+
         public int IsPageDirty()
         {
             if (IsDirty)
@@ -214,7 +215,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             Enabled = (dbgmodeNew == DBGMODE.DBGMODE_Design);
             return NativeMethods.S_OK;
         }
-        
+
         /// <summary>
         /// Informs derived classes that configuration has changed
         /// </summary>
@@ -263,7 +264,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             if (pMsg == null)
                 return VSConstants.E_POINTER;
 
-            Message m = Message.Create(pMsg[0].hwnd, (int)pMsg[0].message, pMsg[0].wParam, pMsg[0].lParam);
+            var m = Message.Create(pMsg[0].hwnd, (int)pMsg[0].message, pMsg[0].wParam, pMsg[0].lParam);
             bool used = false;
 
             // Preprocessing should be passed to the control whose handle the message refers to.
@@ -363,7 +364,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             if (ppunk.Length < cObjects)
                 throw new ArgumentOutOfRangeException("cObjects");
 
-            List<string> configurations = new List<string>();
+            var configurations = new List<string>();
             // Look for an IVsBrowseObject
             for (int i = 0; i < cObjects; ++i)
             {

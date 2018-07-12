@@ -2,9 +2,11 @@
 
 using Microsoft.VisualStudio.Shell;
 
+using Xunit;
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 {
-    [ProjectSystemTrait]
+    [Trait("UnitTest", "ProjectSystem")]
     public class AddClassProjectVBCommandTests : AbstractAddClassProjectCommandTests
     {
         internal override string DirName { get; } = "Common Items";

@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.ComponentModel
 Imports System.ComponentModel.Design
@@ -253,7 +253,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 End Select
 
                 If processedDelayRefreshMessage Then
-                    Internal.Performance.CodeMarkers.Instance.CodeMarker(Internal.Performance.CodeMarkerEvent.perfMSVSEditorsReferencePagePostponedUIRefreshDone)
+                    Internal.Performance.CodeMarkers.Instance.CodeMarker(Internal.Performance.RoslynCodeMarkerEvent.perfMSVSEditorsReferencePagePostponedUIRefreshDone)
                 End If
             Catch ex As COMException
                 ' The message pump in the background compiler could process our pending message, and when the compiler is running, we would get E_PENDING failure
@@ -556,10 +556,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Dim visualStudioWorkspace = componentModel.GetService(Of VisualStudioWorkspace)
                 Dim solution = visualStudioWorkspace.CurrentSolution
 
-                For Each projectId In solution.ProjectIds
-                    ' We need to find the project that matches by IVsHierarchy
-                    If visualStudioWorkspace.GetHierarchy(projectId) Is ProjectHierarchy Then
-                        Dim compilationTask = solution.GetProject(projectId).GetCompilationAsync(cancellationTokenSource.Token)
+                For Each project In solution.Projects
+
+                    ' We need to find the project that matches by project file path
+                    If project.FilePath IsNot Nothing AndAlso String.Compare(project.FilePath, DTEProject.FullName, ignoreCase:=True) = 0 Then
+                        Dim compilationTask = project.GetCompilationAsync(cancellationTokenSource.Token)
                         compilationTask.Wait(cancellationTokenSource.Token)
                         Dim compilation = compilationTask.Result
 
@@ -587,10 +588,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Next
 
                 ' Return empty list if an error occurred
-                Return New String() {}
+                Return Array.Empty(Of String)
             Catch ex As OperationCanceledException
                 ' Return empty list if we canceled
-                Return New String() {}
+                Return Array.Empty(Of String)
             Finally
                 Dim canceled As Integer = 0
                 threadedWaitDialog3.EndWaitDialog(canceled)
@@ -787,30 +788,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 pCallback:=cancellationCallback)
 
             Try
-                Dim componentModel = DirectCast(ServiceProvider.GetService(GetType(SComponentModel)), IComponentModel)
-                Dim visualStudioWorkspace = componentModel.GetService(Of VisualStudioWorkspace)
-                Dim solution = visualStudioWorkspace.CurrentSolution
-                Dim CurrentImportNames As New List(Of String)
-
-                For Each projectId In solution.ProjectIds
-                    ' We need to find the project that matches by IVsHierarchy
-                    If visualStudioWorkspace.GetHierarchy(projectId) Is ProjectHierarchy Then
-                        Dim compilationTask = solution.GetProject(projectId).GetCompilationAsync(cancellationTokenSource.Token)
-                        compilationTask.Wait(cancellationTokenSource.Token)
-                        Dim compilation = compilationTask.Result
-                        Dim compilationOptions = CType(compilation.Options, VisualBasicCompilationOptions)
-                        If (compilationOptions IsNot Nothing) Then
-                            For Each globalImport In compilationOptions.GlobalImports
-                                CurrentImportNames.Add(globalImport.Name)
-                            Next
-                            CurrentImportNames.Sort(CaseInsensitiveComparison.Comparer)
-                        End If
-                        Return CurrentImportNames.ToArray()
-                    End If
-                Next
-
-                ' Return empty list if an error occurred
-                Return New String() {}
+                Dim vsImports As VSLangProj.Imports = CType(DTEProject.Object, VSLangProj.VSProject).Imports
+                Dim result As New List(Of String)(vsImports.Count)
+                result.AddRange(vsImports.Cast(Of String)())
+                result.Sort(CaseInsensitiveComparison.Comparer)
+                Return result.ToArray()
 
             Catch ex As OperationCanceledException
                 ' Return empty list if we canceled
@@ -1142,7 +1124,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         PopulateReferenceList()
                         PopulateImportsList(True)
 
-                        Internal.Performance.CodeMarkers.Instance.CodeMarker(Internal.Performance.CodeMarkerEvent.perfMSVSEditorsReferencePageWCFAdded)
+                        Internal.Performance.CodeMarkers.Instance.CodeMarker(Internal.Performance.RoslynCodeMarkerEvent.perfMSVSEditorsReferencePageWCFAdded)
                     End If
                 Catch ex As Exception When ReportWithoutCrash(ex, NameOf(serviceReferenceToolStripMenuItem_Click), NameOf(ReferencePropPage))
                     If Not IsCheckoutCanceledException(ex) Then
@@ -1402,91 +1384,73 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Imported namespaces are currently added/removed one at a time
         '''    All removes are processed first, and then adds 
         '''</summary>
-        ''' <param name="NewImportList">the imported list being saved</param>
+        ''' <param name="newImportList">the imported list being saved</param>
         ''' <return>return true if any value was changed...</return>
         ''' <remarks>
         ''' CONSIDER: This is how the msvbprj code did it, and it may not work well
         '''         for other compilers (assuming this page is later shared)
         '''</remarks>
-        Private Function SaveImportedNamespaces(NewImportList As String()) As Boolean
-            Dim theVSProject As VSLangProj.VSProject
-            Dim _Imports As VSLangProj.Imports
-            Dim index, ListIndex As Integer
-            Dim _Namespace As String
+        Private Function SaveImportedNamespaces(newImportList As String()) As Boolean
             Dim valueUpdated As Boolean = False
-
-            theVSProject = CType(DTEProject.Object, VSLangProj.VSProject)
-
-            _Imports = theVSProject.Imports
+            Dim vsImports As VSLangProj.Imports = CType(DTEProject.Object, VSLangProj.VSProject).Imports
 
             Debug.Assert(Not _ignoreImportEvent, "why m_ignoreImportEvent = TRUE?")
             Try
                 _ignoreImportEvent = True
 
                 'For backward compatibility we remove all non-imported ones from the current Imports before adding any new ones
-                Dim CurrentImports As String() = GetCurrentImports()
+                Dim currentImports = New List(Of String)(vsImports.Count)
 
-                index = CurrentImports.Length
-                For index = _Imports.Count To 1 Step -1
-                    _Namespace = CurrentImports(index - 1)
-                    ListIndex = LookupInStringArray(NewImportList, _Namespace)
-                    If ListIndex = -1 Then
-                        Debug.WriteLine("Removing reference: " & _Imports.Item(index))
-                        Try
-                            _Imports.Remove(index)
+                For index = vsImports.Count To 1 Step -1
+                    Dim namespaceName As String = String.Empty
+                    Try
+                        namespaceName = vsImports.Item(index)
+                        currentImports.Add(namespaceName)
+                        If Not newImportList.Contains(namespaceName) Then
+                            Debug.WriteLine("Removing reference: " & namespaceName)
+                            vsImports.Remove(index)
                             valueUpdated = True
-                        Catch ex As Exception When ReportWithoutCrash(ex, "Unexpected error when removing imports", NameOf(ReferencePropPage))
-                            If IsCheckoutCanceledException(ex) Then
-                                'Exit early - no need to show any UI, they've already seen it
-                                Return valueUpdated
-                            ElseIf TypeOf ex Is COMException Then
-                                ShowErrorMessage(My.Resources.Designer.GetString(My.Resources.Designer.PPG_Reference_RemoveImportsFailUnexpected, _Namespace, Hex(DirectCast(ex, COMException).ErrorCode)))
-                                Debug.Fail("Unexpected error when removing imports")
-                            Else
-                                ShowErrorMessage(My.Resources.Designer.GetString(My.Resources.Designer.PPG_Reference_RemoveImportsFailUnexpected, _Namespace, ex.Message))
-                                Debug.Fail("Unexpected error when removing imports")
-                            End If
-                        End Try
-                    End If
+                        End If
+                    Catch ex As Exception When ReportWithoutCrash(ex, "Unexpected error when removing imports", NameOf(ReferencePropPage))
+                        If IsCheckoutCanceledException(ex) Then
+                            'Exit early - no need to show any UI, they've already seen it
+                            Return valueUpdated
+                        ElseIf TypeOf ex Is COMException Then
+                            ShowErrorMessage(My.Resources.Designer.GetString(My.Resources.Designer.PPG_Reference_RemoveImportsFailUnexpected, namespaceName, Hex(DirectCast(ex, COMException).ErrorCode)))
+                            Debug.Fail("Unexpected error when removing imports")
+                        Else
+                            ShowErrorMessage(My.Resources.Designer.GetString(My.Resources.Designer.PPG_Reference_RemoveImportsFailUnexpected, namespaceName, ex.Message))
+                            Debug.Fail("Unexpected error when removing imports")
+                        End If
+                    End Try
                 Next index
 
                 'Now add anything new
-                For ListIndex = 0 To UBound(NewImportList)
-                    _Namespace = NewImportList(ListIndex)
-                    'Add it if not already in the list
-                    index = LookupInStringArray(CurrentImports, _Namespace)
-                    If index = -1 Then
-                        Debug.WriteLine("Adding reference: " & _Namespace)
-                        Try
-                            _Imports.Add(_Namespace)
+                For Each namespaceName As String In newImportList
+                    Try
+                        'Add it if not already in the list
+                        If Not currentImports.Contains(namespaceName) Then
+                            Debug.WriteLine("Adding reference: " & namespaceName)
+                            vsImports.Add(namespaceName)
                             valueUpdated = True
-                        Catch ex As Exception When ReportWithoutCrash(ex, "Unexpected error when removing imports", NameOf(ReferencePropPage))
-                            If IsCheckoutCanceledException(ex) Then
-                                'Exit early - no need to show any UI, they've already seen it
-                                Return valueUpdated
-                            ElseIf TypeOf ex Is COMException Then
-                                ShowErrorMessage(My.Resources.Designer.GetString(My.Resources.Designer.PPG_Reference_RemoveImportsFailUnexpected, _Namespace, Hex(DirectCast(ex, COMException).ErrorCode)))
-                                Debug.Fail("Unexpected error when removing imports")
-                            Else
-                                ShowErrorMessage(My.Resources.Designer.GetString(My.Resources.Designer.PPG_Reference_RemoveImportsFailUnexpected, _Namespace, ex.Message))
-                                Debug.Fail("Unexpected error when removing imports")
-                            End If
-                        End Try
-                    End If
+                        End If
+                    Catch ex As Exception When ReportWithoutCrash(ex, "Unexpected error when removing imports", NameOf(ReferencePropPage))
+                        If IsCheckoutCanceledException(ex) Then
+                            'Exit early - no need to show any UI, they've already seen it
+                            Return valueUpdated
+                        ElseIf TypeOf ex Is COMException Then
+                            ShowErrorMessage(My.Resources.Designer.GetString(My.Resources.Designer.PPG_Reference_RemoveImportsFailUnexpected, namespaceName, Hex(DirectCast(ex, COMException).ErrorCode)))
+                            Debug.Fail("Unexpected error when removing imports")
+                        Else
+                            ShowErrorMessage(My.Resources.Designer.GetString(My.Resources.Designer.PPG_Reference_RemoveImportsFailUnexpected, namespaceName, ex.Message))
+                            Debug.Fail("Unexpected error when removing imports")
+                        End If
+                    End Try
                 Next
             Finally
                 _ignoreImportEvent = False
             End Try
             Return valueUpdated
-        End Function
-
-        Private Function LookupInStringArray(StringArray As String(), Text As String) As Integer
-            For i As Integer = 0 To StringArray.Length - 1
-                If String.Compare(StringArray(i), Text) = 0 Then
-                    Return i
-                End If
-            Next
-            Return -1
         End Function
 
         'Get the user selected values and update the project's Imports list

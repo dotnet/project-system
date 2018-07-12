@@ -116,7 +116,7 @@
         <note />
       </trans-unit>
       <trans-unit id="LaunchURL">
-        <source>Launch URL:</source>
+        <source>Launch browser:</source>
         <note />
       </trans-unit>
       <trans-unit id="NameHeader">

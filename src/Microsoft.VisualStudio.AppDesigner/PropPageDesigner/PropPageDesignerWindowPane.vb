@@ -179,14 +179,15 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 ElseIf m.Msg = win.WM_SYSKEYDOWN Then
                     'Here, we have to translate accelerators instead of letting shell handle them. Otherwise the shell menus
                     'will handle the accelerator first if we have a duplicate accelerator. See Dev10 bug 818320.
-                    'We must never handle messages in two cases: if this is a VK_MENU, which means the user just pressed alt
-                    'and did nothing more), or if shift key is being held down. This is to allow Alt+Shift+letter
-                    'to go to the menus or do whatever else they are bound to
+                    'We must never handle messages in three cases: if this is a VK_MENU, which means the user just pressed alt
+                    'and did nothing more), if this is a VK_DOWN, which is used by certain controls (such as ComboBox) to expand
+                    ' themselves, Or if shift key is being held down. This is to allow Alt+Shift+letter to go to the menus or do
+                    ' whatever Else they are bound To
 
                     'GetKeyState returns with the the highest of the 16-bit value set if the key is being pressed
                     Dim shiftBeingHeld As Boolean = (NativeMethods.GetKeyState(Keys.ShiftKey) And &H8000) <> 0
 
-                    If KeyCode <> Keys.Menu AndAlso Not shiftBeingHeld Then
+                    If KeyCode <> Keys.Menu AndAlso KeyCode <> Keys.Down AndAlso KeyCode <> Keys.Up AndAlso Not shiftBeingHeld Then
                         If NativeMethods.TranslateMessage(msg) Then
                             'It was translated, so return true to prevent further processing of the message by the shell
                             Return True

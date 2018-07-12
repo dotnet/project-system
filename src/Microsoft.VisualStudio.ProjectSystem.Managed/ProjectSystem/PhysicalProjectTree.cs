@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         private readonly Lazy<IPhysicalProjectTreeStorage> _treeStorage;
 
         [ImportingConstructor]
-        public PhysicalProjectTree([Import(ExportContractNames.ProjectTreeProviders.PhysicalProjectTreeService)]Lazy<IProjectTreeService> treeService, 
+        public PhysicalProjectTree([Import(ExportContractNames.ProjectTreeProviders.PhysicalProjectTreeService)]Lazy<IProjectTreeService> treeService,
                                    [Import(ExportContractNames.ProjectTreeProviders.PhysicalViewTree)]Lazy<IProjectTreeProvider> treeProvider,
                                    Lazy<IPhysicalProjectTreeStorage> treeStorage)
         {
@@ -43,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public IPhysicalProjectTreeStorage TreeStorage
         {
-            get { return _treeStorage.Value;  }
+            get { return _treeStorage.Value; }
         }
     }
 }

@@ -1,15 +1,17 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
 using Microsoft.VisualStudio.ProjectSystem.Properties;
+
 using Xunit;
-using System;
 
 namespace Microsoft.VisualStudio.ProjectSystem.ProjectPropertiesProviders
 {
-    [ProjectSystemTrait]
+    [Trait("UnitTest", "ProjectSystem")]
     public class AssemblyOriginatorKeyFileValueProviderTests
     {
         private const string AssemblyOriginatorKeyFilePropertyName = "AssemblyOriginatorKeyFile";
@@ -43,7 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.ProjectPropertiesProviders
                 () => keyFileProvider, providerMetadata) };
             var interceptedProvider = new ProjectFileInterceptedProjectPropertiesProvider(delegateProvider, instanceProvider, unconfiguredProject, lazyArray);
             var propertyNames = await properties.GetPropertyNamesAsync();
-            Assert.Equal(1, propertyNames.Count());
+            Assert.Single(propertyNames);
             Assert.Equal(AssemblyOriginatorKeyFilePropertyName, propertyNames.First());
             properties = interceptedProvider.GetProperties("path/to/project.testproj", null, null);
             string newKeyFileName = "KeyFile2.snk";

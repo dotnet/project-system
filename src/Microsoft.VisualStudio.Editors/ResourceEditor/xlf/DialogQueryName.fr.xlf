@@ -1,8 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
-  <file datatype="xml" source-language="en" target-language="fr" original="src/Microsoft.VisualStudio.Editors/ResourceEditor/DialogQueryName.resx">
+  <file datatype="xml" source-language="en" target-language="fr" original="../DialogQueryName.resx">
     <body>
-      <group id="src/Microsoft.VisualStudio.Editors/ResourceEditor/DialogQueryName.resx" />
       <trans-unit id="LabelDescription.Text">
         <source>P&amp;lease enter a name for the new resource.</source>
         <target state="translated">&amp;Entrez un nom pour la nouvelle ressource.</target>

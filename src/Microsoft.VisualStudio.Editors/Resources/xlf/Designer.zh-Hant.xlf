@@ -1,8 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
-  <file datatype="xml" source-language="en" target-language="zh-Hant" original="src/Microsoft.VisualStudio.Editors/Resources/Microsoft.VisualStudio.Editors.Designer.resx">
+  <file datatype="xml" source-language="en" target-language="zh-Hant" original="../Designer.resx">
     <body>
-      <group id="src/Microsoft.VisualStudio.Editors/Resources/Microsoft.VisualStudio.Editors.Designer.resx" />
       <trans-unit id="CMN_AllFilesFilter">
         <source>All Files</source>
         <target state="translated">所有檔案</target>
@@ -321,7 +320,7 @@ Please select a valid folder path.</source>
       </trans-unit>
       <trans-unit id="PPG_Application_AppEventsCommentLine1">
         <source>The following events are available for MyApplication:</source>
-        <target state="translated">MyApplication 可以使用下列事件: </target>
+        <target state="translated">MyApplication 可以使用下列事件:</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Application_AppEventsCommentLine3">
@@ -346,7 +345,7 @@ Please select a valid folder path.</source>
       </trans-unit>
       <trans-unit id="PPG_Application_AppEventsCommentLine7">
         <source>NetworkAvailabilityChanged: Raised when the network connection is connected or disconnected.</source>
-        <target state="translated">NetworkAvailabilityChanged:在連接或中斷網路連線時引發。</target>
+        <target state="translated">NetworkAvailabilityChanged:在建立或中斷網路連線時引發。</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_AdvancedBuildSettings_InvalidBaseAddress">
@@ -1313,7 +1312,7 @@ Error:</source>
       </trans-unit>
       <trans-unit id="RSE_Err_RenameNotSupported">
         <source>The current object is auto-generated and only supports renaming through the Managed Resources Editor.</source>
-        <target state="translated">目前的物件是自動產生的，而且僅支援透過 Managed 資源編輯器重新命名。</target>
+        <target state="translated">目前的物件是自動產生的，而且僅支援透過受控資源編輯器重新命名。</target>
         <note />
       </trans-unit>
       <trans-unit id="RSE_Err_CantFindResourceFile_1Arg">
@@ -1794,7 +1793,7 @@ CONSIDER: get this from CodeDom</note>
       </trans-unit>
       <trans-unit id="RSE_ResourceEditor">
         <source>Managed Resources Editor</source>
-        <target state="translated">Managed 資源編輯器</target>
+        <target state="translated">受控資源編輯器</target>
         <note />
       </trans-unit>
       <trans-unit id="RSE_DlgTitle_AddExisting">
@@ -2223,7 +2222,7 @@ app.config 檔的新值是 '{1}'
       </trans-unit>
       <trans-unit id="SD_CODEGENCMT_COMMON1">
         <source>This class allows you to handle specific events on the settings class:</source>
-        <target state="translated">這個類別可以讓您處理設定類別上的特定事件: </target>
+        <target state="translated">這個類別可以讓您處理設定類別上的特定事件:</target>
         <note>Comments for user part of extending generated settings class</note>
       </trans-unit>
       <trans-unit id="SD_CODEGENCMT_COMMON2">
@@ -2248,7 +2247,7 @@ app.config 檔的新值是 '{1}'
       </trans-unit>
       <trans-unit id="SD_CODEGENCMT_HOWTO_ATTACHEVTS">
         <source>To add event handlers for saving and changing settings, uncomment the lines below:</source>
-        <target state="translated">若要加入用於儲存與變更設定的事件處理常式，請取消註解下列程式行: </target>
+        <target state="translated">若要加入用於儲存與變更設定的事件處理常式，請取消註解下列程式行:</target>
         <note />
       </trans-unit>
       <trans-unit id="SD_CODEGENCMT_HANDLE_CHANGING">
@@ -2717,6 +2716,51 @@ app.config 檔的新值是 '{1}'
       <trans-unit id="PPG_Property_PackageVersion">
         <source>Package Version</source>
         <target state="translated">套件版本</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PPG_AdvancedBuildSettings_ReportCompilerErrors_None">
+        <source>None</source>
+        <target state="translated">無</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PPG_AdvancedBuildSettings_ReportCompilerErrors_Prompt">
+        <source>Prompt</source>
+        <target state="translated">提示</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PPG_AdvancedBuildSettings_ReportCompilerErrors_Queue">
+        <source>Queue</source>
+        <target state="translated">佇列</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PPG_AdvancedBuildSettings_ReportCompilerErrors_Send">
+        <source>Send</source>
+        <target state="translated">傳送</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PPG_AdvancedBuildSettings_DebugInfo_Embedded">
+        <source>Embedded</source>
+        <target state="translated">內嵌</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PPG_AdvancedBuildSettings_DebugInfo_Full">
+        <source>Full</source>
+        <target state="translated">完整</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PPG_AdvancedBuildSettings_DebugInfo_None">
+        <source>None</source>
+        <target state="translated">無</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PPG_AdvancedBuildSettings_DebugInfo_PdbOnly">
+        <source>Pdb-only</source>
+        <target state="translated">僅限 Pdb</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PPG_AdvancedBuildSettings_DebugInfo_Portable">
+        <source>Portable</source>
+        <target state="translated">可攜式</target>
         <note />
       </trans-unit>
     </body>

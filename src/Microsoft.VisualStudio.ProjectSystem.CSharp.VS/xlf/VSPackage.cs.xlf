@@ -1,8 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
-  <file datatype="xml" source-language="en" target-language="cs" original="src/Microsoft.VisualStudio.ProjectSystem.CSharp.VS/VSPackage.resx">
+  <file datatype="xml" source-language="en" target-language="cs" original="../VSPackage.resx">
     <body>
-      <group id="src/Microsoft.VisualStudio.ProjectSystem.CSharp.VS/VSPackage.resx" />
       <trans-unit id="1">
         <source>C#</source>
         <target state="translated">C#</target>
@@ -55,12 +54,12 @@
       </trans-unit>
       <trans-unit id="11">
         <source>xUnit Test Project (.NET Core)</source>
-        <target state="translated">Projekt testování xUnit (.NET Core)</target>
+        <target state="translated">Projekt testů xUnit (.NET Core)</target>
         <note />
       </trans-unit>
       <trans-unit id="12">
-        <source>A project that contains xunit tests that can run on .NET Core on Windows, Linux and MacOS</source>
-        <target state="translated">Projekt obsahující testy jednotek xunit, které je možné spustit na .NET Core ve Windows, Linuxu a MacOS</target>
+        <source>A project that contains xUnit.net tests that can run on .NET Core on Windows, Linux and MacOS.</source>
+        <target state="translated">Projekt obsahující testy xUnit.net, které je možné spustit na .NET Core ve Windows, Linuxu a MacOS</target>
         <note />
       </trans-unit>
     </body>

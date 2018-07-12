@@ -1,17 +1,19 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
-    [ProjectSystemTrait]
+    [Trait("UnitTest", "ProjectSystem")]
     public class VisualBasicProjectGuidProviderTests
     {
         [Fact]
         public void Constructor_NullAsUnconfiguredProject_ThrowsArgumentNull()
         {
-            Assert.Throws<ArgumentNullException>("unconfiguredProject", () => {
+            Assert.Throws<ArgumentNullException>("unconfiguredProject", () =>
+            {
 
                 new VisualBasicProjectGuidProvider((UnconfiguredProject)null);
             });

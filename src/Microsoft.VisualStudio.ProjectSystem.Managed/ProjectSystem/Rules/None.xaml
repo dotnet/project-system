@@ -4,7 +4,7 @@
   Name="None"
   DisplayName="General"
   PageTemplate="generic"
-  Description="Non-build items"
+  Description="File Properties"
   xmlns="http://schemas.microsoft.com/build/2009/properties">
   <Rule.DataSource>
     <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" ItemType="None" SourceOfDefaultValue="AfterContext" />

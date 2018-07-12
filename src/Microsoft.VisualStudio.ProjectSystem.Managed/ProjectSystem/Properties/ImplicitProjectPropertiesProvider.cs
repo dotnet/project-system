@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading.Tasks;
+
 using Microsoft.Build.Execution;
 using Microsoft.Build.Framework;
 
@@ -26,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     [Export("ImplicitProjectFile", typeof(IProjectInstancePropertiesProvider))]
     [Export(typeof(IProjectInstancePropertiesProvider))]
     [ExportMetadata("Name", "ImplicitProjectFile")]
-    [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
+    [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp)]
     internal class ImplicitProjectPropertiesProvider : DelegatedProjectPropertiesProviderBase
     {
         private readonly ImplicitProjectPropertiesStore<string, string> _propertyStore;

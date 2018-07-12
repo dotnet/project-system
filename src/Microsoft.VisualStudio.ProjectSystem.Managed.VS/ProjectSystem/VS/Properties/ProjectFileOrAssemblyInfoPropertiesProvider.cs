@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
+
 using Microsoft.VisualStudio.LanguageServices;
 using Microsoft.VisualStudio.LanguageServices.Implementation.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
@@ -17,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
     [Export("ProjectFileOrAssemblyInfo", typeof(IProjectPropertiesProvider))]
     [Export(typeof(IProjectPropertiesProvider))]
     [ExportMetadata("Name", "ProjectFileOrAssemblyInfo")]
-    [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
+    [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp)]
     internal class ProjectFileOrAssemblyInfoPropertiesProvider : AbstractProjectFileOrAssemblyInfoPropertiesProvider
     {
         [ImportingConstructor]

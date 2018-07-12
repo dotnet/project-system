@@ -1,8 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
-  <file datatype="xml" source-language="en" target-language="ja" original="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/GeneralBrowseObject.xaml">
+  <file datatype="xml" source-language="en" target-language="ja" original="../GeneralBrowseObject.xaml">
     <body>
-      <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/GeneralBrowseObject.xaml" />
       <trans-unit id="Rule|ConfigurationGeneralBrowseObject|DisplayName">
         <source>General</source>
         <target state="translated">全般</target>
@@ -51,46 +50,6 @@
       <trans-unit id="StringProperty|TargetFrameworks|DisplayName">
         <source>Target Frameworks</source>
         <target state="translated">ターゲット フレームワーク</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="DynamicEnumProperty|OutputType|DisplayName">
-        <source>Output Type</source>
-        <target state="translated">出力の種類</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumProperty|OutputTypeEx|DisplayName">
-        <source>Output Type</source>
-        <target state="translated">出力の種類</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|OutputTypeEx.winexe|DisplayName">
-        <source>0</source>
-        <target state="translated">0</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|OutputTypeEx.exe|DisplayName">
-        <source>1</source>
-        <target state="translated">1</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|OutputTypeEx.library|DisplayName">
-        <source>2</source>
-        <target state="translated">2</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|OutputTypeEx.appcontainerexe|DisplayName">
-        <source>3</source>
-        <target state="translated">3</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|OutputTypeEx.winmdobj|DisplayName">
-        <source>4</source>
-        <target state="translated">4</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|StartupObject|DisplayName">
-        <source>Type that contains the entry point</source>
-        <target state="translated">エントリ ポイントを含む型</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ApplicationManifest|DisplayName">
@@ -256,6 +215,31 @@
       <trans-unit id="StringProperty|NeutralLanguage|DisplayName">
         <source>Neutral Resources Language</source>
         <target state="translated">ニュートラル リソース言語</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|TargetFrameworkMonikers|DisplayName">
+        <source>Target Framework Monikers</source>
+        <target state="translated">ターゲット フレームワーク モニカー</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|SupportedTargetFrameworks|DisplayName">
+        <source>Supported TargetFrameworks</source>
+        <target state="translated">サポートされるターゲット フレームワーク</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="IntProperty|OutputType|DisplayName">
+        <source>Output Type</source>
+        <target state="translated">出力の種類</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="IntProperty|OutputTypeEx|DisplayName">
+        <source>Output Type Ex</source>
+        <target state="translated">出力の種類 Ex</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|StartupObject|DisplayName">
+        <source>Type that contains the entry point</source>
+        <target state="translated">エントリ ポイントを含む型</target>
         <note />
       </trans-unit>
     </body>

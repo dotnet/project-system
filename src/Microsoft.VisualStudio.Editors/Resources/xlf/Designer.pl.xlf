@@ -1,8 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
-  <file datatype="xml" source-language="en" target-language="pl" original="src/Microsoft.VisualStudio.Editors/Resources/Microsoft.VisualStudio.Editors.Designer.resx">
+  <file datatype="xml" source-language="en" target-language="pl" original="../Designer.resx">
     <body>
-      <group id="src/Microsoft.VisualStudio.Editors/Resources/Microsoft.VisualStudio.Editors.Designer.resx" />
       <trans-unit id="CMN_AllFilesFilter">
         <source>All Files</source>
         <target state="translated">Wszystkie pliki</target>
@@ -411,7 +410,7 @@ Wybierz prawidłową ścieżkę folderu.</target>
       </trans-unit>
       <trans-unit id="PPG_Compile_42025">
         <source>Instance variable accesses shared member</source>
-        <target state="translated">Zmienna wystąpienia uzyskała dostęp do udostępnionego elementu członkowskiego</target>
+        <target state="translated">Zmienna wystąpienia uzyskała dostęp do udostępnionej składowej</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Compile_42004">
@@ -518,7 +517,7 @@ Zmiana tego ustawienia spowoduje zresetowanie ustawień we wszystkich konfigurac
       </trans-unit>
       <trans-unit id="PPG_SecurityPage_Included">
         <source>Include</source>
-        <target state="translated">Dołącz</target>
+        <target state="translated">Uwzględnij</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_SecurityPage_Excluded">
@@ -538,7 +537,7 @@ Zmiana tego ustawienia spowoduje zresetowanie ustawień we wszystkich konfigurac
       </trans-unit>
       <trans-unit id="PPG_SecurityPage_HeaderIncluded">
         <source>Included</source>
-        <target state="translated">Dołączone</target>
+        <target state="translated">Uwzględnione</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_SecurityPage_HeaderPermission">
@@ -600,17 +599,17 @@ Błąd:</target>
       </trans-unit>
       <trans-unit id="PPG_SecurityPage_CheckAccessibilityName">
         <source>Included</source>
-        <target state="translated">Dołączone</target>
+        <target state="translated">Uwzględnione</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_SecurityPage_BlankAccessibilityName">
         <source>Not Included</source>
-        <target state="translated">Niedołączone</target>
+        <target state="translated">Nieuwzględnione</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_SecurityPage_BangAccessibilityName">
         <source>Included with warning</source>
-        <target state="translated">Dołączone z ostrzeżeniem</target>
+        <target state="translated">Uwzględnione z ostrzeżeniem</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_SecurityPage_PermCalcFailed">
@@ -2717,6 +2716,51 @@ Czy chcesz zaktualizować wartość w pliku settings?</target>
       <trans-unit id="PPG_Property_PackageVersion">
         <source>Package Version</source>
         <target state="translated">Wersja pakietu</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PPG_AdvancedBuildSettings_ReportCompilerErrors_None">
+        <source>None</source>
+        <target state="translated">Brak</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PPG_AdvancedBuildSettings_ReportCompilerErrors_Prompt">
+        <source>Prompt</source>
+        <target state="translated">Monit</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PPG_AdvancedBuildSettings_ReportCompilerErrors_Queue">
+        <source>Queue</source>
+        <target state="translated">Kolejka</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PPG_AdvancedBuildSettings_ReportCompilerErrors_Send">
+        <source>Send</source>
+        <target state="translated">Wyślij</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PPG_AdvancedBuildSettings_DebugInfo_Embedded">
+        <source>Embedded</source>
+        <target state="translated">Osadzone</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PPG_AdvancedBuildSettings_DebugInfo_Full">
+        <source>Full</source>
+        <target state="translated">Pełne</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PPG_AdvancedBuildSettings_DebugInfo_None">
+        <source>None</source>
+        <target state="translated">Brak</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PPG_AdvancedBuildSettings_DebugInfo_PdbOnly">
+        <source>Pdb-only</source>
+        <target state="translated">Tylko plik pdb</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PPG_AdvancedBuildSettings_DebugInfo_Portable">
+        <source>Portable</source>
+        <target state="translated">Przenośne</target>
         <note />
       </trans-unit>
     </body>

@@ -2,12 +2,13 @@
 
 using System;
 using System.ComponentModel.Composition;
+
 using Microsoft.VisualStudio.IO;
 
 namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
 {
     [ExportSpecialFileProvider(SpecialFiles.AssemblyResource)]
-    [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
+    [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp)]
     internal class ResourcesFileSpecialFileProvider : AbstractSpecialFileProvider
     {
         [ImportingConstructor]

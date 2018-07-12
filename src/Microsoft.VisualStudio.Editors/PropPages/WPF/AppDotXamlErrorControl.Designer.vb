@@ -55,7 +55,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
             Me.ErrorControl.Name = "ErrorControl"
             Me.ErrorControl.Padding = New System.Windows.Forms.Padding(17)
             Me.ErrorControl.Size = New System.Drawing.Size(171, 73)
-            Me.ErrorControl.TabIndex = 1
+            Me.ErrorControl.TabIndex = 0
             '
             'EditXamlButton
             '
@@ -64,7 +64,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
             Me.EditXamlButton.Location = New System.Drawing.Point(107, 82)
             Me.EditXamlButton.Name = "EditXamlButton"
             Me.EditXamlButton.Size = New System.Drawing.Size(67, 23)
-            Me.EditXamlButton.TabIndex = 0
+            Me.EditXamlButton.TabIndex = 1
             Me.EditXamlButton.Text = "&Edit XAML"
             Me.EditXamlButton.UseVisualStyleBackColor = True
             '

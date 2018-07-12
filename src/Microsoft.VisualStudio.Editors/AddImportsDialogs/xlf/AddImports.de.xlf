@@ -1,8 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
-  <file datatype="xml" source-language="en" target-language="de" original="src/Microsoft.VisualStudio.Editors/AddImportsDialogs/AddImports.resx">
+  <file datatype="xml" source-language="en" target-language="de" original="../AddImports.resx">
     <body>
-      <group id="src/Microsoft.VisualStudio.Editors/AddImportsDialogs/AddImports.resx" />
       <trans-unit id="AddImportsMainTextFormatString">
         <source>Importing '{0}' would change the meaning of other identifiers in this file. To correct '{1}' and preserve the meaning of other identifiers, choose one of the following options:</source>
         <target state="translated">Durch Importieren von "{0}" ändert sich die Bedeutung anderer Bezeichner in dieser Datei. Wenn Sie "{1}" korrigieren und dabei die Bedeutung anderer Bezeichner beibehalten möchten, wählen Sie eine der folgenden Optionen aus:</target>

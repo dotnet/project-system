@@ -1,16 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
-  <file datatype="xml" source-language="en" target-language="pt-BR" original="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/ResolvedProjectReference.xaml">
+  <file datatype="xml" source-language="en" target-language="pt-BR" original="../ResolvedProjectReference.xaml">
     <body>
-      <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/ResolvedProjectReference.xaml" />
       <trans-unit id="Rule|ResolvedProjectReference|DisplayName">
         <source>Resolved Project Reference</source>
         <target state="translated">Referência de Projeto Resolvida</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|ResolvedProjectReference|Description">
-        <source>Resolved reference</source>
-        <target state="translated">Referência resolvida</target>
+        <source>Reference Properties</source>
+        <target state="translated">Propriedades de Referência</target>
         <note />
       </trans-unit>
       <trans-unit id="StringListProperty|Aliases|DisplayName">
@@ -171,6 +170,56 @@
       <trans-unit id="StringProperty|OriginalItemSpec|Description">
         <source>The evaluated item name of the original reference item whose resolution resulted in this resolved reference item.</source>
         <target state="translated">O nome do item avaliado do item de referência original cuja resolução resultou nesse item de referência resolvido.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|CopyLocalSatelliteAssemblies|DisplayName">
+        <source>Copy Local Satellite Assemblies</source>
+        <target state="translated">Assemblies Satélite do Local da Cópia</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|CopyLocalSatelliteAssemblies|Description">
+        <source>Indicates whether the satellite assemblies of the reference target should be copied into this project's output directory.</source>
+        <target state="translated">Indica se os assemblies satélite do destino de referência devem ser copiados nesse diretório de saída do projeto.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|ExcludeAssets|DisplayName">
+        <source>Exclude Assets</source>
+        <target state="translated">Exclude Assets</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|ExcludeAssets|Description">
+        <source>Assets to exclude from this reference</source>
+        <target state="translated">Ativos a serem excluídos dessa referência</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|IncludeAssets|DisplayName">
+        <source>Include Assets</source>
+        <target state="translated">Include Assets</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|IncludeAssets|Description">
+        <source>Assets to include from this reference</source>
+        <target state="translated">Ativos a serem incluídos dessa referência</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|ReferenceOutputAssembly|DisplayName">
+        <source>Reference Output Assembly</source>
+        <target state="translated">Assembly de Saída de Referência</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|ReferenceOutputAssembly|Description">
+        <source>A value indicating whether the compiler should include a reference to the target project's primary output assembly.</source>
+        <target state="translated">Um valor que indica se o compilador deve incluir uma referência ao assembly de saída principal do projeto de destino.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|PrivateAssets|DisplayName">
+        <source>Private Assets</source>
+        <target state="translated">Private Assets</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|PrivateAssets|Description">
+        <source>Assets that are private in this reference</source>
+        <target state="translated">Ativos que são privados nessa referência</target>
         <note />
       </trans-unit>
     </body>

@@ -1,12 +1,14 @@
-﻿using Microsoft.VisualStudio.ProjectSystem.Properties;
-using System;
-using System.Threading.Tasks;
-using Xunit;
+﻿using System;
 using System.Runtime.Versioning;
+using System.Threading.Tasks;
+
+using Microsoft.VisualStudio.ProjectSystem.Properties;
+
+using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.ProjectPropertiesProviders
 {
-    [ProjectSystemTrait]
+    [Trait("UnitTest", "ProjectSystem")]
     public class TargetFrameworkValueProviderTests
     {
         private const string TargetFrameworkPropertyName = "TargetFramework";

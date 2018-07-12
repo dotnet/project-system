@@ -1,16 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
-  <file datatype="xml" source-language="en" target-language="fr" original="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/SdkReference.xaml">
+  <file datatype="xml" source-language="en" target-language="fr" original="../SdkReference.xaml">
     <body>
-      <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/SdkReference.xaml" />
       <trans-unit id="Rule|SdkReference|DisplayName">
         <source>SDK Reference</source>
         <target state="translated">Référence SDK</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|SdkReference|Description">
-        <source>SDK reference properties</source>
-        <target state="translated">Propriétés de référence SDK</target>
+        <source>SDK Reference Properties</source>
+        <target state="translated">Propriétés de la référence SDK</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|SDKRootFolder|DisplayName">
@@ -55,18 +54,18 @@
       </trans-unit>
       <trans-unit id="StringProperty|DisplayName|DisplayName">
         <source>Display Name</source>
-        <target state="new">Display Name</target>
-        <note></note>
+        <target state="translated">Nom complet</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Name|DisplayName">
         <source>Name</source>
-        <target state="new">Name</target>
-        <note></note>
+        <target state="translated">Nom</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Version|DisplayName">
         <source>Version</source>
-        <target state="new">Version</target>
-        <note></note>
+        <target state="translated">Version</target>
+        <note />
       </trans-unit>
     </body>
   </file>

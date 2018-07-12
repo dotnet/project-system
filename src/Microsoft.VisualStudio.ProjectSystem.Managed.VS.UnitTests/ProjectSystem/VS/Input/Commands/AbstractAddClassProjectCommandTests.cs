@@ -1,14 +1,17 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using Microsoft.VisualStudio.Input;
-using Microsoft.VisualStudio.Shell.Interop;
 using System;
 using System.Collections.Immutable;
 using System.Threading.Tasks;
+
+using Microsoft.VisualStudio.Input;
+using Microsoft.VisualStudio.Shell.Interop;
+
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 {
+    [Trait("UnitTest", "ProjectSystem")]
     public abstract class AbstractAddClassProjectCommandTests
     {
         [Fact]
@@ -114,13 +117,8 @@ Root (flags: {ProjectRoot})
         [Fact]
         public async Task GetCommandStatusAsync_FolderAsNodes_ReturnsHandled()
         {
-
-            var projectProperties = ProjectPropertiesFactory.Create(UnconfiguredProjectFactory.Create(), new[] {
-                    new PropertyPageData { Category = ConfigurationGeneral.SchemaName, PropertyName = ConfigurationGeneral.ProjectGuidProperty, Value = Guid.NewGuid().ToString() }
-                });
-
             var command = CreateInstance(provider: IProjectTreeProviderFactory.Create(""), dlg:
-                IVsAddProjectItemDlgFactory.Create(0), properties: () => projectProperties);
+                IVsAddProjectItemDlgFactory.Create(0));
 
             var tree = ProjectTreeParser.Parse(@"
 Root (flags: {ProjectRoot})
@@ -139,12 +137,8 @@ Root (flags: {ProjectRoot})
         [Fact]
         public async Task TryHandleCommandAsync_FolderAsNodes_ReturnsTrue()
         {
-            var projectProperties = ProjectPropertiesFactory.Create(UnconfiguredProjectFactory.Create(), new[] {
-                    new PropertyPageData { Category = ConfigurationGeneral.SchemaName, PropertyName = ConfigurationGeneral.ProjectGuidProperty, Value = Guid.NewGuid().ToString() }
-                });
-
             var command = CreateInstance(provider: IProjectTreeProviderFactory.Create(""), dlg:
-                IVsAddProjectItemDlgFactory.Create(0), properties: () => projectProperties);
+                IVsAddProjectItemDlgFactory.Create(0));
 
             var tree = ProjectTreeParser.Parse(@"
 Root (flags: {ProjectRoot})
@@ -165,7 +159,7 @@ Root (flags: {ProjectRoot})
             string dirFilter = "";
             string templateFilter = "";
             string browseLocations = "";
-            Guid g = new Guid();
+            var g = new Guid();
             string folder = "folderName";
 
             var dlg = IVsAddProjectItemDlgFactory.ImplementWithParams((id, guid, project, flags, dFilter, tFilter, browseLocs, filter, showAgain) =>
@@ -177,11 +171,7 @@ Root (flags: {ProjectRoot})
                 return 0;
             }, g, folder, string.Empty, 0);
 
-            var projectProperties = ProjectPropertiesFactory.Create(UnconfiguredProjectFactory.Create(), new[] {
-                    new PropertyPageData { Category = ConfigurationGeneral.SchemaName, PropertyName = ConfigurationGeneral.ProjectGuidProperty, Value = g.ToString() }
-                });
-
-            var command = CreateInstance(provider: IProjectTreeProviderFactory.Create(folder), dlg: dlg, properties: () => projectProperties);
+            var command = CreateInstance(provider: IProjectTreeProviderFactory.Create(folder), dlg: dlg);
 
             var tree = ProjectTreeParser.Parse(@"
 Root (flags: {ProjectRoot})
@@ -198,6 +188,7 @@ Root (flags: {ProjectRoot})
             Assert.Equal("folderName", browseLocations);
         }
 
+        [Fact]
         public async Task TryHandleCommand_FolderAsNodes_ReturnsTrueWhenUserClicksCancel()
         {
             var projectProperties = ProjectPropertiesFactory.Create(UnconfiguredProjectFactory.Create(), new[] {
@@ -205,7 +196,7 @@ Root (flags: {ProjectRoot})
                 });
 
             var command = CreateInstance(provider: IProjectTreeProviderFactory.Create(""), dlg:
-                IVsAddProjectItemDlgFactory.Create(VSConstants.OLE_E_PROMPTSAVECANCELLED), properties: () => projectProperties);
+                IVsAddProjectItemDlgFactory.Create(VSConstants.OLE_E_PROMPTSAVECANCELLED));
 
             var tree = ProjectTreeParser.Parse(@"
 Root (flags: {ProjectRoot})
@@ -224,10 +215,10 @@ Root (flags: {ProjectRoot})
 
         internal abstract string DirName { get; }
 
-        internal AbstractAddClassProjectCommand CreateInstance(IPhysicalProjectTree projectTree = null, IUnconfiguredProjectVsServices projectVsServices = null, Shell.SVsServiceProvider serviceProvider = null, IProjectTreeProvider provider = null, IVsAddProjectItemDlg dlg = null, Func<ProjectProperties> properties = null)
+        internal AbstractAddClassProjectCommand CreateInstance(IPhysicalProjectTree projectTree = null, IUnconfiguredProjectVsServices projectVsServices = null, Shell.SVsServiceProvider serviceProvider = null, IProjectTreeProvider provider = null, IVsAddProjectItemDlg dlg = null)
         {
             projectTree = projectTree ?? IPhysicalProjectTreeFactory.Create(provider);
-            projectVsServices = projectVsServices ?? IUnconfiguredProjectVsServicesFactory.Implement(projectProperties: properties);
+            projectVsServices = projectVsServices ?? IUnconfiguredProjectVsServicesFactory.Implement(threadingServiceCreator: () => IProjectThreadingServiceFactory.Create());
             serviceProvider = serviceProvider ?? SVsServiceProviderFactory.Create(dlg);
 
             return CreateInstance(projectTree, projectVsServices, serviceProvider);

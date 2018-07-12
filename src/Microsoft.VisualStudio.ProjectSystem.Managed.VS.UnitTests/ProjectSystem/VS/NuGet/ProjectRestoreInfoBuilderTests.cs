@@ -1,32 +1,35 @@
 ﻿using System;
 using System.Collections.Immutable;
 using System.Linq;
+
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 {
-    [ProjectSystemTrait]
+    [Trait("UnitTest", "ProjectSystem")]
     public class ProjectRestoreInfoBuilderTests
     {
         [Fact]
-        public void ProjectRestoreInfoBuilder_NullUpdate_ThrowsArgumentNull()
+        public void NullUpdate_ThrowsArgumentNull()
         {
-            Assert.Throws<ArgumentNullException>("updates", () => {
+            Assert.Throws<ArgumentNullException>("updates", () =>
+            {
                 ProjectRestoreInfoBuilder.Build(null, GetMockProject());
             });
         }
 
         [Fact]
-        public void ProjectRestoreInfoBuilder_NullProject_ThrowsArgumentNull()
+        public void NullProject_ThrowsArgumentNull()
         {
-            Assert.Throws<ArgumentNullException>("project", () => {
+            Assert.Throws<ArgumentNullException>("project", () =>
+            {
                 var projectSubscriptionUpdates = GetVersionedUpdatesFromJson(_sampleSubscriptionUpdate);
                 ProjectRestoreInfoBuilder.Build(projectSubscriptionUpdates, null);
             });
         }
 
         [Fact]
-        public void ProjectRestoreInfoBuilder_NoProjectChanges_ReturnsNull()
+        public void NoProjectChanges_ReturnsNull()
         {
             var projectSubscriptionUpdates = GetVersionedUpdatesFromJson(@"{
     ""ProjectChanges"": {
@@ -57,23 +60,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         }
 
         [Fact]
-        public void ProjectRestoreInfoBuilder_WithAnyChanges_ReturnsFullRestoreInfo()
+        public void WithAnyChanges_ReturnsFullRestoreInfo()
         {
             var projectSubscriptionUpdates = GetVersionedUpdatesFromJson(_sampleSubscriptionUpdate);
             var restoreInfo = ProjectRestoreInfoBuilder.Build(projectSubscriptionUpdates, GetMockProject());
-            
+
             Assert.NotNull(restoreInfo);
             Assert.Equal(@"obj\", restoreInfo.BaseIntermediatePath);
             Assert.Equal("netcoreapp1.0", restoreInfo.OriginalTargetFrameworks);
 
-            Assert.Equal(1, restoreInfo.TargetFrameworks.Count);
+            Assert.Single(restoreInfo.TargetFrameworks);
             var tfm = restoreInfo.TargetFrameworks.Item("netcoreapp1.0");
             Assert.Equal(tfm, restoreInfo.TargetFrameworks.Item(0));
             Assert.Null(restoreInfo.TargetFrameworks.Item("InvalidFrameworkMoniker"));
 
             Assert.Equal("netcoreapp1.0", tfm.TargetFrameworkMoniker);
-            Assert.Equal(1, tfm.ProjectReferences.Count);
-            Assert.Equal(2, tfm.PackageReferences.Count);
+            Assert.Single(tfm.ProjectReferences);
+            AssertEx.CollectionLength(tfm.PackageReferences, 2);
             Assert.Equal(9, tfm.Properties.Count);
 
             var definingProjectDirectory = "C:\\Test\\Projects\\TestProj";
@@ -109,7 +112,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             Assert.Equal(definingProjectFullPath, packageRef.Properties.Item("DefiningProjectFullPath").Value);
 
             // tool references
-            Assert.Equal(1, restoreInfo.ToolReferences.Count);
+            Assert.Single(restoreInfo.ToolReferences);
             var toolRef = restoreInfo.ToolReferences.Item(0);
             Assert.Equal(toolRef, restoreInfo.ToolReferences.Item("Microsoft.AspNet.EF.Tools"));
             Assert.Equal("Microsoft.AspNet.EF.Tools", toolRef.Name);
@@ -117,7 +120,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         }
 
         [Fact]
-        public void ProjectRestoreInfoBuilder_WithNoTargetFrameworkDimension_UsesPropertiesInstead()
+        public void WithNoTargetFrameworkDimension_UsesPropertiesInstead()
         {
             var projectSubscriptionUpdates = GetVersionedUpdatesFromJson(@"{
     ""ProjectConfiguration"": {
@@ -170,12 +173,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             var restoreInfo = ProjectRestoreInfoBuilder.Build(projectSubscriptionUpdates, GetMockProject());
 
             Assert.NotNull(restoreInfo);
-            Assert.Equal(1, restoreInfo.TargetFrameworks.Count);
+            Assert.Single(restoreInfo.TargetFrameworks);
             Assert.NotNull(restoreInfo.TargetFrameworks.Item("netcoreapp1.0"));
         }
 
         [Fact]
-        public void ProjectRestoreInfoBuilder_WithEmptyTargetFramework_ReturnsNull()
+        public void WithEmptyTargetFramework_ReturnsNull()
         {
             var projectSubscriptionUpdates = GetVersionedUpdatesFromJson(@"{
     ""ProjectConfiguration"": {
@@ -230,7 +233,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         }
 
         [Fact]
-        public void ProjectRestoreInfoBuilder_WithTwoIdenticalUpdates_ReturnsSingleTFM()
+        public void WithTwoIdenticalUpdates_ReturnsSingleTFM()
         {
             var projectSubscriptionUpdates = GetVersionedUpdatesFromJson(
                 _sampleSubscriptionUpdate,
@@ -238,13 +241,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             var restoreInfo = ProjectRestoreInfoBuilder.Build(projectSubscriptionUpdates, GetMockProject());
 
             Assert.NotNull(restoreInfo);
-            Assert.Equal(1, restoreInfo.TargetFrameworks.Count);
+            Assert.Single(restoreInfo.TargetFrameworks);
             var tfm = restoreInfo.TargetFrameworks.Item(0);
             Assert.Equal("netcoreapp1.0", tfm.TargetFrameworkMoniker);
         }
 
         [Fact]
-        public void ProjectRestoreInfoBuilder_WithTwoDifferentUpdates_ReturnsTwoTFMs()
+        public void WithTwoDifferentUpdates_ReturnsTwoTFMs()
         {
             var projectSubscriptionUpdates = GetVersionedUpdatesFromJson(@"{
     ""ProjectConfiguration"": {
@@ -344,13 +347,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             var restoreInfo = ProjectRestoreInfoBuilder.Build(projectSubscriptionUpdates, GetMockProject());
 
             Assert.NotNull(restoreInfo);
-            Assert.Equal(2, restoreInfo.TargetFrameworks.Count);
+            AssertEx.CollectionLength(restoreInfo.TargetFrameworks, 2);
             Assert.NotNull(restoreInfo.TargetFrameworks.Item("netcoreapp1.0"));
             Assert.NotNull(restoreInfo.TargetFrameworks.Item("netstandard1.4"));
         }
 
         [Fact]
-        public void ProjectRestoreInfoBuilder_WithRepeatedToolReference_ReturnsJustOne()
+        public void WithRepeatedToolReference_ReturnsJustOne()
         {
             var projectSubscriptionUpdates = GetVersionedUpdatesFromJson(@"{
     ""ProjectConfiguration"": {
@@ -462,8 +465,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             var restoreInfo = ProjectRestoreInfoBuilder.Build(projectSubscriptionUpdates, GetMockProject());
 
             Assert.NotNull(restoreInfo);
-            Assert.Equal(2, restoreInfo.TargetFrameworks.Count);
-            Assert.Equal(1, restoreInfo.ToolReferences.Count);
+            AssertEx.CollectionLength(restoreInfo.TargetFrameworks, 2);
+            Assert.Single(restoreInfo.ToolReferences);
             var toolRef = restoreInfo.ToolReferences.Item(0);
             Assert.Equal(toolRef, restoreInfo.ToolReferences.Item("Microsoft.AspNet.EF.Tools"));
             Assert.Equal("Microsoft.AspNet.EF.Tools", toolRef.Name);
@@ -471,7 +474,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         }
 
         [Fact]
-        public void ProjectRestoreInfoBuilder_WithoutDefiningProjectDirectory_UsesUnconfiguredProjectRoot()
+        public void WithoutDefiningProjectDirectory_UsesUnconfiguredProjectRoot()
         {
             var projectSubscriptionUpdates = GetVersionedUpdatesFromJson(@"{
     ""ProjectConfiguration"": {
@@ -527,11 +530,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             var restoreInfo = ProjectRestoreInfoBuilder.Build(projectSubscriptionUpdates, GetMockProject());
 
             Assert.NotNull(restoreInfo);
-            Assert.Equal(1, restoreInfo.TargetFrameworks.Count);
+            Assert.Single(restoreInfo.TargetFrameworks);
 
             var tfm = restoreInfo.TargetFrameworks.Item("netcoreapp1.0");
             Assert.Equal("netcoreapp1.0", tfm.TargetFrameworkMoniker);
-            Assert.Equal(1, tfm.ProjectReferences.Count);
+            Assert.Single(tfm.ProjectReferences);
 
             // project references
             var projectRef = tfm.ProjectReferences.Item(0);
@@ -625,7 +628,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 }";
 
         private UnconfiguredProject GetMockProject(string projectFullPath = "D:\\Test\\Projects\\UCProject\\UCProject.csproj") =>
-            UnconfiguredProjectFactory.Create(filePath: projectFullPath);        
+            UnconfiguredProjectFactory.Create(filePath: projectFullPath);
 
         private ImmutableList<IProjectVersionedValue<IProjectSubscriptionUpdate>> GetVersionedUpdatesFromJson(
             params string[] jsonStrings) =>

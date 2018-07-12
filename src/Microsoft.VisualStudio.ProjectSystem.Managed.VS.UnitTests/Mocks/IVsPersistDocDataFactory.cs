@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using Microsoft.VisualStudio.TextManager.Interop;
+
 using Moq;
 
 namespace Microsoft.VisualStudio.Shell.Interop
@@ -33,7 +34,8 @@ namespace Microsoft.VisualStudio.Shell.Interop
             var mock = new Mock<IVsPersistDocData>();
             var textBufferMock = mock.As<IVsTextBuffer>();
             uint flags = 0;
-            textBufferMock.Setup(t => t.GetStateFlags(out flags)).Returns((out uint f) => {
+            textBufferMock.Setup(t => t.GetStateFlags(out flags)).Returns((out uint f) =>
+            {
                 f = existingFlags;
                 return VSConstants.S_OK;
             });
