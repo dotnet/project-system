@@ -1960,4 +1960,8 @@ Do you want to update the value in the .settings file?</value>
   <data name="PPG_AdvancedBuildSettings_DebugInfo_Portable" xml:space="preserve">
     <value>Portable</value>
   </data>
+  <data name="BlockedResx" xml:space="preserve">
+    <value>Unable to load '{0}' because it is not trusted.</value>
+    <comment>{0} is resx file name that is blocked</comment>
+  </data>
 </root>
