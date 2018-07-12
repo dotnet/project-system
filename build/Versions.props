@@ -4,13 +4,6 @@
     <VersionBase Condition="'$(UseVisualStudioVersion)' != 'true'">2.9.0</VersionBase>
     <PreReleaseVersionLabel>beta2</PreReleaseVersionLabel>
 
-    <!-- 
-      15.8 specific workaround for a change to BUILD_BUILDNUMBER format that added two more digits. 
-      Any subsequent versions must have the same amount of digits to be considered higher.
-      Updates the version 20180102.03 to 20180102.0003.
-    -->
-    <BUILD_BUILDNUMBER Condition="$(BUILD_BUILDNUMBER.Length) == 11">$(BUILD_BUILDNUMBER.Insert(9, '00'))</BUILD_BUILDNUMBER>
-
     <!-- Opt-in repo features -->
     <UsingToolVSSDK>true</UsingToolVSSDK>
     <UsingToolIbcOptimization>true</UsingToolIbcOptimization>
