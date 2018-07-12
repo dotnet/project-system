@@ -8,12 +8,14 @@ namespace Microsoft.VisualStudio.ProjectSystem
     {
         public static IProjectCommonServices CreateWithDefaultThreadingPolicy()
         {
-            return ImplementThreadingPolicy(new IProjectThreadingServiceMock());
+            return ImplementThreadingPolicy(null);
         }
 
-        public static IProjectCommonServices ImplementThreadingPolicy(IProjectThreadingService threadingPolicy)
+        public static IProjectCommonServices ImplementThreadingPolicy(IProjectThreadingService threadingService)
         {
-            var services = IProjectServicesFactory.Create(threadingPolicy);
+            threadingService = threadingService ?? IProjectThreadingServiceFactory.Create();
+
+            var services = IProjectServicesFactory.Create(threadingService);
             var projectService = IProjectServiceFactory.Create(services);
 
             var mock = new Mock<IProjectCommonServices>();
