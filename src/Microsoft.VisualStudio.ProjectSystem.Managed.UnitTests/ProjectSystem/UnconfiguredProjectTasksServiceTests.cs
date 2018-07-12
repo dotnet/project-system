@@ -115,7 +115,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             tasksService = tasksService ?? IProjectAsynchronousTasksServiceFactory.Create();
             loadedInHostListener  = loadedInHostListener ?? ILoadedInHostListenerFactory.Create();
 
-            return new UnconfiguredProjectTasksService(tasksService, new IProjectThreadingServiceMock(), loadedInHostListener);
+            return new UnconfiguredProjectTasksService(tasksService, IProjectThreadingServiceFactory.Create(), loadedInHostListener);
         }
     }
 }
