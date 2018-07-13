@@ -28,6 +28,17 @@ namespace Microsoft.VisualStudio.ProjectSystem
             _projectLockService = projectLockService;
         }
 
+        public async Task EnterWriteLockAsync(Func<ProjectCollection, CancellationToken, Task> action, CancellationToken cancellationToken = default)
+        {
+            Requires.NotNull(action, nameof(action));
+
+            using (ProjectWriteLockReleaser access = await _projectLockService.WriteLockAsync(cancellationToken))
+            {
+                // Only async to let the caller call one of the other project accessor methods
+                await action(access.ProjectCollection, cancellationToken).ConfigureAwait(true);
+            }
+        }
+
         public async Task<TResult> OpenProjectForReadAsync<TResult>(ConfiguredProject project, Func<Project, TResult> action, CancellationToken cancellationToken = default)
         {
             Requires.NotNull(project, nameof(project));
