@@ -200,7 +200,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             var instance = new StartupProjectRegistrar(
                 project ?? UnconfiguredProjectFactory.Create(),
                 serviceProvider,
-                threadingService ?? new IProjectThreadingServiceMock(),
+                threadingService ?? IProjectThreadingServiceFactory.Create(),
                 projectGuidService ?? ISafeProjectGuidServiceFactory.ImplementGetProjectGuidAsync(Guid.NewGuid()),
                 projectSubscriptionService ?? IActiveConfiguredProjectSubscriptionServiceFactory.Create(),
                 launchProviders);

@@ -18,7 +18,7 @@ namespace Microsoft.VisualStudio.Threading.Tasks
         [Fact]
         public async Task ScheduleAsyncTask_RunsAsyncMethod()
         {
-            var scheduler = new TaskDelayScheduler(TimeSpan.FromMilliseconds(10), new IProjectThreadingServiceMock(), CancellationToken.None);
+            var scheduler = new TaskDelayScheduler(TimeSpan.FromMilliseconds(10), IProjectThreadingServiceFactory.Create(), CancellationToken.None);
 
             bool taskRan = false;
             var task = scheduler.ScheduleAsyncTask(ct =>
@@ -35,7 +35,7 @@ namespace Microsoft.VisualStudio.Threading.Tasks
         [Fact]
         public async Task ScheduleAsyncTask_SkipsPendingTasks()
         {
-            var scheduler = new TaskDelayScheduler(TimeSpan.FromMilliseconds(250), new IProjectThreadingServiceMock(), CancellationToken.None);
+            var scheduler = new TaskDelayScheduler(TimeSpan.FromMilliseconds(250), IProjectThreadingServiceFactory.Create(), CancellationToken.None);
 
             var tasksRun = new bool[3];
             var task1 = scheduler.ScheduleAsyncTask(ct =>
@@ -68,7 +68,7 @@ namespace Microsoft.VisualStudio.Threading.Tasks
         [Fact]
         public async Task Dispose_SkipsPendingTasks()
         {
-            var scheduler = new TaskDelayScheduler(TimeSpan.FromMilliseconds(250), new IProjectThreadingServiceMock(), CancellationToken.None);
+            var scheduler = new TaskDelayScheduler(TimeSpan.FromMilliseconds(250), IProjectThreadingServiceFactory.Create(), CancellationToken.None);
 
             bool taskRan = false;
             var task = scheduler.ScheduleAsyncTask(ct =>
@@ -86,7 +86,7 @@ namespace Microsoft.VisualStudio.Threading.Tasks
         [Fact]
         public async Task CancelPendingUpdates_SkipsPendingTasks()
         {
-            var scheduler = new TaskDelayScheduler(TimeSpan.FromMilliseconds(250), new IProjectThreadingServiceMock(), CancellationToken.None);
+            var scheduler = new TaskDelayScheduler(TimeSpan.FromMilliseconds(250), IProjectThreadingServiceFactory.Create(), CancellationToken.None);
 
             bool taskRan = false;
             var task = scheduler.ScheduleAsyncTask(ct =>
