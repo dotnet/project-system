@@ -103,14 +103,14 @@ namespace Microsoft.VisualStudio.Threading.Tasks
             }
             sequencer.Dispose();
 
+            bool mustBeCancelled = false;
+
             try
             {
                 await Task.WhenAll(tasks.ToArray());
-                Assert.False(true);
             }
             catch (OperationCanceledException)
             {
-                bool mustBeCancelled = false;
                 for (int i = 0; i < NumberOfTasks; i++)
                 {
                     // The first task or two may already be running. So we skip completed tasks until we find 
@@ -125,9 +125,9 @@ namespace Microsoft.VisualStudio.Threading.Tasks
                         mustBeCancelled = tasks[i].IsCanceled;
                     }
                 }
-
-                Assert.True(mustBeCancelled);
             }
+
+            Assert.True(mustBeCancelled);
         }
     }
 }
