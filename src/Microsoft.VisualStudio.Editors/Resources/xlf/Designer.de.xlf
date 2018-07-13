@@ -2765,7 +2765,7 @@ Möchten Sie den Wert in der SETTINGS-Datei aktualisieren?</target>
       </trans-unit>
       <trans-unit id="BlockedResx">
         <source>Unable to load '{0}' because it is not trusted.</source>
-        <target state="new">Unable to load '{0}' because it is not trusted.</target>
+        <target state="translated">"{0}" kann nicht geladen werden, weil die Datei nicht als vertrauenswürdig eingestuft wird.</target>
         <note>{0} is resx file name that is blocked</note>
       </trans-unit>
     </body>

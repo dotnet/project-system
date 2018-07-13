@@ -37,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             var moqProfileProvider = new Mock<ILaunchSettingsProvider>();
             moqProfileProvider.Setup(p => p.CurrentSnapshot).Returns(testProfiles.Object);
-            var threadingService = new IProjectThreadingServiceMock();
+            var threadingService = IProjectThreadingServiceFactory.Create();
 
             var generator =
                 new DebugProfileEnumValuesGenerator(moqProfileProvider.Object, threadingService);
@@ -62,7 +62,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             var moqProfileProvider = new Mock<ILaunchSettingsProvider>();
             moqProfileProvider.Setup(p => p.CurrentSnapshot).Returns(testProfiles.Object);
-            var threadingService = new IProjectThreadingServiceMock();
+            var threadingService = IProjectThreadingServiceFactory.Create();
 
             var generator =
                 new DebugProfileEnumValuesGenerator(moqProfileProvider.Object, threadingService);

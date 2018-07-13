@@ -2765,7 +2765,7 @@ El nuevo valor del archivo app.config es '{1}'
       </trans-unit>
       <trans-unit id="BlockedResx">
         <source>Unable to load '{0}' because it is not trusted.</source>
-        <target state="new">Unable to load '{0}' because it is not trusted.</target>
+        <target state="translated">No se puede cargar "{0}" porque no es de confianza.</target>
         <note>{0} is resx file name that is blocked</note>
       </trans-unit>
     </body>
