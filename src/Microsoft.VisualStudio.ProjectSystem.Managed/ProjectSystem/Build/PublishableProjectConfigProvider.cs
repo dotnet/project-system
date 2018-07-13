@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Threading;
@@ -24,13 +25,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
 
         public Task PublishAsync(CancellationToken cancellationToken, TextWriter outputPaneWriter)
         {
-            // No-op for now.
-            return Task.CompletedTask;
+            throw new InvalidOperationException();
         }
 
         public Task<bool> ShowPublishPromptAsync()
         {
-            return TaskResult.False;
+            throw new InvalidOperationException();
         }
     }
 }
