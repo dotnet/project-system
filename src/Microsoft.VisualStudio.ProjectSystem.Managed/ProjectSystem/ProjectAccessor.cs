@@ -36,6 +36,10 @@ namespace Microsoft.VisualStudio.ProjectSystem
             {
                 // Only async to let the caller call one of the other project accessor methods
                 await action(access.ProjectCollection, cancellationToken).ConfigureAwait(true);
+
+                // Avoid blocking thread on Dispose
+                await access.ReleaseAsync()
+                            .ConfigureAwait(true);
             }
         }
 
@@ -103,6 +107,10 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 // Deliberately not async to reduce the type of
                 // code you can run while holding the lock.
                 action(rootElement);
+
+                // Avoid blocking thread on Dispose
+                await access.ReleaseAsync()
+                            .ConfigureAwait(true);
             }
         }
 
@@ -122,6 +130,10 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 // Deliberately not async to reduce the type of
                 // code you can run while holding the lock.
                 action(evaluatedProject);
+
+                // Avoid blocking thread on Dispose
+                await access.ReleaseAsync()
+                            .ConfigureAwait(true);
             }
         }
     }
