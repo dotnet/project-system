@@ -292,21 +292,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         [Fact]
         public async Task ReadProfilesFromDisk_NoFile()
         {
-
             var moqFS = new IFileSystemMock();
             var provider = GetLaunchSettingsProvider(moqFS);
 
-            // Test without an existing file. Should throw
-            LaunchSettingsData launchSettings;
-            try
+            await Assert.ThrowsAsync<FileNotFoundException>(() =>
             {
-                launchSettings = await provider.ReadSettingsFileFromDiskTestAsync();
-                Assert.True(false);
-            }
-            catch
-            {   // Should have logged an error
-
-            }
+                return provider.ReadSettingsFileFromDiskTestAsync();
+            });
         }
 
         [Fact]
@@ -330,14 +322,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             var provider = GetLaunchSettingsProvider(moqFS);
 
             moqFS.WriteAllText(provider.LaunchSettingsFile, BadJsonString);
-            try
+
+            await Assert.ThrowsAsync<JsonReaderException>(() =>
             {
-                var launchSettings = await provider.ReadSettingsFileFromDiskTestAsync();
-                Assert.True(false);
-            }
-            catch
-            {   // Should have logged an error
-            }
+                return provider.ReadSettingsFileFromDiskTestAsync();
+            });
         }
 
         [Fact]
