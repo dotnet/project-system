@@ -21,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             Assert.Throws<ArgumentNullException>("project", () =>
             {
-                new SourceItemHandler((UnconfiguredProject)null, context);
+                new SourceItemHandler((UnconfiguredProject)null);
             });
         }
 
@@ -36,7 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             var context = IWorkspaceProjectContextFactory.CreateForSourceFiles(project, onSourceFileAdded, onSourceFileRemoved);
             var logger = Mock.Of<IProjectLogger>();
 
-            var handler = new SourceItemHandler(project, context);
+            var handler = CreateInstance(project, context);
             var projectDir = Path.GetDirectoryName(project.FullPath);
             var added = BuildOptions.FromCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: new[] { @"C:\file1.cs", @"C:\file2.cs", @"C:\file1.cs" }, baseDirectory: projectDir, sdkDirectory: null));
             var empty = BuildOptions.FromCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: new string[] { }, baseDirectory: projectDir, sdkDirectory: null));
@@ -65,7 +65,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             var context = IWorkspaceProjectContextFactory.CreateForSourceFiles(project, onSourceFileAdded, onSourceFileRemoved);
             var logger = Mock.Of<IProjectLogger>();
 
-            var handler = new SourceItemHandler(project, context);
+            var handler = CreateInstance(project, context);
             var projectDir = Path.GetDirectoryName(project.FullPath);
             var added = BuildOptions.FromCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: new[] { @"file1.cs", @"..\ProjectFolder\file1.cs" }, baseDirectory: projectDir, sdkDirectory: null));
             var removed = BuildOptions.FromCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: new string[] { }, baseDirectory: projectDir, sdkDirectory: null));
@@ -85,7 +85,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         {
             project = project ?? UnconfiguredProjectFactory.Create();
 
-            return new SourceItemHandler(project, context);
+            var handler = new SourceItemHandler(project);
+            if (context != null)
+                handler.Initialize(context);
+
+            return handler;
         }
     }
 }

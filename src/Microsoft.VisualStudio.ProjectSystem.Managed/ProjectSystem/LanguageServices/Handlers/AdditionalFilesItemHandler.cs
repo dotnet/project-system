@@ -25,16 +25,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
         [ImportingConstructor]
         public AdditionalFilesItemHandler(UnconfiguredProject project)
-            : this(project, null)
-        {
-        }
-
-        public AdditionalFilesItemHandler(UnconfiguredProject project, IWorkspaceProjectContext context)
         {
             Requires.NotNull(project, nameof(project));
-            
+
             _project = project;
-            _context = context;
         }
 
         public void Initialize(IWorkspaceProjectContext context)

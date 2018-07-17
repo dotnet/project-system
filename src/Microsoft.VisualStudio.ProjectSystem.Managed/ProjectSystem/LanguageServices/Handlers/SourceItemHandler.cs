@@ -23,17 +23,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
         [ImportingConstructor]
         public SourceItemHandler(UnconfiguredProject project)
-            : this(project, null)
-        {
-        }
-
-        public SourceItemHandler(UnconfiguredProject project, IWorkspaceProjectContext context)
             : base(project)
         {
-            Requires.NotNull(project, nameof(project));
-
             _project = project;
-            _context = context;
         }
 
         public string EvaluationRule

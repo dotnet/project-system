@@ -25,16 +25,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
         [ImportingConstructor]
         public AnalyzerItemHandler(UnconfiguredProject project)
-            : this(project, null)
-        {
-        }
-
-        public AnalyzerItemHandler(UnconfiguredProject project, IWorkspaceProjectContext context)
         {
             Requires.NotNull(project, nameof(project));
 
             _project = project;
-            _context = context;
         }
 
         public void Initialize(IWorkspaceProjectContext context)

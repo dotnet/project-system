@@ -17,15 +17,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
         [ImportingConstructor]
         public ProjectPropertiesItemHandler(UnconfiguredProject project)
-            : this(project, null)
-        {
-        }
-
-        public ProjectPropertiesItemHandler(UnconfiguredProject project, IWorkspaceProjectContext context)
         {
             Requires.NotNull(project, nameof(project));
-
-            _context = context;
         }
 
         public string EvaluationRule

@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             Assert.Throws<ArgumentNullException>("project", () =>
             {
-                new AdditionalFilesItemHandler((UnconfiguredProject)null, context);
+                new AdditionalFilesItemHandler((UnconfiguredProject)null);
             });
         }
 
@@ -25,11 +25,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             return CreateInstance(null, null);
         }
 
-        private MetadataReferenceItemHandler CreateInstance(UnconfiguredProject project = null, IWorkspaceProjectContext context = null)
+        private AdditionalFilesItemHandler CreateInstance(UnconfiguredProject project = null, IWorkspaceProjectContext context = null)
         {
             project = project ?? UnconfiguredProjectFactory.Create();
 
-            return new MetadataReferenceItemHandler(project, context);
+            var handler = new AdditionalFilesItemHandler(project);
+            if (context != null)
+                handler.Initialize(context);
+
+            return handler;
         }
     }
 }
