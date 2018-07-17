@@ -241,7 +241,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             If ContainsSensitiveData(ServiceProvider, Dialog.SelectedProvider, RawConnectionString) Then
                 If Not PromptIfContainsSensitiveData OrElse
                        DesignerFramework.DesignerMessageBox.Show(ServiceProvider,
-                                                             My.Resources.Designer.SD_IncludeSensitiveInfoInConnectionStringWarning,
+                                                             My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_IncludeSensitiveInfoInConnectionStringWarning,
                                                              DesignerFramework.DesignUtil.GetDefaultCaption(ServiceProvider),
                                                              Windows.Forms.MessageBoxButtons.YesNo,
                                                              Windows.Forms.MessageBoxIcon.Warning,

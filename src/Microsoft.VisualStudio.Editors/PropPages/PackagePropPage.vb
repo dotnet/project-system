@@ -108,7 +108,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <param name="Version">[Out] the resulting combined version string, if valid.</param>
         Private Sub ValidatePackageVersion(ByRef Version As String)
-            ValidateVersion(PackageVersion, MaxFileVersionPartValue, My.Resources.Designer.PPG_Property_PackageVersion, False, Version)
+            ValidateVersion(PackageVersion, MaxFileVersionPartValue, My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Property_PackageVersion, False, Version)
         End Sub
 
         ''' <summary>
@@ -116,7 +116,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <param name="Version">[Out] the resulting combined version string, if valid.</param>
         Private Sub ValidateAssemblyVersion(ByRef Version As String)
-            ValidateVersion(_assemblyVersionTextBoxes, MaxAssemblyVersionPartValue, My.Resources.Designer.PPG_Property_AssemblyVersion, True, Version)
+            ValidateVersion(_assemblyVersionTextBoxes, MaxAssemblyVersionPartValue, My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Property_AssemblyVersion, True, Version)
         End Sub
 
         ''' <summary>
@@ -124,7 +124,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <param name="Version">[Out] the resulting combined version string, if valid.</param>
         Private Sub ValidateAssemblyFileVersion(ByRef Version As String)
-            ValidateVersion(_fileVersionTextBoxes, MaxFileVersionPartValue, My.Resources.Designer.PPG_Property_AssemblyFileVersion, False, Version)
+            ValidateVersion(_fileVersionTextBoxes, MaxFileVersionPartValue, My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Property_AssemblyFileVersion, False, Version)
         End Sub
 
         Private Sub AssemblyVersionLayoutPanel_TextChanged(sender As Object, e As EventArgs) Handles AssemblyVersionMajorTextBox.TextChanged, AssemblyVersionMinorTextBox.TextChanged, AssemblyVersionBuildTextBox.TextChanged, AssemblyVersionRevisionTextBox.TextChanged
@@ -212,11 +212,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     data = New PropertyControlData(118, "NeutralLanguage", NeutralLanguageComboBox, AddressOf NeutralLanguageSet, AddressOf NeutralLanguageGet, ControlDataFlags.None, New Control() {NeutralLanguageLabel})
                     datalist.Add(data)
                     data = New PropertyControlData(119, "AssemblyVersion", AssemblyVersionLayoutPanel, AddressOf VersionSet, AddressOf VersionGet, ControlDataFlags.None, New Control() {AssemblyVersionLabel}) With {
-                        .DisplayPropertyName = My.Resources.Designer.PPG_Property_AssemblyVersion
+                        .DisplayPropertyName = My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Property_AssemblyVersion
                     }
                     datalist.Add(data)
                     data = New PropertyControlData(120, "FileVersion", FileVersionLayoutPanel, AddressOf VersionSet, AddressOf VersionGet, ControlDataFlags.None, New Control() {AssemblyFileVersionLabel}) With {
-                        .DisplayPropertyName = My.Resources.Designer.PPG_Property_AssemblyFileVersion
+                        .DisplayPropertyName = My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Property_AssemblyFileVersion
                     }
                     datalist.Add(data)
                     m_ControlData = datalist.ToArray()

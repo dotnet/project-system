@@ -524,7 +524,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
                 Return
             End If
 
-            Throw New XamlReadWriteException(My.Resources.Designer.GetString(My.Resources.Designer.PPG_WPFApp_Xaml_CouldntFindRootElement, ELEMENT_APPLICATION))
+            Throw New XamlReadWriteException(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_WPFApp_Xaml_CouldntFindRootElement, ELEMENT_APPLICATION))
         End Sub
 
 #Region "CreateXmlTextReader"
@@ -1062,7 +1062,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' <remarks></remarks>
         Private Sub ThrowUnexpectedFormatException(location As Location)
             Throw New XamlReadWriteException(
-                My.Resources.Designer.GetString(My.Resources.Designer.PPG_WPFApp_Xaml_UnexpectedFormat_2Args,
+                My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_WPFApp_Xaml_UnexpectedFormat_2Args,
                     CStr(location.LineIndex + 1), CStr(location.CharIndex + 1)))
         End Sub
 
