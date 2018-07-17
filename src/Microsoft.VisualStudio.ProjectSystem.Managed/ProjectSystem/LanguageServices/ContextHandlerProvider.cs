@@ -88,7 +88,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             ((project, context) => new SourceItemHandler(project, context), Compile.SchemaName),                // <Compile /> item
 
             // Evaluation only
-            ((project, context) => new ProjectPropertiesItemHandler(context), ConfigurationGeneral.SchemaName),   // <ProjectGuid>, <TargetPath> properties
+            ((project, context) => new ProjectPropertiesItemHandler(project, context), ConfigurationGeneral.SchemaName),   // <ProjectGuid>, <TargetPath> properties
 
             // Command-line only
             ((project, context) => new MetadataReferenceItemHandler(project, context), null),                              // <ProjectReference />, <Reference /> items
