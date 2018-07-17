@@ -1,4 +1,6 @@
-﻿using System;
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+
+using System;
 
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 
@@ -7,7 +9,7 @@ using Xunit;
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 {
     [Trait("UnitTest", "ProjectSystem")]
-    public class ProjectPropertiesItemHandlerTests : EvaluationHandlerTestBase
+    public class SourceItemHandler_EvaluationTests : EvaluationHandlerTestBase
     {
         [Fact]
         public void Constructor_NullAsProject_ThrowsArgumentNull()
@@ -16,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             Assert.Throws<ArgumentNullException>("project", () =>
             {
-                new ProjectPropertiesItemHandler((UnconfiguredProject)null, context);
+                new SourceItemHandler((UnconfiguredProject)null, context);
             });
         }
 
@@ -25,11 +27,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             return CreateInstance(null, null);
         }
 
-        private ProjectPropertiesItemHandler CreateInstance(UnconfiguredProject project = null, IWorkspaceProjectContext context = null)
+        private SourceItemHandler CreateInstance(UnconfiguredProject project = null, IWorkspaceProjectContext context = null)
         {
             project = project ?? UnconfiguredProjectFactory.Create();
 
-            return new ProjectPropertiesItemHandler(project, context);
+            return new SourceItemHandler(project, context);
         }
     }
 }

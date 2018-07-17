@@ -3,19 +3,16 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.Logging;
-
 using Moq;
-
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 {
     [Trait("UnitTest", "ProjectSystem")]
-    public class SourceItemHandlerTests
+    public class SourceItemHandler_CommandTests : CommandLineHandlerTestBase
     {
         [Fact]
         public void Constructor_NullAsProject_ThrowsArgumentNull()
@@ -25,138 +22,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             Assert.Throws<ArgumentNullException>("project", () =>
             {
                 new SourceItemHandler((UnconfiguredProject)null, context);
-            });
-        }
-
-        [Fact]
-        public void Handle1_NullAsVersion_ThrowsArgumentNull()
-        {
-            var handler = CreateInstance();
-            var projectChange = IProjectChangeDescriptionFactory.Create();
-            var logger = Mock.Of<IProjectLogger>();
-
-            Assert.Throws<ArgumentNullException>("version", () =>
-            {
-                handler.Handle((IComparable)null, projectChange, true, logger);
-            });
-        }
-
-        [Fact]
-        public void Handle1_NullAsProjectChange_ThrowsArgumentNull()
-        {
-            var handler = CreateInstance();
-            var logger = Mock.Of<IProjectLogger>();
-
-            Assert.Throws<ArgumentNullException>("projectChange", () =>
-            {
-                handler.Handle(10, (IProjectChangeDescription)null, true, logger);
-            });
-        }
-
-        [Fact]
-        public void Handle1_NullAsLogger_ThrowsArgumentNull()
-        {
-            var handler = CreateInstance();
-            var projectChange = IProjectChangeDescriptionFactory.Create();
-
-            Assert.Throws<ArgumentNullException>("logger", () =>
-            {
-                handler.Handle(10, projectChange, true, (IProjectLogger)null);
-            });
-        }
-
-        [Fact]
-        public void Handle2_NullAsVersion_ThrowsArgumentNull()
-        {
-            var handler = CreateInstance();
-            var added = BuildOptionsFactory.CreateEmpty();
-            var removed = BuildOptionsFactory.CreateEmpty();
-            var logger = Mock.Of<IProjectLogger>();
-
-            Assert.Throws<ArgumentNullException>("version", () =>
-            {
-                handler.Handle((IComparable)null, added, removed, true, logger);
-            });
-        }
-
-        [Fact]
-        public void Handle2_NullAsAdded_ThrowsArgumentNull()
-        {
-            var handler = CreateInstance();
-            var removed = BuildOptionsFactory.CreateEmpty();
-            var logger = Mock.Of<IProjectLogger>();
-
-            Assert.Throws<ArgumentNullException>("added", () =>
-            {
-                handler.Handle(10, (BuildOptions)null, removed, true, logger);
-            });
-        }
-
-        [Fact]
-        public void Handle2_NullAsRemoved_ThrowsArgumentNull()
-        {
-            var handler = CreateInstance();
-            var added = BuildOptionsFactory.CreateEmpty();
-            var logger = Mock.Of<IProjectLogger>();
-
-            Assert.Throws<ArgumentNullException>("removed", () =>
-            {
-                handler.Handle(10, added, (BuildOptions)null, true, logger);
-            });
-        }
-
-        [Fact]
-        public void Handle2_NullAsLogger_ThrowsArgumentNull()
-        {
-            var handler = CreateInstance();
-            var added = BuildOptionsFactory.CreateEmpty();
-            var removed = BuildOptionsFactory.CreateEmpty();
-
-            Assert.Throws<ArgumentNullException>("logger", () =>
-            {
-                handler.Handle(10, added, removed, true, (IProjectLogger)null);
-            });
-        }
-
-        [Fact]
-        public void Handle1_WhenNotInitialized_ThrowsInvalidOperation()
-        {
-            var handler = CreateInstance();
-            var projectChange = IProjectChangeDescriptionFactory.Create();
-            var logger = Mock.Of<IProjectLogger>();
-
-            Assert.Throws<InvalidOperationException>(() =>
-            {
-                handler.Handle(10, projectChange, true, logger);
-            });
-        }
-
-        [Fact]
-        public void Handle2_WhenNotInitialized_ThrowsInvalidOperation()
-        {
-            var handler = CreateInstance();
-            var added = BuildOptionsFactory.CreateEmpty();
-            var removed = BuildOptionsFactory.CreateEmpty();
-            var logger = Mock.Of<IProjectLogger>();
-
-            Assert.Throws<InvalidOperationException>(() =>
-            {
-                handler.Handle(10, added, removed, true, logger);
-            });
-        }
-
-        [Fact]
-        public void Initialize_WhenAlreadyInitialized_ThrowsInvalidOperation()
-        {
-            var handler = CreateInstance();
-
-            var workspaceContext = IWorkspaceProjectContextFactory.Create();
-
-            handler.Initialize(workspaceContext);
-
-            Assert.Throws<InvalidOperationException>(() =>
-            {
-                handler.Initialize(workspaceContext);
             });
         }
 
@@ -209,6 +74,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             Assert.Single(sourceFilesPushedToWorkspace);
             Assert.Contains(@"C:\ProjectFolder\file1.cs", sourceFilesPushedToWorkspace);
+        }
+
+        internal override ICommandLineHandler CreateInstance()
+        {
+            return CreateInstance(null, null);
         }
 
         private SourceItemHandler CreateInstance(UnconfiguredProject project = null, IWorkspaceProjectContext context = null)
