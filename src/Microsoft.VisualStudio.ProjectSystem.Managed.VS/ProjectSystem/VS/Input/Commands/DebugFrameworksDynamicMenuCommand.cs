@@ -56,9 +56,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         }
 
         /// <summary>
-        /// Called by the base when one of our menu ids is queried for. If the index is 
+        /// Called by the base when one of our menu ids is queried for. If the index is
         /// is greater than the count we want to return false
-        /// </summary>       
+        /// </summary>
         public override bool QueryStatusCommand(int cmdIndex, EventArgs e)
         {
             IActiveDebugFrameworkServices activeDebugFramework = StartupProjectHelper.GetExportFromSingleDotNetStartupProject<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles);
@@ -108,7 +108,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         {
 #pragma warning disable VSTHRD102 // Only wrapped for test purposes
             ThreadHelper.JoinableTaskFactory.Run(async () =>
-#pragma warning restore VSTHRD102 
+#pragma warning restore VSTHRD102
             {
                 await asyncFunction().ConfigureAwait(false);
             });
