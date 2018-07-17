@@ -88,7 +88,7 @@
 
     <!-- Tests -->
     <MoqVersion>4.7.99</MoqVersion>
-    <XUnitAnalyzersVersion>0.10.0-build1210</XUnitAnalyzersVersion>
+    <XUnitAnalyzersVersion>0.10.0</XUnitAnalyzersVersion>
   </PropertyGroup>
 
   <PropertyGroup>
