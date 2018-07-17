@@ -63,7 +63,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     Dim data As PropertyControlData
 
                     data = New PropertyControlData(VsProjPropId.VBPROJPROPID_StartURL, "StartURL", StartURL, ControlDataFlags.PersistedInProjectUserFile) With {
-                        .DisplayPropertyName = My.Resources.Designer.PPG_Property_StartURL
+                        .DisplayPropertyName = My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Property_StartURL
                     }
                     datalist.Add(data)
 
@@ -71,12 +71,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     datalist.Add(data)
 
                     data = New PropertyControlData(VsProjPropId.VBPROJPROPID_StartWorkingDirectory, "StartWorkingDirectory", StartWorkingDirectory, ControlDataFlags.PersistedInProjectUserFile, New Control() {StartWorkingDirectoryBrowse, WorkingDirLabel}) With {
-                        .DisplayPropertyName = My.Resources.Designer.PPG_Property_StartWorkingDirectory
+                        .DisplayPropertyName = My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Property_StartWorkingDirectory
                     }
                     datalist.Add(data)
 
                     data = New PropertyControlData(VsProjPropId.VBPROJPROPID_StartProgram, "StartProgram", StartProgram, ControlDataFlags.PersistedInProjectUserFile) With {
-                        .DisplayPropertyName = My.Resources.Designer.PPG_Property_StartProgram
+                        .DisplayPropertyName = My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Property_StartProgram
                     }
                     datalist.Add(data)
 
@@ -92,7 +92,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     datalist.Add(data)
 
                     data = New PropertyControlData(VsProjPropId.VBPROJPROPID_RemoteDebugMachine, "RemoteDebugMachine", RemoteDebugMachine, ControlDataFlags.PersistedInProjectUserFile) With {
-                        .DisplayPropertyName = My.Resources.Designer.PPG_Property_RemoteDebugMachine
+                        .DisplayPropertyName = My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Property_RemoteDebugMachine
                     }
                     datalist.Add(data)
 
@@ -278,7 +278,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 End Try
             End If
 
-            If GetDirectoryViaBrowse(sInitialDirectory, My.Resources.Designer.PPG_SelectWorkingDirectoryTitle, DirName) Then
+            If GetDirectoryViaBrowse(sInitialDirectory, My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_SelectWorkingDirectoryTitle, DirName) Then
                 StartProgramBrowse.Focus()
                 StartWorkingDirectory.Text = DirName
                 SetDirty(StartWorkingDirectory, True)
@@ -308,7 +308,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             SkipValidating(StartProgram)
             ProcessDelayValidationQueue(False)
 
-            If GetFileViaBrowse("", FileName, Common.CreateDialogFilter(My.Resources.Designer.PPG_ExeFilesFilter, ".exe")) Then
+            If GetFileViaBrowse("", FileName, Common.CreateDialogFilter(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_ExeFilesFilter, ".exe")) Then
                 StartProgramBrowse.Focus()
                 StartProgram.Text = FileName
                 SetDirty(StartProgram, True)
@@ -333,15 +333,15 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         'DO NOT Validate file existance if we are remote debugging, as they are local to the remote machine
                         If Not RemoteDebugEnabled.Checked Then
                             If Not File.Exists(StartProgram.Text) Then
-                                message = My.Resources.Designer.PropPage_ProgramNotExist
+                                message = My.Resources.Microsoft_VisualStudio_Editors_Designer.PropPage_ProgramNotExist
                                 Return ValidationResult.Warning
                             End If
                         End If
                         If Trim(StartProgram.Text).Length = 0 Then
-                            message = My.Resources.Designer.PropPage_NeedExternalProgram
+                            message = My.Resources.Microsoft_VisualStudio_Editors_Designer.PropPage_NeedExternalProgram
                             Return ValidationResult.Warning
                         ElseIf Not Path.GetExtension(StartProgram.Text).Equals(".exe", StringComparison.OrdinalIgnoreCase) Then
-                            message = My.Resources.Designer.PropPage_NotAnExeError
+                            message = My.Resources.Microsoft_VisualStudio_Editors_Designer.PropPage_NotAnExeError
                             Return ValidationResult.Warning
                         End If
                     End If
@@ -349,7 +349,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     If rbStartURL.Checked Then
                         Dim newURL As String = Trim(StartURL.Text)
                         If newURL.Length = 0 Then
-                            message = My.Resources.Designer.PropPage_NeedURL
+                            message = My.Resources.Microsoft_VisualStudio_Editors_Designer.PropPage_NeedURL
                             Return ValidationResult.Warning
                         Else
                             If newURL.IndexOf(":"c) < 0 Then
@@ -358,21 +358,21 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                             Try
                                 Dim t As Uri = New Uri(newURL)
                             Catch ex As UriFormatException
-                                message = My.Resources.Designer.PropPage_InvalidURL
+                                message = My.Resources.Microsoft_VisualStudio_Editors_Designer.PropPage_InvalidURL
                                 Return ValidationResult.Warning
                             End Try
                         End If
                     End If
                 Case VsProjPropId.VBPROJPROPID_RemoteDebugMachine
                     If RemoteDebugEnabled.Checked AndAlso Len(Trim(RemoteDebugMachine.Text)) = 0 Then
-                        message = My.Resources.Designer.PropPage_RemoteMachineBlankError
+                        message = My.Resources.Microsoft_VisualStudio_Editors_Designer.PropPage_RemoteMachineBlankError
                         Return ValidationResult.Warning
                     End If
                 Case VsProjPropId.VBPROJPROPID_StartWorkingDirectory
                     'DO NOT Validate working directory if we are remote debugging, as they are local to the remote machine
                     If Not RemoteDebugEnabled.Checked AndAlso Trim(StartWorkingDirectory.Text).Length <> 0 AndAlso Not Directory.Exists(StartWorkingDirectory.Text) Then
                         ' Warn the user when working dir is invalid
-                        message = My.Resources.Designer.PropPage_WorkingDirError
+                        message = My.Resources.Microsoft_VisualStudio_Editors_Designer.PropPage_WorkingDirError
                         Return ValidationResult.Warning
                     End If
             End Select
