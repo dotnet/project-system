@@ -36,7 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             _mockEnvironment.Setup(s => s.GetEnvironmentVariable("Path")).Returns(() => _Path);
 
-            var project = UnconfiguredProjectFactory.Create(null, null, _ProjectFile);
+            var project = UnconfiguredProjectFactory.Create(filePath: _ProjectFile);
 
             var outputTypeEnum = new PageEnumValue(new EnumValue() { Name = outputType });
             var data = new PropertyPageData()
@@ -378,7 +378,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
         [Fact]
         public async Task QueryDebugTargetsAsync_WhenLibraryWithoutRunCommand_ReturnsTargetPath()
-        { 
+        {
             var properties = new Dictionary<string, string>() {
                 {"TargetPath", @"C:\library.dll"},
                 {"TargetFrameworkIdentifier", @".NETFramework" }
