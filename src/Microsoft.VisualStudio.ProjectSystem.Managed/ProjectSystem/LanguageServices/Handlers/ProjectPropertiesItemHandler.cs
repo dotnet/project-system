@@ -12,12 +12,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     /// </summary>
     internal class ProjectPropertiesItemHandler : IEvaluationHandler
     {
-        private readonly IWorkspaceProjectContext _context;
+        private IWorkspaceProjectContext _context;
 
         public ProjectPropertiesItemHandler(IWorkspaceProjectContext context)
         {
             Requires.NotNull(context, nameof(context));
 
+            _context = context;
+        }
+
+        public string EvaluationRule
+        {
+            get { return ConfigurationGeneral.SchemaName; }
+        }
+
+        public void Initialize(IWorkspaceProjectContext context)
+        {
             _context = context;
         }
 

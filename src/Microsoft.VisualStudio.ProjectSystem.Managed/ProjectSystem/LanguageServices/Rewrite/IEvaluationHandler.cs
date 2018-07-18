@@ -10,8 +10,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     ///     Handles changes to a language service rule, and applies them to a
     ///     <see cref="IWorkspaceProjectContext"/> instance.
     /// </summary>
-    internal interface IEvaluationHandler
+    internal interface IEvaluationHandler : IWorkspaceContextHandler
     {
+        /// <summary>
+        ///     Gets the evaluation rule that the <see cref="IEvaluationHandler"/> handles.
+        /// </summary>
+        string EvaluationRule
+        {
+            get;
+        }
+
         /// <summary>
         ///     Handles the specified set of changes to a rule, and applies them
         ///     to the underlying <see cref="IWorkspaceProjectContext"/>.

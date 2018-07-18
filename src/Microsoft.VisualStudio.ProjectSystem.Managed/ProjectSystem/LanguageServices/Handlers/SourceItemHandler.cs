@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
@@ -14,18 +15,34 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     ///     Handles changes to sources files during project evaluations and sources files that are passed
     ///     to the compiler during design-time builds.
     /// </summary>
+    [Export(typeof(IWorkspaceContextHandler))]
     internal partial class SourceItemHandler : AbstractEvaluationCommandLineHandler, IEvaluationHandler, ICommandLineHandler
     {
         private readonly UnconfiguredProject _project;
-        private readonly IWorkspaceProjectContext _context;
+        private IWorkspaceProjectContext _context;
+
+        [ImportingConstructor]
+        public SourceItemHandler(UnconfiguredProject project)
+            : this(project, null)
+        {
+        }
 
         public SourceItemHandler(UnconfiguredProject project, IWorkspaceProjectContext context)
             : base(project)
         {
             Requires.NotNull(project, nameof(project));
-            Requires.NotNull(context, nameof(context));
 
             _project = project;
+            _context = context;
+        }
+
+        public string EvaluationRule
+        {
+            get { return Compile.SchemaName; }
+        }
+
+        public void Initialize(IWorkspaceProjectContext context)
+        {
             _context = context;
         }
 
