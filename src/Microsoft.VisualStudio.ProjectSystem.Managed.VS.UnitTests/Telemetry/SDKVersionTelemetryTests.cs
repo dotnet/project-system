@@ -18,7 +18,7 @@ namespace Microsoft.VisualStudio.Telemetry
     public class SDKVersionTelemetryTests
     {
         [Fact]
-        public static async Task TestCreateCoponentSDKVersionDefined()
+        public static async Task TestCreateComponentSDKVersionDefined()
         {
             var guid = Guid.NewGuid();
             var version = "42.42.42.42";
@@ -39,7 +39,7 @@ namespace Microsoft.VisualStudio.Telemetry
         }
 
         [Fact]
-        public static async Task TestCreateCoponentSDKVersionDefinedInvalidProjectGuid()
+        public static async Task TestCreateComponentSDKVersionDefinedInvalidProjectGuid()
         {
             var guid = Guid.Empty;
             var version = "42.42.42.42";
@@ -49,7 +49,7 @@ namespace Microsoft.VisualStudio.Telemetry
 
 
         [Fact]
-        public static async Task TestCreateCoponentNoSDKVersionDefined()
+        public static async Task TestCreateComponentNoSDKVersionDefined()
         {
             var guid = Guid.NewGuid();
             var (success, result) = await CreateComponentAndGetResult(guid);
@@ -57,7 +57,7 @@ namespace Microsoft.VisualStudio.Telemetry
         }
 
         [Fact]
-        public static async Task TestCreateCoponentNoSDKVersionDefinedInvalidProjectGuid()
+        public static async Task TestCreateComponentNoSDKVersionDefinedInvalidProjectGuid()
         {
             var guid = Guid.Empty;
             var (success, result) = await CreateComponentAndGetResult(guid);
