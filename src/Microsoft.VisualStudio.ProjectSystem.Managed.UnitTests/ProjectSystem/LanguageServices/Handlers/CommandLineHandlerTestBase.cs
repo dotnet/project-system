@@ -1,9 +1,12 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-
 using System;
+
+using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.Logging;
+
 using Moq;
+
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
@@ -74,6 +77,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             Assert.Throws<InvalidOperationException>(() =>
             {
                 handler.Handle(10, added, removed, true, logger);
+            });
+        }
+
+        [Fact]
+        public void Initialize_NullAsContext_ThrowsArgumentNull()
+        {
+            var handler = CreateInstance();
+
+            Assert.Throws<ArgumentNullException>("context", () =>
+            {
+                handler.Initialize((IWorkspaceProjectContext)null);
             });
         }
 

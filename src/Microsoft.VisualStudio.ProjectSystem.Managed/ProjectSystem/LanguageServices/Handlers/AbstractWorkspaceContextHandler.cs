@@ -26,6 +26,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
         public void Initialize(IWorkspaceProjectContext context)
         {
+            Requires.NotNull(context, nameof(context));
+
             if (_context != null)
                 throw new InvalidOperationException();
 
