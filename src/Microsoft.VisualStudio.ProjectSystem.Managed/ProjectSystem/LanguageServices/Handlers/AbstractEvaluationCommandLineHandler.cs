@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     ///     Responsible for coordinating changes and conflicts between evaluation and design-time builds, and pushing those changes
     ///     onto Roslyn via a <see cref="IWorkspaceProjectContext"/>.
     /// </summary>
-    internal abstract partial class AbstractEvaluationCommandLineHandler
+    internal abstract partial class AbstractEvaluationCommandLineHandler : AbstractWorkspaceContextHandler
     {
         // This class is not thread-safe, and the assumption is that the caller will make sure that evaluations and design-time builds do 
         // overlap inside the class at the same time.

@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using Microsoft.CodeAnalysis;
-using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.Logging;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
@@ -13,14 +12,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     ///     Handles changes to the  &lt;AdditionalFiles/&gt; item during design-time builds.
     /// </summary>
     [Export(typeof(IWorkspaceContextHandler))]
-    internal class AdditionalFilesItemHandler : ICommandLineHandler
+    internal class AdditionalFilesItemHandler : AbstractWorkspaceContextHandler, ICommandLineHandler
     {
         // WORKAROUND: To avoid Roslyn throwing when we add duplicate additonal files, we remember what 
         // sent to them and avoid sending on duplicates.
         // See: https://github.com/dotnet/project-system/issues/2230
 
         private readonly UnconfiguredProject _project;
-        private IWorkspaceProjectContext _context;
         private readonly HashSet<string> _paths = new HashSet<string>(StringComparers.Paths);
 
         [ImportingConstructor]
@@ -31,14 +29,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             _project = project;
         }
 
-        public void Initialize(IWorkspaceProjectContext context)
-        {
-            if (_context != null)
-                throw new InvalidOperationException();
-
-            _context = context;
-        }
-
         public void Handle(IComparable version, BuildOptions added, BuildOptions removed, bool isActiveContext, IProjectLogger logger)
         {
             Requires.NotNull(version, nameof(version));
@@ -46,8 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             Requires.NotNull(removed, nameof(removed));
             Requires.NotNull(logger, nameof(logger));
 
-            if (_context == null)
-                throw new InvalidOperationException();
+            EnsureInitialized();
 
             foreach (CommandLineSourceFile additionalFile in removed.AdditionalFiles)
             {
@@ -69,7 +58,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             if (!_paths.Contains(fullPath))
             {
                 logger.WriteLine("Adding additional file '{0}'", fullPath);
-                _context.AddAdditionalFile(fullPath, isActiveContext);
+                Context.AddAdditionalFile(fullPath, isActiveContext);
                 bool added = _paths.Add(fullPath);
                 Assumes.True(added);
             }
@@ -80,7 +69,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             if (_paths.Contains(fullPath))
             {
                 logger.WriteLine("Removing additional file '{0}'", fullPath);
-                _context.RemoveAdditionalFile(fullPath);
+                Context.RemoveAdditionalFile(fullPath);
                 bool removed = _paths.Remove(fullPath);
                 Assumes.True(removed);
             }

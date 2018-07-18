@@ -6,7 +6,7 @@ using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
-using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
+
 using Microsoft.VisualStudio.ProjectSystem.Logging;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
@@ -19,7 +19,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     internal partial class SourceItemHandler : AbstractEvaluationCommandLineHandler, IEvaluationHandler, ICommandLineHandler
     {
         private readonly UnconfiguredProject _project;
-        private IWorkspaceProjectContext _context;
 
         [ImportingConstructor]
         public SourceItemHandler(UnconfiguredProject project)
@@ -33,22 +32,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             get { return Compile.SchemaName; }
         }
 
-        public void Initialize(IWorkspaceProjectContext context)
-        {
-            if (_context != null)
-                throw new InvalidOperationException();
-
-            _context = context;
-        }
-
         public void Handle(IComparable version, IProjectChangeDescription projectChange, bool isActiveContext, IProjectLogger logger)
         {
             Requires.NotNull(version, nameof(version));
             Requires.NotNull(projectChange, nameof(projectChange));
             Requires.NotNull(logger, nameof(logger));
 
-            if (_context == null)
-                throw new InvalidOperationException();
+            EnsureInitialized();
 
             ApplyEvaluationChanges(version, projectChange.Difference, projectChange.After.Items, isActiveContext, logger);
         }
@@ -60,8 +50,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             Requires.NotNull(removed, nameof(removed));
             Requires.NotNull(logger, nameof(logger));
 
-            if (_context == null)
-                throw new InvalidOperationException();
+            EnsureInitialized();
 
             IProjectChangeDiff difference = ConvertToProjectDiff(added, removed);
 
@@ -73,13 +62,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             string[] folderNames = GetFolderNames(fullPath, metadata);
 
             logger.WriteLine("Adding source file '{0}'", fullPath);
-            _context.AddSourceFile(fullPath, isInCurrentContext: isActiveContext, folderNames: folderNames);
+            Context.AddSourceFile(fullPath, isInCurrentContext: isActiveContext, folderNames: folderNames);
         }
 
         protected override void RemoveFromContext(string fullPath, IProjectLogger logger)
         {
             logger.WriteLine("Removing source file '{0}'", fullPath);
-            _context.RemoveSourceFile(fullPath);
+            Context.RemoveSourceFile(fullPath);
         }
 
         private string[] GetFolderNames(string fullPath, IImmutableDictionary<string, string> metadata)

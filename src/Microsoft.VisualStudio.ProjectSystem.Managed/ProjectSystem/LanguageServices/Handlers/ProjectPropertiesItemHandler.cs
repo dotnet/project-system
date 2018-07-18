@@ -2,7 +2,7 @@
 
 using System;
 using System.ComponentModel.Composition;
-using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
+
 using Microsoft.VisualStudio.ProjectSystem.Logging;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
@@ -11,10 +11,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     ///     Handles changes to the project and makes sure the language service is aware of them.
     /// </summary>
     [Export(typeof(IWorkspaceContextHandler))]
-    internal class ProjectPropertiesItemHandler : IEvaluationHandler
+    internal class ProjectPropertiesItemHandler : AbstractWorkspaceContextHandler, IEvaluationHandler
     {
-        private IWorkspaceProjectContext _context;
-
         [ImportingConstructor]
         public ProjectPropertiesItemHandler(UnconfiguredProject project)
         {
@@ -26,22 +24,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             get { return ConfigurationGeneral.SchemaName; }
         }
 
-        public void Initialize(IWorkspaceProjectContext context)
-        {
-            if (_context != null)
-                throw new InvalidOperationException();
-
-            _context = context;
-        }
-
         public void Handle(IComparable version, IProjectChangeDescription projectChange, bool isActiveContext, IProjectLogger logger)
         {
             Requires.NotNull(version, nameof(version));
             Requires.NotNull(projectChange, nameof(projectChange));
             Requires.NotNull(logger, nameof(logger));
 
-            if (_context == null)
-                throw new InvalidOperationException();
+            EnsureInitialized();
 
             // The language service wants both the intermediate (bin\obj) and output (bin\debug)) paths
             // so that it can automatically hook up project-to-project references. It does this by matching the 
@@ -56,7 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
                 if (!string.IsNullOrEmpty(newBinOutputPath))
                 {
                     logger.WriteLine("BinOutputPath: {0}", newBinOutputPath);
-                    _context.BinOutputPath = newBinOutputPath;
+                    Context.BinOutputPath = newBinOutputPath;
                 }
             }
         }
