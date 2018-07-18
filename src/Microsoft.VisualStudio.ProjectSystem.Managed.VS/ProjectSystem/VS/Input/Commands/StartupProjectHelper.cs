@@ -1,8 +1,9 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.Composition;
-
+using System.Linq;
 using Microsoft.VisualStudio.ProjectSystem.VS.Extensibility;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
@@ -49,6 +50,33 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
                 }
             }
             return null;
+        }
+
+        /// <summary>
+        /// Returns the export T of the startup projects if those projects support the specified capabilities
+        /// </summary>
+        public List<T> GetExportFromDotNetStartupProjects<T>(string capabilityMatch) where T : class
+        {
+            EnvDTE.DTE dte = ServiceProvider.GetService<EnvDTE.DTE, EnvDTE.DTE>();
+            if (dte != null)
+            {
+                if (dte.Solution.SolutionBuild.StartupProjects is Array startupProjects && startupProjects.Length > 0)
+                {
+                    IVsSolution sln = ServiceProvider.GetService<IVsSolution, SVsSolution>();
+                    List<T> results = new List<T>(startupProjects.Length);
+                    foreach (string projectName in startupProjects)
+                    {
+                        sln.GetProjectOfUniqueName(projectName, out IVsHierarchy hier);
+                        if (hier != null && hier.IsCapabilityMatch(capabilityMatch))
+                        {
+                            string projectPath = hier.GetProjectFilePath();
+                            results.Add(ProjectExportProvider.GetExport<T>(projectPath));
+                        }
+                    }
+                    return results;
+                }
+            }
+            return new List<T>(0);
         }
     }
 }
