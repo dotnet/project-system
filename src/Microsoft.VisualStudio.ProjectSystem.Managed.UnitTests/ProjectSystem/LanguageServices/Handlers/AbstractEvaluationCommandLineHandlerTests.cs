@@ -191,7 +191,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             var difference = IProjectChangeDiffFactory.WithAddedItems(filesToAdd);
             ApplyEvaluationChanges(handler, 2, difference);
 
-            Assert.Equal(handler.Files.OrderBy(f => f), expectedFiles.OrderBy(f => f));
+            Assert.Equal(expectedFiles.OrderBy(f => f), handler.Files.OrderBy(f => f));
         }
 
         [Theory] // Current state                      Added files                      Expected state
@@ -229,7 +229,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             var difference = IProjectChangeDiffFactory.WithRemovedItems(filesToRemove);
             ApplyEvaluationChanges(handler, 2, difference);
 
-            Assert.Equal(handler.Files.OrderBy(f => f), expectedFiles.OrderBy(f => f));
+            Assert.Equal(expectedFiles.OrderBy(f => f), handler.Files.OrderBy(f => f));
         }
 
         [Theory] // Current state                      Removed files                    Expected state
@@ -248,7 +248,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             var difference = IProjectChangeDiffFactory.WithRemovedItems(filesToRemove);
             ApplyDesignTimeChanges(handler, 1, difference);
 
-            Assert.Equal(handler.Files.OrderBy(f => f), expectedFiles.OrderBy(f => f));
+            Assert.Equal(expectedFiles.OrderBy(f => f), handler.Files.OrderBy(f => f));
         }
 
         [Theory] // Current state                       Added files                     Expected state
@@ -267,7 +267,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             var difference = IProjectChangeDiffFactory.WithAddedItems(filesToAdd);
             ApplyEvaluationChanges(handler, 2, difference);
 
-            Assert.Equal(handler.Files.OrderBy(f => f), expectedFiles.OrderBy(f => f));
+            Assert.Equal(expectedFiles.OrderBy(f => f), handler.Files.OrderBy(f => f));
         }
 
         [Theory] // Current state                      Added files                      Expected state
@@ -286,7 +286,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             var difference = IProjectChangeDiffFactory.WithAddedItems(filesToAdd);
             ApplyDesignTimeChanges(handler, 2, difference);
 
-            Assert.Equal(handler.Files.OrderBy(f => f), expectedFiles.OrderBy(f => f));
+            Assert.Equal(expectedFiles.OrderBy(f => f), handler.Files.OrderBy(f => f));
         }
 
         [Theory] // Current state                      Removed files                    Expected state
@@ -305,7 +305,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             var difference = IProjectChangeDiffFactory.WithRemovedItems(filesToRemove);
             ApplyEvaluationChanges(handler, 2, difference);
 
-            Assert.Equal(handler.Files.OrderBy(f => f), expectedFiles.OrderBy(f => f));
+            Assert.Equal(expectedFiles.OrderBy(f => f), handler.Files.OrderBy(f => f));
         }
 
         [Theory] // Current state                      Removed files                    Expected state
@@ -324,7 +324,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             var difference = IProjectChangeDiffFactory.WithRemovedItems(filesToRemove);
             ApplyDesignTimeChanges(handler, 2, difference);
 
-            Assert.Equal(handler.Files.OrderBy(f => f), expectedFiles.OrderBy(f => f));
+            Assert.Equal(expectedFiles.OrderBy(f => f), handler.Files.OrderBy(f => f));
         }
 
         [Fact]
