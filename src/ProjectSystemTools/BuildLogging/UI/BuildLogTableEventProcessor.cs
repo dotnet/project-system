@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.UI
             _toolWindow = toolWindow;
         }
 
-        public override void PostprocessNavigate(ITableEntryHandle entryHandle, TableEntryNavigateEventArgs e) => _toolWindow.ExploreLog(entryHandle);
+        public override void PostprocessNavigate(ITableEntryHandle entryHandle, TableEntryNavigateEventArgs e) => _toolWindow.OpenLog(entryHandle);
 
         public override void PreprocessSelectionChanged(TableSelectionChangedEventArgs e)
         {
