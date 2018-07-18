@@ -3,9 +3,10 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
-using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
+
 using Microsoft.VisualStudio.ProjectSystem.Logging;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
@@ -14,19 +15,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     ///     Handles changes to sources files during project evaluations and sources files that are passed
     ///     to the compiler during design-time builds.
     /// </summary>
+    [Export(typeof(IWorkspaceContextHandler))]
     internal partial class SourceItemHandler : AbstractEvaluationCommandLineHandler, IEvaluationHandler, ICommandLineHandler
     {
         private readonly UnconfiguredProject _project;
-        private readonly IWorkspaceProjectContext _context;
 
-        public SourceItemHandler(UnconfiguredProject project, IWorkspaceProjectContext context)
+        [ImportingConstructor]
+        public SourceItemHandler(UnconfiguredProject project)
             : base(project)
         {
-            Requires.NotNull(project, nameof(project));
-            Requires.NotNull(context, nameof(context));
-
             _project = project;
-            _context = context;
+        }
+
+        public string EvaluationRule
+        {
+            get { return Compile.SchemaName; }
         }
 
         public void Handle(IComparable version, IProjectChangeDescription projectChange, bool isActiveContext, IProjectLogger logger)
@@ -34,6 +37,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             Requires.NotNull(version, nameof(version));
             Requires.NotNull(projectChange, nameof(projectChange));
             Requires.NotNull(logger, nameof(logger));
+
+            EnsureInitialized();
 
             ApplyEvaluationChanges(version, projectChange.Difference, projectChange.After.Items, isActiveContext, logger);
         }
@@ -45,6 +50,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             Requires.NotNull(removed, nameof(removed));
             Requires.NotNull(logger, nameof(logger));
 
+            EnsureInitialized();
+
             IProjectChangeDiff difference = ConvertToProjectDiff(added, removed);
 
             ApplyDesignTimeChanges(version, difference, isActiveContext, logger);
@@ -55,13 +62,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             string[] folderNames = GetFolderNames(fullPath, metadata);
 
             logger.WriteLine("Adding source file '{0}'", fullPath);
-            _context.AddSourceFile(fullPath, isInCurrentContext: isActiveContext, folderNames: folderNames);
+            Context.AddSourceFile(fullPath, isInCurrentContext: isActiveContext, folderNames: folderNames);
         }
 
         protected override void RemoveFromContext(string fullPath, IProjectLogger logger)
         {
             logger.WriteLine("Removing source file '{0}'", fullPath);
-            _context.RemoveSourceFile(fullPath);
+            Context.RemoveSourceFile(fullPath);
         }
 
         private string[] GetFolderNames(string fullPath, IImmutableDictionary<string, string> metadata)
