@@ -327,6 +327,42 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             Assert.Equal(expectedFiles.OrderBy(f => f), handler.Files.OrderBy(f => f));
         }
 
+        [Theory] // Current state                      Original name        New name                         Expected state
+        [InlineData("A.cs",                            "A.cs",              "B.cs",                          @"C:\Project\B.cs")]
+        [InlineData("A.cs;B.cs",                       "B.cs",              "C.cs",                          @"C:\Project\A.cs;C:\Project\C.cs")]
+        [InlineData("A.cs;B.cs;C.cs",                  "B.cs;C.cs",         "D.cs;E.cs",                     @"C:\Project\A.cs;C:\Project\D.cs;C:\Project\E.cs")]
+        [InlineData("A.cs;B.cs",                       "A.cs;B.cs",         "B.cs;A.cs",                     @"C:\Project\A.cs;C:\Project\B.cs")]
+        public void ApplyEvaluationChanges_WithExistingEvaluationChanges_CanRenameItem(string currentFiles, string originalNames, string newNames, string expected)
+        {
+            string[] expectedFiles = expected.Length == 0 ? Array.Empty<string>() : expected.Split(';');
+
+            var handler = CreateInstanceWithEvaluationItems(@"C:\Project\Project.csproj", currentFiles);
+
+            var difference = IProjectChangeDiffFactory.WithRenameItems(originalNames, newNames);
+
+            ApplyEvaluationChanges(handler, 2, difference);
+
+            Assert.Equal(expectedFiles.OrderBy(f => f), handler.Files.OrderBy(f => f));
+        }
+
+        [Theory] // Current state                      Original name        New name                         Expected state
+        [InlineData("A.cs",                            "A.cs",              "B.cs",                          @"C:\Project\B.cs")]
+        [InlineData("A.cs;B.cs",                       "B.cs",              "C.cs",                          @"C:\Project\A.cs;C:\Project\C.cs")]
+        [InlineData("A.cs;B.cs;C.cs",                  "B.cs;C.cs",         "D.cs;E.cs",                     @"C:\Project\A.cs;C:\Project\D.cs;C:\Project\E.cs")]
+        [InlineData("A.cs;B.cs",                       "A.cs;B.cs",         "B.cs;A.cs",                     @"C:\Project\A.cs;C:\Project\B.cs")]
+        public void ApplyEvaluationChanges_WithExistingDesignTimeChanges_CanRenameItem(string currentFiles, string originalNames, string newNames, string expected)
+        {
+            string[] expectedFiles = expected.Length == 0 ? Array.Empty<string>() : expected.Split(';');
+
+            var handler = CreateInstanceWithDesignTimeItems(@"C:\Project\Project.csproj", currentFiles);
+
+            var difference = IProjectChangeDiffFactory.WithRenameItems(originalNames, newNames);
+
+            ApplyEvaluationChanges(handler, 2, difference);
+
+            Assert.Equal(expectedFiles.OrderBy(f => f), handler.Files.OrderBy(f => f));
+        }
+
         [Fact]
         public void ApplyDesignTimeChanges_WhenNewerEvaluationChangesWithAddedConflict_EvaluationWinsOut()
         {
