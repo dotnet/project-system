@@ -1,9 +1,9 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Namespace My.Resources
 
     <ComponentModel.EditorBrowsable(ComponentModel.EditorBrowsableState.Never)>
-    Partial Friend Class Designer
+    Partial Friend Class Microsoft_VisualStudio_Editors_Designer
 
         ''' <summary>
         ''' Temporary compatibility function to make converting from Designer.txt to Designer.resx easier.

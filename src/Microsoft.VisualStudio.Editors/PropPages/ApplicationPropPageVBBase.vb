@@ -56,7 +56,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             InitializeComponent()
 
-            IconBrowseText = My.Resources.Designer.PPG_BrowseText
+            IconBrowseText = My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_BrowseText
         End Sub
 
 #Region "Icon combobox"
