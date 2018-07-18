@@ -176,12 +176,11 @@
       <LogicalName>Microsoft.VisualStudio.Editors.ResourceEditor.OpenFileWarningDialog.resources</LogicalName>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Designer.resx">
-      <LogicalName>Microsoft.VisualStudio.Editors.Designer.resources</LogicalName>
+    <EmbeddedResource Update="Resources\Microsoft.VisualStudio.Editors.Designer.resx">
       <SubType>Designer</SubType>
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Designer.Designer.vb</LastGenOutput>
+      <LastGenOutput>Microsoft.VisualStudio.Editors.Designer.Designer.vb</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\MyExtensibilityRes.resx">
       <SubType>Designer</SubType>
@@ -516,10 +515,10 @@
     <Compile Update="ResourceEditor\ResourceStringTable.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Update="Resources\Designer.Designer.vb">
+    <Compile Update="Resources\Microsoft.VisualStudio.Editors.Designer.Designer.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Designer.resx</DependentUpon>
+      <DependentUpon>Microsoft.VisualStudio.Editors.Designer.resx</DependentUpon>
     </Compile>
     <Compile Update="Resources\MyExtensibilityRes.Designer.vb">
       <AutoGen>True</AutoGen>
