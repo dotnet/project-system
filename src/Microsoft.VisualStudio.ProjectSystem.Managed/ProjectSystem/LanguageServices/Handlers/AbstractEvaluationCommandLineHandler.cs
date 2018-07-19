@@ -15,8 +15,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     /// </summary>
     internal abstract partial class AbstractEvaluationCommandLineHandler : AbstractWorkspaceContextHandler
     {
-        // This class is not thread-safe, and the assumption is that the caller will make sure that evaluations and design-time builds do 
-        // overlap inside the class at the same time.
+        // This class is not thread-safe, and the assumption is that the caller will make sure that evaluations and design-time builds 
+        // do not overlap inside the class at the same time.
         //
         // In the ideal world, we would simply wait for a design-time build to get the command-line arguments that would have been passed
         // to Csc/Vbc and push these onto Roslyn. This is exactly what the legacy project system did; when a user added or removed a file
@@ -44,15 +44,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         //  Examples of changes that are not conflicts include:
         // 
         //   - A user adds a item and it appears as an addition in both evaluation and design-time build (the item is always added)
-        //   - A user removes a item and it appears as removal in both evaluation and design-time build  (the item is always removed)
+        //   - A user removes a item and it appears as a removal in both evaluation and design-time build  (the item is always removed)
         //   - A target during design-time build generates an item that did not appear during evaluation (the item is always added)
         //   - A target, new since the last design-time build, removes a item that appeared during evaluation (the item is always removed)
         //
         // TODO: These are also not conflicts, but we're currently handling differently to a normal build, which we should fix:
         //
-        //    - A target, since the very first design-time build, removed a item that appeared during evaluation (currently the item gets added).
-        //          * This is because a design-time build IProjectChangeDescription is only a diff between itself and the previous build, 
-        //            not between itself and evaluation, which means that design-time build diff never knows that the item was removed.
+        //    - A target from the very first design-time build, removed an item that appeared during evaluation. Currently, the item is "added"
+        //      but command-line builds do not see the source file. This is because a design-time build IProjectChangeDescription is only a 
+        //      diff between itself and the previous build, not between itself and evaluation, which means that design-time build diff never 
+        //      knows that the item was removed.
         //
         // Algorithm for resolving conflicts is as follows:
         //
@@ -177,10 +178,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         {
             string fullPath = _project.MakeRooted(includePath);
 
-            // Remove from the context first so if Roslyn throws due to a bug 
-            // or other reason, that our state of the world remains consistent
             if (_paths.Contains(fullPath))
             {
+                // Remove from the context first so if Roslyn throws due to a bug 
+                // or other reason, that our state of the world remains consistent
                 RemoveFromContext(fullPath, logger);
                 bool removed = _paths.Remove(fullPath);
                 Assumes.True(removed);
@@ -191,11 +192,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         {
             string fullPath = _project.MakeRooted(includePath);
 
-            // Add to the context first so if Roslyn throws due to a bug or
-            // other reason, that our state of the world remains consistent
             if (!_paths.Contains(fullPath))
             {
                 IImmutableDictionary<string, string> itemMetadata = metadata.GetValueOrDefault(includePath, ImmutableStringDictionary<string>.EmptyOrdinal);
+                
+                // Add to the context first so if Roslyn throws due to a bug or
+                // other reason, that our state of the world remains consistent
                 AddToContext(fullPath, itemMetadata, isActiveContext, logger);
                 bool added = _paths.Add(fullPath);
                 Assumes.True(added);
