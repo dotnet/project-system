@@ -44,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         //  Examples of changes that are not conflicts include:
         // 
         //   - A user adds a item and it appears as an addition in both evaluation and design-time build (the item is always added)
-        //   - A user removes a item and it appears as removal in both evaluation and design-time build  (the item is always removed)
+        //   - A user removes a item and it appears as a removal in both evaluation and design-time build  (the item is always removed)
         //   - A target during design-time build generates an item that did not appear during evaluation (the item is always added)
         //   - A target, new since the last design-time build, removes a item that appeared during evaluation (the item is always removed)
         //
@@ -178,10 +178,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         {
             string fullPath = _project.MakeRooted(includePath);
 
-            // Remove from the context first so if Roslyn throws due to a bug 
-            // or other reason, that our state of the world remains consistent
             if (_paths.Contains(fullPath))
             {
+                // Remove from the context first so if Roslyn throws due to a bug 
+                // or other reason, that our state of the world remains consistent
                 RemoveFromContext(fullPath, logger);
                 bool removed = _paths.Remove(fullPath);
                 Assumes.True(removed);
