@@ -366,7 +366,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         [Fact]
         public void ApplyDesignTimeChanges_WhenNewerEvaluationChangesWithAddedConflict_EvaluationWinsOut()
         {
-            var handler = CreateInstance(@"C:\Project\Project.cs");
+            var handler = CreateInstance(@"C:\Project\Project.csproj");
 
             int evaluationVersion = 1;
 
@@ -383,7 +383,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         [Fact]
         public void ApplyDesignTimeChanges_WhenNewerEvaluationChangesWithRemovedConflict_EvaluationWinsOut()
         {
-            var handler = CreateInstance(@"C:\Project\Project.cs");
+            var handler = CreateInstance(@"C:\Project\Project.csproj");
 
             int evaluationVersion = 1;
 
@@ -395,6 +395,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             ApplyDesignTimeChanges(handler, designTimeVersion, IProjectChangeDiffFactory.WithAddedItems("Source.cs"));
 
             Assert.Empty(handler.Files);
+        }
+
+        [Fact]
+        public void ApplyDesignTimeChanges_WhenOlderEvaluationChangesWithRemovedConflict_DesignTimeWinsOut()
+        {
+            var handler = CreateInstance(@"C:\Project\Project.csproj");
+
+            int evaluationVersion = 0;
+
+            // Setup the "current state"
+            ApplyEvaluationChanges(handler, evaluationVersion, IProjectChangeDiffFactory.WithRemovedItems("Source.cs"));
+
+            int designTimeVersion = 1;
+
+            ApplyDesignTimeChanges(handler, designTimeVersion, IProjectChangeDiffFactory.WithAddedItems("Source.cs"));
+
+            Assert.Single(handler.Files, @"C:\Project\Source.cs");
         }
 
         private static void ApplyEvaluationChanges(AbstractEvaluationCommandLineHandler handler, IComparable version, IProjectChangeDiff difference)
