@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using Xunit;
 
@@ -17,6 +18,32 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             Assert.Throws<ArgumentNullException>("arguments", () =>
             {
                 instance.Parse((IEnumerable<string>)null, @"C:\Project");
+            });
+        }
+
+        [Fact]
+        public void Parse_NullAsBaseDirectory_ThrowsArgumentNull()
+        {
+            var instance = CreateInstance();
+
+            var arguments = Enumerable.Empty<string>();
+
+            Assert.Throws<ArgumentNullException>("baseDirectory", () =>
+            {
+                instance.Parse(arguments, (string)null);
+            });
+        }
+
+        [Fact]
+        public void Parse_EmptyAsBaseDirectory_ThrowsArgument()
+        {
+            var instance = CreateInstance();
+
+            var arguments = Enumerable.Empty<string>();
+
+            Assert.Throws<ArgumentException>("baseDirectory", () =>
+            {
+                instance.Parse(arguments, "");
             });
         }
 
