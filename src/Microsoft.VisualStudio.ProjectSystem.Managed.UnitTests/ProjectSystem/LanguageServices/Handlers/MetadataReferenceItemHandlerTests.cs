@@ -13,7 +13,7 @@ using Xunit;
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 {
     [Trait("UnitTest", "ProjectSystem")]
-    public class MetadataReferenceItemHandlerTests
+    public class MetadataReferenceItemHandlerTests : CommandLineHandlerTestBase
     {
         [Fact]
         public void Constructor_NullAsProject_ThrowsArgumentNull()
@@ -22,18 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             Assert.Throws<ArgumentNullException>("project", () =>
             {
-                new MetadataReferenceItemHandler((UnconfiguredProject)null, context);
-            });
-        }
-
-        [Fact]
-        public void Constructor_NullAsContext_ThrowsArgumentNull()
-        {
-            var project = UnconfiguredProjectFactory.Create();
-
-            Assert.Throws<ArgumentNullException>("context", () =>
-            {
-                new MetadataReferenceItemHandler(project, (IWorkspaceProjectContext)null);
+                new MetadataReferenceItemHandler((UnconfiguredProject)null);
             });
         }
 
@@ -48,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             var context = IWorkspaceProjectContextFactory.CreateForMetadataReferences(project, onReferenceAdded, onReferenceRemoved);
             var logger = Mock.Of<IProjectLogger>();
 
-            var handler = new MetadataReferenceItemHandler(project, context);
+            var handler = CreateInstance(project, context);
             var projectDir = Path.GetDirectoryName(project.FullPath);
             var added = BuildOptions.FromCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: new[] { @"/reference:C:\Assembly1.dll", @"/reference:C:\Assembly2.dll", @"/reference:C:\Assembly1.dll" }, baseDirectory: projectDir, sdkDirectory: null));
             var empty = BuildOptions.FromCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: new string[] { }, baseDirectory: projectDir, sdkDirectory: null));
@@ -77,7 +66,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             var context = IWorkspaceProjectContextFactory.CreateForMetadataReferences(project, onReferenceAdded, onReferenceRemoved);
             var logger = Mock.Of<IProjectLogger>();
 
-            var handler = new MetadataReferenceItemHandler(project, context);
+            var handler = CreateInstance(project, context);
             var projectDir = Path.GetDirectoryName(project.FullPath);
             var added = BuildOptions.FromCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: new[] { @"/reference:Assembly1.dll", @"/reference:C:\ProjectFolder\Assembly2.dll", @"/reference:..\ProjectFolder\Assembly3.dll" }, baseDirectory: projectDir, sdkDirectory: null));
             var removed = BuildOptions.FromCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: new string[] { }, baseDirectory: projectDir, sdkDirectory: null));
@@ -88,6 +77,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             Assert.Contains(@"C:\ProjectFolder\Assembly1.dll", referencesPushedToWorkspace);
             Assert.Contains(@"C:\ProjectFolder\Assembly2.dll", referencesPushedToWorkspace);
             Assert.Contains(@"C:\ProjectFolder\Assembly3.dll", referencesPushedToWorkspace);
+        }
+        
+        internal override ICommandLineHandler CreateInstance()
+        {
+            return CreateInstance(null, null);
+        }
+
+        private MetadataReferenceItemHandler CreateInstance(UnconfiguredProject project = null, IWorkspaceProjectContext context = null)
+        {
+            project = project ?? UnconfiguredProjectFactory.Create();
+
+            var handler = new MetadataReferenceItemHandler(project);
+            if (context != null)
+                handler.Initialize(context);
+
+            return handler;
         }
     }
 }

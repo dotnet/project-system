@@ -191,7 +191,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             var difference = IProjectChangeDiffFactory.WithAddedItems(filesToAdd);
             ApplyEvaluationChanges(handler, 2, difference);
 
-            Assert.Equal(handler.Files.OrderBy(f => f), expectedFiles.OrderBy(f => f));
+            Assert.Equal(expectedFiles.OrderBy(f => f), handler.Files.OrderBy(f => f));
         }
 
         [Theory] // Current state                      Added files                      Expected state
@@ -229,7 +229,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             var difference = IProjectChangeDiffFactory.WithRemovedItems(filesToRemove);
             ApplyEvaluationChanges(handler, 2, difference);
 
-            Assert.Equal(handler.Files.OrderBy(f => f), expectedFiles.OrderBy(f => f));
+            Assert.Equal(expectedFiles.OrderBy(f => f), handler.Files.OrderBy(f => f));
         }
 
         [Theory] // Current state                      Removed files                    Expected state
@@ -248,7 +248,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             var difference = IProjectChangeDiffFactory.WithRemovedItems(filesToRemove);
             ApplyDesignTimeChanges(handler, 1, difference);
 
-            Assert.Equal(handler.Files.OrderBy(f => f), expectedFiles.OrderBy(f => f));
+            Assert.Equal(expectedFiles.OrderBy(f => f), handler.Files.OrderBy(f => f));
         }
 
         [Theory] // Current state                       Added files                     Expected state
@@ -267,7 +267,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             var difference = IProjectChangeDiffFactory.WithAddedItems(filesToAdd);
             ApplyEvaluationChanges(handler, 2, difference);
 
-            Assert.Equal(handler.Files.OrderBy(f => f), expectedFiles.OrderBy(f => f));
+            Assert.Equal(expectedFiles.OrderBy(f => f), handler.Files.OrderBy(f => f));
         }
 
         [Theory] // Current state                      Added files                      Expected state
@@ -286,7 +286,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             var difference = IProjectChangeDiffFactory.WithAddedItems(filesToAdd);
             ApplyDesignTimeChanges(handler, 2, difference);
 
-            Assert.Equal(handler.Files.OrderBy(f => f), expectedFiles.OrderBy(f => f));
+            Assert.Equal(expectedFiles.OrderBy(f => f), handler.Files.OrderBy(f => f));
         }
 
         [Theory] // Current state                      Removed files                    Expected state
@@ -305,7 +305,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             var difference = IProjectChangeDiffFactory.WithRemovedItems(filesToRemove);
             ApplyEvaluationChanges(handler, 2, difference);
 
-            Assert.Equal(handler.Files.OrderBy(f => f), expectedFiles.OrderBy(f => f));
+            Assert.Equal(expectedFiles.OrderBy(f => f), handler.Files.OrderBy(f => f));
         }
 
         [Theory] // Current state                      Removed files                    Expected state
@@ -324,13 +324,49 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             var difference = IProjectChangeDiffFactory.WithRemovedItems(filesToRemove);
             ApplyDesignTimeChanges(handler, 2, difference);
 
-            Assert.Equal(handler.Files.OrderBy(f => f), expectedFiles.OrderBy(f => f));
+            Assert.Equal(expectedFiles.OrderBy(f => f), handler.Files.OrderBy(f => f));
+        }
+
+        [Theory] // Current state                      Original name        New name                         Expected state
+        [InlineData("A.cs",                            "A.cs",              "B.cs",                          @"C:\Project\B.cs")]
+        [InlineData("A.cs;B.cs",                       "B.cs",              "C.cs",                          @"C:\Project\A.cs;C:\Project\C.cs")]
+        [InlineData("A.cs;B.cs;C.cs",                  "B.cs;C.cs",         "D.cs;E.cs",                     @"C:\Project\A.cs;C:\Project\D.cs;C:\Project\E.cs")]
+        [InlineData("A.cs;B.cs",                       "A.cs;B.cs",         "B.cs;A.cs",                     @"C:\Project\A.cs;C:\Project\B.cs")]
+        public void ApplyEvaluationChanges_WithExistingEvaluationChanges_CanRenameItem(string currentFiles, string originalNames, string newNames, string expected)
+        {
+            string[] expectedFiles = expected.Length == 0 ? Array.Empty<string>() : expected.Split(';');
+
+            var handler = CreateInstanceWithEvaluationItems(@"C:\Project\Project.csproj", currentFiles);
+
+            var difference = IProjectChangeDiffFactory.WithRenameItems(originalNames, newNames);
+
+            ApplyEvaluationChanges(handler, 2, difference);
+
+            Assert.Equal(expectedFiles.OrderBy(f => f), handler.Files.OrderBy(f => f));
+        }
+
+        [Theory] // Current state                      Original name        New name                         Expected state
+        [InlineData("A.cs",                            "A.cs",              "B.cs",                          @"C:\Project\B.cs")]
+        [InlineData("A.cs;B.cs",                       "B.cs",              "C.cs",                          @"C:\Project\A.cs;C:\Project\C.cs")]
+        [InlineData("A.cs;B.cs;C.cs",                  "B.cs;C.cs",         "D.cs;E.cs",                     @"C:\Project\A.cs;C:\Project\D.cs;C:\Project\E.cs")]
+        [InlineData("A.cs;B.cs",                       "A.cs;B.cs",         "B.cs;A.cs",                     @"C:\Project\A.cs;C:\Project\B.cs")]
+        public void ApplyEvaluationChanges_WithExistingDesignTimeChanges_CanRenameItem(string currentFiles, string originalNames, string newNames, string expected)
+        {
+            string[] expectedFiles = expected.Length == 0 ? Array.Empty<string>() : expected.Split(';');
+
+            var handler = CreateInstanceWithDesignTimeItems(@"C:\Project\Project.csproj", currentFiles);
+
+            var difference = IProjectChangeDiffFactory.WithRenameItems(originalNames, newNames);
+
+            ApplyEvaluationChanges(handler, 2, difference);
+
+            Assert.Equal(expectedFiles.OrderBy(f => f), handler.Files.OrderBy(f => f));
         }
 
         [Fact]
         public void ApplyDesignTimeChanges_WhenNewerEvaluationChangesWithAddedConflict_EvaluationWinsOut()
         {
-            var handler = CreateInstance(@"C:\Project\Project.cs");
+            var handler = CreateInstance(@"C:\Project\Project.csproj");
 
             int evaluationVersion = 1;
 
@@ -347,7 +383,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         [Fact]
         public void ApplyDesignTimeChanges_WhenNewerEvaluationChangesWithRemovedConflict_EvaluationWinsOut()
         {
-            var handler = CreateInstance(@"C:\Project\Project.cs");
+            var handler = CreateInstance(@"C:\Project\Project.csproj");
 
             int evaluationVersion = 1;
 
@@ -359,6 +395,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             ApplyDesignTimeChanges(handler, designTimeVersion, IProjectChangeDiffFactory.WithAddedItems("Source.cs"));
 
             Assert.Empty(handler.Files);
+        }
+
+        [Fact]
+        public void ApplyDesignTimeChanges_WhenOlderEvaluationChangesWithRemovedConflict_DesignTimeWinsOut()
+        {
+            var handler = CreateInstance(@"C:\Project\Project.csproj");
+
+            int evaluationVersion = 0;
+
+            // Setup the "current state"
+            ApplyEvaluationChanges(handler, evaluationVersion, IProjectChangeDiffFactory.WithRemovedItems("Source.cs"));
+
+            int designTimeVersion = 1;
+
+            ApplyDesignTimeChanges(handler, designTimeVersion, IProjectChangeDiffFactory.WithAddedItems("Source.cs"));
+
+            Assert.Single(handler.Files, @"C:\Project\Source.cs");
         }
 
         private static void ApplyEvaluationChanges(AbstractEvaluationCommandLineHandler handler, IComparable version, IProjectChangeDiff difference)

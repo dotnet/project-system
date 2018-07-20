@@ -7,7 +7,7 @@ using Xunit;
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     [Trait("UnitTest", "ProjectSystem")]
-    public class AbstractProjectDynamicLoadComponentTests
+    public class AbstractMultiLifetimeComponentTests
     {
         [Fact]
         public async Task LoadAsync_Initializes()
@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             await component.LoadAsync();
 
-            var result = (AbstractProjectDynamicLoadComponentFactory.ProjectDynamicLoadComponent.ProjectDynamicLoadComponentInstance)component.Instance;
+            var result = (AbstractMultiLifetimeComponentFactory.MultiLifetimeComponent.MultiLifetimeInstance)component.Instance;
 
             Assert.True(result.IsInitialized);
         }
@@ -118,9 +118,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
             Assert.True(instance.IsDisposed);
         }
 
-        private static AbstractProjectDynamicLoadComponentFactory.ProjectDynamicLoadComponent CreateInstance()
+        private static AbstractMultiLifetimeComponentFactory.MultiLifetimeComponent CreateInstance()
         {
-            return AbstractProjectDynamicLoadComponentFactory.Create();
+            return AbstractMultiLifetimeComponentFactory.Create();
         }
     }
 }
