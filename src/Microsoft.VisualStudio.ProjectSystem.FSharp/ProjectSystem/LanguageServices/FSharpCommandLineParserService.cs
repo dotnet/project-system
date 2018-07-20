@@ -10,9 +10,9 @@ using Microsoft.CodeAnalysis;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
-    [Export(typeof(IParseBuildOptions))]
+    [Export(typeof(ICommandLineParserService))]
     [AppliesTo(ProjectCapability.FSharp)]
-    internal class FSharpParseBuildOptions : IParseBuildOptions
+    internal class FSharpCommandLineParserService : ICommandLineParserService
     {
         private const string HyphenReferencePrefix = "-r:";
         private const string SlashReferencePrefix = "/r:";
@@ -22,15 +22,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         private readonly IEnumerable<Action<string, ImmutableArray<CommandLineSourceFile>, ImmutableArray<CommandLineReference>, ImmutableArray<string>>> _handlers = null;
 
         [ImportingConstructor]
-        public FSharpParseBuildOptions() { }
+        public FSharpCommandLineParserService()
+        {
+        }
 
-        public BuildOptions Parse(IEnumerable<string> commandLineArgs, string baseDirectory)
+        public BuildOptions Parse(IEnumerable<string> arguments, string baseDirectory)
         {
             var sourceFiles = new List<CommandLineSourceFile>();
             var metadataReferences = new List<CommandLineReference>();
             var commandLineOptions = new List<string>();
 
-            foreach (string commandLineArgument in commandLineArgs)
+            foreach (string commandLineArgument in arguments)
             {
                 string[] args = commandLineArgument.Split(';');
                 foreach (string arg in args)

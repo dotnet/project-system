@@ -7,14 +7,14 @@ using Microsoft.CodeAnalysis.VisualBasic;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
-    [Export(typeof(IParseBuildOptions))]
+    [Export(typeof(ICommandLineParserService))]
     [AppliesTo(ProjectCapability.VisualBasic)]
-    internal class VisualBasicParseBuildOptions : IParseBuildOptions
+    internal class VisualBasicCommandLineParserService : ICommandLineParserService
     {
-        public BuildOptions Parse(IEnumerable<string> args, string baseDirectory)
+        public BuildOptions Parse(IEnumerable<string> arguments, string baseDirectory)
         {
             return BuildOptions.FromCommandLineArguments(
-                VisualBasicCommandLineParser.Default.Parse(args, baseDirectory, sdkDirectory: null, additionalReferenceDirectories: null));
+                VisualBasicCommandLineParser.Default.Parse(arguments, baseDirectory, sdkDirectory: null, additionalReferenceDirectories: null));
         }
     }
 }

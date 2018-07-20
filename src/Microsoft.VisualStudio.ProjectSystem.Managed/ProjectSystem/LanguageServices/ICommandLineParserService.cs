@@ -7,6 +7,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     /// <summary>
     ///     Parses <see cref="BuildOptions"/> instances from string-based command-line arguments.
     /// </summary>
+    [ProjectSystemContract(ProjectSystemContractScope.ProjectService, ProjectSystemContractProvider.Private, Cardinality = Composition.ImportCardinality.ZeroOrMore)]
     internal interface ICommandLineParserService
     {
         /// <summary>
@@ -16,12 +17,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         ///     A <see cref="IEnumerable{T}"/> of <see cref="string"/> representing the individual command-line
         ///     arguments.
         /// </param>
+        /// <param name="baseDirectory">
+        ///     A <see cref="String"/> containing the base directory used for qualifying file locations.
+        /// </param>
         /// <returns>
         ///     An <see cref="BuildOptions"/> representing the result.
         /// </returns>
         /// <exception cref="ArgumentNullException">
         ///     <paramref name="arguments"/> is <see langword="null"/>.
+        ///     <para>
+        ///         -or-
+        ///     </para>
+        ///     <paramref name="baseDirectory"/> is <see langword="null"/>.
         /// </exception>
-        BuildOptions Parse(IEnumerable<string> arguments);
+        /// <exception cref="ArgumentException">
+        ///     <paramref name="baseDirectory"/> is an empty string ("").
+        /// </exception>
+        BuildOptions Parse(IEnumerable<string> arguments, string baseDirectory);
     }
 }

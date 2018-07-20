@@ -2,20 +2,19 @@
 
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using System.IO;
 
 using Microsoft.CodeAnalysis.CSharp;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
-    [Export(typeof(IParseBuildOptions))]
+    [Export(typeof(ICommandLineParserService))]
     [AppliesTo(ProjectCapability.CSharp)]
-    internal class CSharpParseBuildOptions : IParseBuildOptions
+    internal class CSharpCommandLineParserService : ICommandLineParserService
     {
-        public BuildOptions Parse(IEnumerable<string> args, string baseDirectory)
+        public BuildOptions Parse(IEnumerable<string> arguments, string baseDirectory)
         {
             return BuildOptions.FromCommandLineArguments(
-                CSharpCommandLineParser.Default.Parse(args, baseDirectory, sdkDirectory: null, additionalReferenceDirectories: null));
+                CSharpCommandLineParser.Default.Parse(arguments, baseDirectory, sdkDirectory: null, additionalReferenceDirectories: null));
         }
     }
 }
