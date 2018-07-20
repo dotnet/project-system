@@ -7,22 +7,21 @@ using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
-    internal partial class AbstractProjectDynamicLoadComponent
+    internal partial class AbstractMultiLifetimeComponent
     {
         /// <summary>
-        ///     Represents an instance that is automatically initialized when its parent
-        ///     <see cref="IProjectDynamicLoadComponent"/> instance's capabilities requirements are 
-        ///     satisfied, or disposed when they are not.
+        ///     Represents an instance that is automatically initialized when its parent <see cref="AbstractMultiLifetimeComponent"/>
+        ///     is loaded, or disposed when it is unloaded.
         /// </summary>
-        public abstract class AbstractProjectDynamicLoadInstance : OnceInitializedOnceDisposedAsync
+        public abstract class AbstractMultiLifetimeInstance : OnceInitializedOnceDisposedAsync
         {
-            protected AbstractProjectDynamicLoadInstance(JoinableTaskContextNode joinableTaskContextNode)
+            protected AbstractMultiLifetimeInstance(JoinableTaskContextNode joinableTaskContextNode)
                 : base(joinableTaskContextNode)
             {
             }
 
             /// <summary>
-            ///     Initializes the <see cref="AbstractProjectDynamicLoadInstance"/>.
+            ///     Initializes the <see cref="AbstractMultiLifetimeInstance"/>.
             /// </summary>
             public Task InitializeAsync()
             {

@@ -2,9 +2,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 
 using Microsoft.CodeAnalysis;
-using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.Logging;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
@@ -12,23 +12,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     /// <summary>
     ///     Handles changes to the  &lt;Analyzer/&gt; item during design-time builds.
     /// </summary>
-    internal class AnalyzerItemHandler : ICommandLineHandler
+    [Export(typeof(IWorkspaceContextHandler))]
+    internal class AnalyzerItemHandler : AbstractWorkspaceContextHandler, ICommandLineHandler
     {
         // WORKAROUND: To avoid Roslyn throwing when we add duplicate analyzers, we remember what 
         // sent to them and avoid sending on duplicates.
 
         // See: https://github.com/dotnet/project-system/issues/2230
         private readonly UnconfiguredProject _project;
-        private readonly IWorkspaceProjectContext _context;
         private readonly HashSet<string> _paths = new HashSet<string>(StringComparers.Paths);
 
-        public AnalyzerItemHandler(UnconfiguredProject project, IWorkspaceProjectContext context)
+        [ImportingConstructor]
+        public AnalyzerItemHandler(UnconfiguredProject project)
         {
             Requires.NotNull(project, nameof(project));
-            Requires.NotNull(context, nameof(context));
 
             _project = project;
-            _context = context;
         }
 
         public void Handle(IComparable version, BuildOptions added, BuildOptions removed, bool isActiveContext, IProjectLogger logger)
@@ -37,6 +36,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             Requires.NotNull(added, nameof(added));
             Requires.NotNull(removed, nameof(removed));
             Requires.NotNull(logger, nameof(logger));
+
+            EnsureInitialized();
 
             foreach (CommandLineAnalyzerReference analyzer in removed.AnalyzerReferences)
             {
@@ -58,7 +59,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             if (!_paths.Contains(fullPath))
             {
                 logger.WriteLine("Adding analyzer '{0}'", fullPath);
-                _context.AddAnalyzerReference(fullPath);
+                Context.AddAnalyzerReference(fullPath);
                 bool added = _paths.Add(fullPath);
                 Assumes.True(added);
             }
@@ -69,7 +70,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             if (_paths.Contains(fullPath))
             {
                 logger.WriteLine("Removing analyzer '{0}'", fullPath);
-                _context.RemoveAnalyzerReference(fullPath);
+                Context.RemoveAnalyzerReference(fullPath);
 
                 bool removed = _paths.Remove(fullPath);
                 Assumes.True(removed);
