@@ -11,8 +11,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
     /// </summary>
     internal interface IStartupProjectHelper
     {
-        T GetExportFromSingleDotNetStartupProject<T>(string capabilityMatch) where T : class;
-
         List<T> GetExportFromDotNetStartupProjects<T>(string capabilityMatch) where T : class;
     }
 }
