@@ -13,37 +13,37 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         [Fact]
         public void Parse_NullAsArguments_ThrowsArgumentNull()
         {
-            var instance = CreateInstance();
+            var service = CreateInstance();
 
             Assert.Throws<ArgumentNullException>("arguments", () =>
             {
-                instance.Parse((IEnumerable<string>)null, @"C:\Project");
+                service.Parse((IEnumerable<string>)null, @"C:\Project");
             });
         }
 
         [Fact]
         public void Parse_NullAsBaseDirectory_ThrowsArgumentNull()
         {
-            var instance = CreateInstance();
+            var service = CreateInstance();
 
             var arguments = Enumerable.Empty<string>();
 
             Assert.Throws<ArgumentNullException>("baseDirectory", () =>
             {
-                instance.Parse(arguments, (string)null);
+                service.Parse(arguments, (string)null);
             });
         }
 
         [Fact]
         public void Parse_EmptyAsBaseDirectory_ThrowsArgument()
         {
-            var instance = CreateInstance();
+            var service = CreateInstance();
 
             var arguments = Enumerable.Empty<string>();
 
             Assert.Throws<ArgumentException>("baseDirectory", () =>
             {
-                instance.Parse(arguments, "");
+                service.Parse(arguments, "");
             });
         }
 
