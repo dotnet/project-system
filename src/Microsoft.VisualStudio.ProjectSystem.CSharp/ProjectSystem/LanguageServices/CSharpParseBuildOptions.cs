@@ -12,10 +12,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     [AppliesTo(ProjectCapability.CSharp)]
     internal class CSharpParseBuildOptions : IParseBuildOptions
     {
-        public BuildOptions Parse(IEnumerable<string> args, string projectPath)
+        public BuildOptions Parse(IEnumerable<string> args, string baseDirectory)
         {
             return BuildOptions.FromCommandLineArguments(
-                CSharpCommandLineParser.Default.Parse(args, Path.GetDirectoryName(projectPath), sdkDirectory: null, additionalReferenceDirectories: null));
+                CSharpCommandLineParser.Default.Parse(args, baseDirectory, sdkDirectory: null, additionalReferenceDirectories: null));
         }
     }
 }

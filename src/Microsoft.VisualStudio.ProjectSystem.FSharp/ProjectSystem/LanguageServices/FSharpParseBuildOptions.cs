@@ -24,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         [ImportingConstructor]
         public FSharpParseBuildOptions() { }
 
-        public BuildOptions Parse(IEnumerable<string> commandLineArgs, string projectPath)
+        public BuildOptions Parse(IEnumerable<string> commandLineArgs, string baseDirectory)
         {
             var sourceFiles = new List<CommandLineSourceFile>();
             var metadataReferences = new List<CommandLineReference>();

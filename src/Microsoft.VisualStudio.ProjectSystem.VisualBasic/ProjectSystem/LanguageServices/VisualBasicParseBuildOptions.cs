@@ -2,7 +2,6 @@
 
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using System.IO;
 
 using Microsoft.CodeAnalysis.VisualBasic;
 
@@ -12,10 +11,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     [AppliesTo(ProjectCapability.VisualBasic)]
     internal class VisualBasicParseBuildOptions : IParseBuildOptions
     {
-        public BuildOptions Parse(IEnumerable<string> args, string projectPath)
+        public BuildOptions Parse(IEnumerable<string> args, string baseDirectory)
         {
             return BuildOptions.FromCommandLineArguments(
-                VisualBasicCommandLineParser.Default.Parse(args, Path.GetDirectoryName(projectPath), sdkDirectory: null, additionalReferenceDirectories: null));
+                VisualBasicCommandLineParser.Default.Parse(args, baseDirectory, sdkDirectory: null, additionalReferenceDirectories: null));
         }
     }
 }
