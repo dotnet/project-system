@@ -663,12 +663,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
                     If PopulateDropdown Then
                         Switches.TracePDPerf("*** Populating splash screen list from the project [may be slow for a large project]")
-                        Debug.Assert(Not m_fInsideInit, "PERFORMANCE ALERT: We shouldn't be populating the screen screen dropdown list during page initialization, it should be done later if needed.")
+                        Debug.Assert(Not m_fInsideInit, "PERFORMANCE ALERT: We shouldn't be populating the splash screen dropdown list during page initialization, it should be done later if needed.")
                         Using New WaitCursor
                             Dim CurrentMainForm As String = MyApplicationProperties.MainFormNoRootNamespace
 
-                            For Each FullName As String In GetFormEntryPoints(IncludeSplashScreen:=True)
-                                Dim SplashForm As String = RemoveCurrentRootNamespace(FullName)
+                            For Each SplashForm As String In GetFormEntryPoints(IncludeSplashScreen:=True) _
+                                .Select(Function(e) RemoveCurrentRootNamespace(e)) _
+                                .OrderBy(Function(n) n)
                                 'Only add forms to this list, skip 'Sub Main'
                                 If (Not SplashForm.Equals(Const_MyApplicationEntryPoint, StringComparison.OrdinalIgnoreCase)) AndAlso
                                     (Not SplashForm.Equals(Const_SubMain, StringComparison.OrdinalIgnoreCase)) Then
