@@ -42,10 +42,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 // Do not block initialization on reporting the sdk version. It is possible to deadlock.
                 Task.Run(async () =>
                 {
-                    // Wait for the project to be loaded so that we don't prematurally load the active configuration
-                    await _unconfiguredProjectTasksService.ProjectLoadedInHost
-                                                          .ConfigureAwait(false);
-                    
                     await _unconfiguredProjectTasksService.LoadedProjectAsync(async () =>
                     {
                         ConfigurationGeneral projectProperties = await _projectVsServices.ActiveConfiguredProjectProperties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(false);
