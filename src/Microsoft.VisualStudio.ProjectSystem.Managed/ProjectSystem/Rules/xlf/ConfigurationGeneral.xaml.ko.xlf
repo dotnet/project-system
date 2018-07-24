@@ -152,11 +152,6 @@
         <target state="translated">빠른 최신 검사 사용 안 함</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|NETCoreSdkVersion|Description">
-        <source>Represents the version of the dotnet sdk being used (if any).</source>
-        <target state="new">Represents the version of the dotnet sdk being used (if any).</target>
-        <note />
-      </trans-unit>
     </body>
   </file>
 </xliff>
