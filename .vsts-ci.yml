@@ -3,7 +3,6 @@ resources:
   clean: true
 queue:
   name: VSEng-MicroBuildVS2017
-  condition: succeeded()
   demands: Cmd
 variables:
   BuildConfiguration: Release
@@ -38,6 +37,7 @@ steps:
     testRunner: XUnit
     testResultsFiles: 'artifacts/$(BuildConfiguration)/TestResults/*.xml'
     testRunTitle: 'Unit Test Results'
+  condition: succeededOrFailed()
     
 - task: PublishSymbols@1
   displayName: Create Symbol Index
