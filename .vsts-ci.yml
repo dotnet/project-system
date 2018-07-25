@@ -6,7 +6,9 @@ queue:
   demands: Cmd
 variables:
   BuildConfiguration: Release
-  TeamName: Roslyn
+  TeamName: Roslyn-Project-System
+  BuildPlatform: any cpu
+  DropRoot: \\cpvsbuild\drops\Roslyn
   
 steps:
 - task: ms-vseng.MicroBuildTasks.30666190-6959-11e5-9f96-f56098202fef.MicroBuildSigningPlugin@1
