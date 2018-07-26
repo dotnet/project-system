@@ -70,7 +70,6 @@
                 VerticalContentAlignment="Center"
                 MinHeight="23"
                 Margin="5,6,2,7"
-                IsTabStop="True"
                 TabIndex="0"
                 ItemsSource="{Binding Path=LaunchProfiles, Mode=OneWay}"
                 SelectedValue="{Binding Path=SelectedDebugProfile}"
