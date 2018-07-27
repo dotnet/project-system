@@ -2768,6 +2768,16 @@ Do you want to update the value in the .settings file?</source>
         <target state="translated">Невозможно загрузить "{0}" из-за отсутствия доверия.</target>
         <note>{0} is resx file name that is blocked</note>
       </trans-unit>
+      <trans-unit id="RSE_Type_WMF">
+        <source>Windows Metafile</source>
+        <target state="new">Windows Metafile</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RSE_Type_EMF">
+        <source>Extended Metafile</source>
+        <target state="new">Extended Metafile</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>

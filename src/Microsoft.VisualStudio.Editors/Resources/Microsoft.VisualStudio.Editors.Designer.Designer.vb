@@ -4069,6 +4069,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Extended Metafile.
+        '''</summary>
+        Friend Shared ReadOnly Property RSE_Type_EMF() As String
+            Get
+                Return ResourceManager.GetString("RSE_Type_EMF", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to EXIF Image.
         '''</summary>
         Friend Shared ReadOnly Property RSE_Type_EXIF() As String
@@ -4146,6 +4155,15 @@ Namespace My.Resources
         Friend Shared ReadOnly Property RSE_Type_Wave() As String
             Get
                 Return ResourceManager.GetString("RSE_Type_Wave", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Windows Metafile.
+        '''</summary>
+        Friend Shared ReadOnly Property RSE_Type_WMF() As String
+            Get
+                Return ResourceManager.GetString("RSE_Type_WMF", resourceCulture)
             End Get
         End Property
         
