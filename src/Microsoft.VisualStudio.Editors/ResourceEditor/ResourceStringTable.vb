@@ -87,6 +87,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             AllowUserToDeleteRows = False
             EditMode = DataGridViewEditMode.EditOnKeystrokeOrF2
             AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
+            AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells
             DefaultCellStyle.WrapMode = DataGridViewTriState.True
 
             ' when the NullValue set to empty string, DataGridView will compare input string with it by using String.Compare.
