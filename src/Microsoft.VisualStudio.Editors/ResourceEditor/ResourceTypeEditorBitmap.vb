@@ -23,7 +23,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             EXT_GIF,
             EXT_JPEG, EXT_JPG,
             EXT_PNG,
-            EXT_TIF, EXT_TIFF}
+            EXT_TIF, EXT_TIFF,
+            EXT_EMF, EXT_WMF}
 
         ' Extensions supported in a device project
         ' NOTE: WinCE does not support TIF file...
