@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Option Explicit On
 Option Strict On
@@ -9,7 +9,7 @@ Imports System.Drawing.Imaging
 Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
     ''' <summary>
-    ''' A base class for resource type editors that handle classes derived from Image (bitmaps and theoretically metafiles).
+    ''' A base class for resource type editors that handle classes derived from Image (bitmaps and metafiles).
     ''' </summary>
     ''' <remarks>Must be inherited.</remarks>
     Friend MustInherit Class ResourceTypeEditorImageBase
@@ -17,12 +17,14 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
         'File extension constants (should be treated as non-case-sensitive)
         Public Const EXT_BMP As String = ".bmp"
+        Public Const EXT_EMF As String = ".emf"
         Public Const EXT_JPG As String = ".jpg"
         Public Const EXT_JPEG As String = ".jpeg"
         Public Const EXT_PNG As String = ".png"
         Public Const EXT_TIF As String = ".tif"
         Public Const EXT_TIFF As String = ".tiff"
         Public Const EXT_GIF As String = ".gif"
+        Public Const EXT_WMF As String = ".wmf"
 
 
 
@@ -83,7 +85,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             If ImageFormat.Equals(ImageFormat.Bmp) Then
                 Return EXT_BMP
             ElseIf ImageFormat.Equals(ImageFormat.Emf) Then
-                Debug.Fail("How did we get an EMF image?")
+                Return EXT_EMF
             ElseIf ImageFormat.Equals(ImageFormat.Exif) Then
                 Return EXT_JPG 'EXIF doesn't have an extension - it's just a JPEG
             ElseIf ImageFormat.Equals(ImageFormat.Gif) Then
@@ -97,7 +99,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ElseIf ImageFormat.Equals(ImageFormat.Tiff) Then
                 Return EXT_TIF
             ElseIf ImageFormat.Equals(ImageFormat.Wmf) Then
-                Debug.Fail("How did we get a WMF image?")
+                Return EXT_WMF
             Else
                 Debug.Fail("Unrecognized raw image format of image")
             End If
@@ -121,7 +123,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             If ImageFormat.Equals(ImageFormat.Bmp) Then
                 Return My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Type_BMP
             ElseIf ImageFormat.Equals(ImageFormat.Emf) Then
-                Debug.Fail("How did we get an EMF image?")
+                Return My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Type_EMF
             ElseIf ImageFormat.Equals(ImageFormat.Exif) Then
                 Return My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Type_EXIF
             ElseIf ImageFormat.Equals(ImageFormat.Gif) Then
@@ -135,7 +137,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ElseIf ImageFormat.Equals(ImageFormat.Tiff) Then
                 Return My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Type_TIFF
             ElseIf ImageFormat.Equals(ImageFormat.Wmf) Then
-                Debug.Fail("How did we get a WMF image?")
+                Return My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Type_WMF
             Else
                 Debug.Fail("Unrecognized raw image format of image")
             End If
