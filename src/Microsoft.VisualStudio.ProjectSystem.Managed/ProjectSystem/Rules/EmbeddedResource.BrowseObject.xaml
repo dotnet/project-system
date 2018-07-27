@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.-->
+<Rule
+    Name="EmbeddedResource"
+    DisplayName="Embedded Resource"
+    PageTemplate="generic"
+    Description="File Properties"
+    xmlns="http://schemas.microsoft.com/build/2009/properties">
+    <Rule.DataSource>
+        <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" ItemType="EmbeddedResource" SourceOfDefaultValue="AfterContext" />
+    </Rule.DataSource>
+    <Rule.Categories>
+        <Category Name="Advanced" DisplayName="Advanced" />
+        <Category Name="Misc" DisplayName="Misc" />
+    </Rule.Categories>
+
+    <StringProperty Name="Extension" Visible="False" ReadOnly="true">
+        <StringProperty.DataSource>
+            <DataSource Persistence="Intrinsic" ItemType="EmbeddedResource" PersistedName="Extension" SourceOfDefaultValue="AfterContext" />
+        </StringProperty.DataSource>
+    </StringProperty>
+
+    <StringProperty
+      Name="FileNameAndExtension"
+      DisplayName="File Name"
+      ReadOnly="true"
+      Category="Misc"
+      Description="Name of the file or folder.">
+        <StringProperty.DataSource>
+            <DataSource Persistence="Intrinsic" ItemType="EmbeddedResource" PersistedName="FileNameAndExtension" SourceOfDefaultValue="AfterContext" />
+        </StringProperty.DataSource>
+    </StringProperty>
+
+    <StringProperty
+      Name="FullPath"
+      DisplayName="Full Path"
+      ReadOnly="true"
+      Category="Misc"
+      Description="Location of the file.">
+        <StringProperty.DataSource>
+            <DataSource Persistence="Intrinsic" ItemType="EmbeddedResource" PersistedName="FullPath" SourceOfDefaultValue="AfterContext" />
+        </StringProperty.DataSource>
+    </StringProperty>
+
+    <StringProperty
+      Name="Identity"
+      Visible="false"
+      ReadOnly="true"
+      Category="Misc"
+      Description="The item specified in the Include attribute.">
+        <StringProperty.DataSource>
+            <DataSource Persistence="Intrinsic" ItemType="EmbeddedResource" PersistedName="Identity" SourceOfDefaultValue="AfterContext" />
+        </StringProperty.DataSource>
+    </StringProperty>
+
+    <StringProperty Name="URL" ReadOnly="true" Visible="false">
+        <StringProperty.DataSource>
+            <DataSource Persistence="Intrinsic" ItemType="EmbeddedResource" PersistedName="FullPath" SourceOfDefaultValue="AfterContext" />
+        </StringProperty.DataSource>
+    </StringProperty>
+</Rule>
