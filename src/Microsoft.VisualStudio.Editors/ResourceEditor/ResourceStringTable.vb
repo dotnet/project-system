@@ -1870,14 +1870,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End Sub
         End Class
 
-        Protected Overrides Function ProcessDataGridViewKey(e As KeyEventArgs) As Boolean
-            If e.KeyCode = Keys.Space AndAlso e.Shift AndAlso IsCurrentCellInEditMode Then
-                Return False
-            Else
-                Return MyBase.ProcessDataGridViewKey(e)
-            End If
-        End Function
-
     End Class
 
 End Namespace
