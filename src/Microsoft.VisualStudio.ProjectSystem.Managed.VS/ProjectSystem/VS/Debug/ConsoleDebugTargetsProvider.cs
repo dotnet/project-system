@@ -225,14 +225,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             // Is this profile just running the project? If so we ignore the exe
             if (IsRunProjectCommand(resolvedProfile))
             {
-                // If we're launching for debug purposes, prevent someone F5'ing a class library
-                if (validateSettings && await IsClassLibraryAsync().ConfigureAwait(false))
-                {
-                    throw new Exception(VSResources.ProjectNotRunnableDirectly);
-                }
-
                 // Get the executable to run, the arguments and the default working directory
-                Tuple<string, string, string> runData = await GetRunnableProjectInformationAsync(configuredProject).ConfigureAwait(false);
+                Tuple<string, string, string> runData = await GetRunnableProjectInformationAsync(configuredProject, validateSettings).ConfigureAwait(false);
                 executable = runData.Item1;
                 arguments = runData.Item2;
                 if (!string.IsNullOrWhiteSpace(runData.Item3))
@@ -340,11 +334,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// Queries properties from the project to get information on how to run the application. The returned Tuple contains:
         /// exeToRun, arguments, workingDir
         /// </summary>
-        private async Task<Tuple<string, string, string>> GetRunnableProjectInformationAsync(ConfiguredProject configuredProject)
+        private async Task<Tuple<string, string, string>> GetRunnableProjectInformationAsync(
+            ConfiguredProject configuredProject,
+            bool validateSettings)
         {
             IProjectProperties properties = configuredProject.Services.ProjectPropertiesProvider.GetCommonProperties();
 
-            string runCommand = await GetTargetCommandAsync(properties).ConfigureAwait(false);
+            string runCommand = await GetTargetCommandAsync(properties, validateSettings).ConfigureAwait(false);
             string runWorkingDirectory = await properties.GetEvaluatedPropertyValueAsync("RunWorkingDirectory").ConfigureAwait(false);
             string runArguments = await properties.GetEvaluatedPropertyValueAsync("RunArguments").ConfigureAwait(false);
 
@@ -362,13 +358,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             return new Tuple<string, string, string>(runCommand, runArguments, runWorkingDirectory);
         }
 
-        private async Task<string> GetTargetCommandAsync(IProjectProperties properties)
+        private async Task<string> GetTargetCommandAsync(
+            IProjectProperties properties,
+            bool validateSettings)
         {
             // First try "RunCommand" property
             string runCommand = await GetRunCommandAsync(properties).ConfigureAwait(false);
 
             if (string.IsNullOrEmpty(runCommand))
             {
+                // If we're launching for debug purposes, prevent someone F5'ing a class library
+                if (validateSettings && await IsClassLibraryAsync().ConfigureAwait(false))
+                {
+                    throw new Exception(VSResources.ProjectNotRunnableDirectly);
+                }
+
                 // Otherwise, fall back to "TargetPath"
                 runCommand = await properties.GetEvaluatedPropertyValueAsync(ConfigurationGeneral.TargetPathProperty)
                                              .ConfigureAwait(false);
