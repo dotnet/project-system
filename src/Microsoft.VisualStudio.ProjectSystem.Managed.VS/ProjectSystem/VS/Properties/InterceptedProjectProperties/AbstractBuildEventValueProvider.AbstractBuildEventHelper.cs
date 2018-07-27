@@ -150,7 +150,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
             }
 
             private static void SetExecParameter(ProjectTaskElement execTask, string unevaluatedPropertyValue)
-                => execTask.SetParameter(Command, ProjectCollection.Escape(unevaluatedPropertyValue));
+                => execTask.SetParameter(Command, unevaluatedPropertyValue.Replace("%", "%25"));
         }
     }
 }
