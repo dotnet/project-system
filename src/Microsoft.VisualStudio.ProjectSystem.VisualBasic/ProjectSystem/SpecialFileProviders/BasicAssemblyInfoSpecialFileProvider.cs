@@ -9,7 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
 {
     [ExportSpecialFileProvider(SpecialFiles.AssemblyInfo)]
     [AppliesTo(ProjectCapability.VisualBasic)]
-    internal class BasicAssemblyInfoSpecialFileProvider : AbstractSpecialFileProvider
+    internal class BasicAssemblyInfoSpecialFileProvider : AbstractFindByNameSpecialFileProvider
     {
         [ImportingConstructor]
         public BasicAssemblyInfoSpecialFileProvider(IPhysicalProjectTree projectTree,

@@ -9,7 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
 {
     [ExportSpecialFileProvider(SpecialFiles.AssemblyResource)]
     [AppliesTo(ProjectCapability.DotNet)]
-    internal class ResourcesFileSpecialFileProvider : AbstractSpecialFileProvider
+    internal class ResourcesFileSpecialFileProvider : AbstractFindByNameSpecialFileProvider
     {
         [ImportingConstructor]
         public ResourcesFileSpecialFileProvider(IPhysicalProjectTree projectTree,

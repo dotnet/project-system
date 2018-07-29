@@ -10,7 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
 {
     [ExportSpecialFileProvider(SpecialFiles.AppManifest)]
     [AppliesTo(ProjectCapability.DotNet)]
-    internal class AppManifestSpecialFileProvider : AbstractSpecialFileProvider
+    internal class AppManifestSpecialFileProvider : AbstractFindByNameSpecialFileProvider
     {
         private readonly ProjectProperties _projectProperties;
         private const string NoManifestValue = "NoManifest";
