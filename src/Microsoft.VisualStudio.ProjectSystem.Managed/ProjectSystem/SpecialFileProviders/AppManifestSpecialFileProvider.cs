@@ -2,6 +2,7 @@
 
 using System;
 using System.ComponentModel.Composition;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.IO;
@@ -32,7 +33,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
 
         protected override string TemplateName => "AppManifestInternal.zip";
 
-        protected override async Task<IProjectTree> FindFileAsync(string specialFileName)
+        protected override async Task<IProjectTree> FindFileAsync(
+            SpecialFiles fileId,
+            SpecialFileFlags flags,
+            CancellationToken cancellationToken = default)
         {
             // If the ApplicationManifest property is defined then we should just use that - otherwise fall back to the default logic to find app.manifest.
             ConfigurationGeneralBrowseObject configurationGeneral = await _projectProperties.GetConfigurationGeneralBrowseObjectPropertiesAsync().ConfigureAwait(false);
@@ -42,10 +46,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
                 !appManifestProperty.Equals(DefaultManifestValue, StringComparison.InvariantCultureIgnoreCase) &&
                 !appManifestProperty.Equals(NoManifestValue, StringComparison.InvariantCultureIgnoreCase))
             {
-                return _projectTree.TreeProvider.FindByPath(_projectTree.CurrentTree, appManifestProperty);
+                return ProjectTree.TreeProvider.FindByPath(ProjectTree.CurrentTree, appManifestProperty);
             }
 
-            return await base.FindFileAsync(specialFileName).ConfigureAwait(false);
+            return await base.FindFileAsync(fileId, flags, cancellationToken).ConfigureAwait(false);
         }
     }
 }
