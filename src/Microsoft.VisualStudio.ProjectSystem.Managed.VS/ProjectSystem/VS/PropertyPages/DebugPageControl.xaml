@@ -70,6 +70,7 @@
                 VerticalContentAlignment="Center"
                 MinHeight="23"
                 Margin="5,6,2,7"
+                TabIndex="0"
                 ItemsSource="{Binding Path=LaunchProfiles, Mode=OneWay}"
                 SelectedValue="{Binding Path=SelectedDebugProfile}"
                 AutomationProperties.Name="{x:Static Member=local:PropertyPageResources.Profile}">
