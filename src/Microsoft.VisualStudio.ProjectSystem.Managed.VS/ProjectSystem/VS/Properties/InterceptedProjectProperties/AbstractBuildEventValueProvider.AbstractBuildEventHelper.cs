@@ -79,7 +79,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
 
                 if (execTask.Parameters.TryGetValue(Command, out string commandText))
                 {
-                    return ProjectCollection.Unescape(commandText);
+                    return commandText.Replace("%25", "%");
                 }
 
                 return null; // exec task as written in the project file is invalid, we should be resilient to this case.
