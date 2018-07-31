@@ -78,7 +78,7 @@
     
     <!-- Roslyn -->
     <MicrosoftVisualStudioLanguageServicesVersion>2.6.0-beta1-62113-02</MicrosoftVisualStudioLanguageServicesVersion>
-    <MicrosoftVisualStudioIntegrationTestUtilitiesVersion>2.6.0-beta1-62113-02</MicrosoftVisualStudioIntegrationTestUtilitiesVersion>
+    <MicrosoftTestApexVisualStudioVersion>15.8.27703</MicrosoftTestApexVisualStudioVersion>
     <RoslynIntegrationVsixVersion>2.6.0.6211302</RoslynIntegrationVsixVersion>
     <MicrosoftNetRoslynDiagnosticsVersion>2.6.1-beta1-62702-01</MicrosoftNetRoslynDiagnosticsVersion>
 
@@ -112,6 +112,7 @@
       https://dotnet.myget.org/F/roslyn-tools/api/v3/index.json;
       https://dotnet.myget.org/F/templating/api/v3/index.json;
       https://dotnet.myget.org/F/project-system-interop/api/v3/index.json;
+      https://vside.myget.org/F/vs-impl/api/v3/index.json;
     </RestoreSources>
   </PropertyGroup>
 </Project>
