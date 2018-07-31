@@ -172,7 +172,7 @@
     </PropertyPageSchema>
     
     <PropertyPageSchema Include="$(ManagedXamlResourceDirectory)XamlAppDef.xaml">
-      <Context>File</Context>
+      <Context>File;BrowseObject</Context>
     </PropertyPageSchema>
 
     <!-- Project related settings -->
