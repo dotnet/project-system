@@ -94,8 +94,9 @@
     <MicrosoftDotNetProjectTemplatesVersion>1.0.0-beta2-20170629-269</MicrosoftDotNetProjectTemplatesVersion>
 
     <!-- Tests -->
-    <MoqVersion>4.7.99</MoqVersion>
-    <XUnitAnalyzersVersion>0.10.0-build1210</XUnitAnalyzersVersion>
+    <MoqVersion>4.9.0</MoqVersion>
+    <XUnitVersion>2.4.0</XUnitVersion>
+    <XUnitAnalyzersVersion>0.10.0</XUnitAnalyzersVersion>
   </PropertyGroup>
 
   <PropertyGroup>
