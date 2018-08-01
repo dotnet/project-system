@@ -29,17 +29,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             return this;
         }
 
-        public IActiveDebugFrameworkServicesMock ImplementGetProjectFrameworksAsync(List<string> frameworsks)
+        public IActiveDebugFrameworkServicesMock ImplementGetProjectFrameworksAsync(List<string> frameworks)
         {
             Setup(x => x.GetProjectFrameworksAsync())
-                        .ReturnsAsync(frameworsks);
+                        .ReturnsAsync(frameworks);
 
             return this;
         }
 
-        public IActiveDebugFrameworkServicesMock ImplementSetActiveDebuggingFrameworkPropertyAsync(string aciiveFramework)
+        public IActiveDebugFrameworkServicesMock ImplementSetActiveDebuggingFrameworkPropertyAsync(string activeFramework)
         {
-            Setup(x => x.SetActiveDebuggingFrameworkPropertyAsync(aciiveFramework))
+            Setup(x => x.SetActiveDebuggingFrameworkPropertyAsync(activeFramework))
                         .ReturnsAsync(() => { });
 
             return this;
