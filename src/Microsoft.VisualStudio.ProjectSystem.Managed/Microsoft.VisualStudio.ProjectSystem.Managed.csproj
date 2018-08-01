@@ -142,6 +142,9 @@
     <Compile Update="ProjectSystem\Rules\NuGetRestore.cs">
       <DependentUpon>NuGetRestore.xaml</DependentUpon>
     </Compile>
+    <Compile Update="ProjectSystem\Rules\XamlAppDef.cs">
+      <DependentUpon>XamlAppDef.xaml</DependentUpon>
+    </Compile>
     <Compile Update="ProjectSystem\Rules\VisualBasic.NamespaceImport.cs">
       <DependentUpon>VisualBasic.NamespaceImport.xaml</DependentUpon>
     </Compile>
