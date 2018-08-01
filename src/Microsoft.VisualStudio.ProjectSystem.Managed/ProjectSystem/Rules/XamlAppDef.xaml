@@ -46,7 +46,7 @@
       Category="Misc"
       Description="The item specified in the Include attribute.">
     <StringProperty.DataSource>
-      <DataSource Persistence="Intrinsic" ItemType="None" PersistedName="Identity" SourceOfDefaultValue="AfterContext" />
+      <DataSource Persistence="Intrinsic" ItemType="XamlAppDef" PersistedName="Identity" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
 
@@ -57,7 +57,7 @@
       Category="Misc"
       Description="Location of the file.">
     <StringProperty.DataSource>
-      <DataSource Persistence="Intrinsic" ItemType="None" PersistedName="FullPath" SourceOfDefaultValue="AfterContext" />
+      <DataSource Persistence="Intrinsic" ItemType="XamlAppDef" PersistedName="FullPath" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
 
@@ -68,13 +68,13 @@
       Category="Misc"
       Description="Name of the file or folder.">
     <StringProperty.DataSource>
-      <DataSource Persistence="Intrinsic" ItemType="None" PersistedName="FileNameAndExtension" SourceOfDefaultValue="AfterContext" />
+      <DataSource Persistence="Intrinsic" ItemType="XamlAppDef" PersistedName="FileNameAndExtension" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
 
   <StringProperty Name="URL" ReadOnly="true" Visible="false">
     <StringProperty.DataSource>
-      <DataSource Persistence="Intrinsic" ItemType="None" PersistedName="FullPath" SourceOfDefaultValue="AfterContext" />
+      <DataSource Persistence="Intrinsic" ItemType="XamlAppDef" PersistedName="FullPath" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <BoolProperty Name="Visible" Visible="false" />
@@ -86,7 +86,7 @@
   </StringProperty>
   <StringProperty Name="Extension" Visible="False" ReadOnly="true">
     <StringProperty.DataSource>
-      <DataSource Persistence="Intrinsic" ItemType="None" PersistedName="Extension" SourceOfDefaultValue="AfterContext" />
+      <DataSource Persistence="Intrinsic" ItemType="XamlAppDef" PersistedName="Extension" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
 </Rule>
