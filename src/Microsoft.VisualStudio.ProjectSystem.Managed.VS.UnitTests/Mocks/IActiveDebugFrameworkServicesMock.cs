@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 using Moq;
 
@@ -17,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         public IActiveDebugFrameworkServicesMock ImplementGetActiveDebuggingFrameworkPropertyAsync(string activeFramework)
         {
             Setup(x => x.GetActiveDebuggingFrameworkPropertyAsync())
-                        .Returns(Task.FromResult(activeFramework));
+                        .ReturnsAsync(activeFramework);
 
             return this;
         }
@@ -25,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         public IActiveDebugFrameworkServicesMock ImplementGetConfiguredProjectForActiveFrameworkAsync(ConfiguredProject project)
         {
             Setup(x => x.GetConfiguredProjectForActiveFrameworkAsync())
-                        .Returns(Task.FromResult(project));
+                        .ReturnsAsync(project);
 
             return this;
         }
@@ -33,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         public IActiveDebugFrameworkServicesMock ImplementGetProjectFrameworksAsync(List<string> frameworsks)
         {
             Setup(x => x.GetProjectFrameworksAsync())
-                        .Returns(Task.FromResult(frameworsks));
+                        .ReturnsAsync(frameworsks);
 
             return this;
         }
@@ -41,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         public IActiveDebugFrameworkServicesMock ImplementSetActiveDebuggingFrameworkPropertyAsync(string aciiveFramework)
         {
             Setup(x => x.SetActiveDebuggingFrameworkPropertyAsync(aciiveFramework))
-                        .Returns(Task.CompletedTask);
+                        .ReturnsAsync(() => { });
 
             return this;
         }
