@@ -55,7 +55,7 @@ Add Data Source                                                             | �
 "Initialize Interactive Window with Project"                               | ●        | ● (15.8 Preview 3) | Only when targeting .NET Framework.
 Class Diagrams                                                              | ●        | ● (15.8 Preview 3) |
 Code Analysis                                                               | ●        | 
-Code Metrics                                                                | ●        | ● (15.8 Preview 3) | Only when targeting .NET Framework.
+Code Metrics                                                                | ●        | ◖ (15.8 Preview 3) ● (16.0 Preview 1) | 15.8 added support for Code Metrics when targeting .NET Framework. 16.0 will add support for Code Metrics when targeting all frameworks.
 Code Clones                                                                 | ●        | ● (15.8 Preview 3) | 
 Fakes                                                                       | ●        | 
 T4 Templates                                                                | ●        | 
