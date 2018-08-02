@@ -195,8 +195,11 @@ function RunIntegrationTests{
   $TestResultsDir = Join-Path (Join-Path $ArtifactsDir $configuration) "TestResults"
   
   # Uninstall extensions as other test runs could happen on the VM
-  & $vsixExpInstalleExe /rootSuffix:$rootsuffix /vsInstallDir:$vsInstallDir $ProjectSystemVsix
-  & $vsixExpInstalleExe /rootSuffix:$rootsuffix /vsInstallDir:$vsInstallDir $VisualStudioEditorsSetupVsix
+  # NOTE: it sometimes takes 2 tries for it to succeed
+  & $vsixExpInstalleExe /u /rootSuffix:$rootsuffix /vsInstallDir:$vsInstallDir $ProjectSystemVsix
+  & $vsixExpInstalleExe /u /rootSuffix:$rootsuffix /vsInstallDir:$vsInstallDir $ProjectSystemVsix
+  & $vsixExpInstalleExe /u /rootSuffix:$rootsuffix /vsInstallDir:$vsInstallDir $VisualStudioEditorsSetupVsix
+  & $vsixExpInstalleExe /u /rootSuffix:$rootsuffix /vsInstallDir:$vsInstallDir $VisualStudioEditorsSetupVsix
   
   # Kill any VS processes left over
   Get-Process -Name "devenv" -ErrorAction SilentlyContinue | Stop-Process

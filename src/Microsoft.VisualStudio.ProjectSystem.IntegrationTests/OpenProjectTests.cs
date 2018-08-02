@@ -10,7 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.IntegrationTests
         [TestMethod]
         public void CreateProject_CreateRestoreAndBuild()
         {
-            var proj = VisualStudio.ObjectModel.Solution.CreateProject(ProjectLanguage.CSharp, ProjectTemplate.ClassLibrary);
+            var proj = VisualStudio.ObjectModel.Solution.CreateProject(ProjectLanguage.CSharp, ProjectTemplate.NetCoreConsoleApp);
             VisualStudio.ObjectModel.Solution.Verify.HasProject();
             VisualStudio.ObjectModel.Shell.ToolWindows.ErrorList.WaitForReady();
             VisualStudio.ObjectModel.Shell.ToolWindows.ErrorList.WaitForNoErrorListItems();
