@@ -338,7 +338,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             var handler = CreateInstanceWithEvaluationItems(@"C:\Project\Project.csproj", currentFiles);
 
-            var difference = IProjectChangeDiffFactory.WithRenameItems(originalNames, newNames);
+            var difference = IProjectChangeDiffFactory.WithRenamedItems(originalNames, newNames);
 
             ApplyEvaluationChanges(handler, 2, difference);
 
@@ -356,7 +356,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             var handler = CreateInstanceWithDesignTimeItems(@"C:\Project\Project.csproj", currentFiles);
 
-            var difference = IProjectChangeDiffFactory.WithRenameItems(originalNames, newNames);
+            var difference = IProjectChangeDiffFactory.WithRenamedItems(originalNames, newNames);
 
             ApplyEvaluationChanges(handler, 2, difference);
 
