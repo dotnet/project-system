@@ -194,6 +194,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             Assert.Equal(expectedFiles.OrderBy(f => f), handler.FileNames.OrderBy(f => f));
         }
 
+        [Fact]
+        public void AddEvalautionChanges_CanAddItemWithMetadata()
+        {
+            var handler = CreateInstance(@"C:\Project\Project.csproj");
+
+            var difference = IProjectChangeDiffFactory.WithAddedItems("A.cs");
+            var metadata = MetadataFactory.Create("A.cs", ("Name", "Value"));
+
+            ApplyEvaluationChanges(handler, 1, difference, metadata);
+
+            var result = handler.Files[@"C:\Project\A.cs"];
+
+            Assert.Equal("Value", result["Name"]);
+        }
+
         [Theory] // Current state                      Added files                      Expected state
         [InlineData("",                                "A.cs",                          @"C:\Project\A.cs")]
         [InlineData("",                                "A.cs;B.cs",                     @"C:\Project\A.cs;C:\Project\B.cs")]
@@ -364,6 +379,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         }
 
         [Fact]
+        public void ApplyEvaluationCHanges_WithExistingEvaluationChanges_CanAddChangeMetadata()
+        {
+            var file = "A.cs";
+            var handler = CreateInstanceWithEvaluationItems(@"C:\Project\Project.csproj", file);
+
+            var difference = IProjectChangeDiffFactory.WithChangedItems(file);
+            var metadata = MetadataFactory.Create(file, ("Name", "Value"));
+
+            ApplyEvaluationChanges(handler, 2, difference, metadata);
+
+            var result = handler.Files[@"C:\Project\A.cs"];
+
+            Assert.Equal("Value", result["Name"]);
+        }
+
+        [Fact]
         public void ApplyDesignTimeChanges_WhenNewerEvaluationChangesWithAddedConflict_EvaluationWinsOut()
         {
             var handler = CreateInstance(@"C:\Project\Project.csproj");
@@ -414,9 +445,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             Assert.Single(handler.FileNames, @"C:\Project\Source.cs");
         }
 
-        private static void ApplyEvaluationChanges(AbstractEvaluationCommandLineHandler handler, IComparable version, IProjectChangeDiff difference)
+        private static void ApplyEvaluationChanges(AbstractEvaluationCommandLineHandler handler, IComparable version, IProjectChangeDiff difference, IImmutableDictionary<string, IImmutableDictionary<string, string>> metadata = null)
         {
-            var metadata = ImmutableDictionary<string, IImmutableDictionary<string, string>>.Empty;
+            metadata = metadata ?? ImmutableDictionary<string, IImmutableDictionary<string, string>>.Empty;
             bool isActiveContext = true;
             var logger = IProjectLoggerFactory.Create();
 

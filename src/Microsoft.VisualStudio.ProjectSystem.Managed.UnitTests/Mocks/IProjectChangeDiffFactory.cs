@@ -48,6 +48,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return Create(renamedItems: builder.ToImmutable());
         }
 
+        public static IProjectChangeDiff WithChangedItems(params string[] changedItems)
+        {
+            return Create(changedItems: ImmutableHashSet.Create(StringComparers.Paths, changedItems));
+        }
+
         public static IProjectChangeDiff WithNoChanges()
         {
             return new ProjectChangeDiff();
