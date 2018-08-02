@@ -13,22 +13,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             public EvaluationCommandLineHandler(UnconfiguredProject project) 
                 : base(project)
             {
-                Files = new Collection<string>();
+                FileNames = new Collection<string>();
             }
 
-            public Collection<string> Files
+            public Collection<string> FileNames
             {
                 get;
             }
 
             protected override void AddToContext(string fullPath, IImmutableDictionary<string, string> metadata, bool isActiveContext, IProjectLogger logger)
             {
-                Files.Add(fullPath);
+                FileNames.Add(fullPath);
             }
 
             protected override void RemoveFromContext(string fullPath, IProjectLogger logger)
             {
-                Files.Remove(fullPath);
+                FileNames.Remove(fullPath);
             }
         }
     }
