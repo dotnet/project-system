@@ -70,6 +70,7 @@
                 VerticalContentAlignment="Center"
                 MinHeight="23"
                 Margin="5,6,2,7"
+                TabIndex="0"
                 ItemsSource="{Binding Path=LaunchProfiles, Mode=OneWay}"
                 SelectedValue="{Binding Path=SelectedDebugProfile}"
                 AutomationProperties.Name="{x:Static Member=local:PropertyPageResources.Profile}">
@@ -80,6 +81,11 @@
                         <Binding Path="DoesNotHaveErrors" Mode="OneWay"/>
                     </MultiBinding>
                 </ComboBox.IsEnabled>
+                <ComboBox.ItemContainerStyle>
+                    <Style TargetType="ComboBoxItem">
+                        <Setter Property="AutomationProperties.Name" Value="{Binding Path=Name}"/>
+                    </Style>
+                </ComboBox.ItemContainerStyle>
             </ComboBox>
             <StackPanel
                 Grid.Row="0"
@@ -133,6 +139,11 @@
                 IsReadOnly="True"
                 IsEditable="False"
                 AutomationProperties.Name="{x:Static Member=local:PropertyPageResources.Launch}">
+                <ComboBox.ItemContainerStyle>
+                    <Style TargetType="ComboBoxItem">
+                        <Setter Property="AutomationProperties.Name" Value="{Binding Path=Name}"/>
+                    </Style>
+                </ComboBox.ItemContainerStyle>
             </ComboBox>
             <Label 
                 Grid.Row="2"
