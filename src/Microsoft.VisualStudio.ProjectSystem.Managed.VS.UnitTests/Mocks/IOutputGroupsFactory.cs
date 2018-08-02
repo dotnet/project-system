@@ -3,7 +3,6 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Threading;
-using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.ProjectSystem.Build;
 
@@ -28,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             outputGroup.Setup(o => o.Outputs).Returns(dictionaryList);
 
             var outputGroupsService = new Mock<IOutputGroupsService>();
-            outputGroupsService.Setup(o => o.GetOutputGroupAsync(It.IsAny<string>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(outputGroup.Object));
+            outputGroupsService.Setup(o => o.GetOutputGroupAsync(It.IsAny<string>(), It.IsAny<CancellationToken>())).ReturnsAsync(outputGroup.Object);
 
             return outputGroupsService.Object;
         }
