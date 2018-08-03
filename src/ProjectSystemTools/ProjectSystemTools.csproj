@@ -75,6 +75,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="BinaryLogEditor\LogViewControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="BinaryLogEditor\EvaluationTreeViewControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Update="BinaryLogEditor\BinaryLogEditorResources.Designer.cs">
@@ -84,6 +92,12 @@
     </Compile>
     <Compile Update="BinaryLogEditor\BuildTreeViewControl.xaml.cs">
       <DependentUpon>BuildTreeViewControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="BinaryLogEditor\EvaluationTreeViewControl.xaml.cs">
+      <DependentUpon>EvaluationTreeViewControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="BinaryLogEditor\LogViewControl.xaml.cs">
+      <DependentUpon>LogViewControl.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
 </Project>

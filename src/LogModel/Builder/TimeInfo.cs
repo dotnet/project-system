@@ -8,13 +8,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
     {
         public TimeSpan ExclusiveTime { get; }
         public TimeSpan InclusiveTime { get; }
-        public int NumberOfHits { get; }
 
-        public TimeInfo(TimeSpan exclusiveTime, TimeSpan inclusiveTime, int numberOfHits)
+        public TimeInfo(TimeSpan exclusiveTime, TimeSpan inclusiveTime)
         {
             ExclusiveTime = exclusiveTime;
             InclusiveTime = inclusiveTime;
-            NumberOfHits = numberOfHits;
         }
     }
 }

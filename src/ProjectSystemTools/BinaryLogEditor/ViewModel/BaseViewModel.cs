@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.ProjectSystem.LogModel;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tools.BinaryLogEditor.ViewModel
 {
-    internal abstract class BaseViewModel
+    internal abstract class BaseViewModel : IViewModelWithProperties
     {
         public abstract string Text { get; }
 
@@ -15,6 +15,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BinaryLogEditor.ViewModel
         public virtual SelectedObjectWrapper Properties => null;
 
         protected static string FormatTime(Time time) =>
-            $"In: {time.InclusiveTime:mm':'ss'.'ffff} | Ex: {time.ExclusiveTime:mm':'ss'.'ffff} | Hits: {time.NumberOfHits}";
+            $"In: {time.InclusiveTime:mm':'ss'.'ffff} | Ex: {time.ExclusiveTime:mm':'ss'.'ffff}";
     }
 }

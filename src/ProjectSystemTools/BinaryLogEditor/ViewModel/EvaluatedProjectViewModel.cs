@@ -2,6 +2,7 @@
 
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using Microsoft.VisualStudio.ProjectSystem.LogModel;
 
@@ -15,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BinaryLogEditor.ViewModel
         private List<object> _children;
         private SelectedObjectWrapper _properties;
 
-        public override string Text => _text ?? (_text = _evaluatedProject.Name);
+        public override string Text => _text ?? (_text = Path.GetFileName(_evaluatedProject.Name));
 
         protected override Node Node => _evaluatedProject;
 
@@ -27,6 +28,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BinaryLogEditor.ViewModel
                 "Evaluated Project",
                 _evaluation?.Messages.Union(_evaluatedProject.Messages) ?? _evaluatedProject.Messages,
                 new Dictionary<string, IDictionary<string, string>> {
+                    {"General", new Dictionary<string, string>
+                        {
+                            {"Path", _evaluatedProject.Name}
+                        }
+                    },
                     {"Build", new Dictionary<string, string>
                         {
                             {"Started", _evaluatedProject.StartTime.ToString(CultureInfo.InvariantCulture)},
@@ -53,10 +59,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BinaryLogEditor.ViewModel
             if (_evaluatedProject.EvaluationProfile != null)
             {
                 list.AddRange(_evaluatedProject.EvaluationProfile.Passes.Select(pass => new EvaluatedPassViewModel(pass)));
-                if (_evaluatedProject.EvaluationProfile.GlobTime != null)
-                {
-                    list.Add(new TextViewModel($"Glob total [{FormatTime(_evaluatedProject.EvaluationProfile.GlobTime)}]"));
-                }
             }
 
             return list;
