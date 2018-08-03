@@ -7,9 +7,10 @@
     <!-- 
       15.8 specific workaround for a change to BUILD_BUILDNUMBER format that added two more digits. 
       Any subsequent versions must have the same amount of digits to be considered higher.
-      Updates the version 20180102.03 to 20180102.0003.
+      Updates the version 20180102.03 to 20180102.0003 OR 20180102.3 to 20180102.0003
     -->
     <BUILD_BUILDNUMBER Condition="$(BUILD_BUILDNUMBER.Length) == 11">$(BUILD_BUILDNUMBER.Insert(9, '00'))</BUILD_BUILDNUMBER>
+    <BUILD_BUILDNUMBER Condition="$(BUILD_BUILDNUMBER.Length) == 10">$(BUILD_BUILDNUMBER.Insert(9, '000'))</BUILD_BUILDNUMBER>
 
     <!-- Opt-in repo features -->
     <UsingToolVSSDK>true</UsingToolVSSDK>
