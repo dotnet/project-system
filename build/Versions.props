@@ -16,6 +16,7 @@
     <RoslynDependenciesProjectSystemOptimizationDataVersion>2.6.0-beta1-62205-02</RoslynDependenciesProjectSystemOptimizationDataVersion>
     <VSWhereVersion>2.3.2</VSWhereVersion>
     <VSIXExpInstallerVersion>1.0.0-beta2-63201-01</VSIXExpInstallerVersion>
+    <TRXUnitVersion>1.0.0-beta1</TRXUnitVersion>
     <MicrosoftDotNetIBCMergeVersion>4.7.1-alpha-00001</MicrosoftDotNetIBCMergeVersion>
     <MicrosoftNetCompilersVersion>2.6.1</MicrosoftNetCompilersVersion>
     <MicrosoftDiaSymReaderPdb2PdbVersion>1.1.0-beta1-62624-01</MicrosoftDiaSymReaderPdb2PdbVersion>

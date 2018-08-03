@@ -190,9 +190,27 @@ function RunIntegrationTests{
   & $VSTestExe /blame /logger:$LogFileArgs /ResultsDirectory:"$IntegrationTestTempDir" $TestAssembly
   
   # Convert trx to be an xUnit xml file
-
+  $trxUnitVersion = GetVersion("TRXUnitVersion")
+  $trxUnitDir = Join-Path $ToolsRoot "TRXUnit\$trxUnitVersion"
+  
+  $trxUnitExe = Join-Path $trxUnitDir "tools\TRXunit.exe"
+  if (!(Test-Path $trxUnitExe)) {
+    Create-Directory $trxUnitDir
+    Write-Host "Downloading TRXUnit"
+    [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+    Invoke-WebRequest "https://dotnet.myget.org/F/roslyn-tools/api/v2/package/TRXunit/$trxUnitVersion" -OutFile TRXUnit.zip
+    Expand-Archive .\TRXUnit.zip -DestinationPath $trxUnitDir
+  }
+  
+  $trxFiles = Get-ChildItem -Path $IntegrationTestTempDir -Recurse -Include *.trx 
+  foreach ($trxFile in $trxFiles) {
+    & $trxUnitExe $trxFile
+  }
+  
+  
   # Move test results to test results folder
   $TestResultsDir = Join-Path (Join-Path $ArtifactsDir $configuration) "TestResults"
+  Copy-Item -Filter *.xml -Path $IntegrationTestTempDir -Recurse -Destination $TestResultsDir
   
   # Uninstall extensions as other test runs could happen on the VM
   # NOTE: it sometimes takes 2 tries for it to succeed
