@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return Create(removedItems: ImmutableHashSet.Create(StringComparers.Paths, removedItems));
         }
 
-        public static IProjectChangeDiff WithRenameItems(string semiColonSeparatedOriginalNames, string semiColonSeparatedNewNames)
+        public static IProjectChangeDiff WithRenamedItems(string semiColonSeparatedOriginalNames, string semiColonSeparatedNewNames)
         {
             string[] originalNames = semiColonSeparatedOriginalNames.Split(';');
             string[] newNames = semiColonSeparatedNewNames.Split(';');
@@ -46,6 +46,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
             }
 
             return Create(renamedItems: builder.ToImmutable());
+        }
+
+        public static IProjectChangeDiff WithChangedItems(params string[] changedItems)
+        {
+            return Create(changedItems: ImmutableHashSet.Create(StringComparers.Paths, changedItems));
         }
 
         public static IProjectChangeDiff WithNoChanges()
