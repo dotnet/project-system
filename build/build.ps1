@@ -157,6 +157,7 @@ $projectSystemAssemblyName, $projectSystemVersion.0
 function RunIntegrationTests{
   
   # Ensure project system is installed to the correct hive
+  Write-Host "Installing project system into '$vsInstallDir'"
   $vsixExpInstallerVersion = GetVersion("VSIXExpInstallerVersion")
   $vsixExpInstalleDir = Join-Path $ToolsRoot "VSIXExpInstaller\$vsixExpInstallerVersion"
   
@@ -190,6 +191,7 @@ function RunIntegrationTests{
   & $VSTestExe /blame /logger:$LogFileArgs /ResultsDirectory:"$IntegrationTestTempDir" $TestAssembly
   
   # Convert trx to be an xUnit xml file
+  Write-Host "Converting MSTest results"
   $trxUnitVersion = GetVersion("TRXUnitVersion")
   $trxUnitDir = Join-Path $ToolsRoot "TRXUnit\$trxUnitVersion"
   
@@ -214,6 +216,7 @@ function RunIntegrationTests{
   
   # Uninstall extensions as other test runs could happen on the VM
   # NOTE: it sometimes takes 2 tries for it to succeed
+  Write-Host "Uninstalling project system from '$VSTestExe'"
   & $vsixExpInstalleExe /u /rootSuffix:$rootsuffix /vsInstallDir:$vsInstallDir $ProjectSystemVsix
   & $vsixExpInstalleExe /u /rootSuffix:$rootsuffix /vsInstallDir:$vsInstallDir $ProjectSystemVsix
   & $vsixExpInstalleExe /u /rootSuffix:$rootsuffix /vsInstallDir:$vsInstallDir $VisualStudioEditorsSetupVsix
