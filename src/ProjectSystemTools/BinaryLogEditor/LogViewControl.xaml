@@ -15,7 +15,7 @@
             <local:EvaluationTreeViewControl x:Name="EvaluationTreeViewControl"/>
         </TabItem>
         <TabItem x:Name="TargetsTab" Header="Target Summary">
-            <DataGrid x:Name="TargetsTable" CanUserAddRows="False" CanUserResizeColumns="True" CanUserSortColumns="True" IsReadOnly="True" AutoGenerateColumns="False" ItemsSource="{Binding}">
+            <DataGrid x:Name="TargetsTable" CanUserAddRows="False" CanUserResizeColumns="True" CanUserSortColumns="True" IsReadOnly="True" AutoGenerateColumns="False" HeadersVisibility="Column" ItemsSource="{Binding}">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Target Name" Binding="{Binding Name}"/>
                     <DataGridTextColumn Header="Source" Binding="{Binding SourceFilePath}"/>
@@ -26,7 +26,7 @@
             </DataGrid>
         </TabItem>
         <TabItem x:Name="TasksTab" Header="Task Summary">
-            <DataGrid x:Name="TasksTable" CanUserAddRows="False" CanUserResizeColumns="True" CanUserSortColumns="True" IsReadOnly="True" AutoGenerateColumns="False" ItemsSource="{Binding}">
+            <DataGrid x:Name="TasksTable" CanUserAddRows="False" CanUserResizeColumns="True" CanUserSortColumns="True" IsReadOnly="True" AutoGenerateColumns="False" HeadersVisibility="Column" ItemsSource="{Binding}">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Task Name" Binding="{Binding Name}"/>
                     <DataGridTextColumn Header="Source" Binding="{Binding SourceFilePath}"/>
@@ -37,7 +37,7 @@
             </DataGrid>
         </TabItem>
         <TabItem x:Name="EvaluationTab" Header="Evaluation Summary">
-            <DataGrid x:Name="EvaluationTable" CanUserAddRows="False" CanUserResizeColumns="True" CanUserSortColumns="True" IsReadOnly="True" AutoGenerateColumns="False" ItemsSource="{Binding}">
+            <DataGrid x:Name="EvaluationTable" CanUserAddRows="False" CanUserResizeColumns="True" CanUserSortColumns="True" IsReadOnly="True" AutoGenerateColumns="False" HeadersVisibility="Column" ItemsSource="{Binding}">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
                     <DataGridTextColumn Header="File" Binding="{Binding SourceFilePath}"/>
