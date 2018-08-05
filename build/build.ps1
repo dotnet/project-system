@@ -180,6 +180,8 @@ function RunIntegrationTests{
   $env:VisualBasicDesignTimeTargetsPath = Join-Path $VisualStudioXamlRulesDir "Microsoft.VisualBasic.DesignTime.targets"
   $env:FSharpDesignTimeTargetsPath = Join-Path $VisualStudioXamlRulesDir "Microsoft.FSharp.DesignTime.targets"
   $env:CSharpDesignTimeTargetsPath = Join-Path $VisualStudioXamlRulesDir "Microsoft.CSharp.DesignTime.targets"
+  $DevEnvExe = Join-Path $vsInstallDir "Common7\IDE\devenv.exe"
+  & $VSTestExe /setup
   
   # Run integration tests
   $VSTestExe = Join-Path $vsInstallDir "Common7\IDE\CommonExtensions\Microsoft\TestWindow\vstest.console.exe"
@@ -189,6 +191,9 @@ function RunIntegrationTests{
   
   Write-Host "Using $VSTestExe"
   & $VSTestExe /blame /logger:$LogFileArgs /ResultsDirectory:"$IntegrationTestTempDir" $TestAssembly
+  
+  # Kill any VS processes left over
+  Get-Process -Name "devenv" -ErrorAction SilentlyContinue | Stop-Process
   
   # Convert trx to be an xUnit xml file
   Write-Host "Converting MSTest results"
@@ -221,9 +226,6 @@ function RunIntegrationTests{
   & $vsixExpInstalleExe /u /rootSuffix:$rootsuffix /vsInstallDir:$vsInstallDir $ProjectSystemVsix
   & $vsixExpInstalleExe /u /rootSuffix:$rootsuffix /vsInstallDir:$vsInstallDir $VisualStudioEditorsSetupVsix
   & $vsixExpInstalleExe /u /rootSuffix:$rootsuffix /vsInstallDir:$vsInstallDir $VisualStudioEditorsSetupVsix
-  
-  # Kill any VS processes left over
-  Get-Process -Name "devenv" -ErrorAction SilentlyContinue | Stop-Process
 }
 
 try {
