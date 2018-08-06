@@ -71,11 +71,7 @@ function GetVersion([string] $name) {
   throw "Failed to find $name in Versions.props"
 }
 
-function LocateVisualStudio {
-  if ($InVSEnvironment) {
-    return Join-Path $env:VS150COMNTOOLS "..\.."
-  }
-
+function GetVsWhereExe{
   $vswhereVersion = GetVersion("VSWhereVersion")
   $vsWhereDir = Join-Path $ToolsRoot "vswhere\$vswhereVersion"
   $vsWhereExe = Join-Path $vsWhereDir "vswhere.exe"
@@ -86,8 +82,52 @@ function LocateVisualStudio {
     [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
     Invoke-WebRequest "http://github.com/Microsoft/vswhere/releases/download/$vswhereVersion/vswhere.exe" -OutFile $vswhereExe
   }
+  
+  return $vsWhereExe
+}
 
-  $vsInstallDir = & $vsWhereExe -latest -prerelease -property installationPath -requires Microsoft.Component.MSBuild -requires Microsoft.VisualStudio.Component.VSSDK -requires Microsoft.Net.Component.4.6.TargetingPack -requires Microsoft.VisualStudio.Component.Roslyn.Compiler -requires Microsoft.VisualStudio.Component.VSSDK
+function GetVSIXExpInstallerExe{
+  $vsixExpInstallerVersion = GetVersion("VSIXExpInstallerVersion")
+  $vsixExpInstalleDir = Join-Path $ToolsRoot "VSIXExpInstaller\$vsixExpInstallerVersion"
+  $vsixExpInstalleExe = Join-Path $vsixExpInstalleDir "tools\VSIXExpInstaller.exe"
+  
+  if (!(Test-Path $vsixExpInstalleExe)) {
+    Create-Directory $vsixExpInstalleDir
+    Write-Host "Downloading VSIXExpInstaller"
+    [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+    Invoke-WebRequest "https://dotnet.myget.org/F/roslyn-tools/api/v2/package/RoslynTools.VSIXExpInstaller/$vsixExpInstallerVersion" -OutFile RoslynTools.VSIXExpInstaller.zip
+    Expand-Archive .\RoslynTools.VSIXExpInstaller.zip -DestinationPath $vsixExpInstalleDir
+  }
+  
+  return $vsixExpInstalleExe
+}
+
+function GetTRXUnitExe{
+  $trxUnitVersion = GetVersion("TRXUnitVersion")
+  $trxUnitDir = Join-Path $ToolsRoot "TRXUnit\$trxUnitVersion"
+  $trxUnitExe = Join-Path $trxUnitDir "tools\TRXunit.exe"
+  if (!(Test-Path $trxUnitExe)) {
+    Create-Directory $trxUnitDir
+    Write-Host "Downloading TRXUnit"
+    [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+    Invoke-WebRequest "https://dotnet.myget.org/F/roslyn-tools/api/v2/package/TRXunit/$trxUnitVersion" -OutFile TRXUnit.zip
+    Expand-Archive .\TRXUnit.zip -DestinationPath $trxUnitDir
+  }
+  
+  return $trxUnitExe
+}
+
+function InstallVSIX([string] $vsixExpInstalleExe, [string] $rootsuffix, [string] $vsInstallDir, [string] $pathToVSIX){
+  & $vsixExpInstalleExe /rootSuffix:$rootsuffix /vsInstallDir:$vsInstallDir $pathToVSIX
+}
+
+function LocateVisualStudio {
+  if ($InVSEnvironment) {
+    return Join-Path $env:VS150COMNTOOLS "..\.."
+  }
+
+  $vsWhereExe = GetVsWhereExe
+  $vsInstallDir = & $vsWhereExe -latest -prerelease -property installationPath -requires Microsoft.Component.MSBuild -requires Microsoft.VisualStudio.Component.VSSDK -requires Microsoft.Net.Component.4.6.TargetingPack -requires Microsoft.VisualStudio.Component.Roslyn.Compiler
 
   if (!(Test-Path $vsInstallDir)) {
     throw "Failed to locate Visual Studio (exit code '$lastExitCode')."
@@ -127,8 +167,12 @@ function Build {
 
 function Stop-Processes() {
   Write-Host "Killing running build processes..."
-  Get-Process -Name "msbuild" -ErrorAction SilentlyContinue | Stop-Process
-  Get-Process -Name "vbcscompiler" -ErrorAction SilentlyContinue | Stop-Process
+  Stop-Process-Name "msbuild"
+  Stop-Process-Name "vbcscompiler"
+}
+
+function Stop-Process-Name([string] $processName) {
+  Get-Process -Name $processName -ErrorAction SilentlyContinue | Stop-Process
 }
 
 function Clear-NuGetCache() {
@@ -154,34 +198,61 @@ $projectSystemAssemblyName, $projectSystemVersion.0
   $csv >> $dependentAssemblyVersionsCsv
 }
 
-function RunIntegrationTests{
-  
-  # Ensure project system is installed to the correct hive
+# Ensure project system is installed to the correct hive
+function InstallProjectSystemVSIX ([string] $rootSuffix, [string] $vsInstallDir) {
+  UninstallVSIXes $rootSuffix
   Write-Host "Installing project system into '$vsInstallDir'"
-  $vsixExpInstallerVersion = GetVersion("VSIXExpInstallerVersion")
-  $vsixExpInstalleDir = Join-Path $ToolsRoot "VSIXExpInstaller\$vsixExpInstallerVersion"
-  
-  $vsixExpInstalleExe = Join-Path $vsixExpInstalleDir "tools\VSIXExpInstaller.exe"
-
-  if (!(Test-Path $vsixExpInstalleExe)) {
-    Create-Directory $vsixExpInstalleDir
-    Write-Host "Downloading VSIXExpInstaller"
-    [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-    Invoke-WebRequest "https://dotnet.myget.org/F/roslyn-tools/api/v2/package/RoslynTools.VSIXExpInstaller/$vsixExpInstallerVersion" -OutFile RoslynTools.VSIXExpInstaller.zip
-    Expand-Archive .\RoslynTools.VSIXExpInstaller.zip -DestinationPath $vsixExpInstalleDir
-  }
+  $vsixExpInstalleExe = GetVSIXExpInstallerExe
   $ProjectSystemVsix = Join-Path (Join-Path $ArtifactsDir $configuration) "VSSetup\ProjectSystem.vsix"
+  InstallVSIX $vsixExpInstalleExe $rootsuffix $vsInstallDir $ProjectSystemVsix
   $VisualStudioEditorsSetupVsix = Join-Path (Join-Path $ArtifactsDir $configuration) "VSSetup\VisualStudioEditorsSetup.vsix"
-  & $vsixExpInstalleExe /rootSuffix:$rootsuffix /vsInstallDir:$vsInstallDir $ProjectSystemVsix
-  & $vsixExpInstalleExe /rootSuffix:$rootsuffix /vsInstallDir:$vsInstallDir $VisualStudioEditorsSetupVsix
+  InstallVSIX $vsixExpInstalleExe $rootsuffix $vsInstallDir $VisualStudioEditorsSetupVsix
   
-  # Ensure rules files can be found by msbuild
+  $DevEnvExe = Join-Path $vsInstallDir "Common7\IDE\devenv.exe"
+  & $DevEnvExe /setup
+  & $DevEnvExe /ResetSettings
+  & $DevEnvExe /Updateconfiguration
+}
+
+# Ensure rules files can be found by msbuild
+function SetIntegrationEnvironmentVariables {
   $VisualStudioXamlRulesDir = Join-Path (Join-Path $ArtifactsDir $configuration) "VSSetup\Rules"
   $env:VisualBasicDesignTimeTargetsPath = Join-Path $VisualStudioXamlRulesDir "Microsoft.VisualBasic.DesignTime.targets"
   $env:FSharpDesignTimeTargetsPath = Join-Path $VisualStudioXamlRulesDir "Microsoft.FSharp.DesignTime.targets"
   $env:CSharpDesignTimeTargetsPath = Join-Path $VisualStudioXamlRulesDir "Microsoft.CSharp.DesignTime.targets"
-  $DevEnvExe = Join-Path $vsInstallDir "Common7\IDE\devenv.exe"
-  & $VSTestExe /setup
+}
+
+function ConvertTRXFiles([string] $folderPath) {
+  $trxUnitExe = GetTRXUnitExe
+  $trxFiles = Get-ChildItem -Path $folderPath -Recurse -Include *.trx 
+  foreach ($trxFile in $trxFiles) {
+    & $trxUnitExe $trxFile
+  }
+}
+
+function Get-VisualStudioId(){
+  $vsWhereExe = GetVsWhereExe
+  $vsinstanceId = & $vsWhereExe -latest -prerelease -property instanceId -requires Microsoft.Component.MSBuild -requires Microsoft.VisualStudio.Component.VSSDK -requires Microsoft.Net.Component.4.6.TargetingPack -requires Microsoft.VisualStudio.Component.Roslyn.Compiler
+  return $vsinstanceId
+}
+
+function UninstallVSIXes([string] $hive){
+  $vsid = Get-VisualStudioId
+  
+  $extDir = Join-Path ${env:USERPROFILE} "AppData\Local\Microsoft\VisualStudio\15.0_$($vsid)$($hive)"
+    if (Test-Path $extDir) {
+        foreach ($dir in Get-ChildItem -Directory $extDir) {
+            $name = Split-Path -leaf $dir
+            Write-Host "`tUninstalling $name"
+        }
+        Remove-Item -re -fo $extDir
+    }
+}
+
+function RunIntegrationTests {
+  
+  InstallProjectSystemVSIX $rootsuffix $vsInstallDir
+  SetIntegrationEnvironmentVariables
   
   # Run integration tests
   $VSTestExe = Join-Path $vsInstallDir "Common7\IDE\CommonExtensions\Microsoft\TestWindow\vstest.console.exe"
@@ -193,27 +264,11 @@ function RunIntegrationTests{
   & $VSTestExe /blame /logger:$LogFileArgs /ResultsDirectory:"$IntegrationTestTempDir" $TestAssembly
   
   # Kill any VS processes left over
-  Get-Process -Name "devenv" -ErrorAction SilentlyContinue | Stop-Process
+  Stop-Process-Name "devenv"
   
   # Convert trx to be an xUnit xml file
   Write-Host "Converting MSTest results"
-  $trxUnitVersion = GetVersion("TRXUnitVersion")
-  $trxUnitDir = Join-Path $ToolsRoot "TRXUnit\$trxUnitVersion"
-  
-  $trxUnitExe = Join-Path $trxUnitDir "tools\TRXunit.exe"
-  if (!(Test-Path $trxUnitExe)) {
-    Create-Directory $trxUnitDir
-    Write-Host "Downloading TRXUnit"
-    [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-    Invoke-WebRequest "https://dotnet.myget.org/F/roslyn-tools/api/v2/package/TRXunit/$trxUnitVersion" -OutFile TRXUnit.zip
-    Expand-Archive .\TRXUnit.zip -DestinationPath $trxUnitDir
-  }
-  
-  $trxFiles = Get-ChildItem -Path $IntegrationTestTempDir -Recurse -Include *.trx 
-  foreach ($trxFile in $trxFiles) {
-    & $trxUnitExe $trxFile
-  }
-  
+  ConvertTRXFiles $IntegrationTestTempDir
   
   # Move test results to test results folder
   $TestResultsDir = Join-Path (Join-Path $ArtifactsDir $configuration) "TestResults"
@@ -221,11 +276,7 @@ function RunIntegrationTests{
   
   # Uninstall extensions as other test runs could happen on the VM
   # NOTE: it sometimes takes 2 tries for it to succeed
-  Write-Host "Uninstalling project system from '$VSTestExe'"
-  & $vsixExpInstalleExe /u /rootSuffix:$rootsuffix /vsInstallDir:$vsInstallDir $ProjectSystemVsix
-  & $vsixExpInstalleExe /u /rootSuffix:$rootsuffix /vsInstallDir:$vsInstallDir $ProjectSystemVsix
-  & $vsixExpInstalleExe /u /rootSuffix:$rootsuffix /vsInstallDir:$vsInstallDir $VisualStudioEditorsSetupVsix
-  & $vsixExpInstalleExe /u /rootSuffix:$rootsuffix /vsInstallDir:$vsInstallDir $VisualStudioEditorsSetupVsix
+  UninstallVSIXes $rootSuffix
 }
 
 try {
