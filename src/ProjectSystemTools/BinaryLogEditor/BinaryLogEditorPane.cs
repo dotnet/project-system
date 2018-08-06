@@ -53,9 +53,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BinaryLogEditor
 
         private void OnDocumentDataLoaded(object sender, EventArgs args)
         {
-            if (_documentData.Log == null)
+            if (_documentData.Log.Exceptions.Any())
             {
-                _buildTreeViewItems.Add(new ListViewModel<Exception>("Exceptions", _documentData.Exceptions, ex => new ExceptionViewModel(ex)));
+                _buildTreeViewItems.Add(new ListViewModel<Exception>("Exceptions", _documentData.Log.Exceptions, ex => new ExceptionViewModel(ex)));
                 return;
             }
 

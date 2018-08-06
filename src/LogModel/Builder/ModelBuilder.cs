@@ -33,14 +33,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
             eventSource.AnyEventRaised += OnAnyEvent;
         }
 
-        private void HandleException(Exception ex)
-        {
-            lock (_syncLock)
-            {
-                _exceptions.Add(ex);
-            }
-        }
-
         private void OnAnyEvent(object sender, BuildEventArgs args)
         {
             try
@@ -131,7 +123,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
             }
             catch (Exception ex)
             {
-                HandleException(ex);
+                _exceptions.Add(ex);
             }
         }
 
@@ -1172,7 +1164,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
 
                 if (parentTask == null)
                 {
-                    throw new LoggerException(Resources.CannotFindTask);
+                    _exceptions.Add(new LoggerException(Resources.CannotFindTask));
+                    continue;
                 }
 
                 parentTask.AddChildProject(projectInfo);
@@ -1206,12 +1199,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
                 _exceptions.Add(ex);
             }
 
-            if (_exceptions.Any())
-            {
-                throw new AggregateException(_exceptions);
-            }
-
-            return new Log(build, evaluations);
+            return new Log(build, evaluations, EmptyIfNull(_exceptions));
         }
     }
 }

@@ -1,9 +1,10 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
-using System.Collections.Generic;
+using System.Collections.Immutable;
 using Microsoft.Build.Logging;
 using Microsoft.VisualStudio.OLE.Interop;
+using Microsoft.VisualStudio.ProjectSystem.LogModel;
 using Microsoft.VisualStudio.ProjectSystem.LogModel.Builder;
 using Microsoft.VisualStudio.Shell.Interop;
 
@@ -13,8 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BinaryLogEditor
     {
         private string _filename;
 
-        public LogModel.Log Log { get; private set; }
-        public IEnumerable<Exception> Exceptions { get; private set; }
+        public Log Log { get; private set; }
 
         public event EventHandler Loaded;
 
@@ -46,11 +46,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BinaryLogEditor
             {
                 if (ex is AggregateException aggregateException)
                 {
-                    Exceptions = aggregateException.InnerExceptions;
+                    Log = new Log(null, ImmutableList<Evaluation>.Empty, aggregateException.InnerExceptions.ToImmutableList());
                 }
                 else
                 {
-                    Exceptions = new[] { ex };
+                    Log = new Log(null, ImmutableList<Evaluation>.Empty, new[] { ex }.ToImmutableList());
                 }
             }
 
