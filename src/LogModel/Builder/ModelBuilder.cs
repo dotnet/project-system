@@ -308,12 +308,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
             foreach (var target in projectInfo.TargetsToBuild)
             {
                 var executedTargets = projectInfo.ExecutedTargets.Where(targetInfo =>
-                    targetInfo.Name.Equals(target, StringComparison.OrdinalIgnoreCase) &&
-                    targetInfo.ParentTarget == null).ToList();
+                    targetInfo.Name.Equals(target, StringComparison.OrdinalIgnoreCase)).ToList();
 
                 if (!executedTargets.Any())
                 {
-                    throw new LoggerException(Resources.CannotFindTarget);
+                    continue;
                 }
 
                 foreach (var executedTarget in executedTargets)
