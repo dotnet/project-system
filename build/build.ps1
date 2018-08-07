@@ -136,6 +136,12 @@ function LocateVisualStudio {
   return $vsInstallDir
 }
 
+function Get-VisualStudioId(){
+  $vsWhereExe = GetVsWhereExe
+  $vsinstanceId = & $vsWhereExe -latest -prerelease -property instanceId -requires Microsoft.Component.MSBuild -requires Microsoft.VisualStudio.Component.VSSDK -requires Microsoft.Net.Component.4.6.TargetingPack -requires Microsoft.VisualStudio.Component.Roslyn.Compiler
+  return $vsinstanceId
+}
+
 function InstallToolset {
   if (!(Test-Path $ToolsetBuildProj)) {
     & $MsbuildExe $ToolsetRestoreProj /t:restore /m /nologo /clp:None /warnaserror /v:quiet /p:NuGetPackageRoot=$NuGetPackageRoot /p:BaseIntermediateOutputPath=$ToolsetDir /p:ExcludeRestorePackageImports=true
@@ -209,8 +215,6 @@ function InstallProjectSystemVSIX ([string] $rootSuffix, [string] $vsInstallDir)
   InstallVSIX $vsixExpInstalleExe $rootsuffix $vsInstallDir $VisualStudioEditorsSetupVsix
   
   $DevEnvExe = Join-Path $vsInstallDir "Common7\IDE\devenv.exe"
-  & $DevEnvExe /setup
-  & $DevEnvExe /ResetSettings
   & $DevEnvExe /Updateconfiguration
 }
 
@@ -230,16 +234,10 @@ function ConvertTRXFiles([string] $folderPath) {
   }
 }
 
-function Get-VisualStudioId(){
-  $vsWhereExe = GetVsWhereExe
-  $vsinstanceId = & $vsWhereExe -latest -prerelease -property instanceId -requires Microsoft.Component.MSBuild -requires Microsoft.VisualStudio.Component.VSSDK -requires Microsoft.Net.Component.4.6.TargetingPack -requires Microsoft.VisualStudio.Component.Roslyn.Compiler
-  return $vsinstanceId
-}
-
 function UninstallVSIXes([string] $hive){
   $vsid = Get-VisualStudioId
   
-  $extDir = Join-Path ${env:USERPROFILE} "AppData\Local\Microsoft\VisualStudio\15.0_$($vsid)$($hive)"
+  $extDir = Join-Path ${env:USERPROFILE} "AppData\Local\Microsoft\VisualStudio\15.0_$($vsid)$($hive)\Extensions"
     if (Test-Path $extDir) {
         foreach ($dir in Get-ChildItem -Directory $extDir) {
             $name = Split-Path -leaf $dir
@@ -247,6 +245,9 @@ function UninstallVSIXes([string] $hive){
         }
         Remove-Item -re -fo $extDir
     }
+    
+    $DevEnvExe = Join-Path $vsInstallDir "Common7\IDE\devenv.exe"
+    & $DevEnvExe /Updateconfiguration
 }
 
 function RunIntegrationTests {
