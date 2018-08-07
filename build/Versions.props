@@ -1,7 +1,9 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <VersionBase Condition="'$(UseVisualStudioVersion)' == 'true'">16.0.0</VersionBase>
-    <VersionBase Condition="'$(UseVisualStudioVersion)' != 'true'">2.11.0</VersionBase>
+    <VisualStudioVersion>16.0.0</VisualStudioVersion>
+    <ProjectSystemVersion>2.11.0</ProjectSystemVersion>
+    <VersionBase Condition="'$(UseVisualStudioVersion)' == 'true'">$(VisualStudioVersion)</VersionBase>
+    <VersionBase Condition="'$(UseVisualStudioVersion)' != 'true'">$(ProjectSystemVersion)</VersionBase>
     <PreReleaseVersionLabel>beta2</PreReleaseVersionLabel>
 
     <!-- Opt-in repo features -->

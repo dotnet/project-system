@@ -140,6 +140,21 @@ function Clear-NuGetCache() {
   }
 }
 
+function GenerateDependentAssemblyVersionFile() {
+  $vsAssemblyName = "Microsoft.VisualStudio.Editors"
+  $visualStudioVersion = GetVersion("VisualStudioVersion")
+  $projectSystemAssemblyName = "Microsoft.VisualStudio.ProjectSystem.Managed"
+  $projectSystemVersion = GetVersion("ProjectSystemVersion")
+  $devDivInsertionFiles = Join-Path (Join-Path $ArtifactsDir $configuration) "DevDivInsertionFiles"
+  $dependentAssemblyVersionsCsv = Join-Path $devDivInsertionFiles "DependentAssemblyVersions.csv"
+  $csv =@"
+$vsAssemblyName, $visualStudioVersion.0
+$projectSystemAssemblyName, $projectSystemVersion.0
+"@
+  & mkdir $devDivInsertionFiles
+  $csv >> $dependentAssemblyVersionsCsv
+}
+
 try {
   $InVSEnvironment = !($env:VS150COMNTOOLS -eq $null) -and (Test-Path $env:VS150COMNTOOLS)
   $RepoRoot = Join-Path $PSScriptRoot "..\"
@@ -191,6 +206,11 @@ try {
   }
 
   Build
+  
+  if ($pack) {
+    GenerateDependentAssemblyVersionFile
+  }
+  
   exit $lastExitCode
 }
 catch {
