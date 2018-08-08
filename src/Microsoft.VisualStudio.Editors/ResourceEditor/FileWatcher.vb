@@ -384,6 +384,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' <param name="FileName">The file name (no path) of the file in this directory that has changed.</param>
             ''' <remarks></remarks>
             Private Sub OnFileChanged(FullDirectoryPath As String, FileName As String)
+                Debug.Assert(Not String.IsNullOrEmpty(FileName))
                 Debug.Assert(0 = String.Compare(Path.GetDirectoryName(FullDirectoryPath), _directoryPath, StringComparison.OrdinalIgnoreCase))
                 Debug.Assert(Path.IsPathRooted(FullDirectoryPath))
 
@@ -427,9 +428,19 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Private Sub FileSystemWatcher_Renamed(sender As Object, e As RenamedEventArgs) Handles _fileSystemWatcher.Renamed
                 Debug.WriteLineIf(Switches.RSEFileWatcher.TraceVerbose, "DirectoryWatcher: Raw renamed event: " & e.ChangeType & ", " & e.FullPath & ": " & e.Name & ", Thread = " & Hex(System.Threading.Thread.CurrentThread.GetHashCode))
 
-                'Both the old file and the new file might be interesting events.
-                OnFileChanged(e.FullPath, e.Name)
-                OnFileChanged(e.FullPath, e.OldName)
+                ' Both the old file and the new file might be interesting events.
+
+                ' ReadDirectoryChangesW/FileSystemWatcher.Rename can on occasion send on a rename with or without the new name or the old name, 
+                ' so make sure we handle this situation. See the comments in FileSystemWatcher.CompletionStatusChanged for more information.
+
+                If Not String.IsNullOrEmpty(e.Name) Then
+                    OnFileChanged(e.FullPath, e.Name)
+                End If
+
+                If Not String.IsNullOrEmpty(e.OldName) Then
+                    OnFileChanged(e.FullPath, e.OldName)
+                End If
+
             End Sub
 
 
