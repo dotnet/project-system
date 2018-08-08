@@ -258,11 +258,25 @@ function RunIntegrationTests {
   # Run integration tests
   $VSTestExe = Join-Path $vsInstallDir "Common7\IDE\CommonExtensions\Microsoft\TestWindow\vstest.console.exe"
   $IntegrationTestTempDir = Join-Path (Join-Path $ArtifactsDir $configuration) "IntegrationTestTemp"
+  Create-Directory $IntegrationTestTempDir
   $LogFileArgs = "trx;LogFileName=Microsoft.VisualStudio.ProjectSystem.IntegrationTests.trx"
   $TestAssembly = Join-Path (Join-Path $ArtifactsDir $configuration) "bin\IntegrationTests\Microsoft.VisualStudio.ProjectSystem.IntegrationTests.dll"
-  
+  # create runsettings file
+  $runSettings = Join-Path $IntegrationTestTempDir "integration.runsettings"
+  if (!(Test-Path $runSettings)) {
+    $runSettingsContents = @"
+<?xml version="1.0" encoding="utf-8"?>  
+<RunSettings>  
+  <TestRunParameters>  
+    <Parameter name="VsRootSuffix" value="$rootsuffix" />
+  </TestRunParameters>
+</RunSettings>
+"@
+    $runSettingsContents >> $runSettings
+  }
+
   Write-Host "Using $VSTestExe"
-  & $VSTestExe /blame /logger:$LogFileArgs /ResultsDirectory:"$IntegrationTestTempDir" $TestAssembly
+  & $VSTestExe /blame /logger:$LogFileArgs /ResultsDirectory:"$IntegrationTestTempDir" /Settings:$runSettings $TestAssembly
   
   # Kill any VS processes left over
   Stop-Process-Name "devenv"

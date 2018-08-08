@@ -98,7 +98,7 @@ def imageName = "latest-dev15-5"
         }
       }
       steps {
-        batchFile(".\\build\\VSIBuild.cmd -configuration ${configName} -prepareMachine")
+        batchFile(".\\build\\VSIBuild.cmd -configuration ${configName} -prepareMachine -rootSuffix:ProjectSystem")
       }
     }
   }
