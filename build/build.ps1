@@ -87,7 +87,7 @@ function GetVsWhereExe{
 }
 
 function GetVSIXExpInstallerExe{
-  $vsixExpInstallerVersion = GetVersion("VSIXExpInstallerVersion")
+  $vsixExpInstallerVersion = GetVersion("RoslynToolsVsixExpInstallerVersion")
   $vsixExpInstalleDir = Join-Path $ToolsRoot "VSIXExpInstaller\$vsixExpInstallerVersion"
   $vsixExpInstalleExe = Join-Path $vsixExpInstalleDir "tools\VSIXExpInstaller.exe"
   
@@ -127,7 +127,7 @@ function LocateVisualStudio {
   }
 
   $vsWhereExe = GetVsWhereExe
-  $vsInstallDir = & $vsWhereExe -latest -prerelease -property installationPath -requires Microsoft.Component.MSBuild -requires Microsoft.VisualStudio.Component.VSSDK -requires Microsoft.Net.Component.4.6.TargetingPack -requires Microsoft.VisualStudio.Component.Roslyn.Compiler
+  $vsInstallDir = & $vsWhereExe -all -latest -prerelease -property installationPath -requires Microsoft.Component.MSBuild -requires Microsoft.VisualStudio.Component.VSSDK -requires Microsoft.Net.Component.4.6.TargetingPack -requires Microsoft.VisualStudio.Component.Roslyn.Compiler
 
   if (!(Test-Path $vsInstallDir)) {
     throw "Failed to locate Visual Studio (exit code '$lastExitCode')."
@@ -138,7 +138,7 @@ function LocateVisualStudio {
 
 function Get-VisualStudioId(){
   $vsWhereExe = GetVsWhereExe
-  $vsinstanceId = & $vsWhereExe -latest -prerelease -property instanceId -requires Microsoft.Component.MSBuild -requires Microsoft.VisualStudio.Component.VSSDK -requires Microsoft.Net.Component.4.6.TargetingPack -requires Microsoft.VisualStudio.Component.Roslyn.Compiler
+  $vsinstanceId = & $vsWhereExe -all -latest -prerelease -property instanceId -requires Microsoft.Component.MSBuild -requires Microsoft.VisualStudio.Component.VSSDK -requires Microsoft.Net.Component.4.6.TargetingPack -requires Microsoft.VisualStudio.Component.Roslyn.Compiler
   return $vsinstanceId
 }
 
@@ -251,7 +251,6 @@ function UninstallVSIXes([string] $hive){
 }
 
 function RunIntegrationTests {
-  
   InstallProjectSystemVSIX $rootsuffix $vsInstallDir
   SetIntegrationEnvironmentVariables
   

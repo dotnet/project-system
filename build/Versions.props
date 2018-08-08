@@ -15,7 +15,6 @@
     <RoslynToolsVsixExpInstallerVersion>1.0.0-beta-62503-02</RoslynToolsVsixExpInstallerVersion>
     <RoslynDependenciesProjectSystemOptimizationDataVersion>2.6.0-beta1-62205-02</RoslynDependenciesProjectSystemOptimizationDataVersion>
     <VSWhereVersion>2.3.2</VSWhereVersion>
-    <VSIXExpInstallerVersion>1.0.0-beta2-63201-01</VSIXExpInstallerVersion>
     <TRXUnitVersion>1.0.0-beta1</TRXUnitVersion>
     <MicrosoftDotNetIBCMergeVersion>4.7.1-alpha-00001</MicrosoftDotNetIBCMergeVersion>
     <MicrosoftNetCompilersVersion>2.6.1</MicrosoftNetCompilersVersion>
