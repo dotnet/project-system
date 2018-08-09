@@ -85,8 +85,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 HorizontalScrollBarVisibility = ScrollBarVisibility.Auto
             };
 
+            // Capture original WPF font
+            var originalFontFamily = viewer.FontFamily;
+            var originalFontSize = viewer.FontSize;
+
             viewer.Content = _control;
             _host.Child = viewer;
+
+            // Parenting viewer to ElementHost removes its default font,
+            // So we restore the font here.
+            viewer.FontFamily = originalFontFamily;
+            viewer.FontSize = originalFontSize;
 
             wpfHostPanel.Dock = DockStyle.Fill;
             wpfHostPanel.Controls.Add(_host);
