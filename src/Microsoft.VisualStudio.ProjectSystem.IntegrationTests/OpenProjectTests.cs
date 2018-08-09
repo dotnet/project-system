@@ -36,7 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.IntegrationTests
         protected VisualStudioHost GetVS() => Operations.CreateHost<VisualStudioHost>(DefaultHostConfiguration);
 
         [TestMethod]
-        public void CreateProject_CreateRestoreAndBuild()
+        public void CreateProject_CreateAndBuild()
         {
             var VS = GetVS();
 
@@ -50,12 +50,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.IntegrationTests
             using (Scope.Enter("Verify Create Project"))
             {
                 VS.ObjectModel.Solution.Verify.HasProject();
-            }
-
-            using (Scope.Enter("Wait For Restore"))
-            {
-                VS.ObjectModel.Shell.ToolWindows.ErrorList.WaitForReady();
-                VS.ObjectModel.Shell.ToolWindows.ErrorList.WaitForNoErrorListItems();
             }
 
             using (Scope.Enter("Build Project"))
