@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 using System;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
 
@@ -82,11 +83,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             var viewer = new ScrollViewer
             {
                 VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
-                HorizontalScrollBarVisibility = ScrollBarVisibility.Auto
+                HorizontalScrollBarVisibility = ScrollBarVisibility.Auto,
             };
+            // Capture original WPF font
+            var originalFontFamily = viewer.FontFamily;
+            var originalFontSize = viewer.FontSize;
 
             viewer.Content = _control;
             _host.Child = viewer;
+
+            // Parenting viewer to ElementHost removes its default font,
+            // So we restore the font here.
+            viewer.FontFamily = originalFontFamily;
+            viewer.FontSize = originalFontSize;
 
             wpfHostPanel.Dock = DockStyle.Fill;
             wpfHostPanel.Controls.Add(_host);
