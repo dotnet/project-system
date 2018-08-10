@@ -24,7 +24,7 @@ if /I "%1" == "/skiptests" set OptTest=$false&&shift&& goto :ParseArguments
 if /I "%1" == "/restore-only" set OptBuild=$false&&set OptDeploy=$false&&set OptTest=$false&&shift&& goto :ParseArguments
 if /I "%1" == "/no-deploy-extension" set OptDeploy=$false&&shift&& goto :ParseArguments
 if /I "%1" == "/diagnostic" set OptLog=$true&&shift&& goto :ParseArguments
-if /I "%1" == "/integrationtests" OptIntegrationTest=$true&&shift&& goto :ParseArguments
+if /I "%1" == "/integrationtests" set OptIntegrationTest=$true&&shift&& goto :ParseArguments
 if /I "%1" == "/rootsuffix" set PropRootSuffix=/p:RootSuffix=%2&&shift&&shift&& goto :ParseArguments
 call :Usage && exit /b 1
 :DoneParsing
