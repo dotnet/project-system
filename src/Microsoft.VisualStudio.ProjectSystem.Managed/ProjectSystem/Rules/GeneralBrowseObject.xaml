@@ -54,7 +54,7 @@
       </StringProperty.DataSource>
     </StringProperty>
 
-    <BoolProperty Name="AutoGenerateBindingRedirects" DisplayName="Auto-Generate Binding Redirects">
+    <BoolProperty Name="AutoGenerateBindingRedirects" DisplayName="Auto-Generate Binding Redirects" Visible="false">
         <BoolProperty.DataSource>
             <DataSource Persistence="ProjectFile" PersistedName="AutoGenerateBindingRedirects" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
         </BoolProperty.DataSource>
