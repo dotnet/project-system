@@ -21,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.IntegrationTests
             {
                 var visualStudioHostConfiguration = new VisualStudioHostConfiguration()
                 {
-                    CommandLineArguments = $"/rootSuffix:{_hiveName}",
+                    CommandLineArguments = $"/rootSuffix {_hiveName}",
                     RestoreUserSettings = false,
                     InheritProcessEnvironment = true,
                     AutomaticallyDismissMessageBoxes = true,
