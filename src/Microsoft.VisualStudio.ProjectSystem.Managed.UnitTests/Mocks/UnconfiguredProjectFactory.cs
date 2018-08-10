@@ -45,9 +45,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
             project.Setup(u => u.Capabilities)
                                .Returns(scope);
 
-            project.Setup(u => u.GetSuggestedConfiguredProjectAsync()).Returns(Task.FromResult(configuredProject));
+            project.Setup(u => u.GetSuggestedConfiguredProjectAsync()).ReturnsAsync(configuredProject);
 
-            project.Setup(u => u.GetFileEncodingAsync()).Returns(Task.FromResult(projectEncoding));
+            project.Setup(u => u.GetFileEncodingAsync()).ReturnsAsync(projectEncoding);
 
             return project.Object;
         }
