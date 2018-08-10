@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
     internal partial class PackageRestoreInitiator
     {
-        private class PackageRestoreInitiatorInstance : AbstractProjectDynamicLoadInstance
+        private class PackageRestoreInitiatorInstance : AbstractMultiLifetimeInstance
         {
             private readonly IUnconfiguredProjectVsServices _projectVsServices;
             private readonly IVsSolutionRestoreService _solutionRestoreService;

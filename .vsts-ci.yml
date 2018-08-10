@@ -72,6 +72,7 @@ steps:
     CopyRoot: '$(Build.SourcesDirectory)'
     Contents: |
      artifacts\$(BuildConfiguration)\bin
+     artifacts\$(BuildConfiguration)\DevDivInsertionFiles
      artifacts\$(BuildConfiguration)\log
      artifacts\$(BuildConfiguration)\packages
      artifacts\$(BuildConfiguration)\VSSetup

@@ -39,7 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             };
 
             var specialFilesManager = ActiveConfiguredProjectFactory.ImplementValue(() => AppDesignerFolderSpecialFileProviderFactory.ImplementGetFile(appDesignerFolder));
-            var project = UnconfiguredProjectFactory.Create(null, null, @"c:\test\Project1\Project1.csproj");
+            var project = UnconfiguredProjectFactory.Create(filePath: @"c:\test\Project1\Project1.csproj");
             var properties = ProjectPropertiesFactory.Create(project, new[] { debuggerData });
             var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(project, null, IProjectThreadingServiceFactory.Create(), null, properties);
             var projectServices = IUnconfiguredProjectServicesFactory.Create(IProjectAsynchronousTasksServiceFactory.Create());
@@ -75,9 +75,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         }
 
         [Theory]
-        [InlineData(@"C:\Properties",                @"C:\Properties\launchSettings.json")]
-        [InlineData(@"C:\Project\Properties",        @"C:\Project\Properties\launchSettings.json")]
-        [InlineData(@"C:\Project\My Project",        @"C:\Project\My Project\launchSettings.json")]
+        [InlineData(@"C:\Properties", @"C:\Properties\launchSettings.json")]
+        [InlineData(@"C:\Project\Properties", @"C:\Project\Properties\launchSettings.json")]
+        [InlineData(@"C:\Project\My Project", @"C:\Project\My Project\launchSettings.json")]
         public async Task WhenAppDesignerFolder_LaunchSettingsIsInAppDesignerFolder(string appDesignerFolder, string expected)
         {
             var provider = GetLaunchSettingsProvider(null, appDesignerFolder: appDesignerFolder);

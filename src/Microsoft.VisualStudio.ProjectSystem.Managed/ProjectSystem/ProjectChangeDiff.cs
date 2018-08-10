@@ -9,11 +9,12 @@ namespace Microsoft.VisualStudio.ProjectSystem
     /// </summary>
     internal class ProjectChangeDiff : IProjectChangeDiff
     {
-        public ProjectChangeDiff(IImmutableSet<string> addedItems = null, IImmutableSet<string> removedItems = null, IImmutableSet<string> changedItems = null)
+        public ProjectChangeDiff(IImmutableSet<string> addedItems = null, IImmutableSet<string> removedItems = null, IImmutableSet<string> changedItems = null, IImmutableDictionary<string, string> renamedItems = null)
         {
             AddedItems = addedItems ?? ImmutableStringHashSet.EmptyOrdinal;
             RemovedItems = removedItems ?? ImmutableStringHashSet.EmptyOrdinal;
             ChangedItems = changedItems ?? ImmutableStringHashSet.EmptyOrdinal;
+            RenamedItems = renamedItems ?? ImmutableStringDictionary<string>.EmptyOrdinal;
         }
 
         public IImmutableSet<string> AddedItems
@@ -33,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public IImmutableDictionary<string, string> RenamedItems
         {
-            get { return ImmutableStringDictionary<string>.EmptyOrdinal; }
+            get;
         }
 
         public IImmutableSet<string> ChangedProperties
@@ -43,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public bool AnyChanges
         {
-            get { return AddedItems.Count > 0 || RemovedItems.Count > 0 || ChangedItems.Count > 0; }
+            get { return AddedItems.Count > 0 || RemovedItems.Count > 0 || ChangedItems.Count > 0 || RenamedItems.Count > 0; }
         }
     }
 }

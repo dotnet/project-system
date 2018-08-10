@@ -1,7 +1,9 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <VersionBase Condition="'$(UseVisualStudioVersion)' == 'true'">15.9.0</VersionBase>
-    <VersionBase Condition="'$(UseVisualStudioVersion)' != 'true'">2.9.0</VersionBase>
+    <VisualStudioVersion>16.0.0</VisualStudioVersion>
+    <ProjectSystemVersion>2.11.0</ProjectSystemVersion>
+    <VersionBase Condition="'$(UseVisualStudioVersion)' == 'true'">$(VisualStudioVersion)</VersionBase>
+    <VersionBase Condition="'$(UseVisualStudioVersion)' != 'true'">$(ProjectSystemVersion)</VersionBase>
     <PreReleaseVersionLabel>beta3</PreReleaseVersionLabel>
 
     <!-- Opt-in repo features -->
@@ -94,7 +96,8 @@
     <MicrosoftDotNetProjectTemplatesVersion>1.0.0-beta2-20170629-269</MicrosoftDotNetProjectTemplatesVersion>
 
     <!-- Tests -->
-    <MoqVersion>4.7.99</MoqVersion>
+    <MoqVersion>4.9.0</MoqVersion>
+    <XUnitVersion>2.4.0</XUnitVersion>
     <XUnitAnalyzersVersion>0.10.0</XUnitAnalyzersVersion>
   </PropertyGroup>
 

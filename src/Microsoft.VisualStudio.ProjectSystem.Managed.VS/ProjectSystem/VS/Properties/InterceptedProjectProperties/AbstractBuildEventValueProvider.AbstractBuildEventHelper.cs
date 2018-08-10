@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using Microsoft.Build.Construction;
+using Microsoft.Build.Evaluation;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectProperties
@@ -78,7 +79,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
 
                 if (execTask.Parameters.TryGetValue(Command, out string commandText))
                 {
-                    return commandText;
+                    return commandText.Replace("%25", "%");
                 }
 
                 return null; // exec task as written in the project file is invalid, we should be resilient to this case.
@@ -149,7 +150,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
             }
 
             private static void SetExecParameter(ProjectTaskElement execTask, string unevaluatedPropertyValue)
-                => execTask.SetParameter(Command, unevaluatedPropertyValue);
+                => execTask.SetParameter(Command, unevaluatedPropertyValue.Replace("%", "%25"));
         }
     }
 }

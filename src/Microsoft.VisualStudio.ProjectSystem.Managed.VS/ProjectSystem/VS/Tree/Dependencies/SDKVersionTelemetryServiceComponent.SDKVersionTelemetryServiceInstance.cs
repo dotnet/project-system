@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
     internal partial class SDKVersionTelemetryServiceComponent
     {
-        protected class SDKVersionTelemetryServiceInstance : AbstractProjectDynamicLoadInstance
+        protected class SDKVersionTelemetryServiceInstance : AbstractMultiLifetimeInstance
         {
             private const string TelemetryEventName = "SDKVersion";
             private const string ProjectProperty = "Project";

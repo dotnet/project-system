@@ -1964,4 +1964,10 @@ Do you want to update the value in the .settings file?</value>
     <value>Unable to load '{0}' because it is not trusted.</value>
     <comment>{0} is resx file name that is blocked</comment>
   </data>
+  <data name="RSE_Type_WMF" xml:space="preserve">
+    <value>Windows Metafile</value>
+  </data>
+  <data name="RSE_Type_EMF" xml:space="preserve">
+    <value>Extended Metafile</value>
+  </data>
 </root>

@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var mock = new Mock<IProjectProperties>();
 
             mock.Setup(t => t.GetPropertyNamesAsync())
-                .Returns(Task.FromResult(propertyNames));
+                .ReturnsAsync(propertyNames);
 
             return mock;
         }

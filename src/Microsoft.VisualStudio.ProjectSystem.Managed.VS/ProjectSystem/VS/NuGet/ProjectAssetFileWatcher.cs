@@ -9,7 +9,6 @@ using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
-using Microsoft.Build.Evaluation;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.Shell;
@@ -277,20 +276,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                     _previousContentsHash = newHash;
                     cancellationToken.ThrowIfCancellationRequested();
                     await _projectServices.Project.Services.ProjectAsynchronousTasks.LoadedProjectAsync(async () =>
+                    {
+                        await _projectServices.ProjectAccessor.EnterWriteLockAsync(async (collection, token) =>
                         {
-                            using (ProjectWriteLockReleaser access = await _projectServices.ProjectLockService.WriteLockAsync(cancellationToken))
+                            // notify all the loaded configured projects
+                            IEnumerable<ConfiguredProject> currentProjects = _projectServices.Project.LoadedConfiguredProjects;
+                            foreach (ConfiguredProject configuredProject in currentProjects)
                             {
-                                // notify all the loaded configured projects
-                                IEnumerable<ConfiguredProject> currentProjects = _projectServices.Project.LoadedConfiguredProjects;
-                                foreach (ConfiguredProject configuredProject in currentProjects)
+                                await _projectServices.ProjectAccessor.OpenProjectForWriteAsync(configuredProject, project =>
                                 {
-                                    // Inside a write lock, we should get back to the same thread.
-                                    Project project = await access.GetProjectAsync(configuredProject, cancellationToken).ConfigureAwait(true);
                                     project.MarkDirty();
                                     configuredProject.NotifyProjectChange();
-                                }
+
+                                }, cancellationToken).ConfigureAwait(true); // Stay on same thread that took lock
                             }
-                        });
+                        }, cancellationToken).ConfigureAwait(true); // Stay on same thread that took lock
+                    });
                 }
                 else
                 {

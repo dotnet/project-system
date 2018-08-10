@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
+using System.IO;
 using System.Reflection;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.Logging;
@@ -16,22 +17,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         private static readonly Dictionary<(Type, string), MethodInfo> s_cachedReflectionMethods = new Dictionary<(Type, string), MethodInfo>();
 
         private readonly UnconfiguredProject _project;
-        private readonly ICommandLineParserService _commandLineParser;
         private readonly IContextHandlerProvider _handlerProvider;
         private readonly IProjectLogger _logger;
 
         [ImportingConstructor]
-        public LanguageServiceHandlerManager(UnconfiguredProject project, ICommandLineParserService commandLineParser, IContextHandlerProvider handlerProvider, IProjectLogger logger)
+        public LanguageServiceHandlerManager(UnconfiguredProject project, IContextHandlerProvider handlerProvider, IProjectLogger logger)
         {
             _project = project;
-            _commandLineParser = commandLineParser;
             _handlerProvider = handlerProvider;
             _logger = logger;
             CommandLineNotifications = new OrderPrecedenceImportCollection<Action<string, BuildOptions, BuildOptions>>(projectCapabilityCheckProvider: project);
+            CommandLineParsers = new OrderPrecedenceImportCollection<ICommandLineParserService>(projectCapabilityCheckProvider: project);
         }
 
         [ImportMany]
         public OrderPrecedenceImportCollection<Action<string, BuildOptions, BuildOptions>> CommandLineNotifications
+        {
+            get;
+        }
+
+        [ImportMany]
+        public OrderPrecedenceImportCollection<ICommandLineParserService> CommandLineParsers
         {
             get;
         }
@@ -192,8 +198,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         {
             ImmutableArray<ICommandLineHandler> handlers = _handlerProvider.GetCommandLineHandlers(context);
 
-            BuildOptions addedItems = _commandLineParser.Parse(projectChange.Difference.AddedItems);
-            BuildOptions removedItems = _commandLineParser.Parse(projectChange.Difference.RemovedItems);
+            ICommandLineParserService parser = CommandLineParsers.First().Value;
+
+            string baseDirectory = Path.GetDirectoryName(_project.FullPath);
+
+            BuildOptions addedItems = parser.Parse(projectChange.Difference.AddedItems, baseDirectory);
+            BuildOptions removedItems = parser.Parse(projectChange.Difference.RemovedItems, baseDirectory);
 
             foreach (ICommandLineHandler handler in handlers)
             {

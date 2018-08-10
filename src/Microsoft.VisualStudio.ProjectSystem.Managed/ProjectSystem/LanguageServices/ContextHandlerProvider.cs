@@ -61,7 +61,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             foreach ((HandlerFactory factory, string evaluationRuleName) factory in s_handlerFactories)
             {
-                object handler = factory.factory(_project, context);
+                IWorkspaceContextHandler handler = factory.factory(_project);
+                handler.Initialize(context);
 
                 // NOTE: Handlers can be both IEvaluationHandler and ICommandLineHandler
                 if (handler is IEvaluationHandler evaluationHandler)
@@ -82,18 +83,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         {
             return ImmutableArray.Create<(HandlerFactory factory, string evaluationRuleName)>(
 
-            // Factory                                                                      EvalautionRuleName                  Description
+            // Factory                                             EvaluationRuleName                  Description
 
             // Evaluation and Command-line
-            ((project, context) => new SourceItemHandler(project, context), Compile.SchemaName),                // <Compile /> item
+            (project => new SourceItemHandler(project),            Compile.SchemaName),                // <Compile /> item
 
             // Evaluation only
-            ((project, context) => new ProjectPropertiesItemHandler(context), ConfigurationGeneral.SchemaName),   // <ProjectGuid>, <TargetPath> properties
+            (project => new ProjectPropertiesItemHandler(project), ConfigurationGeneral.SchemaName),   // <ProjectGuid>, <TargetPath> properties
 
             // Command-line only
-            ((project, context) => new MetadataReferenceItemHandler(project, context), null),                              // <ProjectReference />, <Reference /> items
-            ((project, context) => new AnalyzerItemHandler(project, context), null),                              // <Analyzer /> item
-            ((project, context) => new AdditionalFilesItemHandler(project, context), null)                               // <AdditionalFiles /> item
+            (project => new MetadataReferenceItemHandler(project), null),                              // <ProjectReference />, <Reference /> items
+            (project => new AnalyzerItemHandler(project),          null),                              // <Analyzer /> item
+            (project => new AdditionalFilesItemHandler(project),   null)                               // <AdditionalFiles /> item
             );
         }
 
@@ -105,6 +106,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                                      .ToImmutableArray();
         }
 
-        private delegate object HandlerFactory(UnconfiguredProject project, IWorkspaceProjectContext context);
+        private delegate IWorkspaceContextHandler HandlerFactory(UnconfiguredProject project);
     }
 }
