@@ -2,7 +2,7 @@
   <PropertyGroup>
     <VersionBase Condition="'$(UseVisualStudioVersion)' == 'true'">15.9.0</VersionBase>
     <VersionBase Condition="'$(UseVisualStudioVersion)' != 'true'">2.9.0</VersionBase>
-    <PreReleaseVersionLabel>beta2</PreReleaseVersionLabel>
+    <PreReleaseVersionLabel>beta3</PreReleaseVersionLabel>
 
     <!-- Opt-in repo features -->
     <UsingToolVSSDK>true</UsingToolVSSDK>
