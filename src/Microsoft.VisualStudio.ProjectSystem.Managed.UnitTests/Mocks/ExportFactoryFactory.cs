@@ -18,6 +18,20 @@ namespace System.ComponentModel.Composition
         {
             return new ExportFactory<T>(() => new Tuple<T, Action>(factory(), disposeAction));
         }
+
+        public static ExportFactory<T, TMetadata> ImplementCreateValueWithAutoDispose<T, TMetadata>(Func<T> factory, TMetadata metadata)
+        {
+            return new ExportFactory<T, TMetadata>(() =>
+            {
+                T value = factory();
+
+                return Tuple.Create<T, Action>(value, () =>
+                {
+                    if (value is IDisposable disposable)
+                        disposable.Dispose();
+                });
+
+            }, metadata);
+        }
     }
-}
 }
