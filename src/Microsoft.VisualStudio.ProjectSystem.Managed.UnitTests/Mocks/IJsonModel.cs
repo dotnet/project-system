@@ -2,7 +2,7 @@
 
 using Newtonsoft.Json.Linq;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS
+namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal interface IJsonModel<T>
     {

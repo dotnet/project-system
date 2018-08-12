@@ -62,5 +62,26 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             return new ProjectChangeDiff(addedItems, removedItems, changedItems, renamedItems);
         }
+
+        public static IProjectChangeDiff FromJson(string jsonString)
+        {
+            var model = new IProjectChangeDiffModel();
+            return model.FromJson(jsonString);
+        }
+    }
+
+    internal class IProjectChangeDiffModel : JsonModel<IProjectChangeDiff>, IProjectChangeDiff
+    {
+        public IImmutableSet<string> AddedItems { get; set; }
+        public bool AnyChanges { get; set; }
+        public IImmutableSet<string> ChangedItems { get; set; }
+        public IImmutableSet<string> ChangedProperties { get; set; }
+        public IImmutableSet<string> RemovedItems { get; set; }
+        public IImmutableDictionary<string, string> RenamedItems { get; set; }
+
+        public override IProjectChangeDiff ToActualModel()
+        {
+            return this;
+        }
     }
 }
