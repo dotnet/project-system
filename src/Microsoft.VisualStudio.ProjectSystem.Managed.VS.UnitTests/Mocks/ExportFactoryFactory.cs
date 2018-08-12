@@ -4,11 +4,20 @@ namespace System.ComponentModel.Composition
 {
     internal static class ExportFactoryFactory
     {
-        public static ExportFactory<T> CreateInstance<T>() => new ExportFactory<T>(() => new Tuple<T, Action>(default, () => { }));
+        public static ExportFactory<T> Create<T>()
+        {
+            return ImplementCreateValue(() => default(T));
+        }
 
         public static ExportFactory<T> ImplementCreateValue<T>(Func<T> factory)
         {
-            return new ExportFactory<T>(() => new Tuple<T, Action>(factory(), () => { }));
+            return ImplementCreateValue(factory, () => { });
+        }
+
+        public static ExportFactory<T> ImplementCreateValue<T>(Func<T> factory, Action disposeAction)
+        {
+            return new ExportFactory<T>(() => new Tuple<T, Action>(factory(), disposeAction));
         }
     }
+}
 }
