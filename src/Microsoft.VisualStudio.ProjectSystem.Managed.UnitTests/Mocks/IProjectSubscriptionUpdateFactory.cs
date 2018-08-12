@@ -8,7 +8,7 @@ using Microsoft.VisualStudio.ProjectSystem.Properties;
 
 using Moq;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS
+namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal static class IProjectSubscriptionUpdateFactory
     {
