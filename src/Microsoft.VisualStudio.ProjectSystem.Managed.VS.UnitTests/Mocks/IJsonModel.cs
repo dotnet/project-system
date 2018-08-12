@@ -23,14 +23,4 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             return default;
         }
     }
-
-    internal class JsonModelReader
-    {
-        public static M FromJson<T, M>(string jsonString) where T : IJsonModel<M>
-        {
-            var json = JObject.Parse(jsonString);
-            var data = json.ToObject<T>();
-            return data.ToActualModel();
-        }
-    }
 }
