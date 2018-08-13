@@ -12,13 +12,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     internal interface IApplyChangesToWorkspaceContext
     {
         /// <summary>
-        ///     Returns an enumerable of evaluation rules that should passed to 
+        ///     Returns an enumerable of evaluation rules that should passed to
         ///     <see cref="ApplyEvaluation(IProjectVersionedValue{IProjectSubscriptionUpdate}, bool, CancellationToken)"/>.
         /// </summary>
         IEnumerable<string> GetEvaluationRules();
 
         /// <summary>
-        ///     Returns an enumerable of design-time rules that should passed to 
+        ///     Returns an enumerable of design-time rules that should passed to
         ///     <see cref="ApplyDesignTime(IProjectVersionedValue{IProjectSubscriptionUpdate}, bool)"/>.
         /// </summary>
         IEnumerable<string> GetDesignTimeRules();
@@ -47,7 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         ///     The <see cref="IApplyChangesToWorkspaceContext"/> has been disposed of.
         /// </exception>
         /// <remarks>
-        ///     Note: Cancelling the <paramref name="cancellationToken"/> may result in the underlying 
+        ///     Note: Cancelling the <paramref name="cancellationToken"/> may result in the underlying
         ///     <see cref="IWorkspaceProjectContext"/> to be left in an inconsistent state with respect
         ///     to the project snapshot state. The cancellation token should only be cancelled with the
         ///     intention that the <see cref="IWorkspaceProjectContext"/> will be immediately disposed.
@@ -67,7 +67,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         ///     The <see cref="IApplyChangesToWorkspaceContext"/> has been disposed of.
         /// </exception>
         /// <remarks>
-        ///     Note: Cancelling the <paramref name="cancellationToken"/> may result in the underlying 
+        ///     Note: Cancelling the <paramref name="cancellationToken"/> may result in the underlying
         ///     <see cref="IWorkspaceProjectContext"/> to be left in an inconsistent state with respect
         ///     to the project snapshot state. The cancellation token should only be cancelled with the
         ///     intention that the <see cref="IWorkspaceProjectContext"/> will be immediately disposed.
