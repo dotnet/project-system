@@ -75,14 +75,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         }
     }
 
-
-    internal class IProjectRuleSnapshotModel : JsonModel<IProjectRuleSnapshot>, IProjectRuleSnapshot
+    internal class IProjectRuleSnapshotModel : JsonModel<IProjectRuleSnapshot>, IProjectRuleSnapshot, IProjectRuleSnapshotEvaluationStatus
     {
-        public IImmutableDictionary<string, IImmutableDictionary<string, string>> Items { get; set; }
-        public IImmutableDictionary<string, string> Properties { get; set; }
+        public IImmutableDictionary<string, IImmutableDictionary<string, string>> Items { get; set; } = ImmutableDictionary<string, IImmutableDictionary<string, string>>.Empty;
+        public IImmutableDictionary<string, string> Properties { get; set; } = ImmutableDictionary<string, string>.Empty;
         public string RuleName { get; set; }
-
-        public IImmutableDictionary<NamedIdentity, IComparable> DataSourceVersions { get; }
+        public IImmutableDictionary<NamedIdentity, IComparable> DataSourceVersions { get; } = ImmutableDictionary<NamedIdentity, IComparable>.Empty;
+        public bool EvaluationSucceeded { get; set; } = true;
 
         public override IProjectRuleSnapshot ToActualModel()
         {

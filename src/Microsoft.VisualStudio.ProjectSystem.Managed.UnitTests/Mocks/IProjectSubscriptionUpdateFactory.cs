@@ -63,13 +63,21 @@ namespace Microsoft.VisualStudio.ProjectSystem
             if (CurrentState != null)
             {
                 model.CurrentState = CurrentState.Select(x => new KeyValuePair<string, IProjectRuleSnapshot>(x.Key, x.Value))
-                                        .ToImmutableDictionary();
+                                                 .ToImmutableDictionary();
+            }
+            else
+            {
+                model.CurrentState = ImmutableDictionary<string, IProjectRuleSnapshot>.Empty;
             }
 
             if (ProjectChanges != null)
             {
                 model.ProjectChanges = ProjectChanges.Select(x => new KeyValuePair<string, IProjectChangeDescription>(x.Key, x.Value.ToActualModel()))
-                                            .ToImmutableDictionary();
+                                                     .ToImmutableDictionary();
+            }
+            else
+            {
+                model.ProjectChanges = ImmutableDictionary<string, IProjectChangeDescription>.Empty;
             }
 
             if (ProjectConfiguration != null)
