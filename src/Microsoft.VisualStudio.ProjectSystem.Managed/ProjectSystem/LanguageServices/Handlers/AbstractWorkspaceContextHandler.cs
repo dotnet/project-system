@@ -34,10 +34,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             _context = context;
         }
 
-        protected void EnsureInitialized()
+        protected void VerifyInitialized()
         {
-            if (_context == null)
-                throw new InvalidOperationException("Initialize must be called before calling this method.");
+            Verify.Operation(_context != null, "Must call Initialize(IWorkspaceProjectContext) first.");
         }
     }
 }
