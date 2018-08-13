@@ -14,12 +14,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     {
         public static IWorkspaceProjectContext Create()
         {
-            return Mock.Of<IWorkspaceProjectContext>();
+            return new IWorkspaceProjectContextMock().Object;
         }
 
         public static IWorkspaceProjectContext CreateForSourceFiles(UnconfiguredProject project, Action<string> addSourceFile = null, Action<string> removeSourceFile = null)
         {
-            var context = new Mock<IWorkspaceProjectContext>();
+            var context = new IWorkspaceProjectContextMock();
 
             context.SetupGet(c => c.ProjectFilePath)
                 .Returns(project.FullPath);
