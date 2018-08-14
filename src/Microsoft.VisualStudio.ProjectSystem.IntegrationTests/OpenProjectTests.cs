@@ -1,4 +1,6 @@
-﻿using Microsoft.Test.Apex.VisualStudio;
+﻿using System;
+using System.Linq;
+using Microsoft.Test.Apex.VisualStudio;
 using Microsoft.Test.Apex.VisualStudio.Solution;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -42,9 +44,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.IntegrationTests
 
             VS.Start();
 
+            ProjectTestExtension consoleProject = default;
             using (Scope.Enter("Create Project"))
             {
-                var proj = VS.ObjectModel.Solution.CreateProject(ProjectLanguage.CSharp, ProjectTemplate.NetCoreConsoleApp);
+                consoleProject = VS.ObjectModel.Solution.CreateProject(ProjectLanguage.CSharp, ProjectTemplate.NetCoreConsoleApp);
             }
 
             using (Scope.Enter("Verify Create Project"))
@@ -59,7 +62,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.IntegrationTests
 
             using (Scope.Enter("Verify Build Succeeded"))
             {
-                VS.ObjectModel.Shell.ToolWindows.ErrorList.Verify.ErrorCountIs(0);
+                var sucess = VS.ObjectModel.Solution.BuildManager.Verify.ProjectBuilt(consoleProject);
+                string[] errors = new string[] { };
+                if (!sucess)
+                {
+                    VS.ObjectModel.Shell.ToolWindows.ErrorList.WaitForErrorListItems();
+                    errors = VS.ObjectModel.Shell.ToolWindows.ErrorList.Errors.Select(x => $"Description:'{x.Description}' Project:{x.ProjectName} Line:'{x.LineNumber}'").ToArray();
+                }
+
+                Assert.IsTrue(sucess, $"project '{consoleProject.FileName}' failed to build.{Environment.NewLine}errors:{Environment.NewLine}{string.Join(Environment.NewLine, errors)}");
             }
         }
     }
