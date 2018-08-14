@@ -215,7 +215,13 @@ function InstallProjectSystemVSIX ([string] $rootSuffix, [string] $vsInstallDir)
   InstallVSIX $vsixExpInstalleExe $rootsuffix $vsInstallDir $VisualStudioEditorsSetupVsix
   
   $DevEnvExe = Join-Path $vsInstallDir "Common7\IDE\devenv.exe"
-  & $DevEnvExe /Updateconfiguration
+  & $DevEnvExe /clearcache /rootsuffix $rootSuffix
+  & $DevEnvExe /updateconfiguration /rootsuffix $rootSuffix
+  & $DevEnvExe /resetsettings General.vssettings /command "File.Exit" /rootsuffix $rootSuffix
+  
+  Stop-Process-Name "DbgCLR"
+  Stop-Process-Name "VsJITDebugger"
+  Stop-Process-Name "dexplore"
 }
 
 # Ensure rules files can be found by msbuild
