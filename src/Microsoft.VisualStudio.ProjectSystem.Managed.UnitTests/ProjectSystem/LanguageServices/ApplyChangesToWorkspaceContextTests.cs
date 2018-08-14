@@ -572,7 +572,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             var factories = handlers.Select(h => ExportFactoryFactory.ImplementCreateValueWithAutoDispose(() => h))
                                     .ToArray();
 
-            return new ApplyChangesToWorkspaceContext(project, commandLineParser, logger, factories);
+            var applyChangesToWorkspaceContext = new ApplyChangesToWorkspaceContext(project, logger, factories);
+
+            applyChangesToWorkspaceContext.CommandLineParsers.Add(commandLineParser);
+
+            return applyChangesToWorkspaceContext;
         }
     }
 }
