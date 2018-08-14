@@ -319,4 +319,7 @@
   <ItemGroup>
     <DesignTimeTargetsFile Include="ProjectSystem\DesignTimeTargets\*.targets" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Threading\Tasks\Dataflow\" />
+  </ItemGroup>
 </Project>

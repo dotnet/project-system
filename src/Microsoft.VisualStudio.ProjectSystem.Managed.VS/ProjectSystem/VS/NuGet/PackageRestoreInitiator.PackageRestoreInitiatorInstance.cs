@@ -62,11 +62,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
             protected override Task InitializeCoreAsync(CancellationToken cancellationToken)
             {
-                Action<IProjectVersionedValue<IConfigurationGroup<ConfiguredProject>>> target = OnActiveConfigurationsChanged;
-
-                _configurationsSubscription = _activeConfigurationGroupService.ActiveConfiguredProjectGroupSource.SourceBlock.LinkTo(
-                    target: new ActionBlock<IProjectVersionedValue<IConfigurationGroup<ConfiguredProject>>>(target),
-                    linkOptions: new DataflowLinkOptions() { PropagateCompletion = true });
+                _configurationsSubscription = _activeConfigurationGroupService.ActiveConfiguredProjectGroupSource.SourceBlock.LinkToAction(OnActiveConfigurationsChanged);
 
                 return Task.CompletedTask;
             }
