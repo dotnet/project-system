@@ -105,7 +105,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 _configuredProject.Services.ProjectSubscription.SourceItemsRuleSource.SourceBlock.SyncLinkOptions(),
                 _projectItemSchemaService.SourceBlock.SyncLinkOptions(),
                 target: new ActionBlock<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectSubscriptionUpdate, IProjectItemSchema>>>(e => OnChanged(e)),
-                linkOptions: new DataflowLinkOptions { PropagateCompletion = true });
+                linkOptions: DataflowOption.PropagateCompletion);
         }
 
         private void OnProjectChanged(IProjectSubscriptionUpdate e)

@@ -193,7 +193,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                     ProjectSubscriptionService.ProjectRuleSource.SourceBlock.SyncLinkOptions(evaluationLinkOptions),
                     CommonProjectServices.Project.Capabilities.SourceBlock.SyncLinkOptions(),
                     projectChangesBlock,
-                    linkOptions: new DataflowLinkOptions { PropagateCompletion = true });
+                    linkOptions: DataflowOption.PropagateCompletion);
             }
 
             // Make sure we are watching the file at this point

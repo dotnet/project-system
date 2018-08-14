@@ -13,23 +13,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
     internal static class DataflowUtilities
     {
         /// <summary>
-        ///     Returns a new instance of <see cref="DataflowLinkOptions"/> with 
-        ///     <see cref="DataflowLinkOptions.PropagateCompletion"/> set to <see langword="true"/>.
-        /// </summary>
-        public static DataflowLinkOptions PropagateCompletion
-        {
-            get
-            {
-                // DataflowLinkOptions is mutable, make sure always create
-                // a new copy to avoid accidentally currupting state
-                return new DataflowLinkOptions()
-                {
-                    PropagateCompletion = true  //  // Make sure source block completion and faults flow onto the target block.
-                };
-            }
-        }
-
-        /// <summary>
         ///     Links the <see cref="ISourceBlock{TOutput}" /> to the specified <see cref="Action{T}" /> 
         ///     that can process messages, propagating completion and faults.
         /// </summary>
@@ -48,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             Requires.NotNull(source, nameof(source));
             Requires.NotNull(target, nameof(target));
 
-            return source.LinkTo(new ActionBlock<T>(target), PropagateCompletion);
+            return source.LinkTo(new ActionBlock<T>(target), DataflowOption.PropagateCompletion);
         }
 
         /// <summary>
@@ -70,7 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             Requires.NotNull(source, nameof(source));
             Requires.NotNull(target, nameof(target));
 
-            return source.LinkTo(new ActionBlock<T>(target), PropagateCompletion);
+            return source.LinkTo(new ActionBlock<T>(target), DataflowOption.PropagateCompletion);
         }
 
         /// <summary>

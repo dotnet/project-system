@@ -39,8 +39,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
                 },
                 new ExecutionDataflowBlockOptions() { NameFormat = "Ordered Tree Item Input: {1}" });
 
-            providerProducerBlock.LinkTo(targetBlock, new DataflowLinkOptions() { PropagateCompletion = true });
-            return _orderedItemSource.SourceBlock.LinkTo(providerProducerBlock, new DataflowLinkOptions() { PropagateCompletion = true });
+            providerProducerBlock.LinkTo(targetBlock, DataflowOption.PropagateCompletion);
+            return _orderedItemSource.SourceBlock.LinkTo(providerProducerBlock, DataflowOption.PropagateCompletion);
         }
     }
 }
