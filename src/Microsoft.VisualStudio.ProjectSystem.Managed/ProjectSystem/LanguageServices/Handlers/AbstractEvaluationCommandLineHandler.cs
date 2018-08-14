@@ -24,7 +24,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         // however, design-time builds are not UI blocking, so control can be returned to the user before Roslyn has been told about the 
         // file. This leads to the user observable behavior where the source file for a period of time lives in the "Misc" project and is 
         // without "project" IntelliSense. To counteract that, we push changes both in design-time builds *and* during evaluations, which 
-        // gives the user results a lot faster than if we just pushed during design-time builds only.
+        // gives the user results a lot faster than if we just pushed during design-time builds only. Evaluations are guaranteed to have 
+        // occurred before a file is seen by components outside of the project system.
         //
         // Typically, adds and removes of files found at evaluation time are also found during a design-time build, with the later also 
         // including generated files. This forces us to remember what files we've already sent to Roslyn to avoid sending duplicate adds
@@ -53,7 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         //    - A target from the very first design-time build, removed an item that appeared during evaluation. Currently, the item is "added"
         //      but command-line builds do not see the source file. This is because a design-time build IProjectChangeDescription is only a 
         //      diff between itself and the previous build, not between itself and evaluation, which means that design-time build diff never 
-        //      knows that the item was removed.
+        //      knows that the item was removed, it was just never present.
         //
         // Algorithm for resolving conflicts is as follows:
         //
