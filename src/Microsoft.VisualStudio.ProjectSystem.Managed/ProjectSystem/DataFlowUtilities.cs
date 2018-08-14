@@ -3,6 +3,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Threading.Tasks.Dataflow;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
@@ -11,6 +12,50 @@ namespace Microsoft.VisualStudio.ProjectSystem
     /// </summary>
     internal static class DataflowUtilities
     {
+        /// <summary>
+        ///     Links the <see cref="ISourceBlock{TOutput}" /> to the specified <see cref="Action{T}" /> 
+        ///     that can process messages, propagating completion and faults.
+        /// </summary>
+        /// <returns>
+        ///     An <see cref="IDisposable"/> that, upon calling Dispose, will unlink the source from the target.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        ///     <paramref name="source"/> is <see langword="null"/>.
+        ///     <para>
+        ///         -or-
+        ///     </para>
+        ///     <paramref name="target"/> is <see langword="null"/>.
+        /// </exception>
+        public static IDisposable LinkToAction<T>(this ISourceBlock<T> source, Action<T> target)
+        {
+            Requires.NotNull(source, nameof(source));
+            Requires.NotNull(target, nameof(target));
+
+            return source.LinkTo(new ActionBlock<T>(target), DataflowOption.PropagateCompletion);
+        }
+
+        /// <summary>
+        ///     Links the <see cref="ISourceBlock{TOutput}" /> to the specified <see cref="Func{T, TResult}" /> 
+        ///     that can process messages, propagating completion and faults.
+        /// </summary>
+        /// <returns>
+        ///     An <see cref="IDisposable"/> that, upon calling Dispose, will unlink the source from the target.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        ///     <paramref name="source"/> is <see langword="null"/>.
+        ///     <para>
+        ///         -or-
+        ///     </para>
+        ///     <paramref name="target"/> is <see langword="null"/>.
+        /// </exception>
+        public static IDisposable LinkToAsyncAction<T>(this ISourceBlock<T> source, Func<T, Task> target)
+        {
+            Requires.NotNull(source, nameof(source));
+            Requires.NotNull(target, nameof(target));
+
+            return source.LinkTo(new ActionBlock<T>(target), DataflowOption.PropagateCompletion);
+        }
+
         /// <summary>
         /// Wraps a delegate in a repeatably executable delegate that runs within an ExecutionContext captured at the time of *this* method call.
         /// </summary>

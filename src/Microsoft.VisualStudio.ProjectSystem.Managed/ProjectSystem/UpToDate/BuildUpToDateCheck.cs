@@ -101,11 +101,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         protected override void Initialize()
         {
             _link = ProjectDataSources.SyncLinkTo(
-                _configuredProject.Services.ProjectSubscription.JointRuleSource.SourceBlock.SyncLinkOptions(new StandardRuleDataflowLinkOptions { RuleNames = ProjectPropertiesSchemas }),
+                _configuredProject.Services.ProjectSubscription.JointRuleSource.SourceBlock.SyncLinkOptions(DataflowOption.WithRuleNames(ProjectPropertiesSchemas)),
                 _configuredProject.Services.ProjectSubscription.SourceItemsRuleSource.SourceBlock.SyncLinkOptions(),
                 _projectItemSchemaService.SourceBlock.SyncLinkOptions(),
                 target: new ActionBlock<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectSubscriptionUpdate, IProjectItemSchema>>>(e => OnChanged(e)),
-                linkOptions: new DataflowLinkOptions { PropagateCompletion = true });
+                linkOptions: DataflowOption.PropagateCompletion);
         }
 
         private void OnProjectChanged(IProjectSubscriptionUpdate e)

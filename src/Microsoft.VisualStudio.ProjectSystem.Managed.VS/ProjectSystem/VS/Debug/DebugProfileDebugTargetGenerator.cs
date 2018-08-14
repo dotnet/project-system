@@ -95,9 +95,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             _launchProfileProviderLink = LaunchSettingProvider.SourceBlock.LinkTo(
                 debugProfilesBlock,
-                linkOptions: new DataflowLinkOptions { PropagateCompletion = true });
+                linkOptions: DataflowOption.PropagateCompletion);
 
-            _debugProviderLink = debugProfilesBlock.LinkTo(broadcastBlock, new DataflowLinkOptions { PropagateCompletion = true });
+            _debugProviderLink = debugProfilesBlock.LinkTo(broadcastBlock, DataflowOption.PropagateCompletion);
 
             _publicBlock = broadcastBlock.SafePublicize();
         }
