@@ -125,7 +125,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             ApplyEvaluationChanges(handler, version, difference);
 
-            Assert.Empty(handler.Files);
+            Assert.Empty(handler.FileNames);
         }
 
         [Fact]
@@ -138,7 +138,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             ApplyDesignTimeChanges(handler, version, difference);
 
-            Assert.Empty(handler.Files);
+            Assert.Empty(handler.FileNames);
         }
 
         [Theory]    // Include path                          Expected full path
@@ -155,7 +155,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             ApplyEvaluationChanges(handler, 1, difference);
 
-            Assert.Single(handler.Files, expected);
+            Assert.Single(handler.FileNames, expected);
         }
 
         [Theory]    // Include path                          Expected full path
@@ -172,7 +172,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             ApplyDesignTimeChanges(handler, 1, difference);
 
-            Assert.Single(handler.Files, expected);
+            Assert.Single(handler.FileNames, expected);
         }
 
         [Theory] // Current state                       Added files                     Expected state
@@ -191,7 +191,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             var difference = IProjectChangeDiffFactory.WithAddedItems(filesToAdd);
             ApplyEvaluationChanges(handler, 2, difference);
 
-            Assert.Equal(expectedFiles.OrderBy(f => f), handler.Files.OrderBy(f => f));
+            Assert.Equal(expectedFiles.OrderBy(f => f), handler.FileNames.OrderBy(f => f));
+        }
+
+        [Fact]
+        public void AddEvalautionChanges_CanAddItemWithMetadata()
+        {
+            var handler = CreateInstance(@"C:\Project\Project.csproj");
+
+            var difference = IProjectChangeDiffFactory.WithAddedItems("A.cs");
+            var metadata = MetadataFactory.Create("A.cs", ("Name", "Value"));
+
+            ApplyEvaluationChanges(handler, 1, difference, metadata);
+
+            var result = handler.Files[@"C:\Project\A.cs"];
+
+            Assert.Equal("Value", result["Name"]);
         }
 
         [Theory] // Current state                      Added files                      Expected state
@@ -210,7 +225,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             var difference = IProjectChangeDiffFactory.WithAddedItems(filesToAdd);
             ApplyDesignTimeChanges(handler, 1, difference);
 
-            Assert.Equal(handler.Files.OrderBy(f => f), expectedFiles.OrderBy(f => f));
+            Assert.Equal(handler.FileNames.OrderBy(f => f), expectedFiles.OrderBy(f => f));
         }
 
         [Theory] // Current state                      Removed files                    Expected state
@@ -229,7 +244,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             var difference = IProjectChangeDiffFactory.WithRemovedItems(filesToRemove);
             ApplyEvaluationChanges(handler, 2, difference);
 
-            Assert.Equal(expectedFiles.OrderBy(f => f), handler.Files.OrderBy(f => f));
+            Assert.Equal(expectedFiles.OrderBy(f => f), handler.FileNames.OrderBy(f => f));
         }
 
         [Theory] // Current state                      Removed files                    Expected state
@@ -248,7 +263,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             var difference = IProjectChangeDiffFactory.WithRemovedItems(filesToRemove);
             ApplyDesignTimeChanges(handler, 1, difference);
 
-            Assert.Equal(expectedFiles.OrderBy(f => f), handler.Files.OrderBy(f => f));
+            Assert.Equal(expectedFiles.OrderBy(f => f), handler.FileNames.OrderBy(f => f));
         }
 
         [Theory] // Current state                       Added files                     Expected state
@@ -267,7 +282,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             var difference = IProjectChangeDiffFactory.WithAddedItems(filesToAdd);
             ApplyEvaluationChanges(handler, 2, difference);
 
-            Assert.Equal(expectedFiles.OrderBy(f => f), handler.Files.OrderBy(f => f));
+            Assert.Equal(expectedFiles.OrderBy(f => f), handler.FileNames.OrderBy(f => f));
         }
 
         [Theory] // Current state                      Added files                      Expected state
@@ -286,7 +301,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             var difference = IProjectChangeDiffFactory.WithAddedItems(filesToAdd);
             ApplyDesignTimeChanges(handler, 2, difference);
 
-            Assert.Equal(expectedFiles.OrderBy(f => f), handler.Files.OrderBy(f => f));
+            Assert.Equal(expectedFiles.OrderBy(f => f), handler.FileNames.OrderBy(f => f));
         }
 
         [Theory] // Current state                      Removed files                    Expected state
@@ -305,7 +320,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             var difference = IProjectChangeDiffFactory.WithRemovedItems(filesToRemove);
             ApplyEvaluationChanges(handler, 2, difference);
 
-            Assert.Equal(expectedFiles.OrderBy(f => f), handler.Files.OrderBy(f => f));
+            Assert.Equal(expectedFiles.OrderBy(f => f), handler.FileNames.OrderBy(f => f));
         }
 
         [Theory] // Current state                      Removed files                    Expected state
@@ -324,7 +339,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             var difference = IProjectChangeDiffFactory.WithRemovedItems(filesToRemove);
             ApplyDesignTimeChanges(handler, 2, difference);
 
-            Assert.Equal(expectedFiles.OrderBy(f => f), handler.Files.OrderBy(f => f));
+            Assert.Equal(expectedFiles.OrderBy(f => f), handler.FileNames.OrderBy(f => f));
         }
 
         [Theory] // Current state                      Original name        New name                         Expected state
@@ -338,11 +353,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             var handler = CreateInstanceWithEvaluationItems(@"C:\Project\Project.csproj", currentFiles);
 
-            var difference = IProjectChangeDiffFactory.WithRenameItems(originalNames, newNames);
+            var difference = IProjectChangeDiffFactory.WithRenamedItems(originalNames, newNames);
 
             ApplyEvaluationChanges(handler, 2, difference);
 
-            Assert.Equal(expectedFiles.OrderBy(f => f), handler.Files.OrderBy(f => f));
+            Assert.Equal(expectedFiles.OrderBy(f => f), handler.FileNames.OrderBy(f => f));
         }
 
         [Theory] // Current state                      Original name        New name                         Expected state
@@ -356,11 +371,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             var handler = CreateInstanceWithDesignTimeItems(@"C:\Project\Project.csproj", currentFiles);
 
-            var difference = IProjectChangeDiffFactory.WithRenameItems(originalNames, newNames);
+            var difference = IProjectChangeDiffFactory.WithRenamedItems(originalNames, newNames);
 
             ApplyEvaluationChanges(handler, 2, difference);
 
-            Assert.Equal(expectedFiles.OrderBy(f => f), handler.Files.OrderBy(f => f));
+            Assert.Equal(expectedFiles.OrderBy(f => f), handler.FileNames.OrderBy(f => f));
+        }
+
+        [Fact]
+        public void ApplyEvaluationCHanges_WithExistingEvaluationChanges_CanAddChangeMetadata()
+        {
+            var file = "A.cs";
+            var handler = CreateInstanceWithEvaluationItems(@"C:\Project\Project.csproj", file);
+
+            var difference = IProjectChangeDiffFactory.WithChangedItems(file);
+            var metadata = MetadataFactory.Create(file, ("Name", "Value"));
+
+            ApplyEvaluationChanges(handler, 2, difference, metadata);
+
+            var result = handler.Files[@"C:\Project\A.cs"];
+
+            Assert.Equal("Value", result["Name"]);
         }
 
         [Fact]
@@ -377,7 +408,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             ApplyDesignTimeChanges(handler, designTimeVersion, IProjectChangeDiffFactory.WithRemovedItems("Source.cs"));
 
-            Assert.Single(handler.Files, @"C:\Project\Source.cs");
+            Assert.Single(handler.FileNames, @"C:\Project\Source.cs");
         }
 
         [Fact]
@@ -394,7 +425,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             ApplyDesignTimeChanges(handler, designTimeVersion, IProjectChangeDiffFactory.WithAddedItems("Source.cs"));
 
-            Assert.Empty(handler.Files);
+            Assert.Empty(handler.FileNames);
         }
 
         [Fact]
@@ -411,12 +442,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             ApplyDesignTimeChanges(handler, designTimeVersion, IProjectChangeDiffFactory.WithAddedItems("Source.cs"));
 
-            Assert.Single(handler.Files, @"C:\Project\Source.cs");
+            Assert.Single(handler.FileNames, @"C:\Project\Source.cs");
         }
 
-        private static void ApplyEvaluationChanges(AbstractEvaluationCommandLineHandler handler, IComparable version, IProjectChangeDiff difference)
+        private static void ApplyEvaluationChanges(AbstractEvaluationCommandLineHandler handler, IComparable version, IProjectChangeDiff difference, IImmutableDictionary<string, IImmutableDictionary<string, string>> metadata = null)
         {
-            var metadata = ImmutableDictionary<string, IImmutableDictionary<string, string>>.Empty;
+            metadata = metadata ?? ImmutableDictionary<string, IImmutableDictionary<string, string>>.Empty;
             bool isActiveContext = true;
             var logger = IProjectLoggerFactory.Create();
 
