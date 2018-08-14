@@ -13,6 +13,21 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return new StandardProjectConfiguration(name, dimensions);
         }
 
+        public static ProjectConfiguration Create(string dimensionNames, string dimensionValues)
+        {
+            var dimensionsBuilder = ImmutableDictionary.CreateBuilder<string, string>();
+
+            string[] dimensionNamesArray = dimensionNames.Split('|');
+            string[] dimensionValuesArray = dimensionValues.Split('|');
+
+            for (int i = 0; i < dimensionNamesArray.Length; i++)
+            {
+                dimensionsBuilder.Add(dimensionNamesArray[i], dimensionValuesArray[i]);
+            }
+
+            return Create(dimensionValues, dimensionsBuilder.ToImmutable());
+        }
+
         public static ProjectConfiguration Create(string configuration)
         {
             var dimensionsBuilder = ImmutableDictionary.CreateBuilder<string, string>();

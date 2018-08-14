@@ -72,12 +72,12 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
     internal class IProjectChangeDiffModel : JsonModel<IProjectChangeDiff>, IProjectChangeDiff
     {
-        public IImmutableSet<string> AddedItems { get; set; }
+        public IImmutableSet<string> AddedItems { get; set; } = ImmutableHashSet<string>.Empty;
         public bool AnyChanges { get; set; }
-        public IImmutableSet<string> ChangedItems { get; set; }
-        public IImmutableSet<string> ChangedProperties { get; set; }
-        public IImmutableSet<string> RemovedItems { get; set; }
-        public IImmutableDictionary<string, string> RenamedItems { get; set; }
+        public IImmutableSet<string> ChangedItems { get; set; } = ImmutableHashSet<string>.Empty;
+        public IImmutableSet<string> ChangedProperties { get; set; } = ImmutableHashSet<string>.Empty;
+        public IImmutableSet<string> RemovedItems { get; set; } = ImmutableHashSet<string>.Empty;
+        public IImmutableDictionary<string, string> RenamedItems { get; set; } = ImmutableDictionary<string, string>.Empty;
 
         public override IProjectChangeDiff ToActualModel()
         {
