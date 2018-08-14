@@ -84,11 +84,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
                 if (e.Value.Count > 0)
                 {
-                    var sourceLinkOptions = new StandardRuleDataflowLinkOptions
-                    {
-                        RuleNames = s_designTimeBuildWatchedRules,
-                        PropagateCompletion = true
-                    };
+                    StandardRuleDataflowLinkOptions sourceLinkOptions = DataflowOption.WithRuleNames(s_designTimeBuildWatchedRules);
 
                     var disposableBag = new DisposableBag(CancellationToken.None);
                     // We are taking source blocks from multiple configured projects and creating a SyncLink to combine the sources.

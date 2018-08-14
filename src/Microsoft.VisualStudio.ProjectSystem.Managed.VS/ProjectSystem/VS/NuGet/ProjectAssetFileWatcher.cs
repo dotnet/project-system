@@ -126,11 +126,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                     ProjectDataSources.SourceBlockAndLink<IProjectVersionedValue<IProjectTreeSnapshot>> treeSource = _fileSystemTreeProvider.Tree.SyncLinkOptions();
 
                     // The property source used to get the value of the $ProjectAssetsFile property so that we can identify the location of the assets file.
-                    var sourceLinkOptions = new StandardRuleDataflowLinkOptions
-                    {
-                        RuleNames = Empty.OrdinalIgnoreCaseStringSet.Add(ConfigurationGeneral.SchemaName),
-                        PropagateCompletion = true
-                    };
+                    StandardRuleDataflowLinkOptions sourceLinkOptions = DataflowOption.WithRuleNames(ConfigurationGeneral.SchemaName);
 
                     ProjectDataSources.SourceBlockAndLink<IProjectVersionedValue<IProjectSubscriptionUpdate>> propertySource = _activeConfiguredProjectSubscriptionService.ProjectRuleSource.SourceBlock.SyncLinkOptions(sourceLinkOptions);
                     var target = new ActionBlock<IProjectVersionedValue<Tuple<IProjectTreeSnapshot, IProjectSubscriptionUpdate>>>(DataFlow_ChangedAsync);
