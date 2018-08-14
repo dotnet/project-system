@@ -23,24 +23,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         private readonly ConfiguredProject _project;
         private readonly ICommandLineParserService _commandLineParser;
         private readonly IProjectLogger _logger;
-
+        private readonly ExportFactory<IWorkspaceContextHandler>[] _workspaceContextHandlerFactories;
         private IWorkspaceProjectContext _context;
         private ExportLifetimeContext<IWorkspaceContextHandler>[] _handlers;
 
         [ImportingConstructor]
-        public ApplyChangesToWorkspaceContext(ConfiguredProject project, ICommandLineParserService commandLineParser, IProjectLogger logger)
+        public ApplyChangesToWorkspaceContext(ConfiguredProject project, ICommandLineParserService commandLineParser, IProjectLogger logger, [ImportMany]ExportFactory<IWorkspaceContextHandler>[] workspaceContextHandlerFactories)
         {
             _project = project;
             _commandLineParser = commandLineParser;
             _logger = logger;
-
-            WorkspaceContextHandlerFactories = new OrderPrecedenceExportFactoryCollection<IWorkspaceContextHandler>();
-        }
-
-        [ImportMany]
-        public OrderPrecedenceExportFactoryCollection<IWorkspaceContextHandler> WorkspaceContextHandlerFactories
-        {
-            get;
+            _workspaceContextHandlerFactories = workspaceContextHandlerFactories;
         }
 
         public void Initialize(IWorkspaceProjectContext context)
@@ -133,8 +126,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
         protected override void Initialize()
         {
-            _handlers = WorkspaceContextHandlerFactories.Select(h => h.CreateExport())
-                                                        .ToArray();
+            _handlers = _workspaceContextHandlerFactories.Select(h => h.CreateExport())
+                                                         .ToArray();
 
             foreach (ExportLifetimeContext<IWorkspaceContextHandler> handler in _handlers)
             {

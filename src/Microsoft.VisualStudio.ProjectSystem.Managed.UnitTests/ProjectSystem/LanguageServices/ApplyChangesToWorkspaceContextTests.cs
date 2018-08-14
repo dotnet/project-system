@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -44,8 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             int callCount = 0;
             var handler = IWorkspaceContextHandlerFactory.ImplementDispose(() => { callCount++; });
 
-            var applyChangesToWorkspace = CreateInstance();
-            applyChangesToWorkspace.WorkspaceContextHandlerFactories.Add(handler);
+            var applyChangesToWorkspace = CreateInstance(handlers: handler);
             var context = IWorkspaceProjectContextFactory.Create();
 
             applyChangesToWorkspace.Initialize(context);
@@ -86,8 +86,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             IWorkspaceProjectContext result = null;
             var handler = IWorkspaceContextHandlerFactory.ImplementInitialize((c) => { result = c; });
 
-            var applyChangesToWorkspace = CreateInstance();
-            applyChangesToWorkspace.WorkspaceContextHandlerFactories.Add(handler);
+            var applyChangesToWorkspace = CreateInstance(handlers: handler);
             var context = IWorkspaceProjectContextFactory.Create();
 
             applyChangesToWorkspace.Initialize(context);
@@ -570,15 +569,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             commandLineParser = commandLineParser ?? ICommandLineParserServiceFactory.Create();
             logger = logger ?? IProjectLoggerFactory.Create();
 
-            var applyChangesToWorkspace = new ApplyChangesToWorkspaceContext(project, commandLineParser, logger);
+            var factories = handlers.Select(h => ExportFactoryFactory.ImplementCreateValueWithAutoDispose(() => h))
+                                    .ToArray();
 
-            int orderPrecedence = 0;
-            foreach (IWorkspaceContextHandler handler in handlers)
-            {
-                applyChangesToWorkspace.WorkspaceContextHandlerFactories.Add(handler, orderPrecedence: --orderPrecedence);
-            }
-
-            return applyChangesToWorkspace;
+            return new ApplyChangesToWorkspaceContext(project, commandLineParser, logger, factories);
         }
     }
 }
