@@ -48,8 +48,8 @@ def createJob(def platform, def configName, def osName, def imageName, def isPR,
   Utilities.standardJobSetup(newJob, projectName, isPR, "*/${branchName}")
 
   addGithubTrigger(newJob, isPR, branchName, jobName, manualTrigger, altTriggerPhrase)
-  addArchival(newJob, configName)
   addXUnitDotNETResults(newJob, configName)
+  addArchival(newJob, configName)
   Utilities.setMachineAffinity(newJob, osName, imageName)
 
   return newJob
