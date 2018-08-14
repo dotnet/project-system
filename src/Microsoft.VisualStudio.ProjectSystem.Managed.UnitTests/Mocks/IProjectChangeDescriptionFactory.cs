@@ -47,9 +47,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
     internal class IProjectChangeDescriptionModel : JsonModel<IProjectChangeDescription>
     {
-        public IProjectRuleSnapshotModel After { get; set; }
-        public IProjectRuleSnapshotModel Before { get; set; }
-        public IProjectChangeDiffModel Difference { get; set; }
+        public IProjectRuleSnapshotModel After { get; set; } = new IProjectRuleSnapshotModel();
+        public IProjectRuleSnapshotModel Before { get; set; } = new IProjectRuleSnapshotModel();
+        public IProjectChangeDiffModel Difference { get; set; } = new IProjectChangeDiffModel();
 
         public override IProjectChangeDescription ToActualModel()
         {
