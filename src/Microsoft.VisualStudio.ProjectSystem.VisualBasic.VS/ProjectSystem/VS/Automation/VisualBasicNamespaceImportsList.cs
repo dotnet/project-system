@@ -4,7 +4,6 @@ using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Threading.Tasks.Dataflow;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
 {
