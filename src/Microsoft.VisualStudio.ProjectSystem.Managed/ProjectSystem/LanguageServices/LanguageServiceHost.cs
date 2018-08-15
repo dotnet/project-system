@@ -246,13 +246,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                         continue;
                     }
 
-                    _designTimeBuildSubscriptionLinks.Add(configuredProject.Services.ProjectSubscription.JointRuleSource.SourceBlock.LinkTo(
-                        new ActionBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(e => OnProjectChangedCoreAsync(e, RuleHandlerType.DesignTimeBuild)),
-                        ruleNames: watchedDesignTimeBuildRules, suppressVersionOnlyUpdates: true));
+                    _designTimeBuildSubscriptionLinks.Add(configuredProject.Services.ProjectSubscription.JointRuleSource.SourceBlock.LinkToAsyncAction(
+                        e => OnProjectChangedCoreAsync(e, RuleHandlerType.DesignTimeBuild),
+                        ruleNames: watchedDesignTimeBuildRules));
 
-                    _evaluationSubscriptionLinks.Add(configuredProject.Services.ProjectSubscription.ProjectRuleSource.SourceBlock.LinkTo(
-                        new ActionBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(e => OnProjectChangedCoreAsync(e, RuleHandlerType.Evaluation)),
-                        ruleNames: watchedEvaluationRules, suppressVersionOnlyUpdates: true));
+                    _evaluationSubscriptionLinks.Add(configuredProject.Services.ProjectSubscription.ProjectRuleSource.SourceBlock.LinkToAsyncAction(
+                        e => OnProjectChangedCoreAsync(e, RuleHandlerType.Evaluation),
+                        ruleNames: watchedEvaluationRules));
 
                     _projectConfigurationsWithSubscriptions.Add(configuredProject.ProjectConfiguration);
                 }

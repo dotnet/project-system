@@ -66,10 +66,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             Assumes.Present(_startupProjectsListService);
 
-            _subscription = _projectSubscriptionService.ProjectRuleSource.SourceBlock.LinkTo(
-                target: new ActionBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(OnProjectChangedAsync),
-                suppressVersionOnlyUpdates: true,
-                linkOptions: DataflowOption.PropagateCompletion);
+            _subscription = _projectSubscriptionService.ProjectRuleSource.SourceBlock.LinkToAsyncAction(
+                target: OnProjectChangedAsync);
         }
 
         protected override Task DisposeCoreAsync(bool initialized)

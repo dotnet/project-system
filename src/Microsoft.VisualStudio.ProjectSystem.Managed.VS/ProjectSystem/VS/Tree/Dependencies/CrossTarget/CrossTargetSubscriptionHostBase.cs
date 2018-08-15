@@ -92,7 +92,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             await _tasksService.LoadedProjectAsync(async () =>
             {
                 SubscribeToConfiguredProject(_activeConfiguredProjectSubscriptionService,
-                    new ActionBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(e => OnProjectChangedAsync(e, RuleHandlerType.Evaluation)));
+                    e => OnProjectChangedAsync(e, RuleHandlerType.Evaluation));
 
                 foreach (Lazy<ICrossTargetSubscriber> subscriber in Subscribers)
                 {
@@ -264,8 +264,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                     foreach (ConfiguredProject configuredProject in newProjectContext.InnerConfiguredProjects)
                     {
                         SubscribeToConfiguredProject(configuredProject.Services.ProjectSubscription,
-                            new ActionBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(
-                                              e => OnProjectChangedCoreAsync(e, RuleHandlerType.Evaluation)));
+                                              e => OnProjectChangedCoreAsync(e, RuleHandlerType.Evaluation));
                     }
 
                     foreach (Lazy<ICrossTargetSubscriber> subscriber in Subscribers)
@@ -279,13 +278,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         }
 
         private void SubscribeToConfiguredProject(IProjectSubscriptionService subscriptionService,
-            ActionBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>> actionBlock)
+            Func<IProjectVersionedValue<IProjectSubscriptionUpdate>, Task> action)
         {
             _evaluationSubscriptionLinks.Add(
-                subscriptionService.ProjectRuleSource.SourceBlock.LinkTo(
-                    actionBlock,
-                    ruleNames: new[] { ConfigurationGeneral.SchemaName },
-                    suppressVersionOnlyUpdates: true));
+                subscriptionService.ProjectRuleSource.SourceBlock.LinkToAsyncAction(
+                    action,
+                    ruleNames: ConfigurationGeneral.SchemaName));
         }
 
         private static bool HasTargetFrameworksChanged(IProjectVersionedValue<IProjectSubscriptionUpdate> e)
