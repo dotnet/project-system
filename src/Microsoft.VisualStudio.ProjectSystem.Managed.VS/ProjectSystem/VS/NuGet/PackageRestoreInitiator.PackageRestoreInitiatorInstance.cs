@@ -34,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             private DisposableBag _designTimeBuildSubscriptionLink;
 #pragma warning restore CA2213
 
-            private static ImmutableHashSet<string> s_designTimeBuildWatchedRules = Empty.OrdinalIgnoreCaseStringSet
+            private static readonly ImmutableHashSet<string> s_designTimeBuildWatchedRules = Empty.OrdinalIgnoreCaseStringSet
                 .Add(NuGetRestore.SchemaName)
                 .Add(ProjectReference.SchemaName)
                 .Add(PackageReference.SchemaName)
