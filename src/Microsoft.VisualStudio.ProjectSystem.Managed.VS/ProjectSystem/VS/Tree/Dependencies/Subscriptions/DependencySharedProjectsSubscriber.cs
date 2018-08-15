@@ -93,7 +93,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                     intermediateBlock,
                     ruleNames: ConfigurationGeneral.SchemaName,
                     suppressVersionOnlyUpdates: false,
-                    linkOptions: new DataflowLinkOptions { PropagateCompletion = true }));
+                    linkOptions: DataflowOption.PropagateCompletion));
 
             var actionBlock =
                 new ActionBlock<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectSharedFoldersSnapshot, IProjectCatalogSnapshot>>>
@@ -108,7 +108,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                 subscriptionService.SharedFoldersSource.SourceBlock.SyncLinkOptions(),
                 subscriptionService.ProjectCatalogSource.SourceBlock.SyncLinkOptions(),
                 actionBlock,
-                linkOptions: new DataflowLinkOptions { PropagateCompletion = true }));
+                linkOptions: DataflowOption.PropagateCompletion));
         }
 
         private async Task OnProjectChangedAsync(

@@ -186,14 +186,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 // we get new subscription data from the dataflow.
                 var projectChangesBlock = new ActionBlock<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectCapabilitiesSnapshot>>>(
                             DataflowUtilities.CaptureAndApplyExecutionContext<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectCapabilitiesSnapshot>>>(ProjectRuleBlock_ChangedAsync));
-                var evaluationLinkOptions = new StandardRuleDataflowLinkOptions();
-                evaluationLinkOptions.RuleNames = evaluationLinkOptions.RuleNames.Add(ProjectDebugger.SchemaName);
+                StandardRuleDataflowLinkOptions evaluationLinkOptions = DataflowOption.WithRuleNames(ProjectDebugger.SchemaName);
 
                 ProjectRuleSubscriptionLink = ProjectDataSources.SyncLinkTo(
                     ProjectSubscriptionService.ProjectRuleSource.SourceBlock.SyncLinkOptions(evaluationLinkOptions),
                     CommonProjectServices.Project.Capabilities.SourceBlock.SyncLinkOptions(),
                     projectChangesBlock,
-                    linkOptions: new DataflowLinkOptions { PropagateCompletion = true });
+                    linkOptions: DataflowOption.PropagateCompletion);
             }
 
             // Make sure we are watching the file at this point

@@ -128,14 +128,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                     intermediateBlockDesignTime,
                   ruleNames: watchedDesignTimeBuildRules.Union(watchedEvaluationRules),
                   suppressVersionOnlyUpdates: true,
-                  linkOptions: new DataflowLinkOptions { PropagateCompletion = true }));
+                  linkOptions: DataflowOption.PropagateCompletion));
 
             _evaluationSubscriptionLinks.Add(
                 subscriptionService.ProjectRuleSource.SourceBlock.LinkTo(
                     intermediateBlockEvaluation,
                     ruleNames: watchedEvaluationRules,
                     suppressVersionOnlyUpdates: true,
-                    linkOptions: new DataflowLinkOptions { PropagateCompletion = true }));
+                    linkOptions: DataflowOption.PropagateCompletion));
 
             var actionBlockDesignTimeBuild =
                 new ActionBlock<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectCatalogSnapshot, IProjectCapabilitiesSnapshot>>>(
@@ -158,14 +158,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                 subscriptionService.ProjectCatalogSource.SourceBlock.SyncLinkOptions(),
                 configuredProject.Capabilities.SourceBlock.SyncLinkOptions(),
                 actionBlockDesignTimeBuild,
-                linkOptions: new DataflowLinkOptions { PropagateCompletion = true }));
+                linkOptions: DataflowOption.PropagateCompletion));
 
             _evaluationSubscriptionLinks.Add(ProjectDataSources.SyncLinkTo(
                 intermediateBlockEvaluation.SyncLinkOptions(),
                 subscriptionService.ProjectCatalogSource.SourceBlock.SyncLinkOptions(),
                 configuredProject.Capabilities.SourceBlock.SyncLinkOptions(),
                 actionBlockEvaluation,
-                linkOptions: new DataflowLinkOptions { PropagateCompletion = true }));
+                linkOptions: DataflowOption.PropagateCompletion));
         }
 
         private IEnumerable<string> GetWatchedRules(RuleHandlerType handlerType)

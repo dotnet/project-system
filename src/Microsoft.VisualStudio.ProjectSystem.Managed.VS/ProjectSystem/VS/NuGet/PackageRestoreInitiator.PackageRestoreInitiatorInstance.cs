@@ -62,11 +62,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
             protected override Task InitializeCoreAsync(CancellationToken cancellationToken)
             {
-                Action<IProjectVersionedValue<IConfigurationGroup<ConfiguredProject>>> target = OnActiveConfigurationsChanged;
-
-                _configurationsSubscription = _activeConfigurationGroupService.ActiveConfiguredProjectGroupSource.SourceBlock.LinkTo(
-                    target: new ActionBlock<IProjectVersionedValue<IConfigurationGroup<ConfiguredProject>>>(target),
-                    linkOptions: new DataflowLinkOptions() { PropagateCompletion = true });
+                _configurationsSubscription = _activeConfigurationGroupService.ActiveConfiguredProjectGroupSource.SourceBlock.LinkToAction(OnActiveConfigurationsChanged);
 
                 return Task.CompletedTask;
             }
@@ -88,11 +84,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
                 if (e.Value.Count > 0)
                 {
-                    var sourceLinkOptions = new StandardRuleDataflowLinkOptions
-                    {
-                        RuleNames = s_designTimeBuildWatchedRules,
-                        PropagateCompletion = true
-                    };
+                    StandardRuleDataflowLinkOptions sourceLinkOptions = DataflowOption.WithRuleNames(s_designTimeBuildWatchedRules);
 
                     var disposableBag = new DisposableBag(CancellationToken.None);
                     // We are taking source blocks from multiple configured projects and creating a SyncLink to combine the sources.
@@ -111,7 +103,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                     Action<Tuple<ImmutableList<IProjectValueVersions>, TIdentityDictionary>> action = ProjectPropertyChanged;
                     var target = new ActionBlock<Tuple<ImmutableList<IProjectValueVersions>, TIdentityDictionary>>(action);
 
-                    var targetLinkOptions = new DataflowLinkOptions { PropagateCompletion = true };
+                    var targetLinkOptions = DataflowOption.PropagateCompletion;
 
                     ImmutableList<ProjectDataSources.SourceBlockAndLink<IProjectValueVersions>> sourceBlocksAndCapabilitiesOptions = sourceBlocks.ToImmutableList()
                         .Insert(0, _projectVsServices.Project.Capabilities.SourceBlock.SyncLinkOptions<IProjectValueVersions>());

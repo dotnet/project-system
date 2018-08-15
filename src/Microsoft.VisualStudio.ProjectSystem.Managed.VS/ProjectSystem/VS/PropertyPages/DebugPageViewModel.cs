@@ -9,7 +9,6 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Threading.Tasks.Dataflow;
 using System.Windows.Controls;
 using System.Windows.Input;
 
@@ -18,6 +17,7 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 using Microsoft.VisualStudio.Shell;
 
 using DialogResult = System.Windows.Forms.DialogResult;
+using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 {
@@ -678,24 +678,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         {
             if (_debugProfileProviderLink == null)
             {
-                var debugProfilesBlock = new ActionBlock<ILaunchSettings>(
-                async (profiles) =>
-                {
-                    if (_firstSnapshotCompleteSource == null)
-                    {
-                        await ProjectThreadingService.SwitchToUIThread();
-                    }
-                    InitializeDebugTargetsCore(profiles);
-                });
-
                 ILaunchSettingsProvider profileProvider = GetDebugProfileProvider();
-                _debugProfileProviderLink = profileProvider.SourceBlock.LinkTo(
-                    debugProfilesBlock,
-                    linkOptions: new DataflowLinkOptions { PropagateCompletion = true });
+                _debugProfileProviderLink = profileProvider.SourceBlock.LinkToAsyncAction(OnLaunchSettingsChanged);
 
                 // We need to get the set of UI providers, if any.
                 InitializeUIProviders();
             }
+        }
+
+        private async Task OnLaunchSettingsChanged(ILaunchSettings profiles)
+        {
+            if (_firstSnapshotCompleteSource == null)
+            {
+                await ProjectThreadingService.SwitchToUIThread();
+            }
+
+            InitializeDebugTargetsCore(profiles);
         }
 
         /// <summary>

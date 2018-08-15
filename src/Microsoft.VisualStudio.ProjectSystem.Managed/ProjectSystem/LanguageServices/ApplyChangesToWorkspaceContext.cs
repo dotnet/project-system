@@ -21,19 +21,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     {
         private const string DesignTimeRuleName = CompilerCommandLineArgs.SchemaName;
         private readonly ConfiguredProject _project;
-        private readonly ICommandLineParserService _commandLineParser;
         private readonly IProjectLogger _logger;
         private readonly ExportFactory<IWorkspaceContextHandler>[] _workspaceContextHandlerFactories;
         private IWorkspaceProjectContext _context;
         private ExportLifetimeContext<IWorkspaceContextHandler>[] _handlers;
 
         [ImportingConstructor]
-        public ApplyChangesToWorkspaceContext(ConfiguredProject project, ICommandLineParserService commandLineParser, IProjectLogger logger, [ImportMany]ExportFactory<IWorkspaceContextHandler>[] workspaceContextHandlerFactories)
+        public ApplyChangesToWorkspaceContext(ConfiguredProject project, IProjectLogger logger, [ImportMany]ExportFactory<IWorkspaceContextHandler>[] workspaceContextHandlerFactories)
         {
             _project = project;
-            _commandLineParser = commandLineParser;
             _logger = logger;
             _workspaceContextHandlerFactories = workspaceContextHandlerFactories;
+
+            CommandLineParsers = new OrderPrecedenceImportCollection<ICommandLineParserService>(projectCapabilityCheckProvider: project);
+        }
+
+        public OrderPrecedenceImportCollection<ICommandLineParserService> CommandLineParsers
+        {
+            get;
         }
 
         public void Initialize(IWorkspaceProjectContext context)
@@ -157,10 +162,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
         private void ProcessCommandLine(IComparable version, IProjectChangeDiff differences, bool isActiveContext, CancellationToken cancellationToken)
         {
+            ICommandLineParserService parser = CommandLineParsers.FirstOrDefault()?.Value;
+
+            Assumes.Present(parser);
+
             string baseDirectory = Path.GetDirectoryName(_project.UnconfiguredProject.FullPath);
 
-            BuildOptions added = _commandLineParser.Parse(differences.AddedItems, baseDirectory);
-            BuildOptions removed = _commandLineParser.Parse(differences.RemovedItems, baseDirectory);
+            BuildOptions added = parser.Parse(differences.AddedItems, baseDirectory);
+            BuildOptions removed = parser.Parse(differences.RemovedItems, baseDirectory);
 
             ProcessCommandLineHandlers(version, added, removed, isActiveContext, cancellationToken);
         }
