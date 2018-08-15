@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
@@ -12,6 +13,154 @@ namespace Microsoft.VisualStudio.ProjectSystem
     /// </summary>
     internal static class DataflowUtilities
     {
+        /// <summary>
+        ///     Links to the specified <see cref="Action{T}" /> to receive a cross-sectional slice of project 
+        ///     data,  including detailed descriptions of what changed between snapshots, as described by 
+        ///     specified rules.
+        /// </summary>
+        /// <param name="source">
+        ///     The broadcasting block that produces the messages.
+        /// </param>
+        /// <param name="target">
+        ///     The <see cref="Action{T}"/> to receive the broadcasts.
+        /// </param>
+        /// <param name="suppressVersionOnlyUpdates">
+        ///    A value indicating whether to prevent messages from propagating to the target
+        ///     block if no project changes are include other than an incremented version number.
+        /// </param>
+        /// <param name="ruleNames">
+        ///     The names of the rules that describe the project data the caller is interested in.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        ///     <paramref name="source"/> is <see langword="null"/>.
+        ///     <para>
+        ///         -or-
+        ///     </para>
+        ///     <paramref name="target"/> is <see langword="null"/>.
+        /// </exception>
+        public static IDisposable LinkToAction(this ISourceBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>> source, Action<IProjectVersionedValue<IProjectSubscriptionUpdate>> target, bool suppressVersionOnlyUpdates = true, params string[] ruleNames)
+        {
+            Requires.NotNull(source, nameof(source));
+            Requires.NotNull(target, nameof(target));
+
+            return source.LinkTo(new ActionBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(target),
+                                 DataflowOption.PropagateCompletion,
+                                 initialDataAsNew: true,
+                                 suppressVersionOnlyUpdates: suppressVersionOnlyUpdates,
+                                 ruleNames: ruleNames);
+        }
+
+        /// <summary>
+        ///     Links to the specified <see cref="Action{T}" /> to receive a cross-sectional slice of project 
+        ///     data,  including detailed descriptions of what changed between snapshots, as described by 
+        ///     specified rules.
+        /// </summary>
+        /// <param name="source">
+        ///     The broadcasting block that produces the messages.
+        /// </param>
+        /// <param name="target">
+        ///     The <see cref="Action{T}"/> to receive the broadcasts.
+        /// </param>
+        /// <param name="suppressVersionOnlyUpdates">
+        ///    A value indicating whether to prevent messages from propagating to the target
+        ///     block if no project changes are include other than an incremented version number.
+        /// </param>
+        /// <param name="ruleNames">
+        ///     The names of the rules that describe the project data the caller is interested in.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        ///     <paramref name="source"/> is <see langword="null"/>.
+        ///     <para>
+        ///         -or-
+        ///     </para>
+        ///     <paramref name="target"/> is <see langword="null"/>.
+        /// </exception>
+        public static IDisposable LinkToAction(this ISourceBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>> source, Action<IProjectVersionedValue<IProjectSubscriptionUpdate>> target, bool suppressVersionOnlyUpdates = true, IEnumerable<string> ruleNames = null)
+        {
+            Requires.NotNull(source, nameof(source));
+            Requires.NotNull(target, nameof(target));
+
+            return source.LinkTo(new ActionBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(target),
+                                 DataflowOption.PropagateCompletion,
+                                 initialDataAsNew: true,
+                                 suppressVersionOnlyUpdates: suppressVersionOnlyUpdates,
+                                 ruleNames: ruleNames);
+        }
+
+        /// <summary>
+        ///     Links to the specified <see cref="Func{T, TResult}" /> to receive a cross-sectional slice of project 
+        ///     data,  including detailed descriptions of what changed between snapshots, as described by 
+        ///     specified rules.
+        /// </summary>
+        /// <param name="source">
+        ///     The broadcasting block that produces the messages.
+        /// </param>
+        /// <param name="target">
+        ///     The <see cref="Action{T}"/> to receive the broadcasts.
+        /// </param>
+        /// <param name="suppressVersionOnlyUpdates">
+        ///    A value indicating whether to prevent messages from propagating to the target
+        ///     block if no project changes are include other than an incremented version number.
+        /// </param>
+        /// <param name="ruleNames">
+        ///     The names of the rules that describe the project data the caller is interested in.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        ///     <paramref name="source"/> is <see langword="null"/>.
+        ///     <para>
+        ///         -or-
+        ///     </para>
+        ///     <paramref name="target"/> is <see langword="null"/>.
+        /// </exception>
+        public static IDisposable LinkToAsyncAction(this ISourceBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>> source, Func<IProjectVersionedValue<IProjectSubscriptionUpdate>, Task> target, bool suppressVersionOnlyUpdates = true, params string[] ruleNames)
+        {
+            Requires.NotNull(source, nameof(source));
+            Requires.NotNull(target, nameof(target));
+
+            return source.LinkTo(new ActionBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(target),
+                                 DataflowOption.PropagateCompletion,
+                                 initialDataAsNew: true,
+                                 suppressVersionOnlyUpdates: suppressVersionOnlyUpdates,
+                                 ruleNames: ruleNames);
+        }
+
+        /// <summary>
+        ///     Links to the specified <see cref="Func{T, TResult}" /> to receive a cross-sectional slice of project 
+        ///     data,  including detailed descriptions of what changed between snapshots, as described by 
+        ///     specified rules.
+        /// </summary>
+        /// <param name="source">
+        ///     The broadcasting block that produces the messages.
+        /// </param>
+        /// <param name="target">
+        ///     The <see cref="Action{T}"/> to receive the broadcasts.
+        /// </param>
+        /// <param name="suppressVersionOnlyUpdates">
+        ///    A value indicating whether to prevent messages from propagating to the target
+        ///     block if no project changes are include other than an incremented version number.
+        /// </param>
+        /// <param name="ruleNames">
+        ///     The names of the rules that describe the project data the caller is interested in.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        ///     <paramref name="source"/> is <see langword="null"/>.
+        ///     <para>
+        ///         -or-
+        ///     </para>
+        ///     <paramref name="target"/> is <see langword="null"/>.
+        /// </exception>
+        public static IDisposable LinkToAsyncAction(this ISourceBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>> source, Func<IProjectVersionedValue<IProjectSubscriptionUpdate>, Task> target, bool suppressVersionOnlyUpdates = true, IEnumerable<string> ruleNames = null)
+        {
+            Requires.NotNull(source, nameof(source));
+            Requires.NotNull(target, nameof(target));
+
+            return source.LinkTo(new ActionBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(target),
+                                 DataflowOption.PropagateCompletion,
+                                 initialDataAsNew: true,
+                                 suppressVersionOnlyUpdates: suppressVersionOnlyUpdates,
+                                 ruleNames: ruleNames);
+        }
+
         /// <summary>
         ///     Links the <see cref="ISourceBlock{TOutput}" /> to the specified <see cref="Action{T}" /> 
         ///     that can process messages, propagating completion and faults.
