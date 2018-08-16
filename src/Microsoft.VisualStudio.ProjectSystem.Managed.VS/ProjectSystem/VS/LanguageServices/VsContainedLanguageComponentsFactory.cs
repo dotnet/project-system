@@ -29,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 
         [ImportingConstructor]
         public VsContainedLanguageComponentsFactory(
-            IAsyncServiceProvider serviceProvider,
+            [Import(typeof(SAsyncServiceProvider))]IAsyncServiceProvider serviceProvider,
             IUnconfiguredProjectVsServices projectVsServices,
             IProjectHostProvider projectHostProvider,
             ILanguageServiceHost languageServiceHost)
