@@ -62,15 +62,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.IntegrationTests
 
             using (Scope.Enter("Verify Build Succeeded"))
             {
-                var sucess = VS.ObjectModel.Solution.BuildManager.Verify.ProjectBuilt(consoleProject);
+                var success = VS.ObjectModel.Solution.BuildManager.Verify.ProjectBuilt(consoleProject);
                 string[] errors = new string[] { };
-                if (!sucess)
+                if (!success)
                 {
                     VS.ObjectModel.Shell.ToolWindows.ErrorList.WaitForErrorListItems();
                     errors = VS.ObjectModel.Shell.ToolWindows.ErrorList.Errors.Select(x => $"Description:'{x.Description}' Project:{x.ProjectName} Line:'{x.LineNumber}'").ToArray();
                 }
-
-                Assert.IsTrue(sucess, $"project '{consoleProject.FileName}' failed to build.{Environment.NewLine}errors:{Environment.NewLine}{string.Join(Environment.NewLine, errors)}");
+                
+                Assert.IsTrue(success, $"project '{consoleProject.FileName}' failed to build.{Environment.NewLine}errors:{Environment.NewLine}{string.Join(Environment.NewLine, errors)}");
             }
         }
     }
