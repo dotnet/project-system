@@ -45,14 +45,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
                                                       out uint itemid,
                                                       out IVsContainedLanguageFactory containedLanguageFactory)
         {
-            var result = _projectVsServices.ThreadingService.ExecuteSynchronously(() =>
+            (hierarchy, itemid, containedLanguageFactory) = _projectVsServices.ThreadingService.ExecuteSynchronously(() =>
             {
                 return GetContainedLanguageFactoryForFileAsync(filePath);
             });
-
-            hierarchy = result.hierarchy;
-            itemid = result.itemid;
-            containedLanguageFactory = result.containedLanguageFactory;
 
             return (hierarchy == null || containedLanguageFactory == null) ? HResult.Fail : HResult.OK;
         }
