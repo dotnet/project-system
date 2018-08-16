@@ -49,15 +49,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             return Task.CompletedTask;
         }
 
-        /// <summary>
-        ///     Gets an object that represents a host-specific IVsContainedLanguageFactory implementation and
-        ///     IVsHierarchy and itemId specific to currently active target framework.
-        /// </summary>
-        /// <param name="filePath">Path to a file</param>
-        /// <param name="hierarchy">Project hierarchy containing given file for current language service</param>
-        /// <param name="itemid">item id of the given file</param>
-        /// <param name="containedLanguageFactory">an instance of IVsContainedLanguageFactory specific for current language service</param>
-        /// <returns></returns>
         public int GetContainedLanguageFactoryForFile(string filePath,
                                                       out IVsHierarchy hierarchy,
                                                       out uint itemid,
