@@ -31,16 +31,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         public VsContainedLanguageComponentsFactory(
             IUnconfiguredProjectCommonServices commonServices,
             IAsyncServiceProvider serviceProvider,
-            IUnconfiguredProjectVsServices projectServices,
+            IUnconfiguredProjectVsServices projectVsServices,
             IProjectHostProvider projectHostProvider,
             ILanguageServiceHost languageServiceHost)
         {
             _serviceProvider = serviceProvider;
-            _projectVsServices = projectServices;
+            _projectVsServices = projectVsServices;
             _projectHostProvider = projectHostProvider;
             _languageServiceHost = languageServiceHost;
 
-            _containedLanguageFactory = new AsyncLazy<IVsContainedLanguageFactory>(GetContainedLanguageFactoryAsync, projectServices.ThreadingService.JoinableTaskFactory);
+            _containedLanguageFactory = new AsyncLazy<IVsContainedLanguageFactory>(GetContainedLanguageFactoryAsync, projectVsServices.ThreadingService.JoinableTaskFactory);
         }
 
         public int GetContainedLanguageFactoryForFile(string filePath,
