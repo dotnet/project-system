@@ -99,13 +99,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
                 : VSConstants.S_OK;
         }
 
-        public async Task<Guid?> GetLanguageServiceId()
+        private async Task<Guid?> GetLanguageServiceId()
         {
             ConfigurationGeneral properties = await _projectVsServices.ActiveConfiguredProjectProperties.GetConfigurationGeneralPropertiesAsync()
-                                                                                       .ConfigureAwait(false);
+                                                                                                        .ConfigureAwait(true);
 
             string languageServiceIdString = (string)await properties.LanguageServiceId.GetValueAsync()
-                                                                                    .ConfigureAwait(false);
+                                                                                       .ConfigureAwait(true);
             if (string.IsNullOrEmpty(languageServiceIdString))
                 return null;
 
