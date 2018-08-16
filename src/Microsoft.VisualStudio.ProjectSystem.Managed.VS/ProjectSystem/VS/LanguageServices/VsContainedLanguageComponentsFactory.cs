@@ -48,45 +48,41 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
                                                       out uint itemid,
                                                       out IVsContainedLanguageFactory containedLanguageFactory)
         {
-            uint myItemId = 0;
-            IVsHierarchy myHierarchy = null;
-            IVsContainedLanguageFactory myContainedLanguageFactory = null;
-
-            _projectVsServices.ThreadingService.ExecuteSynchronously(async () =>
+            var result = _projectVsServices.ThreadingService.ExecuteSynchronously(() =>
             {
-                await _languageServiceHost.InitializeAsync()
-                                          .ConfigureAwait(true);
-
-                await _projectVsServices.ThreadingService.SwitchToUIThread();
-
-                var priority = new VSDOCUMENTPRIORITY[1];
-                HResult result = _projectVsServices.VsProject.IsDocumentInProject(filePath,
-                                                                               out int isFound,
-                                                                               priority,
-                                                                               out myItemId);
-                if (result.Failed || isFound == 0)
-                {
-                    return;
-                }
-
-                myHierarchy = (IVsHierarchy)_projectHostProvider.UnconfiguredProjectHostObject.ActiveIntellisenseProjectHostObject;
-
-                myContainedLanguageFactory = await _containedLanguageFactory.GetValueAsync()
-                                                                            .ConfigureAwait(true);
+                return GetContainedLanguageFactoryForFileAsync(filePath);
             });
 
-            hierarchy = myHierarchy;
-            itemid = myItemId;
-            containedLanguageFactory = myContainedLanguageFactory;
+            hierarchy = result.hierarchy;
+            itemid = result.itemid;
+            containedLanguageFactory = result.containedLanguageFactory;
 
-            return (myHierarchy == null || containedLanguageFactory == null)
-                ? VSConstants.E_FAIL
-                : VSConstants.S_OK;
+            return (hierarchy == null || containedLanguageFactory == null) ? HResult.Fail : HResult.OK;
+        }
+
+        private async Task<(IVsHierarchy hierarchy, uint itemid, IVsContainedLanguageFactory containedLanguageFactory)> GetContainedLanguageFactoryForFileAsync(string filePath)
+        {
+            await _languageServiceHost.InitializeAsync()
+                                      .ConfigureAwait(true);
+
+            await _projectVsServices.ThreadingService.SwitchToUIThread();
+
+            var priority = new VSDOCUMENTPRIORITY[1];
+            HResult result = _projectVsServices.VsProject.IsDocumentInProject(filePath, out int isFound, priority, out uint itemid);
+            if (result.Failed || isFound == 0)
+                return (null, HierarchyId.Nil, null);
+
+            var hierarchy = (IVsHierarchy)_projectHostProvider.UnconfiguredProjectHostObject.ActiveIntellisenseProjectHostObject;
+
+            IVsContainedLanguageFactory containedLanguageFactory = await _containedLanguageFactory.GetValueAsync()
+                                                                                                  .ConfigureAwait(true);
+
+            return (hierarchy, itemid, containedLanguageFactory);
         }
 
         private async Task<IVsContainedLanguageFactory> GetContainedLanguageFactoryAsync()
         {
-            var languageServiceId = await GetLanguageServiceId().ConfigureAwait(true);
+            Guid? languageServiceId = await GetLanguageServiceId().ConfigureAwait(true);
             if (languageServiceId == null)
                 return null;
 
