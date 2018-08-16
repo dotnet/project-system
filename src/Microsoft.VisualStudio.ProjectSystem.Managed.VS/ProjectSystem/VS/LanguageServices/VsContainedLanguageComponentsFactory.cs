@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 {
     [Export(typeof(IVsContainedLanguageComponentsFactory))]
     [AppliesTo(ProjectCapability.DotNet)]
-    internal class VsContainedLanguageComponentsFactory : OnceInitializedOnceDisposedAsync, IVsContainedLanguageComponentsFactory
+    internal class VsContainedLanguageComponentsFactory : IVsContainedLanguageComponentsFactory
     {
         private readonly IAsyncServiceProvider _serviceProvider;
         private readonly IUnconfiguredProjectVsServices _projectVsServices;
@@ -34,7 +34,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             IUnconfiguredProjectVsServices projectServices,
             IProjectHostProvider projectHostProvider,
             ILanguageServiceHost languageServiceHost)
-            : base(commonServices.ThreadingService.JoinableTaskContext)
         {
             _serviceProvider = serviceProvider;
             _projectVsServices = projectServices;
@@ -42,16 +41,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             _languageServiceHost = languageServiceHost;
 
             _containedLanguageFactory = new AsyncLazy<IVsContainedLanguageFactory>(GetContainedLanguageFactoryAsync, projectServices.ThreadingService.JoinableTaskFactory);
-        }
-
-        protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
-        {
-            await _languageServiceHost.InitializeAsync(cancellationToken).ConfigureAwait(false);
-        }
-
-        protected override Task DisposeCoreAsync(bool initialized)
-        {
-            return Task.CompletedTask;
         }
 
         public int GetContainedLanguageFactoryForFile(string filePath,
@@ -65,7 +54,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 
             _projectVsServices.ThreadingService.JoinableTaskFactory.Run(async () =>
             {
-                await InitializeAsync().ConfigureAwait(false);
+                await _languageServiceHost.InitializeAsync()
+                                          .ConfigureAwait(true);
 
                 await _projectVsServices.ThreadingService.JoinableTaskFactory.SwitchToMainThreadAsync();
 
