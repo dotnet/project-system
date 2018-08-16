@@ -52,12 +52,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             IVsHierarchy myHierarchy = null;
             IVsContainedLanguageFactory myContainedLanguageFactory = null;
 
-            _projectVsServices.ThreadingService.JoinableTaskFactory.Run(async () =>
+            _projectVsServices.ThreadingService.ExecuteSynchronously(async () =>
             {
                 await _languageServiceHost.InitializeAsync()
                                           .ConfigureAwait(true);
 
-                await _projectVsServices.ThreadingService.JoinableTaskFactory.SwitchToMainThreadAsync();
+                await _projectVsServices.ThreadingService.SwitchToUIThread();
 
                 var priority = new VSDOCUMENTPRIORITY[1];
                 HResult result = _projectVsServices.VsProject.IsDocumentInProject(filePath,
