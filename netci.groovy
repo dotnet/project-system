@@ -80,10 +80,10 @@ def imageName = "latest-dev15-5"
 }
 
 [true, false].each { isPR ->
-  ["debug", "release"].each { configName ->
+  ["debug"].each { configName ->
 
     def platform = "windows_integration"
-    def manualTrigger = true
+    def manualTrigger = false
     def altTriggerPhrase = "vsi"
 
     def newJob = createJob(platform, configName, osName, imageName, isPR, manualTrigger, altTriggerPhrase)
