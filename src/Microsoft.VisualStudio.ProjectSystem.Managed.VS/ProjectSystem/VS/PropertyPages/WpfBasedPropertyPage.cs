@@ -51,17 +51,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             _control.InitializePropertyPage(_viewModel);
         }
 
-        protected override async Task<int> OnApply()
+        protected override Task<int> OnApply()
         {
-            return await _control.Apply().ConfigureAwait(false);
+            return _control.Apply();
         }
 
-        protected override async Task OnDeactivate()
+        protected override Task OnDeactivate()
         {
             if (IsDirty)
             {
-                await OnApply().ConfigureAwait(false);
+                return OnApply();
             }
+
+            return Task.CompletedTask;
         }
 
         private void WpfPropertyPage_Load(object sender, EventArgs e)

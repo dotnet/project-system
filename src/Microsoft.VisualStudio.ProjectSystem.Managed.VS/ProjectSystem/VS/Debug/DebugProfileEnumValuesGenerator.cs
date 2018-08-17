@@ -49,9 +49,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// <summary>
         /// See <see cref="IDynamicEnumValuesGenerator"/>
         /// </summary>
-        public async Task<ICollection<IEnumValue>> GetListedValuesAsync()
+        public Task<ICollection<IEnumValue>> GetListedValuesAsync()
         {
-            return await _listedValues.GetValueAsync().ConfigureAwait(true);
+            return _listedValues.GetValueAsync();
         }
 
         /// <summary>

@@ -153,11 +153,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         /// Ensures that <see cref="_currentAggregateProjectContext"/> is updated for the latest target frameworks from the project properties
         /// and returns this value.
         /// </summary>
-        private async Task<AggregateWorkspaceProjectContext> UpdateProjectContextAsync()
+        private Task<AggregateWorkspaceProjectContext> UpdateProjectContextAsync()
         {
             // Ensure that only single thread is attempting to create a project context.
             AggregateWorkspaceProjectContext previousContextToDispose = null;
-            return await ExecuteWithinLockAsync(async () =>
+            return ExecuteWithinLockAsync(async () =>
             {
                 await _commonServices.ThreadingService.SwitchToUIThread();
 
@@ -216,7 +216,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 }
 
                 return _currentAggregateProjectContext;
-            }).ConfigureAwait(false);
+            });
         }
 
         private async Task DisposeAggregateProjectContextAsync(AggregateWorkspaceProjectContext projectContext)
