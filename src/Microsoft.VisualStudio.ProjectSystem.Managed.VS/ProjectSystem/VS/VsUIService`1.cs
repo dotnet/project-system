@@ -8,40 +8,47 @@ using Microsoft.VisualStudio.Shell;
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     /// <summary>
-    ///     Provides an implementation of <see cref="IVsOptionalService{T}"/> that calls into Visual Studio's <see cref="SVsServiceProvider"/>.
+    ///     Provides an implementation of <see cref="IVsUIService{T}"/> that calls into Visual Studio's <see cref="IServiceProvider"/>.
     /// </summary>
-    [Export(typeof(IVsOptionalService<>))]
-    internal class VsOptionalService<T> : IVsOptionalService<T>
+    [Export(typeof(IVsUIService<>))]
+    internal class VsUIService<T> : IVsUIService<T>
     {
+        private readonly Lazy<T> _value;
         private readonly IProjectThreadingService _threadingService;
         private readonly IServiceProvider _serviceProvider;
-        private readonly Type _serviceType;
 
         [ImportingConstructor]
-        public VsOptionalService([Import(typeof(SVsServiceProvider))]IServiceProvider serviceProvider, IProjectThreadingService threadingService)
-            : this(serviceProvider, threadingService, typeof(T))
-        {
-        }
-
-        protected VsOptionalService(IServiceProvider serviceProvider, IProjectThreadingService threadingService, Type serviceType)
+        public VsUIService([Import(typeof(SVsServiceProvider))]IServiceProvider serviceProvider, IProjectThreadingService threadingService)
         {
             Requires.NotNull(serviceProvider, nameof(serviceProvider));
             Requires.NotNull(threadingService, nameof(threadingService));
-            Requires.NotNull(serviceType, nameof(serviceType));
 
+            _value = new Lazy<T>(GetService);
             _serviceProvider = serviceProvider;
             _threadingService = threadingService;
-            _serviceType = serviceType;
         }
 
         public T Value
         {
             get
             {
+                // We always verify that we're on the UI thread regardless 
+                // of whether we've already retrieved the service to always
+                // enforce this.
                 _threadingService.VerifyOnUIThread();
 
-                return (T)_serviceProvider.GetService(_serviceType);
+                return _value.Value;
             }
+        }
+
+        protected virtual Type ServiceType
+        {
+            get { return typeof(T); }
+        }
+
+        protected virtual T GetService()
+        {
+            return (T)_serviceProvider.GetService(ServiceType);
         }
     }
 }
