@@ -18,7 +18,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
     internal class StartupProjectRegistrar : OnceInitializedOnceDisposedAsync
     {
         private readonly IVsService<IVsStartupProjectsListService> _startupProjectsListService;
-        private readonly IProjectThreadingService _threadingService;
         private readonly ISafeProjectGuidService _projectGuidService;
         private readonly IActiveConfiguredProjectSubscriptionService _projectSubscriptionService;
         private readonly ActiveConfiguredProject<DebuggerLaunchProviders> _launchProviders;
@@ -39,7 +38,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         : base(threadingService.JoinableTaskContext)
         {
             _startupProjectsListService = startupProjectsListService;
-            _threadingService = threadingService;
             _projectGuidService = projectGuidService;
             _projectSubscriptionService = projectSubscriptionService;
             _launchProviders = launchProviders;
