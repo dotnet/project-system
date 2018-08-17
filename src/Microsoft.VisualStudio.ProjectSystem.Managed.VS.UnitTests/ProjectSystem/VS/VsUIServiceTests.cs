@@ -7,7 +7,7 @@ using Xunit;
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     [Trait("UnitTest", "ProjectSystem")]
-    public class VsOptionalServiceTests
+    public class VsUIServiceTests
     {
         [Fact]
         public void Constructor_NullAsServiceProvider_ThrowsArgumentNull()
@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             Assert.Throws<ArgumentNullException>("serviceProvider", () =>
             {
-                return new VsOptionalService<string, string>((IServiceProvider)null, threadingService);
+                return new VsUIService<string, string>((IServiceProvider)null, threadingService);
             });
         }
 
@@ -27,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             Assert.Throws<ArgumentNullException>("threadingService", () =>
             {
-                return new VsOptionalService<string, string>(serviceProvider, (IProjectThreadingService)null);
+                return new VsUIService<string, string>(serviceProvider, (IProjectThreadingService)null);
             });
         }
 
@@ -80,7 +80,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         }
 
         [Fact]
-        public void Value_DoesNotCache()
+        public void Value_CachesResult()
         {
             var threadingService = IProjectThreadingServiceFactory.ImplementVerifyOnUIThread(() => { });
             var serviceProvider = IServiceProviderFactory.ImplementGetService(type =>
@@ -93,15 +93,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             var result1 = service.Value;
             var result2 = service.Value;
 
-            Assert.NotSame(result1, result2);
+            Assert.Same(result1, result2);
         }
 
-        private VsOptionalService<TService, TInterface> CreateInstance<TService, TInterface>(IServiceProvider serviceProvider = null, IProjectThreadingService threadingService = null)
+        private VsUIService<TService, TInterface> CreateInstance<TService, TInterface>(IServiceProvider serviceProvider = null, IProjectThreadingService threadingService = null)
         {
             serviceProvider = serviceProvider ?? SVsServiceProviderFactory.Create();
             threadingService = threadingService ?? IProjectThreadingServiceFactory.Create();
 
-            return new VsOptionalService<TService, TInterface>(serviceProvider, threadingService);
+            return new VsUIService<TService, TInterface>(serviceProvider, threadingService);
         }
     }
 }
