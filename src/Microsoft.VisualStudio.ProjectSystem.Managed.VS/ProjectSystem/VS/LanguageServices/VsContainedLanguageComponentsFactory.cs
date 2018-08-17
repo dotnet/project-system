@@ -5,6 +5,7 @@ using System.ComponentModel.Composition;
 using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
+using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.TextManager.Interop;
@@ -93,17 +94,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             ConfigurationGeneral properties = await _projectVsServices.ActiveConfiguredProjectProperties.GetConfigurationGeneralPropertiesAsync()
                                                                                                         .ConfigureAwait(true);
 
-            string languageServiceIdString = (string)await properties.LanguageServiceId.GetValueAsync()
-                                                                                       .ConfigureAwait(true);
-            if (string.IsNullOrEmpty(languageServiceIdString))
-                return Guid.Empty;
-
-            if (!Guid.TryParse(languageServiceIdString, out Guid languageServiceId))
-            {
-                return Guid.Empty;
-            }
-
-            return languageServiceId;
+            return await properties.LanguageServiceId.GetValueAsGuidAsync()
+                                                     .ConfigureAwait(true);
         }
     }
 }
