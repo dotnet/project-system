@@ -32,6 +32,11 @@
         <target state="translated">Comprobaciones de actualizaciones</target>
         <note />
       </trans-unit>
+      <trans-unit id="General_UsePreviewSdk">
+        <source>Use previews of the .NET Core SDK</source>
+        <target state="new">Use previews of the .NET Core SDK</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>

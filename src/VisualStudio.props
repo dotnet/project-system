@@ -69,7 +69,8 @@
   <Target Name="CustomLinkVSSDKEmbeddableAssemblies" AfterTargets="LinkVSSDKEmbeddableAssemblies">
     <ItemGroup>
       <ReferencePath Condition="
-              '%(FileName)' == 'Microsoft.VisualStudio.Shell.Embeddable'
+              '%(FileName)' == 'Microsoft.VisualStudio.Setup.Configuration.Interop'
+           or '%(FileName)' == 'Microsoft.VisualStudio.Shell.Embeddable'
            or '%(FileName)' == 'Microsoft.VisualStudio.Shell.Interop.12.0'
            or '%(FileName)' == 'Microsoft.VisualStudio.Shell.Interop.12.1.DesignTime'
            or '%(FileName)' == 'Microsoft.VisualStudio.Shell.Interop.14.0.DesignTime'
