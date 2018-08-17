@@ -10,7 +10,6 @@ using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.TextManager.Interop;
 using Microsoft.VisualStudio.Threading;
 
-using IAsyncServiceProvider = Microsoft.VisualStudio.Shell.IAsyncServiceProvider;
 using IOleAsyncServiceProvider = Microsoft.VisualStudio.Shell.Interop.IAsyncServiceProvider;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
@@ -19,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
     [AppliesTo(ProjectCapability.DotNet)]
     internal class VsContainedLanguageComponentsFactory : IVsContainedLanguageComponentsFactory
     {
-        private readonly IAsyncServiceProvider _serviceProvider;
+        private readonly IVsService<SAsyncServiceProvider, IOleAsyncServiceProvider> _serviceProvider;
         private readonly IUnconfiguredProjectVsServices _projectVsServices;
         private readonly IProjectHostProvider _projectHostProvider;
         private readonly ILanguageServiceHost _languageServiceHost;
@@ -27,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 
         [ImportingConstructor]
         public VsContainedLanguageComponentsFactory(
-            [Import(typeof(SAsyncServiceProvider))]IAsyncServiceProvider serviceProvider,
+            IVsService<SAsyncServiceProvider, IOleAsyncServiceProvider> serviceProvider,
             IUnconfiguredProjectVsServices projectVsServices,
             IProjectHostProvider projectHostProvider,
             ILanguageServiceHost languageServiceHost)
@@ -75,19 +74,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 
         private async Task<IVsContainedLanguageFactory> GetContainedLanguageFactoryAsync()
         {
-            Guid? languageServiceId = await GetLanguageServiceId().ConfigureAwait(true);
-            if (languageServiceId == null)
+            Guid languageServiceId = await GetLanguageServiceId().ConfigureAwait(true);
+            if (languageServiceId == Guid.Empty)
                 return null;
 
-            var serviceProvider = (IOleAsyncServiceProvider)await _serviceProvider.GetServiceAsync(typeof(SAsyncServiceProvider))
-                                                                                  .ConfigureAwait(true);
+            object service = await _serviceProvider.Value.QueryServiceAsync(ref languageServiceId);
 
-            Guid clsid = languageServiceId.Value;
+            await _projectVsServices.ThreadingService.SwitchToUIThread();
 
-            return (IVsContainedLanguageFactory)await serviceProvider.QueryServiceAsync(ref clsid);
+            // NOTE: While this type is implemented in Roslyn, we force the cast on 
+            // the UI thread because they are free to change this to an STA object
+            // which would result in an RPC call from a background thread.
+            return (IVsContainedLanguageFactory)service;
         }
 
-        private async Task<Guid?> GetLanguageServiceId()
+        private async Task<Guid> GetLanguageServiceId()
         {
             ConfigurationGeneral properties = await _projectVsServices.ActiveConfiguredProjectProperties.GetConfigurationGeneralPropertiesAsync()
                                                                                                         .ConfigureAwait(true);
@@ -95,11 +96,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             string languageServiceIdString = (string)await properties.LanguageServiceId.GetValueAsync()
                                                                                        .ConfigureAwait(true);
             if (string.IsNullOrEmpty(languageServiceIdString))
-                return null;
+                return Guid.Empty;
 
             if (!Guid.TryParse(languageServiceIdString, out Guid languageServiceId))
             {
-                return null;
+                return Guid.Empty;
             }
 
             return languageServiceId;
