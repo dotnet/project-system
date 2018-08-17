@@ -26,11 +26,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         private readonly AsyncLazy<IVsContainedLanguageFactory> _containedLanguageFactory;
 
         [ImportingConstructor]
-        public VsContainedLanguageComponentsFactory(
-            IVsService<SAsyncServiceProvider, IOleAsyncServiceProvider> serviceProvider,
-            IUnconfiguredProjectVsServices projectVsServices,
-            IProjectHostProvider projectHostProvider,
-            ILanguageServiceHost languageServiceHost)
+        public VsContainedLanguageComponentsFactory(IVsService<SAsyncServiceProvider, IOleAsyncServiceProvider> serviceProvider,
+                                                    IUnconfiguredProjectVsServices projectVsServices,
+                                                    IProjectHostProvider projectHostProvider,
+                                                    ILanguageServiceHost languageServiceHost)
         {
             _serviceProvider = serviceProvider;
             _projectVsServices = projectVsServices;
