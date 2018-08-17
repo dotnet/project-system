@@ -14,9 +14,10 @@ For a list of behavior differences; see [Compability](compatibility.md).
 ASP.NET Core (.NET Framework & .NET Core)                                   |          | ●
 ASP.NET                                                                     | ●        |   
 Xamarin                                                                     | ●        |   
-Universal Windows Platform (UWP)                                            | ●        |   
-Windows Presentation Framework (WPF)                                        | ●        |   
-Windows Forms                                                               | ●        |   
+Universal Windows Platform (UWP)                                            | ●        |
+Windows Presentation Framework (WPF)                                        | ●        | [16.0](https://github.com/dotnet/project-system/labels/Feature-XAML)
+Windows Forms                                                               | ●        | [16.0](https://github.com/dotnet/project-system/labels/Feature-WinForms)  
+Windows Workflow Foundation (WWF)                                           | ●        |
 **Build**|
 Target multiple frameworks (multi-target) from single project               |          | ●
 Show build (design-time) errors & warnings in Error List as you make them   |          | ●
@@ -52,7 +53,8 @@ Generate NuGet package on build                                             |   
 Add Service Reference                                                       | ●        | 
 Add Web Reference                                                           | ●        | 
 Add Data Source                                                             | ●        | 
-"Initialize Interactive Window with Project"                               | ●        | ● (15.8) | Only when targeting .NET Framework.
+DataSet Designer                                                            | ●        |
+"Initialize Interactive Window with Project"                                | ●        | ● (15.8) | Only when targeting .NET Framework.
 Class Diagrams                                                              | ●        | ● (15.8) |
 Code Analysis                                                               | ●        | 
 Code Metrics                                                                | ●        | ◖ (15.8) ● (16.0 Preview 1) | 15.8 added support for Code Metrics when targeting .NET Framework. 16.0 will add support for Code Metrics when targeting all frameworks.
