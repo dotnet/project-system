@@ -1,8 +1,10 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
-
+using System.Threading.Tasks;
 using Xunit;
+
+using IAsyncServiceProvider = Microsoft.VisualStudio.Shell.IAsyncServiceProvider;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
@@ -16,14 +18,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             Assert.Throws<ArgumentNullException>("serviceProvider", () =>
             {
-                return new VsService<string, string>((IServiceProvider)null, threadingService);
+                return new VsService<string, string>((IAsyncServiceProvider)null, threadingService);
             });
         }
 
         [Fact]
         public void Constructor_NullAsThreadingService_ThrowsArgumentNull()
         {
-            var serviceProvider = SVsServiceProviderFactory.Create();
+            var serviceProvider = IAsyncServiceProviderFactory.Create();
 
             Assert.Throws<ArgumentNullException>("threadingService", () =>
             {
@@ -32,40 +34,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         }
 
         [Fact]
-        public void Value_MustBeCalledOnUIThread()
+        public async Task Value_WhenMissingService_ReturnsNull()
         {
-            var threadingService = IProjectThreadingServiceFactory.ImplementVerifyOnUIThread(() => throw new InvalidOperationException());
-
-            var service = CreateInstance<string, string>(threadingService: threadingService);
-
-            Assert.Throws<InvalidOperationException>(() =>
-            {
-                var value = service.Value;
-            });
-        }
-
-        [Fact]
-        public void Value_WhenMissingService_Throws()
-        {
-            var threadingService = IProjectThreadingServiceFactory.ImplementVerifyOnUIThread(() => { });
-            var serviceProvider = IServiceProviderFactory.ImplementGetService(type => null);
+            var threadingService = IProjectThreadingServiceFactory.Create();
+            var serviceProvider = IAsyncServiceProviderFactory.ImplementGetServiceAsync(type => null);
 
             var service = CreateInstance<string, string>(serviceProvider: serviceProvider, threadingService: threadingService);
 
-            // We don't really care about the exception, it's an assertion
-            Assert.ThrowsAny<Exception>(() =>
-            {
-                var value = service.Value;
-            });
+            var result = await service.GetValueAsync();
+
+            Assert.Null(result);
         }
 
         [Fact]
-        public void Value_ReturnsGetService()
+        public async Task Value_ReturnsGetService()
         {
             object input = new object();
 
-            var threadingService = IProjectThreadingServiceFactory.ImplementVerifyOnUIThread(() => { });
-            var serviceProvider = IServiceProviderFactory.ImplementGetService(type =>
+            var threadingService = IProjectThreadingServiceFactory.Create();
+            var serviceProvider = IAsyncServiceProviderFactory.ImplementGetServiceAsync(type =>
             {
                 if (type == typeof(string))
                     return input;
@@ -76,31 +63,31 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             var service = CreateInstance<string, object>(serviceProvider: serviceProvider, threadingService: threadingService);
 
-            var result = service.Value;
+            var result = await service.GetValueAsync();
 
             Assert.Same(input, result);
         }
 
         [Fact]
-        public void Value_DoesNotCache()
+        public async Task Value_CachesResult()
         {
-            var threadingService = IProjectThreadingServiceFactory.ImplementVerifyOnUIThread(() => { });
-            var serviceProvider = IServiceProviderFactory.ImplementGetService(type =>
+            var threadingService = IProjectThreadingServiceFactory.Create();
+            var serviceProvider = IAsyncServiceProviderFactory.ImplementGetServiceAsync(type =>
             {
                 return new object();
             });
 
             var service = CreateInstance<string, object>(serviceProvider: serviceProvider, threadingService: threadingService);
 
-            var result1 = service.Value;
-            var result2 = service.Value;
+            var result1 = await service.GetValueAsync();
+            var result2 = await service.GetValueAsync();
 
-            Assert.NotSame(result1, result2);
+            Assert.Same(result1, result2);
         }
 
-        private VsService<TService, TInterface> CreateInstance<TService, TInterface>(IServiceProvider serviceProvider = null, IProjectThreadingService threadingService = null)
+        private VsService<TService, TInterface> CreateInstance<TService, TInterface>(IAsyncServiceProvider serviceProvider = null, IProjectThreadingService threadingService = null)
         {
-            serviceProvider = serviceProvider ?? SVsServiceProviderFactory.Create();
+            serviceProvider = serviceProvider ?? IAsyncServiceProviderFactory.Create();
             threadingService = threadingService ?? IProjectThreadingServiceFactory.Create();
 
             return new VsService<TService, TInterface>(serviceProvider, threadingService);

@@ -2,50 +2,58 @@
 
 using System;
 using System.ComponentModel.Composition;
+using System.Threading.Tasks;
 
-using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Shell.Interop;
+using Microsoft.VisualStudio.Threading;
+
+using IAsyncServiceProvider = Microsoft.VisualStudio.Shell.IAsyncServiceProvider;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     /// <summary>
-    ///     Provides an implementation of <see cref="IVsService{T}"/> that calls into Visual Studio's <see cref="SVsServiceProvider"/>.
+    ///     Provides an implementation of <see cref="IVsService{T}"/> that calls into Visual Studio's <see cref="IAsyncServiceProvider"/>.
     /// </summary>
     [Export(typeof(IVsService<>))]
-    internal class VsService<T> : IVsService<T>
+    internal class VsService<T>
     {
+        private readonly AsyncLazy<T> _value;
+        private readonly IAsyncServiceProvider _serviceProvider;
         private readonly IProjectThreadingService _threadingService;
-        private readonly IServiceProvider _serviceProvider;
-        private readonly Type _serviceType;
 
         [ImportingConstructor]
-        public VsService([Import(typeof(SVsServiceProvider))]IServiceProvider serviceProvider, IProjectThreadingService threadingService)
-            : this(serviceProvider, threadingService, typeof(T))
-        {
-        }
-
-        protected VsService(IServiceProvider serviceProvider, IProjectThreadingService threadingService, Type serviceType)
+        public VsService([Import(typeof(SAsyncServiceProvider))]IAsyncServiceProvider serviceProvider, IProjectThreadingService threadingService)
         {
             Requires.NotNull(serviceProvider, nameof(serviceProvider));
             Requires.NotNull(threadingService, nameof(threadingService));
-            Requires.NotNull(serviceType, nameof(serviceType));
 
+            _value = new AsyncLazy<T>(GetServiceAsync, threadingService.JoinableTaskFactory);
             _serviceProvider = serviceProvider;
             _threadingService = threadingService;
-            _serviceType = serviceType;
         }
 
-        public T Value
+        public Task<T> GetValueAsync()
         {
-            get
-            {
-                _threadingService.VerifyOnUIThread();
+            return _value.GetValueAsync();
+        }
 
-                var service = (T)_serviceProvider.GetService(_serviceType);
+        protected virtual Type ServiceType
+        {
+            get { return typeof(T); }
+        }
 
-                Assumes.Present(service);
+        private async Task<T> GetServiceAsync()
+        {
+            // If the service request requires a package load, GetServiceAsync will 
+            // happily do that on a background thread.
+            object iunknown = await _serviceProvider.GetServiceAsync(ServiceType)
+                                                    .ConfigureAwait(true);
 
-                return service;
-            }
+            // We explicitly switch to the UI thread to avoid doing a QueryInterface 
+            // via blocking RPC for STA objects when we cast explicitly to the type
+            await _threadingService.SwitchToUIThread();
+
+            return (T)iunknown;
         }
     }
 }
