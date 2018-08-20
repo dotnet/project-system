@@ -24,9 +24,11 @@ __NOTE:__ To workaround a bug preventing Visual Studio from restoring this repro
 
 By default when you build inside Visual Studio or the command-line, the project system and other binaries gets deployed to the _Exp_ experimental instance of Visual Studio. They will automatically _override_ any binaries that come with Visual Studio.
 
+First of all, [setup your debugging environment](https://github.com/dotnet/project-system/blob/master/docs/repo/debugging/setting-up-environment.md).
+
 ### Command-line
 
-From the command-line, after you've run `build.cmd: you can launch a Visual Studio instance with your recently built bits with:
+From the command-line, after you've run `build.cmd` you can launch a Visual Studio instance with your recently built bits with:
 
 ```
 > launch.cmd
