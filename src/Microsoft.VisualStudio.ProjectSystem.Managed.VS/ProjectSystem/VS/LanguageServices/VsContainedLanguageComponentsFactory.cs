@@ -90,11 +90,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 
             object service = await serviceProvider.QueryServiceAsync(ref languageServiceId);
 
-            await _projectVsServices.ThreadingService.SwitchToUIThread();
-
             // NOTE: While this type is implemented in Roslyn, we force the cast on 
             // the UI thread because they are free to change this to an STA object
             // which would result in an RPC call from a background thread.
+            await _projectVsServices.ThreadingService.SwitchToUIThread();
+
             return (IVsContainedLanguageFactory)service;
         }
 
