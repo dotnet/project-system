@@ -222,7 +222,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// </summary>
         internal void SetObjects(bool isClosing)
         {
-            WaitForAsync(async () => await OnSetObjects(isClosing).ConfigureAwait(false));
+            WaitForAsync(() => OnSetObjects(isClosing));
         }
 
         ///--------------------------------------------------------------------------------------------

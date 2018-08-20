@@ -19,11 +19,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
 
         private readonly IProjectThreadingService _threadingService;
 
-        public async Task<string> GetStringAsync(Uri uri)
+        public Task<string> GetStringAsync(Uri uri)
         {
             using (HttpClient client = CreateClient())
             {
-                return await client.GetStringAsync(uri).ConfigureAwait(false);
+                return client.GetStringAsync(uri);
             }
         }
 

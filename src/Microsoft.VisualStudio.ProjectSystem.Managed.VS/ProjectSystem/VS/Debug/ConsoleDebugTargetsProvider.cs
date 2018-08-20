@@ -51,9 +51,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         private ProjectProperties Properties { get; }
         private UnconfiguredProject Project { get; }
 
-        private async Task<ConfiguredProject> GetConfiguredProjectForDebugAsync()
+        private Task<ConfiguredProject> GetConfiguredProjectForDebugAsync()
         {
-            return await ActiveDebugFramework.GetConfiguredProjectForActiveFrameworkAsync().ConfigureAwait(false);
+            return ActiveDebugFramework.GetConfiguredProjectForActiveFrameworkAsync();
         }
 
         /// <summary>

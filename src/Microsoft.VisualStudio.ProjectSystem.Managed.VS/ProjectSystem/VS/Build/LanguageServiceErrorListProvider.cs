@@ -45,12 +45,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
             return AddMessageCoreAsync(error);
         }
 
-        private async Task<AddMessageResult> AddMessageCoreAsync(TargetGeneratedError error)
+        private Task<AddMessageResult> AddMessageCoreAsync(TargetGeneratedError error)
         {
             // We only want to pass compiler, analyzers, etc to the language 
             // service, so we skip tasks that do not have a code
             if (!TryExtractErrorListDetails(error.BuildEventArgs, out ErrorListDetails details) || string.IsNullOrEmpty(details.Code))
-                return await s_notHandled.ConfigureAwait(false);
+                return s_notHandled;
 
             InitializeBuildErrorReporter();
 
@@ -75,7 +75,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
                 }
             }
 
-            return handled ? await s_handledAndStopProcessing.ConfigureAwait(false) : await s_notHandled.ConfigureAwait(false);
+            return handled ? s_handledAndStopProcessing : s_notHandled;
         }
 
         public Task ClearMessageFromTargetAsync(string targetName)
