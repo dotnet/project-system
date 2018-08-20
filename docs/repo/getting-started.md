@@ -20,17 +20,17 @@ To get started:
 2. From a Visual Studio Developer Prompt, run (replacing _[user-name]_ with your GitHub user name):
 
 ```
-> git clone https://github.com/[user-name]/project-system
-> cd project-system
-> git remote add upstream https://github.com/dotnet/project-system
-> git remote set-url --push upstream no_push
+\> git clone https://github.com/[user-name]/project-system
+\> cd project-system
+\project-system> git remote add upstream https://github.com/dotnet/project-system
+\project-system> git remote set-url --push upstream no_push
 ```
 
 The last command prevents an accidental push to this repository without going through a pull request.
 
 After running above, `git remote -v` should show the following:
 ```
-> git remote -v 
+\project-system> git remote -v 
 origin  https://github.com/davkean/project-system (fetch)
 origin  https://github.com/davkean/project-system (push)
 upstream        https://github.com/dotnet/project-system (fetch)
@@ -44,7 +44,7 @@ upstream        no_push (push)
 From within a [Visual Studio Developer Prompt](https://msdn.microsoft.com/en-us/library/ms229859(v=vs.150).aspx), from the repo root, run:
 
 ```
-> build.cmd
+project-system> build.cmd
 ```
 
 This builds, runs tests and deploys to Visual Studio.
@@ -68,7 +68,7 @@ First of all, [setup your debugging environment](https://github.com/dotnet/proje
 From the command-line, after you've run `build.cmd` you can launch a Visual Studio instance with your recently built bits with:
 
 ```
-> launch.cmd
+project-system> launch.cmd
 ```
 
 ### Visual Studio
@@ -89,23 +89,23 @@ When testing inconjunction with other repositories, it's handy to be able to dep
 Both Visual Studio and command-line respect the `ROOTSUFFIX` environment variable:
 
 ```
-set ROOTSUFFIX=RoslynDev
+project-system> set ROOTSUFFIX=RoslynDev
 
-> build.cmd
-> launch.cmd
+project-system> build.cmd
+project-system> launch.cmd
 ```
 
 ```
-set ROOTSUFFIX=RoslynDev
+project-system> set ROOTSUFFIX=RoslynDev
 
-devenv ProjectSystem.sln
+project-system> devenv ProjectSystem.sln
 ```
 
 Also, both `build.cmd` and `launch.cmd` provide a `/rootsuffix` switch:
 
 ``` 
-> build.cmd /rootsuffix RoslynDev
-> launch.cmd /rootsuffix RoslynDev
+project-system> build.cmd /rootsuffix RoslynDev
+project-system> launch.cmd /rootsuffix RoslynDev
 ```
 
 ## Testing 
