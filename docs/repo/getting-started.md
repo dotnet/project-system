@@ -9,7 +9,7 @@ All commands below are run under a [Visual Studio Developer Prompt](https://msdn
 
 ## Code
 
-Contribution to this repository is done using the [fork model](https://help.github.com/articles/fork-a-repo/). Contributors push changes to their own version of this repository, and then submit a pull request into this repository requesting those changes be merged.
+Contribution to this repository is via the [fork model](https://help.github.com/articles/fork-a-repo/). Contributors push changes to their own "forked" version of this repository, and then submit a pull request into it requesting those changes be merged.
 
 To get started:
 
