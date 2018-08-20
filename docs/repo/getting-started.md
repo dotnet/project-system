@@ -7,7 +7,7 @@
 From within a [Visual Studio Developer Prompt](https://msdn.microsoft.com/en-us/library/ms229859(v=vs.150).aspx), from the repo root, run:
 
 ```
-build.cmd
+> build.cmd
 ```
 
 This builds, runs tests and deploys to Visual Studio.
@@ -26,7 +26,11 @@ By default when you build inside Visual Studio or the command-line, the project 
 
 ### Command-line
 
-From the command-line, after you've run `build.cmd`, you can launch a Visual Studio instance with your recently built bits by running `launch.cmd`.
+From the command-line, after you've run `build.cmd: you can launch a Visual Studio instance with your recently built bits with:
+
+```
+> launch.cmd
+```
 
 ### Visual Studio
 
@@ -64,7 +68,6 @@ Also, both `build.cmd` and `launch.cmd` provide a `/rootsuffix` switch:
 > build.cmd /rootsuffix RoslynDev
 > launch.cmd /rootsuffix RoslynDev
 ```
-
 
 ## Testing 
 
