@@ -11,7 +11,7 @@
   <Import Project="..\build\VisualStudio.XamlRules.props" />
 
   <PropertyGroup>
-    <_IsVisualStudioDeveloperBuild Condition="'$(OfficialBuild)' != 'true' AND $(CIBuild) != 'true' AND '$(BuildingInsideVisualStudio)' == 'true'">true</_IsVisualStudioDeveloperBuild>
+    <_IsVisualStudioDeveloperBuild Condition="'$(OfficialBuild)' != 'true' AND '$(CIBuild)' != 'true' AND '$(BuildingInsideVisualStudio)' == 'true'">true</_IsVisualStudioDeveloperBuild>
 
     <!-- Code Coverage doesn't currently work for portable/embedded PDBs - force to full inside Visual Studio builds -->
     <DebugType Condition="'$(_IsVisualStudioDeveloperBuild)' == 'true'">full</DebugType>
