@@ -292,12 +292,22 @@ function RunIntegrationTests {
     $OpenCoverExe = GetOpenCoverExe
     Write-Host "Using $OpenCoverExe"
     Write-Host "Using $VSTestExe"
-    $TestResultsOpenCoverPath = Join-Path (Join-Path $ArtifactsDir $configuration) "TestResults\Microsoft.VisualStudio.ProjectSystem.IntegrationTests.coverage"
-    & $OpenCoverExe -register:path32 -returntargetcode -hideskipped:All -filter:"+[*]*" -excludebyattribute:*.ExcludeFromCodeCoverage* -excludebyfile:*\*Designer.cs -output:"$TestResultsOpenCoverPath" -target:"$VSTestEx" -targetargs:"/blame /logger:$LogFileArgs /ResultsDirectory:"$IntegrationTestTempDir" /Settings:$runSettings $TestAssembly"
+    $TestResultsDirectory = Join-Path (Join-Path $ArtifactsDir $configuration) "TestResults"
+    $TestResultsOpenCoverPath = Join-Path $TestResultsDirectory "Microsoft.VisualStudio.ProjectSystem.IntegrationTests.coverage"
+    if (!(Test-Path $TestResultsDirectory)) {
+      Create-Directory $TestResultsDirectory
+    }
+    & $OpenCoverExe -register:path32 -returntargetcode -hideskipped:All -filter:"+[*]*" -excludebyattribute:*.ExcludeFromCodeCoverage* -excludebyfile:*\*Designer.cs -output:"$TestResultsOpenCoverPath" -target:"$VSTestExe" -targetargs:"/blame /logger:$LogFileArgs /ResultsDirectory:`"$IntegrationTestTempDir`" /Settings:$runSettings $TestAssembly"
   }
   else{
     Write-Host "Using $VSTestExe"
     & $VSTestExe /blame /logger:$LogFileArgs /ResultsDirectory:"$IntegrationTestTempDir" /Settings:$runSettings $TestAssembly
+  }
+
+  if ($useCodecov) {
+    $CodecovProj = Join-Path $PSScriptRoot 'Codecov.proj'
+    $nodeReuse = !$ci
+    & $MsbuildExe $CodecovProj /m /nologo /clp:Summary /nodeReuse:$nodeReuse /warnaserror /v:diag /t:Codecov /p:Configuration=$configuration /p:UseCodecov=$useCodecov /p:NuGetPackageRoot=$NuGetPackageRoot $properties
   }
 
   # Kill any VS processes left over
