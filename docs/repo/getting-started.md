@@ -47,7 +47,7 @@ From within a [Visual Studio Developer Prompt](https://msdn.microsoft.com/en-us/
 project-system> build.cmd
 ```
 
-This builds, runs tests and deploys to Visual Studio.
+This builds, runs tests and deploys to an experimental instance of Visual Studio.
 
 ### Visual Studio
 From within [Visual Studio 2017](https://www.visualstudio.com/downloads/), open _ProjectSystem.sln_.
@@ -59,7 +59,7 @@ __NOTE:__ To workaround a bug preventing Visual Studio from restoring this repro
 
 ## Debugging/Deploying
 
-By default when you build inside Visual Studio or the command-line, the project system and other binaries gets deployed to the _Exp_ experimental instance of Visual Studio. They will automatically _override_ any binaries that come with Visual Studio.
+By default when you build inside Visual Studio or the command-line, the project system and other binaries gets deployed to the _Exp_ experimental instance of Visual Studio. They will automatically _override_ any binaries that come with Visual Studio when you launch that instance.
 
 First of all, [setup your debugging environment](https://github.com/dotnet/project-system/blob/master/docs/repo/debugging/setting-up-environment.md).
 
