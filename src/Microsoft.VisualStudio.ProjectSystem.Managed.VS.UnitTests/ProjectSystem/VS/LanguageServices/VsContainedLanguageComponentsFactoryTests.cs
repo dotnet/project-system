@@ -117,7 +117,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 
             var projectVsServices = new IUnconfiguredProjectVsServicesMock();
             projectVsServices.ImplementVsProject(project);
-            projectVsServices.ImplementThreadingService(new IProjectThreadingServiceMock());
+            projectVsServices.ImplementThreadingService(IProjectThreadingServiceFactory.Create());
             projectVsServices.ImplementActiveConfiguredProjectProperties(properties);
 
             return CreateInstance(serviceProvider, projectVsServices.Object, hostProvider, languageServiceHost);
