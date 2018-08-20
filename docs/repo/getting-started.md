@@ -1,7 +1,7 @@
 # Getting Started
 
 #### Prerequisites
-- [Visual Studio 2017](https://www.visualstudio.com/downloads/).
+- [Visual Studio 2017](https://www.visualstudio.com/downloads/)
 - GitHub account
 - Basic Git experience: https://try.github.io/
 
