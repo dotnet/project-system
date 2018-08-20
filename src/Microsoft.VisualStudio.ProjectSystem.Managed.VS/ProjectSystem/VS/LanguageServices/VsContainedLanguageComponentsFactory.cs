@@ -44,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
                                                       out uint itemid,
                                                       out IVsContainedLanguageFactory containedLanguageFactory)
         {
-            (hierarchy, itemid, containedLanguageFactory) = _projectVsServices.ThreadingService.ExecuteSynchronously(() =>
+            (itemid, hierarchy, containedLanguageFactory) = _projectVsServices.ThreadingService.ExecuteSynchronously(() =>
             {
                 return GetContainedLanguageFactoryForFileAsync(filePath);
             });
@@ -52,7 +52,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             return (hierarchy == null || containedLanguageFactory == null) ? HResult.Fail : HResult.OK;
         }
 
-        private async Task<(IVsHierarchy hierarchy, uint itemid, IVsContainedLanguageFactory containedLanguageFactory)> GetContainedLanguageFactoryForFileAsync(string filePath)
+        private async Task<(HierarchyId itemid, IVsHierarchy hierarchy, IVsContainedLanguageFactory containedLanguageFactory)> GetContainedLanguageFactoryForFileAsync(string filePath)
         {
             await _languageServiceHost.InitializeAsync()
                                       .ConfigureAwait(true);
@@ -62,14 +62,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             var priority = new VSDOCUMENTPRIORITY[1];
             HResult result = _projectVsServices.VsProject.IsDocumentInProject(filePath, out int isFound, priority, out uint itemid);
             if (result.Failed || isFound == 0)
-                return (null, HierarchyId.Nil, null);
+                return (HierarchyId.Nil, null, null);
 
-            var hierarchy = (IVsHierarchy)_projectHostProvider.UnconfiguredProjectHostObject.ActiveIntellisenseProjectHostObject;
+            Assumes.False(itemid == HierarchyId.Nil);
 
             IVsContainedLanguageFactory containedLanguageFactory = await _containedLanguageFactory.GetValueAsync()
                                                                                                   .ConfigureAwait(true);
 
-            return (hierarchy, itemid, containedLanguageFactory);
+            if (containedLanguageFactory == null)
+                return (HierarchyId.Nil, null, null);
+
+            var hierarchy = (IVsHierarchy)_projectHostProvider.UnconfiguredProjectHostObject.ActiveIntellisenseProjectHostObject;
+            if (hierarchy == null)
+                return (HierarchyId.Nil, null, null);
+
+            return (itemid, hierarchy, containedLanguageFactory);
         }
 
         private async Task<IVsContainedLanguageFactory> GetContainedLanguageFactoryAsync()
