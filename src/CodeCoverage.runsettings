@@ -45,11 +45,7 @@ Included items must then not match any entries in the exclude list to remain inc
                 <ModulePath>.*\.exe$</ModulePath>
               </Include>
               <Exclude>
-                <ModulePath>.*CPPUnitTestFramework.*</ModulePath>
-                <ModulePath>.*TestAdapter.*</ModulePath>
-                <ModulePath>.*UnitTests.*</ModulePath>
-                <ModulePath>.*xunit.*</ModulePath>
-                <ModulePath>.*threading.*</ModulePath>  
+
               </Exclude>
             </ModulePaths>
 
@@ -75,9 +71,6 @@ Included items must then not match any entries in the exclude list to remain inc
                 <Attribute>^System.Runtime.CompilerServices.CompilerGeneratedAttribute$</Attribute>
                 <Attribute>^System.CodeDom.Compiler.GeneratedCodeAttribute$</Attribute>
                 <Attribute>^System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute$</Attribute>
-                <Attribute>^NUnit.Framework.TestFixtureAttribute$</Attribute>
-                <Attribute>^Xunit.FactAttribute$</Attribute>
-                <Attribute>^Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute$</Attribute>
               </Exclude>
             </Attributes>
 
@@ -89,6 +82,7 @@ Included items must then not match any entries in the exclude list to remain inc
                 <Source>.*\\public\\sdk\\.*</Source>
                 <Source>.*\\microsoft sdks\\.*</Source>
                 <Source>.*\\vc\\include\\.*</Source>
+                <Source>.*\\Mocks\\.*</Source>
               </Exclude>
             </Sources>
 
