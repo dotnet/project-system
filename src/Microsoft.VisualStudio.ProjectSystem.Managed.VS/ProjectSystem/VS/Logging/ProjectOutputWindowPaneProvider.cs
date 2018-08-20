@@ -15,11 +15,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Logging
         private static readonly Guid s_projectOutputWindowPaneGuid = new Guid("{A18568CC-CA90-4AEE-9D14-A7E9D753B544}");
 
         private readonly IProjectThreadingService _threadingService;
-        private readonly IVsOptionalService<IVsOutputWindow> _outputWindow;
+        private readonly IVsUIService<IVsOutputWindow> _outputWindow;
         private readonly AsyncLazy<IVsOutputWindowPane> _outputWindowPane;
 
         [ImportingConstructor]
-        public ProjectOutputWindowPaneProvider(IProjectThreadingService threadingService, IVsOptionalService<SVsOutputWindow, IVsOutputWindow> outputWindow)
+        public ProjectOutputWindowPaneProvider(IProjectThreadingService threadingService, IVsUIService<SVsOutputWindow, IVsOutputWindow> outputWindow)
         {
             _threadingService = threadingService;
             _outputWindow = outputWindow;

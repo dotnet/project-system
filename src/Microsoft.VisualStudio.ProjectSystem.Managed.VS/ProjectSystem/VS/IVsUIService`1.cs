@@ -3,15 +3,15 @@
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     /// <summary>
-    ///     Provides access to an optional Visual Studio proffered service.
+    ///     Provides access to a Visual Studio proffered service that must be used on the UI thread.
     /// </summary>
     /// <typeparam name="T">
     ///     The type of the service to retrieve and return from <see cref="Value"/>.
     /// </typeparam>
-    internal interface IVsOptionalService<T>
+    internal interface IVsUIService<T>
     {
         /// <summary>
-        ///     Gets the optional service object associated with <typeparamref name="T"/>.
+        ///     Gets the service object associated with <typeparamref name="T"/>.
         /// </summary>
         ///<exception cref="COMException">
         ///     This property was not accessed from the UI thread.

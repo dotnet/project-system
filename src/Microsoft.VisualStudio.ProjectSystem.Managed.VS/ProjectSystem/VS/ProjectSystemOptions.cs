@@ -20,14 +20,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         private const string FastUpToDateEnabledSettingKey = @"ManagedProjectSystem\FastUpToDateCheckEnabled";
         private const string FastUpToDateLogLevelSettingKey = @"ManagedProjectSystem\FastUpToDateLogLevel";
 
-        private readonly IVsOptionalService<SVsSettingsPersistenceManager, ISettingsManager> _settingsManager;
+        private readonly IVsUIService<ISettingsManager> _settingsManager;
         private readonly IEnvironmentHelper _environment;
 #if !DEBUG
         private bool? _isProjectOutputPaneEnabled;
 #endif
 
         [ImportingConstructor]
-        private ProjectSystemOptions(IEnvironmentHelper environment, IVsOptionalService<SVsSettingsPersistenceManager, ISettingsManager> settingsManager)
+        private ProjectSystemOptions(IEnvironmentHelper environment, IVsUIService<SVsSettingsPersistenceManager, ISettingsManager> settingsManager)
         {
             _environment = environment;
             _settingsManager = settingsManager;

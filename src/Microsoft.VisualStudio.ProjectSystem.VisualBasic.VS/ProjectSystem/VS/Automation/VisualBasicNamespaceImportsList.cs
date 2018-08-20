@@ -4,7 +4,6 @@ using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Threading.Tasks.Dataflow;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
 {
@@ -161,12 +160,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             _list = new List<string>();
 
             //set up a subscription to listen for namespace import changes
-            var target = new ActionBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(e => OnNamespaceImportChanged(e));
-            _namespaceImportSubscriptionLink = _activeConfiguredProjectSubscriptionService.ProjectRuleSource.SourceBlock.LinkTo(
-                target: target,
-                ruleNames: s_namespaceImportRule,
-                initialDataAsNew: true,
-                suppressVersionOnlyUpdates: true);
+            _namespaceImportSubscriptionLink = _activeConfiguredProjectSubscriptionService.ProjectRuleSource.SourceBlock.LinkToAction(
+                target: OnNamespaceImportChanged,
+                ruleNames: s_namespaceImportRule);
         }
 
         protected override void Dispose(bool disposing)

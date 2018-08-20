@@ -18,6 +18,23 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return Create(UnconfiguredProjectFactory.Create());
         }
 
+        public static ProjectProperties Create(string category, string propertyName, string value)
+        {
+            var data = new PropertyPageData()
+            {
+                Category = category,
+                PropertyName = propertyName,
+                Value = value,
+            };
+
+            return Create(data);
+        }
+
+        public static ProjectProperties Create(params PropertyPageData[] data)
+        {
+            return Create(UnconfiguredProjectFactory.Create(), data);
+        }
+               
         public static ProjectProperties Create(UnconfiguredProject project, params PropertyPageData[] data)
         {
             var catalog = CreateCatalog(CreateCatalogLookup(data));
