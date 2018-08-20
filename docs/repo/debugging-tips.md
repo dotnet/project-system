@@ -1,5 +1,6 @@
 # Debugging Tips
 
+- [Setting up your Debugging Environment](/docs/repo/debugging/setting-up-environment.md)
 - [Design-Time Builds](/docs/repo/debugging/design-time-builds.md)
 - [CPS Tracing](/docs/repo/debugging/tracing.md)
 - [Project System Logging](/docs/repo/debugging/logging.md)
