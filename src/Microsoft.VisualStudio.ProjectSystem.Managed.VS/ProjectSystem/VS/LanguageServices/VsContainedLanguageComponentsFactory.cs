@@ -85,7 +85,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             if (languageServiceId == Guid.Empty)
                 return null;
 
-            object service = await _serviceProvider.Value.QueryServiceAsync(ref languageServiceId);
+            IOleAsyncServiceProvider serviceProvider = await _serviceProvider.GetValueAsync()
+                                                                             .ConfigureAwait(true);
+
+            object service = await serviceProvider.QueryServiceAsync(ref languageServiceId);
 
             await _projectVsServices.ThreadingService.SwitchToUIThread();
 
