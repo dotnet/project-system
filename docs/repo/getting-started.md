@@ -1,6 +1,43 @@
 # Getting Started
 
+#### Prerequisites
+- [Visual Studio 2017](https://www.visualstudio.com/downloads/).
+- GitHub account
+- Basic Git experience: https://try.github.io/
+
+All commands below are run under a [Visual Studio Developer Prompt](https://msdn.microsoft.com/en-us/library/ms229859(v=vs.150).aspx).
+
 ## Code
+
+Contribution to this repository is done using the [fork model](https://help.github.com/articles/fork-a-repo/). Contributors push changes to their own version of this repository, and then submit a pull request into this repository requesting the changes be merged.
+
+To get started:
+
+1. Fork the repo by clicking Fork in the top right corner:
+
+![image](https://user-images.githubusercontent.com/1103906/44329309-7ab55d00-a4a7-11e8-9d1f-74a91f5229f5.png)
+
+2. From a Visual Studio Developer Prompt, run (replacing _[user-name]_ with your GitHub user name):
+
+```
+> git clone https://github.com/[user-name]/project-system
+> cd project-system
+> git remote add upstream https://github.com/dotnet/project-system
+> git remote set-url --push upstream no_push
+```
+
+The last command prevents an accidental push to this repository without going through a pull request.
+
+After running above, `git remote -v` should show the following:
+```
+> git remote -v 
+origin  https://github.com/davkean/project-system (fetch)
+origin  https://github.com/davkean/project-system (push)
+upstream        https://github.com/dotnet/project-system (fetch)
+upstream        no_push (push)
+```
+
+## Build
 
 ### Command-line
 
