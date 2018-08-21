@@ -6,7 +6,7 @@ queue:
   demands: Cmd
 variables:
   BuildConfiguration: Release
-  TeamName: Roslyn-Project-System
+  TeamName: DotNet-Project-System
   BuildPlatform: any cpu
   DropRoot: \\cpvsbuild\drops\Roslyn
   
@@ -44,7 +44,7 @@ steps:
 - task: PublishSymbols@1
   displayName: Create Symbol Index
   inputs:
-    SymbolsPath: '$(DropRoot)\$(TeamName)\$(Build.DefinitionName)\$(Build.BuildNumber)\Symbols'
+    SymbolsPath: '$(DropRoot)\$(TeamName)\$(Build.SourceBranchName)\$(Build.BuildNumber)\Symbols'
     SearchPattern: '**/*.pdb;**/*.dll;**/*.exe'
     SymbolsFolder: '$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\SymStore'
     SkipIndexing: true
@@ -58,7 +58,7 @@ steps:
   inputs:
     symbolServiceURI: 'https://microsoft.artifacts.visualstudio.com/DefaultCollection'
     requestName: '$(system.teamProject)/$(Build.DefinitionName)/$(Build.BuildNumber)/$(Build.BuildId)'
-    sourcePath: '$(DropRoot)\$(TeamName)\$(Build.DefinitionName)\$(Build.BuildNumber)\Symbols'
+    sourcePath: '$(DropRoot)\$(TeamName)\$(Build.SourceBranchName)\$(Build.BuildNumber)\Symbols'
     usePat: false
     
 - task: ms-vseng.MicroBuildTasks.4305a8de-ba66-4d8b-b2d1-0dc4ecbbf5e8.MicroBuildUploadVstsDropFolder@1
@@ -72,12 +72,13 @@ steps:
     CopyRoot: '$(Build.SourcesDirectory)'
     Contents: |
      artifacts\$(BuildConfiguration)\bin
+     artifacts\$(BuildConfiguration)\DevDivInsertionFiles
      artifacts\$(BuildConfiguration)\log
      artifacts\$(BuildConfiguration)\packages
      artifacts\$(BuildConfiguration)\VSSetup
     ArtifactName: '$(Build.BuildNumber)'
     ArtifactType: FilePath
-    TargetPath: '$(DropRoot)\$(TeamName)\$(Build.DefinitionName)'
+    TargetPath: '$(DropRoot)\$(TeamName)\$(Build.SourceBranchName)'
   condition: succeededOrFailed()
 
 - task: NuGetPublisher@0
@@ -105,5 +106,5 @@ steps:
     PathtoPublish: '$(Build.StagingDirectory)\MicroBuild\Output'
     ArtifactName: '$(Build.BuildNumber)'
     publishLocation: FilePath
-    TargetPath: '$(DropRoot)\$(TeamName)\$(Build.DefinitionName)'
+    TargetPath: '$(DropRoot)\$(TeamName)\$(Build.SourceBranchName)'
   condition: succeededOrFailed()

@@ -279,7 +279,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return Not GetPropertyControlData(VsProjPropId80.VBPROJPROPID_Win32ResourceFile).IsMissing
         End Function
 
-        Function SetIconAndWin32ResourceFile() As Boolean
+        Private Function SetIconAndWin32ResourceFile() As Boolean
             Dim obj As Object
             Dim propWin32ResourceFile As PropertyDescriptor
             Dim stWin32ResourceFile As String = Nothing

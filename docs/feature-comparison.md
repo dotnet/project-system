@@ -14,9 +14,10 @@ For a list of behavior differences; see [Compability](compatibility.md).
 ASP.NET Core (.NET Framework & .NET Core)                                   |          | ●
 ASP.NET                                                                     | ●        |   
 Xamarin                                                                     | ●        |   
-Universal Windows Platform (UWP)                                            | ●        |   
-Windows Presentation Framework (WPF)                                        | ●        |   
-Windows Forms                                                               | ●        |   
+Universal Windows Platform (UWP)                                            | ●        |
+Windows Presentation Framework (WPF)                                        | ●        | [16.0](https://github.com/dotnet/project-system/labels/Feature-XAML)
+Windows Forms                                                               | ●        | [16.0](https://github.com/dotnet/project-system/labels/Feature-WinForms)  
+Windows Workflow Foundation (WWF)                                           | ●        |
 **Build**|
 Target multiple frameworks (multi-target) from single project               |          | ●
 Show build (design-time) errors & warnings in Error List as you make them   |          | ●
@@ -52,13 +53,14 @@ Generate NuGet package on build                                             |   
 Add Service Reference                                                       | ●        | 
 Add Web Reference                                                           | ●        | 
 Add Data Source                                                             | ●        | 
-"Initialize Interactive Window with Project"                               | ●        | ● (15.8 Preview 3) | Only when targeting .NET Framework.
-Class Diagrams                                                              | ●        | ● (15.8 Preview 3) |
+DataSet Designer                                                            | ●        |
+"Initialize Interactive Window with Project"                                | ●        | ● (15.8) | Only when targeting .NET Framework.
+Class Diagrams                                                              | ●        | ● (15.8) |
 Code Analysis                                                               | ●        | 
-Code Metrics                                                                | ●        | ● (15.8 Preview 3) | Only when targeting .NET Framework.
-Code Clones                                                                 | ●        | ● (15.8 Preview 3) | 
+Code Metrics                                                                | ●        | ◖ (15.8) ● (16.0 Preview 1) | 15.8 added support for Code Metrics when targeting .NET Framework. 16.0 will add support for Code Metrics when targeting all frameworks.
+Code Clones                                                                 | ●        | ● (15.8) | 
 Fakes                                                                       | ●        | 
 T4 Templates                                                                | ●        | 
 Zero Impact Projects ("Save new projects when created")                     | ●        | 
 Simplified configurations ("Show advanced build configurations")            | ●        | 
-[Automation Extenders](https://msdn.microsoft.com/en-us/library/0y92k2w2.aspx)| ●        | ● (15.8 Preview 3) | 
+[Automation Extenders](https://msdn.microsoft.com/en-us/library/0y92k2w2.aspx)| ●        | ● (15.8) | 

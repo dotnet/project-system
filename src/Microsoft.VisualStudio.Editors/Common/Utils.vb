@@ -1735,6 +1735,8 @@ Namespace Microsoft.VisualStudio.Editors.Common
         Public Class TelemetryLogger
 
             Private Const InputXmlFormEventName As String = "vs/projectsystem/editors/inputxmlform"
+            Private Const UsePreviewSdkEventName As String = "vs/projectsystem/options/usepreviewsdk"
+
             Public Enum InputXmlFormEvent
                 FormOpened
                 FromFileButtonClicked
@@ -1751,6 +1753,14 @@ Namespace Microsoft.VisualStudio.Editors.Common
             Public Shared Sub LogInputXmlFormException(ex As Exception)
                 TelemetryService.DefaultSession.PostFault(InputXmlFormEventName, "Exception encountered during Xml Schema Inference", ex)
             End Sub
+
+            Public Shared Sub LogUsePreviewSdkEvent(usePreviewSdk As Boolean, isPreview As Boolean)
+                Dim userTask = New UserTaskEvent(UsePreviewSdkEventName, TelemetryResult.Success)
+                userTask.Properties("vs.projectsystem.options.usepreviewsdk") = usePreviewSdk
+                userTask.Properties("vs.projectsystem.options.ispreview") = isPreview
+                TelemetryService.DefaultSession.PostEvent(userTask)
+            End Sub
+
         End Class
 #End Region
     End Module

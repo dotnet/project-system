@@ -13,6 +13,21 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return new StandardProjectConfiguration(name, dimensions);
         }
 
+        public static ProjectConfiguration Create(string dimensionNames, string dimensionValues)
+        {
+            var dimensionsBuilder = ImmutableDictionary.CreateBuilder<string, string>();
+
+            string[] dimensionNamesArray = dimensionNames.Split('|');
+            string[] dimensionValuesArray = dimensionValues.Split('|');
+
+            for (int i = 0; i < dimensionNamesArray.Length; i++)
+            {
+                dimensionsBuilder.Add(dimensionNamesArray[i], dimensionValuesArray[i]);
+            }
+
+            return Create(dimensionValues, dimensionsBuilder.ToImmutable());
+        }
+
         public static ProjectConfiguration Create(string configuration)
         {
             var dimensionsBuilder = ImmutableDictionary.CreateBuilder<string, string>();
@@ -40,6 +55,12 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return configurationsBuilder.ToImmutable();
         }
 
+        public static ProjectConfiguration FromJson(string jsonString)
+        {
+            var model = new ProjectConfigurationModel();
+            return model.FromJson(jsonString);
+        }
+
 
         private static string GetDimensionName(int ordinal)
         {
@@ -56,6 +77,34 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
                 default:
                     throw new InvalidOperationException();
+            }
+        }
+    }
+
+    internal class ProjectConfigurationModel : JsonModel<ProjectConfiguration>
+    {
+        public IImmutableDictionary<string, string> Dimensions { get; set; }
+
+        public string Name { get; set; }
+
+        public override ProjectConfiguration ToActualModel()
+        {
+            return new ActualModel
+            {
+                Dimensions = Dimensions,
+                Name = Name
+            };
+        }
+
+        private class ActualModel : ProjectConfiguration
+        {
+            public IImmutableDictionary<string, string> Dimensions { get; set; }
+
+            public string Name { get; set; }
+
+            public bool Equals(ProjectConfiguration other)
+            {
+                throw new NotImplementedException();
             }
         }
     }

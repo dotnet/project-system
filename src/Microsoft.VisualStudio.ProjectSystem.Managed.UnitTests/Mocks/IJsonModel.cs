@@ -2,7 +2,7 @@
 
 using Newtonsoft.Json.Linq;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS
+namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal interface IJsonModel<T>
     {
@@ -21,16 +21,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         public virtual T ToActualModel()
         {
             return default;
-        }
-    }
-
-    internal class JsonModelReader
-    {
-        public static M FromJson<T, M>(string jsonString) where T : IJsonModel<M>
-        {
-            var json = JObject.Parse(jsonString);
-            var data = json.ToObject<T>();
-            return data.ToActualModel();
         }
     }
 }

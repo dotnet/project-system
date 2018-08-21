@@ -24,5 +24,14 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             return Create(projectConfiguration: projectConfiguration);
         }
+
+        public static ConfiguredProject ImplementUnconfiguredProject(UnconfiguredProject project)
+        {
+            var mock = new Mock<ConfiguredProject>();
+            mock.SetupGet(p => p.UnconfiguredProject)
+                .Returns(project);
+
+            return mock.Object;
+        }
     }
 }

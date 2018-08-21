@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return Create(removedItems: ImmutableHashSet.Create(StringComparers.Paths, removedItems));
         }
 
-        public static IProjectChangeDiff WithRenameItems(string semiColonSeparatedOriginalNames, string semiColonSeparatedNewNames)
+        public static IProjectChangeDiff WithRenamedItems(string semiColonSeparatedOriginalNames, string semiColonSeparatedNewNames)
         {
             string[] originalNames = semiColonSeparatedOriginalNames.Split(';');
             string[] newNames = semiColonSeparatedNewNames.Split(';');
@@ -48,6 +48,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return Create(renamedItems: builder.ToImmutable());
         }
 
+        public static IProjectChangeDiff WithChangedItems(params string[] changedItems)
+        {
+            return Create(changedItems: ImmutableHashSet.Create(StringComparers.Paths, changedItems));
+        }
+
         public static IProjectChangeDiff WithNoChanges()
         {
             return new ProjectChangeDiff();
@@ -56,6 +61,27 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public static IProjectChangeDiff Create(IImmutableSet<string> addedItems = null, IImmutableSet<string> removedItems = null, IImmutableSet<string> changedItems = null, IImmutableDictionary<string, string> renamedItems = null)
         {
             return new ProjectChangeDiff(addedItems, removedItems, changedItems, renamedItems);
+        }
+
+        public static IProjectChangeDiff FromJson(string jsonString)
+        {
+            var model = new IProjectChangeDiffModel();
+            return model.FromJson(jsonString);
+        }
+    }
+
+    internal class IProjectChangeDiffModel : JsonModel<IProjectChangeDiff>, IProjectChangeDiff
+    {
+        public IImmutableSet<string> AddedItems { get; set; } = ImmutableHashSet<string>.Empty;
+        public bool AnyChanges { get; set; }
+        public IImmutableSet<string> ChangedItems { get; set; } = ImmutableHashSet<string>.Empty;
+        public IImmutableSet<string> ChangedProperties { get; set; } = ImmutableHashSet<string>.Empty;
+        public IImmutableSet<string> RemovedItems { get; set; } = ImmutableHashSet<string>.Empty;
+        public IImmutableDictionary<string, string> RenamedItems { get; set; } = ImmutableDictionary<string, string>.Empty;
+
+        public override IProjectChangeDiff ToActualModel()
+        {
+            return this;
         }
     }
 }

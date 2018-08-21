@@ -16,7 +16,6 @@ using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Threading;
 using Microsoft.VisualStudio.Threading.Tasks;
 
-using IAsyncServiceProvider = Microsoft.VisualStudio.Shell.IAsyncServiceProvider;
 using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
@@ -28,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
     {
         private static readonly TimeSpan s_notifyDelay = TimeSpan.FromMilliseconds(100);
 
-        private readonly IAsyncServiceProvider _asyncServiceProvider;
+        private readonly IVsService<IVsFileChangeEx> _fileChangeService;
         private readonly IUnconfiguredProjectCommonServices _projectServices;
         private readonly IUnconfiguredProjectTasksService _projectTasksService;
         private readonly IActiveConfiguredProjectSubscriptionService _activeConfiguredProjectSubscriptionService;
@@ -39,27 +38,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         private ITaskDelayScheduler _taskDelayScheduler;
         private IDisposable _treeWatcher;
 #pragma warning restore CA2213
-        private IVsFileChangeEx _fileChangeService;
         private uint _filechangeCookie;
         private string _fileBeingWatched;
         private byte[] _previousContentsHash;
 
         [ImportingConstructor]
         public ProjectAssetFileWatcher(
-            [Import(typeof(SAsyncServiceProvider))]IAsyncServiceProvider asyncServiceProvider,
+            IVsService<SVsFileChangeEx, IVsFileChangeEx> fileChangeService,
             [Import(ContractNames.ProjectTreeProviders.FileSystemDirectoryTree)] IProjectTreeProvider fileSystemTreeProvider,
             IUnconfiguredProjectCommonServices projectServices,
             IUnconfiguredProjectTasksService projectTasksService,
             IActiveConfiguredProjectSubscriptionService activeConfiguredProjectSubscriptionService)
             : base(projectServices.ThreadingService.JoinableTaskContext)
         {
-            Requires.NotNull(asyncServiceProvider, nameof(asyncServiceProvider));
+            Requires.NotNull(fileChangeService, nameof(fileChangeService));
             Requires.NotNull(fileSystemTreeProvider, nameof(fileSystemTreeProvider));
             Requires.NotNull(projectServices, nameof(projectServices));
             Requires.NotNull(projectTasksService, nameof(projectTasksService));
             Requires.NotNull(activeConfiguredProjectSubscriptionService, nameof(activeConfiguredProjectSubscriptionService));
 
-            _asyncServiceProvider = asyncServiceProvider;
+            _fileChangeService = fileChangeService;
             _fileSystemTreeProvider = fileSystemTreeProvider;
             _projectServices = projectServices;
             _projectTasksService = projectTasksService;
@@ -104,8 +102,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             // the immediate path could have changed. In either case, change the file watcher.
             if (!PathHelper.IsSamePath(projectLockFilePath, _fileBeingWatched))
             {
-                UnregisterFileWatcherIfAny();
-                RegisterFileWatcher(projectLockFilePath);
+                await UnregisterFileWatcherIfAnyAsync().ConfigureAwait(true);
+                await RegisterFileWatcherAsync(projectLockFilePath).ConfigureAwait(true);
             }
         }
 
@@ -114,8 +112,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         /// </summary>
         protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
         {
-            _fileChangeService = (IVsFileChangeEx)(await _asyncServiceProvider.GetServiceAsync(typeof(SVsFileChangeEx)).ConfigureAwait(false));
-
             // Explicitly get back to the thread pool for the rest of this method so we don't tie up the UI thread;
             await TaskScheduler.Default;
 
@@ -125,11 +121,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                     ProjectDataSources.SourceBlockAndLink<IProjectVersionedValue<IProjectTreeSnapshot>> treeSource = _fileSystemTreeProvider.Tree.SyncLinkOptions();
 
                     // The property source used to get the value of the $ProjectAssetsFile property so that we can identify the location of the assets file.
-                    var sourceLinkOptions = new StandardRuleDataflowLinkOptions
-                    {
-                        RuleNames = Empty.OrdinalIgnoreCaseStringSet.Add(ConfigurationGeneral.SchemaName),
-                        PropagateCompletion = true
-                    };
+                    StandardRuleDataflowLinkOptions sourceLinkOptions = DataflowOption.WithRuleNames(ConfigurationGeneral.SchemaName);
 
                     ProjectDataSources.SourceBlockAndLink<IProjectVersionedValue<IProjectSubscriptionUpdate>> propertySource = _activeConfiguredProjectSubscriptionService.ProjectRuleSource.SourceBlock.SyncLinkOptions(sourceLinkOptions);
                     var target = new ActionBlock<IProjectVersionedValue<Tuple<IProjectTreeSnapshot, IProjectSubscriptionUpdate>>>(DataFlow_ChangedAsync);
@@ -141,15 +133,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                 }).ConfigureAwait(false);
         }
 
-        protected override Task DisposeCoreAsync(bool initialized)
+        protected override async Task DisposeCoreAsync(bool initialized)
         {
             if (initialized)
             {
                 _treeWatcher.Dispose();
-                UnregisterFileWatcherIfAny();
+                await UnregisterFileWatcherIfAnyAsync().ConfigureAwait(true);
             }
-
-            return Task.CompletedTask;
         }
 
         private static byte[] GetFileHashOrNull(string path)
@@ -216,10 +206,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             return null;
         }
 
-        private void RegisterFileWatcher(string projectLockJsonFilePath)
+        private async Task RegisterFileWatcherAsync(string projectLockJsonFilePath)
         {
             // Note file change service is free-threaded
-            if (_fileChangeService != null && projectLockJsonFilePath != null)
+            if (projectLockJsonFilePath != null)
             {
                 _previousContentsHash = GetFileHashOrNull(projectLockJsonFilePath);
                 _taskDelayScheduler = new TaskDelayScheduler(
@@ -227,20 +217,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                     _projectServices.ThreadingService,
                     CreateLinkedCancellationToken());
 
-                int hr = _fileChangeService.AdviseFileChange(projectLockJsonFilePath, (uint)(_VSFILECHANGEFLAGS.VSFILECHG_Time | _VSFILECHANGEFLAGS.VSFILECHG_Size | _VSFILECHANGEFLAGS.VSFILECHG_Add | _VSFILECHANGEFLAGS.VSFILECHG_Del), this, out _filechangeCookie);
+                IVsFileChangeEx fileChangeService = await _fileChangeService.GetValueAsync()
+                                                                            .ConfigureAwait(true);
+
+                int hr = fileChangeService.AdviseFileChange(projectLockJsonFilePath, (uint)(_VSFILECHANGEFLAGS.VSFILECHG_Time | _VSFILECHANGEFLAGS.VSFILECHG_Size | _VSFILECHANGEFLAGS.VSFILECHG_Add | _VSFILECHANGEFLAGS.VSFILECHG_Del), this, out _filechangeCookie);
                 ErrorHandler.ThrowOnFailure(hr);
             }
 
             _fileBeingWatched = projectLockJsonFilePath;
         }
 
-        private void UnregisterFileWatcherIfAny()
+        private async Task UnregisterFileWatcherIfAnyAsync()
         {
             // Note file change service is free-threaded
-            if (_filechangeCookie != VSConstants.VSCOOKIE_NIL && _fileChangeService != null)
+            if (_filechangeCookie != VSConstants.VSCOOKIE_NIL)
             {
+                IVsFileChangeEx fileChangeService = await _fileChangeService.GetValueAsync()
+                                                                            .ConfigureAwait(true);
+
                 // There's nothing for us to do if this fails. So ignore the return value.
-                _fileChangeService?.UnadviseFileChange(_filechangeCookie);
+                fileChangeService.UnadviseFileChange(_filechangeCookie);
                 _watchedFileResetCancellationToken?.Cancel();
                 _watchedFileResetCancellationToken?.Dispose();
                 _taskDelayScheduler?.Dispose();

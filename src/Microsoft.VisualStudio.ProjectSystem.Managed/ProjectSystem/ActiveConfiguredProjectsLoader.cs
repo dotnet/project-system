@@ -43,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             _subscription = _activeConfigurationGroupService.ActiveConfigurationGroupSource.SourceBlock.LinkTo(
                 target: _targetBlock,
-                linkOptions: new DataflowLinkOptions() { PropagateCompletion = true });
+                linkOptions: DataflowOption.PropagateCompletion);
         }
 
         protected override void Dispose(bool disposing)

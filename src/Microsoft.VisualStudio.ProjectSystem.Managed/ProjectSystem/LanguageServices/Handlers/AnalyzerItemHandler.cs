@@ -37,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             Requires.NotNull(removed, nameof(removed));
             Requires.NotNull(logger, nameof(logger));
 
-            EnsureInitialized();
+            VerifyInitialized();
 
             foreach (CommandLineAnalyzerReference analyzer in removed.AnalyzerReferences)
             {
