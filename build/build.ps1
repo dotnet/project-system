@@ -198,7 +198,7 @@ function GenerateDependentAssemblyVersionFile() {
   $dependentAssemblyVersionsCsv = Join-Path $devDivInsertionFiles "DependentAssemblyVersions.csv"
   $csv =@"
 $vsAssemblyName, $visualStudioVersion.0
-$projectSystemAssemblyName, $projectSystemVersion.0
+$projectSystemAssemblyName,$projectSystemVersion.0
 "@
   & mkdir $devDivInsertionFiles
   $csv >> $dependentAssemblyVersionsCsv
