@@ -9,7 +9,7 @@ All commands below are run under a [Visual Studio Developer Prompt](https://msdn
 
 ## Code
 
-Contribution to this repository is via the [fork model](https://help.github.com/articles/fork-a-repo/). Contributors push changes to their own "forked" version of this repository, and then submit a pull request into it requesting those changes be merged.
+Contribution to this repository is via the [fork model](https://help.github.com/articles/fork-a-repo/). Contributors push changes to their own "forked" version of project-system, and then submit a pull request into it requesting those changes be merged.
 
 To get started:
 
@@ -28,7 +28,7 @@ To get started:
 
 The last command prevents an accidental push to this repository without going through a pull request.
 
-After running above, `git remote -v` should show the following:
+After running above, `git remote -v` should something like the following:
 ```
 \project-system> git remote -v 
 origin  https://github.com/davkean/project-system (fetch)
