@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Security.Cryptography;
@@ -12,43 +11,11 @@ namespace Microsoft.VisualStudio.Telemetry
     [Export(typeof(ITelemetryService))]
     internal class VsTelemetryService : ITelemetryService
     {
-        private const string EventPrefix = "vs/projectsystem/managed/";
-        private const string PropertyPrefix = "VS.ProjectSystem.Managed.";
-
-        private readonly ConcurrentDictionary<string, (string Event, ConcurrentDictionary<string, string> Properties)> _eventCache = new ConcurrentDictionary<string, (string, ConcurrentDictionary<string, string>)>();
-
-        private (string eventPath, ConcurrentDictionary<string, string> properties) GetEventInfo(string eventName)
-        {
-            if (!_eventCache.TryGetValue(eventName, out (string Event, ConcurrentDictionary<string, string> Properties) eventInfo))
-            {
-                eventInfo = (EventPrefix + eventName.ToLower(), new ConcurrentDictionary<string, string>());
-                _eventCache[eventName] = eventInfo;
-            }
-
-            return eventInfo;
-        }
-
-        private string GetEventName(string eventName) => GetEventInfo(eventName).eventPath;
-
-        private string GetPropertyName(string eventName, string propertyName)
-        {
-            (_, ConcurrentDictionary<string, string> properties) = GetEventInfo(eventName);
-            if (!properties.TryGetValue(propertyName, out string fullPropertyName))
-            {
-                fullPropertyName = BuildPropertyName(eventName, propertyName);
-                properties[propertyName] = fullPropertyName;
-            }
-
-            return fullPropertyName;
-        }
-
-  
         public void PostEvent(string eventName)
         {
             Requires.NotNullOrEmpty(eventName, nameof(eventName));
 
-            var telemetryEvent = new TelemetryEvent(GetEventName(eventName));
-            TelemetryService.DefaultSession.PostEvent(telemetryEvent);
+            PostTelemetryEvent(new TelemetryEvent(eventName));
         }
 
         public void PostProperty(string eventName, string propertyName, object propertyValue)
@@ -57,9 +24,10 @@ namespace Microsoft.VisualStudio.Telemetry
             Requires.NotNullOrEmpty(propertyName, nameof(propertyName));
             Requires.NotNull(propertyValue, nameof(propertyValue));
 
-            var telemetryEvent = new TelemetryEvent(GetEventName(eventName));
-            telemetryEvent.Properties.Add(BuildPropertyName(eventName, propertyName), propertyValue);
-            TelemetryService.DefaultSession.PostEvent(telemetryEvent);
+            var telemetryEvent = new TelemetryEvent(eventName);
+            telemetryEvent.Properties.Add(propertyName, propertyValue);
+
+            PostTelemetryEvent(telemetryEvent);
         }
       
         public void PostProperties(string eventName, IEnumerable<(string propertyName, object propertyValue)> properties)
@@ -67,11 +35,25 @@ namespace Microsoft.VisualStudio.Telemetry
             Requires.NotNullOrEmpty(eventName, nameof(eventName));
             Requires.NotNullOrEmpty(properties, nameof(properties));
 
-            var telemetryEvent = new TelemetryEvent(GetEventName(eventName));
+            var telemetryEvent = new TelemetryEvent(eventName);
             foreach ((string propertyName, object propertyValue) in properties)
             {
-                telemetryEvent.Properties.Add(GetPropertyName(eventName, propertyName), propertyValue);
+                telemetryEvent.Properties.Add(propertyName, propertyValue);
             }
+
+            PostTelemetryEvent(telemetryEvent);
+        }
+
+        private static void PostTelemetryEvent(TelemetryEvent telemetryEvent)
+        {
+#if DEBUG
+            Assumes.True(telemetryEvent.Name.StartsWith(TelemetryEventName.Prefix, StringComparison.Ordinal));
+
+            foreach (string propertyName in telemetryEvent.Properties.Keys)
+            {
+                Assumes.True(propertyName.StartsWith(TelemetryPropertyName.Prefix, StringComparison.Ordinal));
+            }
+#endif
 
             TelemetryService.DefaultSession.PostEvent(telemetryEvent);
         }
@@ -89,31 +71,6 @@ namespace Microsoft.VisualStudio.Telemetry
             {
                 return BitConverter.ToString(cryptoServiceProvider.ComputeHash(inputBytes));
             }
-        }
-
-        /// <summary>
-        /// Build a fully qualified property name based on it's parent event and the property name
-        /// </summary>
-        /// <param name="eventName">Name of the parent event.</param>
-        /// <param name="propertyName">Name of the property.</param>
-        /// <returns>Fully qualified property name.</returns>
-        /// <remarks>
-        /// Properties are expected to be in the following format - EventName.PropertyName
-        /// with the the slashes from the vent name replaced by periods.
-        /// e.g. vs/myevent would translate to VS.MyEvent.MyProperty
-        /// </remarks>
-        private static string BuildPropertyName(string eventName, string propertyName)
-        {
-            string name = PropertyPrefix + eventName.Replace('/', '.');
-
-            if (!name.EndsWith("."))
-            {
-                name += ".";
-            }
-
-            name += propertyName;
-
-            return name;
         }
     }
 }
