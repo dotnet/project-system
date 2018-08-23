@@ -215,17 +215,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         }
 
         [Fact]
-        public void Initialize_SetsLastDesignTimeBuildSucceededToFalse()
-        {
-            var applyChangesToWorkspace = CreateInstance();
-            var context = IWorkspaceProjectContextFactory.Create();
-
-            applyChangesToWorkspace.Initialize(context);
-
-            Assert.False(context.LastDesignTimeBuildSucceeded);
-        }
-
-        [Fact]
         public void GetEvaluationRules_ReturnsAllEvaluationRuleNames()
         {
             var handler1 = IEvaluationHandlerFactory.ImplementEvaluationRule("Rule1");
@@ -498,6 +487,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         public void ApplyDesignTime_WhenDesignTimeBuildFails_SetsLastDesignTimeBuildSucceededToFalse()
         {
             var applyChangesToWorkspace = CreateInitializedInstance(out var context);
+            context.LastDesignTimeBuildSucceeded = true;
 
             var update = IProjectVersionedValueFactory.FromJson(
 @"{
