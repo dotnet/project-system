@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         [Fact]
         public void Constructor_NullAsProject_ThrowsArgumentNull()
         {
-            var context = IWorkspaceProjectContextFactory.Create();
+            var context = IWorkspaceProjectContextMockFactory.Create();
 
             Assert.Throws<ArgumentNullException>("project", () =>
             {
@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             void onSourceFileRemoved(string s) => sourceFilesPushedToWorkspace.Remove(s);
 
             var project = UnconfiguredProjectFactory.Create(filePath: @"C:\Myproject.csproj");
-            var context = IWorkspaceProjectContextFactory.CreateForSourceFiles(project, onSourceFileAdded, onSourceFileRemoved);
+            var context = IWorkspaceProjectContextMockFactory.CreateForSourceFiles(project, onSourceFileAdded, onSourceFileRemoved);
             var logger = Mock.Of<IProjectLogger>();
 
             var handler = CreateInstance(project, context);
@@ -62,7 +62,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             void onSourceFileRemoved(string s) => sourceFilesPushedToWorkspace.Remove(s);
 
             var project = UnconfiguredProjectFactory.Create(filePath: @"C:\ProjectFolder\Myproject.csproj");
-            var context = IWorkspaceProjectContextFactory.CreateForSourceFiles(project, onSourceFileAdded, onSourceFileRemoved);
+            var context = IWorkspaceProjectContextMockFactory.CreateForSourceFiles(project, onSourceFileAdded, onSourceFileRemoved);
             var logger = Mock.Of<IProjectLogger>();
 
             var handler = CreateInstance(project, context);
