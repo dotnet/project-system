@@ -24,7 +24,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         private const string CopyToOutputDirectory = "CopyToOutputDirectory";
         private const string PreserveNewest = "PreserveNewest";
         private const string Always = "Always";
-        private const string TelemetryEventName = "UpToDateCheck";
         private const string Link = "Link";
 
         private static ImmutableHashSet<string> ReferenceSchemas => ImmutableStringHashSet.EmptyOrdinal
@@ -313,7 +312,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         private bool Fail(BuildUpToDateCheckLogger logger, string message, string reason)
         {
             logger.Info(message);
-            _telemetryService.PostProperty($"{TelemetryEventName}/Fail", "Reason", reason);
+            _telemetryService.PostProperty(TelemetryEventName.UpToDateCheckFail, TelemetryPropertyName.UpToDateCheckFailReason, reason);
             return false;
         }
 
@@ -622,23 +621,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             if (!markersUpToDate)
             {
-                _telemetryService.PostProperty($"{TelemetryEventName}/Fail", "Reason", "Marker");
+                _telemetryService.PostProperty(TelemetryEventName.UpToDateCheckFail, TelemetryPropertyName.UpToDateCheckFailReason, "Marker");
             }
             else if (!outputsUpToDate)
             {
-                _telemetryService.PostProperty($"{TelemetryEventName}/Fail", "Reason", "Outputs");
+                _telemetryService.PostProperty(TelemetryEventName.UpToDateCheckFail, TelemetryPropertyName.UpToDateCheckFailReason, "Outputs");
             }
             else if (!copyToOutputDirectoryUpToDate)
             {
-                _telemetryService.PostProperty($"{TelemetryEventName}/Fail", "Reason", "CopyToOutputDirectory");
+                _telemetryService.PostProperty(TelemetryEventName.UpToDateCheckFail, TelemetryPropertyName.UpToDateCheckFailReason, "CopyToOutputDirectory");
             }
             else if (!copiedOutputUpToDate)
             {
-                _telemetryService.PostProperty($"{TelemetryEventName}/Fail", "Reason", "CopyOutput");
+                _telemetryService.PostProperty(TelemetryEventName.UpToDateCheckFail, TelemetryPropertyName.UpToDateCheckFailReason, "CopyOutput");
             }
             else
             {
-                _telemetryService.PostEvent($"{TelemetryEventName}/Success");
+                _telemetryService.PostEvent(TelemetryEventName.UpToDateCheckSuccess);
             }
 
             logger.Info("Project is{0} up to date.", !isUpToDate ? " not" : "");

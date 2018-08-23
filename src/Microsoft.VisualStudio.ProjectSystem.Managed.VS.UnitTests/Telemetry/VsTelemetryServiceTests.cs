@@ -11,6 +11,29 @@ namespace Microsoft.VisualStudio.Telemetry
     public class VsTelemetryServiceTests
     {
         [Fact]
+        public void PostEvent_NullAsEventName_ThrowsArgumentNull()
+        {
+            var service = CreateInstance();
+
+            Assert.Throws<ArgumentNullException>("eventName", () =>
+            {
+                service.PostEvent(null);
+            });
+        }
+
+        [Fact]
+        public void PostEvent_EmptyAsEventName_ThrowsArgument()
+        {
+            var service = CreateInstance();
+
+            Assert.Throws<ArgumentException>("eventName", () =>
+            {
+                service.PostEvent(string.Empty);
+            });
+        }
+
+
+        [Fact]
         public void PostProperty_NullAsEventName_ThrowArgumentNull()
         {
             var service = CreateInstance();
@@ -107,6 +130,60 @@ namespace Microsoft.VisualStudio.Telemetry
             {
                 service.PostProperties("event1", new List<(string propertyName, object propertyValue)>());
             });
+        }
+
+        [Fact]
+        public void PostEvent_SendsTelemetryEvent()
+        {
+            TelemetryEvent result = null;
+            var channel = ITelemetryTestChannelFactory.ImplementOnPostEvent((e) => { result = e; });
+
+            var service = CreateInstance();
+
+            using (new TelemetryTestContext(channel))
+            {
+                service.PostEvent(TelemetryEventName.UpToDateCheckSuccess);
+            }
+
+            Assert.Equal(TelemetryEventName.UpToDateCheckSuccess, result.Name);
+        }
+
+
+        [Fact]
+        public void PostProperty_SendsTelemetryEventWithProperty()
+        {
+            TelemetryEvent result = null;
+            var channel = ITelemetryTestChannelFactory.ImplementOnPostEvent((e) => { result = e; });
+            var service = CreateInstance();
+
+            using (new TelemetryTestContext(channel))
+            {
+                service.PostProperty(TelemetryEventName.UpToDateCheckFail, TelemetryPropertyName.UpToDateCheckFailReason, "Reason");
+            }
+
+            Assert.Equal(TelemetryEventName.UpToDateCheckFail, result.Name);
+            Assert.Contains(new KeyValuePair<string, object>(TelemetryPropertyName.UpToDateCheckFailReason, "Reason"), result.Properties);
+        }
+
+        [Fact]
+        public void PostProperties_SendsTelemetryEventWithProperties()
+        {
+            TelemetryEvent result = null;
+            var channel = ITelemetryTestChannelFactory.ImplementOnPostEvent((e) => { result = e; });
+            var service = CreateInstance();
+
+            using (new TelemetryTestContext(channel))
+            {
+                service.PostProperties(TelemetryEventName.DesignTimeBuildComplete, new[]
+                {
+                    (TelemetryPropertyName.DesignTimeBuildCompleteSucceeded, (object)true),
+                    (TelemetryPropertyName.DesignTimeBuildCompleteTargets, "Compile")
+                });
+            }
+
+            Assert.Equal(TelemetryEventName.DesignTimeBuildComplete, result.Name);
+            Assert.Contains(new KeyValuePair<string, object>(TelemetryPropertyName.DesignTimeBuildCompleteSucceeded, true), result.Properties);
+            Assert.Contains(new KeyValuePair<string, object>(TelemetryPropertyName.DesignTimeBuildCompleteTargets, "Compile"), result.Properties);
         }
 
         private static VsTelemetryService CreateInstance()
