@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 
 namespace Microsoft.VisualStudio.Telemetry
@@ -7,24 +8,101 @@ namespace Microsoft.VisualStudio.Telemetry
     internal interface ITelemetryService
     {
         /// <summary>
-        /// Post an event with the event name.
+        ///     Posts a fault with the specified event name and exception, returning 
+        ///     <see cref="true"/> to that it can be used as an exception filter.
         /// </summary>
-        /// <param name="eventName">Name of the event.</param>
+        /// <param name="eventName">
+        ///     The name of the event.
+        /// </param>
+        /// <param name="exceptionObject">
+        ///     The exception of the event.
+        /// </param>
+        /// <returns>
+        ///     Always returns <see cref="true"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        ///     <paramref name="eventName"/> is <see langword="null"/>.
+        ///     <para>
+        ///         -or-
+        ///     </para>
+        ///     <paramref name="exceptionObject"/> is <see langword="null"/>.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        ///     <paramref name="eventName"/> is an empty string ("").
+        /// </exception>
+        bool PostFault(string eventName, Exception exceptionObject);
+
+        /// <summary>
+        ///     Posts an event with the specified event name.
+        /// </summary>
+        /// <param name="eventName">
+        ///     The name of the event.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        ///     <paramref name="eventName"/> is <see langword="null"/>.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        ///     <paramref name="eventName"/> is an empty string ("").
+        /// </exception>
         void PostEvent(string eventName);
 
         /// <summary>
-        /// Post an event with the event name also with the corresponding Property name and Property value.
+        ///     Posts an event with the specified event name and property with the 
+        ///     specified name and value.
         /// </summary>
-        /// <param name="eventName">Name of the event.</param>
-        /// <param name="propertyName">Property name to be reported.</param>
-        /// <param name="propertyValue">Property value to be reported.</param>
+        /// <param name="eventName">
+        ///     The name of the event.
+        /// </param>
+        /// <param name="propertyName">
+        ///     The name of the property.
+        /// </param>
+        /// <param name="propertyValue">
+        ///     The value of the property.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        ///     <paramref name="eventName"/> is <see langword="null"/>.
+        ///     <para>
+        ///         -or-
+        ///     </para>
+        ///     <paramref name="propertyName"/> is <see langword="null"/>.
+        ///     <para>
+        ///         -or-
+        ///     </para>
+        ///     <paramref name="propertyValue"/> is <see langword="null"/>.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        ///     <paramref name="eventName"/> is an empty string ("").
+        ///     <para>
+        ///         -or
+        ///     </para>
+        ///     <paramref name="propertyName"/> is an empty string ("").
+        /// </exception> 
         void PostProperty(string eventName, string propertyName, object propertyValue);
 
         /// <summary>
-        /// Post an event with the event name also with the corresponding Property names and Property values.
+        ///     Posts an event with the specified event name and properties with the 
+        ///     specified names and values.
         /// </summary>
-        /// <param name="eventName">Name of the event.</param>
-        /// <param name="properties">List of Property name and corresponding values. PropertyName and PropertyValue cannot be null or empty.</param>
+        /// <param name="eventName">
+        ///     The name of the event.
+        /// </param>
+        /// <param name="properties">
+        ///     An <see cref="IEnumerable{T}"/> of property names and values.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        ///     <paramref name="eventName"/> is <see langword="null"/>.
+        ///     <para>
+        ///         -or-
+        ///     </para>
+        ///     <paramref name="properties"/> is <see langword="null"/>.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        ///     <paramref name="eventName"/> is an empty string ("").
+        ///     <para>
+        ///         -or-
+        ///     </para>
+        ///     <paramref name="properties"/> is contains no elements.
+        /// </exception> 
         void PostProperties(string eventName, IEnumerable<(string propertyName, object propertyValue)> properties);
 
         /// <summary>
