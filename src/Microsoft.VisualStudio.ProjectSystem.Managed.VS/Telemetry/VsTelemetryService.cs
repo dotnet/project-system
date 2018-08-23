@@ -44,7 +44,7 @@ namespace Microsoft.VisualStudio.Telemetry
             PostTelemetryEvent(telemetryEvent);
         }
 
-        private static void PostTelemetryEvent(TelemetryEvent telemetryEvent)
+        private void PostTelemetryEvent(TelemetryEvent telemetryEvent)
         {
 #if DEBUG
             Assumes.True(telemetryEvent.Name.StartsWith(TelemetryEventName.Prefix, StringComparison.Ordinal));
@@ -55,6 +55,11 @@ namespace Microsoft.VisualStudio.Telemetry
             }
 #endif
 
+            PostEventToSession(telemetryEvent);
+        }
+
+        protected virtual void PostEventToSession(TelemetryEvent telemetryEvent)
+        {
             TelemetryService.DefaultSession.PostEvent(telemetryEvent);
         }
 
