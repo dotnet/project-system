@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         public async Task DisposeAsync_WhenInitializedWithNoHandlers_DoesNotThrow()
         {
             var applyChangesToWorkspace = CreateInstance();
-            var context = IWorkspaceProjectContextFactory.Create();
+            var context = IWorkspaceProjectContextMockFactory.Create();
             applyChangesToWorkspace.Initialize(context);
 
             await applyChangesToWorkspace.DisposeAsync();
@@ -46,7 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             var handler = IWorkspaceContextHandlerFactory.ImplementDispose(() => { callCount++; });
 
             var applyChangesToWorkspace = CreateInstance(handlers: handler);
-            var context = IWorkspaceProjectContextFactory.Create();
+            var context = IWorkspaceProjectContextMockFactory.Create();
 
             applyChangesToWorkspace.Initialize(context);
 
@@ -70,7 +70,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         public void Initialize_WhenAlreadyInitialized_ThrowsInvalidOperation()
         {
             var applyChangesToWorkspace = CreateInstance();
-            var context = IWorkspaceProjectContextFactory.Create();
+            var context = IWorkspaceProjectContextMockFactory.Create();
 
             applyChangesToWorkspace.Initialize(context);
 
@@ -87,7 +87,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             var handler = IWorkspaceContextHandlerFactory.ImplementInitialize((c) => { result = c; });
 
             var applyChangesToWorkspace = CreateInstance(handlers: handler);
-            var context = IWorkspaceProjectContextFactory.Create();
+            var context = IWorkspaceProjectContextMockFactory.Create();
 
             applyChangesToWorkspace.Initialize(context);
 
@@ -149,7 +149,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             await applyChangesToWorkspace.DisposeAsync();
 
-            var context = IWorkspaceProjectContextFactory.Create();
+            var context = IWorkspaceProjectContextMockFactory.Create();
             Assert.Throws<ObjectDisposedException>(() =>
             {
                 applyChangesToWorkspace.Initialize(context);
@@ -163,7 +163,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             await applyChangesToWorkspace.DisposeAsync();
 
-            var context = IWorkspaceProjectContextFactory.Create();
+            var context = IWorkspaceProjectContextMockFactory.Create();
             Assert.Throws<ObjectDisposedException>(() =>
             {
                 applyChangesToWorkspace.GetEvaluationRules();
@@ -177,7 +177,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             await applyChangesToWorkspace.DisposeAsync();
 
-            var context = IWorkspaceProjectContextFactory.Create();
+            var context = IWorkspaceProjectContextMockFactory.Create();
             Assert.Throws<ObjectDisposedException>(() =>
             {
                 applyChangesToWorkspace.GetDesignTimeRules();
@@ -218,7 +218,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         public void Initialize_SetsLastDesignTimeBuildSucceededToFalse()
         {
             var applyChangesToWorkspace = CreateInstance();
-            var context = IWorkspaceProjectContextFactory.Create();
+            var context = IWorkspaceProjectContextMockFactory.Create();
 
             applyChangesToWorkspace.Initialize(context);
 
@@ -550,7 +550,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         private static ApplyChangesToWorkspaceContext CreateInitializedInstance(out IWorkspaceProjectContext context, ConfiguredProject project = null, ICommandLineParserService commandLineParser = null, IProjectLogger logger = null, params IWorkspaceContextHandler[] handlers)
         {
             var applyChangesToWorkspace = CreateInstance(project, commandLineParser, logger, handlers);
-            context = IWorkspaceProjectContextFactory.Create();
+            context = IWorkspaceProjectContextMockFactory.Create();
 
             applyChangesToWorkspace.Initialize(context);
 
