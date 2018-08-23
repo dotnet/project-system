@@ -4,14 +4,23 @@ using System;
 using System.Collections.Generic;
 
 using Microsoft.CodeAnalysis;
-using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
-
+using Microsoft.VisualStudio.ProjectSystem;
 using Moq;
 
-namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
+namespace Microsoft.VisualStudio.LanguageServices.ProjectSystem
 {
-    internal static class IWorkspaceProjectContextFactory
+    internal static class IWorkspaceProjectContextMockFactory
     {
+        public static IWorkspaceProjectContext ImplementDispose(Action action)
+        {
+            var mock = new Mock<IWorkspaceProjectContext>();
+
+            mock.Setup(c => c.Dispose())
+                .Callback(action);
+
+            return mock.Object;
+        }
+
         public static IWorkspaceProjectContext Create()
         {
             return new IWorkspaceProjectContextMock().Object;

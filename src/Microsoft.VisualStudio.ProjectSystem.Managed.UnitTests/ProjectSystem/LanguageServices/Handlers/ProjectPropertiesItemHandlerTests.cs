@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         [Fact]
         public void Constructor_NullAsProject_ThrowsArgumentNull()
         {
-            var context = IWorkspaceProjectContextFactory.Create();
+            var context = IWorkspaceProjectContextMockFactory.Create();
 
             Assert.Throws<ArgumentNullException>("project", () =>
             {

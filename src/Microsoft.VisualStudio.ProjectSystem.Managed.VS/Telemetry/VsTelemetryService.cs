@@ -11,6 +11,21 @@ namespace Microsoft.VisualStudio.Telemetry
     [Export(typeof(ITelemetryService))]
     internal class VsTelemetryService : ITelemetryService
     {
+        public bool PostFault(string eventName, Exception exceptionObject)
+        {
+            Requires.NotNullOrEmpty(eventName, nameof(eventName));
+            Requires.NotNull(exceptionObject, nameof(exceptionObject));
+
+            var faultEvent = new FaultEvent(eventName,
+                                            description: null,
+                                            exceptionObject);
+
+            PostTelemetryEvent(faultEvent);
+
+            return true;
+        }
+
+
         public void PostEvent(string eventName)
         {
             Requires.NotNullOrEmpty(eventName, nameof(eventName));
@@ -44,7 +59,7 @@ namespace Microsoft.VisualStudio.Telemetry
             PostTelemetryEvent(telemetryEvent);
         }
 
-        private static void PostTelemetryEvent(TelemetryEvent telemetryEvent)
+        private void PostTelemetryEvent(TelemetryEvent telemetryEvent)
         {
 #if DEBUG
             Assumes.True(telemetryEvent.Name.StartsWith(TelemetryEventName.Prefix, StringComparison.Ordinal));
@@ -55,6 +70,11 @@ namespace Microsoft.VisualStudio.Telemetry
             }
 #endif
 
+            PostEventToSession(telemetryEvent);
+        }
+
+        protected virtual void PostEventToSession(TelemetryEvent telemetryEvent)
+        {
             TelemetryService.DefaultSession.PostEvent(telemetryEvent);
         }
 
