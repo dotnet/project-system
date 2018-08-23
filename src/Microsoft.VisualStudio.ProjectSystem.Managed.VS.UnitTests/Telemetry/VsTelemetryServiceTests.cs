@@ -2,7 +2,9 @@
 
 using System;
 using System.Collections.Generic;
-
+using System.Threading.Tasks;
+using Moq;
+using Moq.Protected;
 using Xunit;
 
 namespace Microsoft.VisualStudio.Telemetry
@@ -136,30 +138,20 @@ namespace Microsoft.VisualStudio.Telemetry
         public void PostEvent_SendsTelemetryEvent()
         {
             TelemetryEvent result = null;
-            var channel = ITelemetryTestChannelFactory.ImplementOnPostEvent((e) => { result = e; });
+            var service = CreateInstance((e) => { result = e; });
 
-            var service = CreateInstance();
-
-            using (new TelemetryTestContext(channel))
-            {
-                service.PostEvent(TelemetryEventName.UpToDateCheckSuccess);
-            }
+            service.PostEvent(TelemetryEventName.UpToDateCheckSuccess);
 
             Assert.Equal(TelemetryEventName.UpToDateCheckSuccess, result.Name);
         }
-
 
         [Fact]
         public void PostProperty_SendsTelemetryEventWithProperty()
         {
             TelemetryEvent result = null;
-            var channel = ITelemetryTestChannelFactory.ImplementOnPostEvent((e) => { result = e; });
-            var service = CreateInstance();
+            var service = CreateInstance((e) => { result = e; });
 
-            using (new TelemetryTestContext(channel))
-            {
-                service.PostProperty(TelemetryEventName.UpToDateCheckFail, TelemetryPropertyName.UpToDateCheckFailReason, "Reason");
-            }
+            service.PostProperty(TelemetryEventName.UpToDateCheckFail, TelemetryPropertyName.UpToDateCheckFailReason, "Reason");
 
             Assert.Equal(TelemetryEventName.UpToDateCheckFail, result.Name);
             Assert.Contains(new KeyValuePair<string, object>(TelemetryPropertyName.UpToDateCheckFailReason, "Reason"), result.Properties);
@@ -169,26 +161,30 @@ namespace Microsoft.VisualStudio.Telemetry
         public void PostProperties_SendsTelemetryEventWithProperties()
         {
             TelemetryEvent result = null;
-            var channel = ITelemetryTestChannelFactory.ImplementOnPostEvent((e) => { result = e; });
-            var service = CreateInstance();
+            var service = CreateInstance((e) => { result = e; });
 
-            using (new TelemetryTestContext(channel))
+            service.PostProperties(TelemetryEventName.DesignTimeBuildComplete, new[]
             {
-                service.PostProperties(TelemetryEventName.DesignTimeBuildComplete, new[]
-                {
-                    (TelemetryPropertyName.DesignTimeBuildCompleteSucceeded, (object)true),
-                    (TelemetryPropertyName.DesignTimeBuildCompleteTargets, "Compile")
-                });
-            }
+                (TelemetryPropertyName.DesignTimeBuildCompleteSucceeded, (object)true),
+                (TelemetryPropertyName.DesignTimeBuildCompleteTargets, "Compile")
+            });
 
             Assert.Equal(TelemetryEventName.DesignTimeBuildComplete, result.Name);
             Assert.Contains(new KeyValuePair<string, object>(TelemetryPropertyName.DesignTimeBuildCompleteSucceeded, true), result.Properties);
             Assert.Contains(new KeyValuePair<string, object>(TelemetryPropertyName.DesignTimeBuildCompleteTargets, "Compile"), result.Properties);
         }
 
-        private static VsTelemetryService CreateInstance()
+        private static VsTelemetryService CreateInstance(Action<TelemetryEvent> action = null)
         {
-            return new VsTelemetryService();
+            if (action == null)
+                return new VsTelemetryService();
+
+            // Override PostEventToSession to avoid actually sending to telemetry
+            var mock = new Mock<VsTelemetryService>();
+            mock.Protected().Setup("PostEventToSession", ItExpr.IsAny<TelemetryEvent>())
+                .Callback(action);
+
+            return mock.Object;
         }
     }
 }
