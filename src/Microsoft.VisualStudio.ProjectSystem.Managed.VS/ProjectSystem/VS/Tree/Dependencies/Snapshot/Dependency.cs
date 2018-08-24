@@ -10,6 +10,7 @@ using System.Text;
 
 using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
+using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 using Microsoft.VisualStudio.Text;
 
@@ -75,7 +76,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 Flags = Flags.Union(DependencyTreeFlags.UnresolvedFlags);
             }
 
-            _iconSet = new DependencyIconSet(dependencyModel.Icon, dependencyModel.ExpandedIcon, dependencyModel.UnresolvedIcon, dependencyModel.UnresolvedExpandedIcon);
+            // If this is one of our implementations of IDependencyModel then we can just reuse the icon
+            // set rather than creating a new one.
+            if (dependencyModel is Dependency dependency)
+            {
+                _iconSet = dependency._iconSet;
+            }
+            else if (dependencyModel is DependencyModel model)
+            {
+                _iconSet = model.IconSet;
+            }
+            else
+            {
+                _iconSet = new DependencyIconSet(dependencyModel.Icon, dependencyModel.ExpandedIcon, dependencyModel.UnresolvedIcon, dependencyModel.UnresolvedExpandedIcon);
+            }
 
             Properties = dependencyModel.Properties ??
                             ImmutableStringDictionary<string>.EmptyOrdinal
@@ -106,9 +120,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             // since this is a clone make the modelId and dependencyIds match the original model
             _modelId = modelId;
             _fullPath = model._fullPath; // Grab the cached value if we've already created it
-
-            // We can also reuse the icon set rather than hanging on to what is effectively a copy.
-            _iconSet = model._iconSet;
 
             if (model.DependencyIDs != null && model.DependencyIDs.Any())
             {
