@@ -18,6 +18,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
     {
         public const string ProviderTypeString = "AssemblyDependency";
 
+        private static readonly DependencyIconSet s_iconSet = new DependencyIconSet(
+            icon: KnownMonikers.Reference,
+            expandedIcon: KnownMonikers.Reference,
+            unresolvedIcon: KnownMonikers.ReferenceWarning,
+            unresolvedExpandedIcon: KnownMonikers.ReferenceWarning);
+
         protected override string UnresolvedRuleName { get; } = AssemblyReference.SchemaName;
         protected override string ResolvedRuleName { get; } = ResolvedAssemblyReference.SchemaName;
         public override string ProviderType { get; } = ProviderTypeString;
@@ -27,8 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             return new SubTreeRootDependencyModel(
                 ProviderType,
                 VSResources.AssembliesNodeName,
-                KnownMonikers.Reference,
-                KnownMonikers.ReferenceWarning,
+                s_iconSet,
                 DependencyTreeFlags.AssemblySubTreeRootNodeFlags);
         }
 

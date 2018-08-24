@@ -17,6 +17,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
     {
         public const string ProviderTypeString = "SdkDependency";
 
+        private static readonly DependencyIconSet s_iconSet = new DependencyIconSet(
+            icon: ManagedImageMonikers.Sdk,
+            expandedIcon: ManagedImageMonikers.Sdk,
+            unresolvedIcon: ManagedImageMonikers.SdkWarning,
+            unresolvedExpandedIcon: ManagedImageMonikers.SdkWarning);
+
         protected override string UnresolvedRuleName { get; } = SdkReference.SchemaName;
         protected override string ResolvedRuleName { get; } = ResolvedSdkReference.SchemaName;
         public override string ProviderType { get; } = ProviderTypeString;
@@ -26,8 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             return new SubTreeRootDependencyModel(
                 ProviderType,
                 VSResources.SdkNodeName,
-                ManagedImageMonikers.Sdk,
-                ManagedImageMonikers.SdkWarning,
+                s_iconSet,
                 DependencyTreeFlags.SdkSubTreeRootNodeFlags);
         }
 

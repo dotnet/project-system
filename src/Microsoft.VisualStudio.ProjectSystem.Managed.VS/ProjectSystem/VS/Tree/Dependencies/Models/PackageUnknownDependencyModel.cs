@@ -11,6 +11,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 {
     internal class PackageUnknownDependencyModel : DependencyModel
     {
+        private readonly static DependencyIconSet s_iconSet = new DependencyIconSet(
+            icon: KnownMonikers.QuestionMark,
+            expandedIcon: KnownMonikers.QuestionMark,
+            unresolvedIcon: KnownMonikers.QuestionMark,
+            unresolvedExpandedIcon: KnownMonikers.QuestionMark);
+
         public PackageUnknownDependencyModel(
             string providerType,
             string path,
@@ -27,10 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             Name = name;
             Caption = name;
             TopLevel = false;
-            Icon = KnownMonikers.QuestionMark;
-            ExpandedIcon = Icon;
-            UnresolvedIcon = KnownMonikers.QuestionMark;
-            UnresolvedExpandedIcon = UnresolvedIcon;
+            IconSet = s_iconSet;
             Priority = Dependency.UnresolvedReferenceNodePriority;
 
             if (dependenciesIDs != null && dependenciesIDs.Any())

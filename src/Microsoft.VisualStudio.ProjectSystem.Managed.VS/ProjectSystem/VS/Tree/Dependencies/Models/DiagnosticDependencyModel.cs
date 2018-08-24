@@ -15,6 +15,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 
     internal class DiagnosticDependencyModel : DependencyModel
     {
+        private static readonly DependencyIconSet s_errorIconSet = new DependencyIconSet(
+            icon: ManagedImageMonikers.ErrorSmall,
+            expandedIcon: ManagedImageMonikers.ErrorSmall,
+            unresolvedIcon: ManagedImageMonikers.ErrorSmall,
+            unresolvedExpandedIcon: ManagedImageMonikers.ErrorSmall);
+
+        private static readonly DependencyIconSet s_warningIconSet = new DependencyIconSet(
+            icon: ManagedImageMonikers.WarningSmall,
+            expandedIcon: ManagedImageMonikers.WarningSmall,
+            unresolvedIcon: ManagedImageMonikers.WarningSmall,
+            unresolvedExpandedIcon: ManagedImageMonikers.WarningSmall);
+
         public DiagnosticDependencyModel(
             string providerType,
             string originalItemSpec,
@@ -38,20 +50,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 
             if (severity == DiagnosticMessageSeverity.Error)
             {
-                Icon = ManagedImageMonikers.ErrorSmall;
+                IconSet = s_errorIconSet;
                 Flags = Flags.Union(DependencyTreeFlags.DiagnosticErrorNodeFlags);
                 Priority = Dependency.DiagnosticsErrorNodePriority;
             }
             else
             {
-                Icon = ManagedImageMonikers.WarningSmall;
+                IconSet = s_warningIconSet;
                 Flags = Flags.Union(DependencyTreeFlags.DiagnosticWarningNodeFlags);
                 Priority = Dependency.DiagnosticsWarningNodePriority;
             }
-
-            ExpandedIcon = Icon;
-            UnresolvedIcon = Icon;
-            UnresolvedExpandedIcon = Icon;
         }
 
         private string _id;

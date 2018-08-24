@@ -8,6 +8,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 {
     internal class ComDependencyModel : DependencyModel
     {
+        private static readonly DependencyIconSet s_iconSet = new DependencyIconSet(
+            icon: ManagedImageMonikers.Component,
+            expandedIcon: ManagedImageMonikers.Component,
+            unresolvedIcon: ManagedImageMonikers.ComponentWarning,
+            unresolvedExpandedIcon: ManagedImageMonikers.ComponentWarning);
+
+        private static readonly DependencyIconSet s_implicitIconSet = new DependencyIconSet(
+            icon: ManagedImageMonikers.ComponentPrivate,
+            expandedIcon: ManagedImageMonikers.ComponentPrivate,
+            unresolvedIcon: ManagedImageMonikers.ComponentWarning,
+            unresolvedExpandedIcon: ManagedImageMonikers.ComponentWarning);
+
         public ComDependencyModel(
             string providerType,
             string path,
@@ -31,10 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 
             SchemaItemType = ComReference.PrimaryDataSourceItemType;
             Priority = Dependency.ComNodePriority;
-            Icon = isImplicit ? ManagedImageMonikers.ComponentPrivate : ManagedImageMonikers.Component;
-            ExpandedIcon = Icon;
-            UnresolvedIcon = ManagedImageMonikers.ComponentWarning;
-            UnresolvedExpandedIcon = UnresolvedIcon;
+            IconSet = isImplicit ? s_implicitIconSet : s_iconSet;
         }
     }
 }

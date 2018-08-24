@@ -22,6 +22,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
     {
         public const string ProviderTypeString = "NuGetDependency";
 
+        private static readonly DependencyIconSet s_iconSet = new DependencyIconSet(
+            icon: ManagedImageMonikers.NuGetGrey,
+            expandedIcon: ManagedImageMonikers.NuGetGrey,
+            unresolvedIcon: ManagedImageMonikers.NuGetGreyWarning,
+            unresolvedExpandedIcon: ManagedImageMonikers.NuGetGreyWarning);
+
         [ImportingConstructor]
         public PackageRuleHandler(ITargetFrameworkProvider targetFrameworkProvider)
         {
@@ -242,8 +248,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             return new SubTreeRootDependencyModel(
                 ProviderType,
                 VSResources.NuGetPackagesNodeName,
-                ManagedImageMonikers.NuGetGrey,
-                ManagedImageMonikers.NuGetGreyWarning,
+                s_iconSet,
                 DependencyTreeFlags.NuGetSubTreeRootNodeFlags);
         }
 
