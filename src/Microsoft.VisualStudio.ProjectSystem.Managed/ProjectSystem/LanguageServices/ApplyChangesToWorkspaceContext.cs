@@ -138,9 +138,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             {
                 handler.Value.Initialize(_context);
             }
-
-            // By default, set "LastDesignTimeBuildSucceeded = false" to turn off diagnostics until the first design time build succeeds for this project.
-            _context.LastDesignTimeBuildSucceeded = false;
         }
 
         private void ProcessDesignTimeBuildFailure(IProjectRuleSnapshot snapshot)

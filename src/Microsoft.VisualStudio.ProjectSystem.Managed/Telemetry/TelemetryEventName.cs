@@ -1,5 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
+
 namespace Microsoft.VisualStudio.Telemetry
 {
     /// <summary>
@@ -33,9 +35,14 @@ namespace Microsoft.VisualStudio.Telemetry
         public static readonly string TreeUpdatedResolved = BuildEventName("TreeUpdated/Resolved");
 
         /// <summary>
-        ///     Inidicate that a design-time build has completed.
+        ///     Indicates that a design-time build has completed.
         /// </summary>
         public static readonly string DesignTimeBuildComplete = BuildEventName("DesignTimeBuildComplete");
+
+        /// <summary>
+        ///     Indicates that a failure occurred during creation or disposal of an <see cref="IWorkspaceProjectContext"/> instance.
+        /// </summary>
+        public static readonly string LanguageServiceInitFault = BuildEventName("LanguageServiceInit/Fault");
 
         private static string BuildEventName(string eventName)
         {

@@ -2,6 +2,7 @@
 
 
 using System;
+using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.Logging;
 using Moq;
 using Xunit;
@@ -65,7 +66,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         {
             var handler = CreateInstance();
 
-            var workspaceContext = IWorkspaceProjectContextFactory.Create();
+            var workspaceContext = IWorkspaceProjectContextMockFactory.Create();
 
             handler.Initialize(workspaceContext);
 

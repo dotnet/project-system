@@ -2,21 +2,28 @@
 
 using System;
 using System.Collections.Generic;
-
 using Moq;
 
 namespace Microsoft.VisualStudio.Telemetry
 {
     internal static class ITelemetryServiceFactory
     {
+        public static ITelemetryService Create()
+        {
+            var mock = new Mock<ITelemetryService>();
+
+            mock.Setup(s => s.PostFault(It.IsAny<string>(), It.IsAny<Exception>()))
+                .Returns(true);
+
+            return mock.Object;
+        }
+
         public class TelemetryParameters
         {
             public string EventName { get; set; }
 
             public IEnumerable<(string propertyName, object propertyValue)> Properties { get; set; }
         }
-
-        public static ITelemetryService Create() => Mock.Of<ITelemetryService>();
 
         public static ITelemetryService Create(TelemetryParameters callParameters)
         {
