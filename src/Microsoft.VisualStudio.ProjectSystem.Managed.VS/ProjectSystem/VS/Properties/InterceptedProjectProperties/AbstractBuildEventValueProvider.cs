@@ -9,8 +9,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
 {
     internal abstract partial class AbstractBuildEventValueProvider : InterceptingPropertyValueProviderBase
     {
-        protected readonly IProjectLockService _projectLockService;
-        protected readonly UnconfiguredProject _unconfiguredProject;
+        private readonly IProjectLockService _projectLockService;
+        private readonly UnconfiguredProject _unconfiguredProject;
         private readonly AbstractBuildEventHelper _helper;
 
         protected AbstractBuildEventValueProvider(

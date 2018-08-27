@@ -117,11 +117,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
             InitializeApplicationTypes()
             InitializeShutdownModeValues()
 
-            s_noneText = My.Resources.Designer.PPG_ComboBoxSelect_None
+            s_noneText = My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_ComboBoxSelect_None
 
             'Get text for the Startup Object/Uri label from resources
-            s_startupUriLabelText = My.Resources.Designer.PPG_Application_StartupUriLabelText
-            s_startupObjectLabelText = My.Resources.Designer.PPG_Application_StartupObjectLabelText
+            s_startupUriLabelText = My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_StartupUriLabelText
+            s_startupObjectLabelText = My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_StartupObjectLabelText
         End Sub
 
 #End Region
@@ -163,13 +163,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
                     'StartupObject.  
                     'StartupObjectOrUri must be kept after OutputType because it depends on the initialization of "OutputType" values
                     data = New PropertyControlData(VsProjPropId.VBPROJPROPID_StartupObject, Const_StartupObject, Nothing, ControlDataFlags.Hidden) With {
-                        .DisplayPropertyName = My.Resources.Designer.PPG_Property_StartupObject
+                        .DisplayPropertyName = My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Property_StartupObject
                     }
                     list.Add(data)
 
                     'RootNamespace
                     data = New PropertyControlData(VsProjPropId.VBPROJPROPID_RootNamespace, Const_RootNamespace, RootNamespaceTextBox, New Control() {RootNamespaceLabel}) With {
-                        .DisplayPropertyName = My.Resources.Designer.PPG_Property_RootNamespace
+                        .DisplayPropertyName = My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Property_RootNamespace
                     }
                     list.Add(data)
 
@@ -194,13 +194,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
 
                     'AssemblyName
                     data = New PropertyControlData(VsProjPropId.VBPROJPROPID_AssemblyName, "AssemblyName", AssemblyNameTextBox, New Control() {AssemblyNameLabel}) With {
-                        .DisplayPropertyName = My.Resources.Designer.PPG_Property_AssemblyName
+                        .DisplayPropertyName = My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Property_AssemblyName
                     }
                     list.Add(data)
 
                     'ApplicationIcon
                     data = New PropertyControlData(VsProjPropId.VBPROJPROPID_ApplicationIcon, "ApplicationIcon", IconCombobox, AddressOf ApplicationIconSet, AddressOf ApplicationIconGet, ControlDataFlags.UserHandledEvents, New Control() {IconLabel, IconPicturebox}) With {
-                        .DisplayPropertyName = My.Resources.Designer.PPG_Property_ApplicationIcon
+                        .DisplayPropertyName = My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Property_ApplicationIcon
                     }
                     list.Add(data)
 
@@ -384,9 +384,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' <remarks></remarks>
         Private Shared Sub InitializeApplicationTypes()
             '   Note: WPF application page does not support NT service or Web control application types
-            s_applicationTypes.Add(New ApplicationTypeInfo(ApplicationTypes.WindowsApp, My.Resources.Designer.PPG_WindowsApp_WPF, True))
-            s_applicationTypes.Add(New ApplicationTypeInfo(ApplicationTypes.WindowsClassLib, My.Resources.Designer.PPG_WindowsClassLib_WPF, True))
-            s_applicationTypes.Add(New ApplicationTypeInfo(ApplicationTypes.CommandLineApp, My.Resources.Designer.PPG_CommandLineApp_WPF, True))
+            s_applicationTypes.Add(New ApplicationTypeInfo(ApplicationTypes.WindowsApp, My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_WindowsApp_WPF, True))
+            s_applicationTypes.Add(New ApplicationTypeInfo(ApplicationTypes.WindowsClassLib, My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_WindowsClassLib_WPF, True))
+            s_applicationTypes.Add(New ApplicationTypeInfo(ApplicationTypes.CommandLineApp, My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_CommandLineApp_WPF, True))
         End Sub
 
 #End Region
@@ -430,7 +430,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' <param name="e"></param>
         ''' <remarks></remarks>
         Private Sub AssemblyInfoButton_Click(sender As Object, e As EventArgs) Handles AssemblyInfoButton.Click
-            ShowChildPage(My.Resources.Designer.PPG_AssemblyInfo_Title, GetType(AssemblyInfoPropPage), HelpKeywords.VBProjPropAssemblyInfo)
+            ShowChildPage(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_AssemblyInfo_Title, GetType(AssemblyInfoPropPage), HelpKeywords.VBProjPropAssemblyInfo)
         End Sub
 
 #End Region
@@ -775,13 +775,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
                     'The file should have been created, or it should have failed.  Throw an unexpected
                     '  error, because our contract says we have to succeed or throw if
                     '  createAppXamlIfDoesNotExist is specified.
-                    Throw New PropertyPageException(My.Resources.Designer.PPG_Unexpected)
+                    Throw New PropertyPageException(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Unexpected)
                 End If
 
                 Return Nothing
             Catch ex As Exception
                 Throw New PropertyPageException(
-                    String.Format(My.Resources.Designer.PPG_WPFApp_CantOpenOrCreateAppXaml_1Arg, ex.Message),
+                    String.Format(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_WPFApp_CantOpenOrCreateAppXaml_1Arg, ex.Message),
                     HelpKeywords.VBProjPropWPFApp_CantOpenOrCreateAppXaml,
                     ex)
             End Try
@@ -808,8 +808,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
             ElseIf createAppXamlIfDoesNotExist Then
                 Debug.Fail("This function should not have reached here if createAppDotXamlFileIfNotExist was passed in as True.  It should have thrown an exception by now.")
                 Throw New PropertyPageException(
-                    String.Format(My.Resources.Designer.PPG_WPFApp_CantOpenOrCreateAppXaml_1Arg,
-                        My.Resources.Designer.PPG_Unexpected),
+                    String.Format(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_WPFApp_CantOpenOrCreateAppXaml_1Arg,
+                        My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Unexpected),
                     HelpKeywords.VBProjPropWPFApp_CantOpenOrCreateAppXaml)
             Else
                 Return Nothing
@@ -832,7 +832,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
                 Dim vsTextLines As IVsTextLines = TryCast(docData.Buffer, IVsTextLines)
                 If vsTextLines Is Nothing Then
                     Throw New PropertyPageException(
-                        My.Resources.Designer.PPG_WPFApp_AppXamlOpenInUnsupportedEditor,
+                        My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_WPFApp_AppXamlOpenInUnsupportedEditor,
                         HelpKeywords.VBProjPropWPFApp_AppXamlOpenInUnsupportedEditor)
                 End If
                 Dim document As New AppDotXamlDocument(vsTextLines)
@@ -842,8 +842,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
             If createAppXamlIfDoesNotExist Then
                 Debug.Fail("This function should not have reached here if createAppDotXamlFileIfNotExist was passed in as True.  It should have thrown an exception by now.")
                 Throw New PropertyPageException(
-                    String.Format(My.Resources.Designer.PPG_WPFApp_CantOpenOrCreateAppXaml_1Arg,
-                        My.Resources.Designer.PPG_Unexpected),
+                    String.Format(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_WPFApp_CantOpenOrCreateAppXaml_1Arg,
+                        My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Unexpected),
                     HelpKeywords.VBProjPropWPFApp_CantOpenOrCreateAppXaml)
             Else
                 Return Nothing
@@ -1397,10 +1397,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
 
         Private Shared Sub InitializeShutdownModeValues()
             'This order affects the order in the combobox
-            s_defaultShutdownMode = New ShutdownMode("OnLastWindowClose", My.Resources.Designer.PPG_WPFApp_ShutdownMode_OnLastWindowClose)
+            s_defaultShutdownMode = New ShutdownMode("OnLastWindowClose", My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_WPFApp_ShutdownMode_OnLastWindowClose)
             s_shutdownModes.Add(s_defaultShutdownMode)
-            s_shutdownModes.Add(New ShutdownMode("OnMainWindowClose", My.Resources.Designer.PPG_WPFApp_ShutdownMode_OnMainWindowClose))
-            s_shutdownModes.Add(New ShutdownMode("OnExplicitShutdown", My.Resources.Designer.PPG_WPFApp_ShutdownMode_OnExplicitShutdown))
+            s_shutdownModes.Add(New ShutdownMode("OnMainWindowClose", My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_WPFApp_ShutdownMode_OnMainWindowClose))
+            s_shutdownModes.Add(New ShutdownMode("OnExplicitShutdown", My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_WPFApp_ShutdownMode_OnExplicitShutdown))
         End Sub
 
         Public Function GetShutdownModeFromStorage() As String
@@ -1472,7 +1472,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
 
                 If foundShutdownMode Is Nothing Then
                     'The value wasn't found in the combobox.  Add it, but show it as an unsupported value.
-                    foundShutdownMode = New ShutdownMode(shutdownModeStringValue, String.Format(My.Resources.Designer.PPG_WPFApp_InvalidShutdownMode, shutdownModeStringValue))
+                    foundShutdownMode = New ShutdownMode(shutdownModeStringValue, String.Format(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_WPFApp_InvalidShutdownMode, shutdownModeStringValue))
                     ShutdownModeComboBox.Items.Add(foundShutdownMode)
                     ShutdownModeComboBox.SelectedItem = foundShutdownMode
                 End If
@@ -1616,7 +1616,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
             Try
                 Dim appXamlProjectItem As ProjectItem = FindApplicationXamlProjectItem(ProjectHierarchy, createAppDotXamlIfItDoesntExist)
                 If appXamlProjectItem Is Nothing Then
-                    ShowErrorMessage(My.Resources.Designer.PPG_WPFApp_CantFindAppXaml)
+                    ShowErrorMessage(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_WPFApp_CantFindAppXaml)
                     Return
                 End If
 
@@ -1676,7 +1676,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
             '  to us).
             Dim newProjectItem As ProjectItem = FindDependentFile(parent, VB_EXTENSION)
             If newProjectItem Is Nothing Then
-                Throw New PropertyPageException(My.Resources.Designer.PPG_Unexpected)
+                Throw New PropertyPageException(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Unexpected)
             End If
 
             Return newProjectItem
@@ -1723,7 +1723,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
                         dependentVBItem = CreateApplicationEventsFile(appXamlProjectItem)
                     Catch ex As Exception
                         Throw New PropertyPageException(
-                            String.Format(My.Resources.Designer.PPG_WPFApp_CouldntCreateApplicationEventsFile_1Arg, ex.Message),
+                            String.Format(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_WPFApp_CouldntCreateApplicationEventsFile_1Arg, ex.Message),
                             HelpKeywords.VBProjPropWPFApp_CouldntCreateApplicationEventsFile,
                             ex)
                     End Try
@@ -1807,7 +1807,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
                 Catch ex As Exception
                     'Problems here should be parsing errors.
                     Dim message As String =
-                        String.Format(My.Resources.Designer.PPG_WPFApp_ErrorControlMessage_1Arg, TryGetAppDotXamlFilename()) _
+                        String.Format(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_WPFApp_ErrorControlMessage_1Arg, TryGetAppDotXamlFilename()) _
                         & vbCrLf & vbCrLf _
                         & ex.Message
                     DisplayErrorControl(message)
@@ -1908,6 +1908,18 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' <remarks></remarks>
         Private Sub ViewUACSettingsButton_Click(sender As Object, e As EventArgs) Handles ViewUACSettingsButton.Click
             ViewUACSettings()
+        End Sub
+
+#End Region
+
+#Region "Auto-generate binding redirects checkbox"
+
+        ''' <summary>
+        ''' Shows or hides the Auto-generate Binding Redirects checkbox depending on the new target
+        ''' framework.
+        ''' </summary>
+        Protected Overrides Sub TargetFrameworkMonikerChanged()
+            ShowAutoGeneratedBindingRedirectsCheckBox(TargetFrameworkComboBox, AutoGenerateBindingRedirectsCheckBox)
         End Sub
 
 #End Region

@@ -78,12 +78,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             }).ConfigureAwait(false);
         }
 
-        public async Task<ConfiguredProject> GetConfiguredProject(ITargetFramework target)
+        public Task<ConfiguredProject> GetConfiguredProject(ITargetFramework target)
         {
-            return await ExecuteWithinLockAsync(() =>
+            return ExecuteWithinLockAsync(() =>
             {
                 return Task.FromResult(_currentAggregateProjectContext.GetInnerConfiguredProject(target));
-            }).ConfigureAwait(false);
+            });
         }
 
         protected async Task AddInitialSubscriptionsAsync()
@@ -179,11 +179,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         /// Ensures that <see cref="_currentAggregateProjectContext"/> is updated for the latest TargetFrameworks from the project properties
         /// and returns this value.
         /// </summary>
-        private async Task<AggregateCrossTargetProjectContext> UpdateProjectContextAsync()
+        private Task<AggregateCrossTargetProjectContext> UpdateProjectContextAsync()
         {
             // Ensure that only single thread is attempting to create a project context.
             AggregateCrossTargetProjectContext previousContextToDispose = null;
-            return await ExecuteWithinLockAsync(async () =>
+            return ExecuteWithinLockAsync(async () =>
             {
                 // Check if we have already computed the project context.
                 if (_currentAggregateProjectContext != null)
@@ -234,7 +234,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                 OnAggregateContextChanged(previousContextToDispose, _currentAggregateProjectContext);
 
                 return _currentAggregateProjectContext;
-            }).ConfigureAwait(false);
+            });
         }
 
         private async Task DisposeAggregateProjectContextAsync(AggregateCrossTargetProjectContext projectContext)

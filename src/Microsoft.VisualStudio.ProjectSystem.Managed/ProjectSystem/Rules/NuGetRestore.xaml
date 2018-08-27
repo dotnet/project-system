@@ -134,4 +134,16 @@
                     Visible="False" 
                     ReadOnly="True" />
 
+    <StringProperty Name="RestorePackagesWithLockFile"
+                    Visible="False"
+                    ReadOnly="True" />
+
+    <StringProperty Name="RestoreLockedMode"
+                    Visible="False"
+                    ReadOnly="True" />
+
+    <StringProperty Name="NuGetLockFilePath"
+                    Visible="False"
+                    ReadOnly="True" />
+
 </Rule>

@@ -25,27 +25,5 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
             return emptyRule;
         }
-
-        /// <summary>
-        /// Gets the rule from the specified catalog, if such a catalog and rule exist.
-        /// </summary>
-        /// <param name="snapshot">The snapshot to read from.</param>
-        /// <param name="catalogName">The name of the catalog.</param>
-        /// <param name="ruleName">The name of the rule.</param>
-        /// <returns>The rule, if found; otherwise <c>null</c>.</returns>
-        internal static Rule GetSchema(this IProjectCatalogSnapshot snapshot, string catalogName, string ruleName)
-        {
-            Requires.NotNull(snapshot, nameof(snapshot));
-            Requires.NotNull(catalogName, nameof(catalogName));
-            Requires.NotNullOrEmpty(ruleName, nameof(ruleName));
-            if (snapshot.NamedCatalogs.TryGetValue(catalogName, out IPropertyPagesCatalog catalog))
-            {
-                return catalog.GetSchema(ruleName);
-            }
-            else
-            {
-                return null;
-            }
-        }
     }
 }

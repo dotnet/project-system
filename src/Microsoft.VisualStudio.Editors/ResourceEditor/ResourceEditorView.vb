@@ -45,7 +45,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private _fileWatcher As FileWatcher
 
         'Standard title for messageboxes, etc.
-        Private Shared ReadOnly s_messageBoxCaption As String = My.Resources.Designer.RSE_ResourceEditor
+        Private Shared ReadOnly s_messageBoxCaption As String = My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_ResourceEditor
 
         'The project guid for C++ (Project.Kind)
         Private ReadOnly _projectGuid_CPlusPlus As New Guid("8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942")
@@ -290,7 +290,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 If allowNoCodeGeneration Then
                     'An empty custom tool gives us "No Code Generation".  Anything non-empty will be considered
                     '  custom and will disable the combobox.
-                    AddCodeGeneratorEntry(My.Resources.Designer.RSE_NoCodeGeneration, "")
+                    AddCodeGeneratorEntry(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_NoCodeGeneration, "")
                 End If
 
                 'Ensure we don't disable the Access Modifier combobox just because the custom tool is set to the
@@ -632,8 +632,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             MainFont = GetEnvironmentFont(ServiceProvider)
 
             'Now check the resx file for overrides
-            StringTableFont = GetFontFromResources(My.Resources.Designer.RSE_Font_StringTable)
-            ListViewFont = GetFontFromResources(My.Resources.Designer.RSE_Font_ListView)
+            StringTableFont = GetFontFromResources(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Font_StringTable)
+            ListViewFont = GetFontFromResources(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Font_ListView)
             'Now set the fonts for only those items which have been overridden.  Controls will automatically
             '  get their font from their parent if we don't set them manually.
             If MainFont IsNot Nothing Then
@@ -863,7 +863,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <remarks></remarks>
         Private Sub InitializeResourceCategories()
             _categoryStrings = New Category(
-                _categoryNameStrings, My.Resources.Designer.RSE_Cat_Strings,
+                _categoryNameStrings, My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Cat_Strings,
                 Category.Display.StringTable,
                 New DesignerMenuCommand(Nothing, Constants.MenuConstants.CommandIDRESXResTypeStrings, AddressOf MenuResourceTypeStrings),
                 AddressOf ButtonAdd_NewString_Click,
@@ -873,7 +873,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             _categories.Add(_categoryStrings)
 
             _categoryImages = New Category(
-                _categoryNameImages, My.Resources.Designer.RSE_Cat_Images,
+                _categoryNameImages, My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Cat_Images,
                 Category.Display.ListView,
                 New DesignerMenuCommand(Nothing, Constants.MenuConstants.CommandIDRESXResTypeImages, AddressOf MenuResourceTypeImages),
                 AddressOf ButtonAdd_NewImage_BMP_Click,
@@ -885,14 +885,14 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             If PropertyPages.VSProductSKU.IsExpress() Then
                 ' NOTE: we disable "Add New Icon" in the express SKU, because the icon editor (a part of native resource designer) does not exist in the express SKUs...
                 _categoryIcons = New Category(
-                    _categoryNameIcons, My.Resources.Designer.RSE_Cat_Icons,
+                    _categoryNameIcons, My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Cat_Icons,
                     Category.Display.ListView,
                     New DesignerMenuCommand(Nothing, Constants.MenuConstants.CommandIDRESXResTypeIcons, AddressOf MenuResourceTypeIcons),
                     AddressOf ButtonAdd_ExistingFile_Click,
                     ResourceTypeEditors.Icon)
             Else
                 _categoryIcons = New Category(
-                    _categoryNameIcons, My.Resources.Designer.RSE_Cat_Icons,
+                    _categoryNameIcons, My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Cat_Icons,
                     Category.Display.ListView,
                     New DesignerMenuCommand(Nothing, Constants.MenuConstants.CommandIDRESXResTypeIcons, AddressOf MenuResourceTypeIcons),
                     AddressOf ButtonAdd_NewIcon_Click,
@@ -903,7 +903,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             _categories.Add(_categoryIcons)
 
             _categoryAudio = New Category(
-                _categoryNameAudio, My.Resources.Designer.RSE_Cat_Audio,
+                _categoryNameAudio, My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Cat_Audio,
                 Category.Display.ListView,
                 New DesignerMenuCommand(Nothing, Constants.MenuConstants.CommandIDRESXResTypeAudio, AddressOf MenuResourceTypeAudio),
                 AddressOf ButtonAdd_ExistingFile_Click,
@@ -913,7 +913,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             _categories.Add(_categoryAudio)
 
             _categoryFiles = New Category(
-                _categoryNameFiles, My.Resources.Designer.RSE_Cat_Files,
+                _categoryNameFiles, My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Cat_Files,
                 Category.Display.ListView,
                 New DesignerMenuCommand(Nothing, Constants.MenuConstants.CommandIDRESXResTypeFiles, AddressOf MenuResourceTypeFiles),
                 AddressOf ButtonAdd_ExistingFile_Click,
@@ -924,7 +924,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             _categories.Add(_categoryFiles)
 
             _categoryOther = New Category(
-                _categoryNameOther, My.Resources.Designer.RSE_Cat_Other,
+                _categoryNameOther, My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Cat_Other,
                 Category.Display.StringTable,
                 New DesignerMenuCommand(Nothing, Constants.MenuConstants.CommandIDRESXResTypeOther, AddressOf MenuResourceTypeOther),
                 Nothing,
@@ -1678,13 +1678,13 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
                                 ' We should check whether the project can accept the item before adding the external file to the project
                                 If Not IsValidResourseItem(Resource, Message, HelpID) Then
-                                    DsMsgBox(My.Resources.Designer.GetString(My.Resources.Designer.RSE_Err_CantAddUnsupportedResource_1Arg, Resource.Name) & vbCrLf & vbCrLf & Message, MessageBoxButtons.OK, MessageBoxIcon.Error, , HelpID)
+                                    DsMsgBox(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_CantAddUnsupportedResource_1Arg, Resource.Name) & vbCrLf & vbCrLf & Message, MessageBoxButtons.OK, MessageBoxIcon.Error, , HelpID)
                                     Continue For
                                 End If
 
                                 ' We try to add file to the project...
                                 Dim FinalPathAndFileName As String = ResourcesFolderService.AddFileToProject(
-                                    My.Resources.Designer.RSE_ResourceEditor,
+                                    My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_ResourceEditor,
                                     GetProject(),
                                     GetResXProjectItem(),
                                     GetDialogOwnerWindow(),
@@ -1719,7 +1719,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                                 End If
                             Else
                                 'The source file doesn't exist.  See if the user wants to continue or to cancel.
-                                If DsMsgBox(My.Resources.Designer.GetString(My.Resources.Designer.RSE_Err_CantFindResourceFile_1Arg, Resource.AbsoluteLinkPathAndFileName) & VB.vbCrLf & VB.vbCrLf & My.Resources.Designer.RSE_Dlg_ContinueAnyway, MessageBoxButtons.YesNo, MessageBoxIcon.Error, ,
+                                If DsMsgBox(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_CantFindResourceFile_1Arg, Resource.AbsoluteLinkPathAndFileName) & VB.vbCrLf & VB.vbCrLf & My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Dlg_ContinueAnyway, MessageBoxButtons.YesNo, MessageBoxIcon.Error, ,
                                         HelpIDs.Err_CantFindResourceFile) _
                                         = DialogResult.No Then
                                     'User canceled - cancel entire add operation for all files.
@@ -1787,7 +1787,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Dim HelpID As String = String.Empty
 
                 If Not IsValidResourseItem(NewResource, Message, HelpID) Then
-                    DsMsgBox(My.Resources.Designer.GetString(My.Resources.Designer.RSE_Err_CantAddUnsupportedResource_1Arg, NewResource.Name) & vbCrLf & vbCrLf & Message, MessageBoxButtons.OK, MessageBoxIcon.Error, , HelpID)
+                    DsMsgBox(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_CantAddUnsupportedResource_1Arg, NewResource.Name) & vbCrLf & vbCrLf & Message, MessageBoxButtons.OK, MessageBoxIcon.Error, , HelpID)
                     Return
                 End If
             Next
@@ -1815,7 +1815,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
                             If Not File.Exists(Resource.AbsoluteLinkPathAndFileName) Then
                                 'The source file doesn't exist.  See if the user wants to continue or to cancel.
-                                If DsMsgBox(My.Resources.Designer.GetString(My.Resources.Designer.RSE_Err_CantFindResourceFile_1Arg, Resource.AbsoluteLinkPathAndFileName) & VB.vbCrLf & VB.vbCrLf & My.Resources.Designer.RSE_Dlg_ContinueAnyway, MessageBoxButtons.YesNo, MessageBoxIcon.Error, ,
+                                If DsMsgBox(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_CantFindResourceFile_1Arg, Resource.AbsoluteLinkPathAndFileName) & VB.vbCrLf & VB.vbCrLf & My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Dlg_ContinueAnyway, MessageBoxButtons.YesNo, MessageBoxIcon.Error, ,
                                         HelpIDs.Err_CantFindResourceFile) _
                                         = DialogResult.No Then
                                     'User canceled - cancel entire add operation for all files.
@@ -1827,7 +1827,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                             Else
                                 'Add the file to the project (if appropriate, according to the project)
                                 Dim FinalPathAndFileName As String = ResourcesFolderService.AddFileToProject(
-                                    My.Resources.Designer.RSE_ResourceEditor,
+                                    My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_ResourceEditor,
                                     GetProject(),
                                     GetResXProjectItem(),
                                     GetDialogOwnerWindow(),
@@ -1888,7 +1888,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     'And finally, add them to the resource file and our view.
                     'Do all the resource adds as a single transaction so it shows up as a single Undo/Redo
                     If ResourcesReadyToAdd.Count > 0 Then
-                        Using Transaction As DesignerTransaction = RootDesigner.DesignerHost.CreateTransaction(My.Resources.Designer.GetString(My.Resources.Designer.RSE_Undo_AddResources_1Arg, CStr(ResourcesReadyToAdd.Count)))
+                        Using Transaction As DesignerTransaction = RootDesigner.DesignerHost.CreateTransaction(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Undo_AddResources_1Arg, CStr(ResourcesReadyToAdd.Count)))
 
                             'Add all our new resources to our internal list (but don't add them to the UI yet - that would cause too much flicker)
                             'This call will mark ourselves as dirty.
@@ -2010,7 +2010,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
                 'Then remove them from the ResourceFile.
                 'Do the resource removes as a single transaction so it shows up as a single Undo/Redo
-                Using Transaction As DesignerTransaction = RootDesigner.DesignerHost.CreateTransaction(My.Resources.Designer.GetString(My.Resources.Designer.RSE_Undo_RemoveResources_1Arg, CStr(Resources.Count)))
+                Using Transaction As DesignerTransaction = RootDesigner.DesignerHost.CreateTransaction(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Undo_RemoveResources_1Arg, CStr(Resources.Count)))
 
                     'Finally, remove the resources from the resource file and also dispose of them
                     For Each Resource As Resource In Resources
@@ -2481,7 +2481,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 'Make sure we can check out the resx file first.
                 RootDesigner.DesignerLoader.ManualCheckOut()
 
-                Using Transaction As DesignerTransaction = RootDesigner.DesignerHost.CreateTransaction(My.Resources.Designer.GetString(My.Resources.Designer.RSE_Undo_DeleteResourceCell, cells.Count))
+                Using Transaction As DesignerTransaction = RootDesigner.DesignerHost.CreateTransaction(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Undo_DeleteResourceCell, cells.Count))
                     StringTable.ClearSelectedCells()
                     Transaction.Commit()
                 End Using
@@ -3382,7 +3382,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 End If
 
             Catch ex As Exception
-                DsMsgBox(My.Resources.Designer.GetString(My.Resources.Designer.RSE_Err_CantPlay_1Arg, ex.Message), MessageBoxButtons.OK, MessageBoxIcon.Error, , HelpIDs.Err_CantPlay)
+                DsMsgBox(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_CantPlay_1Arg, ex.Message), MessageBoxButtons.OK, MessageBoxIcon.Error, , HelpIDs.Err_CantPlay)
             End Try
         End Sub
 
@@ -3483,7 +3483,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             If Not Resource.IsLink Then
                 'It's a non-linked resource.  Ask the user if s/he wants to change it to linked so we can
                 '  open it.
-                If DsMsgBox(My.Resources.Designer.RSE_Err_CantEditEmbeddedResource, MessageBoxButtons.OKCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2, HelpIDs.Dlg_OpenEmbedded) = DialogResult.OK Then
+                If DsMsgBox(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_CantEditEmbeddedResource, MessageBoxButtons.OKCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2, HelpIDs.Dlg_OpenEmbedded) = DialogResult.OK Then
                     'User said yes.
                     Resource.PersistenceMode = Resource.ResourcePersistenceMode.Linked
                     Debug.Assert(Resource.IsLink)
@@ -3501,7 +3501,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             'Before we actually try opening the file, let's see if it still exists.  If we try to open a non-existing file,
             '  we can get a nasty, unfriendly COM exception.
             If Not File.Exists(ResourceFilePath) Then
-                DsMsgBox(My.Resources.Designer.GetString(My.Resources.Designer.RSE_Err_CantFindResourceFile_1Arg, ResourceFilePath), MessageBoxButtons.OK, MessageBoxIcon.Error, , HelpIDs.Err_CantFindResourceFile)
+                DsMsgBox(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_CantFindResourceFile_1Arg, ResourceFilePath), MessageBoxButtons.OK, MessageBoxIcon.Error, , HelpIDs.Err_CantFindResourceFile)
                 Exit Sub
             End If
 
@@ -3621,7 +3621,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                         If SelectedResources.Length = 1 Then
                             'If it's just one resource we're exporting, we'll bring up the file save dialog.
                             Dim ResourceToExportFrom As Resource = SelectedResources(0)
-                            Dim Title As String = My.Resources.Designer.GetString(My.Resources.Designer.RSE_DlgTitle_Export_1Arg, ResourceToExportFrom.Name)
+                            Dim Title As String = My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_DlgTitle_Export_1Arg, ResourceToExportFrom.Name)
                             Dim SuggestedFileName As String = GetSuggestedFileNameForResource(ResourceToExportFrom)
                             Dim Filter As String = ResourceToExportFrom.ResourceTypeEditor.GetSaveFileDialogFilter(Path.GetExtension(SuggestedFileName))
                             Dim FilterIndex As Integer = 0
@@ -3639,7 +3639,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                         Else
                             'For multiple resources, we bring up the browser dialog, and don't let them control
                             '  the individual filenames.
-                            Dim Title As String = My.Resources.Designer.RSE_Dlg_ExportMultiple
+                            Dim Title As String = My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Dlg_ExportMultiple
                             Dim UserCanceled As Boolean
                             Dim PathToExportTo As String = ShowFolderBrowserDialog(UserCanceled, Title, ShowNewFolderButton:=True, DefaultPath:=StickyExportPath)
                             If Not UserCanceled AndAlso PathToExportTo <> "" Then
@@ -3684,7 +3684,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 If CanImportOrExportResources(SelectedResources) Then
                     'Okay, we've got our resource.  Now we need to ask the user what file to import from.
                     Dim ResourceToImportTo As Resource = SelectedResources(0)
-                    Dim Title As String = My.Resources.Designer.GetString(My.Resources.Designer.RSE_DlgTitle_Import_1Arg, ResourceToImportTo.Name)
+                    Dim Title As String = My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_DlgTitle_Import_1Arg, ResourceToImportTo.Name)
                     Dim Filter As String = ResourceToImportTo.ResourceTypeEditor.GetOpenFileDialogFilter(_resourceFile)
                     Dim FilterIndex As Integer = 0
                     Dim UserCanceled As Boolean
@@ -3704,7 +3704,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                                 Dim Message As String = String.Empty
                                 Dim HelpID As String = String.Empty
                                 If Not IsValidResourseItem(NewResourceItem, Message, HelpID) Then
-                                    DsMsgBox(My.Resources.Designer.GetString(My.Resources.Designer.RSE_Err_CantAddUnsupportedResource_1Arg, ResourceToImportTo.Name) & vbCrLf & vbCrLf & Message, MessageBoxButtons.OK, MessageBoxIcon.Error, , HelpID)
+                                    DsMsgBox(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_CantAddUnsupportedResource_1Arg, ResourceToImportTo.Name) & vbCrLf & vbCrLf & Message, MessageBoxButtons.OK, MessageBoxIcon.Error, , HelpID)
                                     Return
                                 End If
                             End Using
@@ -3838,7 +3838,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Debug.Fail("QueryUserToReplaceFiles: there weren't any files passed in")
                 Return False
             ElseIf FileNames.Count = 1 Then
-                Return DialogResult.Yes = DsMsgBox(My.Resources.Designer.GetString(My.Resources.Designer.RSE_Dlg_ReplaceExistingFile, CStr(FileNames(0))), MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2)
+                Return DialogResult.Yes = DsMsgBox(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Dlg_ReplaceExistingFile, CStr(FileNames(0))), MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2)
             Else
                 'Build up a list of the files to show the user
                 Dim ExistingFiles As String = ""
@@ -3846,7 +3846,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     ExistingFiles &= vbCrLf & FileName
                 Next
 
-                Return DialogResult.Yes = DsMsgBox(My.Resources.Designer.RSE_Dlg_ReplaceExistingFiles & vbCrLf & ExistingFiles, MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2)
+                Return DialogResult.Yes = DsMsgBox(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Dlg_ReplaceExistingFiles & vbCrLf & ExistingFiles, MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2)
             End If
         End Function
 
@@ -4164,7 +4164,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="e"></param>
         ''' <remarks></remarks>
         Private Sub ButtonAdd_ExistingFile_Click(sender As Object, e As EventArgs)
-            Dim Title As String = My.Resources.Designer.RSE_DlgTitle_AddExisting
+            Dim Title As String = My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_DlgTitle_AddExisting
             Dim FilterIndex As Integer = 0
             Dim Filter As String = GetFileDialogFilterForCategories(_categories, _currentCategory, FilterIndex)
             Dim UserCanceled As Boolean
@@ -4360,7 +4360,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 'Ask the user where to save the file.
                 NewResourceFilePath = ShowSaveFileDialog(
                     UserCancel,
-                    My.Resources.Designer.RSE_DlgTitle_AddNew,
+                    My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_DlgTitle_AddNew,
                     TypeEditor.GetSaveFileDialogFilter(Path.GetExtension(FileNameOnly)),
                     0,
                     FileNameOnly,
@@ -4433,8 +4433,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     'Write out a blank resource into the new file
                     Try
                         TypeEditor.CreateNewResourceFile(NewResourceFilePath)
-                    Catch ex As Exception When ReportWithoutCrash(ex, My.Resources.Designer.GetString(My.Resources.Designer.RSE_Err_CantCreateNewResource_2Args, NewResourceFilePath, ex.Message), NameOf(ResourceEditorView))
-                        DsMsgBox(My.Resources.Designer.GetString(My.Resources.Designer.RSE_Err_CantCreateNewResource_2Args, NewResourceFilePath, ex.Message), MessageBoxButtons.OK, MessageBoxIcon.Error, , HelpIDs.Err_CantCreateNewResource)
+                    Catch ex As Exception When ReportWithoutCrash(ex, My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_CantCreateNewResource_2Args, NewResourceFilePath, ex.Message), NameOf(ResourceEditorView))
+                        DsMsgBox(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_CantCreateNewResource_2Args, NewResourceFilePath, ex.Message), MessageBoxButtons.OK, MessageBoxIcon.Error, , HelpIDs.Err_CantCreateNewResource)
                         Exit Sub
                     End Try
 
@@ -4649,7 +4649,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Return CType(fileNames.ToArray(GetType(String)), String())
             Catch ex As COMException When ex.ErrorCode = NativeMethods.HRESULT_FROM_WIN32(Win32Constant.FNERR_BUFFERTOOSMALL)
                 ' We didn't provide enough buffer for file names. It passes the limitation of the designer.
-                Throw NewException(My.Resources.Designer.RSE_Err_MaxFilesLimitation, HelpIDs.Err_MaxFilesLimitation, ex)
+                Throw NewException(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_MaxFilesLimitation, HelpIDs.Err_MaxFilesLimitation, ex)
             End Try
         End Function
 
@@ -4722,7 +4722,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 FilterIndexForDefaultCategory = FilterIndex '0-indexed
             End If
             '... then add *.*
-            Filter.Append("|" & My.Resources.Designer.RSE_Filter_All & " (*.*)|*.*")
+            Filter.Append("|" & My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Filter_All & " (*.*)|*.*")
 
             Return Filter.ToString
         End Function

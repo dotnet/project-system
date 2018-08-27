@@ -38,13 +38,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             var data = LaunchProfileData.FromILaunchProfile(profile);
 
-            Assert.True(data.Name == profile.Name);
-            Assert.True(data.ExecutablePath == profile.ExecutablePath);
-            Assert.True(data.CommandLineArgs == profile.CommandLineArgs);
-            Assert.True(data.WorkingDirectory == profile.WorkingDirectory);
-            Assert.True(data.LaunchBrowser == profile.LaunchBrowser);
-            Assert.True(data.LaunchUrl == profile.LaunchUrl);
-            Assert.True(DictionaryEqualityComparer<string, string>.Instance.Equals(data.EnvironmentVariables.ToImmutableDictionary(), profile.EnvironmentVariables));
+            Assert.Equal(data.Name, profile.Name);
+            Assert.Equal(data.ExecutablePath, profile.ExecutablePath);
+            Assert.Equal(data.CommandLineArgs, profile.CommandLineArgs);
+            Assert.Equal(data.WorkingDirectory, profile.WorkingDirectory);
+            Assert.Equal(data.LaunchBrowser, profile.LaunchBrowser);
+            Assert.Equal(data.LaunchUrl, profile.LaunchUrl);
+            Assert.Equal(data.EnvironmentVariables.ToImmutableDictionary(), profile.EnvironmentVariables, DictionaryEqualityComparer<string, string>.Instance);
             Assert.True(DictionaryEqualityComparer<string, string>.Instance.Equals(data.EnvironmentVariables.ToImmutableDictionary(), profile.EnvironmentVariables));
             Assert.Equal(isInMemory, data.InMemoryProfile);
         }

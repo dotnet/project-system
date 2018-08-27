@@ -117,5 +117,14 @@ Namespace My.Resources
                 Return ResourceManager.GetString("General_FastUpToDateCheck_Title", resourceCulture)
             End Get
         End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Use previews of the .NET Core SDK.
+        '''</summary>
+        Public Shared ReadOnly Property General_UsePreviewSdk() As String
+            Get
+                Return ResourceManager.GetString("General_UsePreviewSdk", resourceCulture)
+            End Get
+        End Property
     End Class
 End Namespace

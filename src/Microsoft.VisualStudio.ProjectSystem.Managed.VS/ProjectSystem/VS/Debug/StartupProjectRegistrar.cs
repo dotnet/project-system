@@ -8,8 +8,6 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.Shell.Interop;
 
-using IAsyncServiceProvider = Microsoft.VisualStudio.Shell.IAsyncServiceProvider;
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 {
     /// <summary>
@@ -18,12 +16,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
     /// </summary>
     internal class StartupProjectRegistrar : OnceInitializedOnceDisposedAsync
     {
-        private readonly IAsyncServiceProvider _serviceProvider;
-        private readonly IProjectThreadingService _threadingService;
+        private readonly IVsService<IVsStartupProjectsListService> _startupProjectsListService;
         private readonly ISafeProjectGuidService _projectGuidService;
         private readonly IActiveConfiguredProjectSubscriptionService _projectSubscriptionService;
         private readonly ActiveConfiguredProject<DebuggerLaunchProviders> _launchProviders;
-        private IVsStartupProjectsListService _startupProjectsListService;
+        
         private Guid _projectGuid;
 #pragma warning disable CA2213 // OnceInitializedOnceDisposedAsync are not tracked corretly by the IDisposeable analyzer
         private IDisposable _subscription;
@@ -32,15 +29,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         [ImportingConstructor]
         public StartupProjectRegistrar(
             UnconfiguredProject project,
-            [Import(typeof(SAsyncServiceProvider))]IAsyncServiceProvider serviceProvider,
+            IVsService<SVsStartupProjectsListService, IVsStartupProjectsListService> startupProjectsListService,
             IProjectThreadingService threadingService,
             ISafeProjectGuidService projectGuidService,
             IActiveConfiguredProjectSubscriptionService projectSubscriptionService,
             ActiveConfiguredProject<DebuggerLaunchProviders> launchProviders)
         : base(threadingService.JoinableTaskContext)
         {
-            _serviceProvider = serviceProvider;
-            _threadingService = threadingService;
+            _startupProjectsListService = startupProjectsListService;
             _projectGuidService = projectGuidService;
             _projectSubscriptionService = projectSubscriptionService;
             _launchProviders = launchProviders;
@@ -59,11 +55,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                                                     .ConfigureAwait(false);
 
             Assumes.False(_projectGuid == Guid.Empty);
-
-            _startupProjectsListService = (IVsStartupProjectsListService)await _serviceProvider.GetServiceAsync(typeof(SVsStartupProjectsListService))
-                                                                                               .ConfigureAwait(false);
-
-            Assumes.Present(_startupProjectsListService);
 
             _subscription = _projectSubscriptionService.ProjectRuleSource.SourceBlock.LinkToAsyncAction(
                 target: OnProjectChangedAsync);
@@ -84,15 +75,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             bool isDebuggable = await _launchProviders.Value.IsDebuggableAsync()
                                                             .ConfigureAwait(false);
 
+            IVsStartupProjectsListService startupProjectsListService = await _startupProjectsListService.GetValueAsync()
+                                                                                                        .ConfigureAwait(true);
+
+            Assumes.Present(startupProjectsListService);
+
             if (isDebuggable)
             {
                 // If we're already registered, the service no-ops
-                _startupProjectsListService.AddProject(ref _projectGuid);
+                startupProjectsListService.AddProject(ref _projectGuid);
             }
             else
             {
                 // If we're already unregistered, the service no-ops
-                _startupProjectsListService.RemoveProject(ref _projectGuid);
+                startupProjectsListService.RemoveProject(ref _projectGuid);
             }
         }
 

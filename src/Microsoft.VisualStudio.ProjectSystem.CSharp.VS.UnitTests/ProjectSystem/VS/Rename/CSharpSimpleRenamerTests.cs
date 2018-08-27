@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -53,7 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             var userNotificationServices = IUserNotificationServicesFactory.Create();
             var roslynServices = IRoslynServicesFactory.Implement(new CSharpSyntaxFactsService(null));
 
-            await RenameAsync(soureCode, oldFilePath, newFilePath, userNotificationServices, roslynServices, LanguageNames.CSharp);
+            await RenameAsync(soureCode, oldFilePath, newFilePath, userNotificationServices, roslynServices, LanguageNames.CSharp).TimeoutAfter(TimeSpan.FromSeconds(1));
 
             Mock.Get(userNotificationServices).Verify(h => h.Confirm(It.IsAny<string>()), Times.Never);
             Mock.Get(roslynServices).Verify(h => h.RenameSymbolAsync(It.IsAny<Solution>(), It.IsAny<ISymbol>(), It.IsAny<string>()), Times.Never);
@@ -71,7 +72,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                 var environmentOptionsFactory = IEnvironmentOptionsFactory.Implement((string category, string page, string property, bool defaultValue) => { return true; });
 
                 var renamer = new Renamer(ws, IProjectThreadingServiceFactory.Create(), userNotificationServices, environmentOptionsFactory, roslynServices, project, oldFilePath, newFilePath);
-                await renamer.RenameAsync(project);
+                await renamer.RenameAsync(project)
+                             .TimeoutAfter(TimeSpan.FromSeconds(1));
             }
         }
     }

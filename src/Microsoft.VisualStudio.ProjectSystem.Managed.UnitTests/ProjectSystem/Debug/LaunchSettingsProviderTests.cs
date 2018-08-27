@@ -39,9 +39,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             };
 
             var specialFilesManager = ActiveConfiguredProjectFactory.ImplementValue(() => AppDesignerFolderSpecialFileProviderFactory.ImplementGetFile(appDesignerFolder));
-            var project = UnconfiguredProjectFactory.Create(null, null, @"c:\test\Project1\Project1.csproj");
+            var project = UnconfiguredProjectFactory.Create(filePath: @"c:\test\Project1\Project1.csproj");
             var properties = ProjectPropertiesFactory.Create(project, new[] { debuggerData });
-            var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(project, null, new IProjectThreadingServiceMock(), null, properties);
+            var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(project, null, IProjectThreadingServiceFactory.Create(), null, properties);
             var projectServices = IUnconfiguredProjectServicesFactory.Create(IProjectAsynchronousTasksServiceFactory.Create());
             var provider = new LaunchSettingsUnderTest(project, projectServices, fileSystem ?? new IFileSystemMock(), commonServices, null, specialFilesManager);
             return provider;
@@ -75,9 +75,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         }
 
         [Theory]
-        [InlineData(@"C:\Properties",                @"C:\Properties\launchSettings.json")]
-        [InlineData(@"C:\Project\Properties",        @"C:\Project\Properties\launchSettings.json")]
-        [InlineData(@"C:\Project\My Project",        @"C:\Project\My Project\launchSettings.json")]
+        [InlineData(@"C:\Properties", @"C:\Properties\launchSettings.json")]
+        [InlineData(@"C:\Project\Properties", @"C:\Project\Properties\launchSettings.json")]
+        [InlineData(@"C:\Project\My Project", @"C:\Project\My Project\launchSettings.json")]
         public async Task WhenAppDesignerFolder_LaunchSettingsIsInAppDesignerFolder(string appDesignerFolder, string expected)
         {
             var provider = GetLaunchSettingsProvider(null, appDesignerFolder: appDesignerFolder);
@@ -292,21 +292,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         [Fact]
         public async Task ReadProfilesFromDisk_NoFile()
         {
-
             var moqFS = new IFileSystemMock();
             var provider = GetLaunchSettingsProvider(moqFS);
 
-            // Test without an existing file. Should throw
-            LaunchSettingsData launchSettings;
-            try
+            await Assert.ThrowsAsync<FileNotFoundException>(() =>
             {
-                launchSettings = await provider.ReadSettingsFileFromDiskTestAsync();
-                Assert.True(false);
-            }
-            catch
-            {   // Should have logged an error
-
-            }
+                return provider.ReadSettingsFileFromDiskTestAsync();
+            });
         }
 
         [Fact]
@@ -330,14 +322,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             var provider = GetLaunchSettingsProvider(moqFS);
 
             moqFS.WriteAllText(provider.LaunchSettingsFile, BadJsonString);
-            try
+
+            await Assert.ThrowsAsync<JsonReaderException>(() =>
             {
-                var launchSettings = await provider.ReadSettingsFileFromDiskTestAsync();
-                Assert.True(false);
-            }
-            catch
-            {   // Should have logged an error
-            }
+                return provider.ReadSettingsFileFromDiskTestAsync();
+            });
         }
 
         [Fact]

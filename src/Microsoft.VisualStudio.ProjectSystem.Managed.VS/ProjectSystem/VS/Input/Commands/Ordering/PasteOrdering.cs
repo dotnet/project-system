@@ -67,6 +67,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
 
         public bool CanHandleDataObject(object dataObject, IProjectTree dropTarget, IProjectTreeProvider currentProvider)
         {
+            _dropTarget = dropTarget;
             return PasteProcessor.CanHandleDataObject(dataObject, dropTarget, currentProvider);
         }
 

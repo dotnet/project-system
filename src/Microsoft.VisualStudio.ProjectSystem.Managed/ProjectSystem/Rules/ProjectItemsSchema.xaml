@@ -64,11 +64,14 @@
       <NameValuePair Name="DefaultMetadata_Generator" Value="MSBuild:Compile" />
     </ContentType>
 
+    <ContentType Name="XamlAppDef" DisplayName="Workflow definition" ItemType="XamlAppDef" />
+
     <ItemType Name="None" DisplayName="None"/>
     <ItemType Name="Content" DisplayName="Content" />
     <ItemType Name="EmbeddedResource" DisplayName="Embedded resource" />
     <ItemType Name="Page" DisplayName="Page" />
     <ItemType Name="ApplicationDefinition" DisplayName="Application definition" />
+    <ItemType Name="XamlAppDef" DisplayName="Workflow definition" />
 
     <FileExtension Name=".asax" ContentType="Asax" />
     <FileExtension Name=".asmx" ContentType="HTML" />

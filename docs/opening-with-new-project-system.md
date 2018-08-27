@@ -8,7 +8,7 @@ Because both the new project system and legacy project systems use the same file
 
 ### TargetFramework/TargetFrameworks properties (C# and Visual Basic)
 
-If a csproj or vbproj project contains a `<TargetFramework>` or `<TargetFrameworks>` property in the body of the project file (not in any of its imports), then it will be automatically opened in the new project system:
+If a csproj or vbproj project contains a `<TargetFramework>` or `<TargetFrameworks>` property in the body of the project file (not in any of its imports), then it will be automatically opened in the new project system.  Specifically, before picking a project system, Visual Studio will scan the raw text of the project file and if it contains `</TargetFramework>` or `</TargetFrameworks>`, it will be opened in the new project system.
 
 For example, the following two csproj or vbproj projects will open in the new project system:
 
