@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         [Fact]
         public void Handle_WhenMSBuildProjectFullPathPropertyNotChanged_DoesNothing()
         {
-            var context = IWorkspaceProjectContextFactory.Create();
+            var context = IWorkspaceProjectContextMockFactory.Create();
             context.ProjectFilePath = @"ProjectFilePath";
             context.DisplayName = "DisplayName";
 
@@ -35,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         [Fact]
         public void Handle_WhenMSBuildProjectFullPathPropertyChanged_SetsProjectFilePath()
         {
-            var context = IWorkspaceProjectContextFactory.Create();
+            var context = IWorkspaceProjectContextMockFactory.Create();
             context.ProjectFilePath = @"ProjectFilePath";
 
             var handler = CreateInstance(context: context);
@@ -60,7 +60,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         [Fact]
         public void Handle_WhenMSBuildProjectFullPathPropertyChanged_SetsDisplayNameToFileNameWithoutExtension()
         {
-            var context = IWorkspaceProjectContextFactory.Create();
+            var context = IWorkspaceProjectContextMockFactory.Create();
 
             var handler = CreateInstance(context: context);
 
@@ -95,7 +95,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         [InlineData("Configuration|Platform|TargetFramework",   "Debug|AnyCPU|net45",  "TargetFramework",                        "Project (net45)")]
         public void Handle_WhenMSBuildProjectFullPathPropertyChangedAndMultitargeting_IncludeDimensionValuesInDisplayName(string dimensionNames, string dimensionValues, string implicitDimensionNames, string expected)
         {
-            var context = IWorkspaceProjectContextFactory.Create();
+            var context = IWorkspaceProjectContextMockFactory.Create();
             var implicitlyActiveDimensionProvider = IImplicitlyActiveDimensionProviderFactory.ImplementGetImplicitlyActiveDimensions(n => implicitDimensionNames.SplitReturningEmptyIfEmpty('|'));
             var configuration = ProjectConfigurationFactory.Create(dimensionNames, dimensionValues);
             var handler = CreateInstance(configuration, implicitlyActiveDimensionProvider, context);

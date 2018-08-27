@@ -96,7 +96,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         {
             var handler = CreateInstance();
 
-            var workspaceContext = IWorkspaceProjectContextFactory.Create();
+            var workspaceContext = IWorkspaceProjectContextMockFactory.Create();
 
             handler.Initialize(workspaceContext);
 
