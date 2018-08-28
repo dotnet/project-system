@@ -350,6 +350,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             if (copyAlwaysItem.Path != null)
             {
                 logger.Info("Item '{0}' has CopyToOutputDirectory set to 'Always', not up to date.", copyAlwaysItem.Path);
+                return false;
             }
 
             return true;
