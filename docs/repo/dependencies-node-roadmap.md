@@ -53,6 +53,8 @@ Most of the work of translating [`IDependency`][4]s to `IProjectTree`s is done b
 
 The [`GroupedByTargetTreeViewProvider`][8] traverses down the existing `IProjectTree` and the new [`IDependenciesSnapshot`][6] in parallel starting from the Dependencies node itself and proceeding on to target framework, groupings, and then the individual top-level dependencies. Along the way it incrementally generates new `IProjectTree`s as it finds dependencies that have been updated, added, or removed.
 
+> Aside: The `IProjectTree` nodes are intentionally updated from top to bottom as it prevents Solution Explorer from closing opened nodes during the update. At the very least this would be visually distracting to the user.
+
 [`IDependency`][4]s are not translated directly into `IProjectTree`s. They are first converted to [`IDependencyViewModel`][9]s and those in turn become the `IProjectTree`s. This makes it a little easier to create the `IProjectTree`s for targets and groups (e.g. the Assemblies, NuGet, Projects, etc. nodes) which are not themselves [`IDependency`][4]s.
 
 ## Identifiers
