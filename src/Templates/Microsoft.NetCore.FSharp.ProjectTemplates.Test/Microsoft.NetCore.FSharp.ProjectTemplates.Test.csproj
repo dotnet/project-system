@@ -18,5 +18,11 @@
     <VSTemplate Include="MSTest.vstemplate">
       <OutputSubPath>Test</OutputSubPath>
     </VSTemplate>
+    <VSTemplate Include="NUnitTest.vstemplate">
+      <OutputSubPath>.NET Core</OutputSubPath>
+    </VSTemplate>
+    <VSTemplate Include="NUnitTest.vstemplate">
+      <OutputSubPath>Test</OutputSubPath>
+    </VSTemplate>
   </ItemGroup>
 </Project>
