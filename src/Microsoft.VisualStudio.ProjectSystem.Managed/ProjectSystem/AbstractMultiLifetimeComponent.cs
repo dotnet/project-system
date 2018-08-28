@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
     {
         private readonly object _lock = new object();
 #pragma warning disable CA2213 // OnceInitializedOnceDisposedAsync are not tracked correctly by the IDisposeable analyzer
-        private AbstractMultiLifetimeInstance _instance;
+        private IMultiLifetimeInstance _instance;
 #pragma warning restore CA2213
 
         protected AbstractMultiLifetimeComponent(JoinableTaskContextNode joinableTaskContextNode)
@@ -23,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
         }
 
-        public AbstractMultiLifetimeInstance Instance
+        public IMultiLifetimeInstance Instance
         {
             get { return _instance; }
         }
@@ -37,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         private Task LoadCoreAsync()
         {
-            AbstractMultiLifetimeInstance instance;
+            IMultiLifetimeInstance instance;
             lock (_lock)
             {
                 if (_instance == null)
@@ -53,7 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public Task UnloadAsync()
         {
-            AbstractMultiLifetimeInstance instance = null;
+            IMultiLifetimeInstance instance = null;
 
             lock (_lock)
             {
@@ -83,8 +83,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
         }
 
         /// <summary>
-        ///     Creates a new instance of the underlying <see cref="AbstractMultiLifetimeInstance"/>.
+        ///     Creates a new instance of the underlying <see cref="IMultiLifetimeInstance"/>.
         /// </summary>
-        protected abstract AbstractMultiLifetimeInstance CreateInstance();
+        protected abstract IMultiLifetimeInstance CreateInstance();
     }
 }

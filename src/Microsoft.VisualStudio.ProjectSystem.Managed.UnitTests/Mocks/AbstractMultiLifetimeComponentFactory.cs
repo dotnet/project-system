@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Threading;
 
@@ -25,9 +24,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 _joinableTaskContextNode = joinableTaskContextNode;
             }
 
-            protected override AbstractMultiLifetimeInstance CreateInstance()
+            protected override IMultiLifetimeInstance CreateInstance()
             {
-                return new MultiLifetimeInstance(_joinableTaskContextNode);
+                return new MultiLifetimeInstance();
             }
 
             public new bool IsInitialized
@@ -35,26 +34,32 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 get { return base.IsInitialized; }
             }
 
-            public class MultiLifetimeInstance : AbstractMultiLifetimeInstance
+            public class MultiLifetimeInstance : IMultiLifetimeInstance
             {
-                public MultiLifetimeInstance(JoinableTaskContextNode joinableTaskContextNode) 
-                    : base(joinableTaskContextNode)
+                public bool IsInitialized
                 {
+                    get;
+                    private set;
                 }
 
-                protected override Task DisposeCoreAsync(bool initialized)
+                public bool IsDisposed
                 {
+                    get;
+                    private set;
+                }
+
+                public Task InitializeAsync()
+                {
+                    IsInitialized = true;
+
                     return Task.CompletedTask;
                 }
 
-                protected override Task InitializeCoreAsync(CancellationToken cancellationToken)
+                public Task DisposeAsync()
                 {
-                    return Task.CompletedTask;
-                }
+                    IsDisposed = true;
 
-                public new bool IsInitialized
-                {
-                    get { return base.IsInitialized; }
+                    return Task.CompletedTask;
                 }
             }
         }
