@@ -37,8 +37,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         private static readonly Regex s_matchTokenRegex = new Regex(@"(\$\((?<token>[^\)]+)\))", RegexOptions.IgnoreCase);
 
         /// <summary>
-        /// Walks the profile and returns a new one where all the tokens have been replaced. Tokens can consist of 
-        /// environment variables (%var%), or any msbuild property $(msbuildproperty). Environment variables are 
+        /// Walks the profile and returns a new one where all the tokens have been replaced. Tokens can consist of
+        /// environment variables (%var%), or any msbuild property $(msbuildproperty). Environment variables are
         /// replaced first, followed by msbuild properties.
         /// </summary>
         public async Task<ILaunchProfile> ReplaceTokensInProfileAsync(ILaunchProfile profile)
@@ -77,9 +77,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             {
                 foreach (KeyValuePair<string, object> kvp in resolvedProfile.OtherSettings)
                 {
-                    if (kvp.Value is string)
+                    if (kvp.Value is string s)
                     {
-                        resolvedProfile.OtherSettings = resolvedProfile.OtherSettings.SetItem(kvp.Key, await ReplaceTokensInStringAsync((string)kvp.Value, true));
+                        resolvedProfile.OtherSettings = resolvedProfile.OtherSettings.SetItem(kvp.Key, await ReplaceTokensInStringAsync(s, true));
                     }
 
                 }

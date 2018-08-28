@@ -451,9 +451,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 var jsonObject = JObject.Parse(jsonString);
                 foreach (KeyValuePair<string, JToken> pair in jsonObject)
                 {
-                    if (pair.Key.Equals(ProfilesSectionName, StringComparison.Ordinal) && pair.Value is JObject)
+                    if (pair.Key.Equals(ProfilesSectionName, StringComparison.Ordinal) && pair.Value is JObject jObject)
                     {
-                        Dictionary<string, LaunchProfileData> profiles = LaunchProfileData.DeserializeProfiles((JObject)pair.Value);
+                        Dictionary<string, LaunchProfileData> profiles = LaunchProfileData.DeserializeProfiles(jObject);
                         launchSettingsData.Profiles = FixupProfilesAndLogErrors(profiles);
                     }
                     else

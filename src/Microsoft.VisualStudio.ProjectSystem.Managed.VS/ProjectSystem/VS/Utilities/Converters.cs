@@ -57,9 +57,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
             bool res = false;
             foreach (object v in values)
             {
-                if (v is bool)
+                if (v is bool b)
                 {
-                    res = res || (bool)v;
+                    res = res || b;
                 }
             }
             return res ? Visibility.Visible : Visibility.Collapsed;
@@ -78,9 +78,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
             bool res = true;
             foreach (object v in values)
             {
-                if (v is bool)
+                if (v is bool b)
                 {
-                    res = res && (bool)v;
+                    res = res && b;
                 }
             }
             return res ? Visibility.Visible : Visibility.Collapsed;
@@ -99,7 +99,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
             foreach (object v in values)
             {
                 // Any false, the result is false
-                if (v is bool && !(bool)v)
+                if (v is bool b && !b)
                 {
                     return false;
                 }
@@ -117,8 +117,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is string)
-                return string.IsNullOrEmpty((string)value) ? Visibility.Collapsed : Visibility.Visible;
+            if (value is string s)
+                return string.IsNullOrEmpty(s) ? Visibility.Collapsed : Visibility.Visible;
             return Visibility.Collapsed;
         }
 
@@ -153,9 +153,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
                 status = false;
             }
 
-            if (value is string)
+            if (value is string s)
             {
-                status = string.IsNullOrWhiteSpace((string)value) ? false : true;
+                status = string.IsNullOrWhiteSpace(s) ? false : true;
             }
 
             return status;
@@ -219,8 +219,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
         public object Convert(object value, Type targetType, object parameter,
             CultureInfo culture)
         {
-            if (value is bool)
-                return !(bool)value;
+            if (value is bool b)
+                return !b;
             throw new ArgumentException("The target must be a bool");
         }
 
@@ -297,9 +297,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
                 textBlock.Inlines.Clear();
                 foreach (Token token in tokens)
                 {
-                    if (token.Value is Hyperlink)
+                    if (token.Value is Hyperlink hyperlink)
                     {
-                        textBlock.Inlines.Add((Hyperlink)token.Value);
+                        textBlock.Inlines.Add(hyperlink);
                     }
                     else
                     {

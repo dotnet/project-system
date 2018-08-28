@@ -113,9 +113,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
         {
             string message = e.ToString();
 
-            if (e is AggregateException)
+            if (e is AggregateException aggregateException)
             {
-                message = (e as AggregateException).Flatten().ToString();
+                message = aggregateException.Flatten().ToString();
             }
 
             if (!string.IsNullOrEmpty(formattedMessage))
