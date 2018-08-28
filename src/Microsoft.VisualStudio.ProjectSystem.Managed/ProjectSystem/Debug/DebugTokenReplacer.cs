@@ -34,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         private IProjectAccessor ProjectAccessor { get; }
 
         // Regular expression string to extract $(sometoken) elements from a string
-        private static Regex s_matchTokenRegex = new Regex(@"(\$\((?<token>[^\)]+)\))", RegexOptions.IgnoreCase);
+        private static readonly Regex s_matchTokenRegex = new Regex(@"(\$\((?<token>[^\)]+)\))", RegexOptions.IgnoreCase);
 
         /// <summary>
         /// Walks the profile and returns a new one where all the tokens have been replaced. Tokens can consist of 

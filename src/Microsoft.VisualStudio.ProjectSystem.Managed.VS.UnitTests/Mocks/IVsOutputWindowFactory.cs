@@ -14,7 +14,7 @@ namespace Microsoft.VisualStudio.Shell.Interop
 
         private class VsOutputWindowMock : IVsOutputWindow
         {
-            private Dictionary<Guid, IVsOutputWindowPane> _panes = new Dictionary<Guid, IVsOutputWindowPane>();
+            private readonly Dictionary<Guid, IVsOutputWindowPane> _panes = new Dictionary<Guid, IVsOutputWindowPane>();
 
             public int GetPane(ref Guid rguidPane, out IVsOutputWindowPane ppPane)
             {

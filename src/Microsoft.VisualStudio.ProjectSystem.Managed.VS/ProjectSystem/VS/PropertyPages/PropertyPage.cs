@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
     {
         private IPropertyPageSite _site = null;
         private bool _isDirty = false;
-        private bool _ignoreEvents = false;
+        private readonly bool _ignoreEvents = false;
         private bool _useJoinableTaskFactory = true;
         private IVsDebugger _debugger;
         private uint _debuggerCookie;

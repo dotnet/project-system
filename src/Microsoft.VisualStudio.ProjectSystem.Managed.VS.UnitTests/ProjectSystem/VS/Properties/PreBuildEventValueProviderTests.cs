@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
     [Trait("UnitTest", "ProjectSystem")]
     public class PreBuildEventValueProviderTests
     {
-        private static PreBuildEventValueProvider.PreBuildEventHelper systemUnderTest =
+        private static readonly PreBuildEventValueProvider.PreBuildEventHelper systemUnderTest =
             new PreBuildEventValueProvider.PreBuildEventHelper();
 
         private static readonly IProjectProperties emptyProjectProperties =

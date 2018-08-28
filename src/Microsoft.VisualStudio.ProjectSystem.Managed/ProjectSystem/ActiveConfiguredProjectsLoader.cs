@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         private readonly UnconfiguredProject _project;
         private readonly IActiveConfigurationGroupService _activeConfigurationGroupService;
         private readonly IUnconfiguredProjectTasksService _tasksService;
-        private ActionBlock<IProjectVersionedValue<IConfigurationGroup<ProjectConfiguration>>> _targetBlock;
+        private readonly ActionBlock<IProjectVersionedValue<IConfigurationGroup<ProjectConfiguration>>> _targetBlock;
         private IDisposable _subscription;
 
         [ImportingConstructor]

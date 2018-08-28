@@ -23,9 +23,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
     {
         private readonly string _ProjectFile = @"c:\test\project\project.csproj";
         private readonly string _Path = @"c:\program files\dotnet;c:\program files\SomeDirectory";
-        private Mock<IEnvironmentHelper> _mockEnvironment = new Mock<IEnvironmentHelper>();
-        private IFileSystemMock _mockFS = new IFileSystemMock();
-        private Mock<IDebugTokenReplacer> _mockTokenReplace = new Mock<IDebugTokenReplacer>();
+        private readonly Mock<IEnvironmentHelper> _mockEnvironment = new Mock<IEnvironmentHelper>();
+        private readonly IFileSystemMock _mockFS = new IFileSystemMock();
+        private readonly Mock<IDebugTokenReplacer> _mockTokenReplace = new Mock<IDebugTokenReplacer>();
 
         private ConsoleDebugTargetsProvider GetDebugTargetsProvider(string outputType = "exe", Dictionary<string, string> properties = null)
         {

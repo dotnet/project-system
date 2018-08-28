@@ -63,7 +63,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
         private OrderPrecedenceImportCollection<IDependenciesGraphActionHandler> GraphActionHandlers { get; }
 
         private readonly object _changedContextsQueueLock = new object();
-        private Dictionary<string, SnapshotChangedEventArgs> _changedContextsQueue =
+        private readonly Dictionary<string, SnapshotChangedEventArgs> _changedContextsQueue =
             new Dictionary<string, SnapshotChangedEventArgs>(StringComparer.OrdinalIgnoreCase);
         private Task _trackChangesTask;
         private IVsImageService2 _imageService;

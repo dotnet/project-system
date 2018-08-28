@@ -7,12 +7,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 {
     internal class TargetFramework : ITargetFramework
     {
-        public static ITargetFramework Empty = new TargetFramework(string.Empty);
+        public static readonly ITargetFramework Empty = new TargetFramework(string.Empty);
 
         /// <summary>
         /// Any represents all TFMs, no need to be localized, used only in internal data.
         /// </summary>
-        public static ITargetFramework Any = new TargetFramework("any");
+        public static readonly ITargetFramework Any = new TargetFramework("any");
 
         public TargetFramework(FrameworkName frameworkName, string shortName = null)
         {

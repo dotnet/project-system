@@ -100,7 +100,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
         protected int WaitForFirstSnapshotDelay = 5000; // 5 seconds
 
-        private TaskCompletionSource<bool> _firstSnapshotCompletionSource = new TaskCompletionSource<bool>();
+        private readonly TaskCompletionSource<bool> _firstSnapshotCompletionSource = new TaskCompletionSource<bool>();
 
         protected IDisposable ProjectRuleSubscriptionLink { get; set; }
 
