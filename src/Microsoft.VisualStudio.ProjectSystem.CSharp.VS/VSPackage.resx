@@ -129,6 +129,12 @@
   <data name="12" xml:space="preserve">
     <value>A project that contains xUnit.net tests that can run on .NET Core on Windows, Linux and MacOS.</value>
   </data>
+  <data name="13" xml:space="preserve">
+    <value>NUnit Test Project (.NET Core)</value>
+  </data>
+  <data name="14" xml:space="preserve">
+    <value>A project that contains NUnit tests that can run on .NET Core on Windows, Linux and MacOS.</value>
+  </data>
   <data name="2" xml:space="preserve">
     <value>C# Project Files (*.csproj);*.csproj</value>
   </data>
