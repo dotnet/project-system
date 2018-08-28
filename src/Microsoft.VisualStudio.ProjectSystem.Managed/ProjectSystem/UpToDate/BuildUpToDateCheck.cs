@@ -349,8 +349,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             (string Path, string Link, CopyToOutputDirectoryType CopyType) copyAlwaysItem = _items.SelectMany(kvp => kvp.Value).FirstOrDefault(item => item.CopyType == CopyToOutputDirectoryType.CopyAlways);
             if (copyAlwaysItem.Path != null)
             {
-                logger.Info("Item '{0}' has CopyToOutputDirectory set to 'Always', not up to date.", copyAlwaysItem.Path);
-                return false;
+                return Fail(logger, $"Item '{copyAlwaysItem.Path}' has CopyToOutputDirectory set to 'Always', not up to date.", "CopyAlwaysItemExists");
             }
 
             return true;
