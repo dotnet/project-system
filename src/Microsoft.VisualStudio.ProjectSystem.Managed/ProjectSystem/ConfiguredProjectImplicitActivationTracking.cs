@@ -79,7 +79,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             _tasksService.UnloadCancellationToken.Register(RegisterOptions.ExecuteImmediatelyIfAlreadyCanceledAndDisposed, () =>
             {
-                /// Unloading, notify anyone listening that we're never going to be active
+                // Unloading, notify anyone listening that we're never going to be active
                 OnCanceled();
             });
         }

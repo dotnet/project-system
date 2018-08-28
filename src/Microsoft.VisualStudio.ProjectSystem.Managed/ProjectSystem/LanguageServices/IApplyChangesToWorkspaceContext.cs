@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
@@ -19,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
         /// <summary>
         ///     Returns an enumerable of project build rules that should passed to
-        ///     <see cref="ApplyProjectBuild(IProjectVersionedValue{IProjectSubscriptionUpdate}, bool)"/>.
+        ///     <see cref="ApplyProjectBuild(IProjectVersionedValue{IProjectSubscriptionUpdate}, bool, CancellationToken)"/>.
         /// </summary>
         IEnumerable<string> GetProjectBuildRules();
 

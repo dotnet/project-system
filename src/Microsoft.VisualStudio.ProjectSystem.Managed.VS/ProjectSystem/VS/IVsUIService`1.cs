@@ -1,5 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System.Runtime.InteropServices;
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     /// <summary>
@@ -13,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// <summary>
         ///     Gets the service object associated with <typeparamref name="T"/>.
         /// </summary>
-        ///<exception cref="COMException">
+        /// <exception cref="COMException">
         ///     This property was not accessed from the UI thread.
         /// </exception>
         /// <value>
