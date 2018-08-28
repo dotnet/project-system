@@ -2,9 +2,9 @@
 
 This document describes, at a high level, the design and implementation of the Dependencies node with pointers to the important types.
 
-Let's start at the top and work our way down.
+Let's start at the top and work our way down. There are two fundamentally different paths that dependency information takes from the Project System to Solution Explorer. Direct dependencies go through CPS, whereas transitive dependencies generally go through graph node providers.
 
-## The CPS View of the Project Tree
+## The CPS View of Dependencies
 
 On the CPS side the project tree is composed of instances of the `IProjectTree` and `IProjectItemTree` interfaces. `IProjectTree` captures the structure of the tree (e.g. it has properties to access the parent and child nodes) and the "UI" aspects of the node--name, icons, visibility, etc. An `IProjectItemTree` captures all of that but also represents a concrete item within the project like a file, assembly reference, or NuGet package.
 
@@ -12,7 +12,11 @@ An `IProjectTree` is immutable. When a part of the tree needs to be updated, we 
 
 Components wishing to add items to the project tree we must implement and export the `IProjectTreeProvider` interface. In practice we implement the interface by deriving from the abstract `ProjectTreeProviderBase` class provided by CPS. In general, we receive events/messages from CPS detailing changes to the project, generated an updated `IProjectTree`, and then pass it back to CPS via `ProjectTreeProviderBase.SubmitTreeUpdateAsync`.
 
-## The Project System View of the Project Tree
+## The Graph Node Provider View of Dependencies
+
+TODO: Document the Graph Node side of dependencies.
+
+## The Project System View of Dependencies
 
 Internally every individual dependency (both direct and transitive) is represented as an [`IDependency`][4].
 
