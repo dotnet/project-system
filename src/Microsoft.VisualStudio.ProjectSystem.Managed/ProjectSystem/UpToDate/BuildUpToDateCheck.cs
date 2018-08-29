@@ -267,48 +267,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             return time;
         }
 
-        private static void AddInput(BuildUpToDateCheckLogger logger, HashSet<string> inputs, string path)
-        {
-            logger.Verbose("    '{0}'", path);
-            inputs.Add(path);
-        }
-
-        private static void AddInputs(BuildUpToDateCheckLogger logger, HashSet<string> inputs, IEnumerable<string> paths, string description)
-        {
-            bool first = true;
-
-            foreach (string path in paths)
-            {
-                if (first)
-                {
-                    logger.Verbose("Adding {0} inputs:", description);
-                    first = false;
-                }
-                AddInput(logger, inputs, path);
-            }
-        }
-
-        private static void AddOutput(BuildUpToDateCheckLogger logger, HashSet<string> outputs, string path)
-        {
-            logger.Verbose("    '{0}'", path);
-            outputs.Add(path);
-        }
-
-        private static void AddOutputs(BuildUpToDateCheckLogger logger, HashSet<string> outputs, IEnumerable<string> paths, string description)
-        {
-            bool first = true;
-
-            foreach (string path in paths)
-            {
-                if (first)
-                {
-                    logger.Verbose("Adding {0} outputs:", description);
-                    first = false;
-                }
-                AddOutput(logger, outputs, path);
-            }
-        }
-
         private bool Fail(BuildUpToDateCheckLogger logger, string message, string reason)
         {
             logger.Info(message);
@@ -358,33 +316,88 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
         private IEnumerable<string> CollectInputs(BuildUpToDateCheckLogger logger)
         {
-            var inputs = new HashSet<string>(StringComparers.Paths);
-
             logger.Verbose("Adding project file inputs:");
-            AddInput(logger, inputs, _msBuildProjectFullPath);
+            logger.Verbose("    '{0}'", _msBuildProjectFullPath);
+            yield return _msBuildProjectFullPath;
 
-            AddInputs(logger, inputs, _imports, "import");
+            if (_imports.Count != 0)
+            {
+                logger.Verbose("Adding import inputs:");
+                foreach (string input in _imports)
+                {
+                    logger.Verbose("    '{0}'", input);
+                    yield return input;
+                }
+            }
 
             foreach (KeyValuePair<string, HashSet<(string Path, string Link, CopyToOutputDirectoryType CopyType)>> pair in _items.Where(kvp => !NonCompilationItemTypes.Contains(kvp.Key)))
             {
-                AddInputs(logger, inputs, pair.Value.Select(item => item.Path), pair.Key);
+                if (pair.Value.Count != 0)
+                {
+                    logger.Verbose("Adding {0} inputs:", pair.Key);
+
+                    foreach (string input in pair.Value.Select(item => item.Path))
+                    {
+                        logger.Verbose("    '{0}'", input);
+                        yield return input;
+                    }
+                }
             }
 
-            AddInputs(logger, inputs, _analyzerReferences, ResolvedAnalyzerReference.SchemaName);
-            AddInputs(logger, inputs, _compilationReferences, ResolvedCompilationReference.SchemaName);
-            AddInputs(logger, inputs, _customInputs, UpToDateCheckInput.SchemaName);
+            if (_analyzerReferences.Count != 0)
+            {
+                logger.Verbose("Adding " + ResolvedAnalyzerReference.SchemaName + " inputs:");
+                foreach (string input in _analyzerReferences)
+                {
+                    logger.Verbose("    '{0}'", input);
+                    yield return input;
+                }
+            }
 
-            return inputs;
+            if (_compilationReferences.Count != 0)
+            {
+                logger.Verbose("Adding " + ResolvedCompilationReference.SchemaName + " inputs:");
+                foreach (string input in _compilationReferences)
+                {
+                    logger.Verbose("    '{0}'", input);
+                    yield return input;
+                }
+            }
+
+            if (_customInputs.Count != 0)
+            {
+                logger.Verbose("Adding " + UpToDateCheckInput.SchemaName + " inputs:");
+                foreach (string input in _customInputs)
+                {
+                    logger.Verbose("    '{0}'", input);
+                    yield return input;
+                }
+            }
         }
 
         private IEnumerable<string> CollectOutputs(BuildUpToDateCheckLogger logger)
         {
-            var outputs = new HashSet<string>(StringComparers.Paths);
+            if (_customOutputs.Count != 0)
+            {
+                logger.Verbose("Adding " + UpToDateCheckOutput.SchemaName + " outputs:");
 
-            AddOutputs(logger, outputs, _customOutputs, UpToDateCheckOutput.SchemaName);
-            AddOutputs(logger, outputs, _builtOutputs.Select(_configuredProject.UnconfiguredProject.MakeRooted), UpToDateCheckBuilt.SchemaName);
+                foreach (string output in _customOutputs)
+                {
+                    logger.Verbose("    '{0}'", output);
+                    yield return output;
+                }
+            }
 
-            return outputs;
+            if (_builtOutputs.Count != 0)
+            {
+                logger.Verbose("Adding " + UpToDateCheckBuilt.SchemaName + " outputs:");
+
+                foreach (string output in _builtOutputs.Select(_configuredProject.UnconfiguredProject.MakeRooted))
+                {
+                    logger.Verbose("    '{0}'", output);
+                    yield return output;
+                }
+            }
         }
 
         private static (DateTime? time, string path) GetLatestInput(IEnumerable<string> inputs, IDictionary<string, DateTime> timestampCache, bool ignoreMissing = false)
