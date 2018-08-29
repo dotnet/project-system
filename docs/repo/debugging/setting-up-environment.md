@@ -2,7 +2,7 @@
 
 ## Debugger Settings
 
-The day-to-day job of a developer that works on Visual Studio involves debugging and inspecting code outside of this repository. For best results, you'll want to flip some of the defaults so that you can can step into other Visual Studio, framework and Windows code (Microsoft-employees only) and inspect locals, fields, etc.
+The day-to-day job of a developer that works on Visual Studio involves debugging and inspecting code outside of this repository. For best results, you'll want to flip some of the defaults so that you can can step into (Microsoft-employees only) other Visual Studio, framework and Windows code and inspect locals, fields, etc.
 
 ![image](https://user-images.githubusercontent.com/1103906/44320403-3fa23200-a485-11e8-9baa-b743cb96948d.png)
 
