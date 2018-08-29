@@ -585,7 +585,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 return false;
             }
 
-            var timestampCache = new Dictionary<string, DateTime>(StringComparer.OrdinalIgnoreCase);
+            var timestampCache = new Dictionary<string, DateTime>(StringComparers.Paths);
             (DateTime? inputTime, string inputPath) = GetLatestInput(CollectInputs(logger), timestampCache);
             (DateTime? outputTime, string outputPath) = GetEarliestOutput(CollectOutputs(logger), timestampCache);
 
