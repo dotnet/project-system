@@ -346,10 +346,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 return Fail(logger, "The 'DisableFastUpToDateCheckProperty' property is true, not up to date.", "Disabled");
             }
 
-            (string Path, string Link, CopyToOutputDirectoryType CopyType) copyAlwaysItem = _items.SelectMany(kvp => kvp.Value).FirstOrDefault(item => item.CopyType == CopyToOutputDirectoryType.CopyAlways);
-            if (copyAlwaysItem.Path != null)
+            string copyAlwaysItemPath = _items.SelectMany(kvp => kvp.Value).FirstOrDefault(item => item.CopyType == CopyToOutputDirectoryType.CopyAlways).Path;
+
+            if (copyAlwaysItemPath != null)
             {
-                return Fail(logger, $"Item '{copyAlwaysItem.Path}' has CopyToOutputDirectory set to 'Always', not up to date.", "CopyAlwaysItemExists");
+                return Fail(logger, $"Item '{copyAlwaysItemPath}' has CopyToOutputDirectory set to 'CopyAlways', not up to date.", "CopyAlwaysItemExists");
             }
 
             return true;
@@ -434,10 +435,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             return (earliest, earliestPath);
         }
 
-        // Reference assembly copy markers are strange. The property is always going to be present on 
-        // references to SDK-based projects, regardless of whether or not those referenced projects 
-        // will actually produce a marker. And an item always will be present in an SDK-based project, 
-        // regardless of whether or not the project produces a marker. So, basically, we only check 
+        // Reference assembly copy markers are strange. The property is always going to be present on
+        // references to SDK-based projects, regardless of whether or not those referenced projects
+        // will actually produce a marker. And an item always will be present in an SDK-based project,
+        // regardless of whether or not the project produces a marker. So, basically, we only check
         // here if the project actually produced a marker and we only check it against references that
         // actually produced a marker.
         private bool CheckMarkers(BuildUpToDateCheckLogger logger, IDictionary<string, DateTime> timestampCache)
