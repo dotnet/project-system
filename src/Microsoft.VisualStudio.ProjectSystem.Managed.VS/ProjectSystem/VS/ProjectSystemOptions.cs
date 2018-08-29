@@ -49,12 +49,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         public async Task<bool> GetIsFastUpToDateCheckEnabledAsync(CancellationToken cancellationToken = default)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
+            cancellationToken.ThrowIfCancellationRequested();
+
             return _settingsManager.Value?.GetValueOrDefault(FastUpToDateEnabledSettingKey, true) ?? true;
         }
 
         public async Task<LogLevel> GetFastUpToDateLoggingLevelAsync(CancellationToken cancellationToken = default)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
+            cancellationToken.ThrowIfCancellationRequested();
+
             return _settingsManager.Value?.GetValueOrDefault(FastUpToDateLogLevelSettingKey, LogLevel.None) ?? LogLevel.None;
         }
 
