@@ -225,7 +225,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             foreach (KeyValuePair<string, IProjectChangeDescription> itemType in e.ProjectChanges.Where(changes => (itemTypesChanged || changes.Value.Difference.AnyChanges) && _itemTypes.Contains(changes.Key)))
             {
                 IEnumerable<(string, string, CopyToOutputDirectoryType)> items = itemType.Value.After.Items
-                    .Select(item => (_configuredProject.UnconfiguredProject.MakeRooted(item.Key), GetLink(item.Value), GetCopyType(item.Value)));
+                    .Select(item => (item.Key, GetLink(item.Value), GetCopyType(item.Value)));
                 _items[itemType.Key] = new HashSet<(string, string, CopyToOutputDirectoryType)>(items, UpToDateCheckItemComparer.Instance);
                 _itemsChangedSinceLastCheck = true;
             }
@@ -307,7 +307,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             if (copyAlwaysItemPath != null)
             {
-                return Fail(logger, $"Item '{copyAlwaysItemPath}' has CopyToOutputDirectory set to 'CopyAlways', not up to date.", "CopyAlwaysItemExists");
+                return Fail(logger, $"Item '{_configuredProject.UnconfiguredProject.MakeRooted(copyAlwaysItemPath)}' has CopyToOutputDirectory set to 'CopyAlways', not up to date.", "CopyAlwaysItemExists");
             }
 
             return true;
@@ -335,7 +335,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 {
                     logger.Verbose("Adding {0} inputs:", pair.Key);
 
-                    foreach (string input in pair.Value.Select(item => item.Path))
+                    foreach (string input in pair.Value.Select(item => _configuredProject.UnconfiguredProject.MakeRooted(item.Path)))
                     {
                         logger.Verbose("    '{0}'", input);
                         yield return input;
@@ -550,7 +550,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             foreach ((string Path, string Link, CopyToOutputDirectoryType CopyType) item in items)
             {
-                string filename = string.IsNullOrEmpty(item.Link) ? item.Path : item.Link;
+                string path = _configuredProject.UnconfiguredProject.MakeRooted(item.Path);
+                string filename = string.IsNullOrEmpty(item.Link) ? path : item.Link;
 
                 if (string.IsNullOrEmpty(filename))
                 {
@@ -559,17 +560,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 filename = _configuredProject.UnconfiguredProject.MakeRelative(filename);
 
-                logger.Info("Checking PreserveNewest file '{0}':", item.Path);
+                logger.Info("Checking PreserveNewest file '{0}':", path);
 
-                DateTime? itemTime = GetTimestamp(item.Path, timestampCache);
+                DateTime? itemTime = GetTimestamp(path, timestampCache);
 
                 if (itemTime != null)
                 {
-                    logger.Info("    Source {0}: '{1}'.", itemTime, item.Path);
+                    logger.Info("    Source {0}: '{1}'.", itemTime, path);
                 }
                 else
                 {
-                    logger.Info("Source '{0}' does not exist, not up to date.", item.Path);
+                    logger.Info("Source '{0}' does not exist, not up to date.", path);
                     return false;
                 }
 
