@@ -399,23 +399,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             }
         }
 
-        private static (DateTime? time, string path) GetLatestInput(IEnumerable<string> inputs, IDictionary<string, DateTime> timestampCache, bool ignoreMissing = false)
+        private static (DateTime time, string path) GetLatestInput(IEnumerable<string> inputs, IDictionary<string, DateTime> timestampCache)
         {
-            DateTime? latest = DateTime.MinValue;
+            DateTime latest = DateTime.MinValue;
             string latestPath = null;
 
             foreach (string input in inputs)
             {
                 DateTime? time = GetTimestamp(input, timestampCache);
 
-                if (time == null && !ignoreMissing)
-                {
-                    return (null, null);
-                }
-
                 if (time > latest)
                 {
-                    latest = time;
+                    latest = time.Value;
                     latestPath = input;
                 }
             }
@@ -470,12 +465,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             logger.Verbose("Adding output reference copy marker:");
             logger.Verbose("    '{0}'", _markerFile);
 
-            (DateTime? inputMarkerTime, string inputMarkerPath) = GetLatestInput(_copyReferenceInputs, timestampCache, true);
+            (DateTime inputMarkerTime, string inputMarkerPath) = GetLatestInput(_copyReferenceInputs, timestampCache);
             DateTime? outputMarkerTime = GetTimestamp(_markerFile, timestampCache);
 
             if (inputMarkerPath != null)
             {
-                logger.Info("Latest write timestamp on input marker is {0} on '{1}'.", inputMarkerTime.Value, inputMarkerPath);
+                logger.Info("Latest write timestamp on input marker is {0} on '{1}'.", inputMarkerTime, inputMarkerPath);
             }
             else
             {
@@ -611,36 +606,45 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 return false;
             }
 
+            // Short-lived cache of timestamp by path
             var timestampCache = new Dictionary<string, DateTime>(StringComparers.Paths);
-            (DateTime? inputTime, string inputPath) = GetLatestInput(CollectInputs(logger), timestampCache);
+
+            // We assume there are fewer outputs than inputs, so perform a full scan of outputs to find the earliest
             (DateTime? outputTime, string outputPath) = GetEarliestOutput(CollectOutputs(logger), timestampCache);
 
-            if (inputTime != null)
-            {
-                logger.Info("Latest write timestamp on input is {0} on '{1}'.", inputTime.Value, inputPath);
-            }
-            else
-            {
-                logger.Info("Input '{0}' does not exist, not up to date.", inputPath);
-            }
+            bool outputsUpToDate = true;
 
             if (outputTime != null)
             {
-                logger.Info("Earliest write timestamp on output is {0} on '{1}'.", outputTime.Value, outputPath);
+                // Search for an input that's either missing or newer than the earliest output.
+                // As soon as we find one, we can stop the scan.
+                foreach (string input in CollectInputs(logger))
+                {
+                    DateTime? time = GetTimestamp(input, timestampCache);
+
+                    if (time == null)
+                    {
+                        logger.Info("Input '{0}' does not exist, not up to date.", input);
+                        outputsUpToDate = false;
+                        break;
+                    }
+
+                    if (time > outputTime)
+                    {
+                        logger.Info("Input '{0}' is newer ({1}) than earliest output '{2}' ({3}), not up to date.", input, time.Value, outputPath, outputTime.Value);
+                        outputsUpToDate = false;
+                        break;
+                    }
+                }
             }
             else
             {
                 logger.Info("Output '{0}' does not exist, not up to date.", outputPath);
-            }
-
-            if (outputTime <= inputTime)
-            {
-                logger.Info("Output is newer than input, not up to date.");
+                outputsUpToDate = false;
             }
 
             // We are up to date if the earliest output write happened after the latest input write
             bool markersUpToDate = CheckMarkers(logger, timestampCache);
-            bool outputsUpToDate = inputTime != null && outputTime != null && outputTime > inputTime;
             bool copyToOutputDirectoryUpToDate = CheckCopyToOutputDirectoryFiles(logger, timestampCache);
             bool copiedOutputUpToDate = CheckCopiedOutputFiles(logger, timestampCache);
             bool isUpToDate = outputsUpToDate && markersUpToDate && copyToOutputDirectoryUpToDate && copiedOutputUpToDate;
