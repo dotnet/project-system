@@ -3,6 +3,7 @@
 using System.Threading.Tasks;
 
 using Xunit;
+using static Microsoft.VisualStudio.ProjectSystem.AbstractMultiLifetimeComponentFactory.MultiLifetimeComponent;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
@@ -25,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             await component.LoadAsync();
 
-            var result = (AbstractMultiLifetimeComponentFactory.MultiLifetimeComponent.MultiLifetimeInstance)component.Instance;
+            var result = (MultiLifetimeInstance)component.Instance;
 
             Assert.True(result.IsInitialized);
         }
@@ -72,7 +73,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             await component.UnloadAsync();
 
             Assert.Null(component.Instance);
-            Assert.True(instance.IsDisposed);
+            Assert.True(((MultiLifetimeInstance)instance).IsDisposed);
         }
 
         [Fact]
@@ -114,7 +115,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             component.Dispose();
 
-            Assert.True(instance.IsDisposed);
+            Assert.True(((MultiLifetimeInstance)instance).IsDisposed);
         }
 
         private static AbstractMultiLifetimeComponentFactory.MultiLifetimeComponent CreateInstance()
