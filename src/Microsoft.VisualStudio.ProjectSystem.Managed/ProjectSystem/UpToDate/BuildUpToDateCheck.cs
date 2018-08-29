@@ -394,7 +394,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             foreach (string input in inputs)
             {
                 DateTime? time = GetTimestamp(input, timestampCache);
-                if (latest != null && (time == null && !ignoreMissing || time > latest))
+
+                if (time == null && !ignoreMissing)
+                {
+                    return (null, null);
+                }
+
+                if (time > latest)
                 {
                     latest = time;
                     latestPath = input;
@@ -412,7 +418,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             foreach (string output in outputs)
             {
                 DateTime? time = GetTimestamp(output, timestampCache);
-                if (earliest != null && (time == null || time < earliest))
+
+                if (time == null)
+                {
+                    return (null, null);
+                }
+
+                if (time < earliest)
                 {
                     earliest = time;
                     earliestPath = output;
