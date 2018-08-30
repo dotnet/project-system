@@ -88,16 +88,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
         protected async Task AddInitialSubscriptionsAsync()
         {
-            await _tasksService.LoadedProjectAsync(async () =>
+            await _tasksService.LoadedProjectAsync(() =>
             {
                 SubscribeToConfiguredProject(_activeConfiguredProjectSubscriptionService,
                     e => OnProjectChangedAsync(e, RuleHandlerType.Evaluation));
 
                 foreach (Lazy<ICrossTargetSubscriber> subscriber in Subscribers)
                 {
-                    await subscriber.Value.InitializeSubscriberAsync(this, _activeConfiguredProjectSubscriptionService)
-                                          .ConfigureAwait(false);
+                    subscriber.Value.InitializeSubscriber(this, _activeConfiguredProjectSubscriptionService);
+                                          
                 }
+
+                return Task.CompletedTask;
             });
         }
 
