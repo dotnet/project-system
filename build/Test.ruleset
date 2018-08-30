@@ -28,6 +28,7 @@
     <Rule Id="VSTHRD002" Action="None" />                     <!-- Synchronously waiting on tasks or awaiters may cause deadlocks. Use JoinableTaskFactory.Run instead.-->
     <Rule Id="VSTHRD010" Action="None" />                     <!-- Visual Studio service should be used on main thread explicitly.-->
     <Rule Id="VSTHRD103" Action="None" />                     <!-- Synchronously blocks. Await ThrowsAsync instead.-->
+    <Rule Id="VSTHRD110" Action="None" />                     <!-- Observe result of async calls -->
     <Rule Id="VSTHRD200" Action="None" />                     <!-- Naming styles                                Task Open()                                         Task OpenAsync()                      -->
   </Rules>
   <Rules AnalyzerId="xunit.analyzers" RuleNamespace="xunit.analyzers">
