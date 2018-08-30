@@ -14,7 +14,7 @@ using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 {
-    internal abstract class CrossTargetRuleSubscriberBase<T> : OnceInitializedOnceDisposedAsync, ICrossTargetSubscriber where T : IRuleChangeContext
+    internal abstract class CrossTargetRuleSubscriberBase<T> : OnceInitializedOnceDisposed, ICrossTargetSubscriber where T : IRuleChangeContext
     {
 #pragma warning disable CA2213 // OnceInitializedOnceDisposedAsync are not tracked corretly by the IDisposeable analyzer
         private readonly SemaphoreSlim _gate = new SemaphoreSlim(initialCount: 1);
@@ -31,7 +31,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             IUnconfiguredProjectCommonServices commonServices,
             IProjectAsynchronousTasksService tasksService,
             IDependencyTreeTelemetryService treeTelemetryService)
-            : base(commonServices.ThreadingService.JoinableTaskContext)
         {
             _commonServices = commonServices;
             _tasksService = tasksService;
@@ -42,17 +41,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
         protected abstract OrderPrecedenceImportCollection<ICrossTargetRuleHandler<T>> Handlers { get; }
 
-        public async Task InitializeSubscriberAsync(ICrossTargetSubscriptionsHost host, IProjectSubscriptionService subscriptionService)
+        public Task InitializeSubscriberAsync(ICrossTargetSubscriptionsHost host, IProjectSubscriptionService subscriptionService)
         {
             _host = host;
 
-            await InitializeAsync().ConfigureAwait(false);
+            EnsureInitialized();
 
             IEnumerable<string> watchedEvaluationRules = GetWatchedRules(RuleHandlerType.Evaluation);
             IEnumerable<string> watchedDesignTimeBuildRules = GetWatchedRules(RuleHandlerType.DesignTimeBuild);
 
             SubscribeToConfiguredProject(
                 _commonServices.ActiveConfiguredProject, subscriptionService, watchedEvaluationRules, watchedDesignTimeBuildRules);
+
+            return Task.CompletedTask;
         }
 
         public void AddSubscriptions(AggregateCrossTargetProjectContext newProjectContext)
@@ -271,19 +272,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             return Task.CompletedTask;
         }
 
-        protected override Task InitializeCoreAsync(CancellationToken cancellationToken)
-        {
-            return Task.CompletedTask;
+        protected override void Initialize()
+        {   
         }
-
-        protected override Task DisposeCoreAsync(bool initialized)
+        protected override void Dispose(bool disposing)
         {
-            if (initialized)
+            if (disposing)
             {
                 ReleaseSubscriptions();
             }
-
-            return Task.CompletedTask;
         }
     }
 }
