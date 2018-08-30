@@ -55,7 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                 _commonServices.ActiveConfiguredProject, subscriptionService, watchedEvaluationRules, watchedDesignTimeBuildRules);
         }
 
-        public Task AddSubscriptionsAsync(AggregateCrossTargetProjectContext newProjectContext)
+        public void AddSubscriptions(AggregateCrossTargetProjectContext newProjectContext)
         {
             Requires.NotNull(newProjectContext, nameof(newProjectContext));
 
@@ -76,8 +76,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                 SubscribeToConfiguredProject(
                     configuredProject, configuredProject.Services.ProjectSubscription, watchedEvaluationRules, watchedDesignTimeBuildRules);
             }
-
-            return Task.CompletedTask;
         }
 
         public void ReleaseSubscriptions()

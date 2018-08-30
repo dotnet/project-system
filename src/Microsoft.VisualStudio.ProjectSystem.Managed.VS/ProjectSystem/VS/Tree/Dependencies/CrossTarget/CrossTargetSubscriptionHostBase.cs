@@ -260,7 +260,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
                     foreach (Lazy<ICrossTargetSubscriber> subscriber in Subscribers)
                     {
-                        subscriber.Value.AddSubscriptionsAsync(newProjectContext);
+                        subscriber.Value.AddSubscriptions(newProjectContext);
                     }
                 }
 

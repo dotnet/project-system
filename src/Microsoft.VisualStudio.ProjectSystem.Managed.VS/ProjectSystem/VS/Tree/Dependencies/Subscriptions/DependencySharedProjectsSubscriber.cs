@@ -49,7 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             return Task.CompletedTask;
         }
 
-        public Task AddSubscriptionsAsync(AggregateCrossTargetProjectContext newProjectContext)
+        public void AddSubscriptions(AggregateCrossTargetProjectContext newProjectContext)
         {
             Requires.NotNull(newProjectContext, nameof(newProjectContext));
 
@@ -57,8 +57,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             {
                 SubscribeToConfiguredProject(configuredProject.Services.ProjectSubscription);
             }
-
-            return Task.CompletedTask;
         }
 
         public void ReleaseSubscriptions()
