@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. 
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. 
 
 namespace Microsoft.VisualStudio.ProjectSystem.Utilities
 {
@@ -37,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
         /// <summary>
         /// Initializes a new instance of the <see cref="DisposableBag"/> class.
         /// </summary>
-        internal DisposableBag(CancellationToken cancellationToken)
+        internal DisposableBag(CancellationToken cancellationToken = default)
         {
             _cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
             _cancellationToken = _cts.Token;
