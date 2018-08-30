@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Option Strict On
 Option Explicit On
@@ -13,8 +13,8 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
     ''' List view used on My Extension Property Page which can show context menu
     ''' using IMenuCommandService.
     ''' </summary>
-    Friend Class MyExtensionListView
-        Inherits DesignerListView
+    Friend Class MyExtensionDataGridView
+        Inherits DesignerDataGridView
 
         Public Event AddExtension(sender As Object, e As EventArgs)
         Public Event RemoveExtension(sender As Object, e As EventArgs)
@@ -35,7 +35,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         Private Sub MyExtensionListView_ContextMenuShow(
                 sender As Object, e As MouseEventArgs) Handles Me.ContextMenuShow
 
-            _menuCommandRemoveExtension.Enabled = SelectedItems.Count > 0
+            _menuCommandRemoveExtension.Enabled = SelectedRows.Count > 0
 
             MenuCommandService.ShowContextMenu(
                 Constants.MenuConstants.CommandIDMYEXTENSIONContextMenu, e.X, e.Y)
