@@ -22,6 +22,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
     {
         public const string ProviderTypeString = "ProjectDependency";
 
+        private static readonly DependencyIconSet s_iconSet = new DependencyIconSet(
+            icon: KnownMonikers.Application,
+            expandedIcon: KnownMonikers.Application,
+            unresolvedIcon: ManagedImageMonikers.ApplicationWarning,
+            unresolvedExpandedIcon: ManagedImageMonikers.ApplicationWarning);
+
         protected override string UnresolvedRuleName { get; } = ProjectReference.SchemaName;
         protected override string ResolvedRuleName { get; } = ResolvedProjectReference.SchemaName;
         public override string ProviderType { get; } = ProviderTypeString;
@@ -50,8 +56,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             return new SubTreeRootDependencyModel(
                 ProviderType,
                 VSResources.ProjectsNodeName,
-                KnownMonikers.Application,
-                ManagedImageMonikers.ApplicationWarning,
+                s_iconSet,
                 DependencyTreeFlags.ProjectSubTreeRootNodeFlags);
         }
 

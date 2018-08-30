@@ -10,6 +10,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 {
     internal class PackageDependencyModel : DependencyModel
     {
+        private static readonly DependencyIconSet s_iconSet = new DependencyIconSet(
+            icon: ManagedImageMonikers.NuGetGrey,
+            expandedIcon: ManagedImageMonikers.NuGetGrey,
+            unresolvedIcon: ManagedImageMonikers.NuGetGreyWarning,
+            unresolvedExpandedIcon: ManagedImageMonikers.NuGetGreyWarning);
+
+        private static readonly DependencyIconSet s_implicitIconSet = new DependencyIconSet(
+            icon: ManagedImageMonikers.NuGetGreyPrivate,
+            expandedIcon: ManagedImageMonikers.NuGetGreyPrivate,
+            unresolvedIcon: ManagedImageMonikers.NuGetGreyWarning,
+            unresolvedExpandedIcon: ManagedImageMonikers.NuGetGreyWarning);
+
         public PackageDependencyModel(
             string providerType,
             string path,
@@ -33,10 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             TopLevel = isTopLevel;
             Visible = isVisible;
             SchemaItemType = PackageReference.PrimaryDataSourceItemType;
-            Icon = isImplicit ? ManagedImageMonikers.NuGetGreyPrivate : ManagedImageMonikers.NuGetGrey;
-            ExpandedIcon = Icon;
-            UnresolvedIcon = ManagedImageMonikers.NuGetGreyWarning;
-            UnresolvedExpandedIcon = UnresolvedIcon;
+            IconSet = isImplicit ? s_implicitIconSet : s_iconSet;
 
             if (dependenciesIDs != null && dependenciesIDs.Any())
             {

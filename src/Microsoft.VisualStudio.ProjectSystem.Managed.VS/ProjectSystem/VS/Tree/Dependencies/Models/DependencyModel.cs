@@ -64,13 +64,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
         public bool Implicit { get; protected set; } = false;
         public bool Visible { get; protected set; } = true;
         public int Priority { get; protected set; } = 0;
-        public ImageMoniker Icon { get; protected set; }
-        public ImageMoniker ExpandedIcon { get; protected set; }
-        public ImageMoniker UnresolvedIcon { get; protected set; }
-        public ImageMoniker UnresolvedExpandedIcon { get; protected set; }
+        public ImageMoniker Icon => IconSet.Icon;
+        public ImageMoniker ExpandedIcon => IconSet.ExpandedIcon;
+        public ImageMoniker UnresolvedIcon => IconSet.UnresolvedIcon;
+        public ImageMoniker UnresolvedExpandedIcon => IconSet.UnresolvedExpandedIcon;
         public IImmutableDictionary<string, string> Properties { get; protected set; }
         public IImmutableList<string> DependencyIDs { get; protected set; } = ImmutableList<string>.Empty;
         public ProjectTreeFlags Flags { get; protected set; } = ProjectTreeFlags.Empty;
+
+        public DependencyIconSet IconSet { get; protected set; }
 
         private string _id;
         public virtual string Id

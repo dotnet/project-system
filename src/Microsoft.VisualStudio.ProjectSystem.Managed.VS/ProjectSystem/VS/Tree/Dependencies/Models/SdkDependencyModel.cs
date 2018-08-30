@@ -11,6 +11,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 {
     internal class SdkDependencyModel : DependencyModel
     {
+        private static readonly DependencyIconSet s_iconSet = new DependencyIconSet(
+            icon: ManagedImageMonikers.Sdk,
+            expandedIcon: ManagedImageMonikers.Sdk,
+            unresolvedIcon: ManagedImageMonikers.SdkWarning,
+            unresolvedExpandedIcon: ManagedImageMonikers.SdkWarning);
+
+        private static readonly DependencyIconSet s_implicitIconSet = new DependencyIconSet(
+            icon: ManagedImageMonikers.SdkPrivate,
+            expandedIcon: ManagedImageMonikers.SdkPrivate,
+            unresolvedIcon: ManagedImageMonikers.SdkWarning,
+            unresolvedExpandedIcon: ManagedImageMonikers.SdkWarning);
+
         public SdkDependencyModel(
             string providerType,
             string path,
@@ -34,10 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 
             SchemaItemType = SdkReference.PrimaryDataSourceItemType;
             Priority = Dependency.SdkNodePriority;
-            Icon = isImplicit ? ManagedImageMonikers.SdkPrivate : ManagedImageMonikers.Sdk;
-            ExpandedIcon = Icon;
-            UnresolvedIcon = ManagedImageMonikers.SdkWarning;
-            UnresolvedExpandedIcon = UnresolvedIcon;
+            IconSet = isImplicit ? s_implicitIconSet : s_iconSet;
             Version = properties != null && properties.ContainsKey(ProjectItemMetadata.Version)
                         ? properties[ProjectItemMetadata.Version] : string.Empty;
             string baseCaption = Path.Split(Delimiter.Comma, StringSplitOptions.RemoveEmptyEntries)

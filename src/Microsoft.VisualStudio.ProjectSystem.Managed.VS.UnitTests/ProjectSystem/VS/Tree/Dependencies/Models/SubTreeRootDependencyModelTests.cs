@@ -13,12 +13,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         [Fact]
         public void SubTreeRootDependencyModelTest()
         {
+            var iconSet = new DependencyIconSet(
+                icon: KnownMonikers.AboutBox,
+                expandedIcon: KnownMonikers.AboutBox,
+                unresolvedIcon: KnownMonikers.AbsolutePosition,
+                unresolvedExpandedIcon: KnownMonikers.AbsolutePosition);
             var flag = ProjectTreeFlags.Create("MyCustomFlag");
             var model = new SubTreeRootDependencyModel(
                 "myProvider",
                 "myRoot",
-                KnownMonikers.AboutBox,
-                KnownMonikers.AbsolutePosition,
+                iconSet,
                 flags: flag);
 
             Assert.Equal("myProvider", model.ProviderType);
