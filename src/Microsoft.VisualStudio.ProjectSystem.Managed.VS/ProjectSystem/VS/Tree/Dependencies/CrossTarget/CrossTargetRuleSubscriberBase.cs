@@ -31,6 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             IUnconfiguredProjectCommonServices commonServices,
             IProjectAsynchronousTasksService tasksService,
             IDependencyTreeTelemetryService treeTelemetryService)
+            : base(synchronousDisposal: true)
         {
             _commonServices = commonServices;
             _tasksService = tasksService;

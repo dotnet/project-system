@@ -34,6 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             IUnconfiguredProjectCommonServices commonServices,
             [Import(ExportContractNames.Scopes.UnconfiguredProject)]IProjectAsynchronousTasksService tasksService,
             IDependenciesSnapshotProvider dependenciesSnapshotProvider)
+            : base(synchronousDisposal: true)
         {
             _tasksService = tasksService;
             _dependenciesSnapshotProvider = dependenciesSnapshotProvider;
