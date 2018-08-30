@@ -93,14 +93,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             _designTimeBuildSubscriptionLinks.Clear();
         }
 
-        public async Task OnContextReleasedAsync(ITargetedProjectContext innerContext)
-        {
-            foreach (Lazy<ICrossTargetRuleHandler<T>, IOrderPrecedenceMetadataView> handler in Handlers)
-            {
-                await handler.Value.OnContextReleasedAsync(innerContext).ConfigureAwait(false);
-            }
-        }
-
         private void SubscribeToConfiguredProject(
             ConfiguredProject configuredProject,
             IProjectSubscriptionService subscriptionService,

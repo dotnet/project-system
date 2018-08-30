@@ -9,6 +9,5 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         Task InitializeSubscriberAsync(ICrossTargetSubscriptionsHost host, IProjectSubscriptionService subscriptionService);
         Task AddSubscriptionsAsync(AggregateCrossTargetProjectContext newProjectContext);
         void ReleaseSubscriptions();
-        Task OnContextReleasedAsync(ITargetedProjectContext innerContext);
     }
 }

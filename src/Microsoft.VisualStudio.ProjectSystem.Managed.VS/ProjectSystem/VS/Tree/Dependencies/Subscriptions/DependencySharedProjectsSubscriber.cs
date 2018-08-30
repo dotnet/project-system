@@ -71,11 +71,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             _subscriptionLinks.Clear();
         }
 
-        public Task OnContextReleasedAsync(ITargetedProjectContext innerContext)
-        {
-            return Task.CompletedTask;
-        }
-
         private void SubscribeToConfiguredProject(IProjectSubscriptionService subscriptionService)
         {
             var intermediateBlock =

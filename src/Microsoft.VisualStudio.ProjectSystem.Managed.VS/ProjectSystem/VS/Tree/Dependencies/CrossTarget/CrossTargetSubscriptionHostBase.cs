@@ -240,14 +240,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         private async Task DisposeAggregateProjectContextAsync(AggregateCrossTargetProjectContext projectContext)
         {
             await _contextProvider.Value.ReleaseProjectContextAsync(projectContext).ConfigureAwait(false);
-
-            foreach (ITargetedProjectContext innerContext in projectContext.DisposedInnerProjectContexts)
-            {
-                foreach (Lazy<ICrossTargetSubscriber> subscriber in Subscribers)
-                {
-                    await subscriber.Value.OnContextReleasedAsync(innerContext).ConfigureAwait(false);
-                }
-            }
         }
 
         private async Task AddSubscriptionsAsync(AggregateCrossTargetProjectContext newProjectContext)
