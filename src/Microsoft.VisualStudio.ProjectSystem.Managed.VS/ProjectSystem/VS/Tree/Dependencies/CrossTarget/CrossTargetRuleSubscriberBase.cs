@@ -10,6 +10,7 @@ using System.Threading.Tasks.Dataflow;
 
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
+using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
@@ -18,9 +19,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
     {
 #pragma warning disable CA2213 // OnceInitializedOnceDisposedAsync are not tracked corretly by the IDisposeable analyzer
         private readonly SemaphoreSlim _gate = new SemaphoreSlim(initialCount: 1);
+        private readonly DisposableBag _subscriptions = new DisposableBag();
 #pragma warning restore CA2213
-        private readonly List<IDisposable> _evaluationSubscriptionLinks;
-        private readonly List<IDisposable> _designTimeBuildSubscriptionLinks;
         private readonly IUnconfiguredProjectCommonServices _commonServices;
         private readonly IProjectAsynchronousTasksService _tasksService;
         private readonly IDependencyTreeTelemetryService _treeTelemetryService;
@@ -36,8 +36,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             _commonServices = commonServices;
             _tasksService = tasksService;
             _treeTelemetryService = treeTelemetryService;
-            _evaluationSubscriptionLinks = new List<IDisposable>();
-            _designTimeBuildSubscriptionLinks = new List<IDisposable>();
         }
 
         protected abstract OrderPrecedenceImportCollection<ICrossTargetRuleHandler<T>> Handlers { get; }
@@ -81,14 +79,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         public void ReleaseSubscriptions()
         {
             _currentProjectContext = null;
-
-            foreach (IDisposable link in _evaluationSubscriptionLinks.Concat(_designTimeBuildSubscriptionLinks))
-            {
-                link.Dispose();
-            }
-
-            _evaluationSubscriptionLinks.Clear();
-            _designTimeBuildSubscriptionLinks.Clear();
+            _subscriptions.Dispose();
         }
 
         private void SubscribeToConfiguredProject(
@@ -111,14 +102,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                         NameFormat = "CrossTarget Intermediate Evaluation Input: {1}"
                     });
 
-            _designTimeBuildSubscriptionLinks.Add(
+            _subscriptions.AddDisposable(
                 subscriptionService.JointRuleSource.SourceBlock.LinkTo(
                     intermediateBlockDesignTime,
                   ruleNames: watchedDesignTimeBuildRules.Union(watchedEvaluationRules),
                   suppressVersionOnlyUpdates: true,
                   linkOptions: DataflowOption.PropagateCompletion));
 
-            _evaluationSubscriptionLinks.Add(
+            _subscriptions.AddDisposable(
                 subscriptionService.ProjectRuleSource.SourceBlock.LinkTo(
                     intermediateBlockEvaluation,
                     ruleNames: watchedEvaluationRules,
@@ -141,14 +132,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                          NameFormat = "CrossTarget Evaluation Input: {1}"
                      });
 
-            _designTimeBuildSubscriptionLinks.Add(ProjectDataSources.SyncLinkTo(
+            _subscriptions.AddDisposable(ProjectDataSources.SyncLinkTo(
                 intermediateBlockDesignTime.SyncLinkOptions(),
                 subscriptionService.ProjectCatalogSource.SourceBlock.SyncLinkOptions(),
                 configuredProject.Capabilities.SourceBlock.SyncLinkOptions(),
                 actionBlockDesignTimeBuild,
                 linkOptions: DataflowOption.PropagateCompletion));
 
-            _evaluationSubscriptionLinks.Add(ProjectDataSources.SyncLinkTo(
+            _subscriptions.AddDisposable(ProjectDataSources.SyncLinkTo(
                 intermediateBlockEvaluation.SyncLinkOptions(),
                 subscriptionService.ProjectCatalogSource.SourceBlock.SyncLinkOptions(),
                 configuredProject.Capabilities.SourceBlock.SyncLinkOptions(),
