@@ -144,6 +144,3 @@
 <Assembly: CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Justification:="<Pending>", Scope:="member", Target:="~P:Microsoft.VisualStudio.Editors.SettingsDesigner.TypePickerDialog.m_OkButton")>
 <Assembly: CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Justification:="<Pending>", Scope:="member", Target:="~P:Microsoft.VisualStudio.Editors.SettingsDesigner.TypePickerDialog.okCancelTableLayoutPanel")>
 <Assembly: CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Justification:="<Pending>", Scope:="member", Target:="~P:Microsoft.VisualStudio.Editors.SettingsDesigner.TypePickerDialog.overarchingTableLayoutPanel")>
-
-' BUG https://github.com/dotnet/roslyn/issues/16114
-<Assembly: CodeAnalysis.SuppressMessage("Style", "IDE0030:Use null propagation", Justification:="<Pending>", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.XmlToSchema.InputXmlForm._okButtonClick(System.Object,System.EventArgs)")>
