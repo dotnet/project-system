@@ -307,7 +307,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             if (copyAlwaysItemPath != null)
             {
-                return Fail(logger, $"Item '{_configuredProject.UnconfiguredProject.MakeRooted(copyAlwaysItemPath)}' has CopyToOutputDirectory set to 'CopyAlways', not up to date.", "CopyAlwaysItemExists");
+                return Fail(logger, $"Item '{_configuredProject.UnconfiguredProject.MakeRooted(copyAlwaysItemPath)}' has CopyToOutputDirectory set to 'Always', not up to date.", "CopyAlwaysItemExists");
             }
 
             return true;
