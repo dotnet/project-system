@@ -577,7 +577,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             EnsureInitialized();
 
-            LogLevel requestedLogLevel = await _projectSystemOptions.GetFastUpToDateLoggingLevelAsync().ConfigureAwait(false);
+            LogLevel requestedLogLevel = await _projectSystemOptions.GetFastUpToDateLoggingLevelAsync(cancellationToken).ConfigureAwait(false);
             var logger = new BuildUpToDateCheckLogger(logWriter, requestedLogLevel, _configuredProject.UnconfiguredProject.FullPath);
 
             if (!CheckGlobalConditions(buildAction, logger))
@@ -646,6 +646,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         }
 
         public async Task<bool> IsUpToDateCheckEnabledAsync(CancellationToken cancellationToken = default) =>
-            await _projectSystemOptions.GetIsFastUpToDateCheckEnabledAsync().ConfigureAwait(false);
+            await _projectSystemOptions.GetIsFastUpToDateCheckEnabledAsync(cancellationToken).ConfigureAwait(false);
     }
 }
