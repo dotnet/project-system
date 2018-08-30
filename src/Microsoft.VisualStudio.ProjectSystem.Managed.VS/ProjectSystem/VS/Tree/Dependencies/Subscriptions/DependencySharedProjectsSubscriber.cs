@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 {
     [Export(typeof(IDependencyCrossTargetSubscriber))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
-    internal class DependencySharedProjectsSubscriber : OnceInitializedOnceDisposedAsync, IDependencyCrossTargetSubscriber
+    internal class DependencySharedProjectsSubscriber : OnceInitializedOnceDisposed, IDependencyCrossTargetSubscriber
     {
 #pragma warning disable CA2213 // OnceInitializedOnceDisposedAsync are not tracked corretly by the IDisposeable analyzer
         private readonly SemaphoreSlim _gate = new SemaphoreSlim(initialCount: 1);
@@ -34,7 +34,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             IUnconfiguredProjectCommonServices commonServices,
             [Import(ExportContractNames.Scopes.UnconfiguredProject)]IProjectAsynchronousTasksService tasksService,
             IDependenciesSnapshotProvider dependenciesSnapshotProvider)
-            : base(commonServices.ThreadingService.JoinableTaskContext)
         {
             _tasksService = tasksService;
             _dependenciesSnapshotProvider = dependenciesSnapshotProvider;
@@ -117,7 +116,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                 return;
             }
 
-            await InitializeAsync().ConfigureAwait(false);
+            EnsureInitialized();
 
 
             await _tasksService.LoadedProjectAsync(async () =>
@@ -233,19 +232,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
         public event EventHandler<DependencySubscriptionChangedEventArgs> DependenciesChanged;
 
-        protected override Task InitializeCoreAsync(CancellationToken cancellationToken)
-        {
-            return Task.CompletedTask;
+        protected override void Initialize()
+        {   
         }
 
-        protected override Task DisposeCoreAsync(bool initialized)
+        protected override void Dispose(bool disposing)
         {
-            if (initialized)
+            if (disposing)
             {
                 ReleaseSubscriptions();
             }
-
-            return Task.CompletedTask;
         }
     }
 }
