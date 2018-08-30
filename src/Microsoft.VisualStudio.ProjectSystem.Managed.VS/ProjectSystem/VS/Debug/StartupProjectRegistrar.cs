@@ -22,9 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         private readonly ActiveConfiguredProject<DebuggerLaunchProviders> _launchProviders;
         
         private Guid _projectGuid;
-#pragma warning disable CA2213 // OnceInitializedOnceDisposedAsync are not tracked corretly by the IDisposeable analyzer
         private IDisposable _subscription;
-#pragma warning restore CA2213
 
         [ImportingConstructor]
         public StartupProjectRegistrar(
