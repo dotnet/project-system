@@ -62,7 +62,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             return Task.CompletedTask;
         }
 
-        public Task ReleaseSubscriptionsAsync()
+        public void ReleaseSubscriptions()
         {
             foreach (IDisposable link in _subscriptionLinks)
             {
@@ -70,8 +70,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             }
 
             _subscriptionLinks.Clear();
-
-            return Task.CompletedTask;
         }
 
         public Task OnContextReleasedAsync(ITargetedProjectContext innerContext)
@@ -240,12 +238,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             return Task.CompletedTask;
         }
 
-        protected override async Task DisposeCoreAsync(bool initialized)
+        protected override Task DisposeCoreAsync(bool initialized)
         {
             if (initialized)
             {
-                await ReleaseSubscriptionsAsync().ConfigureAwait(false);
+                ReleaseSubscriptions();
             }
+
+            return Task.CompletedTask;
         }
     }
 }

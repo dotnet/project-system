@@ -316,7 +316,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             {
                 foreach (Lazy<ICrossTargetSubscriber> subscriber in Subscribers)
                 {
-                    subscriber.Value.ReleaseSubscriptionsAsync();
+                    subscriber.Value.ReleaseSubscriptions();
                 }
 
                 foreach (IDisposable link in _evaluationSubscriptionLinks)
