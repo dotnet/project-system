@@ -43,14 +43,5 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                          ITargetedProjectContext targetedProjectContext,
                          bool isActiveContext,
                          T ruleChangeContext);
-
-        /// <summary>
-        /// Handles clearing any state specific to the given context being released.
-        /// </summary>
-        /// <param name="context">
-        ///     A <see cref="ITargetedProjectContext"/> being released.
-        /// </param>
-        Task OnContextReleasedAsync(ITargetedProjectContext context);
-
     }
 }

@@ -14,7 +14,7 @@ using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 {
-    internal abstract class CrossTargetRuleSubscriberBase<T> : OnceInitializedOnceDisposedAsync, ICrossTargetSubscriber where T : IRuleChangeContext
+    internal abstract class CrossTargetRuleSubscriberBase<T> : OnceInitializedOnceDisposed, ICrossTargetSubscriber where T : IRuleChangeContext
     {
 #pragma warning disable CA2213 // OnceInitializedOnceDisposedAsync are not tracked corretly by the IDisposeable analyzer
         private readonly SemaphoreSlim _gate = new SemaphoreSlim(initialCount: 1);
@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             IUnconfiguredProjectCommonServices commonServices,
             IProjectAsynchronousTasksService tasksService,
             IDependencyTreeTelemetryService treeTelemetryService)
-            : base(commonServices.ThreadingService.JoinableTaskContext)
+            : base(synchronousDisposal: true)
         {
             _commonServices = commonServices;
             _tasksService = tasksService;
@@ -42,11 +42,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
         protected abstract OrderPrecedenceImportCollection<ICrossTargetRuleHandler<T>> Handlers { get; }
 
-        public async Task InitializeSubscriberAsync(ICrossTargetSubscriptionsHost host, IProjectSubscriptionService subscriptionService)
+        public void InitializeSubscriber(ICrossTargetSubscriptionsHost host, IProjectSubscriptionService subscriptionService)
         {
             _host = host;
 
-            await InitializeAsync().ConfigureAwait(false);
+            EnsureInitialized();
 
             IEnumerable<string> watchedEvaluationRules = GetWatchedRules(RuleHandlerType.Evaluation);
             IEnumerable<string> watchedDesignTimeBuildRules = GetWatchedRules(RuleHandlerType.DesignTimeBuild);
@@ -55,7 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                 _commonServices.ActiveConfiguredProject, subscriptionService, watchedEvaluationRules, watchedDesignTimeBuildRules);
         }
 
-        public Task AddSubscriptionsAsync(AggregateCrossTargetProjectContext newProjectContext)
+        public void AddSubscriptions(AggregateCrossTargetProjectContext newProjectContext)
         {
             Requires.NotNull(newProjectContext, nameof(newProjectContext));
 
@@ -76,11 +76,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                 SubscribeToConfiguredProject(
                     configuredProject, configuredProject.Services.ProjectSubscription, watchedEvaluationRules, watchedDesignTimeBuildRules);
             }
-
-            return Task.CompletedTask;
         }
 
-        public Task ReleaseSubscriptionsAsync()
+        public void ReleaseSubscriptions()
         {
             _currentProjectContext = null;
 
@@ -91,16 +89,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
             _evaluationSubscriptionLinks.Clear();
             _designTimeBuildSubscriptionLinks.Clear();
-
-            return Task.CompletedTask;
-        }
-
-        public async Task OnContextReleasedAsync(ITargetedProjectContext innerContext)
-        {
-            foreach (Lazy<ICrossTargetRuleHandler<T>, IOrderPrecedenceMetadataView> handler in Handlers)
-            {
-                await handler.Value.OnContextReleasedAsync(innerContext).ConfigureAwait(false);
-            }
         }
 
         private void SubscribeToConfiguredProject(
@@ -283,16 +271,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             return Task.CompletedTask;
         }
 
-        protected override Task InitializeCoreAsync(CancellationToken cancellationToken)
-        {
-            return Task.CompletedTask;
+        protected override void Initialize()
+        {   
         }
-
-        protected override async Task DisposeCoreAsync(bool initialized)
+        protected override void Dispose(bool disposing)
         {
-            if (initialized)
+            if (disposing)
             {
-                await ReleaseSubscriptionsAsync().ConfigureAwait(false);
+                ReleaseSubscriptions();
             }
         }
     }

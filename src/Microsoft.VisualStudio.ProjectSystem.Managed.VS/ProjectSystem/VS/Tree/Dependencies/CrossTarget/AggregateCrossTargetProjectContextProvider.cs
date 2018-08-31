@@ -36,6 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             ITaskScheduler taskScheduler,
             IActiveConfiguredProjectsProvider activeConfiguredProjectsProvider,
             ITargetFrameworkProvider targetFrameworkProvider)
+            : base(synchronousDisposal: true)
         {
             _commonServices = commonServices;
             _tasksService = tasksService;

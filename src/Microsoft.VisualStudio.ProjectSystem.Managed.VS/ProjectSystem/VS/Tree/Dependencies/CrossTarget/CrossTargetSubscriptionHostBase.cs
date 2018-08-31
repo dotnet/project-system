@@ -88,16 +88,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
         protected async Task AddInitialSubscriptionsAsync()
         {
-            await _tasksService.LoadedProjectAsync(async () =>
+            await _tasksService.LoadedProjectAsync(() =>
             {
                 SubscribeToConfiguredProject(_activeConfiguredProjectSubscriptionService,
                     e => OnProjectChangedAsync(e, RuleHandlerType.Evaluation));
 
                 foreach (Lazy<ICrossTargetSubscriber> subscriber in Subscribers)
                 {
-                    await subscriber.Value.InitializeSubscriberAsync(this, _activeConfiguredProjectSubscriptionService)
-                                          .ConfigureAwait(false);
+                    subscriber.Value.InitializeSubscriber(this, _activeConfiguredProjectSubscriptionService);
+                                          
                 }
+
+                return Task.CompletedTask;
             });
         }
 
@@ -240,14 +242,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         private async Task DisposeAggregateProjectContextAsync(AggregateCrossTargetProjectContext projectContext)
         {
             await _contextProvider.Value.ReleaseProjectContextAsync(projectContext).ConfigureAwait(false);
-
-            foreach (ITargetedProjectContext innerContext in projectContext.DisposedInnerProjectContexts)
-            {
-                foreach (Lazy<ICrossTargetSubscriber> subscriber in Subscribers)
-                {
-                    await subscriber.Value.OnContextReleasedAsync(innerContext).ConfigureAwait(false);
-                }
-            }
         }
 
         private async Task AddSubscriptionsAsync(AggregateCrossTargetProjectContext newProjectContext)
@@ -268,7 +262,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
                     foreach (Lazy<ICrossTargetSubscriber> subscriber in Subscribers)
                     {
-                        subscriber.Value.AddSubscriptionsAsync(newProjectContext);
+                        subscriber.Value.AddSubscriptions(newProjectContext);
                     }
                 }
 
@@ -316,7 +310,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             {
                 foreach (Lazy<ICrossTargetSubscriber> subscriber in Subscribers)
                 {
-                    subscriber.Value.ReleaseSubscriptionsAsync();
+                    subscriber.Value.ReleaseSubscriptions();
                 }
 
                 foreach (IDisposable link in _evaluationSubscriptionLinks)
