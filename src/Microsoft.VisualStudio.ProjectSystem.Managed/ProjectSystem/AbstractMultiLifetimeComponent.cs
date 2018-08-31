@@ -14,9 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
     internal abstract partial class AbstractMultiLifetimeComponent : OnceInitializedOnceDisposedAsync
     {
         private readonly object _lock = new object();
-#pragma warning disable CA2213 // OnceInitializedOnceDisposedAsync are not tracked correctly by the IDisposeable analyzer
         private AbstractMultiLifetimeInstance _instance;
-#pragma warning restore CA2213
 
         protected AbstractMultiLifetimeComponent(JoinableTaskContextNode joinableTaskContextNode)
             : base(joinableTaskContextNode)
