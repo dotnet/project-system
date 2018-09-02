@@ -10,6 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 
+using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.Build;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.Telemetry;
@@ -50,6 +51,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         private readonly IProjectAsynchronousTasksService _tasksService;
         private readonly IProjectItemSchemaService _projectItemSchemaService;
         private readonly ITelemetryService _telemetryService;
+        private readonly IFileSystem _fileSystem;
 
         private IDisposable _link;
         private IComparable _lastVersionSeen;
@@ -78,13 +80,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             ConfiguredProject configuredProject,
             [Import(ExportContractNames.Scopes.ConfiguredProject)] IProjectAsynchronousTasksService tasksService,
             IProjectItemSchemaService projectItemSchemaService,
-            ITelemetryService telemetryService)
+            ITelemetryService telemetryService,
+            IFileSystem fileSystem)
         {
             _projectSystemOptions = projectSystemOptions;
             _configuredProject = configuredProject;
             _tasksService = tasksService;
             _projectItemSchemaService = projectItemSchemaService;
             _telemetryService = telemetryService;
+            _fileSystem = fileSystem;
         }
 
         /// <summary>
@@ -250,16 +254,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             _link?.Dispose();
         }
 
-        private static DateTime? GetTimestamp(string path, IDictionary<string, DateTime> timestampCache)
+        private DateTime? GetTimestamp(string path, IDictionary<string, DateTime> timestampCache)
         {
             if (!timestampCache.TryGetValue(path, out DateTime time))
             {
-                var info = new FileInfo(path);
-                if (!info.Exists)
+                if (!_fileSystem.FileExists(path))
                 {
                     return null;
                 }
-                time = info.LastWriteTimeUtc;
+                time = _fileSystem.LastFileWriteTimeUtc(path);
                 timestampCache[path] = time;
             }
 
@@ -399,7 +402,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             }
         }
 
-        private static (DateTime time, string path) GetLatestInput(IEnumerable<string> inputs, IDictionary<string, DateTime> timestampCache)
+        private (DateTime time, string path) GetLatestInput(IEnumerable<string> inputs, IDictionary<string, DateTime> timestampCache)
         {
             DateTime latest = DateTime.MinValue;
             string latestPath = null;
@@ -418,7 +421,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             return (latest, latestPath);
         }
 
-        private static (DateTime? time, string path) GetEarliestOutput(IEnumerable<string> outputs, IDictionary<string, DateTime> timestampCache)
+        private (DateTime? time, string path) GetEarliestOutput(IEnumerable<string> outputs, IDictionary<string, DateTime> timestampCache)
         {
             DateTime? earliest = DateTime.MaxValue;
             string earliestPath = null;
