@@ -42,7 +42,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             .Union(ReferenceSchemas)
             .Union(UpToDateSchemas);
 
-        private static ImmutableHashSet<string> NonCompilationItemTypes => ImmutableStringHashSet.EmptyOrdinal
+        private static ImmutableHashSet<string> NonCompilationItemTypes => ImmutableHashSet<string>.Empty
+            .WithComparer(StringComparers.ItemTypes)
             .Add(None.SchemaName)
             .Add(Content.SchemaName);
 
@@ -64,12 +65,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         private string _outputRelativeOrFullPath;
 
         private readonly HashSet<string> _imports = new HashSet<string>(StringComparers.Paths);
-        private readonly HashSet<string> _itemTypes = new HashSet<string>(StringComparers.Paths);
-        private readonly Dictionary<string, HashSet<(string Path, string Link, CopyToOutputDirectoryType CopyType)>> _items = new Dictionary<string, HashSet<(string, string, CopyToOutputDirectoryType)>>();
+        private readonly HashSet<string> _itemTypes = new HashSet<string>(StringComparers.ItemTypes);
+        private readonly Dictionary<string, HashSet<(string Path, string Link, CopyToOutputDirectoryType CopyType)>> _items = new Dictionary<string, HashSet<(string, string, CopyToOutputDirectoryType)>>(StringComparers.ItemTypes);
         private readonly HashSet<string> _customInputs = new HashSet<string>(StringComparers.Paths);
         private readonly HashSet<string> _customOutputs = new HashSet<string>(StringComparers.Paths);
         private readonly HashSet<string> _builtOutputs = new HashSet<string>(StringComparers.Paths);
-        private readonly Dictionary<string, string> _copiedOutputFiles = new Dictionary<string, string>();
+        private readonly Dictionary<string, string> _copiedOutputFiles = new Dictionary<string, string>(StringComparers.Paths);
         private readonly HashSet<string> _analyzerReferences = new HashSet<string>(StringComparers.Paths);
         private readonly HashSet<string> _compilationReferences = new HashSet<string>(StringComparers.Paths);
         private readonly HashSet<string> _copyReferenceInputs = new HashSet<string>(StringComparers.Paths);
