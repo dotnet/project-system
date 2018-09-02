@@ -151,14 +151,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 inputs.Difference.AnyChanges)
             {
                 _customInputs.Clear();
-                _customInputs.AddRange(inputs.After.Items.Select(item => _configuredProject.UnconfiguredProject.MakeRooted(item.Key)));
+                _customInputs.AddRange(inputs.After.Items.Keys);
             }
 
             if (e.ProjectChanges.TryGetValue(UpToDateCheckOutput.SchemaName, out IProjectChangeDescription outputs) &&
                 outputs.Difference.AnyChanges)
             {
                 _customOutputs.Clear();
-                _customOutputs.AddRange(outputs.After.Items.Select(item => _configuredProject.UnconfiguredProject.MakeRooted(item.Key)));
+                _customOutputs.AddRange(outputs.After.Items.Keys);
             }
 
             if (e.ProjectChanges.TryGetValue(UpToDateCheckBuilt.SchemaName, out IProjectChangeDescription built) &&
@@ -234,7 +234,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 outputs.Difference.AnyChanges)
             {
                 _customOutputs.Clear();
-                _customOutputs.AddRange(outputs.After.Items.Select(item => _configuredProject.UnconfiguredProject.MakeRooted(item.Key)));
+                _customOutputs.AddRange(outputs.After.Items.Keys);
             }
         }
 
@@ -366,7 +366,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             if (_customInputs.Count != 0)
             {
                 logger.Verbose("Adding " + UpToDateCheckInput.SchemaName + " inputs:");
-                foreach (string input in _customInputs)
+                foreach (string input in _customInputs.Select(_configuredProject.UnconfiguredProject.MakeRooted))
                 {
                     logger.Verbose("    '{0}'", input);
                     yield return input;
@@ -380,7 +380,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             {
                 logger.Verbose("Adding " + UpToDateCheckOutput.SchemaName + " outputs:");
 
-                foreach (string output in _customOutputs)
+                foreach (string output in _customOutputs.Select(_configuredProject.UnconfiguredProject.MakeRooted))
                 {
                     logger.Verbose("    '{0}'", output);
                     yield return output;
