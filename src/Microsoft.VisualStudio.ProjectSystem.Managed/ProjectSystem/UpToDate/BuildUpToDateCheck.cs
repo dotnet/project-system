@@ -329,9 +329,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 }
             }
 
-            foreach (KeyValuePair<string, HashSet<(string Path, string Link, CopyToOutputDirectoryType CopyType)>> pair in _items.Where(kvp => !NonCompilationItemTypes.Contains(kvp.Key)))
+            foreach (KeyValuePair<string, HashSet<(string Path, string Link, CopyToOutputDirectoryType CopyType)>> pair in _items)
             {
-                if (pair.Value.Count != 0)
+                if (pair.Value.Count != 0 && !NonCompilationItemTypes.Contains(pair.Key))
                 {
                     logger.Verbose("Adding {0} inputs:", pair.Key);
 
