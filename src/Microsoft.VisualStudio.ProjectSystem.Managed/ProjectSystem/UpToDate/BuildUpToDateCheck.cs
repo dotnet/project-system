@@ -133,16 +133,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 _compilationReferences.Clear();
                 _copyReferenceInputs.Clear();
 
-                foreach (KeyValuePair<string, IImmutableDictionary<string, string>> item in changes.After.Items)
+                foreach (IImmutableDictionary<string, string> item in changes.After.Items.Values)
                 {
-                    _compilationReferences.Add(item.Value[ResolvedCompilationReference.ResolvedPathProperty]);
-                    if (!string.IsNullOrWhiteSpace(item.Value[CopyUpToDateMarker.SchemaName]))
+                    _compilationReferences.Add(item[ResolvedCompilationReference.ResolvedPathProperty]);
+                    if (!string.IsNullOrWhiteSpace(item[CopyUpToDateMarker.SchemaName]))
                     {
-                        _copyReferenceInputs.Add(item.Value[CopyUpToDateMarker.SchemaName]);
+                        _copyReferenceInputs.Add(item[CopyUpToDateMarker.SchemaName]);
                     }
-                    if (!string.IsNullOrWhiteSpace(item.Value[ResolvedCompilationReference.OriginalPathProperty]))
+                    if (!string.IsNullOrWhiteSpace(item[ResolvedCompilationReference.OriginalPathProperty]))
                     {
-                        _copyReferenceInputs.Add(item.Value[ResolvedCompilationReference.OriginalPathProperty]);
+                        _copyReferenceInputs.Add(item[ResolvedCompilationReference.OriginalPathProperty]);
                     }
                 }
             }
