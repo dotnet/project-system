@@ -225,7 +225,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             foreach (KeyValuePair<string, IProjectChangeDescription> itemType in e.ProjectChanges.Where(changes => (itemTypesChanged || changes.Value.Difference.AnyChanges) && _itemTypes.Contains(changes.Key)))
             {
                 IEnumerable<(string, string, CopyToOutputDirectoryType)> items = itemType.Value.After.Items
-                    .Select(item => (item.Key, GetLink(item.Value), GetCopyType(item.Value)));
+                    .Select(item => (Path: item.Key, Link: GetLink(item.Value), CopyType: GetCopyType(item.Value)));
                 _items[itemType.Key] = new HashSet<(string, string, CopyToOutputDirectoryType)>(items, UpToDateCheckItemComparer.Instance);
                 _itemsChangedSinceLastCheck = true;
             }

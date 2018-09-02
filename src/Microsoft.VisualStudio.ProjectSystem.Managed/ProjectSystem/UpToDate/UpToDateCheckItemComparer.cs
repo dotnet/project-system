@@ -2,7 +2,7 @@
 
 namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 {
-    internal class UpToDateCheckItemComparer : IEqualityComparer<(string, string, CopyToOutputDirectoryType)>
+    internal class UpToDateCheckItemComparer : IEqualityComparer<(string Path, string Link, CopyToOutputDirectoryType CopyType)>
     {
         public static UpToDateCheckItemComparer Instance = new UpToDateCheckItemComparer();
 
@@ -10,8 +10,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         {
         }
 
-        public bool Equals((string, string, CopyToOutputDirectoryType) x, (string, string, CopyToOutputDirectoryType) y) => StringComparers.Paths.Equals(x.Item1, y.Item1);
+        public bool Equals(
+            (string Path, string Link, CopyToOutputDirectoryType CopyType) x,
+            (string Path, string Link, CopyToOutputDirectoryType CopyType) y)
+        {
+            return StringComparers.Paths.Equals(x.Path, y.Path);
+        }
 
-        public int GetHashCode((string, string, CopyToOutputDirectoryType) obj) => StringComparers.Paths.GetHashCode(obj.Item1);
+        public int GetHashCode(
+            (string Path, string Link, CopyToOutputDirectoryType CopyType) obj)
+        {
+            return StringComparers.Paths.GetHashCode(obj.Path);
+        }
     }
 }
