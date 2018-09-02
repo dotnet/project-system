@@ -190,7 +190,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             if (e.ProjectChanges.TryGetValue(CopyUpToDateMarker.SchemaName, out IProjectChangeDescription upToDateMarkers) &&
                 upToDateMarkers.Difference.AnyChanges)
             {
-                _markerFile = upToDateMarkers.After.Items.Count == 1 ? _configuredProject.UnconfiguredProject.MakeRooted(upToDateMarkers.After.Items.Single().Key) : null;
+                _markerFile = upToDateMarkers.After.Items.Count == 1 ? upToDateMarkers.After.Items.Single().Key : null;
             }
         }
 
@@ -459,6 +459,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 return true;
             }
 
+            var markerFile = _configuredProject.UnconfiguredProject.MakeRooted(_markerFile);
+
             logger.Verbose("Adding input reference copy markers:");
 
             foreach (string referenceMarkerFile in _copyReferenceInputs)
@@ -467,10 +469,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             }
 
             logger.Verbose("Adding output reference copy marker:");
-            logger.Verbose("    '{0}'", _markerFile);
+            logger.Verbose("    '{0}'", markerFile);
 
             (DateTime inputMarkerTime, string inputMarkerPath) = GetLatestInput(_copyReferenceInputs, timestampCache);
-            DateTime? outputMarkerTime = GetTimestamp(_markerFile, timestampCache);
+            DateTime? outputMarkerTime = GetTimestamp(markerFile, timestampCache);
 
             if (inputMarkerPath != null)
             {
@@ -483,11 +485,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             if (outputMarkerTime != null)
             {
-                logger.Info("Write timestamp on output marker is {0} on '{1}'.", outputMarkerTime, _markerFile);
+                logger.Info("Write timestamp on output marker is {0} on '{1}'.", outputMarkerTime, markerFile);
             }
             else
             {
-                logger.Info("Output marker '{0}' does not exist, skipping marker check.", _markerFile);
+                logger.Info("Output marker '{0}' does not exist, skipping marker check.", markerFile);
             }
 
             if (outputMarkerTime <= inputMarkerTime)
