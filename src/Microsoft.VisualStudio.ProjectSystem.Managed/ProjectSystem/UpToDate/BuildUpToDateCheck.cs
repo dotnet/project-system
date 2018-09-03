@@ -169,6 +169,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             if (e.ProjectChanges.TryGetValue(UpToDateCheckBuilt.SchemaName, out IProjectChangeDescription built) &&
                 built.Difference.AnyChanges)
             {
+                _copiedOutputFiles.Clear();
                 _builtOutputs.Clear();
 
                 foreach (KeyValuePair<string, IImmutableDictionary<string, string>> item in built.After.Items)
