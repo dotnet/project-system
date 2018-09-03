@@ -437,7 +437,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 if (time == null)
                 {
-                    return (null, null);
+                    return (null, output);
                 }
 
                 if (time < earliest)
