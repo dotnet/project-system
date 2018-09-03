@@ -21,5 +21,6 @@
   <Assets>
     <Asset Type="Microsoft.VisualStudio.ProjectTemplate" Path="XUnitTest" />
     <Asset Type="Microsoft.VisualStudio.ProjectTemplate" Path="MSTest" />
+    <Asset Type="Microsoft.VisualStudio.ProjectTemplate" Path="NUnitTest" />
   </Assets>
 </PackageManifest>
