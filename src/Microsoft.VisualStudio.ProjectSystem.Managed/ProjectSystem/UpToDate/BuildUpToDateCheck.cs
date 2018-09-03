@@ -308,7 +308,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             if (_isDisabled)
             {
-                return Fail(logger, "The 'DisableFastUpToDateCheckProperty' property is true, not up to date.", "Disabled");
+                return Fail(logger, "The 'DisableFastUpToDateCheck' property is true, not up to date.", "Disabled");
             }
 
             string copyAlwaysItemPath = _items.SelectMany(kvp => kvp.Value).FirstOrDefault(item => item.CopyType == CopyToOutputDirectoryType.CopyAlways).Path;
