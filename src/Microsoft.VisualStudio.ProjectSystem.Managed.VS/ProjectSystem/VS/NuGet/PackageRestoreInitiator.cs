@@ -38,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             _logger = logger;
         }
 
-        protected override AbstractMultiLifetimeInstance CreateInstance()
+        protected override IMultiLifetimeInstance CreateInstance()
         {
             return new PackageRestoreInitiatorInstance(_projectVsServices, _solutionRestoreService, _activeConfiguredProjectSubscriptionService, _activeConfigurationGroupService, _logger);
         }
