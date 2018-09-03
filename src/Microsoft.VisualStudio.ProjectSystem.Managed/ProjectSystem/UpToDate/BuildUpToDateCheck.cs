@@ -172,11 +172,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 _copiedOutputFiles.Clear();
                 _builtOutputs.Clear();
 
-                foreach (KeyValuePair<string, IImmutableDictionary<string, string>> item in built.After.Items)
+                foreach ((string destination, IImmutableDictionary<string, string> properties) in built.After.Items)
                 {
-                    string destination = item.Key;
-
-                    if (item.Value.TryGetValue(UpToDateCheckBuilt.OriginalProperty, out string source) &&
+                    if (properties.TryGetValue(UpToDateCheckBuilt.OriginalProperty, out string source) &&
                         !string.IsNullOrEmpty(source))
                     {
                         _copiedOutputFiles[destination] = source;
@@ -228,11 +226,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 _items.Clear();
             }
 
-            foreach (KeyValuePair<string, IProjectChangeDescription> itemType in e.ProjectChanges.Where(changes => (itemTypesChanged || changes.Value.Difference.AnyChanges) && _itemTypes.Contains(changes.Key)))
+            foreach ((string itemType, IProjectChangeDescription changes) in e.ProjectChanges)
             {
-                IEnumerable<(string, string, CopyToOutputDirectoryType)> items = itemType.Value.After.Items
-                    .Select(item => (Path: item.Key, Link: GetLink(item.Value), CopyType: GetCopyType(item.Value)));
-                _items[itemType.Key] = new HashSet<(string, string, CopyToOutputDirectoryType)>(items, UpToDateCheckItemComparer.Instance);
+                if (!_itemTypes.Contains(itemType))
+                    continue;
+                if (!itemTypesChanged && !changes.Difference.AnyChanges)
+                    continue;
+
+                _items[itemType] = new HashSet<(string Path, string Link, CopyToOutputDirectoryType CopyType)>(
+                    changes.After.Items.Select(item => (item.Key, GetLink(item.Value), GetCopyType(item.Value))),
+                    UpToDateCheckItemComparer.Instance);
                 _itemsChangedSinceLastCheck = true;
             }
 
@@ -334,13 +337,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 }
             }
 
-            foreach (KeyValuePair<string, HashSet<(string Path, string Link, CopyToOutputDirectoryType CopyType)>> pair in _items)
+            foreach ((string itemType, HashSet<(string Path, string Link, CopyToOutputDirectoryType CopyType)> changes) in _items)
             {
-                if (pair.Value.Count != 0 && !NonCompilationItemTypes.Contains(pair.Key))
+                if (changes.Count != 0 && !NonCompilationItemTypes.Contains(itemType))
                 {
-                    logger.Verbose("Adding {0} inputs:", pair.Key);
+                    logger.Verbose("Adding {0} inputs:", itemType);
 
-                    foreach (string input in pair.Value.Select(item => _configuredProject.UnconfiguredProject.MakeRooted(item.Path)))
+                    foreach (string input in changes.Select(item => _configuredProject.UnconfiguredProject.MakeRooted(item.Path)))
                     {
                         logger.Verbose("    '{0}'", input);
                         yield return input;
@@ -503,10 +506,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
         private bool CheckCopiedOutputFiles(BuildUpToDateCheckLogger logger, IDictionary<string, DateTime> timestampCache)
         {
-            foreach (KeyValuePair<string, string> kvp in _copiedOutputFiles)
+            foreach ((string sourceRelative, string destinationRelative) in _copiedOutputFiles)
             {
-                string source = _configuredProject.UnconfiguredProject.MakeRooted(kvp.Value);
-                string destination = _configuredProject.UnconfiguredProject.MakeRooted(kvp.Key);
+                string source = _configuredProject.UnconfiguredProject.MakeRooted(sourceRelative);
+                string destination = _configuredProject.UnconfiguredProject.MakeRooted(destinationRelative);
 
                 logger.Info("Checking build output file '{0}':", source);
 
