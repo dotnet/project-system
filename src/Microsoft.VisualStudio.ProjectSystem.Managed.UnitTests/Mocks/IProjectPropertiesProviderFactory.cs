@@ -6,7 +6,7 @@ using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
-    internal class IProjectPropertiesProviderFactory
+    internal static class IProjectPropertiesProviderFactory
     {
         public static IProjectPropertiesProvider Create(IProjectProperties props = null, IProjectProperties commonProps = null)
         {
