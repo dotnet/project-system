@@ -363,7 +363,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             {
                 string[] idParts = dependencyId.Split(Delimiter.ForwardSlash, StringSplitOptions.RemoveEmptyEntries);
                 Requires.NotNull(idParts, nameof(idParts));
-                if (idParts.Count() <= 0)
+                if (idParts.Length == 0)
                 {
                     // should never happen
                     throw new ArgumentException(nameof(idParts));
