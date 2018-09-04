@@ -12,7 +12,7 @@ On the CPS side the project tree is composed of instances of the `IProjectTree` 
 
 An `IProjectTree` is immutable. When a part of the tree needs to be updated, we need to replace it and form a new tree.
 
-Components wishing to add items to the project tree we must implement and export the `IProjectTreeProvider` interface. In practice we implement the interface by deriving from the abstract `ProjectTreeProviderBase` class provided by CPS. In general, we receive events/messages from CPS detailing changes to the project, generated an updated `IProjectTree`, and then pass it back to CPS via `ProjectTreeProviderBase.SubmitTreeUpdateAsync`.
+Components wishing to add items to the project tree must implement and export the `IProjectTreeProvider` interface. In practice we implement the interface by deriving from the abstract `ProjectTreeProviderBase` class provided by CPS. In general, we receive events/messages from CPS detailing changes to the project, generate an updated `IProjectTree`, and then pass it back to CPS via `ProjectTreeProviderBase.SubmitTreeUpdateAsync`.
 
 ### The Graph Node Provider View of Dependencies
 
@@ -30,13 +30,13 @@ Much of the code for the Dependencies node is concerned with creating [`IDepende
 
 ## CPS/Project System Interaction
 
-In general, items _directly_ referenced by the project file (e.g., through `Reference`, `ProjectReference`, and `Analyzer` items in the project file) are represented with `IProjectTree` nodes as opposed to `GraphNodes`. This makes it possible for them to the represented in the project's `IVsHierarchy` and, crucially, makes it easier to code the sorts of interactions users expect for these items. For example, a user should be able to right-click on an assembly reference and remove it, or modify the properties of an assembly refrence.
+In general, items _directly_ referenced by the project file (e.g., through `Reference`, `ProjectReference`, and `Analyzer` items in the project file) are represented with `IProjectTree` nodes as opposed to `GraphNodes`. This makes it possible for them to be represented in the project's `IVsHierarchy` and, crucially, makes it easier to code the sorts of interactions users expect for these items. For example, a user should be able to right-click on an assembly reference and remove it, or modify the properties of an assembly reference.
 
 > Aside: There are exceptions to this. In practice analyzers are not directly referenced but rather brought in as part of a NuGet package. We still represent all analyzers as `IProjectTree` items directly under the "Analyzers" node. This makes it much easier for the C#/VB language service to add nodes for each diagnostic underneath the analyzer's node, and it makes it easy for the user to find so they can check the severity of the diagnostic and potentially change it using the context menu.
 
 ### DependenciesProjectTreeProvider
 
-The primary connection point between CPS and the Dependencies node is the [`DependenciesProjectTreeProvider`][1], implementing the the `IProjectTreeProvider` interface. It is directly responsible for the following:
+The primary connection point between CPS and the Dependencies node is the [`DependenciesProjectTreeProvider`][1], implementing the `IProjectTreeProvider` interface. It is directly responsible for the following:
 
 1. Creating the `IProjectTree` for the "Dependencies" node itself (children are handled elsewhere).
 2. Handling explicit commands to copy or remove a node underneath the "Dependencies" node.
