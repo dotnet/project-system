@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
     internal partial class SDKVersionTelemetryServiceComponent
     {
-        protected class SDKVersionTelemetryServiceInstance : AbstractMultiLifetimeInstance
+        protected class SDKVersionTelemetryServiceInstance : OnceInitializedOnceDisposedAsync, IMultiLifetimeInstance
         {
             private const string TelemetryEventName = "SDKVersion";
             private const string ProjectProperty = "Project";
@@ -77,6 +77,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             {
                 Guid projectGuid = await _projectGuidSevice.GetProjectGuidAsync().ConfigureAwait(false);
                 return projectGuid == Guid.Empty ? null : projectGuid.ToString();
+            }
+
+            public Task InitializeAsync()
+            {
+                return InitializeAsync(CancellationToken.None);
             }
         }
     }
