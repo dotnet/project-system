@@ -151,14 +151,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 inputs.Difference.AnyChanges)
             {
                 _customInputs.Clear();
-                _customInputs.AddRange(inputs.After.Items.Select(item => _configuredProject.UnconfiguredProject.MakeRooted(item.Key)));
+                _customInputs.AddRange(inputs.After.Items.Keys);
             }
 
             if (e.ProjectChanges.TryGetValue(UpToDateCheckOutput.SchemaName, out IProjectChangeDescription outputs) &&
                 outputs.Difference.AnyChanges)
             {
                 _customOutputs.Clear();
-                _customOutputs.AddRange(outputs.After.Items.Select(item => _configuredProject.UnconfiguredProject.MakeRooted(item.Key)));
+                _customOutputs.AddRange(outputs.After.Items.Keys);
             }
 
             if (e.ProjectChanges.TryGetValue(UpToDateCheckBuilt.SchemaName, out IProjectChangeDescription built) &&
@@ -225,8 +225,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             foreach (KeyValuePair<string, IProjectChangeDescription> itemType in e.ProjectChanges.Where(changes => (itemTypesChanged || changes.Value.Difference.AnyChanges) && _itemTypes.Contains(changes.Key)))
             {
                 IEnumerable<(string, string, CopyToOutputDirectoryType)> items = itemType.Value.After.Items
-                    .Select(item => (_configuredProject.UnconfiguredProject.MakeRooted(item.Key), GetLink(item.Value), GetCopyType(item.Value)))
-                    .Where(tuple => tuple.Item1 != null);
+                    .Select(item => (item.Key, GetLink(item.Value), GetCopyType(item.Value)));
                 _items[itemType.Key] = new HashSet<(string, string, CopyToOutputDirectoryType)>(items, UpToDateCheckItemComparer.Instance);
                 _itemsChangedSinceLastCheck = true;
             }
@@ -235,7 +234,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 outputs.Difference.AnyChanges)
             {
                 _customOutputs.Clear();
-                _customOutputs.AddRange(outputs.After.Items.Select(item => _configuredProject.UnconfiguredProject.MakeRooted(item.Key)));
+                _customOutputs.AddRange(outputs.After.Items.Keys);
             }
         }
 
@@ -265,48 +264,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             }
 
             return time;
-        }
-
-        private static void AddInput(BuildUpToDateCheckLogger logger, HashSet<string> inputs, string path)
-        {
-            logger.Verbose("    '{0}'", path);
-            inputs.Add(path);
-        }
-
-        private static void AddInputs(BuildUpToDateCheckLogger logger, HashSet<string> inputs, IEnumerable<string> paths, string description)
-        {
-            bool first = true;
-
-            foreach (string path in paths)
-            {
-                if (first)
-                {
-                    logger.Verbose("Adding {0} inputs:", description);
-                    first = false;
-                }
-                AddInput(logger, inputs, path);
-            }
-        }
-
-        private static void AddOutput(BuildUpToDateCheckLogger logger, HashSet<string> outputs, string path)
-        {
-            logger.Verbose("    '{0}'", path);
-            outputs.Add(path);
-        }
-
-        private static void AddOutputs(BuildUpToDateCheckLogger logger, HashSet<string> outputs, IEnumerable<string> paths, string description)
-        {
-            bool first = true;
-
-            foreach (string path in paths)
-            {
-                if (first)
-                {
-                    logger.Verbose("Adding {0} outputs:", description);
-                    first = false;
-                }
-                AddOutput(logger, outputs, path);
-            }
         }
 
         private bool Fail(BuildUpToDateCheckLogger logger, string message, string reason)
@@ -346,10 +303,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 return Fail(logger, "The 'DisableFastUpToDateCheckProperty' property is true, not up to date.", "Disabled");
             }
 
-            (string Path, string Link, CopyToOutputDirectoryType CopyType) copyAlwaysItem = _items.SelectMany(kvp => kvp.Value).FirstOrDefault(item => item.CopyType == CopyToOutputDirectoryType.CopyAlways);
-            if (copyAlwaysItem.Path != null)
+            string copyAlwaysItemPath = _items.SelectMany(kvp => kvp.Value).FirstOrDefault(item => item.CopyType == CopyToOutputDirectoryType.CopyAlways).Path;
+
+            if (copyAlwaysItemPath != null)
             {
-                return Fail(logger, $"Item '{copyAlwaysItem.Path}' has CopyToOutputDirectory set to 'Always', not up to date.", "CopyAlwaysItemExists");
+                return Fail(logger, $"Item '{_configuredProject.UnconfiguredProject.MakeRooted(copyAlwaysItemPath)}' has CopyToOutputDirectory set to 'Always', not up to date.", "CopyAlwaysItemExists");
             }
 
             return true;
@@ -357,46 +315,102 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
         private IEnumerable<string> CollectInputs(BuildUpToDateCheckLogger logger)
         {
-            var inputs = new HashSet<string>(StringComparers.Paths);
-
             logger.Verbose("Adding project file inputs:");
-            AddInput(logger, inputs, _msBuildProjectFullPath);
+            logger.Verbose("    '{0}'", _msBuildProjectFullPath);
+            yield return _msBuildProjectFullPath;
 
-            AddInputs(logger, inputs, _imports, "import");
+            if (_imports.Count != 0)
+            {
+                logger.Verbose("Adding import inputs:");
+                foreach (string input in _imports)
+                {
+                    logger.Verbose("    '{0}'", input);
+                    yield return input;
+                }
+            }
 
             foreach (KeyValuePair<string, HashSet<(string Path, string Link, CopyToOutputDirectoryType CopyType)>> pair in _items.Where(kvp => !NonCompilationItemTypes.Contains(kvp.Key)))
             {
-                AddInputs(logger, inputs, pair.Value.Select(item => item.Path), pair.Key);
+                if (pair.Value.Count != 0)
+                {
+                    logger.Verbose("Adding {0} inputs:", pair.Key);
+
+                    foreach (string input in pair.Value.Select(item => _configuredProject.UnconfiguredProject.MakeRooted(item.Path)))
+                    {
+                        logger.Verbose("    '{0}'", input);
+                        yield return input;
+                    }
+                }
             }
 
-            AddInputs(logger, inputs, _analyzerReferences, ResolvedAnalyzerReference.SchemaName);
-            AddInputs(logger, inputs, _compilationReferences, ResolvedCompilationReference.SchemaName);
-            AddInputs(logger, inputs, _customInputs, UpToDateCheckInput.SchemaName);
+            if (_analyzerReferences.Count != 0)
+            {
+                logger.Verbose("Adding " + ResolvedAnalyzerReference.SchemaName + " inputs:");
+                foreach (string input in _analyzerReferences)
+                {
+                    logger.Verbose("    '{0}'", input);
+                    yield return input;
+                }
+            }
 
-            return inputs;
+            if (_compilationReferences.Count != 0)
+            {
+                logger.Verbose("Adding " + ResolvedCompilationReference.SchemaName + " inputs:");
+                foreach (string input in _compilationReferences)
+                {
+                    logger.Verbose("    '{0}'", input);
+                    yield return input;
+                }
+            }
+
+            if (_customInputs.Count != 0)
+            {
+                logger.Verbose("Adding " + UpToDateCheckInput.SchemaName + " inputs:");
+                foreach (string input in _customInputs.Select(_configuredProject.UnconfiguredProject.MakeRooted))
+                {
+                    logger.Verbose("    '{0}'", input);
+                    yield return input;
+                }
+            }
         }
 
         private IEnumerable<string> CollectOutputs(BuildUpToDateCheckLogger logger)
         {
-            var outputs = new HashSet<string>(StringComparers.Paths);
+            if (_customOutputs.Count != 0)
+            {
+                logger.Verbose("Adding " + UpToDateCheckOutput.SchemaName + " outputs:");
 
-            AddOutputs(logger, outputs, _customOutputs, UpToDateCheckOutput.SchemaName);
-            AddOutputs(logger, outputs, _builtOutputs.Select(_configuredProject.UnconfiguredProject.MakeRooted), UpToDateCheckBuilt.SchemaName);
+                foreach (string output in _customOutputs.Select(_configuredProject.UnconfiguredProject.MakeRooted))
+                {
+                    logger.Verbose("    '{0}'", output);
+                    yield return output;
+                }
+            }
 
-            return outputs;
+            if (_builtOutputs.Count != 0)
+            {
+                logger.Verbose("Adding " + UpToDateCheckBuilt.SchemaName + " outputs:");
+
+                foreach (string output in _builtOutputs.Select(_configuredProject.UnconfiguredProject.MakeRooted))
+                {
+                    logger.Verbose("    '{0}'", output);
+                    yield return output;
+                }
+            }
         }
 
-        private static (DateTime? time, string path) GetLatestInput(IEnumerable<string> inputs, IDictionary<string, DateTime> timestampCache, bool ignoreMissing = false)
+        private static (DateTime time, string path) GetLatestInput(IEnumerable<string> inputs, IDictionary<string, DateTime> timestampCache)
         {
-            DateTime? latest = DateTime.MinValue;
+            DateTime latest = DateTime.MinValue;
             string latestPath = null;
 
             foreach (string input in inputs)
             {
                 DateTime? time = GetTimestamp(input, timestampCache);
-                if (latest != null && (time == null && !ignoreMissing || time > latest))
+
+                if (time > latest)
                 {
-                    latest = time;
+                    latest = time.Value;
                     latestPath = input;
                 }
             }
@@ -412,7 +426,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             foreach (string output in outputs)
             {
                 DateTime? time = GetTimestamp(output, timestampCache);
-                if (earliest != null && (time == null || time < earliest))
+
+                if (time == null)
+                {
+                    return (null, null);
+                }
+
+                if (time < earliest)
                 {
                     earliest = time;
                     earliestPath = output;
@@ -422,10 +442,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             return (earliest, earliestPath);
         }
 
-        // Reference assembly copy markers are strange. The property is always going to be present on 
-        // references to SDK-based projects, regardless of whether or not those referenced projects 
-        // will actually produce a marker. And an item always will be present in an SDK-based project, 
-        // regardless of whether or not the project produces a marker. So, basically, we only check 
+        // Reference assembly copy markers are strange. The property is always going to be present on
+        // references to SDK-based projects, regardless of whether or not those referenced projects
+        // will actually produce a marker. And an item always will be present in an SDK-based project,
+        // regardless of whether or not the project produces a marker. So, basically, we only check
         // here if the project actually produced a marker and we only check it against references that
         // actually produced a marker.
         private bool CheckMarkers(BuildUpToDateCheckLogger logger, IDictionary<string, DateTime> timestampCache)
@@ -445,12 +465,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             logger.Verbose("Adding output reference copy marker:");
             logger.Verbose("    '{0}'", _markerFile);
 
-            (DateTime? inputMarkerTime, string inputMarkerPath) = GetLatestInput(_copyReferenceInputs, timestampCache, true);
+            (DateTime inputMarkerTime, string inputMarkerPath) = GetLatestInput(_copyReferenceInputs, timestampCache);
             DateTime? outputMarkerTime = GetTimestamp(_markerFile, timestampCache);
 
             if (inputMarkerPath != null)
             {
-                logger.Info("Latest write timestamp on input marker is {0} on '{1}'.", inputMarkerTime.Value, inputMarkerPath);
+                logger.Info("Latest write timestamp on input marker is {0} on '{1}'.", inputMarkerTime, inputMarkerPath);
             }
             else
             {
@@ -525,7 +545,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             foreach ((string Path, string Link, CopyToOutputDirectoryType CopyType) item in items)
             {
-                string filename = string.IsNullOrEmpty(item.Link) ? item.Path : item.Link;
+                string path = _configuredProject.UnconfiguredProject.MakeRooted(item.Path);
+                string filename = string.IsNullOrEmpty(item.Link) ? path : item.Link;
 
                 if (string.IsNullOrEmpty(filename))
                 {
@@ -534,17 +555,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 filename = _configuredProject.UnconfiguredProject.MakeRelative(filename);
 
-                logger.Info("Checking PreserveNewest file '{0}':", item.Path);
+                logger.Info("Checking PreserveNewest file '{0}':", path);
 
-                DateTime? itemTime = GetTimestamp(item.Path, timestampCache);
+                DateTime? itemTime = GetTimestamp(path, timestampCache);
 
                 if (itemTime != null)
                 {
-                    logger.Info("    Source {0}: '{1}'.", itemTime, item.Path);
+                    logger.Info("    Source {0}: '{1}'.", itemTime, path);
                 }
                 else
                 {
-                    logger.Info("Source '{0}' does not exist, not up to date.", item.Path);
+                    logger.Info("Source '{0}' does not exist, not up to date.", path);
                     return false;
                 }
 
@@ -585,36 +606,45 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 return false;
             }
 
-            var timestampCache = new Dictionary<string, DateTime>(StringComparer.OrdinalIgnoreCase);
-            (DateTime? inputTime, string inputPath) = GetLatestInput(CollectInputs(logger), timestampCache);
+            // Short-lived cache of timestamp by path
+            var timestampCache = new Dictionary<string, DateTime>(StringComparers.Paths);
+
+            // We assume there are fewer outputs than inputs, so perform a full scan of outputs to find the earliest
             (DateTime? outputTime, string outputPath) = GetEarliestOutput(CollectOutputs(logger), timestampCache);
 
-            if (inputTime != null)
-            {
-                logger.Info("Latest write timestamp on input is {0} on '{1}'.", inputTime.Value, inputPath);
-            }
-            else
-            {
-                logger.Info("Input '{0}' does not exist, not up to date.", inputPath);
-            }
+            bool outputsUpToDate = true;
 
             if (outputTime != null)
             {
-                logger.Info("Earliest write timestamp on output is {0} on '{1}'.", outputTime.Value, outputPath);
+                // Search for an input that's either missing or newer than the earliest output.
+                // As soon as we find one, we can stop the scan.
+                foreach (string input in CollectInputs(logger))
+                {
+                    DateTime? time = GetTimestamp(input, timestampCache);
+
+                    if (time == null)
+                    {
+                        logger.Info("Input '{0}' does not exist, not up to date.", input);
+                        outputsUpToDate = false;
+                        break;
+                    }
+
+                    if (time > outputTime)
+                    {
+                        logger.Info("Input '{0}' is newer ({1}) than earliest output '{2}' ({3}), not up to date.", input, time.Value, outputPath, outputTime.Value);
+                        outputsUpToDate = false;
+                        break;
+                    }
+                }
             }
             else
             {
                 logger.Info("Output '{0}' does not exist, not up to date.", outputPath);
-            }
-
-            if (outputTime <= inputTime)
-            {
-                logger.Info("Output is newer than input, not up to date.");
+                outputsUpToDate = false;
             }
 
             // We are up to date if the earliest output write happened after the latest input write
             bool markersUpToDate = CheckMarkers(logger, timestampCache);
-            bool outputsUpToDate = inputTime != null && outputTime != null && outputTime > inputTime;
             bool copyToOutputDirectoryUpToDate = CheckCopyToOutputDirectoryFiles(logger, timestampCache);
             bool copiedOutputUpToDate = CheckCopiedOutputFiles(logger, timestampCache);
             bool isUpToDate = outputsUpToDate && markersUpToDate && copyToOutputDirectoryUpToDate && copiedOutputUpToDate;
