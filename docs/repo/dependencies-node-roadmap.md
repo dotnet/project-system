@@ -97,6 +97,12 @@ New `GraphNode`s are added to the graph as a result of operations initiated by t
 4. We find the first [`IDependenciesGraphViewProvider`][25] that supports the given [`IDependency`][4] and ask it to build up the corresponding parts of the graph.
 5. The [`IDependenciesGraphViewProvider`][25] decides what nodes to add to the graph, and calls [`IDependenciesGraphBuilder`][24]`.AddGraphNode` (implemented by [`DependenciesGraphProvider`][22]) to handle the actual mechanics.
 
+### Connecting `GraphNode`s to `IProjectTree` nodes
+
+`GraphNode`s are automatically created for `IProjectTree` nodes by CPS and the core graph logic. For example, we will create an `IProjectTree` for a top-level NuGet package and an associated `GraphNode` will be generated automatically. We will later see this `GraphNode` as an input node in an `IGraphContext` and create and link new `GraphNode`s for its transitive dependencies.
+
+While we don't need to create these top-level `GraphNode`s we do sometimes need to adjust their properties.
+
 ### Tracking changes to the graph
 
 Changes to the dependencies may require that we update the graphs already produced. The [`DependenciesGraphProvider`][22] holds weak references to all the graphs that may need to be updated due to dependency changes, and subscribes to the [`IAggregateDependenciesSnapshotProvider`][10]`.SnapshotChanged` event. When the event fires we pass each of these `IGraphContexts` to each implementation of [`IDependenciesGraphActionHandler`][23]`.HandleChanges` to deal with. Currently, the only one that does anything interesting is the [`TrackChangesGraphActionHandler`][26].
