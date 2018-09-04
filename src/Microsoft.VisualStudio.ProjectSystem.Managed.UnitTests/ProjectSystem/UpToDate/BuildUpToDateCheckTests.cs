@@ -1,0 +1,461 @@
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+
+using Microsoft.VisualStudio.IO;
+using Microsoft.VisualStudio.ProjectSystem.Build;
+using Microsoft.VisualStudio.ProjectSystem.Properties;
+using Microsoft.VisualStudio.Telemetry;
+
+using Moq;
+
+using Xunit;
+
+namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
+{
+    public sealed class BuildUpToDateCheckTests : IDisposable
+    {
+        private const string _projectFullPath = "C:\\Dev\\Solution\\Project\\Project.csproj";
+        private const string _msBuildProjectFullPath = "NewProjectFullPath";
+        private const string _msBuildProjectDirectory = "NewProjectDirectory";
+        private const string _outputPath = "NewOutputPath";
+
+        private readonly IImmutableList<IItemType> _itemTypes = ImmutableList<IItemType>.Empty
+            .Add(new ItemType("None", true))
+            .Add(new ItemType("Content", true))
+            .Add(new ItemType("Compile", true))
+            .Add(new ItemType("Resource", true));
+
+        private readonly List<ITelemetryServiceFactory.TelemetryParameters> _telemetryEvents = new List<ITelemetryServiceFactory.TelemetryParameters>();
+        private readonly BuildUpToDateCheck _buildUpToDateCheck;
+        private readonly IFileSystemMock _fileSystem;
+
+        // Values returned by mocks that may be modified in test cases as needed
+        private int _projectVersion = 1;
+        private bool _isTaskQueueEmpty = true;
+        private bool _isFastUpToDateCheckEnabled = true;
+
+        public BuildUpToDateCheckTests()
+        {
+            // NOTE most of these mocks are only present to prevent NREs in Initialize
+
+            // Enable "Info" log level, as we assert logged messages in tests
+            var projectSystemOptions = new Mock<IProjectSystemOptions>();
+            projectSystemOptions.Setup(o => o.GetFastUpToDateLoggingLevelAsync(It.IsAny<CancellationToken>()))
+                .ReturnsAsync(LogLevel.Info);
+            projectSystemOptions.Setup(o => o.GetIsFastUpToDateCheckEnabledAsync(It.IsAny<CancellationToken>()))
+                .ReturnsAsync(() => _isFastUpToDateCheckEnabled);
+
+            var projectCommonServices = IProjectCommonServicesFactory.CreateWithDefaultThreadingPolicy();
+            var jointRuleSource = new ProjectValueDataSource<IProjectSubscriptionUpdate>(projectCommonServices);
+            var sourceItemsRuleSource = new ProjectValueDataSource<IProjectSubscriptionUpdate>(projectCommonServices);
+
+            var projectSubscriptionService = new Mock<IProjectSubscriptionService>();
+            projectSubscriptionService.SetupGet(o => o.JointRuleSource).Returns(jointRuleSource);
+            projectSubscriptionService.SetupGet(o => o.SourceItemsRuleSource).Returns(sourceItemsRuleSource);
+
+            var configuredProjectServices = new Mock<IConfiguredProjectServices>();
+            configuredProjectServices.SetupGet(p => p.ProjectSubscription)
+                .Returns(projectSubscriptionService.Object);
+
+            var configuredProject = new Mock<ConfiguredProject>();
+            configuredProject.SetupGet(c => c.ProjectVersion).Returns(() => _projectVersion);
+            configuredProject.SetupGet(c => c.Services).Returns(configuredProjectServices.Object);
+            configuredProject.SetupGet(c => c.UnconfiguredProject).Returns(UnconfiguredProjectFactory.Create(filePath: _projectFullPath));
+
+            var projectAsynchronousTasksService = new Mock<IProjectAsynchronousTasksService>();
+            projectAsynchronousTasksService.SetupGet(s => s.UnloadCancellationToken).Returns(CancellationToken.None);
+            projectAsynchronousTasksService.Setup(s => s.IsTaskQueueEmpty(ProjectCriticalOperation.Build)).Returns(() => _isTaskQueueEmpty);
+
+            _fileSystem = new IFileSystemMock();
+            _fileSystem.AddFile(_msBuildProjectFullPath);
+            _fileSystem.AddFolder(_msBuildProjectDirectory);
+            _fileSystem.AddFolder(_outputPath);
+
+            _buildUpToDateCheck = new BuildUpToDateCheck(
+                projectSystemOptions.Object,
+                configuredProject.Object,
+                projectAsynchronousTasksService.Object,
+                IProjectItemSchemaServiceFactory.Create(),
+                ITelemetryServiceFactory.Create(telemetryParameters => _telemetryEvents.Add(telemetryParameters)),
+                _fileSystem);
+
+            _buildUpToDateCheck.Load();
+        }
+
+        public void Dispose() => _buildUpToDateCheck.Dispose();
+
+        private async Task SetupAsync(
+            Dictionary<string, IProjectRuleSnapshotModel> projectSnapshot = null,
+            Dictionary<string, IProjectRuleSnapshotModel> sourceSnapshot = null,
+            bool expectUpToDate = true)
+        {
+            // Run one change event to set things up.
+            BroadcastChange(projectSnapshot, sourceSnapshot);
+
+            // The first check will always return false, so flush it out here.
+            var writer = new AssertWriter { "The list of source items has changed since the last build, not up to date." };
+            Assert.False(await _buildUpToDateCheck.IsUpToDateAsync(BuildAction.Build, writer), "Never up to date on the first check");
+            AssertTelemetryFailureEvent("ItemInfoOutOfDate");
+            writer.Assert();
+
+            if (expectUpToDate)
+            {
+                // Run through once so we know things are considered up to date before running further tests.
+                // Most tests will assert that the project is not up to date, so this provides a good baseline.
+                await AssertUpToDate();
+            }
+        }
+
+        private void BroadcastChange(
+            Dictionary<string, IProjectRuleSnapshotModel> projectSnapshot = null,
+            Dictionary<string, IProjectRuleSnapshotModel> sourceSnapshot = null,
+            bool disableFastUpToDateCheck = false)
+        {
+            projectSnapshot = projectSnapshot ?? new Dictionary<string, IProjectRuleSnapshotModel>();
+
+            if (!projectSnapshot.ContainsKey(ConfigurationGeneral.SchemaName))
+            {
+                projectSnapshot[ConfigurationGeneral.SchemaName] = new IProjectRuleSnapshotModel
+                {
+                    Properties = ImmutableStringDictionary<string>.EmptyOrdinal
+                        .Add("MSBuildProjectFullPath", _msBuildProjectFullPath)
+                        .Add("MSBuildProjectDirectory", _msBuildProjectDirectory)
+                        .Add("OutputPath", _outputPath)
+                        .Add("DisableFastUpToDateCheck", disableFastUpToDateCheck.ToString())
+                };
+            }
+
+            var value = IProjectVersionedValueFactory<
+                Tuple<
+                    IProjectSubscriptionUpdate,
+                    IProjectSubscriptionUpdate,
+                    IProjectItemSchema>>.Create(
+                Tuple.Create(
+                    CreateUpdate(projectSnapshot),
+                    CreateUpdate(sourceSnapshot),
+                    IProjectItemSchemaFactory.Create(_itemTypes)),
+                identity: ProjectDataSources.ConfiguredProjectVersion,
+                version: _projectVersion);
+
+            _buildUpToDateCheck.OnChanged(value);
+
+            return;
+
+            IProjectSubscriptionUpdate CreateUpdate(Dictionary<string, IProjectRuleSnapshotModel> snapshotBySchemaName)
+            {
+                var snapshots = ImmutableDictionary<string, IProjectRuleSnapshot>.Empty;
+                var changes = ImmutableDictionary<string, IProjectChangeDescription>.Empty;
+
+                if (snapshotBySchemaName != null)
+                {
+                    foreach ((string schemaName, IProjectRuleSnapshotModel model) in snapshotBySchemaName)
+                    {
+                        var change = new IProjectChangeDescriptionModel
+                        {
+                            After = model,
+                            Difference = new IProjectChangeDiffModel { AnyChanges = true }
+                        };
+
+                        snapshots = snapshots.Add(schemaName, model.ToActualModel());
+                        changes = changes.Add(schemaName, change.ToActualModel());
+                    }
+                }
+                return IProjectSubscriptionUpdateFactory.Implement(snapshots, changes);
+            }
+        }
+
+        private static IProjectRuleSnapshotModel SimpleItems(params string[] items)
+        {
+            return new IProjectRuleSnapshotModel
+            {
+                Items = items.Aggregate(
+                    ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal,
+                    (current, item) => current.Add(item, ImmutableDictionary<string, string>.Empty))
+            };
+        }
+
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public async Task IsUpToDateCheckEnabledAsync_DelegatesToProjectSystemOptions(bool isEnabled)
+        {
+            _isFastUpToDateCheckEnabled = isEnabled;
+
+            Assert.Equal(
+                isEnabled,
+                await _buildUpToDateCheck.IsUpToDateCheckEnabledAsync(CancellationToken.None));
+        }
+
+        [Theory]
+        [InlineData(BuildAction.Clean)]
+        [InlineData(BuildAction.Compile)]
+        [InlineData(BuildAction.Deploy)]
+        [InlineData(BuildAction.Link)]
+        [InlineData(BuildAction.Package)]
+        [InlineData(BuildAction.Rebuild)]
+        public async Task IsUpToDateAsync_False_NonBuildAction(BuildAction buildAction)
+        {
+            await SetupAsync();
+
+            await AssertNotUpToDateAsync(buildAction: buildAction);
+        }
+
+        [Fact]
+        public async Task IsUpToDateAsync_False_BuildTasksActive()
+        {
+            await SetupAsync();
+
+            _isTaskQueueEmpty = false;
+
+            await AssertNotUpToDateAsync(
+                "Critical build tasks are running, not up to date.",
+                "CriticalTasks");
+        }
+
+        [Fact]
+        public async Task IsUpToDateAsync_False_ProjectVersionIncreased()
+        {
+            await SetupAsync();
+
+            _projectVersion++;
+
+            await AssertNotUpToDateAsync(
+                "Project information is older than current project version, not up to date.",
+                "ProjectInfoOutOfDate");
+        }
+
+        [Fact]
+        public async Task IsUpToDateAsync_True_ProjectVersionDecreased()
+        {
+            await SetupAsync();
+
+            _projectVersion--;
+
+            await AssertUpToDate();
+        }
+
+        [Fact]
+        public async Task IsUpToDateAsync_False_ItemsChanged()
+        {
+            await SetupAsync();
+
+            // Add new items
+            BroadcastChange(sourceSnapshot: new Dictionary<string, IProjectRuleSnapshotModel>
+            {
+                ["Content"] = SimpleItems("ItemPath1", "ItemPath2")
+            });
+
+            await AssertNotUpToDateAsync(
+                "The list of source items has changed since the last build, not up to date.",
+                "ItemInfoOutOfDate");
+        }
+
+        [Fact]
+        public async Task IsUpToDateAsync_False_Disabled()
+        {
+            await SetupAsync();
+
+            BroadcastChange(disableFastUpToDateCheck: true);
+
+            await AssertNotUpToDateAsync(
+                "The 'DisableFastUpToDateCheck' property is true, not up to date.",
+                "Disabled");
+        }
+
+        [Fact]
+        public async Task IsUpToDateAsync_False_CopyAlwaysItemExists()
+        {
+            // TODO add a Content or None item as CopyAlways and verify (these are currently excluded by CollectInputs)
+
+            var sourceSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
+            {
+                ["Content"] = new IProjectRuleSnapshotModel
+                {
+                    Items = ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal
+                        .Add("ItemPath1", ImmutableDictionary<string, string>.Empty
+                            .Add("CopyToOutputDirectory", "Always")) // ALWAYS COPY THIS ITEM
+                        .Add("ItemPath2", ImmutableDictionary<string, string>.Empty)
+                }
+            };
+
+            await SetupAsync(sourceSnapshot: sourceSnapshot, expectUpToDate: false);
+
+            await AssertNotUpToDateAsync(
+                "Item 'C:\\Dev\\Solution\\Project\\ItemPath1' has CopyToOutputDirectory set to 'Always', not up to date.",
+                "CopyAlwaysItemExists");
+        }
+
+        [Fact]
+        public async Task IsUpToDateAsync_False_OutputItemDoesNotExist()
+        {
+            var projectSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
+            {
+                ["UpToDateCheckBuilt"] = SimpleItems("BuiltOutputPath1")
+            };
+
+            await SetupAsync(projectSnapshot: projectSnapshot, expectUpToDate: false);
+
+            await AssertNotUpToDateAsync(
+                new[] { "Output 'C:\\Dev\\Solution\\Project\\BuiltOutputPath1' does not exist, not up to date.", "Project is not up to date." },
+                "Outputs");
+        }
+
+        [Fact]
+        public async Task IsUpToDateAsync_False_InputItemDoesNotExist()
+        {
+            var projectSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
+            {
+                ["UpToDateCheckBuilt"] = SimpleItems("BuiltOutputPath1")
+            };
+
+            var sourceSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
+            {
+                ["Compile"] = SimpleItems("ItemPath1")
+            };
+
+            _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\BuiltOutputPath1");
+
+            await SetupAsync(projectSnapshot, sourceSnapshot, expectUpToDate: false);
+
+            await AssertNotUpToDateAsync(
+                new[]
+                {
+                    "Input 'C:\\Dev\\Solution\\Project\\ItemPath1' does not exist, not up to date.",
+                    "Project is not up to date."
+                },
+                "Outputs");
+        }
+
+        [Fact]
+        public async Task IsUpToDateAsync_False_InputNewerThanEarliestOutput()
+        {
+            var projectSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
+            {
+                ["UpToDateCheckBuilt"] = SimpleItems("BuiltOutputPath1")
+            };
+
+            var sourceSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
+            {
+                ["Compile"] = SimpleItems("ItemPath1")
+            };
+
+            var outputTime = DateTime.Now;
+            var inputTime = outputTime.AddMinutes(1);
+
+            _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\BuiltOutputPath1", outputTime);
+            _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\ItemPath1", inputTime);
+
+            await SetupAsync(projectSnapshot, sourceSnapshot, expectUpToDate: false);
+
+            // TODO test newer inputs of types found in NonCompilationItemTypes (None, Content) with PreserveNewest semantics
+            // TODO test other kinds of input (MSBuildProjectFileFullPath, AnalyzerReferences, CompilationReferences, CustomInputs)
+            // TODO test other kinds of output (CustomOutputs)
+
+            await AssertNotUpToDateAsync(
+                new[]
+                {
+                    $"Input 'C:\\Dev\\Solution\\Project\\ItemPath1' is newer ({inputTime}) than earliest output 'C:\\Dev\\Solution\\Project\\BuiltOutputPath1' ({outputTime}), not up to date.",
+                    "Project is not up to date."
+                },
+                "Outputs");
+        }
+
+        #region Test helpers
+
+        private Task AssertNotUpToDateAsync(string logMessage = null, string telemetryReason = null, BuildAction buildAction = BuildAction.Build)
+        {
+            return AssertNotUpToDateAsync(logMessage == null ? null : new[] { logMessage }, telemetryReason, buildAction);
+        }
+
+        private async Task AssertNotUpToDateAsync(IReadOnlyList<string> logMessages, string telemetryReason = null, BuildAction buildAction = BuildAction.Build)
+        {
+            var writer = new AssertWriter();
+
+            if (logMessages != null)
+            {
+                foreach (var logMessage in logMessages)
+                {
+                    writer.Add(logMessage);
+                }
+            }
+
+            Assert.False(await _buildUpToDateCheck.IsUpToDateAsync(buildAction, writer));
+
+            if (telemetryReason != null)
+                AssertTelemetryFailureEvent(telemetryReason);
+            else
+                Assert.Empty(_telemetryEvents);
+
+            writer.Assert();
+        }
+
+        private async Task AssertUpToDate()
+        {
+            var writer = new AssertWriter { "Project is up to date." };
+            Assert.True(await _buildUpToDateCheck.IsUpToDateAsync(BuildAction.Build, writer));
+            AssertTelemetrySuccessEvent();
+            writer.Assert();
+        }
+
+        private void AssertTelemetryFailureEvent(string reason)
+        {
+            Assert.Single(_telemetryEvents);
+            Assert.Equal(TelemetryEventName.UpToDateCheckFail, _telemetryEvents.Single().EventName);
+            Assert.Single(_telemetryEvents.Single().Properties);
+            Assert.Equal(TelemetryPropertyName.UpToDateCheckFailReason, _telemetryEvents.Single().Properties.Single().propertyName);
+            Assert.Equal(reason, _telemetryEvents.Single().Properties.Single().propertyValue);
+
+            _telemetryEvents.Clear();
+        }
+
+        private void AssertTelemetrySuccessEvent()
+        {
+            Assert.Single(_telemetryEvents);
+            Assert.Equal(TelemetryEventName.UpToDateCheckSuccess, _telemetryEvents.Single().EventName);
+            Assert.Null(_telemetryEvents.Single().Properties);
+
+            _telemetryEvents.Clear();
+        }
+
+        private sealed class AssertWriter : TextWriter, IEnumerable
+        {
+            private readonly Queue<string> _expectedLines;
+
+            public AssertWriter(params string[] expectedLines)
+            {
+                _expectedLines = new Queue<string>(expectedLines);
+            }
+
+            public void Add(string line)
+            {
+                _expectedLines.Enqueue(line);
+            }
+
+            public override Encoding Encoding { get; } = Encoding.UTF8;
+
+            public override void WriteLine(string value)
+            {
+                Xunit.Assert.NotEmpty(_expectedLines);
+                Xunit.Assert.Equal($"FastUpToDate: {_expectedLines.Dequeue()} ({Path.GetFileNameWithoutExtension(_projectFullPath)})", value);
+            }
+
+            public void Assert()
+            {
+                Xunit.Assert.Empty(_expectedLines);
+            }
+
+            IEnumerator IEnumerable.GetEnumerator() => throw new NotSupportedException("Only for collection initialiser syntax");
+        }
+
+        #endregion
+    }
+}
