@@ -7,11 +7,6 @@ using System.Threading.Tasks;
 
 using Microsoft.Build.Framework.XamlTypes;
 
-// CPS calls the IProjectPropertiesProvider under a write lock. If we try to read a property from the 
-// project, we will try to acquire a read lock. Taking a read lock from the same thread as the write lock
-// is fine but ConfigureAwait(false) will put us in a different thread and cause the lock-taking code to blow up.
-#pragma warning disable CA2007 // Do not directly await a Task
-
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
     /// <summary>
@@ -44,10 +39,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         public override async Task<string> GetEvaluatedPropertyValueAsync(string propertyName)
         {
-            string evaluatedProperty = await base.GetEvaluatedPropertyValueAsync(propertyName);
+            string evaluatedProperty = await base.GetEvaluatedPropertyValueAsync(propertyName).ConfigureAwait(true);
             if (_valueProviders.TryGetValue(propertyName, out Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata> valueProvider))
             {
-                evaluatedProperty = await valueProvider.Value.OnGetEvaluatedPropertyValueAsync(evaluatedProperty, DelegatedProperties);
+                evaluatedProperty = await valueProvider.Value.OnGetEvaluatedPropertyValueAsync(evaluatedProperty, DelegatedProperties).ConfigureAwait(true);
             }
 
             return evaluatedProperty;
@@ -55,10 +50,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         public override async Task<string> GetUnevaluatedPropertyValueAsync(string propertyName)
         {
-            string unevaluatedProperty = await base.GetUnevaluatedPropertyValueAsync(propertyName);
+            string unevaluatedProperty = await base.GetUnevaluatedPropertyValueAsync(propertyName).ConfigureAwait(true);
             if (_valueProviders.TryGetValue(propertyName, out Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata> valueProvider))
             {
-                unevaluatedProperty = await valueProvider.Value.OnGetUnevaluatedPropertyValueAsync(unevaluatedProperty, DelegatedProperties);
+                unevaluatedProperty = await valueProvider.Value.OnGetUnevaluatedPropertyValueAsync(unevaluatedProperty, DelegatedProperties).ConfigureAwait(true);
             }
 
             return unevaluatedProperty;
@@ -68,12 +63,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         {
             if (_valueProviders.TryGetValue(propertyName, out Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata> valueProvider))
             {
-                unevaluatedPropertyValue = await valueProvider.Value.OnSetPropertyValueAsync(unevaluatedPropertyValue, DelegatedProperties, dimensionalConditions);
+                unevaluatedPropertyValue = await valueProvider.Value.OnSetPropertyValueAsync(unevaluatedPropertyValue, DelegatedProperties, dimensionalConditions).ConfigureAwait(true);
             }
 
             if (unevaluatedPropertyValue != null)
             {
-                await base.SetPropertyValueAsync(propertyName, unevaluatedPropertyValue, dimensionalConditions);
+                await base.SetPropertyValueAsync(propertyName, unevaluatedPropertyValue, dimensionalConditions).ConfigureAwait(true);
             }
         }
 

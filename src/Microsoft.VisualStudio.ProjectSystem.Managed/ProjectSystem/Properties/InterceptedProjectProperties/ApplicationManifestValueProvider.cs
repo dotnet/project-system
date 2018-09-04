@@ -6,11 +6,6 @@ using System.ComponentModel.Composition;
 using System.IO;
 using System.Threading.Tasks;
 
-// CPS calls the IProjectPropertiesProvider under a write lock. If we try to read a property from the 
-// project, we will try to acquire a read lock. Taking a read lock from the same thread as the write lock
-// is fine but ConfigureAwait(false) will put us in a different thread and cause the lock-taking code to blow up.
-#pragma warning disable CA2007 // Do not directly await a Task
-
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
     [ExportInterceptingPropertyValueProvider("ApplicationManifest", ExportInterceptingPropertyValueProviderFile.ProjectFile)]
@@ -48,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 return evaluatedPropertyValue;
             }
 
-            string noManifestPropertyValue = await defaultProperties.GetEvaluatedPropertyValueAsync(NoManifestMSBuildProperty);
+            string noManifestPropertyValue = await defaultProperties.GetEvaluatedPropertyValueAsync(NoManifestMSBuildProperty).ConfigureAwait(true);
             if (noManifestPropertyValue?.Equals("true", StringComparison.InvariantCultureIgnoreCase) == true)
             {
                 return NoManifestValue;
@@ -68,17 +63,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             // We treat NULL/empty value as reset to default and remove the two properties from the project.
             if (string.IsNullOrEmpty(unevaluatedPropertyValue) || string.Equals(unevaluatedPropertyValue, DefaultManifestValue, StringComparison.InvariantCultureIgnoreCase))
             {
-                await defaultProperties.DeletePropertyAsync(ApplicationManifestMSBuildProperty);
-                await defaultProperties.DeletePropertyAsync(NoManifestMSBuildProperty);
+                await defaultProperties.DeletePropertyAsync(ApplicationManifestMSBuildProperty).ConfigureAwait(true);
+                await defaultProperties.DeletePropertyAsync(NoManifestMSBuildProperty).ConfigureAwait(true);
             }
             else if (string.Equals(unevaluatedPropertyValue, NoManifestValue, StringComparison.InvariantCultureIgnoreCase))
             {
-                await defaultProperties.DeletePropertyAsync(ApplicationManifestMSBuildProperty);
-                await defaultProperties.SetPropertyValueAsync(NoManifestMSBuildProperty, "true");
+                await defaultProperties.DeletePropertyAsync(ApplicationManifestMSBuildProperty).ConfigureAwait(true);
+                await defaultProperties.SetPropertyValueAsync(NoManifestMSBuildProperty, "true").ConfigureAwait(true);
             }
             else
             {
-                await defaultProperties.DeletePropertyAsync(NoManifestMSBuildProperty);
+                await defaultProperties.DeletePropertyAsync(NoManifestMSBuildProperty).ConfigureAwait(true);
                 // If we can make the path relative to the project folder do so. Otherwise just use the given path.
                 if (Path.IsPathRooted(unevaluatedPropertyValue) &&
                     PathHelper.TryMakeRelativeToProjectDirectory(_unconfiguredProject, unevaluatedPropertyValue, out string relativePath))
