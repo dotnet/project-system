@@ -32,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             _unconfiguredProjectTasksService = unconfiguredProjectTasksService;
         }
 
-        protected override AbstractMultiLifetimeInstance CreateInstance()
+        protected override IMultiLifetimeInstance CreateInstance()
             => new SDKVersionTelemetryServiceInstance(
                 _projectVsServices,
                 _projectGuidSevice,
