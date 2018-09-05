@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System;
 using Microsoft.VisualStudio.Imaging.Interop;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
@@ -10,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     /// sets; we can save considerable amounts of memory by given the sets their
     /// own type and sharing instances.
     /// </summary>
-    internal sealed class DependencyIconSet
+    internal sealed class DependencyIconSet : IEquatable<DependencyIconSet>
     {
         public DependencyIconSet(ImageMoniker icon, ImageMoniker expandedIcon, ImageMoniker unresolvedIcon, ImageMoniker unresolvedExpandedIcon)
         {
@@ -43,6 +44,37 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             }
 
             return new DependencyIconSet(Icon, newExpandedIcon, UnresolvedIcon, UnresolvedExpandedIcon);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as DependencyIconSet);
+        }
+
+        public bool Equals(DependencyIconSet other)
+        {
+            return other != null
+                && Icon.Id == other.Icon.Id
+                && ExpandedIcon.Id == other.ExpandedIcon.Id
+                && UnresolvedIcon.Id == other.UnresolvedIcon.Id
+                && UnresolvedExpandedIcon.Id == other.UnresolvedExpandedIcon.Id
+                && Icon.Guid == other.Icon.Guid
+                && ExpandedIcon.Guid == other.ExpandedIcon.Guid
+                && UnresolvedIcon.Guid == other.UnresolvedIcon.Guid
+                && UnresolvedExpandedIcon.Guid == other.UnresolvedExpandedIcon.Guid;
+        }
+
+        public override int GetHashCode()
+        {
+            var hashCode = Icon.Id.GetHashCode();
+            hashCode = hashCode * -1521134295 + Icon.Guid.GetHashCode();
+            hashCode = hashCode * -1521134295 + ExpandedIcon.Id.GetHashCode();
+            hashCode = hashCode * -1521134295 + ExpandedIcon.Guid.GetHashCode();
+            hashCode = hashCode * -1521134295 + UnresolvedIcon.Id.GetHashCode();
+            hashCode = hashCode * -1521134295 + UnresolvedIcon.Guid.GetHashCode();
+            hashCode = hashCode * -1521134295 + UnresolvedExpandedIcon.Id.GetHashCode();
+            hashCode = hashCode * -1521134295 + UnresolvedExpandedIcon.Guid.GetHashCode();
+            return hashCode;
         }
     }
 }
