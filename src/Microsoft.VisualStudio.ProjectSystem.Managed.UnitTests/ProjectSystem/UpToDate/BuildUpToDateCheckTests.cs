@@ -111,7 +111,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             {
                 // Run through once so we know things are considered up to date before running further tests.
                 // Most tests will assert that the project is not up to date, so this provides a good baseline.
-                await AssertUpToDate();
+                await AssertUpToDateAsync();
             }
         }
 
@@ -240,7 +240,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             _projectVersion--;
 
-            await AssertUpToDate();
+            await AssertUpToDateAsync();
         }
 
         [Fact]
@@ -390,7 +390,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             writer.Assert();
         }
 
-        private async Task AssertUpToDate()
+        private async Task AssertUpToDateAsync()
         {
             var writer = new AssertWriter { "Project is up to date." };
             Assert.True(await _buildUpToDateCheck.IsUpToDateAsync(BuildAction.Build, writer));
