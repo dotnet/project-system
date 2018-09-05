@@ -476,7 +476,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             logger.Verbose("    '{0}'", markerFile);
 
             (DateTime inputMarkerTime, string inputMarkerPath) = GetLatestInput(_copyReferenceInputs, timestampCache);
-            DateTime? outputMarkerTime = GetTimestamp(markerFile, timestampCache);
 
             if (inputMarkerPath != null)
             {
@@ -485,7 +484,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             else
             {
                 logger.Info("No input markers exist, skipping marker check.");
+                return true;
             }
+
+            DateTime? outputMarkerTime = GetTimestamp(markerFile, timestampCache);
 
             if (outputMarkerTime != null)
             {
@@ -494,14 +496,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             else
             {
                 logger.Info("Output marker '{0}' does not exist, skipping marker check.", markerFile);
+                return true;
             }
 
             if (outputMarkerTime <= inputMarkerTime)
             {
-                logger.Info("Input marker is newer than output marker, not up to date.");
+                return Fail(logger, "Marker", "Input marker is newer than output marker, not up to date.");
             }
 
-            return inputMarkerPath == null || outputMarkerTime == null || outputMarkerTime > inputMarkerTime;
+            return true;
         }
 
         private bool CheckCopiedOutputFiles(BuildUpToDateCheckLogger logger, IDictionary<string, DateTime> timestampCache)
@@ -648,7 +651,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             if (!CheckMarkers(logger, timestampCache))
             {
-                _telemetryService.PostProperty(TelemetryEventName.UpToDateCheckFail, TelemetryPropertyName.UpToDateCheckFailReason, "Marker");
                 return false;
             }
 
