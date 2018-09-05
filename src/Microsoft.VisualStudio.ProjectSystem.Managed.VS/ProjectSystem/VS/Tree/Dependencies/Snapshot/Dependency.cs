@@ -204,6 +204,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         public ImageMoniker UnresolvedIcon => _iconSet.UnresolvedIcon;
         public ImageMoniker UnresolvedExpandedIcon => _iconSet.UnresolvedExpandedIcon;
 
+        public DependencyIconSet IconSet => _iconSet;
+
         public int Priority { get; }
         public ProjectTreeFlags Flags { get; set; }
 
@@ -223,8 +225,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             ProjectTreeFlags? flags = null,
             string schemaName = null,
             IImmutableList<string> dependencyIDs = null,
-            ImageMoniker icon = default,
-            ImageMoniker expandedIcon = default,
+            DependencyIconSet iconSet = null,
             bool? isImplicit = null)
         {
             var clone = new Dependency(this, _modelId);
@@ -254,14 +255,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 clone.DependencyIDs = dependencyIDs;
             }
 
-            if (icon.Id != 0 && icon.Guid != Guid.Empty)
+            if (iconSet != null && !_iconSet.Equals(iconSet))
             {
-                _iconSet = _iconSet.WithIcon(icon);
-            }
-
-            if (expandedIcon.Id != 0 && expandedIcon.Guid != Guid.Empty)
-            {
-                _iconSet = _iconSet.WithExpandedIcon(expandedIcon);
+                _iconSet = iconSet;
             }
 
             if (isImplicit != null)

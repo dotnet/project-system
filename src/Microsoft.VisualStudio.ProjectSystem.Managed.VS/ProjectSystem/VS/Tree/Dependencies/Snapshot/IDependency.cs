@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Immutable;
 
-using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
@@ -30,6 +29,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         /// </summary>
         string Alias { get; }
 
+        DependencyIconSet IconSet { get; }
+
         /// <summary>
         /// IDependency is immutable and sometimes tree view provider or snapshot filters need 
         /// to change some properties of a given dependency. This method creates a new instance 
@@ -41,8 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             ProjectTreeFlags? flags = null,
             string schemaName = null,
             IImmutableList<string> dependencyIDs = null,
-            ImageMoniker icon = default,
-            ImageMoniker expandedIcon = default,
+            DependencyIconSet iconSet = null,
             bool? isImplicit = null);
     }
 }

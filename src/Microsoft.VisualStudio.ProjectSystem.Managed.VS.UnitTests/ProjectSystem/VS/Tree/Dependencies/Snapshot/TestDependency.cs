@@ -41,6 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         public string Id { get; set; }
         public string Alias { get; set; }
         public ITargetFramework TargetFramework { get; set; }
+        public DependencyIconSet IconSet { get; set; }
 
         public IDependency SetProperties(
             string caption = null,
@@ -48,8 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             ProjectTreeFlags? flags = null,
             string schemaName = null,
             IImmutableList<string> dependencyIDs = null,
-            ImageMoniker icon = default,
-            ImageMoniker expandedIcon = default,
+            DependencyIconSet iconSet = null,
             bool? isImplicit = null)
         {
             return this;
