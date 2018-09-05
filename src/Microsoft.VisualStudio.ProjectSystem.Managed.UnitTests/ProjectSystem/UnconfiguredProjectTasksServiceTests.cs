@@ -98,6 +98,20 @@ namespace Microsoft.VisualStudio.ProjectSystem
         }
 
         [Fact]
+        public void UnloadCancellationToken_WhenUnderlyingUnloadCancellationTokenCancelled_IsCancelled()
+        {
+            var source = new CancellationTokenSource();
+            var tasksService = IProjectAsynchronousTasksServiceFactory.ImplementUnloadCancellationToken(source.Token);
+            var service = CreateInstance(tasksService);
+
+            Assert.False(tasksService.UnloadCancellationToken.IsCancellationRequested);
+
+            source.Cancel();
+
+            Assert.True(tasksService.UnloadCancellationToken.IsCancellationRequested);
+        }
+
+        [Fact]
         public void OnProjectFactoryCompleted_StartsLoadedInHostListening()
         {
             int callCount = 0;
