@@ -29,8 +29,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
         {
             using (ProjectLockReleaser access = await _projectLockService.ReadLockAsync())
             {
-                Microsoft.Build.Construction.ProjectRootElement projectXml = await access.GetProjectXmlAsync(_unconfiguredProject.FullPath).ConfigureAwait(true);
-                return await _helper.GetPropertyAsync(projectXml, defaultProperties).ConfigureAwait(true);
+                Microsoft.Build.Construction.ProjectRootElement projectXml = await access.GetProjectXmlAsync(_unconfiguredProject.FullPath);
+                return await _helper.GetPropertyAsync(projectXml, defaultProperties);
             }
         }
 
@@ -41,8 +41,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
         {
             using (ProjectWriteLockReleaser access = await _projectLockService.WriteLockAsync())
             {
-                Microsoft.Build.Construction.ProjectRootElement projectXml = await access.GetProjectXmlAsync(_unconfiguredProject.FullPath).ConfigureAwait(true);
-                await _helper.SetPropertyAsync(unevaluatedPropertyValue, defaultProperties, projectXml).ConfigureAwait(true);
+                Microsoft.Build.Construction.ProjectRootElement projectXml = await access.GetProjectXmlAsync(_unconfiguredProject.FullPath);
+                await _helper.SetPropertyAsync(unevaluatedPropertyValue, defaultProperties, projectXml);
             }
 
             return null;

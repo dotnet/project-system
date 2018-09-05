@@ -21,8 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         {
             Requires.NotNull(property, nameof(property));
 
-            string value = (string)await property.GetValueAsync()
-                                                 .ConfigureAwait(true);
+            string value = (string)await property.GetValueAsync();
 
             if (Guid.TryParse(value, out Guid result))
             {

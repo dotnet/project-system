@@ -37,7 +37,7 @@ Root (flags: {ProjectRoot})
 
             var nodes = ImmutableHashSet.Create(tree.Children[0]);
 
-            var result = await command.GetCommandStatusAsync(nodes, 1, true, "commandText", CommandStatus.Enabled).ConfigureAwait(true);
+            var result = await command.GetCommandStatusAsync(nodes, 1, true, "commandText", CommandStatus.Enabled);
 
             Assert.False(result.Handled);
         }
@@ -54,7 +54,7 @@ Root (flags: {ProjectRoot})
 
             var nodes = ImmutableHashSet.Create(tree.Children[0]);
 
-            var result = await command.TryHandleCommandAsync(nodes, 1, true, 0, IntPtr.Zero, IntPtr.Zero).ConfigureAwait(true);
+            var result = await command.TryHandleCommandAsync(nodes, 1, true, 0, IntPtr.Zero, IntPtr.Zero);
 
             Assert.False(result);
         }
@@ -71,7 +71,7 @@ Root (flags: {ProjectRoot})
 
             var nodes = ImmutableHashSet.Create(tree, tree.Children[0]);
 
-            var result = await command.GetCommandStatusAsync(nodes, GetCommandId(), true, "commandText", (CommandStatus)0).ConfigureAwait(true);
+            var result = await command.GetCommandStatusAsync(nodes, GetCommandId(), true, "commandText", (CommandStatus)0);
 
             Assert.False(result.Handled);
         }
@@ -89,7 +89,7 @@ Root (flags: {ProjectRoot})
 
             var nodes = ImmutableHashSet.Create(tree, tree.Children[0]);
 
-            var result = await command.TryHandleCommandAsync(nodes, GetCommandId(), true, 0, IntPtr.Zero, IntPtr.Zero).ConfigureAwait(true);
+            var result = await command.TryHandleCommandAsync(nodes, GetCommandId(), true, 0, IntPtr.Zero, IntPtr.Zero);
 
             Assert.False(result);
         }
@@ -106,7 +106,7 @@ Root (flags: {ProjectRoot})
 
             var nodes = ImmutableHashSet.Create(tree.Children[0]);
 
-            var result = await command.GetCommandStatusAsync(nodes, GetCommandId(), true, "commandText", (CommandStatus)0).ConfigureAwait(true);
+            var result = await command.GetCommandStatusAsync(nodes, GetCommandId(), true, "commandText", (CommandStatus)0);
 
             Assert.False(result.Handled);
         }
@@ -123,7 +123,7 @@ Root (flags: {ProjectRoot})
 
             var nodes = ImmutableHashSet.Create(tree.Children[0]);
 
-            var result = await command.TryHandleCommandAsync(nodes, GetCommandId(), true, 0, IntPtr.Zero, IntPtr.Zero).ConfigureAwait(true);
+            var result = await command.TryHandleCommandAsync(nodes, GetCommandId(), true, 0, IntPtr.Zero, IntPtr.Zero);
 
             Assert.False(result);
         }
@@ -140,7 +140,7 @@ Root (flags: {ProjectRoot})
 
             var nodes = ImmutableHashSet.Create(tree.Children[0]);
 
-            var result = await command.GetCommandStatusAsync(nodes, GetCommandId(), true, "commandText", (CommandStatus)0).ConfigureAwait(true);
+            var result = await command.GetCommandStatusAsync(nodes, GetCommandId(), true, "commandText", (CommandStatus)0);
 
             Assert.True(result.Handled);
             Assert.Equal("commandText", result.CommandText);
@@ -159,7 +159,7 @@ Root (flags: {ProjectRoot})
 
             var nodes = ImmutableHashSet.Create(tree.Children[0]);
 
-            var result = await command.TryHandleCommandAsync(nodes, GetCommandId(), true, 0, IntPtr.Zero, IntPtr.Zero).ConfigureAwait(true);
+            var result = await command.TryHandleCommandAsync(nodes, GetCommandId(), true, 0, IntPtr.Zero, IntPtr.Zero);
 
             Assert.True(result);
         }
@@ -179,7 +179,7 @@ Root (flags: {ProjectRoot})
 
             var nodes = ImmutableHashSet.Create(tree.Children[0]);
 
-            await command.TryHandleCommandAsync(nodes, GetCommandId(), true, 0, IntPtr.Zero, IntPtr.Zero).ConfigureAwait(true);
+            await command.TryHandleCommandAsync(nodes, GetCommandId(), true, 0, IntPtr.Zero, IntPtr.Zero);
 
             Assert.Equal(1, callCount);
         }

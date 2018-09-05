@@ -39,10 +39,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         public override async Task<string> GetEvaluatedPropertyValueAsync(string propertyName)
         {
-            string evaluatedProperty = await base.GetEvaluatedPropertyValueAsync(propertyName).ConfigureAwait(true);
+            string evaluatedProperty = await base.GetEvaluatedPropertyValueAsync(propertyName);
             if (_valueProviders.TryGetValue(propertyName, out Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata> valueProvider))
             {
-                evaluatedProperty = await valueProvider.Value.OnGetEvaluatedPropertyValueAsync(evaluatedProperty, DelegatedProperties).ConfigureAwait(true);
+                evaluatedProperty = await valueProvider.Value.OnGetEvaluatedPropertyValueAsync(evaluatedProperty, DelegatedProperties);
             }
 
             return evaluatedProperty;
@@ -50,10 +50,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         public override async Task<string> GetUnevaluatedPropertyValueAsync(string propertyName)
         {
-            string unevaluatedProperty = await base.GetUnevaluatedPropertyValueAsync(propertyName).ConfigureAwait(true);
+            string unevaluatedProperty = await base.GetUnevaluatedPropertyValueAsync(propertyName);
             if (_valueProviders.TryGetValue(propertyName, out Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata> valueProvider))
             {
-                unevaluatedProperty = await valueProvider.Value.OnGetUnevaluatedPropertyValueAsync(unevaluatedProperty, DelegatedProperties).ConfigureAwait(true);
+                unevaluatedProperty = await valueProvider.Value.OnGetUnevaluatedPropertyValueAsync(unevaluatedProperty, DelegatedProperties);
             }
 
             return unevaluatedProperty;
@@ -63,12 +63,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         {
             if (_valueProviders.TryGetValue(propertyName, out Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata> valueProvider))
             {
-                unevaluatedPropertyValue = await valueProvider.Value.OnSetPropertyValueAsync(unevaluatedPropertyValue, DelegatedProperties, dimensionalConditions).ConfigureAwait(true);
+                unevaluatedPropertyValue = await valueProvider.Value.OnSetPropertyValueAsync(unevaluatedPropertyValue, DelegatedProperties, dimensionalConditions);
             }
 
             if (unevaluatedPropertyValue != null)
             {
-                await base.SetPropertyValueAsync(propertyName, unevaluatedPropertyValue, dimensionalConditions).ConfigureAwait(true);
+                await base.SetPropertyValueAsync(propertyName, unevaluatedPropertyValue, dimensionalConditions);
             }
         }
 

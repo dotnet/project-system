@@ -48,8 +48,7 @@ namespace Microsoft.VisualStudio.Packaging
             Guid selectorGuid = typeof(FSharpProjectSelector).GUID;
             _projectSelectorService.RegisterProjectSelector(ref selectorGuid, new FSharpProjectSelector(), out _projectSelectorCookie);
 
-            await base.InitializeAsync(cancellationToken, progress)
-                      .ConfigureAwait(true); // Avoid forced switch to thread-pool
+            await base.InitializeAsync(cancellationToken, progress);
         }
 
         protected override void Dispose(bool disposing)

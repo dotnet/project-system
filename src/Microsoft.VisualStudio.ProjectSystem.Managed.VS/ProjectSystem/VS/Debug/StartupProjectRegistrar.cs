@@ -73,8 +73,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             bool isDebuggable = await _launchProviders.Value.IsDebuggableAsync()
                                                             .ConfigureAwait(false);
 
-            IVsStartupProjectsListService startupProjectsListService = await _startupProjectsListService.GetValueAsync()
-                                                                                                        .ConfigureAwait(true);
+            IVsStartupProjectsListService startupProjectsListService = await _startupProjectsListService.GetValueAsync();
 
             Assumes.Present(startupProjectsListService);
 

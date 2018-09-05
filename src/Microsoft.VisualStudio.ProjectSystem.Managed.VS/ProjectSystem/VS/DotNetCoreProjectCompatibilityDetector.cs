@@ -83,14 +83,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             await _threadHandling.Value.SwitchToUIThread();
 
             // Initialize our cache file
-            string appDataFolder = await _shellUtilitiesHelper.Value.GetLocalAppDataFolderAsync(_serviceProvider).ConfigureAwait(true);
+            string appDataFolder = await _shellUtilitiesHelper.Value.GetLocalAppDataFolderAsync(_serviceProvider);
             if (appDataFolder != null)
             {
                 _versionDataCacheFile = new RemoteCacheFile(Path.Combine(appDataFolder, VersionDataFilename), VersionCompatibilityDownloadFwlink,
                                                             TimeSpan.FromHours(CacheFileValidHours), _fileSystem.Value, _httpClient);
             }
 
-            _ourVSVersion = await _shellUtilitiesHelper.Value.GetVSVersionAsync(_serviceProvider).ConfigureAwait(true);
+            _ourVSVersion = await _shellUtilitiesHelper.Value.GetVSVersionAsync(_serviceProvider);
 
             IVsSolution solution = _serviceProvider.GetService<IVsSolution, SVsSolution>();
             Verify.HResult(solution.AdviseSolutionEvents(this, out _solutionCookie));
@@ -232,7 +232,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                         suppressPrompt = _dialogServices.Value.DontShowAgainMessageBox(caption, msg, VSResources.DontShowAgain, false, VSResources.LearnMore, SupportedLearnMoreFwlink);
                         if (suppressPrompt && settingsManager != null)
                         {
-                            await settingsManager.SetValueAsync(SuppressDotNewCoreWarningKey, suppressPrompt, isMachineLocal: true).ConfigureAwait(true);
+                            await settingsManager.SetValueAsync(SuppressDotNewCoreWarningKey, suppressPrompt, isMachineLocal: true);
                         }
                     }
                 }

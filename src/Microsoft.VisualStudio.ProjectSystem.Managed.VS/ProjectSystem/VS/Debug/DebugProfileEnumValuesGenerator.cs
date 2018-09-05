@@ -67,7 +67,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// </summary>
         public async Task<IEnumValue> TryCreateEnumValueAsync(string userSuppliedValue)
         {
-            return (await _listedValues.GetValueAsync().ConfigureAwait(true))
+            return (await _listedValues.GetValueAsync())
             .FirstOrDefault(v => LaunchProfile.IsSameProfileName(v.Name, userSuppliedValue));
         }
 

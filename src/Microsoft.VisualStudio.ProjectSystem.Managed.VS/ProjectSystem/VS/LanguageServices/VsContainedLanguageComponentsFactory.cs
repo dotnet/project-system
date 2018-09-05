@@ -54,8 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 
         private async Task<(HierarchyId itemid, IVsHierarchy hierarchy, IVsContainedLanguageFactory containedLanguageFactory)> GetContainedLanguageFactoryForFileAsync(string filePath)
         {
-            await _languageServiceHost.InitializeAsync()
-                                      .ConfigureAwait(true);
+            await _languageServiceHost.InitializeAsync();
 
             await _projectVsServices.ThreadingService.SwitchToUIThread();
 
@@ -66,8 +65,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 
             Assumes.False(itemid == HierarchyId.Nil);
 
-            IVsContainedLanguageFactory containedLanguageFactory = await _containedLanguageFactory.GetValueAsync()
-                                                                                                  .ConfigureAwait(true);
+            IVsContainedLanguageFactory containedLanguageFactory = await _containedLanguageFactory.GetValueAsync();
 
             if (containedLanguageFactory == null)
                 return (HierarchyId.Nil, null, null);
@@ -81,12 +79,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 
         private async Task<IVsContainedLanguageFactory> GetContainedLanguageFactoryAsync()
         {
-            Guid languageServiceId = await GetLanguageServiceId().ConfigureAwait(true);
+            Guid languageServiceId = await GetLanguageServiceId();
             if (languageServiceId == Guid.Empty)
                 return null;
 
-            IOleAsyncServiceProvider serviceProvider = await _serviceProvider.GetValueAsync()
-                                                                             .ConfigureAwait(true);
+            IOleAsyncServiceProvider serviceProvider = await _serviceProvider.GetValueAsync();
 
             object service = await serviceProvider.QueryServiceAsync(ref languageServiceId);
 
@@ -100,11 +97,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 
         private async Task<Guid> GetLanguageServiceId()
         {
-            ConfigurationGeneral properties = await _projectVsServices.ActiveConfiguredProjectProperties.GetConfigurationGeneralPropertiesAsync()
-                                                                                                        .ConfigureAwait(true);
+            ConfigurationGeneral properties = await _projectVsServices.ActiveConfiguredProjectProperties.GetConfigurationGeneralPropertiesAsync();
 
-            return await properties.LanguageServiceId.GetValueAsGuidAsync()
-                                                     .ConfigureAwait(true);
+            return await properties.LanguageServiceId.GetValueAsGuidAsync();
         }
     }
 }

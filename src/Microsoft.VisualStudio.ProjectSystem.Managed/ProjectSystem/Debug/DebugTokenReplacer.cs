@@ -111,8 +111,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             if (matches.Count == 0)
                 return rawString;
 
-            ConfiguredProject configuredProject = await ActiveDebugFrameworkService.GetConfiguredProjectForActiveFrameworkAsync()
-                                                                                   .ConfigureAwait(true);
+            ConfiguredProject configuredProject = await ActiveDebugFrameworkService.GetConfiguredProjectForActiveFrameworkAsync();
 
             return await ProjectAccessor.OpenProjectForReadAsync(configuredProject, project =>
             {
@@ -127,7 +126,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
                 return expandedString;
 
-            }).ConfigureAwait(true);
+            });
         }
     }
 }

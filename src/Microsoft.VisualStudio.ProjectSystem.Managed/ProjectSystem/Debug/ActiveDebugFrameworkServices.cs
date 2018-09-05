@@ -51,7 +51,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         public async Task SetActiveDebuggingFrameworkPropertyAsync(string activeFramework)
         {
             ProjectDebugger props = await _commonProjectServices.ActiveConfiguredProjectProperties.GetProjectDebuggerPropertiesAsync().ConfigureAwait(false);
-            await props.ActiveDebugFramework.SetValueAsync(activeFramework).ConfigureAwait(true);
+            await props.ActiveDebugFramework.SetValueAsync(activeFramework);
         }
 
         /// <summary>
@@ -60,7 +60,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         public async Task<string> GetActiveDebuggingFrameworkPropertyAsync()
         {
             ProjectDebugger props = await _commonProjectServices.ActiveConfiguredProjectProperties.GetProjectDebuggerPropertiesAsync().ConfigureAwait(false);
-            string activeValue = await props.ActiveDebugFramework.GetValueAsync().ConfigureAwait(true) as string;
+            string activeValue = await props.ActiveDebugFramework.GetValueAsync() as string;
             return activeValue;
         }
 

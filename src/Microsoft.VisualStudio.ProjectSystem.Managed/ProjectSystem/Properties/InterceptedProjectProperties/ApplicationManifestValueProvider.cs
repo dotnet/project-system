@@ -43,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 return evaluatedPropertyValue;
             }
 
-            string noManifestPropertyValue = await defaultProperties.GetEvaluatedPropertyValueAsync(NoManifestMSBuildProperty).ConfigureAwait(true);
+            string noManifestPropertyValue = await defaultProperties.GetEvaluatedPropertyValueAsync(NoManifestMSBuildProperty);
             if (noManifestPropertyValue?.Equals("true", StringComparison.InvariantCultureIgnoreCase) == true)
             {
                 return NoManifestValue;
@@ -63,17 +63,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             // We treat NULL/empty value as reset to default and remove the two properties from the project.
             if (string.IsNullOrEmpty(unevaluatedPropertyValue) || string.Equals(unevaluatedPropertyValue, DefaultManifestValue, StringComparison.InvariantCultureIgnoreCase))
             {
-                await defaultProperties.DeletePropertyAsync(ApplicationManifestMSBuildProperty).ConfigureAwait(true);
-                await defaultProperties.DeletePropertyAsync(NoManifestMSBuildProperty).ConfigureAwait(true);
+                await defaultProperties.DeletePropertyAsync(ApplicationManifestMSBuildProperty);
+                await defaultProperties.DeletePropertyAsync(NoManifestMSBuildProperty);
             }
             else if (string.Equals(unevaluatedPropertyValue, NoManifestValue, StringComparison.InvariantCultureIgnoreCase))
             {
-                await defaultProperties.DeletePropertyAsync(ApplicationManifestMSBuildProperty).ConfigureAwait(true);
-                await defaultProperties.SetPropertyValueAsync(NoManifestMSBuildProperty, "true").ConfigureAwait(true);
+                await defaultProperties.DeletePropertyAsync(ApplicationManifestMSBuildProperty);
+                await defaultProperties.SetPropertyValueAsync(NoManifestMSBuildProperty, "true");
             }
             else
             {
-                await defaultProperties.DeletePropertyAsync(NoManifestMSBuildProperty).ConfigureAwait(true);
+                await defaultProperties.DeletePropertyAsync(NoManifestMSBuildProperty);
                 // If we can make the path relative to the project folder do so. Otherwise just use the given path.
                 if (Path.IsPathRooted(unevaluatedPropertyValue) &&
                     PathHelper.TryMakeRelativeToProjectDirectory(_unconfiguredProject, unevaluatedPropertyValue, out string relativePath))
