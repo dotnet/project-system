@@ -64,7 +64,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         {
             Requires.NotNull(project, nameof(project));
 
-            string propertyValue = await GetPropertyValue(project).ConfigureAwait(true);
+            string propertyValue = await GetPropertyValue(project);
             if (propertyValue == null || string.IsNullOrEmpty(propertyValue))
             {
                 return ImmutableArray<string>.Empty;

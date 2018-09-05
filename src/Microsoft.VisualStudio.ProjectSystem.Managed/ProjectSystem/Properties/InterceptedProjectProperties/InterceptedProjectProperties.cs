@@ -7,11 +7,6 @@ using System.Threading.Tasks;
 
 using Microsoft.Build.Framework.XamlTypes;
 
-// CPS calls the IProjectPropertiesProvider under a write lock. If we try to read a property from the 
-// project, we will try to acquire a read lock. Taking a read lock from the same thread as the write lock
-// is fine but ConfigureAwait(false) will put us in a different thread and cause the lock-taking code to blow up.
-#pragma warning disable CA2007 // Do not directly await a Task
-
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
     /// <summary>

@@ -35,11 +35,10 @@ namespace Microsoft.VisualStudio.ProjectSystem
             using (ProjectWriteLockReleaser access = await _projectLockService.WriteLockAsync(cancellationToken))
             {
                 // Only async to let the caller call one of the other project accessor methods
-                await action(access.ProjectCollection, cancellationToken).ConfigureAwait(true);
+                await action(access.ProjectCollection, cancellationToken);
 
                 // Avoid blocking thread on Dispose
-                await access.ReleaseAsync()
-                            .ConfigureAwait(true);
+                await access.ReleaseAsync();
             }
         }
 
@@ -50,8 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             using (ProjectLockReleaser access = await _projectLockService.ReadLockAsync(cancellationToken))
             {
-                Project evaluatedProject = await access.GetProjectAsync(project, cancellationToken)
-                                                       .ConfigureAwait(true);
+                Project evaluatedProject = await access.GetProjectAsync(project, cancellationToken);
 
                 // Deliberately not async to reduce the type of
                 // code you can run while holding the lock.
@@ -66,8 +64,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             using (ProjectLockReleaser access = await _projectLockService.ReadLockAsync(cancellationToken))
             {
-                ProjectRootElement rootElement = await access.GetProjectXmlAsync(project.FullPath, cancellationToken)
-                                                             .ConfigureAwait(true);
+                ProjectRootElement rootElement = await access.GetProjectXmlAsync(project.FullPath, cancellationToken);
 
                 // Deliberately not async to reduce the type of
                 // code you can run while holding the lock.
@@ -82,12 +79,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             using (ProjectLockReleaser access = await _projectLockService.UpgradeableReadLockAsync(cancellationToken))
             {
-                ProjectRootElement rootElement = await access.GetProjectXmlAsync(project.FullPath, cancellationToken)
-                                                             .ConfigureAwait(true);
+                ProjectRootElement rootElement = await access.GetProjectXmlAsync(project.FullPath, cancellationToken);
 
                 // Only async to let the caller upgrade to a 
                 // write lock via OpenProjectXmlForWriteAsync
-                await action(rootElement, cancellationToken).ConfigureAwait(true);
+                await action(rootElement, cancellationToken);
             }
         }
 
@@ -98,19 +94,16 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             using (ProjectWriteLockReleaser access = await _projectLockService.WriteLockAsync(cancellationToken))
             {
-                await access.CheckoutAsync(project.FullPath)
-                            .ConfigureAwait(true);
+                await access.CheckoutAsync(project.FullPath);
 
-                ProjectRootElement rootElement = await access.GetProjectXmlAsync(project.FullPath, cancellationToken)
-                                                             .ConfigureAwait(true);
+                ProjectRootElement rootElement = await access.GetProjectXmlAsync(project.FullPath, cancellationToken);
 
                 // Deliberately not async to reduce the type of
                 // code you can run while holding the lock.
                 action(rootElement);
 
                 // Avoid blocking thread on Dispose
-                await access.ReleaseAsync()
-                            .ConfigureAwait(true);
+                await access.ReleaseAsync();
             }
         }
 
@@ -121,19 +114,16 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             using (ProjectWriteLockReleaser access = await _projectLockService.WriteLockAsync(cancellationToken))
             {
-                await access.CheckoutAsync(project.UnconfiguredProject.FullPath)
-                            .ConfigureAwait(true);
+                await access.CheckoutAsync(project.UnconfiguredProject.FullPath);
 
-                Project evaluatedProject = await access.GetProjectAsync(project, cancellationToken)
-                                                       .ConfigureAwait(true);
+                Project evaluatedProject = await access.GetProjectAsync(project, cancellationToken);
 
                 // Deliberately not async to reduce the type of
                 // code you can run while holding the lock.
                 action(evaluatedProject);
 
                 // Avoid blocking thread on Dispose
-                await access.ReleaseAsync()
-                            .ConfigureAwait(true);
+                await access.ReleaseAsync();
             }
         }
     }

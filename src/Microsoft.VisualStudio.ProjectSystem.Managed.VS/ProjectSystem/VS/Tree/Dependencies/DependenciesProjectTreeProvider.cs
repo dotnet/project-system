@@ -206,7 +206,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             using (ProjectWriteLockReleaser access = await ProjectLockService.WriteLockAsync())
             {
-                Project project = await access.GetProjectAsync(ActiveConfiguredProject).ConfigureAwait(true);
+                Project project = await access.GetProjectAsync(ActiveConfiguredProject);
 
                 // Handle the removal of normal reference Item Nodes (this excludes any shared import nodes).
                 foreach (IProjectTree node in referenceItemNodes)
@@ -231,8 +231,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     Report.IfNot(unresolvedReferenceItem != null, "Cannot find reference to remove.");
                     if (unresolvedReferenceItem != null)
                     {
-                        await access.CheckoutAsync(unresolvedReferenceItem.Xml.ContainingProject.FullPath)
-                                    .ConfigureAwait(true);
+                        await access.CheckoutAsync(unresolvedReferenceItem.Xml.ContainingProject.FullPath);
                         project.RemoveItem(unresolvedReferenceItem);
                     }
                 }
@@ -245,8 +244,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 }
 
                 // Handle the removal of shared import nodes.
-                ProjectRootElement projectXml = await access.GetProjectXmlAsync(UnconfiguredProject.FullPath)
-                                             .ConfigureAwait(true);
+                ProjectRootElement projectXml = await access.GetProjectXmlAsync(UnconfiguredProject.FullPath);
                 foreach (IProjectTree sharedImportNode in sharedImportNodes)
                 {
                     string sharedFilePath = UnconfiguredProject.GetRelativePath(sharedImportNode.FilePath);
@@ -274,8 +272,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                      "Cannot find shared project reference to remove.");
                         if (importingElementToRemove != null)
                         {
-                            await access.CheckoutAsync(importingElementToRemove.ContainingProject.FullPath)
-                                        .ConfigureAwait(true);
+                            await access.CheckoutAsync(importingElementToRemove.ContainingProject.FullPath);
                             importingElementToRemove.Parent.RemoveChild(importingElementToRemove);
                         }
                     }

@@ -518,7 +518,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 return ImmutableStringDictionary<object>.EmptyOrdinal.Add("iisSettings", iisSettings);
             });
 
-            await provider.UpdateAndSaveSettingsAsync(testSettings.Object).ConfigureAwait(true);
+            await provider.UpdateAndSaveSettingsAsync(testSettings.Object);
 
             // Check disk contents
             Assert.Equal(JsonStringWithWebSettings, moqFS.ReadAllText(provider.LaunchSettingsFile), ignoreLineEndingDifferences: true);
@@ -555,7 +555,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             testSettings.Setup(m => m.GlobalSettings).Returns(() => ImmutableStringDictionary<object>.EmptyOrdinal);
 
-            await provider.UpdateAndSaveSettingsAsync(testSettings.Object).ConfigureAwait(true);
+            await provider.UpdateAndSaveSettingsAsync(testSettings.Object);
 
             // Verify the activeProfile hasn't changed
             Assert.Equal("bar", provider.CurrentSnapshot.ActiveProfile.Name);
@@ -583,7 +583,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             var newProfile = new LaunchProfile() { Name = "test", CommandName = "Test", DoNotPersist = isInMemory };
 
-            await provider.AddOrUpdateProfileAsync(newProfile, addToFront).ConfigureAwait(true);
+            await provider.AddOrUpdateProfileAsync(newProfile, addToFront);
 
             // Check disk file was written unless not in memory
             Assert.Equal(!isInMemory, moqFS.FileExists(provider.LaunchSettingsFile));
@@ -618,7 +618,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             var newProfile = new LaunchProfile() { Name = "test", CommandName = "Test", DoNotPersist = isInMemory };
 
-            await provider.AddOrUpdateProfileAsync(newProfile, addToFront).ConfigureAwait(true);
+            await provider.AddOrUpdateProfileAsync(newProfile, addToFront);
 
             // Check disk file was written unless in memory profile
             Assert.Equal(!isInMemory || (isInMemory && !existingIsInMemory), moqFS.FileExists(provider.LaunchSettingsFile));
@@ -650,7 +650,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             provider.SetCurrentSnapshot(testSettings.Object);
 
-            await provider.RemoveProfileAsync("test").ConfigureAwait(true);
+            await provider.RemoveProfileAsync("test");
 
             // Check disk file was written
             Assert.Equal(!isInMemory, moqFS.FileExists(provider.LaunchSettingsFile));
@@ -677,7 +677,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             provider.SetCurrentSnapshot(testSettings.Object);
 
-            await provider.RemoveProfileAsync("test").ConfigureAwait(true);
+            await provider.RemoveProfileAsync("test");
 
             // Check disk file was not written
             Assert.False(moqFS.FileExists(provider.LaunchSettingsFile));
@@ -707,7 +707,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             var newSettings = new IISSettingsData() { WindowsAuthentication = true, DoNotPersist = isInMemory };
 
-            await provider.AddOrUpdateGlobalSettingAsync("iisSettings", newSettings).ConfigureAwait(true);
+            await provider.AddOrUpdateGlobalSettingAsync("iisSettings", newSettings);
 
             // Check disk file was written
             Assert.Equal(!isInMemory, moqFS.FileExists(provider.LaunchSettingsFile));
@@ -742,7 +742,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             var newSettings = new IISSettingsData() { WindowsAuthentication = true, DoNotPersist = isInMemory };
 
-            await provider.AddOrUpdateGlobalSettingAsync("iisSettings", newSettings).ConfigureAwait(true);
+            await provider.AddOrUpdateGlobalSettingAsync("iisSettings", newSettings);
 
             // Check disk file was written
             Assert.Equal(!isInMemory || (isInMemory && !existingIsInMemory), moqFS.FileExists(provider.LaunchSettingsFile));
@@ -769,7 +769,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             provider.SetCurrentSnapshot(testSettings.Object);
 
-            await provider.RemoveGlobalSettingAsync("iisSettings").ConfigureAwait(true);
+            await provider.RemoveGlobalSettingAsync("iisSettings");
 
             // Check disk file was not written
             Assert.False(moqFS.FileExists(provider.LaunchSettingsFile));
@@ -797,7 +797,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             provider.SetCurrentSnapshot(testSettings.Object);
 
-            await provider.RemoveGlobalSettingAsync("iisSettings").ConfigureAwait(true);
+            await provider.RemoveGlobalSettingAsync("iisSettings");
 
             // Check disk file was written
             Assert.True(moqFS.FileExists(provider.LaunchSettingsFile));

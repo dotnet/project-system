@@ -57,7 +57,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         private async Task<bool> IsReadyToBuildAsync()
         {
             // Ensure build manager is initialized.
-            await EnsureBuildManagerInitializedAsync().ConfigureAwait(true);
+            await EnsureBuildManagerInitializedAsync();
 
             ErrorHandler.ThrowOnFailure(_buildManager.QueryBuildManagerBusy(out int busy));
             return busy == 0;

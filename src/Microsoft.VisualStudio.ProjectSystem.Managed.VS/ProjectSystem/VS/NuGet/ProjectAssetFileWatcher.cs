@@ -100,8 +100,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             // the immediate path could have changed. In either case, change the file watcher.
             if (!PathHelper.IsSamePath(projectLockFilePath, _fileBeingWatched))
             {
-                await UnregisterFileWatcherIfAnyAsync().ConfigureAwait(true);
-                await RegisterFileWatcherAsync(projectLockFilePath).ConfigureAwait(true);
+                await UnregisterFileWatcherIfAnyAsync();
+                await RegisterFileWatcherAsync(projectLockFilePath);
             }
         }
 
@@ -136,7 +136,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             if (initialized)
             {
                 _treeWatcher.Dispose();
-                await UnregisterFileWatcherIfAnyAsync().ConfigureAwait(true);
+                await UnregisterFileWatcherIfAnyAsync();
             }
         }
 
@@ -215,8 +215,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                     _projectServices.ThreadingService,
                     CreateLinkedCancellationToken());
 
-                IVsFileChangeEx fileChangeService = await _fileChangeService.GetValueAsync()
-                                                                            .ConfigureAwait(true);
+                IVsFileChangeEx fileChangeService = await _fileChangeService.GetValueAsync();
 
                 int hr = fileChangeService.AdviseFileChange(projectLockJsonFilePath, (uint)(_VSFILECHANGEFLAGS.VSFILECHG_Time | _VSFILECHANGEFLAGS.VSFILECHG_Size | _VSFILECHANGEFLAGS.VSFILECHG_Add | _VSFILECHANGEFLAGS.VSFILECHG_Del), this, out _filechangeCookie);
                 ErrorHandler.ThrowOnFailure(hr);
@@ -230,8 +229,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             // Note file change service is free-threaded
             if (_filechangeCookie != VSConstants.VSCOOKIE_NIL)
             {
-                IVsFileChangeEx fileChangeService = await _fileChangeService.GetValueAsync()
-                                                                            .ConfigureAwait(true);
+                IVsFileChangeEx fileChangeService = await _fileChangeService.GetValueAsync();
 
                 // There's nothing for us to do if this fails. So ignore the return value.
                 fileChangeService.UnadviseFileChange(_filechangeCookie);
@@ -282,9 +280,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                                     project.MarkDirty();
                                     configuredProject.NotifyProjectChange();
 
-                                }, cancellationToken).ConfigureAwait(true); // Stay on same thread that took lock
+                                }, cancellationToken); // Stay on same thread that took lock
                             }
-                        }, cancellationToken).ConfigureAwait(true); // Stay on same thread that took lock
+                        }, cancellationToken); // Stay on same thread that took lock
                     });
                 }
                 else

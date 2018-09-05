@@ -46,8 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             // If the service request requires a package load, GetServiceAsync will 
             // happily do that on a background thread.
-            object iunknown = await _serviceProvider.GetServiceAsync(ServiceType)
-                                                    .ConfigureAwait(true);
+            object iunknown = await _serviceProvider.GetServiceAsync(ServiceType);
 
             // We explicitly switch to the UI thread to avoid doing a QueryInterface 
             // via blocking RPC for STA objects when we cast explicitly to the type

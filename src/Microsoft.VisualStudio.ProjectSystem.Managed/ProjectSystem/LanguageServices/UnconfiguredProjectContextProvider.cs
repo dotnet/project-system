@@ -222,7 +222,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 
             // Get the set of active configured projects ignoring target framework.
 #pragma warning disable CS0618 // Type or member is obsolete
-            ImmutableDictionary<string, ConfiguredProject> configuredProjectsMap = await _activeConfiguredProjectsProvider.GetActiveConfiguredProjectsMapAsync().ConfigureAwait(true);
+            ImmutableDictionary<string, ConfiguredProject> configuredProjectsMap = await _activeConfiguredProjectsProvider.GetActiveConfiguredProjectsMapAsync();
 #pragma warning restore CS0618 // Type or member is obsolete
 
             // Get the unconfigured project host object (shared host object).
@@ -241,9 +241,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
                 {
                     // Get the target path for the configured project.
                     ProjectProperties projectProperties = configuredProject.Services.ExportProvider.GetExportedValue<ProjectProperties>();
-                    ConfigurationGeneral configurationGeneralProperties = await projectProperties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(true);
-                    targetPath = (string)await configurationGeneralProperties.TargetPath.GetValueAsync().ConfigureAwait(true);
-                    string targetFrameworkMoniker = (string)await configurationGeneralProperties.TargetFrameworkMoniker.GetValueAsync().ConfigureAwait(true);
+                    ConfigurationGeneral configurationGeneralProperties = await projectProperties.GetConfigurationGeneralPropertiesAsync();
+                    targetPath = (string)await configurationGeneralProperties.TargetPath.GetValueAsync();
+                    string targetFrameworkMoniker = (string)await configurationGeneralProperties.TargetFrameworkMoniker.GetValueAsync();
                     string workspaceProjectContextId = GetWorkspaceContextId(configuredProject);
                     configuredProjectHostObject = _projectHostProvider.GetConfiguredProjectHostObject(_unconfiguredProjectHostObject, workspaceProjectContextId, targetFrameworkMoniker);
 
