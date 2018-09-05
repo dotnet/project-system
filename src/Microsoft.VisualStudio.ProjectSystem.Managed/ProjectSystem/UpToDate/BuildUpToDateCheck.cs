@@ -274,9 +274,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             return time;
         }
 
-        private bool Fail(BuildUpToDateCheckLogger logger, string message, string reason)
+        private bool Fail(BuildUpToDateCheckLogger logger, string reason, string message, params object[] values)
         {
-            logger.Info(message);
+            logger.Info(message, values);
             _telemetryService.PostProperty(TelemetryEventName.UpToDateCheckFail, TelemetryPropertyName.UpToDateCheckFailReason, reason);
             return false;
         }
@@ -293,29 +293,29 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             if (!_tasksService.IsTaskQueueEmpty(ProjectCriticalOperation.Build))
             {
-                return Fail(logger, "Critical build tasks are running, not up to date.", "CriticalTasks");
+                return Fail(logger, "CriticalTasks", "Critical build tasks are running, not up to date.");
             }
 
             if (_lastVersionSeen == null || _configuredProject.ProjectVersion.CompareTo(_lastVersionSeen) > 0)
             {
-                return Fail(logger, "Project information is older than current project version, not up to date.", "ProjectInfoOutOfDate");
+                return Fail(logger, "ProjectInfoOutOfDate", "Project information is older than current project version, not up to date.");
             }
 
             if (itemsChangedSinceLastCheck)
             {
-                return Fail(logger, "The list of source items has changed since the last build, not up to date.", "ItemInfoOutOfDate");
+                return Fail(logger, "ItemInfoOutOfDate", "The list of source items has changed since the last build, not up to date.");
             }
 
             if (_isDisabled)
             {
-                return Fail(logger, "The 'DisableFastUpToDateCheck' property is true, not up to date.", "Disabled");
+                return Fail(logger, "Disabled", "The 'DisableFastUpToDateCheck' property is true, not up to date.");
             }
 
             string copyAlwaysItemPath = _items.SelectMany(kvp => kvp.Value).FirstOrDefault(item => item.copyType == CopyToOutputDirectoryType.CopyAlways).path;
 
             if (copyAlwaysItemPath != null)
             {
-                return Fail(logger, $"Item '{_configuredProject.UnconfiguredProject.MakeRooted(copyAlwaysItemPath)}' has CopyToOutputDirectory set to 'Always', not up to date.", "CopyAlwaysItemExists");
+                return Fail(logger, "CopyAlwaysItemExists", "Item '{0}' has CopyToOutputDirectory set to 'Always', not up to date.", _configuredProject.UnconfiguredProject.MakeRooted(copyAlwaysItemPath));
             }
 
             return true;
