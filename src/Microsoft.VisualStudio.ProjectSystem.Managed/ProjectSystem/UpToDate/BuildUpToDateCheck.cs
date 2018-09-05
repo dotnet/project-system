@@ -622,8 +622,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             // We assume there are fewer outputs than inputs, so perform a full scan of outputs to find the earliest
             (DateTime? outputTime, string outputPath) = GetEarliestOutput(CollectOutputs(logger), timestampCache);
 
-            bool outputsUpToDate = true;
-
             if (outputTime != null)
             {
                 // Search for an input that's either missing or newer than the earliest output.
@@ -634,38 +632,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                     if (time == null)
                     {
-                        logger.Info("Input '{0}' does not exist, not up to date.", input);
-                        outputsUpToDate = false;
-                        break;
+                        return Fail(logger, "Outputs", "Input '{0}' does not exist, not up to date.", input);
                     }
 
                     if (time > outputTime)
                     {
-                        logger.Info("Input '{0}' is newer ({1}) than earliest output '{2}' ({3}), not up to date.", input, time.Value, outputPath, outputTime.Value);
-                        outputsUpToDate = false;
-                        break;
+                        return Fail(logger, "Outputs", "Input '{0}' is newer ({1}) than earliest output '{2}' ({3}), not up to date.", input, time.Value, outputPath, outputTime.Value);
                     }
                 }
             }
             else
             {
-                logger.Info("Output '{0}' does not exist, not up to date.", outputPath);
-                outputsUpToDate = false;
+                return Fail(logger, "Outputs", "Output '{0}' does not exist, not up to date.", outputPath);
             }
 
-            // We are up to date if the earliest output write happened after the latest input write
             bool markersUpToDate = CheckMarkers(logger, timestampCache);
             bool copyToOutputDirectoryUpToDate = CheckCopyToOutputDirectoryFiles(logger, timestampCache);
             bool copiedOutputUpToDate = CheckCopiedOutputFiles(logger, timestampCache);
-            bool isUpToDate = outputsUpToDate && markersUpToDate && copyToOutputDirectoryUpToDate && copiedOutputUpToDate;
+            bool isUpToDate = markersUpToDate && copyToOutputDirectoryUpToDate && copiedOutputUpToDate;
 
             if (!markersUpToDate)
             {
                 _telemetryService.PostProperty(TelemetryEventName.UpToDateCheckFail, TelemetryPropertyName.UpToDateCheckFailReason, "Marker");
-            }
-            else if (!outputsUpToDate)
-            {
-                _telemetryService.PostProperty(TelemetryEventName.UpToDateCheckFail, TelemetryPropertyName.UpToDateCheckFailReason, "Outputs");
             }
             else if (!copyToOutputDirectoryUpToDate)
             {

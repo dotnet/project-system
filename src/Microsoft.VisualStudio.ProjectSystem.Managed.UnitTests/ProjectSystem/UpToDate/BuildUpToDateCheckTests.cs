@@ -305,7 +305,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             await SetupAsync(projectSnapshot: projectSnapshot, expectUpToDate: false);
 
             await AssertNotUpToDateAsync(
-                new[] { "Output 'C:\\Dev\\Solution\\Project\\BuiltOutputPath1' does not exist, not up to date.", "Project is not up to date." },
+                "Output 'C:\\Dev\\Solution\\Project\\BuiltOutputPath1' does not exist, not up to date.",
                 "Outputs");
         }
 
@@ -327,11 +327,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             await SetupAsync(projectSnapshot, sourceSnapshot, expectUpToDate: false);
 
             await AssertNotUpToDateAsync(
-                new[]
-                {
-                    "Input 'C:\\Dev\\Solution\\Project\\ItemPath1' does not exist, not up to date.",
-                    "Project is not up to date."
-                },
+                "Input 'C:\\Dev\\Solution\\Project\\ItemPath1' does not exist, not up to date.",
                 "Outputs");
         }
 
@@ -361,11 +357,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             // TODO test other kinds of output (CustomOutputs)
 
             await AssertNotUpToDateAsync(
-                new[]
-                {
-                    $"Input 'C:\\Dev\\Solution\\Project\\ItemPath1' is newer ({inputTime}) than earliest output 'C:\\Dev\\Solution\\Project\\BuiltOutputPath1' ({outputTime}), not up to date.",
-                    "Project is not up to date."
-                },
+                $"Input 'C:\\Dev\\Solution\\Project\\ItemPath1' is newer ({inputTime}) than earliest output 'C:\\Dev\\Solution\\Project\\BuiltOutputPath1' ({outputTime}), not up to date.",
                 "Outputs");
         }
 
