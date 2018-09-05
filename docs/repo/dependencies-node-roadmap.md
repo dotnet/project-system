@@ -99,7 +99,7 @@ New `GraphNode`s are added to the graph as a result of operations initiated by t
 
 ### Connecting `GraphNode`s to `IProjectTree` nodes
 
-`GraphNode`s are automatically created for `IProjectTree` nodes by CPS and the core graph logic. For example, we will create an `IProjectTree` for a top-level NuGet package and an associated `GraphNode` will be generated automatically. We will later see this `GraphNode` as an input node in an `IGraphContext` and create and link new `GraphNode`s for its transitive dependencies.
+CPS and the core graph logic automatically create `GraphNode`s for `IProjectTree` nodes marked with the `ProjectTreeFlags.Common.ResolvedReference` flag. For example, we will create an `IProjectTree` for a top-level NuGet package and an associated `GraphNode` will be generated automatically. We will later see this `GraphNode` as an input node in an `IGraphContext` and create and link new `GraphNode`s for its transitive dependencies.
 
 While we don't need to create these top-level `GraphNode`s we do sometimes need to adjust their properties.
 
