@@ -77,8 +77,17 @@ namespace Microsoft.VisualStudio.ProjectSystem
             {
                 CancellationToken jointCancellationToken = source.Token;
 
-                await _semaphore.ExecuteAsync(() => action(jointCancellationToken), jointCancellationToken)
-                                .ConfigureAwait(true);
+                try
+                {
+                    await _semaphore.ExecuteAsync(() => action(jointCancellationToken), jointCancellationToken)
+                                    .ConfigureAwait(true);
+                }
+                catch (ObjectDisposedException)
+                {   // There's a tiny chance that between checking the cancellation token (wrapping DisposalToken) 
+                    // and checking if the underlying SemaphoreSlim has been disposed, that dispose for this instance 
+                    // has been run. Handle that and just treat it as a cancellation.
+                    throw new OperationCanceledException();
+                }
             }
         }
     }
