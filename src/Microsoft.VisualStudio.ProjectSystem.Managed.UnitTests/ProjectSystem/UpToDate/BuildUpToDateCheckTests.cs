@@ -26,6 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         private const string _projectFullPath = "C:\\Dev\\Solution\\Project\\Project.csproj";
         private const string _msBuildProjectFullPath = "NewProjectFullPath";
         private const string _msBuildProjectDirectory = "NewProjectDirectory";
+        private const string _msBuildAllProjects = "Project1;Project2";
         private const string _outputPath = "NewOutputPath";
 
         private readonly IImmutableList<IItemType> _itemTypes = ImmutableList<IItemType>.Empty
@@ -77,6 +78,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             _fileSystem = new IFileSystemMock();
             _fileSystem.AddFile(_msBuildProjectFullPath);
+            _fileSystem.AddFile("Project1");
+            _fileSystem.AddFile("Project2");
             _fileSystem.AddFolder(_msBuildProjectDirectory);
             _fileSystem.AddFolder(_outputPath);
 
@@ -129,6 +132,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     Properties = ImmutableStringDictionary<string>.EmptyOrdinal
                         .Add("MSBuildProjectFullPath", _msBuildProjectFullPath)
                         .Add("MSBuildProjectDirectory", _msBuildProjectDirectory)
+                        .Add("MSBuildAllProjects", _msBuildAllProjects)
                         .Add("OutputPath", _outputPath)
                         .Add("DisableFastUpToDateCheck", disableFastUpToDateCheck.ToString())
                 };
@@ -358,6 +362,120 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             await AssertNotUpToDateAsync(
                 $"Input 'C:\\Dev\\Solution\\Project\\ItemPath1' is newer ({inputTime}) than earliest output 'C:\\Dev\\Solution\\Project\\BuiltOutputPath1' ({outputTime}), not up to date.",
+                "Outputs");
+        }
+
+        [Fact]
+        public async Task IsUpToDateAsync_False_CopyReferenceInputNewerThanMarkerOutput()
+        {
+            var projectSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
+            {
+                ["CopyUpToDateMarker"] = SimpleItems("Marker"),
+                ["ResolvedCompilationReference"] = new IProjectRuleSnapshotModel
+                {
+                    Items = ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal
+                        .Add("Reference1", ImmutableDictionary<string, string>.Empty
+                            .Add("CopyUpToDateMarker", "Reference1MarkerPath")
+                            .Add("ResolvedPath", "Reference1ResolvedPath")
+                            .Add("OriginalPath", "Reference1OriginalPath"))
+                }
+            };
+
+            var outputTime = DateTime.Now;
+
+            _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\Marker", outputTime);
+            _fileSystem.AddFile("Reference1MarkerPath", outputTime.AddMinutes(1));
+            _fileSystem.AddFile("Reference1OriginalPath", outputTime.AddMinutes(2));
+            _fileSystem.AddFile("Reference1ResolvedPath", outputTime);
+
+            await SetupAsync(projectSnapshot, expectUpToDate: false);
+
+            await AssertNotUpToDateAsync(
+                new[]
+                {
+                    $"Latest write timestamp on input marker is {outputTime.AddMinutes(2)} on 'Reference1OriginalPath'.",
+                    $"Write timestamp on output marker is {outputTime} on 'C:\\Dev\\Solution\\Project\\Marker'.",
+                    "Input marker is newer than output marker, not up to date."
+                },
+                "Marker");
+        }
+
+        [Fact]
+        public async Task IsUpToDateAsync_False_AnalyzerReferenceNewerThanEarliestOutput()
+        {
+            var projectSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
+            {
+                ["UpToDateCheckBuilt"] = SimpleItems("BuiltOutputPath1"),
+                ["ResolvedAnalyzerReference"] = new IProjectRuleSnapshotModel
+                {
+                    Items = ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal
+                        .Add("Analyzer1", ImmutableDictionary<string, string>.Empty
+                            .Add("ResolvedPath", "Analyzer1ResolvedPath"))
+                }
+            };
+
+            var outputTime = DateTime.Now;
+            var inputTime = outputTime.AddMinutes(1);
+
+            _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\BuiltOutputPath1", outputTime);
+            _fileSystem.AddFile("Analyzer1ResolvedPath", inputTime);
+
+            await SetupAsync(projectSnapshot, expectUpToDate: false);
+
+            await AssertNotUpToDateAsync(
+                $"Input 'Analyzer1ResolvedPath' is newer ({inputTime}) than earliest output 'C:\\Dev\\Solution\\Project\\BuiltOutputPath1' ({outputTime}), not up to date.",
+                "Outputs");
+        }
+
+        [Fact]
+        public async Task IsUpToDateAsync_False_CompilationReferenceNewerThanEarliestOutput()
+        {
+            var projectSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
+            {
+                ["UpToDateCheckBuilt"] = SimpleItems("BuiltOutputPath1"),
+                ["ResolvedCompilationReference"] = new IProjectRuleSnapshotModel
+                {
+                    Items = ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal
+                        .Add("Reference1", ImmutableDictionary<string, string>.Empty
+                            .Add("CopyUpToDateMarker", "Reference1MarkerPath")
+                            .Add("ResolvedPath", "Reference1ResolvedPath")
+                            .Add("OriginalPath", "Reference1OriginalPath"))
+                }
+            };
+
+            var outputTime = DateTime.Now;
+            var inputTime = outputTime.AddMinutes(1);
+
+            _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\BuiltOutputPath1", outputTime);
+            _fileSystem.AddFile("Reference1ResolvedPath", inputTime);
+
+            await SetupAsync(projectSnapshot, expectUpToDate: false);
+
+            await AssertNotUpToDateAsync(
+                $"Input 'Reference1ResolvedPath' is newer ({inputTime}) than earliest output 'C:\\Dev\\Solution\\Project\\BuiltOutputPath1' ({outputTime}), not up to date.",
+                "Outputs");
+        }
+
+        [Fact]
+        public async Task IsUpToDateAsync_False_UpToDateCheckInputNewerThanEarliestOutput()
+        {
+            var projectSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
+            {
+                ["UpToDateCheckBuilt"] = SimpleItems("BuiltOutputPath1"),
+                ["UpToDateCheckInput"] = SimpleItems("Item1", "Item2")
+            };
+
+            var outputTime = DateTime.Now;
+            var inputTime = outputTime.AddMinutes(1);
+
+            _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\BuiltOutputPath1", outputTime);
+            _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\Item1", inputTime);
+            _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\Item2", outputTime);
+
+            await SetupAsync(projectSnapshot, expectUpToDate: false);
+
+            await AssertNotUpToDateAsync(
+                $"Input 'C:\\Dev\\Solution\\Project\\Item1' is newer ({inputTime}) than earliest output 'C:\\Dev\\Solution\\Project\\BuiltOutputPath1' ({outputTime}), not up to date.",
                 "Outputs");
         }
 
