@@ -66,7 +66,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
         private readonly HashSet<string> _imports = new HashSet<string>(StringComparers.Paths);
         private readonly HashSet<string> _itemTypes = new HashSet<string>(StringComparers.ItemTypes);
-        private readonly Dictionary<string, HashSet<(string Path, string Link, CopyToOutputDirectoryType CopyType)>> _items = new Dictionary<string, HashSet<(string, string, CopyToOutputDirectoryType)>>(StringComparers.ItemTypes);
+        private readonly Dictionary<string, HashSet<(string path, string link, CopyToOutputDirectoryType copyType)>> _items = new Dictionary<string, HashSet<(string, string, CopyToOutputDirectoryType)>>(StringComparers.ItemTypes);
         private readonly HashSet<string> _customInputs = new HashSet<string>(StringComparers.Paths);
         private readonly HashSet<string> _customOutputs = new HashSet<string>(StringComparers.Paths);
         private readonly HashSet<string> _builtOutputs = new HashSet<string>(StringComparers.Paths);
@@ -233,7 +233,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 if (!itemTypesChanged && !changes.Difference.AnyChanges)
                     continue;
 
-                _items[itemType] = new HashSet<(string Path, string Link, CopyToOutputDirectoryType CopyType)>(
+                _items[itemType] = new HashSet<(string path, string link, CopyToOutputDirectoryType copyType)>(
                     changes.After.Items.Select(item => (item.Key, GetLink(item.Value), GetCopyType(item.Value))),
                     UpToDateCheckItemComparer.Instance);
                 _itemsChangedSinceLastCheck = true;
@@ -311,7 +311,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 return Fail(logger, "The 'DisableFastUpToDateCheck' property is true, not up to date.", "Disabled");
             }
 
-            string copyAlwaysItemPath = _items.SelectMany(kvp => kvp.Value).FirstOrDefault(item => item.CopyType == CopyToOutputDirectoryType.CopyAlways).Path;
+            string copyAlwaysItemPath = _items.SelectMany(kvp => kvp.Value).FirstOrDefault(item => item.copyType == CopyToOutputDirectoryType.CopyAlways).path;
 
             if (copyAlwaysItemPath != null)
             {
@@ -337,13 +337,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 }
             }
 
-            foreach ((string itemType, HashSet<(string Path, string Link, CopyToOutputDirectoryType CopyType)> changes) in _items)
+            foreach ((string itemType, HashSet<(string path, string link, CopyToOutputDirectoryType copyType)> changes) in _items)
             {
                 if (changes.Count != 0 && !NonCompilationItemTypes.Contains(itemType))
                 {
                     logger.Verbose("Adding {0} inputs:", itemType);
 
-                    foreach (string input in changes.Select(item => _configuredProject.UnconfiguredProject.MakeRooted(item.Path)))
+                    foreach (string input in changes.Select(item => _configuredProject.UnconfiguredProject.MakeRooted(item.path)))
                     {
                         logger.Verbose("    '{0}'", input);
                         yield return input;
@@ -549,14 +549,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
         private bool CheckCopyToOutputDirectoryFiles(BuildUpToDateCheckLogger logger, IDictionary<string, DateTime> timestampCache)
         {
-            IEnumerable<(string Path, string Link, CopyToOutputDirectoryType CopyType)> items = _items.SelectMany(kvp => kvp.Value).Where(item => item.CopyType == CopyToOutputDirectoryType.CopyIfNewer);
+            IEnumerable<(string path, string link, CopyToOutputDirectoryType copyType)> items = _items.SelectMany(kvp => kvp.Value).Where(item => item.copyType == CopyToOutputDirectoryType.CopyIfNewer);
 
             string outputFullPath = Path.Combine(_msBuildProjectDirectory, _outputRelativeOrFullPath);
 
-            foreach ((string Path, string Link, CopyToOutputDirectoryType CopyType) item in items)
+            foreach ((string path, string link, CopyToOutputDirectoryType copyType) item in items)
             {
-                string path = _configuredProject.UnconfiguredProject.MakeRooted(item.Path);
-                string filename = string.IsNullOrEmpty(item.Link) ? path : item.Link;
+                string path = _configuredProject.UnconfiguredProject.MakeRooted(item.path);
+                string filename = string.IsNullOrEmpty(item.link) ? path : item.link;
 
                 if (string.IsNullOrEmpty(filename))
                 {
