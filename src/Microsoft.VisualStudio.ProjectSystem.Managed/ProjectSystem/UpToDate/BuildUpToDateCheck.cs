@@ -646,31 +646,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 return Fail(logger, "Outputs", "Output '{0}' does not exist, not up to date.", outputPath);
             }
 
-            bool markersUpToDate = CheckMarkers(logger, timestampCache);
-            bool copyToOutputDirectoryUpToDate = CheckCopyToOutputDirectoryFiles(logger, timestampCache);
-            bool copiedOutputUpToDate = CheckCopiedOutputFiles(logger, timestampCache);
-            bool isUpToDate = markersUpToDate && copyToOutputDirectoryUpToDate && copiedOutputUpToDate;
-
-            if (!markersUpToDate)
+            if (!CheckMarkers(logger, timestampCache))
             {
                 _telemetryService.PostProperty(TelemetryEventName.UpToDateCheckFail, TelemetryPropertyName.UpToDateCheckFailReason, "Marker");
+                return false;
             }
-            else if (!copyToOutputDirectoryUpToDate)
+
+            if (!CheckCopyToOutputDirectoryFiles(logger, timestampCache))
             {
                 _telemetryService.PostProperty(TelemetryEventName.UpToDateCheckFail, TelemetryPropertyName.UpToDateCheckFailReason, "CopyToOutputDirectory");
+                return false;
             }
-            else if (!copiedOutputUpToDate)
+
+            if (!CheckCopiedOutputFiles(logger, timestampCache))
             {
                 _telemetryService.PostProperty(TelemetryEventName.UpToDateCheckFail, TelemetryPropertyName.UpToDateCheckFailReason, "CopyOutput");
-            }
-            else
-            {
-                _telemetryService.PostEvent(TelemetryEventName.UpToDateCheckSuccess);
+                return false;
             }
 
-            logger.Info("Project is{0} up to date.", !isUpToDate ? " not" : "");
-
-            return isUpToDate;
+            _telemetryService.PostEvent(TelemetryEventName.UpToDateCheckSuccess);
+            logger.Info("Project is up to date.");
+            return true;
         }
 
         public async Task<bool> IsUpToDateCheckEnabledAsync(CancellationToken cancellationToken = default) =>
