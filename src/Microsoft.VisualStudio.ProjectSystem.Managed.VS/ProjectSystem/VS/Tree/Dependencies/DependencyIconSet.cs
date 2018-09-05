@@ -8,7 +8,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     /// <summary>
     /// Represents the set of icons associated with a particular dependency.
     /// In practice dependencies use a relatively small number of distinct icon
-    /// sets; we can save considerable amounts of memory by given the sets their
+    /// sets; we can save considerable amounts of memory by giving the sets their
     /// own type and sharing instances.
     /// </summary>
     internal sealed class DependencyIconSet : IEquatable<DependencyIconSet>
