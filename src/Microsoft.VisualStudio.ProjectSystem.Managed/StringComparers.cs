@@ -42,7 +42,7 @@ namespace Microsoft.VisualStudio
 
         public static IEqualityComparer<string> ItemTypes
         {
-            get { return StringComparer.Ordinal; }
+            get { return StringComparer.OrdinalIgnoreCase; }
         }
     }
 }
