@@ -108,7 +108,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             '''      The object to convert.
             ''' </param>
             ''' <returns>
-            '''      The converted object.  This will throw an excetpion if the converson
+            '''      The converted object.  This will throw an exception if the conversion
             '''      could not be performed.
             ''' </returns>
             ''' <seealso cref='TypeConverter' />
@@ -128,7 +128,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             '''      Converts the given object to another type.  The most common types to convert
             '''      are to and from a string object.  The default implementation will make a call
             '''      to ToString on the object if the object is valid and if the destination
-            '''      type is string.  If this cannot convert to the desitnation type, this will
+            '''      type is string.  If this cannot convert to the destination type, this will
             '''      throw a NotSupportedException.
             ''' </summary>
             ''' <param name='context'>
@@ -551,7 +551,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
                 'Now that we have a parent ResourceFile, we are allowed to add tasks to the task
                 '  list.  Go ahead and check for basic problems now, but delay checking for
-                '  Value problems, because we don't want to cause Value instatantion during loading
+                '  Value problems, because we don't want to cause Value instantiation during loading
                 '  (it can be expensive, especially for linked resources).  Instead, we'll handle
                 '  that task later during idle (see ResourceFile.OnDelayCheckForErrors()).
                 CheckForErrors(FastChecksOnly:=True)
@@ -662,7 +662,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   the NameWithoutUndo property.
         ''' </summary>
         ''' <value></value>
-        ''' <remarks>Can't be private because ResourceFileneeds access to it.</remarks>
+        ''' <remarks>Can't be private because ResourceFile needs access to it.</remarks>
         <EditorBrowsable(EditorBrowsableState.Never)>
         Friend Property NameRawWithoutUndo() As String
             Get
@@ -1178,7 +1178,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''  the actual value from disk (linked) or instantiate it (non-linked).
         ''' </summary>
         ''' <value>The cached or non-linked value if possible, or else Nothing.</value>
-        ''' <remarks>No exceptions are thrown (that are not swalled)</remarks>
+        ''' <remarks>No exceptions are thrown (that are not swallowed)</remarks>
         Public ReadOnly Property CachedValue() As Object
             Get
                 If _cachedValue Is Nothing Then
@@ -1259,7 +1259,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 #Region "IComponent properties"
 
         ''' <summary>
-        ''' (IComomponent) Gets or sets the ISite associated with the component.
+        ''' (IComponent) Gets or sets the ISite associated with the component.
         ''' </summary>
         ''' <value>The ISite object associated with the component, or Nothing.</value>
         ''' <remarks>
@@ -1431,7 +1431,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Debug.Assert(Value IsNot Nothing, "Resource value shouldn't be Nothing unless it's a resxnullref")
 
                 'We were able to successfully load the resource.  Clear the resource instantiation
-                '  error for this resoucre, if there was one.
+                '  error for this resource, if there was one.
                 ClearTask(ResourceFile.ResourceTaskType.CantInstantiateResource)
             Catch ex As Exception
                 'Create task list entry
@@ -1454,7 +1454,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   entry from that exception (if one doesn't already exist).  Handles some special cases.
         ''' </summary>
         ''' <param name="ExceptionFromGetValue">The exception to create the task list entry from.</param>
-        ''' <param name="ExceptionToRethrow">The exception to rethrow, if any.  May be the same exeption as ExceptionFromGetValue or different.</param>
+        ''' <param name="ExceptionToRethrow">The exception to rethrow, if any.  May be the same exception as ExceptionFromGetValue or different.</param>
         ''' <remarks></remarks>
         Friend Sub SetTaskFromGetValueException(ExceptionFromGetValue As Exception, ByRef ExceptionToRethrow As Exception)
             'We hit an exception.  Add a task list item for resource instantiation (if it doesn't already exist)
@@ -2225,7 +2225,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 #Region "Integration with Visual Studio's Properties Window"
 
         ''' <summary>
-        '''  Returns a collection of property descriptors to describle this resource's properties for the Property Window.
+        '''  Returns a collection of property descriptors to describe this resource's properties for the Property Window.
         ''' </summary>
         ''' <returns>A PropertyDescriptorCollection containing the properties we want to show.</returns>
         ''' <remarks>
@@ -2636,7 +2636,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Return True
             End If
 
-            'Now we want to trim all blanks from the Name's beginning and end only, in case the user typed them in accidently
+            'Now we want to trim all blanks from the Name's beginning and end only, in case the user typed them in accidentally
             Dim TrimmedName As String
             If NewName <> "" Then
                 TrimmedName = NewName.Trim()
@@ -2820,7 +2820,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="Comment">The comment for the ResXDataNode</param>
         ''' <param name="FileName">The full path and file name to the file which contains the linked resource's value.</param>
         ''' <param name="ValueTypeName">The expected type of the resource in the file.</param>
-        ''' <param name="TextFileEncoding">The encoding to be used if this is a text file resource.  May be Nothing.  Irrevelant for any other type of resource.</param>
+        ''' <param name="TextFileEncoding">The encoding to be used if this is a text file resource.  May be Nothing.  Irrelevant for any other type of resource.</param>
         ''' <returns>The new ResXDataNode instance.</returns>
         ''' <remarks></remarks>
         Private Function NewResXDataNode(Name As String, Comment As String, FileName As String, ValueTypeName As String, TextFileEncoding As Encoding) As ResXDataNode

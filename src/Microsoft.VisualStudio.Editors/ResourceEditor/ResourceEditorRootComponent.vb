@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Option Explicit On
 Option Strict On
@@ -15,7 +15,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
     ''' <summary>
     ''' This class represents the root component of the resource editor.  It could be thought of as
-    '''    resepenting the .resx file itself, except that we may handle more than one .resx file in 
+    '''    representing the .resx file itself, except that we may handle more than one .resx file in 
     '''    the resource editor at once.  
     '''    This class itself does not do much except to keep a reference to ResXResourceFile(s) being
     '''    edited.  If this were a "real" component, this class would represent the component whose

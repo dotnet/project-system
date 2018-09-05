@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.ComponentModel.Design
 Imports System.Diagnostics.CodeAnalysis
@@ -100,7 +100,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         '   RootDesigner: The root designer that owns this menu item (may be Nothing)
         '   CommandID: The command ID of this item. It comes from Constants.MenuConstants (and its value must match
         '       one of the constants in designerui\VisualStudioEditorsUI.h).
-        '   CommandHadler: The event handler to handle this menu item.
+        '   CommandHandler: The event handler to handle this menu item.
         '   CommandEnabledHandler: The event handler to check if this menu item should be enabled or not.
         '   CommandCheckedHandler: The event handler to check if this menu item should be checked or not.
         '   CommandVisibleHandler: The event handler to check if this menu item should be visible or not.

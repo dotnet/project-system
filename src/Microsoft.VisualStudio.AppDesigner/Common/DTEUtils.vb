@@ -15,7 +15,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         Private Const PROJECTPROPERTY_BUILDACTION As String = "BuildAction"
 
         ''' <summary>
-        ''' This is a shared class - disallow instantation.
+        ''' This is a shared class - disallow instantiation.
         ''' </summary>
         ''' <remarks></remarks>
         Private Sub New()
@@ -78,7 +78,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
 
 
         ''' <summary>
-        ''' Tries to set the Build Action property of the given project item to the given build action (enumation).  
+        ''' Tries to set the Build Action property of the given project item to the given build action (enumeration).  
         '''   If this project system doesn't have that property, this call is a NOP.
         ''' </summary>
         ''' <param name="Item">The ProjectItem on which to set the property</param>

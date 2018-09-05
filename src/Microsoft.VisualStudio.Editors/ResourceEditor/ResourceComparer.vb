@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Option Explicit On
 Option Strict On
@@ -16,7 +16,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Implements IComparer
 
         ''' <summary>
-        ''' Sorts an ArrayList of Resoures for UI purposes
+        ''' Sorts an ArrayList of Resources for UI purposes
         ''' </summary>
         ''' <param name="Resources">ArrayList of Resources to source (will be sorted in place)</param>
         ''' <remarks></remarks>

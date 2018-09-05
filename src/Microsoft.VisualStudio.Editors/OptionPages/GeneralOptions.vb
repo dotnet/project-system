@@ -48,10 +48,10 @@ Namespace Microsoft.VisualStudio.Editors.OptionPages
         '''     - false if VS was installed from Release channel.
         ''' When default setting value is changed by user, we write current value to a marker file 
         ''' located under local AppData VS instance folder to be used by out-proc components.
-        ''' If there no marker file there, it measn VS is having default setting value which was 
-        ''' never changed by user manually. Out-proc components should treat absense of the file as 
+        ''' If there no marker file there, it means VS is having default setting value which was 
+        ''' never changed by user manually. Out-proc components should treat absence of the file as 
         ''' default option value and check the channel using same setup API we use here. 
-        ''' This absense=default logic is needed for the case VS is installed, was never started yet,
+        ''' This absence=default logic is needed for the case VS is installed, was never started yet,
         ''' but user runs msbuild form dev command line to build solution. In this case msbuild 
         ''' components should have a way to figure out default setting on their own.
         ''' 

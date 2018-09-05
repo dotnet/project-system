@@ -529,7 +529,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             Dim PlatformEntries As New List(Of String)
 
-            ' Let's try to sniff the supported platforms from our hiearchy (if any)
+            ' Let's try to sniff the supported platforms from our hierarchy (if any)
             TargetCPUComboBox.Items.Clear()
             If ProjectHierarchy IsNot Nothing Then
                 Dim oCfgProv As Object = Nothing
@@ -782,7 +782,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         ''' <summary>
         ''' Make sure we set the Register for COM interop property whenever the
-        ''' user checkes the corresponding checkbox on the property page
+        ''' user checks the corresponding checkbox on the property page
         ''' </summary>
         Private Sub RegisterForComInteropCheckBox_CheckedChanged(sender As Object, e As EventArgs) Handles RegisterForComInteropCheckBox.CheckedChanged
             If Not m_fInsideInit Then
@@ -1018,7 +1018,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
 
         ''' <summary>
-        ''' Remove any items in itemsToRmove from completeSet
+        ''' Remove any items in itemsToRemove from completeSet
         ''' </summary>
         ''' <remarks>Both set1 and set2 must be sorted for this to work correctly!</remarks>
         Private Function RemoveItems(completeSet() As Integer, itemsToRemove() As Integer) As Integer()
@@ -1305,7 +1305,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         End If
                     End If
                 Catch ex As ApplicationException
-                    ' The old behavior was to assume a secure path if exceptio occured...
+                    ' The old behavior was to assume a secure path if exception occured...
                 End Try
             End If
             MyBase.PreApplyPageChanges()

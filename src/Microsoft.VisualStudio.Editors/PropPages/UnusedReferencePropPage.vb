@@ -148,7 +148,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' GetReferenceList
         ''' get list of project's references as VSLangProj.References 
         ''' </summary>
-        ''' <remarks>RefsList should alway be set before using this proppage</remarks>
+        ''' <remarks>RefsList should always be set before using this proppage</remarks>
         Private Function GetReferenceList() As ArrayList
             Dim theVSProject As VSLangProj.VSProject
             Dim ReferenceCount As Integer
@@ -210,7 +210,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             ' Only update status when necessary
             If Status <> _lastStatus Then
-                ' Remeber last status set
+                ' Remember last status set
                 _lastStatus = Status
 
                 ' Use a arrow and hourglass cursor if waiting
@@ -328,7 +328,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' ;GetUnusedRefs
         ''' Poll compiler for unused references list from compiler and update listview
-        ''' when recieved.
+        ''' when received.
         ''' </summary>
         ''' <remarks></remarks>
         Private Sub GetUnusedRefs()
@@ -494,7 +494,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Private Sub OnUnusedReferenceListItemCheck(sender As Object, e As ItemCheckEventArgs) Handles UnusedReferenceList.ItemCheck
 
-            ' Since CheckIndicies is updated after this event, we enable remove button if
+            ' Since CheckIndices is updated after this event, we enable remove button if
             ' there are more than one check references or there are none and one is being checked
             EnableRemoveRefs(e.NewValue = CheckState.Checked OrElse UnusedReferenceList.CheckedIndices.Count > 1)
 
@@ -518,7 +518,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
 
         ''' <summary>
-        '''  We need initialize the dialog when it pops up (everytime)
+        '''  We need initialize the dialog when it pops up (every time)
         ''' </summary>
         ''' <param name="sender">Event args</param>
         ''' <param name="e">Event args</param>
@@ -534,7 +534,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 ' Clean up the list: We don't want to see old list refreshes when we open the dialog again.
                 UnusedReferenceList.Items.Clear()
 
-                ' Supress column headers until something is added
+                ' Suppress column headers until something is added
                 UnusedReferenceList.View = View.LargeIcon
             End With
 

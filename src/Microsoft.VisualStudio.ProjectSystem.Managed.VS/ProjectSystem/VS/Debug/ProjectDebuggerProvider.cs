@@ -296,7 +296,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
         /// <summary>
         /// Converts the environment key value pairs to a valid environment string of the form
-        /// key=value/0key2=value2/0/0, with null's between each entry and a double null terminator.
+        /// key=value/0key2=value2/0/0, with nulls between each entry and a double null terminator.
         /// </summary>
         private static string GetSerializedEnvironmentString(IDictionary<string, string> environment)
         {
@@ -345,7 +345,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
         /// <summary>
         /// IDeployedProjectItemMappingProvider
-        /// Implementd so that we can map URL's back to local file item paths
+        /// Implemented so that we can map URL's back to local file item paths
         /// </summary>
         public bool TryGetProjectItemPathFromDeployedPath(string deployedPath, out string localPath)
         {

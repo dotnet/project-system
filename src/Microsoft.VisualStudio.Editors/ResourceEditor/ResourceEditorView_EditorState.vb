@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Option Explicit On
 Option Strict On
@@ -14,7 +14,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' A class that contains the current editor state (current category, grid column widths, etc.).
         '''   This is useful for when the resx file is changed by another editor and we have to reload.
         '''   We can use this saved state to put the editor into close to the original state after
-        '''   the reload (which completely diposes the old designers and creates new ones).
+        '''   the reload (which completely disposes the old designers and creates new ones).
         ''' </summary>
         ''' <remarks>
         ''' EditorState is a private class of ResourceEditorView.  This gives it access to all private
@@ -49,7 +49,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
 
             ''' <summary>
-            ''' Public constructor.  Sets it to an empty stte.
+            ''' Public constructor.  Sets it to an empty state.
             ''' </summary>
             ''' <remarks></remarks>
             Public Sub New()

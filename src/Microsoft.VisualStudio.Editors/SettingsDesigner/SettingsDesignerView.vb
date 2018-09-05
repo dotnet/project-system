@@ -129,7 +129,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         Private _inCellValidated As Boolean
 
         ''' <summary>
-        ''' Cached instance of the type name resoloution service
+        ''' Cached instance of the type name resolution service
         ''' </summary>
         ''' <remarks></remarks>
         Private _typeNameResolver As SettingTypeNameResolutionService
@@ -678,7 +678,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         End Function
 
         ''' <summary>
-        ''' Get the instance from the current row, creating one if nescessary
+        ''' Get the instance from the current row, creating one if necessary
         ''' </summary>
         ''' <param name="Row"></param>
         ''' <returns></returns>
@@ -1424,7 +1424,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
         ''' <summary>
         ''' To find out when the user clicks on the "browse..." item in the types combo box,
-        ''' we have got to "commit" (end edit) the value everytime the cell gets dirty!
+        ''' we have got to "commit" (end edit) the value every time the cell gets dirty!
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
@@ -1757,7 +1757,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                         ' DevDiv Bugs 198406
                         ' If the application is targetting .Net 3.5 SP1, client subset, then disable "Load Web Settings" menu button because only a subset 
                         ' of the Full .Net Framework assemblies will be available to this application, in particular the client 
-                        ' subset will NOT include System.Web.Extentions.dll
+                        ' subset will NOT include System.Web.Extensions.dll
 
                         If IsClientFrameworkSubset(_hierarchy) Then
                             Return False

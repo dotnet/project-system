@@ -1567,7 +1567,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         '''     The new IVsHierarchy. We ignore this.
         ''' </param>
         ''' <param name='itemidNew'>
-        '''     The new hieararchies ITEMID.  We ignore this.
+        '''     The new hierarchies ITEMID.  We ignore this.
         ''' </param>
         ''' <param name='pMISNew'>
         '''     The new MultiItemSelection pointer, which we ignore.

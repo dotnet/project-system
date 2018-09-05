@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
         internal static readonly TraceSource Source = new TraceSource("CPS");
 
         /// <summary>
-        /// Buffer to preserve lastest set of error messages to help diagnosing Watson bugs.
+        /// Buffer to preserve latest set of error messages to help diagnosing Watson bugs.
         /// </summary>
         private static readonly string[] s_criticalTraceBuffer = new string[CriticalTraceBufferSize];
         private static volatile int s_currentTraceIndex = 0;

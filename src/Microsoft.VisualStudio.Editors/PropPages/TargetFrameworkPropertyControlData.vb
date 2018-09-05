@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports Microsoft.VisualStudio.OLE.Interop
 Imports Microsoft.VisualStudio.Shell.Interop
@@ -109,8 +109,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Public Property Site As IServiceProvider = Nothing
 
         ''' <summary>
-        ''' Holds the last commited property value.  This can change with user interaction in the combo box
-        ''' or by programmacticaly setting the property value (i.e. DTE)
+        ''' Holds the last committed property value.  This can change with user interaction in the combo box
+        ''' or by programmatically setting the property value (i.e. DTE)
         ''' </summary>
         Public Property IndexOfLastCommittedValue As Integer = -1
 

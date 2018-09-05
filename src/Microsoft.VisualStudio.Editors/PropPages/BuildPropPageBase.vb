@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports Microsoft.VisualStudio.Editors.Common
 Imports System.ComponentModel
@@ -96,7 +96,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         End Function
 
-        ' Holds the last value the Prefer32Bit check box had when enabled (or explicity
+        ' Holds the last value the Prefer32Bit check box had when enabled (or explicitly
         ' set by the project system), so that the proper state is restored if the 
         ' control is disabled and then later enabled
         Private _lastPrefer32BitValue As Boolean

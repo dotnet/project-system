@@ -119,7 +119,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
 
         ''' <summary>
-        ''' Stops watching a particuliar file.
+        ''' Stops watching a particular file.
         ''' </summary>
         ''' <param name="PathAndFileName">The full path and file to stop watching.</param>
         ''' <param name="Listener">The listener that wants to stop watching.</param>
@@ -156,7 +156,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Gets a DirectoryWatcher for this path.  If one doesn't already exist, a new one
         '''   will be created.
         ''' </summary>
-        ''' <param name="DirectoryPath">Directoy path to watch.</param>
+        ''' <param name="DirectoryPath">Directory path to watch.</param>
         ''' <param name="CreateIfNotFound">If True, will create a new DirectoryWatcher if none is found matching the file.</param>
         ''' <returns></returns>
         ''' <remarks></remarks>

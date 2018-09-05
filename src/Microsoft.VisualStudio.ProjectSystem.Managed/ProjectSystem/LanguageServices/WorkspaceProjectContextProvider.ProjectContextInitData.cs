@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             public bool IsInvalid()
             {
-                // If we don't have these MSBuild values as a mininum, we cannot create a context.
+                // If we don't have these MSBuild values as a minimum, we cannot create a context.
                 if (string.IsNullOrEmpty(LanguageName) || string.IsNullOrEmpty(BinOutputPath) || string.IsNullOrEmpty(ProjectFilePath))
                     return true;
 

@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
         public static string SkipCompilerExecution = nameof(SkipCompilerExecution);
 
         /// <summary>
-        ///     Indicates whether CoreCompile target should ouput the command-line 
+        ///     Indicates whether CoreCompile target should output the command-line
         ///     that would have been passed to Csc.exe and Vbc.exe.
         /// </summary>
         public static string ProvideCommandLineArgs = nameof(ProvideCommandLineArgs);

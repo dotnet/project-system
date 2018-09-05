@@ -15,7 +15,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         Private _buttonCollection As New List(Of ProjectDesignerTabButton)
 
         Private _renderer As ProjectDesignerTabRenderer 'The renderer to use for painting.  May not be Nothing.
-        Private _selectedItem As ProjectDesignerTabButton ' Currently-seleted item.  May be Nothing.
+        Private _selectedItem As ProjectDesignerTabButton ' Currently-selected item.  May be Nothing.
         Private _hoverItem As ProjectDesignerTabButton ' Currently-hovered item.  May be Nothing.
         Private _hostingPanel As Panel
 
@@ -614,7 +614,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         End Sub
 
         ''' <summary>
-        ''' We've gotta tell the renderer whenver the system colors change...
+        ''' We've gotta tell the renderer whenever the system colors change...
         ''' </summary>
         ''' <param name="msg"></param>
         ''' <param name="wparam"></param>
@@ -644,7 +644,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             Public Sub New()
                 'We don't want it to get focus.  Also, if we don't do this, it will have
                 '  a border size too large when it does obtain focus (or thinks it does).  
-                '  Setting TabStop=False itsn't enough.
+                '  Setting TabStop=False isn't enough.
                 SetStyle(ControlStyles.Selectable, False)
 
                 FlatStyle = FlatStyle.Flat

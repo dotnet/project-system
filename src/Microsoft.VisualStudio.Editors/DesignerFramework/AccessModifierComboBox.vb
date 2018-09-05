@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.CodeDom
 Imports System.CodeDom.Compiler
@@ -78,7 +78,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
         ' Cached flag to indicate if the custom tools associated with this combobox are
         ' registered for the current project type.
-        ' The states are True (registered), False (not registerd) or Missing (we haven't 
+        ' The states are True (registered), False (not registered) or Missing (we haven't 
         ' checked the project system yet)
         ' This field should only be accessed through the CustomToolsRegistered property.
         Private _customToolsRegistered As Boolean?
@@ -164,7 +164,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 #Region "Nested class "
 
         ''' <summary>
-        ''' This class registers/unregisters a DesigerMenuCommand with the package.
+        ''' This class registers/unregisters a DesignerMenuCommand with the package.
         ''' This is needed for the access modifier combobox because we want the
         '''   combobox to remain enabled when the user clicks away from the designer
         '''   and onto, say, the solution explorer.
@@ -244,7 +244,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ''' Get the command at the head of the queue for the given command ID
             ''' </summary>
             ''' <returns>
-            ''' The first command at the head of the queue, or NULL if no the queue is emty
+            ''' The first command at the head of the queue, or NULL if no the queue is empty
             ''' </returns>
             ''' <remarks></remarks>
             Protected Shared Function GetMenuCommandAtHeadOfInternalList(cmdId As CommandID) As DesignerMenuCommand

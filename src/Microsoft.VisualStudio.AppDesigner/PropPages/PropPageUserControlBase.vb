@@ -1207,7 +1207,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Dim Successful As Boolean
             Try
                 'NOTE: The code today doesn't really work to allow the parent page do batch saving for child pages
-                ' We do need create a transacation here, if there is no existing one (created by parent page). 
+                ' We do need create a transaction here, if there is no existing one (created by parent page). 
                 ' When something fails, who created the transaction should rollback it, but no other page should do that. 
                 ' However, the child page should never pop error message, but wrap all failure message to an exception.
                 ' The page starting the transaction should merge error messages, and show to the user one time.

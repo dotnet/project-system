@@ -116,7 +116,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
 
             ''' <summary>
             '''     This method is called when Visual Studio needs to
-            '''     evalulate which toolbox items should be enabled.  The
+            '''     evaluate which toolbox items should be enabled.  The
             '''     default implementation searches the service provider
             '''     for IVsToolboxUser and delegates.  If IVsToolboxUser
             '''     cannot be found this will search the service provider for
@@ -381,7 +381,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
 
             ''' <summary>
             ''' This takes our control UI and populates it with the
-            '''    design surface.  If there was an error encoutered
+            '''    design surface.  If there was an error encountered
             '''    it will display the WSOD.
             ''' </summary>
             ''' <remarks></remarks>

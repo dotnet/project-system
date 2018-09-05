@@ -28,12 +28,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// Gets the application manifest property
         /// </summary>
         /// <remarks>
-        /// The Application Manifest's value is one of three possibilites:
+        /// The Application Manifest's value is one of three possibilities:
         ///     - It's either a path to file that is the manifest
         ///     - It's the value "NoManifest" which means the application doesn't have a manifest.
         ///     - It's the value "DefaultManifest" which means that the application will have a default manifest.
         ///     
-        /// These three values map to two MSBuild properties - ApplicationManifest (specified if it's a path) or NoWin32Manfiest 
+        /// These three values map to two MSBuild properties - ApplicationManifest (specified if it's a path) or NoWin32Manifest 
         /// which is true for the second case and false or non-existent for the third.
         /// </remarks>
         public override async Task<string> OnGetEvaluatedPropertyValueAsync(string evaluatedPropertyValue, IProjectProperties defaultProperties)
@@ -49,7 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 return NoManifestValue;
             }
 
-            // It doesnt matter if it is set to false or the value is not present. We default to "DefaultManifest" scenario.
+            // It doesn't matter if it is set to false or the value is not present. We default to "DefaultManifest" scenario.
             return DefaultManifestValue;
         }
 

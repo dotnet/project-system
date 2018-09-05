@@ -52,7 +52,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 #Region "Base class overrides"
 
         ''' <summary>
-        ''' Initialize the designer loader. This is called just after begin load, so we shoud
+        ''' Initialize the designer loader. This is called just after begin load, so we should
         ''' have a loader host here.
         ''' This is the place where we add services!
         ''' NOTE: Remember to call RemoveService on any service object we don't own, when the Loader is disposed
@@ -643,7 +643,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                     Else
                         ' 
                         ' Please note that we should normally let the DesignerDocDataService's dispose dispose
-                        ' the child docdata - this will be done in the BaseDesignerLoader's Dipose.
+                        ' the child docdata - this will be done in the BaseDesignerLoader's Dispose.
                         ' 
                     End If
                     _appConfigDocData = Nothing
@@ -675,7 +675,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         End Function
 
         ''' <summary>
-        ''' We somtimes want to check out the project file (to add app.config) and sometimes we only want to 
+        ''' We sometimes want to check out the project file (to add app.config) and sometimes we only want to 
         ''' check out the app.config file itself...
         ''' </summary>
         ''' <value></value>

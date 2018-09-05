@@ -209,7 +209,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Dim NeutralLanguageComboBox = DirectCast(control, Windows.Forms.ComboBox)
             If NeutralLanguageComboBox.SelectedIndex < 0 Then
                 'Nothing selected, return the typed-in text - we will try to accept it as is
-                '  (i.e., they might have entered just a culture abbrevation, such as "de-ch", and
+                '  (i.e., they might have entered just a culture abbreviation, such as "de-ch", and
                 '  we will accept it if it's valid)
                 value = NeutralLanguageComboBox.Text
             Else

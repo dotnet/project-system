@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.ComponentModel
 Imports System.ComponentModel.Design
@@ -146,7 +146,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
 #Region "System.ComponentModel.ICustomTypeDescriptor"
-        ' we overrite the ICustomTypeDescriptor to replace the ClassName and ComponentName which are shown on the propertyGrid
+        ' we override the ICustomTypeDescriptor to replace the ClassName and ComponentName which are shown on the propertyGrid
         ' all other functions are implemented in its default way...
 
         Public Function GetAttributes() As AttributeCollection Implements ICustomTypeDescriptor.GetAttributes
@@ -224,7 +224,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End Get
         End Property
 
-        ' we only implement coverting from string...
+        ' we only implement converting from string...
         Public Overrides Function CanConvertFrom(context As ITypeDescriptorContext, sourceType As Type) As Boolean
             If sourceType Is GetType(String) Then
                 Return True
@@ -232,7 +232,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return MyBase.CanConvertFrom(context, sourceType)
         End Function
 
-        ' we only implement coverting to string...
+        ' we only implement converting to string...
         Public Overrides Function CanConvertTo(context As ITypeDescriptorContext, destinationType As Type) As Boolean
             If destinationType Is GetType(String) Then
                 Return True
@@ -240,7 +240,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return MyBase.CanConvertTo(context, destinationType)
         End Function
 
-        ' we only implement coverting from string...
+        ' we only implement converting from string...
         Public Overrides Function ConvertFrom(context As ITypeDescriptorContext, culture As Globalization.CultureInfo, value As Object) As Object
             If TypeOf value Is String Then
                 Dim stringValue As String = CStr(value)
@@ -253,7 +253,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return MyBase.ConvertFrom(context, culture, value)
         End Function
 
-        ' we only implement coverting to string...
+        ' we only implement converting to string...
         Public Overrides Function ConvertTo(context As ITypeDescriptorContext, culture As Globalization.CultureInfo, value As Object, destinationType As Type) As Object
             If destinationType Is GetType(String) Then
                 Dim type As UrlBehaviorType = CType(value, UrlBehaviorType)

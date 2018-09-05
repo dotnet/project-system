@@ -267,7 +267,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
 
         ''' <summary>
-        ''' Retrieves the desiger host for the resource editor
+        ''' Retrieves the designer host for the resource editor
         ''' </summary>
         ''' <value></value>
         ''' <remarks></remarks>
@@ -1179,7 +1179,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
 
             ''' <summary>
-            ''' Constuctor.
+            ''' Constructor.
             ''' </summary>
             ''' <param name="Resource"></param>
             ''' <remarks></remarks>

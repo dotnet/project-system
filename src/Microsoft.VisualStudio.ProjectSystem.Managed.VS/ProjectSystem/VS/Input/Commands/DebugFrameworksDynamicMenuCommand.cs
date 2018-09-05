@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         private IStartupProjectHelper StartupProjectHelper { get; }
 
         /// <summary>
-        /// CAlled by the base when one if our menu ids is clicked. Need to return true if the command was handled
+        /// Called by the base when one if our menu ids is clicked. Need to return true if the command was handled
         /// </summary>
         public override bool ExecCommand(int cmdIndex, EventArgs e)
         {

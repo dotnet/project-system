@@ -40,7 +40,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' If the file is already in the project (in any subfolder), it is left where it is.
             ''' Otherwise, the file is added to the Resources folder (using ProjectItems.AddFromFileCopy)
             '''   in the top level of the Project.
-            '''   If a Resources folder doesn 't exist, it is created.   
+            '''   If a Resources folder doesn't exist, it is created.   
             ''' A link is made to the copied file, if it was copied, or else to the original location of the file.
             ''' </remarks>
             AddToResourcesFolder = 1
@@ -102,7 +102,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <returns>The final file and path of the file after it was added to the project, or else its original location if
         '''   it was not added to the project or was not copied while being added to the project.  Returns Nothing if the
         '''  user canceled the operation.</returns>
-        ''' <remarks>The user is given the choic to cancel the operation when he is asked to overwrite an existing file or link.</remarks>
+        ''' <remarks>The user is given the choice to cancel the operation when he is asked to overwrite an existing file or link.</remarks>
         Public Shared Function AddFileToProject(EditorName As String, Project As Project, ResXProjectItem As ProjectItem, MessageBoxOwner As IWin32Window, SourceFilePath As String) As String
             Return AddFileToProjectHelper(EditorName, Project, ResXProjectItem, MessageBoxOwner, SourceFilePath, CopyFileIfExists:=False)
         End Function
@@ -136,7 +136,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         <Conditional("DEBUG")>
         Friend Shared Sub Trace(Message As String, ParamArray FormatArguments() As Object)
             If FormatArguments.Length > 0 Then
-                'Only use String.Format when we have specific format arguments, although we might accidently break on something like a stray "{" in a filename
+                'Only use String.Format when we have specific format arguments, although we might accidentally break on something like a stray "{" in a filename
                 Message = String.Format(Message, FormatArguments)
             End If
             Debug.WriteLineIf(s_resourcesFolderServiceSwitch.TraceVerbose, "Resources Folder Service: " & Message)
@@ -160,7 +160,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <returns>The final file and path of the file after it was added to the project, or else its original location if
         '''   it was not added to the project or was not copied while being added to the project.  Returns Nothing if the
         '''  user canceled the operation.</returns>
-        ''' <remarks>The user is given the choic to cancel the operation when he is asked to overwrite an existing file or link.</remarks>
+        ''' <remarks>The user is given the choice to cancel the operation when he is asked to overwrite an existing file or link.</remarks>
         Private Shared Function AddFileToProjectHelper(EditorName As String, Project As Project, ResXProjectItem As ProjectItem, MessageBoxOwner As IWin32Window, SourceFilePath As String, CopyFileIfExists As Boolean) As String
             If EditorName = "" Then
                 Throw New ArgumentNullException("EditorName")

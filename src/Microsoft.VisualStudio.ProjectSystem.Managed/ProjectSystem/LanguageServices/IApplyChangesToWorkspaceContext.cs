@@ -35,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         void Initialize(IWorkspaceProjectContext context);
 
         /// <summary>
-        ///     Applys evaluation changes to the underlying <see cref="IWorkspaceProjectContext"/>.
+        ///     Applies evaluation changes to the underlying <see cref="IWorkspaceProjectContext"/>.
         /// </summary>
         /// <exception cref="ArgumentNullException">
         ///     <paramref name="update"/> is <see langword="null"/>.
@@ -55,7 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         void ApplyEvaluation(IProjectVersionedValue<IProjectSubscriptionUpdate> update, bool isActiveContext, CancellationToken cancellationToken);
 
         /// <summary>
-        ///     Applys evaluation changes to the underlying <see cref="IWorkspaceProjectContext"/>.
+        ///     Applies evaluation changes to the underlying <see cref="IWorkspaceProjectContext"/>.
         /// </summary>
         /// <exception cref="ArgumentNullException">
         ///     <paramref name="update"/> is <see langword="null"/>.

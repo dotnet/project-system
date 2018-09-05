@@ -111,7 +111,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
         Private Const MaxPollInterval As Integer = 60 * 1000 ' 1 minutes
         Private Const MinPollInterval As Integer = 1000 ' 1 second
 
-        ' Number of calls into AsyncCompile prior to terminating inital compilation loop
+        ' Number of calls into AsyncCompile prior to terminating initial compilation loop
         Private Const CompilationLevel As Integer = 2
 
         Private _data As XmlIntellisenseSchemasData

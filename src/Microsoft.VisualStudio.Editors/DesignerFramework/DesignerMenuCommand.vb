@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.ComponentModel.Design
 Imports System.Runtime.InteropServices
@@ -330,7 +330,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         Inherits DesignerMenuCommand
 
         ''' <summary>
-        ''' Constructs an intance of an ImposterDesignerMenuCommand
+        ''' Constructs an instance of an ImposterDesignerMenuCommand
         ''' </summary>
         ''' <param name="commandId">Id of the command.</param>
         ''' <remarks>Sets the command invisible and disabled.</remarks>
