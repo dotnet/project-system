@@ -45,7 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         protected abstract Task DisposeCoreUnderLockAsync(bool initialized);
 
         /// <summary>
-        ///     Executes the specified action under a lock that presents overlap with any currently executing actions passed to
+        ///     Executes the specified action under a lock that prevents overlap with any currently executing actions passed to
         ///     <see cref="ExecuteUnderLockAsync(Func{CancellationToken, Task}, CancellationToken)"/> and 
         ///     <see cref="OnceInitializedOnceDisposedAsync.DisposeAsync"/>.
         /// </summary>
@@ -85,7 +85,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 catch (ObjectDisposedException)
                 {   // There's a tiny chance that between checking the cancellation token (wrapping DisposalToken) 
                     // and checking if the underlying SemaphoreSlim has been disposed, that dispose for this instance 
-                    // has been run. Handle that and just treat it as a cancellation.
+                    // (and hence _semaphore) has been run. Handle that and just treat it as a cancellation.
                     throw new OperationCanceledException();
                 }
             }
