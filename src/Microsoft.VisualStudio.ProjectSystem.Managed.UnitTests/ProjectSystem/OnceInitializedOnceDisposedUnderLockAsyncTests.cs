@@ -41,8 +41,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             }, cancellationTokenSource.Token);
 
-            cancellationTokenSource.Cancel();
-
             Assert.True(result);
         }
 
