@@ -575,6 +575,104 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 "CopyOutput");
         }
 
+        [Fact]
+        public async Task IsUpToDateAsync_False_CopyToOutputDirectorySourceIsNewerThanDestination()
+        {
+            var sourceSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
+            {
+                ["Content"] = new IProjectRuleSnapshotModel
+                {
+                    Items = ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal
+                        .Add("Item1", ImmutableDictionary<string, string>.Empty
+                            .Add("CopyToOutputDirectory", "PreserveNewest"))
+                }
+            };
+
+            var destinationPath = @"NewProjectDirectory\NewOutputPath\Item1";
+            var sourcePath = @"C:\Dev\Solution\Project\Item1";
+
+            var destinationTime = DateTime.Now;
+            var sourceTime = destinationTime.AddMinutes(1);
+
+            _fileSystem.AddFile(destinationPath, destinationTime);
+            _fileSystem.AddFile(sourcePath, sourceTime);
+
+            await SetupAsync(sourceSnapshot: sourceSnapshot, expectUpToDate: false);
+
+            await AssertNotUpToDateAsync(
+                new[]
+                {
+                    $"Checking PreserveNewest file '{sourcePath}':",
+                    $"    Source {sourceTime}: '{sourcePath}'.",
+                    $"    Destination {destinationTime}: '{destinationPath}'.",
+                    "PreserveNewest destination is newer than source, not up to date."
+                },
+                "CopyToOutputDirectory");
+        }
+
+        [Fact]
+        public async Task IsUpToDateAsync_False_CopyToOutputDirectorySourceDoesNotExist()
+        {
+            var sourceSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
+            {
+                ["Content"] = new IProjectRuleSnapshotModel
+                {
+                    Items = ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal
+                        .Add("Item1", ImmutableDictionary<string, string>.Empty
+                            .Add("CopyToOutputDirectory", "PreserveNewest"))
+                }
+            };
+
+            var destinationPath = @"NewProjectDirectory\NewOutputPath\Item1";
+            var sourcePath = @"C:\Dev\Solution\Project\Item1";
+
+            var destinationTime = DateTime.Now;
+
+            _fileSystem.AddFile(destinationPath, destinationTime);
+
+            await SetupAsync(sourceSnapshot: sourceSnapshot, expectUpToDate: false);
+
+            await AssertNotUpToDateAsync(
+                new[]
+                {
+                    $"Checking PreserveNewest file '{sourcePath}':",
+                    $"Source '{sourcePath}' does not exist, not up to date."
+                },
+                "CopyToOutputDirectory");
+        }
+
+        [Fact]
+        public async Task IsUpToDateAsync_False_CopyToOutputDirectoryDestinationDoesNotExist()
+        {
+            var sourceSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
+            {
+                ["Content"] = new IProjectRuleSnapshotModel
+                {
+                    Items = ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal
+                        .Add("Item1", ImmutableDictionary<string, string>.Empty
+                            .Add("CopyToOutputDirectory", "PreserveNewest"))
+                }
+            };
+
+            var destinationPath = @"NewProjectDirectory\NewOutputPath\Item1";
+            var sourcePath = @"C:\Dev\Solution\Project\Item1";
+
+            var sourceTime = DateTime.Now;
+
+            _fileSystem.AddFile(sourcePath, sourceTime);
+
+            await SetupAsync(sourceSnapshot: sourceSnapshot, expectUpToDate: false);
+
+            await AssertNotUpToDateAsync(
+                new[]
+                {
+                    $"Checking PreserveNewest file '{sourcePath}':",
+                    $"    Source {sourceTime}: '{sourcePath}'.",
+                    $"Destination '{destinationPath}' does not exist, not up to date."
+                },
+                "CopyToOutputDirectory");
+        }
+
         #region Test helpers
 
         private Task AssertNotUpToDateAsync(string logMessage = null, string telemetryReason = null, BuildAction buildAction = BuildAction.Build)
