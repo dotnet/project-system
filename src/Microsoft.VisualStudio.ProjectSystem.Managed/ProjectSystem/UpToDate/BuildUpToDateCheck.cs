@@ -524,8 +524,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 }
                 else
                 {
-                    logger.Info("Source '{0}' does not exist, not up to date.", source);
-                    return false;
+                    return Fail(logger, "CopyOutput", "Source '{0}' does not exist, not up to date.", source);
                 }
 
                 DateTime? destinationTime = GetTimestamp(destination, timestampCache);
@@ -536,14 +535,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 }
                 else
                 {
-                    logger.Info("Destination '{0}' does not exist, not up to date.", destination);
-                    return false;
+                    return Fail(logger, "CopyOutput", "Destination '{0}' does not exist, not up to date.", destination);
                 }
 
                 if (destinationTime < sourceTime)
                 {
-                    logger.Info("Build output destination is newer than source, not up to date.");
-                    return false;
+                    return Fail(logger, "CopyOutput", "Build output destination is newer than source, not up to date.");
                 }
             }
 
@@ -662,7 +659,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             if (!CheckCopiedOutputFiles(logger, timestampCache))
             {
-                _telemetryService.PostProperty(TelemetryEventName.UpToDateCheckFail, TelemetryPropertyName.UpToDateCheckFailReason, "CopyOutput");
                 return false;
             }
 
