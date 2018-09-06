@@ -479,6 +479,102 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 "Outputs");
         }
 
+        [Fact]
+        public async Task IsUpToDateAsync_False_CopiedOutputFileSourceIsNewerThanDestination()
+        {
+            var projectSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
+            {
+                ["UpToDateCheckBuilt"] = new IProjectRuleSnapshotModel
+                {
+                    Items = ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal
+                        .Add("CopiedOutputDestination", ImmutableDictionary<string, string>.Empty
+                            .Add("Original", "CopiedOutputSource"))
+                }
+            };
+
+            var destinationPath = @"C:\Dev\Solution\Project\CopiedOutputDestination";
+            var sourcePath = @"C:\Dev\Solution\Project\CopiedOutputSource";
+
+            var destinationTime = DateTime.Now;
+            var sourceTime = destinationTime.AddMinutes(1);
+
+            _fileSystem.AddFile(destinationPath, destinationTime);
+            _fileSystem.AddFile(sourcePath, sourceTime);
+
+            await SetupAsync(projectSnapshot, expectUpToDate: false);
+
+            await AssertNotUpToDateAsync(
+                new[]
+                {
+                    $"Checking build output file '{sourcePath}':",
+                    $"    Source {sourceTime}: '{sourcePath}'.",
+                    $"    Destination {destinationTime}: '{destinationPath}'.",
+                    "Build output destination is newer than source, not up to date."
+                },
+                "CopyOutput");
+        }
+
+        [Fact]
+        public async Task IsUpToDateAsync_False_CopiedOutputFileSourceDoesNotExist()
+        {
+            var projectSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
+            {
+                ["UpToDateCheckBuilt"] = new IProjectRuleSnapshotModel
+                {
+                    Items = ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal
+                        .Add("CopiedOutputDestination", ImmutableDictionary<string, string>.Empty
+                            .Add("Original", "CopiedOutputSource"))
+                }
+            };
+
+            var destinationPath = @"C:\Dev\Solution\Project\CopiedOutputDestination";
+            var sourcePath = @"C:\Dev\Solution\Project\CopiedOutputSource";
+
+            _fileSystem.AddFile(destinationPath);
+
+            await SetupAsync(projectSnapshot, expectUpToDate: false);
+
+            await AssertNotUpToDateAsync(
+                new[]
+                {
+                    $"Checking build output file '{sourcePath}':",
+                    $"Source '{sourcePath}' does not exist, not up to date."
+                },
+                "CopyOutput");
+        }
+
+        [Fact]
+        public async Task IsUpToDateAsync_False_CopiedOutputFileDestinationDoesNotExist()
+        {
+            var projectSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
+            {
+                ["UpToDateCheckBuilt"] = new IProjectRuleSnapshotModel
+                {
+                    Items = ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal
+                        .Add("CopiedOutputDestination", ImmutableDictionary<string, string>.Empty
+                            .Add("Original", "CopiedOutputSource"))
+                }
+            };
+
+            var destinationPath = @"C:\Dev\Solution\Project\CopiedOutputDestination";
+            var sourcePath = @"C:\Dev\Solution\Project\CopiedOutputSource";
+
+            var sourceTime = DateTime.Now;
+
+            _fileSystem.AddFile(sourcePath, sourceTime);
+
+            await SetupAsync(projectSnapshot, expectUpToDate: false);
+
+            await AssertNotUpToDateAsync(
+                new[]
+                {
+                    $"Checking build output file '{sourcePath}':",
+                    $"    Source {sourceTime}: '{sourcePath}'.",
+                    $"Destination '{destinationPath}' does not exist, not up to date."
+                },
+                "CopyOutput");
+        }
+
         #region Test helpers
 
         private Task AssertNotUpToDateAsync(string logMessage = null, string telemetryReason = null, BuildAction buildAction = BuildAction.Build)
