@@ -20,6 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
     internal class Dependency : IDependency
     {
         private static readonly ConcurrentBag<StringBuilder> s_builderPool = new ConcurrentBag<StringBuilder>();
+        private static readonly DependencyIconSetCache s_iconSetCache = new DependencyIconSetCache();
 
         // These priorities are for graph nodes only and are used to group graph nodes 
         // appropriately in order groups predefined order instead of alphabetically.
@@ -80,15 +81,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             // set rather than creating a new one.
             if (dependencyModel is Dependency dependency)
             {
-                _iconSet = dependency._iconSet;
+                IconSet = dependency.IconSet;
             }
             else if (dependencyModel is DependencyModel model)
             {
-                _iconSet = model.IconSet;
+                IconSet = model.IconSet;
             }
             else
             {
-                _iconSet = new DependencyIconSet(dependencyModel.Icon, dependencyModel.ExpandedIcon, dependencyModel.UnresolvedIcon, dependencyModel.UnresolvedExpandedIcon);
+                IconSet = s_iconSetCache.GetOrAddIconSet(dependencyModel.Icon, dependencyModel.ExpandedIcon, dependencyModel.UnresolvedIcon, dependencyModel.UnresolvedExpandedIcon);
             }
 
             Properties = dependencyModel.Properties ??
@@ -196,15 +197,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         public bool Implicit { get; private set; }
         public bool Visible { get; }
 
-        // Not readonly because SetProperties needs to mutate the clone.
-        private DependencyIconSet _iconSet;
 
-        public ImageMoniker Icon => _iconSet.Icon;
-        public ImageMoniker ExpandedIcon => _iconSet.ExpandedIcon;
-        public ImageMoniker UnresolvedIcon => _iconSet.UnresolvedIcon;
-        public ImageMoniker UnresolvedExpandedIcon => _iconSet.UnresolvedExpandedIcon;
+        public ImageMoniker Icon => IconSet.Icon;
+        public ImageMoniker ExpandedIcon => IconSet.ExpandedIcon;
+        public ImageMoniker UnresolvedIcon => IconSet.UnresolvedIcon;
+        public ImageMoniker UnresolvedExpandedIcon => IconSet.UnresolvedExpandedIcon;
 
-        public DependencyIconSet IconSet => _iconSet;
+        public DependencyIconSet IconSet { get; private set; }
 
         public int Priority { get; }
         public ProjectTreeFlags Flags { get; set; }
@@ -255,9 +254,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 clone.DependencyIDs = dependencyIDs;
             }
 
-            if (iconSet != null && !_iconSet.Equals(iconSet))
+            if (iconSet != null)
             {
-                _iconSet = iconSet;
+                clone.IconSet = s_iconSetCache.GetOrAddIconSet(iconSet);
             }
 
             if (isImplicit != null)
