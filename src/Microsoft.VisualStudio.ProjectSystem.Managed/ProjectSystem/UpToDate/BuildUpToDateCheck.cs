@@ -516,11 +516,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 logger.Info("Checking build output file '{0}':", source);
 
-                DateTime? itemTime = GetTimestamp(source, timestampCache);
+                DateTime? sourceTime = GetTimestamp(source, timestampCache);
 
-                if (itemTime != null)
+                if (sourceTime != null)
                 {
-                    logger.Info("    Source {0}: '{1}'.", itemTime, source);
+                    logger.Info("    Source {0}: '{1}'.", sourceTime, source);
                 }
                 else
                 {
@@ -528,11 +528,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     return false;
                 }
 
-                DateTime? outputItemTime = GetTimestamp(destination, timestampCache);
+                DateTime? destinationTime = GetTimestamp(destination, timestampCache);
 
-                if (outputItemTime != null)
+                if (destinationTime != null)
                 {
-                    logger.Info("    Destination {0}: '{1}'.", outputItemTime, destination);
+                    logger.Info("    Destination {0}: '{1}'.", destinationTime, destination);
                 }
                 else
                 {
@@ -540,7 +540,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     return false;
                 }
 
-                if (outputItemTime < itemTime)
+                if (destinationTime < sourceTime)
                 {
                     logger.Info("Build output destination is newer than source, not up to date.");
                     return false;
