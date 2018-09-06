@@ -648,22 +648,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             // Short-lived cache of timestamp by path
             var timestampCache = new Dictionary<string, DateTime>(StringComparers.Paths);
 
-            if (!CheckOutputs(logger, timestampCache))
-            {
-                return false;
-            }
-
-            if (!CheckMarkers(logger, timestampCache))
-            {
-                return false;
-            }
-
-            if (!CheckCopyToOutputDirectoryFiles(logger, timestampCache))
-            {
-                return false;
-            }
-
-            if (!CheckCopiedOutputFiles(logger, timestampCache))
+            if (!CheckOutputs(logger, timestampCache) ||
+                !CheckMarkers(logger, timestampCache) ||
+                !CheckCopyToOutputDirectoryFiles(logger, timestampCache) ||
+                !CheckCopiedOutputFiles(logger, timestampCache))
             {
                 return false;
             }
