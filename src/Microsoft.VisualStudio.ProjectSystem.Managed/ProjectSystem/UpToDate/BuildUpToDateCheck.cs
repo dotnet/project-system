@@ -509,7 +509,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
         private bool CheckCopiedOutputFiles(BuildUpToDateCheckLogger logger, IDictionary<string, DateTime> timestampCache)
         {
-            foreach ((string sourceRelative, string destinationRelative) in _copiedOutputFiles)
+            foreach ((string destinationRelative, string sourceRelative) in _copiedOutputFiles)
             {
                 string source = _configuredProject.UnconfiguredProject.MakeRooted(sourceRelative);
                 string destination = _configuredProject.UnconfiguredProject.MakeRooted(destinationRelative);
