@@ -60,6 +60,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         {
             Requires.NotNull(projectContext, nameof(projectContext));
 
+            // TODO: https://github.com/dotnet/project-system/issues/353.
             await _threadingService.SwitchToUIThread();
 
             try
@@ -73,6 +74,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
         private async Task<IWorkspaceProjectContext> CreateProjectContextHandlingFaultAsync(ProjectContextInitData data, object hostObject)
         {
+            // TODO: https://github.com/dotnet/project-system/issues/353.
             await _threadingService.SwitchToUIThread();
 
             try

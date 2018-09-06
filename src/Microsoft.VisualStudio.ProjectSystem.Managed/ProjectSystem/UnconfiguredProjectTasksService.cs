@@ -3,6 +3,7 @@
 using System;
 using System.ComponentModel.Composition;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.Threading;
@@ -45,6 +46,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public Task PrioritizedProjectLoadedInHost
         {
             get { return _prioritizedProjectLoadedInHost.Task.WithCancellation(_tasksService.UnloadCancellationToken); }
+        }
+
+        public CancellationToken UnloadCancellationToken
+        {
+            get { return _tasksService.UnloadCancellationToken; }
         }
 
         public Task LoadedProjectAsync(Func<Task> action)
