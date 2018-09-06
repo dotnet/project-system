@@ -450,6 +450,38 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             return (earliest, earliestPath);
         }
 
+        private bool CheckOutputs(BuildUpToDateCheckLogger logger, IDictionary<string, DateTime> timestampCache)
+        {
+            // We assume there are fewer outputs than inputs, so perform a full scan of outputs to find the earliest
+            (DateTime? outputTime, string outputPath) = GetEarliestOutput(CollectOutputs(logger), timestampCache);
+
+            if (outputTime != null)
+            {
+                // Search for an input that's either missing or newer than the earliest output.
+                // As soon as we find one, we can stop the scan.
+                foreach (string input in CollectInputs(logger))
+                {
+                    DateTime? time = GetTimestamp(input, timestampCache);
+
+                    if (time == null)
+                    {
+                        return Fail(logger, "Outputs", "Input '{0}' does not exist, not up to date.", input);
+                    }
+
+                    if (time > outputTime)
+                    {
+                        return Fail(logger, "Outputs", "Input '{0}' is newer ({1}) than earliest output '{2}' ({3}), not up to date.", input, time.Value, outputPath, outputTime.Value);
+                    }
+                }
+            }
+            else
+            {
+                return Fail(logger, "Outputs", "Output '{0}' does not exist, not up to date.", outputPath);
+            }
+
+            return true;
+        }
+
         // Reference assembly copy markers are strange. The property is always going to be present on
         // references to SDK-based projects, regardless of whether or not those referenced projects
         // will actually produce a marker. And an item always will be present in an SDK-based project,
@@ -616,31 +648,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             // Short-lived cache of timestamp by path
             var timestampCache = new Dictionary<string, DateTime>(StringComparers.Paths);
 
-            // We assume there are fewer outputs than inputs, so perform a full scan of outputs to find the earliest
-            (DateTime? outputTime, string outputPath) = GetEarliestOutput(CollectOutputs(logger), timestampCache);
-
-            if (outputTime != null)
+            if (!CheckOutputs(logger, timestampCache))
             {
-                // Search for an input that's either missing or newer than the earliest output.
-                // As soon as we find one, we can stop the scan.
-                foreach (string input in CollectInputs(logger))
-                {
-                    DateTime? time = GetTimestamp(input, timestampCache);
-
-                    if (time == null)
-                    {
-                        return Fail(logger, "Outputs", "Input '{0}' does not exist, not up to date.", input);
-                    }
-
-                    if (time > outputTime)
-                    {
-                        return Fail(logger, "Outputs", "Input '{0}' is newer ({1}) than earliest output '{2}' ({3}), not up to date.", input, time.Value, outputPath, outputTime.Value);
-                    }
-                }
-            }
-            else
-            {
-                return Fail(logger, "Outputs", "Output '{0}' does not exist, not up to date.", outputPath);
+                return false;
             }
 
             if (!CheckMarkers(logger, timestampCache))
