@@ -553,10 +553,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             string outputFullPath = Path.Combine(_msBuildProjectDirectory, _outputRelativeOrFullPath);
 
-            foreach ((string path, string link, CopyToOutputDirectoryType copyType) item in items)
+            foreach ((string path, string link, _) in items)
             {
-                string path = _configuredProject.UnconfiguredProject.MakeRooted(item.path);
-                string filename = string.IsNullOrEmpty(item.link) ? path : item.link;
+                string rootedPath = _configuredProject.UnconfiguredProject.MakeRooted(path);
+                string filename = string.IsNullOrEmpty(link) ? rootedPath : link;
 
                 if (string.IsNullOrEmpty(filename))
                 {
@@ -565,17 +565,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 filename = _configuredProject.UnconfiguredProject.MakeRelative(filename);
 
-                logger.Info("Checking PreserveNewest file '{0}':", path);
+                logger.Info("Checking PreserveNewest file '{0}':", rootedPath);
 
-                DateTime? itemTime = GetTimestamp(path, timestampCache);
+                DateTime? itemTime = GetTimestamp(rootedPath, timestampCache);
 
                 if (itemTime != null)
                 {
-                    logger.Info("    Source {0}: '{1}'.", itemTime, path);
+                    logger.Info("    Source {0}: '{1}'.", itemTime, rootedPath);
                 }
                 else
                 {
-                    logger.Info("Source '{0}' does not exist, not up to date.", path);
+                    logger.Info("Source '{0}' does not exist, not up to date.", rootedPath);
                     return false;
                 }
 
