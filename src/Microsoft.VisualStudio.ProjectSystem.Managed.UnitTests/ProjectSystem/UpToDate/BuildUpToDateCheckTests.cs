@@ -336,7 +336,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         }
 
         [Fact]
-        public async Task IsUpToDateAsync_False_InputNewerThanEarliestOutput()
+        public async Task IsUpToDateAsync_False_InputNewerThanBuiltOutput()
         {
             var projectSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
             {
@@ -356,12 +356,34 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             await SetupAsync(projectSnapshot, sourceSnapshot, expectUpToDate: false);
 
-            // TODO test newer inputs of types found in NonCompilationItemTypes (None, Content) with PreserveNewest semantics
-            // TODO test other kinds of input (MSBuildProjectFileFullPath, AnalyzerReferences, CompilationReferences, CustomInputs)
-            // TODO test other kinds of output (CustomOutputs)
-
             await AssertNotUpToDateAsync(
                 $"Input 'C:\\Dev\\Solution\\Project\\ItemPath1' is newer ({inputTime}) than earliest output 'C:\\Dev\\Solution\\Project\\BuiltOutputPath1' ({outputTime}), not up to date.",
+                "Outputs");
+        }
+
+        [Fact]
+        public async Task IsUpToDateAsync_False_InputNewerThanCustomOutput()
+        {
+            var projectSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
+            {
+                ["UpToDateCheckOutput"] = SimpleItems("CustomOutputPath1")
+            };
+
+            var sourceSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
+            {
+                ["Compile"] = SimpleItems("ItemPath1")
+            };
+
+            var outputTime = DateTime.Now;
+            var inputTime = outputTime.AddMinutes(1);
+
+            _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\CustomOutputPath1", outputTime);
+            _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\ItemPath1", inputTime);
+
+            await SetupAsync(projectSnapshot, sourceSnapshot, expectUpToDate: false);
+
+            await AssertNotUpToDateAsync(
+                $"Input 'C:\\Dev\\Solution\\Project\\ItemPath1' is newer ({inputTime}) than earliest output 'C:\\Dev\\Solution\\Project\\CustomOutputPath1' ({outputTime}), not up to date.",
                 "Outputs");
         }
 
