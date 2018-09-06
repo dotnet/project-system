@@ -575,8 +575,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 }
                 else
                 {
-                    logger.Info("Source '{0}' does not exist, not up to date.", rootedPath);
-                    return false;
+                    return Fail(logger, "CopyToOutputDirectory", "Source '{0}' does not exist, not up to date.", rootedPath);
                 }
 
                 string outputItem = Path.Combine(outputFullPath, filename);
@@ -588,14 +587,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 }
                 else
                 {
-                    logger.Info("Destination '{0}' does not exist, not up to date.", outputItem);
-                    return false;
+                    return Fail(logger, "CopyToOutputDirectory", "Destination '{0}' does not exist, not up to date.", outputItem);
                 }
 
                 if (outputItemTime < itemTime)
                 {
-                    logger.Info("PreserveNewest destination is newer than source, not up to date.");
-                    return false;
+                    return Fail(logger, "CopyToOutputDirectory", "PreserveNewest destination is newer than source, not up to date.");
                 }
             }
 
@@ -653,7 +650,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             if (!CheckCopyToOutputDirectoryFiles(logger, timestampCache))
             {
-                _telemetryService.PostProperty(TelemetryEventName.UpToDateCheckFail, TelemetryPropertyName.UpToDateCheckFailReason, "CopyToOutputDirectory");
                 return false;
             }
 
