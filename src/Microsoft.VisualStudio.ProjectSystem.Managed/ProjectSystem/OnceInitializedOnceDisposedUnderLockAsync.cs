@@ -9,7 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 {
     /// <summary>
     ///     Provides an implementation of <see cref="OnceInitializedOnceDisposedAsync"/> that lets 
-    ///     implementors protect themselves from being disposed while doing work.
+    ///     implementers protect themselves from being disposed while doing work.
     /// </summary>
     /// <remarks>
     ///     <see cref="OnceInitializedOnceDisposed"/> lets implementors prevent themselves from being disposed
@@ -61,7 +61,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         ///     <para>
         ///         -or-
         ///     </para>
-        ///     The result is awaited and the s<see cref="ThreadSafeOnceInitializedOnceDisposedAsync"/> 
+        ///     The result is awaited and the <see cref="ThreadSafeOnceInitializedOnceDisposedAsync"/> 
         ///     has been disposed of.
         /// </exception>
         protected Task ExecuteUnderLockAsync(Func<CancellationToken, Task> action, CancellationToken cancellationToken = default)
