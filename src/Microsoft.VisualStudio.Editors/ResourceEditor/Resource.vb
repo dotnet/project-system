@@ -2035,14 +2035,10 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             'Is it a legal identifier?  We only check this if strongly-typed resource generation is set up for this
             '  resx file.
             If Not FastChecksOnly AndAlso _parentResourceFile IsNot Nothing AndAlso _parentResourceFile.IsGeneratedToCode() Then
-                Dim CodeDomProvider As CodeDomProvider = _parentResourceFile.GetCodeDomProvider
-                If CodeDomProvider IsNot Nothing Then
-                    If Not CodeDomProvider.IsValidIdentifier(Name) Then
-                        SetTask(ResourceFile.ResourceTaskType.BadName, My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Task_InvalidName_1Arg, Name), TaskPriority.Low, "", TaskErrorCategory.Warning)
-                        Exit Sub
-                    End If
-                Else
-                    Debug.Fail("Couldn't get CodeDomProvider to validate resource name")
+                ' Validate the name using the same method that codegen uses so invalid characters are replaced as part of validation
+                If Not ValidateName(_parentResourceFile, Name, Nothing, CheckForDuplicateNames:=False) Then
+                    SetTask(ResourceFile.ResourceTaskType.BadName, My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Task_InvalidName_1Arg, Name), TaskPriority.Low, "", TaskErrorCategory.Warning)
+                    Exit Sub
                 End If
             End If
 
