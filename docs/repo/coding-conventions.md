@@ -4,7 +4,7 @@
 
 We use the same coding style conventions as outlined in [.NET Framework Coding Styles](https://github.com/dotnet/corefx/blob/master/Documentation/coding-guidelines/coding-style.md), with the following additions:
 
-- We put one type per file, including nested types. Files containing a nested type, should follow the `Parent.NestedType.cs` convention. Generic types should follow the ``GenericWithOneTypeParameter`1.cs``, ``GenericWithTwoTypeParameters`2.cs`` convention.
+- DOI put one type per file, including nested types. Files containing a nested type, should follow the `Parent.NestedType.cs` convention. Generic types should follow the ``GenericWithOneTypeParameter`1.cs``, ``GenericWithTwoTypeParameters`2.cs`` convention. If you have a single generic type,`GeneraticWithOneTypeParamter.cs` is acceptable.
 - We avoid using regions.
 - We sort members in classes in the following order; fields, constructors, events, properties and then methods.
 - We favor private fields over private properties.
@@ -41,3 +41,4 @@ These properties are user "aliases" and should only be used for conditions, disp
 
 - DO NOT call `IProjectThreadingService.ExecuteSynchronously` or `JoinableTaskFactory.Run` from a ThreadPool thread that marshals to another thread (such as via `JoinableTaskFactory.SwitchToMainThreadAsync`).
 If you synchronously block on other async code, often that code needs to run or finish on a ThreadPool thread. When the number of threads in the ThreadPool reaches a certain threshold, the ThreadPool manager slows down thread creation and only adds a new thread to the pool every 250 - 500ms. This can result in random UI deadlocks for short periods of time while the code on the UI thread waits for a new thread to be spun up. See [ThreadPool Starvation](https://github.com/Microsoft/vs-threading/blob/master/doc/threadpool_starvation.md) for more information.
+  
