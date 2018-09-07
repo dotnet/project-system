@@ -95,13 +95,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         }
 
         [Fact]
-        public void GetEvaluationRules_WhenNotInitialized_ThrowsInvalidOperation()
+        public void GetProjectEvaluationRules_WhenNotInitialized_ThrowsInvalidOperation()
         {
             var applyChangesToWorkspace = CreateInstance();
 
             Assert.Throws<InvalidOperationException>(() =>
             {
-                applyChangesToWorkspace.GetEvaluationRules();
+                applyChangesToWorkspace.GetProjectEvaluationRules();
             });
         }
 
@@ -117,7 +117,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         }
 
         [Fact]
-        public void ApplyEvaluation_WhenNotInitialized_ThrowsInvalidOperation()
+        public void ApplyProjectEvaluation_WhenNotInitialized_ThrowsInvalidOperation()
         {
             var applyChangesToWorkspace = CreateInstance();
 
@@ -125,7 +125,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             Assert.Throws<InvalidOperationException>(() =>
             {
-                applyChangesToWorkspace.ApplyEvaluation(update, false, CancellationToken.None);
+                applyChangesToWorkspace.ApplyProjectEvaluation(update, false, CancellationToken.None);
             });
         }
 
@@ -166,7 +166,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             var context = IWorkspaceProjectContextMockFactory.Create();
             Assert.Throws<ObjectDisposedException>(() =>
             {
-                applyChangesToWorkspace.GetEvaluationRules();
+                applyChangesToWorkspace.GetProjectEvaluationRules();
             });
         }
 
@@ -185,7 +185,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         }
 
         [Fact]
-        public async Task ApplyEvaluation_WhenDisposed_ThrowsObjectDisposed()
+        public async Task ApplyProjectEvaluation_WhenDisposed_ThrowsObjectDisposed()
         {
             var applyChangesToWorkspace = CreateInstance();
 
@@ -195,7 +195,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             Assert.Throws<ObjectDisposedException>(() =>
             {
-                applyChangesToWorkspace.ApplyEvaluation(update, true, CancellationToken.None);
+                applyChangesToWorkspace.ApplyProjectEvaluation(update, true, CancellationToken.None);
             });
         }
 
@@ -215,14 +215,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         }
 
         [Fact]
-        public void GetEvaluationRules_ReturnsAllEvaluationRuleNames()
+        public void GetProjectEvaluationRules_ReturnsAllProjectEvaluationRuleNames()
         {
-            var handler1 = IEvaluationHandlerFactory.ImplementEvaluationRule("Rule1");
-            var handler2 = IEvaluationHandlerFactory.ImplementEvaluationRule("Rule2");
+            var handler1 = IEvaluationHandlerFactory.ImplementProjectEvaluationRule("Rule1");
+            var handler2 = IEvaluationHandlerFactory.ImplementProjectEvaluationRule("Rule2");
 
             var applyChangesToWorkspace = CreateInitializedInstance(handlers: new[] { handler1, handler2 });
 
-            var result = applyChangesToWorkspace.GetEvaluationRules();
+            var result = applyChangesToWorkspace.GetProjectEvaluationRules();
 
             Assert.Equal(new[] { "Rule1", "Rule2" }, result.OrderBy(n => n));
         }
@@ -238,7 +238,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         }
 
         [Fact]
-        public void ApplyEvaluation_WhenNoRuleChanges_DoesNotCallHandler()
+        public void ApplyProjectEvaluation_WhenNoRuleChanges_DoesNotCallHandler()
         {
             int callCount = 0;
             var handler = IEvaluationHandlerFactory.ImplementHandle("RuleName", (version, description, isActiveContext, logger) => { callCount++; });
@@ -256,7 +256,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     }
 }");
 
-            applyChangesToWorkspace.ApplyEvaluation(update, isActiveContext: false, CancellationToken.None);
+            applyChangesToWorkspace.ApplyProjectEvaluation(update, isActiveContext: false, CancellationToken.None);
 
             Assert.Equal(0, callCount);
         }
@@ -286,7 +286,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         }
 
         [Fact]
-        public void ApplyEvaluation_CallsHandler()
+        public void ApplyProjectEvaluation_CallsHandler()
         {
             (IComparable version, IProjectChangeDescription description, bool isActiveContext, IProjectLogger logger) result = default;
 
@@ -307,7 +307,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         }
     }
 }");
-            applyChangesToWorkspace.ApplyEvaluation(update, isActiveContext: true, CancellationToken.None);
+            applyChangesToWorkspace.ApplyProjectEvaluation(update, isActiveContext: true, CancellationToken.None);
 
             Assert.Equal(2, result.version);
             Assert.NotNull(result.description);
@@ -352,7 +352,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         }
 
         [Fact]
-        public void ApplyEvaluation_WhenCancellationTokenCancelled_StopsProcessingHandlers()
+        public void ApplyProjectEvaluation_WhenCancellationTokenCancelled_StopsProcessingHandlers()
         {
             var cancellationTokenSource = new CancellationTokenSource();
 
@@ -384,7 +384,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         }
     }
 }");
-            applyChangesToWorkspace.ApplyEvaluation(update, isActiveContext: true, cancellationTokenSource.Token);
+            applyChangesToWorkspace.ApplyProjectEvaluation(update, isActiveContext: true, cancellationTokenSource.Token);
 
             Assert.True(cancellationTokenSource.IsCancellationRequested);
             Assert.Equal(0, callCount);
@@ -426,7 +426,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
 
         [Fact]
-        public void ApplyEvaluation_IgnoresCommandLineHandlers()
+        public void ApplyProjectEvaluation_IgnoresCommandLineHandlers()
         {
             int callCount = 0;
             var handler = ICommandLineHandlerFactory.ImplementHandle((version, added, removed, isActiveContext, logger) => { callCount++; });
@@ -448,7 +448,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         }
     }
 }");
-            applyChangesToWorkspace.ApplyEvaluation(update, isActiveContext: true, CancellationToken.None);
+            applyChangesToWorkspace.ApplyProjectEvaluation(update, isActiveContext: true, CancellationToken.None);
 
             Assert.Equal(0, callCount);
         }

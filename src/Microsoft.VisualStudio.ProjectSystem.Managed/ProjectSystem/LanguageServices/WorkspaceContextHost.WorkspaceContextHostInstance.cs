@@ -64,7 +64,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 _subscriptions = new DisposableBag(CancellationToken.None);
                 _subscriptions.AddDisposable(_projectSubscriptionService.ProjectRuleSource.SourceBlock.LinkToAsyncAction(
                         target: e => OnProjectChangedAsync(e, evaluation: true),
-                        ruleNames: _applyChangesToWorkspaceContext.Value.GetEvaluationRules()));
+                        ruleNames: _applyChangesToWorkspaceContext.Value.GetProjectEvaluationRules()));
 
                 _subscriptions.AddDisposable(_projectSubscriptionService.ProjectBuildRuleSource.SourceBlock.LinkToAsyncAction(
                         target: e => OnProjectChangedAsync(e, evaluation: false),
@@ -95,7 +95,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 {
                     if (evaluation)
                     {
-                        _applyChangesToWorkspaceContext.Value.ApplyEvaluation(update, isActiveContext: true, cancellationToken);
+                        _applyChangesToWorkspaceContext.Value.ApplyProjectEvaluation(update, isActiveContext: true, cancellationToken);
                     }
                     else
                     {

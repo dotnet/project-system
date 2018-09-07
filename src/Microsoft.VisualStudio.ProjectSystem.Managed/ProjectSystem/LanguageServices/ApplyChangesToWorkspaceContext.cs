@@ -77,7 +77,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             }
         }
 
-        public void ApplyEvaluation(IProjectVersionedValue<IProjectSubscriptionUpdate> update, bool isActiveContext, CancellationToken cancellationToken)
+        public void ApplyProjectEvaluation(IProjectVersionedValue<IProjectSubscriptionUpdate> update, bool isActiveContext, CancellationToken cancellationToken)
         {
             Requires.NotNull(update, nameof(update));
 
@@ -87,19 +87,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
                 IComparable version = GetConfiguredProjectVersion(update);
 
-                ProcessEvaluationHandlers(version, update, isActiveContext, cancellationToken);
+                ProcessProjectEvaluationHandlers(version, update, isActiveContext, cancellationToken);
             }
         }
 
-        public IEnumerable<string> GetEvaluationRules()
+        public IEnumerable<string> GetProjectEvaluationRules()
         {
             lock (SyncObject)
             {
                 VerifyInitializedAndNotDisposed();
 
                 return _handlers.Select(e => e.Value)
-                                .OfType<IEvaluationHandler>()
-                                .Select(e => e.EvaluationRule)
+                                .OfType<IProjectEvaluationHandler>()
+                                .Select(e => e.ProjectEvaluationRule)
                                 .Distinct(StringComparers.RuleNames)
                                 .ToArray();
             }
@@ -185,16 +185,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             }
         }
 
-        private void ProcessEvaluationHandlers(IComparable version, IProjectVersionedValue<IProjectSubscriptionUpdate> update, bool isActiveContext, CancellationToken cancellationToken)
+        private void ProcessProjectEvaluationHandlers(IComparable version, IProjectVersionedValue<IProjectSubscriptionUpdate> update, bool isActiveContext, CancellationToken cancellationToken)
         {
             foreach (ExportLifetimeContext<IWorkspaceContextHandler> handler in _handlers)
             {
                 if (cancellationToken.IsCancellationRequested)
                     break;
 
-                if (handler.Value is IEvaluationHandler evaluationHandler)
+                if (handler.Value is IProjectEvaluationHandler evaluationHandler)
                 {
-                    IProjectChangeDescription projectChange = update.Value.ProjectChanges[evaluationHandler.EvaluationRule];
+                    IProjectChangeDescription projectChange = update.Value.ProjectChanges[evaluationHandler.ProjectEvaluationRule];
                     if (!projectChange.Difference.AnyChanges)
                         continue;
                     

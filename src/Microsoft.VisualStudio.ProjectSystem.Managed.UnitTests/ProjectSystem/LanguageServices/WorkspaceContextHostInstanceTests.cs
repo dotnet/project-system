@@ -70,7 +70,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 cancellationToken.ThrowIfCancellationRequested();
             }
 
-            var applyChangesToWorkspaceContext = evaluation ? IApplyChangesToWorkspaceContextFactory.ImplementApplyEvaluation(applyChanges) : IApplyChangesToWorkspaceContextFactory.ImplementApplyDesignTime(applyChanges);
+            var applyChangesToWorkspaceContext = evaluation ? IApplyChangesToWorkspaceContextFactory.ImplementApplyProjectEvaluation(applyChanges) : IApplyChangesToWorkspaceContextFactory.ImplementApplyDesignTime(applyChanges);
 
             var instance = await CreateInitializedInstanceAsync(tasksService: tasksService, applyChangesToWorkspaceContext: applyChangesToWorkspaceContext);
 
@@ -96,7 +96,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 cancellationToken.ThrowIfCancellationRequested();
             }
 
-            var applyChangesToWorkspaceContext = evaluation ? IApplyChangesToWorkspaceContextFactory.ImplementApplyEvaluation(applyChanges) : IApplyChangesToWorkspaceContextFactory.ImplementApplyDesignTime(applyChanges);
+            var applyChangesToWorkspaceContext = evaluation ? IApplyChangesToWorkspaceContextFactory.ImplementApplyProjectEvaluation(applyChanges) : IApplyChangesToWorkspaceContextFactory.ImplementApplyDesignTime(applyChanges);
 
             instance = await CreateInitializedInstanceAsync(applyChangesToWorkspaceContext: applyChangesToWorkspaceContext);
 
@@ -121,7 +121,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 isActiveContextResult = iac;
             }
 
-            var applyChangesToWorkspaceContext = evaluation ? IApplyChangesToWorkspaceContextFactory.ImplementApplyEvaluation(applyChanges) : IApplyChangesToWorkspaceContextFactory.ImplementApplyDesignTime(applyChanges);
+            var applyChangesToWorkspaceContext = evaluation ? IApplyChangesToWorkspaceContextFactory.ImplementApplyProjectEvaluation(applyChanges) : IApplyChangesToWorkspaceContextFactory.ImplementApplyDesignTime(applyChanges);
 
             var instance = await CreateInitializedInstanceAsync(applyChangesToWorkspaceContext: applyChangesToWorkspaceContext);
 

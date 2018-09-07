@@ -22,10 +22,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             return mock.Object;
         }
 
-        public static IApplyChangesToWorkspaceContext ImplementApplyEvaluation(Action<IProjectVersionedValue<IProjectSubscriptionUpdate>, bool, CancellationToken> action)
+        public static IApplyChangesToWorkspaceContext ImplementApplyProjectEvaluation(Action<IProjectVersionedValue<IProjectSubscriptionUpdate>, bool, CancellationToken> action)
         {
             var mock = new Mock<IApplyChangesToWorkspaceContext>();
-            mock.Setup(c => c.ApplyEvaluation(It.IsAny<IProjectVersionedValue<IProjectSubscriptionUpdate>>(), It.IsAny<bool>(), It.IsAny<CancellationToken>()))
+            mock.Setup(c => c.ApplyProjectEvaluation(It.IsAny<IProjectVersionedValue<IProjectSubscriptionUpdate>>(), It.IsAny<bool>(), It.IsAny<CancellationToken>()))
                 .Callback(action);
 
             return mock.Object;
