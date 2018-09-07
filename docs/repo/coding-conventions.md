@@ -58,4 +58,7 @@ These properties are user "aliases" and should only be used for conditions, disp
 
 - **DO NOT** call `IProjectThreadingService.ExecuteSynchronously` or `JoinableTaskFactory.Run` from a ThreadPool thread that marshals to another thread (such as via `JoinableTaskFactory.SwitchToMainThreadAsync`).
 If you synchronously block on other async code, often that code needs to run or finish on a ThreadPool thread. When the number of threads in the ThreadPool reaches a certain threshold, the ThreadPool manager slows down thread creation and only adds a new thread to the pool every 250 - 500ms. This can result in random UI deadlocks for short periods of time while the code on the UI thread waits for a new thread to be spun up. See [ThreadPool Starvation](https://github.com/Microsoft/vs-threading/blob/master/doc/threadpool_starvation.md) for more information.
-  
+
+- **AVOID** marking `await` calls with `ConfigureAwait(true)` or `ConfigureAwait(false)`.
+
+We follow the [Visual Studio guidelines](https://github.com/Microsoft/vs-threading/blob/master/doc/cookbook_vs.md#should-i-await-a-task-with-configureawaitfalse) around `ConfigureAwait` usage.
