@@ -2,7 +2,7 @@
 
 using System;
 using System.Threading.Tasks;
-
+using EnvDTE;
 using EnvDTE80;
 
 using Microsoft.VisualStudio.Shell.Interop;
@@ -70,7 +70,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             string fileName = "Settings.settings";
 
             var hierarchy = IVsHierarchyFactory.Create();
-            var solution = SolutionFactory.CreateWithGetProjectItemTemplate((templateFile, language) =>
+            var solution = (Solution)SolutionFactory.CreateWithGetProjectItemTemplate((templateFile, language) =>
             {
                 Assert.Equal(templateName, templateFile);
                 return templateFilePath;
@@ -90,11 +90,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 return VSConstants.S_OK;
             });
 
-            var dteServices = IDteServicesFactory.ImplementSolution(() => solution);
+            var dte = DTEFactory.ImplementSolution(() => solution);
 
             var projectVsServices = IUnconfiguredProjectVsServicesFactory.Implement(() => hierarchy, () => vsProject);
             var properties = CreateProperties();
-            var service = new CreateFileFromTemplateService(projectVsServices, dteServices, properties);
+            var service = CreateInstance(projectVsServices, dte, properties);
 
             bool returnValue = await service.CreateFileAsync(templateName, "Moniker", fileName);
             Assert.Equal(returnValue, expectedResult);
@@ -105,13 +105,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             return CreateInstance(null, null, null);
         }
 
-        private CreateFileFromTemplateService CreateInstance(IUnconfiguredProjectVsServices projectVsServices, IDteServices dteServices, ProjectProperties properties)
+        private CreateFileFromTemplateService CreateInstance(IUnconfiguredProjectVsServices projectVsServices, DTE2 dte, ProjectProperties properties)
         {
             projectVsServices = projectVsServices ?? IUnconfiguredProjectVsServicesFactory.Create();
-            dteServices = dteServices ?? IDteServicesFactory.Create();
+            dte = dte ?? DTEFactory.Create();
             properties = properties ?? ProjectPropertiesFactory.CreateEmpty();
 
-            return new CreateFileFromTemplateService(projectVsServices, dteServices, properties);
+            return new CreateFileFromTemplateService(projectVsServices, IVsUIServiceFactory.Create<SDTE, DTE2>(dte), properties);
         }
 
         private ProjectProperties CreateProperties()
