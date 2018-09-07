@@ -4,25 +4,29 @@
 
 We use the same coding style conventions as outlined in [.NET Framework Coding Styles](https://github.com/dotnet/corefx/blob/master/Documentation/coding-guidelines/coding-style.md), with the following additions:
 
-- DOI put one type per file, including nested types. Files containing a nested type, should follow the `Parent.NestedType.cs` convention. Generic types should follow the ``GenericWithOneTypeParameter`1.cs``, ``GenericWithTwoTypeParameters`2.cs`` convention. If you have a single generic type,`GeneraticWithOneTypeParamter.cs` is acceptable.
-- We avoid using regions.
-- We sort members in classes in the following order; fields, constructors, events, properties and then methods.
-- We favor private fields over private properties.
-- Internal fields are `PascalCased` not `_camelCased`.
+- DO put one type per file, including nested types. Files containing a nested type, should follow the `Parent.NestedType.cs` convention. Generic types should follow the ``GenericWithOneTypeParameter`1.cs``, ``GenericWithTwoTypeParameters`2.cs`` convention. If you have a single generic type,`GeneraticWithOneTypeParamter.cs` is acceptable.
+- AVOID using regions.
+- DO sort members in classes in the following order; fields, constructors, events, properties and then methods.
+- DO use private fields over private properties.
+- DO case internal fields as `PascalCased` not `_camelCased`.
 
 ## MEF
 
 - For MEF parts/components, we favor constructor injection over property/field injection.
 - We flavor `IVsUIService<T>` and `IVsUIService<TService, TInterface>` over usage of `IServiceProvider`.
-  - IVsUIService enforces UI thread access which prevents accidental RPC calls from a background thread.
+  
+IVsUIService enforces UI thread access which prevents accidental RPC calls from a background thread.
+  
 - We flavor `IVsService<T>` and `IVsService<TService, TInterface>` over usage of `IAsyncServiceProvider`.
-  - IVsService ensures casts are performed on the UI thread which prevents accidental RPC calls from a background thread.
+  
+IVsService ensures casts are performed on the UI thread which prevents accidental RPC calls from a background thread.
+  
 - We favor importing components over usage of `IComponentModel`.
 
 ## Tests
 
-- We favor a single Assert per unit test.
-- We use the `Method_Setup_Behavior` naming style for unit tests, for example, `GetProperty_NullAsName_ThrowsArgument` or `CalculateValues_WhenDisposed_ReturnsNull`.
+- DO favor a single Assert per unit test.
+- DO use the `Method_Setup_Behavior` naming style for unit tests, for example, `GetProperty_NullAsName_ThrowsArgument` or `CalculateValues_WhenDisposed_ReturnsNull`.
 
 # Guidelines
 
