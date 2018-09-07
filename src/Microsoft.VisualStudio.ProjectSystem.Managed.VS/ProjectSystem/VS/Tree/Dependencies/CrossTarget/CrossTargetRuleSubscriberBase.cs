@@ -80,6 +80,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         {
             _currentProjectContext = null;
 
+            // We can't re-use the DisposableBag after disposing it, so null it out
+            // to ensure we create a new one the next time we go to add subscriptions.
             _subscriptions?.Dispose();
             _subscriptions = null;
         }
