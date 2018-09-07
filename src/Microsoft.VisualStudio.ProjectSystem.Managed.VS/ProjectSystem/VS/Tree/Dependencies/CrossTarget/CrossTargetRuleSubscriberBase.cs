@@ -80,11 +80,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         {
             _currentProjectContext = null;
 
-            if (_subscriptions != null)
-            {
-                _subscriptions.Dispose();
-                _subscriptions = null;
-            }
+            _subscriptions?.Dispose();
+            _subscriptions = null;
         }
 
         private void SubscribeToConfiguredProject(
@@ -107,10 +104,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                         NameFormat = "CrossTarget Intermediate Evaluation Input: {1}"
                     });
 
-            if (_subscriptions == null)
-            {
-                _subscriptions = new DisposableBag();
-            }
+            _subscriptions = _subscriptions ?? new DisposableBag();
 
             _subscriptions.AddDisposable(
                 subscriptionService.JointRuleSource.SourceBlock.LinkTo(
