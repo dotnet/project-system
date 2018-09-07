@@ -12,16 +12,17 @@ We use the same coding style conventions as outlined in [.NET Framework Coding S
 
 ## MEF
 
-- For MEF parts/components, we favor constructor injection over property/field injection.
-- We flavor `IVsUIService<T>` and `IVsUIService<TService, TInterface>` over usage of `IServiceProvider`.
+- DO use constructor injection over property/field injection.
+
+- DO use `IVsUIService<T>` and `IVsUIService<TService, TInterface>` over usage of `IServiceProvider`.
   
 IVsUIService enforces UI thread access which prevents accidental RPC calls from a background thread.
   
-- We flavor `IVsService<T>` and `IVsService<TService, TInterface>` over usage of `IAsyncServiceProvider`.
+- DO use `IVsService<T>` and `IVsService<TService, TInterface>` over usage of `IAsyncServiceProvider`.
   
 IVsService ensures casts are performed on the UI thread which prevents accidental RPC calls from a background thread.
   
-- We favor importing components over usage of `IComponentModel`.
+- DO use MEF imports over direct usage of `IComponentModel`.
 
 ## Tests
 
