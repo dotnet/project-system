@@ -69,7 +69,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
             }
 
 
-            var shell = (IVsUIShell)serviceProvider.GetService<SVsUIShell>();
+            var shell = serviceProvider.GetService<IVsUIShell, SVsUIShell>();
 
             object pvar = null;
             IVsUIHierarchyWindow uiHierarchyWindow = null;
