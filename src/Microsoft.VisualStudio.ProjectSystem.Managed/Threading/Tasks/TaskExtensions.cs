@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.Threading.Tasks
@@ -26,12 +27,16 @@ namespace Microsoft.VisualStudio.Threading.Tasks
         /// </exception>
         public static async Task<bool> TryWaitForCompleteOrTimeout(this Task task, int millisecondsTimeout)
         {
-            if (task != await Task.WhenAny(task, Task.Delay(millisecondsTimeout)).ConfigureAwait(false))
+            using (var cts = new CancellationTokenSource())
             {
-                return false;
+                if (task != await Task.WhenAny(task, Task.Delay(millisecondsTimeout, cts.Token)))
+                {
+                    return false;
+                }
+                cts.Cancel();
+                await task;
+                return true;
             }
-
-            return true;
         }
     }
 }
