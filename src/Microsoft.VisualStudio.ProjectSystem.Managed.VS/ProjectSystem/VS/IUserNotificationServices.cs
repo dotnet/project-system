@@ -10,8 +10,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         void NotifyFailure(string failureMessage);
 
-        void ReportErrorInfo(int hr);
-
         /// <summary>
         /// Note that typically you wan to set the title to null and have VS decide on the caption. If you do add a title it will
         /// appear in the message box area above the message string

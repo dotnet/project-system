@@ -48,19 +48,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         }
 
         /// <summary>
-        /// Uses IVsUIShell to display the error associated with the hr. Will look for an error string on the current thread that was
-        /// set by SetErrorInfo() and use that. Otherwise, tries to get the best error from the hResult.
-        /// </summary>
-        public void ReportErrorInfo(int hr)
-        {
-            _threadingService.VerifyOnUIThread();
-
-            IVsUIShell vsUIShell = _serviceProvider.GetService<IVsUIShell, SVsUIShell>();
-
-            int result = vsUIShell.ReportErrorInfo(hr);
-        }
-
-        /// <summary>
         /// It is the responsibility of caller to call this method on UI Thread.
         /// The method will throw if not called on UI Thread.
         /// </summary>

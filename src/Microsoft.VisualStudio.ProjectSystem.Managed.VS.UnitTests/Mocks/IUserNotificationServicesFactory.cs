@@ -20,14 +20,5 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             return mock.Object;
         }
-
-        public static IUserNotificationServices ImplementReportErrorInfo()
-        {
-            var mock = new Mock<IUserNotificationServices>();
-
-            mock.Setup(h => h.ReportErrorInfo(It.IsAny<int>()));
-
-            return mock.Object;
-        }
     }
 }
