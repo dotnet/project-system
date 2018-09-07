@@ -16,7 +16,7 @@ We use the same coding style conventions as outlined in [.NET Framework Coding S
 - We flavor `IVsUIService<T>` and `IVsUIService<TService, TInterface>` over usage of `IServiceProvider`.
   - IVsUIService enforces UI thread access which prevents accidental RPC calls from a background thread.
 - We flavor `IVsService<T>` and `IVsService<TService, TInterface>` over usage of `IAsyncServiceProvider`.
-  - IVsService ensure casts are performed on the UI thread which prevents accidental RPC calls from a background thread.
+  - IVsService ensures casts are performed on the UI thread which prevents accidental RPC calls from a background thread.
 - We favor importing components over usage of `IComponentModel`.
 
 ## Tests
