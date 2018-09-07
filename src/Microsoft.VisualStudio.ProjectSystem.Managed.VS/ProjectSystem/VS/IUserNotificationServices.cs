@@ -4,14 +4,32 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     internal interface IUserNotificationServices
     {
+        /// <summary>
+        ///     Shows a Yes/No confirmation box to the user.
+        /// </summary>
+        /// <returns>
+        ///     <see langword="true"/> if the user clicked the Yes button, otherwise; 
+        ///     <see langword="false"/> if the user clicked the No button.
+        /// </returns>
+        ///<exception cref="COMException">
+        ///     This method was not accessed from the UI thread.
+        /// </exception>
         bool Confirm(string message);
 
+        /// <summary>
+        ///     Shows a warning to the user.
+        /// </summary>
+        ///<exception cref="COMException">
+        ///     This method was not accessed from the UI thread.
+        /// </exception>
         void ShowWarning(string warning);
 
         /// <summary>
-        /// Note that typically you wan to set the title to null and have VS decide on the caption. If you do add a title it will
-        /// appear in the message box area above the message string
+        ///     Shows a error to the user.
         /// </summary>
+        ///<exception cref="COMException">
+        ///     This method was not accessed from the UI thread.
+        /// </exception>
         void ShowError(string error);
     }
 }
