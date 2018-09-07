@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
     {
 #pragma warning disable CA2213 // OnceInitializedOnceDisposedAsync are not tracked corretly by the IDisposeable analyzer
         private readonly SemaphoreSlim _gate = new SemaphoreSlim(initialCount: 1);
-        private readonly DisposableBag _subscriptions = new DisposableBag();
+        private DisposableBag _subscriptions;
 #pragma warning restore CA2213
         private readonly IUnconfiguredProjectCommonServices _commonServices;
         private readonly IProjectAsynchronousTasksService _tasksService;
@@ -79,7 +79,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         public void ReleaseSubscriptions()
         {
             _currentProjectContext = null;
-            _subscriptions.Dispose();
+
+            if (_subscriptions != null)
+            {
+                _subscriptions.Dispose();
+                _subscriptions = null;
+            }
         }
 
         private void SubscribeToConfiguredProject(
@@ -101,6 +106,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                     {
                         NameFormat = "CrossTarget Intermediate Evaluation Input: {1}"
                     });
+
+            if (_subscriptions == null)
+            {
+                _subscriptions = new DisposableBag();
+            }
 
             _subscriptions.AddDisposable(
                 subscriptionService.JointRuleSource.SourceBlock.LinkTo(
