@@ -85,7 +85,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         }
 
         /// <summary>
-        ///     Applys the specified version of evaluation <see cref="IProjectChangeDiff"/> and metadata to the underlying 
+        ///     Applies the specified version of evaluation <see cref="IProjectChangeDiff"/> and metadata to the underlying 
         ///     <see cref="IWorkspaceProjectContext"/>, indicating if the context is the currently active one.
         /// </summary>
         /// <exception cref="ArgumentNullException">
@@ -120,7 +120,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         }
 
         /// <summary>
-        ///     Applys the specified version of design-time build <see cref="IProjectChangeDiff"/> to the underlying
+        ///     Applies the specified version of design-time build <see cref="IProjectChangeDiff"/> to the underlying
         ///     <see cref="IWorkspaceProjectContext"/>, indicating if the context is the currently active one.
         /// </summary>
         /// <exception cref="ArgumentNullException">
