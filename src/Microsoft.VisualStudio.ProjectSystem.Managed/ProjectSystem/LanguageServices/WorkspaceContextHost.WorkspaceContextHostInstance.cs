@@ -68,7 +68,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
                 _subscriptions.AddDisposable(_projectSubscriptionService.ProjectBuildRuleSource.SourceBlock.LinkToAsyncAction(
                         target: e => OnProjectChangedAsync(e, evaluation: false),
-                        ruleNames: _applyChangesToWorkspaceContext.Value.GetDesignTimeRules()));
+                        ruleNames: _applyChangesToWorkspaceContext.Value.GetProjectBuildRules()));
             }
 
             protected override async Task DisposeCoreUnderLockAsync(bool initialized)
@@ -99,7 +99,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                     }
                     else
                     {
-                        _applyChangesToWorkspaceContext.Value.ApplyDesignTime(update, isActiveContext: true, cancellationToken);
+                        _applyChangesToWorkspaceContext.Value.ApplyProjectBuild(update, isActiveContext: true, cancellationToken);
                     }
 
                     return Task.CompletedTask;

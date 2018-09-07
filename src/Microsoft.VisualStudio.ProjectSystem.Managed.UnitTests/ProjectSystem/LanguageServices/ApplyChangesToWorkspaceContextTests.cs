@@ -112,7 +112,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             Assert.Throws<InvalidOperationException>(() =>
             {
-                applyChangesToWorkspace.GetDesignTimeRules();
+                applyChangesToWorkspace.GetProjectBuildRules();
             });
         }
 
@@ -130,7 +130,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         }
 
         [Fact]
-        public void ApplyDesignTime_WhenNotInitialized_ThrowsInvalidOperation()
+        public void ApplyProjectBuild_WhenNotInitialized_ThrowsInvalidOperation()
         {
             var applyChangesToWorkspace = CreateInstance();
 
@@ -138,7 +138,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             Assert.Throws<InvalidOperationException>(() =>
             {
-                applyChangesToWorkspace.ApplyDesignTime(update, false, CancellationToken.None);
+                applyChangesToWorkspace.ApplyProjectBuild(update, false, CancellationToken.None);
             });
         }
 
@@ -180,7 +180,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             var context = IWorkspaceProjectContextMockFactory.Create();
             Assert.Throws<ObjectDisposedException>(() =>
             {
-                applyChangesToWorkspace.GetDesignTimeRules();
+                applyChangesToWorkspace.GetProjectBuildRules();
             });
         }
 
@@ -200,7 +200,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         }
 
         [Fact]
-        public async Task ApplyDesignTime_WhenDisposed_ThrowsObjectDisposed()
+        public async Task ApplyProjectBuild_WhenDisposed_ThrowsObjectDisposed()
         {
             var applyChangesToWorkspace = CreateInstance();
 
@@ -210,7 +210,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             Assert.Throws<ObjectDisposedException>(() =>
             {
-                applyChangesToWorkspace.ApplyDesignTime(update, true, CancellationToken.None);
+                applyChangesToWorkspace.ApplyProjectBuild(update, true, CancellationToken.None);
             });
         }
 
@@ -232,7 +232,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         {
             var applyChangesToWorkspace = CreateInitializedInstance();
 
-            var result = applyChangesToWorkspace.GetDesignTimeRules();
+            var result = applyChangesToWorkspace.GetProjectBuildRules();
 
             Assert.Single(result, "CompilerCommandLineArgs");
         }
@@ -262,7 +262,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         }
 
         [Fact]
-        public void ApplyDesignTime_WhenNoCompilerCommandLineArgsRuleChanges_DoesNotCallHandler()
+        public void ApplyProjectBuild_WhenNoCompilerCommandLineArgsRuleChanges_DoesNotCallHandler()
         {
             int callCount = 0;
             var handler = ICommandLineHandlerFactory.ImplementHandle((version, added, removed, isActiveContext, logger) => { callCount++; });
@@ -280,7 +280,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     }
 }");
 
-            applyChangesToWorkspace.ApplyDesignTime(update, isActiveContext: false, CancellationToken.None);
+            applyChangesToWorkspace.ApplyProjectBuild(update, isActiveContext: false, CancellationToken.None);
 
             Assert.Equal(0, callCount);
         }
@@ -316,7 +316,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         }
 
         [Fact]
-        public void ApplyDesignTime_ParseCommandLineAndCallsHandler()
+        public void ApplyProjectBuild_ParseCommandLineAndCallsHandler()
         {
             (IComparable version, BuildOptions added, BuildOptions removed, bool isActiveContext, IProjectLogger logger) result = default;
 
@@ -341,7 +341,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         }
     }
 }");
-            applyChangesToWorkspace.ApplyDesignTime(update, isActiveContext: true, CancellationToken.None);
+            applyChangesToWorkspace.ApplyProjectBuild(update, isActiveContext: true, CancellationToken.None);
 
             Assert.Equal(2, result.version);
             Assert.True(result.isActiveContext);
@@ -391,7 +391,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         }
 
         [Fact]
-        public void ApplyDesignTime_WhenCancellationTokenCancelled_StopsProcessingHandlers()
+        public void ApplyProjectBuild_WhenCancellationTokenCancelled_StopsProcessingHandlers()
         {
             var cancellationTokenSource = new CancellationTokenSource();
 
@@ -418,7 +418,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         }
     }
 }");
-            applyChangesToWorkspace.ApplyDesignTime(update, isActiveContext: true, cancellationTokenSource.Token);
+            applyChangesToWorkspace.ApplyProjectBuild(update, isActiveContext: true, cancellationTokenSource.Token);
 
             Assert.True(cancellationTokenSource.IsCancellationRequested);
             Assert.Equal(0, callCount);
@@ -455,7 +455,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
 
         [Fact]
-        public void ApplyDesignTime_IgnoresEvaluationHandlers()
+        public void ApplyProjectBuild_IgnoresEvaluationHandlers()
         {
             int callCount = 0;
             var handler = IEvaluationHandlerFactory.ImplementHandle("RuleName", (version, description, isActiveContext, logger) => { callCount++; });
@@ -477,14 +477,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         }
     }
 }");
-            applyChangesToWorkspace.ApplyDesignTime(update, isActiveContext: true, CancellationToken.None);
+            applyChangesToWorkspace.ApplyProjectBuild(update, isActiveContext: true, CancellationToken.None);
 
             Assert.Equal(0, callCount);
         }
 
 
         [Fact]
-        public void ApplyDesignTime_WhenDesignTimeBuildFails_SetsLastDesignTimeBuildSucceededToFalse()
+        public void ApplyProjectBuild_WhenDesignTimeBuildFails_SetsLastDesignTimeBuildSucceededToFalse()
         {
             var applyChangesToWorkspace = CreateInitializedInstance(out var context);
             context.LastDesignTimeBuildSucceeded = true;
@@ -503,13 +503,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     }
 }");
 
-            applyChangesToWorkspace.ApplyDesignTime(update, isActiveContext: false, CancellationToken.None);
+            applyChangesToWorkspace.ApplyProjectBuild(update, isActiveContext: false, CancellationToken.None);
 
             Assert.False(context.LastDesignTimeBuildSucceeded);
         }
 
         [Fact]
-        public void ApplyDesignTime_AfterFailingDesignTimeBuildSucceeds_SetsLastDesignTimeBuildSucceededToTrue()
+        public void ApplyProjectBuild_AfterFailingDesignTimeBuildSucceeds_SetsLastDesignTimeBuildSucceededToTrue()
         {
             var applyChangesToWorkspace = CreateInitializedInstance(out var context);
 
@@ -527,7 +527,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     }
 }");
 
-            applyChangesToWorkspace.ApplyDesignTime(update, isActiveContext: false, CancellationToken.None);
+            applyChangesToWorkspace.ApplyProjectBuild(update, isActiveContext: false, CancellationToken.None);
 
             Assert.True(context.LastDesignTimeBuildSucceeded);
         }

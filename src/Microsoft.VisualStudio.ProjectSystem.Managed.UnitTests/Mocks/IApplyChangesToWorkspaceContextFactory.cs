@@ -13,10 +13,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             return Mock.Of<IApplyChangesToWorkspaceContext>();
         }
 
-        public static IApplyChangesToWorkspaceContext ImplementApplyDesignTime(Action<IProjectVersionedValue<IProjectSubscriptionUpdate>, bool, CancellationToken> action)
+        public static IApplyChangesToWorkspaceContext ImplementApplyProjectBuild(Action<IProjectVersionedValue<IProjectSubscriptionUpdate>, bool, CancellationToken> action)
         {
             var mock = new Mock<IApplyChangesToWorkspaceContext>();
-            mock.Setup(c => c.ApplyDesignTime(It.IsAny<IProjectVersionedValue<IProjectSubscriptionUpdate>>(), It.IsAny<bool>(), It.IsAny<CancellationToken>()))
+            mock.Setup(c => c.ApplyProjectBuild(It.IsAny<IProjectVersionedValue<IProjectSubscriptionUpdate>>(), It.IsAny<bool>(), It.IsAny<CancellationToken>()))
                 .Callback(action);
 
             return mock.Object;

@@ -18,10 +18,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         IEnumerable<string> GetProjectEvaluationRules();
 
         /// <summary>
-        ///     Returns an enumerable of design-time rules that should passed to
-        ///     <see cref="ApplyDesignTime(IProjectVersionedValue{IProjectSubscriptionUpdate}, bool)"/>.
+        ///     Returns an enumerable of project build rules that should passed to
+        ///     <see cref="ApplyProjectBuild(IProjectVersionedValue{IProjectSubscriptionUpdate}, bool)"/>.
         /// </summary>
-        IEnumerable<string> GetDesignTimeRules();
+        IEnumerable<string> GetProjectBuildRules();
 
         /// <summary>
         ///     Initializes the service with the specified <see cref="IWorkspaceProjectContext"/>.
@@ -55,7 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         void ApplyProjectEvaluation(IProjectVersionedValue<IProjectSubscriptionUpdate> update, bool isActiveContext, CancellationToken cancellationToken);
 
         /// <summary>
-        ///     Applies evaluation changes to the underlying <see cref="IWorkspaceProjectContext"/>.
+        ///     Applies project build changes to the underlying <see cref="IWorkspaceProjectContext"/>.
         /// </summary>
         /// <exception cref="ArgumentNullException">
         ///     <paramref name="update"/> is <see langword="null"/>.
@@ -72,6 +72,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         ///     to the project snapshot state. The cancellation token should only be cancelled with the
         ///     intention that the <see cref="IWorkspaceProjectContext"/> will be immediately disposed.
         /// </remarks>
-        void ApplyDesignTime(IProjectVersionedValue<IProjectSubscriptionUpdate> update, bool isActiveContext, CancellationToken cancellationToken);
+        void ApplyProjectBuild(IProjectVersionedValue<IProjectSubscriptionUpdate> update, bool isActiveContext, CancellationToken cancellationToken);
     }
 }

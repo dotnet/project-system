@@ -54,7 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             IProjectChangeDiff difference = ConvertToProjectDiff(added, removed);
 
-            ApplyDesignTimeChanges(version, difference, isActiveContext, logger);
+            ApplyProjectBuild(version, difference, isActiveContext, logger);
         }
 
         protected override void AddToContext(string fullPath, IImmutableDictionary<string, string> metadata, bool isActiveContext, IProjectLogger logger)

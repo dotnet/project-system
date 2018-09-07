@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     /// </summary>
     internal abstract partial class AbstractEvaluationCommandLineHandler : AbstractWorkspaceContextHandler
     {
-        // This class is not thread-safe, and the assumption is that the caller will make sure that project evaluations and design-time builds 
+        // This class is not thread-safe, and the assumption is that the caller will make sure that project evaluations and builds (design-time) 
         // do not overlap inside the class at the same time.
         //
         // In the ideal world, we would simply wait for a design-time build to get the command-line arguments that would have been passed
@@ -120,7 +120,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         }
 
         /// <summary>
-        ///     Applies the specified version of design-time build <see cref="IProjectChangeDiff"/> to the underlying
+        ///     Applies the specified version of the project build <see cref="IProjectChangeDiff"/> to the underlying
         ///     <see cref="IWorkspaceProjectContext"/>, indicating if the context is the currently active one.
         /// </summary>
         /// <exception cref="ArgumentNullException">
@@ -134,7 +134,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         ///     </para>
         ///     <paramref name="logger" /> is <see langword="null"/>.
         /// </exception>
-        public void ApplyDesignTimeChanges(IComparable version, IProjectChangeDiff difference, bool isActiveContext, IProjectLogger logger)
+        public void ApplyProjectBuild(IComparable version, IProjectChangeDiff difference, bool isActiveContext, IProjectLogger logger)
         {
             Requires.NotNull(version, nameof(version));
             Requires.NotNull(difference, nameof(difference));
@@ -144,7 +144,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
                 return;
 
             difference = NormalizeDifferences(difference);
-            difference = ResolveDesignTimeConflicts(version, difference);
+            difference = ResolveProjectBuildConflicts(version, difference);
 
             ApplyChangesToContext(version, difference, ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal, isActiveContext, logger);
         }
@@ -205,30 +205,30 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             }
         }
 
-        private IProjectChangeDiff ResolveDesignTimeConflicts(IComparable designTimeVersion, IProjectChangeDiff designTimeDifference)
+        private IProjectChangeDiff ResolveProjectBuildConflicts(IComparable projectBuildVersion, IProjectChangeDiff projectBuildDifference)
         {
-            DiscardOutOfDateProjectEvaluations(designTimeVersion);
+            DiscardOutOfDateProjectEvaluations(projectBuildVersion);
 
             // Walk all evaluations (if any) that occurred since we launched and resolve the conflicts
             foreach (VersionedProjectChangeDiff evaluation in _projectEvaluations)
             {
-                Assumes.True(evaluation.Version.IsLaterThan(designTimeVersion), "Attempted to resolve a conflict between a design-time build and an earlier evaluation.");
+                Assumes.True(evaluation.Version.IsLaterThan(projectBuildVersion), "Attempted to resolve a conflict between a project build and an earlier project evaluation.");
 
-                designTimeDifference = ResolveConflicts(evaluation.Difference, designTimeDifference);
+                projectBuildDifference = ResolveConflicts(evaluation.Difference, projectBuildDifference);
             }
 
-            return designTimeDifference;
+            return projectBuildDifference;
         }
 
-        private static IProjectChangeDiff ResolveConflicts(IProjectChangeDiff evaluationDifferences, IProjectChangeDiff designTimeDifferences)
+        private static IProjectChangeDiff ResolveConflicts(IProjectChangeDiff evaluationDifferences, IProjectChangeDiff projectBuildDifferences)
         {
             // Remove added items that were removed by later evaluations, and vice versa
-            IImmutableSet<string> added = designTimeDifferences.AddedItems.Except(evaluationDifferences.RemovedItems);
-            IImmutableSet<string> removed = designTimeDifferences.RemovedItems.Except(evaluationDifferences.AddedItems);
+            IImmutableSet<string> added = projectBuildDifferences.AddedItems.Except(evaluationDifferences.RemovedItems);
+            IImmutableSet<string> removed = projectBuildDifferences.RemovedItems.Except(evaluationDifferences.AddedItems);
 
-            Assumes.True(designTimeDifferences.ChangedItems.Count == 0, "We should never see ChangedItems during design-time builds.");
+            Assumes.True(projectBuildDifferences.ChangedItems.Count == 0, "We should never see ChangedItems during project builds.");
 
-            return new ProjectChangeDiff(added, removed, designTimeDifferences.ChangedItems);
+            return new ProjectChangeDiff(added, removed, projectBuildDifferences.ChangedItems);
         }
 
         private void DiscardOutOfDateProjectEvaluations(IComparable version)
@@ -249,7 +249,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
         private void EnqueueProjectEvaluation(IComparable version, IProjectChangeDiff evaluationDifference)
         {
-            Assumes.False(_projectEvaluations.Count > 0 && version.IsEarlierThanOrEqualTo(_projectEvaluations.Peek().Version), "Attempted to push an evaluation that regressed in version.");
+            Assumes.False(_projectEvaluations.Count > 0 && version.IsEarlierThanOrEqualTo(_projectEvaluations.Peek().Version), "Attempted to push a project evaluation that regressed in version.");
 
             _projectEvaluations.Enqueue(new VersionedProjectChangeDiff(version, evaluationDifference));
         }
