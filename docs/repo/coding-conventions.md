@@ -10,6 +10,8 @@ We use the same coding style conventions as outlined in [.NET Framework Coding S
 - **DO** flavor private fields over private properties.
 - **DO** case internal fields as `PascalCased` not `_camelCased`.
 
+The majority of the guidelines, where possible, are enforced via the [.editorconfig](https://github.com/dotnet/project-system/blob/master/.editorconfig) in the root the repository.
+
 ## MEF
 
 - **DO** use constructor injection over property/field injection.
