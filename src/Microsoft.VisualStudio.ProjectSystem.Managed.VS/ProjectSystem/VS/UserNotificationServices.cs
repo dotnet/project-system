@@ -37,12 +37,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             return true;
         }
 
-        public void NotifyFailure(string failureMessage)
+        public void ShowWarning(string warning)
         {
             _threadingService.VerifyOnUIThread();
             if (!VsShellUtilities.IsInAutomationFunction(_serviceProvider))
             {
-                int result = VsShellUtilities.ShowMessageBox(_serviceProvider, failureMessage, null, OLEMSGICON.OLEMSGICON_WARNING,
+                int result = VsShellUtilities.ShowMessageBox(_serviceProvider, warning, null, OLEMSGICON.OLEMSGICON_WARNING,
                                OLEMSGBUTTON.OLEMSGBUTTON_OK, OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
             }
         }

@@ -8,7 +8,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     {
         bool Confirm(string message);
 
-        void NotifyFailure(string failureMessage);
+        void ShowWarning(string warning);
 
         /// <summary>
         /// Note that typically you wan to set the title to null and have VS decide on the caption. If you do add a title it will

@@ -43,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             {
                 string failureMessage = string.Format(CultureInfo.CurrentCulture, VSResources.RenameSymbolFailed, oldNameBase);
                 await _threadingService.SwitchToUIThread();
-                _userNotificationServices.NotifyFailure(failureMessage);
+                _userNotificationServices.ShowWarning(failureMessage);
             }
         }
 
