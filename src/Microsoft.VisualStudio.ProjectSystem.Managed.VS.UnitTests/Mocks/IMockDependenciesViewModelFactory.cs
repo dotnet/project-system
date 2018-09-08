@@ -11,7 +11,7 @@ using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
-    internal class IMockDependenciesViewModelFactory
+    internal static class IMockDependenciesViewModelFactory
     {
         public static IDependenciesViewModelFactory Create()
         {

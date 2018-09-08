@@ -6,7 +6,7 @@ using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
-    internal class IProjectTreeServiceFactory
+    internal static class IProjectTreeServiceFactory
     {
         public static IProjectTreeService Create(IProjectTree tree)
         {

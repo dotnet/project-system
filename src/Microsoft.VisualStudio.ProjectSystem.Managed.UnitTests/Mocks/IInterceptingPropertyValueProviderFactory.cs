@@ -10,7 +10,7 @@ using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
-    internal class IInterceptingPropertyValueProviderFactory
+    internal static class IInterceptingPropertyValueProviderFactory
     {
         public static IInterceptingPropertyValueProvider Create(
             Func<string, IProjectProperties, string> onGetEvaluatedPropertyValue = null,

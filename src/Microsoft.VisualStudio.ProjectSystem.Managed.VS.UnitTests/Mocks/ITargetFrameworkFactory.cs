@@ -6,7 +6,7 @@ using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
-    internal class ITargetFrameworkFactory
+    internal static class ITargetFrameworkFactory
     {
         public static ITargetFramework Create()
         {

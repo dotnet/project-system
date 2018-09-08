@@ -4,7 +4,7 @@ using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
 {
-    internal class ISpecialFilesManagerFactory
+    internal static class ISpecialFilesManagerFactory
     {
         public static ISpecialFilesManager ImplementGetFile(string result)
         {

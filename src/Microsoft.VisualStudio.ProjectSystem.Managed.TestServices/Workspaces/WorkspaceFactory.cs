@@ -7,7 +7,7 @@ using Microsoft.CodeAnalysis.Text;
 
 namespace Microsoft.VisualStudio.Workspaces
 {
-    public class WorkspaceFactory
+    public static class WorkspaceFactory
     {
         private static readonly MetadataReference s_corlibReference = MetadataReference.CreateFromFile(typeof(object).Assembly.Location);
         private static readonly MetadataReference s_systemReference = MetadataReference.CreateFromFile(typeof(System.Diagnostics.Debug).Assembly.Location);

@@ -9,7 +9,7 @@ using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
-    internal class IProjectTreeProviderFactory
+    internal static class IProjectTreeProviderFactory
     {
         public static IProjectTreeProvider ImplementGetAddNewItemDirectory(Func<IProjectTree, string> action)
         {

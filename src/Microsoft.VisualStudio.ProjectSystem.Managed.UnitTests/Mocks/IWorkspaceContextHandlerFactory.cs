@@ -7,7 +7,7 @@ using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
-    internal class IWorkspaceContextHandlerFactory
+    internal static class IWorkspaceContextHandlerFactory
     {
         public static IWorkspaceContextHandler ImplementDispose(Action action)
         {

@@ -14,7 +14,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
-    internal class IDependencyFactory
+    internal static class IDependencyFactory
     {
         public static IDependency Create()
         {

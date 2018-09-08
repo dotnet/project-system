@@ -2,7 +2,7 @@
 
 namespace Microsoft.VisualStudio.Threading
 {
-    internal class JoinableTaskContextNodeFactory
+    internal static class JoinableTaskContextNodeFactory
     {
         public static JoinableTaskContextNode Create()
         {

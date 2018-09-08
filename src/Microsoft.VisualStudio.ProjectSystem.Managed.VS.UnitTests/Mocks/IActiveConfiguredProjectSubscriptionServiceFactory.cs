@@ -4,7 +4,7 @@ using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
-    public class IActiveConfiguredProjectSubscriptionServiceFactory
+    public static class IActiveConfiguredProjectSubscriptionServiceFactory
     {
         public static IActiveConfiguredProjectSubscriptionService Create()
         {

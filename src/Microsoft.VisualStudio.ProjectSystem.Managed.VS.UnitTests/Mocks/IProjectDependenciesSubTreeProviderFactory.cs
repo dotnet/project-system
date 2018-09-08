@@ -10,7 +10,7 @@ using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
-    internal class IProjectDependenciesSubTreeProviderFactory
+    internal static class IProjectDependenciesSubTreeProviderFactory
     {
         public static IProjectDependenciesSubTreeProvider Create()
         {
