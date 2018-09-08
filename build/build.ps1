@@ -118,7 +118,8 @@ function GetTRXUnitExe{
 }
 
 function InstallVSIX([string] $vsixExpInstalleExe, [string] $rootsuffix, [string] $vsInstallDir, [string] $pathToVSIX){
-  & $vsixExpInstalleExe /rootSuffix:$rootsuffix /vsInstallDir:$vsInstallDir $pathToVSIX
+  $rootedPath = [System.IO.Path]::GetFullPath($vsInstallDir)
+  & $vsixExpInstalleExe /rootSuffix:$rootsuffix /vsInstallDir:"$rootedPath" $pathToVSIX
 }
 
 function LocateVisualStudio {
@@ -209,9 +210,9 @@ function InstallProjectSystemVSIX ([string] $rootSuffix, [string] $vsInstallDir)
   UninstallVSIXes $rootSuffix
   Write-Host "Installing project system into '$vsInstallDir'"
   $vsixExpInstalleExe = GetVSIXExpInstallerExe
-  $ProjectSystemVsix = Join-Path (Join-Path $ArtifactsDir $configuration) "VSSetup\ProjectSystem.vsix"
+  $ProjectSystemVsix = [System.IO.Path]::GetFullPath((Join-Path (Join-Path $ArtifactsDir $configuration) "VSSetup\ProjectSystem.vsix"))
   InstallVSIX $vsixExpInstalleExe $rootsuffix $vsInstallDir $ProjectSystemVsix
-  $VisualStudioEditorsSetupVsix = Join-Path (Join-Path $ArtifactsDir $configuration) "VSSetup\VisualStudioEditorsSetup.vsix"
+  $VisualStudioEditorsSetupVsix = [System.IO.Path]::GetFullPath((Join-Path (Join-Path $ArtifactsDir $configuration) "VSSetup\VisualStudioEditorsSetup.vsix"))
   InstallVSIX $vsixExpInstalleExe $rootsuffix $vsInstallDir $VisualStudioEditorsSetupVsix
   
   $DevEnvExe = Join-Path $vsInstallDir "Common7\IDE\devenv.exe"
