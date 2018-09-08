@@ -4,6 +4,8 @@ using System;
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
 
+using EnvDTE80;
+
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
@@ -16,14 +18,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     internal class CreateFileFromTemplateService : ICreateFileFromTemplateService
     {
         private readonly IUnconfiguredProjectVsServices _projectVsServices;
-        private readonly IDteServices _dteServices;
+        private readonly IVsUIService<DTE2> _dte;
         private readonly ProjectProperties _properties;
 
         [ImportingConstructor]
-        public CreateFileFromTemplateService(IUnconfiguredProjectVsServices projectVsServices, IDteServices dteServices, ProjectProperties properties)
+        public CreateFileFromTemplateService(IUnconfiguredProjectVsServices projectVsServices, IVsUIService<SDTE, DTE2> dte, ProjectProperties properties)
         {
             _projectVsServices = projectVsServices;
-            _dteServices = dteServices;
+            _dte = dte;
             _properties = properties;
         }
 
@@ -46,7 +48,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             await _projectVsServices.ThreadingService.SwitchToUIThread();
 
-            string templateFilePath = _dteServices.Solution.GetProjectItemTemplate(templateFile, templateLanguage);
+            string templateFilePath = ((Solution2)_dte.Value.Solution).GetProjectItemTemplate(templateFile, templateLanguage);
 
             if (templateFilePath != null)
             {
