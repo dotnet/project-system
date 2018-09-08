@@ -47,7 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
             }
         }
 
-        private IUserNotificationServices _userNotificationServices;
+        private readonly IUserNotificationServices _userNotificationServices;
 
         //Strictly used for databinding, no notifications
         public string MessageText { get; }

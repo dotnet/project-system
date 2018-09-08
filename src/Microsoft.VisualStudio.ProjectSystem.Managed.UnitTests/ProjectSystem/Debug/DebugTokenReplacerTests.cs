@@ -17,12 +17,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     [Trait("UnitTest", "ProjectSystem")]
     public class DebugTokenReplacerTests
     {
-        private Dictionary<string, string> _envVars = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase) {
+        private readonly Dictionary<string, string> _envVars = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase) {
             { "%env1%","envVariable1" },
             { "%env2%","envVariable2" },
             { "%env3%","$(msbuildProperty6)" }
         };
-        private Mock<IEnvironmentHelper> _envHelper = new Mock<IEnvironmentHelper>();
+        private readonly Mock<IEnvironmentHelper> _envHelper = new Mock<IEnvironmentHelper>();
         public DebugTokenReplacerTests()
         {
             _envHelper.Setup(x => x.ExpandEnvironmentVariables(It.IsAny<string>())).Returns<string>((str) =>

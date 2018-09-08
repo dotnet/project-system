@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
     [DebuggerDisplay("{" + nameof(Id) + ",nq}")]
     internal class Dependency : IDependency
     {
-        private static ConcurrentBag<StringBuilder> s_builderPool = new ConcurrentBag<StringBuilder>();
+        private static readonly ConcurrentBag<StringBuilder> s_builderPool = new ConcurrentBag<StringBuilder>();
 
         // These priorities are for graph nodes only and are used to group graph nodes 
         // appropriately in order groups predefined order instead of alphabetically.

@@ -27,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         private IDisposable _debugProfileProviderLink;
 
         // Unit Tests only
-        private TaskCompletionSource<bool> _firstSnapshotCompleteSource = null;
+        private readonly TaskCompletionSource<bool> _firstSnapshotCompleteSource = null;
 
         private IProjectThreadingService _projectThreadingService;
         private IProjectThreadingService ProjectThreadingService

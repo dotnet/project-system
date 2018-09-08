@@ -28,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             _configuredProject = configuredProject;
         }
 
-        private ConfiguredProject _configuredProject;
+        private readonly ConfiguredProject _configuredProject;
 
         /// <summary>
         /// This provider handles the NoAction profile

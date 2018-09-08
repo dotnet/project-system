@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
     [Trait("UnitTest", "ProjectSystem")]
     public class PostBuildEventValueProviderTests
     {
-        private static PostBuildEventValueProvider.PostBuildEventHelper systemUnderTest =
+        private static readonly PostBuildEventValueProvider.PostBuildEventHelper systemUnderTest =
             new PostBuildEventValueProvider.PostBuildEventHelper();
 
         private static readonly IProjectProperties emptyProjectProperties =

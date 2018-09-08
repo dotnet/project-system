@@ -4,10 +4,10 @@ namespace System.Collections.Immutable
 {
     internal static class ImmutableStringHashSet
     {
-        public static ImmutableHashSet<string> EmptyOrdinal
+        public static readonly ImmutableHashSet<string> EmptyOrdinal
             = ImmutableHashSet<string>.Empty;
 
-        public static ImmutableHashSet<string> EmptyOrdinalIgnoreCase
+        public static readonly ImmutableHashSet<string> EmptyOrdinalIgnoreCase
             = ImmutableHashSet<string>.Empty.WithComparer(StringComparer.OrdinalIgnoreCase);
     }
 }
