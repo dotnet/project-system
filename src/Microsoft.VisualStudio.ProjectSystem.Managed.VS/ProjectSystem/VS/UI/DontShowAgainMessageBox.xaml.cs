@@ -3,8 +3,6 @@ using System.Diagnostics;
 using System.Windows;
 using System.Windows.Input;
 
-using Microsoft.VisualStudio.Shell.Interop;
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
 {
     internal partial class DontShowAgainMessageBox : PlatformUI.DialogWindow
@@ -43,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
                     }
                     catch (Exception ex)
                     {
-                        _userNotificationServices.ShowMessageBox(ex.Message, null, OLEMSGICON.OLEMSGICON_CRITICAL, OLEMSGBUTTON.OLEMSGBUTTON_OK, OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
+                        _userNotificationServices.ShowError(ex.Message);
                     }
                 });
             }
