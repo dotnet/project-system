@@ -310,28 +310,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             }
         }
 
-
-        /// <summary>
-        /// Get the unconfigured property provider for the project
-        /// </summary>
-        internal virtual UnconfiguredProject GetUnconfiguredProject(IVsHierarchy hier)
-        {
-            IProjectExportProvider provider = GetExport<IProjectExportProvider>(hier);
-            return provider.GetExport<UnconfiguredProject>(hier.GetDTEProject().FileName);
-        }
-
-        /// <summary>
-        /// Get export
-        /// </summary>
-        internal static T GetExport<T>(IVsHierarchy hier)
-        {
-            using (var sp = new Shell.ServiceProvider((OLE.Interop.IServiceProvider)hier.GetDTEProject().DTE))
-            {
-                IComponentModel compMode = sp.GetService<IComponentModel, SComponentModel>();
-                return compMode.DefaultExportProvider.GetExport<T>().Value;
-            }
-        }
-
         ///--------------------------------------------------------------------------------------------
         /// <summary>
         /// Quit listening to debug mode changes
@@ -379,7 +357,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                     int hr = browseObj.GetProjectItem(out IVsHierarchy hier, out uint itemid);
                     if (hr == VSConstants.S_OK && itemid == VSConstants.VSITEMID_ROOT)
                     {
-                        UnconfiguredProject = GetUnconfiguredProject(hier);
+                        UnconfiguredProject = hier.GetUnconfiguredProject();
 
                         // We need to save ThreadHandling because the appdesigner will call SetObjects with null, and then call
                         // Deactivate(). We need to run Async code during Deactivate() which requires ThreadHandling.
