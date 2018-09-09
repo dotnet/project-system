@@ -262,11 +262,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             '
             'DataGridViewExtensions
             '
-            '
-
-            colHeaderExtensionName.HeaderText = "Name"
-            colHeaderExtensionVersion.HeaderText = "Version"
-            colHeaderExtensionDescription.HeaderText = "Description"
             DataGridViewExtensions.Columns.AddRange(New DataGridViewTextBoxColumn() {colHeaderExtensionName, colHeaderExtensionVersion, colHeaderExtensionDescription})
             resources.ApplyResources(DataGridViewExtensions, "DataGridViewExtensions")
             DataGridViewExtensions.SelectionMode = DataGridViewSelectionMode.CellSelect
@@ -283,7 +278,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             DataGridViewExtensions.CellBorderStyle = DataGridViewCellBorderStyle.None
             DataGridViewExtensions.BackgroundColor = Drawing.SystemColors.Window
             DataGridViewExtensions.AllowUserToResizeRows = False
-
             '
             'colHeaderExtensionName
             '
