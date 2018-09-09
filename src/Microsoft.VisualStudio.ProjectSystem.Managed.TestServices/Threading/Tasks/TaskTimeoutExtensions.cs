@@ -9,14 +9,13 @@ namespace System.Threading.Tasks
             using (var cts = new CancellationTokenSource())
             {
                 Task timeoutTask = Task.Delay(timeout, cts.Token);
-                Task completedTask = await Task.WhenAny(task, timeoutTask)
-                                              .ConfigureAwait(false);
+                Task completedTask = await Task.WhenAny(task, timeoutTask);
 
                 if (timeoutTask == completedTask)
                     throw new TimeoutException($"Task timed out after {timeout.TotalMilliseconds} ms");
 
                 cts.Cancel();
-                await task.ConfigureAwait(false);
+                await task;
             }
         }
 
@@ -25,14 +24,13 @@ namespace System.Threading.Tasks
             using (var cts = new CancellationTokenSource())
             {
                 Task timeoutTask = Task.Delay(timeout, cts.Token);
-                Task completedTask = await Task.WhenAny(task, timeoutTask)
-                                              .ConfigureAwait(false);
+                Task completedTask = await Task.WhenAny(task, timeoutTask);
 
                 if (timeoutTask == completedTask)
                     throw new TimeoutException($"Task timed out after {timeout.TotalMilliseconds} ms");
 
                 cts.Cancel();
-                return await task.ConfigureAwait(false);
+                return await task;
             }
         }
     }

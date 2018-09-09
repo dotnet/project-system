@@ -40,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             Requires.NotNullOrEmpty(parentDocumentMoniker, nameof(parentDocumentMoniker));
             Requires.NotNull(fileName, nameof(fileName));
 
-            string templateLanguage = await GetTemplateLanguageAsync().ConfigureAwait(false);
+            string templateLanguage = await GetTemplateLanguageAsync();
             if (string.IsNullOrEmpty(templateLanguage))
                 return false;
 
@@ -66,11 +66,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         private async Task<string> GetTemplateLanguageAsync()
         {
-            ConfigurationGeneral general = await _properties.GetConfigurationGeneralPropertiesAsync()
-                                                            .ConfigureAwait(false);
+            ConfigurationGeneral general = await _properties.GetConfigurationGeneralPropertiesAsync();
 
-            return (string)await general.TemplateLanguage.GetValueAsync()
-                                                         .ConfigureAwait(false);
+            return (string)await general.TemplateLanguage.GetValueAsync();
         }
     }
 }

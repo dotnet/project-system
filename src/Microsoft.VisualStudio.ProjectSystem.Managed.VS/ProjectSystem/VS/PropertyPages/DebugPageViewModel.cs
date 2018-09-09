@@ -736,7 +736,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             }
         }
 
-        public override System.Threading.Tasks.Task Initialize()
+        public override Task Initialize()
         {
             // Initialize the page
             InitializePropertyPage();

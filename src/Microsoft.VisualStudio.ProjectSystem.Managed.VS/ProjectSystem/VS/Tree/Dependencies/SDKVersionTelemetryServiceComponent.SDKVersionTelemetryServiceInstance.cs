@@ -43,15 +43,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 Task.Run(async () =>
                 {
                     // Wait for the project to be loaded so that we don't prematurally load the active configuration
-                    await _unconfiguredProjectTasksService.ProjectLoadedInHost
-                                                          .ConfigureAwait(false);
+                    await _unconfiguredProjectTasksService.ProjectLoadedInHost;
                     
                     await _unconfiguredProjectTasksService.LoadedProjectAsync(async () =>
                     {
-                        ConfigurationGeneral projectProperties = await _projectVsServices.ActiveConfiguredProjectProperties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(false);
+                        ConfigurationGeneral projectProperties = await _projectVsServices.ActiveConfiguredProjectProperties.GetConfigurationGeneralPropertiesAsync();
                         Task<object> task = projectProperties?.NETCoreSdkVersion?.GetValueAsync();
-                        string version = task == null ? string.Empty : (string)await task.ConfigureAwait(false);
-                        string projectId = await GetProjectIdAsync().ConfigureAwait(false);
+                        string version = task == null ? string.Empty : (string)await task;
+                        string projectId = await GetProjectIdAsync();
 
                         if (string.IsNullOrEmpty(version) || string.IsNullOrEmpty(projectId))
                         {
@@ -65,7 +64,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                 (ProjectProperty, projectId),
                                 (NETCoreSdkVersionProperty, version)
                             });
-                    }).ConfigureAwait(false);
+                    });
                 });
 
                 return Task.CompletedTask;
@@ -75,7 +74,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             private async Task<string> GetProjectIdAsync()
             {
-                Guid projectGuid = await _projectGuidSevice.GetProjectGuidAsync().ConfigureAwait(false);
+                Guid projectGuid = await _projectGuidSevice.GetProjectGuidAsync();
                 return projectGuid == Guid.Empty ? null : projectGuid.ToString();
             }
 
