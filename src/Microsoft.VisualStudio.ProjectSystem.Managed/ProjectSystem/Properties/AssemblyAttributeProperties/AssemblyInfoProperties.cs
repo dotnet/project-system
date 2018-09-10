@@ -62,7 +62,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             if (_attributeValueProviderMap.ContainsKey(propertyName) &&
                 !await IsAssemblyInfoPropertyGeneratedByBuild(propertyName))
             {
-                return await GetPropertyValueFromSourceAttributeAsync(propertyName).ConfigureAwait(false);
+                return await GetPropertyValueFromSourceAttributeAsync(propertyName);
             }
 
             return await base.GetUnevaluatedPropertyValueAsync(propertyName);
@@ -76,7 +76,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             if (_attributeValueProviderMap.ContainsKey(propertyName) &&
                 !await IsAssemblyInfoPropertyGeneratedByBuild(propertyName))
             {
-                return await GetPropertyValueFromSourceAttributeAsync(propertyName).ConfigureAwait(false);
+                return await GetPropertyValueFromSourceAttributeAsync(propertyName);
             }
 
             return await base.GetEvaluatedPropertyValueAsync(propertyName);

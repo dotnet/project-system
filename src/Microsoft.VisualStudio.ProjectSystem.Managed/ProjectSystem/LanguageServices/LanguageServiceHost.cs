@@ -111,25 +111,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             await _tasksService.LoadedProjectAsync(async () =>
             {
-                await HandleAsync(e, handlerType).ConfigureAwait(false);
+                await HandleAsync(e, handlerType);
             });
 
             // If "TargetFrameworks" property has changed, we need to refresh the project context and subscriptions.
             if (HasTargetFrameworksChanged(e))
             {
-                await UpdateProjectContextAndSubscriptionsAsync().ConfigureAwait(false);
+                await UpdateProjectContextAndSubscriptionsAsync();
             }
         }
 
         private async Task UpdateProjectContextAndSubscriptionsAsync()
         {
             AggregateWorkspaceProjectContext previousProjectContext = _currentAggregateProjectContext;
-            AggregateWorkspaceProjectContext newProjectContext = await UpdateProjectContextAsync().ConfigureAwait(false);
+            AggregateWorkspaceProjectContext newProjectContext = await UpdateProjectContextAsync();
 
             if (previousProjectContext != newProjectContext)
             {
                 // Add subscriptions for the new configured projects in the new project context.
-                await AddSubscriptionsAsync(newProjectContext).ConfigureAwait(false);
+                await AddSubscriptionsAsync(newProjectContext);
             }
         }
 
@@ -161,7 +161,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 await _commonServices.ThreadingService.SwitchToUIThread();
 
                 string newTargetFramework = null;
-                ConfigurationGeneral projectProperties = await _commonServices.ActiveConfiguredProjectProperties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(false);
+                ConfigurationGeneral projectProperties = await _commonServices.ActiveConfiguredProjectProperties.GetConfigurationGeneralPropertiesAsync();
 
                 // Check if we have already computed the project context.
                 if (_currentAggregateProjectContext != null)
@@ -172,20 +172,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
                     if (!_currentAggregateProjectContext.IsCrossTargeting)
                     {
-                        newTargetFramework = (string)await projectProperties.TargetFramework.GetValueAsync().ConfigureAwait(false);
+                        newTargetFramework = (string)await projectProperties.TargetFramework.GetValueAsync();
                         if (StringComparers.PropertyValues.Equals(_currentTargetFramework, newTargetFramework))
                         {
                             return _currentAggregateProjectContext;
                         }
 
                         // Dispose the old workspace project context for the previous target framework.
-                        await DisposeAggregateProjectContextAsync(_currentAggregateProjectContext).ConfigureAwait(false);
+                        await DisposeAggregateProjectContextAsync(_currentAggregateProjectContext);
                     }
                     else
                     {
                         // Check if the current project context is up-to-date for the current active and known project configurations.
                         ProjectConfiguration activeProjectConfiguration = _commonServices.ActiveConfiguredProject.ProjectConfiguration;
-                        IImmutableSet<ProjectConfiguration> knownProjectConfigurations = await _commonServices.Project.Services.ProjectConfigurationsService.GetKnownProjectConfigurationsAsync().ConfigureAwait(false);
+                        IImmutableSet<ProjectConfiguration> knownProjectConfigurations = await _commonServices.Project.Services.ProjectConfigurationsService.GetKnownProjectConfigurationsAsync();
                         if (knownProjectConfigurations.All(c => c.IsCrossTargeting()) &&
                             _currentAggregateProjectContext.HasMatchingTargetFrameworks(activeProjectConfiguration, knownProjectConfigurations))
                         {
@@ -197,21 +197,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 }
                 else
                 {
-                    newTargetFramework = (string)await projectProperties.TargetFramework.GetValueAsync().ConfigureAwait(false);
+                    newTargetFramework = (string)await projectProperties.TargetFramework.GetValueAsync();
                 }
 
                 // Force refresh the CPS active project configuration (needs UI thread).
                 await _commonServices.ThreadingService.SwitchToUIThread();
-                await _activeProjectConfigurationRefreshService.RefreshActiveProjectConfigurationAsync().ConfigureAwait(false);
+                await _activeProjectConfigurationRefreshService.RefreshActiveProjectConfigurationAsync();
 
                 // Create new project context.
-                _currentAggregateProjectContext = await _contextProvider.Value.CreateProjectContextAsync().ConfigureAwait(false);
+                _currentAggregateProjectContext = await _contextProvider.Value.CreateProjectContextAsync();
                 _currentTargetFramework = newTargetFramework;
 
                 // Dispose the old project context, if one exists.
                 if (previousContextToDispose != null)
                 {
-                    await DisposeAggregateProjectContextAsync(previousContextToDispose).ConfigureAwait(false);
+                    await DisposeAggregateProjectContextAsync(previousContextToDispose);
                 }
 
                 return _currentAggregateProjectContext;
@@ -220,7 +220,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
         private async Task DisposeAggregateProjectContextAsync(AggregateWorkspaceProjectContext projectContext)
         {
-            await _contextProvider.Value.ReleaseProjectContextAsync(projectContext).ConfigureAwait(false);
+            await _contextProvider.Value.ReleaseProjectContextAsync(projectContext);
 
             foreach (IWorkspaceProjectContext innerContext in projectContext.DisposedInnerProjectContexts)
             {
@@ -280,7 +280,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 }
 
                 _languageServiceHandlerManager.Handle(update, handlerType, projectContextToUpdate, isActiveContext);
-            }).ConfigureAwait(false);
+            });
         }
 
         /// <summary>
@@ -308,9 +308,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 {
                     if (_currentAggregateProjectContext != null)
                     {
-                        await _contextProvider.Value.ReleaseProjectContextAsync(_currentAggregateProjectContext).ConfigureAwait(false);
+                        await _contextProvider.Value.ReleaseProjectContextAsync(_currentAggregateProjectContext);
                     }
-                }).ConfigureAwait(false);
+                });
             }
         }
 

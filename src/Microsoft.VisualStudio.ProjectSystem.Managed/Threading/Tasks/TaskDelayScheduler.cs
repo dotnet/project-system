@@ -66,10 +66,7 @@ namespace Microsoft.VisualStudio.Threading.Tasks
                 CancellationToken token = PendingUpdateTokenSource.Token;
 
                 // We want to return a joinable task so wrap the function
-                LatestScheduledTask = _threadingService.JoinableTaskFactory.RunAsync(async () =>
-                {
-                    await ThrottleAsync(asyncFnctionToCall, token).ConfigureAwait(false);
-                });
+                LatestScheduledTask = _threadingService.JoinableTaskFactory.RunAsync(() => ThrottleAsync(asyncFnctionToCall, token));
                 return LatestScheduledTask;
             }
         }
