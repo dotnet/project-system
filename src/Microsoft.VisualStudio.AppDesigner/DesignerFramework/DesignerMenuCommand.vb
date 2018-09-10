@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.ComponentModel.Design
 Imports System.Diagnostics.CodeAnalysis
@@ -178,7 +178,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         Private _statusValid As Boolean ' Whether the status of the command is still valid.
     End Class 'DesignerMenuCommand
 
-    Public Delegate Function CheckCommandStatusHandler(MenuCommand As DesignerMenuCommand) As Boolean
+    Public Delegate Function CheckCommandStatusHandler(menuCommand As DesignerMenuCommand) As Boolean
 
 
 End Namespace
