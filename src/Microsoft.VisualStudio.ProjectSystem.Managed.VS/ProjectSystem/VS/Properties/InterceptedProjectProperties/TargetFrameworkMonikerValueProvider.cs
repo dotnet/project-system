@@ -57,7 +57,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
                 }, options: ForkOptions.HideLocks | ForkOptions.StartOnMainThread,
                    factory: _unconfiguredProjectVsServices.ThreadingService.JoinableTaskFactory);
             }
-            return await System.Threading.Tasks.Task.FromResult<string>(null).ConfigureAwait(false);
+            return null;
         }
     }
 }
