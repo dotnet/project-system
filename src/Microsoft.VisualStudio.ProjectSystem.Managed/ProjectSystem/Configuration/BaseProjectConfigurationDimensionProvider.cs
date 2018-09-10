@@ -89,7 +89,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         {
             Requires.NotNull(project, nameof(project));
 
-            ImmutableArray<string> values = await GetOrderedPropertyValuesAsync(project).ConfigureAwait(false);
+            ImmutableArray<string> values = await GetOrderedPropertyValuesAsync(project);
             if (values.IsEmpty)
             {
                 return ImmutableArray<KeyValuePair<string, string>>.Empty;
@@ -117,7 +117,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         {
             Requires.NotNull(project, nameof(project));
 
-            ImmutableArray<string> values = await GetOrderedPropertyValuesAsync(project).ConfigureAwait(false);
+            ImmutableArray<string> values = await GetOrderedPropertyValuesAsync(project);
             if (values.IsEmpty)
             {
                 return ImmutableArray<KeyValuePair<string, IEnumerable<string>>>.Empty;
@@ -132,7 +132,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
 
         public async Task<IEnumerable<KeyValuePair<string, string>>> GetBestGuessDefaultValuesForDimensionsAsync(UnconfiguredProject project)
         {
-            string defaultValue = await FindDefaultValueFromDimensionPropertyAsync(project).ConfigureAwait(false) ?? DimensionDefaultValue;
+            string defaultValue = await FindDefaultValueFromDimensionPropertyAsync(project) ?? DimensionDefaultValue;
             if (defaultValue != null)
                 return new[] { new KeyValuePair<string, string>(DimensionName, defaultValue) };
 
@@ -158,18 +158,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         /// </remarks>
         protected async Task<string> GetPropertyValue(UnconfiguredProject project, string propertyName = null)
         {
-            ConfiguredProject configuredProject = await project.GetSuggestedConfiguredProjectAsync()
-                                                 .ConfigureAwait(false);
+            ConfiguredProject configuredProject = await project.GetSuggestedConfiguredProjectAsync();
 
             return await ProjectAccessor.OpenProjectForReadAsync(configuredProject, evaluatedProject =>
             {
                 return evaluatedProject.GetProperty(propertyName ?? PropertyName)?.EvaluatedValue;
-            }).ConfigureAwait(false);
+            });
         }
 
         private async Task<string> FindDefaultValueFromDimensionPropertyAsync(UnconfiguredProject project)
         {
-            string values = await FindDimensionPropertyAsync(project).ConfigureAwait(false);
+            string values = await FindDimensionPropertyAsync(project);
             if (string.IsNullOrEmpty(values))
                 return null;
 

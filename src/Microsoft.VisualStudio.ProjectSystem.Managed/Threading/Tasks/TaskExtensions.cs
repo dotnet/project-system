@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.Threading.Tasks
         ///     The <see cref="Task"/> to wait on for completion.
         /// </param>
         /// <param name="millisecondsTimeout">
-        ///     The number of milliseconds to wait, or <see cref="System.Threading.Timeout.Infinite"/> (-1) to wait indefinitely.
+        ///     The number of milliseconds to wait, or <see cref="Timeout.Infinite"/> (-1) to wait indefinitely.
         /// </param>
         /// <returns>
         ///     An <see cref="Task"/> instance on which to wait.

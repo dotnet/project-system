@@ -82,8 +82,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
         {
             AggregateSnapshotProvider.SnapshotChanged += OnSnapshotChanged;
 
-            _imageService = (IVsImageService2)await ServiceProvider.GetServiceAsync(typeof(SVsImageService))
-                                                                   .ConfigureAwait(false); // Want to get off UI thread if switch to it
+            _imageService = (IVsImageService2)await ServiceProvider.GetServiceAsync(typeof(SVsImageService));
         }
 
         protected override Task DisposeCoreAsync(bool initialized)
@@ -104,7 +103,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
         {
             ThreadHelper.JoinableTaskFactory.RunAsync(async () =>
             {
-                await BeginGetGraphDataAsync(context).ConfigureAwait(false);
+                await BeginGetGraphDataAsync(context);
             });
         }
 
@@ -139,7 +138,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
         {
             try
             {
-                await InitializeAsync().ConfigureAwait(false);
+                await InitializeAsync();
 
                 IEnumerable<Lazy<IDependenciesGraphActionHandler, IOrderPrecedenceMetadataView>> actionHandlers = GraphActionHandlers.Where(x => x.Value.CanHandleRequest(context));
                 bool shouldTrackChanges = actionHandlers.Aggregate(
@@ -210,7 +209,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
 
                 foreach (SnapshotChangedEventArgs context in queue)
                 {
-                    await TrackChangesAsync(context).ConfigureAwait(false);
+                    await TrackChangesAsync(context);
                 }
             }).Task;
         }

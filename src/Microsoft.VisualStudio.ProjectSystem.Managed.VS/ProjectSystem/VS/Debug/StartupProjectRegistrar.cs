@@ -49,8 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
         protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
         {
-            _projectGuid = await _projectGuidService.GetProjectGuidAsync()
-                                                    .ConfigureAwait(false);
+            _projectGuid = await _projectGuidService.GetProjectGuidAsync();
 
             Assumes.False(_projectGuid == Guid.Empty);
 
@@ -70,8 +69,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
         internal async Task OnProjectChangedAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e = null)
         {
-            bool isDebuggable = await _launchProviders.Value.IsDebuggableAsync()
-                                                            .ConfigureAwait(false);
+            bool isDebuggable = await _launchProviders.Value.IsDebuggableAsync();
 
             IVsStartupProjectsListService startupProjectsListService = await _startupProjectsListService.GetValueAsync();
 
@@ -108,8 +106,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             {
                 foreach (Lazy<IDebugLaunchProvider> provider in Debuggers)
                 {
-                    if (await provider.Value.CanLaunchAsync(DebugLaunchOptions.DesignTimeExpressionEvaluation)
-                                            .ConfigureAwait(false))
+                    if (await provider.Value.CanLaunchAsync(DebugLaunchOptions.DesignTimeExpressionEvaluation))
                     {
                         return true;
                     }

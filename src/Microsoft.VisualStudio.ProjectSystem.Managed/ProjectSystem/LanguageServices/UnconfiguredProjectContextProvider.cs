@@ -49,7 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         {
             EnsureInitialized();
 
-            AggregateWorkspaceProjectContext context = await CreateProjectContextAsyncCore().ConfigureAwait(false);
+            AggregateWorkspaceProjectContext context = await CreateProjectContextAsyncCore();
             if (context == null)
                 return null;
 
@@ -148,19 +148,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         // Returns the name that is the handshake between Roslyn and the csproj/vbproj
         private async Task<string> GetLanguageServiceName()
         {
-            ConfigurationGeneral properties = await _commonServices.ActiveConfiguredProjectProperties.GetConfigurationGeneralPropertiesAsync()
-                                                                                                .ConfigureAwait(false);
+            ConfigurationGeneral properties = await _commonServices.ActiveConfiguredProjectProperties.GetConfigurationGeneralPropertiesAsync();
 
-            return (string)await properties.LanguageServiceName.GetValueAsync()
-                                                               .ConfigureAwait(false);
+            return (string)await properties.LanguageServiceName.GetValueAsync();
         }
 
         private async Task<string> GetTargetPathAsync()
         {
-            ConfigurationGeneral properties = await _commonServices.ActiveConfiguredProjectProperties.GetConfigurationGeneralPropertiesAsync()
-                                                                                                     .ConfigureAwait(false);
-            return (string)await properties.TargetPath.GetValueAsync()
-                                                      .ConfigureAwait(false);
+            ConfigurationGeneral properties = await _commonServices.ActiveConfiguredProjectProperties.GetConfigurationGeneralPropertiesAsync();
+            return (string)await properties.TargetPath.GetValueAsync();
         }
 
         private ProjectData GetProjectData()
@@ -203,14 +199,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 
         private async Task<AggregateWorkspaceProjectContext> CreateProjectContextAsyncCore()
         {
-            string languageName = await GetLanguageServiceName().ConfigureAwait(false);
+            string languageName = await GetLanguageServiceName();
             if (string.IsNullOrEmpty(languageName))
                 return null;
 
-            Guid projectGuid = await _projectGuidService.GetProjectGuidAsync()
-                                                        .ConfigureAwait(false);
+            Guid projectGuid = await _projectGuidService.GetProjectGuidAsync();
 
-            string targetPath = await GetTargetPathAsync().ConfigureAwait(false);
+            string targetPath = await GetTargetPathAsync();
             if (string.IsNullOrEmpty(targetPath))
                 return null;
 

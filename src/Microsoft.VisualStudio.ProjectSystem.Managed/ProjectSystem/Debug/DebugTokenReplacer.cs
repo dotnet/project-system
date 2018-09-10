@@ -46,22 +46,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             var resolvedProfile = new LaunchProfile(profile);
             if (!string.IsNullOrWhiteSpace(resolvedProfile.ExecutablePath))
             {
-                resolvedProfile.ExecutablePath = await ReplaceTokensInStringAsync(resolvedProfile.ExecutablePath, true).ConfigureAwait(false);
+                resolvedProfile.ExecutablePath = await ReplaceTokensInStringAsync(resolvedProfile.ExecutablePath, true);
             }
 
             if (!string.IsNullOrWhiteSpace(resolvedProfile.CommandLineArgs))
             {
-                resolvedProfile.CommandLineArgs = await ReplaceTokensInStringAsync(resolvedProfile.CommandLineArgs, true).ConfigureAwait(false);
+                resolvedProfile.CommandLineArgs = await ReplaceTokensInStringAsync(resolvedProfile.CommandLineArgs, true);
             }
 
             if (!string.IsNullOrWhiteSpace(resolvedProfile.WorkingDirectory))
             {
-                resolvedProfile.WorkingDirectory = await ReplaceTokensInStringAsync(resolvedProfile.WorkingDirectory, true).ConfigureAwait(false);
+                resolvedProfile.WorkingDirectory = await ReplaceTokensInStringAsync(resolvedProfile.WorkingDirectory, true);
             }
 
             if (!string.IsNullOrWhiteSpace(resolvedProfile.LaunchUrl))
             {
-                resolvedProfile.LaunchUrl = await ReplaceTokensInStringAsync(resolvedProfile.LaunchUrl, true).ConfigureAwait(false);
+                resolvedProfile.LaunchUrl = await ReplaceTokensInStringAsync(resolvedProfile.LaunchUrl, true);
             }
 
             // Since Env variables are an immutable dictionary they are a little messy to update.
@@ -69,7 +69,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             {
                 foreach (KeyValuePair<string, string> kvp in resolvedProfile.EnvironmentVariables)
                 {
-                    resolvedProfile.EnvironmentVariables = resolvedProfile.EnvironmentVariables.SetItem(kvp.Key, await ReplaceTokensInStringAsync(kvp.Value, true).ConfigureAwait(false));
+                    resolvedProfile.EnvironmentVariables = resolvedProfile.EnvironmentVariables.SetItem(kvp.Key, await ReplaceTokensInStringAsync(kvp.Value, true));
                 }
             }
 
@@ -79,7 +79,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 {
                     if (kvp.Value is string)
                     {
-                        resolvedProfile.OtherSettings = resolvedProfile.OtherSettings.SetItem(kvp.Key, await ReplaceTokensInStringAsync((string)kvp.Value, true).ConfigureAwait(false));
+                        resolvedProfile.OtherSettings = resolvedProfile.OtherSettings.SetItem(kvp.Key, await ReplaceTokensInStringAsync((string)kvp.Value, true));
                     }
 
                 }

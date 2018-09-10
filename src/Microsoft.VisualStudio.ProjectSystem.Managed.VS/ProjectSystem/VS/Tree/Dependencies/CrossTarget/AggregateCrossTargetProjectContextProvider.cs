@@ -49,7 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         {
             EnsureInitialized();
 
-            AggregateCrossTargetProjectContext context = await CreateProjectContextAsyncCore().ConfigureAwait(false);
+            AggregateCrossTargetProjectContext context = await CreateProjectContextAsyncCore();
             if (context == null)
             {
                 return null;
@@ -155,10 +155,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
         private async Task<string> GetTargetPathAsync()
         {
-            ConfigurationGeneral properties = await _commonServices.ActiveConfiguredProjectProperties.GetConfigurationGeneralPropertiesAsync()
-                                                                                                     .ConfigureAwait(false);
-            return (string)await properties.TargetPath.GetValueAsync()
-                                                      .ConfigureAwait(false);
+            ConfigurationGeneral properties = await _commonServices.ActiveConfiguredProjectProperties.GetConfigurationGeneralPropertiesAsync();
+            return (string)await properties.TargetPath.GetValueAsync();
         }
 
         private ProjectData GetProjectData()
@@ -213,7 +211,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                 ConfiguredProject configuredProject = kvp.Value;
                 ProjectProperties projectProperties = configuredProject.Services.ExportProvider.GetExportedValue<ProjectProperties>();
                 ConfigurationGeneral configurationGeneralProperties = await projectProperties.GetConfigurationGeneralPropertiesAsync();
-                ITargetFramework targetFramework = await GetTargetFrameworkAsync(kvp.Key, configurationGeneralProperties).ConfigureAwait(false);
+                ITargetFramework targetFramework = await GetTargetFrameworkAsync(kvp.Key, configurationGeneralProperties);
 
                 if (!TryGetConfiguredProjectState(configuredProject, out ITargetedProjectContext targetedProjectContext))
                 {
@@ -253,7 +251,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         {
             if (string.IsNullOrEmpty(shortOrFullName))
             {
-                object targetObject = await configurationGeneralProperties.TargetFramework.GetValueAsync().ConfigureAwait(false);
+                object targetObject = await configurationGeneralProperties.TargetFramework.GetValueAsync();
                 if (targetObject == null)
                 {
                     return TargetFramework.Empty;

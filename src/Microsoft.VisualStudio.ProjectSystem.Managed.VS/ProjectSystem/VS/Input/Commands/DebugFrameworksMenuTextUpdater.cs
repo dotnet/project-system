@@ -66,11 +66,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
                 List<string> frameworks = null;
                 ExecuteSynchronously(async () =>
                 {
-                    frameworks = await activeDebugFramework.GetProjectFrameworksAsync().ConfigureAwait(false);
+                    frameworks = await activeDebugFramework.GetProjectFrameworksAsync();
                     if (frameworks != null && frameworks.Count > 1)
                     {
                         // Only get this if we will need it down below
-                        activeFramework = await activeDebugFramework.GetActiveDebuggingFrameworkPropertyAsync().ConfigureAwait(false);
+                        activeFramework = await activeDebugFramework.GetActiveDebuggingFrameworkPropertyAsync();
                     }
                 });
 
@@ -99,11 +99,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         protected virtual void ExecuteSynchronously(Func<Task> asyncFunction)
         {
 #pragma warning disable VSTHRD102 // Only wrapped for test purposes
-            ThreadHelper.JoinableTaskFactory.Run(async () =>
+            ThreadHelper.JoinableTaskFactory.Run(asyncFunction);
 #pragma warning restore VSTHRD102
-            {
-                await asyncFunction().ConfigureAwait(false);
-            });
         }
     }
 }

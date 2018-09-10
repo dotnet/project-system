@@ -74,11 +74,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         /// <returns>A task for the async operation.</returns>
         private async Task OnConfigurationAddedAsync(UnconfiguredProject project, string configurationName)
         {
-            string evaluatedPropertyValue = await GetPropertyValue(project).ConfigureAwait(false);
+            string evaluatedPropertyValue = await GetPropertyValue(project);
             await ProjectAccessor.OpenProjectXmlForWriteAsync(project, msbuildProject =>
             {
                 BuildUtilities.AppendPropertyValue(msbuildProject, evaluatedPropertyValue, PropertyName, configurationName);
-            }).ConfigureAwait(false);
+            });
         }
 
         /// <summary>
@@ -89,11 +89,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         /// <returns>A task for the async operation.</returns>
         private async Task OnConfigurationRemovedAsync(UnconfiguredProject project, string configurationName)
         {
-            string evaluatedPropertyValue = await GetPropertyValue(project).ConfigureAwait(false);
+            string evaluatedPropertyValue = await GetPropertyValue(project);
             await ProjectAccessor.OpenProjectXmlForWriteAsync(project, msbuildProject =>
             {
                 BuildUtilities.RemovePropertyValue(msbuildProject, evaluatedPropertyValue, PropertyName, configurationName);
-            }).ConfigureAwait(false);
+            });
         }
 
         /// <summary>
@@ -105,11 +105,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         /// <returns>A task for the async operation.</returns>
         private async Task OnConfigurationRenamedAsync(UnconfiguredProject project, string oldName, string newName)
         {
-            string evaluatedPropertyValue = await GetPropertyValue(project).ConfigureAwait(false);
+            string evaluatedPropertyValue = await GetPropertyValue(project);
             await ProjectAccessor.OpenProjectXmlForWriteAsync(project, msbuildProject =>
             {
                 BuildUtilities.RenamePropertyValue(msbuildProject, evaluatedPropertyValue, PropertyName, oldName, newName);
-            }).ConfigureAwait(false);
+            });
         }
     }
 }

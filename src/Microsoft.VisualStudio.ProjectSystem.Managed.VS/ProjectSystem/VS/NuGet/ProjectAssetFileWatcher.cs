@@ -77,7 +77,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         /// </summary>
         internal async Task DataFlow_ChangedAsync(IProjectVersionedValue<Tuple<IProjectTreeSnapshot, IProjectSubscriptionUpdate>> dataFlowUpdate)
         {
-            await InitializeAsync().ConfigureAwait(false);
+            await InitializeAsync();
 
             IProjectTreeSnapshot treeSnapshot = dataFlowUpdate.Value.Item1;
             IProjectTree newTree = treeSnapshot.Tree;
@@ -128,7 +128,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                     _treeWatcher = ProjectDataSources.SyncLinkTo(treeSource, propertySource, target);
 
                     return Task.CompletedTask;
-                }).ConfigureAwait(false);
+                });
         }
 
         protected override async Task DisposeCoreAsync(bool initialized)

@@ -139,10 +139,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                         IProjectCreationState projectCreationState = project.Services.ExportProvider.GetExportedValueOrDefault<IProjectCreationState>();
                         if (projectCreationState != null && !projectCreationState.WasNewlyCreated)
                         {
-                            CompatibilityLevel compatLevel = await GetProjectCompatibilityAsync(project, compatData).ConfigureAwait(false);
+                            CompatibilityLevel compatLevel = await GetProjectCompatibilityAsync(project, compatData);
                             if (compatLevel != CompatibilityLevel.Recommended)
                             {
-                                await WarnUserOfIncompatibleProjectAsync(compatLevel, compatData).ConfigureAwait(false);
+                                await WarnUserOfIncompatibleProjectAsync(compatLevel, compatData);
                             }
                         }
                     });
@@ -180,7 +180,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 foreach (UnconfiguredProject project in projects)
                 {
                     // Track the most severe compatibility level
-                    CompatibilityLevel compatLevel = await GetProjectCompatibilityAsync(project, compatDataToUse).ConfigureAwait(false);
+                    CompatibilityLevel compatLevel = await GetProjectCompatibilityAsync(project, compatDataToUse);
                     if (compatLevel != CompatibilityLevel.Recommended && compatLevel > finalCompatLevel)
                     {
                         finalCompatLevel = compatLevel;
@@ -191,7 +191,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 {
 
                     // Warn the user.
-                    await WarnUserOfIncompatibleProjectAsync(finalCompatLevel, compatDataToUse).ConfigureAwait(false);
+                    await WarnUserOfIncompatibleProjectAsync(finalCompatLevel, compatDataToUse);
                 }
 
                 // Used so we know when to process newly added projects
@@ -258,7 +258,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             if (project.Capabilities.AppliesTo($"{ProjectCapability.DotNet} & {ProjectCapability.PackageReferences}"))
             {
                 IProjectProperties properties = project.Services.ActiveConfiguredProjectProvider.ActiveConfiguredProject.Services.ProjectPropertiesProvider.GetCommonProperties();
-                string tfm = await properties.GetEvaluatedPropertyValueAsync("TargetFrameworkMoniker").ConfigureAwait(false);
+                string tfm = await properties.GetEvaluatedPropertyValueAsync("TargetFrameworkMoniker");
                 if (!string.IsNullOrEmpty(tfm))
                 {
                     var fw = new FrameworkName(tfm);
@@ -269,7 +269,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                     else if (fw.Identifier.Equals(".NETFramework", StringComparison.OrdinalIgnoreCase))
                     {
                         // The interesting case here is Asp.Net Core on full framework
-                        IImmutableSet<IUnresolvedPackageReference> pkgReferences = await project.Services.ActiveConfiguredProjectProvider.ActiveConfiguredProject.Services.PackageReferences.GetUnresolvedReferencesAsync().ConfigureAwait(false);
+                        IImmutableSet<IUnresolvedPackageReference> pkgReferences = await project.Services.ActiveConfiguredProjectProvider.ActiveConfiguredProject.Services.PackageReferences.GetUnresolvedReferencesAsync();
 
                         // Look through the package references
                         foreach (IUnresolvedPackageReference pkgRef in pkgReferences)
@@ -277,7 +277,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                             if (string.Equals(pkgRef.EvaluatedInclude, "Microsoft.AspNetCore.All", StringComparison.OrdinalIgnoreCase) ||
                                 string.Equals(pkgRef.EvaluatedInclude, "Microsoft.AspNetCore", StringComparison.OrdinalIgnoreCase))
                             {
-                                string verString = await pkgRef.Metadata.GetEvaluatedPropertyValueAsync("Version").ConfigureAwait(false);
+                                string verString = await pkgRef.Metadata.GetEvaluatedPropertyValueAsync("Version");
                                 if (!string.IsNullOrWhiteSpace(verString))
                                 {
                                     // This is a semantic version string. We only care about the non-semantic version part

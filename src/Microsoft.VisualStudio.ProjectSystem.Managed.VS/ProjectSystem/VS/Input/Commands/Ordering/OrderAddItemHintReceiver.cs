@@ -35,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
             {
                 IProjectChangeHint hint = hints[ProjectChangeFileSystemEntityHint.AddedFile].First();
                 ConfiguredProject configuredProject = hint.UnconfiguredProject.Services.ActiveConfiguredProjectProvider.ActiveConfiguredProject;
-                await OrderingHelper.Move(configuredProject, _accessor, _previousIncludes, _target, _action).ConfigureAwait(false);
+                await OrderingHelper.Move(configuredProject, _accessor, _previousIncludes, _target, _action);
             }
 
             // Reset everything because we are done.
@@ -51,7 +51,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
             {
                 ConfiguredProject configuredProject = hint.UnconfiguredProject.Services.ActiveConfiguredProjectProvider.ActiveConfiguredProject;
 
-                _previousIncludes = await OrderingHelper.GetAllEvaluatedIncludes(configuredProject, _accessor).ConfigureAwait(false);
+                _previousIncludes = await OrderingHelper.GetAllEvaluatedIncludes(configuredProject, _accessor);
 
                 _isHinting = true;
             }
@@ -68,7 +68,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
 
             _action = action;
             _target = target;
-            await task().ConfigureAwait(false);
+            await task();
 
             // We need to be sure we are not hinting before we reset, otherwise everything would get reset before HintedAsync gets called.
             // This is for sanity.

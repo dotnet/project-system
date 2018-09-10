@@ -43,10 +43,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
             {
                 ExecuteSynchronously(async () =>
                 {
-                    List<string> frameworks = await activeDebugFramework.GetProjectFrameworksAsync().ConfigureAwait(false);
+                    List<string> frameworks = await activeDebugFramework.GetProjectFrameworksAsync();
                     if (frameworks != null && cmdIndex >= 0 && cmdIndex < frameworks.Count)
                     {
-                        await activeDebugFramework.SetActiveDebuggingFrameworkPropertyAsync(frameworks[cmdIndex]).ConfigureAwait(false);
+                        await activeDebugFramework.SetActiveDebuggingFrameworkPropertyAsync(frameworks[cmdIndex]);
                         handled = true;
                     }
                 });
@@ -69,11 +69,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
                 string activeFramework = null;
                 ExecuteSynchronously(async () =>
                 {
-                    frameworks = await activeDebugFramework.GetProjectFrameworksAsync().ConfigureAwait(false);
+                    frameworks = await activeDebugFramework.GetProjectFrameworksAsync();
                     if (frameworks != null && frameworks.Count > 1 && cmdIndex < frameworks.Count)
                     {
                         // Only call this if we will need it down below.
-                        activeFramework = await activeDebugFramework.GetActiveDebuggingFrameworkPropertyAsync().ConfigureAwait(false);
+                        activeFramework = await activeDebugFramework.GetActiveDebuggingFrameworkPropertyAsync();
                     }
                 });
 
@@ -106,12 +106,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         /// </summary>
         protected virtual void ExecuteSynchronously(Func<Task> asyncFunction)
         {
-#pragma warning disable VSTHRD102 // Only wrapped for test purposes
-            ThreadHelper.JoinableTaskFactory.Run(async () =>
-#pragma warning restore VSTHRD102 
-            {
-                await asyncFunction().ConfigureAwait(false);
-            });
+#pragma warning disable VSTHRD102 // Implement internal logic asynchronously
+            ThreadHelper.JoinableTaskFactory.Run(asyncFunction);
+#pragma warning restore VSTHRD102 // Implement internal logic asynchronously
         }
     }
 }

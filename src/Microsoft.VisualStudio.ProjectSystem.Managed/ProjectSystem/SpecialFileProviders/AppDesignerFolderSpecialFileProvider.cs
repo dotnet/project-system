@@ -36,19 +36,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
         public virtual async Task<string> GetFileAsync(SpecialFiles fileId, SpecialFileFlags flags, CancellationToken cancellationToken = default)
         {
             // Make sure at least have a tree before we start searching it
-            await _projectTree.Value.TreeService.PublishAnyNonLoadingTreeAsync(cancellationToken)
-                                                .ConfigureAwait(false);
+            await _projectTree.Value.TreeService.PublishAnyNonLoadingTreeAsync(cancellationToken);
 
             string path = FindAppDesignerFolder();
             if (path == null)
             {
                 // Not found, let's find the default path and create it if needed
-                path = await GetDefaultAppDesignerFolderPathAsync().ConfigureAwait(false);
+                path = await GetDefaultAppDesignerFolderPathAsync();
 
                 if (path != null && (flags & SpecialFileFlags.CreateIfNotExist) == SpecialFileFlags.CreateIfNotExist)
                 {
-                    await _projectTree.Value.TreeStorage.CreateFolderAsync(path)
-                                                        .ConfigureAwait(false);
+                    await _projectTree.Value.TreeStorage.CreateFolderAsync(path);
                 }
             }
 
@@ -71,7 +69,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
         {
             string rootPath = _projectTree.Value.TreeProvider.GetRootedAddNewItemDirectory(_projectTree.Value.CurrentTree);
 
-            string folderName = await GetDefaultAppDesignerFolderNameAsync().ConfigureAwait(false);
+            string folderName = await GetDefaultAppDesignerFolderNameAsync();
             if (string.IsNullOrEmpty(folderName))
                 return null; // Developer has set the AppDesigner path to empty
 
@@ -80,11 +78,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
 
         private async Task<string> GetDefaultAppDesignerFolderNameAsync()
         {
-            AppDesigner general = await _properties.GetAppDesignerPropertiesAsync()
-                                                   .ConfigureAwait(false);
+            AppDesigner general = await _properties.GetAppDesignerPropertiesAsync();
 
-            return (string)await general.FolderName.GetValueAsync()
-                                                   .ConfigureAwait(false);
+            return (string)await general.FolderName.GetValueAsync();
         }
     }
 }

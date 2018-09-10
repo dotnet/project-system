@@ -35,8 +35,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
         protected override async Task<IProjectTree> FindFileAsync(string specialFileName)
         {
             // If the ApplicationManifest property is defined then we should just use that - otherwise fall back to the default logic to find app.manifest.
-            ConfigurationGeneralBrowseObject configurationGeneral = await _projectProperties.GetConfigurationGeneralBrowseObjectPropertiesAsync().ConfigureAwait(false);
-            string appManifestProperty = await configurationGeneral.ApplicationManifest.GetEvaluatedValueAtEndAsync().ConfigureAwait(false) as string;
+            ConfigurationGeneralBrowseObject configurationGeneral = await _projectProperties.GetConfigurationGeneralBrowseObjectPropertiesAsync();
+            string appManifestProperty = await configurationGeneral.ApplicationManifest.GetEvaluatedValueAtEndAsync();
 
             if (!string.IsNullOrEmpty(appManifestProperty) &&
                 !appManifestProperty.Equals(DefaultManifestValue, StringComparison.InvariantCultureIgnoreCase) &&
@@ -45,7 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
                 return _projectTree.TreeProvider.FindByPath(_projectTree.CurrentTree, appManifestProperty);
             }
 
-            return await base.FindFileAsync(specialFileName).ConfigureAwait(false);
+            return await base.FindFileAsync(specialFileName);
         }
     }
 }

@@ -64,7 +64,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 {
                     return _project.LoadConfiguredProjectAsync(configuration);
 
-                }).ConfigureAwait(false);
+                });
             }
         }
     }

@@ -180,7 +180,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
                 using (ProjectCapabilitiesContext.CreateIsolatedContext(configuredProject, e.Value.Item3))
                 {
-                    await HandleAsync(e, handlerType).ConfigureAwait(false);
+                    await HandleAsync(e, handlerType);
                 }
             });
         }
@@ -189,7 +189,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                     IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectCatalogSnapshot, IProjectCapabilitiesSnapshot>> e,
                     RuleHandlerType handlerType)
         {
-            AggregateCrossTargetProjectContext currentAggregateContext = await _host.GetCurrentAggregateProjectContext().ConfigureAwait(false);
+            AggregateCrossTargetProjectContext currentAggregateContext = await _host.GetCurrentAggregateProjectContext();
             if (currentAggregateContext == null || _currentProjectContext != currentAggregateContext)
             {
                 return;
@@ -247,7 +247,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                     }
                 }
 
-                await CompleteHandleAsync(ruleChangeContext).ConfigureAwait(false);
+                await CompleteHandleAsync(ruleChangeContext);
 
                 // record all the rules that have occurred
                 _treeTelemetryService.ObserveTargetFrameworkRules(projectContextToUpdate.TargetFramework, update.ProjectChanges.Keys);

@@ -47,8 +47,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
             if (ShouldHandle(node))
             {
                 // Enable the command if the build manager is ready to build.
-                CommandStatus commandStatus = await IsReadyToBuildAsync().ConfigureAwait(false) ? CommandStatus.Enabled : CommandStatus.Supported;
-                return await GetCommandStatusResult.Handled(GetCommandText(), commandStatus).ConfigureAwait(false);
+                CommandStatus commandStatus = await IsReadyToBuildAsync() ? CommandStatus.Enabled : CommandStatus.Supported;
+                return await GetCommandStatusResult.Handled(GetCommandText(), commandStatus);
             }
 
             return CommandStatusResult.Unhandled;
@@ -84,7 +84,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
                 return false;
             }
 
-            if (await IsReadyToBuildAsync().ConfigureAwait(false))
+            if (await IsReadyToBuildAsync())
             {
                 // Build manager APIs require UI thread access.
                 await _threadingService.SwitchToUIThread();

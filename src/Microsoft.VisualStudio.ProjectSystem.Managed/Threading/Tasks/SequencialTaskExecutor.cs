@@ -51,7 +51,7 @@ namespace Microsoft.VisualStudio.Threading.Tasks
                     try
                     {
                         _executingTask.Value = true;
-                        await asyncFunction().ConfigureAwait(false);
+                        await asyncFunction();
                     }
                     finally
                     {

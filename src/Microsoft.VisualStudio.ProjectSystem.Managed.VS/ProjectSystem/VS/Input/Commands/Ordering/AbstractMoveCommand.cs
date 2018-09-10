@@ -46,14 +46,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         {
             bool didMove = false;
 
-            await _accessor.OpenProjectForWriteAsync(_configuredProject, project => didMove = TryMove(project, node)).ConfigureAwait(false);
+            await _accessor.OpenProjectForWriteAsync(_configuredProject, project => didMove = TryMove(project, node));
 
             if (didMove)
             {
                 // Wait for updating to finish before re-selecting the node that moved.
                 // We need to re-select the node after it is moved in order to continuously move the node using hotkeys.
-                await _projectTree.TreeService.PublishLatestTreeAsync(waitForFileSystemUpdates: true).ConfigureAwait(false);
-                await NodeHelper.SelectAsync(_configuredProject, _serviceProvider, node).ConfigureAwait(false);
+                await _projectTree.TreeService.PublishLatestTreeAsync(waitForFileSystemUpdates: true);
+                await NodeHelper.SelectAsync(_configuredProject, _serviceProvider, node);
             }
 
             return didMove;

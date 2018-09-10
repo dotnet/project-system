@@ -76,7 +76,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             ImmutableDictionary<string, ConfiguredProject>.Builder builder = ImmutableDictionary.CreateBuilder<string, ConfiguredProject>();
 
-            ActiveConfiguredObjects<ConfiguredProject> projects = await GetActiveConfiguredProjectsAsync().ConfigureAwait(false);
+            ActiveConfiguredObjects<ConfiguredProject> projects = await GetActiveConfiguredProjectsAsync();
 
             bool isCrossTargeting = projects.Objects.All(project => project.ProjectConfiguration.IsCrossTargeting());
             if (isCrossTargeting)
@@ -97,7 +97,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public async Task<ActiveConfiguredObjects<ConfiguredProject>> GetActiveConfiguredProjectsAsync()
         {
-            ActiveConfiguredObjects<ProjectConfiguration> configurations = await GetActiveProjectConfigurationsAsync().ConfigureAwait(false);
+            ActiveConfiguredObjects<ProjectConfiguration> configurations = await GetActiveProjectConfigurationsAsync();
             if (configurations == null)
                 return null;
 
@@ -105,8 +105,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             foreach (ProjectConfiguration configuration in configurations.Objects)
             {
-                ConfiguredProject project = await _project.LoadConfiguredProjectAsync(configuration)
-                                                          .ConfigureAwait(false);
+                ConfiguredProject project = await _project.LoadConfiguredProjectAsync(configuration);
 
                 builder.Add(project);
             }
@@ -120,8 +119,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             if (activeSolutionConfiguration == null)
                 return null;
 
-            IImmutableSet<ProjectConfiguration> configurations = await _services.ProjectConfigurationsService.GetKnownProjectConfigurationsAsync()
-                                                                                                             .ConfigureAwait(false);
+            IImmutableSet<ProjectConfiguration> configurations = await _services.ProjectConfigurationsService.GetKnownProjectConfigurationsAsync();
 
             ImmutableArray<ProjectConfiguration>.Builder builder = ImmutableArray.CreateBuilder<ProjectConfiguration>(configurations.Count);
             IImmutableSet<string> dimensionNames = GetDimensionNames();
