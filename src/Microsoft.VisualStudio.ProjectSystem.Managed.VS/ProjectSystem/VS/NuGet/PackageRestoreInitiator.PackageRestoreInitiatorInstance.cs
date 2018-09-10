@@ -149,8 +149,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
                             await _solutionRestoreService
                                    .NominateProjectAsync(_projectVsServices.Project.FullPath, projectRestoreInfo,
-                                        _projectVsServices.Project.Services.ProjectAsynchronousTasks.UnloadCancellationToken)
-                                   .ConfigureAwait(false);
+                                        _projectVsServices.Project.Services.ProjectAsynchronousTasks.UnloadCancellationToken);
 
                             CodeMarkers.Instance.CodeMarker(CodeMarkerTimerId.PerfPackageRestoreEnd);
 
