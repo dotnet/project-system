@@ -103,9 +103,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
 
             // ConfigureAwait is true because we need to come back for PasteItemsAsync to work. If not, PasteItemsAsync will throw.
             ImmutableHashSet<string> previousIncludes = await OrderingHelper.GetAllEvaluatedIncludes(_configuredProject, _accessor);
-            PasteItemsResult result = await PasteHandler.PasteItemsAsync(items, effect).ConfigureAwait(false);
+            PasteItemsResult result = await PasteHandler.PasteItemsAsync(items, effect);
 
-            await OrderingHelper.Move(_configuredProject, _accessor, previousIncludes, _dropTarget, OrderingMoveAction.MoveToTop).ConfigureAwait(false);
+            await OrderingHelper.Move(_configuredProject, _accessor, previousIncludes, _dropTarget, OrderingMoveAction.MoveToTop);
 
             return result;
         }
