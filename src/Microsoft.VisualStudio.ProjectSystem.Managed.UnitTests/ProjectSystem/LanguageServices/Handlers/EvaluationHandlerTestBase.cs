@@ -76,11 +76,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             });
         }
 
-        internal static void Handle(IEvaluationHandler handler, IProjectChangeDescription projectChange)
+        internal static void Handle(IProjectEvaluationHandler handler, IProjectChangeDescription projectChange)
         {
             handler.Handle(1, projectChange, false, IProjectLoggerFactory.Create());
         }
 
-        internal abstract IEvaluationHandler CreateInstance();
+        internal abstract IProjectEvaluationHandler CreateInstance();
     }
 }

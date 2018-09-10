@@ -29,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             get { return s_allEvaluationRuleNames; }
         }
 
-        public ImmutableArray<(IEvaluationHandler handler, string evaluationRuleName)> GetEvaluationHandlers(IWorkspaceProjectContext context)
+        public ImmutableArray<(IProjectEvaluationHandler handler, string evaluationRuleName)> GetEvaluationHandlers(IWorkspaceProjectContext context)
         {
             Requires.NotNull(context, nameof(context));
 
@@ -56,7 +56,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
         private Handlers CreateHandlers(IWorkspaceProjectContext context)
         {
-            ImmutableArray<(IEvaluationHandler handler, string evaluationRuleName)>.Builder evaluationHandlers = ImmutableArray.CreateBuilder<(IEvaluationHandler handler, string evaluationRuleName)>(s_handlerFactories.Length);
+            ImmutableArray<(IProjectEvaluationHandler handler, string evaluationRuleName)>.Builder evaluationHandlers = ImmutableArray.CreateBuilder<(IProjectEvaluationHandler handler, string evaluationRuleName)>(s_handlerFactories.Length);
             ImmutableArray<ICommandLineHandler>.Builder commandLineHandlers = ImmutableArray.CreateBuilder<ICommandLineHandler>(s_handlerFactories.Length);
 
             foreach ((HandlerFactory factory, string evaluationRuleName) factory in s_handlerFactories)
@@ -65,7 +65,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 handler.Initialize(context);
 
                 // NOTE: Handlers can be both IEvaluationHandler and ICommandLineHandler
-                if (handler is IEvaluationHandler evaluationHandler)
+                if (handler is IProjectEvaluationHandler evaluationHandler)
                 {
                     evaluationHandlers.Add((evaluationHandler, factory.evaluationRuleName));
                 }

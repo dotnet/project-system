@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     [Export(typeof(IApplyChangesToWorkspaceContext))]
     internal class ApplyChangesToWorkspaceContext : OnceInitializedOnceDisposed, IApplyChangesToWorkspaceContext
     {
-        private const string DesignTimeRuleName = CompilerCommandLineArgs.SchemaName;
+        private const string ProjectBuildRuleName = CompilerCommandLineArgs.SchemaName;
         private readonly ConfiguredProject _project;
         private readonly IProjectLogger _logger;
         private readonly ExportFactory<IWorkspaceContextHandler>[] _workspaceContextHandlerFactories;
@@ -56,7 +56,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             }
         }
 
-        public void ApplyDesignTime(IProjectVersionedValue<IProjectSubscriptionUpdate> update, bool isActiveContext, CancellationToken cancellationToken)
+        public void ApplyProjectBuild(IProjectVersionedValue<IProjectSubscriptionUpdate> update, bool isActiveContext, CancellationToken cancellationToken)
         {
             Requires.NotNull(update, nameof(update));
             
@@ -64,7 +64,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             {
                 VerifyInitializedAndNotDisposed();
 
-                IProjectChangeDescription projectChange = update.Value.ProjectChanges[DesignTimeRuleName];
+                IProjectChangeDescription projectChange = update.Value.ProjectChanges[ProjectBuildRuleName];
 
                 if (projectChange.Difference.AnyChanges)
                 {
@@ -72,12 +72,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
                     ProcessOptions(projectChange.After);
                     ProcessCommandLine(version, projectChange.Difference, isActiveContext, cancellationToken);
-                    ProcessDesignTimeBuildFailure(projectChange.After);
+                    ProcessProjectBuildFailure(projectChange.After);
                 }
             }
         }
 
-        public void ApplyEvaluation(IProjectVersionedValue<IProjectSubscriptionUpdate> update, bool isActiveContext, CancellationToken cancellationToken)
+        public void ApplyProjectEvaluation(IProjectVersionedValue<IProjectSubscriptionUpdate> update, bool isActiveContext, CancellationToken cancellationToken)
         {
             Requires.NotNull(update, nameof(update));
 
@@ -87,31 +87,31 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
                 IComparable version = GetConfiguredProjectVersion(update);
 
-                ProcessEvaluationHandlers(version, update, isActiveContext, cancellationToken);
+                ProcessProjectEvaluationHandlers(version, update, isActiveContext, cancellationToken);
             }
         }
 
-        public IEnumerable<string> GetEvaluationRules()
+        public IEnumerable<string> GetProjectEvaluationRules()
         {
             lock (SyncObject)
             {
                 VerifyInitializedAndNotDisposed();
 
                 return _handlers.Select(e => e.Value)
-                                .OfType<IEvaluationHandler>()
-                                .Select(e => e.EvaluationRule)
+                                .OfType<IProjectEvaluationHandler>()
+                                .Select(e => e.ProjectEvaluationRule)
                                 .Distinct(StringComparers.RuleNames)
                                 .ToArray();
             }
         }
 
-        public IEnumerable<string> GetDesignTimeRules()
+        public IEnumerable<string> GetProjectBuildRules()
         {
             lock (SyncObject)
             {
                 VerifyInitializedAndNotDisposed();
 
-                return new string[] { DesignTimeRuleName };
+                return new string[] { ProjectBuildRuleName };
             }
         }
 
@@ -140,7 +140,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             }
         }
 
-        private void ProcessDesignTimeBuildFailure(IProjectRuleSnapshot snapshot)
+        private void ProcessProjectBuildFailure(IProjectRuleSnapshot snapshot)
         {
             // If 'CompileDesignTime' didn't run due to a preceeding failed target, or a failure in itself, IsEvalutionSucceeded returns false.
             //
@@ -185,16 +185,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             }
         }
 
-        private void ProcessEvaluationHandlers(IComparable version, IProjectVersionedValue<IProjectSubscriptionUpdate> update, bool isActiveContext, CancellationToken cancellationToken)
+        private void ProcessProjectEvaluationHandlers(IComparable version, IProjectVersionedValue<IProjectSubscriptionUpdate> update, bool isActiveContext, CancellationToken cancellationToken)
         {
             foreach (ExportLifetimeContext<IWorkspaceContextHandler> handler in _handlers)
             {
                 if (cancellationToken.IsCancellationRequested)
                     break;
 
-                if (handler.Value is IEvaluationHandler evaluationHandler)
+                if (handler.Value is IProjectEvaluationHandler evaluationHandler)
                 {
-                    IProjectChangeDescription projectChange = update.Value.ProjectChanges[evaluationHandler.EvaluationRule];
+                    IProjectChangeDescription projectChange = update.Value.ProjectChanges[evaluationHandler.ProjectEvaluationRule];
                     if (!projectChange.Difference.AnyChanges)
                         continue;
                     

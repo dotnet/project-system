@@ -79,7 +79,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
         private void HandleEvaluation(IProjectVersionedValue<IProjectSubscriptionUpdate> update, IWorkspaceProjectContext context, bool isActiveContext)
         {
-            ImmutableArray<(IEvaluationHandler handler, string evaluationRuleName)> handlers = _handlerProvider.GetEvaluationHandlers(context);
+            ImmutableArray<(IProjectEvaluationHandler handler, string evaluationRuleName)> handlers = _handlerProvider.GetEvaluationHandlers(context);
 
             IComparable version = update.DataSourceVersions[ProjectDataSources.ConfiguredProjectVersion];
 
@@ -87,7 +87,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             {
                 WriteHeader(logger, update, version, RuleHandlerType.Evaluation, isActiveContext);
 
-                foreach ((IEvaluationHandler handler, string evaluationRuleName) handler in handlers)
+                foreach ((IProjectEvaluationHandler handler, string evaluationRuleName) handler in handlers)
                 {
                     string ruleName = handler.evaluationRuleName;
 

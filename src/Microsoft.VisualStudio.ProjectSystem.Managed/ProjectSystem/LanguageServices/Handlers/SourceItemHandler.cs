@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     ///     to the compiler during design-time builds.
     /// </summary>
     [Export(typeof(IWorkspaceContextHandler))]
-    internal partial class SourceItemHandler : AbstractEvaluationCommandLineHandler, IEvaluationHandler, ICommandLineHandler
+    internal partial class SourceItemHandler : AbstractEvaluationCommandLineHandler, IProjectEvaluationHandler, ICommandLineHandler
     {
         private readonly UnconfiguredProject _project;
 
@@ -27,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             _project = project;
         }
 
-        public string EvaluationRule
+        public string ProjectEvaluationRule
         {
             get { return Compile.SchemaName; }
         }
@@ -40,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             VerifyInitialized();
 
-            ApplyEvaluationChanges(version, projectChange.Difference, projectChange.After.Items, isActiveContext, logger);
+            ApplyProjectEvaluation(version, projectChange.Difference, projectChange.After.Items, isActiveContext, logger);
         }
 
         public void Handle(IComparable version, BuildOptions added, BuildOptions removed, bool isActiveContext, IProjectLogger logger)
@@ -54,7 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             IProjectChangeDiff difference = ConvertToProjectDiff(added, removed);
 
-            ApplyDesignTimeChanges(version, difference, isActiveContext, logger);
+            ApplyProjectBuild(version, difference, isActiveContext, logger);
         }
 
         protected override void AddToContext(string fullPath, IImmutableDictionary<string, string> metadata, bool isActiveContext, IProjectLogger logger)
