@@ -61,9 +61,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
                     return resultDependency;
                 }
 
+                DependencyIconSet implicitIconSet = resultDependency.IconSet
+                    .WithIcon(internalProvider.GetImplicitIcon())
+                    .WithExpandedIcon(internalProvider.GetImplicitIcon());
+
                 resultDependency = resultDependency.SetProperties(
-                    icon: internalProvider.GetImplicitIcon(),
-                    expandedIcon: internalProvider.GetImplicitIcon(),
+                    iconSet: implicitIconSet,
                     isImplicit: true);
                 filterAnyChanges = true;
             }

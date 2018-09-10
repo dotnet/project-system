@@ -42,6 +42,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                                             IImmutableList<string> setPropertiesDependencyIDs = null,
                                             string setPropertiesSchemaName = null,
                                             ITargetFramework targetFramework = null,
+                                            DependencyIconSet iconSet = null,
+                                            DependencyIconSet setPropertiesIconSet = null,
                                             MockBehavior? mockBehavior = null)
         {
             var behavior = mockBehavior ?? MockBehavior.Strict;
@@ -117,11 +119,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 mock.Setup(x => x.TargetFramework).Returns(targetFramework);
             }
 
+            if (iconSet != null)
+            {
+                mock.Setup(x => x.IconSet).Returns(iconSet);
+            }
+
             if (setPropertiesCaption != null
                 || setPropertiesDependencyIDs != null
                 || setPropertiesResolved != null
                 || setPropertiesFlags != null
-                || setPropertiesImplicit != null)
+                || setPropertiesImplicit != null
+                || setPropertiesIconSet != null)
             {
                 mock.Setup(x => x.SetProperties(
                             setPropertiesCaption,
@@ -129,8 +137,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                             setPropertiesFlags,
                             setPropertiesSchemaName,
                             setPropertiesDependencyIDs,
-                            It.IsAny<ImageMoniker>(),
-                            It.IsAny<ImageMoniker>(),
+                            setPropertiesIconSet,
                             setPropertiesImplicit))
                     .Returns(mock.Object);
             }
