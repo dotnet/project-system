@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System.Collections.Concurrent;
+using System.Collections.Immutable;
 using Microsoft.VisualStudio.Imaging.Interop;
+using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
@@ -13,11 +14,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     /// </summary>
     internal sealed class DependencyIconSetCache
     {
-        private readonly ConcurrentDictionary<DependencyIconSet, DependencyIconSet> _iconSets = new ConcurrentDictionary<DependencyIconSet, DependencyIconSet>();
+        private ImmutableHashSet<DependencyIconSet> _iconSets = ImmutableHashSet<DependencyIconSet>.Empty;
 
         public DependencyIconSet GetOrAddIconSet(DependencyIconSet iconSet)
         {
-            return _iconSets.GetOrAdd(iconSet, set => set);
+            if (ThreadingTools.ApplyChangeOptimistically(ref _iconSets, iconSets => iconSets.Add(iconSet)))
+            {
+                // The cache did not already contain an equivalent icon set; use the one passed in.
+                return iconSet;
+            }
+            else
+            {
+                // The cache already has an equivalent icon set; retrieve and return that one.
+                _iconSets.TryGetValue(iconSet, out DependencyIconSet existingIconSet);
+                return existingIconSet;
+            }
         }
 
         public DependencyIconSet GetOrAddIconSet(ImageMoniker icon, ImageMoniker expandedIcon, ImageMoniker unresolvedIcon, ImageMoniker unresolvedExpandedIcon)
