@@ -1174,19 +1174,19 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         Inherits GlobalObject
         Implements VSDesignerPackage.IRefreshSettingsObject
 
-        Private _provider As SettingsGlobalObjectProvider
+        Private ReadOnly _provider As SettingsGlobalObjectProvider
         Private ReadOnly _item As ProjectItem
         Private ReadOnly _hierarchy As IVsHierarchy
         Private _itemid As UInteger
-        Private _typeResolver As ITypeResolutionService
+        Private ReadOnly _typeResolver As ITypeResolutionService
         Private _docData As DocData
         Private _virtualType As Type
         Private _dtSettings As DesignTimeSettings
         Private _namespace As String
-        Private _className As String
+        Private ReadOnly _className As String
         Private _ignoreDocLock As Boolean
         Private ReadOnly _fileName As String
-        Private _valueCache As SettingsValueCache
+        Private ReadOnly _valueCache As SettingsValueCache
         Private _typeCache As SettingsTypeCache
 
         ''' <summary>
@@ -2112,7 +2112,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         Private NotInheritable Class SettingsFileTypeImplementor
             Inherits VirtualTypeImplementor
 
-            Private _globalObject As SettingsFileGlobalObject
+            Private ReadOnly _globalObject As SettingsFileGlobalObject
 
             ''' <summary>
             ''' constructor for this implementor
@@ -2389,7 +2389,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         Private Class GlobalSettingsPropertyCollection
             Inherits SettingsPropertyCollection
 
-            Private _globalObject As SettingsFileGlobalObject
+            Private ReadOnly _globalObject As SettingsFileGlobalObject
 
             ''' <summary>
             ''' 

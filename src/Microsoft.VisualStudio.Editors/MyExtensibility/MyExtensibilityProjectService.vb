@@ -517,12 +517,12 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
 
         ' Service provider, current project, project hierarchy and solution.
         Private ReadOnly _vbPackage As VBPackage
-        Private _project As Project
-        Private _projectHierarchy As IVsHierarchy
+        Private ReadOnly _project As Project
+        Private ReadOnly _projectHierarchy As IVsHierarchy
         Private _projectTypeID As String
 
         ' Extension templates information.
-        Private _extensibilitySettings As MyExtensibilitySettings
+        Private ReadOnly _extensibilitySettings As MyExtensibilitySettings
         ' Managing extension code files in current project.
         Private WithEvents _projectSettings As MyExtensibilityProjectSettings
 
@@ -592,8 +592,8 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
                 Return MyBase.Equals(obj)
             End Function
 
-            Private _assemblyName As String
-            Private _changeType As AddRemoveAction
+            Private ReadOnly _assemblyName As String
+            Private ReadOnly _changeType As AddRemoveAction
             Private _extensionTemplates As List(Of MyExtensionTemplate)
             Private _extensionProjectFiles As List(Of MyExtensionProjectItemGroup)
         End Class ' Private Class AssemblyChange

@@ -39,7 +39,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private WithEvents _designerHost As IDesignerHost = Nothing
 
         ' Contains information about the current state of Find/Replace
-        Private _findReplace As New FindReplace(Me)
+        Private ReadOnly _findReplace As New FindReplace(Me)
 
         ' Indicates whether or not we are trying to register our view helper on a delayed basis
         Private _delayRegisteringViewHelper As Boolean

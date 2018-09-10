@@ -58,7 +58,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private _uiInitialized As Boolean
 
         'The set of categories handled by this instance of the resource editor.
-        Private _categories As New CategoryCollection
+        Private ReadOnly _categories As New CategoryCollection
 
         'The root designer associated with this resource editor instance
         Private _rootDesigner As ResourceEditorRootDesigner
@@ -71,10 +71,10 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private _currentCategory As Category
 
         'Temporary files which can be cleaned up on the next clipboard flush.
-        Private _deleteFilesOnClipboardFlush As New ArrayList
+        Private ReadOnly _deleteFilesOnClipboardFlush As New ArrayList
 
         'Temporary files which can be cleaned up when the editor exists.
-        Private _deleteFoldersOnEditorExit As New ArrayList
+        Private ReadOnly _deleteFoldersOnEditorExit As New ArrayList
 
         'The set of internal resources that we cache for this instance of the resource editor
         Private _cachedResources As CachedResourcesForView
@@ -154,7 +154,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '  the assemblies of any types handled by these type editors.
         '
         'System, mscorlib, System.Drawing, System.Windows.Forms, System.Data
-        Private Shared s_defaultAssemblyReferences() As AssemblyName =
+        Private Shared ReadOnly s_defaultAssemblyReferences() As AssemblyName =
             {
                 GetType(CodeDom.MemberAttributes).Assembly.GetName(),
                 GetType(Integer).Assembly.GetName(),

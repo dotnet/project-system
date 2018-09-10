@@ -325,7 +325,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         Private Class EditContext
             Implements System.ComponentModel.ITypeDescriptorContext
 
-            Private _instance As DesignTimeSettingInstance
+            Private ReadOnly _instance As DesignTimeSettingInstance
 
             Public Sub New(instance As DesignTimeSettingInstance)
                 _instance = instance

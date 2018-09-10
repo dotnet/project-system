@@ -15,7 +15,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         Private ReadOnly _serviceProvider As IServiceProvider
 
         ' A map of file names to manage
-        Private _managedFiles As New Dictionary(Of String, Boolean)(3, StringComparer.OrdinalIgnoreCase)
+        Private ReadOnly _managedFiles As New Dictionary(Of String, Boolean)(3, StringComparer.OrdinalIgnoreCase)
 
 #End Region
 

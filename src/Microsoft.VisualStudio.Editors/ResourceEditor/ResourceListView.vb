@@ -24,7 +24,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '  Since we're using the listview in virtual mode (in order to accomplish
         '  delay-load of the images from disk), we keep track of the data ourselves.
         '  The base listview notifies us when it needs data to display.
-        Private _virtualResourceList As New ArrayList 'Of Resource
+        Private ReadOnly _virtualResourceList As New ArrayList 'Of Resource
 
         'A cache of thumbnails for the listview items that we are displaying.  This has
         '  knowledge of our imagelist, and manages it for us.
@@ -1279,18 +1279,18 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private Structure LVITEM
 #Disable Warning IDE1006 ' Naming Styles
             Public mask As Integer
-            Public iItem As Integer
-            Public iSubItem As Integer
+            Public ReadOnly iItem As Integer
+            Public ReadOnly iSubItem As Integer
             Public state As Integer
             Public stateMask As Integer
-            Public pszText As String
-            Public cchTextMax As Integer
-            Public iImage As Integer
-            Public lParam As IntPtr
-            Public iIndent As Integer
-            Public iGroupId As Integer
-            Public cColumns As Integer
-            Public puColumns As IntPtr
+            Public ReadOnly pszText As String
+            Public ReadOnly cchTextMax As Integer
+            Public ReadOnly iImage As Integer
+            Public ReadOnly lParam As IntPtr
+            Public ReadOnly iIndent As Integer
+            Public ReadOnly iGroupId As Integer
+            Public ReadOnly cColumns As Integer
+            Public ReadOnly puColumns As IntPtr
 #Enable Warning IDE1006 ' Naming Styles
         End Structure
 
@@ -1508,8 +1508,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         Private Class ImageCacheRequirement
             ' We should cache images from StartIndex to EndIndex (included)
-            Public StartIndex As Integer
-            Public EndIndex As Integer
+            Public ReadOnly StartIndex As Integer
+            Public ReadOnly EndIndex As Integer
 
             ''' <summary>
             ''' Constructor.

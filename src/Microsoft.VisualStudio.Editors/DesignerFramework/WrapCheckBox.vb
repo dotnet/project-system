@@ -77,7 +77,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         End Sub
 
         Private _cachedSizeOfOneLineOfText As Size = Size.Empty
-        Private _preferredSizeHash As New Dictionary(Of Size, Size)()
+        Private ReadOnly _preferredSizeHash As New Dictionary(Of Size, Size)()
 
     End Class
 End Namespace

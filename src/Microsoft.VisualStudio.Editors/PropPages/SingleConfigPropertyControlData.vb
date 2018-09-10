@@ -38,7 +38,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Release
         End Enum
 
-        Private _specificConfigName As String
+        Private ReadOnly _specificConfigName As String
 
 
         ' Constructor.  Same as PropertyControlData, except for Config.

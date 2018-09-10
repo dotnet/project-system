@@ -18,7 +18,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         Inherits PropertyDescriptor
 
         'The property descriptor for the Project or Config property we wrap
-        Private _propDesc As PropertyDescriptor
+        Private ReadOnly _propDesc As PropertyDescriptor
         Private ReadOnly _typeConverter As TypeConverter
         Private ReadOnly _displayName As String
         Private ReadOnly _name As String

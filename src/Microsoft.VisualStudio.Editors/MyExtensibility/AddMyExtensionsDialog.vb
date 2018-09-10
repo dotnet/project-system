@@ -150,7 +150,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
 
         Private ReadOnly _extensionTemplates As List(Of MyExtensionTemplate)
         Private _extensionTemplatesToAdd As List(Of MyExtensionTemplate)
-        Private _comparer As ListViewComparer
+        Private ReadOnly _comparer As ListViewComparer
 
 #Region "Windows Forms Designer generated code"
 

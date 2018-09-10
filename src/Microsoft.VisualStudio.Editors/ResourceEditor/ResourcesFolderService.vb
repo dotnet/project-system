@@ -122,7 +122,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 #End Region
 
         'Trace switch for this class.
-        Private Shared s_resourcesFolderServiceSwitch As New TraceSwitch("ResourcesFolderService", "Traces the behavior of the Resources Folder Service")
+        Private Shared ReadOnly s_resourcesFolderServiceSwitch As New TraceSwitch("ResourcesFolderService", "Traces the behavior of the Resources Folder Service")
 
 
 #Region "Tracing"

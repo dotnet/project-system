@@ -112,7 +112,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         Private WithEvents _settingsTableLayoutPanel As TableLayoutPanel
         Private _isReportingError As Boolean
         Private _isShowingTypePicker As Boolean
-        Private _toolbarPanel As DesignerToolbarPanel
+        Private ReadOnly _toolbarPanel As DesignerToolbarPanel
 
         ' Does the current language support partial classes? If yes, enable the ViewCode button...
         Private _viewCodeEnabled As Boolean

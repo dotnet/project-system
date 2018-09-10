@@ -177,7 +177,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
 #End Region
 
-        Private _typeTreeView As TypeTV
+        Private ReadOnly _typeTreeView As TypeTV
 
         Private Sub TypeTreeViewAfterSelectHandler(sender As Object, e As TreeViewEventArgs)
             If e.Node IsNot Nothing Then

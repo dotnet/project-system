@@ -369,10 +369,10 @@ Namespace Microsoft.VisualStudio.Editors
             Private _cookie As UInteger
 
             ' A handle to the IVsSolution service providing the events
-            Private _solution As IVsSolution
+            Private ReadOnly _solution As IVsSolution
 
             ' List of files to clean up when a ZIP project is discarded
-            Private _filesToCleanUp As New List(Of String)
+            Private ReadOnly _filesToCleanUp As New List(Of String)
 
             ''' <summary>
             ''' Create a new instance of this class

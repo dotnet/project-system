@@ -248,7 +248,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
 
             'Cookie for use with IVsShell.{Advise,Unadvise}BroadcastMessages
             Private _cookieBroadcastMessages As UInteger
-            Private _serviceProvider As IServiceProvider
+            Private ReadOnly _serviceProvider As IServiceProvider
 
             Public Sub New(sp As IServiceProvider)
                 _serviceProvider = sp
@@ -348,7 +348,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
             Inherits BroadcastMessageEventsHelper
 
             ' Control that we are going to set the font on (if any)
-            Private _control As Control
+            Private ReadOnly _control As Control
 
             Private ReadOnly _serviceProvider As IServiceProvider
 
