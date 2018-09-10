@@ -383,7 +383,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
         Friend Class KnownClassName
             Implements IFindFilter
 
-            Private _className As String
+            Private ReadOnly _className As String
             Private ReadOnly _classOrModule As ClassOrModule
 
             Friend Sub New(ClassName As String, Optional ClassOrModule As ClassOrModule = ClassOrModule.ClassOnly)
@@ -424,7 +424,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
             ''' The class to expand
             ''' </summary>
             ''' <remarks></remarks>
-            Private _classToExpand As EnvDTE80.CodeClass2
+            Private ReadOnly _classToExpand As EnvDTE80.CodeClass2
 
             Friend Sub New(ClassToExpand As EnvDTE80.CodeClass2)
                 If ClassToExpand Is Nothing Then
@@ -455,7 +455,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
         Friend Class FindPropertyFilter
             Implements IFindFilter
 
-            Private _containtingClass As EnvDTE.CodeElement
+            Private ReadOnly _containtingClass As EnvDTE.CodeElement
             Private ReadOnly _propertyName As String
 
             Public Sub New(ContainingClass As EnvDTE.CodeElement, PropertyName As String)
@@ -513,7 +513,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
         Friend Class FindFunctionFilter
             Implements IFindFilter
 
-            Private _containtingClass As EnvDTE.CodeElement
+            Private ReadOnly _containtingClass As EnvDTE.CodeElement
             Private ReadOnly _functionName As String
 
             Public Sub New(ContainingClass As EnvDTE.CodeElement, FunctionName As String)

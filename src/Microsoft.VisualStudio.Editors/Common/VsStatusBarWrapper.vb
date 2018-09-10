@@ -52,7 +52,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
             _vsStatusBar.SetText(text)
         End Sub
 
-        Private _vsStatusBar As IVsStatusbar
+        Private ReadOnly _vsStatusBar As IVsStatusbar
 
         Private _vsStatusBarCookie As UInteger = 0
         Private _total As Integer = 0

@@ -156,8 +156,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         'Used for caching property change notification until after Apply is done
         Private Class PropertyChange
-            Public DispId As Integer
-            Public Source As PropertyChangeSource
+            Public ReadOnly DispId As Integer
+            Public ReadOnly Source As PropertyChangeSource
 
             Public Sub New(DispId As Integer, Source As PropertyChangeSource)
                 Me.DispId = DispId
@@ -244,10 +244,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private _uiShellService As IVsUIShell
         Private _uiShell2Service As IVsUIShell2
 
-        Private Shared s_runningPropertyPages As New ArrayList
+        Private Shared ReadOnly s_runningPropertyPages As New ArrayList
 
         'Child property pages that have been shown are cached here
-        Private _childPages As New Dictionary(Of Type, PropPageUserControlBase)
+        Private ReadOnly _childPages As New Dictionary(Of Type, PropPageUserControlBase)
 
         Private _pageRequiresScaling As Boolean = True
 
@@ -267,7 +267,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private _pageEnabledState As Boolean = True
 
         'A list of all connected property listeners
-        Private _propertyListeners As New ArrayList '(Of PropertyListener)
+        Private ReadOnly _propertyListeners As New ArrayList '(Of PropertyListener)
 
         'Whether the page should be enabled based only on the debug state of the application
         Private _pageEnabledPerDebugMode As Boolean = True
@@ -281,7 +281,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         'Dispids which the page is changing manually, and which are to be ignored while listening for
         '  property changes
-        Private _suspendPropertyChangeListeningDispIds As New List(Of Integer)
+        Private ReadOnly _suspendPropertyChangeListeningDispIds As New List(Of Integer)
 
         'DISPID_UNKNOWN
         Public DISPID_UNKNOWN As Integer = Interop.Win32Constant.DISPID_UNKNOWN

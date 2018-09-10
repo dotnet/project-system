@@ -14,7 +14,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
     Public NotInheritable Class DeferrableWindowPaneProviderService
         Inherits WindowPaneProviderService
 
-        Private _docData As DocData
+        Private ReadOnly _docData As DocData
 
         ' <devdoc>
         '     Creates a new DeferrableWindowPaneProviderService.

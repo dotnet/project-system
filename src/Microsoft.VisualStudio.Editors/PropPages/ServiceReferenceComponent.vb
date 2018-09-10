@@ -14,8 +14,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Inherits Component
         Implements ICustomTypeDescriptor, IReferenceComponent, IUpdatableReferenceComponent
 
-        Private _collection As IVsWCFReferenceGroupCollection
-        Private _referenceGroup As IVsWCFReferenceGroup
+        Private ReadOnly _collection As IVsWCFReferenceGroupCollection
+        Private ReadOnly _referenceGroup As IVsWCFReferenceGroup
 
         Public Sub New(collection As IVsWCFReferenceGroupCollection, referenceGroup As IVsWCFReferenceGroup)
             _collection = collection

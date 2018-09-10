@@ -112,7 +112,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
 
             Private _isDisposed As Boolean
             Private _buffer As IVsTextLines
-            Private _debugLockCheck As IDebugLockCheck 'Used by the document to verify BufferLock is used when it's needed
+            Private ReadOnly _debugLockCheck As IDebugLockCheck 'Used by the document to verify BufferLock is used when it's needed
 
             Public Sub New(buffer As IVsTextLines, debugLockCheck As IDebugLockCheck)
                 If buffer Is Nothing Then

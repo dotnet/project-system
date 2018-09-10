@@ -62,7 +62,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private _hidingImportListSelectedItem As Boolean
 
         ' helper object to sort the reference list
-        Private _referenceSorter As ListViewComparer
+        Private ReadOnly _referenceSorter As ListViewComparer
 
         Private _referenceGroupManager As IVsWCFReferenceManager
 
@@ -2273,12 +2273,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private Const AliasGroup As String = "(?<" & AliasGroupName & ">[^=""'\s]+)"
 
         ' Regular expression for parsing XML imports statement (<xmlns[:Alias]='url'>).
-        Private Shared s_xmlImportRegex As New Regex(
+        Private Shared ReadOnly s_xmlImportRegex As New Regex(
             "^\s*\<\s*[xX][mM][lL][nN][sS]\s*(:\s*" & AliasGroup & ")?\s*=\s*(""[^""]*""|'[^']*')\s*\>\s*$",
             RegexOptions.Compiled)
 
         ' Regular expression for parsing VB alias imports statement (Alias=Namespace).
-        Private Shared s_vbImportRegex As New Regex(
+        Private Shared ReadOnly s_vbImportRegex As New Regex(
             "^\s*" & AliasGroup & "\s*=\s*.*$",
             RegexOptions.Compiled)
 

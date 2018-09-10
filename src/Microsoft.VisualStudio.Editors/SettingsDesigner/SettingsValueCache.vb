@@ -9,7 +9,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
         ' We cache the values in a hashtable of hashtables:
         ' Type -> Serialized value -> Deserialized value
-        Private _cachedSettingValues As New Dictionary(Of Type, Dictionary(Of String, Object))
+        Private ReadOnly _cachedSettingValues As New Dictionary(Of Type, Dictionary(Of String, Object))
 
         Private ReadOnly _culture As Globalization.CultureInfo
 

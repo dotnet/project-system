@@ -19,7 +19,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private _settingGenerateXmlDocumentation As Boolean
         Private _generateXmlDocumentation As Object
         ' The list of warning ids that are affected by option strict on/off
-        Private _optionStrictIDs() As Integer
+        Private ReadOnly _optionStrictIDs() As Integer
 
         ' List of warnings to ignore
         Private _noWarn() As Integer
@@ -30,9 +30,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private _comVisible As Object
 
         'Localized error/warning strings for notify column
-        Private _notifyError As String
-        Private _notifyNone As String
-        Private _notifyWarning As String
+        Private ReadOnly _notifyError As String
+        Private ReadOnly _notifyNone As String
+        Private ReadOnly _notifyWarning As String
         Private Const ConditionColumnIndex As Integer = 0
         Private Const NotifyColumnIndex As Integer = 1
         Private Const ConditionColumnWidthPercentage As Integer = 35 'non-resizable column
@@ -638,7 +638,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End Sub
         End Class
 
-        Private _errorInfos As ErrorInfo() = {
+        Private ReadOnly _errorInfos As ErrorInfo() = {
             New ErrorInfo(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Compile_42016, "42016,41999", ErrorNotification.None, True, New Integer() {42016, 41999}),
             New ErrorInfo(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Compile_42017_42018_42019, "42017,42018,42019,42032,42036", ErrorNotification.None, True, New Integer() {42017, 42018, 42019, 42032, 42036}),
             New ErrorInfo(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Compile_42020, "42020,42021,42022", ErrorNotification.None, True, New Integer() {42020, 42021, 42022}),
@@ -1500,7 +1500,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End Class
 
             ' Shared cache of raw & extended configuration objects
-            Private _configurationObjectCache As ConfigurationObjectCache
+            Private ReadOnly _configurationObjectCache As ConfigurationObjectCache
 
             ' Create a new instance
             Public Sub New(ConfigurationObjectCache As ConfigurationObjectCache, id As Integer, name As String, control As Control, setter As SetDelegate, getter As GetDelegate, flags As ControlDataFlags, AssocControls As Control())

@@ -17,7 +17,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
     ''' </summary>
     ''' <remarks></remarks>
     Friend Class AccessModifierConverter
-        Private _converter As TypeConverter
+        Private ReadOnly _converter As TypeConverter
 
         Public Enum Access
             [Public]
@@ -66,12 +66,12 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         Implements IDisposable
 
         Private _isDisposed As Boolean = False
-        Private _rootDesigner As BaseRootDesigner
-        Private _projectItem As EnvDTE.ProjectItem
+        Private ReadOnly _rootDesigner As BaseRootDesigner
+        Private ReadOnly _projectItem As EnvDTE.ProjectItem
         Private ReadOnly _serviceProvider As IServiceProvider
         Private ReadOnly _namespaceToOverrideIfCustomToolIsEmpty As String
-        Private _codeGeneratorEntries As New List(Of CodeGenerator)
-        Private _recognizedCustomToolValues As New List(Of String)
+        Private ReadOnly _codeGeneratorEntries As New List(Of CodeGenerator)
+        Private ReadOnly _recognizedCustomToolValues As New List(Of String)
 
         Private _designerCommandBarComboBoxCommand As DesignerCommandBarComboBox
         Private _commandIdCombobox As CommandID
@@ -133,7 +133,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             Inherits CodeGenerator
 
             Private ReadOnly _accessibility As AccessModifierConverter.Access
-            Private _serviceProvider As IServiceProvider
+            Private ReadOnly _serviceProvider As IServiceProvider
 
             Public Sub New(accessibility As AccessModifierConverter.Access, serviceProvider As IServiceProvider, customToolValue As String)
                 MyBase.New(customToolValue)
@@ -192,7 +192,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ' Map from command ID to LIFO list of command handlers. The item at the head of the list is the item 
             ' that is currently registered with the shell's MenuCommandService
             ' 
-            Private Shared s_packageCommandForwarderLists As New Dictionary(Of CommandID, LinkedList(Of DesignerMenuCommand))
+            Private Shared ReadOnly s_packageCommandForwarderLists As New Dictionary(Of CommandID, LinkedList(Of DesignerMenuCommand))
 
             Public Shared Sub RegisterMenuCommandForwarder(commandID As CommandID, forwarder As DesignerMenuCommand)
                 Dim menuCommandService As IMenuCommandService = VBPackage.Instance.MenuCommandService
