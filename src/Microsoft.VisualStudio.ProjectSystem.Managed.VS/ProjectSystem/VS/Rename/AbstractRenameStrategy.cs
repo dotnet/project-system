@@ -55,8 +55,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
         protected static Document GetDocument(Project project, string filePath) =>
             (from d in project.Documents where StringComparers.Paths.Equals(d.FilePath, filePath) select d).FirstOrDefault();
 
-        protected static async Task<SyntaxNode> GetRootNode(Document newDocument) =>
-            await newDocument.GetSyntaxRootAsync().ConfigureAwait(false);
+        protected static Task<SyntaxNode> GetRootNode(Document newDocument) =>
+            newDocument.GetSyntaxRootAsync();
 
         protected static bool HasMatchingSyntaxNode(SemanticModel model, SyntaxNode syntaxNode, string name, bool isCaseSensitive)
         {

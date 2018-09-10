@@ -32,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
         public override async Task RenameAsync(Project myNewProject, string oldFileName, string newFileName, bool isCaseSensitive)
         {
             string oldNameBase = Path.GetFileNameWithoutExtension(oldFileName);
-            Solution renamedSolution = await GetRenamedSolutionAsync(myNewProject, oldNameBase, newFileName, isCaseSensitive).ConfigureAwait(false);
+            Solution renamedSolution = await GetRenamedSolutionAsync(myNewProject, oldNameBase, newFileName, isCaseSensitive);
             if (renamedSolution == null)
                 return;
 
@@ -58,11 +58,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                 if (newDocument == null)
                     return renamedSolution;
 
-                SyntaxNode root = await GetRootNode(newDocument).ConfigureAwait(false);
+                SyntaxNode root = await GetRootNode(newDocument);
                 if (root == null)
                     return renamedSolution;
 
-                SemanticModel semanticModel = await newDocument.GetSemanticModelAsync().ConfigureAwait(false);
+                SemanticModel semanticModel = await newDocument.GetSemanticModelAsync();
                 if (semanticModel == null)
                     return renamedSolution;
 
@@ -71,14 +71,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                 if (declaration == null)
                     return renamedSolution;
 
-                bool userConfirmed = await CheckUserConfirmation(oldNameBase).ConfigureAwait(false);
+                bool userConfirmed = await CheckUserConfirmation(oldNameBase);
                 if (!userConfirmed)
                     return renamedSolution;
 
                 string newName = Path.GetFileNameWithoutExtension(newDocument.FilePath);
 
                 // Note that RenameSymbolAsync will return a new snapshot of solution.
-                renamedSolution = await _roslynServices.RenameSymbolAsync(newDocument.Project.Solution, semanticModel.GetDeclaredSymbol(declaration), newName).ConfigureAwait(false);
+                renamedSolution = await _roslynServices.RenameSymbolAsync(newDocument.Project.Solution, semanticModel.GetDeclaredSymbol(declaration), newName);
                 project = renamedSolution.Projects.Where(p => StringComparers.Paths.Equals(p.FilePath, myNewProject.FilePath)).FirstOrDefault();
             }
             return null;
