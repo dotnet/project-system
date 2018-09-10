@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.ProjectSystem.Debug;
@@ -31,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         {
             var startupHelper = new Mock<IStartupProjectHelper>();
             startupHelper.Setup(x => x.GetExportFromDotNetStartupProjects<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles))
-                         .Returns(new List<IActiveDebugFrameworkServices>());
+                         .Returns(ImmutableArray<IActiveDebugFrameworkServices>.Empty);
 
             var command = new TestDebugFrameworkPropertyMenuTextUpdater(startupHelper.Object);
             command.QueryStatus();
@@ -49,7 +50,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
                                                .ImplementGetProjectFrameworksAsync(null);
             var startupHelper = new Mock<IStartupProjectHelper>();
             startupHelper.Setup(x => x.GetExportFromDotNetStartupProjects<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles))
-                         .Returns(new List<IActiveDebugFrameworkServices>() { activeDebugFrameworkSvcs.Object });
+                         .Returns(ImmutableArray.Create(activeDebugFrameworkSvcs.Object));
 
             var command = new TestDebugFrameworkPropertyMenuTextUpdater(startupHelper.Object);
             command.QueryStatus();
@@ -67,7 +68,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
                                                .ImplementGetProjectFrameworksAsync(new List<string>() { "net45" });
             var startupHelper = new Mock<IStartupProjectHelper>();
             startupHelper.Setup(x => x.GetExportFromDotNetStartupProjects<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles))
-                         .Returns(new List<IActiveDebugFrameworkServices>() { activeDebugFrameworkSvcs.Object });
+                         .Returns(ImmutableArray.Create(activeDebugFrameworkSvcs.Object));
 
             var command = new TestDebugFrameworkPropertyMenuTextUpdater(startupHelper.Object);
             command.QueryStatus();
@@ -85,7 +86,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
                                                .ImplementGetProjectFrameworksAsync(new List<string>() { "net461", "netcoreapp1.0" });
             var startupHelper = new Mock<IStartupProjectHelper>();
             startupHelper.Setup(x => x.GetExportFromDotNetStartupProjects<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles))
-                         .Returns(new List<IActiveDebugFrameworkServices>() { activeDebugFrameworkSvcs.Object });
+                         .Returns(ImmutableArray.Create(activeDebugFrameworkSvcs.Object));
 
             var command = new TestDebugFrameworkPropertyMenuTextUpdater(startupHelper.Object);
             command.QueryStatus();
@@ -103,7 +104,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
                                                .ImplementGetProjectFrameworksAsync(new List<string>() { "net461", "netcoreapp1.0" });
             var startupHelper = new Mock<IStartupProjectHelper>();
             startupHelper.Setup(x => x.GetExportFromDotNetStartupProjects<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles))
-                         .Returns(new List<IActiveDebugFrameworkServices>() { activeDebugFrameworkSvcs.Object });
+                         .Returns(ImmutableArray.Create(activeDebugFrameworkSvcs.Object));
 
             var command = new TestDebugFrameworkPropertyMenuTextUpdater(startupHelper.Object);
             command.QueryStatus();
@@ -121,7 +122,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
                                                .ImplementGetProjectFrameworksAsync(new List<string>() { "net461", "netcoreapp1.0" });
             var startupHelper = new Mock<IStartupProjectHelper>();
             startupHelper.Setup(x => x.GetExportFromDotNetStartupProjects<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles))
-                         .Returns(new List<IActiveDebugFrameworkServices>() { activeDebugFrameworkSvcs.Object });
+                         .Returns(ImmutableArray.Create(activeDebugFrameworkSvcs.Object));
 
             var command = new TestDebugFrameworkPropertyMenuTextUpdater(startupHelper.Object);
             command.QueryStatus();
@@ -144,7 +145,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 
             var startupHelper = new Mock<IStartupProjectHelper>();
             startupHelper.Setup(x => x.GetExportFromDotNetStartupProjects<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles))
-                         .Returns(new List<IActiveDebugFrameworkServices>() { activeDebugFrameworkSvcs1.Object, activeDebugFrameworkSvcs2.Object });
+                         .Returns(ImmutableArray.Create(activeDebugFrameworkSvcs1.Object, activeDebugFrameworkSvcs2.Object));
 
             var command = new TestDebugFrameworkPropertyMenuTextUpdater(startupHelper.Object);
             command.QueryStatus();
@@ -167,7 +168,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 
             var startupHelper = new Mock<IStartupProjectHelper>();
             startupHelper.Setup(x => x.GetExportFromDotNetStartupProjects<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles))
-                         .Returns(new List<IActiveDebugFrameworkServices>() { activeDebugFrameworkSvcs1.Object, activeDebugFrameworkSvcs2.Object });
+                         .Returns(ImmutableArray.Create(activeDebugFrameworkSvcs1.Object, activeDebugFrameworkSvcs2.Object));
 
             var command = new TestDebugFrameworkPropertyMenuTextUpdater(startupHelper.Object);
             command.QueryStatus();
@@ -190,7 +191,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 
             var startupHelper = new Mock<IStartupProjectHelper>();
             startupHelper.Setup(x => x.GetExportFromDotNetStartupProjects<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles))
-                         .Returns(new List<IActiveDebugFrameworkServices>() { activeDebugFrameworkSvcs1.Object, activeDebugFrameworkSvcs2.Object });
+                         .Returns(ImmutableArray.Create(activeDebugFrameworkSvcs1.Object, activeDebugFrameworkSvcs2.Object));
 
             var command = new TestDebugFrameworkPropertyMenuTextUpdater(startupHelper.Object);
             command.QueryStatus();
@@ -213,7 +214,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 
             var startupHelper = new Mock<IStartupProjectHelper>();
             startupHelper.Setup(x => x.GetExportFromDotNetStartupProjects<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles))
-                         .Returns(new List<IActiveDebugFrameworkServices>() { activeDebugFrameworkSvcs1.Object, activeDebugFrameworkSvcs2.Object });
+                         .Returns(ImmutableArray.Create(activeDebugFrameworkSvcs1.Object, activeDebugFrameworkSvcs2.Object));
 
             var command = new TestDebugFrameworkPropertyMenuTextUpdater(startupHelper.Object);
             command.QueryStatus();
@@ -240,7 +241,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 
             var startupHelper = new Mock<IStartupProjectHelper>();
             startupHelper.Setup(x => x.GetExportFromDotNetStartupProjects<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles))
-                         .Returns(new List<IActiveDebugFrameworkServices>() { activeDebugFrameworkSvcs1.Object, activeDebugFrameworkSvcs2.Object, activeDebugFrameworkSvcs3.Object });
+                         .Returns(ImmutableArray.Create(activeDebugFrameworkSvcs1.Object, activeDebugFrameworkSvcs2.Object, activeDebugFrameworkSvcs3.Object));
 
             var command = new TestDebugFrameworkPropertyMenuTextUpdater(startupHelper.Object);
             command.QueryStatus();
@@ -263,7 +264,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 
             var startupHelper = new Mock<IStartupProjectHelper>();
             startupHelper.Setup(x => x.GetExportFromDotNetStartupProjects<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles))
-                         .Returns(new List<IActiveDebugFrameworkServices>() { activeDebugFrameworkSvcs1.Object, activeDebugFrameworkSvcs2.Object });
+                         .Returns(ImmutableArray.Create(activeDebugFrameworkSvcs1.Object, activeDebugFrameworkSvcs2.Object));
 
             var command = new TestDebugFrameworkPropertyMenuTextUpdater(startupHelper.Object);
             command.QueryStatus();
@@ -286,7 +287,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 
             var startupHelper = new Mock<IStartupProjectHelper>();
             startupHelper.Setup(x => x.GetExportFromDotNetStartupProjects<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles))
-                         .Returns(new List<IActiveDebugFrameworkServices>() { activeDebugFrameworkSvcs1.Object, activeDebugFrameworkSvcs2.Object });
+                         .Returns(ImmutableArray.Create(activeDebugFrameworkSvcs1.Object, activeDebugFrameworkSvcs2.Object));
 
             var command = new TestDebugFrameworkPropertyMenuTextUpdater(startupHelper.Object);
             command.QueryStatus();
@@ -309,7 +310,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 
             var startupHelper = new Mock<IStartupProjectHelper>();
             startupHelper.Setup(x => x.GetExportFromDotNetStartupProjects<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles))
-                         .Returns(new List<IActiveDebugFrameworkServices>() { activeDebugFrameworkSvcs1.Object, activeDebugFrameworkSvcs2.Object });
+                         .Returns(ImmutableArray.Create(activeDebugFrameworkSvcs1.Object, activeDebugFrameworkSvcs2.Object));
 
             var command = new TestDebugFrameworkPropertyMenuTextUpdater(startupHelper.Object);
             command.QueryStatus();

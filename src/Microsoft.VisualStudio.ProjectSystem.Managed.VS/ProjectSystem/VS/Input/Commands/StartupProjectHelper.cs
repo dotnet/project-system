@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
-using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.ProjectSystem.VS.Extensibility;
 using Microsoft.VisualStudio.Shell;
@@ -29,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         /// <summary>
         /// Returns the export T of the startup projects if those projects support the specified capabilities
         /// </summary>
-        public List<T> GetExportFromDotNetStartupProjects<T>(string capabilityMatch) where T : class
+        public ImmutableArray<T> GetExportFromDotNetStartupProjects<T>(string capabilityMatch) where T : class
         {
             EnvDTE.DTE dte = ServiceProvider.GetService<EnvDTE.DTE, EnvDTE.DTE>();
             if (dte != null)
@@ -37,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
                 if (dte.Solution.SolutionBuild.StartupProjects is Array startupProjects && startupProjects.Length > 0)
                 {
                     IVsSolution sln = ServiceProvider.GetService<IVsSolution, SVsSolution>();
-                    List<T> results = new List<T>(startupProjects.Length);
+                    ImmutableArray<T>.Builder results = ImmutableArray.CreateBuilder<T>();
                     foreach (string projectName in startupProjects)
                     {
                         sln.GetProjectOfUniqueName(projectName, out IVsHierarchy hier);
@@ -47,10 +47,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
                             results.Add(ProjectExportProvider.GetExport<T>(projectPath));
                         }
                     }
-                    return results;
+                    return results.ToImmutable();
                 }
             }
-            return new List<T>(0);
+            return ImmutableArray<T>.Empty;
         }
     }
 }

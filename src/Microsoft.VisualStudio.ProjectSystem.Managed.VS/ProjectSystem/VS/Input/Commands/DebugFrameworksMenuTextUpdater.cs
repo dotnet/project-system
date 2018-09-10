@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Design;
 using System.Linq;
@@ -59,8 +60,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 
         public void QueryStatus()
         {
-            List<IActiveDebugFrameworkServices> activeDebugFrameworks = StartupProjectHelper.GetExportFromDotNetStartupProjects<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles);
-            if (activeDebugFrameworks.Count > 0)
+            ImmutableArray<IActiveDebugFrameworkServices> activeDebugFrameworks = StartupProjectHelper.GetExportFromDotNetStartupProjects<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles);
+            if (activeDebugFrameworks.Length > 0)
             {
                 string activeFramework = null;
                 List<string> frameworks = null;

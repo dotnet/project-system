@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Design;
 using System.Linq;
@@ -38,8 +39,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         public override bool ExecCommand(int cmdIndex, EventArgs e)
         {
             bool handled = false;
-            List<IActiveDebugFrameworkServices> activeDebugFrameworks = StartupProjectHelper.GetExportFromDotNetStartupProjects<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles);
-            if (activeDebugFrameworks.Count > 0)
+            ImmutableArray<IActiveDebugFrameworkServices> activeDebugFrameworks = StartupProjectHelper.GetExportFromDotNetStartupProjects<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles);
+            if (activeDebugFrameworks.Length > 0)
             {
                 ExecuteSynchronously(async () =>
                 {
@@ -64,8 +65,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         /// </summary>
         public override bool QueryStatusCommand(int cmdIndex, EventArgs e)
         {
-            List<IActiveDebugFrameworkServices> activeDebugFrameworks = StartupProjectHelper.GetExportFromDotNetStartupProjects<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles);
-            if (activeDebugFrameworks.Count > 0)
+            ImmutableArray<IActiveDebugFrameworkServices> activeDebugFrameworks = StartupProjectHelper.GetExportFromDotNetStartupProjects<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles);
+            if (activeDebugFrameworks.Length > 0)
             {
                 // See if the projects support at least two runtimes
                 List<string> frameworks = null;

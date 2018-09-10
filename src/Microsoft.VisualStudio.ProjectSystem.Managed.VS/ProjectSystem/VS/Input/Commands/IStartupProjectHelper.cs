@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 
-using System.Collections.Generic;
+using System.Collections.Immutable;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 {
@@ -11,6 +11,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
     /// </summary>
     internal interface IStartupProjectHelper
     {
-        List<T> GetExportFromDotNetStartupProjects<T>(string capabilityMatch) where T : class;
+        ImmutableArray<T> GetExportFromDotNetStartupProjects<T>(string capabilityMatch) where T : class;
     }
 }

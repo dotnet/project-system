@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.ProjectSystem.Debug;
@@ -20,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         {
             var startupHelper = new Mock<IStartupProjectHelper>();
             startupHelper.Setup(x => x.GetExportFromDotNetStartupProjects<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles))
-                         .Returns(new List<IActiveDebugFrameworkServices>());
+                         .Returns(ImmutableArray<IActiveDebugFrameworkServices>.Empty);
 
             var command = new TestDebugFrameworksDynamicMenuCommand(startupHelper.Object);
             Assert.False(command.ExecCommand(0, EventArgs.Empty));
@@ -44,7 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
             }
             var startupHelper = new Mock<IStartupProjectHelper>();
             startupHelper.Setup(x => x.GetExportFromDotNetStartupProjects<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles))
-                         .Returns(new List<IActiveDebugFrameworkServices>() { activeDebugFrameworkSvcs.Object });
+                         .Returns(ImmutableArray.Create(activeDebugFrameworkSvcs.Object));
 
             var command = new TestDebugFrameworksDynamicMenuCommand(startupHelper.Object);
             Assert.Equal(expected, command.ExecCommand(cmdIndex, EventArgs.Empty));
@@ -76,7 +77,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
             }
             var startupHelper = new Mock<IStartupProjectHelper>();
             startupHelper.Setup(x => x.GetExportFromDotNetStartupProjects<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles))
-                         .Returns(new List<IActiveDebugFrameworkServices>() { activeDebugFrameworkSvcs1.Object, activeDebugFrameworkSvcs2.Object });
+                         .Returns(ImmutableArray.Create(activeDebugFrameworkSvcs1.Object, activeDebugFrameworkSvcs2.Object));
 
             var command = new TestDebugFrameworksDynamicMenuCommand(startupHelper.Object);
             Assert.Equal(expected, command.ExecCommand(cmdIndex, EventArgs.Empty));
@@ -91,7 +92,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         {
             var startupHelper = new Mock<IStartupProjectHelper>();
             startupHelper.Setup(x => x.GetExportFromDotNetStartupProjects<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles))
-                         .Returns(new List<IActiveDebugFrameworkServices>());
+                         .Returns(ImmutableArray<IActiveDebugFrameworkServices>.Empty);
 
             var command = new TestDebugFrameworksDynamicMenuCommand(startupHelper.Object);
             Assert.False(command.QueryStatusCommand(0, EventArgs.Empty));
@@ -105,7 +106,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
                                                .ImplementGetProjectFrameworksAsync(null);
             var startupHelper = new Mock<IStartupProjectHelper>();
             startupHelper.Setup(x => x.GetExportFromDotNetStartupProjects<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles))
-                         .Returns(new List<IActiveDebugFrameworkServices>() { activeDebugFrameworkSvcs.Object });
+                         .Returns(ImmutableArray.Create(activeDebugFrameworkSvcs.Object));
 
             var command = new TestDebugFrameworksDynamicMenuCommand(startupHelper.Object);
             Assert.True(command.QueryStatusCommand(0, EventArgs.Empty));
@@ -127,7 +128,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
                                                .ImplementGetProjectFrameworksAsync(createList ? new List<string>() { "netcoreapp1.0" } : null);
             var startupHelper = new Mock<IStartupProjectHelper>();
             startupHelper.Setup(x => x.GetExportFromDotNetStartupProjects<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles))
-                         .Returns(new List<IActiveDebugFrameworkServices>() { activeDebugFrameworkSvcs.Object });
+                         .Returns(ImmutableArray.Create(activeDebugFrameworkSvcs.Object));
 
             var command = new TestDebugFrameworksDynamicMenuCommand(startupHelper.Object);
             Assert.True(command.QueryStatusCommand(0, EventArgs.Empty));
@@ -155,7 +156,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 
             var startupHelper = new Mock<IStartupProjectHelper>();
             startupHelper.Setup(x => x.GetExportFromDotNetStartupProjects<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles))
-                         .Returns(new List<IActiveDebugFrameworkServices>() { activeDebugFrameworkSvcs.Object });
+                         .Returns(ImmutableArray.Create(activeDebugFrameworkSvcs.Object));
 
             var command = new TestDebugFrameworksDynamicMenuCommand(startupHelper.Object);
             Assert.True(command.QueryStatusCommand(cmdIndex, EventArgs.Empty));
@@ -179,7 +180,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 
             var startupHelper = new Mock<IStartupProjectHelper>();
             startupHelper.Setup(x => x.GetExportFromDotNetStartupProjects<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles))
-                         .Returns(new List<IActiveDebugFrameworkServices>() { activeDebugFrameworkSvcs1.Object, activeDebugFrameworkSvcs2.Object });
+                         .Returns(ImmutableArray.Create(activeDebugFrameworkSvcs1.Object, activeDebugFrameworkSvcs2.Object));
 
             var command = new TestDebugFrameworksDynamicMenuCommand(startupHelper.Object);
             Assert.True(command.QueryStatusCommand(0, EventArgs.Empty));
@@ -206,7 +207,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 
             var startupHelper = new Mock<IStartupProjectHelper>();
             startupHelper.Setup(x => x.GetExportFromDotNetStartupProjects<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles))
-                         .Returns(new List<IActiveDebugFrameworkServices>() { activeDebugFrameworkSvcs1.Object, activeDebugFrameworkSvcs2.Object });
+                         .Returns(ImmutableArray.Create(activeDebugFrameworkSvcs1.Object, activeDebugFrameworkSvcs2.Object));
 
             var command = new TestDebugFrameworksDynamicMenuCommand(startupHelper.Object);
             Assert.True(command.QueryStatusCommand(0, EventArgs.Empty));
@@ -233,7 +234,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 
             var startupHelper = new Mock<IStartupProjectHelper>();
             startupHelper.Setup(x => x.GetExportFromDotNetStartupProjects<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles))
-                         .Returns(new List<IActiveDebugFrameworkServices>() { activeDebugFrameworkSvcs1.Object, activeDebugFrameworkSvcs2.Object });
+                         .Returns(ImmutableArray.Create(activeDebugFrameworkSvcs1.Object, activeDebugFrameworkSvcs2.Object));
 
             var command = new TestDebugFrameworksDynamicMenuCommand(startupHelper.Object);
             Assert.True(command.QueryStatusCommand(0, EventArgs.Empty));
@@ -260,7 +261,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 
             var startupHelper = new Mock<IStartupProjectHelper>();
             startupHelper.Setup(x => x.GetExportFromDotNetStartupProjects<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles))
-                         .Returns(new List<IActiveDebugFrameworkServices>() { activeDebugFrameworkSvcs1.Object, activeDebugFrameworkSvcs2.Object });
+                         .Returns(ImmutableArray.Create(activeDebugFrameworkSvcs1.Object, activeDebugFrameworkSvcs2.Object));
 
             var command = new TestDebugFrameworksDynamicMenuCommand(startupHelper.Object);
             Assert.True(command.QueryStatusCommand(0, EventArgs.Empty));
@@ -291,7 +292,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 
             var startupHelper = new Mock<IStartupProjectHelper>();
             startupHelper.Setup(x => x.GetExportFromDotNetStartupProjects<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles))
-                         .Returns(new List<IActiveDebugFrameworkServices>() { activeDebugFrameworkSvcs1.Object, activeDebugFrameworkSvcs2.Object, activeDebugFrameworkSvcs3.Object });
+                         .Returns(ImmutableArray.Create(activeDebugFrameworkSvcs1.Object, activeDebugFrameworkSvcs2.Object, activeDebugFrameworkSvcs3.Object));
 
             var command = new TestDebugFrameworksDynamicMenuCommand(startupHelper.Object);
             Assert.True(command.QueryStatusCommand(0, EventArgs.Empty));
@@ -327,7 +328,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 
             var startupHelper = new Mock<IStartupProjectHelper>();
             startupHelper.Setup(x => x.GetExportFromDotNetStartupProjects<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles))
-                         .Returns(new List<IActiveDebugFrameworkServices>() { activeDebugFrameworkSvcs1.Object, activeDebugFrameworkSvcs2.Object });
+                         .Returns(ImmutableArray.Create(activeDebugFrameworkSvcs1.Object, activeDebugFrameworkSvcs2.Object));
 
             var command = new TestDebugFrameworksDynamicMenuCommand(startupHelper.Object);
             Assert.True(command.QueryStatusCommand(cmdIndex, EventArgs.Empty));
