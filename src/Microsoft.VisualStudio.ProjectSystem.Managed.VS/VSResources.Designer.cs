@@ -427,7 +427,7 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Visual Studio 2017 version 15.7 or newer is recommended for .NET Core {0}.{1} projects..
+        ///   Looks up a localized string similar to A newer version of Visual Studio is recommended for projects targetting .NET Core {0}.{1}..
         /// </summary>
         internal static string PartialSupportedDotNetCoreProject {
             get {
