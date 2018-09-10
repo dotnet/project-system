@@ -7,7 +7,7 @@ Namespace Microsoft.VisualStudio.Editors.OptionPages
     Partial Friend NotInheritable Class GeneralOptionPageControl
         Inherits OptionPageControl
 
-        Private _generalOptions As GeneralOptions
+        Private ReadOnly _generalOptions As GeneralOptions
 
         Public Shared ReadOnly FastUpToDateLogLevelItemSource As String() = {
             My.Resources.GeneralOptionPageResources.General_FastUpToDateCheck_LogLevel_None,

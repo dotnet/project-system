@@ -12,8 +12,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Inherits Component
         Implements ICustomTypeDescriptor, IReferenceComponent, IUpdatableReferenceComponent
 
-        Private _page As ReferencePropPage
-        Private _projectItem As EnvDTE.ProjectItem
+        Private ReadOnly _page As ReferencePropPage
+        Private ReadOnly _projectItem As EnvDTE.ProjectItem
 
         Public Sub New(page As ReferencePropPage, projectItem As EnvDTE.ProjectItem)
             _page = page

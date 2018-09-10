@@ -72,7 +72,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         Private ReadOnly _menuCommandAddExtension As New MenuCommand(
             New EventHandler(AddressOf AddExtension_Click),
             Constants.MenuConstants.CommandIDMyEXTENSIONAddExtension)
-        Private _menuCommandRemoveExtension As New MenuCommand(
+        Private ReadOnly _menuCommandRemoveExtension As New MenuCommand(
             New EventHandler(AddressOf RemoveExtension_Click),
             Constants.MenuConstants.CommandIDMyEXTENSIONRemoveExtension)
         Private ReadOnly _menuCommands() As MenuCommand =

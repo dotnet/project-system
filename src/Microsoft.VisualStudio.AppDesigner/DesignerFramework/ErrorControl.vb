@@ -14,7 +14,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
     Public NotInheritable Class ErrorControl
 
         Private _firstGotFocus As Boolean = True
-        Private _sizingLabel As Label
+        Private ReadOnly _sizingLabel As Label
 
         Public Sub New()
             ' This call is required by the Windows Form Designer.

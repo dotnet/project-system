@@ -166,7 +166,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             _statusValid = True
         End Sub 'UpdateStatus
 
-        Private _rootDesigner As BaseRootDesigner ' Pointer to the RootDesigner allowing refreshing all menu commands.
+        Private ReadOnly _rootDesigner As BaseRootDesigner ' Pointer to the RootDesigner allowing refreshing all menu commands.
         Private ReadOnly _commandEnabledHandler As CheckCommandStatusHandler ' Handler to check if the command should be enabled.
         Private ReadOnly _commandCheckedHandler As CheckCommandStatusHandler ' Handler to check if the command should be checked.
         Private ReadOnly _commandVisibleHandler As CheckCommandStatusHandler ' Handler to check if the command should be hidden.
@@ -357,7 +357,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
     ''' <remarks></remarks>
     Friend Class LatchedCommandGroup
 
-        Private _commands As New Dictionary(Of Integer, MenuCommand)
+        Private ReadOnly _commands As New Dictionary(Of Integer, MenuCommand)
 
         ''' <summary>
         ''' Add a command to the group

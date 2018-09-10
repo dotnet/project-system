@@ -37,10 +37,10 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Private _stringTableCurrentCellAddress As Point
 
             'Current listview view (thumbnail, icons, etc.) for each category, hashed by category name (whether or not these categories are showing)
-            Private _resourceViewHash As New ListDictionary
+            Private ReadOnly _resourceViewHash As New ListDictionary
 
             'Current sorter for each category, hashed by category name (whether or not these categories are showing)
-            Private _categorySorter As New ListDictionary
+            Private ReadOnly _categorySorter As New ListDictionary
 
             'Widths of the columns in the listview's details view (whether or not the listview is currently showing)
             Private _listViewColumnWidths() As Integer

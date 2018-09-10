@@ -677,12 +677,12 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         End Sub
 #End Region
 
-        Private _projectService As MyExtensibilityProjectService
+        Private ReadOnly _projectService As MyExtensibilityProjectService
         Private ReadOnly _serviceProvider As IServiceProvider ' Usually VBPackage.
-        Private _project As Project ' The associated project.
+        Private ReadOnly _project As Project ' The associated project.
         Private ReadOnly _projectHierarchy As IVsHierarchy ' The associated project hierarchy.
 
-        Private _vsBuildPropertyStorage As IVsBuildPropertyStorage ' Used to set the item extension attributes.
+        Private ReadOnly _vsBuildPropertyStorage As IVsBuildPropertyStorage ' Used to set the item extension attributes.
 
         Private _extensionFolderProjectItem As ProjectItem ' "My Extensions" folder.
 

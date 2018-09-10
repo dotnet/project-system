@@ -99,7 +99,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         Private _tabControlRect As Rectangle 'The entire area of the tab control, including the tabs and panel area
 
         'Pointer to the ProjectDesignerTabControl which owns this renderer.  May not be null
-        Private _owner As ProjectDesignerTabControl
+        Private ReadOnly _owner As ProjectDesignerTabControl
 
         'The service provider to use.  May be Nothing
         Private _serviceProvider As IServiceProvider

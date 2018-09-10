@@ -42,7 +42,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         Private _inOnClose As Boolean
 
         Private _vsWindowFrame As IVsWindowFrame
-        Private _serviceProvider As IServiceProvider
+        Private ReadOnly _serviceProvider As IServiceProvider
 
         'Document related items
         Private _mkDocument As String
@@ -75,7 +75,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         Private _creatingDesigner As Boolean
 
         'The owning project designer
-        Private _view As ApplicationDesignerView
+        Private ReadOnly _view As ApplicationDesignerView
 
 
         ''' <summary>

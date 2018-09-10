@@ -632,7 +632,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
             ' in this list. All unknown entries will be reported as &hFF
             '
             ' Add more entries to the end of this list. Do *not* put any new entries in the middle of the list!
-            Private Shared s_sqmOrder() As Guid = {
+            Private Shared ReadOnly s_sqmOrder() As Guid = {
                 KnownPropertyPageGuids.GuidApplicationPage_VB,
                 KnownPropertyPageGuids.GuidApplicationPage_CS,
                 KnownPropertyPageGuids.GuidApplicationPage_JS,

@@ -12,7 +12,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
     Friend Class TargetFrameworkPropertyControlData
         Inherits PropertyControlData
 
-        Private _comboBox As ComboBox
+        Private ReadOnly _comboBox As ComboBox
 
         Public Sub New(id As Integer, name As String, comboBox As ComboBox, setter As SetDelegate, getter As GetDelegate, flags As ControlDataFlags, AssocControls As Control())
             MyBase.New(id, name, comboBox, setter, getter, flags, AssocControls)

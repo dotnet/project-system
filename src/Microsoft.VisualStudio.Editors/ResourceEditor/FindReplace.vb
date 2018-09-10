@@ -29,7 +29,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
 
         'Pointer to the root designer
-        Private _rootDesigner As ResourceEditorRootDesigner
+        Private ReadOnly _rootDesigner As ResourceEditorRootDesigner
 
         'The find state object. Find state is an opaque object we hold on behalf of the find engine.
         '  Setting this object to Nothing will reset the find / replace loop.

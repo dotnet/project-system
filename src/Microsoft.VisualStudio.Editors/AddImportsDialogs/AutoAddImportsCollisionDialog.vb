@@ -8,7 +8,7 @@ Namespace Microsoft.VisualStudio.Editors.AddImports
         Private _importMnemonic As Char? = Nothing
         Private _doNotImportMnemonic As Char? = Nothing
         Private _lastFocus As Control
-        Private _helpCallBack As IVBAddImportsDialogHelpCallback
+        Private ReadOnly _helpCallBack As IVBAddImportsDialogHelpCallback
 
         Public Sub New([namespace] As String, identifier As String, minimallyQualifiedName As String, callBack As IVBAddImportsDialogHelpCallback, isp As IServiceProvider)
             MyBase.New(isp)

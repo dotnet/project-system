@@ -6,7 +6,7 @@ Imports System.Windows.Forms
 Namespace Microsoft.VisualStudio.Editors.AddImports
     Friend Class AutoAddImportsExtensionCollisionDialog
         Private _lastFocus As Control
-        Private _helpCallBack As IVBAddImportsDialogHelpCallback
+        Private ReadOnly _helpCallBack As IVBAddImportsDialogHelpCallback
 
         Public Sub New([namespace] As String, identifier As String, minimallyQualifiedName As String, helpCAllback As IVBAddImportsDialogHelpCallback, isp As IServiceProvider)
             MyBase.New(isp)

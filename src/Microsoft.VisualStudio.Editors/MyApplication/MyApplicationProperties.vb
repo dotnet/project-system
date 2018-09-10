@@ -138,7 +138,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
 
         'WeakReference list of MyApplicationProperties objects, one for each
         '  IVsHierarchy that we've been initialized against
-        Private Shared s_myPropertyInstances As New Hashtable
+        Private Shared ReadOnly s_myPropertyInstances As New Hashtable
 
 
         ''' <summary>

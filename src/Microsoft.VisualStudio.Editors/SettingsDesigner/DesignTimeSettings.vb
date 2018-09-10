@@ -28,7 +28,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <remarks></remarks>
         Private _useSpecialClassName As Boolean
 
-        Private _settings As New List(Of DesignTimeSettingInstance)(16)
+        Private ReadOnly _settings As New List(Of DesignTimeSettingInstance)(16)
 
         Private Function IEnumerableOfDesignTimeSettingInstance_GetEnumerator() As IEnumerator(Of DesignTimeSettingInstance) Implements IEnumerable(Of DesignTimeSettingInstance).GetEnumerator
             Return _settings.GetEnumerator()

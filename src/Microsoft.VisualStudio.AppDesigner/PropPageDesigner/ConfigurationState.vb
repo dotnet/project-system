@@ -32,7 +32,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         Private _vsCfgProvider As IVsCfgProvider2
 
         'Pointer to the parent application designer view
-        Private _view As ApplicationDesigner.ApplicationDesignerView
+        Private ReadOnly _view As ApplicationDesigner.ApplicationDesignerView
 
         'The current selections in the configuration/platform comboboxes
         Private _selectedConfigIndex As Integer

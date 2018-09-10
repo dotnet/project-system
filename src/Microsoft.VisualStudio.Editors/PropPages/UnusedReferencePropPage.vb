@@ -30,7 +30,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private WithEvents _hostDialog As PropPageHostDialog
 
         ' helper object to sort the reference list
-        Private _referenceSorter As ListViewComparer
+        Private ReadOnly _referenceSorter As ListViewComparer
 
         ' keep the last status of the last call to GetUnusedReferences...
         ' we only update UI when the status was changed...

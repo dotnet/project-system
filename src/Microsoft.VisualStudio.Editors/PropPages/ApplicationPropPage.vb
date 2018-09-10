@@ -27,7 +27,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Protected Const INDEX_COMMANDLINEAPP As Integer = 1
         Protected Const INDEX_WINDOWSCLASSLIB As Integer = 2
         Private _rootNamespace As String
-        Private _outputTypeDefaultValues As OutputTypeComboBoxValue()
+        Private ReadOnly _outputTypeDefaultValues As OutputTypeComboBoxValue()
         Private _controlGroup As Control()()
 
         Public Sub New()

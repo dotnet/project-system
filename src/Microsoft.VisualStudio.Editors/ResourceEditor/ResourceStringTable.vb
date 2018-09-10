@@ -28,7 +28,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
         'A list of all Resource entries that are displayed in this string table (with the exception
         '  of the uncommitted resource, if any)
-        Private _virtualResourceList As New ArrayList
+        Private ReadOnly _virtualResourceList As New ArrayList
 
         'The row that is currently being removed, if any.
         Private _removingRow As DataGridViewRow

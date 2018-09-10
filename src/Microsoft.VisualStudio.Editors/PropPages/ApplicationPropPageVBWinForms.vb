@@ -30,12 +30,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Protected Const Const_MyApplication As String = "MyApplication"
 
 
-        Private _shutdownModeStringValues As String()
-        Private _authenticationModeStringValues As String()
-        Private _noneText As String
+        Private ReadOnly _shutdownModeStringValues As String()
+        Private ReadOnly _authenticationModeStringValues As String()
+        Private ReadOnly _noneText As String
         Private _myType As String
-        Private _startupObjectLabelText As String 'This one is in the form's resx when initialized
-        Private _startupFormLabelText As String 'This one we pull from resources
+        Private ReadOnly _startupObjectLabelText As String 'This one is in the form's resx when initialized
+        Private ReadOnly _startupFormLabelText As String 'This one we pull from resources
 
         'This is the (cached) MyApplication.MyApplicationProperties object returned by the project system
         Private _myApplicationPropertiesCache As IMyApplicationPropertiesInternal
@@ -66,7 +66,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Protected Const Const_SaveMySettingsOnExit As String = "SaveMySettingsOnExit"
 
         ' Shared list of all known application types and their properties...
-        Private Shared s_applicationTypes As New List(Of ApplicationTypeInfo)
+        Private Shared ReadOnly s_applicationTypes As New List(Of ApplicationTypeInfo)
 
         Private _settingApplicationType As Boolean
 

@@ -14,13 +14,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Inherits PropPageUserControlBase
 
         ' We map colors for all bitmap buttons on the page, because the default one is too dark in high-contrast mode, and it is difficult to know whether it is disabled
-        Private _moveUpImageOriginal As Image
+        Private ReadOnly _moveUpImageOriginal As Image
         Private _moveUpImage As Image
         Private _moveUpGreyImage As Image
-        Private _moveDownImageOriginal As Image
+        Private ReadOnly _moveDownImageOriginal As Image
         Private _moveDownImage As Image
         Private _moveDownGreyImage As Image
-        Private _removeFolderImageOriginal As Image
+        Private ReadOnly _removeFolderImageOriginal As Image
         Private _removeFolderImage As Image
         Private _removeFolderGreyImage As Image
         Private _inContrastMode As Boolean   ' whether we are in ContrastMode

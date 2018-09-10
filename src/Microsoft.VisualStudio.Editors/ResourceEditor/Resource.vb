@@ -262,7 +262,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '  Resource.  The set of properties shown is based solely on the value type of the
         '  resource and the type of ResourceTypeEditor that it uses.  Therefore we only need to 
         '  create a unique properties collection for each distinct pairing of these values.
-        Private Shared s_propertyDescriptorCollectionHash As New Hashtable '(Of PropertyDescriptorCollection), key = fully-qualified type names of resource value + resource type editor
+        Private Shared ReadOnly s_propertyDescriptorCollectionHash As New Hashtable '(Of PropertyDescriptorCollection), key = fully-qualified type names of resource value + resource type editor
 
         'A list of names which are not recommended for use by the end user (because they cause
         '  compiler errors or other problems).

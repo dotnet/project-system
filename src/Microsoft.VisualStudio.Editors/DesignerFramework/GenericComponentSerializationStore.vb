@@ -456,7 +456,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             'Backing for public properties
             Private ReadOnly _objectName As String
             Private ReadOnly _propertyName As String
-            Private _serializedValue As Byte()
+            Private ReadOnly _serializedValue As Byte()
 
             ''' <summary>
             ''' Constructor

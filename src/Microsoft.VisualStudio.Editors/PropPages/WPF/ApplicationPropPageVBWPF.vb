@@ -26,9 +26,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         'Holds the DocData for the Application.xaml file
         Private WithEvents _applicationXamlDocData As DocData
 
-        Private Shared s_noneText As String '(None)" in the startup object combobox
-        Private Shared s_startupObjectLabelText As String 'The label text to use for a startup object
-        Private Shared s_startupUriLabelText As String 'The label text to use for a startup Uri
+        Private Shared ReadOnly s_noneText As String '(None)" in the startup object combobox
+        Private Shared ReadOnly s_startupObjectLabelText As String 'The label text to use for a startup object
+        Private Shared ReadOnly s_startupUriLabelText As String 'The label text to use for a startup Uri
         Private _errorControl As AppDotXamlErrorControl
 
         Protected Const STARTUPOBJECT_SubMain As String = "Sub Main"
@@ -376,7 +376,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
 #Region "Application type"
 
         ' Shared list of all known application types and their properties...
-        Private Shared s_applicationTypes As New List(Of ApplicationTypeInfo)
+        Private Shared ReadOnly s_applicationTypes As New List(Of ApplicationTypeInfo)
 
         ''' <summary>
         ''' Initialize the application types applicable to this page (logic is in the base class)
@@ -1392,7 +1392,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
 
 #End Region
 
-        Private Shared s_shutdownModes As New List(Of ShutdownMode)
+        Private Shared ReadOnly s_shutdownModes As New List(Of ShutdownMode)
         Private Shared s_defaultShutdownMode As ShutdownMode
 
         Private Shared Sub InitializeShutdownModeValues()
