@@ -139,7 +139,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
         protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
         {
-            await base.InitializeCoreAsync(cancellationToken).ConfigureAwait(false);
+            await base.InitializeCoreAsync(cancellationToken);
 
             CommonServices.Project.ProjectUnloading += OnUnconfiguredProjectUnloading;
             CommonServices.Project.ProjectRenamed += OnUnconfiguredProjectRenamed;
@@ -157,7 +157,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             CommonServices.Project.ProjectUnloading -= OnUnconfiguredProjectUnloading;
             CommonServices.Project.ProjectRenamed -= OnUnconfiguredProjectRenamed;
 
-            await base.DisposeCoreAsync(initialized).ConfigureAwait(false);
+            await base.DisposeCoreAsync(initialized);
         }
 
         private Task OnUnconfiguredProjectUnloading(object sender, EventArgs args)

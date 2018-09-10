@@ -373,7 +373,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                             return;
                         }
 
-                        await BuildTreeForSnapshotAsync(snapshot).ConfigureAwait(false);
+                        await BuildTreeForSnapshotAsync(snapshot);
                     }).Task;
                 }
                 else
@@ -398,8 +398,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     IProjectTree dependenciesNode = treeSnapshot.Value.Tree;
                     if (!cancellationToken.IsCancellationRequested)
                     {
-                        dependenciesNode = await viewProvider.Value.BuildTreeAsync(dependenciesNode, snapshot, cancellationToken)
-                                                                   .ConfigureAwait(false);
+                        dependenciesNode = await viewProvider.Value.BuildTreeAsync(dependenciesNode, snapshot, cancellationToken);
 
                         _treeTelemetryService.ObserveTreeUpdateCompleted(snapshot.HasUnresolvedDependency);
                     }
@@ -468,8 +467,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             // Thus, just in case, explicitly request it here (GetCatalogsAsync will accuire a project read lock)
             NamedCatalogs = await ActiveConfiguredProject.Services
                                                          .PropertyPagesCatalog
-                                                         .GetCatalogsAsync(CancellationToken.None)
-                                                         .ConfigureAwait(false);
+                                                         .GetCatalogsAsync(CancellationToken.None);
 
             return NamedCatalogs;
         }
@@ -590,12 +588,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             }
             else
             {
-                project = await DependenciesHost.GetConfiguredProject(dependency.TargetFramework)
-                                                .ConfigureAwait(false) ?? ActiveConfiguredProject;
+                project = await DependenciesHost.GetConfiguredProject(dependency.TargetFramework) ?? ActiveConfiguredProject;
             }
 
             ConfiguredProjectExports configuredProjectExports = GetActiveConfiguredProjectExports(project);
-            IImmutableDictionary<string, IPropertyPagesCatalog> namedCatalogs = await GetNamedCatalogsAsync(catalogs).ConfigureAwait(false);
+            IImmutableDictionary<string, IPropertyPagesCatalog> namedCatalogs = await GetNamedCatalogsAsync(catalogs);
             Requires.NotNull(namedCatalogs, nameof(namedCatalogs));
 
             IPropertyPagesCatalog browseObjectsCatalog = namedCatalogs[PropertyPageContexts.BrowseObject];

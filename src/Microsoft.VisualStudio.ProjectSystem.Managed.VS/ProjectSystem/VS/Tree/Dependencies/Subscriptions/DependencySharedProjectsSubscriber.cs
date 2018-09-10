@@ -118,14 +118,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                     return;
                 }
 
-                await HandleAsync(e).ConfigureAwait(false);
+                await HandleAsync(e);
             });
         }
 
         private async Task HandleAsync(
             IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectSharedFoldersSnapshot, IProjectCatalogSnapshot>> e)
         {
-            AggregateCrossTargetProjectContext currentAggregaceContext = await _host.GetCurrentAggregateProjectContext().ConfigureAwait(false);
+            AggregateCrossTargetProjectContext currentAggregaceContext = await _host.GetCurrentAggregateProjectContext();
             if (currentAggregaceContext == null)
             {
                 return;
