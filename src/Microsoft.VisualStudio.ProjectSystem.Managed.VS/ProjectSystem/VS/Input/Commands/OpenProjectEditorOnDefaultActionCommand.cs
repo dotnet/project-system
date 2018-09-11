@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 {
     // Opens the Project file in the text editor when the user double-clicks or presses ENTER on the project file while its selected
     [ProjectCommand(CommandGroup.UIHierarchyWindow, UIHierarchyWindowCommandId.DoubleClick, UIHierarchyWindowCommandId.EnterKey)]
-    [AppliesTo(ProjectCapability.OpenProjectFile)]
+    [AppliesTo(ProjectCapability.DoubleClickEditProjectFile)]
     [Order(Order.Default)]
     internal class OpenProjectEditorOnDefaultActionCommand : AbstractSingleNodeProjectCommand
     {
