@@ -330,7 +330,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         Inherits DesignerMenuCommand
 
         ''' <summary>
-        ''' Constructs an intance of an ImposterDesignerMenuCommand
+        ''' Constructs an instance of an ImposterDesignerMenuCommand
         ''' </summary>
         ''' <param name="commandId">Id of the command.</param>
         ''' <remarks>Sets the command invisible and disabled.</remarks>

@@ -82,7 +82,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
         ''' <summary>
         ''' If our window handle wasn't created when we called SetupToolbar, then we
-        ''' need to assoicate the new window handle with the toolbar
+        ''' need to associate the new window handle with the toolbar
         ''' </summary>
         ''' <param name="e"></param>
         ''' <remarks></remarks>

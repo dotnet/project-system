@@ -405,7 +405,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             minimumHeight = _owner.HostingPanel.MinimumSize.Height + 1 + _buttonPagePadding.Bottom + 1
             height = Math.Max(height, minimumHeight)
 
-            ' Calcuate the required height by tab button area...
+            ' Calculate the required height by tab button area...
             Dim panelMinimumHeight As Integer = _buttonHeight * _visibleButtonSlots + 1 + _buttonPagePadding.Bottom + 1
             height = Math.Max(height, panelMinimumHeight)
 
@@ -601,7 +601,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                     Dim previousSmoothingMode = g.SmoothingMode
                     g.SmoothingMode = SmoothingMode.HighQuality
 
-                    ' Draw the traingle part of the path
+                    ' Draw the triangle part of the path
                     g.FillPath(backgroundBrush, trianglePath)
                     g.SmoothingMode = previousSmoothingMode
 

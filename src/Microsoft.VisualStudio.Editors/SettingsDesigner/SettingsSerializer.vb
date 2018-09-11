@@ -309,7 +309,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 Dim designTimeValue As String = Nothing
                 Dim defaultValue As String
 
-                ' If this is a connection string, we have different values at design time and runtim.
+                ' If this is a connection string, we have different values at design time and runtime.
                 ' We serialize the design time value in the DesignTimeValue node, and add a Value node
                 ' that contain the value that's going to be used at runtime...
                 If String.Equals(Instance.SettingTypeName, CultureInvariantVirtualTypeNameConnectionString, StringComparison.Ordinal) Then

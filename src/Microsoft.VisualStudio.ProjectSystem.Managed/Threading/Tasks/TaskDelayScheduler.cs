@@ -25,7 +25,7 @@ namespace Microsoft.VisualStudio.Threading.Tasks
         /// </summary>
         public TimeSpan TaskDelayTime { get; set; }
 
-        // Task completetion source for cancelling a pending file update.
+        // Task completion source for cancelling a pending file update.
         private CancellationTokenSource PendingUpdateTokenSource { get; set; }
 
         private CancellationToken OriginalSourceToken { get; set; }
@@ -83,7 +83,7 @@ namespace Microsoft.VisualStudio.Threading.Tasks
                 bool isCanceled = token.IsCancellationRequested;
                 lock (_syncObject)
                 {
-                    // We want to clear any existing cancelation token IF it matches our token
+                    // We want to clear any existing cancellation token IF it matches our token
                     if (PendingUpdateTokenSource != null && PendingUpdateTokenSource.Token == token)
                     {
                         ClearPendingUpdates(cancel: false);

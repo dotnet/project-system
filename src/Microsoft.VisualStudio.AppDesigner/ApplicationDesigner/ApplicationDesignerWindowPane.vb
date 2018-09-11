@@ -19,7 +19,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
     Public NotInheritable Class ApplicationDesignerWindowPane
         Inherits DesignerWindowPane
-        Implements IVsMultiViewDocumentView ' CONSIDER: Do we really need to implement this? GetActiveLoficalView always returns Guid.Empty
+        Implements IVsMultiViewDocumentView ' CONSIDER: Do we really need to implement this? GetActiveLogicalView always returns Guid.Empty
         Implements IVsWindowPaneCommit
 
         'The main view (the ApplicationDesignerView will be a child of this control)
@@ -83,7 +83,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
         ''' <summary>
         '''     This method is called when Visual Studio needs to
-        '''     evalulate which toolbox items should be enabled.  The
+        '''     evaluate which toolbox items should be enabled.  The
         '''     default implementation searches the service provider
         '''     for IVsToolboxUser and delegates.  If IVsToolboxUser
         '''     cannot be found this will search the service provider for
@@ -137,7 +137,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
         ''' <summary>
         '''  This takes our control UI and populates it with the
-        '''  design surface.  If there was an error encoutered
+        '''  design surface.  If there was an error encountered
         '''  it will display the error control.
         ''' </summary>
         ''' <remarks></remarks>
@@ -346,7 +346,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' </summary>
         ''' <returns></returns>
         ''' <remarks>
-        ''' This will cause the IVsWindowFrameNotify3.OnClose notifcation on CmdTargetHelper to fire.
+        ''' This will cause the IVsWindowFrameNotify3.OnClose notification on CmdTargetHelper to fire.
         ''' </remarks>
         Public Function CloseFrameNoSave() As Integer
             If AppDesignerView IsNot Nothing Then

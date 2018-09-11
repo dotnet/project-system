@@ -40,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         {
             var replacer = CreateInstance();
 
-            // Tests all the possible replacements. env3 tests that enviroment vars are resolved before msbuild tokens
+            // Tests all the possible replacements. env3 tests that environment vars are resolved before msbuild tokens
             var launchProfile = new LaunchProfile()
             {
                 Name = "$(msbuildProperty1)",

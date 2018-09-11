@@ -478,7 +478,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
 
             ''' <summary>
             ''' Interprets the new (string-based) correctly, based on the string or
-            '''   integeger representation.
+            '''   integer representation.
             ''' </summary>
             ''' <remarks></remarks>
             Protected Overrides Sub OnValueChanged()

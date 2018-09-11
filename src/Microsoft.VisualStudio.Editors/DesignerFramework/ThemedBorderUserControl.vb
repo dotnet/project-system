@@ -42,7 +42,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         End Sub
 
         Protected Overrides Sub OnPaint(e As PaintEventArgs)
-            ' we have to get a new pen everytime
+            ' we have to get a new pen every time
             _borderPen.Dispose()
             _borderPen = New Pen(VisualStyleInformation.TextControlBorder)
             If UseVisualStyles Then

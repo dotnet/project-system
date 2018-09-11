@@ -283,7 +283,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
 #End Region
 
             ''' <summary>
-            ''' Forward to overridable OnBrodcastMessage handler
+            ''' Forward to overridable OnBroadcastMessage handler
             ''' </summary>
             ''' <param name="msg"></param>
             ''' <param name="wParam"></param>

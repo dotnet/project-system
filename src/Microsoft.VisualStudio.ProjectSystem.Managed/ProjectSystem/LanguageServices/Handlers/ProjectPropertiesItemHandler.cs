@@ -37,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             // bin output path with the another project's /reference argument, if they match, then it automatically 
             // introduces a project reference between the two. We pass the intermediate path via the /out 
             // command-line argument and set via one of the other handlers, where as the latter is calculated via 
-            // the TargetPath property and explictly set on the context.
+            // the TargetPath property and explicitly set on the context.
 
             if (projectChange.Difference.ChangedProperties.Contains(ConfigurationGeneral.TargetPathProperty))
             {

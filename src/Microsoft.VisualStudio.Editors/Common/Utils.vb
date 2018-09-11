@@ -284,7 +284,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
 
 
         ''' <summary>
-        ''' Attempts to create a string represention of an object, for debug purposes.  Under retail,
+        ''' Attempts to create a string representation of an object, for debug purposes.  Under retail,
         '''   returns an empty string.
         ''' </summary>
         ''' <param name="Value">The value to turn into a displayable string.</param>
@@ -344,7 +344,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <summary>
         ''' Given an exception, returns True if it is a CheckOut exception.
         ''' </summary>
-        ''' <param name="ex">The exception to check rethrow if it's caused by cancaling checkout</param>
+        ''' <param name="ex">The exception to check rethrow if it's caused by canceling checkout</param>
         ''' <remarks></remarks>
         Public Function IsCheckoutCanceledException(ex As Exception) As Boolean
             If (TypeOf ex Is CheckoutException AndAlso ex.Equals(CheckoutException.Canceled)) _
@@ -924,7 +924,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 Return RemoveEndingSeparator(Path)
             End If
 
-            ' Use the algorith from URI.MakeRelative.
+            ' Use the algorithm from URI.MakeRelative.
             Dim Index As Integer = 0
             Dim CommonSeparatorPosition As Integer = -1
             ' Loop until the end of a path, or different characters at an index.

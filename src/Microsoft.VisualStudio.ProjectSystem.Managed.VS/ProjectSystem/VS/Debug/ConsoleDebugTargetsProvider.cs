@@ -108,7 +108,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         }
 
         /// <summary>
-        /// This is called on F5/Ctrl-F5 to return the list of debug targets.What we return depends on the type
+        /// This is called on F5/Ctrl-F5 to return the list of debug targets. What we return depends on the type
         /// of project.
         /// </summary>
         public Task<IReadOnlyList<IDebugLaunchSettings>> QueryDebugTargetsAsync(DebugLaunchOptions launchOptions, ILaunchProfile activeProfile)
@@ -422,7 +422,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         }
 
         /// <summary>
-        /// Searchs the path variable for the first match of exeToSearchFor. Returns
+        /// Searches the path variable for the first match of exeToSearchFor. Returns
         /// null if not found.
         /// </summary>
         public string GetFullPathOfExeFromEnvironmentPath(string exeToSearchFor)

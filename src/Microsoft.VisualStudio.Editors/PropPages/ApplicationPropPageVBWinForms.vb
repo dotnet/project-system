@@ -1566,7 +1566,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             ' Navigate to events may add a file to the project, which may in turn cause the
             ' project file to be checked out at a later version. This will cause the project
             ' file to be reloaded, which will dispose me and bad things will happen (unless I
-            ' tell myselft that I'm about to potentially check out stuff)
+            ' tell myself that I'm about to potentially check out stuff)
             EnterProjectCheckoutSection()
             Try
                 MyApplicationProperties.NavigateToEvents()

@@ -302,7 +302,7 @@ Namespace Microsoft.VisualStudio.Editors
 
 #Region "Load/save project designer's last active tab"
         ''' <summary>
-        ''' Get the project guid (VSHPROPID_ProjectIDGuid) from a IVsHieararchy
+        ''' Get the project guid (VSHPROPID_ProjectIDGuid) from a IVsHierarchy
         ''' </summary>
         ''' <param name="hierarchy"></param>
         ''' <returns></returns>
@@ -424,7 +424,7 @@ Namespace Microsoft.VisualStudio.Editors
             End Function
 
             ''' <summary>
-            ''' Before the solutin is closed, we check if this is a ZIP project, and if so make a list of all files
+            ''' Before the solution is closed, we check if this is a ZIP project, and if so make a list of all files
             ''' we'll delete when the solution is closed
             ''' </summary>
             ''' <param name="pUnkReserved"></param>

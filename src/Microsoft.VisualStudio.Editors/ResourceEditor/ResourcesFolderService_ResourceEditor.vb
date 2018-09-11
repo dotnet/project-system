@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Option Explicit On
 Option Strict On
@@ -26,7 +26,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <returns>The final file and path of the file after it was added to the project, or else its original location if
         '''   it was not added to the project or was not copied while being added to the project.  Returns Nothing if the
         '''  user canceled the operation.</returns>
-        ''' <remarks>The user is given the choic to cancel the operation when he is asked to overwrite an existing file or link.</remarks>
+        ''' <remarks>The user is given the choice to cancel the operation when he is asked to overwrite an existing file or link.</remarks>
         Friend Shared Function AddFileToProject(EditorName As String, Project As Project, ResXProjectItem As ProjectItem, MessageBoxOwner As IWin32Window, SourceFilePath As String, CopyFileIfExists As Boolean) As String
             Return AddFileToProjectHelper(EditorName, Project, ResXProjectItem, MessageBoxOwner, SourceFilePath, CopyFileIfExists)
         End Function

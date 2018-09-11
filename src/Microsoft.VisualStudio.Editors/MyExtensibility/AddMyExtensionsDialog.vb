@@ -223,7 +223,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             '
             resources.ApplyResources(colHeaderExtensionVersion, "colHeaderExtensionVersion")
             '
-            'colHeaderExensionDescription
+            'colHeaderExtensionDescription
             '
             resources.ApplyResources(colHeaderExensionDescription, "colHeaderExensionDescription")
             '

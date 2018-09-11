@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     internal class MetadataReferenceItemHandler : AbstractWorkspaceContextHandler, ICommandLineHandler
     {
         // WORKAROUND: The language services through IWorkspaceProjectContext doesn't expect to see AddMetadataReference called more than
-        // once with the same path and different properties. This dedups the references to work around this limitation.
+        // once with the same path and different properties. This dedupes the references to work around this limitation.
         // See: https://github.com/dotnet/project-system/issues/2230
 
         private readonly UnconfiguredProject _project;

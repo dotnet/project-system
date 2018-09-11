@@ -97,7 +97,7 @@ Namespace Microsoft.Internal.Performance
                         If _regroot = Nothing Then
                             _fShouldUseTestDll = NativeMethods.GetModuleHandle(ProductDllName) = IntPtr.Zero
                         Else
-                            ' if CodeMarkers are explictly enabled in the registry then try to
+                            ' if CodeMarkers are explicitly enabled in the registry then try to
                             ' use the test DLL, otherwise fall back to trying to use the product DLL
                             _fShouldUseTestDll = UsePrivateCodeMarkers(_regroot)
                         End If

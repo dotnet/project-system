@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.ComponentModel
 Imports System.ComponentModel.Design.Serialization
@@ -127,7 +127,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' This method serializes the given member on the given object, 
         '''   but attempts to do so in such a way as to serialize only the 
         '''   difference between the member's current value and oldValue.  
-        '''   This type of seralization is generally only useful for properties 
+        '''   This type of serialization is generally only useful for properties 
         '''   that maintain a lot of state such as collections, and then only 
         '''   if the state is being deserialized into an existing object.
         ''' </summary>

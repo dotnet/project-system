@@ -34,7 +34,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
 
         ''' ;GetAttributeValue
         ''' <summary>
-        ''' Get the trimed attribute with the given name from the given xml element.
+        ''' Get the trimmed attribute with the given name from the given xml element.
         ''' Return Nothing if such attributes don't exist.
         ''' </summary>
         Public Shared Function GetAttributeValue(xmlElement As XmlElement, attributeName As String) _
@@ -107,7 +107,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
 
     ''' ;AssemblyDictionary
     ''' <summary>
-    ''' A dictionary based on assembly full name. It containst a list of assembly independent items and
+    ''' A dictionary based on assembly full name. It contains a list of assembly independent items and
     ''' a dictionary of assembly name and (dictionary of version and item). When version with an assembly name
     ''' it will return the list of items corresponding to that name.
     ''' </summary>

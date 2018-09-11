@@ -8,7 +8,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 {
     /// <summary>
     /// This text box functions like any other text box, except that it allows the consumer
-    /// to specify a 'water mark' that appears in the text area (or somet other indicator
+    /// to specify a 'water mark' that appears in the text area (or some other indicator
     /// based on the presence of text in the text property.
     /// 
     /// Additionally, it adds:

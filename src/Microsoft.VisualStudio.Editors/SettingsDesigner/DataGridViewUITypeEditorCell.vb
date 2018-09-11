@@ -37,7 +37,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         End Property
 
         ''' <summary>
-        ''' Retrun a formatted representation of the value
+        ''' Return a formatted representation of the value
         ''' Consider: figure out how to make serialization localized in this case...
         ''' </summary>
         ''' <param name="value"></param>

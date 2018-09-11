@@ -506,7 +506,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
 
         '
         ' Application Type and Output Type are related in the following manner (note that it *is* one-to-one for WPF,
-        '  unlikes the more complicated logic for the non-WPF VB application page):
+        '  unlike the more complicated logic for the non-WPF VB application page):
         '
         '  Application Type      -> Output Type
         '  ---------------------    -----------

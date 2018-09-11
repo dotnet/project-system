@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Option Explicit On
 Option Strict On
@@ -137,7 +137,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                             ResourceFile.ReadResources(NewResourceEditorRoot.ResourceFileName, bufferText)
                         End If
 
-                        'NOTE:  We should consider to restoer many view states before populating the designer surface...
+                        'NOTE:  We should consider to restore many view states before populating the designer surface...
                         NewResourceEditorRoot.LoadResXResourceFile(ResourceFile)
 
                         'We need to stash away a reference to the root component for use in Flush, etc.
@@ -206,7 +206,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
         ''' <summary>
         ''' This method is called immediately after the first time
-        '''   BeginLoad is invoked.  This is an appopriate place to
+        '''   BeginLoad is invoked.  This is an appropriate place to
         '''   add custom services to the loader host.  Remember to
         '''   remove any custom services you add here by overriding
         '''   Dispose.
@@ -215,7 +215,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Protected Overrides Sub Initialize()
             MyBase.Initialize()
 
-            'Add our ComponentSerializationService so that the basic desiger will give us automatic Undo/Redo
+            'Add our ComponentSerializationService so that the basic designer will give us automatic Undo/Redo
             Dim SerializationService As New ResourceSerializationService(LoaderHost)
             LoaderHost.AddService(GetType(ComponentSerializationService), SerializationService)
             Debug.Assert(GetService(GetType(ComponentSerializationService)) IsNot Nothing,
@@ -338,7 +338,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     Dim Designer As ResourceEditorRootDesigner = _rootComponent.RootDesigner
                     If Designer IsNot Nothing Then
                         If Not Designer.HasView Then
-                            ' It means the DesignerView hasn't been created, or we are still initilizing it
+                            ' It means the DesignerView hasn't been created, or we are still initializing it
                             Return False
                         End If
 

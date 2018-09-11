@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         ///     Note: currently we have only one target framework and IVsHierarchy and itemId is returned as 
         ///     they are from the unconfigured project. Later when combined intellisense is implemented, depending
         ///     on implementation we might need to have a logic that returns IVsHierarchy and itemId specific to 
-        ///     currently active target framework (thats how it was in Dev14's dnx/dotnet project system)
+        ///     currently active target framework (that's how it was in Dev14's dnx/dotnet project system)
         /// </summary>
         /// <param name="filePath">Path to a file</param>
         /// <param name="hierarchy">Project hierarchy containing given file for current language service</param>

@@ -179,7 +179,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
             if (string.IsNullOrEmpty(objDirectory))
             {
-                // Don't have an intermdiate directory set, probably missing SDK attribute or Microsoft.Common.props
+                // Don't have an intermediate directory set, probably missing SDK attribute or Microsoft.Common.props
                 return null;
             }
 

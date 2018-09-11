@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Option Strict On
 Option Explicit On
@@ -124,7 +124,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
                     If Fields.Length = 1 Then
                         If EncodingType = CsvEncoder.EncodingType.TabDelimited Then
-                            ' we put the unformated string in the value field, which will be more useful
+                            ' we put the unformatted string in the value field, which will be more useful
                             Value = Name.Trim()
                             Name = ResourceTypeEditors.String.GetSuggestedNamePrefix()
                         End If
