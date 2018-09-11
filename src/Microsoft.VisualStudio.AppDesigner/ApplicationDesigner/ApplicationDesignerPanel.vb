@@ -299,14 +299,14 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                                 If EditorGuid.Equals(Guid.Empty) Then
                                     VSErrorHandler.ThrowOnFailure(VsUIShellOpenDocument.OpenDocumentViaProject(MkDocument, (LogicalViewGuid), OleServiceProvider, VsUIHierarchy, ItemId, WindowFrame))
                                 Else
-                                    Dim OpenHierachy As IVsUIHierarchy = Nothing
+                                    Dim OpenHierarchy As IVsUIHierarchy = Nothing
                                     Dim OpenItemId As UInteger
                                     Dim OpenWindowFrame As IVsWindowFrame = Nothing
                                     Dim fOpen As Integer
 
                                     'Is this file already opened in the specific editor we want to open it in?  If so, we will not be able to open it
                                     '  as a nested document window.
-                                    Dim hr As Integer = VsUIShellOpenDocument.IsSpecificDocumentViewOpen(VsUIHierarchy, ItemId, MkDocument, (EditorGuid), PhysicalView, CUInt(__VSIDOFLAGS2.IDO_IncludeUninitializedFrames), OpenHierachy, OpenItemId, OpenWindowFrame, fOpen)
+                                    Dim hr As Integer = VsUIShellOpenDocument.IsSpecificDocumentViewOpen(VsUIHierarchy, ItemId, MkDocument, (EditorGuid), PhysicalView, CUInt(__VSIDOFLAGS2.IDO_IncludeUninitializedFrames), OpenHierarchy, OpenItemId, OpenWindowFrame, fOpen)
                                     Debug.Assert(VSErrorHandler.Succeeded(hr), "Unexpected failure from VsUIShellOpenDocument.IsSpecificDocumentViewOpen")
                                     If VSErrorHandler.Succeeded(hr) Then
                                         If fOpen <> 0 Then

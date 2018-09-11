@@ -95,7 +95,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.References
         [InlineData(3)]
         [InlineData(5)]
         [InlineData(10)]
-        public async Task CanAddProjectReferencesAsync_ReturnsAsManyIndivualResultsAsProjects(int count)
+        public async Task CanAddProjectReferencesAsync_ReturnsAsManyIndividualResultsAsProjects(int count)
         {
             var checker = CreateInstance();
             var referencedProjects = CreateSet(count);

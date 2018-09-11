@@ -178,14 +178,14 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' exist.
         ''' </summary>
         ''' <param name="Hierarchy"></param>
-        ''' <param name="Writeable">
+        ''' <param name="Writable">
         ''' If the DocData should be write:able, and a DocDataService is provider, all write:able files added to the
         ''' DocDataService will be checked out
         ''' </param>
         ''' <param name="DocDataService">If specified, the DesignerDocDataService to add/get this DocData to/from</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Friend Shared Function GetAppConfigDocData(ServiceProvider As IServiceProvider, Hierarchy As IVsHierarchy, CreateIfNotExists As Boolean, Writeable As Boolean, Optional DocDataService As DesignerDocDataService = Nothing) As DocData
+        Friend Shared Function GetAppConfigDocData(ServiceProvider As IServiceProvider, Hierarchy As IVsHierarchy, CreateIfNotExists As Boolean, Writable As Boolean, Optional DocDataService As DesignerDocDataService = Nothing) As DocData
             Dim ProjSpecialFiles As IVsProjectSpecialFiles = TryCast(Hierarchy, IVsProjectSpecialFiles)
             Dim AppConfigDocData As DocData = Nothing
 
@@ -212,7 +212,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 If AppConfigItemId <> VSITEMID.NIL Then
                     If DocDataService IsNot Nothing Then
                         Dim Access As FileAccess
-                        If Writeable Then
+                        If Writable Then
                             Access = FileAccess.ReadWrite
                         Else
                             Access = FileAccess.Read

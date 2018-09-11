@@ -1293,23 +1293,23 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' <param name="list"></param>
         ''' <remarks></remarks>
         Private Sub FindXamlPageFiles(projectItems As ProjectItems, list As List(Of ProjectItem))
-            For Each projectitem As ProjectItem In projectItems
-                If IO.Path.GetExtension(projectitem.FileNames(1)).Equals(".xaml", StringComparison.OrdinalIgnoreCase) Then
+            For Each projectItem As ProjectItem In projectItems
+                If IO.Path.GetExtension(projectItem.FileNames(1)).Equals(".xaml", StringComparison.OrdinalIgnoreCase) Then
                     'We only want .xaml files with BuildAction="Page"
-                    Dim CurrentBuildAction As String = DTEUtils.GetBuildActionAsString(projectitem)
+                    Dim CurrentBuildAction As String = DTEUtils.GetBuildActionAsString(projectItem)
                     If CurrentBuildAction IsNot Nothing AndAlso BUILDACTION_PAGE.Equals(CurrentBuildAction, StringComparison.OrdinalIgnoreCase) Then
                         'Build action is correct.
 
                         'Is the item inside the project folders (instead of, say, a link to an external file)?
-                        If IsFileRelativeToProjectPath(projectitem.FileNames(1)) Then
+                        If IsFileRelativeToProjectPath(projectItem.FileNames(1)) Then
                             'Okay, we want this one
-                            list.Add(projectitem)
+                            list.Add(projectItem)
                         End If
                     End If
                 End If
 
-                If projectitem.ProjectItems IsNot Nothing Then
-                    FindXamlPageFiles(projectitem.ProjectItems, list)
+                If projectItem.ProjectItems IsNot Nothing Then
+                    FindXamlPageFiles(projectItem.ProjectItems, list)
                 End If
             Next
         End Sub

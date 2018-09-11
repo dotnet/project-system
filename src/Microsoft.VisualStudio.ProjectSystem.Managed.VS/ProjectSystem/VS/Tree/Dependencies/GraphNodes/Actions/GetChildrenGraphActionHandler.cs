@@ -25,8 +25,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
 
         [ImportingConstructor]
         public GetChildrenGraphActionHandler(IDependenciesGraphBuilder builder,
-                                             IAggregateDependenciesSnapshotProvider aggregateSnpahostProvider)
-            : base(builder, aggregateSnpahostProvider)
+                                             IAggregateDependenciesSnapshotProvider aggregateSnapshotProvider)
+            : base(builder, aggregateSnapshotProvider)
         {
         }
 

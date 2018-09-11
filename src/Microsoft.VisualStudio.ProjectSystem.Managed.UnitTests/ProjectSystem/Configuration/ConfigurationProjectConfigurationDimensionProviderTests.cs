@@ -247,7 +247,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         [InlineData("$(Foo);Dbg;Retail",        "Dbg")]
         [InlineData("$(Foo); Dbg ;Retail",      "Dbg")]
         [InlineData("Dbg_$(Foo); Dbg ;Retail",  "Dbg")]
-        public async Task GetBestGuessDefaultValuesForDimensionsAsync_ReturnsFirstParsableValue(string configurations, string expected)
+        public async Task GetBestGuessDefaultValuesForDimensionsAsync_ReturnsFirstParseableValue(string configurations, string expected)
         {
             string projectXml =
 $@"<Project>

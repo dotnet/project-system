@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.Threading.Tasks
         /// the cancellation of the current scheduled task, the caller will not know
         /// and need to use that latest return task instead.
         /// </summary>
-        JoinableTask ScheduleAsyncTask(Func<CancellationToken, Task> asyncFnctionToCall);
+        JoinableTask ScheduleAsyncTask(Func<CancellationToken, Task> asyncFunctionToCall);
 
         /// <summary>
         /// Returns true if updates are pending

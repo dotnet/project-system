@@ -125,8 +125,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         private async Task HandleAsync(
             IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectSharedFoldersSnapshot, IProjectCatalogSnapshot>> e)
         {
-            AggregateCrossTargetProjectContext currentAggregaceContext = await _host.GetCurrentAggregateProjectContext();
-            if (currentAggregaceContext == null)
+            AggregateCrossTargetProjectContext currentAggregateContext = await _host.GetCurrentAggregateProjectContext();
+            if (currentAggregateContext == null)
             {
                 return;
             }
@@ -141,7 +141,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             using (await _gate.DisposableWaitAsync())
             {
                 // Get the inner workspace project context to update for this change.
-                ITargetedProjectContext projectContextToUpdate = currentAggregaceContext
+                ITargetedProjectContext projectContextToUpdate = currentAggregateContext
                     .GetInnerProjectContext(projectUpdate.ProjectConfiguration, out bool isActiveContext);
                 if (projectContextToUpdate == null)
                 {
@@ -149,7 +149,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                 }
 
                 var dependencyChangeContext = new DependenciesRuleChangeContext(
-                        currentAggregaceContext.ActiveProjectContext.TargetFramework, catalogs);
+                        currentAggregateContext.ActiveProjectContext.TargetFramework, catalogs);
 
                 ProcessSharedProjectsUpdates(sharedProjectsUpdate, projectContextToUpdate, dependencyChangeContext);
 

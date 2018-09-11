@@ -1681,11 +1681,11 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     ' We should ignore, if we couldn't find type...
                     ' We also skip the mscorlib.dll
                     If resourceType IsNot Nothing AndAlso resourceType.Assembly IsNot GetType(String).Assembly Then
-                        Dim assmeblyName As String = resourceType.Assembly.GetName().Name
+                        Dim assemblyName As String = resourceType.Assembly.GetName().Name
 
                         ' skip the assembly if we have already processed it
-                        If Not assemblyCollection.Contains(assmeblyName) Then
-                            assemblyCollection.Add(assmeblyName)
+                        If Not assemblyCollection.Contains(assemblyName) Then
+                            assemblyCollection.Add(assemblyName)
 
                             Try
                                 If vsLangProj Is Nothing Then
@@ -1701,9 +1701,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                                     End If
                                 End If
 
-                                If vsLangProj.References.Find(assmeblyName) Is Nothing Then
+                                If vsLangProj.References.Find(assemblyName) Is Nothing Then
                                     ' Let the project system to handle the exactly version...
-                                    vsLangProj.References.Add(assmeblyName)
+                                    vsLangProj.References.Add(assemblyName)
                                 End If
                             Catch ex As CheckoutException
                                 ' Ignore CheckoutException

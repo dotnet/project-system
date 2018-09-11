@@ -149,7 +149,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
         }
 
         [Fact]
-        public void GlobaJsonSetup_NoExistingRemover_RegistersForAdvise()
+        public void GlobalJsonSetup_NoExistingRemover_RegistersForAdvise()
         {
             UnitTestHelper.IsRunningUnitTests = true;
             GlobalJsonRemover.Remover = null;

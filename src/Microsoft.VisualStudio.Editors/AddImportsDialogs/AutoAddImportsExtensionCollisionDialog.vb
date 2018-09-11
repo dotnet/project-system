@@ -6,13 +6,13 @@ Imports System.Windows.Forms
 Namespace Microsoft.VisualStudio.Editors.AddImports
     Friend Class AutoAddImportsExtensionCollisionDialog
         Private _lastFocus As Control
-        Private ReadOnly _helpCallBack As IVBAddImportsDialogHelpCallback
+        Private ReadOnly _helpCallback As IVBAddImportsDialogHelpCallback
 
-        Public Sub New([namespace] As String, identifier As String, minimallyQualifiedName As String, helpCAllback As IVBAddImportsDialogHelpCallback, isp As IServiceProvider)
+        Public Sub New([namespace] As String, identifier As String, minimallyQualifiedName As String, helpCallback As IVBAddImportsDialogHelpCallback, isp As IServiceProvider)
             MyBase.New(isp)
             SuspendLayout()
             Try
-                _helpCallBack = helpCAllback
+                _helpCallBack = helpCallback
                 InitializeComponent()
                 txtMain_.Text = String.Format(My.Resources.AddImports.AddImportsExtensionMethodsMainFormatString, [namespace], identifier, minimallyQualifiedName)
                 txtMain_.AutoSize = True

@@ -22,11 +22,6 @@
         <target state="translated">Versión</target>
         <note />
       </trans-unit>
-      <trans-unit id="colHeaderExensionDescription.Text">
-        <source>Description</source>
-        <target state="translated">Descripción</target>
-        <note />
-      </trans-unit>
       <trans-unit id="listViewExtensions.AccessibleName">
         <source>Available My Namespace Extensions</source>
         <target state="translated">Extensiones del espacio de nombres My disponibles</target>
@@ -35,6 +30,11 @@
       <trans-unit id="$this.Text">
         <source>Add Visual Basic My Namespace Extension</source>
         <target state="translated">Agregar la extensión de espacio de nombres My de Visual Basic</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="colHeaderExtensionDescription.Text">
+        <source>Description</source>
+        <target state="new">Description</target>
         <note />
       </trans-unit>
     </body>

@@ -1619,12 +1619,12 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
 
                         If AppConfigDocData IsNot Nothing Then
                             Dim cfgHelper As New ConfigurationHelperService
-                            Dim FullyQualifedClassName As String = ProjectUtils.FullyQualifiedClassName(ProjectUtils.GeneratedSettingsClassNamespace(_hierarchy, _itemid, True), _className)
+                            Dim FullyQualifiedClassName As String = ProjectUtils.FullyQualifiedClassName(ProjectUtils.GeneratedSettingsClassNamespace(_hierarchy, _itemid, True), _className)
                             Try
                                 AppConfigSerializer.Deserialize(dtSettings,
                                                                     _typeCache,
                                                                     _valueCache,
-                                                                    cfgHelper.GetSectionName(FullyQualifedClassName, String.Empty),
+                                                                    cfgHelper.GetSectionName(FullyQualifiedClassName, String.Empty),
                                                                     AppConfigDocData,
                                                                     AppConfigSerializer.MergeValueMode.UseAppConfigFileValue)
                             Catch ex As ConfigurationErrorsException

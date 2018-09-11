@@ -606,7 +606,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             IWritableLaunchSettings newSettings = profiles.ToWritableLaunchSettings();
 
             // Since this get's reentered if the user saves or the user switches active profiles.
-            if (CurrentLaunchSettings != null && !CurrentLaunchSettings.SetttingsDiffer(newSettings))
+            if (CurrentLaunchSettings != null && !CurrentLaunchSettings.SettingsDiffer(newSettings))
             {
                 return;
             }
@@ -759,12 +759,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         }
 
 
-        private ICommand _addEnironmentVariableRowCommand;
+        private ICommand _addEnvironmentVariableRowCommand;
         public ICommand AddEnvironmentVariableRowCommand
         {
             get
             {
-                return LazyInitializer.EnsureInitialized(ref _addEnironmentVariableRowCommand, () =>
+                return LazyInitializer.EnsureInitialized(ref _addEnvironmentVariableRowCommand, () =>
                     new DelegateCommand((state) =>
                     {
                         var newRow = new NameValuePair(PropertyPageResources.EnvVariableNameWatermark, PropertyPageResources.EnvVariableValueWatermark, EnvironmentVariables);

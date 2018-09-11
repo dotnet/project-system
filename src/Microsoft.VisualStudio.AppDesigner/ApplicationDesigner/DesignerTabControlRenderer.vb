@@ -583,7 +583,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             If IsSelected Then
 
                 ' Create an array of points which describes the path of the triangle
-                Dim trainglePoints() As PointF =
+                Dim trianglePoints() As PointF =
                 {
                     New PointF(triangleHorizontalStart - 1, triangleVerticalStart),
                     New PointF(button.Width, CSng(triangleVerticalStart) + CSng(TriangleHeight) / 2),
@@ -592,7 +592,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
                 Using trianglePath As New GraphicsPath()
 
-                    trianglePath.AddPolygon(trainglePoints)
+                    trianglePath.AddPolygon(trianglePoints)
 
                     ' Draw the rectangle using Fill Rectangle with the default smoothing mode
                     ' If the rectangle is drawn with SmoothingMode.HighQuality / AntiAliased it

@@ -54,7 +54,7 @@ namespace Microsoft.VisualStudio.Threading.Tasks
         /// the cancellation of the current scheduled task, the caller will not know
         /// and need to use that latest returned task instead.
         /// </summary>
-        public JoinableTask ScheduleAsyncTask(Func<CancellationToken, Task> asyncFnctionToCall)
+        public JoinableTask ScheduleAsyncTask(Func<CancellationToken, Task> asyncFunctionToCall)
         {
             lock (_syncObject)
             {
@@ -66,12 +66,12 @@ namespace Microsoft.VisualStudio.Threading.Tasks
                 CancellationToken token = PendingUpdateTokenSource.Token;
 
                 // We want to return a joinable task so wrap the function
-                LatestScheduledTask = _threadingService.JoinableTaskFactory.RunAsync(() => ThrottleAsync(asyncFnctionToCall, token));
+                LatestScheduledTask = _threadingService.JoinableTaskFactory.RunAsync(() => ThrottleAsync(asyncFunctionToCall, token));
                 return LatestScheduledTask;
             }
         }
 
-        private async Task ThrottleAsync(Func<CancellationToken, Task> asyncFnctionToCall, CancellationToken token)
+        private async Task ThrottleAsync(Func<CancellationToken, Task> asyncFunctionToCall, CancellationToken token)
         {
             try
             {
@@ -104,7 +104,7 @@ namespace Microsoft.VisualStudio.Threading.Tasks
             }
 
             // Execute the code
-            await asyncFnctionToCall(token);
+            await asyncFunctionToCall(token);
         }
 
         /// <summary>

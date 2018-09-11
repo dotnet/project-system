@@ -536,7 +536,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
             ' Add SettingsManageabilityAttribute if this setting is roaming (but only if this is a USER scoped setting...
             If Instance.Roaming AndAlso Instance.Scope = DesignTimeSettingInstance.SettingScope.User Then
-                AddManagebilityAttribue(CodeProperty, Configuration.SettingsManageability.Roaming)
+                AddManageabilityAttribute(CodeProperty, Configuration.SettingsManageability.Roaming)
             End If
 
             Return CodeProperty
@@ -549,7 +549,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             CodeProperty.CustomAttributes.Add(DefaultValueAttribute)
         End Sub
 
-        Private Shared Sub AddManagebilityAttribue(CodeProperty As CodeMemberProperty, Value As Configuration.SettingsManageability)
+        Private Shared Sub AddManageabilityAttribute(CodeProperty As CodeMemberProperty, Value As Configuration.SettingsManageability)
             Dim SettingsManageability As New CodeTypeReferenceExpression(CreateGlobalCodeTypeReference(GetType(Configuration.SettingsManageability)))
             Dim FieldExp As New CodeFieldReferenceExpression(SettingsManageability, Value.ToString)
             Dim Parameters() As CodeAttributeArgument = {New CodeAttributeArgument(FieldExp)}
@@ -599,9 +599,9 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Dim Parameters() As CodeExpression = {New CodePrimitiveExpression(Instance.Name)}
             Dim IndexerStatement As New CodeIndexerExpression(New CodeThisReferenceExpression(), Parameters)
             ' Make sure we case this value to the correct type
-            Dim AssignmentStatment As New CodeAssignStatement(IndexerStatement, New CodePropertySetValueReferenceExpression)
+            Dim AssignmentStatement As New CodeAssignStatement(IndexerStatement, New CodePropertySetValueReferenceExpression)
 
-            Statements.Add(AssignmentStatment)
+            Statements.Add(AssignmentStatement)
             Return Statements
         End Function
 

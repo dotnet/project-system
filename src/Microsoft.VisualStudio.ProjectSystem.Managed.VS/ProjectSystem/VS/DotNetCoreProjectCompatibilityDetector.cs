@@ -133,7 +133,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                         // Run on the background
                         await TaskScheduler.Default;
 
-                        VersionCompatibilityData compatData = GetVersionCmpatibilityData();
+                        VersionCompatibilityData compatData = GetVersionCompatibilityData();
 
                         // We need to check if this project has been newly created. Our projects will implement IProjectCreationState -we can 
                         // skip any that don't
@@ -173,7 +173,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 // Run on the background
                 await TaskScheduler.Default;
 
-                VersionCompatibilityData compatDataToUse = GetVersionCmpatibilityData();
+                VersionCompatibilityData compatDataToUse = GetVersionCompatibilityData();
 
                 CompatibilityLevel finalCompatLevel = CompatibilityLevel.Recommended;
                 IProjectService projectService = _projectServiceAccessor.Value.GetProjectService();
@@ -347,7 +347,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// less than 24 hours old, it uses that data. Otherwise it downloads from the server. If the download fails it will use the previously cached
         ///  file, or if that file doesn't not exist, it uses the data baked into this class
         /// </summary>
-        private VersionCompatibilityData GetVersionCmpatibilityData()
+        private VersionCompatibilityData GetVersionCompatibilityData()
         {
             // Do we need to update our cached data? Note that since the download could take a long time like tens of seconds we don't really want to
             // start showing messages to the user well after their project is opened and they are interacting with it. Thus we start a task to update the 

@@ -15,12 +15,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         [Fact]
         public void UnconfiguredProject_CanGetSet()
         {
-            var unconfiguedProject = UnconfiguredProjectFactory.Create();
+            var unconfiguredProject = UnconfiguredProjectFactory.Create();
             var provider = CreateInstance();
 
-            provider.Project = unconfiguedProject;
+            provider.Project = unconfiguredProject;
 
-            Assert.Same(unconfiguedProject, provider.Project);
+            Assert.Same(unconfiguredProject, provider.Project);
         }
 
         private static VisualBasicCodeDomProvider CreateInstance()

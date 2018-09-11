@@ -1495,12 +1495,12 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                             vsProjectItem.RunCustomTool()
                         End If
                     End If
-                    Dim FullyQualifedClassName As String = SettingsDesigner.FullyQualifiedGeneratedTypedSettingsClassName(Hierarchy, VSITEMID.NIL, Settings, ProjectItem)
+                    Dim FullyQualifiedClassName As String = SettingsDesigner.FullyQualifiedGeneratedTypedSettingsClassName(Hierarchy, VSITEMID.NIL, Settings, ProjectItem)
                     Dim suggestedFileName As String = ""
                     If Settings.UseSpecialClassName AndAlso IsVbProject(Hierarchy) AndAlso SettingsDesigner.IsDefaultSettingsFile(Hierarchy, DesignerLoader.ProjectItemid) Then
                         suggestedFileName = "Settings"
                     End If
-                    ProjectUtils.OpenAndMaybeAddExtendingFile(FullyQualifedClassName, suggestedFileName, Settings.Site, Hierarchy, ProjectItem, CType(VSMDCodeDomProvider.CodeDomProvider, CodeDom.Compiler.CodeDomProvider), Me)
+                    ProjectUtils.OpenAndMaybeAddExtendingFile(FullyQualifiedClassName, suggestedFileName, Settings.Site, Hierarchy, ProjectItem, CType(VSMDCodeDomProvider.CodeDomProvider, CodeDom.Compiler.CodeDomProvider), Me)
                 Catch ex As Exception When ReportWithoutCrash(ex, NameOf(ViewCode), NameOf(SettingsDesignerView))
                     If Settings IsNot Nothing AndAlso Settings.Site IsNot Nothing Then
                         ' We better tell the user that something went wrong (if we still have a settings/settings.site that is)

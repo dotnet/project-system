@@ -170,7 +170,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         [InlineData("$(Foo);ARM;x64",       "ARM")]
         [InlineData("$(Foo); ARM ;x64",     "ARM")]
         [InlineData("x64_$(Foo); ARM ;x64", "ARM")]
-        public async Task GetBestGuessDefaultValuesForDimensionsAsync_ReturnsFirstParsableValue(string platforms, string expected)
+        public async Task GetBestGuessDefaultValuesForDimensionsAsync_ReturnsFirstParseableValue(string platforms, string expected)
         {
             string projectXml =
 $@"<Project>

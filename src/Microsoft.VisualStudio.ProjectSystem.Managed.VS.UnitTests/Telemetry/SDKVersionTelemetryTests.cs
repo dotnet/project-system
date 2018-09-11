@@ -84,7 +84,7 @@ namespace Microsoft.VisualStudio.Telemetry
         private static SDKVersionTelemetryServiceComponent CreateComponent(Guid guid, Action<TelemetryParameters> onTelemetryLogged, string version, SemaphoreSlim semaphore)
         {
             var projectVsServices = CreateProjectServices(version);
-            var projectGuidSevice = CreateISafeProjectGuidService(guid);
+            var projectGuidService = CreateISafeProjectGuidService(guid);
             var telemetryService = CreateITelemetryService(onTelemetryLogged);
             var unconfiguredProjectTasksService = IUnconfiguredProjectTasksServiceFactory.ImplementLoadedProjectAsync(async t =>
             {
@@ -93,7 +93,7 @@ namespace Microsoft.VisualStudio.Telemetry
             });
             return new SDKVersionTelemetryServiceComponent(
                 projectVsServices,
-                projectGuidSevice,
+                projectGuidService,
                 telemetryService,
                 unconfiguredProjectTasksService);
         }

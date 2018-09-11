@@ -33,9 +33,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Me.HelpLink = helpLink
         End Sub
 
-        Public Sub New(message As String, innerException As Exception, ShowHeaderandFooterInErrorControl As Boolean)
+        Public Sub New(message As String, innerException As Exception, ShowHeaderAndFooterInErrorControl As Boolean)
             MyBase.New(message, innerException)
-            _showHeaderAndFooterInErrorControl = ShowHeaderandFooterInErrorControl
+            _showHeaderAndFooterInErrorControl = ShowHeaderAndFooterInErrorControl
         End Sub
 
         ''' <summary>

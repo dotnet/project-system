@@ -77,7 +77,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         }
 
         [Fact]
-        public async Task CreateFolderAsync_IncludesFolderInProjectNonRecusively()
+        public async Task CreateFolderAsync_IncludesFolderInProjectNonRecursively()
         {
             bool? result = null;
             var project = UnconfiguredProjectFactory.Create(filePath: @"C:\Root.csproj");

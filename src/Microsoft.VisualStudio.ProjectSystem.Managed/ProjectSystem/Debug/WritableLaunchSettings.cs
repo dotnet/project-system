@@ -33,9 +33,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             {
                 foreach (KeyValuePair<string, object> kvp in settings.GlobalSettings)
                 {
-                    if (kvp.Value is ICloneable clonableObject)
+                    if (kvp.Value is ICloneable cloneableObject)
                     {
-                        GlobalSettings.Add(kvp.Key, clonableObject.Clone());
+                        GlobalSettings.Add(kvp.Key, cloneableObject.Clone());
                     }
                     else
                     {
@@ -65,7 +65,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
     internal static class WritableLaunchSettingsExtension
     {
-        public static bool SetttingsDiffer(this IWritableLaunchSettings launchSettings, IWritableLaunchSettings settingsToCompare)
+        public static bool SettingsDiffer(this IWritableLaunchSettings launchSettings, IWritableLaunchSettings settingsToCompare)
         {
             if (launchSettings.Profiles.Count != settingsToCompare.Profiles.Count)
             {

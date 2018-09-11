@@ -20,9 +20,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 
         private static CSharpProjectTypeGuidProvider CreateInstance()
         {
-            var unconfiguedProject = UnconfiguredProjectFactory.Create();
+            var unconfiguredProject = UnconfiguredProjectFactory.Create();
 
-            return new CSharpProjectTypeGuidProvider(unconfiguedProject);
+            return new CSharpProjectTypeGuidProvider(unconfiguredProject);
         }
     }
 }

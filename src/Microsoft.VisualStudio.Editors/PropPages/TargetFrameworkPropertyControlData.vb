@@ -26,7 +26,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                    TypeOf _comboBox.Items(_comboBox.SelectedIndex) Is InstallOtherFrameworksComboBoxValue
         End Function
 
-        Private Sub NativageToInstallOtherFrameworksFWLink()
+        Private Sub NavigateToInstallOtherFrameworksFWLink()
 
             If Site Is Nothing Then
                 ' Can't do anything without a site
@@ -77,7 +77,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 ' If the user chooses 'Install other frameworks...', move the selection back to the last target
                 ' framework value and navigate to the fwlink
                 _comboBox.SelectedIndex = IndexOfLastCommittedValue
-                NativageToInstallOtherFrameworksFWLink()
+                NavigateToInstallOtherFrameworksFWLink()
 
             ElseIf _comboBox.SelectedIndex <> IndexOfLastCommittedValue Then
 

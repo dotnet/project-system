@@ -607,12 +607,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Setter for MainForm.  We handle this so that we also get notified when the property
         '''   has changed.
         ''' </summary>
-        ''' <param name="conrol"></param>
+        ''' <param name="control"></param>
         ''' <param name="prop"></param>
         ''' <param name="value"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Protected Function MainFormNoRootNSSet(conrol As Control, prop As PropertyDescriptor, value As Object) As Boolean
+        Protected Function MainFormNoRootNSSet(control As Control, prop As PropertyDescriptor, value As Object) As Boolean
             If Not PropertyControlData.IsSpecialValue(value) Then
                 MainFormTextboxNoRootNS.Text = DirectCast(value, String)
 

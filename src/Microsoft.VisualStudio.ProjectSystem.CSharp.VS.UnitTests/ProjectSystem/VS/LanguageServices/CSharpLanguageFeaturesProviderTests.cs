@@ -132,7 +132,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         [InlineData(new[] { "Microsoft.VisualStudio", "ProjectSystem"},                                 "Microsoft.VisualStudio.ProjectSystem")]
         [InlineData(new[] { "", "Microsoft", "VisualStudio", "ProjectSystem"},                          "Microsoft.VisualStudio.ProjectSystem")]
         [InlineData(new[] { "Microsoft", "", "ProjectSystem"},                                          "Microsoft.ProjectSystem")]
-        public void ConcatNamespaces_ValuesAsNamespacesName_ReturnsConcatedNamespaces(string[] namespaceNames, string expected)
+        public void ConcatNamespaces_ValuesAsNamespacesName_ReturnsConcatenatedNamespaces(string[] namespaceNames, string expected)
         {
             var provider = CreateInstance();
 

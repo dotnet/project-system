@@ -183,7 +183,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         }
 
         [Fact]
-        public async Task UpdateProfiles_MergeInMemroyProfiles()
+        public async Task UpdateProfiles_MergeInMemoryProfiles()
         {
             var moqFS = new IFileSystemMock();
             var provider = GetLaunchSettingsProvider(moqFS);
@@ -210,7 +210,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         }
 
         [Fact]
-        public async Task UpdateProfiles_MergeInMemroyProfiles_AddProfileAtAend()
+        public async Task UpdateProfiles_MergeInMemoryProfiles_AddProfileAtEnd()
         {
             var moqFS = new IFileSystemMock();
             var provider = GetLaunchSettingsProvider(moqFS);
@@ -239,7 +239,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         }
 
         [Fact]
-        public async Task UpdateProfiles_MergeInMemroyGlobalSettings()
+        public async Task UpdateProfiles_MergeInMemoryGlobalSettings()
         {
             var moqFS = new IFileSystemMock();
             var provider = GetLaunchSettingsProvider(moqFS);

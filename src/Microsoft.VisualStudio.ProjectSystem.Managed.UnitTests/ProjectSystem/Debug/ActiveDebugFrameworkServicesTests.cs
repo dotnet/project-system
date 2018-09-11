@@ -88,7 +88,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Input.Commands
         [InlineData("netcoreapp1.0", "netcoreapp1.0")]
         [InlineData("net461", "net461")]
         [InlineData("", "net462")]
-        [InlineData("someframwork", "net462")]
+        [InlineData("someframework", "net462")]
         public async Task GetConfiguredProjectForActiveFrameworkAsync_ReturnsCorrectProject(string framework, string selectedConfigFramework)
         {
             var project = UnconfiguredProjectFactory.Create();
@@ -120,12 +120,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Input.Commands
                                                                                     .Add("TargetFramework", "net462"))));
 
             var projectProperties = ProjectPropertiesFactory.Create(project, data, data2);
-            var projectConfgProvider = new IActiveConfiguredProjectsProviderFactory(MockBehavior.Strict)
+            var projectConfigProvider = new IActiveConfiguredProjectsProviderFactory(MockBehavior.Strict)
                                        .ImplementGetActiveConfiguredProjectsMapAsync(projects);
 
             var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(projectProperties: projectProperties);
 
-            var debugFrameworkSvcs = new ActiveDebugFrameworkServices(projectConfgProvider.Object, commonServices);
+            var debugFrameworkSvcs = new ActiveDebugFrameworkServices(projectConfigProvider.Object, commonServices);
             var activeConfiguredProject = await debugFrameworkSvcs.GetConfiguredProjectForActiveFrameworkAsync();
             Assert.Equal(selectedConfigFramework, activeConfiguredProject.ProjectConfiguration.Dimensions.GetValueOrDefault("TargetFramework"));
         }
