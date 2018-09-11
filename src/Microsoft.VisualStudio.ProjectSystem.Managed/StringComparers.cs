@@ -39,5 +39,10 @@ namespace Microsoft.VisualStudio
         {
             get { return StringComparer.OrdinalIgnoreCase; }
         }
+
+        public static IEqualityComparer<string> ItemTypes
+        {
+            get { return StringComparer.OrdinalIgnoreCase; }
+        }
     }
 }
