@@ -303,7 +303,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 Requires.NotNull(properties, nameof(properties));
                 Properties = properties;
 
-                DependencyType = GetEnumMetadata(ProjectItemMetadata.Type, DependencyType.Unknown);
+                DependencyType = GetEnumMetadata<DependencyType>(ProjectItemMetadata.Type) ?? DependencyType.Unknown;
                 Name = GetStringMetadata(ProjectItemMetadata.Name);
                 if (string.IsNullOrEmpty(Name))
                 {
@@ -312,8 +312,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
                 Version = GetStringMetadata(ProjectItemMetadata.Version);
                 Path = GetStringMetadata(ProjectItemMetadata.Path);
-                Resolved = GetBoolMetadata(ProjectItemMetadata.Resolved, true);
-                IsImplicitlyDefined = GetBoolMetadata(ProjectItemMetadata.IsImplicitlyDefined, false);
+                Resolved = GetBoolMetadata(ProjectItemMetadata.Resolved) ?? true;
+                IsImplicitlyDefined = GetBoolMetadata(ProjectItemMetadata.IsImplicitlyDefined) ?? false;
 
                 var dependenciesHashSet = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
                 if (properties.ContainsKey(ProjectItemMetadata.Dependencies)
@@ -332,7 +332,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
                 if (DependencyType == DependencyType.Diagnostic)
                 {
-                    Severity = GetEnumMetadata(ProjectItemMetadata.Severity, DiagnosticMessageSeverity.Info);
+                    Severity = GetEnumMetadata<DiagnosticMessageSeverity>(ProjectItemMetadata.Severity) ?? DiagnosticMessageSeverity.Info;
                     DiagnosticCode = GetStringMetadata(ProjectItemMetadata.DiagnosticCode);
                 }
             }
@@ -347,22 +347,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 return string.Empty;
             }
 
-            private T GetEnumMetadata<T>(string metadataName, T defaultValue) where T : struct
+            private T? GetEnumMetadata<T>(string metadataName) where T : struct
             {
                 string enumString = GetStringMetadata(metadataName);
-                T enumValue = defaultValue;
-                Enum.TryParse(enumString ?? string.Empty, /*ignoreCase */ true, out enumValue);
-
-                return enumValue;
+                return Enum.TryParse(enumString, ignoreCase: true, out T enumValue) ? enumValue : (T?)null;
             }
 
-            private bool GetBoolMetadata(string metadataName, bool defaultValue)
+            private bool? GetBoolMetadata(string metadataName)
             {
                 string boolString = GetStringMetadata(metadataName);
-                bool boolValue = defaultValue;
-                bool.TryParse(boolString ?? "false", out boolValue);
-
-                return boolValue;
+                return bool.TryParse(boolString, out bool boolValue) ? boolValue : (bool?)null;
             }
 
             public static string GetTargetFromDependencyId(string dependencyId)
