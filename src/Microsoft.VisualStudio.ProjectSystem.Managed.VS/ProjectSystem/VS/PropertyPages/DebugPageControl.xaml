@@ -15,14 +15,8 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="WatermarkStyle.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            <util:NotBoolConverter
-                x:Key="inverseConverter" />
             <BooleanToVisibilityConverter
                 x:Key="visibilityConverter" />
-            <util:InvertableBooleanToVisibilityConverter 
-                x:Key="invertableVisibiltyConverter"/>
-            <util:EnumMatchToBooleanConverter 
-                x:Key="enumToBooleanConverter"/>
             <util:MultiValueBoolToBool_And 
                 x:Key="MultiValueBoolToBoolAnd"/>
         </ResourceDictionary>
