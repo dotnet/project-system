@@ -729,7 +729,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
 
 
         ''' <summary>
-        ''' Returns the ProjectItem corresponding to the hieararchy and itemId
+        ''' Returns the ProjectItem corresponding to the hierarchy and itemId
         ''' </summary>
         ''' <param name="phier">the IVsHierarchy to get the ProjectItem from</param>
         ''' <param name="itemId">the ItemId corresponding to the ProjectItem</param>

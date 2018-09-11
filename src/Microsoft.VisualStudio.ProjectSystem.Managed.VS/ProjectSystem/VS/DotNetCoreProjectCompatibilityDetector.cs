@@ -307,7 +307,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// </summary>
         private static CompatibilityLevel GetCompatibilityLevelFromVersion(Version version, VersionCompatibilityData compatData)
         {
-            // Omly compare major, minor. The presence of build with change the comparison. ie: 2.0 != 2.0.0
+            // Only compare major, minor. The presence of build with change the comparison. ie: 2.0 != 2.0.0
             if (version.Build != -1)
             {
                 version = new Version(version.Major, version.Minor);
@@ -374,7 +374,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
                 if (versionCompatData != null)
                 {
-                    // First try to match exatly on our VS version and if that fails, match on just major, minor
+                    // First try to match exactly on our VS version and if that fails, match on just major, minor
                     if (versionCompatData.TryGetValue(_ourVSVersion, out VersionCompatibilityData compatData) || versionCompatData.TryGetValue(new Version(_ourVSVersion.Major, _ourVSVersion.Minor), out compatData))
                     {
                         // Now fix up missing data

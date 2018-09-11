@@ -149,7 +149,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         ///--------------------------------------------------------------------------------------------
         /// <summary>
         /// IPropertyPage
-        /// Returns a stuct describing our property page
+        /// Returns a struct describing our property page
         /// </summary>
         ///--------------------------------------------------------------------------------------------
         public void GetPageInfo(PROPPAGEINFO[] pPageInfo)
@@ -257,7 +257,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         ///--------------------------------------------------------------------------------------------
         /// <summary>
         /// IPropertyPage
-        /// Handles mneumonics
+        /// Handles mnemonics
         /// </summary>
         ///--------------------------------------------------------------------------------------------
         public int TranslateAccelerator(MSG[] pMsg)

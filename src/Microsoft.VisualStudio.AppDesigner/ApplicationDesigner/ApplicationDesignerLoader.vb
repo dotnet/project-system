@@ -31,7 +31,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         'We use the DesignerDocDataService class as a cheap way of getting check-in/out behavior.  See
         '  the Modify property.  We let it manage our DocData as its "primary" (in this case, only)
         '  doc data.  It will automatically track changes and handle check-in/check-out (see the
-        '  Modifyi property).
+        '  Modify property).
 #Disable Warning IDE1006 ' Naming Styles (Compat)
         Protected m_DocDataService As DesignerDocDataService
 #Enable Warning IDE1006 ' Naming Styles
@@ -43,7 +43,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 #End If
 
         ''' <summary>
-        ''' Initialize the designer loader. This is called just after begin load, so we shoud
+        ''' Initialize the designer loader. This is called just after begin load, so we should
         ''' have a loader host here.
         ''' This is the place where we add services!
         ''' NOTE: Remember to call RemoveService on any service object we don't own, when the Loader is disposed

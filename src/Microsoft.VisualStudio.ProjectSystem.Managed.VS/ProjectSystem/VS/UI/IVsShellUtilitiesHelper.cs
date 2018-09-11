@@ -8,7 +8,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
     internal interface IVsShellUtilitiesHelper
     {
         /// <summary>
-        /// Returns the version of VS as defined by VSVSAPROPID_ProductSemanticVersion with the trailing sem verson stripped, or null on failure. 
+        /// Returns the version of VS as defined by VSVSAPROPID_ProductSemanticVersion with the trailing sem version stripped, or null on failure. 
         /// </summary>
         Task<Version> GetVSVersionAsync(IServiceProvider serviceProvider);
 

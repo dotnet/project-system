@@ -94,7 +94,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
 
         /// <summary>
         /// IGraphProvider.BeginGetGraphData
-        /// Entry point for progression. Gets called everytime when progression
+        /// Entry point for progression. Gets called every time when progression
         ///  - Needs to know if a node has children
         ///  - Wants to get children for a node
         ///  - During solution explorer search
@@ -162,7 +162,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
         }
 
         /// <summary>
-        /// ProjectContextChanged gets fired everytime dependencies change for projects accross solution.
+        /// ProjectContextChanged gets fired every time dependencies change for projects across solution.
         /// ExpandedGraphContexts contain all nodes that we need to check for potential updates in their 
         /// children dependencies.
         /// </summary>

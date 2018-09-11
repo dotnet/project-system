@@ -163,7 +163,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
 
         Private ReadOnly _id As String ' Extension ID
         Private ReadOnly _version As Version ' Extension version
-        Private _template As Template ' VSCore Template file.
+        Private ReadOnly _template As Template ' VSCore Template file.
         Private ReadOnly _assemblyFullName As String ' Full name of the triggering assembly.
 
         ' Element and attribute names for extension template information in template's custom data.

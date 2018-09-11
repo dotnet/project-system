@@ -431,7 +431,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             ''' <summary>
             ''' Keeps track of everything that we want to serialized about a single
-            '''   Resource instance (either the entire Resoure itself, or a set of
+            '''   Resource instance (either the entire Resource itself, or a set of
             '''   its properties)
             ''' </summary>
             ''' <remarks></remarks>

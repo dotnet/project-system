@@ -58,7 +58,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private _uiInitialized As Boolean
 
         'The set of categories handled by this instance of the resource editor.
-        Private _categories As New CategoryCollection
+        Private ReadOnly _categories As New CategoryCollection
 
         'The root designer associated with this resource editor instance
         Private _rootDesigner As ResourceEditorRootDesigner
@@ -71,10 +71,10 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private _currentCategory As Category
 
         'Temporary files which can be cleaned up on the next clipboard flush.
-        Private _deleteFilesOnClipboardFlush As New ArrayList
+        Private ReadOnly _deleteFilesOnClipboardFlush As New ArrayList
 
         'Temporary files which can be cleaned up when the editor exists.
-        Private _deleteFoldersOnEditorExit As New ArrayList
+        Private ReadOnly _deleteFoldersOnEditorExit As New ArrayList
 
         'The set of internal resources that we cache for this instance of the resource editor
         Private _cachedResources As CachedResourcesForView
@@ -138,7 +138,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private Const DESIGNER_PADDING As Integer = 14
         Private Const DESIGNER_PADDING_TOP As Integer = 23
 
-        ' the seperator character to save multiple extensions in one string
+        ' the separator character to save multiple extensions in one string
         Private Const SAFE_EXTENSION_SEPERATOR As Char = "|"c
 
 #End Region
@@ -154,7 +154,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '  the assemblies of any types handled by these type editors.
         '
         'System, mscorlib, System.Drawing, System.Windows.Forms, System.Data
-        Private Shared s_defaultAssemblyReferences() As AssemblyName =
+        Private Shared ReadOnly s_defaultAssemblyReferences() As AssemblyName =
             {
                 GetType(CodeDom.MemberAttributes).Assembly.GetName(),
                 GetType(Integer).Assembly.GetName(),
@@ -1167,7 +1167,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
         ''' <summary>
         ''' Ping the toolbar panel so that it gets included in the search for
-        ''' toolbars when translating accellerators/pressing shift-alt
+        ''' toolbars when translating accelerators/pressing shift-alt
         ''' </summary>
         ''' <remarks></remarks>
         Private Sub UpdateToolbarFocus()
@@ -1202,7 +1202,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
 
         ''' <summary>
-        ''' Invalidates a given resource so taht it is redrawn on the next paint.
+        ''' Invalidates a given resource so that it is redrawn on the next paint.
         ''' </summary>
         ''' <param name="Resource">The resource to invalidate</param>
         ''' <param name="InvalidateThumbnail">If True, the resource's thumbnail and other info is also invalidated.</param>
@@ -1345,7 +1345,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   It will change the currently-shown category and scroll the given resource into view, if
         '''   necessary.
         ''' </summary>
-        ''' <param name="Resource">The Resource to highligh</param>
+        ''' <param name="Resource">The Resource to highlight</param>
         ''' <param name="Field">The field in the resource's row to highlight.</param>
         ''' <param name="SelectInPropertyGrid">If true, update the property grid with the new selection</param>
         ''' <remarks></remarks>
@@ -1361,7 +1361,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   It will change the currently-shown category and scroll the given resource into view, if
         '''   necessary.
         ''' </summary>
-        ''' <param name="Resource">The Resource to highligh</param>
+        ''' <param name="Resource">The Resource to highlight</param>
         ''' <param name="SelectInPropertyGrid">If true, update the property grid with the new selection</param>
         ''' <remarks></remarks>
         Friend Sub HighlightResource(Resource As Resource, SelectInPropertyGrid As Boolean)
@@ -1374,7 +1374,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Helper function for HighlightResource.
         ''' </summary>
-        ''' <param name="Resources">The Resource to highligh</param>
+        ''' <param name="Resources">The Resource to highlight</param>
         ''' <param name="Field">The field in the resource's row to highlight, if not HighlightEntireResource and if it's a stringtable.</param>
         ''' <param name="SelectInPropertyGrid">If true, update the property grid with the new selection</param>
         ''' <param name="HighlightEntireResource">If true, Field is ignored and the entire resource is highlighted.</param>
@@ -1558,7 +1558,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks>This handles the case when user select a row, and when we hightlight a row in search.</remarks>
+        ''' <remarks>This handles the case when user select a row, and when we highlight a row in search.</remarks>
         Private Sub StringTable_RowStateChanged(sender As Object, e As DataGridViewRowStateChangedEventArgs) _
                     Handles StringTable.RowStateChanged
             Try
@@ -1779,9 +1779,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Resource.SetTypeNameConverter(ResourceFile)
             Next
 
-            ' Verify whether the resouce items are supported by current platform
+            ' Verify whether the resource items are supported by current platform
             ' NOTE: some projects like device projects do not support TIFF files. We don't want the user to add them into the resource, and hit the issue at runtime.
-            '  We validate resource here, because a tiff item could be added from an external file, or copy from another resouce editor...
+            '  We validate resource here, because a tiff item could be added from an external file, or copy from another resource editor...
             For Each NewResource As Resource In NewResources
                 Dim Message As String = String.Empty
                 Dim HelpID As String = String.Empty
@@ -2150,7 +2150,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Given a filename extension, determines which Resource Type Editor is the preferred editor to
         '''  handle this file extension.  This essentially determines what type of resource to expect
-        '''  based on the file extension (which is the right thing to do - Visual Studio is fuly based
+        '''  based on the file extension (which is the right thing to do - Visual Studio is fully based
         '''  on file extensions).
         ''' </summary>
         ''' <param name="Extension">The filename extension (including the period prefix, e.g. ".txt") to check</param>
@@ -3235,7 +3235,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private Function GetFileListFromVsHDropHandle(HDropStream As Stream) As DraggedFileInfo()
             Dim Files() As DraggedFileInfo
             Const MAX_PATH As Integer = 260
-            Const FILEINFO_LENGTH As Integer = 2 * MAX_PATH + 41     ' FILEINFO include two pathes and a GUID
+            Const FILEINFO_LENGTH As Integer = 2 * MAX_PATH + 41     ' FILEINFO include two paths and a GUID
 
 
             If HDropStream.Length <= Integer.MaxValue Then
@@ -4949,7 +4949,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Gets the DTE ProjectItem corresponding to the ResX file being edited.
         ''' </summary>
         ''' <returns></returns>
-        ''' <remarks>There's always a ProjectItem, even if you're not opened in a projec, 'cause then you're really opened in the Miscellaneous Files project.</remarks>
+        ''' <remarks>There's always a ProjectItem, even if you're not opened in a project, 'cause then you're really opened in the Miscellaneous Files project.</remarks>
         Public Function GetResXProjectItem() As ProjectItem
             'Retrieve the ProjectItem service that we proffered in our designer loader.
             Dim ResXProjectItem As ProjectItem = TryCast(RootDesigner.GetService(GetType(ProjectItem)), ProjectItem)

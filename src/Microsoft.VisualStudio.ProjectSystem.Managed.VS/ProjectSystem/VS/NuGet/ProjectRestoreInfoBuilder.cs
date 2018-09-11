@@ -93,7 +93,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                     // late (after *.g.props files would need to have been imported from it). Instead of modifying the
                     // IVsProjectRestoreInfo interface or introducing something like IVsProjectRestoreInfo with an
                     // MSBuildProjectExtensionsPath property, we opted to leave the interface the same but change the
-                    // meaning of its BaseIntermediatePath proprtey. See
+                    // meaning of its BaseIntermediatePath property. See
                     // https://github.com/dotnet/project-system/issues/3466for for details.
                     BaseIntermediatePath = msbuildProjectExtensionsPath,
                     OriginalTargetFrameworks = originalTargetFrameworks,

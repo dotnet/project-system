@@ -38,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             }
             else
             {
-                //viewModel can be non-null when the configuration is chaged. 
+                //viewModel can be non-null when the configuration is changed.
                 if (_control == null)
                 {
                     _control = CreatePropertyPageControl();

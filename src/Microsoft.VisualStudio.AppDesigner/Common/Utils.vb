@@ -183,7 +183,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
 
 
         ''' <summary>
-        ''' Attempts to create a string represention of an object, for debug purposes.  Under retail,
+        ''' Attempts to create a string representation of an object, for debug purposes.  Under retail,
         '''   returns an empty string.
         ''' </summary>
         ''' <param name="Value">The value to turn into a displayable string.</param>
@@ -244,7 +244,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <summary>
         ''' Given an exception, returns True if it is a CheckOut exception.
         ''' </summary>
-        ''' <param name="ex">The exception to check rethrow if it's caused by cancaling checkout</param>
+        ''' <param name="ex">The exception to check rethrow if it's caused by canceling checkout</param>
         ''' <remarks></remarks>
         Public Function IsCheckoutCanceledException(ex As Exception) As Boolean
             If (TypeOf ex Is CheckoutException AndAlso ex.Equals(CheckoutException.Canceled)) _
@@ -324,7 +324,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <summary>
         ''' Set the drop-down width of a datagridviewcomboboxcolumn wide enough to show the text of all entries in it
         ''' </summary>
-        ''' <param name="column">The columnto change the width for</param>
+        ''' <param name="column">The column to change the width for</param>
         ''' <remarks>
         ''' This does not take the current cell style into account - it uses the font from the parent datagridview (if any)
         ''' It also makes room for the scrollbar even though it may not be visible...
@@ -632,7 +632,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
             ' in this list. All unknown entries will be reported as &hFF
             '
             ' Add more entries to the end of this list. Do *not* put any new entries in the middle of the list!
-            Private Shared s_sqmOrder() As Guid = {
+            Private Shared ReadOnly s_sqmOrder() As Guid = {
                 KnownPropertyPageGuids.GuidApplicationPage_VB,
                 KnownPropertyPageGuids.GuidApplicationPage_CS,
                 KnownPropertyPageGuids.GuidApplicationPage_JS,

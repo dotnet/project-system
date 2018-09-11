@@ -111,10 +111,10 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
         Private Const MaxPollInterval As Integer = 60 * 1000 ' 1 minutes
         Private Const MinPollInterval As Integer = 1000 ' 1 second
 
-        ' Number of calls into AsyncCompile prior to terminating inital compilation loop
+        ' Number of calls into AsyncCompile prior to terminating initial compilation loop
         Private Const CompilationLevel As Integer = 2
 
-        Private _data As XmlIntellisenseSchemasData
+        Private ReadOnly _data As XmlIntellisenseSchemasData
         '--------------------------------------------------------------------------
         ' New:
         '   Initialize the class.
@@ -497,13 +497,13 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
     Friend Class XmlIntellisenseMember
         Implements IXmlIntellisenseMember
 
-        Private _name As XmlQualifiedName
+        Private ReadOnly _name As XmlQualifiedName
         Private _children As XmlIntellisenseMember
         Private _nextMember As XmlIntellisenseMember
         Private _flags As Flags
         Private ReadOnly _element As XmlSchemaElement
 
-        Private Shared s_any As XmlIntellisenseMember
+        Private Shared ReadOnly s_any As XmlIntellisenseMember
 
         Private Enum Flags
             None = 0
@@ -621,9 +621,9 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
     '--------------------------------------------------------------------------
     <ClassInterface(ClassInterfaceType.None)>
     Friend Class IndexedMembers
-        Private _targetNamespaces As Dictionary(Of String, String)
-        Private _indexedByNamespace As Dictionary(Of String, List(Of XmlIntellisenseMember))
-        Private _indexedByName As Dictionary(Of XmlQualifiedName, Object)
+        Private ReadOnly _targetNamespaces As Dictionary(Of String, String)
+        Private ReadOnly _indexedByNamespace As Dictionary(Of String, List(Of XmlIntellisenseMember))
+        Private ReadOnly _indexedByName As Dictionary(Of XmlQualifiedName, Object)
         Private ReadOnly _all As XmlIntellisenseMemberList
         Private ReadOnly _document As XmlIntellisenseMemberList
         Private ReadOnly _roots As XmlIntellisenseMemberList
@@ -900,10 +900,10 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
     Friend Class XmlIntellisenseMemberList
         Implements IXmlIntellisenseMemberList, IEnumerable(Of XmlIntellisenseMember)
 
-        Private _allMembers As IndexedMembers
-        Private _previousStep As XmlIntellisenseMemberList
+        Private ReadOnly _allMembers As IndexedMembers
+        Private ReadOnly _previousStep As XmlIntellisenseMemberList
         Private ReadOnly _axis As Axis
-        Private _name As XmlQualifiedName
+        Private ReadOnly _name As XmlQualifiedName
         Private _members As IEnumerable(Of XmlIntellisenseMember)
 
         Private Enum Axis
@@ -1289,7 +1289,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
     Friend Class XmlIntellisenseMemberEnumerator
         Implements IXmlIntellisenseMemberEnumerator
 
-        Private _enumerator As IEnumerator(Of XmlIntellisenseMember)
+        Private ReadOnly _enumerator As IEnumerator(Of XmlIntellisenseMember)
 
         Public Sub New(Enumerator As IEnumerator(Of XmlIntellisenseMember))
             _enumerator = Enumerator

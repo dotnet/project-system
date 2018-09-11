@@ -133,7 +133,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             var provider = GetLaunchSettingsProvider(moqFS);
             moqFS.WriteAllText(provider.LaunchSettingsFile, JsonString1);
 
-            // Change the value of activeDebugProfile to web it should be the active one. Similates a change
+            // Change the value of activeDebugProfile to web it should be the active one. Simulates a change
             // on disk doesn't affect active profile
             provider = GetLaunchSettingsProvider(moqFS, activeProfile: "web");
             await provider.UpdateProfilesAsyncTest(null);
@@ -877,10 +877,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 }";
     }
 
-    // Dervies from base class to be able to set protected memebers
+    // Derives from base class to be able to set protected members
     internal class LaunchSettingsUnderTest : LaunchSettingsProvider
     {
-        // ECan pass null for all and a default will be crewated
+        // ECan pass null for all and a default will be created
         public LaunchSettingsUnderTest(UnconfiguredProject project, IUnconfiguredProjectServices projectServices,
                                       IFileSystem fileSystem, IUnconfiguredProjectCommonServices commonProjectServices,
                                       IActiveConfiguredProjectSubscriptionService projectSubscriptionService, ActiveConfiguredProject<AppDesignerFolderSpecialFileProvider> appDesignerFolderSpecialFileProvider)

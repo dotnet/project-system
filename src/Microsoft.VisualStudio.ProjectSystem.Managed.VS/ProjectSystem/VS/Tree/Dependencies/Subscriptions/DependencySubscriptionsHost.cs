@@ -279,7 +279,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
             HashSet<string> projectItemSpecs = GetProjectItemSpecsFromSnapshot(catalogs);
 
-            // Note: we are updating existing snapshot, not receivig a complete new one. Thus we must
+            // Note: we are updating existing snapshot, not receiving a complete new one. Thus we must
             // ensure incremental updates are done in the correct order. This lock ensures that here.
             lock (_snapshotLock)
             {

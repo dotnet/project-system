@@ -117,7 +117,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
         }
     }
 
-    // Returns Visibility.Visible if the string is not null or empy, otherwise  Visibility.Collapsed;
+    // Returns Visibility.Visible if the string is not null or empty, otherwise  Visibility.Collapsed;
     internal class StringToVisibilityConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -198,7 +198,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
     }
 
     /// <summary>
-    /// Samve a BoolToVisiabilityConverter except instead of false= collapse, false = Hidden
+    /// Same as BoolToVisibilityConverter except instead of false= collapse, false = Hidden
     /// </summary>
     internal class BoolToVisibleOrHiddenConverter : IValueConverter
     {

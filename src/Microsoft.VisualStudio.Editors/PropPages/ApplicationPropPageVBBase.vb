@@ -442,7 +442,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Public Delegate Function CompareFun(SemicolonSeparatedNames As String, Item As ApplicationTypeInfo) As Boolean
 
                 ' Non-localized name to match
-                Private _names As New Dictionary(Of String, Boolean)
+                Private ReadOnly _names As New Dictionary(Of String, Boolean)
                 Private ReadOnly _mustBeSupportedInExpressSKUs As Boolean
 
                 ''' <summary>

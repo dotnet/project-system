@@ -101,7 +101,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         /// <param name="otherProjectSnapshot"></param>
         /// <param name="shouldBeResolved">
         /// Specifies if top-level project dependencies resolved status. When other project just had it's dependencies
-        /// changed, it is resolved=true (we check target's support when we add projec dependencies). However when 
+        /// changed, it is resolved=true (we check target's support when we add project dependencies). However when 
         /// other project is unloaded, we should mark top-level dependencies as unresolved.
         /// </param>
         private void OnOtherProjectDependenciesChanged(IDependenciesSnapshot otherProjectSnapshot, bool shouldBeResolved)

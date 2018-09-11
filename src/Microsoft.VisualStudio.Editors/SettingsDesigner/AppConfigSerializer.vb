@@ -540,7 +540,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="Settings">The owner of the setting</param>
         ''' <param name="Instance">The existing setting instance</param>
         ''' <param name="SerializedAppConfigValue">The serialized representation of the value found in the app.config file</param>
-        ''' <param name="AppConfigScope">The scope of the value found in the app.cofig file</param>
+        ''' <param name="AppConfigScope">The scope of the value found in the app.config file</param>
         ''' <param name="UIService">An option UI service to help us pop up a nice dialog</param>
         ''' <remarks></remarks>
         Private Shared Function QueryReplaceValue(Settings As DesignTimeSettings, Instance As DesignTimeSettingInstance, SerializedAppConfigValue As String, AppConfigScope As DesignTimeSettingInstance.SettingScope, mergeMode As MergeValueMode, UIService As IUIService) As DirtyState

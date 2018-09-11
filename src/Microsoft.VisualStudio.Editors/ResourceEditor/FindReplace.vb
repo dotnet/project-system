@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Option Explicit On
 Option Strict On
@@ -29,7 +29,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
 
         'Pointer to the root designer
-        Private _rootDesigner As ResourceEditorRootDesigner
+        Private ReadOnly _rootDesigner As ResourceEditorRootDesigner
 
         'The find state object. Find state is an opaque object we hold on behalf of the find engine.
         '  Setting this object to Nothing will reset the find / replace loop.
@@ -228,7 +228,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="pszSearch">The search pattern.</param>
         ''' <param name="grfOptions">The options of the test (from __VSFINDOPTIONS).</param>
         ''' <param name="fResetStartPoint">1 means the find loop is reset, otherwise 0.</param>
-        ''' <param name="pHelper">IVsFindHelper interface containing utiliy methods for Find.</param>
+        ''' <param name="pHelper">IVsFindHelper interface containing utility methods for Find.</param>
         ''' <param name="pResult">Search result, values are taken from __VSFINDRESULT.</param>
         ''' <remarks> 
         ''' Find works as follow:

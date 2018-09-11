@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
     {
 #pragma warning disable CA2213 // OnceInitializedOnceDisposedAsync are not tracked corretly by the IDisposeable analyzer
         private readonly SemaphoreSlim _gate = new SemaphoreSlim(initialCount: 1);
-        private readonly DisposableBag _subscriptions = new DisposableBag();
+        private DisposableBag _subscriptions;
 #pragma warning restore CA2213
         private readonly IUnconfiguredProjectCommonServices _commonServices;
         private readonly IProjectAsynchronousTasksService _tasksService;
@@ -79,7 +79,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         public void ReleaseSubscriptions()
         {
             _currentProjectContext = null;
-            _subscriptions.Dispose();
+
+            // We can't re-use the DisposableBag after disposing it, so null it out
+            // to ensure we create a new one the next time we go to add subscriptions.
+            _subscriptions?.Dispose();
+            _subscriptions = null;
         }
 
         private void SubscribeToConfiguredProject(
@@ -101,6 +105,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                     {
                         NameFormat = "CrossTarget Intermediate Evaluation Input: {1}"
                     });
+
+            _subscriptions = _subscriptions ?? new DisposableBag();
 
             _subscriptions.AddDisposable(
                 subscriptionService.JointRuleSource.SourceBlock.LinkTo(
@@ -201,7 +207,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                                    .Where(h => h.SupportsHandlerType(handlerType));
 
             // We need to process the update within a lock to ensure that we do not release this context during processing.
-            // TODO: Enable concurrent execution of updates themeselves, i.e. two separate invocations of HandleAsync
+            // TODO: Enable concurrent execution of updates themselves, i.e. two separate invocations of HandleAsync
             //       should be able to run concurrently.
             using (await _gate.DisposableWaitAsync())
             {

@@ -216,7 +216,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                         // if node does not have an IRule with valid ProjectPropertiesContext we can not 
                         // get it's itemsSpec. If nodes provided by custom IProjectDependenciesSubTreeProvider
                         // implementation, and have some custom IRule without context, it is not a problem,
-                        // since they wouldnot have DependencyNode.GenericDependencyFlags and we would not 
+                        // since they would not have DependencyNode.GenericDependencyFlags and we would not 
                         // end up here, since CanRemove would return false and Remove command would not show 
                         // up for those nodes. 
                         continue;
@@ -464,7 +464,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             // Note: it is unlikely that we end up here, however for cases when node providers
             // getting their node data not from Design time build events, we might have OnDependenciesChanged
             // event coming before initial design time build event updates NamedCatalogs in this class.
-            // Thus, just in case, explicitly request it here (GetCatalogsAsync will accuire a project read lock)
+            // Thus, just in case, explicitly request it here (GetCatalogsAsync will acquire a project read lock)
             NamedCatalogs = await ActiveConfiguredProject.Services
                                                          .PropertyPagesCatalog
                                                          .GetCatalogsAsync(CancellationToken.None);
@@ -491,11 +491,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             //  - rule for unresolved dependency, they persist in ProjectFile
             //  - rule for resolved dependency, they persist in ResolvedReference
             // So to be able to find rule for resolved or unresolved reference we need to be consistent there 
-            // and make sure we do set ResolvedReference persistense for resolved dependnecies, since we rely
+            // and make sure we do set ResolvedReference persistence for resolved dependencies, since we rely
             // on that here when pick correct rule schema.
             // (old code used to check if rule datasource has SourceType=TargetResults, which was true for Resolved,
             // dependencies. However now we have custom logic for collecting unresolved dependencies too and use 
-            // DesignTime build results there too. Thats why we swicthed to check for persistence).
+            // DesignTime build results there too. That's why we switched to check for persistence).
             IPropertyPagesCatalog browseObjectCatalog = namedCatalogs[PropertyPageContexts.BrowseObject];
             IReadOnlyCollection<string> schemas = browseObjectCatalog.GetPropertyPagesSchemas(itemType);
 

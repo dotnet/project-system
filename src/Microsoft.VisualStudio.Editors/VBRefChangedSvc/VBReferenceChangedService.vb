@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Option Strict On
 Option Explicit On
@@ -12,12 +12,12 @@ Namespace Microsoft.VisualStudio.Editors.VBRefChangedSvc
 
     ''' ;VBReferenceChangedService
     ''' <summary>
-    ''' This service will be called by the VB compiler when a reference change ocurred in the VB Project.
+    ''' This service will be called by the VB compiler when a reference change occurred in the VB Project.
     ''' This will initiate the My Extensibility service.
     ''' </summary>
     ''' <remarks>
     ''' - This service is exposed in vbpackage.vb.
-    ''' - Registration for this service is in SetupAuthoring\vb\registry\Microsoft.VisualStudio.Eidtors.vrg_33310.ddr
+    ''' - Registration for this service is in SetupAuthoring\vb\registry\Microsoft.VisualStudio.Editors.vrg_33310.ddr
     '''   and Microsoft.VisualStudio.Editors.vbexpress.vrg_33310.ddr.
     ''' </remarks>
     <CLSCompliant(False)>

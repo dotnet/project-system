@@ -8,8 +8,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
     internal static class Order
     {
         // NOTE: For consistency, we use the priorities from 10 -> 30 for the managed project system.
-        // This lets us have a higher precendence than built-in CPS components (which default to 0), but at 
-        // the same time let other 1st and 3rd party components have a higher precendence than us.
+        // This lets us have a higher precedence than built-in CPS components (which default to 0), but at 
+        // the same time let other 1st and 3rd party components have a higher precedence than us.
         // Because we might want to order components within the managed project system itself, we also 
         // have a staggered set of priorities that also lets other components run between our individual 
         // components.

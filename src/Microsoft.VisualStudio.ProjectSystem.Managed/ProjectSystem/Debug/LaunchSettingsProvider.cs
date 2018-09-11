@@ -88,7 +88,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
         protected SimpleFileWatcher FileWatcher { get; set; }
 
-        // When we are saveing the file we set this to minimize noise from the file change
+        // When we are saving the file we set this to minimize noise from the file change
         protected bool IgnoreFileChanges { get; set; }
 
         protected TimeSpan FileChangeProcessingDelay = TimeSpan.FromMilliseconds(500);
@@ -143,7 +143,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         }
 
         /// <summary>
-        /// IOebugProfileProvider
+        /// IDebugProfileProvider
         /// Access to the current set of profile information
         /// </summary>
         private ILaunchSettings _currentSnapshot;
@@ -224,7 +224,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         }
 
         /// <summary>
-        /// Called when the active profile has changed. If there is a current snapshot it just updates that. Otherwwise, it creates
+        /// Called when the active profile has changed. If there is a current snapshot it just updates that. Otherwise, it creates
         /// a new snapshot
         /// </summary>
         protected async Task UpdateActiveProfileInSnapshotAsync(string activeProfile)
@@ -262,7 +262,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
                 LaunchSettingsData launchSettingData = await GetLaunchSettingsAsync();
 
-                // If there are no profiles, we will add a default profile to run the prroject. W/o it our debugger
+                // If there are no profiles, we will add a default profile to run the project. W/o it our debugger
                 // won't be called on F5 and the user will see a poor error message
                 if (launchSettingData.Profiles.Count == 0)
                 {
@@ -403,7 +403,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         }
 
         /// <summary>
-        /// Creates the intiial set of settings based on the file on disk
+        /// Creates the initial set of settings based on the file on disk
         /// </summary>
         protected async Task<LaunchSettingsData> GetLaunchSettingsAsync()
         {
@@ -703,13 +703,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
         /// <summary>
         /// Sets up a file system watcher to look for changes to the launchsettings.json file. It watches at the root of the
-        /// project oltherwise we force the project to have a properties folder.
+        /// project otherwise we force the project to have a properties folder.
         /// </summary>
         private void WatchLaunchSettingsFile()
         {
             if (FileWatcher == null)
             {
-                // Create our scheduler for processing file chagnes
+                // Create our scheduler for processing file changes
                 FileChangeScheduler = new TaskDelayScheduler(FileChangeProcessingDelay, CommonProjectServices.ThreadingService,
                     ProjectServices.ProjectAsynchronousTasks.UnloadCancellationToken);
 
@@ -723,7 +723,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         }
 
         /// <summary>
-        /// Need to amke sure we cleanup the dataflow links and file watcher
+        /// Need to make sure we cleanup the dataflow links and file watcher
         /// </summary>
         /// <param name="disposing"></param>
         protected override void Dispose(bool disposing)
@@ -854,7 +854,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                     profiles = profiles.Insert(insertionIndex, new LaunchProfile(profile));
                 }
 
-                // If the new profile is in-nmemory only, we don't want to touch the disk unless it replaces an existing disk based
+                // If the new profile is in-memory only, we don't want to touch the disk unless it replaces an existing disk based
                 // profile
                 bool saveToDisk = !profile.IsInMemoryObject() || (existingProfile != null && !existingProfile.IsInMemoryObject());
 
@@ -877,7 +877,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 {
                     ImmutableList<ILaunchProfile> profiles = currentSettings.Profiles.Remove(existingProfile);
 
-                    // If the new profile is in-nmemory only, we don't want to touch the disk
+                    // If the new profile is in-memory only, we don't want to touch the disk
                     bool saveToDisk = !existingProfile.IsInMemoryObject();
                     var newSnapshot = new LaunchSettings(profiles, currentSettings.GlobalSettings, currentSettings.ActiveProfile?.Name);
                     await UpdateAndSaveSettingsInternalAsync(newSnapshot, saveToDisk);

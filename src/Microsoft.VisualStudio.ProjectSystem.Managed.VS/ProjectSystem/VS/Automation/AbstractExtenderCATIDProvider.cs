@@ -24,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             // See https://docs.microsoft.com/en-us/visualstudio/extensibility/internals/extending-the-object-model-of-the-base-project.
             //
             // The latter issue we can do nothing about, however, to address the former, map these types to a truer form it makes 
-            // it easier on implementators and maintainers of this to understand the objects we're talking about.
+            // it easier on implementors and maintainers of this to understand the objects we're talking about.
 
             switch (extenderCATIDType)
             {
@@ -36,7 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
                 case ExtenderCATIDType.ProjectBrowseObject:                                     // EnvDTE.Project.Properties
                     return GetExtenderCATID(ExtendeeObject.ProjectBrowseObject);
 
-                case ExtenderCATIDType.ConfigurationBrowseObject:                               // IVsCfgProvider2.GetCfgProviderProperty(VSCFGPROPID_IntrinsicExtenderCATID)/DTE.Configuraton
+                case ExtenderCATIDType.ConfigurationBrowseObject:                               // IVsCfgProvider2.GetCfgProviderProperty(VSCFGPROPID_IntrinsicExtenderCATID)/DTE.Configuration
                     return GetExtenderCATID(ExtendeeObject.Configuration);
 
                 case ExtenderCATIDType.HierarchyConfigurationBrowseObject:                      // IVsHierarchy.GetProperty(VSHPROPID_CfgBrowseObjectCATID)

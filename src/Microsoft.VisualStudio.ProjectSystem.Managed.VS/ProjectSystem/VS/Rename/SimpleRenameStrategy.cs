@@ -21,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
         {
         }
 
-        // For the SimpleRename, it can attempt to handle any situtation
+        // For the SimpleRename, it can attempt to handle any situation
         public override bool CanHandleRename(string oldFileName, string newFileName, bool isCaseSensitive)
         {
             string oldNameBase = Path.GetFileNameWithoutExtension(oldFileName);

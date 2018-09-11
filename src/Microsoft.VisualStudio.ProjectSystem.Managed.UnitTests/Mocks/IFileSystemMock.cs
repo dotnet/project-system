@@ -56,6 +56,16 @@ namespace Microsoft.VisualStudio.IO
             }
         }
 
+        public void AddFile(string path, DateTime? lastWriteTime = null)
+        {
+            _files[path] = new FileData
+            {
+                FileContents = "",
+                FileEncoding = Encoding.UTF8,
+                LastWriteTime = lastWriteTime ?? DateTime.Now
+            };
+        }
+
         public void AddFolder(string path)
         {
             _folders.Add(path);

@@ -13,7 +13,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
     Friend Class StringArrayEditorForStringCollections
         Inherits UITypeEditor
 
-        Private _parent As UITypeEditor
+        Private ReadOnly _parent As UITypeEditor
 
         ''' <summary>
         ''' Create a new StringArrayEditorForStringCollections

@@ -263,7 +263,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             MultiValueGetCallback = multiValueGetter
             Me.AssociatedControls = AssociatedControls
 
-            ''DisplayName should be explicity set if it is a localized string
+            ''DisplayName should be explicitly set if it is a localized string
             If DisplayPropertyName = "" Then
                 'Use non-localized name if not found
                 DisplayPropertyName = name
@@ -925,7 +925,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     End If
 
                 ElseIf Not Handled AndAlso FormControl IsNot Nothing Then
-                    ' If we have a contol associated with this property, and we don't have a set callback, or the 
+                    ' If we have a control associated with this property, and we don't have a set callback, or the 
                     ' set callback didn't handle updating the control (Handled = false), we use the default setter 
                     ' to update the associated control's UI.
                     '
@@ -1035,7 +1035,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <remarks>
         ''' This is normally overridden in the property page, which this method delegates to, and
         '''    not in this class.
-        ''' Used only for non-standard properties.  Note that this is completelyi independent of whether a custom
+        ''' Used only for non-standard properties.  Note that this is completely independent of whether a custom
         '''   getter and setter are defined (they control reading a value from and writing it to a control's UI, while this
         '''   mechanism handles persisting and depersisting the property value in the project or other storage once it's 
         '''   obtained from the control).
@@ -1055,7 +1055,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="PropertyName"></param>
         ''' <param name="Value"></param>
         ''' <returns></returns>
-        ''' <remarks>Used only for non-standard properties.  Note that this is completelyi independent of whether a custom
+        ''' <remarks>Used only for non-standard properties.  Note that this is completely independent of whether a custom
         '''   getter and setter are defined (they control reading a value from and writing it to a control's UI, while this
         '''   mechanism handles persisting and depersisting the property value in the project or other storage once it's 
         '''   obtained from the control).</remarks>
@@ -1075,7 +1075,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="PropertyName"></param>
         ''' <param name="Value"></param>
         ''' <returns></returns>
-        ''' <remarks>Used only for non-standard properties.  Note that this is completelyi independent of whether a custom
+        ''' <remarks>Used only for non-standard properties.  Note that this is completely independent of whether a custom
         '''   getter and setter are defined (they control reading a value from and writing it to a control's UI, while this
         '''   mechanism handles persisting and depersisting the property value in the project or other storage once it's 
         '''   obtained from the control).</remarks>
@@ -1738,7 +1738,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         Return
                     Else
                         'Must have been canceled by the user.  There will already have been
-                        '  a UI indication of the cancelation.  But we need to throw so that the
+                        '  a UI indication of the cancellation.  But we need to throw so that the
                         '  current transaction gets cancelled (otherwise the property page may
                         '  show a changed value, and the user may get prompted for additional
                         '  checkouts as we try to process more property changes).
@@ -1963,7 +1963,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         ''' <summary>
         ''' Restore the initial value of a property into the property's control (or user-persisted store).
-        '''   This is done after a non-immmediate (child) property page is canceled in order to restore
+        '''   This is done after a non-immediate (child) property page is canceled in order to restore
         '''   the page's original values into the control.
         ''' </summary>
         ''' <remarks></remarks>
