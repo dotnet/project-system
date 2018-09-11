@@ -99,7 +99,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
             foreach (object v in values)
             {
                 // Any false, the result is false
-                if (v is bool b && !b)
+                if (v is false)
                 {
                     return false;
                 }
