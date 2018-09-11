@@ -2,6 +2,7 @@
 
 - [Setting up your Debugging Environment](/docs/repo/debugging/setting-up-environment.md)
 - [Design-Time Builds](/docs/repo/debugging/design-time-builds.md)
+- [Debugging Async Test Hangs](/docs/repo/debugging/async-test-hangs.md)
 - [CPS Tracing](/docs/repo/debugging/tracing.md)
 - [Project System Logging](/docs/repo/debugging/logging.md)
 - [Capabilities](/docs/repo/debugging/capabilities.md)
