@@ -92,19 +92,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
         }
     }
 
-    internal class MultiValueBoolToBool_And : IMultiValueConverter
+    internal sealed class MultiValueBoolToBool_And : IMultiValueConverter
     {
+        private static readonly object s_false = false;
+        private static readonly object s_true = true;
+
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
             foreach (object v in values)
             {
                 // Any false, the result is false
-                if (v is false)
+                if (s_false.Equals(v))
                 {
-                    return false;
+                    return s_false;
                 }
             }
-            return true;
+
+            return s_true;
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
@@ -112,6 +116,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
             throw new NotImplementedException("ConvertBack should NOT be invoked");
         }
     }
+
     // Returns Visibility.Visible if the string is not null or empy, otherwise  Visibility.Collapsed;
     internal class StringToVisibilityConverter : IValueConverter
     {
