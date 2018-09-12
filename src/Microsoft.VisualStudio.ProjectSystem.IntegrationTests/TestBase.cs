@@ -18,26 +18,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.IntegrationTests
             SetTestInstallationDirectoryIfUnset();
         }
 
-        protected VisualStudioHostConfiguration DefaultHostConfiguration
+        protected override VisualStudioHostConfiguration GetHostConfiguration()
         {
-            get
+            var visualStudioHostConfiguration = new VisualStudioHostConfiguration()
             {
-                var visualStudioHostConfiguration = new VisualStudioHostConfiguration()
-                {
-                    CommandLineArguments = $"/rootSuffix {_hiveName}",
-                    RestoreUserSettings = false,
-                    InheritProcessEnvironment = true,
-                    AutomaticallyDismissMessageBoxes = true,
-                    DelayInitialVsLicenseValidation = true,
-                    ForceFirstLaunch = true,
-                    BootstrapInjection = BootstrapInjectionMethod.DteFromROT,
-                };
+                CommandLineArguments = $"/rootSuffix {_hiveName}",
+                RestoreUserSettings = false,
+                InheritProcessEnvironment = true,
+                AutomaticallyDismissMessageBoxes = true,
+                DelayInitialVsLicenseValidation = true,
+                ForceFirstLaunch = true,
+                BootstrapInjection = BootstrapInjectionMethod.DteFromROT,
+            };
 
-                return visualStudioHostConfiguration;
-            }
+            return visualStudioHostConfiguration;
         }
-
-        protected VisualStudioHost GetVS() => Operations.CreateHost<VisualStudioHost>(DefaultHostConfiguration);
 
         private static string GetVsHiveName(TestContext context)
         {
