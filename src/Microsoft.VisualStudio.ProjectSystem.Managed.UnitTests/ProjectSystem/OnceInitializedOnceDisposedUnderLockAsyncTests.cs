@@ -78,20 +78,20 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             var instance = CreateInstance();
 
-            Func<Task> firstAction = () => instance.ExecuteUnderLockAsync(async (ct) =>
+            Task firstAction() => instance.ExecuteUnderLockAsync(async (ct) =>
             {
                 firstEntered.Set();
                 await firstRelease;
 
             }, CancellationToken.None);
 
-            Func<Task> secondAction = () => instance.ExecuteUnderLockAsync((ct) =>
+            Task secondAction() => Task.Run(() => instance.ExecuteUnderLockAsync((ct) =>
             {
                 secondEntered.Set();
                 return Task.CompletedTask;
 
-            }, CancellationToken.None);
-            
+            }, CancellationToken.None));
+
             await AssertNoOverlap(firstAction, secondAction, firstEntered, firstRelease, secondEntered);
         }
 
@@ -125,10 +125,10 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             ConcreteOnceInitializedOnceDisposedUnderLockAsync instance = null;
 
-            Func<Task> firstAction = () => instance.ExecuteUnderLockAsync(async (ct) =>
+            Task firstAction() => instance.ExecuteUnderLockAsync(async (ct) =>
             {
                 firstEntered.Set();
-                await firstRelease;
+                await firstRelease.WaitAsync();
 
             }, CancellationToken.None);
 
@@ -138,7 +138,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 return Task.CompletedTask;
             });
 
-            Func<Task> disposeAction = () => instance.DisposeAsync();
+            Task disposeAction() => Task.Run(instance.DisposeAsync);
 
             await AssertNoOverlap(firstAction, disposeAction, firstEntered, firstRelease, disposeEntered);
         }
