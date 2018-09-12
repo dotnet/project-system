@@ -30,6 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.IntegrationTests
                     AutomaticallyDismissMessageBoxes = true,
                     DelayInitialVsLicenseValidation = true,
                     ForceFirstLaunch = true,
+                    BootstrapInjection = BootstrapInjectionMethod.DteFromROT,
                 };
 
                 return visualStudioHostConfiguration;
