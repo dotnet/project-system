@@ -2,42 +2,19 @@
 
 using System;
 using System.Linq;
-using Microsoft.Test.Apex.VisualStudio;
 using Microsoft.Test.Apex.VisualStudio.Solution;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Microsoft.VisualStudio.ProjectSystem.IntegrationTests
 {
     [TestClass]
-    public class CreateProjectTests : VisualStudioHostTest
+    public class CreateProjectTests : TestBase
     {
-        private static string _hiveName;
-
-        [ClassInitialize()]
+        [ClassInitialize]
         public static void ClassInitialize(TestContext context)
         {
-            _hiveName = context.Properties["VsRootSuffix"].ToString();
+            Initialize(context);
         }
-
-        protected VisualStudioHostConfiguration DefaultHostConfiguration
-        {
-            get
-            {
-                var visualStudioHostConfiguration = new VisualStudioHostConfiguration()
-                {
-                    CommandLineArguments = $"/rootSuffix {_hiveName}",
-                    RestoreUserSettings = false,
-                    InheritProcessEnvironment = true,
-                    AutomaticallyDismissMessageBoxes = true,
-                    DelayInitialVsLicenseValidation = true,
-                    ForceFirstLaunch = true,
-                };
-
-                return visualStudioHostConfiguration;
-            }
-        }
-
-        protected VisualStudioHost GetVS() => Operations.CreateHost<VisualStudioHost>(DefaultHostConfiguration);
 
         [TestMethod]
         public void CreateProject_CreateAndBuild()
@@ -74,6 +51,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.IntegrationTests
                 
                 Assert.IsTrue(success, $"project '{consoleProject.FileName}' failed to build.{Environment.NewLine}errors:{Environment.NewLine}{string.Join(Environment.NewLine, errors)}");
             }
+
+            VS.Stop();
         }
     }
 }
