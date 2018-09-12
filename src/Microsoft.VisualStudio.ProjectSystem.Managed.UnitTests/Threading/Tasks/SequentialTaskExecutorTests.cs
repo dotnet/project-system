@@ -9,8 +9,6 @@ using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.Threading.Tasks
 {
-
-    [Trait("UnitTest", "ProjectSystem")]
     public class SequentialTaskExecutorTests
     {
         [Fact]

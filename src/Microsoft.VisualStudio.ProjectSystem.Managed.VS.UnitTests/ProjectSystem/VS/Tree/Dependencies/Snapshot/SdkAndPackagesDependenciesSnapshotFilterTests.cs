@@ -12,7 +12,6 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
-    [Trait("UnitTest", "ProjectSystem")]
     public class SdkAndPackagesDependenciesSnapshotFilterTests
     {
         [Fact]

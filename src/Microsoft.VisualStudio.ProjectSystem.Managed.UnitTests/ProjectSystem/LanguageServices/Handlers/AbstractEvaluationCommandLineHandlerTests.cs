@@ -10,7 +10,6 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 {
-    [Trait("UnitTest", "ProjectSystem")]
     public partial class AbstractEvaluationCommandLineHandlerTests
     {
         [Fact]

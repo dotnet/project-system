@@ -6,7 +6,6 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 {
-    [Trait("UnitTest", "ProjectSystem")]
     public class BuildMacroInfoTests
     {
         [Theory]

@@ -14,7 +14,6 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.References
 {
-    [Trait("UnitTest", "ProjectSystem")]
     public class DesignTimeAssemblyResolutionTests
     {
         [Fact]

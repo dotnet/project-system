@@ -13,7 +13,6 @@ using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 {
-    [Trait("UnitTest", "ProjectSystem")]
     public class ProjectDesignerServiceTests
     {
         [Theory]

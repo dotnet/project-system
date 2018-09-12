@@ -10,7 +10,6 @@ using static Microsoft.VisualStudio.ProjectSystem.VS.Debug.StartupProjectRegistr
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 {
-    [Trait("UnitTest", "ProjectSystem")]
     public class StartupProjectRegistrarTests
     {
         [Fact]

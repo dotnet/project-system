@@ -11,7 +11,6 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 {
-    [Trait("UnitTest", "ProjectSystem")]
     public class SourceItemHandler_CommandTests : CommandLineHandlerTestBase
     {
         [Fact]

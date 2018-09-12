@@ -10,7 +10,6 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 {
-    [Trait("UnitTest", "ProjectSystem")]
     public class PreBuildEventValueProviderTests
     {
         private static readonly PreBuildEventValueProvider.PreBuildEventHelper systemUnderTest =
