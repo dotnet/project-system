@@ -116,7 +116,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
             ''' <summary>
             '''     This method is called when Visual Studio needs to
-            '''     evalulate which toolbox items should be enabled.  The
+            '''     evaluate which toolbox items should be enabled.  The
             '''     default implementation searches the service provider
             '''     for IVsToolboxUser and delegates.  If IVsToolboxUser
             '''     cannot be found this will search the service provider for
@@ -375,7 +375,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
             ''' <summary>
             ''' This takes our control UI and populates it with the
-            '''    design surface.  If there was an error encoutered
+            '''    design surface.  If there was an error encountered
             '''    it will display the WSOD.
             ''' </summary>
             ''' <remarks></remarks>
@@ -408,7 +408,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 End Try
 
                 If (viewChild Is Nothing) Then
-                    Dim er As String = My.Resources.Designer.DFX_WindowPane_UnknownError
+                    Dim er As String = My.Resources.Microsoft_VisualStudio_Editors_Designer.DFX_WindowPane_UnknownError
                     Dim errors As ArrayList = New ArrayList From {
                         er
                     }

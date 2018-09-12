@@ -51,11 +51,11 @@ namespace Microsoft.VisualStudio.Packaging
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
-            var componentModel = (IComponentModel)(await GetServiceAsync(typeof(SComponentModel)).ConfigureAwait(true));
+            var componentModel = (IComponentModel)(await GetServiceAsync(typeof(SComponentModel)));
             ICompositionService compositionService = componentModel.DefaultCompositionService;
             Lazy<DebugFrameworksDynamicMenuCommand> debugFrameworksCmd = componentModel.DefaultExportProvider.GetExport<DebugFrameworksDynamicMenuCommand>();
 
-            var mcs = (await GetServiceAsync(typeof(IMenuCommandService)).ConfigureAwait(true)) as OleMenuCommandService;
+            var mcs = (await GetServiceAsync(typeof(IMenuCommandService))) as OleMenuCommandService;
             mcs.AddCommand(debugFrameworksCmd.Value);
 
             Lazy<DebugFrameworkPropertyMenuTextUpdater> debugFrameworksMenuTextUpdater = componentModel.DefaultExportProvider.GetExport<DebugFrameworkPropertyMenuTextUpdater>();
@@ -64,7 +64,7 @@ namespace Microsoft.VisualStudio.Packaging
             // Need to use the CPS export provider to get the dotnet compatibility detector
             Lazy<IProjectServiceAccessor> projectServiceAccessor = componentModel.DefaultExportProvider.GetExport<IProjectServiceAccessor>();
             _dotNetCoreCompatibilityDetector = projectServiceAccessor.Value.GetProjectService().Services.ExportProvider.GetExport<IDotNetCoreProjectCompatibilityDetector>().Value;
-            await _dotNetCoreCompatibilityDetector.InitializeAsync().ConfigureAwait(true);
+            await _dotNetCoreCompatibilityDetector.InitializeAsync();
 
 #if DEBUG
             DebuggerTraceListener.RegisterTraceListener();

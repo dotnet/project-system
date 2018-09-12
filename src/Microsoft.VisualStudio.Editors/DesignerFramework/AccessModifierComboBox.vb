@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.CodeDom
 Imports System.CodeDom.Compiler
@@ -17,7 +17,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
     ''' </summary>
     ''' <remarks></remarks>
     Friend Class AccessModifierConverter
-        Private _converter As TypeConverter
+        Private ReadOnly _converter As TypeConverter
 
         Public Enum Access
             [Public]
@@ -66,19 +66,19 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         Implements IDisposable
 
         Private _isDisposed As Boolean = False
-        Private _rootDesigner As BaseRootDesigner
-        Private _projectItem As EnvDTE.ProjectItem
+        Private ReadOnly _rootDesigner As BaseRootDesigner
+        Private ReadOnly _projectItem As EnvDTE.ProjectItem
         Private ReadOnly _serviceProvider As IServiceProvider
         Private ReadOnly _namespaceToOverrideIfCustomToolIsEmpty As String
-        Private _codeGeneratorEntries As New List(Of CodeGenerator)
-        Private _recognizedCustomToolValues As New List(Of String)
+        Private ReadOnly _codeGeneratorEntries As New List(Of CodeGenerator)
+        Private ReadOnly _recognizedCustomToolValues As New List(Of String)
 
         Private _designerCommandBarComboBoxCommand As DesignerCommandBarComboBox
         Private _commandIdCombobox As CommandID
 
         ' Cached flag to indicate if the custom tools associated with this combobox are
         ' registered for the current project type.
-        ' The states are True (registered), False (not registerd) or Missing (we haven't 
+        ' The states are True (registered), False (not registered) or Missing (we haven't 
         ' checked the project system yet)
         ' This field should only be accessed through the CustomToolsRegistered property.
         Private _customToolsRegistered As Boolean?
@@ -133,7 +133,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             Inherits CodeGenerator
 
             Private ReadOnly _accessibility As AccessModifierConverter.Access
-            Private _serviceProvider As IServiceProvider
+            Private ReadOnly _serviceProvider As IServiceProvider
 
             Public Sub New(accessibility As AccessModifierConverter.Access, serviceProvider As IServiceProvider, customToolValue As String)
                 MyBase.New(customToolValue)
@@ -164,7 +164,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 #Region "Nested class "
 
         ''' <summary>
-        ''' This class registers/unregisters a DesigerMenuCommand with the package.
+        ''' This class registers/unregisters a DesignerMenuCommand with the package.
         ''' This is needed for the access modifier combobox because we want the
         '''   combobox to remain enabled when the user clicks away from the designer
         '''   and onto, say, the solution explorer.
@@ -192,7 +192,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ' Map from command ID to LIFO list of command handlers. The item at the head of the list is the item 
             ' that is currently registered with the shell's MenuCommandService
             ' 
-            Private Shared s_packageCommandForwarderLists As New Dictionary(Of CommandID, LinkedList(Of DesignerMenuCommand))
+            Private Shared ReadOnly s_packageCommandForwarderLists As New Dictionary(Of CommandID, LinkedList(Of DesignerMenuCommand))
 
             Public Shared Sub RegisterMenuCommandForwarder(commandID As CommandID, forwarder As DesignerMenuCommand)
                 Dim menuCommandService As IMenuCommandService = VBPackage.Instance.MenuCommandService
@@ -244,7 +244,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ''' Get the command at the head of the queue for the given command ID
             ''' </summary>
             ''' <returns>
-            ''' The first command at the head of the queue, or NULL if no the queue is emty
+            ''' The first command at the head of the queue, or NULL if no the queue is empty
             ''' </returns>
             ''' <remarks></remarks>
             Protected Shared Function GetMenuCommandAtHeadOfInternalList(cmdId As CommandID) As DesignerMenuCommand
@@ -423,7 +423,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             If matchingEntry IsNot Nothing Then
                 currentValue = matchingEntry.DisplayName
             Else
-                currentValue = My.Resources.Designer.RSE_AccessModifier_Custom
+                currentValue = My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_AccessModifier_Custom
             End If
 
             Switches.TracePDAccessModifierCombobox(TraceLevel.Verbose, "GetCurrentValue: " & [GetType].Name & ": " & currentValue)
@@ -499,7 +499,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             Catch ex As Exception When ReportWithoutCrash(ex, NameOf(TrySetCustomToolValue), NameOf(AccessModifierCombobox))
                 DesignerMessageBox.Show(
                     _rootDesigner,
-                    My.Resources.Designer.RSE_Task_CantChangeCustomToolOrNamespace,
+                    My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Task_CantChangeCustomToolOrNamespace,
                     ex,
                     Nothing) 'Note: when we integrate the changes to DesignerMessageBox.Show, the caption property can be removed)
             End Try

@@ -3,7 +3,7 @@
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
     /// <summary>
-    /// Extennds IWritableLaunchProfile to handle inmemory only profiles
+    /// Extends IWritableLaunchProfile to handle in-memory only profiles
     /// </summary>
     public interface IWritablePersistOption : IPersistOption
     {

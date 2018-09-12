@@ -11,14 +11,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     /// Abstraction that helps to build different views for Dependencies node contents.
     /// Having multiple views implementations we could have some context commands switching 
     /// between different views. 
-    /// View is responsible for buiding nodes hierarchy based on given dependencies snapshot.
+    /// View is responsible for building nodes hierarchy based on given dependencies snapshot.
     /// </summary>
     internal interface IDependenciesTreeViewProvider
     {
         /// <summary>
-        /// Builds Dependency node contents (target frameworks, groups and top level dependenies)
+        /// Builds Dependency node contents (target frameworks, groups and top level dependencies)
         /// </summary>
-        /// <param name="dependenciesTree">Old dependencies ndoe</param>
+        /// <param name="dependenciesTree">Old dependencies node</param>
         /// <param name="snapshot">Current dependencies snapshot</param>
         /// <param name="cancellationToken">Cancellation token if need to stop building the view</param>
         /// <returns>New dependencies node</returns>

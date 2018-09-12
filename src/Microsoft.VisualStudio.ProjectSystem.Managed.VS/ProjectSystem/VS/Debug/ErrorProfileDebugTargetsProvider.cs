@@ -28,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             _configuredProject = configuredProject;
         }
 
-        private ConfiguredProject _configuredProject;
+        private readonly ConfiguredProject _configuredProject;
 
         /// <summary>
         /// This provider handles the NoAction profile
@@ -39,7 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         }
 
         /// <summary>
-        /// Called just prior to launch to do additionl work (put up ui, do special configuration etc).
+        /// Called just prior to launch to do additional work (put up ui, do special configuration etc).
         /// </summary>
         public Task OnBeforeLaunchAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile)
         {
@@ -48,7 +48,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         }
 
         /// <summary>
-        /// Called just prior to launch to do additionl work (put up ui, do special configuration etc).
+        /// Called just prior to launch to do additional work (put up ui, do special configuration etc).
         /// </summary>
         public Task OnAfterLaunchAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile)
         {

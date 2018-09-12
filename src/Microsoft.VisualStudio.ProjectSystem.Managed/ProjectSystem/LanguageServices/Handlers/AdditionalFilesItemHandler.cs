@@ -14,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     [Export(typeof(IWorkspaceContextHandler))]
     internal class AdditionalFilesItemHandler : AbstractWorkspaceContextHandler, ICommandLineHandler
     {
-        // WORKAROUND: To avoid Roslyn throwing when we add duplicate additonal files, we remember what 
+        // WORKAROUND: To avoid Roslyn throwing when we add duplicate additional files, we remember what 
         // sent to them and avoid sending on duplicates.
         // See: https://github.com/dotnet/project-system/issues/2230
 

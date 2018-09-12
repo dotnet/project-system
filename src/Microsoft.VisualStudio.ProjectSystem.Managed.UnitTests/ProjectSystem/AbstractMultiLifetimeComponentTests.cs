@@ -7,6 +7,7 @@ using static Microsoft.VisualStudio.ProjectSystem.AbstractMultiLifetimeComponent
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
+    [Trait("UnitTest", "ProjectSystem")]
     public class AbstractMultiLifetimeComponentTests
     {
         [Fact]

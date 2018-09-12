@@ -76,7 +76,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Protected Overrides Sub PostInitPage()
             MyBase.PostInitPage()
 
-            ' Only enable the dll base adress for library type projects...
+            ' Only enable the dll base address for library type projects...
             Dim dllBaseEnabled As Boolean = False
             Dim pcd As PropertyControlData = GetPropertyControlData(VsProjPropId.VBPROJPROPID_OutputType)
             If pcd IsNot Nothing Then
@@ -137,7 +137,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     'Let throw below
                 End Try
             End If
-            Throw New FormatException(My.Resources.Designer.PPG_InvalidHexString)
+            Throw New FormatException(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_InvalidHexString)
         End Function
 
         ''' <summary>
@@ -175,7 +175,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Dim stValue As String = TryCast(value, String)
                 If (Not stValue Is Nothing) AndAlso (stValue.Trim().Length > 0) Then
 
-                    '// Need to special case pdb-only becuase it's stored in the property without the dash but it's
+                    '// Need to special case pdb-only because it's stored in the property without the dash but it's
                     '// displayed in the dialog with a dash.
 
                     If (String.Compare(stValue, "pdbonly", StringComparison.OrdinalIgnoreCase) <> 0) Then
@@ -239,7 +239,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     'Reformat into clean
                     DllBaseTextbox.Text = ToHexAddress(LongValue)
                 Else
-                    'Cancel here prevents swithing to another window
+                    'Cancel here prevents switching to another window
                     'e.Cancel = True
                     'Throw New Exception(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_InvalidHexString))
                 End If

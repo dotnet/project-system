@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.ComponentModel
 Imports System.ComponentModel.Design
@@ -14,15 +14,15 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Inherits Component
         Implements ICustomTypeDescriptor, IReferenceComponent, IUpdatableReferenceComponent
 
-        Private _collection As IVsWCFReferenceGroupCollection
-        Private _referenceGroup As IVsWCFReferenceGroup
+        Private ReadOnly _collection As IVsWCFReferenceGroupCollection
+        Private ReadOnly _referenceGroup As IVsWCFReferenceGroup
 
         Public Sub New(collection As IVsWCFReferenceGroupCollection, referenceGroup As IVsWCFReferenceGroup)
             _collection = collection
             _referenceGroup = referenceGroup
         End Sub
 
-        <VBDescription(My.Resources.Designer.ConstantResourceIDs.PPG_ServiceReferenceNamespaceDescription)>
+        <VBDescription(My.Resources.Microsoft_VisualStudio_Editors_Designer.ConstantResourceIDs.PPG_ServiceReferenceNamespaceDescription)>
         <MergableProperty(False)>
         <HelpKeyword("ServiceReference Properties.Namespace")>
         Public Property [Namespace]() As String
@@ -39,8 +39,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return False
         End Function
 
-        <VBDisplayName(My.Resources.Designer.ConstantResourceIDs.PPG_ServiceReferenceUrlName)>
-        <VBDescription(My.Resources.Designer.ConstantResourceIDs.PPG_ServiceReferenceUrlDescription)>
+        <VBDisplayName(My.Resources.Microsoft_VisualStudio_Editors_Designer.ConstantResourceIDs.PPG_ServiceReferenceUrlName)>
+        <VBDescription(My.Resources.Microsoft_VisualStudio_Editors_Designer.ConstantResourceIDs.PPG_ServiceReferenceUrlDescription)>
         <HelpKeyword("ServiceReference Properties.ServiceReferenceURL")>
         <MergableProperty(False)>
         Public Property ServiceReferenceURL() As String
@@ -48,7 +48,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 If _referenceGroup.GetReferenceCount() = 1 Then
                     Return _referenceGroup.GetReferenceUrl(0)
                 ElseIf _referenceGroup.GetReferenceCount() > 1 Then
-                    Return My.Resources.Designer.CSRDlg_MultipleURL
+                    Return My.Resources.Microsoft_VisualStudio_Editors_Designer.CSRDlg_MultipleURL
                 Else
                     Return ""
                 End If
@@ -68,10 +68,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                             Throw ex
                         End Try
                     Else
-                        Throw New ArgumentException(My.Resources.Designer.PPG_ServiceReferenceProperty_SetReferenceUrlEmpty)
+                        Throw New ArgumentException(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_ServiceReferenceProperty_SetReferenceUrlEmpty)
                     End If
                 ElseIf currentCount > 1 Then
-                    Throw New NotSupportedException(My.Resources.Designer.PPG_ServiceReferenceProperty_MultipleUrlNotSupported)
+                    Throw New NotSupportedException(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_ServiceReferenceProperty_MultipleUrlNotSupported)
                 Else
                     If value <> "" Then
                         _referenceGroup.AddReference(Nothing, value)
@@ -117,7 +117,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
 #Region "System.ComponentModel.ICustomTypeDescriptor"
-        ' we overrite the ICustomTypeDescriptor to replace the ClassName and ComponentName which are shown on the propertyGrid
+        ' we override the ICustomTypeDescriptor to replace the ClassName and ComponentName which are shown on the propertyGrid
         ' all other functions are implemented in its default way...
 
         Public Function GetAttributes() As AttributeCollection Implements ICustomTypeDescriptor.GetAttributes
@@ -125,7 +125,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Function
 
         Public Function GetClassName() As String Implements ICustomTypeDescriptor.GetClassName
-            Return My.Resources.Designer.PPG_ServiceReferenceTypeName
+            Return My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_ServiceReferenceTypeName
         End Function
 
         Public Function GetComponentName() As String Implements ICustomTypeDescriptor.GetComponentName

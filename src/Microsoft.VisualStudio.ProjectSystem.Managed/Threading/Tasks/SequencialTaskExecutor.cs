@@ -17,15 +17,15 @@ namespace Microsoft.VisualStudio.Threading.Tasks
         private Task _taskAdded = Task.CompletedTask;
         private readonly object _syncObject = new object();
 #pragma warning disable CA2213 // Tests fail is this is disposed
-        private CancellationTokenSource _disposedCancelTokenSource = new CancellationTokenSource();
+        private readonly CancellationTokenSource _disposedCancelTokenSource = new CancellationTokenSource();
 #pragma warning restore CA2213 
 
         /// <summary>
-        /// Deadlocks will occur if a task returned from ExecuteTask , awaits a task which also calls ExcecuteTask. The 2nd one will never get started since
-        /// it will be backed up behind the first one completing. The AysncLocal is used to detect when a task is being executed, and if a downstream one gets
+        /// Deadlocks will occur if a task returned from ExecuteTask , awaits a task which also calls ExecuteTask. The 2nd one will never get started since
+        /// it will be backed up behind the first one completing. The AsyncLocal is used to detect when a task is being executed, and if a downstream one gets
         /// added, it will be executed directly, rather than get queued
         /// </summary>
-        private System.Threading.AsyncLocal<bool> _executingTask = new System.Threading.AsyncLocal<bool>();
+        private readonly System.Threading.AsyncLocal<bool> _executingTask = new System.Threading.AsyncLocal<bool>();
 
         /// <summary>
         /// Adds a new task to the continuation chain and returns it so that it can be awaited.
@@ -39,7 +39,7 @@ namespace Microsoft.VisualStudio.Threading.Tasks
 
             lock (_syncObject)
             {
-                // If we are on the same exceution chain, run the task directly
+                // If we are on the same execution chain, run the task directly
                 if (_executingTask.Value)
                 {
                     return asyncFunction();
@@ -51,7 +51,7 @@ namespace Microsoft.VisualStudio.Threading.Tasks
                     try
                     {
                         _executingTask.Value = true;
-                        await asyncFunction().ConfigureAwait(false);
+                        await asyncFunction();
                     }
                     finally
                     {

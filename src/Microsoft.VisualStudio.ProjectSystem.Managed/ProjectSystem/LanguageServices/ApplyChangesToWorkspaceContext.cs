@@ -142,7 +142,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
         private void ProcessProjectBuildFailure(IProjectRuleSnapshot snapshot)
         {
-            // If 'CompileDesignTime' didn't run due to a preceeding failed target, or a failure in itself, IsEvalutionSucceeded returns false.
+            // If 'CompileDesignTime' didn't run due to a preceding failed target, or a failure in itself, IsEvaluationSucceeded returns false.
             //
             // We still forward those 'removes' of references, sources, etc onto Roslyn to avoid duplicate/incorrect results when the next
             // successful build occurs, because it will be diff between it and this failed build.

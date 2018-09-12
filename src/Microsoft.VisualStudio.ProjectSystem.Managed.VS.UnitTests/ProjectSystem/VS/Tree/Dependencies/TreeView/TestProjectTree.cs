@@ -55,7 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         public ProjectImageMoniker Icon { get; set; }
         public string FilePath { get; set; }
         public string Caption { get; set; }
-        private List<TestProjectTree> _children = new List<TestProjectTree>();
+        private readonly List<TestProjectTree> _children = new List<TestProjectTree>();
         public IReadOnlyList<IProjectTree> Children { get { return _children.ToList(); } }
         public IProjectTree Root { get; }
         public IProjectTree Parent { get; set; }

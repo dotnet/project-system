@@ -47,11 +47,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             _fileSystem.Value.CreateDirectory(fullPath);
 
-            await _folderManager.Value.IncludeFolderInProjectAsync(fullPath, recursive: false)
-                                  .ConfigureAwait(false);
+            await _folderManager.Value.IncludeFolderInProjectAsync(fullPath, recursive: false);
 
-            await _treeService.Value.PublishLatestTreeAsync()
-                                    .ConfigureAwait(false);
+            await _treeService.Value.PublishLatestTreeAsync();
 
             return _treeProvider.Value.FindByPath(_treeService.Value.CurrentTree.Tree, fullPath);
         }

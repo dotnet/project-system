@@ -484,7 +484,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
 
         ''' ;OnAfterRenameFiles
         ''' <summary>
-        ''' File (or directory??) renamed. Check and reload extension file list if neccessary.
+        ''' File (or directory??) renamed. Check and reload extension file list if necessary.
         ''' </summary>
         Private Sub OnAfterRenameFiles(cProjects As Integer, cFiles As Integer, rgpProjects() As IVsProject, rgFirstIndices() As Integer, rgszMkOldNames() As String, rgszMkNewNames() As String, rgFlags() As VSRENAMEFILEFLAGS)
             Debug.Assert(rgszMkNewNames IsNot Nothing, "NULL rgszMkNewNames!")
@@ -504,7 +504,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
                 Exit Sub
             End If
 
-            ' If it was not, check if the change affect files underneath it and raise event if neccessary.
+            ' If it was not, check if the change affect files underneath it and raise event if necessary.
             ' Only care about when file is moved in / out of this folder.
             If _extensionFolderProjectItem IsNot Nothing Then
                 Dim myExtensionsFolderPath As String = GetProjectItemPath(_extensionFolderProjectItem)
@@ -550,7 +550,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
 
         ''' ;OnAfterRenameDirectories
         ''' <summary>
-        ''' Directories renamed in the solution. See if MyExtensions folder is removed / readded.
+        ''' Directories renamed in the solution. See if MyExtensions folder is removed / re-added.
         ''' </summary>
         Private Sub OnAfterRenameDirectories(cProjects As Integer, cDirs As Integer, rgpProjects() As IVsProject, rgFirstIndices() As Integer, rgszMkOldNames() As String, rgszMkNewNames() As String, rgFlags() As VSRENAMEDIRECTORYFLAGS)
 
@@ -677,12 +677,12 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         End Sub
 #End Region
 
-        Private _projectService As MyExtensibilityProjectService
+        Private ReadOnly _projectService As MyExtensibilityProjectService
         Private ReadOnly _serviceProvider As IServiceProvider ' Usually VBPackage.
-        Private _project As Project ' The associated project.
+        Private ReadOnly _project As Project ' The associated project.
         Private ReadOnly _projectHierarchy As IVsHierarchy ' The associated project hierarchy.
 
-        Private _vsBuildPropertyStorage As IVsBuildPropertyStorage ' Used to set the item extension attributes.
+        Private ReadOnly _vsBuildPropertyStorage As IVsBuildPropertyStorage ' Used to set the item extension attributes.
 
         Private _extensionFolderProjectItem As ProjectItem ' "My Extensions" folder.
 

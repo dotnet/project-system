@@ -1,11 +1,11 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.ComponentModel
 
 Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
     ''' <summary>
-    '''  a sub class of DescriptionAttribute to help localizating the description...
+    '''  a sub class of DescriptionAttribute to help localizing the description...
     ''' </summary>
     <AttributeUsage(AttributeTargets.All)>
     Friend Class VBDescriptionAttribute
@@ -21,7 +21,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Get
                 If Not _replaced Then
                     _replaced = True
-                    DescriptionValue = My.Resources.Designer.ResourceManager.GetString(DescriptionValue)
+                    DescriptionValue = My.Resources.Microsoft_VisualStudio_Editors_Designer.ResourceManager.GetString(DescriptionValue)
                 End If
                 Return DescriptionValue
             End Get

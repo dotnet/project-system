@@ -62,7 +62,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private _hidingImportListSelectedItem As Boolean
 
         ' helper object to sort the reference list
-        Private _referenceSorter As ListViewComparer
+        Private ReadOnly _referenceSorter As ListViewComparer
 
         Private _referenceGroupManager As IVsWCFReferenceManager
 
@@ -269,7 +269,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
         ''' <summary>
-        ''' We cannot process the UI refereshing message when compiler is running. However the compiler continuely pump messages.
+        ''' We cannot process the UI refreshing message when compiler is running. However the compiler continually pumps messages.
         '''  It is a workaround to use background thread to wait for the compiler to finish.
         ''' Note: it rarely happens. (It happens we have a post message when a third party start the compiler and wait for something.)
         ''' </summary>
@@ -335,7 +335,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             ' We should put an error message there if we can not resolve the reference...
             Dim path As String = ref.Path
             If String.IsNullOrEmpty(path) Then
-                path = My.Resources.Designer.PropPage_ReferenceNotFound
+                path = My.Resources.Microsoft_VisualStudio_Editors_Designer.PropPage_ReferenceNotFound
             End If
 
             lvi.SubItems.Add(path)
@@ -541,8 +541,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Dim cancellationTokenSource As New CancellationTokenSource
             Dim cancellationCallback As New CancellationCallback(cancellationTokenSource)
             threadedWaitDialog3.StartWaitDialogWithCallback(
-                My.Resources.Designer.PropPage_ImportedNamespacesTitle,
-                My.Resources.Designer.PropPage_ComputingReferencedNamespacesMessage,
+                My.Resources.Microsoft_VisualStudio_Editors_Designer.PropPage_ImportedNamespacesTitle,
+                My.Resources.Microsoft_VisualStudio_Editors_Designer.PropPage_ComputingReferencedNamespacesMessage,
                 szProgressText:=Nothing,
                 varStatusBmpAnim:=Nothing,
                 szStatusBarText:=Nothing,
@@ -777,8 +777,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Dim cancellationTokenSource As New CancellationTokenSource
             Dim cancellationCallback As New CancellationCallback(cancellationTokenSource)
             threadedWaitDialog3.StartWaitDialogWithCallback(
-                My.Resources.Designer.PropPage_CurrentImportsTitle,
-                My.Resources.Designer.PropPage_ComputingCurrentImportsMessage,
+                My.Resources.Microsoft_VisualStudio_Editors_Designer.PropPage_CurrentImportsTitle,
+                My.Resources.Microsoft_VisualStudio_Editors_Designer.PropPage_ComputingCurrentImportsMessage,
                 szProgressText:=Nothing,
                 varStatusBmpAnim:=Nothing,
                 szStatusBarText:=Nothing,
@@ -960,7 +960,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                                     Exit For
                                 Else
                                     ' some reference can not be removed (like mscorlib)
-                                    err = My.Resources.Designer.GetString(My.Resources.Designer.PPG_Reference_CanNotRemoveReference, refName, ex.Message)
+                                    err = My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Reference_CanNotRemoveReference, refName, ex.Message)
                                 End If
                             Finally
                                 LeaveProjectCheckoutSection()
@@ -1086,7 +1086,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 End If
             Catch ex As Exception When ReportWithoutCrash(ex, NameOf(webReferenceToolStripMenuItem_Click), NameOf(ReferencePropPage))
                 If Not IsCheckoutCanceledException(ex) Then
-                    ShowErrorMessage(My.Resources.Designer.GetString(My.Resources.Designer.PPG_Reference_AddWebReference, ex.Message))
+                    ShowErrorMessage(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Reference_AddWebReference, ex.Message))
                 End If
             End Try
         End Sub
@@ -1130,7 +1130,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     End If
                 Catch ex As Exception When ReportWithoutCrash(ex, NameOf(serviceReferenceToolStripMenuItem_Click), NameOf(ReferencePropPage))
                     If Not IsCheckoutCanceledException(ex) Then
-                        ShowErrorMessage(My.Resources.Designer.GetString(My.Resources.Designer.PPG_Reference_AddWebReference, ex.Message))
+                        ShowErrorMessage(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Reference_AddWebReference, ex.Message))
                     End If
                 End Try
             End If
@@ -1193,7 +1193,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
                     ' The "Update user import" button should be enabled iff:
                     ' * There is only one item selected in the imports list box
-                    ' * The list of known namespaces retreived from the compiler doesn't 
+                    ' * The list of known namespaces retrieved from the compiler doesn't 
                     '   contain the currently selected item in the imports list box
                     '   (we can't modify those imports...)
                     Debug.Assert(ImportListSelectedItem IsNot Nothing, "ImportListSelectedItem should not return Nothing")
@@ -1284,7 +1284,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                             referenceComponent.Update()
                         Catch ex As Exception When ReportWithoutCrash(ex, NameOf(UpdateReferences_Click), NameOf(ReferencePropPage))
                             If Not IsCheckoutCanceledException(ex) Then
-                                ShowErrorMessage(My.Resources.Designer.GetString(My.Resources.Designer.PPG_Reference_FailedToUpdateWebReference, CType(referenceComponent, IReferenceComponent).GetName(), ex.Message))
+                                ShowErrorMessage(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Reference_FailedToUpdateWebReference, CType(referenceComponent, IReferenceComponent).GetName(), ex.Message))
                             End If
                         End Try
                     End If
@@ -1297,7 +1297,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             ' Take a snapshot of the user imports...
             Dim ImportsSnapshot As IDictionary(Of String, Boolean) = GetUserDefinedImportsSnapshot()
 
-            If ShowChildPage(My.Resources.Designer.PropPage_UnusedReferenceTitle, GetType(UnusedReferencePropPage)) = DialogResult.OK Then
+            If ShowChildPage(My.Resources.Microsoft_VisualStudio_Editors_Designer.PropPage_UnusedReferenceTitle, GetType(UnusedReferencePropPage)) = DialogResult.OK Then
                 If SaveImportedNamespaces(TrimUserImports(ImportsSnapshot)) Then
                     'RemoveInvalidEntries=True here because so that we can remove imports
                     '  that correspond to the removed references, instead of just unchecking
@@ -1311,7 +1311,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
         Private Sub ReferencePathsButton_Click(sender As Object, e As EventArgs) Handles ReferencePathsButton.Click
-            ShowChildPage(My.Resources.Designer.PPG_ReferencePaths_Title, GetType(ReferencePathsPropPage))
+            ShowChildPage(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_ReferencePaths_Title, GetType(ReferencePathsPropPage))
         End Sub
 
         Private Sub ImportList_ItemCheck(sender As Object, e As ItemCheckEventArgs) Handles ImportList.ItemCheck
@@ -1418,10 +1418,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                             'Exit early - no need to show any UI, they've already seen it
                             Return valueUpdated
                         ElseIf TypeOf ex Is COMException Then
-                            ShowErrorMessage(My.Resources.Designer.GetString(My.Resources.Designer.PPG_Reference_RemoveImportsFailUnexpected, namespaceName, Hex(DirectCast(ex, COMException).ErrorCode)))
+                            ShowErrorMessage(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Reference_RemoveImportsFailUnexpected, namespaceName, Hex(DirectCast(ex, COMException).ErrorCode)))
                             Debug.Fail("Unexpected error when removing imports")
                         Else
-                            ShowErrorMessage(My.Resources.Designer.GetString(My.Resources.Designer.PPG_Reference_RemoveImportsFailUnexpected, namespaceName, ex.Message))
+                            ShowErrorMessage(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Reference_RemoveImportsFailUnexpected, namespaceName, ex.Message))
                             Debug.Fail("Unexpected error when removing imports")
                         End If
                     End Try
@@ -1441,10 +1441,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                             'Exit early - no need to show any UI, they've already seen it
                             Return valueUpdated
                         ElseIf TypeOf ex Is COMException Then
-                            ShowErrorMessage(My.Resources.Designer.GetString(My.Resources.Designer.PPG_Reference_RemoveImportsFailUnexpected, namespaceName, Hex(DirectCast(ex, COMException).ErrorCode)))
+                            ShowErrorMessage(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Reference_RemoveImportsFailUnexpected, namespaceName, Hex(DirectCast(ex, COMException).ErrorCode)))
                             Debug.Fail("Unexpected error when removing imports")
                         Else
-                            ShowErrorMessage(My.Resources.Designer.GetString(My.Resources.Designer.PPG_Reference_RemoveImportsFailUnexpected, namespaceName, ex.Message))
+                            ShowErrorMessage(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Reference_RemoveImportsFailUnexpected, namespaceName, ex.Message))
                             Debug.Fail("Unexpected error when removing imports")
                         End If
                     End Try
@@ -1529,7 +1529,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Function
 
         Protected Overrides Sub OnApplyComplete(ApplySuccessful As Boolean)
-            'Refress the lists
+            'Refresh the lists
             m_fInsideInit = True
             Try
                 PopulateReferenceList()
@@ -1633,7 +1633,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
         ''' <summary>
-        ''' Update imports button / fill in imports text box with appropriate info everytime the seleced index
+        ''' Update imports button / fill in imports text box with appropriate info every time the selected index
         ''' changes
         ''' </summary>
         ''' <param name="sender"></param>
@@ -1934,7 +1934,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' This is the structure we used to save information when we receive Reference/WebReference change event.
         ''' We save the changes in a collection, and do a batch process to update our UI later.
-        '''  We record Reference/WebReferenc changes with the same class. But only one of the Reference and WebReference property contains value, while the other one contains Nothing
+        '''  We record Reference/WebReference changes with the same class. But only one of the Reference and WebReference property contains value, while the other one contains Nothing
         ''' </summary>
         Private Class ReferenceUpdateItem
             Private ReadOnly _updateType As ReferenceUpdateType
@@ -2273,12 +2273,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private Const AliasGroup As String = "(?<" & AliasGroupName & ">[^=""'\s]+)"
 
         ' Regular expression for parsing XML imports statement (<xmlns[:Alias]='url'>).
-        Private Shared s_xmlImportRegex As New Regex(
+        Private Shared ReadOnly s_xmlImportRegex As New Regex(
             "^\s*\<\s*[xX][mM][lL][nN][sS]\s*(:\s*" & AliasGroup & ")?\s*=\s*(""[^""]*""|'[^']*')\s*\>\s*$",
             RegexOptions.Compiled)
 
         ' Regular expression for parsing VB alias imports statement (Alias=Namespace).
-        Private Shared s_vbImportRegex As New Regex(
+        Private Shared ReadOnly s_vbImportRegex As New Regex(
             "^\s*" & AliasGroup & "\s*=\s*.*$",
             RegexOptions.Compiled)
 

@@ -83,8 +83,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Friend Class ResourcePersistenceModeEnumConverter
             Inherits EnumConverter
 
-            Private ReadOnly _linkedDisplayValue As String = My.Resources.Designer.RES_PersistenceMode_Linked
-            Private ReadOnly _embeddedDisplayValue As String = My.Resources.Designer.RES_PersistenceMode_Embeded
+            Private ReadOnly _linkedDisplayValue As String = My.Resources.Microsoft_VisualStudio_Editors_Designer.RES_PersistenceMode_Linked
+            Private ReadOnly _embeddedDisplayValue As String = My.Resources.Microsoft_VisualStudio_Editors_Designer.RES_PersistenceMode_Embeded
 
             ''' <summary>
             ''' </summary>
@@ -108,7 +108,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             '''      The object to convert.
             ''' </param>
             ''' <returns>
-            '''      The converted object.  This will throw an excetpion if the converson
+            '''      The converted object.  This will throw an exception if the conversion
             '''      could not be performed.
             ''' </returns>
             ''' <seealso cref='TypeConverter' />
@@ -128,7 +128,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             '''      Converts the given object to another type.  The most common types to convert
             '''      are to and from a string object.  The default implementation will make a call
             '''      to ToString on the object if the object is valid and if the destination
-            '''      type is string.  If this cannot convert to the desitnation type, this will
+            '''      type is string.  If this cannot convert to the destination type, this will
             '''      throw a NotSupportedException.
             ''' </summary>
             ''' <param name='context'>
@@ -262,7 +262,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '  Resource.  The set of properties shown is based solely on the value type of the
         '  resource and the type of ResourceTypeEditor that it uses.  Therefore we only need to 
         '  create a unique properties collection for each distinct pairing of these values.
-        Private Shared s_propertyDescriptorCollectionHash As New Hashtable '(Of PropertyDescriptorCollection), key = fully-qualified type names of resource value + resource type editor
+        Private Shared ReadOnly s_propertyDescriptorCollectionHash As New Hashtable '(Of PropertyDescriptorCollection), key = fully-qualified type names of resource value + resource type editor
 
         'A list of names which are not recommended for use by the end user (because they cause
         '  compiler errors or other problems).
@@ -295,21 +295,21 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '  type of the resource (the exception here is the Value property typed as the actual type of the Resource value).
         '  So we create them once and cache them here for all resource editor instances.
 
-        Private Shared ReadOnly s_valueDescriptionAttribute As DescriptionAttribute = New DescriptionAttribute(My.Resources.Designer.RSE_PropDesc_Value)
+        Private Shared ReadOnly s_valueDescriptionAttribute As DescriptionAttribute = New DescriptionAttribute(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_PropDesc_Value)
 
         'PropertyDescriptor for "Name" property
         Private Shared ReadOnly s_propertyDescriptor_Name As _
             New ResourcePropertyDescriptor(ResourcePropertyDescriptor.PROPERTY_NAME, GetType(String), IsReadOnly:=False,
                 Attributes:=New Attribute() {
                     s_categoryAttribute, s_notMergablePropertyAttribute,
-                    New DescriptionAttribute(My.Resources.Designer.RSE_PropDesc_Name)})
+                    New DescriptionAttribute(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_PropDesc_Name)})
 
         'PropertyDescriptor for "Comment" property
         Private Shared ReadOnly s_propertyDescriptor_Comment As _
             New ResourcePropertyDescriptor(ResourcePropertyDescriptor.PROPERTY_COMMENT, GetType(String), IsReadOnly:=False,
                 Attributes:=New Attribute() {
                     s_categoryAttribute,
-                    New DescriptionAttribute(My.Resources.Designer.RSE_PropDesc_Comment)})
+                    New DescriptionAttribute(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_PropDesc_Comment)})
 
         'PropertyDescriptor for "Encoding" property
         'Note that we have an attribute to associate our encoding converter with this property so we get a dropdown list to show up
@@ -320,14 +320,14 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     Attributes:=New Attribute() {
                         s_categoryAttribute,
                         New TypeConverterAttribute(GetType(SerializableEncodingConverter)),
-                        New DescriptionAttribute(My.Resources.Designer.RSE_PropDesc_Encoding)})
+                        New DescriptionAttribute(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_PropDesc_Encoding)})
 
         'PropertyDescriptor for "Filename" property (read-only property)
         Private Shared ReadOnly s_propertyDescriptor_Filename_ReadOnly As _
             New ResourcePropertyDescriptor(ResourcePropertyDescriptor.PROPERTY_FILENAME, GetType(String), IsReadOnly:=True,
                 Attributes:=New Attribute() {
                     s_categoryAttribute,
-                    New DescriptionAttribute(My.Resources.Designer.RSE_PropDesc_Filename)})
+                    New DescriptionAttribute(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_PropDesc_Filename)})
 
         'PropertyDescriptor for "Filename" property (read/write - not currently visible publicly - used when changing Persistence mode)
         Private Shared ReadOnly s_propertyDescriptor_Filename_ReadWrite As _
@@ -338,28 +338,28 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             New ResourcePropertyDescriptor(ResourcePropertyDescriptor.PROPERTY_FILETYPE, GetType(FileTypes), IsReadOnly:=False,
                 Attributes:=New Attribute() {
                     s_categoryAttribute,
-                    New DescriptionAttribute(My.Resources.Designer.RSE_PropDesc_FileType)})
+                    New DescriptionAttribute(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_PropDesc_FileType)})
 
         'PropertyDescriptor for "Persistence" property
         Private Shared ReadOnly s_propertyDescriptor_Persistence As _
             New ResourcePropertyDescriptor(ResourcePropertyDescriptor.PROPERTY_PERSISTENCE, GetType(ResourcePersistenceMode), IsReadOnly:=False,
                 Attributes:=New Attribute() {
                     s_categoryAttribute,
-                    New DescriptionAttribute(My.Resources.Designer.RSE_PropDesc_Persistence)})
+                    New DescriptionAttribute(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_PropDesc_Persistence)})
 
         'PropertyDescriptor for "Persistence" property (read/only)
         Private Shared ReadOnly s_propertyDescriptor_Persistence_ReadOnly As _
             New ResourcePropertyDescriptor(ResourcePropertyDescriptor.PROPERTY_PERSISTENCE, GetType(ResourcePersistenceMode), IsReadOnly:=True,
                 Attributes:=New Attribute() {
                     s_categoryAttribute,
-                    New DescriptionAttribute(My.Resources.Designer.RSE_PropDesc_Persistence)})
+                    New DescriptionAttribute(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_PropDesc_Persistence)})
 
         'PropertyDescriptor for "Type" property (read-only property)
         Private Shared ReadOnly s_propertyDescriptor_Type As _
             New ResourcePropertyDescriptor(ResourcePropertyDescriptor.PROPERTY_TYPE, GetType(String), IsReadOnly:=True,
                 Attributes:=New Attribute() {
                     s_categoryAttribute,
-                    New DescriptionAttribute(My.Resources.Designer.RSE_PropDesc_Type)})
+                    New DescriptionAttribute(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_PropDesc_Type)})
 
         'PropertyDescriptor for "Value" property, typed as Object
         Private Shared ReadOnly s_propertyDescriptor_ValueAsObject As _
@@ -551,7 +551,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
                 'Now that we have a parent ResourceFile, we are allowed to add tasks to the task
                 '  list.  Go ahead and check for basic problems now, but delay checking for
-                '  Value problems, because we don't want to cause Value instatantion during loading
+                '  Value problems, because we don't want to cause Value instantiation during loading
                 '  (it can be expensive, especially for linked resources).  Instead, we'll handle
                 '  that task later during idle (see ResourceFile.OnDelayCheckForErrors()).
                 CheckForErrors(FastChecksOnly:=True)
@@ -606,7 +606,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     '  have an opportunity to commit a change caused via ComponentChangeService.ComponentRename
                     '  because there's only the one event (not a Renaming/Renamed).  So, we need to wrap this 
                     '  in a transaction ourselves for this to work properly.
-                    Using Transaction As DesignerTransaction = _parentResourceFile.View.RootDesigner.DesignerHost.CreateTransaction(My.Resources.Designer.RSE_Undo_ChangeName)
+                    Using Transaction As DesignerTransaction = _parentResourceFile.View.RootDesigner.DesignerHost.CreateTransaction(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Undo_ChangeName)
                         s_propertyDescriptor_Name.SetValue(Me, Value)
                         Transaction.Commit()
                     End Using
@@ -628,7 +628,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Public WriteOnly Property NameWithoutUndo() As String
             Set(Value As String)
                 If Value = "" Then
-                    Throw NewException(My.Resources.Designer.RSE_Err_NameBlank, HelpIDs.Err_NameBlank)
+                    Throw NewException(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_NameBlank, HelpIDs.Err_NameBlank)
                 End If
 
                 'Validate the value first...
@@ -662,7 +662,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   the NameWithoutUndo property.
         ''' </summary>
         ''' <value></value>
-        ''' <remarks>Can't be private because ResourceFileneeds access to it.</remarks>
+        ''' <remarks>Can't be private because ResourceFile needs access to it.</remarks>
         <EditorBrowsable(EditorBrowsableState.Never)>
         Friend Property NameRawWithoutUndo() As String
             Get
@@ -758,7 +758,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
                         'Can this resource type be saved to a file?
                         If Not ResourceTypeEditor.CanSaveResourceToFile(Me) OrElse Not ResourceTypeEditor.CanChangePersistenceProperty(ParentResourceFile) Then
-                            Throw NewException(My.Resources.Designer.GetString(My.Resources.Designer.RSE_Err_CantSaveResource_1Arg, Name))
+                            Throw NewException(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_CantSaveResource_1Arg, Name))
                         End If
 
                         'First, get the path to save the file to.
@@ -818,7 +818,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
                         'Now add the file to the project
                         Dim FinalPathAndFileName As String = ResourcesFolderService.AddFileToProject(
-                            My.Resources.Designer.RSE_ResourceEditor,
+                            My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_ResourceEditor,
                             View.GetProject(),
                             View.GetResXProjectItem(),
                             View.GetDialogOwnerWindow(),
@@ -832,7 +832,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                         'Can this resource type be saved to a file?  We don't want to allow changing
                         '  to non-linked if the user couldn't change it back again.
                         If Not ResourceTypeEditor.CanSaveResourceToFile(Me) OrElse Not ResourceTypeEditor.CanChangePersistenceProperty(ParentResourceFile) Then
-                            Throw NewException(My.Resources.Designer.GetString(My.Resources.Designer.RSE_Err_CantSaveResource_1Arg, Name))
+                            Throw NewException(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_CantSaveResource_1Arg, Name))
                         End If
 
                         'Changed linked to non-linked
@@ -1166,7 +1166,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
                     Return TypeName
                 Catch ex As Exception When ReportWithoutCrash(ex, "Unexpected exception - ResXDataNode.GetValueTypeName() is not supposed to throw exceptions (except unrecoverable ones), it should instead return the typename as in the original .resx file", NameOf(Resource))
-                    Return My.Resources.Designer.RSE_UnknownType
+                    Return My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_UnknownType
                 End Try
             End Get
         End Property
@@ -1178,7 +1178,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''  the actual value from disk (linked) or instantiate it (non-linked).
         ''' </summary>
         ''' <value>The cached or non-linked value if possible, or else Nothing.</value>
-        ''' <remarks>No exceptions are thrown (that are not swalled)</remarks>
+        ''' <remarks>No exceptions are thrown (that are not swallowed)</remarks>
         Public ReadOnly Property CachedValue() As Object
             Get
                 If _cachedValue Is Nothing Then
@@ -1259,7 +1259,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 #Region "IComponent properties"
 
         ''' <summary>
-        ''' (IComomponent) Gets or sets the ISite associated with the component.
+        ''' (IComponent) Gets or sets the ISite associated with the component.
         ''' </summary>
         ''' <value>The ISite object associated with the component, or Nothing.</value>
         ''' <remarks>
@@ -1307,7 +1307,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
                 If IsResXNullRef(TypeName) Then
                     'Null/Nothing value
-                    Return My.Resources.Designer.RSE_NothingValue
+                    Return My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_NothingValue
                 End If
 
                 'Cut off the assembly info from the type, leaving just the fully-qualified name of the type
@@ -1431,7 +1431,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Debug.Assert(Value IsNot Nothing, "Resource value shouldn't be Nothing unless it's a resxnullref")
 
                 'We were able to successfully load the resource.  Clear the resource instantiation
-                '  error for this resoucre, if there was one.
+                '  error for this resource, if there was one.
                 ClearTask(ResourceFile.ResourceTaskType.CantInstantiateResource)
             Catch ex As Exception
                 'Create task list entry
@@ -1454,7 +1454,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   entry from that exception (if one doesn't already exist).  Handles some special cases.
         ''' </summary>
         ''' <param name="ExceptionFromGetValue">The exception to create the task list entry from.</param>
-        ''' <param name="ExceptionToRethrow">The exception to rethrow, if any.  May be the same exeption as ExceptionFromGetValue or different.</param>
+        ''' <param name="ExceptionToRethrow">The exception to rethrow, if any.  May be the same exception as ExceptionFromGetValue or different.</param>
         ''' <remarks></remarks>
         Friend Sub SetTaskFromGetValueException(ExceptionFromGetValue As Exception, ByRef ExceptionToRethrow As Exception)
             'We hit an exception.  Add a task list item for resource instantiation (if it doesn't already exist)
@@ -1467,7 +1467,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End If
 
             If TypeOf ExceptionToRethrow Is ArgumentException Then
-                ExceptionToRethrow = New ApplicationException(My.Resources.Designer.RSE_Err_BadData)
+                ExceptionToRethrow = New ApplicationException(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_BadData)
             End If
 
             'But first, we'd like to know whether it was because the linked file couldn't be found (we
@@ -1476,11 +1476,11 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Dim HelpLink As String
             If Not IsLink OrElse File.Exists(AbsoluteLinkPathAndFileName) Then
                 'Regular message - not caused by a broken link.
-                ErrorMessage = My.Resources.Designer.GetString(My.Resources.Designer.RSE_Task_CantInstantiate_2Args, Name, ExceptionToRethrow.Message)
+                ErrorMessage = My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Task_CantInstantiate_2Args, Name, ExceptionToRethrow.Message)
                 HelpLink = HelpIDs.Task_CantInstantiate
             Else
                 'Broken link
-                ErrorMessage = My.Resources.Designer.GetString(My.Resources.Designer.RSE_Task_BadLink_2Args, Name, AbsoluteLinkPathAndFileName)
+                ErrorMessage = My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Task_BadLink_2Args, Name, AbsoluteLinkPathAndFileName)
                 HelpLink = HelpIDs.Task_BadLink
             End If
 
@@ -1550,7 +1550,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                         ElseIf NewResourceValue.GetType().Equals(GetType(MemoryStream)) AndAlso GetValueType().Equals(GetType(Byte())) Then
                             NewResourceValue = DirectCast(NewResourceValue, MemoryStream).ToArray()
                         Else
-                            Throw NewException(My.Resources.Designer.RSE_Err_UnexpectedResourceType, HelpIDs.Err_UnexpectedResourceType)
+                            Throw NewException(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_UnexpectedResourceType, HelpIDs.Err_UnexpectedResourceType)
                         End If
                     End If
 
@@ -2035,20 +2035,16 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             'Is it a legal identifier?  We only check this if strongly-typed resource generation is set up for this
             '  resx file.
             If Not FastChecksOnly AndAlso _parentResourceFile IsNot Nothing AndAlso _parentResourceFile.IsGeneratedToCode() Then
-                Dim CodeDomProvider As CodeDomProvider = _parentResourceFile.GetCodeDomProvider
-                If CodeDomProvider IsNot Nothing Then
-                    If Not CodeDomProvider.IsValidIdentifier(Name) Then
-                        SetTask(ResourceFile.ResourceTaskType.BadName, My.Resources.Designer.GetString(My.Resources.Designer.RSE_Task_InvalidName_1Arg, Name), TaskPriority.Low, "", TaskErrorCategory.Warning)
-                        Exit Sub
-                    End If
-                Else
-                    Debug.Fail("Couldn't get CodeDomProvider to validate resource name")
+                ' Validate the name using the same method that codegen uses so invalid characters are replaced as part of validation
+                If Not ValidateName(_parentResourceFile, Name, Nothing, CheckForDuplicateNames:=False) Then
+                    SetTask(ResourceFile.ResourceTaskType.BadName, My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Task_InvalidName_1Arg, Name), TaskPriority.Low, "", TaskErrorCategory.Warning)
+                    Exit Sub
                 End If
             End If
 
             'Is it in our list of unrecommended names?
             If UnrecommendedResourceNamesHash.ContainsKey(Name) Then
-                SetTask(ResourceFile.ResourceTaskType.BadName, My.Resources.Designer.GetString(My.Resources.Designer.RSE_Task_NonrecommendedName_1Arg, Name), TaskPriority.Low, HelpIDs.Task_NonrecommendedName, TaskErrorCategory.Warning)
+                SetTask(ResourceFile.ResourceTaskType.BadName, My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Task_NonrecommendedName_1Arg, Name), TaskPriority.Low, HelpIDs.Task_NonrecommendedName, TaskErrorCategory.Warning)
                 Exit Sub
             End If
 
@@ -2229,7 +2225,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 #Region "Integration with Visual Studio's Properties Window"
 
         ''' <summary>
-        '''  Returns a collection of property descriptors to describle this resource's properties for the Property Window.
+        '''  Returns a collection of property descriptors to describe this resource's properties for the Property Window.
         ''' </summary>
         ''' <returns>A PropertyDescriptorCollection containing the properties we want to show.</returns>
         ''' <remarks>
@@ -2640,7 +2636,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Return True
             End If
 
-            'Now we want to trim all blanks from the Name's beginning and end only, in case the user typed them in accidently
+            'Now we want to trim all blanks from the Name's beginning and end only, in case the user typed them in accidentally
             Dim TrimmedName As String
             If NewName <> "" Then
                 TrimmedName = NewName.Trim()
@@ -2650,7 +2646,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             'Verify that the Name is not blank
             If TrimmedName = "" Then
-                Exception = NewException(My.Resources.Designer.RSE_Err_NameBlank, HelpIDs.Err_NameBlank)
+                Exception = NewException(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_NameBlank, HelpIDs.Err_NameBlank)
                 Return False
             End If
 
@@ -2660,7 +2656,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 If FixedName = "" Then
                     'ResGen wasn't able to create a valid identifier out of the ID (e.g. something like "$")
                     If CheckForFatallyInvalidIDs Then
-                        Exception = NewException(My.Resources.Designer.GetString(My.Resources.Designer.RSE_Err_BadIdentifier_2Arg, TrimmedName, FindInvalidCharactersInIdentifier(TrimmedName, CodeDomProvider)), HelpIDs.Err_InvalidName)
+                        Exception = NewException(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_BadIdentifier_2Arg, TrimmedName, FindInvalidCharactersInIdentifier(TrimmedName, CodeDomProvider)), HelpIDs.Err_InvalidName)
                         Return False
                     End If
                 Else
@@ -2679,7 +2675,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             If CheckForDuplicateNames Then
                 If ResourceFile IsNot Nothing Then
                     If ResourceFile.Contains(TrimmedName) Then
-                        Exception = NewException(My.Resources.Designer.GetString(My.Resources.Designer.RSE_Err_DuplicateName_1Arg, TrimmedName), HelpIDs.Err_DuplicateName)
+                        Exception = NewException(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_DuplicateName_1Arg, TrimmedName), HelpIDs.Err_DuplicateName)
                         Return False
                     End If
                 End If
@@ -2775,13 +2771,13 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             If FailureException IsNot Nothing Then
                 'We failed the validation somewhere along the way.  Return a friendly error message, in case
                 '  it's needed, and return failure.
-                Exception = NewException(My.Resources.Designer.GetString(My.Resources.Designer.RSE_Err_CantConvertFromString_2Args, FriendlyValueTypeName, FailureException.Message), HelpIDs.Err_CantConvertFromString)
+                Exception = NewException(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_CantConvertFromString_2Args, FriendlyValueTypeName, FailureException.Message), HelpIDs.Err_CantConvertFromString)
                 NewParsedValue = Nothing
                 Return False
             End If
 
             If ConvertedValue Is Nothing Then
-                Exception = NewException(My.Resources.Designer.GetString(My.Resources.Designer.RSE_Err_CantUseEmptyValue, FriendlyValueTypeName), HelpIDs.Err_CantConvertFromString)
+                Exception = NewException(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_CantUseEmptyValue, FriendlyValueTypeName), HelpIDs.Err_CantConvertFromString)
                 NewParsedValue = Nothing
                 Return False
             End If
@@ -2824,7 +2820,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="Comment">The comment for the ResXDataNode</param>
         ''' <param name="FileName">The full path and file name to the file which contains the linked resource's value.</param>
         ''' <param name="ValueTypeName">The expected type of the resource in the file.</param>
-        ''' <param name="TextFileEncoding">The encoding to be used if this is a text file resource.  May be Nothing.  Irrevelant for any other type of resource.</param>
+        ''' <param name="TextFileEncoding">The encoding to be used if this is a text file resource.  May be Nothing.  Irrelevant for any other type of resource.</param>
         ''' <returns>The new ResXDataNode instance.</returns>
         ''' <remarks></remarks>
         Private Function NewResXDataNode(Name As String, Comment As String, FileName As String, ValueTypeName As String, TextFileEncoding As Encoding) As ResXDataNode

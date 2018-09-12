@@ -7,7 +7,7 @@ using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
-    internal class IProjectItemProviderFactory
+    internal static class IProjectItemProviderFactory
     {
         public static IProjectItemProvider Create()
         {

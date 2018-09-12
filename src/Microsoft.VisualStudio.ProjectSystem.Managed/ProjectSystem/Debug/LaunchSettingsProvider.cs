@@ -88,7 +88,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
         protected SimpleFileWatcher FileWatcher { get; set; }
 
-        // When we are saveing the file we set this to minimize noise from the file change
+        // When we are saving the file we set this to minimize noise from the file change
         protected bool IgnoreFileChanges { get; set; }
 
         protected TimeSpan FileChangeProcessingDelay = TimeSpan.FromMilliseconds(500);
@@ -100,7 +100,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
         protected int WaitForFirstSnapshotDelay = 5000; // 5 seconds
 
-        private TaskCompletionSource<bool> _firstSnapshotCompletionSource = new TaskCompletionSource<bool>();
+        private readonly TaskCompletionSource<bool> _firstSnapshotCompletionSource = new TaskCompletionSource<bool>();
 
         protected IDisposable ProjectRuleSubscriptionLink { get; set; }
 
@@ -143,7 +143,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         }
 
         /// <summary>
-        /// IOebugProfileProvider
+        /// IDebugProfileProvider
         /// Access to the current set of profile information
         /// </summary>
         private ILaunchSettings _currentSnapshot;
@@ -216,28 +216,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                     {
                         using (ProjectCapabilitiesContext.CreateIsolatedContext(CommonProjectServices.Project, projectSnapshot.Value.Item2))
                         {
-                            await UpdateActiveProfileInSnapshotAsync(activeProfile).ConfigureAwait(false);
+                            await UpdateActiveProfileInSnapshotAsync(activeProfile);
                         }
-                    }).ConfigureAwait(false);
+                    });
                 }
             }
         }
 
         /// <summary>
-        /// Called when the active profile has changed. If there is a current snapshot it just updates that. Otherwwise, it creates
+        /// Called when the active profile has changed. If there is a current snapshot it just updates that. Otherwise, it creates
         /// a new snapshot
         /// </summary>
         protected async Task UpdateActiveProfileInSnapshotAsync(string activeProfile)
         {
             ILaunchSettings snapshot = CurrentSnapshot;
-            if (snapshot == null || await SettingsFileHasChangedAsync().ConfigureAwait(false))
+            if (snapshot == null || await SettingsFileHasChangedAsync())
             {
-                await UpdateProfilesAsync(activeProfile).ConfigureAwait(false);
+                await UpdateProfilesAsync(activeProfile);
                 return;
             }
 
             var newSnapshot = new LaunchSettings(snapshot.Profiles, snapshot.GlobalSettings, activeProfile);
-            await FinishUpdateAsync(newSnapshot, ensureProfileProperty: false).ConfigureAwait(false);
+            await FinishUpdateAsync(newSnapshot, ensureProfileProperty: false);
         }
 
         /// <summary>
@@ -253,16 +253,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 // If no active profile specified, try to get one
                 if (activeProfile == null)
                 {
-                    ProjectDebugger props = await CommonProjectServices.ActiveConfiguredProjectProperties.GetProjectDebuggerPropertiesAsync().ConfigureAwait(false);
-                    if (await props.ActiveDebugProfile.GetValueAsync().ConfigureAwait(false) is IEnumValue activeProfileVal)
+                    ProjectDebugger props = await CommonProjectServices.ActiveConfiguredProjectProperties.GetProjectDebuggerPropertiesAsync();
+                    if (await props.ActiveDebugProfile.GetValueAsync() is IEnumValue activeProfileVal)
                     {
                         activeProfile = activeProfileVal.Name;
                     }
                 }
 
-                LaunchSettingsData launchSettingData = await GetLaunchSettingsAsync().ConfigureAwait(false);
+                LaunchSettingsData launchSettingData = await GetLaunchSettingsAsync();
 
-                // If there are no profiles, we will add a default profile to run the prroject. W/o it our debugger
+                // If there are no profiles, we will add a default profile to run the project. W/o it our debugger
                 // won't be called on F5 and the user will see a poor error message
                 if (launchSettingData.Profiles.Count == 0)
                 {
@@ -279,7 +279,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
                 var newSnapshot = new LaunchSettings(launchSettingData, activeProfile);
 
-                await FinishUpdateAsync(newSnapshot, ensureProfileProperty: true).ConfigureAwait(false);
+                await FinishUpdateAsync(newSnapshot, ensureProfileProperty: true);
             }
             catch (Exception ex)
             {
@@ -292,7 +292,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                     var errorProfile = new LaunchProfile() { Name = Resources.NoActionProfileName, CommandName = ErrorProfileCommandName, DoNotPersist = true };
                     errorProfile.OtherSettings = ImmutableStringDictionary<object>.EmptyOrdinal.Add("ErrorString", ex.Message);
                     var snapshot = new LaunchSettings(new List<ILaunchProfile>() { errorProfile }, null, errorProfile.Name);
-                    await FinishUpdateAsync(snapshot, ensureProfileProperty: false).ConfigureAwait(false);
+                    await FinishUpdateAsync(snapshot, ensureProfileProperty: false);
                 }
             }
         }
@@ -359,7 +359,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// </summary>
         protected async Task<bool> SettingsFileHasChangedAsync()
         {
-            string fileName = await GetLaunchSettingsFilePathAsync().ConfigureAwait(false);
+            string fileName = await GetLaunchSettingsFilePathAsync();
 
             return !FileManager.FileExists(fileName) || FileManager.LastFileWriteTime(fileName) != LastSettingsFileSyncTime;
         }
@@ -373,12 +373,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             CurrentSnapshot = newSnapshot;
             if (ensureProfileProperty)
             {
-                ProjectDebugger props = await CommonProjectServices.ActiveConfiguredProjectProperties.GetProjectDebuggerPropertiesAsync().ConfigureAwait(false);
-                if (await props.ActiveDebugProfile.GetValueAsync().ConfigureAwait(false) is IEnumValue activeProfileVal)
+                ProjectDebugger props = await CommonProjectServices.ActiveConfiguredProjectProperties.GetProjectDebuggerPropertiesAsync();
+                if (await props.ActiveDebugProfile.GetValueAsync() is IEnumValue activeProfileVal)
                 {
                     if (newSnapshot.ActiveProfile?.Name != null && !string.Equals(newSnapshot.ActiveProfile?.Name, activeProfileVal.Name))
                     {
-                        await props.ActiveDebugProfile.SetValueAsync(newSnapshot.ActiveProfile.Name).ConfigureAwait(false);
+                        await props.ActiveDebugProfile.SetValueAsync(newSnapshot.ActiveProfile.Name);
                     }
                 }
             }
@@ -403,16 +403,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         }
 
         /// <summary>
-        /// Creates the intiial set of settings based on the file on disk
+        /// Creates the initial set of settings based on the file on disk
         /// </summary>
         protected async Task<LaunchSettingsData> GetLaunchSettingsAsync()
         {
-            string fileName = await GetLaunchSettingsFilePathAsync().ConfigureAwait(false);
+            string fileName = await GetLaunchSettingsFilePathAsync();
 
             LaunchSettingsData settings;
             if (FileManager.FileExists(fileName))
             {
-                settings = await ReadSettingsFileFromDiskAsync().ConfigureAwait(false);
+                settings = await ReadSettingsFileFromDiskAsync();
             }
             else
             {
@@ -437,7 +437,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// </summary>
         protected async Task<LaunchSettingsData> ReadSettingsFileFromDiskAsync()
         {
-            string fileName = await GetLaunchSettingsFilePathAsync().ConfigureAwait(false);
+            string fileName = await GetLaunchSettingsFilePathAsync();
 
             // Clear errors
             ClearErrors();
@@ -557,11 +557,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             // Clear stale errors since we are saving
             ClearErrors();
             Dictionary<string, object> serializationData = GetSettingsToSerialize(newSettings);
-            string fileName = await GetLaunchSettingsFilePathAsync().ConfigureAwait(false);
+            string fileName = await GetLaunchSettingsFilePathAsync();
 
             try
             {
-                await EnsureSettingsFolderAsync().ConfigureAwait(false);
+                await EnsureSettingsFolderAsync();
 
                 // We don't want to write null values. We want to keep the file as small as possible
                 var settings = new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore };
@@ -635,9 +635,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             Lazy<ISourceCodeControlIntegration, IOrderPrecedenceMetadataView> sourceControlIntegration = SourceControlIntegrations.FirstOrDefault();
             if (sourceControlIntegration != null && sourceControlIntegration.Value != null)
             {
-                string fileName = await GetLaunchSettingsFilePathAsync().ConfigureAwait(false);
+                string fileName = await GetLaunchSettingsFilePathAsync();
 
-                await sourceControlIntegration.Value.CanChangeProjectFilesAsync(new[] { fileName }).ConfigureAwait(false);
+                await sourceControlIntegration.Value.CanChangeProjectFilesAsync(new[] { fileName });
             }
         }
 
@@ -669,8 +669,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                         // Updates need to be sequenced
                         await _sequentialTaskQueue.ExecuteTask(async () =>
                                         {
-                                            await UpdateProfilesAsync(null).ConfigureAwait(false);
-                                        }).ConfigureAwait(false);
+                                            await UpdateProfilesAsync(null);
+                                        });
                     });
                 }
             }
@@ -682,7 +682,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// </summary>
         protected async Task EnsureSettingsFolderAsync()
         {
-            string fileName = await GetLaunchSettingsFilePathAsync().ConfigureAwait(false);
+            string fileName = await GetLaunchSettingsFilePathAsync();
 
             string parentPath = Path.GetDirectoryName(fileName);
 
@@ -703,13 +703,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
         /// <summary>
         /// Sets up a file system watcher to look for changes to the launchsettings.json file. It watches at the root of the
-        /// project oltherwise we force the project to have a properties folder.
+        /// project otherwise we force the project to have a properties folder.
         /// </summary>
         private void WatchLaunchSettingsFile()
         {
             if (FileWatcher == null)
             {
-                // Create our scheduler for processing file chagnes
+                // Create our scheduler for processing file changes
                 FileChangeScheduler = new TaskDelayScheduler(FileChangeProcessingDelay, CommonProjectServices.ThreadingService,
                     ProjectServices.ProjectAsynchronousTasks.UnloadCancellationToken);
 
@@ -723,7 +723,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         }
 
         /// <summary>
-        /// Need to amke sure we cleanup the dataflow links and file watcher
+        /// Need to make sure we cleanup the dataflow links and file watcher
         /// </summary>
         /// <param name="disposing"></param>
         protected override void Dispose(bool disposing)
@@ -768,8 +768,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             // will deadlock
             await _sequentialTaskQueue.ExecuteTask(async () =>
             {
-                await UpdateAndSaveSettingsInternalAsync(newSettings).ConfigureAwait(false);
-            }).ConfigureAwait(false);
+                await UpdateAndSaveSettingsInternalAsync(newSettings);
+            });
         }
 
         /// <summary>
@@ -779,7 +779,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// </summary>
         private async Task UpdateAndSaveSettingsInternalAsync(ILaunchSettings newSettings, bool persistToDisk = true)
         {
-            await CheckoutSettingsFileAsync().ConfigureAwait(false);
+            await CheckoutSettingsFileAsync();
 
             // Make sure the profiles are copied. We don't want them to mutate.
             string activeProfileName = ActiveProfile?.Name;
@@ -787,10 +787,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             ILaunchSettings newSnapshot = new LaunchSettings(newSettings.Profiles, newSettings.GlobalSettings, activeProfileName);
             if (persistToDisk)
             {
-                await SaveSettingsToDiskAsync(newSettings).ConfigureAwait(false);
+                await SaveSettingsToDiskAsync(newSettings);
             }
 
-            await FinishUpdateAsync(newSnapshot, ensureProfileProperty: true).ConfigureAwait(false);
+            await FinishUpdateAsync(newSnapshot, ensureProfileProperty: true);
         }
 
         /// <summary>
@@ -804,7 +804,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 return CurrentSnapshot;
             }
 
-            await _firstSnapshotCompletionSource.Task.TryWaitForCompleteOrTimeout(timeout).ConfigureAwait(false);
+            await _firstSnapshotCompletionSource.Task.TryWaitForCompleteOrTimeout(timeout);
             return CurrentSnapshot;
         }
 
@@ -820,7 +820,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             // Updates need to be sequenced
             await _sequentialTaskQueue.ExecuteTask(async () =>
             {
-                ILaunchSettings currentSettings = await GetSnapshotThrowIfErrors().ConfigureAwait(false);
+                ILaunchSettings currentSettings = await GetSnapshotThrowIfErrors();
                 ILaunchProfile existingProfile = null;
                 int insertionIndex = 0;
                 foreach (ILaunchProfile p in currentSettings.Profiles)
@@ -854,13 +854,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                     profiles = profiles.Insert(insertionIndex, new LaunchProfile(profile));
                 }
 
-                // If the new profile is in-nmemory only, we don't want to touch the disk unless it replaces an existing disk based
+                // If the new profile is in-memory only, we don't want to touch the disk unless it replaces an existing disk based
                 // profile
                 bool saveToDisk = !profile.IsInMemoryObject() || (existingProfile != null && !existingProfile.IsInMemoryObject());
 
                 var newSnapshot = new LaunchSettings(profiles, currentSettings?.GlobalSettings, currentSettings?.ActiveProfile?.Name);
-                await UpdateAndSaveSettingsInternalAsync(newSnapshot, saveToDisk).ConfigureAwait(false);
-            }).ConfigureAwait(false);
+                await UpdateAndSaveSettingsInternalAsync(newSnapshot, saveToDisk);
+            });
         }
 
         /// <summary>
@@ -871,18 +871,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             // Updates need to be sequenced
             await _sequentialTaskQueue.ExecuteTask(async () =>
             {
-                ILaunchSettings currentSettings = await GetSnapshotThrowIfErrors().ConfigureAwait(false);
+                ILaunchSettings currentSettings = await GetSnapshotThrowIfErrors();
                 ILaunchProfile existingProfile = currentSettings.Profiles.FirstOrDefault(p => LaunchProfile.IsSameProfileName(p.Name, profileName));
                 if (existingProfile != null)
                 {
                     ImmutableList<ILaunchProfile> profiles = currentSettings.Profiles.Remove(existingProfile);
 
-                    // If the new profile is in-nmemory only, we don't want to touch the disk
+                    // If the new profile is in-memory only, we don't want to touch the disk
                     bool saveToDisk = !existingProfile.IsInMemoryObject();
                     var newSnapshot = new LaunchSettings(profiles, currentSettings.GlobalSettings, currentSettings.ActiveProfile?.Name);
-                    await UpdateAndSaveSettingsInternalAsync(newSnapshot, saveToDisk).ConfigureAwait(false);
+                    await UpdateAndSaveSettingsInternalAsync(newSnapshot, saveToDisk);
                 }
-            }).ConfigureAwait(false);
+            });
         }
 
         /// <summary>
@@ -894,7 +894,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             // Updates need to be sequenced
             await _sequentialTaskQueue.ExecuteTask(async () =>
             {
-                ILaunchSettings currentSettings = await GetSnapshotThrowIfErrors().ConfigureAwait(false);
+                ILaunchSettings currentSettings = await GetSnapshotThrowIfErrors();
                 ImmutableDictionary<string, object> globalSettings = ImmutableStringDictionary<object>.EmptyOrdinal;
                 if (currentSettings.GlobalSettings.TryGetValue(settingName, out object currentValue))
                 {
@@ -908,8 +908,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 bool saveToDisk = !settingContent.IsInMemoryObject() || (currentValue != null && !currentValue.IsInMemoryObject());
 
                 var newSnapshot = new LaunchSettings(currentSettings.Profiles, globalSettings.Add(settingName, settingContent), currentSettings.ActiveProfile?.Name);
-                await UpdateAndSaveSettingsInternalAsync(newSnapshot, saveToDisk).ConfigureAwait(false);
-            }).ConfigureAwait(false);
+                await UpdateAndSaveSettingsInternalAsync(newSnapshot, saveToDisk);
+            });
         }
 
         /// <summary>
@@ -920,15 +920,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             // Updates need to be sequenced
             await _sequentialTaskQueue.ExecuteTask(async () =>
             {
-                ILaunchSettings currentSettings = await GetSnapshotThrowIfErrors().ConfigureAwait(false);
+                ILaunchSettings currentSettings = await GetSnapshotThrowIfErrors();
                 if (currentSettings.GlobalSettings.TryGetValue(settingName, out object currentValue))
                 {
                     bool saveToDisk = !currentValue.IsInMemoryObject();
                     ImmutableDictionary<string, object> globalSettings = currentSettings.GlobalSettings.Remove(settingName);
                     var newSnapshot = new LaunchSettings(currentSettings.Profiles, globalSettings, currentSettings.ActiveProfile?.Name);
-                    await UpdateAndSaveSettingsInternalAsync(newSnapshot, saveToDisk).ConfigureAwait(false);
+                    await UpdateAndSaveSettingsInternalAsync(newSnapshot, saveToDisk);
                 }
-            }).ConfigureAwait(false);
+            });
         }
 
         /// <summary>
@@ -937,10 +937,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// </summary>
         public async Task<ILaunchSettings> GetSnapshotThrowIfErrors()
         {
-            ILaunchSettings currentSettings = await WaitForFirstSnapshot(WaitForFirstSnapshotDelay).ConfigureAwait(false);
+            ILaunchSettings currentSettings = await WaitForFirstSnapshot(WaitForFirstSnapshotDelay);
             if (currentSettings == null || (currentSettings.Profiles.Count == 1 && string.Equals(currentSettings.Profiles[0].CommandName, ErrorProfileCommandName, StringComparison.Ordinal)))
             {
-                string fileName = await GetLaunchSettingsFilePathAsync().ConfigureAwait(false);
+                string fileName = await GetLaunchSettingsFilePathAsync();
 
                 throw new Exception(string.Format(Resources.JsonErrorNeedToBeCorrected, fileName));
             }
@@ -954,8 +954,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// </summary>
         public async Task SetActiveProfileAsync(string profileName)
         {
-            ProjectDebugger props = await CommonProjectServices.ActiveConfiguredProjectProperties.GetProjectDebuggerPropertiesAsync().ConfigureAwait(false);
-            await props.ActiveDebugProfile.SetValueAsync(profileName).ConfigureAwait(false);
+            ProjectDebugger props = await CommonProjectServices.ActiveConfiguredProjectProperties.GetProjectDebuggerPropertiesAsync();
+            await props.ActiveDebugProfile.SetValueAsync(profileName);
         }
 
         internal async Task<string> GetLaunchSettingsFilePathNoCacheAsync()
@@ -964,8 +964,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             // even though it can change over the lifetime of the project. We should fix this and convert to using dataflow
             // see: https://github.com/dotnet/project-system/issues/2316.
 
-            string folder = await _appDesignerSpecialFileProvider.Value.GetFileAsync(SpecialFiles.AppDesigner, SpecialFileFlags.FullPath)
-                                                                       .ConfigureAwait(false);
+            string folder = await _appDesignerSpecialFileProvider.Value.GetFileAsync(SpecialFiles.AppDesigner, SpecialFileFlags.FullPath);
 
             if (folder == null)  // AppDesigner capability not present, or the project has set AppDesignerFolder to empty
                 folder = Path.GetDirectoryName(CommonProjectServices.Project.FullPath);

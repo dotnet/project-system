@@ -28,10 +28,10 @@ namespace Microsoft.VisualStudio.Threading.Tasks
                 {
                     async Task func()
                     {
-                        await Task.Delay(1).ConfigureAwait(false);
+                        await Task.Delay(1);
                         sequences.Add(num);
                     }
-                    await func().ConfigureAwait(false);
+                    await func();
                 }));
             }
 
@@ -59,11 +59,11 @@ namespace Microsoft.VisualStudio.Threading.Tasks
                     {
                         await sequencer.ExecuteTask(async () =>
                         {
-                            await Task.Delay(1).ConfigureAwait(false);
+                            await Task.Delay(1);
                             sequences.Add(num);
                         });
                     }
-                    await func().ConfigureAwait(false);
+                    await func();
                 }));
             }
 
@@ -96,21 +96,21 @@ namespace Microsoft.VisualStudio.Threading.Tasks
                 {
                     async Task func()
                     {
-                        await Task.Delay(100).ConfigureAwait(false);
+                        await Task.Delay(100);
                     }
-                    await func().ConfigureAwait(false);
+                    await func();
                 }));
             }
             sequencer.Dispose();
 
+            bool mustBeCancelled = false;
+
             try
             {
                 await Task.WhenAll(tasks.ToArray());
-                Assert.False(true);
             }
             catch (OperationCanceledException)
             {
-                bool mustBeCancelled = false;
                 for (int i = 0; i < NumberOfTasks; i++)
                 {
                     // The first task or two may already be running. So we skip completed tasks until we find 
@@ -125,9 +125,9 @@ namespace Microsoft.VisualStudio.Threading.Tasks
                         mustBeCancelled = tasks[i].IsCanceled;
                     }
                 }
-
-                Assert.True(mustBeCancelled);
             }
+
+            Assert.True(mustBeCancelled);
         }
     }
 }

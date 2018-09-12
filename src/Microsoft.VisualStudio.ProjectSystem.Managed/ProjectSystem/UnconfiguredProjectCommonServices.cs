@@ -14,21 +14,21 @@ namespace Microsoft.VisualStudio.ProjectSystem
         private readonly UnconfiguredProject _project;
         private readonly Lazy<IPhysicalProjectTree> _projectTree;
         private readonly Lazy<IProjectThreadingService> _threadingService;
-        private readonly Lazy<IProjectLockService> _projectLockService;
+        private readonly Lazy<IProjectAccessor> _projectAccessor;
         private readonly ActiveConfiguredProject<ConfiguredProject> _activeConfiguredProject;
         private readonly ActiveConfiguredProject<ProjectProperties> _activeConfiguredProjectProperties;
 
         [ImportingConstructor]
         public UnconfiguredProjectCommonServices(UnconfiguredProject project, Lazy<IPhysicalProjectTree> projectTree, Lazy<IProjectThreadingService> threadingService,
                                                  ActiveConfiguredProject<ConfiguredProject> activeConfiguredProject, ActiveConfiguredProject<ProjectProperties> activeConfiguredProjectProperties,
-                                                 Lazy<IProjectLockService> projectLockService)
+                                                 Lazy<IProjectAccessor> projectAccessor)
         {
             _project = project;
             _projectTree = projectTree;
             _threadingService = threadingService;
             _activeConfiguredProject = activeConfiguredProject;
             _activeConfiguredProjectProperties = activeConfiguredProjectProperties;
-            _projectLockService = projectLockService;
+            _projectAccessor = projectAccessor;
         }
 
         public IProjectThreadingService ThreadingService
@@ -56,9 +56,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
             get { return _activeConfiguredProjectProperties.Value; }
         }
 
-        public IProjectLockService ProjectLockService
+        public IProjectAccessor ProjectAccessor
         {
-            get { return _projectLockService.Value; }
+            get { return _projectAccessor.Value; }
         }
     }
 }

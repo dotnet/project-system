@@ -11,7 +11,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <returns></returns>
         ''' <remarks></remarks>
         Public Function CreateArgumentException(argumentName As String) As Exception
-            Return New ArgumentException(String.Format(My.Resources.Designer.General_InvalidArgument_1Arg, argumentName))
+            Return New ArgumentException(String.Format(My.Resources.Microsoft_VisualStudio_Editors_Designer.General_InvalidArgument_1Arg, argumentName))
         End Function
     End Module
 End Namespace

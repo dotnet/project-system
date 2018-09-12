@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.ComponentModel
 Imports System.Drawing
@@ -14,13 +14,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Inherits PropPageUserControlBase
 
         ' We map colors for all bitmap buttons on the page, because the default one is too dark in high-contrast mode, and it is difficult to know whether it is disabled
-        Private _moveUpImageOriginal As Image
+        Private ReadOnly _moveUpImageOriginal As Image
         Private _moveUpImage As Image
         Private _moveUpGreyImage As Image
-        Private _moveDownImageOriginal As Image
+        Private ReadOnly _moveDownImageOriginal As Image
         Private _moveDownImage As Image
         Private _moveDownGreyImage As Image
-        Private _removeFolderImageOriginal As Image
+        Private ReadOnly _removeFolderImageOriginal As Image
         Private _removeFolderImage As Image
         Private _removeFolderGreyImage As Image
         Private _inContrastMode As Boolean   ' whether we are in ContrastMode
@@ -142,7 +142,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     ReferencePath.SelectedIndex = ReferencePath.Items.Add(FolderText)
                     SetDirty(VsProjPropId.VBPROJPROPID_ReferencePath)
                 Else
-                    ShowErrorMessage(My.Resources.Designer.PPG_InvalidFolderPath)
+                    ShowErrorMessage(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_InvalidFolderPath)
                 End If
             End If
         End Sub
@@ -157,7 +157,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     SetDirty(VsProjPropId.VBPROJPROPID_ReferencePath)
                     UpdateFolder.Enabled = False
                 Else
-                    ShowErrorMessage(My.Resources.Designer.PPG_InvalidFolderPath)
+                    ShowErrorMessage(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_InvalidFolderPath)
                 End If
             End If
         End Sub
@@ -352,7 +352,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Private Sub FolderBrowse_Click(sender As Object, e As EventArgs) Handles FolderBrowse.Click
             Dim value As String = Nothing
-            If GetDirectoryViaBrowse(GetCurrentFolderPathAbsolute(), My.Resources.Designer.PPG_SelectReferencePath, value) Then
+            If GetDirectoryViaBrowse(GetCurrentFolderPathAbsolute(), My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_SelectReferencePath, value) Then
                 Folder.Text = GetProjectRelativeDirectoryPath(value)
             End If
         End Sub
@@ -427,7 +427,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
         ''' <summary>
-        '''  Handle SystemEvents, so we will update Buttom image when SystemColor was changed...
+        '''  Handle SystemEvents, so we will update Button image when SystemColor was changed...
         ''' </summary>
         Private Sub SystemEvents_UserPreferenceChanged(sender As Object, e As UserPreferenceChangedEventArgs)
             Select Case e.Category

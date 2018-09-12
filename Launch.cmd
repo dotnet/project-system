@@ -19,7 +19,10 @@ if /I "%1" == "/rootsuffix" set ROOTSUFFIX=%2&&shift&&shift&& goto :ParseArgumen
 call :Usage && exit /b 1
 :DoneParsing
 
+for /f "tokens=*" %%i in ('where devenv.exe') do set DevEnvPath=%%i
+
 echo Launching Visual Studio under the '!ROOTSUFFIX!' hive
+echo %DevEnvPath%
 devenv /rootsuffix !ROOTSUFFIX!
 exit /b %ERRORLEVEL%
 

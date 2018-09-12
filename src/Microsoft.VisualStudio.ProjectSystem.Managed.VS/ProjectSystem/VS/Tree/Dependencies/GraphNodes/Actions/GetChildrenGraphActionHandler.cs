@@ -11,6 +11,11 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.Actions
 {
+    /// <summary>
+    /// Finds the children of the input <see cref="GraphNode"/>s and adds them to the graph.
+    /// Determining if a <see cref="GraphNode"/> has children is handled separately by
+    /// <see cref="CheckChildrenGraphActionHandler"/>.
+    /// </summary>
     [Export(typeof(IDependenciesGraphActionHandler))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
     [Order(Order)]

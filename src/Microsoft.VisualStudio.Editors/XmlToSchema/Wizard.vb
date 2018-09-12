@@ -35,20 +35,20 @@ Namespace Microsoft.VisualStudio.Editors.XmlToSchema
 
                 Dim activeProjects As Array = TryCast(dte.ActiveSolutionProjects, Array)
                 If activeProjects Is Nothing OrElse activeProjects.Length = 0 Then
-                    ShowWarning(My.Resources.Designer.XmlToSchema_NoProjectSelected)
+                    ShowWarning(My.Resources.Microsoft_VisualStudio_Editors_Designer.XmlToSchema_NoProjectSelected)
                     Return
                 End If
 
                 Dim acitveProject = TryCast(activeProjects.GetValue(0), Project)
                 If acitveProject Is Nothing Then
-                    ShowWarning(My.Resources.Designer.XmlToSchema_NoProjectSelected)
+                    ShowWarning(My.Resources.Microsoft_VisualStudio_Editors_Designer.XmlToSchema_NoProjectSelected)
                     Return
                 End If
 
                 Dim savePath = Path.GetDirectoryName(acitveProject.FullName)
                 If Not Directory.Exists(savePath) Then
                     'For Website projects targeting IIS/IIS Express activeProject.FullName returns http path which is not a Valid Directory.
-                    'Instead we will use acitveProject.Properties.Item(FullPath).Value to give a chance for Website projects(IIS/IIS Express)
+                    'Instead we will use activeProject.Properties.Item(FullPath).Value to give a chance for Website projects(IIS/IIS Express)
                     'to see if valid directory exists before showing warning. We will keep this logic inside try/catch block
                     'since for projects which dont support "FullPath" property exception can be thrown.
                     Try
@@ -56,14 +56,14 @@ Namespace Microsoft.VisualStudio.Editors.XmlToSchema
                     Catch 'Eat any exception
                     End Try
                     If Not Directory.Exists(savePath) Then
-                        ShowWarning(String.Format(My.Resources.Designer.XmlToSchema_InvalidProjectPath, savePath))
+                        ShowWarning(String.Format(My.Resources.Microsoft_VisualStudio_Editors_Designer.XmlToSchema_InvalidProjectPath, savePath))
                         Return
                     End If
                 End If
 
                 Dim fileName = replacementsDictionary("$rootname$")
                 If String.IsNullOrEmpty(fileName) Then
-                    ShowWarning(My.Resources.Designer.XmlToSchema_InvalidEmptyItemName)
+                    ShowWarning(My.Resources.Microsoft_VisualStudio_Editors_Designer.XmlToSchema_InvalidEmptyItemName)
                     Return
                 End If
 

@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
-    internal class AbstractMultiLifetimeComponentFactory
+    internal static class AbstractMultiLifetimeComponentFactory
     {
         public static MultiLifetimeComponent Create()
         {

@@ -23,7 +23,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             EXT_GIF,
             EXT_JPEG, EXT_JPG,
             EXT_PNG,
-            EXT_TIF, EXT_TIFF}
+            EXT_TIF, EXT_TIFF,
+            EXT_EMF, EXT_WMF}
 
         ' Extensions supported in a device project
         ' NOTE: WinCE does not support TIF file...
@@ -83,7 +84,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             If TypeOf LoadedImage Is Bitmap Then
                 Return LoadedImage
             Else
-                Throw NewException(My.Resources.Designer.RSE_Err_UnexpectedResourceType, HelpIDs.Err_UnexpectedResourceType)
+                Throw NewException(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_UnexpectedResourceType, HelpIDs.Err_UnexpectedResourceType)
             End If
         End Function
 
@@ -151,9 +152,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </remarks>
         Public Overrides Function GetOpenFileDialogFilter(ResourceContentFile As IResourceContentFile) As String
             If ResourceContentFile.IsInsideDeviceProject() Then
-                Return CreateSingleDialogFilter(My.Resources.Designer.RSE_Filter_Bitmap, _extensionsForDevice)
+                Return CreateSingleDialogFilter(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Filter_Bitmap, _extensionsForDevice)
             Else
-                Return CreateSingleDialogFilter(My.Resources.Designer.RSE_Filter_Bitmap, _extensions)
+                Return CreateSingleDialogFilter(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Filter_Bitmap, _extensions)
             End If
         End Function
 
@@ -188,15 +189,15 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             If MatchAgainstListOfExtensions(Extension, _extensions, ExtensionIndex) Then
                 Select Case _extensions(ExtensionIndex)
                     Case EXT_BMP
-                        FilterText = My.Resources.Designer.RSE_FilterSave_BMP
+                        FilterText = My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_FilterSave_BMP
                     Case EXT_PNG
-                        FilterText = My.Resources.Designer.RSE_FilterSave_PNG
+                        FilterText = My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_FilterSave_PNG
                     Case EXT_GIF
-                        FilterText = My.Resources.Designer.RSE_FilterSave_GIF
+                        FilterText = My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_FilterSave_GIF
                     Case EXT_JPG, EXT_JPEG
-                        FilterText = My.Resources.Designer.RSE_FilterSave_JPEG
+                        FilterText = My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_FilterSave_JPEG
                     Case EXT_TIF, EXT_TIFF
-                        FilterText = My.Resources.Designer.RSE_FilterSave_TIFF
+                        FilterText = My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_FilterSave_TIFF
                     Case Else
                         Debug.Fail("Unexpected extension " & _extensions(ExtensionIndex))
                 End Select

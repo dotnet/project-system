@@ -27,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         private IDisposable _debugProfileProviderLink;
 
         // Unit Tests only
-        private TaskCompletionSource<bool> _firstSnapshotCompleteSource = null;
+        private readonly TaskCompletionSource<bool> _firstSnapshotCompleteSource = null;
 
         private IProjectThreadingService _projectThreadingService;
         private IProjectThreadingService ProjectThreadingService
@@ -537,7 +537,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// Functions which actually does the save of the settings. Persists the changes to the launch settings
         /// file and configures IIS if needed.
         /// </summary>
-        public virtual async System.Threading.Tasks.Task SaveLaunchSettings()
+        public virtual async Task SaveLaunchSettings()
         {
             ILaunchSettingsProvider provider = GetDebugProfileProvider();
             if (EnvironmentVariables != null && EnvironmentVariables.Count > 0 && SelectedDebugProfile != null)
@@ -553,7 +553,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 SelectedDebugProfile.EnvironmentVariables.Clear();
             }
 
-            await provider.UpdateAndSaveSettingsAsync(CurrentLaunchSettings.ToLaunchSettings()).ConfigureAwait(false);
+            await provider.UpdateAndSaveSettingsAsync(CurrentLaunchSettings.ToLaunchSettings());
         }
 
         private void SetEnvironmentGrid(IWritableLaunchProfile oldProfile)
@@ -736,7 +736,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             }
         }
 
-        public override System.Threading.Tasks.Task Initialize()
+        public override Task Initialize()
         {
             // Initialize the page
             InitializePropertyPage();
@@ -753,7 +753,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 throw new Exception(PropertyPageResources.ErrorsMustBeCorrectedPriorToSaving);
             }
 
-            await SaveLaunchSettings().ConfigureAwait(false);
+            await SaveLaunchSettings();
 
             return VSConstants.S_OK;
         }

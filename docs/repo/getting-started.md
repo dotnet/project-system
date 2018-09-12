@@ -1,16 +1,53 @@
 # Getting Started
 
+#### Prerequisites
+- [Visual Studio 2017](https://www.visualstudio.com/downloads/)
+- GitHub account
+- Basic Git experience: https://try.github.io/
+
+All commands below are run under a [Visual Studio Developer Prompt](https://msdn.microsoft.com/en-us/library/ms229859(v=vs.150).aspx).
+
 ## Code
+
+Contribution to this repository is via the [fork model](https://help.github.com/articles/fork-a-repo/). Contributors push changes to their own "forked" version of project-system, and then submit a pull request into it requesting those changes be merged.
+
+To get started:
+
+1. Fork the repo by clicking Fork in the top right corner:
+
+![image](https://user-images.githubusercontent.com/1103906/44329309-7ab55d00-a4a7-11e8-9d1f-74a91f5229f5.png)
+
+2. From a Visual Studio Developer Prompt, run (replacing _[user-name]_ with your GitHub user name):
+
+```
+\> git clone https://github.com/[user-name]/project-system
+\> cd project-system
+\project-system> git remote add upstream https://github.com/dotnet/project-system
+\project-system> git remote set-url --push upstream no_push
+```
+
+The last command prevents an accidental push to this repository without going through a pull request.
+
+After running above, `git remote -v` should something like the following:
+```
+\project-system> git remote -v 
+origin  https://github.com/davkean/project-system (fetch)
+origin  https://github.com/davkean/project-system (push)
+upstream        https://github.com/dotnet/project-system (fetch)
+upstream        no_push (push)
+```
+
+## Build
 
 ### Command-line
 
 From within a [Visual Studio Developer Prompt](https://msdn.microsoft.com/en-us/library/ms229859(v=vs.150).aspx), from the repo root, run:
 
 ```
-build.cmd
+project-system> build.cmd
 ```
 
-This builds, runs tests and deploys to Visual Studio.
+This builds, runs tests and deploys to an experimental instance of Visual Studio.
 
 ### Visual Studio
 From within [Visual Studio 2017](https://www.visualstudio.com/downloads/), open _ProjectSystem.sln_.
@@ -22,11 +59,17 @@ __NOTE:__ To workaround a bug preventing Visual Studio from restoring this repro
 
 ## Debugging/Deploying
 
-By default when you build inside Visual Studio or the command-line, the project system and other binaries gets deployed to the _Exp_ experimental instance of Visual Studio. They will automatically _override_ any binaries that come with Visual Studio.
+By default when you build inside Visual Studio or the command-line, the project system and other binaries gets deployed to the _Exp_ experimental instance of Visual Studio. They will automatically _override_ any binaries that come with Visual Studio when you launch that instance.
+
+First of all, [setup your debugging environment](https://github.com/dotnet/project-system/blob/master/docs/repo/debugging/setting-up-environment.md).
 
 ### Command-line
 
-From the command-line, after you've run `build.cmd`, you can launch a Visual Studio instance with your recently built bits by running `launch.cmd`.
+From the command-line, after you've run `build.cmd` you can launch a Visual Studio instance with your recently built bits with:
+
+```
+project-system> launch.cmd
+```
 
 ### Visual Studio
 
@@ -46,25 +89,24 @@ When testing inconjunction with other repositories, it's handy to be able to dep
 Both Visual Studio and command-line respect the `ROOTSUFFIX` environment variable:
 
 ```
-set ROOTSUFFIX=RoslynDev
+project-system> set ROOTSUFFIX=RoslynDev
 
-> build.cmd
-> launch.cmd
+project-system> build.cmd
+project-system> launch.cmd
 ```
 
 ```
-set ROOTSUFFIX=RoslynDev
+project-system> set ROOTSUFFIX=RoslynDev
 
-devenv ProjectSystem.sln
+project-system> devenv ProjectSystem.sln
 ```
 
 Also, both `build.cmd` and `launch.cmd` provide a `/rootsuffix` switch:
 
 ``` 
-> build.cmd /rootsuffix RoslynDev
-> launch.cmd /rootsuffix RoslynDev
+project-system> build.cmd /rootsuffix RoslynDev
+project-system> launch.cmd /rootsuffix RoslynDev
 ```
-
 
 ## Testing 
 

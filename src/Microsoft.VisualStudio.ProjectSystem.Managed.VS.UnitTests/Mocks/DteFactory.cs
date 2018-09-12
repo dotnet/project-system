@@ -8,13 +8,13 @@ using Moq;
 
 namespace EnvDTE80
 {
-    internal static class DteFactory
+    internal static class DTEFactory
     {
-        public static DTE Create()
+        public static DTE2 Create()
         {
-            var mock = new Mock<DTE2>();
+            var mock = new Mock<DTE>();
 
-            return mock.As<DTE>().Object;
+            return mock.As<DTE2>().Object;
         }
 
         public static DTE2 ImplementSolution(Func<Solution> action)

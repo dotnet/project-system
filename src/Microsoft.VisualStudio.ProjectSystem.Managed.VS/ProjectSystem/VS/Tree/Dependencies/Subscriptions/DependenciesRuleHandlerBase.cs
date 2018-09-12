@@ -171,11 +171,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             return null;
         }
 
-        public Task OnContextReleasedAsync(ITargetedProjectContext context)
-        {
-            return Task.CompletedTask;
-        }
-
         #endregion
 
         #region  IProjectDependenciesSubTreeProvider

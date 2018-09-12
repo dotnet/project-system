@@ -10,6 +10,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 {
     internal class AssemblyDependencyModel : DependencyModel
     {
+        private static readonly DependencyIconSet s_iconSet = new DependencyIconSet(
+            icon: KnownMonikers.Reference,
+            expandedIcon: KnownMonikers.Reference,
+            unresolvedIcon: KnownMonikers.ReferenceWarning,
+            unresolvedExpandedIcon: KnownMonikers.ReferenceWarning);
+
+        private static readonly DependencyIconSet s_implicitIconSet = new DependencyIconSet(
+            icon: ManagedImageMonikers.ReferencePrivate,
+            expandedIcon: ManagedImageMonikers.ReferencePrivate,
+            unresolvedIcon: KnownMonikers.ReferenceWarning,
+            unresolvedExpandedIcon: KnownMonikers.ReferenceWarning);
+
         public AssemblyDependencyModel(
             string providerType,
             string path,
@@ -48,10 +60,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 
             SchemaItemType = AssemblyReference.PrimaryDataSourceItemType;
             Priority = Dependency.FrameworkAssemblyNodePriority;
-            Icon = isImplicit ? ManagedImageMonikers.ReferencePrivate : KnownMonikers.Reference;
-            ExpandedIcon = Icon;
-            UnresolvedIcon = KnownMonikers.ReferenceWarning;
-            UnresolvedExpandedIcon = UnresolvedIcon;
+            IconSet = isImplicit ? s_implicitIconSet : s_iconSet;
         }
     }
 }

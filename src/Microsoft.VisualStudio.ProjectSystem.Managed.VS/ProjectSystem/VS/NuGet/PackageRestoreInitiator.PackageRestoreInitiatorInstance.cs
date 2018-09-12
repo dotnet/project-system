@@ -29,10 +29,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             private readonly IActiveConfigurationGroupService _activeConfigurationGroupService;
             private readonly IActiveConfiguredProjectSubscriptionService _activeConfiguredProjectSubscriptionService;
             private readonly IProjectLogger _logger;
-#pragma warning disable CA2213 // OnceInitializedOnceDisposedAsync are not tracked correctly by the IDisposeable analyzer
             private IDisposable _configurationsSubscription;
             private DisposableBag _designTimeBuildSubscriptionLink;
-#pragma warning restore CA2213
 
             private static readonly ImmutableHashSet<string> s_designTimeBuildWatchedRules = Empty.OrdinalIgnoreCaseStringSet
                 .Add(NuGetRestore.SchemaName)
@@ -151,8 +149,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
                             await _solutionRestoreService
                                    .NominateProjectAsync(_projectVsServices.Project.FullPath, projectRestoreInfo,
-                                        _projectVsServices.Project.Services.ProjectAsynchronousTasks.UnloadCancellationToken)
-                                   .ConfigureAwait(false);
+                                        _projectVsServices.Project.Services.ProjectAsynchronousTasks.UnloadCancellationToken);
 
                             CodeMarkers.Instance.CodeMarker(CodeMarkerTimerId.PerfPackageRestoreEnd);
 

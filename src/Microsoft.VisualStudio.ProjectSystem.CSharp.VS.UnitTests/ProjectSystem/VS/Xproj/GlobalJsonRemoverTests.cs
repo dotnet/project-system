@@ -46,7 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
                 Assert.Equal(globalJsonPath, path);
                 return projectItem;
             });
-            var dte = DteFactory.ImplementSolution(() => dteSolution);
+            var dte = DTEFactory.ImplementSolution(() => dteSolution);
 
             var serviceProvider = IServiceProviderFactory.ImplementGetService(t =>
             {
@@ -84,7 +84,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
                 Assert.Equal(Path.Combine(Directory, "global.json"), path);
                 return null;
             });
-            var dte = DteFactory.ImplementSolution(() => dteSolution);
+            var dte = DTEFactory.ImplementSolution(() => dteSolution);
 
             var serviceProvider = IServiceProviderFactory.ImplementGetService(t =>
             {
@@ -119,7 +119,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
                 Assert.Equal(globalJsonPath, path);
                 return projectItem;
             });
-            var dte = DteFactory.ImplementSolution(() => dteSolution);
+            var dte = DTEFactory.ImplementSolution(() => dteSolution);
 
             var serviceProvider = IServiceProviderFactory.ImplementGetService(t =>
             {

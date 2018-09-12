@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.Windows.Forms
 Imports System.Runtime.InteropServices
@@ -35,7 +35,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Protected Overrides ReadOnly Property Title() As String
             Get
-                Return My.Resources.Designer.PPG_ApplicationTitle
+                Return My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_ApplicationTitle
             End Get
         End Property
 
@@ -62,7 +62,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Protected Overrides ReadOnly Property Title() As String
             Get
-                Return My.Resources.Designer.PPG_ApplicationTitle
+                Return My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_ApplicationTitle
             End Get
         End Property
 
@@ -89,7 +89,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Protected Overrides ReadOnly Property Title() As String
             Get
-                Return My.Resources.Designer.PPG_ApplicationTitle
+                Return My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_ApplicationTitle
             End Get
         End Property
 
@@ -115,7 +115,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Protected Overrides ReadOnly Property Title() As String
             Get
-                Return My.Resources.Designer.PPG_ApplicationTitle
+                Return My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_ApplicationTitle
             End Get
         End Property
 
@@ -143,7 +143,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Protected Overrides ReadOnly Property Title() As String
             Get
-                Return My.Resources.Designer.PPG_PackageTitle
+                Return My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_PackageTitle
             End Get
         End Property
 
@@ -169,7 +169,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Protected Overrides ReadOnly Property Title() As String
             Get
-                Return My.Resources.Designer.PPG_CompileTitle
+                Return My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_CompileTitle
             End Get
         End Property
 
@@ -187,7 +187,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Protected Overrides Property DefaultSize() As Drawing.Size
             Get
                 ' This is somewhat hacky, but the compile's size page can sometimes exceed the default
-                ' mimimum size for a property page. The PropPageDesignerView will query for this in order to
+                ' minimum size for a property page. The PropPageDesignerView will query for this in order to
                 ' figure out what the minimum autoscrollsize should be set to, but it will also check 
                 ' the size of the actual control and use the min of those two values, so as long as we
                 ' we return a default size that is larger than what our maximum minimum size will be, we 
@@ -211,7 +211,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Protected Overrides ReadOnly Property Title() As String
             Get
-                Return My.Resources.Designer.PPG_Services
+                Return My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Services
             End Get
         End Property
 
@@ -237,7 +237,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Protected Overrides ReadOnly Property Title() As String
             Get
-                Return My.Resources.Designer.PPG_DebugTitle
+                Return My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_DebugTitle
             End Get
         End Property
 
@@ -263,7 +263,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Protected Overrides ReadOnly Property Title() As String
             Get
-                Return My.Resources.Designer.PPG_ReferencesTitle
+                Return My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_ReferencesTitle
             End Get
         End Property
 
@@ -289,7 +289,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Protected Overrides ReadOnly Property Title() As String
             Get
-                Return My.Resources.Designer.PPG_BuildTitle
+                Return My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_BuildTitle
             End Get
         End Property
 
@@ -314,7 +314,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Protected Overrides ReadOnly Property Title() As String
             Get
-                Return My.Resources.Designer.PPG_BuildEventsTitle
+                Return My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_BuildEventsTitle
             End Get
         End Property
 
@@ -339,7 +339,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Protected Overrides ReadOnly Property Title() As String
             Get
-                Return My.Resources.Designer.PPG_ReferencePathsTitle
+                Return My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_ReferencePathsTitle
             End Get
         End Property
 

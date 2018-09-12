@@ -19,7 +19,10 @@
     <Rule Id="RS0023" Action="None" />
   </Rules>
    <Rules AnalyzerId="Microsoft.CodeAnalysis.CSharp.Features" RuleNamespace="Microsoft.CodeAnalysis.CSharp.Features">
-     <!-- Naming styles is too noisy as it fires on all async tests -->
+    <!-- Too noisy due to https://github.com/dotnet/roslyn/issues/27819 -->
+    <Rule Id="IDE0001" Action="None" />                       <!-- Simplify names                               System.Version version;                             Version version;                      -->
+
+     <!-- Naming styles is too noisy as it fires on all async tests -->     
     <Rule Id="IDE1006" Action="None" />                       <!-- Naming styles                                Task Open()                                         Task OpenAsync()                      -->
     <Rule Id="IDE1006WithoutSuggestion" Action="None" />
   </Rules>

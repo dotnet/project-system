@@ -24,7 +24,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '  Since we're using the listview in virtual mode (in order to accomplish
         '  delay-load of the images from disk), we keep track of the data ourselves.
         '  The base listview notifies us when it needs data to display.
-        Private _virtualResourceList As New ArrayList 'Of Resource
+        Private ReadOnly _virtualResourceList As New ArrayList 'Of Resource
 
         'A cache of thumbnails for the listview items that we are displaying.  This has
         '  knowledge of our imagelist, and manages it for us.
@@ -77,7 +77,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private Const DefaultColumnWidthComment As Integer = 300
 
         'If this is turned on, attempted retrieval of listview items will simply return
-        '  a blank entry.  This is useful when the resourc editor is being disposed of.
+        '  a blank entry.  This is useful when the resource editor is being disposed of.
         Private _disableItemRetrieval As Boolean
 
         'The ResourceFile used to populate this grid.
@@ -116,7 +116,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private _cacheRequirementStack As Stack
 
         ' If the ListView asks for the image, we know it want to paint it, and we want to load it earlier than the others.
-        '  In that senario, we update m_IdleProcessingIndex to load that item first.
+        '  In that scenario, we update m_IdleProcessingIndex to load that item first.
         '  However, we shouldn't update it if we have already updated it before handling any Idle message.
         '  The reason is the first item required is often the focused item, which we want to paint first.
         Private _needLoadVisibleItem As Boolean
@@ -329,11 +329,11 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             If Not _columnInitialized Then
 
-                Columns.Add(My.Resources.Designer.RSE_DetailsCol_Name, DpiHelper.LogicalToDeviceUnitsX(DefaultColumnWidthName), HorizontalAlignment.Left)
-                Columns.Add(My.Resources.Designer.RSE_DetailsCol_Filename, DpiHelper.LogicalToDeviceUnitsX(DefaultColumnWidthFilename), HorizontalAlignment.Left)
-                Columns.Add(My.Resources.Designer.RSE_DetailsCol_ImageType, DpiHelper.LogicalToDeviceUnitsX(DefaultColumnWidthImageType), HorizontalAlignment.Left)
-                Columns.Add(My.Resources.Designer.RSE_DetailsCol_Size, DpiHelper.LogicalToDeviceUnitsX(DefaultColumnWidthSize), HorizontalAlignment.Left)
-                Columns.Add(My.Resources.Designer.RSE_DetailsCol_Comment, DpiHelper.LogicalToDeviceUnitsX(DefaultColumnWidthComment), HorizontalAlignment.Left)
+                Columns.Add(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_DetailsCol_Name, DpiHelper.LogicalToDeviceUnitsX(DefaultColumnWidthName), HorizontalAlignment.Left)
+                Columns.Add(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_DetailsCol_Filename, DpiHelper.LogicalToDeviceUnitsX(DefaultColumnWidthFilename), HorizontalAlignment.Left)
+                Columns.Add(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_DetailsCol_ImageType, DpiHelper.LogicalToDeviceUnitsX(DefaultColumnWidthImageType), HorizontalAlignment.Left)
+                Columns.Add(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_DetailsCol_Size, DpiHelper.LogicalToDeviceUnitsX(DefaultColumnWidthSize), HorizontalAlignment.Left)
+                Columns.Add(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_DetailsCol_Comment, DpiHelper.LogicalToDeviceUnitsX(DefaultColumnWidthComment), HorizontalAlignment.Left)
 
                 _columnInitialized = True
             End If
@@ -808,7 +808,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     'Using a PagesInCache notion means we'll try to keep a certain number of pages of ImageList
                     '  items in the cache before we start recycling images again.  If this doesn't work well in
                     '  practice, we could tweak the constant or the concept.
-                    ' NOTE: 3 pages cache looks too consertivative, for list/detail view, the tiny icon shouldn't cost a lot memory,
+                    ' NOTE: 3 pages cache looks too conservative, for list/detail view, the tiny icon shouldn't cost a lot memory,
                     '  and Thumbnail view doesn't show many in one page
                     Const PagesInCache As Integer = 5
                     Const PagesInCachDetailView As Integer = 20
@@ -1118,7 +1118,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 AndAlso ParentView.CachedResources.ErrorGlyphSmall.Size.Height <= _smallImageWidthHeight,
                 "Small error glyph is too big")
 
-            'Do we already have a thumbnail cached for this object (and is it stil valid)?
+            'Do we already have a thumbnail cached for this object (and is it still valid)?
             Dim Found As Boolean
             Dim Index As Integer
             _thumbnailCache.GetCachedImageListIndex(Resource, Found, Index)
@@ -1129,7 +1129,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             'No thumbnail is in the cache.  We'll have to create one and add it.
             'Get the source image from which we create a thumbnail.  This will either be the actual
-            '  (or copied) image from the resource, or it will be the image of an error glpyh.
+            '  (or copied) image from the resource, or it will be the image of an error glyph.
             Dim ThumbnailSourceImage As Image
             Dim IsSharedImage As Boolean = Resource.ResourceTypeEditor.IsImageForThumbnailShared
             If Not IsSharedImage AndAlso AllowDelayLoading Then
@@ -1279,18 +1279,18 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private Structure LVITEM
 #Disable Warning IDE1006 ' Naming Styles
             Public mask As Integer
-            Public iItem As Integer
-            Public iSubItem As Integer
+            Public ReadOnly iItem As Integer
+            Public ReadOnly iSubItem As Integer
             Public state As Integer
             Public stateMask As Integer
-            Public pszText As String
-            Public cchTextMax As Integer
-            Public iImage As Integer
-            Public lParam As IntPtr
-            Public iIndent As Integer
-            Public iGroupId As Integer
-            Public cColumns As Integer
-            Public puColumns As IntPtr
+            Public ReadOnly pszText As String
+            Public ReadOnly cchTextMax As Integer
+            Public ReadOnly iImage As Integer
+            Public ReadOnly lParam As IntPtr
+            Public ReadOnly iIndent As Integer
+            Public ReadOnly iGroupId As Integer
+            Public ReadOnly cColumns As Integer
+            Public ReadOnly puColumns As IntPtr
 #Enable Warning IDE1006 ' Naming Styles
         End Structure
 
@@ -1501,15 +1501,15 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         End Class
 
         ''' <summary>
-        '''  We save the index range of the items, whose images are quired by the ResourceListView.
+        '''  We save the index range of the items, whose images are queried by the ResourceListView.
         '''  We usually save the information directly in m_ImageStartIndex and m_ImageEndIndex field in the ListView,
         '''  However, when we need load several blocks of them, we have to save the block we haven't processed in a stack.
         '''   This class is the record we push to the stack.
         ''' </summary>
         Private Class ImageCacheRequirement
             ' We should cache images from StartIndex to EndIndex (included)
-            Public StartIndex As Integer
-            Public EndIndex As Integer
+            Public ReadOnly StartIndex As Integer
+            Public ReadOnly EndIndex As Integer
 
             ''' <summary>
             ''' Constructor.

@@ -11,7 +11,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
 
     ''' <summary>
-    ''' Requests a new resouce name from the user.
+    ''' Requests a new resource name from the user.
     ''' </summary>
     ''' <remarks></remarks>
     Friend NotInheritable Class DialogQueryName
@@ -154,7 +154,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
 
         ''' <summary>
-        ''' Requests a new resouce name from the user.
+        ''' Requests a new resource name from the user.
         ''' </summary>
         ''' <param name="SuggestedName">The default name to show in the dialog when it is first shown.</param>
         ''' <param name="UserCancel">[Out] True iff the user canceled the dialog.</param>
@@ -197,7 +197,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Dim NewResourceName As String = TextBoxName.Text
                 Dim Exception As Exception = Nothing
                 If String.IsNullOrEmpty(NewResourceName) Then
-                    ResourceView.DsMsgBox(My.Resources.Designer.RSE_Err_NameBlank, MessageBoxButtons.OK, MessageBoxIcon.Error, , HelpIDs.Err_NameBlank)
+                    ResourceView.DsMsgBox(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_NameBlank, MessageBoxButtons.OK, MessageBoxIcon.Error, , HelpIDs.Err_NameBlank)
                 ElseIf Not Resource.ValidateName(ResourceView.ResourceFile, NewResourceName, String.Empty, NewResourceName, Exception) Then
                     ResourceView.DsMsgBox(Exception)
                 Else

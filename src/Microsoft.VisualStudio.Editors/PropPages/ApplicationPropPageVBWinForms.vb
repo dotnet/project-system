@@ -30,12 +30,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Protected Const Const_MyApplication As String = "MyApplication"
 
 
-        Private _shutdownModeStringValues As String()
-        Private _authenticationModeStringValues As String()
-        Private _noneText As String
+        Private ReadOnly _shutdownModeStringValues As String()
+        Private ReadOnly _authenticationModeStringValues As String()
+        Private ReadOnly _noneText As String
         Private _myType As String
-        Private _startupObjectLabelText As String 'This one is in the form's resx when initialized
-        Private _startupFormLabelText As String 'This one we pull from resources
+        Private ReadOnly _startupObjectLabelText As String 'This one is in the form's resx when initialized
+        Private ReadOnly _startupFormLabelText As String 'This one we pull from resources
 
         'This is the (cached) MyApplication.MyApplicationProperties object returned by the project system
         Private _myApplicationPropertiesCache As IMyApplicationPropertiesInternal
@@ -66,7 +66,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Protected Const Const_SaveMySettingsOnExit As String = "SaveMySettingsOnExit"
 
         ' Shared list of all known application types and their properties...
-        Private Shared s_applicationTypes As New List(Of ApplicationTypeInfo)
+        Private Shared ReadOnly s_applicationTypes As New List(Of ApplicationTypeInfo)
 
         Private _settingApplicationType As Boolean
 
@@ -76,11 +76,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <remarks></remarks>
         Shared Sub New()
             ' Populate shared list of all known application types allowed on this page
-            s_applicationTypes.Add(New ApplicationTypeInfo(ApplicationTypes.WindowsApp, My.Resources.Designer.PPG_WindowsFormsApp, True))
-            s_applicationTypes.Add(New ApplicationTypeInfo(ApplicationTypes.WindowsClassLib, My.Resources.Designer.PPG_WindowsClassLib, True))
-            s_applicationTypes.Add(New ApplicationTypeInfo(ApplicationTypes.CommandLineApp, My.Resources.Designer.PPG_CommandLineApp, True))
-            s_applicationTypes.Add(New ApplicationTypeInfo(ApplicationTypes.WindowsService, My.Resources.Designer.PPG_WindowsService, False))
-            s_applicationTypes.Add(New ApplicationTypeInfo(ApplicationTypes.WebControl, My.Resources.Designer.PPG_WebControlLib, False))
+            s_applicationTypes.Add(New ApplicationTypeInfo(ApplicationTypes.WindowsApp, My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_WindowsFormsApp, True))
+            s_applicationTypes.Add(New ApplicationTypeInfo(ApplicationTypes.WindowsClassLib, My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_WindowsClassLib, True))
+            s_applicationTypes.Add(New ApplicationTypeInfo(ApplicationTypes.CommandLineApp, My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_CommandLineApp, True))
+            s_applicationTypes.Add(New ApplicationTypeInfo(ApplicationTypes.WindowsService, My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_WindowsService, False))
+            s_applicationTypes.Add(New ApplicationTypeInfo(ApplicationTypes.WebControl, My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_WebControlLib, False))
         End Sub
 
         Public Sub New()
@@ -97,13 +97,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             _startupObjectLabelText = StartupObjectLabel.Text
 
             'Get text for the forms case from resources
-            _startupFormLabelText = My.Resources.Designer.PPG_Application_StartupFormLabelText
+            _startupFormLabelText = My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_StartupFormLabelText
 
-            _noneText = My.Resources.Designer.PPG_ComboBoxSelect_None
+            _noneText = My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_ComboBoxSelect_None
 
             'Ordering of strings here determines value stored in MyApplication.myapp
-            _shutdownModeStringValues = New String() {My.Resources.Designer.PPG_MyApplication_StartupMode_FormCloses, My.Resources.Designer.PPG_MyApplication_StartupMode_AppExits}
-            _authenticationModeStringValues = New String() {My.Resources.Designer.PPG_MyApplication_AuthenMode_Windows, My.Resources.Designer.PPG_MyApplication_AuthenMode_ApplicationDefined}
+            _shutdownModeStringValues = New String() {My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_MyApplication_StartupMode_FormCloses, My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_MyApplication_StartupMode_AppExits}
+            _authenticationModeStringValues = New String() {My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_MyApplication_AuthenMode_Windows, My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_MyApplication_AuthenMode_ApplicationDefined}
             PageRequiresScaling = False
         End Sub
 
@@ -144,7 +144,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     data = New PropertyControlData(MyAppDISPIDs.CustomSubMain, Const_CustomSubMain, UseApplicationFrameworkCheckBox, AddressOf CustomSubMainSet, AddressOf CustomSubMainGet, ControlDataFlags.UserPersisted Or ControlDataFlags.UserHandledEvents Or ControlDataFlags.PersistedInVBMyAppFile)
                     datalist.Add(data)
                     data = New PropertyControlData(VsProjPropId.VBPROJPROPID_RootNamespace, Const_RootNamespace, RootNamespaceTextBox, New Control() {RootNamespaceLabel}) With {
-                        .DisplayPropertyName = My.Resources.Designer.PPG_Property_RootNamespace
+                        .DisplayPropertyName = My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Property_RootNamespace
                     }
                     datalist.Add(data)
                     data = New PropertyControlData(VsProjPropId110.VBPROJPROPID_OutputTypeEx, Const_OutputTypeEx, Nothing, AddressOf OutputTypeSet, AddressOf OutputTypeGet, ControlDataFlags.None, ControlsThatDependOnOutputTypeProperty)
@@ -152,15 +152,15 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     data = New PropertyControlData(MyAppDISPIDs.MainForm, Const_MainFormNoRootNS, MainFormTextboxNoRootNS, AddressOf MainFormNoRootNSSet, Nothing, ControlDataFlags.UserPersisted Or ControlDataFlags.PersistedInVBMyAppFile)
                     datalist.Add(data)
                     data = New PropertyControlData(VsProjPropId.VBPROJPROPID_StartupObject, Const_StartupObject, StartupObjectComboBox, AddressOf StartupObjectSet, AddressOf StartupObjectGet, ControlDataFlags.UserHandledEvents, ControlsThatDependOnStartupObjectProperty) With {
-                        .DisplayPropertyName = My.Resources.Designer.PPG_Property_StartupObject
+                        .DisplayPropertyName = My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Property_StartupObject
                     }
                     datalist.Add(data)
                     data = New PropertyControlData(VsProjPropId.VBPROJPROPID_AssemblyName, "AssemblyName", AssemblyNameTextBox, New Control() {AssemblyNameLabel}) With {
-                        .DisplayPropertyName = My.Resources.Designer.PPG_Property_AssemblyName
+                        .DisplayPropertyName = My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Property_AssemblyName
                     }
                     datalist.Add(data)
                     data = New PropertyControlData(VsProjPropId.VBPROJPROPID_ApplicationIcon, "ApplicationIcon", IconCombobox, AddressOf ApplicationIconSet, AddressOf ApplicationIconGet, ControlDataFlags.UserHandledEvents, New Control() {IconLabel, IconPicturebox}) With {
-                        .DisplayPropertyName = My.Resources.Designer.PPG_Property_ApplicationIcon
+                        .DisplayPropertyName = My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Property_ApplicationIcon
                     }
                     datalist.Add(data)
                     data = New PropertyControlData(VBProjPropId.VBPROJPROPID_MyType, Const_MyType, Nothing, AddressOf MyTypeSet, AddressOf MyTypeGet)
@@ -533,13 +533,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 If Not IsAForm Then
                     If StringValue <> "" AndAlso StringValue.Equals(MyApplicationProperties.SplashScreenNoRootNS, StringComparison.OrdinalIgnoreCase) Then
                         'We couldn't find it because it's the same as the splash screen.  That's not allowed.
-                        ShowErrorMessage(My.Resources.Designer.PPG_Application_SplashSameAsStart)
+                        ShowErrorMessage(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_SplashSameAsStart)
                     Else
                         'When the application framework is enabled, there must be a start-up form selected (MainForm) or there will
                         '  be a compile error or run-time error.  We avoid this when possible by picking the first available
                         '  form.  Also show a messagebox to let the user know about the problem (but don't throw an exception, because
                         '  that would cause problems in applying the other properties on the page).
-                        ShowErrorMessage(My.Resources.Designer.PPG_Application_InvalidSubMainStartup)
+                        ShowErrorMessage(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_InvalidSubMainStartup)
                     End If
 
                     If FormEntryPoints IsNot Nothing AndAlso FormEntryPoints.Length() > 0 Then
@@ -663,12 +663,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
                     If PopulateDropdown Then
                         Switches.TracePDPerf("*** Populating splash screen list from the project [may be slow for a large project]")
-                        Debug.Assert(Not m_fInsideInit, "PERFORMANCE ALERT: We shouldn't be populating the screen screen dropdown list during page initialization, it should be done later if needed.")
+                        Debug.Assert(Not m_fInsideInit, "PERFORMANCE ALERT: We shouldn't be populating the splash screen dropdown list during page initialization, it should be done later if needed.")
                         Using New WaitCursor
                             Dim CurrentMainForm As String = MyApplicationProperties.MainFormNoRootNamespace
 
-                            For Each FullName As String In GetFormEntryPoints(IncludeSplashScreen:=True)
-                                Dim SplashForm As String = RemoveCurrentRootNamespace(FullName)
+                            For Each SplashForm As String In GetFormEntryPoints(IncludeSplashScreen:=True) _
+                                .Select(Function(e) RemoveCurrentRootNamespace(e)) _
+                                .OrderBy(Function(n) n)
                                 'Only add forms to this list, skip 'Sub Main'
                                 If (Not SplashForm.Equals(Const_MyApplicationEntryPoint, StringComparison.OrdinalIgnoreCase)) AndAlso
                                     (Not SplashForm.Equals(Const_SubMain, StringComparison.OrdinalIgnoreCase)) Then
@@ -1041,6 +1042,14 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             PopulateSplashScreenList(False)
 
+        End Sub
+
+        ''' <summary>
+        ''' Shows or hides the Auto-generate Binding Redirects checkbox depending on the new target
+        ''' framework.
+        ''' </summary>
+        Protected Overrides Sub TargetFrameworkMonikerChanged()
+            ShowAutoGeneratedBindingRedirectsCheckBox(TargetFrameworkComboBox, AutoGenerateBindingRedirectsCheckBox)
         End Sub
 
         Public Overrides Function GetUserDefinedPropertyDescriptor(PropertyName As String) As PropertyDescriptor
@@ -1417,7 +1426,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
         Private Sub AssemblyInfoButton_Click(sender As Object, e As EventArgs) Handles AssemblyInfoButton.Click
-            ShowChildPage(My.Resources.Designer.PPG_AssemblyInfo_Title, GetType(AssemblyInfoPropPage), HelpKeywords.VBProjPropAssemblyInfo)
+            ShowChildPage(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_AssemblyInfo_Title, GetType(AssemblyInfoPropPage), HelpKeywords.VBProjPropAssemblyInfo)
         End Sub
 
         ''' <summary>
@@ -1557,7 +1566,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             ' Navigate to events may add a file to the project, which may in turn cause the
             ' project file to be checked out at a later version. This will cause the project
             ' file to be reloaded, which will dispose me and bad things will happen (unless I
-            ' tell myselft that I'm about to potentially check out stuff)
+            ' tell myself that I'm about to potentially check out stuff)
             EnterProjectCheckoutSection()
             Try
                 MyApplicationProperties.NavigateToEvents()
@@ -1650,7 +1659,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 '  be confusing to the user.  So if there is no start-up form available in the project, then disable
                 '  the application framework again and tell the user why.
                 If GetFormEntryPoints(IncludeSplashScreen:=False).Length = 0 Then
-                    ShowErrorMessage(My.Resources.Designer.PPG_Application_InvalidSubMainStartup)
+                    ShowErrorMessage(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_InvalidSubMainStartup)
                     Try
                         Debug.Assert(Not m_fInsideInit, "This should have been checked at the beginning of this method")
                         m_fInsideInit = True 'Keep this routine from getting called recursively

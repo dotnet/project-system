@@ -22,7 +22,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         'We use the DesignerDocDataService class as a cheap way of getting check-in/out behavior.  See
         '  the Modify property.  We let it manage our DocData as its "primary" (in this case, only)
         '  doc data.  It will automatically track changes and handle check-in/check-out (see the
-        '  Modifyi property).
+        '  Modify property).
         Protected DocDataService As DesignerDocDataService
 
         'Window events from the DTE that we can hook up to
@@ -183,7 +183,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         Private _deferredLoaderService As IDesignerLoaderService
         Private _deferredLoadManager As IDesignerSerializationManager
         Protected NotOverridable Overrides Sub PerformLoad(SerializationManager As IDesignerSerializationManager)
-            ' Are we aready loaded?  If not, then we must defer the entire process for later.
+            ' Are we already loaded?  If not, then we must defer the entire process for later.
             '
             If DocData.Name Is Nothing OrElse DocData.Name.Length = 0 Then
                 'Visual Studio has handed us a DocData before telling that doc data to load.  We have to handle
@@ -198,7 +198,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 _deferredLoaderService = DirectCast(GetService(GetType(IDesignerLoaderService)), IDesignerLoaderService)
                 If _deferredLoaderService Is Nothing Then
                     Debug.Fail("Deferred load doc data requires support for IDesignerLoaderService")
-                    Throw New NotSupportedException(My.Resources.Designer.DFX_IncompatibleBuffer)
+                    Throw New NotSupportedException(My.Resources.Microsoft_VisualStudio_Editors_Designer.DFX_IncompatibleBuffer)
                 End If
 
                 Debug.Assert(_deferredLoadManager Is Nothing)
@@ -401,7 +401,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
             If Status = EditorCaptionState.ReadOnly Then
                 'Append "[Read Only]" to the caption so far
-                Caption = My.Resources.Designer.GetString(My.Resources.Designer.DFX_DesignerReadOnlyCaption, Caption)
+                Caption = My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.DFX_DesignerReadOnlyCaption, Caption)
             End If
 
             Return Caption
@@ -500,9 +500,9 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 End If
 
                 If FileName.Length > 0 Then
-                    Throw New Exception(My.Resources.Designer.GetString(My.Resources.Designer.DFX_DesignerLoaderIVsTextStreamNotFound, FileName))
+                    Throw New Exception(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.DFX_DesignerLoaderIVsTextStreamNotFound, FileName))
                 Else
-                    Throw New Exception(My.Resources.Designer.DFX_DesignerLoaderIVsTextStreamNotFoundNoFile)
+                    Throw New Exception(My.Resources.Microsoft_VisualStudio_Editors_Designer.DFX_DesignerLoaderIVsTextStreamNotFoundNoFile)
                 End If
             End If
 
@@ -604,7 +604,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             '  However, the designer host is not torn down, so any services that you proffer to it will
             '  still be available after the reload.
 
-            ' NoFlush: Causes the designer loader to anbandon any changes before reloading.
+            ' NoFlush: Causes the designer loader to abandon any changes before reloading.
             Reload(ReloadOptions.NoFlush)
         End Sub
 
@@ -820,7 +820,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                     ' update the IVsHierarchy service with the new value
                     UpdateService(GetType(IVsHierarchy), _vsHierarchy)
 
-                    ' the hierarchy is a component of the ProjectItem, so we need to update the ProejctItem service as well
+                    ' the hierarchy is a component of the ProjectItem, so we need to update the ProjectItem service as well
                     updateProjectItemService = True
                 End If
 
@@ -828,7 +828,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 If ((attributes And __VSRDTATTRIB.RDTA_ItemID) <> 0) AndAlso (_projectItemid = itemidOld) Then
                     _projectItemid = itemidNew
 
-                    ' the project item ID is a component of the ProjectItem, so we need to update the ProejctItem service
+                    ' the project item ID is a component of the ProjectItem, so we need to update the ProjectItem service
                     updateProjectItemService = True
                 End If
 

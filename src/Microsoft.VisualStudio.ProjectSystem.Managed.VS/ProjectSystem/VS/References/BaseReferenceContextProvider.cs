@@ -106,7 +106,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
         /// Higher numbers appear earlier in the Reference Manager.
         /// 
         /// These values are the values CPS uses for the tab order. This should be removed
-        /// when those are exposed publically and use those values directly.
+        /// when those are exposed publicly and use those values directly.
         /// </remarks>
         protected static class ReferencePriority
         {

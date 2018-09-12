@@ -20,8 +20,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <remarks></remarks>
         Public Const NestingCharacter As String = ":"
 
-        Private _wrappedInternalSite As IPropertyPageSiteInternal 'May *not* be Nothing
-        Private _wrappedUndoSite As IVsProjectDesignerPageSite    'May be Nothing
+        Private ReadOnly _wrappedInternalSite As IPropertyPageSiteInternal 'May *not* be Nothing
+        Private ReadOnly _wrappedUndoSite As IVsProjectDesignerPageSite    'May be Nothing
         Private ReadOnly _nestedPropertyNamePrefix As String               'Prefix string to be placed at the beginning of PropertyName to distinguish properties from the page hosted by this child page site
 
 

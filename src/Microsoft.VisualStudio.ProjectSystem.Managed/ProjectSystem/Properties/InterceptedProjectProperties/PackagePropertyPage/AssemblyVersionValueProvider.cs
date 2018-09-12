@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Package
         protected override async Task<Version> GetDefaultVersionAsync(IProjectProperties defaultProperties)
         {
             // Default semantic/package version just has 3 fields, we need to append an additional Revision field with value "0".
-            Version defaultVersion = await base.GetDefaultVersionAsync(defaultProperties).ConfigureAwait(true);
+            Version defaultVersion = await base.GetDefaultVersionAsync(defaultProperties);
             if (ReferenceEquals(defaultVersion, DefaultVersion))
             {
                 return s_defaultAssemblyVersion;

@@ -64,7 +64,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         Function Init(<[In]()> ProjectHierarchy As IVsHierarchy) As Integer 'Initialize the MyApplicationProperties object, etc.
 
         <PreserveSig()>
-        Function GetProperties(<Out(), MarshalAs(UnmanagedType.IDispatch)> ByRef MyAppProps As Object) As Integer 'Get MyAppliationProperties object
+        Function GetProperties(<Out(), MarshalAs(UnmanagedType.IDispatch)> ByRef MyAppProps As Object) As Integer 'Get MyApplicationProperties object
 
         <PreserveSig()>
         Function Save() As Integer 'Save any MyApplicationProperties changes to disk (in MyApplication.myapp), if dirty
@@ -138,7 +138,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
 
         'WeakReference list of MyApplicationProperties objects, one for each
         '  IVsHierarchy that we've been initialized against
-        Private Shared s_myPropertyInstances As New Hashtable
+        Private Shared ReadOnly s_myPropertyInstances As New Hashtable
 
 
         ''' <summary>
@@ -890,11 +890,11 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                 'The COM exception don't give us much to go on.  In the SCC case, for instance, if 
                 '  project check-out fails, the message is simply "Exception occurred".  We'd rather
                 '  simply throw a general exception of our own text than propagate this to the user.
-                Throw New Exception(My.Resources.Designer.RSE_Task_CantChangeCustomToolOrNamespace, ex)
+                Throw New Exception(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Task_CantChangeCustomToolOrNamespace, ex)
 
             Catch ex As Exception
                 'For anything else, combine our error messages.
-                Throw New Exception(My.Resources.Designer.RSE_Task_CantChangeCustomToolOrNamespace & vbCrLf & ex.Message)
+                Throw New Exception(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Task_CantChangeCustomToolOrNamespace & vbCrLf & ex.Message)
             End Try
         End Sub
 
@@ -971,13 +971,13 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
 
                     'Add comments
                     Dim Comments As String =
-                        My.Resources.Designer.PPG_Application_AppEventsCommentLine1 _
-                        & vbCrLf & My.Resources.Designer.PPG_Application_AppEventsCommentLine2 _
-                        & vbCrLf & My.Resources.Designer.PPG_Application_AppEventsCommentLine3 _
-                        & vbCrLf & My.Resources.Designer.PPG_Application_AppEventsCommentLine4 _
-                        & vbCrLf & My.Resources.Designer.PPG_Application_AppEventsCommentLine5 _
-                        & vbCrLf & My.Resources.Designer.PPG_Application_AppEventsCommentLine6 _
-                        & vbCrLf & My.Resources.Designer.PPG_Application_AppEventsCommentLine7
+                        My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_AppEventsCommentLine1 _
+                        & vbCrLf & My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_AppEventsCommentLine2 _
+                        & vbCrLf & My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_AppEventsCommentLine3 _
+                        & vbCrLf & My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_AppEventsCommentLine4 _
+                        & vbCrLf & My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_AppEventsCommentLine5 _
+                        & vbCrLf & My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_AppEventsCommentLine6 _
+                        & vbCrLf & My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_AppEventsCommentLine7
                     MyEventsClass.Comment = Comments
                 End If
             End If
@@ -1221,7 +1221,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         End Function
 
         ''' <summary>
-        ''' Whenver the backing file changes, we better update ourselves...
+        ''' Whenever the backing file changes, we better update ourselves...
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>

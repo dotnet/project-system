@@ -7,7 +7,7 @@ Namespace Microsoft.VisualStudio.Editors.OptionPages
     Partial Friend NotInheritable Class GeneralOptionPageControl
         Inherits OptionPageControl
 
-        Private _generalOptions As GeneralOptions
+        Private ReadOnly _generalOptions As GeneralOptions
 
         Public Shared ReadOnly FastUpToDateLogLevelItemSource As String() = {
             My.Resources.GeneralOptionPageResources.General_FastUpToDateCheck_LogLevel_None,
@@ -40,6 +40,25 @@ Namespace Microsoft.VisualStudio.Editors.OptionPages
 
             bindingExpression = FastUpToDateLogLevel.SetBinding(Selector.SelectedIndexProperty, binding)
             AddBinding(bindingExpression)
+
+            binding = New Binding() With {
+                .Source = _generalOptions,
+                .Path = New Windows.PropertyPath(NameOf(GeneralOptions.UsePreviewSdk)),
+                .UpdateSourceTrigger = UpdateSourceTrigger.Explicit
+            }
+
+            bindingExpression = UsePreviewSdk.SetBinding(ToggleButton.IsCheckedProperty, binding)
+            AddBinding(bindingExpression)
+
+            binding = New Binding() With {
+                .Source = _generalOptions,
+                .Path = New Windows.PropertyPath(NameOf(GeneralOptions.CanChangeUsePreviewSdk)),
+                .UpdateSourceTrigger = UpdateSourceTrigger.Explicit
+            }
+
+            bindingExpression = UsePreviewSdk.SetBinding(IsEnabledProperty, binding)
+            AddBinding(bindingExpression)
+
         End Sub
     End Class
 End Namespace

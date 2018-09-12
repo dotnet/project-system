@@ -10,7 +10,7 @@ using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
-    internal class IProjectPropertiesFactory
+    internal static class IProjectPropertiesFactory
     {
         public static Mock<IProjectProperties> MockWithProperty(string propertyName)
         {

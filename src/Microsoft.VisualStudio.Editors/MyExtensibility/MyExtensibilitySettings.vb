@@ -465,14 +465,14 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ' - value is an AssemblyDictionary of object. AssemblyDictionary contains extension templates
         '   + key is an assembly full name.
         '   + enabling getting extension templates associated with an assembly with / without version.
-        Private _extensionInfos As New Dictionary(Of String, AssemblyDictionary(Of MyExtensionTemplate))
+        Private ReadOnly _extensionInfos As New Dictionary(Of String, AssemblyDictionary(Of MyExtensionTemplate))
         ' The auto options dictionary:
         ' - key is assembly full name without culture / public key - case insensitive.
         ' - value is AssemblyAutoOption.
-        Private _autoOptions As New Dictionary(Of String, AssemblyAutoOption)(StringComparer.OrdinalIgnoreCase)
+        Private ReadOnly _autoOptions As New Dictionary(Of String, AssemblyAutoOption)(StringComparer.OrdinalIgnoreCase)
 
         ' Assembly settings file path
-        Private _settingsFilePath As String
+        Private ReadOnly _settingsFilePath As String
         ' Cached and lazy-init TypeConverter for AssemblyOption enumeration.
         Private Shared s_assemblyOptionConverter As TypeConverter
 

@@ -10,7 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     internal static class IProjectTreeExtensions1
     {
         /// <summary>
-        /// Finds a tree node by it's flags. If there many nodes that sattisfy flags, returns first.
+        /// Finds a tree node by it's flags. If there many nodes that satisfy flags, returns first.
         /// </summary>
         internal static IProjectTree GetSubTreeNode(this IProjectTree self, ProjectTreeFlags flags)
         {

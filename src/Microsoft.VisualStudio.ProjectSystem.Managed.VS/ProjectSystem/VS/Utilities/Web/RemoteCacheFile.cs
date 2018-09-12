@@ -58,7 +58,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
         {
             try
             {
-                string downLoadedVersionData = await _httpClient.Value.GetStringAsync(new Uri(_downloadUrl)).ConfigureAwait(false);
+                string downLoadedVersionData = await _httpClient.Value.GetStringAsync(new Uri(_downloadUrl));
 
                 // Make sure it is valid data before we write to the file (will throw on failure, we don't need the returned data)
                 VersionCompatibilityData.DeserializeVersionData(downLoadedVersionData);

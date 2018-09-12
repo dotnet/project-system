@@ -21,13 +21,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
 
         public override async Task<string> OnGetEvaluatedPropertyValueAsync(string evaluatedPropertyValue, IProjectProperties defaultProperties)
         {
-            ActiveConfiguredObjects<ConfiguredProject> configuredProjects = await _projectProvider.GetActiveConfiguredProjectsAsync().ConfigureAwait(true);
+            ActiveConfiguredObjects<ConfiguredProject> configuredProjects = await _projectProvider.GetActiveConfiguredProjectsAsync();
             ImmutableArray<string>.Builder builder = ImmutableArray.CreateBuilder<string>();
             foreach (ConfiguredProject configuredProject in configuredProjects.Objects)
             {
                 ProjectProperties projectProperties = configuredProject.Services.ExportProvider.GetExportedValue<ProjectProperties>();
-                ConfigurationGeneral configuration = await projectProperties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(true);
-                string currentTargetFrameworkMoniker = (string)await configuration.TargetFrameworkMoniker.GetValueAsync().ConfigureAwait(true);
+                ConfigurationGeneral configuration = await projectProperties.GetConfigurationGeneralPropertiesAsync();
+                string currentTargetFrameworkMoniker = (string)await configuration.TargetFrameworkMoniker.GetValueAsync();
                 builder.Add(currentTargetFrameworkMoniker);
             }
 

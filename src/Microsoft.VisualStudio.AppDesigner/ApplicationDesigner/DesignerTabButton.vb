@@ -239,7 +239,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             Inherits ButtonBaseAccessibleObject
 
             ' button which this accessible object belongs to
-            Private _button As ProjectDesignerTabButton
+            Private ReadOnly _button As ProjectDesignerTabButton
 
             Public Sub New(owner As ProjectDesignerTabButton)
                 MyBase.New(owner)

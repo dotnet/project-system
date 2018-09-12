@@ -19,13 +19,18 @@
   
   <PropertyGroup Condition="'$(Language)' == 'C#'">
     <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <!-- Build machines only have Visual Studio 15.5 -->
     <LangVersion>7.2</LangVersion>
+    <Features>strict</Features>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Language)' == 'VB'">
+    <!-- Build machines only have Visual Studio 15.5 (which comes with VB 15.3) -->
+    <LangVersion>15.3</LangVersion>
     <!-- The default is Embed -->
     <VBRuntime>Default</VBRuntime>
     <RemoveIntegerChecks>true</RemoveIntegerChecks>
+    <Features>strict</Features>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -52,5 +57,10 @@
     <SuppressFromVsix Include="Microsoft.VSDesigner.dll"/>
     <SuppressFromVsix Include="Microsoft.VisualStudio.DataTools.Interop.dll"/>
     <SuppressFromVsix Include="Microsoft.VisualStudio.XmlEditor.dll"/>
+  </ItemGroup>
+  
+  <!-- Dogfood double click editing of project files: https://github.com/dotnet/project-system/issues/1224 -->
+  <ItemGroup>
+    <ProjectCapability Include="DoubleClickEditProjectFile"/>
   </ItemGroup>
 </Project>

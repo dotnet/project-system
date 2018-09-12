@@ -69,7 +69,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     End If
 
                     'First draw the "selection rectangle" area (actually, we draw the whole rect,
-                    '  but we'll eraase it with background afterwards)
+                    '  but we'll erase it with background afterwards)
                     ThumbnailGraphics.FillRectangle(New SolidBrush(AlmostTransparent), ImageRect)
 
                     '... then the border
@@ -505,9 +505,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             If LengthInBytes > BytesInKilobyte Then
                 Dim FormattedKB As String = (LengthInBytes / BytesInKilobyte).ToString("0.0")
-                Return String.Format(My.Resources.Designer.GetString(My.Resources.Designer.RSE_FileSizeFormatKB, FormattedKB))
+                Return String.Format(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_FileSizeFormatKB, FormattedKB))
             Else
-                Return String.Format(My.Resources.Designer.GetString(My.Resources.Designer.RSE_FileSizeFormatBytes_1Arg, LengthInBytes))
+                Return String.Format(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_FileSizeFormatBytes_1Arg, LengthInBytes))
             End If
         End Function
 

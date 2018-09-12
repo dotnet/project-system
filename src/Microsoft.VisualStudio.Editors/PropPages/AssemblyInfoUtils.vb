@@ -118,10 +118,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         Select Case Field
                             Case 0, 1
                                 'Wildcards never allowed in this field
-                                Throw New ArgumentException(My.Resources.Designer.PPG_AssemblyInfo_BadWildcard)
+                                Throw New ArgumentException(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_AssemblyInfo_BadWildcard)
                             Case 2, 3
                                 If Not WildcardsAllowed Then
-                                    Throw New ArgumentException(My.Resources.Designer.PPG_AssemblyInfo_BadWildcard)
+                                    Throw New ArgumentException(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_AssemblyInfo_BadWildcard)
                                 End If
                             Case Else
                                 Debug.Fail("Unexpected case")
@@ -130,7 +130,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     Else
                         'If not an asterisk, it had better be numeric in the accepted range
                         If Not ValidateIsNumericVersionPart(Fields(Field), MaxVersionPartValue) Then
-                            Throw New ArgumentException(My.Resources.Designer.GetString(My.Resources.Designer.PPG_AssemblyInfo_VersionOutOfRange_2Args, PropertyName, CStr(MaxVersionPartValue)))
+                            Throw New ArgumentException(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_AssemblyInfo_VersionOutOfRange_2Args, PropertyName, CStr(MaxVersionPartValue)))
                         End If
                     End If
                 Next
@@ -139,14 +139,14 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             If IsValid Then
                 FormattedVersion = CombinedVersion
             Else
-                Throw New ArgumentException(My.Resources.Designer.PPG_AssemblyInfo_InvalidVersion)
+                Throw New ArgumentException(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_AssemblyInfo_InvalidVersion)
             End If
         End Sub
 
 
 #Region "Neutral Language Combobox"
 
-        Private ReadOnly s_neutralLanguageNoneText As String = My.Resources.Designer.PPG_NeutralLanguage_None 'Text for "None" in the neutral language combobox (stored in case thread language changes)
+        Private ReadOnly s_neutralLanguageNoneText As String = My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_NeutralLanguage_None 'Text for "None" in the neutral language combobox (stored in case thread language changes)
 
         ''' <summary>
         ''' Populate the neutral language combobox with cultures
@@ -209,7 +209,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Dim NeutralLanguageComboBox = DirectCast(control, Windows.Forms.ComboBox)
             If NeutralLanguageComboBox.SelectedIndex < 0 Then
                 'Nothing selected, return the typed-in text - we will try to accept it as is
-                '  (i.e., they might have entered just a culture abbrevation, such as "de-ch", and
+                '  (i.e., they might have entered just a culture abbreviation, such as "de-ch", and
                 '  we will accept it if it's valid)
                 value = NeutralLanguageComboBox.Text
             Else

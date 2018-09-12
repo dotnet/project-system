@@ -137,4 +137,5 @@
     <StringProperty Name="LanguageServiceName" ReadOnly="True" Visible="False" Description="Represents the LanguageName that is passed to Roslyn" />
     <StringProperty Name="LanguageServiceId" ReadOnly="True" Visible="False" Description="Represents the GUID of object that implements the language service for the project." />
     <StringProperty Name="TemplateLanguage" ReadOnly="True" Visible="False" Description="Represent the language that is persisted in items and project templates" />
+    <StringProperty Name="NETCoreSdkVersion" ReadOnly="True" Visible="False" Description="Represents the version of the dotnet sdk being used (if any)."/>
 </Rule>

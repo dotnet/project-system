@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.ComponentModel.Design.Serialization
 Imports System.Diagnostics.CodeAnalysis
@@ -19,7 +19,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 
         ''' <summary>
         ''' This method is called immediately after the first time
-        '''   BeginLoad is invoked.  This is an appopriate place to
+        '''   BeginLoad is invoked.  This is an appropriate place to
         '''   add custom services to the loader host.  Remember to
         '''   remove any custom services you add here by overriding
         '''   Dispose.
@@ -28,7 +28,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         Protected Overrides Sub Initialize()
             MyBase.Initialize()
 
-            'Add our ComponentSerializationService so that the basic desiger will give us automatic Undo/Redo
+            'Add our ComponentSerializationService so that the basic designer will give us automatic Undo/Redo
             Dim SerializationService As New PropertyPageSerializationService(LoaderHost)
             LoaderHost.AddService(GetType(ComponentSerializationService), SerializationService)
             LoaderHost.AddService(GetType(Shell.Design.WindowPaneProviderService),
@@ -81,7 +81,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         End Sub
 
         ''' <summary>
-        ''' Initializes the designer.  We are not file bsed, so not much to do
+        ''' Initializes the designer.  We are not file based, so not much to do
         ''' </summary>
         ''' <param name="serializationManager"></param>
         ''' <remarks>

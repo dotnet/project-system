@@ -25,7 +25,7 @@ namespace Microsoft.VisualStudio
         /// <summary>
         /// Single, static instance of an array that contains a forward slash '/', which is used to split strings.
         /// </summary>
-        internal static readonly char[] FowardSlash = new char[] { '/' };
+        internal static readonly char[] ForwardSlash = new char[] { '/' };
 
         /// <summary>
         /// Single, static instance of an array that contains a back slash '\', which is used to split strings.

@@ -15,7 +15,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Implements IComparer
 
         'A hashtable that maps a Category to its sort order
-        Private _categoryToCategoryOrderHash As New Hashtable
+        Private ReadOnly _categoryToCategoryOrderHash As New Hashtable
 
         'All categories included in the search
         Private ReadOnly _categories As CategoryCollection

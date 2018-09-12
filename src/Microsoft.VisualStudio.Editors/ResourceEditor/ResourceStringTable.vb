@@ -28,7 +28,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
         'A list of all Resource entries that are displayed in this string table (with the exception
         '  of the uncommitted resource, if any)
-        Private _virtualResourceList As New ArrayList
+        Private ReadOnly _virtualResourceList As New ArrayList
 
         'The row that is currently being removed, if any.
         Private _removingRow As DataGridViewRow
@@ -87,6 +87,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             AllowUserToDeleteRows = False
             EditMode = DataGridViewEditMode.EditOnKeystrokeOrF2
             AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
+            AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells
             DefaultCellStyle.WrapMode = DataGridViewTriState.True
 
             ' when the NullValue set to empty string, DataGridView will compare input string with it by using String.Compare.
@@ -225,7 +226,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 .CellTemplate = New ResourceStringTextBoxCell()
                 .FillWeight = DefaultColumnWidthPercentage_Name
                 .MinimumWidth = ColumnWidth
-                .Name = My.Resources.Designer.RSE_ResourceNameColumn
+                .Name = My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_ResourceNameColumn
                 .Width = ColumnWidth
                 Debug.Assert(COLUMN_NAME = Columns.GetColumnCount(DataGridViewElementStates.Visible), "COLUMN_NAME constant is not correct")
                 .HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleLeft
@@ -241,7 +242,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 .CellTemplate = New ResourceStringTextBoxCell()
                 .FillWeight = DefaultColumnWidthPercentage_Type
                 .MinimumWidth = ColumnWidth
-                .Name = My.Resources.Designer.RSE_TypeColumn
+                .Name = My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_TypeColumn
                 .ReadOnly = True 'Can't modify the Type column - just for info
                 .Width = ColumnWidth
                 Debug.Assert(COLUMN_TYPE = Columns.GetColumnCount(DataGridViewElementStates.Visible), "COLUMN_TYPE constant is not correct")
@@ -261,7 +262,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 .CellTemplate = New ResourceStringTextBoxCell()
                 .FillWeight = DefaultColumnWidthPercentage_Value
                 .MinimumWidth = ColumnWidth
-                .Name = My.Resources.Designer.RSE_ResourceColumn
+                .Name = My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_ResourceColumn
                 .Width = ColumnWidth
                 Debug.Assert(COLUMN_VALUE = Columns.GetColumnCount(DataGridViewElementStates.Visible), "COLUMN_VALUE constant is not correct")
                 .HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleLeft
@@ -276,7 +277,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 .CellTemplate = New ResourceStringTextBoxCell()
                 .FillWeight = DefaultColumnWidthPercentage_Comment
                 .MinimumWidth = ColumnWidth
-                .Name = My.Resources.Designer.RSE_CommentColumn
+                .Name = My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_CommentColumn
                 .Width = ColumnWidth
                 Debug.Assert(COLUMN_COMMENT = Columns.GetColumnCount(DataGridViewElementStates.Visible), "COLUMN_COMMENT constant is not correct")
                 .HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleLeft
@@ -477,7 +478,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 #Region "Validation"
 
         ''' <summary>
-        ''' Called for eror handling.  Shouldn't ever be called in our case, added just
+        ''' Called for error handling.  Shouldn't ever be called in our case, added just
         '''   to assert in case.
         ''' </summary>
         ''' <param name="e"></param>
@@ -787,7 +788,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                         Rows.Add(CreateNewResourceRow())
                     Else
                         'We will note that we need to create a shared row, but we want to
-                        '  accumulte and add them at once.
+                        '  accumulate and add them at once.
                         SharedRowsToAdd += 1
                     End If
                 Else
@@ -1708,10 +1709,10 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             If failedCount > 0 Then
                 If failedCount = cells.Count Then
                     ' throw an exception to abort the transaction...
-                    Throw New InvalidOperationException(My.Resources.Designer.RSE_Err_CantBeEmpty)
+                    Throw New InvalidOperationException(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_CantBeEmpty)
                 End If
 
-                DsMsgBox(My.Resources.Designer.RSE_Err_CantBeEmpty, MessageBoxButtons.OK, MessageBoxIcon.Error)
+                DsMsgBox(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_CantBeEmpty, MessageBoxButtons.OK, MessageBoxIcon.Error)
             End If
 
             Refresh()
@@ -1800,7 +1801,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
         ''' <summary>
         '''  customized TextBox in the ResourceStringTable. The TextBox is used to edit cell value.
-        '''  However, it fires serveral OnDirty events when the customer types one character in the cell. We depend on this event to check out the file.
+        '''  However, it fires several OnDirty events when the customer types one character in the cell. We depend on this event to check out the file.
         '''  We don't want to prompt check out multiple times in a single event. But we don't know whether those OnDirty is caused by single action.
         '''  We overrides the EditingControl to see whether all those events are caused by one window message.
         ''' </summary>

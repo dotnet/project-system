@@ -51,9 +51,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         private ProjectProperties Properties { get; }
         private UnconfiguredProject Project { get; }
 
-        private async Task<ConfiguredProject> GetConfiguredProjectForDebugAsync()
+        private Task<ConfiguredProject> GetConfiguredProjectForDebugAsync()
         {
-            return await ActiveDebugFramework.GetConfiguredProjectForActiveFrameworkAsync().ConfigureAwait(false);
+            return ActiveDebugFramework.GetConfiguredProjectForActiveFrameworkAsync();
         }
 
         /// <summary>
@@ -94,12 +94,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         {
             // Used by default Windows debugger to figure out whether to add an extra
             // pause to end of window when CTRL+F5'ing a console application
-            ConfigurationGeneral configuration = await Properties.GetConfigurationGeneralPropertiesAsync()
-                                                                 .ConfigureAwait(false);
+            ConfigurationGeneral configuration = await Properties.GetConfigurationGeneralPropertiesAsync();
 
 
-            var actualOutputType = (IEnumValue)await configuration.OutputType.GetValueAsync()
-                                                                             .ConfigureAwait(false);
+            var actualOutputType = (IEnumValue)await configuration.OutputType.GetValueAsync();
 
             return StringComparers.PropertyValues.Equals(actualOutputType.Name, outputType);
         }
@@ -110,7 +108,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         }
 
         /// <summary>
-        /// This is called on F5/Ctrl-F5 to return the list of debug targets.What we return depends on the type
+        /// This is called on F5/Ctrl-F5 to return the list of debug targets. What we return depends on the type
         /// of project.
         /// </summary>
         public Task<IReadOnlyList<IDebugLaunchSettings>> QueryDebugTargetsAsync(DebugLaunchOptions launchOptions, ILaunchProfile activeProfile)
@@ -123,16 +121,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             var launchSettings = new List<DebugLaunchSettings>();
 
             // Resolve the tokens in the profile
-            ILaunchProfile resolvedProfile = await TokenReplacer.ReplaceTokensInProfileAsync(activeProfile).ConfigureAwait(false);
+            ILaunchProfile resolvedProfile = await TokenReplacer.ReplaceTokensInProfileAsync(activeProfile);
 
             // For "run project", we want to launch the process if it's a console app via the command shell when 
             // not debugging, except when this debug session is being launched for profiling.
             bool useCmdShell =
                     IsRunProjectCommand(resolvedProfile) &&
                     (launchOptions & (DebugLaunchOptions.NoDebug | DebugLaunchOptions.Profiling)) == DebugLaunchOptions.NoDebug &&
-                    await IsConsoleAppAsync().ConfigureAwait(false);
+                    await IsConsoleAppAsync();
 
-            DebugLaunchSettings consoleTarget = await GetConsoleTargetForProfile(resolvedProfile, launchOptions, useCmdShell, validateSettings).ConfigureAwait(false);
+            DebugLaunchSettings consoleTarget = await GetConsoleTargetForProfile(resolvedProfile, launchOptions, useCmdShell, validateSettings);
 
             launchSettings.Add(consoleTarget);
 
@@ -199,11 +197,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             string executable, arguments;
 
             string projectFolder = Path.GetDirectoryName(Project.FullPath);
-            ConfiguredProject configuredProject = await GetConfiguredProjectForDebugAsync().ConfigureAwait(false);
+            ConfiguredProject configuredProject = await GetConfiguredProjectForDebugAsync();
 
             // If no working directory specified in the profile, we default to output directory. If for some reason the output directory
             // is not specified, fall back to the project folder.
-            string defaultWorkingDir = await GetOutputDirectoryAsync(configuredProject).ConfigureAwait(false);
+            string defaultWorkingDir = await GetOutputDirectoryAsync(configuredProject);
             if (string.IsNullOrEmpty(defaultWorkingDir))
             {
                 defaultWorkingDir = projectFolder;
@@ -225,14 +223,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             // Is this profile just running the project? If so we ignore the exe
             if (IsRunProjectCommand(resolvedProfile))
             {
-                // If we're launching for debug purposes, prevent someone F5'ing a class library
-                if (validateSettings && await IsClassLibraryAsync().ConfigureAwait(false))
-                {
-                    throw new Exception(VSResources.ProjectNotRunnableDirectly);
-                }
-
                 // Get the executable to run, the arguments and the default working directory
-                Tuple<string, string, string> runData = await GetRunnableProjectInformationAsync(configuredProject).ConfigureAwait(false);
+                Tuple<string, string, string> runData = await GetRunnableProjectInformationAsync(configuredProject, validateSettings);
                 executable = runData.Item1;
                 arguments = runData.Item2;
                 if (!string.IsNullOrWhiteSpace(runData.Item3))
@@ -321,7 +313,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             settings.Arguments = finalArguments;
             settings.CurrentDirectory = workingDir;
             settings.LaunchOperation = DebugLaunchOperation.CreateProcess;
-            settings.LaunchDebugEngineGuid = await GetDebuggingEngineAsync(configuredProject).ConfigureAwait(false);
+            settings.LaunchDebugEngineGuid = await GetDebuggingEngineAsync(configuredProject);
 
             if (resolvedProfile.NativeDebuggingIsEnabled())
             {
@@ -340,13 +332,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// Queries properties from the project to get information on how to run the application. The returned Tuple contains:
         /// exeToRun, arguments, workingDir
         /// </summary>
-        private async Task<Tuple<string, string, string>> GetRunnableProjectInformationAsync(ConfiguredProject configuredProject)
+        private async Task<Tuple<string, string, string>> GetRunnableProjectInformationAsync(
+            ConfiguredProject configuredProject,
+            bool validateSettings)
         {
             IProjectProperties properties = configuredProject.Services.ProjectPropertiesProvider.GetCommonProperties();
 
-            string runCommand = await GetTargetCommandAsync(properties).ConfigureAwait(false);
-            string runWorkingDirectory = await properties.GetEvaluatedPropertyValueAsync("RunWorkingDirectory").ConfigureAwait(false);
-            string runArguments = await properties.GetEvaluatedPropertyValueAsync("RunArguments").ConfigureAwait(false);
+            string runCommand = await GetTargetCommandAsync(properties, validateSettings);
+            string runWorkingDirectory = await properties.GetEvaluatedPropertyValueAsync("RunWorkingDirectory");
+            string runArguments = await properties.GetEvaluatedPropertyValueAsync("RunArguments");
 
             if (string.IsNullOrWhiteSpace(runCommand))
             {
@@ -362,16 +356,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             return new Tuple<string, string, string>(runCommand, runArguments, runWorkingDirectory);
         }
 
-        private async Task<string> GetTargetCommandAsync(IProjectProperties properties)
+        private async Task<string> GetTargetCommandAsync(
+            IProjectProperties properties,
+            bool validateSettings)
         {
             // First try "RunCommand" property
-            string runCommand = await GetRunCommandAsync(properties).ConfigureAwait(false);
+            string runCommand = await GetRunCommandAsync(properties);
 
             if (string.IsNullOrEmpty(runCommand))
             {
+                // If we're launching for debug purposes, prevent someone F5'ing a class library
+                if (validateSettings && await IsClassLibraryAsync())
+                {
+                    throw new Exception(VSResources.ProjectNotRunnableDirectly);
+                }
+
                 // Otherwise, fall back to "TargetPath"
-                runCommand = await properties.GetEvaluatedPropertyValueAsync(ConfigurationGeneral.TargetPathProperty)
-                                             .ConfigureAwait(false);
+                runCommand = await properties.GetEvaluatedPropertyValueAsync(ConfigurationGeneral.TargetPathProperty);
             }
 
             return runCommand;
@@ -380,8 +381,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
         private async Task<string> GetRunCommandAsync(IProjectProperties properties)
         {
-            string runCommand = await properties.GetEvaluatedPropertyValueAsync("RunCommand")
-                                                .ConfigureAwait(false);
+            string runCommand = await properties.GetEvaluatedPropertyValueAsync("RunCommand");
 
             if (string.IsNullOrEmpty(runCommand))
                 return null;
@@ -409,20 +409,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         private static async Task<string> GetOutputDirectoryAsync(ConfiguredProject configuredProject)
         {
             IProjectProperties properties = configuredProject.Services.ProjectPropertiesProvider.GetCommonProperties();
-            string outdir = await properties.GetEvaluatedPropertyValueAsync("OutDir").ConfigureAwait(false);
+            string outdir = await properties.GetEvaluatedPropertyValueAsync("OutDir");
 
             return outdir;
         }
         private static async Task<Guid> GetDebuggingEngineAsync(ConfiguredProject configuredProject)
         {
             IProjectProperties properties = configuredProject.Services.ProjectPropertiesProvider.GetCommonProperties();
-            string framework = await properties.GetEvaluatedPropertyValueAsync("TargetFrameworkIdentifier").ConfigureAwait(false);
+            string framework = await properties.GetEvaluatedPropertyValueAsync("TargetFrameworkIdentifier");
 
             return ProjectDebuggerProvider.GetManagedDebugEngineForFramework(framework);
         }
 
         /// <summary>
-        /// Searchs the path variable for the first match of exeToSearchFor. Returns
+        /// Searches the path variable for the first match of exeToSearchFor. Returns
         /// null if not found.
         /// </summary>
         public string GetFullPathOfExeFromEnvironmentPath(string exeToSearchFor)

@@ -40,7 +40,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' If the file is already in the project (in any subfolder), it is left where it is.
             ''' Otherwise, the file is added to the Resources folder (using ProjectItems.AddFromFileCopy)
             '''   in the top level of the Project.
-            '''   If a Resources folder doesn 't exist, it is created.   
+            '''   If a Resources folder doesn't exist, it is created.   
             ''' A link is made to the copied file, if it was copied, or else to the original location of the file.
             ''' </remarks>
             AddToResourcesFolder = 1
@@ -102,7 +102,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <returns>The final file and path of the file after it was added to the project, or else its original location if
         '''   it was not added to the project or was not copied while being added to the project.  Returns Nothing if the
         '''  user canceled the operation.</returns>
-        ''' <remarks>The user is given the choic to cancel the operation when he is asked to overwrite an existing file or link.</remarks>
+        ''' <remarks>The user is given the choice to cancel the operation when he is asked to overwrite an existing file or link.</remarks>
         Public Shared Function AddFileToProject(EditorName As String, Project As Project, ResXProjectItem As ProjectItem, MessageBoxOwner As IWin32Window, SourceFilePath As String) As String
             Return AddFileToProjectHelper(EditorName, Project, ResXProjectItem, MessageBoxOwner, SourceFilePath, CopyFileIfExists:=False)
         End Function
@@ -122,7 +122,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 #End Region
 
         'Trace switch for this class.
-        Private Shared s_resourcesFolderServiceSwitch As New TraceSwitch("ResourcesFolderService", "Traces the behavior of the Resources Folder Service")
+        Private Shared ReadOnly s_resourcesFolderServiceSwitch As New TraceSwitch("ResourcesFolderService", "Traces the behavior of the Resources Folder Service")
 
 
 #Region "Tracing"
@@ -136,7 +136,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         <Conditional("DEBUG")>
         Friend Shared Sub Trace(Message As String, ParamArray FormatArguments() As Object)
             If FormatArguments.Length > 0 Then
-                'Only use String.Format when we have specific format arguments, although we might accidently break on something like a stray "{" in a filename
+                'Only use String.Format when we have specific format arguments, although we might accidentally break on something like a stray "{" in a filename
                 Message = String.Format(Message, FormatArguments)
             End If
             Debug.WriteLineIf(s_resourcesFolderServiceSwitch.TraceVerbose, "Resources Folder Service: " & Message)
@@ -160,7 +160,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <returns>The final file and path of the file after it was added to the project, or else its original location if
         '''   it was not added to the project or was not copied while being added to the project.  Returns Nothing if the
         '''  user canceled the operation.</returns>
-        ''' <remarks>The user is given the choic to cancel the operation when he is asked to overwrite an existing file or link.</remarks>
+        ''' <remarks>The user is given the choice to cancel the operation when he is asked to overwrite an existing file or link.</remarks>
         Private Shared Function AddFileToProjectHelper(EditorName As String, Project As Project, ResXProjectItem As ProjectItem, MessageBoxOwner As IWin32Window, SourceFilePath As String, CopyFileIfExists As Boolean) As String
             If EditorName = "" Then
                 Throw New ArgumentNullException("EditorName")
@@ -176,7 +176,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             'Verify the file exists
             If Not File.Exists(FullSourceFilePath) Then
-                Throw New FileNotFoundException(My.Resources.Designer.GetString(My.Resources.Designer.RFS_FindNotFound_File, FullSourceFilePath))
+                Throw New FileNotFoundException(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RFS_FindNotFound_File, FullSourceFilePath))
             End If
 
             'Determine the behavior for this project.  This handles the case of Project = Nothing and the Miscellaneous Files project.
@@ -250,7 +250,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                         SetBuildAction(NewProjectItem)
                         FinalFilePath = GetFileNameFromProjectItem(NewProjectItem, Path.GetExtension(FullSourceFilePath))
                     Catch ex As Exception
-                        Throw New Exception(My.Resources.Designer.GetString(My.Resources.Designer.RFS_CantAddFileToProject_File_ExMsg, FullSourceFilePath, ex.Message), ex)
+                        Throw New Exception(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RFS_CantAddFileToProject_File_ExMsg, FullSourceFilePath, ex.Message), ex)
                     End Try
                 End If
             Else
@@ -267,7 +267,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             'Get the full path of the new project item
             If Not File.Exists(FinalFilePath) Then
                 Debug.Fail("We added the file to the project, but the file can't be found at the location it's supposed to be at: " & FinalFilePath)
-                Throw New Exception(My.Resources.Designer.GetString(My.Resources.Designer.RFS_CantAddFileToProject_File, FinalFilePath))
+                Throw New Exception(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RFS_CantAddFileToProject_File, FinalFilePath))
             End If
 
             'We're done.
@@ -393,7 +393,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 SetBuildAction(NewItem)
                 Return GetFileNameFromProjectItem(NewItem, Path.GetExtension(CopiedFilePath))
             Catch ex As Exception
-                Throw New Exception(My.Resources.Designer.GetString(My.Resources.Designer.RFS_CantAddFileToProject_File_ExMsg, SourceFilePath, ex.Message), ex)
+                Throw New Exception(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RFS_CantAddFileToProject_File_ExMsg, SourceFilePath, ex.Message), ex)
             End Try
         End Function
 
@@ -462,8 +462,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                         End If
                     ElseIf FileAlreadyExists Then
                         'Ask the user if it's okay to replace the file on disk.
-                        If MessageBox.Show(MessageBoxOwner, My.Resources.Designer.GetString(My.Resources.Designer.RFS_QueryReplaceFile_File, DestinationFilePath),
-                                My.Resources.Designer.GetString(My.Resources.Designer.RFS_QueryReplaceFileTitle_Editor, EditorName),
+                        If MessageBox.Show(MessageBoxOwner, My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RFS_QueryReplaceFile_File, DestinationFilePath),
+                                My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RFS_QueryReplaceFileTitle_Editor, EditorName),
                                 MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) _
                                 = DialogResult.Yes _
                         Then
@@ -486,8 +486,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                         End If
                     ElseIf ProjectItemAlreadyExists Then
                         'Ask user for permission to remove the current link.
-                        If MessageBox.Show(MessageBoxOwner, My.Resources.Designer.GetString(My.Resources.Designer.RFS_QueryRemoveLink_Folder_Link, SourceFileNameOnly, DestinationFolderPath),
-                                    My.Resources.Designer.GetString(My.Resources.Designer.RFS_QueryRemoveLinkTitle_Editor, EditorName),
+                        If MessageBox.Show(MessageBoxOwner, My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RFS_QueryRemoveLink_Folder_Link, SourceFileNameOnly, DestinationFolderPath),
+                                    My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RFS_QueryRemoveLinkTitle_Editor, EditorName),
                                     MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) _
                                     = DialogResult.Yes _
                         Then
@@ -510,7 +510,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     Return GetFileNameFromProjectItem(NewItem, Path.GetExtension(FilePathToTryAgain))
                 Catch exFinalFailure As Exception
                     'Okay, we've hit an exception in our corrective measures.  Time to give up and report the exception.
-                    Throw New Exception(My.Resources.Designer.GetString(My.Resources.Designer.RFS_CantAddFileToProject_File_ExMsg, FullSourceFilePath, exFinalFailure.Message), exFinalFailure)
+                    Throw New Exception(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RFS_CantAddFileToProject_File_ExMsg, FullSourceFilePath, exFinalFailure.Message), exFinalFailure)
                 End Try
             End Try
         End Function
@@ -557,7 +557,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     Try
                         FoundProjectItem = Project.ProjectItems.AddFromDirectory(ResourcesFolderPath)
                     Catch ex As Exception
-                        Throw New Exception(My.Resources.Designer.GetString(My.Resources.Designer.RFS_CantCreateResourcesFolder_Folder_ExMsg, ResourcesFolderName, ex.Message), ex)
+                        Throw New Exception(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RFS_CantCreateResourcesFolder_Folder_ExMsg, ResourcesFolderName, ex.Message), ex)
                     End Try
 
                     'We didn't really want all those other files added to the project, so we try to remove them (but ignore
@@ -585,7 +585,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                         Trace("Project doesn't implement ProjectItems.AddFolder().  Adding to top-level node instead.")
                         AddToProjectRoot = True
                     Catch ex As Exception
-                        Throw New Exception(My.Resources.Designer.GetString(My.Resources.Designer.RFS_CantCreateResourcesFolder_Folder_ExMsg, ResourcesFolderName, ex.Message), ex)
+                        Throw New Exception(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RFS_CantCreateResourcesFolder_Folder_ExMsg, ResourcesFolderName, ex.Message), ex)
                     End Try
                 End If
             End If

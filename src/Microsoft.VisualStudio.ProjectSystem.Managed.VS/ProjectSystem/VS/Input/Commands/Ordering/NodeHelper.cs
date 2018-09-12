@@ -7,7 +7,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
 {
     /// <summary>
     /// These are helper functions to select items in a IVsUIHierarchy.
-    /// This is hack due to CPS not exposing fuctionality to do this. They have it internally though.
+    /// This is hack due to CPS not exposing functionality to do this. They have it internally though.
     /// Bug filed here: https://devdiv.visualstudio.com/DevDiv/VS%20IDE%20CPS/_workitems/edit/589115
     /// </summary>
     internal static class NodeHelper
@@ -69,7 +69,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
             }
 
 
-            var shell = (IVsUIShell)serviceProvider.GetService<SVsUIShell>();
+            IVsUIShell shell = serviceProvider.GetService<IVsUIShell, SVsUIShell>();
 
             object pvar = null;
             IVsUIHierarchyWindow uiHierarchyWindow = null;

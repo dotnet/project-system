@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 using Microsoft.CodeAnalysis;
@@ -134,7 +135,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                 var environmentOptionsFactory = IEnvironmentOptionsFactory.Implement((string category, string page, string property, bool defaultValue) => { return true; });
 
                 var renamer = new Renamer(ws, IProjectThreadingServiceFactory.Create(), userNotificationServices, environmentOptionsFactory, roslynServices, project, oldFilePath, newFilePath);
-                await renamer.RenameAsync(project);
+                await renamer.RenameAsync(project)
+                             .TimeoutAfter(TimeSpan.FromSeconds(1));
             }
         }
     }

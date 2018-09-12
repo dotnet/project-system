@@ -39,7 +39,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                     (Not String.IsNullOrEmpty(Text) AndAlso
                     Not proposedsize.Width.Equals(Integer.MaxValue) OrElse
                     Not proposedsize.Height.Equals(Integer.MaxValue)) Then
-                ' we have the possiblility of wrapping... back out the single line of text
+                ' we have the possibility of wrapping... back out the single line of text
                 Dim bordersAndPadding As Size = prefSize - _cachedSizeOfOneLineOfText
                 ' add back in the text size, subtract baseprefsize.width and 3 from proposed size width 
                 ' so they wrap properly
@@ -77,7 +77,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         End Sub
 
         Private _cachedSizeOfOneLineOfText As Size = Size.Empty
-        Private _preferredSizeHash As New Dictionary(Of Size, Size)()
+        Private ReadOnly _preferredSizeHash As New Dictionary(Of Size, Size)()
 
     End Class
 End Namespace

@@ -37,10 +37,10 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private WithEvents _componentChangeService As IComponentChangeService
 
         'Our set of resources (keyed by Name normalized to uppercase so our look-up is case-insensitive)
-        Private _resourcesHash As Hashtable = Nothing
+        Private ReadOnly _resourcesHash As Hashtable = Nothing
 
         'an arrayList to keep all meta data, we shouldn't lose them when we save the resource file back...
-        Private _metadataList As ArrayList
+        Private ReadOnly _metadataList As ArrayList
 
         'The root component for the resource editor.  Cannot be Nothing.
         Private ReadOnly _rootComponent As ResourceEditorRootComponent
@@ -54,11 +54,11 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
         'Holds a set of tasks for each Resource that has any task list entries.
         'Hashes key=Resource to ResourceTaskSet.
-        Private _resourceErrorsHash As New Hashtable 'Of Resource To ResourceTaskSet
+        Private ReadOnly _resourceErrorsHash As New Hashtable 'Of Resource To ResourceTaskSet
 
         'A list of resources that need to be checked for errors during idle-time
         '  processing.
-        Private _resourcesToDelayCheckForErrors As New ArrayList
+        Private ReadOnly _resourcesToDelayCheckForErrors As New ArrayList
 
         ' Indicate whether we should suspend delay checking temporary...
         Private _delayCheckSuspended As Boolean
@@ -74,7 +74,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
         ' We get ResourceWrite from this environment service
         '  the reason is some projects (device project) need write the resource file in v1.x format, but other projects write in 2.0 format.
-        Private _resxService As IResXResourceService
+        Private ReadOnly _resxService As IResXResourceService
 
         'True if the original file bases on alphabetized order, we will keep this style...
         Private _alphabetizedOrder As Boolean = True
@@ -93,7 +93,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ' If it is true, we are adding a collection of resources to the file
         Private _inBatchAdding As Boolean
 
-        Private _multiTargetService As MultiTargetService
+        Private ReadOnly _multiTargetService As MultiTargetService
 
         Private ReadOnly _allowMOTW As Boolean = False
 #End Region
@@ -267,7 +267,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
 
         ''' <summary>
-        ''' Retrieves the desiger host for the resource editor
+        ''' Retrieves the designer host for the resource editor
         ''' </summary>
         ''' <value></value>
         ''' <remarks></remarks>
@@ -505,10 +505,10 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Public Sub AddResource(NewResource As Resource)
             If NewResource.Name = "" Then
                 Debug.Fail("Resource Name is blank - we shouldn't reach here with that condition")
-                Throw NewException(My.Resources.Designer.RSE_Err_NameBlank, HelpIDs.Err_NameBlank)
+                Throw NewException(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_NameBlank, HelpIDs.Err_NameBlank)
             End If
             If Contains(NewResource.Name) Then
-                Throw NewException(My.Resources.Designer.GetString(My.Resources.Designer.RSE_Err_DuplicateName_1Arg, NewResource.Name), HelpIDs.Err_DuplicateName)
+                Throw NewException(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_DuplicateName_1Arg, NewResource.Name), HelpIDs.Err_DuplicateName)
             End If
 
             'Set up a type resolution context for the resource in case this hasn't
@@ -742,7 +742,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 '  the same as Resource, since we find case-insensitively).
                 Dim ExistingResource As Resource = FindResource(NewName)
                 If ExistingResource IsNot Nothing AndAlso ExistingResource IsNot Resource Then
-                    Throw NewException(My.Resources.Designer.GetString(My.Resources.Designer.RSE_Err_DuplicateName_1Arg, NewName), HelpIDs.Err_DuplicateName)
+                    Throw NewException(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_DuplicateName_1Arg, NewName), HelpIDs.Err_DuplicateName)
                 End If
 
                 'Make sure the resx file is checked out if it isn't yet.  Otherwise this failure might
@@ -868,7 +868,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Public Sub ReadResources(resourceFileName As String, allBufferText As String)
 
             If IsDangerous(resourceFileName, allBufferText) Then
-                View.DsMsgBox(String.Format(My.Resources.Designer.BlockedResx, resourceFileName), MessageBoxButtons.OK, MessageBoxIcon.Error)
+                View.DsMsgBox(String.Format(My.Resources.Microsoft_VisualStudio_Editors_Designer.BlockedResx, resourceFileName), MessageBoxButtons.OK, MessageBoxIcon.Error)
                 Return
             End If
 
@@ -1030,16 +1030,16 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                         Catch ex As Exception When ReportWithoutCrash(ex, NameOf(WriteResources), NameOf(ResourceFile))
                             resource.SetTaskFromGetValueException(ex, ex)
                             If failedList IsNot Nothing Then
-                                failedList = My.Resources.Designer.GetString(My.Resources.Designer.RSE_Err_NameList, failedList, resource.Name)
+                                failedList = My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_NameList, failedList, resource.Name)
                             Else
-                                failedList = My.Resources.Designer.GetString(My.Resources.Designer.RSE_Err_Name, resource.Name)
+                                failedList = My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_Name, resource.Name)
                                 extraMessage = ex.Message
                             End If
                         End Try
                     Next
 
                     If failedList IsNot Nothing Then
-                        RootComponent.RootDesigner.GetView().DsMsgBox(My.Resources.Designer.GetString(My.Resources.Designer.RSE_Err_CantSaveResouce_1Arg, failedList) & vbCrLf & vbCrLf & extraMessage,
+                        RootComponent.RootDesigner.GetView().DsMsgBox(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_CantSaveResouce_1Arg, failedList) & vbCrLf & vbCrLf & extraMessage,
                             MessageBoxButtons.OK, MessageBoxIcon.Error, , HelpIDs.Err_CantSaveBadResouceItem)
                     End If
                 End If
@@ -1109,7 +1109,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <remarks></remarks>
         Private NotInheritable Class ResourceTaskSet
             'The number of error types that we have.  Calculated from the ResourceTaskType enum.
-            Private Shared s_errorTypeCount As Integer
+            Private Shared ReadOnly s_errorTypeCount As Integer
 
             'Backs Tasks property
             '  (could just have well been a hashtable as an array, but an array is more lightweight)
@@ -1179,7 +1179,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
 
             ''' <summary>
-            ''' Constuctor.
+            ''' Constructor.
             ''' </summary>
             ''' <param name="Resource"></param>
             ''' <remarks></remarks>

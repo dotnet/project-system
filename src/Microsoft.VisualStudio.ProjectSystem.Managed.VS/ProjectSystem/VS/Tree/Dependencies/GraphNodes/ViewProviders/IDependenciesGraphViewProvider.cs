@@ -7,6 +7,10 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.ViewProviders
 {
+    /// <summary>
+    /// Handles child, search, and tracking operations for a particular kind of
+    /// <see cref="IDependency"/>.
+    /// </summary>
     internal interface IDependenciesGraphViewProvider
     {
         bool SupportsDependency(IDependency dependency);

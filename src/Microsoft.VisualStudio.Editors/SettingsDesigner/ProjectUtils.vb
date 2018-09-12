@@ -339,11 +339,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
                     .IsPartial = True
                 }
 
-                ExtendingType.Comments.Add(New CodeCommentStatement(My.Resources.Designer.SD_CODEGENCMT_COMMON1))
-                ExtendingType.Comments.Add(New CodeCommentStatement(My.Resources.Designer.SD_CODEGENCMT_COMMON2))
-                ExtendingType.Comments.Add(New CodeCommentStatement(My.Resources.Designer.SD_CODEGENCMT_COMMON3))
-                ExtendingType.Comments.Add(New CodeCommentStatement(My.Resources.Designer.SD_CODEGENCMT_COMMON4))
-                ExtendingType.Comments.Add(New CodeCommentStatement(My.Resources.Designer.SD_CODEGENCMT_COMMON5))
+                ExtendingType.Comments.Add(New CodeCommentStatement(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_CODEGENCMT_COMMON1))
+                ExtendingType.Comments.Add(New CodeCommentStatement(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_CODEGENCMT_COMMON2))
+                ExtendingType.Comments.Add(New CodeCommentStatement(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_CODEGENCMT_COMMON3))
+                ExtendingType.Comments.Add(New CodeCommentStatement(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_CODEGENCMT_COMMON4))
+                ExtendingType.Comments.Add(New CodeCommentStatement(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_CODEGENCMT_COMMON5))
                 If Not supportsDeclarativeEventHandlers Then
                     GenerateExtendingClassInstructions(ExtendingType, Generator)
                 End If
@@ -383,7 +383,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
         Friend Class KnownClassName
             Implements IFindFilter
 
-            Private _className As String
+            Private ReadOnly _className As String
             Private ReadOnly _classOrModule As ClassOrModule
 
             Friend Sub New(ClassName As String, Optional ClassOrModule As ClassOrModule = ClassOrModule.ClassOnly)
@@ -424,7 +424,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
             ''' The class to expand
             ''' </summary>
             ''' <remarks></remarks>
-            Private _classToExpand As EnvDTE80.CodeClass2
+            Private ReadOnly _classToExpand As EnvDTE80.CodeClass2
 
             Friend Sub New(ClassToExpand As EnvDTE80.CodeClass2)
                 If ClassToExpand Is Nothing Then
@@ -455,7 +455,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
         Friend Class FindPropertyFilter
             Implements IFindFilter
 
-            Private _containtingClass As EnvDTE.CodeElement
+            Private ReadOnly _containtingClass As EnvDTE.CodeElement
             Private ReadOnly _propertyName As String
 
             Public Sub New(ContainingClass As EnvDTE.CodeElement, PropertyName As String)
@@ -513,7 +513,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
         Friend Class FindFunctionFilter
             Implements IFindFilter
 
-            Private _containtingClass As EnvDTE.CodeElement
+            Private ReadOnly _containtingClass As EnvDTE.CodeElement
             Private ReadOnly _functionName As String
 
             Public Sub New(ContainingClass As EnvDTE.CodeElement, FunctionName As String)
@@ -682,7 +682,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
             ' Generate a series of statements to add to the constructor
             Dim thisExpr As New CodeThisReferenceExpression()
             Dim stmts As New CodeStatementCollection From {
-                New CodeCommentStatement(My.Resources.Designer.SD_CODEGENCMT_HOWTO_ATTACHEVTS),
+                New CodeCommentStatement(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_CODEGENCMT_HOWTO_ATTACHEVTS),
                 New CodeAttachEventStatement(thisExpr, SettingChangingEventName, New CodeMethodReferenceExpression(thisExpr, SettingChangingEventHandlerName)),
                 New CodeAttachEventStatement(thisExpr, SettingsSavingEventName, New CodeMethodReferenceExpression(thisExpr, SettingsSavingEventHandlerName))
             }
@@ -699,7 +699,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
             }
             changingStub.Parameters.Add(senderParam)
             changingStub.Parameters.Add(New CodeParameterDeclarationExpression(GetType(Configuration.SettingChangingEventArgs), "e"))
-            changingStub.Statements.Add(New CodeCommentStatement(My.Resources.Designer.SD_CODEGENCMT_HANDLE_CHANGING))
+            changingStub.Statements.Add(New CodeCommentStatement(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_CODEGENCMT_HANDLE_CHANGING))
 
             Dim savingStub As New CodeMemberMethod With {
                 .Name = SettingsSavingEventHandlerName,
@@ -707,7 +707,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
             }
             savingStub.Parameters.Add(senderParam)
             savingStub.Parameters.Add(New CodeParameterDeclarationExpression(GetType(ComponentModel.CancelEventArgs), "e"))
-            savingStub.Statements.Add(New CodeCommentStatement(My.Resources.Designer.SD_CODEGENCMT_HANDLE_SAVING))
+            savingStub.Statements.Add(New CodeCommentStatement(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_CODEGENCMT_HANDLE_SAVING))
 
             ct.Members.Add(constr)
             ct.Members.Add(changingStub)

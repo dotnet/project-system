@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using Microsoft.Build.Construction;
+using Microsoft.Build.Evaluation;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectProperties
@@ -36,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
             public async Task<string> GetPropertyAsync(ProjectRootElement projectXml, IProjectProperties defaultProperties)
             {
                 // check if value already exists
-                string unevaluatedPropertyValue = await defaultProperties.GetUnevaluatedPropertyValueAsync(BuildEvent).ConfigureAwait(true);
+                string unevaluatedPropertyValue = await defaultProperties.GetUnevaluatedPropertyValueAsync(BuildEvent);
                 if (unevaluatedPropertyValue != null)
                 {
                     return unevaluatedPropertyValue;
@@ -49,7 +50,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
             public async Task SetPropertyAsync(string unevaluatedPropertyValue, IProjectProperties defaultProperties, ProjectRootElement projectXml)
             {
                 // Check if project file already has props in place for this.
-                if (await TrySetPropertyAsync(unevaluatedPropertyValue, defaultProperties, projectXml).ConfigureAwait(true))
+                if (await TrySetPropertyAsync(unevaluatedPropertyValue, defaultProperties, projectXml))
                 {
                     return;
                 }
@@ -78,7 +79,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
 
                 if (execTask.Parameters.TryGetValue(Command, out string commandText))
                 {
-                    return commandText;
+                    return commandText.Replace("%25", "%");
                 }
 
                 return null; // exec task as written in the project file is invalid, we should be resilient to this case.
@@ -86,7 +87,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
 
             private async Task<bool> TrySetPropertyAsync(string unevaluatedPropertyValue, IProjectProperties defaultProperties, ProjectRootElement projectXml)
             {
-                string currentValue = await defaultProperties.GetUnevaluatedPropertyValueAsync(BuildEvent).ConfigureAwait(true);
+                string currentValue = await defaultProperties.GetUnevaluatedPropertyValueAsync(BuildEvent);
                 if (currentValue == null)
                 {
                     return false;
@@ -94,11 +95,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
 
                 if (OnlyWhitespaceCharacters(unevaluatedPropertyValue))
                 {
-                    await defaultProperties.DeletePropertyAsync(BuildEvent).ConfigureAwait(true);
+                    await defaultProperties.DeletePropertyAsync(BuildEvent);
                     return true;
                 }
 
-                await defaultProperties.SetPropertyValueAsync(BuildEvent, unevaluatedPropertyValue).ConfigureAwait(true);
+                await defaultProperties.SetPropertyValueAsync(BuildEvent, unevaluatedPropertyValue);
                 return true;
             }
 
@@ -149,7 +150,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
             }
 
             private static void SetExecParameter(ProjectTaskElement execTask, string unevaluatedPropertyValue)
-                => execTask.SetParameter(Command, unevaluatedPropertyValue);
+                => execTask.SetParameter(Command, unevaluatedPropertyValue.Replace("%", "%25"));
         }
     }
 }

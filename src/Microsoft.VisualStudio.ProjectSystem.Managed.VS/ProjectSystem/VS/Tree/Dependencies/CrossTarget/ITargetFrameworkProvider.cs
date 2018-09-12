@@ -14,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         ITargetFramework GetTargetFramework(string shortOrFullName);
 
         /// <summary>
-        /// Given a target framework it tries to determine which of the given list of other framworks 
+        /// Given a target framework it tries to determine which of the given list of other frameworks 
         /// is most compatible/closest to the target. If no compatible frameworks, returns null.
         /// </summary>
         ITargetFramework GetNearestFramework(ITargetFramework targetFramework, IEnumerable<ITargetFramework> otherFrameworks);

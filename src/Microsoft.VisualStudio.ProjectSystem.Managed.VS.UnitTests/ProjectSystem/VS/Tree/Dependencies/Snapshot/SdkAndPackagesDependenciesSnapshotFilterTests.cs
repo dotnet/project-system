@@ -212,7 +212,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 { sdkDependency.Object.Id, sdkDependency.Object },
             }.ToImmutableDictionary().ToBuilder();
 
-            // try to have empty top level hash set - no error should happen when removing sdk and readding 
+            // try to have empty top level hash set - no error should happen when removing sdk and reading 
             var topLevelBuilder = ImmutableHashSet<IDependency>.Empty.ToBuilder();
 
             var filter = new SdkAndPackagesDependenciesSnapshotFilter();

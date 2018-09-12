@@ -23,9 +23,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
     {
         private readonly string _ProjectFile = @"c:\test\project\project.csproj";
         private readonly string _Path = @"c:\program files\dotnet;c:\program files\SomeDirectory";
-        private Mock<IEnvironmentHelper> _mockEnvironment = new Mock<IEnvironmentHelper>();
-        private IFileSystemMock _mockFS = new IFileSystemMock();
-        private Mock<IDebugTokenReplacer> _mockTokenReplace = new Mock<IDebugTokenReplacer>();
+        private readonly Mock<IEnvironmentHelper> _mockEnvironment = new Mock<IEnvironmentHelper>();
+        private readonly IFileSystemMock _mockFS = new IFileSystemMock();
+        private readonly Mock<IDebugTokenReplacer> _mockTokenReplace = new Mock<IDebugTokenReplacer>();
 
         private ConsoleDebugTargetsProvider GetDebugTargetsProvider(string outputType = "exe", Dictionary<string, string> properties = null)
         {
@@ -36,7 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             _mockEnvironment.Setup(s => s.GetEnvironmentVariable("Path")).Returns(() => _Path);
 
-            var project = UnconfiguredProjectFactory.Create(null, null, _ProjectFile);
+            var project = UnconfiguredProjectFactory.Create(filePath: _ProjectFile);
 
             var outputTypeEnum = new PageEnumValue(new EnumValue() { Name = outputType });
             var data = new PropertyPageData()
@@ -378,7 +378,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
         [Fact]
         public async Task QueryDebugTargetsAsync_WhenLibraryWithoutRunCommand_ReturnsTargetPath()
-        { 
+        {
             var properties = new Dictionary<string, string>() {
                 {"TargetPath", @"C:\library.dll"},
                 {"TargetFrameworkIdentifier", @".NETFramework" }
@@ -413,7 +413,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         }
 
         [Fact]
-        public async Task QueryDebugTargetsForDebugLaunchAsync_WhenLibrary_Throws()
+        public async Task QueryDebugTargetsForDebugLaunchAsync_WhenLibraryAndNoRunCommandSpecified_Throws()
         {
             var properties = new Dictionary<string, string>() {
                 {"TargetPath", @"C:\library.dll"},
@@ -430,6 +430,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             {
                 return debugger.QueryDebugTargetsForDebugLaunchAsync(0, activeProfile);
             });
+        }
+
+        [Fact]
+        public async Task QueryDebugTargetsForDebugLaunchAsync_WhenLibraryAndRunCommandSpecified_ReturnsRunCommand()
+        {
+            var properties = new Dictionary<string, string>() {
+                {"RunCommand", @"C:\dotnet.exe"},
+                {"TargetFrameworkIdentifier", @".NETFramework" }
+                };
+
+            _mockFS.WriteAllText(@"C:\library.dll", string.Empty);
+
+            var debugger = GetDebugTargetsProvider("Library", properties);
+
+            var activeProfile = new LaunchProfile() { Name = "Name", CommandName = "Project" };
+
+            var targets = await debugger.QueryDebugTargetsAsync(0, activeProfile);
+
+            Assert.Single(targets);
+            Assert.Equal(@"C:\dotnet.exe", targets[0].Executable);
         }
 
         [Fact]

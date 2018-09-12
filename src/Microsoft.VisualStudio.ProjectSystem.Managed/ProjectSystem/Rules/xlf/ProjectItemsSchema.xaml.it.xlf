@@ -77,6 +77,16 @@
         <target state="translated">Definizione dell'applicazione</target>
         <note />
       </trans-unit>
+      <trans-unit id="ContentType|XamlAppDef|DisplayName">
+        <source>Workflow definition</source>
+        <target state="new">Workflow definition</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ItemType|XamlAppDef|DisplayName">
+        <source>Workflow definition</source>
+        <target state="new">Workflow definition</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>

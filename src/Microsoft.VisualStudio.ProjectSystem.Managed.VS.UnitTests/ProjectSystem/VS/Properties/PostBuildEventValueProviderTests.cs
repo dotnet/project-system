@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
     [Trait("UnitTest", "ProjectSystem")]
     public class PostBuildEventValueProviderTests
     {
-        private static PostBuildEventValueProvider.PostBuildEventHelper systemUnderTest =
+        private static readonly PostBuildEventValueProvider.PostBuildEventHelper systemUnderTest =
             new PostBuildEventValueProvider.PostBuildEventHelper();
 
         private static readonly IProjectProperties emptyProjectProperties =
@@ -635,6 +635,97 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
   </Target>
 </Project>";
 
+            var actual = root.SaveAndGetChanges();
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public static async Task EscapeValue_Read_CheckEscaped()
+        {
+            var root = @"<Project Sdk=""Microsoft.NET.Sdk"">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
+  </PropertyGroup>
+  <Target Name=""PostBuild"" AfterTargets=""PostBuildEvent"">
+    <Exec Command=""echo %25DATE%"" />
+  </Target>
+</Project>
+".AsProjectRootElement();
+
+            const string expected = "echo %DATE%";
+            string actual = await systemUnderTest.GetPropertyAsync(root, emptyProjectProperties);
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public static async Task EscapeValue_Read_CheckNotDoubleEscaped()
+        {
+            var root = @"<Project Sdk=""Microsoft.NET.Sdk"">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
+  </PropertyGroup>
+  <Target Name=""PostBuild"" AfterTargets=""PostBuildEvent"">
+    <Exec Command=""echo %2525DATE%"" />
+  </Target>
+</Project>
+".AsProjectRootElement();
+
+            const string expected = "echo %25DATE%";
+            string actual = await systemUnderTest.GetPropertyAsync(root, emptyProjectProperties);
+            Assert.Equal(expected, actual);
+        }
+
+
+        [Fact]
+        public static async Task EscapeValue_Write_CheckEscaped()
+        {
+            var root = @"<Project Sdk=""Microsoft.NET.Sdk"">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
+  </PropertyGroup>
+</Project>
+".AsProjectRootElement();
+
+            const string expected = @"<Project Sdk=""Microsoft.NET.Sdk"">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
+  </PropertyGroup>
+  <Target Name=""PostBuild"" AfterTargets=""PostBuildEvent"">
+    <Exec Command=""echo %25DATE%25"" />
+  </Target>
+</Project>";
+
+            await systemUnderTest.SetPropertyAsync("echo %DATE%", emptyProjectProperties, root);
+            var actual = root.SaveAndGetChanges();
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public static async Task EscapeValue_Write_CheckNotDoubleEscaped()
+        {
+            var root = @"<Project Sdk=""Microsoft.NET.Sdk"">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
+  </PropertyGroup>
+</Project>
+".AsProjectRootElement();
+
+            const string expected = @"<Project Sdk=""Microsoft.NET.Sdk"">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
+  </PropertyGroup>
+  <Target Name=""PostBuild"" AfterTargets=""PostBuildEvent"">
+    <Exec Command=""echo %2525DATE%25"" />
+  </Target>
+</Project>";
+
+            await systemUnderTest.SetPropertyAsync("echo %25DATE%", emptyProjectProperties, root);
             var actual = root.SaveAndGetChanges();
             Assert.Equal(expected, actual);
         }

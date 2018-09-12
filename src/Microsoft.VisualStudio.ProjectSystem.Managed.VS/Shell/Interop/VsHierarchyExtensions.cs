@@ -28,7 +28,7 @@ namespace Microsoft.VisualStudio.Shell.Interop
         }
 
         /// <summary>
-        ///     Gets the value of the specified property if the hierarchy supports it, or throws an excepton if there was an error.
+        ///     Gets the value of the specified property if the hierarchy supports it, or throws an exception if there was an error.
         /// </summary>
         public static T GetProperty<T>(this IVsHierarchy hierarchy, VsHierarchyPropID property, T defaultValue = default)
         {

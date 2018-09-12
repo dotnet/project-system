@@ -39,9 +39,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             };
 
             var specialFilesManager = ActiveConfiguredProjectFactory.ImplementValue(() => AppDesignerFolderSpecialFileProviderFactory.ImplementGetFile(appDesignerFolder));
-            var project = UnconfiguredProjectFactory.Create(null, null, @"c:\test\Project1\Project1.csproj");
+            var project = UnconfiguredProjectFactory.Create(filePath: @"c:\test\Project1\Project1.csproj");
             var properties = ProjectPropertiesFactory.Create(project, new[] { debuggerData });
-            var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(project, null, new IProjectThreadingServiceMock(), null, properties);
+            var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(project, null, IProjectThreadingServiceFactory.Create(), null, properties);
             var projectServices = IUnconfiguredProjectServicesFactory.Create(IProjectAsynchronousTasksServiceFactory.Create());
             var provider = new LaunchSettingsUnderTest(project, projectServices, fileSystem ?? new IFileSystemMock(), commonServices, null, specialFilesManager);
             return provider;
@@ -75,9 +75,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         }
 
         [Theory]
-        [InlineData(@"C:\Properties",                @"C:\Properties\launchSettings.json")]
-        [InlineData(@"C:\Project\Properties",        @"C:\Project\Properties\launchSettings.json")]
-        [InlineData(@"C:\Project\My Project",        @"C:\Project\My Project\launchSettings.json")]
+        [InlineData(@"C:\Properties", @"C:\Properties\launchSettings.json")]
+        [InlineData(@"C:\Project\Properties", @"C:\Project\Properties\launchSettings.json")]
+        [InlineData(@"C:\Project\My Project", @"C:\Project\My Project\launchSettings.json")]
         public async Task WhenAppDesignerFolder_LaunchSettingsIsInAppDesignerFolder(string appDesignerFolder, string expected)
         {
             var provider = GetLaunchSettingsProvider(null, appDesignerFolder: appDesignerFolder);
@@ -133,7 +133,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             var provider = GetLaunchSettingsProvider(moqFS);
             moqFS.WriteAllText(provider.LaunchSettingsFile, JsonString1);
 
-            // Change the value of activeDebugProfile to web it should be the active one. Similates a change
+            // Change the value of activeDebugProfile to web it should be the active one. Simulates a change
             // on disk doesn't affect active profile
             provider = GetLaunchSettingsProvider(moqFS, activeProfile: "web");
             await provider.UpdateProfilesAsyncTest(null);
@@ -292,21 +292,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         [Fact]
         public async Task ReadProfilesFromDisk_NoFile()
         {
-
             var moqFS = new IFileSystemMock();
             var provider = GetLaunchSettingsProvider(moqFS);
 
-            // Test without an existing file. Should throw
-            LaunchSettingsData launchSettings;
-            try
+            await Assert.ThrowsAsync<FileNotFoundException>(() =>
             {
-                launchSettings = await provider.ReadSettingsFileFromDiskTestAsync();
-                Assert.True(false);
-            }
-            catch
-            {   // Should have logged an error
-
-            }
+                return provider.ReadSettingsFileFromDiskTestAsync();
+            });
         }
 
         [Fact]
@@ -330,14 +322,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             var provider = GetLaunchSettingsProvider(moqFS);
 
             moqFS.WriteAllText(provider.LaunchSettingsFile, BadJsonString);
-            try
+
+            await Assert.ThrowsAsync<JsonReaderException>(() =>
             {
-                var launchSettings = await provider.ReadSettingsFileFromDiskTestAsync();
-                Assert.True(false);
-            }
-            catch
-            {   // Should have logged an error
-            }
+                return provider.ReadSettingsFileFromDiskTestAsync();
+            });
         }
 
         [Fact]
@@ -529,7 +518,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 return ImmutableStringDictionary<object>.EmptyOrdinal.Add("iisSettings", iisSettings);
             });
 
-            await provider.UpdateAndSaveSettingsAsync(testSettings.Object).ConfigureAwait(true);
+            await provider.UpdateAndSaveSettingsAsync(testSettings.Object);
 
             // Check disk contents
             Assert.Equal(JsonStringWithWebSettings, moqFS.ReadAllText(provider.LaunchSettingsFile), ignoreLineEndingDifferences: true);
@@ -566,7 +555,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             testSettings.Setup(m => m.GlobalSettings).Returns(() => ImmutableStringDictionary<object>.EmptyOrdinal);
 
-            await provider.UpdateAndSaveSettingsAsync(testSettings.Object).ConfigureAwait(true);
+            await provider.UpdateAndSaveSettingsAsync(testSettings.Object);
 
             // Verify the activeProfile hasn't changed
             Assert.Equal("bar", provider.CurrentSnapshot.ActiveProfile.Name);
@@ -594,7 +583,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             var newProfile = new LaunchProfile() { Name = "test", CommandName = "Test", DoNotPersist = isInMemory };
 
-            await provider.AddOrUpdateProfileAsync(newProfile, addToFront).ConfigureAwait(true);
+            await provider.AddOrUpdateProfileAsync(newProfile, addToFront);
 
             // Check disk file was written unless not in memory
             Assert.Equal(!isInMemory, moqFS.FileExists(provider.LaunchSettingsFile));
@@ -629,7 +618,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             var newProfile = new LaunchProfile() { Name = "test", CommandName = "Test", DoNotPersist = isInMemory };
 
-            await provider.AddOrUpdateProfileAsync(newProfile, addToFront).ConfigureAwait(true);
+            await provider.AddOrUpdateProfileAsync(newProfile, addToFront);
 
             // Check disk file was written unless in memory profile
             Assert.Equal(!isInMemory || (isInMemory && !existingIsInMemory), moqFS.FileExists(provider.LaunchSettingsFile));
@@ -661,7 +650,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             provider.SetCurrentSnapshot(testSettings.Object);
 
-            await provider.RemoveProfileAsync("test").ConfigureAwait(true);
+            await provider.RemoveProfileAsync("test");
 
             // Check disk file was written
             Assert.Equal(!isInMemory, moqFS.FileExists(provider.LaunchSettingsFile));
@@ -688,7 +677,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             provider.SetCurrentSnapshot(testSettings.Object);
 
-            await provider.RemoveProfileAsync("test").ConfigureAwait(true);
+            await provider.RemoveProfileAsync("test");
 
             // Check disk file was not written
             Assert.False(moqFS.FileExists(provider.LaunchSettingsFile));
@@ -718,7 +707,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             var newSettings = new IISSettingsData() { WindowsAuthentication = true, DoNotPersist = isInMemory };
 
-            await provider.AddOrUpdateGlobalSettingAsync("iisSettings", newSettings).ConfigureAwait(true);
+            await provider.AddOrUpdateGlobalSettingAsync("iisSettings", newSettings);
 
             // Check disk file was written
             Assert.Equal(!isInMemory, moqFS.FileExists(provider.LaunchSettingsFile));
@@ -753,7 +742,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             var newSettings = new IISSettingsData() { WindowsAuthentication = true, DoNotPersist = isInMemory };
 
-            await provider.AddOrUpdateGlobalSettingAsync("iisSettings", newSettings).ConfigureAwait(true);
+            await provider.AddOrUpdateGlobalSettingAsync("iisSettings", newSettings);
 
             // Check disk file was written
             Assert.Equal(!isInMemory || (isInMemory && !existingIsInMemory), moqFS.FileExists(provider.LaunchSettingsFile));
@@ -780,7 +769,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             provider.SetCurrentSnapshot(testSettings.Object);
 
-            await provider.RemoveGlobalSettingAsync("iisSettings").ConfigureAwait(true);
+            await provider.RemoveGlobalSettingAsync("iisSettings");
 
             // Check disk file was not written
             Assert.False(moqFS.FileExists(provider.LaunchSettingsFile));
@@ -808,7 +797,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             provider.SetCurrentSnapshot(testSettings.Object);
 
-            await provider.RemoveGlobalSettingAsync("iisSettings").ConfigureAwait(true);
+            await provider.RemoveGlobalSettingAsync("iisSettings");
 
             // Check disk file was written
             Assert.True(moqFS.FileExists(provider.LaunchSettingsFile));
@@ -888,10 +877,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 }";
     }
 
-    // Dervies from base class to be able to set protected memebers
+    // Derives from base class to be able to set protected members
     internal class LaunchSettingsUnderTest : LaunchSettingsProvider
     {
-        // ECan pass null for all and a default will be crewated
+        // ECan pass null for all and a default will be created
         public LaunchSettingsUnderTest(UnconfiguredProject project, IUnconfiguredProjectServices projectServices,
                                       IFileSystem fileSystem, IUnconfiguredProjectCommonServices commonProjectServices,
                                       IActiveConfiguredProjectSubscriptionService projectSubscriptionService, ActiveConfiguredProject<AppDesignerFolderSpecialFileProvider> appDesignerFolderSpecialFileProvider)

@@ -171,7 +171,7 @@ Namespace Microsoft.VisualStudio.Editors.VBAttributeEditor
                             strTip &= vbCrLf
                         Else
 
-                            strTip &= My.Resources.Designer.PermissionSet_Requires & vbCrLf
+                            strTip &= My.Resources.Microsoft_VisualStudio_Editors_Designer.PermissionSet_Requires & vbCrLf
 
                             hasTip = True
                             isFirstPermission = False

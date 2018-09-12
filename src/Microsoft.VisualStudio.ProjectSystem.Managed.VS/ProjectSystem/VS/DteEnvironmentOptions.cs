@@ -2,7 +2,10 @@
 
 using System.ComponentModel.Composition;
 
+using EnvDTE80;
+
 using Microsoft.VisualStudio.Composition;
+using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
@@ -12,17 +15,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     [Export(typeof(IEnvironmentOptions))]
     internal class DteEnvironmentOptions : IEnvironmentOptions
     {
-        private readonly IDteServices _dteServices;
+        private readonly IVsUIService<DTE2> _dte;
 
         [ImportingConstructor]
-        public DteEnvironmentOptions(IDteServices dteServices)
+        public DteEnvironmentOptions(IVsUIService<SDTE, DTE2> dte)
         {
-            _dteServices = dteServices;
+            _dte = dte;
         }
 
         public T GetOption<T>(string category, string page, string option, T defaultValue)
         {
-            EnvDTE.Properties properties = _dteServices.Dte.Properties[category, page];
+            EnvDTE.Properties properties = _dte.Value.Properties[category, page];
             if (properties != null)
             {
                 return ((T)properties.Item(option).Value);

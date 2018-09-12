@@ -7,7 +7,7 @@ using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
-    internal class IFolderManagerFactory
+    internal static class IFolderManagerFactory
     {
         public static IFolderManager Create()
         {

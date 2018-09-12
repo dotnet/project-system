@@ -22,6 +22,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
     {
         public const string ProviderTypeString = "ProjectDependency";
 
+        private static readonly DependencyIconSet s_iconSet = new DependencyIconSet(
+            icon: KnownMonikers.Application,
+            expandedIcon: KnownMonikers.Application,
+            unresolvedIcon: ManagedImageMonikers.ApplicationWarning,
+            unresolvedExpandedIcon: ManagedImageMonikers.ApplicationWarning);
+
         protected override string UnresolvedRuleName { get; } = ProjectReference.SchemaName;
         protected override string ResolvedRuleName { get; } = ResolvedProjectReference.SchemaName;
         public override string ProviderType { get; } = ProviderTypeString;
@@ -50,8 +56,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             return new SubTreeRootDependencyModel(
                 ProviderType,
                 VSResources.ProjectsNodeName,
-                KnownMonikers.Application,
-                ManagedImageMonikers.ApplicationWarning,
+                s_iconSet,
                 DependencyTreeFlags.ProjectSubTreeRootNodeFlags);
         }
 
@@ -96,7 +101,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         /// <param name="otherProjectSnapshot"></param>
         /// <param name="shouldBeResolved">
         /// Specifies if top-level project dependencies resolved status. When other project just had it's dependencies
-        /// changed, it is resolved=true (we check target's support when we add projec dependencies). However when 
+        /// changed, it is resolved=true (we check target's support when we add project dependencies). However when 
         /// other project is unloaded, we should mark top-level dependencies as unresolved.
         /// </param>
         private void OnOtherProjectDependenciesChanged(IDependenciesSnapshot otherProjectSnapshot, bool shouldBeResolved)

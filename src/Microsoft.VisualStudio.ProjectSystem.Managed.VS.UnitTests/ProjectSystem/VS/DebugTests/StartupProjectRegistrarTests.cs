@@ -8,8 +8,6 @@ using Xunit;
 
 using static Microsoft.VisualStudio.ProjectSystem.VS.Debug.StartupProjectRegistrar;
 
-using IAsyncServiceProvider = Microsoft.VisualStudio.Shell.IAsyncServiceProvider;
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 {
     [Trait("UnitTest", "ProjectSystem")]
@@ -167,14 +165,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
         private async Task<StartupProjectRegistrar> CreateInitializedInstanceAsync(
            UnconfiguredProject project = null,
-           IAsyncServiceProvider serviceProvider = null,
            IVsStartupProjectsListService vsStartupProjectsListService = null,
            IProjectThreadingService threadingService = null,
            ISafeProjectGuidService projectGuidService = null,
            IActiveConfiguredProjectSubscriptionService projectSubscriptionService = null,
            ActiveConfiguredProject<DebuggerLaunchProviders> launchProviders = null)
         {
-            var instance = CreateInstance(project, serviceProvider, vsStartupProjectsListService, threadingService, projectGuidService, projectSubscriptionService, launchProviders);
+            var instance = CreateInstance(project, vsStartupProjectsListService, threadingService, projectGuidService, projectSubscriptionService, launchProviders);
             await instance.InitializeAsync();
 
             return instance;
@@ -182,25 +179,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
         private StartupProjectRegistrar CreateInstance(
             UnconfiguredProject project = null,
-            IAsyncServiceProvider serviceProvider = null,
             IVsStartupProjectsListService vsStartupProjectsListService = null,
             IProjectThreadingService threadingService = null,
             ISafeProjectGuidService projectGuidService = null,
             IActiveConfiguredProjectSubscriptionService projectSubscriptionService = null,
             ActiveConfiguredProject<DebuggerLaunchProviders> launchProviders = null)
         {
-
-            if (serviceProvider == null)
-            {
-                var sp = new IAsyncServiceProviderMoq();
-                sp.AddService(typeof(SVsStartupProjectsListService), vsStartupProjectsListService ?? IVsStartupProjectsListServiceFactory.Create());
-                serviceProvider = sp;
-            }
-
             var instance = new StartupProjectRegistrar(
                 project ?? UnconfiguredProjectFactory.Create(),
-                serviceProvider,
-                threadingService ?? new IProjectThreadingServiceMock(),
+                IVsServiceFactory.Create<SVsStartupProjectsListService, IVsStartupProjectsListService>(vsStartupProjectsListService),
+                threadingService ?? IProjectThreadingServiceFactory.Create(),
                 projectGuidService ?? ISafeProjectGuidServiceFactory.ImplementGetProjectGuidAsync(Guid.NewGuid()),
                 projectSubscriptionService ?? IActiveConfiguredProjectSubscriptionServiceFactory.Create(),
                 launchProviders);

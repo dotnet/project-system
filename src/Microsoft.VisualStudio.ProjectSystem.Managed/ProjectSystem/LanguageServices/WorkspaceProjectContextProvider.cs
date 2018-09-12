@@ -42,13 +42,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         {
             Requires.NotNull(project, nameof(project));
 
-            ProjectContextInitData data = await GetProjectContextInitDataAsync(project).ConfigureAwait(true);
+            ProjectContextInitData data = await GetProjectContextInitDataAsync(project);
             if (data.IsInvalid())
                 return null;
 
             object hostObject = _project.Services.HostObject;
 
-            IWorkspaceProjectContext context = await CreateProjectContextHandlingFaultAsync(data, hostObject).ConfigureAwait(true);
+            IWorkspaceProjectContext context = await CreateProjectContextHandlingFaultAsync(data, hostObject);
             if (context == null)
                 return null;
 
@@ -101,10 +101,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
         private async Task<ProjectContextInitData> GetProjectContextInitDataAsync(ConfiguredProject project)
         {
-            Guid projectGuid = await _projectGuidService.GetProjectGuidAsync()
-                                                        .ConfigureAwait(true);
+            Guid projectGuid = await _projectGuidService.GetProjectGuidAsync();
 
-            IProjectRuleSnapshot snapshot = await GetLatestSnapshotAsync(project).ConfigureAwait(true);
+            IProjectRuleSnapshot snapshot = await GetLatestSnapshotAsync(project);
 
             return ProjectContextInitData.GetProjectContextInitData(snapshot, projectGuid, project.ProjectConfiguration);
         }
@@ -113,8 +112,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         {
             IProjectSubscriptionService service = project.Services.ProjectSubscription;
 
-            IImmutableDictionary<string, IProjectRuleSnapshot> update = await service.ProjectRuleSource.GetLatestVersionAsync(project, new string[] { ConfigurationGeneral.SchemaName })
-                                                                                                       .ConfigureAwait(true);
+            IImmutableDictionary<string, IProjectRuleSnapshot> update = await service.ProjectRuleSource.GetLatestVersionAsync(project, new string[] { ConfigurationGeneral.SchemaName });
 
             return update[ConfigurationGeneral.SchemaName];
         }

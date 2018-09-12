@@ -19,7 +19,7 @@ Imports System.Reflection
 Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
     ''' <summary>
     '''    The Settings global object provider will provide global objects for each project-level 
-    '''    .setings file.  The Settings GlobalObjectProvider will provide a single global object for 
+    '''    .settings file.  The Settings GlobalObjectProvider will provide a single global object for 
     '''    each project-level .settings file, and it will also provide a global object for each 
     '''    property the code generator will produce for the project-level .settings files.  When 
     '''    asked to provide global objects for a project, the Settings global object provider 
@@ -28,7 +28,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
     '''    1.	It searches the project for Settings files.
     '''    2.	For each file it finds, it loads up a SettingsSerializer for the 
     '''          file and enumerates all the settings in the file.
-    '''    3.	It creats a global object for the Settings file as a whole.  This global object 
+    '''    3.	It creates a global object for the Settings file as a whole.  This global object 
     '''          consists of properties that are named like the Settings enumerated
     '''          properties.
     '''
@@ -120,7 +120,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             '
             Dim dts As DynamicTypeService = TryCast(GetService(GetType(DynamicTypeService)), DynamicTypeService)
             If (dts Is Nothing) Then
-                Throw New NotSupportedException(My.Resources.Designer.GetString(My.Resources.Designer.General_MissingService, GetType(DynamicTypeService).Name))
+                Throw New NotSupportedException(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.General_MissingService, GetType(DynamicTypeService).Name))
             End If
 
             Dim hierarchy As IVsHierarchy = ProjectUtilities.GetVsHierarchy(Me, project)
@@ -451,7 +451,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                         If itemid <> VSITEMID.NIL Then
                             Dim dts As DynamicTypeService = TryCast(GetService(GetType(DynamicTypeService)), DynamicTypeService)
                             If (dts Is Nothing) Then
-                                Throw New NotSupportedException(My.Resources.Designer.GetString(My.Resources.Designer.General_MissingService, GetType(DynamicTypeService).Name))
+                                Throw New NotSupportedException(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.General_MissingService, GetType(DynamicTypeService).Name))
                             End If
 
                             Dim typeResolver As ITypeResolutionService = dts.GetTypeResolutionService(hierarchy, itemid)
@@ -732,7 +732,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         ''' means that the document has been changed outside of VS.
         ''' </summary>
         ''' <param name="docCookie">id for the document who's attribute is changing</param>
-        ''' <param name="attributes">the attribute chaning</param>
+        ''' <param name="attributes">the attribute chaining</param>
         Private Function OnAfterAttributeChange(docCookie As UInteger, attributes As UInteger) As Integer _
             Implements IVsRunningDocTableEvents.OnAfterAttributeChange
 
@@ -1016,7 +1016,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         ''' array should be the project associated with the filename on position N in the array of files into which the
         ''' rgFirstIndices parameter points. This way we can simply loop through all the items and use the SAME index into
         ''' both the projects and filenames arrays.... 
-        ''' This is a *little* extra work up-front everytime a file is added to the project, but it is a small loop, and 
+        ''' This is a *little* extra work up-front every time a file is added to the project, but it is a small loop, and 
         ''' there is not much info that is being stored. Even adding 10000 files at the same time would only require 10000
         ''' iterations and use about ~40k memory.
         ''' </summary>
@@ -1062,7 +1062,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
 
         ''' <summary>
         ''' Called when a new project item is removed from a project we're tracking.  In this
-        ''' case we must find the individaul global object, raise its removing event, and
+        ''' case we must find the individual global object, raise its removing event, and
         ''' then dispose it.
         ''' </summary>
         ''' <param name="hierarchy">IVsHierarchy (project) that we are going to remove an item from</param>
@@ -1174,19 +1174,19 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         Inherits GlobalObject
         Implements VSDesignerPackage.IRefreshSettingsObject
 
-        Private _provider As SettingsGlobalObjectProvider
+        Private ReadOnly _provider As SettingsGlobalObjectProvider
         Private ReadOnly _item As ProjectItem
         Private ReadOnly _hierarchy As IVsHierarchy
         Private _itemid As UInteger
-        Private _typeResolver As ITypeResolutionService
+        Private ReadOnly _typeResolver As ITypeResolutionService
         Private _docData As DocData
         Private _virtualType As Type
         Private _dtSettings As DesignTimeSettings
         Private _namespace As String
-        Private _className As String
+        Private ReadOnly _className As String
         Private _ignoreDocLock As Boolean
         Private ReadOnly _fileName As String
-        Private _valueCache As SettingsValueCache
+        Private ReadOnly _valueCache As SettingsValueCache
         Private _typeCache As SettingsTypeCache
 
         ''' <summary>
@@ -2112,7 +2112,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         Private NotInheritable Class SettingsFileTypeImplementor
             Inherits VirtualTypeImplementor
 
-            Private _globalObject As SettingsFileGlobalObject
+            Private ReadOnly _globalObject As SettingsFileGlobalObject
 
             ''' <summary>
             ''' constructor for this implementor
@@ -2348,7 +2348,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
 
             ''' <summary>
             ''' Return the properties collection for this type. The ApplicationSettingsBase class uses reflection to
-            ''' enumrate all the correctly attributed properties in the current instance and put 'em in it's settings property
+            ''' enumerate all the correctly attributed properties in the current instance and put 'em in it's settings property
             ''' collection. Since reflecting over this specific instance wouldn't return any settings unless we wrote a custom
             ''' type provider (which will be hard to get to work with all the magic custom type descriptor goo used by global
             ''' objects in general) we use our derived SettingsPropertyCollection that will happily pick up the settings from
@@ -2389,7 +2389,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         Private Class GlobalSettingsPropertyCollection
             Inherits SettingsPropertyCollection
 
-            Private _globalObject As SettingsFileGlobalObject
+            Private ReadOnly _globalObject As SettingsFileGlobalObject
 
             ''' <summary>
             ''' 
