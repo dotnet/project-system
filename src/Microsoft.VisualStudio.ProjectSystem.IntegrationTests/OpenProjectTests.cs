@@ -10,12 +10,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.IntegrationTests
     [TestClass]
     public class CreateProjectTests : TestBase
     {
-        [ClassInitialize]
-        public static void ClassInitialize(TestContext context)
-        {
-            Initialize(context);
-        }
-
         [TestMethod]
         public void CreateProject_CreateAndBuild()
         {

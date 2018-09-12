@@ -7,6 +7,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Microsoft.VisualStudio.ProjectSystem.IntegrationTests
 {
+    [TestClass] // AssemblyInitialize won't be found without it
     public abstract class TestBase : VisualStudioHostTest
     {
         private static string _hiveName;
@@ -17,13 +18,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.IntegrationTests
             // the AutoloadExternalChanges if it thinks the default changed even if
             // that was just caused by settings to be sync'd. Just turn this feature off.
             SuppressReloadPrompt = false;
-        }
-
-        protected static void Initialize(TestContext context)
-        {
-            _hiveName = GetVsHiveName(context);
-
-            SetTestInstallationDirectoryIfUnset();
         }
 
         protected override VisualStudioHostConfiguration GetHostConfiguration()
@@ -40,6 +34,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.IntegrationTests
             };
 
             return visualStudioHostConfiguration;
+        }
+
+
+        [AssemblyInitialize]
+        public static void Initialize(TestContext context)
+        {
+            _hiveName = GetVsHiveName(context);
+
+            SetTestInstallationDirectoryIfUnset();
         }
 
         private static string GetVsHiveName(TestContext context)
