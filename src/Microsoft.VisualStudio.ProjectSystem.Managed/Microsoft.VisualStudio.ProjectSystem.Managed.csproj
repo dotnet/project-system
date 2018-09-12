@@ -319,4 +319,9 @@
   <ItemGroup>
     <DesignTimeTargetsFile Include="ProjectSystem\DesignTimeTargets\*.targets" />
   </ItemGroup>
+  <ItemGroup>
+    <None Update="ProjectSystem\Rules\XamlAppDef.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+  </ItemGroup>
 </Project>
