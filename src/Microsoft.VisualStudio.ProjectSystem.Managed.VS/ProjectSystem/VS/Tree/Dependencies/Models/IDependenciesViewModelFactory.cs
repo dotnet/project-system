@@ -9,6 +9,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
     {
         IDependencyViewModel CreateTargetViewModel(ITargetedDependenciesSnapshot snapshot);
         IDependencyViewModel CreateRootViewModel(string providerType, bool hasUnresolvedDependency);
-        ImageMoniker GetDependenciesRootIcon(bool hasUnresolvedDependencies);
+        ImageMoniker GetDependenciesRootIcon();
     }
 }

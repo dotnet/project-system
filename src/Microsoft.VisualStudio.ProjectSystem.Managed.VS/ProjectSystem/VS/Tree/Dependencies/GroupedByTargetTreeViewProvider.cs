@@ -122,7 +122,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             dependenciesTree = CleanupOldNodes(dependenciesTree, currentTopLevelNodes);
 
             // now update root Dependencies node status
-            ProjectImageMoniker rootIcon = ViewModelFactory.GetDependenciesRootIcon(snapshot.HasUnresolvedDependency).ToProjectSystemType();
+            ProjectImageMoniker rootIcon = ViewModelFactory.GetDependenciesRootIcon().ToProjectSystemType();
             return dependenciesTree.SetProperties(icon: rootIcon, expandedIcon: rootIcon);
         }
 
