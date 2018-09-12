@@ -18,7 +18,6 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 {
-    [Trait("UnitTest", "ProjectSystem")]
     public class ConsoleDebugLaunchProviderTest
     {
         private readonly string _ProjectFile = @"c:\test\project\project.csproj";

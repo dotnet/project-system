@@ -8,7 +8,6 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Build
 {
-    [Trait("UnitTest", "ProjectSystem")]
     public class PublishableProjectConfigProviderTests
     {
         [Fact]

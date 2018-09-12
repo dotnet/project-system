@@ -11,7 +11,6 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
 {
-    [Trait("UnitTest", "ProjectSystem")]
     public class LanguageServiceErrorListProviderTests
     {
         [Fact]

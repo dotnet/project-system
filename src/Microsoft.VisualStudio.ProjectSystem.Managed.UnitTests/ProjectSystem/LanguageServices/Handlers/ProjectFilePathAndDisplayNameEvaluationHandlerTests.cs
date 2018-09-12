@@ -7,7 +7,6 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 {
-    [Trait("UnitTest", "ProjectSystem")]
     public class ProjectFilePathAndDisplayNameEvaluationHandlerTests : EvaluationHandlerTestBase
     {
         [Fact]

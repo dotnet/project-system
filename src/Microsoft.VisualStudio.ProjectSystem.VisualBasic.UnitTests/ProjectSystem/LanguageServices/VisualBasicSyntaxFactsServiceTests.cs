@@ -5,7 +5,6 @@ using Xunit;
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
 
-    [Trait("UnitTest", "ProjectSystem")]
     public class VisualBasicSyntaxFactsServiceTests
     {
         private static readonly ISyntaxFactsService s_service = new VisualBasicSyntaxFactsService(null);

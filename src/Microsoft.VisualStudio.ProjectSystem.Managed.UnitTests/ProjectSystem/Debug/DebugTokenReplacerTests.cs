@@ -14,7 +14,6 @@ using Xunit;
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
 
-    [Trait("UnitTest", "ProjectSystem")]
     public class DebugTokenReplacerTests
     {
         private readonly Dictionary<string, string> _envVars = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase) {

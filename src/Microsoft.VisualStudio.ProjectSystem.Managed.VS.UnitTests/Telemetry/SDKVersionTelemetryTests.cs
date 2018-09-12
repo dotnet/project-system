@@ -14,7 +14,6 @@ using static Microsoft.VisualStudio.Telemetry.ITelemetryServiceFactory;
 
 namespace Microsoft.VisualStudio.Telemetry
 {
-    [Trait("UnitTest", "ProjectSystem")]
     public class SDKVersionTelemetryTests
     {
         [Fact]

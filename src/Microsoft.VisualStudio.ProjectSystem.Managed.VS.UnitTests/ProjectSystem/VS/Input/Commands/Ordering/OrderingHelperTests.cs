@@ -10,7 +10,6 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
 {
-    [Trait("UnitTest", "ProjectSystem")]
     public class OrderingHelperTests
     {
         private static void AssertEqualProject(string expected, Project project)

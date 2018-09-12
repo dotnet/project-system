@@ -13,7 +13,6 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 {
-    [Trait("UnitTest", "ProjectSystem")]
     public class DebugProfileEnumValuesGenerator_Tests
     {
         private readonly List<ILaunchProfile> _profiles = new List<ILaunchProfile>() {

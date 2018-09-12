@@ -17,7 +17,6 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
 {
-    [Trait("UnitTest", "ProjectSystem")]
     public class GlobalJsonRemoverTests
     {
         private const string Directory = @"C:\Temp";

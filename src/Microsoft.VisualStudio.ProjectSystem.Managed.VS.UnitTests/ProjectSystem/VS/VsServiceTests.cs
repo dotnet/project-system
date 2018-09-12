@@ -8,7 +8,6 @@ using IAsyncServiceProvider = Microsoft.VisualStudio.Shell.IAsyncServiceProvider
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
-    [Trait("UnitTest", "ProjectSystem")]
     public class VsServiceTests
     {
         [Fact]

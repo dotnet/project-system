@@ -8,7 +8,6 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.References
 {
-    [Trait("UnitTest", "ProjectSystem")]
     public class AlwaysAllowValidProjectReferenceCheckerTests
     {
 

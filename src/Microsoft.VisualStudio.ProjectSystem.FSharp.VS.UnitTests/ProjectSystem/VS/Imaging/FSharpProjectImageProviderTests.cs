@@ -8,7 +8,6 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Imaging
 {
-    [Trait("UnitTest", "ProjectSystem")]
     public class FSharpProjectImageProviderTests
     {
         [Fact]

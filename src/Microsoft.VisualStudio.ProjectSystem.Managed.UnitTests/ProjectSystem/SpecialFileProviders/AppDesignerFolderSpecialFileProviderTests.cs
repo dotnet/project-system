@@ -7,7 +7,6 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
 {
-    [Trait("UnitTest", "ProjectSystem")]
     public class AppDesignerFolderSpecialFileProviderTests
     {
         [Theory]

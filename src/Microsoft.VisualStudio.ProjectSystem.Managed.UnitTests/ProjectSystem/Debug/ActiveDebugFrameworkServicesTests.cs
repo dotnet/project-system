@@ -11,7 +11,6 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Input.Commands
 {
-    [Trait("UnitTest", "ProjectSystem")]
     public class ActiveDebugFrameworkServicesTests
     {
         [Theory]
