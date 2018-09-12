@@ -349,10 +349,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             // Look for an IVsBrowseObject
             for (int i = 0; i < cObjects; ++i)
             {
-                IVsBrowseObject browseObj = null;
-                browseObj = ppunk[i] as IVsBrowseObject;
-
-                if (browseObj != null)
+                if (ppunk[i] is IVsBrowseObject browseObj)
                 {
                     int hr = browseObj.GetProjectItem(out IVsHierarchy hier, out uint itemid);
                     if (hr == VSConstants.S_OK && itemid == VSConstants.VSITEMID_ROOT)

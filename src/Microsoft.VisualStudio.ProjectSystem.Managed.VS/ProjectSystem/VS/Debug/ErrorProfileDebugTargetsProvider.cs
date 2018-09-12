@@ -62,10 +62,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// </summary>
         public Task<IReadOnlyList<IDebugLaunchSettings>> QueryDebugTargetsAsync(DebugLaunchOptions launchOptions, ILaunchProfile activeProfile)
         {
-            if (activeProfile.OtherSettings.TryGetValue("ErrorString", out object oErrorString) && oErrorString is string)
+            if (activeProfile.OtherSettings.TryGetValue("ErrorString", out object objErrorString) && objErrorString is string errorString)
             {
-                throw new Exception(string.Format(VSResources.ErrorInProfilesFile2, Path.GetFileNameWithoutExtension(_configuredProject.UnconfiguredProject.FullPath), (string)oErrorString));
+                throw new Exception(string.Format(VSResources.ErrorInProfilesFile2, Path.GetFileNameWithoutExtension(_configuredProject.UnconfiguredProject.FullPath), errorString));
             }
+
             throw new Exception(string.Format(VSResources.ErrorInProfilesFile, Path.GetFileNameWithoutExtension(_configuredProject.UnconfiguredProject.FullPath)));
         }
     }

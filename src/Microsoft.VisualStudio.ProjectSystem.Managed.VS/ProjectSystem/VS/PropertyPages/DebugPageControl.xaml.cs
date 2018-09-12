@@ -26,20 +26,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
         private void DebugPageControlControl_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            if (e.OldValue != null && e.OldValue is DebugPageViewModel)
+            if (e.OldValue is DebugPageViewModel oldViewModel)
             {
-                var viewModel = e.OldValue as DebugPageViewModel;
-                viewModel.FocusEnvironmentVariablesGridRow -= OnFocusEnvironmentVariableGridRow;
-                viewModel.ClearEnvironmentVariablesGridError -= OnClearEnvironmentVariableGridError;
-                viewModel.PropertyChanged -= ViewModel_PropertyChanged;
+                oldViewModel.FocusEnvironmentVariablesGridRow -= OnFocusEnvironmentVariableGridRow;
+                oldViewModel.ClearEnvironmentVariablesGridError -= OnClearEnvironmentVariableGridError;
+                oldViewModel.PropertyChanged -= ViewModel_PropertyChanged;
             }
 
-            if (e.NewValue != null && e.NewValue is DebugPageViewModel)
+            if (e.NewValue is DebugPageViewModel newViewModel)
             {
-                var viewModel = e.NewValue as DebugPageViewModel;
-                viewModel.FocusEnvironmentVariablesGridRow += OnFocusEnvironmentVariableGridRow;
-                viewModel.ClearEnvironmentVariablesGridError += OnClearEnvironmentVariableGridError;
-                viewModel.PropertyChanged += ViewModel_PropertyChanged;
+                newViewModel.FocusEnvironmentVariablesGridRow += OnFocusEnvironmentVariableGridRow;
+                newViewModel.ClearEnvironmentVariablesGridError += OnClearEnvironmentVariableGridError;
+                newViewModel.PropertyChanged += ViewModel_PropertyChanged;
             }
         }
 
