@@ -12,21 +12,6 @@
         <target state="translated">My Namespace özelleştirmesi hakkında daha fazla bilgi edinin.</target>
         <note />
       </trans-unit>
-      <trans-unit id="colHeaderExtensionName.Text">
-        <source>Name</source>
-        <target state="translated">Ad</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="colHeaderExtensionVersion.Text">
-        <source>Version</source>
-        <target state="translated">Sürüm</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="colHeaderExtensionDescription.Text">
-        <source>Description</source>
-        <target state="translated">Açıklama</target>
-        <note />
-      </trans-unit>
       <trans-unit id="buttonRemove.Text">
         <source>Remo&amp;ve extension</source>
         <target state="translated">Uzantıyı kal&amp;dır</target>
@@ -35,6 +20,21 @@
       <trans-unit id="buttonAdd.Text">
         <source>&amp;Add extension...</source>
         <target state="translated">&amp;Uzantı ekle...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="colHeaderExtensionName.HeaderText">
+        <source>Name</source>
+        <target state="new">Name</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="colHeaderExtensionVersion.HeaderText">
+        <source>Version</source>
+        <target state="new">Version</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="colHeaderExtensionDescription.HeaderText">
+        <source>Description</source>
+        <target state="new">Description</target>
         <note />
       </trans-unit>
     </body>
