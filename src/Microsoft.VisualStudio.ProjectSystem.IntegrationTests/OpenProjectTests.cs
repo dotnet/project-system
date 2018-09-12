@@ -41,8 +41,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.IntegrationTests
                 
                 Assert.IsTrue(success, $"project '{consoleProject.FileName}' failed to build.{Environment.NewLine}errors:{Environment.NewLine}{string.Join(Environment.NewLine, errors)}");
             }
-
-            VisualStudio.Stop();
         }
     }
 }

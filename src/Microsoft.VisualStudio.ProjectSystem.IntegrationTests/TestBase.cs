@@ -36,6 +36,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.IntegrationTests
             return visualStudioHostConfiguration;
         }
 
+        protected override void DoHostTestCleanup()
+        {
+            base.DoHostTestCleanup();
+
+            TryShutdownVisualStudioInstance();
+        }
 
         [AssemblyInitialize]
         public static void Initialize(TestContext context)
