@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     ///     Handles changes to the project and makes sure the language service is aware of them.
     /// </summary>
     [Export(typeof(IWorkspaceContextHandler))]
-    internal class ProjectPropertiesItemHandler : AbstractWorkspaceContextHandler, IEvaluationHandler
+    internal class ProjectPropertiesItemHandler : AbstractWorkspaceContextHandler, IProjectEvaluationHandler
     {
         [ImportingConstructor]
         public ProjectPropertiesItemHandler(UnconfiguredProject project)
@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             Requires.NotNull(project, nameof(project));
         }
 
-        public string EvaluationRule
+        public string ProjectEvaluationRule
         {
             get { return ConfigurationGeneral.SchemaName; }
         }

@@ -7,21 +7,21 @@ using Microsoft.VisualStudio.ProjectSystem.Logging;
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
     /// <summary>
-    ///     Handles changes to a language service rule, and applies them to a
+    ///     Handles changes to project evaluation rule and applies them to a
     ///     <see cref="IWorkspaceProjectContext"/> instance.
     /// </summary>
-    internal interface IEvaluationHandler : IWorkspaceContextHandler
+    internal interface IProjectEvaluationHandler : IWorkspaceContextHandler
     {
         /// <summary>
-        ///     Gets the evaluation rule that the <see cref="IEvaluationHandler"/> handles.
+        ///     Gets the project evaluation rule that the <see cref="IProjectEvaluationHandler"/> handles.
         /// </summary>
-        string EvaluationRule
+        string ProjectEvaluationRule
         {
             get;
         }
 
         /// <summary>
-        ///     Handles the specified set of changes to a rule, and applies them
+        ///     Handles the specified set of changes to the project evaluation rule, and applies them
         ///     to the underlying <see cref="IWorkspaceProjectContext"/>.
         /// </summary>
         /// <param name="version">

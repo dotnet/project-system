@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public const string CSharpAppDesigner = ProjectCapabilities.CSharp + " & " + AppDesigner;
         public const string FSharpAppDesigner = FSharp + " & " + AppDesigner;
         public const string CSharpOrVisualBasic = "(" + ProjectCapabilities.CSharp + " | " + ProjectCapabilities.VB + ")";
-        public const string DotNetLanguageService = DotNet + " & " + ProjectCapabilities.LanguageService;
+        
         public const string AppDesigner = nameof(AppDesigner);
         public const string AppSettings = nameof(AppSettings);
         public const string DependenciesTree = nameof(DependenciesTree);
@@ -34,7 +34,10 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public const string PackageReferences = ProjectCapabilities.PackageReferences;
         public const string PreserveFormatting = nameof(PreserveFormatting);
         public const string ProjectConfigurationsDeclaredDimensions = ProjectCapabilities.ProjectConfigurationsDeclaredDimensions;
-        public const string LanguageService = ProjectCapabilities.LanguageService;
+        public const string LanguageService = "(LanguageService & !LanguageService2)";
+        public const string LanguageService2 = "(!LanguageService & LanguageService2)";
+        public const string DotNetLanguageService = DotNet + " & " + LanguageService;
+        public const string DotNetLanguageService2 = DotNet + " & " + LanguageService2;
         public const string SortByDisplayOrder = ProjectCapabilities.SortByDisplayOrder;
         public const string DotNet = ".NET";
     }

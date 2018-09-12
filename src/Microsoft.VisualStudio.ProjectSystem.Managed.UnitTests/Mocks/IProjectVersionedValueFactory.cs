@@ -6,6 +6,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal static class IProjectVersionedValueFactory
     {
+        public static IProjectVersionedValue<IProjectSubscriptionUpdate> CreateEmpty()
+        {
+            return FromJson("{}");
+        }
+
         public static IProjectVersionedValue<IProjectSubscriptionUpdate> FromJson(string jsonString)
         {
             return FromJson(version: 1, jsonString: jsonString);

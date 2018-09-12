@@ -117,7 +117,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             Assert.Equal(expected, context.DisplayName);
         }
 
-        internal override IEvaluationHandler CreateInstance()
+        internal override IProjectEvaluationHandler CreateInstance()
         {
             return CreateInstance(null, null);
         }

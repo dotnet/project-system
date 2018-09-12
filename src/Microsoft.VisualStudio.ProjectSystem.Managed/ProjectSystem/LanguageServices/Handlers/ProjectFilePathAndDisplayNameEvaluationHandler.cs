@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     ///     and <see cref="IWorkspaceProjectContext.DisplayName"/>.
     /// </summary>
     [Export(typeof(IWorkspaceContextHandler))]
-    internal class ProjectFilePathAndDisplayNameEvaluationHandler : AbstractWorkspaceContextHandler, IEvaluationHandler
+    internal class ProjectFilePathAndDisplayNameEvaluationHandler : AbstractWorkspaceContextHandler, IProjectEvaluationHandler
     {
         private readonly ConfiguredProject _project;
         private readonly IImplicitlyActiveDimensionProvider _implicitlyActiveDimensionProvider;
@@ -28,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             _implicitlyActiveDimensionProvider = implicitlyActiveDimensionProvider;
         }
 
-        public string EvaluationRule
+        public string ProjectEvaluationRule
         {
             get { return ConfigurationGeneral.SchemaName; }
         }

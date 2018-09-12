@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             });
         }
 
-        internal override IEvaluationHandler CreateInstance()
+        internal override IProjectEvaluationHandler CreateInstance()
         {
             return CreateInstance(null, null);
         }

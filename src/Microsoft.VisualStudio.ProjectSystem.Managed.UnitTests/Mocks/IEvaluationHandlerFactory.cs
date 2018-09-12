@@ -10,21 +10,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
     internal static class IEvaluationHandlerFactory
     {
-        public static IEvaluationHandler ImplementEvaluationRule(string evaluationRule)
+        public static IProjectEvaluationHandler ImplementProjectEvaluationRule(string evaluationRule)
         {
-            var mock = new Mock<IEvaluationHandler>();
+            var mock = new Mock<IProjectEvaluationHandler>();
 
-            mock.SetupGet(h => h.EvaluationRule)
+            mock.SetupGet(h => h.ProjectEvaluationRule)
                 .Returns(evaluationRule);
 
             return mock.Object;
         }
 
-        public static IEvaluationHandler ImplementHandle(string evaluationRule, Action<IComparable, IProjectChangeDescription, bool, IProjectLogger> action)
+        public static IProjectEvaluationHandler ImplementHandle(string evaluationRule, Action<IComparable, IProjectChangeDescription, bool, IProjectLogger> action)
         {
-            var mock = new Mock<IEvaluationHandler>();
+            var mock = new Mock<IProjectEvaluationHandler>();
 
-            mock.SetupGet(h => h.EvaluationRule)
+            mock.SetupGet(h => h.ProjectEvaluationRule)
                 .Returns(evaluationRule);
 
             mock.Setup(h => h.Handle(It.IsAny<IComparable>(), It.IsAny<IProjectChangeDescription>(), It.IsAny<bool>(), It.IsAny<IProjectLogger>()))
