@@ -11,6 +11,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.IntegrationTests
     {
         private static string _hiveName;
 
+        protected TestBase()
+        {
+            // TestCleanup will fire up another instance of Visual Studio to reset 
+            // the AutoloadExternalChanges if it thinks the default changed even if
+            // that was just caused by settings to be sync'd. Just turn this feature off.
+            SuppressReloadPrompt = false;
+        }
+
         protected static void Initialize(TestContext context)
         {
             _hiveName = GetVsHiveName(context);
