@@ -78,7 +78,7 @@ namespace Microsoft.VisualStudio.Threading.Tasks
                 // First we wait the delay time. If another request has been made in the interval, then this task
                 // is cancelled. To avoid unnecessary OperationCanceled exceptions it tests to see if the token has
                 // been canceled
-                await Task.Delay(TaskDelayTime);
+                await Task.Delay(TaskDelayTime, token);
 
                 bool isCanceled = token.IsCancellationRequested;
                 lock (_syncObject)

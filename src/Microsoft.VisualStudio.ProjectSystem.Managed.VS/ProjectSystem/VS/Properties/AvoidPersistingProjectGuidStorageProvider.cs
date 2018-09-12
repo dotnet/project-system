@@ -79,7 +79,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
                         {
                             property.Value = ProjectCollection.Escape(value.ToString("B").ToUpperInvariant());
 
-                        });
+                        }, cancellationToken);
                     }
                 }
                 else
