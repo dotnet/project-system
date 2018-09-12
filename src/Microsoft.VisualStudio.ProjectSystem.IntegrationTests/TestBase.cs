@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+using System.IO;
 using Microsoft.Test.Apex.VisualStudio;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -13,6 +14,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.IntegrationTests
         protected static void Initialize(TestContext context)
         {
             _hiveName = GetVsHiveName(context);
+
+            SetTestInstallationDirectoryIfUnset();
         }
 
         protected VisualStudioHostConfiguration DefaultHostConfiguration
@@ -42,6 +45,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.IntegrationTests
                 return rootSuffix;
 
             return Environment.GetEnvironmentVariable("RootSuffix") ?? "Exp";
+        }
+
+        private static void SetTestInstallationDirectoryIfUnset()
+        {
+            string installationUnderTest = "VisualStudio.InstallationUnderTest.Path";
+
+            if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable(installationUnderTest)))
+            {
+                string vsDirectory = Environment.GetEnvironmentVariable("VSAPPIDDIR");
+                string devenv = Environment.GetEnvironmentVariable("VSAPPIDNAME");
+                if (!string.IsNullOrEmpty(vsDirectory) && !string.IsNullOrEmpty(devenv))
+                {
+                    Environment.SetEnvironmentVariable(installationUnderTest, Path.Combine(vsDirectory, devenv));
+                }
+            }
         }
     }
 }
