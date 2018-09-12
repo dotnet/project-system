@@ -5,39 +5,51 @@ using System.IO;
 using Microsoft.Test.Apex.VisualStudio;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Microsoft.VisualStudio.ProjectSystem.IntegrationTests
+namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
+    [TestClass] // AssemblyInitialize won't be found without it
     public abstract class TestBase : VisualStudioHostTest
     {
         private static string _hiveName;
 
-        protected static void Initialize(TestContext context)
+        protected TestBase()
+        {
+            // TestCleanup will fire up another instance of Visual Studio to reset 
+            // the AutoloadExternalChanges if it thinks the default changed even if
+            // that was just caused by settings to be sync'd. Just turn this feature off.
+            SuppressReloadPrompt = false;
+        }
+
+        protected override VisualStudioHostConfiguration GetHostConfiguration()
+        {
+            var visualStudioHostConfiguration = new VisualStudioHostConfiguration()
+            {
+                CommandLineArguments = $"/rootSuffix {_hiveName}",
+                RestoreUserSettings = false,
+                InheritProcessEnvironment = true,
+                AutomaticallyDismissMessageBoxes = true,
+                DelayInitialVsLicenseValidation = true,
+                ForceFirstLaunch = true,
+                BootstrapInjection = BootstrapInjectionMethod.DteFromROT,
+            };
+
+            return visualStudioHostConfiguration;
+        }
+
+        protected override void DoHostTestCleanup()
+        {
+            base.DoHostTestCleanup();
+
+            TryShutdownVisualStudioInstance();
+        }
+
+        [AssemblyInitialize]
+        public static void Initialize(TestContext context)
         {
             _hiveName = GetVsHiveName(context);
 
             SetTestInstallationDirectoryIfUnset();
         }
-
-        protected VisualStudioHostConfiguration DefaultHostConfiguration
-        {
-            get
-            {
-                var visualStudioHostConfiguration = new VisualStudioHostConfiguration()
-                {
-                    CommandLineArguments = $"/rootSuffix {_hiveName}",
-                    RestoreUserSettings = false,
-                    InheritProcessEnvironment = true,
-                    AutomaticallyDismissMessageBoxes = true,
-                    DelayInitialVsLicenseValidation = true,
-                    ForceFirstLaunch = true,
-                    BootstrapInjection = BootstrapInjectionMethod.DteFromROT,
-                };
-
-                return visualStudioHostConfiguration;
-            }
-        }
-
-        protected VisualStudioHost GetVS() => Operations.CreateHost<VisualStudioHost>(DefaultHostConfiguration);
 
         private static string GetVsHiveName(TestContext context)
         {
