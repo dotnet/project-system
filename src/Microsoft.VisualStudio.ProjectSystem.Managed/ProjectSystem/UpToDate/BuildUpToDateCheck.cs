@@ -326,7 +326,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             if (!string.IsNullOrWhiteSpace(_msBuildAllProjects))
             {
                 logger.Verbose("Adding import inputs:");
-                foreach (string input in _msBuildAllProjects.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries))
+                foreach (string input in _msBuildAllProjects.Split(Delimiter.Semicolon, StringSplitOptions.RemoveEmptyEntries))
                 {
                     logger.Verbose("    '{0}'", input);
                     yield return input;
