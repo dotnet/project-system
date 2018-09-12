@@ -11,13 +11,13 @@ namespace Microsoft.VisualStudio.Threading.Tasks
 {
 
     [Trait("UnitTest", "ProjectSystem")]
-    public class SequencialTaskExecutorTests
+    public class SequentialTaskExecutorTests
     {
         [Fact]
         public async Task EnsureTasksAreRunInOrder()
         {
             const int NumberOfTasks = 25;
-            var sequencer = new SequencialTaskExecutor();
+            var sequencer = new SequentialTaskExecutor();
 
             var tasks = new List<Task>();
             var sequences = new List<int>();
@@ -46,7 +46,7 @@ namespace Microsoft.VisualStudio.Threading.Tasks
         public async Task EnsureNestedCallsAreExcecutedDirectly()
         {
             const int NumberOfTasks = 10;
-            var sequencer = new SequencialTaskExecutor();
+            var sequencer = new SequentialTaskExecutor();
 
             var tasks = new List<Task>();
             var sequences = new List<int>();
@@ -77,7 +77,7 @@ namespace Microsoft.VisualStudio.Threading.Tasks
         [Fact]
         public void CalltoDisposedObjectShouldThrow()
         {
-            var sequencer = new SequencialTaskExecutor();
+            var sequencer = new SequentialTaskExecutor();
             sequencer.Dispose();
             Assert.Throws<ObjectDisposedException>(() => { sequencer.ExecuteTask(() => Task.CompletedTask); });
         }
@@ -86,7 +86,7 @@ namespace Microsoft.VisualStudio.Threading.Tasks
         public async Task EnsureTasksCancelledWhenDisposed()
         {
             const int NumberOfTasks = 10;
-            var sequencer = new SequencialTaskExecutor();
+            var sequencer = new SequentialTaskExecutor();
 
             var tasks = new List<Task>();
             for (int i = 0; i < NumberOfTasks; i++)
