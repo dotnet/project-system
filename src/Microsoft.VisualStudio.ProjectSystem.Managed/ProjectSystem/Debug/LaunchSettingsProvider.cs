@@ -104,7 +104,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
         protected IDisposable ProjectRuleSubscriptionLink { get; set; }
 
-        private SequencialTaskExecutor _sequentialTaskQueue = new SequencialTaskExecutor();
+        private SequentialTaskExecutor _sequentialTaskQueue = new SequentialTaskExecutor();
 
         [Obsolete("Use GetLaunchSettingsFilePathAsync instead.")]
         public string LaunchSettingsFile
