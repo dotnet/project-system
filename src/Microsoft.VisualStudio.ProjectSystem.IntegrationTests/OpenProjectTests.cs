@@ -5,7 +5,7 @@ using System.Linq;
 using Microsoft.Test.Apex.VisualStudio.Solution;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Microsoft.VisualStudio.ProjectSystem.IntegrationTests
+namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     [TestClass]
     public class CreateProjectTests : TestBase
