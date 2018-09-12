@@ -37,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             mockSnapshot = ITargetedDependenciesSnapshotFactory.ImplementHasUnresolvedDependency("tfm1\\yyy\\dependencyExisting", true);
 
-            Assert.True(dependency1.IsOrHasUnresolvedDependency(mockSnapshot));
+            Assert.True(dependency2.IsOrHasUnresolvedDependency(mockSnapshot));
 
             var dependency3 = IDependencyFactory.FromJson(@"
 {
