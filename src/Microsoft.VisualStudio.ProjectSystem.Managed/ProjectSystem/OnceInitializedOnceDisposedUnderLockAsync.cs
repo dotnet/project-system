@@ -28,8 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         protected override sealed async Task DisposeCoreAsync(bool initialized)
         {
-            await _semaphore.ExecuteAsync(() => DisposeCoreUnderLockAsync(initialized))
-                            .ConfigureAwait(true);
+            await _semaphore.ExecuteAsync(() => DisposeCoreUnderLockAsync(initialized));
 
             _semaphore.Dispose();
         }
@@ -79,8 +78,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
                 try
                 {
-                    await _semaphore.ExecuteAsync(() => action(jointCancellationToken), jointCancellationToken)
-                                    .ConfigureAwait(true);
+                    await _semaphore.ExecuteAsync(() => action(jointCancellationToken), jointCancellationToken);
                 }
                 catch (ObjectDisposedException)
                 {   // There's a tiny chance that between checking the cancellation token (wrapping DisposalToken) 

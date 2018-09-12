@@ -52,8 +52,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
             {
-                _context = await _workspaceProjectContextProvider.Value.CreateProjectContextAsync(_project)
-                                                                       .ConfigureAwait(true);
+                _context = await _workspaceProjectContextProvider.Value.CreateProjectContextAsync(_project);
 
                 if (_context == null)
                     return;
@@ -80,8 +79,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
                     if (_context != null)
                     {
-                        await _workspaceProjectContextProvider.Value.ReleaseProjectContextAsync(_context)
-                                                                    .ConfigureAwait(true);
+                        await _workspaceProjectContextProvider.Value.ReleaseProjectContextAsync(_context);
                     }
                 }
             }
@@ -104,7 +102,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
                     return Task.CompletedTask;
 
-                }, _tasksService.UnloadCancellationToken).ConfigureAwait(true);
+                }, _tasksService.UnloadCancellationToken);
             }
         }
     }
