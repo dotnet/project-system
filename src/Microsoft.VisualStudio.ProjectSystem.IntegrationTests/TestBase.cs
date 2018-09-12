@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System;
 using Microsoft.Test.Apex.VisualStudio;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -11,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.IntegrationTests
 
         protected static void Initialize(TestContext context)
         {
-            _hiveName = context.Properties["VsRootSuffix"].ToString();
+            _hiveName = GetVsHiveName(context);
         }
 
         protected VisualStudioHostConfiguration DefaultHostConfiguration
@@ -33,5 +34,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.IntegrationTests
         }
 
         protected VisualStudioHost GetVS() => Operations.CreateHost<VisualStudioHost>(DefaultHostConfiguration);
+
+        private static string GetVsHiveName(TestContext context)
+        {
+            string rootSuffix = (string)context.Properties["VsRootSuffix"];
+            if (!string.IsNullOrEmpty(rootSuffix))
+                return rootSuffix;
+
+            return Environment.GetEnvironmentVariable("RootSuffix") ?? "Exp";
+        }
     }
 }
