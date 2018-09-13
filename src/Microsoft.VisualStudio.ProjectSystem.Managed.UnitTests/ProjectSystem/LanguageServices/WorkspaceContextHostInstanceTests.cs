@@ -178,7 +178,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                                                     threadingService,
                                                     tasksService,
                                                     projectSubscriptionService,
-                                                    workspaceProjectContextProvider.AsLazy(),
+                                                    workspaceProjectContextProvider,
                                                     activeWorkspaceProjectContextTracker,
                                                     ExportFactoryFactory.ImplementCreateValueWithAutoDispose(() => applyChangesToWorkspaceContext));
         }

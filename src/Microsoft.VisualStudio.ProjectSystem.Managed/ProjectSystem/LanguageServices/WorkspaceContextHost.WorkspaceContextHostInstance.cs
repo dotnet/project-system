@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System;
 using System.ComponentModel.Composition;
 using System.Threading;
 using System.Threading.Tasks;
@@ -22,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             private readonly IProjectSubscriptionService _projectSubscriptionService;
             private readonly IProjectThreadingService _threadingService;
             private readonly IUnconfiguredProjectTasksService _tasksService;
-            private readonly Lazy<IWorkspaceProjectContextProvider> _workspaceProjectContextProvider;
+            private readonly IWorkspaceProjectContextProvider _workspaceProjectContextProvider;
             private readonly IActiveWorkspaceProjectContextTracker _activeWorkspaceProjectContextTracker;
             private readonly ExportFactory<IApplyChangesToWorkspaceContext> _applyChangesToWorkspaceContextFactory;
 
@@ -34,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                                                 IProjectThreadingService threadingService,
                                                 IUnconfiguredProjectTasksService tasksService,
                                                 IProjectSubscriptionService projectSubscriptionService,
-                                                Lazy<IWorkspaceProjectContextProvider> workspaceProjectContextProvider,
+                                                IWorkspaceProjectContextProvider workspaceProjectContextProvider,
                                                 IActiveWorkspaceProjectContextTracker activeWorkspaceProjectContextTracker,
                                                 ExportFactory<IApplyChangesToWorkspaceContext> applyChangesToWorkspaceContextFactory)
                 : base(threadingService.JoinableTaskContext)
@@ -55,8 +54,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
             {
-                _context = await _workspaceProjectContextProvider.Value.CreateProjectContextAsync(_project)
-                                                                       .ConfigureAwait(true);
+                _context = await _workspaceProjectContextProvider.CreateProjectContextAsync(_project)
+                                                                  .ConfigureAwait(true);
 
                 if (_context == null)
                     return;
@@ -83,8 +82,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
                     if (_context != null)
                     {
-                        await _workspaceProjectContextProvider.Value.ReleaseProjectContextAsync(_context)
-                                                                    .ConfigureAwait(true);
+                        await _workspaceProjectContextProvider.ReleaseProjectContextAsync(_context)
+                                                              .ConfigureAwait(true);
                     }
                 }
             }
