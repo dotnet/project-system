@@ -33,10 +33,10 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public const string PackageReferences = ProjectCapabilities.PackageReferences;
         public const string PreserveFormatting = nameof(PreserveFormatting);
         public const string ProjectConfigurationsDeclaredDimensions = ProjectCapabilities.ProjectConfigurationsDeclaredDimensions;
-        public const string LanguageService = "(LanguageService & !LanguageService2)";
-        public const string LanguageService2 = "(!LanguageService & LanguageService2)";
-        public const string DotNetLanguageService = DotNet + " & " + LanguageService;
-        public const string DotNetLanguageService2 = DotNet + " & " + LanguageService2;
+        public const string LanguageService = nameof(LanguageService);
+        public const string LanguageService2 = nameof(LanguageService2);
+        public const string DotNetLanguageService = DotNet + " & (LanguageService & !LanguageService2)";        // Temporary until we turn new language service hookup
+        public const string DotNetLanguageService2 = DotNet + " & (!LanguageService & LanguageService2)";
         public const string SortByDisplayOrder = ProjectCapabilities.SortByDisplayOrder;
         public const string DotNet = ".NET";
     }
