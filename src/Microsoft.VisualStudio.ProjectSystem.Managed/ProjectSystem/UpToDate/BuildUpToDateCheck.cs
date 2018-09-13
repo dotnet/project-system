@@ -14,6 +14,7 @@ using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.Build;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.Telemetry;
+using Microsoft.VisualStudio.Text;
 
 namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 {
@@ -326,7 +327,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             if (!string.IsNullOrWhiteSpace(_msBuildAllProjects))
             {
                 logger.Verbose("Adding import inputs:");
-                foreach (string input in _msBuildAllProjects.Split(Delimiter.Semicolon, StringSplitOptions.RemoveEmptyEntries))
+                foreach (string input in new LazyStringSplit(_msBuildAllProjects, ';'))
                 {
                     logger.Verbose("    '{0}'", input);
                     yield return input;
