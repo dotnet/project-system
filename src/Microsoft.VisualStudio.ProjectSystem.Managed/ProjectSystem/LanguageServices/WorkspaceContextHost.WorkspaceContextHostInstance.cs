@@ -23,8 +23,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             private readonly IProjectThreadingService _threadingService;
             private readonly IUnconfiguredProjectTasksService _tasksService;
             private readonly Lazy<IWorkspaceProjectContextProvider> _workspaceProjectContextProvider;
+            private readonly IActiveWorkspaceProjectContextTracker _activeWorkspaceProjectContextTracker;
             private readonly ExportFactory<IApplyChangesToWorkspaceContext> _applyChangesToWorkspaceContextFactory;
-            
+
             private DisposableBag _subscriptions;
             private IWorkspaceProjectContext _context;
             private ExportLifetimeContext<IApplyChangesToWorkspaceContext> _applyChangesToWorkspaceContext;
@@ -34,6 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                                                 IUnconfiguredProjectTasksService tasksService,
                                                 IProjectSubscriptionService projectSubscriptionService,
                                                 Lazy<IWorkspaceProjectContextProvider> workspaceProjectContextProvider,
+                                                IActiveWorkspaceProjectContextTracker activeWorkspaceProjectContextTracker,
                                                 ExportFactory<IApplyChangesToWorkspaceContext> applyChangesToWorkspaceContextFactory)
                 : base(threadingService.JoinableTaskContext)
             {
@@ -43,6 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 _tasksService = tasksService;
                 _workspaceProjectContextProvider = workspaceProjectContextProvider;
                 _applyChangesToWorkspaceContextFactory = applyChangesToWorkspaceContextFactory;
+                _activeWorkspaceProjectContextTracker = activeWorkspaceProjectContextTracker;
             }
 
             public Task InitializeAsync()
@@ -93,13 +96,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
                 await ExecuteUnderLockAsync(cancellationToken =>
                 {
+                    bool isActiveContext = _activeWorkspaceProjectContextTracker.IsActiveContext(_context);
+
                     if (evaluation)
                     {
-                        _applyChangesToWorkspaceContext.Value.ApplyProjectEvaluation(update, isActiveContext: true, cancellationToken);
+                        _applyChangesToWorkspaceContext.Value.ApplyProjectEvaluation(update, isActiveContext, cancellationToken);
                     }
                     else
                     {
-                        _applyChangesToWorkspaceContext.Value.ApplyProjectBuild(update, isActiveContext: true, cancellationToken);
+                        _applyChangesToWorkspaceContext.Value.ApplyProjectBuild(update, isActiveContext, cancellationToken);
                     }
 
                     return Task.CompletedTask;
