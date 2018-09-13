@@ -23,18 +23,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         private readonly ITelemetryService _telemetryService;
         private readonly ISafeProjectGuidService _projectGuidService;
         private readonly Lazy<IWorkspaceProjectContextFactory> _workspaceProjectContextFactory;
+        private readonly IActiveWorkspaceProjectContextTracker _activeWorkspaceProjectContextTracker;
 
         [ImportingConstructor]
         public WorkspaceProjectContextProvider(UnconfiguredProject project,
                                                IProjectThreadingService threadingService,
                                                ISafeProjectGuidService projectGuidService,
                                                ITelemetryService telemetryService,
-                                               Lazy<IWorkspaceProjectContextFactory> workspaceProjectContextFactory)
+                                               Lazy<IWorkspaceProjectContextFactory> workspaceProjectContextFactory,        // From Roslyn, so lazy
+                                               IActiveWorkspaceProjectContextTracker activeWorkspaceProjectContextTracker)
         {
             _project = project;
             _threadingService = threadingService;
             _telemetryService = telemetryService;
             _workspaceProjectContextFactory = workspaceProjectContextFactory;
+            _activeWorkspaceProjectContextTracker = activeWorkspaceProjectContextTracker;
             _projectGuidService = projectGuidService;
         }
 
@@ -53,12 +56,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 return null;
 
             // Wrap to enforce UI-thread
-            return new ForegroundWorkspaceProjectContext(_threadingService, context);
+            context = new ForegroundWorkspaceProjectContext(_threadingService, context);
+
+            _activeWorkspaceProjectContextTracker.RegisterContext(context, data.WorkspaceProjectContextId);
+
+            return context;            
         }
 
         public async Task ReleaseProjectContextAsync(IWorkspaceProjectContext projectContext)
         {
             Requires.NotNull(projectContext, nameof(projectContext));
+
+            _activeWorkspaceProjectContextTracker.UnregisterContext(projectContext);
 
             // TODO: https://github.com/dotnet/project-system/issues/353.
             await _threadingService.SwitchToUIThread();
