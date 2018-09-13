@@ -398,7 +398,7 @@
     <Compile Update="MyExtensibility\MyExtensibilityPropPage.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Update="MyExtensibility\MyExtensionListView.vb">
+    <Compile Update="MyExtensibility\MyExtensionDataGridView.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Update="PropPages\AdvancedServicesDialog.vb">
