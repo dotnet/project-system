@@ -12,21 +12,6 @@
         <target state="translated">Aprenda mais sobre a personalização do My Namespace.</target>
         <note />
       </trans-unit>
-      <trans-unit id="colHeaderExtensionName.Text">
-        <source>Name</source>
-        <target state="translated">Nome</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="colHeaderExtensionVersion.Text">
-        <source>Version</source>
-        <target state="translated">Versão</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="colHeaderExtensionDescription.Text">
-        <source>Description</source>
-        <target state="translated">Descrição</target>
-        <note />
-      </trans-unit>
       <trans-unit id="buttonRemove.Text">
         <source>Remo&amp;ve extension</source>
         <target state="translated">Remo&amp;ver extensão</target>
@@ -35,6 +20,21 @@
       <trans-unit id="buttonAdd.Text">
         <source>&amp;Add extension...</source>
         <target state="translated">&amp;Adicionar extensão...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="colHeaderExtensionName.HeaderText">
+        <source>Name</source>
+        <target state="new">Name</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="colHeaderExtensionVersion.HeaderText">
+        <source>Version</source>
+        <target state="new">Version</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="colHeaderExtensionDescription.HeaderText">
+        <source>Description</source>
+        <target state="new">Description</target>
         <note />
       </trans-unit>
     </body>
