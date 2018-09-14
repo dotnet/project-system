@@ -14,6 +14,7 @@ using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.Build;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.Telemetry;
+using Microsoft.VisualStudio.Text;
 
 namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 {
@@ -63,8 +64,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         private string _msBuildProjectDirectory;
         private string _markerFile;
         private string _outputRelativeOrFullPath;
+        private string _msBuildAllProjects;
 
-        private readonly HashSet<string> _imports = new HashSet<string>(StringComparers.Paths);
         private readonly HashSet<string> _itemTypes = new HashSet<string>(StringComparers.ItemTypes);
         private readonly Dictionary<string, HashSet<(string path, string link, CopyToOutputDirectoryType copyType)>> _items = new Dictionary<string, HashSet<(string, string, CopyToOutputDirectoryType)>>(StringComparers.ItemTypes);
         private readonly HashSet<string> _customInputs = new HashSet<string>(StringComparers.Paths);
@@ -119,11 +120,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             _msBuildProjectFullPath = e.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.MSBuildProjectFullPathProperty, _msBuildProjectFullPath);
             _msBuildProjectDirectory = e.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.MSBuildProjectDirectoryProperty, _msBuildProjectDirectory);
             _outputRelativeOrFullPath = e.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.OutputPathProperty, _outputRelativeOrFullPath);
-
-            string[] allProjects = e.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.MSBuildAllProjectsProperty, string.Empty)
-                .Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
-            _imports.Clear();
-            _imports.AddRange(allProjects);
+            _msBuildAllProjects = e.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.MSBuildAllProjectsProperty, "");
 
             if (e.ProjectChanges.TryGetValue(ResolvedAnalyzerReference.SchemaName, out IProjectChangeDescription changes) &&
                 changes.Difference.AnyChanges)
@@ -327,10 +324,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             logger.Verbose("    '{0}'", _msBuildProjectFullPath);
             yield return _msBuildProjectFullPath;
 
-            if (_imports.Count != 0)
+            if (!string.IsNullOrWhiteSpace(_msBuildAllProjects))
             {
                 logger.Verbose("Adding import inputs:");
-                foreach (string input in _imports)
+                foreach (string input in new LazyStringSplit(_msBuildAllProjects, ';'))
                 {
                     logger.Verbose("    '{0}'", input);
                     yield return input;

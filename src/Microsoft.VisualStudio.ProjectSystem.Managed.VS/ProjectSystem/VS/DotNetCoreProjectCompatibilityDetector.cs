@@ -282,7 +282,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                                 if (!string.IsNullOrWhiteSpace(verString))
                                 {
                                     // This is a semantic version string. We only care about the non-semantic version part
-                                    int index = verString.IndexOfAny(new char[] { '-', '+' });
+                                    int index = verString.IndexOfAny(Delimiter.PlusAndMinus);
                                     if (index != -1)
                                     {
                                         verString = verString.Substring(0, index);

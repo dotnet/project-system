@@ -33,6 +33,11 @@ namespace Microsoft.VisualStudio
         internal static readonly char[] BackSlash = new char[] { '\\' };
 
         /// <summary>
+        /// Single, static instance of an array that contains '+' and '-' characters.
+        /// </summary>
+        internal static readonly char[] PlusAndMinus = new char[] { '+', '-' };
+
+        /// <summary>
         /// Single, static instance of an array that contains platform-specific path separators
         /// </summary>
         internal static readonly char[] Path = new char[]
