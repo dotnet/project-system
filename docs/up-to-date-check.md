@@ -42,6 +42,7 @@ Output files break down as follows:
 
 - :heavy_check_mark: All input files exist
 - :heavy_check_mark: All input files are older than the earliest output (`_customOutputs` and `_builtOutputs`)
+- :heavy_check_mark: All input files were modified before the last up-to-date check was performed
 
 ### `CopyUpToDateMarker` and `ResolvedCompilationReference`
 

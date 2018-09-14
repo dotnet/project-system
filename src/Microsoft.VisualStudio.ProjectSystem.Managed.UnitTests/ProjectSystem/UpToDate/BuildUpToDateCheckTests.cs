@@ -76,10 +76,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             projectAsynchronousTasksService.SetupGet(s => s.UnloadCancellationToken).Returns(CancellationToken.None);
             projectAsynchronousTasksService.Setup(s => s.IsTaskQueueEmpty(ProjectCriticalOperation.Build)).Returns(() => _isTaskQueueEmpty);
 
+            var lastWriteTime = new DateTime(1999, 1, 1);
             _fileSystem = new IFileSystemMock();
-            _fileSystem.AddFile(_msBuildProjectFullPath);
-            _fileSystem.AddFile("Project1");
-            _fileSystem.AddFile("Project2");
+            _fileSystem.AddFile(_msBuildProjectFullPath, lastWriteTime);
+            _fileSystem.AddFile("Project1", lastWriteTime);
+            _fileSystem.AddFile("Project2", lastWriteTime);
             _fileSystem.AddFolder(_msBuildProjectDirectory);
             _fileSystem.AddFolder(_outputPath);
 
@@ -362,6 +363,59 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         }
 
         [Fact]
+        public async Task IsUpToDateAsync_False_InputChangedBetweenLastCheckAndEarliestOutput()
+        {
+            // This test covers a race condition described in https://github.com/dotnet/project-system/issues/4014
+            //
+            // t0 Modify input file
+            // t1 Check up to date (false) so start a build
+            // t2 Modify input file
+            // t3 Produce first (earliest) output DLL (from t0 input)
+            // t4 Check incorrectly claims everything up to date, as t3 > t2
+
+            var projectSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
+            {
+                [UpToDateCheckBuilt.SchemaName] = SimpleItems("BuiltOutputPath1")
+            };
+
+            var sourceSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
+            {
+                [Compile.SchemaName] = SimpleItems("ItemPath1")
+            };
+
+            var t0 = DateTime.Now.AddMinutes(-1);
+
+            _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\ItemPath1", t0);
+            _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\BuiltOutputPath1", t0.AddMinutes(-1));
+
+            // Run test (t1)
+            await SetupAsync(projectSnapshot, sourceSnapshot, expectUpToDate: false);
+
+            await AssertNotUpToDateAsync(
+                $"Input 'C:\\Dev\\Solution\\Project\\ItemPath1' is newer ({t0}) than earliest output 'C:\\Dev\\Solution\\Project\\BuiltOutputPath1' ({t0.AddMinutes(-1)}), not up to date.",
+                "Outputs");
+
+            await Task.Delay(50);
+
+            // Modify input while build in progress (t2)
+            var t2 = DateTime.Now;
+            _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\ItemPath1", t2);
+
+            await Task.Delay(50);
+
+            // Update write time of output (t3)
+            var t3 = DateTime.Now;
+            _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\BuiltOutputPath1", t3);
+
+            await Task.Delay(50);
+
+            // Run check again (t4)
+            await AssertNotUpToDateAsync(
+                "Input 'C:\\Dev\\Solution\\Project\\ItemPath1' has been modified since the last up-to-date check, not up to date.",
+                "Outputs");
+        }
+
+        [Fact]
         public async Task IsUpToDateAsync_False_InputNewerThanCustomOutput()
         {
             var projectSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
@@ -403,7 +457,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 }
             };
 
-            var outputTime = DateTime.Now;
+            var outputTime = DateTime.UtcNow.AddMinutes(-10);
 
             _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\Marker", outputTime);
             _fileSystem.AddFile("Reference1MarkerPath", outputTime.AddMinutes(1));
@@ -415,8 +469,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             await AssertNotUpToDateAsync(
                 new[]
                 {
-                    $"Latest write timestamp on input marker is {outputTime.AddMinutes(2)} on 'Reference1OriginalPath'.",
-                    $"Write timestamp on output marker is {outputTime} on 'C:\\Dev\\Solution\\Project\\Marker'.",
+                    $"Latest write timestamp on input marker is {outputTime.AddMinutes(2).ToLocalTime()} on 'Reference1OriginalPath'.",
+                    $"Write timestamp on output marker is {outputTime.ToLocalTime()} on 'C:\\Dev\\Solution\\Project\\Marker'.",
                     "Input marker is newer than output marker, not up to date."
                 },
                 "Marker");
