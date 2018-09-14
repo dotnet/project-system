@@ -29,7 +29,8 @@
         "VisualBasicDesignTimeTargetsPath": "$(VisualStudioXamlRulesDir)Microsoft.VisualBasic.DesignTime.targets",
         "FSharpDesignTimeTargetsPath": "$(VisualStudioXamlRulesDir)Microsoft.FSharp.DesignTime.targets",
         "CSharpDesignTimeTargetsPath": "$(VisualStudioXamlRulesDir)Microsoft.CSharp.DesignTime.targets",
-        "COMPlus_ZapDisable": "1"
+        "COMPlus_ZapDisable": "1",
+        "PROJECTSYSTEM_PROJECTOUTPUTPANEENABLED": "1"
       },
       "nativeDebugging": true
     }
