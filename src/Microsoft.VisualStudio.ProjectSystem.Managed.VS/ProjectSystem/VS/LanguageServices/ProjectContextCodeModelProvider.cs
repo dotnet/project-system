@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
     /// </summary>
     [Export(typeof(ICodeModelProvider))]
     [Export(typeof(IProjectCodeModelProvider))]
-    [AppliesTo(ProjectCapability.DotNetLanguageService)]
+    [AppliesTo(ProjectCapability.DotNetLanguageServiceOrLanguageService2)]
     internal class ProjectContextCodeModelProvider : ICodeModelProvider, IProjectCodeModelProvider
     {
         private readonly IProjectThreadingService _threadingService;
