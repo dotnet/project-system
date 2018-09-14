@@ -22,13 +22,14 @@ namespace Microsoft.VisualStudio.IO
             public string FileContents;
             public DateTime LastWriteTimeUtc = DateTime.MaxValue;
             public Encoding FileEncoding = Encoding.Default;
-        };
+        }
 
-        private readonly Dictionary<string, FileData> _files = new Dictionary<string, FileData>(StringComparer.OrdinalIgnoreCase);
         private readonly HashSet<string> _folders = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-        private string _currentDirectory;
 
-        public Dictionary<string, FileData> Files { get => _files; }
+        private string _currentDirectory;
+        private string _tempFile;
+
+        public Dictionary<string, FileData> Files { get; } = new Dictionary<string, FileData>(StringComparer.OrdinalIgnoreCase);
 
         public Stream Create(string path)
         {
@@ -58,7 +59,7 @@ namespace Microsoft.VisualStudio.IO
 
         public void AddFile(string path, DateTime? lastWriteTime = null)
         {
-            _files[path] = new FileData
+            Files[path] = new FileData
             {
                 FileContents = "",
                 FileEncoding = Encoding.UTF8,
@@ -100,7 +101,7 @@ namespace Microsoft.VisualStudio.IO
         // Now supports search patterns
         public IEnumerable<string> EnumerateFiles(string path, string searchPattern, SearchOption searchOption)
         {
-            var files = _files.Keys.Where(filePath => filePath.StartsWith(path));
+            var files = Files.Keys.Where(filePath => filePath.StartsWith(path));
 
 
             // Need to handle at least simple wildcards. *.* and *.ext
@@ -119,20 +120,20 @@ namespace Microsoft.VisualStudio.IO
         // Convert the wildcard to a regex
         public static string WildcardToRegex(string pattern)
         {
-            return "^" + Regex.Escape(pattern).
-            Replace("\\*", ".*").
-            Replace("\\?", ".") + "$";
+            return "^" +
+               Regex.Escape(pattern)
+                   .Replace("\\*", ".*")
+                   .Replace("\\?", ".") + "$";
         }
 
         public bool FileExists(string path)
         {
-            return _files.ContainsKey(path);
+            return Files.ContainsKey(path);
         }
 
         public bool DirectoryExists(string path)
         {
-            bool val = _folders.Contains(path);
-            return val;
+            return _folders.Contains(path);
         }
 
         public void CreateDirectory(string path)
@@ -178,14 +179,14 @@ namespace Microsoft.VisualStudio.IO
             {
                 throw new FileNotFoundException();
             }
-            _files.Remove(path);
+            Files.Remove(path);
         }
 
         public void CopyFile(string source, string destination, bool overwrite)
         {
             if (!FileExists(destination))
             {
-                _files.Add(destination, _files[source]);
+                Files.Add(destination, Files[source]);
             }
         }
 
@@ -195,7 +196,7 @@ namespace Microsoft.VisualStudio.IO
             {
                 throw new FileNotFoundException();
             }
-            return _files[path].FileContents;
+            return Files[path].FileContents;
         }
 
         public void WriteAllText(string path, string content)
@@ -205,7 +206,7 @@ namespace Microsoft.VisualStudio.IO
 
         public void WriteAllText(string path, string content, Encoding encoding)
         {
-            if (_files.TryGetValue(path, out FileData curData))
+            if (Files.TryGetValue(path, out FileData curData))
             {
                 // This makes sure each write to the file increases the timestamp
                 curData.FileContents = content;
@@ -214,19 +215,19 @@ namespace Microsoft.VisualStudio.IO
             }
             else
             {
-                _files[path] = new FileData() { FileContents = content, FileEncoding = encoding };
-                SetLastWriteTime(_files[path]);
+                Files[path] = new FileData() { FileContents = content, FileEncoding = encoding };
+                SetLastWriteTime(Files[path]);
             }
         }
 
         public DateTime LastFileWriteTime(string path)
         {
-            return _files[path].LastWriteTimeUtc.ToLocalTime();
+            return Files[path].LastWriteTimeUtc.ToLocalTime();
         }
 
         public DateTime LastFileWriteTimeUtc(string path)
         {
-            return _files[path].LastWriteTimeUtc;
+            return Files[path].LastWriteTimeUtc;
         }
 
         public void RemoveDirectory(string directoryPath, bool recursive)
@@ -239,14 +240,13 @@ namespace Microsoft.VisualStudio.IO
 
             if (recursive)
             {
-                foreach (var item in _files.Where(file => file.Key.StartsWith(directoryPath)).ToList())
+                foreach (var item in Files.Where(file => file.Key.StartsWith(directoryPath)).ToList())
                 {
-                    _files.Remove(item.Key);
+                    Files.Remove(item.Key);
                 }
             }
         }
 
-        private string _tempFile;
         public void SetTempFile(string tempFile)
         {
             _tempFile = tempFile;
@@ -266,6 +266,5 @@ namespace Microsoft.VisualStudio.IO
         {
             return ReadAllText(filename).Length;
         }
-
     }
 }
