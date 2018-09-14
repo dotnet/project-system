@@ -28,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                                     IProjectThreadingService threadingService,
                                     IUnconfiguredProjectTasksService tasksService,
                                     IProjectSubscriptionService projectSubscriptionService,
-                                    WorkspaceProjectContextProvider workspaceProjectContextProvider,
+                                    IWorkspaceProjectContextProvider workspaceProjectContextProvider,
                                     IActiveWorkspaceProjectContextTracker activeWorkspaceProjectContextTracker,
                                     ExportFactory<IApplyChangesToWorkspaceContext> applyChangesToWorkspaceContextFactory)
             : base(threadingService.JoinableTaskContext)
