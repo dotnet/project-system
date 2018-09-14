@@ -265,7 +265,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             _link?.Dispose();
         }
 
-        private DateTime? GetTimestamp(string path, IDictionary<string, DateTime> timestampCache)
+        private DateTime? GetTimestampUtc(string path, IDictionary<string, DateTime> timestampCache)
         {
             if (!timestampCache.TryGetValue(path, out DateTime time))
             {
@@ -420,7 +420,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             foreach (string input in inputs)
             {
-                DateTime? time = GetTimestamp(input, timestampCache);
+                DateTime? time = GetTimestampUtc(input, timestampCache);
 
                 if (time > latest)
                 {
@@ -439,7 +439,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             foreach (string output in outputs)
             {
-                DateTime? time = GetTimestamp(output, timestampCache);
+                DateTime? time = GetTimestampUtc(output, timestampCache);
 
                 if (time == null)
                 {
@@ -467,7 +467,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 // As soon as we find one, we can stop the scan.
                 foreach (string input in CollectInputs(logger))
                 {
-                    DateTime? time = GetTimestamp(input, timestampCache);
+                    DateTime? time = GetTimestampUtc(input, timestampCache);
 
                     if (time == null)
                     {
@@ -525,7 +525,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 return true;
             }
 
-            DateTime? outputMarkerTime = GetTimestamp(markerFile, timestampCache);
+            DateTime? outputMarkerTime = GetTimestampUtc(markerFile, timestampCache);
 
             if (outputMarkerTime != null)
             {
@@ -554,7 +554,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 logger.Info("Checking build output file '{0}':", source);
 
-                DateTime? sourceTime = GetTimestamp(source, timestampCache);
+                DateTime? sourceTime = GetTimestampUtc(source, timestampCache);
 
                 if (sourceTime != null)
                 {
@@ -565,7 +565,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     return Fail(logger, "CopyOutput", "Source '{0}' does not exist, not up to date.", source);
                 }
 
-                DateTime? destinationTime = GetTimestamp(destination, timestampCache);
+                DateTime? destinationTime = GetTimestampUtc(destination, timestampCache);
 
                 if (destinationTime != null)
                 {
@@ -605,7 +605,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 logger.Info("Checking PreserveNewest file '{0}':", rootedPath);
 
-                DateTime? itemTime = GetTimestamp(rootedPath, timestampCache);
+                DateTime? itemTime = GetTimestampUtc(rootedPath, timestampCache);
 
                 if (itemTime != null)
                 {
@@ -617,7 +617,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 }
 
                 string outputItem = Path.Combine(outputFullPath, filename);
-                DateTime? outputItemTime = GetTimestamp(outputItem, timestampCache);
+                DateTime? outputItemTime = GetTimestampUtc(outputItem, timestampCache);
 
                 if (outputItemTime != null)
                 {
