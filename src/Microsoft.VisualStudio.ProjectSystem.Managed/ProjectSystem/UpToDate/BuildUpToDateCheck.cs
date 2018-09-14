@@ -513,11 +513,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             logger.Verbose("Adding output reference copy marker:");
             logger.Verbose("    '{0}'", markerFile);
 
-            (DateTime inputMarkerTime, string inputMarkerPath) = GetLatestInput(_copyReferenceInputs, timestampCache);
+            (DateTime latestInputMarkerTime, string latestInputMarkerPath) = GetLatestInput(_copyReferenceInputs, timestampCache);
 
-            if (inputMarkerPath != null)
+            if (latestInputMarkerPath != null)
             {
-                logger.Info("Latest write timestamp on input marker is {0} on '{1}'.", inputMarkerTime, inputMarkerPath);
+                logger.Info("Latest write timestamp on input marker is {0} on '{1}'.", latestInputMarkerTime, latestInputMarkerPath);
             }
             else
             {
@@ -537,7 +537,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 return true;
             }
 
-            if (outputMarkerTime <= inputMarkerTime)
+            if (outputMarkerTime <= latestInputMarkerTime)
             {
                 return Fail(logger, "Marker", "Input marker is newer than output marker, not up to date.");
             }
