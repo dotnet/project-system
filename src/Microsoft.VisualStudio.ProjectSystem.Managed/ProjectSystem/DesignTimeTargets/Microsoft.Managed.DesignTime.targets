@@ -148,7 +148,11 @@
     </PropertyPageSchema>
 
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)None.xaml">
-      <Context>File;BrowseObject</Context>
+      <Context>File</Context>
+    </PropertyPageSchema>
+
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)None.BrowseObject.xaml">
+      <Context>BrowseObject</Context>
     </PropertyPageSchema>
 
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)Page.xaml">

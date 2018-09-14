@@ -309,6 +309,7 @@
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
     </XamlPropertyRule>
+    <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\None.BrowseObject.xaml" />
     <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\Compile.BrowseObject.xaml" />
     <XamlPropertyProjectItemsSchema Include="ProjectSystem\Rules\ProjectItemsSchema.xaml" />
     <XamlPropertyProjectItemsSchema Include="ProjectSystem\Rules\CSharp.ProjectItemsSchema.xaml" />
