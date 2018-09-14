@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -641,30 +642,39 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         {
             cancellationToken.ThrowIfCancellationRequested();
 
+            var sw = Stopwatch.StartNew();
+
             EnsureInitialized();
 
             LogLevel requestedLogLevel = await _projectSystemOptions.GetFastUpToDateLoggingLevelAsync(cancellationToken);
             var logger = new BuildUpToDateCheckLogger(logWriter, requestedLogLevel, _configuredProject.UnconfiguredProject.FullPath);
 
-            if (!CheckGlobalConditions(buildAction, logger))
+            try
             {
-                return false;
+                if (!CheckGlobalConditions(buildAction, logger))
+                {
+                    return false;
+                }
+
+                // Short-lived cache of timestamp by path
+                var timestampCache = new Dictionary<string, DateTime>(StringComparers.Paths);
+
+                if (!CheckOutputs(logger, timestampCache) ||
+                    !CheckMarkers(logger, timestampCache) ||
+                    !CheckCopyToOutputDirectoryFiles(logger, timestampCache) ||
+                    !CheckCopiedOutputFiles(logger, timestampCache))
+                {
+                    return false;
+                }
+
+                _telemetryService.PostEvent(TelemetryEventName.UpToDateCheckSuccess);
+                logger.Info("Project is up to date.");
+                return true;
             }
-
-            // Short-lived cache of timestamp by path
-            var timestampCache = new Dictionary<string, DateTime>(StringComparers.Paths);
-
-            if (!CheckOutputs(logger, timestampCache) ||
-                !CheckMarkers(logger, timestampCache) ||
-                !CheckCopyToOutputDirectoryFiles(logger, timestampCache) ||
-                !CheckCopiedOutputFiles(logger, timestampCache))
+            finally
             {
-                return false;
+                logger.Verbose("Up to date check completed in {0:#,##0.#} ms", sw.Elapsed.TotalMilliseconds);
             }
-
-            _telemetryService.PostEvent(TelemetryEventName.UpToDateCheckSuccess);
-            logger.Info("Project is up to date.");
-            return true;
         }
 
         public Task<bool> IsUpToDateCheckEnabledAsync(CancellationToken cancellationToken = default) =>
