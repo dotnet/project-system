@@ -21,6 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         private readonly IUnconfiguredProjectTasksService _tasksService;
         private readonly IProjectSubscriptionService _projectSubscriptionService;
         private readonly Lazy<IWorkspaceProjectContextProvider> _workspaceProjectContextProvider;
+        private readonly IActiveWorkspaceProjectContextTracker _activeWorkspaceProjectContextTracker;
         private readonly ExportFactory<IApplyChangesToWorkspaceContext> _applyChangesToWorkspaceContextFactory;
 
         [ImportingConstructor]
@@ -29,6 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                                     IUnconfiguredProjectTasksService tasksService,
                                     IProjectSubscriptionService projectSubscriptionService,
                                     Lazy<IWorkspaceProjectContextProvider> workspaceProjectContextProvider,
+                                    IActiveWorkspaceProjectContextTracker activeWorkspaceProjectContextTracker,
                                     ExportFactory<IApplyChangesToWorkspaceContext> applyChangesToWorkspaceContextFactory)
             : base(threadingService.JoinableTaskContext)
         {
@@ -37,6 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             _tasksService = tasksService;
             _projectSubscriptionService = projectSubscriptionService;
             _workspaceProjectContextProvider = workspaceProjectContextProvider;
+            _activeWorkspaceProjectContextTracker = activeWorkspaceProjectContextTracker;
             _applyChangesToWorkspaceContextFactory = applyChangesToWorkspaceContextFactory;
         }
 
@@ -52,7 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
         protected override IMultiLifetimeInstance CreateInstance()
         {
-            return new WorkspaceContextHostInstance(_project, _threadingService, _tasksService, _projectSubscriptionService, _workspaceProjectContextProvider, _applyChangesToWorkspaceContextFactory);
+            return new WorkspaceContextHostInstance(_project, _threadingService, _tasksService, _projectSubscriptionService, _workspaceProjectContextProvider, _activeWorkspaceProjectContextTracker, _applyChangesToWorkspaceContextFactory);
         }
     }
 }
