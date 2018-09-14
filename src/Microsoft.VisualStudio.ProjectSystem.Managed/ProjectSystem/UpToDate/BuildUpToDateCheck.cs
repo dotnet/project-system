@@ -70,7 +70,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         private readonly HashSet<string> _customInputs = new HashSet<string>(StringComparers.Paths);
         private readonly HashSet<string> _customOutputs = new HashSet<string>(StringComparers.Paths);
         private readonly HashSet<string> _builtOutputs = new HashSet<string>(StringComparers.Paths);
+
+        /// <summary>Key is destination, value is source.</summary>
         private readonly Dictionary<string, string> _copiedOutputFiles = new Dictionary<string, string>(StringComparers.Paths);
+
         private readonly HashSet<string> _analyzerReferences = new HashSet<string>(StringComparers.Paths);
         private readonly HashSet<string> _compilationReferences = new HashSet<string>(StringComparers.Paths);
         private readonly HashSet<string> _copyReferenceInputs = new HashSet<string>(StringComparers.Paths);
@@ -177,10 +180,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     if (properties.TryGetValue(UpToDateCheckBuilt.OriginalProperty, out string source) &&
                         !string.IsNullOrEmpty(source))
                     {
+                        // This file is copied, not built
+                        // Remember the `Original` source for later
                         _copiedOutputFiles[destination] = source;
                     }
                     else
                     {
+                        // This file is built, not copied
                         _builtOutputs.Add(destination);
                     }
                 }
