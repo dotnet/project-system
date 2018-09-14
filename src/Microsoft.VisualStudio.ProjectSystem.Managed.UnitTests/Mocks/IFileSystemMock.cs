@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.IO
         internal class FileData
         {
             public string FileContents;
-            public DateTime LastWriteTime = DateTime.MaxValue;
+            public DateTime LastWriteTimeUtc = DateTime.MaxValue;
             public Encoding FileEncoding = Encoding.Default;
         };
 
@@ -40,19 +40,19 @@ namespace Microsoft.VisualStudio.IO
 
         private void SetLastWriteTime(FileData data)
         {
-            // Every write should increase in time and just using DateTime.Now can cause issues where
+            // Every write should increase in time and just using DateTime.UtcNow can cause issues where
             // two very fast writes return the same value. The following better simulates writes in the real world
-            if (data.LastWriteTime == DateTime.MaxValue)
+            if (data.LastWriteTimeUtc == DateTime.MaxValue)
             {
-                data.LastWriteTime = DateTime.Now;
+                data.LastWriteTimeUtc = DateTime.UtcNow;
             }
-            else if (data.LastWriteTime == DateTime.Now)
+            else if (data.LastWriteTimeUtc == DateTime.UtcNow)
             {
-                data.LastWriteTime = DateTime.Now.AddMilliseconds(new Random().NextDouble() * 10000);
+                data.LastWriteTimeUtc = DateTime.UtcNow.AddMilliseconds(new Random().NextDouble() * 10000);
             }
             else
             {
-                data.LastWriteTime = data.LastWriteTime.AddMilliseconds(new Random().NextDouble() * 10000);
+                data.LastWriteTimeUtc = data.LastWriteTimeUtc.AddMilliseconds(new Random().NextDouble() * 10000);
             }
         }
 
@@ -62,7 +62,7 @@ namespace Microsoft.VisualStudio.IO
             {
                 FileContents = "",
                 FileEncoding = Encoding.UTF8,
-                LastWriteTime = lastWriteTime ?? DateTime.Now
+                LastWriteTimeUtc = lastWriteTime ?? DateTime.UtcNow
             };
         }
 
@@ -221,12 +221,12 @@ namespace Microsoft.VisualStudio.IO
 
         public DateTime LastFileWriteTime(string path)
         {
-            return _files[path].LastWriteTime;
+            return _files[path].LastWriteTimeUtc.ToLocalTime();
         }
 
         public DateTime LastFileWriteTimeUtc(string path)
         {
-            return _files[path].LastWriteTime;
+            return _files[path].LastWriteTimeUtc;
         }
 
         public void RemoveDirectory(string directoryPath, bool recursive)
