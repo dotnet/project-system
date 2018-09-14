@@ -255,7 +255,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             // Add new items
             BroadcastChange(sourceSnapshot: new Dictionary<string, IProjectRuleSnapshotModel>
             {
-                ["Content"] = SimpleItems("ItemPath1", "ItemPath2")
+                [Content.SchemaName] = SimpleItems("ItemPath1", "ItemPath2")
             });
 
             await AssertNotUpToDateAsync(
@@ -282,7 +282,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             var sourceSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
             {
-                ["Content"] = new IProjectRuleSnapshotModel
+                [Content.SchemaName] = new IProjectRuleSnapshotModel
                 {
                     Items = ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal
                         .Add("ItemPath1", ImmutableDictionary<string, string>.Empty
@@ -303,7 +303,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         {
             var projectSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
             {
-                ["UpToDateCheckBuilt"] = SimpleItems("BuiltOutputPath1")
+                [UpToDateCheckBuilt.SchemaName] = SimpleItems("BuiltOutputPath1")
             };
 
             await SetupAsync(projectSnapshot: projectSnapshot, expectUpToDate: false);
@@ -318,12 +318,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         {
             var projectSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
             {
-                ["UpToDateCheckBuilt"] = SimpleItems("BuiltOutputPath1")
+                [UpToDateCheckBuilt.SchemaName] = SimpleItems("BuiltOutputPath1")
             };
 
             var sourceSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
             {
-                ["Compile"] = SimpleItems("ItemPath1")
+                [Compile.SchemaName] = SimpleItems("ItemPath1")
             };
 
             _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\BuiltOutputPath1");
@@ -340,12 +340,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         {
             var projectSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
             {
-                ["UpToDateCheckBuilt"] = SimpleItems("BuiltOutputPath1")
+                [UpToDateCheckBuilt.SchemaName] = SimpleItems("BuiltOutputPath1")
             };
 
             var sourceSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
             {
-                ["Compile"] = SimpleItems("ItemPath1")
+                [Compile.SchemaName] = SimpleItems("ItemPath1")
             };
 
             var outputTime = DateTime.Now;
@@ -366,12 +366,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         {
             var projectSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
             {
-                ["UpToDateCheckOutput"] = SimpleItems("CustomOutputPath1")
+                [UpToDateCheckOutput.SchemaName] = SimpleItems("CustomOutputPath1")
             };
 
             var sourceSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
             {
-                ["Compile"] = SimpleItems("ItemPath1")
+                [Compile.SchemaName] = SimpleItems("ItemPath1")
             };
 
             var outputTime = DateTime.Now;
@@ -392,8 +392,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         {
             var projectSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
             {
-                ["CopyUpToDateMarker"] = SimpleItems("Marker"),
-                ["ResolvedCompilationReference"] = new IProjectRuleSnapshotModel
+                [CopyUpToDateMarker.SchemaName] = SimpleItems("Marker"),
+                [ResolvedCompilationReference.SchemaName] = new IProjectRuleSnapshotModel
                 {
                     Items = ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal
                         .Add("Reference1", ImmutableDictionary<string, string>.Empty
@@ -427,8 +427,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         {
             var projectSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
             {
-                ["UpToDateCheckBuilt"] = SimpleItems("BuiltOutputPath1"),
-                ["ResolvedAnalyzerReference"] = new IProjectRuleSnapshotModel
+                [UpToDateCheckBuilt.SchemaName] = SimpleItems("BuiltOutputPath1"),
+                [ResolvedAnalyzerReference.SchemaName] = new IProjectRuleSnapshotModel
                 {
                     Items = ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal
                         .Add("Analyzer1", ImmutableDictionary<string, string>.Empty
@@ -454,8 +454,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         {
             var projectSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
             {
-                ["UpToDateCheckBuilt"] = SimpleItems("BuiltOutputPath1"),
-                ["ResolvedCompilationReference"] = new IProjectRuleSnapshotModel
+                [UpToDateCheckBuilt.SchemaName] = SimpleItems("BuiltOutputPath1"),
+                [ResolvedCompilationReference.SchemaName] = new IProjectRuleSnapshotModel
                 {
                     Items = ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal
                         .Add("Reference1", ImmutableDictionary<string, string>.Empty
@@ -483,8 +483,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         {
             var projectSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
             {
-                ["UpToDateCheckBuilt"] = SimpleItems("BuiltOutputPath1"),
-                ["UpToDateCheckInput"] = SimpleItems("Item1", "Item2")
+                [UpToDateCheckBuilt.SchemaName] = SimpleItems("BuiltOutputPath1"),
+                [UpToDateCheckInput.SchemaName] = SimpleItems("Item1", "Item2")
             };
 
             var outputTime = DateTime.Now;
@@ -506,7 +506,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         {
             var projectSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
             {
-                ["UpToDateCheckBuilt"] = new IProjectRuleSnapshotModel
+                [UpToDateCheckBuilt.SchemaName] = new IProjectRuleSnapshotModel
                 {
                     Items = ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal
                         .Add("CopiedOutputDestination", ImmutableDictionary<string, string>.Empty
@@ -541,7 +541,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         {
             var projectSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
             {
-                ["UpToDateCheckBuilt"] = new IProjectRuleSnapshotModel
+                [UpToDateCheckBuilt.SchemaName] = new IProjectRuleSnapshotModel
                 {
                     Items = ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal
                         .Add("CopiedOutputDestination", ImmutableDictionary<string, string>.Empty
@@ -570,7 +570,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         {
             var projectSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
             {
-                ["UpToDateCheckBuilt"] = new IProjectRuleSnapshotModel
+                [UpToDateCheckBuilt.SchemaName] = new IProjectRuleSnapshotModel
                 {
                     Items = ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal
                         .Add("CopiedOutputDestination", ImmutableDictionary<string, string>.Empty
@@ -602,7 +602,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         {
             var sourceSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
             {
-                ["Content"] = new IProjectRuleSnapshotModel
+                [Content.SchemaName] = new IProjectRuleSnapshotModel
                 {
                     Items = ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal
                         .Add("Item1", ImmutableDictionary<string, string>.Empty
@@ -637,7 +637,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         {
             var sourceSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
             {
-                ["Content"] = new IProjectRuleSnapshotModel
+                [Content.SchemaName] = new IProjectRuleSnapshotModel
                 {
                     Items = ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal
                         .Add("Item1", ImmutableDictionary<string, string>.Empty
@@ -668,7 +668,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         {
             var sourceSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
             {
-                ["Content"] = new IProjectRuleSnapshotModel
+                [Content.SchemaName] = new IProjectRuleSnapshotModel
                 {
                     Items = ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal
                         .Add("Item1", ImmutableDictionary<string, string>.Empty
