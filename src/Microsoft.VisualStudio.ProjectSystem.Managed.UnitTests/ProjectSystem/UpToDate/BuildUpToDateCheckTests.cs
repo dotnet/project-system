@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         private const string _projectFullPath = "C:\\Dev\\Solution\\Project\\Project.csproj";
         private const string _msBuildProjectFullPath = "NewProjectFullPath";
         private const string _msBuildProjectDirectory = "NewProjectDirectory";
-        private const string _msBuildAllProjects = "Project1;Project2";
+        private const string _msBuildAllProjects = "NewestProject;OlderProject";
         private const string _outputPath = "NewOutputPath";
 
         private readonly IImmutableList<IItemType> _itemTypes = ImmutableList<IItemType>.Empty
@@ -79,8 +79,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             var lastWriteTime = new DateTime(1999, 1, 1);
             _fileSystem = new IFileSystemMock();
             _fileSystem.AddFile(_msBuildProjectFullPath, lastWriteTime);
-            _fileSystem.AddFile("Project1", lastWriteTime);
-            _fileSystem.AddFile("Project2", lastWriteTime);
+            _fileSystem.AddFile("NewestProject", lastWriteTime);
             _fileSystem.AddFolder(_msBuildProjectDirectory);
             _fileSystem.AddFolder(_outputPath);
 

@@ -65,7 +65,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         private string _msBuildProjectDirectory;
         private string _markerFile;
         private string _outputRelativeOrFullPath;
-        private string _msBuildAllProjects;
+        private string _newestProject;
 
         private DateTime _lastCheckTimeUtc = DateTime.MinValue;
 
@@ -126,7 +126,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             _msBuildProjectFullPath = e.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.MSBuildProjectFullPathProperty, _msBuildProjectFullPath);
             _msBuildProjectDirectory = e.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.MSBuildProjectDirectoryProperty, _msBuildProjectDirectory);
             _outputRelativeOrFullPath = e.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.OutputPathProperty, _outputRelativeOrFullPath);
-            _msBuildAllProjects = e.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.MSBuildAllProjectsProperty, "");
+            string msBuildAllProjects = e.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.MSBuildAllProjectsProperty, "");
+
+            _newestProject = new LazyStringSplit(msBuildAllProjects, ';').FirstOrDefault();
 
             if (e.ProjectChanges.TryGetValue(ResolvedAnalyzerReference.SchemaName, out IProjectChangeDescription changes) &&
                 changes.Difference.AnyChanges)
@@ -329,18 +331,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
         private IEnumerable<string> CollectInputs(BuildUpToDateCheckLogger logger)
         {
-            logger.Verbose("Adding project file inputs:");
+            logger.Verbose("Adding project file input:");
             logger.Verbose("    '{0}'", _msBuildProjectFullPath);
             yield return _msBuildProjectFullPath;
 
-            if (!string.IsNullOrWhiteSpace(_msBuildAllProjects))
+            if (!string.IsNullOrWhiteSpace(_newestProject))
             {
-                logger.Verbose("Adding import inputs:");
-                foreach (string input in new LazyStringSplit(_msBuildAllProjects, ';'))
-                {
-                    logger.Verbose("    '{0}'", input);
-                    yield return input;
-                }
+                logger.Verbose("Adding newest import input:");
+                logger.Verbose("    '{0}'", _newestProject);
+                yield return _newestProject;
             }
 
             foreach ((string itemType, HashSet<(string path, string link, CopyToOutputDirectoryType copyType)> changes) in _items)
