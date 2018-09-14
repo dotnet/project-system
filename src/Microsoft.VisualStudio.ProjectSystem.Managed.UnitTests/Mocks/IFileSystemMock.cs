@@ -22,6 +22,24 @@ namespace Microsoft.VisualStudio.IO
             public string FileContents;
             public DateTime LastWriteTimeUtc = DateTime.MaxValue;
             public Encoding FileEncoding = Encoding.Default;
+
+            public void SetLastWriteTime()
+            {
+                // Every write should increase in time and just using DateTime.UtcNow can cause issues where
+                // two very fast writes return the same value. The following better simulates writes in the real world
+                if (LastWriteTimeUtc == DateTime.MaxValue)
+                {
+                    LastWriteTimeUtc = DateTime.UtcNow;
+                }
+                else if (LastWriteTimeUtc == DateTime.UtcNow)
+                {
+                    LastWriteTimeUtc = DateTime.UtcNow.AddMilliseconds(new Random().NextDouble() * 10000);
+                }
+                else
+                {
+                    LastWriteTimeUtc = LastWriteTimeUtc.AddMilliseconds(new Random().NextDouble() * 10000);
+                }
+            }
         }
 
         private readonly HashSet<string> _folders = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
@@ -37,24 +55,6 @@ namespace Microsoft.VisualStudio.IO
 
             // Caller does not check the return value.
             return null;
-        }
-
-        private void SetLastWriteTime(FileData data)
-        {
-            // Every write should increase in time and just using DateTime.UtcNow can cause issues where
-            // two very fast writes return the same value. The following better simulates writes in the real world
-            if (data.LastWriteTimeUtc == DateTime.MaxValue)
-            {
-                data.LastWriteTimeUtc = DateTime.UtcNow;
-            }
-            else if (data.LastWriteTimeUtc == DateTime.UtcNow)
-            {
-                data.LastWriteTimeUtc = DateTime.UtcNow.AddMilliseconds(new Random().NextDouble() * 10000);
-            }
-            else
-            {
-                data.LastWriteTimeUtc = data.LastWriteTimeUtc.AddMilliseconds(new Random().NextDouble() * 10000);
-            }
         }
 
         public void AddFile(string path, DateTime? lastWriteTime = null)
@@ -211,12 +211,12 @@ namespace Microsoft.VisualStudio.IO
                 // This makes sure each write to the file increases the timestamp
                 curData.FileContents = content;
                 curData.FileEncoding = encoding;
-                SetLastWriteTime(curData);
+                curData.SetLastWriteTime();
             }
             else
             {
                 Files[path] = new FileData() { FileContents = content, FileEncoding = encoding };
-                SetLastWriteTime(Files[path]);
+                Files[path].SetLastWriteTime();
             }
         }
 
