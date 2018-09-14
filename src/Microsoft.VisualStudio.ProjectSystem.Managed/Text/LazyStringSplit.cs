@@ -8,7 +8,8 @@ namespace Microsoft.VisualStudio.Text
 {
     /// <summary>
     ///     Splits a string by a delimiter, producing substrings lazily during enumeration.
-    ///     Skips empty items.
+    ///     Skips empty items, behaving equivalently to <see cref="string.Split(char[])"/> with
+    ///     <see cref="StringSplitOptions.RemoveEmptyEntries"/>.
     /// </summary>
     /// <remarks>
     ///     Unlike <see cref="string.Split(char[])"/> and overloads, <see cref="LazyStringSplit"/>

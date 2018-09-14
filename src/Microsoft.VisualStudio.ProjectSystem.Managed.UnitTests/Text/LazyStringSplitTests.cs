@@ -44,6 +44,9 @@ namespace Microsoft.VisualStudio.Text
             }
 
             Assert.Equal(expected, list);
+
+            // Equivalence with string.Split
+            Assert.Equal(expected, input.Split(new[] { delimiter }, StringSplitOptions.RemoveEmptyEntries));
         }
 
         [Fact]
