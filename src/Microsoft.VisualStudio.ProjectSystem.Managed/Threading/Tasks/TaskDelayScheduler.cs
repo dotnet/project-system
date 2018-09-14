@@ -25,12 +25,12 @@ namespace Microsoft.VisualStudio.Threading.Tasks
         /// </summary>
         public TimeSpan TaskDelayTime { get; set; }
 
-        // Task completion source for cancelling a pending file update.
+        // Task completion source for cancelling a pending task
         private CancellationTokenSource PendingUpdateTokenSource { get; set; }
 
         private CancellationToken OriginalSourceToken { get; set; }
 
-        // True if there are pending file changes
+        // True if there is a pending task
         public bool HasPendingUpdates { get { return PendingUpdateTokenSource != null; } }
 
         // Holds the latest scheduled task
@@ -76,9 +76,18 @@ namespace Microsoft.VisualStudio.Threading.Tasks
             try
             {
                 // First we wait the delay time. If another request has been made in the interval, then this task
-                // is cancelled. To avoid unnecessary OperationCanceled exceptions it tests to see if the token has
-                // been canceled
-                await Task.Delay(TaskDelayTime);
+                // is cancelled.
+                try
+                {
+                    if (!token.IsCancellationRequested)
+                    {
+                        await Task.Delay(TaskDelayTime, token);
+                    }
+                }
+                catch (OperationCanceledException)
+                {
+                    // fall through
+                }
 
                 bool isCanceled = token.IsCancellationRequested;
                 lock (_syncObject)
