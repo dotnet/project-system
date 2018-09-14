@@ -35,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
                 oVersion is string semVersion)
             {
                 // This is a semantic version string. We only care about the non-semantic version part
-                int index = semVersion.IndexOfAny(new char[] { '-', '+' });
+                int index = semVersion.IndexOfAny(Delimiter.PlusAndMinus);
                 if (index != -1)
                 {
                     semVersion = semVersion.Substring(0, index);
