@@ -24,7 +24,9 @@ namespace Microsoft.VisualStudio.Text
 
         public LazyStringSplit(string input, char delimiter)
         {
-            _input = input ?? throw new ArgumentNullException(nameof(input));
+            Requires.NotNull(input, nameof(input));
+
+            _input = input;
             _delimiter = delimiter;
         }
 
