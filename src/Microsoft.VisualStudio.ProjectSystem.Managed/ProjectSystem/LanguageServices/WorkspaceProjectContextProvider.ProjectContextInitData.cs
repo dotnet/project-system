@@ -7,7 +7,7 @@ using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
-    internal partial class WorkspaceProjectContextProvider : IWorkspaceProjectContextProvider
+    internal partial class WorkspaceProjectContextProvider
     {
         /// <summary>
         ///     Contains initialization data for creating a <see cref="IWorkspaceProjectContext"/>.
