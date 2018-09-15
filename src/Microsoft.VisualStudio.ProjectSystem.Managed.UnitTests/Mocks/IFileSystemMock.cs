@@ -83,12 +83,11 @@ namespace Microsoft.VisualStudio.IO
                 if (!folderPath.StartsWith(path, StringComparison.OrdinalIgnoreCase) || folderPath.Equals(path, StringComparison.OrdinalIgnoreCase))
                     return false;
 
-                var subPath = folderPath.Substring(path.Length);
-                if (subPath[0] == Path.DirectorySeparatorChar)
-                {
-                    subPath = subPath.Substring(1);
-                }
-                return !subPath.Contains(Path.DirectorySeparatorChar);
+                var offset = folderPath[path.Length] == Path.DirectorySeparatorChar
+                    ? path.Length + 1
+                    : path.Length;
+
+                return folderPath.IndexOf(Path.DirectorySeparatorChar, offset) == -1;
             });
         }
 
