@@ -215,8 +215,12 @@ namespace Microsoft.VisualStudio.IO
             }
             else
             {
-                Files[path] = new FileData() { FileContents = content, FileEncoding = encoding };
-                Files[path].SetLastWriteTime();
+                Files[path] = new FileData
+                {
+                    FileContents = content,
+                    FileEncoding = encoding,
+                    LastWriteTimeUtc = DateTime.UtcNow
+                };
             }
         }
 
