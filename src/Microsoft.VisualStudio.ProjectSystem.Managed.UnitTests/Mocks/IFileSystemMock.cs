@@ -103,7 +103,6 @@ namespace Microsoft.VisualStudio.IO
         {
             var files = Files.Keys.Where(filePath => filePath.StartsWith(path));
 
-
             // Need to handle at least simple wildcards. *.* and *.ext
             if (string.IsNullOrEmpty(searchPattern))
             {
@@ -205,12 +204,12 @@ namespace Microsoft.VisualStudio.IO
 
         public void WriteAllText(string path, string content, Encoding encoding)
         {
-            if (Files.TryGetValue(path, out FileData curData))
+            if (Files.TryGetValue(path, out FileData data))
             {
                 // This makes sure each write to the file increases the timestamp
-                curData.FileContents = content;
-                curData.FileEncoding = encoding;
-                curData.SetLastWriteTime();
+                data.FileContents = content;
+                data.FileEncoding = encoding;
+                data.SetLastWriteTime();
             }
             else
             {
