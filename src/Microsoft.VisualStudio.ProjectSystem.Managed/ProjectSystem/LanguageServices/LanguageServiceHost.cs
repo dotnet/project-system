@@ -99,9 +99,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             return Task.CompletedTask;
         }
 
-        Task ILanguageServiceHost.InitializeAsync(CancellationToken cancellationToken)
+        public Task InitializeAsync()
         {
-            return InitializeAsync(cancellationToken);
+            return InitializeAsync(CancellationToken.None);
         }
 
         private async Task OnProjectChangedCoreAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e, RuleHandlerType handlerType)

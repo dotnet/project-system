@@ -48,8 +48,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         /// <summary>
         ///     Initializes the language service host.
         /// </summary>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        Task InitializeAsync(CancellationToken cancellationToken = default);
+        Task InitializeAsync();
     }
 }

@@ -89,8 +89,6 @@
                           DeclaredSourceItems;
                           UserSourceItems;" />
 
-    <ProjectCapability Include="LanguageService" />
-
     <!-- Reference Manager capabilities -->
     <ProjectCapability Include="ReferenceManagerAssemblies" />
     <ProjectCapability Include="ReferenceManagerBrowse" />
