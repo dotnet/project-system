@@ -33,6 +33,7 @@ namespace Microsoft.VisualStudio.Packaging
 
 
         public const string DefaultCapabilities = ProjectCapability.AppDesigner + "; " +
+                                                  ProjectCapability.DynamicDependentFile + "; " +
                                                   ProjectCapability.EditAndContinue + "; " +
                                                   ProjectCapability.HandlesOwnReload + "; " +
                                                   ProjectCapability.OpenProjectFile + "; " +
