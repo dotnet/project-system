@@ -46,7 +46,7 @@
     <Rule Id="CA1721" Action="None" />
     <Rule Id="CA1724" Action="None" />
     <Rule Id="CA1815" Action="None" />
-    <Rule Id="CA2007" Action="Warning" />
+    <Rule Id="CA2007" Action="None" />
     <Rule Id="CA2211" Action="None" />
     <Rule Id="CA2218" Action="None" />
     <Rule Id="CA2222" Action="None" />
