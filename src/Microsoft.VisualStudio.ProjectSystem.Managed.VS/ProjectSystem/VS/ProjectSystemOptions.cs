@@ -23,9 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         private readonly IVsUIService<ISettingsManager> _settingsManager;
         private readonly IEnvironmentHelper _environment;
-#if !DEBUG
         private bool? _isProjectOutputPaneEnabled;
-#endif
 
         [ImportingConstructor]
         private ProjectSystemOptions(IEnvironmentHelper environment, IVsUIService<SVsSettingsPersistenceManager, ISettingsManager> settingsManager)
@@ -38,11 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             get
             {
-#if DEBUG
-                return true;
-#else
                 return IsEnabled("PROJECTSYSTEM_PROJECTOUTPUTPANEENABLED", ref _isProjectOutputPaneEnabled);
-#endif
             }
         }
 
