@@ -8,10 +8,6 @@
     <Rule.DataSource>
         <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" ItemType="None" SourceOfDefaultValue="AfterContext" />
     </Rule.DataSource>
-    <Rule.Categories>
-        <Category Name="Advanced" />
-        <Category Name="Misc" />
-    </Rule.Categories>
 
     <DynamicEnumProperty Name="{}{ItemType}" Category="Advanced"
                      EnumProvider="ItemTypes" />
