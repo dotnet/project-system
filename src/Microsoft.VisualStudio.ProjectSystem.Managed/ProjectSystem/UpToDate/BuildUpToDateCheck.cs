@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -64,14 +65,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         private string _msBuildProjectDirectory;
         private string _markerFile;
         private string _outputRelativeOrFullPath;
-        private string _msBuildAllProjects;
+        private string _newestProject;
+
+        private DateTime _lastCheckTimeUtc = DateTime.MinValue;
 
         private readonly HashSet<string> _itemTypes = new HashSet<string>(StringComparers.ItemTypes);
         private readonly Dictionary<string, HashSet<(string path, string link, CopyToOutputDirectoryType copyType)>> _items = new Dictionary<string, HashSet<(string, string, CopyToOutputDirectoryType)>>(StringComparers.ItemTypes);
         private readonly HashSet<string> _customInputs = new HashSet<string>(StringComparers.Paths);
         private readonly HashSet<string> _customOutputs = new HashSet<string>(StringComparers.Paths);
         private readonly HashSet<string> _builtOutputs = new HashSet<string>(StringComparers.Paths);
+
+        /// <summary>Key is destination, value is source.</summary>
         private readonly Dictionary<string, string> _copiedOutputFiles = new Dictionary<string, string>(StringComparers.Paths);
+
         private readonly HashSet<string> _analyzerReferences = new HashSet<string>(StringComparers.Paths);
         private readonly HashSet<string> _compilationReferences = new HashSet<string>(StringComparers.Paths);
         private readonly HashSet<string> _copyReferenceInputs = new HashSet<string>(StringComparers.Paths);
@@ -120,7 +126,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             _msBuildProjectFullPath = e.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.MSBuildProjectFullPathProperty, _msBuildProjectFullPath);
             _msBuildProjectDirectory = e.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.MSBuildProjectDirectoryProperty, _msBuildProjectDirectory);
             _outputRelativeOrFullPath = e.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.OutputPathProperty, _outputRelativeOrFullPath);
-            _msBuildAllProjects = e.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.MSBuildAllProjectsProperty, "");
+            string msBuildAllProjects = e.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.MSBuildAllProjectsProperty, "");
+
+            _newestProject = new LazyStringSplit(msBuildAllProjects, ';').FirstOrDefault();
 
             if (e.ProjectChanges.TryGetValue(ResolvedAnalyzerReference.SchemaName, out IProjectChangeDescription changes) &&
                 changes.Difference.AnyChanges)
@@ -174,10 +182,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     if (properties.TryGetValue(UpToDateCheckBuilt.OriginalProperty, out string source) &&
                         !string.IsNullOrEmpty(source))
                     {
+                        // This file is copied, not built
+                        // Remember the `Original` source for later
                         _copiedOutputFiles[destination] = source;
                     }
                     else
                     {
+                        // This file is built, not copied
                         _builtOutputs.Add(destination);
                     }
                 }
@@ -256,7 +267,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             _link?.Dispose();
         }
 
-        private DateTime? GetTimestamp(string path, IDictionary<string, DateTime> timestampCache)
+        private DateTime? GetTimestampUtc(string path, IDictionary<string, DateTime> timestampCache)
         {
             if (!timestampCache.TryGetValue(path, out DateTime time))
             {
@@ -320,18 +331,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
         private IEnumerable<string> CollectInputs(BuildUpToDateCheckLogger logger)
         {
-            logger.Verbose("Adding project file inputs:");
+            logger.Verbose("Adding project file input:");
             logger.Verbose("    '{0}'", _msBuildProjectFullPath);
             yield return _msBuildProjectFullPath;
 
-            if (!string.IsNullOrWhiteSpace(_msBuildAllProjects))
+            if (!string.IsNullOrWhiteSpace(_newestProject))
             {
-                logger.Verbose("Adding import inputs:");
-                foreach (string input in new LazyStringSplit(_msBuildAllProjects, ';'))
-                {
-                    logger.Verbose("    '{0}'", input);
-                    yield return input;
-                }
+                logger.Verbose("Adding newest import input:");
+                logger.Verbose("    '{0}'", _newestProject);
+                yield return _newestProject;
             }
 
             foreach ((string itemType, HashSet<(string path, string link, CopyToOutputDirectoryType copyType)> changes) in _items)
@@ -411,7 +419,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             foreach (string input in inputs)
             {
-                DateTime? time = GetTimestamp(input, timestampCache);
+                DateTime? time = GetTimestampUtc(input, timestampCache);
 
                 if (time > latest)
                 {
@@ -430,7 +438,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             foreach (string output in outputs)
             {
-                DateTime? time = GetTimestamp(output, timestampCache);
+                DateTime? time = GetTimestampUtc(output, timestampCache);
 
                 if (time == null)
                 {
@@ -458,7 +466,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 // As soon as we find one, we can stop the scan.
                 foreach (string input in CollectInputs(logger))
                 {
-                    DateTime? time = GetTimestamp(input, timestampCache);
+                    DateTime? time = GetTimestampUtc(input, timestampCache);
 
                     if (time == null)
                     {
@@ -468,6 +476,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     if (time > outputTime)
                     {
                         return Fail(logger, "Outputs", "Input '{0}' is newer ({1}) than earliest output '{2}' ({3}), not up to date.", input, time.Value, outputPath, outputTime.Value);
+                    }
+
+                    if (time > _lastCheckTimeUtc)
+                    {
+                        return Fail(logger, "Outputs", "Input '{0}' has been modified since the last up-to-date check, not up to date.", input, time.Value);
                     }
                 }
             }
@@ -504,11 +517,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             logger.Verbose("Adding output reference copy marker:");
             logger.Verbose("    '{0}'", markerFile);
 
-            (DateTime inputMarkerTime, string inputMarkerPath) = GetLatestInput(_copyReferenceInputs, timestampCache);
+            (DateTime latestInputMarkerTime, string latestInputMarkerPath) = GetLatestInput(_copyReferenceInputs, timestampCache);
 
-            if (inputMarkerPath != null)
+            if (latestInputMarkerPath != null)
             {
-                logger.Info("Latest write timestamp on input marker is {0} on '{1}'.", inputMarkerTime, inputMarkerPath);
+                logger.Info("Latest write timestamp on input marker is {0} on '{1}'.", latestInputMarkerTime, latestInputMarkerPath);
             }
             else
             {
@@ -516,7 +529,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 return true;
             }
 
-            DateTime? outputMarkerTime = GetTimestamp(markerFile, timestampCache);
+            DateTime? outputMarkerTime = GetTimestampUtc(markerFile, timestampCache);
 
             if (outputMarkerTime != null)
             {
@@ -528,7 +541,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 return true;
             }
 
-            if (outputMarkerTime <= inputMarkerTime)
+            if (outputMarkerTime <= latestInputMarkerTime)
             {
                 return Fail(logger, "Marker", "Input marker is newer than output marker, not up to date.");
             }
@@ -545,7 +558,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 logger.Info("Checking build output file '{0}':", source);
 
-                DateTime? sourceTime = GetTimestamp(source, timestampCache);
+                DateTime? sourceTime = GetTimestampUtc(source, timestampCache);
 
                 if (sourceTime != null)
                 {
@@ -556,7 +569,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     return Fail(logger, "CopyOutput", "Source '{0}' does not exist, not up to date.", source);
                 }
 
-                DateTime? destinationTime = GetTimestamp(destination, timestampCache);
+                DateTime? destinationTime = GetTimestampUtc(destination, timestampCache);
 
                 if (destinationTime != null)
                 {
@@ -596,7 +609,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 logger.Info("Checking PreserveNewest file '{0}':", rootedPath);
 
-                DateTime? itemTime = GetTimestamp(rootedPath, timestampCache);
+                DateTime? itemTime = GetTimestampUtc(rootedPath, timestampCache);
 
                 if (itemTime != null)
                 {
@@ -608,7 +621,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 }
 
                 string outputItem = Path.Combine(outputFullPath, filename);
-                DateTime? outputItemTime = GetTimestamp(outputItem, timestampCache);
+                DateTime? outputItemTime = GetTimestampUtc(outputItem, timestampCache);
 
                 if (outputItemTime != null)
                 {
@@ -632,30 +645,40 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         {
             cancellationToken.ThrowIfCancellationRequested();
 
+            var sw = Stopwatch.StartNew();
+
             EnsureInitialized();
 
             LogLevel requestedLogLevel = await _projectSystemOptions.GetFastUpToDateLoggingLevelAsync(cancellationToken);
             var logger = new BuildUpToDateCheckLogger(logWriter, requestedLogLevel, _configuredProject.UnconfiguredProject.FullPath);
 
-            if (!CheckGlobalConditions(buildAction, logger))
+            try
             {
-                return false;
+                if (!CheckGlobalConditions(buildAction, logger))
+                {
+                    return false;
+                }
+
+                // Short-lived cache of timestamp by path
+                var timestampCache = new Dictionary<string, DateTime>(StringComparers.Paths);
+
+                if (!CheckOutputs(logger, timestampCache) ||
+                    !CheckMarkers(logger, timestampCache) ||
+                    !CheckCopyToOutputDirectoryFiles(logger, timestampCache) ||
+                    !CheckCopiedOutputFiles(logger, timestampCache))
+                {
+                    return false;
+                }
+
+                _telemetryService.PostEvent(TelemetryEventName.UpToDateCheckSuccess);
+                logger.Info("Project is up to date.");
+                return true;
             }
-
-            // Short-lived cache of timestamp by path
-            var timestampCache = new Dictionary<string, DateTime>(StringComparers.Paths);
-
-            if (!CheckOutputs(logger, timestampCache) ||
-                !CheckMarkers(logger, timestampCache) ||
-                !CheckCopyToOutputDirectoryFiles(logger, timestampCache) ||
-                !CheckCopiedOutputFiles(logger, timestampCache))
+            finally
             {
-                return false;
+                _lastCheckTimeUtc = DateTime.UtcNow;
+                logger.Verbose("Up to date check completed in {0:#,##0.#} ms", sw.Elapsed.TotalMilliseconds);
             }
-
-            _telemetryService.PostEvent(TelemetryEventName.UpToDateCheckSuccess);
-            logger.Info("Project is up to date.");
-            return true;
         }
 
         public Task<bool> IsUpToDateCheckEnabledAsync(CancellationToken cancellationToken = default) =>
