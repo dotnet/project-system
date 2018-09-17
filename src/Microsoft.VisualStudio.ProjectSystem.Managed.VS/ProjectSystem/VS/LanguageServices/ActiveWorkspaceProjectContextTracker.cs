@@ -17,6 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
     ///     "active" context by handling the VSHPROPID_ActiveIntellisenseProjectContext IVsHierarchy property.
     /// </summary>
     [Export(typeof(IActiveIntellisenseProjectProvider))]
+    [Export(typeof(IActiveWorkspaceProjectContextTracker))]
     [ExportProjectNodeComService(typeof(IVsContainedLanguageProjectNameProvider))]
     [AppliesTo(ProjectCapability.DotNetLanguageService2)]
     internal class ActiveWorkspaceProjectContextTracker : IActiveIntellisenseProjectProvider, IVsContainedLanguageProjectNameProvider, IActiveWorkspaceProjectContextTracker

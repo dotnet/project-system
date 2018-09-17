@@ -36,6 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             CommandLineParsers = new OrderPrecedenceImportCollection<ICommandLineParserService>(projectCapabilityCheckProvider: project);
         }
 
+        [ImportMany]
         public OrderPrecedenceImportCollection<ICommandLineParserService> CommandLineParsers
         {
             get;

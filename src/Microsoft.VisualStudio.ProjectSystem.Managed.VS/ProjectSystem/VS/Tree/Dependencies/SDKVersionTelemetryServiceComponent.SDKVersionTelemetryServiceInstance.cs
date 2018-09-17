@@ -65,7 +65,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                 (NETCoreSdkVersionProperty, version)
                             });
                     });
-                });
+                }, cancellationToken);
 
                 return Task.CompletedTask;
             }

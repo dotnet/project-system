@@ -30,7 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         }
 
         [ProjectAutoLoad(ProjectLoadCheckpoint.ProjectInitialCapabilitiesEstablished)]
-        [AppliesTo(ProjectCapability.DotNetLanguageService)]
+        [AppliesTo(ProjectCapability.DotNetLanguageServiceOrLanguageService2)]
         public Task InitializeAsync()
         {
             EnsureInitialized();
