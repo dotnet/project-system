@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System;
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
 
@@ -20,7 +19,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         private readonly IProjectThreadingService _threadingService;
         private readonly IUnconfiguredProjectTasksService _tasksService;
         private readonly IProjectSubscriptionService _projectSubscriptionService;
-        private readonly Lazy<IWorkspaceProjectContextProvider> _workspaceProjectContextProvider;
+        private readonly IWorkspaceProjectContextProvider _workspaceProjectContextProvider;
+        private readonly IActiveWorkspaceProjectContextTracker _activeWorkspaceProjectContextTracker;
         private readonly ExportFactory<IApplyChangesToWorkspaceContext> _applyChangesToWorkspaceContextFactory;
 
         [ImportingConstructor]
@@ -28,7 +28,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                                     IProjectThreadingService threadingService,
                                     IUnconfiguredProjectTasksService tasksService,
                                     IProjectSubscriptionService projectSubscriptionService,
-                                    Lazy<IWorkspaceProjectContextProvider> workspaceProjectContextProvider,
+                                    IWorkspaceProjectContextProvider workspaceProjectContextProvider,
+                                    IActiveWorkspaceProjectContextTracker activeWorkspaceProjectContextTracker,
                                     ExportFactory<IApplyChangesToWorkspaceContext> applyChangesToWorkspaceContextFactory)
             : base(threadingService.JoinableTaskContext)
         {
@@ -37,6 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             _tasksService = tasksService;
             _projectSubscriptionService = projectSubscriptionService;
             _workspaceProjectContextProvider = workspaceProjectContextProvider;
+            _activeWorkspaceProjectContextTracker = activeWorkspaceProjectContextTracker;
             _applyChangesToWorkspaceContextFactory = applyChangesToWorkspaceContextFactory;
         }
 
@@ -52,7 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
         protected override IMultiLifetimeInstance CreateInstance()
         {
-            return new WorkspaceContextHostInstance(_project, _threadingService, _tasksService, _projectSubscriptionService, _workspaceProjectContextProvider, _applyChangesToWorkspaceContextFactory);
+            return new WorkspaceContextHostInstance(_project, _threadingService, _tasksService, _projectSubscriptionService, _workspaceProjectContextProvider, _activeWorkspaceProjectContextTracker, _applyChangesToWorkspaceContextFactory);
         }
     }
 }

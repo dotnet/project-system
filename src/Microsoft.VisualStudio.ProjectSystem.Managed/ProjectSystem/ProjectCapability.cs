@@ -38,6 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public const string LanguageService2 = nameof(LanguageService2);
         public const string DotNetLanguageService = DotNet + " & (LanguageService & !LanguageService2)";        // Temporary until we turn new language service hookup
         public const string DotNetLanguageService2 = DotNet + " & (!LanguageService & LanguageService2)";
+        public const string DotNetLanguageServiceOrLanguageService2 = DotNet + "& (LanguageService | LanguageService2)";
         public const string SortByDisplayOrder = ProjectCapabilities.SortByDisplayOrder;
         public const string DotNet = ".NET";
     }
