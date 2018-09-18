@@ -140,7 +140,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 Return False
             End If
 
-            Dim successed As Boolean = True
+            Dim success As Boolean = True
 
             Try
                 InsideOnStatusChange = True
@@ -151,7 +151,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                         Try
                             _propPage.Apply()
                         Catch ex As Exception
-                            successed = False
+                            success = False
                             If Not Common.IsCheckoutCanceledException(ex) Then
                                 Debug.Assert(_appDesView IsNot Nothing, "No project designer - can't show error message: " & ex.ToString())
                                 If _appDesView IsNot Nothing Then
@@ -182,7 +182,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 InsideOnStatusChange = False
             End Try
 
-            Return successed
+            Return success
 
         End Function
 

@@ -161,7 +161,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         }
 
         [Fact]
-        public async Task CreateProjectContextAsync_ReturnsContextWithLastDesignTimeBuildSuceeededSetToFalse()
+        public async Task CreateProjectContextAsync_ReturnsContextWithLastDesignTimeBuildSucceededSetToFalse()
         {
             var context = IWorkspaceProjectContextMockFactory.Create();
             var workspaceProjectContextFactory = IWorkspaceProjectContextFactoryFactory.ImplementCreateProjectContext((_, __, ___, ____, ______, _______) => context);

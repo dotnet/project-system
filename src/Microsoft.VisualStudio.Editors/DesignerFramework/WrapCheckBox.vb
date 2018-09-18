@@ -32,18 +32,18 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             CacheTextSize()
         End Sub
 
-        Public Overrides Function GetPreferredSize(proposedsize As Size) As Size
-            Dim prefSize As Size = MyBase.GetPreferredSize(proposedsize)
-            If (proposedsize.Width > 1) AndAlso
-                    (prefSize.Width > proposedsize.Width) AndAlso
+        Public Overrides Function GetPreferredSize(proposedSize As Size) As Size
+            Dim prefSize As Size = MyBase.GetPreferredSize(proposedSize)
+            If (proposedSize.Width > 1) AndAlso
+                    (prefSize.Width > proposedSize.Width) AndAlso
                     (Not String.IsNullOrEmpty(Text) AndAlso
-                    Not proposedsize.Width.Equals(Integer.MaxValue) OrElse
-                    Not proposedsize.Height.Equals(Integer.MaxValue)) Then
+                    Not proposedSize.Width.Equals(Integer.MaxValue) OrElse
+                    Not proposedSize.Height.Equals(Integer.MaxValue)) Then
                 ' we have the possibility of wrapping... back out the single line of text
                 Dim bordersAndPadding As Size = prefSize - _cachedSizeOfOneLineOfText
                 ' add back in the text size, subtract baseprefsize.width and 3 from proposed size width 
                 ' so they wrap properly
-                Dim newConstraints As Size = proposedsize - bordersAndPadding - New Size(3, 0)
+                Dim newConstraints As Size = proposedSize - bordersAndPadding - New Size(3, 0)
 
                 ' guarding against errors with newConstraints.
                 If newConstraints.Width < 0 Then

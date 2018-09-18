@@ -153,7 +153,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
 
 
         [Fact]
-        public void NonExistantProjectJson_DoesNotBackUp()
+        public void NonExistentProjectJson_DoesNotBackUp()
         {
             var procRunner = ProcessRunnerFactory.CreateRunner();
             var migrator = CreateInstance(procRunner, CreateFileSystem(false));

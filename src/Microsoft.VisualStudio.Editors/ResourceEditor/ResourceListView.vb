@@ -811,9 +811,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     ' NOTE: 3 pages cache looks too conservative, for list/detail view, the tiny icon shouldn't cost a lot memory,
                     '  and Thumbnail view doesn't show many in one page
                     Const PagesInCache As Integer = 5
-                    Const PagesInCachDetailView As Integer = 20
+                    Const PagesInCacheDetailView As Integer = 20
                     If Me.View = ResourceView.Details Then
-                        _thumbnailCache.MaximumSuggestedCacheSize = _thumbnailCache.MinimumSizeBeforeRecycling * PagesInCachDetailView
+                        _thumbnailCache.MaximumSuggestedCacheSize = _thumbnailCache.MinimumSizeBeforeRecycling * PagesInCacheDetailView
                     Else
                         _thumbnailCache.MaximumSuggestedCacheSize = _thumbnailCache.MinimumSizeBeforeRecycling * PagesInCache
                     End If

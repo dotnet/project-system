@@ -65,13 +65,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
         [InlineData("Foo.vb", "Folder1\\foo.vb",
                     @"Class Foo
                       End Class")]
-        public async Task Rename_Symbol_Should_Not_HappenAsync(string oldFilePath, string newFilePath, string soureCode)
+        public async Task Rename_Symbol_Should_Not_HappenAsync(string oldFilePath, string newFilePath, string sourceCode)
         {
 
             var userNotificationServices = IUserNotificationServicesFactory.Create();
             var roslynServices = IRoslynServicesFactory.Implement(new VisualBasicSyntaxFactsService(null));
 
-            await RenameAsync(soureCode, oldFilePath, newFilePath, userNotificationServices, roslynServices, LanguageNames.VisualBasic);
+            await RenameAsync(sourceCode, oldFilePath, newFilePath, userNotificationServices, roslynServices, LanguageNames.VisualBasic);
 
             Mock.Get(userNotificationServices).Verify(h => h.Confirm(It.IsAny<string>()), Times.Never);
             Mock.Get(roslynServices).Verify(h => h.RenameSymbolAsync(It.IsAny<Solution>(), It.IsAny<ISymbol>(), It.IsAny<string>()), Times.Never);
@@ -112,23 +112,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                 Class Foo
                 End Class
             End Namespace")]
-        public async Task Rename_Symbol_Should_TriggerUserConfirmationAsync(string oldFilePath, string newFilePath, string soureCode)
+        public async Task Rename_Symbol_Should_TriggerUserConfirmationAsync(string oldFilePath, string newFilePath, string sourceCode)
         {
             var userNotificationServices = IUserNotificationServicesFactory.Create();
             var roslynServices = IRoslynServicesFactory.Implement(new VisualBasicSyntaxFactsService(null));
 
-            await RenameAsync(soureCode, oldFilePath, newFilePath, userNotificationServices, roslynServices, LanguageNames.VisualBasic);
+            await RenameAsync(sourceCode, oldFilePath, newFilePath, userNotificationServices, roslynServices, LanguageNames.VisualBasic);
 
             Mock.Get(userNotificationServices).Verify(h => h.Confirm(It.IsAny<string>()), Times.Once);
             Mock.Get(roslynServices).Verify(h => h.RenameSymbolAsync(It.IsAny<Solution>(), It.IsAny<ISymbol>(), It.IsAny<string>()), Times.Never);
         }
 
-        internal async Task RenameAsync(string soureCode, string oldFilePath, string newFilePath, IUserNotificationServices userNotificationServices, IRoslynServices roslynServices, string language)
+        internal async Task RenameAsync(string sourceCode, string oldFilePath, string newFilePath, IUserNotificationServices userNotificationServices, IRoslynServices roslynServices, string language)
         {
             using (var ws = new AdhocWorkspace())
             {
                 var projectId = ProjectId.CreateNewId();
-                Solution solution = ws.AddSolution(InitializeWorkspace(projectId, newFilePath, soureCode, language));
+                Solution solution = ws.AddSolution(InitializeWorkspace(projectId, newFilePath, sourceCode, language));
                 Project project = (from d in solution.Projects where d.Id == projectId select d).FirstOrDefault();
 
                 var environmentOptionsFactory = IEnvironmentOptionsFactory.Implement((string category, string page, string property, bool defaultValue) => { return true; });

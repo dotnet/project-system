@@ -10,7 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     public class UnconfiguredProjectVsServicesTests
     {
         [Fact]
-        public void Constructor_ValueAsUnconfiguedProject_SetsVsHierarchyToHostObject()
+        public void Constructor_ValueAsUnconfiguredProject_SetsVsHierarchyToHostObject()
         {
             var hierarchy = IVsHierarchyFactory.Create();
             var project = UnconfiguredProjectFactory.Create(hostObject: hierarchy);
@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         }
 
         [Fact]
-        public void Constructor_ValueAsUnconfiguedProject_SetsVsProjectToHostObject()
+        public void Constructor_ValueAsUnconfiguredProject_SetsVsProjectToHostObject()
         {
             var hierarchy = IVsHierarchyFactory.Create();
             var project = UnconfiguredProjectFactory.Create(hostObject: hierarchy);

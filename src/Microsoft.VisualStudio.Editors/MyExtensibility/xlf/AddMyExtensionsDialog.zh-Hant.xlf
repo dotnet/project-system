@@ -22,11 +22,6 @@
         <target state="translated">版本</target>
         <note />
       </trans-unit>
-      <trans-unit id="colHeaderExensionDescription.Text">
-        <source>Description</source>
-        <target state="translated">說明</target>
-        <note />
-      </trans-unit>
       <trans-unit id="listViewExtensions.AccessibleName">
         <source>Available My Namespace Extensions</source>
         <target state="translated">可用的 My 命名空間延伸模組</target>
@@ -35,6 +30,11 @@
       <trans-unit id="$this.Text">
         <source>Add Visual Basic My Namespace Extension</source>
         <target state="translated">加入 Visual Basic My 命名空間擴充功能</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="colHeaderExtensionDescription.Text">
+        <source>Description</source>
+        <target state="new">Description</target>
         <note />
       </trans-unit>
     </body>

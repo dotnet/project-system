@@ -167,7 +167,7 @@ Caption=Dependency1, FilePath=tfm1\Xxx\dependencyXxxpath, IconHash=325249260, Ex
         }
 
         [Fact]
-        public async Task WhenOneTargetSnapshotAndDependencySupportsHierarchyAndIsResolved_ShouldReadd()
+        public async Task WhenOneTargetSnapshotAndDependencySupportsHierarchyAndIsResolved_ShouldRead()
         {
             var tfm1 = ITargetFrameworkFactory.Implement(moniker: "tfm1");
             var dependencyRootYyy = IDependencyFactory.FromJson(@"
@@ -250,7 +250,7 @@ Caption=DependencyExisting, FilePath=tfm1\Yyy\dependencyExistingpath, IconHash=3
         }
 
         [Fact]
-        public async Task WhenOneTargetSnapshotAndDependencySupportsHierarchyAndIsUnresolved_ShouldReadd()
+        public async Task WhenOneTargetSnapshotAndDependencySupportsHierarchyAndIsUnresolved_ShouldRead()
         {
             var dependencyRootYyy = IDependencyFactory.FromJson(@"
 {
@@ -723,7 +723,7 @@ Caption=Dependency1, FilePath=tfm1\Xxx\dependencyxxxpath, IconHash=325249260, Ex
         }
 
         [Fact]
-        public void WhenFindByPathAndNoolNode_ShouldDoNothing()
+        public void WhenFindByPathAndNullNode_ShouldDoNothing()
         {
             // Arrange
             const string projectPath = @"c:\myfolder\mysubfolder\myproject.csproj";

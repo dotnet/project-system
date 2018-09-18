@@ -174,7 +174,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Func<IProjectTree, IEnumerable<IProjectTree>, IProjectTree> syncFunc)
         {
             var currentNodes = new List<IProjectTree>();
-            var grouppedByProviderType = new Dictionary<string, List<IDependency>>(StringComparer.OrdinalIgnoreCase);
+            var groupedByProviderType = new Dictionary<string, List<IDependency>>(StringComparer.OrdinalIgnoreCase);
             foreach (IDependency dependency in targetedSnapshot.TopLevelDependencies)
             {
                 if (!dependency.Visible)
@@ -183,23 +183,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     {
                         // if provider sends special invisible node with flag ShowEmptyProviderRootNode, we 
                         // need to show provider node even if it does not have any dependencies.
-                        grouppedByProviderType.Add(dependency.ProviderType, new List<IDependency>());
+                        groupedByProviderType.Add(dependency.ProviderType, new List<IDependency>());
                     }
 
                     continue;
                 }
 
-                if (!grouppedByProviderType.TryGetValue(dependency.ProviderType, out List<IDependency> dependencies))
+                if (!groupedByProviderType.TryGetValue(dependency.ProviderType, out List<IDependency> dependencies))
                 {
                     dependencies = new List<IDependency>();
-                    grouppedByProviderType.Add(dependency.ProviderType, dependencies);
+                    groupedByProviderType.Add(dependency.ProviderType, dependencies);
                 }
 
                 dependencies.Add(dependency);
             }
 
             bool isActiveTarget = targetedSnapshot.TargetFramework.Equals(activeTarget);
-            foreach (KeyValuePair<string, List<IDependency>> dependencyGroup in grouppedByProviderType)
+            foreach (KeyValuePair<string, List<IDependency>> dependencyGroup in groupedByProviderType)
             {
                 IDependencyViewModel subTreeViewModel = ViewModelFactory.CreateRootViewModel(
                     dependencyGroup.Key, targetedSnapshot.CheckForUnresolvedDependencies(dependencyGroup.Key));

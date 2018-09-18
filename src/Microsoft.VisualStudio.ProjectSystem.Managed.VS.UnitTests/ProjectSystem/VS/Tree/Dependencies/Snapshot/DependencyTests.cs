@@ -126,7 +126,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         [InlineData(@"../../somepath", @"tfm1\xxx\__\__\somepath")]
         [InlineData(@"__\somepath..\", @"tfm1\xxx\__\somepath__")]
         [InlineData(@"somepath", @"tfm1\xxx\somepath")]
-        public void Dependency_Id_NoSnapsotTargetFramework(string modelId, string expectedId)
+        public void Dependency_Id_NoSnapshotTargetFramework(string modelId, string expectedId)
         {
             var mockModel = IDependencyModelFactory.Implement(providerType: "xxx", id: modelId);
             var mockSnapshot = ITargetedDependenciesSnapshotFactory.Create();

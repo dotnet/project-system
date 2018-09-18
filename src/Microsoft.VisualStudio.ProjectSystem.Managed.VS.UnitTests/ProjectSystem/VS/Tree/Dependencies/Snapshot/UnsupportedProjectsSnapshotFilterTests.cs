@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         public void UnsupportedProjectsSnapshotFilter_WhenDependencyNotRecognized_ShouldDoNothing()
         {
             var aggregateSnapshotProvider = IAggregateDependenciesSnapshotProviderFactory.Create();
-            var targetFRameworkProvider = ITargetFrameworkProviderFactory.Create();
+            var targetFrameworkProvider = ITargetFrameworkProviderFactory.Create();
 
             var dependency = IDependencyFactory.Implement(
                 id: "mydependency1",
@@ -49,7 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             }.ToImmutableDictionary().ToBuilder();
 
-            var filter = new UnsupportedProjectsSnapshotFilter(aggregateSnapshotProvider, targetFRameworkProvider);
+            var filter = new UnsupportedProjectsSnapshotFilter(aggregateSnapshotProvider, targetFrameworkProvider);
 
             var resultDependency = filter.BeforeAdd(
                 null,

@@ -19,10 +19,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     {
 
         [ImportingConstructor]
-        public DebugTokenReplacer(IUnconfiguredProjectCommonServices unconnfiguredServices, IEnvironmentHelper environmentHelper,
+        public DebugTokenReplacer(IUnconfiguredProjectCommonServices unconfiguredServices, IEnvironmentHelper environmentHelper,
                                   IActiveDebugFrameworkServices activeDebugFrameworkService, IProjectAccessor projectAccessor)
         {
-            UnconfiguredServices = unconnfiguredServices;
+            UnconfiguredServices = unconfiguredServices;
             EnvironmentHelper = environmentHelper;
             ActiveDebugFrameworkService = activeDebugFrameworkService;
             ProjectAccessor = projectAccessor;

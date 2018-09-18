@@ -41,7 +41,7 @@ namespace Microsoft.VisualStudio.Threading.Tasks
         }
 
         [Fact]
-        public async Task EnsureNestedCallsAreExcecutedDirectly()
+        public async Task EnsureNestedCallsAreExecutedDirectly()
         {
             const int NumberOfTasks = 10;
             var sequencer = new SequentialTaskExecutor();
@@ -73,7 +73,7 @@ namespace Microsoft.VisualStudio.Threading.Tasks
         }
 
         [Fact]
-        public void CalltoDisposedObjectShouldThrow()
+        public void CallToDisposedObjectShouldThrow()
         {
             var sequencer = new SequentialTaskExecutor();
             sequencer.Dispose();

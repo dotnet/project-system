@@ -154,7 +154,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         }
 
         [Fact]
-        public async Task ExecuteUnderLockAsync_WhenDisposed_ThrowsOperationCancellated()
+        public async Task ExecuteUnderLockAsync_WhenDisposed_ThrowsOperationCanceled()
         {
             var instance = CreateInstance();
 

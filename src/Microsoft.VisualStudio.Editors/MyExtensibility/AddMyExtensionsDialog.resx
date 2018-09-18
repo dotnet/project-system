@@ -240,10 +240,10 @@
   <data name="colHeaderExtensionVersion.Width" type="System.Int32, mscorlib">
     <value>80</value>
   </data>
-  <data name="colHeaderExensionDescription.Text" xml:space="preserve">
+  <data name="colHeaderExtensionDescription.Text" xml:space="preserve">
     <value>Description</value>
   </data>
-  <data name="colHeaderExensionDescription.Width" type="System.Int32, mscorlib">
+  <data name="colHeaderExtensionDescription.Width" type="System.Int32, mscorlib">
     <value>250</value>
   </data>
   <data name="listViewExtensions.AccessibleName" xml:space="preserve">
@@ -339,10 +339,10 @@
   <data name="&gt;&gt;colHeaderExtensionVersion.Type" xml:space="preserve">
     <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;colHeaderExensionDescription.Name" xml:space="preserve">
-    <value>colHeaderExensionDescription</value>
+  <data name="&gt;&gt;colHeaderExtensionDescription.Name" xml:space="preserve">
+    <value>colHeaderExtensionDescription</value>
   </data>
-  <data name="&gt;&gt;colHeaderExensionDescription.Type" xml:space="preserve">
+  <data name="&gt;&gt;colHeaderExtensionDescription.Type" xml:space="preserve">
     <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">

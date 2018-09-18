@@ -373,13 +373,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                             For Each UnusedRefPath As String In UnusedRefPaths
                                 If UnusedRefPath.Length > 0 Then
 
-                                    Dim formatedPath As String = UnusedRefPath.ToUpper(Globalization.CultureInfo.InvariantCulture)
-                                    Dim refObj As Object = pathHash.Item(formatedPath)
+                                    Dim formattedPath As String = UnusedRefPath.ToUpper(Globalization.CultureInfo.InvariantCulture)
+                                    Dim refObj As Object = pathHash.Item(formattedPath)
 
                                     If refObj IsNot Nothing Then
                                         UnusedRefsList.Add(RefsList(CInt(refObj)))
                                         ' remove the one we matched, so we don't scan it and waste time to GetAssemblyName again...
-                                        pathHash.Remove(formatedPath)
+                                        pathHash.Remove(formattedPath)
                                     ElseIf IO.File.Exists(UnusedRefPath) Then
                                         ' If we haven't matched any path, we need collect the assembly name and use it to do match...
                                         Dim UnusedRefName As String = GetAssemblyName(UnusedRefPath).FullName
@@ -505,7 +505,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <param name="sender">Event args</param>
         ''' <param name="e">Event args</param>
-        Private Sub OnUnusedRerenceListColumnClick(sender As Object, e As ColumnClickEventArgs) Handles UnusedReferenceList.ColumnClick
+        Private Sub OnUnusedReferenceListColumnClick(sender As Object, e As ColumnClickEventArgs) Handles UnusedReferenceList.ColumnClick
             ListViewComparer.HandleColumnClick(UnusedReferenceList, _referenceSorter, e)
         End Sub
 

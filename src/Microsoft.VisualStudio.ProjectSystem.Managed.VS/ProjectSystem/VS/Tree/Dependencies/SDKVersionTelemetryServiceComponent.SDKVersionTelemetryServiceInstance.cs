@@ -19,20 +19,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             private const string NETCoreSdkVersionProperty = "NETCoreSdkVersion";
 
             private readonly IUnconfiguredProjectVsServices _projectVsServices;
-            private readonly ISafeProjectGuidService _projectGuidSevice;
+            private readonly ISafeProjectGuidService _projectGuidService;
             private readonly ITelemetryService _telemetryService;
             private readonly IUnconfiguredProjectTasksService _unconfiguredProjectTasksService;
 
             [ImportingConstructor]
             public SDKVersionTelemetryServiceInstance(
                 IUnconfiguredProjectVsServices projectVsServices,
-                ISafeProjectGuidService projectGuidSevice,
+                ISafeProjectGuidService projectGuidService,
                 ITelemetryService telemetryService,
                 IUnconfiguredProjectTasksService unconfiguredProjectTasksService)
                 : base(projectVsServices.ThreadingService.JoinableTaskContext)
             {
                 _projectVsServices = projectVsServices;
-                _projectGuidSevice = projectGuidSevice;
+                _projectGuidService = projectGuidService;
                 _telemetryService = telemetryService;
                 _unconfiguredProjectTasksService = unconfiguredProjectTasksService;
             }
@@ -74,7 +74,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             private async Task<string> GetProjectIdAsync()
             {
-                Guid projectGuid = await _projectGuidSevice.GetProjectGuidAsync();
+                Guid projectGuid = await _projectGuidService.GetProjectGuidAsync();
                 return projectGuid == Guid.Empty ? null : projectGuid.ToString();
             }
 

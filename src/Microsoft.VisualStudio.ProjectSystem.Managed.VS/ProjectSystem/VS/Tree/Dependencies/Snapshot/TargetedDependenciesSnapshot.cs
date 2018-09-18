@@ -69,21 +69,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         private readonly Dictionary<string, bool> _unresolvedDescendantsMap
             = new Dictionary<string, bool>(StringComparer.OrdinalIgnoreCase);
 
-        private bool? _hasUresolvedDependency;
+        private bool? _hasUnresolvedDependency;
         public bool HasUnresolvedDependency
         {
             get
             {
-                if (_hasUresolvedDependency == null)
+                if (_hasUnresolvedDependency == null)
                 {
-                    _hasUresolvedDependency = TopLevelDependencies.Any(x => !x.Resolved);
-                    if (!_hasUresolvedDependency.Value)
+                    _hasUnresolvedDependency = TopLevelDependencies.Any(x => !x.Resolved);
+                    if (!_hasUnresolvedDependency.Value)
                     {
-                        _hasUresolvedDependency = DependenciesWorld.Values.Any(x => !x.Resolved);
+                        _hasUnresolvedDependency = DependenciesWorld.Values.Any(x => !x.Resolved);
                     }
                 }
 
-                return _hasUresolvedDependency.Value;
+                return _hasUnresolvedDependency.Value;
             }
         }
 
