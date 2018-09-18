@@ -67,6 +67,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         private string _outputRelativeOrFullPath;
         private string _msBuildAllProjects;
 
+        private DateTime _lastCheckTimeUtc = DateTime.MinValue;
+
         private readonly HashSet<string> _itemTypes = new HashSet<string>(StringComparers.ItemTypes);
         private readonly Dictionary<string, HashSet<(string path, string link, CopyToOutputDirectoryType copyType)>> _items = new Dictionary<string, HashSet<(string, string, CopyToOutputDirectoryType)>>(StringComparers.ItemTypes);
         private readonly HashSet<string> _customInputs = new HashSet<string>(StringComparers.Paths);
@@ -476,6 +478,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     {
                         return Fail(logger, "Outputs", "Input '{0}' is newer ({1}) than earliest output '{2}' ({3}), not up to date.", input, time.Value, outputPath, outputTime.Value);
                     }
+
+                    if (time > _lastCheckTimeUtc)
+                    {
+                        return Fail(logger, "Outputs", "Input '{0}' has been modified since the last up-to-date check, not up to date.", input, time.Value);
+                    }
                 }
             }
             else
@@ -670,6 +677,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             }
             finally
             {
+                _lastCheckTimeUtc = DateTime.UtcNow;
                 logger.Verbose("Up to date check completed in {0:#,##0.#} ms", sw.Elapsed.TotalMilliseconds);
             }
         }
