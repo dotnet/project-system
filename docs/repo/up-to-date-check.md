@@ -80,6 +80,12 @@ For each `_copiedOutputFiles` source/destination
 
 The `BuildUpToDateCheck` class uses a `BuildUpToDateCheckLogger` to log verbose and info level information that is very useful during debugging.
 
-The log level is obtained via `IProjectSystemOptions.GetFastUpToDateLoggingLevelAsync`.
+The log level is obtained via `IProjectSystemOptions.GetFastUpToDateLoggingLevelAsync` which is user-controlled in Visual Studio via:
 
-TODO document how to view this log
+> Tools | Options | Projects and Solutions | .NET Core
+
+![Projects and Solutions, .NET Core options](images/options.png)
+
+With a log level of info or verbose, you'll see messages prefixed with "FastUpToDate:" in the "Build" section of the "Output" pane in Visual Studio. These messages will explain why the project is considered up to date or not.
+
+Uncheck the check box to disable the fast up to date check and always call MSBuild.
