@@ -1065,7 +1065,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="rgszParamIndexes">the indexes of the new parameters</param>
         ''' <param name="rgszRQTypeNames">RQName-syntax strings that identify the types of the new parameters</param>
         ''' <param name="rgszParamNames">the names of the parameters</param>
-        ''' <param name="prgAdditionalCheckoutVSITEMIDS">array of VSITEMID's if the RefactorNotify implementor needs to check out additional files</param>
         ''' <returns>error code</returns>
         Private Function OnAddParams(phier As IVsHierarchy, itemId As UInteger, lpszRQName As String, cParams As UInteger, rgszParamIndexes() As UInteger, rgszRQTypeNames() As String, rgszParamNames() As String) As Integer Implements IVsRefactorNotify.OnAddParams
             Common.SetErrorInfo(Common.ServiceProviderFromHierarchy(phier), NativeMethods.E_NOTIMPL, My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ERR_ModifyParamsNotSupported)
@@ -1130,7 +1129,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="lpszRQName">RQName-syntax string that identifies the method whose params are being removed</param>
         ''' <param name="cParamIndexes">number of parameters in rgParamIndexes</param>
         ''' <param name="rgParamIndexes">array of param indexes where each value indicates the index of the parameter being removed</param>
-        ''' <param name="prgAdditionalCheckoutVSITEMIDS">array of VSITEMID's if the RefactorNotify implementor needs to check out additional files</param>
         ''' <returns>error code</returns>
         Private Function OnRemoveParams(phier As IVsHierarchy, itemId As UInteger, lpszRQName As String, cParamIndexes As UInteger, rgParamIndexes() As UInteger) As Integer Implements IVsRefactorNotify.OnRemoveParams
             Common.SetErrorInfo(Common.ServiceProviderFromHierarchy(phier), NativeMethods.E_NOTIMPL, My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ERR_ModifyParamsNotSupported)

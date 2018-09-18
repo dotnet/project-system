@@ -113,7 +113,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
         '''<summary>
         '''</summary>
-        '''<remarks> We need handle OnClick to make Accessiblity work... </remarks>
+        '''<remarks> We need handle OnClick to make Accessibility work... </remarks>
         Protected Overrides Sub OnClick(e As EventArgs)
             MyBase.OnClick(e)
 
@@ -284,9 +284,9 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             ''' Calls default action when select is called. Checks for correct flag
             ''' </summary>
             Public Overrides Sub [Select](flags As AccessibleSelection)
-                '''AccessibleSelection.TakeSelection is the flag set when an object is selected,
-                '''specfically from SelectionItem.Select If this flag is set, we call the default
-                '''action on the PageTab, which gives the desired behavior of selecting the item.
+                ' AccessibleSelection.TakeSelection is the flag set when an object is selected,
+                ' specifically from SelectionItem.Select If this flag is set, we call the default
+                ' action on the PageTab, which gives the desired behavior of selecting the item.
                 If (flags And AccessibleSelection.TakeSelection) = AccessibleSelection.TakeSelection Then
                     DoDefaultAction()
                 Else
