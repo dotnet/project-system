@@ -20,3 +20,11 @@ To enable this logging in other situations you may, for example:
 4. Open a solution
 5. Use "View.Output Window"
 6. Select the pane titled "Project" from the dropdown
+
+## Up to date logs
+
+The up-to-date check uses a separate CPS mechanism for logging (disabled by
+default) that logs to the "Build" section of the "Output" pane. It is
+controlled via Visual Studio's "Options" dialog:
+
+![Projects and Solutions, .NET Core options](../images/options.png)
