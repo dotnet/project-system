@@ -81,7 +81,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.EditAndContinue
 
         public int GetExceptionSpans(uint celt, ENC_EXCEPTION_SPAN[] rgelt, ref uint pceltFetched)
         {
-            uint pceltFetchedResult = 0;
+            uint pceltFetchedResult = pceltFetched;
             HResult hr = Invoke(encProvider => encProvider.GetExceptionSpans(celt, rgelt, ref pceltFetchedResult));
 
             pceltFetched = pceltFetchedResult;
