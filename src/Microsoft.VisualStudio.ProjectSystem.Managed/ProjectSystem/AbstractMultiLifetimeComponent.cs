@@ -14,6 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
     internal abstract partial class AbstractMultiLifetimeComponent : OnceInitializedOnceDisposedAsync
     {
         private readonly object _lock = new object();
+        private TaskCompletionSource<object> _loadedSource = new TaskCompletionSource<object>();
 #pragma warning disable CA2213 // OnceInitializedOnceDisposedAsync are not tracked correctly by the IDisposeable analyzer
         private IMultiLifetimeInstance _instance;
 #pragma warning restore CA2213
@@ -28,6 +29,19 @@ namespace Microsoft.VisualStudio.ProjectSystem
             get { return _instance; }
         }
 
+        /// <summary>
+        ///     Gets a task that is completed when current <see cref="AbstractMultiLifetimeComponent"/> has 
+        ///     completed loading.
+        /// </summary>
+        /// <remarks>
+        ///     The returned <see cref="Task"/> is canceled when the <see cref="AbstractMultiLifetimeComponent"/> 
+        ///     is disposed.
+        /// </remarks>
+        public Task Loaded
+        {
+            get { return _loadedSource.Task; }
+        }
+
         public async Task LoadAsync()
         {
             await InitializeAsync().ConfigureAwait(false);
@@ -35,20 +49,25 @@ namespace Microsoft.VisualStudio.ProjectSystem
             await LoadCoreAsync().ConfigureAwait(false);
         }
 
-        private Task LoadCoreAsync()
+        private async Task LoadCoreAsync()
         {
+            TaskCompletionSource<object> loadedSource = null;
             IMultiLifetimeInstance instance;
             lock (_lock)
             {
                 if (_instance == null)
                 {
                     _instance = CreateInstance();
+                    loadedSource = _loadedSource;
                 }
 
                 instance = _instance;
             }
 
-            return instance.InitializeAsync();
+            // While all callers should wait on InitializeAsync, 
+            // only one should complete the completion source
+            await instance.InitializeAsync();
+            loadedSource?.SetResult(null);
         }
 
         public Task UnloadAsync()
@@ -61,6 +80,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 {
                     instance = _instance;
                     _instance = null;
+                    _loadedSource = new TaskCompletionSource<object>();
                 }
             }
 
@@ -72,9 +92,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return Task.CompletedTask;
         }
 
-        protected override Task DisposeCoreAsync(bool initialized)
+        protected override async Task DisposeCoreAsync(bool initialized)
         {
-            return UnloadAsync();
+            await UnloadAsync();
+
+            _loadedSource.TrySetCanceled();
         }
 
         protected override Task InitializeCoreAsync(CancellationToken cancellationToken)
