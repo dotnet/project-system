@@ -27,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             var behavior = mockBehavior ?? MockBehavior.Strict;
             var mock = new Mock<IDependenciesViewModelFactory>(behavior);
 
-            if (getDependenciesRootIcon != null && getDependenciesRootIcon.HasValue)
+            if (getDependenciesRootIcon.HasValue)
             {
                 mock.Setup(x => x.GetDependenciesRootIcon(It.IsAny<bool>())).Returns(getDependenciesRootIcon.Value);
             }
