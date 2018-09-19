@@ -418,7 +418,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     propertySheet: null,
                     visible: true,
                     browseObjectProperties: rule,
-                    flags: viewModel.Flags,
+                    flags: flags,
                     icon: viewModel.Icon.ToProjectSystemType(),
                     expandedIcon: viewModel.ExpandedIcon.ToProjectSystemType());
             }
