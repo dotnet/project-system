@@ -90,15 +90,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             internal async Task OnProjectChangedAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> update, bool evaluation)
             {
+                CancellationToken cancellationToken = _tasksService.UnloadCancellationToken;
+
                 // TODO: https://github.com/dotnet/project-system/issues/353
-                await _threadingService.SwitchToUIThread();
+                await _threadingService.SwitchToUIThread(cancellationToken);
 
                 await ExecuteUnderLockAsync(ct =>
                 {
                     ApplyProjectChangesUnderLock(update, evaluation, ct);
 
                     return Task.CompletedTask;
-                }, _tasksService.UnloadCancellationToken);
+                }, cancellationToken);
             }
 
             private void ApplyProjectChangesUnderLock(IProjectVersionedValue<IProjectSubscriptionUpdate> update, bool evaluation, CancellationToken cancellationToken)
