@@ -10,6 +10,60 @@ namespace Microsoft.VisualStudio.ProjectSystem
     public class AbstractMultiLifetimeComponentTests
     {
         [Fact]
+        public void Loaded_WhenNotUnloaded_ReturnsNonCompletedTask()
+        {
+            var component = CreateInstance();
+
+            Assert.False(component.Loaded.IsCanceled);
+            Assert.False(component.Loaded.IsCompleted);
+            Assert.False(component.Loaded.IsFaulted);
+        }
+
+        [Fact]
+        public async Task Loaded_WhenLoaded_ReturnsCompletedTask()
+        {
+            var component = CreateInstance();
+
+            await component.LoadAsync();
+
+            Assert.True(component.Loaded.IsCompleted);
+        }
+
+        [Fact]
+        public async Task Loaded_WhenUnloaded_ReturnsNonCompletedTask()
+        {
+            var component = CreateInstance();
+
+            await component.LoadAsync();
+            await component.UnloadAsync();
+
+            Assert.False(component.Loaded.IsCanceled);
+            Assert.False(component.Loaded.IsCompleted);
+            Assert.False(component.Loaded.IsFaulted);
+        }
+
+        [Fact]
+        public async Task Loaded_DisposedWhenUnloaded_ReturnsCancelledTask()
+        {
+            var component = CreateInstance();
+
+            await component.DisposeAsync();
+
+            Assert.True(component.Loaded.IsCanceled);
+        }
+
+        [Fact]
+        public async Task Loaded_DisposedWhenLoaded_ReturnsCancelledTask()
+        {
+            var component = CreateInstance();
+
+            await component.LoadAsync();
+            await component.DisposeAsync();
+
+            Assert.True(component.Loaded.IsCanceled);
+        }
+
+        [Fact]
         public async Task LoadAsync_Initializes()
         {
             var component = CreateInstance();

@@ -36,7 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
         {
-            await _threadingService.SwitchToUIThread();
+            await _threadingService.SwitchToUIThread(cancellationToken);
 
             HResult result = _solution.Value.AdviseSolutionEvents(this, out _cookie);
             if (result.Failed)
