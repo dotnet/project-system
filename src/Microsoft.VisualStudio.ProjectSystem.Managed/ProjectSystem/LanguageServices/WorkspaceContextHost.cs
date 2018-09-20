@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System;
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
 
@@ -13,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     /// </summary>
     [Export(typeof(IImplicitlyActiveService))]
     [AppliesTo(ProjectCapability.DotNetLanguageService2)]
-    internal partial class WorkspaceContextHost : AbstractMultiLifetimeComponent, IImplicitlyActiveService
+    internal partial class WorkspaceContextHost : AbstractMultiLifetimeComponent, IImplicitlyActiveService, IWorkspaceProjectContextHost
     {
         private readonly ConfiguredProject _project;
         private readonly IProjectThreadingService _threadingService;
@@ -50,6 +51,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         public Task DeactivateAsync()
         {
             return UnloadAsync();
+        }
+
+        public async Task OpenContextForWriteAsync(Func<IWorkspaceProjectContext, Task> action)
+        {
+            Requires.NotNull(action, nameof(action));
+
+            await Loaded;
+
+            var instance = (WorkspaceContextHostInstance)Instance;
+            if (instance == null)   // Unloaded between being Loaded and here
+                throw new OperationCanceledException();     
+
+            // Throws OperationCanceledException if 'instance' is Disposed
+            await instance.OpenContextForWriteAsync(action);
         }
 
         protected override IMultiLifetimeInstance CreateInstance()

@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System;
 using System.ComponentModel.Composition;
 using System.Threading;
 using System.Threading.Tasks;
@@ -86,6 +87,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                                                               .ConfigureAwait(true);
                     }
                 }
+            }
+
+            public async Task OpenContextForWriteAsync(Func<IWorkspaceProjectContext, Task> action)
+            {
+                await InitializationCompletion;
+
+                // If we failed to create a context, we treat it as a cancellation
+                if (_context == null)
+                    throw new OperationCanceledException();
+
+                CancellationToken cancellationToken = _tasksService.UnloadCancellationToken;
+
+                // TODO: https://github.com/dotnet/project-system/issues/353
+                await _threadingService.SwitchToUIThread(cancellationToken);
+
+                await ExecuteUnderLockAsync(_ => action(_context), cancellationToken);
             }
 
             internal async Task OnProjectChangedAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> update, bool evaluation)

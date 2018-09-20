@@ -38,6 +38,52 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         }
 
         [Fact]
+        public async Task OpenContextForWriteAsync_WhenInitializedWithNoContext_ThrowsOperationCanceled()
+        {
+            var workspaceProjectContextProvider = IWorkspaceProjectContextProviderFactory.ImplementCreateProjectContextAsync(context: null);
+
+            var instance = await CreateInitializedInstanceAsync(workspaceProjectContextProvider: workspaceProjectContextProvider);
+
+            await Assert.ThrowsAsync<OperationCanceledException>(() =>
+            {
+                return instance.OpenContextForWriteAsync(context => Task.CompletedTask);
+            });
+        }
+
+        [Fact]
+        public async Task OpenContextForWriteAsync_WhenInitializedWithContext_CallsAction()
+        {
+            var context = IWorkspaceProjectContextMockFactory.Create();
+            var workspaceProjectContextProvider = IWorkspaceProjectContextProviderFactory.ImplementCreateProjectContextAsync(context: context);
+
+            var instance = await CreateInitializedInstanceAsync(workspaceProjectContextProvider: workspaceProjectContextProvider);
+
+            IWorkspaceProjectContext result = null;
+            await instance.OpenContextForWriteAsync(c => { result = c; return Task.CompletedTask; });
+
+            Assert.Same(context, result);
+        }
+
+        [Fact]
+        public async Task OpenContextForWriteAsync_WhenProjectUnloaded_ThrowsOperationCanceled()
+        {
+            var tasksService = IUnconfiguredProjectTasksServiceFactory.ImplementUnloadCancellationToken(new CancellationToken(canceled: true));
+            var context = IWorkspaceProjectContextMockFactory.Create();
+            var workspaceProjectContextProvider = IWorkspaceProjectContextProviderFactory.ImplementCreateProjectContextAsync(context: context);
+
+            var instance = await CreateInitializedInstanceAsync(workspaceProjectContextProvider: workspaceProjectContextProvider, tasksService: tasksService);
+
+            int callCount = 0;
+
+            await Assert.ThrowsAnyAsync<OperationCanceledException>(() =>
+            {
+                return instance.OpenContextForWriteAsync(c => { callCount++; return Task.CompletedTask; });
+            });
+
+            Assert.Equal(0, callCount);
+        }
+
+        [Fact]
         public async Task Dispose_WhenInitializedWithContext_ReleasesContext()
         {
             var context = IWorkspaceProjectContextMockFactory.Create();
