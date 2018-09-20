@@ -6,16 +6,16 @@ using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
-    internal static class ILanguageServiceHostFactory
+    internal static class IActiveWorkspaceProjectContextHostFactory
     {
-        public static ILanguageServiceHost Create()
+        public static IActiveWorkspaceProjectContextHost Create()
         {
-            return Mock.Of<ILanguageServiceHost>();
+            return Mock.Of<IActiveWorkspaceProjectContextHost>();
         }
 
-        public static ILanguageServiceHost ImplementHostSpecificErrorReporter(Func<object> action)
+        public static IActiveWorkspaceProjectContextHost ImplementHostSpecificErrorReporter(Func<object> action)
         {
-            var mock = new Mock<ILanguageServiceHost>();
+            var mock = new Mock<IActiveWorkspaceProjectContextHost>();
             mock.SetupGet(h => h.HostSpecificErrorReporter)
                 .Returns(action);
 

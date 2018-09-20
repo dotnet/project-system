@@ -21,13 +21,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
     {
         private static readonly Task<AddMessageResult> s_handledAndStopProcessing = Task.FromResult(AddMessageResult.HandledAndStopProcessing);
         private static readonly Task<AddMessageResult> s_notHandled = Task.FromResult(AddMessageResult.NotHandled);
-        private readonly ILanguageServiceHost _host;
+        private readonly IActiveWorkspaceProjectContextHost _projectContextHost;
         private IVsLanguageServiceBuildErrorReporter2 _languageServiceBuildErrorReporter;
 
         [ImportingConstructor]
-        public LanguageServiceErrorListProvider(UnconfiguredProject project, ILanguageServiceHost host)
+        public LanguageServiceErrorListProvider(UnconfiguredProject project, IActiveWorkspaceProjectContextHost projectContextHost)
         {
-            _host = host;
+            _projectContextHost = projectContextHost;
         }
 
         public void SuspendRefresh()
@@ -66,7 +66,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
                                                                     details.ColumnNumberForErrorList,
                                                                     details.EndLineNumberForErrorList,
                                                                     details.EndColumnNumberForErrorList,
-                                                                    details.GetFileFullPath(_host));
+                                                                    details.GetFileFullPath(_projectContextHost));
                     handled = true;
                 }
                 catch (NotImplementedException)
@@ -98,7 +98,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
             // We defer grabbing error reporter the until the first build event, because the language service is initialized asynchronously
             if (_languageServiceBuildErrorReporter == null)
             {
-                _languageServiceBuildErrorReporter = (IVsLanguageServiceBuildErrorReporter2)_host.HostSpecificErrorReporter;
+                _languageServiceBuildErrorReporter = (IVsLanguageServiceBuildErrorReporter2)_projectContextHost.HostSpecificErrorReporter;
             }
         }
 

@@ -27,11 +27,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             [Import(ContractNames.ProjectPropertyProviders.ProjectFile)] IProjectInstancePropertiesProvider instanceProvider,
             [ImportMany(ContractNames.ProjectPropertyProviders.ProjectFile)]IEnumerable<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>> interceptingValueProviders,
             UnconfiguredProject project,
-            ILanguageServiceHost languageServiceHost,
+            IActiveWorkspaceProjectContextHost projectContextHost,
             VisualStudioWorkspace workspace,
             IProjectThreadingService threadingService)
             : base(delegatedProvider, instanceProvider, interceptingValueProviders, project,
-                  getActiveProjectId: () => ((AbstractProject)languageServiceHost.ActiveProjectContext)?.Id,
+                  getActiveProjectId: () => ((AbstractProject)projectContextHost.ActiveProjectContext)?.Id,
                   workspace: workspace,
                   threadingService: threadingService)
         {
