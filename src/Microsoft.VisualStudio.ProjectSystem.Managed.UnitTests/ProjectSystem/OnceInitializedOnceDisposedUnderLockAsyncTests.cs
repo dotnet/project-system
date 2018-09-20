@@ -78,19 +78,19 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             var instance = CreateInstance();
 
-            var firstAction = instance.ExecuteUnderLockAsync(async (ct) =>
+            Task firstAction() => instance.ExecuteUnderLockAsync(async (ct) =>
             {
                 firstEntered.Set();
                 await firstRelease;
-            },
-            CancellationToken.None);
 
-            var secondAction = instance.ExecuteUnderLockAsync((ct) =>
+            }, CancellationToken.None);
+
+            Task secondAction() => Task.Run(() => instance.ExecuteUnderLockAsync((ct) =>
             {
                 secondEntered.Set();
                 return Task.CompletedTask;
-            },
-            CancellationToken.None);
+
+            }, CancellationToken.None));
 
             await AssertNoOverlap(firstAction, secondAction, firstEntered, firstRelease, secondEntered);
         }
@@ -123,20 +123,22 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var firstRelease = new AsyncManualResetEvent();
             var disposeEntered = new AsyncManualResetEvent();
 
-            var instance = CreateInstance(() =>
+            ConcreteOnceInitializedOnceDisposedUnderLockAsync instance = null;
+
+            Task firstAction() => instance.ExecuteUnderLockAsync(async (ct) =>
+            {
+                firstEntered.Set();
+                await firstRelease.WaitAsync();
+
+            }, CancellationToken.None);
+
+            instance = CreateInstance(() =>
             {
                 disposeEntered.Set();
                 return Task.CompletedTask;
             });
 
-            var firstAction = instance.ExecuteUnderLockAsync(async (ct) =>
-            {
-                firstEntered.Set();
-                await firstRelease;
-            },
-            CancellationToken.None);
-
-            var disposeAction = instance.DisposeAsync();
+            Task disposeAction() => Task.Run(instance.DisposeAsync);
 
             await AssertNoOverlap(firstAction, disposeAction, firstEntered, firstRelease, disposeEntered);
         }
@@ -164,16 +166,22 @@ namespace Microsoft.VisualStudio.ProjectSystem
             });
         }
 
-        private async Task AssertNoOverlap(Task firstAction, Task secondAction, AsyncManualResetEvent firstEntered, AsyncManualResetEvent firstRelease, AsyncManualResetEvent secondEntered)
+        private async Task AssertNoOverlap(Func<Task> firstAction, Func<Task> secondAction, AsyncManualResetEvent firstEntered, AsyncManualResetEvent firstRelease, AsyncManualResetEvent secondEntered)
         {
-            // Asserts that "secondAction" blocks until "firstAction" has completed
-
+            // Run first task and wait until we've entered it
+            var firstTask = firstAction();
             await firstEntered.WaitAsync();
+
+            // Run second task, we should never enter it
+            var secondTask = secondAction();
             await Assert.ThrowsAsync<TimeoutException>(() => secondEntered.WaitAsync().WithTimeout(TimeSpan.FromMilliseconds(50)));
 
+            // Now release first
             firstRelease.Set();
+
+            // Now we should enter first one
             await secondEntered.WaitAsync();
-            await Task.WhenAll(firstAction, secondAction);
+            await Task.WhenAll(firstTask, secondTask);
         }
 
         private static ConcreteOnceInitializedOnceDisposedUnderLockAsync CreateInstance(Func<Task> disposed = null)
