@@ -32,12 +32,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
                 set;
             }
 
-            public string GetFileFullPath(ILanguageServiceHost languageServiceHost)
+            public string GetFileFullPath(IActiveWorkspaceProjectContextHost projectContextHost)
             {
                 string projectFile = ProjectFile;
                 if (string.IsNullOrEmpty(projectFile))
                 {
-                    projectFile = languageServiceHost.ActiveProjectContext?.ProjectFilePath;
+                    projectFile = projectContextHost.ActiveProjectContext?.ProjectFilePath;
                 }
 
                 if (!string.IsNullOrEmpty(projectFile) && !string.IsNullOrEmpty(File))

@@ -20,21 +20,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
     {
         private readonly IProjectThreadingService _threadingService;
         private readonly ICodeModelFactory _codeModelFactory;
-        private readonly ILanguageServiceHost _languageServiceHost;
+        private readonly IActiveWorkspaceProjectContextHost _projectContextHost;
 
         [ImportingConstructor]
-        public ProjectContextCodeModelProvider(IProjectThreadingService threadingService, ICodeModelFactory codeModelFactory, ILanguageServiceHost languageServiceHost)
+        public ProjectContextCodeModelProvider(IProjectThreadingService threadingService, ICodeModelFactory codeModelFactory, IActiveWorkspaceProjectContextHost projectContextHost)
         {
             _threadingService = threadingService;
             _codeModelFactory = codeModelFactory;
-            _languageServiceHost = languageServiceHost;
+            _projectContextHost = projectContextHost;
         }
 
         public CodeModel GetCodeModel(Project project)
         {
             Requires.NotNull(project, nameof(project));
 
-            IWorkspaceProjectContext projectContext = _languageServiceHost.ActiveProjectContext;
+            IWorkspaceProjectContext projectContext = _projectContextHost.ActiveProjectContext;
             if (projectContext == null)
                 return null;
 
@@ -50,7 +50,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         {
             Requires.NotNull(fileItem, nameof(fileItem));
 
-            IWorkspaceProjectContext projectContext = _languageServiceHost.ActiveProjectContext;
+            IWorkspaceProjectContext projectContext = _projectContextHost.ActiveProjectContext;
             if (projectContext == null)
                 return null;
 
