@@ -2,7 +2,6 @@
 
 using System;
 
-using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
@@ -32,17 +31,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
                 set;
             }
 
-            public string GetFileFullPath(IActiveWorkspaceProjectContextHost projectContextHost)
+            public string GetFileFullPath(string projectFile)
             {
-                string projectFile = ProjectFile;
-                if (string.IsNullOrEmpty(projectFile))
+                string baseFilePath = ProjectFile;
+                if (string.IsNullOrEmpty(baseFilePath))
                 {
-                    projectFile = projectContextHost.ActiveProjectContext?.ProjectFilePath;
+                    baseFilePath = projectFile;
                 }
 
-                if (!string.IsNullOrEmpty(projectFile) && !string.IsNullOrEmpty(File))
+                if (!string.IsNullOrEmpty(baseFilePath) && !string.IsNullOrEmpty(File))
                 {
-                    return TryMakeRooted(projectFile, File);
+                    return TryMakeRooted(baseFilePath, File);
                 }
 
                 return string.Empty;

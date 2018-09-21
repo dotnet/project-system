@@ -21,12 +21,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
     {
         private static readonly Task<AddMessageResult> s_handledAndStopProcessing = Task.FromResult(AddMessageResult.HandledAndStopProcessing);
         private static readonly Task<AddMessageResult> s_notHandled = Task.FromResult(AddMessageResult.NotHandled);
+        private readonly UnconfiguredProject _project;
         private readonly IActiveWorkspaceProjectContextHost _projectContextHost;
         private IVsLanguageServiceBuildErrorReporter2 _languageServiceBuildErrorReporter;
 
         [ImportingConstructor]
         public LanguageServiceErrorListProvider(UnconfiguredProject project, IActiveWorkspaceProjectContextHost projectContextHost)
         {
+            _project = project;
             _projectContextHost = projectContextHost;
         }
 
@@ -66,7 +68,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
                                                                     details.ColumnNumberForErrorList,
                                                                     details.EndLineNumberForErrorList,
                                                                     details.EndColumnNumberForErrorList,
-                                                                    details.GetFileFullPath(_projectContextHost));
+                                                                    details.GetFileFullPath(_project.FullPath));
                     handled = true;
                 }
                 catch (NotImplementedException)
