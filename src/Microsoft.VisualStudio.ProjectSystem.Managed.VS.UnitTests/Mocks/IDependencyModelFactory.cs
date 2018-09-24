@@ -61,7 +61,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 mock.Setup(x => x.DependencyIDs).Returns(ImmutableList<string>.Empty.AddRange(dependencyIDs));
             }
 
-            if (resolved != null && resolved.HasValue)
+            if (resolved.HasValue)
             {
                 mock.Setup(x => x.Resolved).Returns(resolved.Value);
             }
@@ -87,27 +87,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             var json = JObject.Parse(jsonString);
             var data = json.ToObject<TestDependencyModel>();
 
-            if (flags != null && flags.HasValue)
+            if (flags.HasValue)
             {
                 data.Flags = data.Flags.Union(flags.Value);
             }
 
-            if (icon != null && icon.HasValue)
+            if (icon.HasValue)
             {
                 data.Icon = icon.Value;
             }
 
-            if (expandedIcon != null && expandedIcon.HasValue)
+            if (expandedIcon.HasValue)
             {
                 data.ExpandedIcon = expandedIcon.Value;
             }
 
-            if (unresolvedIcon != null && unresolvedIcon.HasValue)
+            if (unresolvedIcon.HasValue)
             {
                 data.UnresolvedIcon = unresolvedIcon.Value;
             }
 
-            if (unresolvedExpandedIcon != null && unresolvedExpandedIcon.HasValue)
+            if (unresolvedExpandedIcon.HasValue)
             {
                 data.UnresolvedExpandedIcon = unresolvedExpandedIcon.Value;
             }

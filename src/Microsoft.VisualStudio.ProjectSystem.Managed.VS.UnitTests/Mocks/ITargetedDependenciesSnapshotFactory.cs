@@ -60,7 +60,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                     .Returns(ImmutableStringDictionary<IDependency>.EmptyOrdinalIgnoreCase.AddRange(dependenciesWorld));
             }
 
-            if (hasUnresolvedDependency != null && hasUnresolvedDependency.HasValue)
+            if (hasUnresolvedDependency.HasValue)
             {
                 mock.Setup(x => x.HasUnresolvedDependency).Returns(hasUnresolvedDependency.Value);
             }
@@ -81,7 +81,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 mock.Setup(x => x.TopLevelDependencies).Returns(dependencies);
             }
 
-            if (checkForUnresolvedDependencies != null && checkForUnresolvedDependencies.HasValue)
+            if (checkForUnresolvedDependencies.HasValue)
             {
                 mock.Setup(x => x.CheckForUnresolvedDependencies(It.IsAny<string>())).Returns(checkForUnresolvedDependencies.Value);
             }

@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 mock.Setup(x => x.Targets).Returns(targets.ToImmutableDictionary());
             }
 
-            if (hasUnresolvedDependency != null && hasUnresolvedDependency.HasValue)
+            if (hasUnresolvedDependency.HasValue)
             {
                 mock.Setup(x => x.HasUnresolvedDependency).Returns(hasUnresolvedDependency.Value);
             }
