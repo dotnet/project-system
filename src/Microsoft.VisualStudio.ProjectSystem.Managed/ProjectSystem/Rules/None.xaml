@@ -9,22 +9,19 @@
         <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" ItemType="None" SourceOfDefaultValue="AfterContext" />
     </Rule.DataSource>
 
-    <DynamicEnumProperty Name="{}{ItemType}" Category="Advanced"
+    <DynamicEnumProperty Name="{}{ItemType}"
                      EnumProvider="ItemTypes" />
     <EnumProperty
-      Name="CopyToOutputDirectory"
-      Category="Advanced">
+      Name="CopyToOutputDirectory">
         <EnumValue Name="Never" />
         <EnumValue Name="Always" />
         <EnumValue Name="PreserveNewest" />
     </EnumProperty>
 
     <StringProperty
-      Name="Generator"
-      Category="Advanced" />
+      Name="Generator" />
     <StringProperty
-      Name="CustomToolNamespace"
-      Category="Advanced" />
+      Name="CustomToolNamespace" />
 
     <StringProperty Name="LastGenOutput" Visible="false" />
     <BoolProperty Name="DesignTime" Visible="false" />
