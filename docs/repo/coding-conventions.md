@@ -4,7 +4,7 @@
 
 We use the same coding style conventions as outlined in [.NET Framework Coding Styles](https://github.com/dotnet/corefx/blob/master/Documentation/coding-guidelines/coding-style.md), with the following additions:
 
-- **DO** put one type per file, including nested types. Files containing a nested type, should follow the `Parent.NestedType.cs` convention. Generic types should follow the ``GenericWithOneTypeParameter`1.cs``, ``GenericWithTwoTypeParameters`2.cs`` convention. If you have a single generic type,`GeneraticWithOneTypeParamter.cs` is acceptable.
+- **DO** put one type per file, including nested types. Files containing a nested type, should follow the `Parent.NestedType.cs` convention. Generic types should follow the ``GenericWithOneTypeParameter`1.cs``, ``GenericWithTwoTypeParameters`2.cs`` convention. If you have a single generic type,`GeneraticWithOneTypeParameter.cs` is acceptable.
 - **DO NOT** use regions.
 - **DO** sort members in classes in the following order; fields, constructors, events, properties and then methods.
 - **DO** flavor private fields over private properties.
@@ -15,7 +15,6 @@ The majority of the guidelines, where possible, are enforced via the [.editorcon
 ## MEF
 
 - **DO** use constructor injection over property/field injection.
-
   
 - **DO** use MEF imports over direct usage of `IComponentModel`.
 
@@ -23,11 +22,11 @@ The majority of the guidelines, where possible, are enforced via the [.editorcon
 
 - **DO** flavor `IVsUIService<T>` and `IVsUIService<TService, TInterface>` over usage of `IServiceProvider`.
   
-IVsUIService enforces UI thread access which prevents accidental RPC calls from a background thread.
+`IVsUIService` enforces UI thread access which prevents accidental RPC calls from a background thread.
   
 - **DO** flavor `IVsService<T>` and `IVsService<TService, TInterface>` over usage of `IAsyncServiceProvider`.
   
-IVsService ensures casts are performed on the UI thread which prevents accidental RPC calls from a background thread.
+`IVsService` ensures casts are performed on the UI thread which prevents accidental RPC calls from a background thread.
 
 - **DO** flavor `HResult` over `VSConstants` and raw constants.
 
@@ -35,15 +34,18 @@ IVsService ensures casts are performed on the UI thread which prevents accidenta
 
 ## Tests
 
-- **DO** favor a single Assert per unit test.
+- **DO** flavor a single Assert per unit test.
+
 - **DO** use the `Method_Setup_Behavior` naming style for unit tests, for example, `GetProperty_NullAsName_ThrowsArgument` or `CalculateValues_WhenDisposed_ReturnsNull`.
-- **DO** favor static `CreateInstance` for creating the object under test versus directly calling the constructor
+
+- **DO** flavor static `CreateInstance` for creating the object under test versus directly calling the constructor
 
 This reduces the amount of refactoring/fixup needed when adding a new import to a service.
 
 # Guidelines
 
 ## Data
+
 - **DO NOT** mix snapshot and "live" project data in the same component. 
 
 For example, listening to data flow blocks from `IProjectSubscriptionService` and then reading properties from `ProjectProperties` within the callback will lead to inconsistent results. The dataflow represents a "snapshot" of the project from changes in the past, whereas ProjectProperties represents the actual live project. These will not always agree. The same applies to consuming other CPS APIs from within a dataflow block, the majority of them use live data to provide results and hence will return results inconsistent with the snapshot that you are reading in the dataflow.
