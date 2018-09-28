@@ -33,32 +33,11 @@
       "certificate": "VsixSHA2",
       "strongName": null,
       "values": [
-        "VSSetup/Microsoft.NetCore.CSharp.ProjectTemplates.Test.vsix",
-        "VSSetup/Microsoft.NetCore.CSharp.ProjectTemplates.vsix",
-        "VSSetup/Microsoft.NetCore.FSharp.ProjectTemplates.Test.vsix",
-        "VSSetup/Microsoft.NetCore.FSharp.ProjectTemplates.Web.vsix",
-        "VSSetup/Microsoft.NetCore.FSharp.ProjectTemplates.vsix",
-        "VSSetup/Microsoft.NetCore.VB.ProjectTemplates.Test.vsix",
-        "VSSetup/Microsoft.NetCore.VB.ProjectTemplates.vsix",
-        "VSSetup/Microsoft.NetStandard.CSharp.ProjectTemplates.vsix",
-        "VSSetup/Microsoft.NetStandard.FSharp.ProjectTemplates.vsix",
-        "VSSetup/Microsoft.NetStandard.VB.ProjectTemplates.vsix",
         "VSSetup/ProjectSystem.vsix",
         "VSSetup/VisualStudioEditorsSetup.vsix",
-        "VSSetup/Insertion/Microsoft.NetCore.CSharp.ProjectTemplates.Test.vsix",
-        "VSSetup/Insertion/Microsoft.NetCore.CSharp.ProjectTemplates.vsix",
-        "VSSetup/Insertion/Microsoft.NetCore.FSharp.ProjectTemplates.Test.vsix",
-        "VSSetup/Insertion/Microsoft.NetCore.FSharp.ProjectTemplates.Web.vsix",
-        "VSSetup/Insertion/Microsoft.NetCore.FSharp.ProjectTemplates.vsix",
-        "VSSetup/Insertion/Microsoft.NetCore.VB.ProjectTemplates.Test.vsix",
-        "VSSetup/Insertion/Microsoft.NetCore.VB.ProjectTemplates.vsix",
-        "VSSetup/Insertion/Microsoft.NetStandard.CSharp.ProjectTemplates.vsix",
-        "VSSetup/Insertion/Microsoft.NetStandard.FSharp.ProjectTemplates.vsix",
-        "VSSetup/Insertion/Microsoft.NetStandard.VB.ProjectTemplates.vsix",
         "VSSetup/Insertion/ProjectSystem.vsix",
         "VSSetup/Insertion/VisualStudioEditorsSetup.vsix",
-        "VSSetup/Insertion/Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles.vsix",
-        "VSSetup/Insertion/Microsoft.VisualStudio.NetCore.ProjectTemplates.1.x.vsix"
+        "VSSetup/Insertion/Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles.vsix"
       ]
     },
     {
