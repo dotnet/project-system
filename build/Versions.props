@@ -82,7 +82,7 @@
     
     <!-- Roslyn -->
     <MicrosoftVisualStudioLanguageServicesVersion>2.6.0-beta1-62113-02</MicrosoftVisualStudioLanguageServicesVersion>
-    <MicrosoftTestApexVisualStudioVersion>15.8.27703</MicrosoftTestApexVisualStudioVersion>
+    <MicrosoftTestApexVisualStudioVersion>16.0.28117-pre</MicrosoftTestApexVisualStudioVersion>
     <RoslynIntegrationVsixVersion>2.6.0.6211302</RoslynIntegrationVsixVersion>
     <MicrosoftNetRoslynDiagnosticsVersion>2.6.1-beta1-62702-01</MicrosoftNetRoslynDiagnosticsVersion>
 
