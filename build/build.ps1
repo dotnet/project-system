@@ -82,7 +82,7 @@ function GetVsWhereExe{
     [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
     Invoke-WebRequest "http://github.com/Microsoft/vswhere/releases/download/$vswhereVersion/vswhere.exe" -OutFile $vswhereExe
   }
-  
+
   return $vsWhereExe
 }
 
@@ -90,7 +90,7 @@ function GetVSIXExpInstallerExe{
   $vsixExpInstallerVersion = GetVersion("RoslynToolsVsixExpInstallerVersion")
   $vsixExpInstalleDir = Join-Path $ToolsRoot "VSIXExpInstaller\$vsixExpInstallerVersion"
   $vsixExpInstalleExe = Join-Path $vsixExpInstalleDir "tools\VSIXExpInstaller.exe"
-  
+
   if (!(Test-Path $vsixExpInstalleExe)) {
     Create-Directory $vsixExpInstalleDir
     Write-Host "Downloading VSIXExpInstaller"
@@ -98,7 +98,7 @@ function GetVSIXExpInstallerExe{
     Invoke-WebRequest "https://dotnet.myget.org/F/roslyn-tools/api/v2/package/RoslynTools.VSIXExpInstaller/$vsixExpInstallerVersion" -OutFile RoslynTools.VSIXExpInstaller.zip
     Expand-Archive .\RoslynTools.VSIXExpInstaller.zip -DestinationPath $vsixExpInstalleDir
   }
-  
+
   return $vsixExpInstalleExe
 }
 
@@ -113,7 +113,7 @@ function GetTRXUnitExe{
     Invoke-WebRequest "https://dotnet.myget.org/F/roslyn-tools/api/v2/package/TRXunit/$trxUnitVersion" -OutFile TRXUnit.zip
     Expand-Archive .\TRXUnit.zip -DestinationPath $trxUnitDir
   }
-  
+
   return $trxUnitExe
 }
 
@@ -172,6 +172,12 @@ function Build {
   }
 }
 
+function GetOpenCoverExe {
+  $OpenCoverVersion = GetVersion("OpenCoverVersion")
+  $OpenCoverExe = Join-Path $NuGetPackageRoot "opencover\$OpenCoverVersion\tools\OpenCover.Console.exe"
+  return $OpenCoverExe
+}
+
 function Stop-Processes() {
   Write-Host "Killing running build processes..."
   Stop-Process-Name "msbuild"
@@ -214,12 +220,12 @@ function InstallProjectSystemVSIX ([string] $rootSuffix, [string] $vsInstallDir)
   InstallVSIX $vsixExpInstalleExe $rootsuffix $vsInstallDir $ProjectSystemVsix
   $VisualStudioEditorsSetupVsix = [System.IO.Path]::GetFullPath((Join-Path (Join-Path $ArtifactsDir $configuration) "VSSetup\VisualStudioEditorsSetup.vsix"))
   InstallVSIX $vsixExpInstalleExe $rootsuffix $vsInstallDir $VisualStudioEditorsSetupVsix
-  
+
   $DevEnvExe = Join-Path $vsInstallDir "Common7\IDE\devenv.exe"
   & $DevEnvExe /clearcache /rootsuffix $rootSuffix
   & $DevEnvExe /updateconfiguration /rootsuffix $rootSuffix
   & $DevEnvExe /resetsettings General.vssettings /command "File.Exit" /rootsuffix $rootSuffix
-  
+
   Stop-Process-Name "DbgCLR"
   Stop-Process-Name "VsJITDebugger"
   Stop-Process-Name "dexplore"
@@ -235,7 +241,7 @@ function SetIntegrationEnvironmentVariables {
 
 function ConvertTRXFiles([string] $folderPath) {
   $trxUnitExe = GetTRXUnitExe
-  $trxFiles = Get-ChildItem -Path $folderPath -Recurse -Include *.trx 
+  $trxFiles = Get-ChildItem -Path $folderPath -Recurse -Include *.trx
   foreach ($trxFile in $trxFiles) {
     & $trxUnitExe $trxFile
   }
@@ -243,7 +249,7 @@ function ConvertTRXFiles([string] $folderPath) {
 
 function UninstallVSIXes([string] $hive){
   $vsid = Get-VisualStudioId
-  
+
   $extDir = Join-Path ${env:USERPROFILE} "AppData\Local\Microsoft\VisualStudio\15.0_$($vsid)$($hive)\Extensions"
     if (Test-Path $extDir) {
         foreach ($dir in Get-ChildItem -Directory $extDir) {
@@ -252,7 +258,7 @@ function UninstallVSIXes([string] $hive){
         }
         Remove-Item -re -fo $extDir
     }
-    
+
     $DevEnvExe = Join-Path $vsInstallDir "Common7\IDE\devenv.exe"
     & $DevEnvExe /Updateconfiguration
 }
@@ -260,7 +266,7 @@ function UninstallVSIXes([string] $hive){
 function RunIntegrationTests {
   InstallProjectSystemVSIX $rootsuffix $vsInstallDir
   SetIntegrationEnvironmentVariables
-  
+
   # Run integration tests
   $VSTestExe = Join-Path $vsInstallDir "Common7\IDE\CommonExtensions\Microsoft\TestWindow\vstest.console.exe"
   $IntegrationTestTempDir = Join-Path (Join-Path $ArtifactsDir $configuration) "IntegrationTestTemp"
@@ -271,9 +277,9 @@ function RunIntegrationTests {
   $runSettings = Join-Path $IntegrationTestTempDir "integration.runsettings"
   if (!(Test-Path $runSettings)) {
     $runSettingsContents = @"
-<?xml version="1.0" encoding="utf-8"?>  
-<RunSettings>  
-  <TestRunParameters>  
+<?xml version="1.0" encoding="utf-8"?>
+<RunSettings>
+  <TestRunParameters>
     <Parameter name="VsRootSuffix" value="$rootsuffix" />
   </TestRunParameters>
 </RunSettings>
@@ -281,20 +287,41 @@ function RunIntegrationTests {
     $runSettingsContents >> $runSettings
   }
 
-  Write-Host "Using $VSTestExe"
-  & $VSTestExe /blame /logger:$LogFileArgs /ResultsDirectory:"$IntegrationTestTempDir" /Settings:$runSettings $TestAssembly
-  
+  $useCodecov = $ci -and $env:CODECOV_TOKEN -and ($configuration -eq 'Debug') -and ($env:ghprbPullAuthorLogin -ne 'dotnet-bot')
+
+  if ($useCodecov) {
+    $OpenCoverExe = GetOpenCoverExe
+    Write-Host "Using $OpenCoverExe"
+    Write-Host "Using $VSTestExe"
+    $TestResultsDirectory = Join-Path (Join-Path $ArtifactsDir $configuration) "TestResults"
+    $TestResultsOpenCoverPath = Join-Path $TestResultsDirectory "Microsoft.VisualStudio.ProjectSystem.IntegrationTests.coverage"
+    if (!(Test-Path $TestResultsDirectory)) {
+      Create-Directory $TestResultsDirectory
+    }
+    & $OpenCoverExe -register:path32 -returntargetcode -hideskipped:All -filter:"+[*]*" -excludebyattribute:*.ExcludeFromCodeCoverage* -excludebyfile:*\*Designer.cs -output:"$TestResultsOpenCoverPath" -target:"$VSTestExe" -targetargs:"/blame /logger:$LogFileArgs /ResultsDirectory:`"$IntegrationTestTempDir`" /Settings:$runSettings $TestAssembly"
+  }
+  else{
+    Write-Host "Using $VSTestExe"
+    & $VSTestExe /blame /logger:$LogFileArgs /ResultsDirectory:"$IntegrationTestTempDir" /Settings:$runSettings $TestAssembly
+  }
+
+  if ($useCodecov) {
+    $CodecovProj = Join-Path $PSScriptRoot 'Codecov.proj'
+    $nodeReuse = !$ci
+    & $MsbuildExe $CodecovProj /m /nologo /clp:Summary /nodeReuse:$nodeReuse /warnaserror /v:diag /t:Codecov /p:Configuration=$configuration /p:UseCodecov=$useCodecov /p:NuGetPackageRoot=$NuGetPackageRoot $properties
+  }
+
   # Kill any VS processes left over
   Stop-Process-Name "devenv"
-  
+
   # Convert trx to be an xUnit xml file
   Write-Host "Converting MSTest results"
   ConvertTRXFiles $IntegrationTestTempDir
-  
+
   # Move test results to test results folder
   $TestResultsDir = Join-Path (Join-Path $ArtifactsDir $configuration) "TestResults"
   Copy-Item -Filter *.xml -Path $IntegrationTestTempDir -Recurse -Destination $TestResultsDir
-  
+
   # Uninstall extensions as other test runs could happen on the VM
   # NOTE: it sometimes takes 2 tries for it to succeed
   UninstallVSIXes $rootSuffix
@@ -351,15 +378,15 @@ try {
   }
 
   Build
-  
+
   if ($pack) {
     GenerateDependentAssemblyVersionFile
   }
-  
+
   if($integrationTest){
     RunIntegrationTests
   }
-  
+
   exit $lastExitCode
 }
 catch {
