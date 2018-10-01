@@ -30,7 +30,7 @@ steps:
   displayName: Run script CIBuild.cmd
   inputs:
     filename: 'build\CIBuild.cmd'
-    arguments: '-configuration $(BuildConfiguration)'
+    arguments: '-configuration $(BuildConfiguration)'/p:Optimize=true
     modifyEnvironment: false
     
 - task: PublishTestResults@1
