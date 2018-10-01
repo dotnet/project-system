@@ -170,6 +170,23 @@ function Build {
     $CodecovProj = Join-Path $PSScriptRoot 'Codecov.proj'
     & $MsbuildExe $CodecovProj /m /nologo /clp:Summary /nodeReuse:$nodeReuse /warnaserror /v:diag /t:Codecov /p:Configuration=$configuration /p:UseCodecov=$useCodecov /p:NuGetPackageRoot=$NuGetPackageRoot $properties
   }
+
+  # create suite.json file
+  $IntegrationTestDir = Join-Path (Join-Path $ArtifactsDir $configuration) "bin\IntegrationTests"
+  $testSuite = Join-Path $IntegrationTestDir "suite.json"
+  if (!(Test-Path $testSuite)) {
+    $testSuiteContents = @'
+{
+    "_comment":  "dotnet project-system built tests",
+    "testcontainer":  [
+                          {
+                              "name":  "Microsoft.VisualStudio.ProjectSystem.IntegrationTests.dll"
+                          }
+                      ]
+}
+'@
+    $testSuiteContents >> $testSuite
+  }
 }
 
 function Stop-Processes() {
