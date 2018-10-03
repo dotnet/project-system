@@ -8,28 +8,29 @@ phases:
       displayName: Set variables
       inputs:
         targetType: inline
+        arguments: $(CODECOV_TOKEN)
         script: |
-          Write-Host "##vso[task.setvariable variable=CODECOV_TOKEN;]$CODECOV_TOKEN"
-          $env:CODECOV_TOKEN = $CODECOV_TOKEN
+          Write-Host "##vso[task.setvariable variable=CODECOV_TOKEN;]$args[0]"
+          $env:CODECOV_TOKEN = $args[0]
     - script: build\CIBuild.cmd -configuration $(_configuration) -prepareMachine
     - task: PublishBuildArtifacts@1
       inputs:
         PathtoPublish: '$(Build.SourcesDirectory)\artifacts\$(_configuration)\log'
-        ArtifactName: '$(_configuration) unit test logs'
+        ArtifactName: 'logs'
         publishLocation: Container
       continueOnError: true
       condition: failed()
     - task: PublishBuildArtifacts@1
       inputs:
         PathtoPublish: '$(Build.SourcesDirectory)\artifacts\$(_configuration)\bin'
-        ArtifactName: '$(_configuration) bin folder'
+        ArtifactName: 'bin'
         publishLocation: Container
       continueOnError: true
       condition: failed()
     - task: PublishBuildArtifacts@1
       inputs:
         PathtoPublish: '$(Build.SourcesDirectory)\artifacts\$(_configuration)\VSSetup'
-        ArtifactName: '$(_configuration) VSSetup folder'
+        ArtifactName: 'VSSetup'
         publishLocation: Container
       continueOnError: true
       condition: failed()
