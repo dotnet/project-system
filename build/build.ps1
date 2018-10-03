@@ -161,6 +161,9 @@ function Build {
   $nodeReuse = !$ci
   $useCodecov = $ci -and $env:CODECOV_TOKEN -and ($configuration -eq 'Debug') -and ($env:ghprbPullAuthorLogin -ne 'dotnet-bot')
   $useOpenCover = $useCodecov
+  
+  $environment = Get-ChildItem ENV: | Out-String
+  Write-Host $environment
 
   & $MsbuildExe $ToolsetBuildProj /m /nologo /clp:Summary /nodeReuse:$nodeReuse /warnaserror /v:$verbosity $logCmd /p:Configuration=$configuration /p:SolutionPath=$solution /p:Restore=$restore /p:QuietRestore=true /p:Build=$build /p:Rebuild=$rebuild /p:Deploy=$deploy /p:Test=$test /p:IntegrationTest="false" /p:Sign=$sign /p:Pack=$pack /p:UseCodecov=$useCodecov /p:UseOpenCover=$useOpenCover /p:CIBuild=$ci /p:Optimize=$optimize /p:NuGetPackageRoot=$NuGetPackageRoot $properties
   if ((-not $?) -or ($lastExitCode -ne 0)) {
