@@ -116,7 +116,11 @@
     
     <!-- Files/Folders -->
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)AdditionalFiles.xaml">
-      <Context>File;BrowseObject</Context>
+      <Context>File</Context>
+    </PropertyPageSchema>
+
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)AdditionalFiles.BrowseObject.xaml">
+      <Context>BrowseObject</Context>
     </PropertyPageSchema>
 
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ApplicationDefinition.xaml">
@@ -132,7 +136,11 @@
     </PropertyPageSchema>
 
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)Content.xaml">
-      <Context>File;BrowseObject</Context>
+      <Context>File</Context>
+    </PropertyPageSchema>
+
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)Content.BrowseObject.xaml">
+      <Context>BrowseObject</Context>
     </PropertyPageSchema>
 
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)CopyUpToDateMarker.xaml">
@@ -140,7 +148,11 @@
     </PropertyPageSchema>
 
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)EmbeddedResource.xaml">
-      <Context>File;BrowseObject</Context>
+      <Context>File</Context>
+    </PropertyPageSchema>
+
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)EmbeddedResource.BrowseObject.xaml">
+      <Context>BrowseObject</Context>
     </PropertyPageSchema>
 
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)Folder.xaml">
