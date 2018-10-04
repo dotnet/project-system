@@ -150,4 +150,7 @@
     <Rule Id="VSTHRD103" Action="None" />                       <!-- Call async methods when in an async method.-->
     <Rule Id="VSTHRD108" Action="None" />                       <!-- Thread affinity checks should be unconditional.-->
   </Rules>
+  <Rules AnalyzerId="Microsoft.VisualStudio.SDK.Analyzers" RuleNamespace="Microsoft.VisualStudio.SDK.Analyzers">
+    <Rule Id="VSSDK006" Action="None" />                        <!-- Check whether the result of GetService calls is null -->
+  </Rules>
 </RuleSet>
