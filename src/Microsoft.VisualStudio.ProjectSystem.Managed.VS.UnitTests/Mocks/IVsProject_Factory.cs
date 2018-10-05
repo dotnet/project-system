@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
-
+using Microsoft.VisualStudio.ProjectSystem.VS;
 using Moq;
 
 namespace Microsoft.VisualStudio.Shell.Interop
@@ -10,6 +10,26 @@ namespace Microsoft.VisualStudio.Shell.Interop
     // class.
     internal static class IVsProject_Factory
     {
+        public static IVsProject4 ImplementIsDocumentInProject(int hr)
+        {
+            return ImplementIsDocumentInProject(hr, found: 0, itemid: 0);
+        }
+
+        public static IVsProject4 ImplementIsDocumentInProject(bool found, uint itemid = 0)
+        {
+            return ImplementIsDocumentInProject(HResult.OK, found: found ? 1 : 0, itemid: itemid);
+        }
+
+        public static IVsProject4 ImplementIsDocumentInProject(int hr, int found, uint itemid)
+        {
+            var mock = new Mock<IVsProject4>();
+
+            mock.Setup(p => p.IsDocumentInProject(It.IsAny<string>(), out found, It.IsAny<VSDOCUMENTPRIORITY[]>(), out itemid))
+                .Returns(hr);
+
+            return mock.Object;
+        }
+
         public static void ImplementOpenItemWithSpecific(this IVsProject4 project, Guid editorType, Guid logicalView, int hr)
         {
             IVsWindowFrame frame;

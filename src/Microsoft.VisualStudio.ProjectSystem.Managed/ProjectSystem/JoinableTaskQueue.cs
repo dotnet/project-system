@@ -80,8 +80,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 // case they need it while its blocked on this method.
                 using (joinableTasks.Join())
                 {
-                    await Task.WhenAll(tasks)
-                              .ConfigureAwait(false);
+                    await Task.WhenAll(tasks);
                 }
             }
         }

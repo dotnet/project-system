@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.Threading.Tasks
@@ -16,7 +17,7 @@ namespace Microsoft.VisualStudio.Threading.Tasks
         ///     The <see cref="Task"/> to wait on for completion.
         /// </param>
         /// <param name="millisecondsTimeout">
-        ///     The number of milliseconds to wait, or <see cref="System.Threading.Timeout.Infinite"/> (-1) to wait indefinitely.
+        ///     The number of milliseconds to wait, or <see cref="Timeout.Infinite"/> (-1) to wait indefinitely.
         /// </param>
         /// <returns>
         ///     An <see cref="Task"/> instance on which to wait.
@@ -26,12 +27,16 @@ namespace Microsoft.VisualStudio.Threading.Tasks
         /// </exception>
         public static async Task<bool> TryWaitForCompleteOrTimeout(this Task task, int millisecondsTimeout)
         {
-            if (task != await Task.WhenAny(task, Task.Delay(millisecondsTimeout)).ConfigureAwait(false))
+            using (var cts = new CancellationTokenSource())
             {
-                return false;
+                if (task != await Task.WhenAny(task, Task.Delay(millisecondsTimeout, cts.Token)))
+                {
+                    return false;
+                }
+                cts.Cancel();
+                await task;
+                return true;
             }
-
-            return true;
         }
     }
 }

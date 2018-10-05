@@ -19,7 +19,10 @@
     <Rule Id="RS0023" Action="None" />
   </Rules>
    <Rules AnalyzerId="Microsoft.CodeAnalysis.CSharp.Features" RuleNamespace="Microsoft.CodeAnalysis.CSharp.Features">
-     <!-- Naming styles is too noisy as it fires on all async tests -->
+    <!-- Too noisy due to https://github.com/dotnet/roslyn/issues/27819 -->
+    <Rule Id="IDE0001" Action="None" />                       <!-- Simplify names                               System.Version version;                             Version version;                      -->
+
+     <!-- Naming styles is too noisy as it fires on all async tests -->     
     <Rule Id="IDE1006" Action="None" />                       <!-- Naming styles                                Task Open()                                         Task OpenAsync()                      -->
     <Rule Id="IDE1006WithoutSuggestion" Action="None" />
   </Rules>
@@ -28,6 +31,7 @@
     <Rule Id="VSTHRD002" Action="None" />                     <!-- Synchronously waiting on tasks or awaiters may cause deadlocks. Use JoinableTaskFactory.Run instead.-->
     <Rule Id="VSTHRD010" Action="None" />                     <!-- Visual Studio service should be used on main thread explicitly.-->
     <Rule Id="VSTHRD103" Action="None" />                     <!-- Synchronously blocks. Await ThrowsAsync instead.-->
+    <Rule Id="VSTHRD110" Action="None" />                     <!-- Observe result of async calls -->
     <Rule Id="VSTHRD200" Action="None" />                     <!-- Naming styles                                Task Open()                                         Task OpenAsync()                      -->
   </Rules>
   <Rules AnalyzerId="xunit.analyzers" RuleNamespace="xunit.analyzers">

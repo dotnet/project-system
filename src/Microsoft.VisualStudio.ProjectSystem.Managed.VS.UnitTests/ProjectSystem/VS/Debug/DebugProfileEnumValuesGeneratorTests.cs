@@ -13,10 +13,9 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 {
-    [Trait("UnitTest", "ProjectSystem")]
     public class DebugProfileEnumValuesGenerator_Tests
     {
-        private List<ILaunchProfile> _profiles = new List<ILaunchProfile>() {
+        private readonly List<ILaunchProfile> _profiles = new List<ILaunchProfile>() {
             {new LaunchProfile() { Name="Profile1", LaunchBrowser=true}},
             {new LaunchProfile() { Name = "MyCommand"} },
             {new LaunchProfile() { Name = "Foo"} },

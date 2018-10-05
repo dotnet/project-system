@@ -14,7 +14,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
     Friend Class DesignerTypeDiscoveryService
         Implements ComponentModel.Design.ITypeDiscoveryService
 
-        Private _serviceProvider As IServiceProvider
+        Private ReadOnly _serviceProvider As IServiceProvider
         Private ReadOnly _hierarchy As IVsHierarchy
 
         ''' <summary>

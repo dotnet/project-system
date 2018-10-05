@@ -49,7 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         {
             EnsureInitialized();
 
-            AggregateWorkspaceProjectContext context = await CreateProjectContextAsyncCore().ConfigureAwait(false);
+            AggregateWorkspaceProjectContext context = await CreateProjectContextAsyncCore();
             if (context == null)
                 return null;
 
@@ -148,19 +148,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         // Returns the name that is the handshake between Roslyn and the csproj/vbproj
         private async Task<string> GetLanguageServiceName()
         {
-            ConfigurationGeneral properties = await _commonServices.ActiveConfiguredProjectProperties.GetConfigurationGeneralPropertiesAsync()
-                                                                                                .ConfigureAwait(false);
+            ConfigurationGeneral properties = await _commonServices.ActiveConfiguredProjectProperties.GetConfigurationGeneralPropertiesAsync();
 
-            return (string)await properties.LanguageServiceName.GetValueAsync()
-                                                               .ConfigureAwait(false);
+            return (string)await properties.LanguageServiceName.GetValueAsync();
         }
 
         private async Task<string> GetTargetPathAsync()
         {
-            ConfigurationGeneral properties = await _commonServices.ActiveConfiguredProjectProperties.GetConfigurationGeneralPropertiesAsync()
-                                                                                                     .ConfigureAwait(false);
-            return (string)await properties.TargetPath.GetValueAsync()
-                                                      .ConfigureAwait(false);
+            ConfigurationGeneral properties = await _commonServices.ActiveConfiguredProjectProperties.GetConfigurationGeneralPropertiesAsync();
+            return (string)await properties.TargetPath.GetValueAsync();
         }
 
         private ProjectData GetProjectData()
@@ -203,14 +199,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 
         private async Task<AggregateWorkspaceProjectContext> CreateProjectContextAsyncCore()
         {
-            string languageName = await GetLanguageServiceName().ConfigureAwait(false);
+            string languageName = await GetLanguageServiceName();
             if (string.IsNullOrEmpty(languageName))
                 return null;
 
-            Guid projectGuid = await _projectGuidService.GetProjectGuidAsync()
-                                                        .ConfigureAwait(false);
+            Guid projectGuid = await _projectGuidService.GetProjectGuidAsync();
 
-            string targetPath = await GetTargetPathAsync().ConfigureAwait(false);
+            string targetPath = await GetTargetPathAsync();
             if (string.IsNullOrEmpty(targetPath))
                 return null;
 
@@ -222,7 +217,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 
             // Get the set of active configured projects ignoring target framework.
 #pragma warning disable CS0618 // Type or member is obsolete
-            ImmutableDictionary<string, ConfiguredProject> configuredProjectsMap = await _activeConfiguredProjectsProvider.GetActiveConfiguredProjectsMapAsync().ConfigureAwait(true);
+            ImmutableDictionary<string, ConfiguredProject> configuredProjectsMap = await _activeConfiguredProjectsProvider.GetActiveConfiguredProjectsMapAsync();
 #pragma warning restore CS0618 // Type or member is obsolete
 
             // Get the unconfigured project host object (shared host object).
@@ -241,9 +236,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
                 {
                     // Get the target path for the configured project.
                     ProjectProperties projectProperties = configuredProject.Services.ExportProvider.GetExportedValue<ProjectProperties>();
-                    ConfigurationGeneral configurationGeneralProperties = await projectProperties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(true);
-                    targetPath = (string)await configurationGeneralProperties.TargetPath.GetValueAsync().ConfigureAwait(true);
-                    string targetFrameworkMoniker = (string)await configurationGeneralProperties.TargetFrameworkMoniker.GetValueAsync().ConfigureAwait(true);
+                    ConfigurationGeneral configurationGeneralProperties = await projectProperties.GetConfigurationGeneralPropertiesAsync();
+                    targetPath = (string)await configurationGeneralProperties.TargetPath.GetValueAsync();
+                    string targetFrameworkMoniker = (string)await configurationGeneralProperties.TargetFrameworkMoniker.GetValueAsync();
                     string workspaceProjectContextId = GetWorkspaceContextId(configuredProject);
                     configuredProjectHostObject = _projectHostProvider.GetConfiguredProjectHostObject(_unconfiguredProjectHostObject, workspaceProjectContextId, targetFrameworkMoniker);
 

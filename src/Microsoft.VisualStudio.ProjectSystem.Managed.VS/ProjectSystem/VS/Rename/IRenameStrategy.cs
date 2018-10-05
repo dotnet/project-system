@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
     internal interface IRenameStrategy
     {
         /// <summary>
-        /// Returns whether or not this strategy applies to this rename. This should depend soley on the input and output names.
+        /// Returns whether or not this strategy applies to this rename. This should depend solely on the input and output names.
         /// </summary>
         /// <param name="oldFilePath">The original path and name of the file</param>
         /// <param name="newFilePath">The new path and name of the file</param>

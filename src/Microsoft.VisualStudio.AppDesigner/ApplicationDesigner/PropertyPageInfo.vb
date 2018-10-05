@@ -22,7 +22,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         Private _info As OleInterop.PROPPAGEINFO
         Private _site As PropertyPageSite
         Private _loadException As Exception 'The exception that occurred while loading the page, if any
-        Private _parentView As ApplicationDesignerView 'The owning application designer view
+        Private ReadOnly _parentView As ApplicationDesignerView 'The owning application designer view
         Private _loadAlreadyAttempted As Boolean 'Whether or not we've attempted to load this property page
 
         Private Const REGKEY_CachedPageTitles As String = "\ProjectDesigner\CachedPageTitles"

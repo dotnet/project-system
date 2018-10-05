@@ -60,13 +60,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
         private readonly object _snapshotLock = new object();
 
-        private Dictionary<string, IDependency> _topLevelDependenciesByPathMap
+        private readonly Dictionary<string, IDependency> _topLevelDependenciesByPathMap
             = new Dictionary<string, IDependency>(StringComparer.OrdinalIgnoreCase);
 
-        private Dictionary<string, IList<IDependency>> _dependenciesChildrenMap
+        private readonly Dictionary<string, IList<IDependency>> _dependenciesChildrenMap
             = new Dictionary<string, IList<IDependency>>(StringComparer.OrdinalIgnoreCase);
 
-        private Dictionary<string, bool> _unresolvedDescendantsMap
+        private readonly Dictionary<string, bool> _unresolvedDescendantsMap
             = new Dictionary<string, bool>(StringComparer.OrdinalIgnoreCase);
 
         private bool? _hasUresolvedDependency;

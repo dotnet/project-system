@@ -34,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         bool HasUnresolvedDependency { get; }
 
         /// <summary>
-        /// Finds dependency for given id accross all target frameworks.
+        /// Finds dependency for given id across all target frameworks.
         /// </summary>
         /// <param name="id">Unique id for dependency to be found.</param>
         /// <param name="topLevel">Suggests that id is specified for top level dependency and 

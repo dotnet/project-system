@@ -46,7 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         }
 
         /// <summary>
-        ///     Initializes the langauge service host.
+        ///     Initializes the language service host.
         /// </summary>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>

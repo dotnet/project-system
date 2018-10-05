@@ -8,10 +8,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     {
         private class Handlers
         {
-            public readonly ImmutableArray<(IEvaluationHandler handler, string evaluationRuleName)> EvaluationHandlers;
+            public readonly ImmutableArray<(IProjectEvaluationHandler handler, string evaluationRuleName)> EvaluationHandlers;
             public readonly ImmutableArray<ICommandLineHandler> CommandLineHandlers;
 
-            public Handlers(ImmutableArray<(IEvaluationHandler handler, string evaluationRuleName)> evaluationHandlers, ImmutableArray<ICommandLineHandler> commandLineHandlers)
+            public Handlers(ImmutableArray<(IProjectEvaluationHandler handler, string evaluationRuleName)> evaluationHandlers, ImmutableArray<ICommandLineHandler> commandLineHandlers)
             {
                 EvaluationHandlers = evaluationHandlers;
                 CommandLineHandlers = commandLineHandlers;

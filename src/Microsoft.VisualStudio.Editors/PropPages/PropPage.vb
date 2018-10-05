@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.Windows.Forms
 Imports System.Runtime.InteropServices
@@ -187,7 +187,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Protected Overrides Property DefaultSize() As Drawing.Size
             Get
                 ' This is somewhat hacky, but the compile's size page can sometimes exceed the default
-                ' mimimum size for a property page. The PropPageDesignerView will query for this in order to
+                ' minimum size for a property page. The PropPageDesignerView will query for this in order to
                 ' figure out what the minimum autoscrollsize should be set to, but it will also check 
                 ' the size of the actual control and use the min of those two values, so as long as we
                 ' we return a default size that is larger than what our maximum minimum size will be, we 

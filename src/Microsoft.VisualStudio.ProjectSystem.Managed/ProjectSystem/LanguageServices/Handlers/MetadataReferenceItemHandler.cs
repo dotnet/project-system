@@ -3,9 +3,9 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.ComponentModel.Composition;
 
 using Microsoft.CodeAnalysis;
-using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.Logging;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
@@ -13,23 +13,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     /// <summary>
     ///     Handles changes to references that are passed to the compiler during design-time builds.
     /// </summary>
-    internal class MetadataReferenceItemHandler : ICommandLineHandler
+    [Export(typeof(IWorkspaceContextHandler))]
+    internal class MetadataReferenceItemHandler : AbstractWorkspaceContextHandler, ICommandLineHandler
     {
         // WORKAROUND: The language services through IWorkspaceProjectContext doesn't expect to see AddMetadataReference called more than
-        // once with the same path and different properties. This dedups the references to work around this limitation.
+        // once with the same path and different properties. This dedupes the references to work around this limitation.
         // See: https://github.com/dotnet/project-system/issues/2230
 
         private readonly UnconfiguredProject _project;
-        private readonly IWorkspaceProjectContext _context;
         private readonly Dictionary<string, MetadataReferenceProperties> _addedPathsWithMetadata = new Dictionary<string, MetadataReferenceProperties>(StringComparers.Paths);
 
-        public MetadataReferenceItemHandler(UnconfiguredProject project, IWorkspaceProjectContext context)
+        [ImportingConstructor]
+        public MetadataReferenceItemHandler(UnconfiguredProject project)
         {
             Requires.NotNull(project, nameof(project));
-            Requires.NotNull(context, nameof(context));
 
             _project = project;
-            _context = context;
         }
 
         public void Handle(IComparable version, BuildOptions added, BuildOptions removed, bool isActiveContext, IProjectLogger logger)
@@ -38,6 +37,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             Requires.NotNull(added, nameof(added));
             Requires.NotNull(removed, nameof(removed));
             Requires.NotNull(logger, nameof(logger));
+
+            VerifyInitialized();
 
             foreach (CommandLineReference reference in removed.MetadataReferences)
             {
@@ -63,7 +64,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
                 // The reference has already been added previously. The current implementation of IWorkspaceProjectContext
                 // presumes that we'll only called AddMetadataReference once for a given path. Thus we have to remove the
                 // existing one, compute merged properties, and add the new one.
-                _context.RemoveMetadataReference(fullPath);
+                Context.RemoveMetadataReference(fullPath);
 
                 ImmutableArray<string> combinedAliases = GetEmptyIfGlobalAlias(GetGlobalAliasIfEmpty(existingProperties.Aliases).AddRange(GetGlobalAliasIfEmpty(properties.Aliases)));
                 properties = properties.WithAliases(combinedAliases);
@@ -71,7 +72,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             logger.WriteLine("Adding {0} '{1}'", properties.EmbedInteropTypes ? "link" : "reference", fullPath);
 
-            _context.AddMetadataReference(fullPath, properties);
+            Context.AddMetadataReference(fullPath, properties);
             _addedPathsWithMetadata[fullPath] = properties;
         }
 
@@ -81,7 +82,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             {
                 logger.WriteLine("Removing {0} '{1}'", properties.EmbedInteropTypes ? "link" : "reference", fullPath);
 
-                _context.RemoveMetadataReference(fullPath);
+                Context.RemoveMetadataReference(fullPath);
 
                 // Subtract any existing aliases out. This will be an empty list if we should remove the reference entirely
                 ImmutableArray<string> resultantAliases = GetGlobalAliasIfEmpty(existingProperties.Aliases).RemoveRange(GetGlobalAliasIfEmpty(properties.Aliases));
@@ -97,7 +98,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
                     resultantAliases = GetEmptyIfGlobalAlias(resultantAliases);
                     properties = properties.WithAliases(resultantAliases);
                     logger.WriteLine("Adding {0} '{1}' back with remaining aliases", properties.EmbedInteropTypes ? "link" : "reference", fullPath);
-                    _context.AddMetadataReference(fullPath, properties);
+                    Context.AddMetadataReference(fullPath, properties);
                     _addedPathsWithMetadata[fullPath] = properties;
                 }
             }

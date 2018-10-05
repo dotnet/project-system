@@ -6,7 +6,7 @@ using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
-    internal class IProjectTreeCustomizablePropertyContextFactory
+    internal static class IProjectTreeCustomizablePropertyContextFactory
     {
         public static IProjectTreeCustomizablePropertyContext Create()
         {

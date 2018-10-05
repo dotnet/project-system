@@ -6,7 +6,6 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
-    [Trait("UnitTest", "ProjectSystem")]
     public class UnconfiguredProjectCommonServicesTests
     {
         [Fact]
@@ -18,9 +17,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var projectProperties = ProjectPropertiesFactory.Create(project);
             var activeConfiguredProject = ActiveConfiguredProjectFactory.ImplementValue(() => projectProperties.ConfiguredProject);
             var activeConfiguredProjectProperties = ActiveConfiguredProjectFactory.ImplementValue(() => projectProperties);
-            var projectLockService = new Lazy<IProjectLockService>(() => IProjectLockServiceFactory.Create());
+            var projectAccessor = new Lazy<IProjectAccessor>(() => IProjectAccessorFactory.Create());
 
-            var services = new UnconfiguredProjectCommonServices(project, projectTree, threadingService, activeConfiguredProject, activeConfiguredProjectProperties, projectLockService);
+            var services = new UnconfiguredProjectCommonServices(project, projectTree, threadingService, activeConfiguredProject, activeConfiguredProjectProperties, projectAccessor);
 
             Assert.Same(project, services.Project);
         }
@@ -34,9 +33,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var projectProperties = ProjectPropertiesFactory.Create(project);
             var activeConfiguredProject = ActiveConfiguredProjectFactory.ImplementValue(() => projectProperties.ConfiguredProject);
             var activeConfiguredProjectProperties = ActiveConfiguredProjectFactory.ImplementValue(() => projectProperties);
-            var projectLockService = new Lazy<IProjectLockService>(() => IProjectLockServiceFactory.Create());
+            var projectAccessor = new Lazy<IProjectAccessor>(() => IProjectAccessorFactory.Create());
 
-            var services = new UnconfiguredProjectCommonServices(project, projectTree, threadingService, activeConfiguredProject, activeConfiguredProjectProperties, projectLockService);
+            var services = new UnconfiguredProjectCommonServices(project, projectTree, threadingService, activeConfiguredProject, activeConfiguredProjectProperties, projectAccessor);
 
             Assert.Same(projectTree.Value, services.ProjectTree);
         }
@@ -50,9 +49,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var projectProperties = ProjectPropertiesFactory.Create(project);
             var activeConfiguredProject = ActiveConfiguredProjectFactory.ImplementValue(() => projectProperties.ConfiguredProject);
             var activeConfiguredProjectProperties = ActiveConfiguredProjectFactory.ImplementValue(() => projectProperties);
-            var projectLockService = new Lazy<IProjectLockService>(() => IProjectLockServiceFactory.Create());
+            var projectAccessor = new Lazy<IProjectAccessor>(() => IProjectAccessorFactory.Create());
 
-            var services = new UnconfiguredProjectCommonServices(project, projectTree, threadingService, activeConfiguredProject, activeConfiguredProjectProperties, projectLockService);
+            var services = new UnconfiguredProjectCommonServices(project, projectTree, threadingService, activeConfiguredProject, activeConfiguredProjectProperties, projectAccessor);
 
             Assert.Same(threadingService.Value, services.ThreadingService);
         }
@@ -66,9 +65,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var projectProperties = ProjectPropertiesFactory.Create(project);
             var activeConfiguredProject = ActiveConfiguredProjectFactory.ImplementValue(() => projectProperties.ConfiguredProject);
             var activeConfiguredProjectProperties = ActiveConfiguredProjectFactory.ImplementValue(() => projectProperties);
-            var projectLockService = new Lazy<IProjectLockService>(() => IProjectLockServiceFactory.Create());
+            var projectAccessor = new Lazy<IProjectAccessor>(() => IProjectAccessorFactory.Create());
 
-            var services = new UnconfiguredProjectCommonServices(project, projectTree, threadingService, activeConfiguredProject, activeConfiguredProjectProperties, projectLockService);
+            var services = new UnconfiguredProjectCommonServices(project, projectTree, threadingService, activeConfiguredProject, activeConfiguredProjectProperties, projectAccessor);
 
             Assert.Same(projectProperties.ConfiguredProject, services.ActiveConfiguredProject);
         }
@@ -82,11 +81,27 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var projectProperties = ProjectPropertiesFactory.Create(project);
             var activeConfiguredProject = ActiveConfiguredProjectFactory.ImplementValue(() => projectProperties.ConfiguredProject);
             var activeConfiguredProjectProperties = ActiveConfiguredProjectFactory.ImplementValue(() => projectProperties);
-            var projectLockService = new Lazy<IProjectLockService>(() => IProjectLockServiceFactory.Create());
+            var projectAccessor = new Lazy<IProjectAccessor>(() => IProjectAccessorFactory.Create());
 
-            var services = new UnconfiguredProjectCommonServices(project, projectTree, threadingService, activeConfiguredProject, activeConfiguredProjectProperties, projectLockService);
+            var services = new UnconfiguredProjectCommonServices(project, projectTree, threadingService, activeConfiguredProject, activeConfiguredProjectProperties, projectAccessor);
 
             Assert.Same(projectProperties, services.ActiveConfiguredProjectProperties);
+        }
+
+        [Fact]
+        public void Constructor_ValueAsProjectAccessor_SetsProjectAccessorProperty()
+        {
+            var project = UnconfiguredProjectFactory.Create();
+            var projectTree = new Lazy<IPhysicalProjectTree>(() => IPhysicalProjectTreeFactory.Create());
+            var threadingService = new Lazy<IProjectThreadingService>(() => IProjectThreadingServiceFactory.Create());
+            var projectProperties = ProjectPropertiesFactory.Create(project);
+            var activeConfiguredProject = ActiveConfiguredProjectFactory.ImplementValue(() => projectProperties.ConfiguredProject);
+            var activeConfiguredProjectProperties = ActiveConfiguredProjectFactory.ImplementValue(() => projectProperties);
+            var projectAccessor = new Lazy<IProjectAccessor>(() => IProjectAccessorFactory.Create());
+
+            var services = new UnconfiguredProjectCommonServices(project, projectTree, threadingService, activeConfiguredProject, activeConfiguredProjectProperties, projectAccessor);
+
+            Assert.Same(projectAccessor.Value, services.ProjectAccessor);
         }
     }
 }

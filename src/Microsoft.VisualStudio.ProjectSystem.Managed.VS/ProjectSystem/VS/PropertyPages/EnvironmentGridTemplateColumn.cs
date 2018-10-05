@@ -11,9 +11,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
     {
         protected override object PrepareCellForEdit(FrameworkElement frameworkElement, RoutedEventArgs routedEventArgs)
         {
-            if (frameworkElement != null && frameworkElement is ContentPresenter)
+            if (frameworkElement is ContentPresenter contentPresenter)
             {
-                var contentPresenter = frameworkElement as ContentPresenter;
                 TextBox textBox = WpfHelper.GetVisualChild<TextBox>(contentPresenter);
                 if (textBox != null)
                 {

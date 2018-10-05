@@ -13,6 +13,10 @@ using Microsoft.VisualStudio.Shell;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.Actions
 {
+    /// <summary>
+    /// Updates the graph to include any <see cref="GraphNode"/>s matching the search
+    /// criteria.
+    /// </summary>
     [Export(typeof(IDependenciesGraphActionHandler))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
     [Order(Order)]

@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.ComponentModel
 Imports System.ComponentModel.Design
@@ -14,8 +14,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Inherits Component
         Implements ICustomTypeDescriptor, IReferenceComponent, IUpdatableReferenceComponent
 
-        Private _collection As IVsWCFReferenceGroupCollection
-        Private _referenceGroup As IVsWCFReferenceGroup
+        Private ReadOnly _collection As IVsWCFReferenceGroupCollection
+        Private ReadOnly _referenceGroup As IVsWCFReferenceGroup
 
         Public Sub New(collection As IVsWCFReferenceGroupCollection, referenceGroup As IVsWCFReferenceGroup)
             _collection = collection
@@ -117,7 +117,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
 #Region "System.ComponentModel.ICustomTypeDescriptor"
-        ' we overrite the ICustomTypeDescriptor to replace the ClassName and ComponentName which are shown on the propertyGrid
+        ' we override the ICustomTypeDescriptor to replace the ClassName and ComponentName which are shown on the propertyGrid
         ' all other functions are implemented in its default way...
 
         Public Function GetAttributes() As AttributeCollection Implements ICustomTypeDescriptor.GetAttributes

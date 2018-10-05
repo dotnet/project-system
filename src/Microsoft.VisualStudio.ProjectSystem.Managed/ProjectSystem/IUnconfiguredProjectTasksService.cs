@@ -1,6 +1,7 @@
 ﻿// Copyright(c) Microsoft.All Rights Reserved.Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.ProjectSystem
@@ -12,6 +13,18 @@ namespace Microsoft.VisualStudio.ProjectSystem
     [ProjectSystemContract(ProjectSystemContractScope.UnconfiguredProject, ProjectSystemContractProvider.Private)]
     internal interface IUnconfiguredProjectTasksService
     {
+        /// <summary>
+        ///     Gets a token that is cancelled when the project has started to unload.
+        /// </summary>
+        /// <remarks>
+        ///     NOTE: This token is cancelled before <see cref="LoadedProjectAsync"/> actions 
+        ///     have been completed, so callers can bail early if needed.
+        /// </remarks>
+        CancellationToken UnloadCancellationToken
+        {
+            get;
+        }
+
         /// <summary>
         ///     Gets a task that completes when the host recognizes that the project is loaded, 
         ///     or is cancelled if the project is unloaded before that occurs.

@@ -5,6 +5,10 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.Actions
 {
+    /// <summary>
+    /// Handles graph requests and/or changes in an <see cref="IDependenciesSnapshot"/>
+    /// and updates the corresponding graph (via an <see cref="IGraphContext"/>) appropriately.
+    /// </summary>
     internal interface IDependenciesGraphActionHandler
     {
         bool CanHandleRequest(IGraphContext graphContext);

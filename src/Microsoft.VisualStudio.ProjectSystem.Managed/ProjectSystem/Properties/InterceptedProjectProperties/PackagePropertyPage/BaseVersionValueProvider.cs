@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Package
 
         protected virtual async Task<Version> GetDefaultVersionAsync(IProjectProperties defaultProperties)
         {
-            string versionStr = await defaultProperties.GetEvaluatedPropertyValueAsync(PackageVersionMSBuildProperty).ConfigureAwait(true);
+            string versionStr = await defaultProperties.GetEvaluatedPropertyValueAsync(PackageVersionMSBuildProperty);
             if (string.IsNullOrEmpty(versionStr))
             {
                 return DefaultVersion;
@@ -35,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Package
             }
 
             // Default value is Version (major.minor.build components only)
-            Version version = await GetDefaultVersionAsync(defaultProperties).ConfigureAwait(true);
+            Version version = await GetDefaultVersionAsync(defaultProperties);
             return version.ToString();
         }
 
@@ -45,12 +45,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Package
             //  1. There is no existing property entry AND
             //  2. The new value is identical to the default value.
 
-            IEnumerable<string> propertyNames = await defaultProperties.GetPropertyNamesAsync().ConfigureAwait(true);
+            IEnumerable<string> propertyNames = await defaultProperties.GetPropertyNamesAsync();
             if (!propertyNames.Contains(PropertyName))
             {
                 if (Version.TryParse(unevaluatedPropertyValue, out Version version))
                 {
-                    Version defaultVersion = await GetDefaultVersionAsync(defaultProperties).ConfigureAwait(true);
+                    Version defaultVersion = await GetDefaultVersionAsync(defaultProperties);
                     if (version.Equals(defaultVersion))
                     {
                         return null;
@@ -58,7 +58,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Package
                 }
             }
 
-            return await base.OnSetPropertyValueAsync(unevaluatedPropertyValue, defaultProperties, dimensionalConditions).ConfigureAwait(true);
+            return await base.OnSetPropertyValueAsync(unevaluatedPropertyValue, defaultProperties, dimensionalConditions);
         }
     }
 }

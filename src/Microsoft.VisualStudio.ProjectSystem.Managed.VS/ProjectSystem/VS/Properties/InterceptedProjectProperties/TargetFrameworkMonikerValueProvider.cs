@@ -31,9 +31,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 
         public override async Task<string> OnSetPropertyValueAsync(string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string> dimensionalConditions = null)
         {
-            ConfigurationGeneral configuration = await _properties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(true);
-            string currentTargetFramework = (string)await configuration.TargetFramework.GetValueAsync().ConfigureAwait(true);
-            string currentTargetFrameworks = (string)await configuration.TargetFrameworks.GetValueAsync().ConfigureAwait(true);
+            ConfigurationGeneral configuration = await _properties.GetConfigurationGeneralPropertiesAsync();
+            string currentTargetFramework = (string)await configuration.TargetFramework.GetValueAsync();
+            string currentTargetFrameworks = (string)await configuration.TargetFrameworks.GetValueAsync();
             if (!string.IsNullOrEmpty(currentTargetFrameworks))
             {
                 throw new InvalidOperationException(VSResources.MultiTFEditNotSupported);
@@ -41,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             else if (!string.IsNullOrEmpty(currentTargetFramework))
             {
                 var frameworkName = new FrameworkName(unevaluatedPropertyValue);
-                await defaultProperties.SetPropertyValueAsync(_targetFrameworkProperty, _frameworkParser.GetShortFrameworkName(frameworkName)).ConfigureAwait(true);
+                await defaultProperties.SetPropertyValueAsync(_targetFrameworkProperty, _frameworkParser.GetShortFrameworkName(frameworkName));
             }
             else
             {
@@ -57,7 +57,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
                 }, options: ForkOptions.HideLocks | ForkOptions.StartOnMainThread,
                    factory: _unconfiguredProjectVsServices.ThreadingService.JoinableTaskFactory);
             }
-            return await System.Threading.Tasks.Task.FromResult<string>(null).ConfigureAwait(false);
+            return null;
         }
     }
 }

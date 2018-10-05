@@ -7,7 +7,6 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
-    [Trait("UnitTest", "ProjectSystem")]
     public class UnconfiguredProjectVsServicesTests
     {
         [Fact]
@@ -91,6 +90,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             Assert.Same(projectProperties, vsServices.ActiveConfiguredProjectProperties);
         }
+
+        [Fact]
+        public void Constructor_ValueAsCommonServices_SetsProjectAccessorToCommonServicesProjectAccessor()
+        {
+            var projectAccessor = IProjectAccessorFactory.Create();
+            var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(projectAccessor: projectAccessor);
+
+            var vsServices = CreateInstance(commonServices);
+
+            Assert.Same(projectAccessor, vsServices.ProjectAccessor);
+        }
+
 
         private static UnconfiguredProjectVsServices CreateInstance(IUnconfiguredProjectCommonServices commonServices)
         {

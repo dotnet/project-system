@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
     /// <summary>
-    /// Wrapper around the active debug framework to provide a single implementation of what is considered the active fraemowrk. If there is
+    /// Wrapper around the active debug framework to provide a single implementation of what is considered the active framework. If there is
     /// only one framework
     /// </summary>
     public interface IActiveDebugFrameworkServices
@@ -22,12 +22,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         Task SetActiveDebuggingFrameworkPropertyAsync(string activeFramework);
 
         /// <summary>
-        /// Returns the value of the propety, or empty string/null if the property has never been set
+        /// Returns the value of the property, or empty string/null if the property has never been set
         /// </summary>
         Task<string> GetActiveDebuggingFrameworkPropertyAsync();
 
         /// <summary>
-        /// Returns the configured project which respresents the active framework. This is valid whether multi-targeting or not
+        /// Returns the configured project which represents the active framework. This is valid whether multi-targeting or not
         /// </summary>
         Task<ConfiguredProject> GetConfiguredProjectForActiveFrameworkAsync();
     }

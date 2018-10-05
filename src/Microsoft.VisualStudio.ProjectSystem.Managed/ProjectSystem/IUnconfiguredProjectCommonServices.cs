@@ -48,9 +48,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
         }
 
         /// <summary>
-        ///     Gets the project lock service     
+        ///     Gets the <see cref="IProjectAccessor"/> which provides access to MSBuild evaluation and construction models for a project.
         /// </summary>
-        IProjectLockService ProjectLockService
+        IProjectAccessor ProjectAccessor
         {
             get;
         }

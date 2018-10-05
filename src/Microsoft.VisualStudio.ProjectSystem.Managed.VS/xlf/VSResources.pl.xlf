@@ -282,8 +282,8 @@ Aby debugować ten projekt, dodaj projekt wykonywalny do tego rozwiązania, któ
         <note />
       </trans-unit>
       <trans-unit id="PartialSupportedDotNetCoreProject">
-        <source>Visual Studio 2017 version 15.7 or newer is recommended for .NET Core {0}.{1} projects.</source>
-        <target state="translated">Dla projektów platformy .NET Core {0}.{1} zalecany jest program Visual Studio 2017 w wersji 15.7 lub nowszej.</target>
+        <source>A newer version of Visual Studio is recommended for projects targetting .NET Core {0}.{1}.</source>
+        <target state="needs-review-translation">Dla projektów platformy .NET Core {0}.{1} zalecany jest program Visual Studio 2017 w wersji 15.7 lub nowszej.</target>
         <note />
       </trans-unit>
       <trans-unit id="NotSupportedDotNetCoreProject">

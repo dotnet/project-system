@@ -71,7 +71,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
             if (IsDirty)
             {
-                result = await OnApply().ConfigureAwait(false);
+                result = await OnApply();
                 if (result == VSConstants.S_OK)
                 {
                     IsDirty = false;

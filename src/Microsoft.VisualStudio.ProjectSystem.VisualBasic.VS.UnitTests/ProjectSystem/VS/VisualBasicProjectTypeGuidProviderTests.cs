@@ -6,7 +6,6 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
-    [Trait("UnitTest", "ProjectSystem")]
     public class VisualBasicProjectTypeGuidProviderTests
     {
         [Fact]

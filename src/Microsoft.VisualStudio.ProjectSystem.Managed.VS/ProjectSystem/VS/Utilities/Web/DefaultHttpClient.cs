@@ -10,6 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
     [Export(typeof(IHttpClient))]
     internal class DefaultHttpClient : IHttpClient
     {
+        private static readonly Lazy<HttpClient> s_client = new Lazy<HttpClient>(CreateClient);
 
         [ImportingConstructor]
         public DefaultHttpClient(IProjectThreadingService threadingService)
@@ -19,12 +20,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
 
         private readonly IProjectThreadingService _threadingService;
 
-        public async Task<string> GetStringAsync(Uri uri)
+        public Task<string> GetStringAsync(Uri uri)
         {
-            using (HttpClient client = CreateClient())
-            {
-                return await client.GetStringAsync(uri).ConfigureAwait(false);
-            }
+            return s_client.Value.GetStringAsync(uri);
         }
 
         private static HttpClient CreateClient()

@@ -7,7 +7,6 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 {
-    [Trait("UnitTest", "ProjectSystem")]
     public class LaunchProfilesDebugPageGuidProviderTests
     {
         [Fact]

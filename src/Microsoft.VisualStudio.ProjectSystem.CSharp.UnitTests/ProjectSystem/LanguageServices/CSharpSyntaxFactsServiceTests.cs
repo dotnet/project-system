@@ -4,10 +4,9 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
-    [Trait("UnitTest", "ProjectSystem")]
     public class CSharpSyntaxFactsServiceTests
     {
-        private static ISyntaxFactsService s_service = new CSharpSyntaxFactsService(null);
+        private static readonly ISyntaxFactsService s_service = new CSharpSyntaxFactsService(null);
 
         [Fact]
         public void TestIsValidIdentifier()

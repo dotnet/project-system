@@ -206,7 +206,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             using (ProjectWriteLockReleaser access = await ProjectLockService.WriteLockAsync())
             {
-                Project project = await access.GetProjectAsync(ActiveConfiguredProject).ConfigureAwait(true);
+                Project project = await access.GetProjectAsync(ActiveConfiguredProject);
 
                 // Handle the removal of normal reference Item Nodes (this excludes any shared import nodes).
                 foreach (IProjectTree node in referenceItemNodes)
@@ -216,7 +216,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                         // if node does not have an IRule with valid ProjectPropertiesContext we can not 
                         // get it's itemsSpec. If nodes provided by custom IProjectDependenciesSubTreeProvider
                         // implementation, and have some custom IRule without context, it is not a problem,
-                        // since they wouldnot have DependencyNode.GenericDependencyFlags and we would not 
+                        // since they would not have DependencyNode.GenericDependencyFlags and we would not 
                         // end up here, since CanRemove would return false and Remove command would not show 
                         // up for those nodes. 
                         continue;
@@ -231,8 +231,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     Report.IfNot(unresolvedReferenceItem != null, "Cannot find reference to remove.");
                     if (unresolvedReferenceItem != null)
                     {
-                        await access.CheckoutAsync(unresolvedReferenceItem.Xml.ContainingProject.FullPath)
-                                    .ConfigureAwait(true);
+                        await access.CheckoutAsync(unresolvedReferenceItem.Xml.ContainingProject.FullPath);
                         project.RemoveItem(unresolvedReferenceItem);
                     }
                 }
@@ -245,8 +244,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 }
 
                 // Handle the removal of shared import nodes.
-                ProjectRootElement projectXml = await access.GetProjectXmlAsync(UnconfiguredProject.FullPath)
-                                             .ConfigureAwait(true);
+                ProjectRootElement projectXml = await access.GetProjectXmlAsync(UnconfiguredProject.FullPath);
                 foreach (IProjectTree sharedImportNode in sharedImportNodes)
                 {
                     string sharedFilePath = UnconfiguredProject.GetRelativePath(sharedImportNode.FilePath);
@@ -274,8 +272,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                      "Cannot find shared project reference to remove.");
                         if (importingElementToRemove != null)
                         {
-                            await access.CheckoutAsync(importingElementToRemove.ContainingProject.FullPath)
-                                        .ConfigureAwait(true);
+                            await access.CheckoutAsync(importingElementToRemove.ContainingProject.FullPath);
                             importingElementToRemove.Parent.RemoveChild(importingElementToRemove);
                         }
                     }
@@ -376,7 +373,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                             return;
                         }
 
-                        await BuildTreeForSnapshotAsync(snapshot).ConfigureAwait(false);
+                        await BuildTreeForSnapshotAsync(snapshot);
                     }).Task;
                 }
                 else
@@ -401,8 +398,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     IProjectTree dependenciesNode = treeSnapshot.Value.Tree;
                     if (!cancellationToken.IsCancellationRequested)
                     {
-                        dependenciesNode = await viewProvider.Value.BuildTreeAsync(dependenciesNode, snapshot, cancellationToken)
-                                                                   .ConfigureAwait(false);
+                        dependenciesNode = await viewProvider.Value.BuildTreeAsync(dependenciesNode, snapshot, cancellationToken);
 
                         _treeTelemetryService.ObserveTreeUpdateCompleted(snapshot.HasUnresolvedDependency);
                     }
@@ -468,11 +464,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             // Note: it is unlikely that we end up here, however for cases when node providers
             // getting their node data not from Design time build events, we might have OnDependenciesChanged
             // event coming before initial design time build event updates NamedCatalogs in this class.
-            // Thus, just in case, explicitly request it here (GetCatalogsAsync will accuire a project read lock)
+            // Thus, just in case, explicitly request it here (GetCatalogsAsync will acquire a project read lock)
             NamedCatalogs = await ActiveConfiguredProject.Services
                                                          .PropertyPagesCatalog
-                                                         .GetCatalogsAsync(CancellationToken.None)
-                                                         .ConfigureAwait(false);
+                                                         .GetCatalogsAsync(CancellationToken.None);
 
             return NamedCatalogs;
         }
@@ -496,11 +491,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             //  - rule for unresolved dependency, they persist in ProjectFile
             //  - rule for resolved dependency, they persist in ResolvedReference
             // So to be able to find rule for resolved or unresolved reference we need to be consistent there 
-            // and make sure we do set ResolvedReference persistense for resolved dependnecies, since we rely
+            // and make sure we do set ResolvedReference persistence for resolved dependencies, since we rely
             // on that here when pick correct rule schema.
             // (old code used to check if rule datasource has SourceType=TargetResults, which was true for Resolved,
             // dependencies. However now we have custom logic for collecting unresolved dependencies too and use 
-            // DesignTime build results there too. Thats why we swicthed to check for persistence).
+            // DesignTime build results there too. That's why we switched to check for persistence).
             IPropertyPagesCatalog browseObjectCatalog = namedCatalogs[PropertyPageContexts.BrowseObject];
             IReadOnlyCollection<string> schemas = browseObjectCatalog.GetPropertyPagesSchemas(itemType);
 
@@ -593,12 +588,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             }
             else
             {
-                project = await DependenciesHost.GetConfiguredProject(dependency.TargetFramework)
-                                                .ConfigureAwait(false) ?? ActiveConfiguredProject;
+                project = await DependenciesHost.GetConfiguredProject(dependency.TargetFramework) ?? ActiveConfiguredProject;
             }
 
             ConfiguredProjectExports configuredProjectExports = GetActiveConfiguredProjectExports(project);
-            IImmutableDictionary<string, IPropertyPagesCatalog> namedCatalogs = await GetNamedCatalogsAsync(catalogs).ConfigureAwait(false);
+            IImmutableDictionary<string, IPropertyPagesCatalog> namedCatalogs = await GetNamedCatalogsAsync(catalogs);
             Requires.NotNull(namedCatalogs, nameof(namedCatalogs));
 
             IPropertyPagesCatalog browseObjectsCatalog = namedCatalogs[PropertyPageContexts.BrowseObject];

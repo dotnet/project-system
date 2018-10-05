@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 {
     [Export(typeof(IDependencyCrossTargetSubscriber))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
-    internal class DependencySharedProjectsSubscriber : OnceInitializedOnceDisposedAsync, IDependencyCrossTargetSubscriber
+    internal class DependencySharedProjectsSubscriber : OnceInitializedOnceDisposed, IDependencyCrossTargetSubscriber
     {
 #pragma warning disable CA2213 // OnceInitializedOnceDisposedAsync are not tracked corretly by the IDisposeable analyzer
         private readonly SemaphoreSlim _gate = new SemaphoreSlim(initialCount: 1);
@@ -34,23 +34,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             IUnconfiguredProjectCommonServices commonServices,
             [Import(ExportContractNames.Scopes.UnconfiguredProject)]IProjectAsynchronousTasksService tasksService,
             IDependenciesSnapshotProvider dependenciesSnapshotProvider)
-            : base(commonServices.ThreadingService.JoinableTaskContext)
+            : base(synchronousDisposal: true)
         {
             _tasksService = tasksService;
             _dependenciesSnapshotProvider = dependenciesSnapshotProvider;
             _subscriptionLinks = new List<IDisposable>();
         }
 
-        public Task InitializeSubscriberAsync(ICrossTargetSubscriptionsHost host, IProjectSubscriptionService subscriptionService)
+        public void InitializeSubscriber(ICrossTargetSubscriptionsHost host, IProjectSubscriptionService subscriptionService)
         {
             _host = host;
 
             SubscribeToConfiguredProject(subscriptionService);
-
-            return Task.CompletedTask;
         }
 
-        public Task AddSubscriptionsAsync(AggregateCrossTargetProjectContext newProjectContext)
+        public void AddSubscriptions(AggregateCrossTargetProjectContext newProjectContext)
         {
             Requires.NotNull(newProjectContext, nameof(newProjectContext));
 
@@ -58,11 +56,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             {
                 SubscribeToConfiguredProject(configuredProject.Services.ProjectSubscription);
             }
-
-            return Task.CompletedTask;
         }
 
-        public Task ReleaseSubscriptionsAsync()
+        public void ReleaseSubscriptions()
         {
             foreach (IDisposable link in _subscriptionLinks)
             {
@@ -70,13 +66,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             }
 
             _subscriptionLinks.Clear();
-
-            return Task.CompletedTask;
-        }
-
-        public Task OnContextReleasedAsync(ITargetedProjectContext innerContext)
-        {
-            return Task.CompletedTask;
         }
 
         private void SubscribeToConfiguredProject(IProjectSubscriptionService subscriptionService)
@@ -93,7 +82,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                     intermediateBlock,
                     ruleNames: ConfigurationGeneral.SchemaName,
                     suppressVersionOnlyUpdates: false,
-                    linkOptions: new DataflowLinkOptions { PropagateCompletion = true }));
+                    linkOptions: DataflowOption.PropagateCompletion));
 
             var actionBlock =
                 new ActionBlock<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectSharedFoldersSnapshot, IProjectCatalogSnapshot>>>
@@ -108,7 +97,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                 subscriptionService.SharedFoldersSource.SourceBlock.SyncLinkOptions(),
                 subscriptionService.ProjectCatalogSource.SourceBlock.SyncLinkOptions(),
                 actionBlock,
-                linkOptions: new DataflowLinkOptions { PropagateCompletion = true }));
+                linkOptions: DataflowOption.PropagateCompletion));
         }
 
         private async Task OnProjectChangedAsync(
@@ -119,7 +108,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                 return;
             }
 
-            await InitializeAsync().ConfigureAwait(false);
+            EnsureInitialized();
 
 
             await _tasksService.LoadedProjectAsync(async () =>
@@ -129,14 +118,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                     return;
                 }
 
-                await HandleAsync(e).ConfigureAwait(false);
+                await HandleAsync(e);
             });
         }
 
         private async Task HandleAsync(
             IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectSharedFoldersSnapshot, IProjectCatalogSnapshot>> e)
         {
-            AggregateCrossTargetProjectContext currentAggregaceContext = await _host.GetCurrentAggregateProjectContext().ConfigureAwait(false);
+            AggregateCrossTargetProjectContext currentAggregaceContext = await _host.GetCurrentAggregateProjectContext();
             if (currentAggregaceContext == null)
             {
                 return;
@@ -147,9 +136,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             IProjectCatalogSnapshot catalogs = e.Value.Item3;
 
             // We need to process the update within a lock to ensure that we do not release this context during processing.
-            // TODO: Enable concurrent execution of updates themeselves, i.e. two separate invocations of HandleAsync
+            // TODO: Enable concurrent execution of updates themselves, i.e. two separate invocations of HandleAsync
             //       should be able to run concurrently.
-            using (await _gate.DisposableWaitAsync().ConfigureAwait(true))
+            using (await _gate.DisposableWaitAsync())
             {
                 // Get the inner workspace project context to update for this change.
                 ITargetedProjectContext projectContextToUpdate = currentAggregaceContext
@@ -235,16 +224,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
         public event EventHandler<DependencySubscriptionChangedEventArgs> DependenciesChanged;
 
-        protected override Task InitializeCoreAsync(CancellationToken cancellationToken)
-        {
-            return Task.CompletedTask;
+        protected override void Initialize()
+        {   
         }
 
-        protected override async Task DisposeCoreAsync(bool initialized)
+        protected override void Dispose(bool disposing)
         {
-            if (initialized)
+            if (disposing)
             {
-                await ReleaseSubscriptionsAsync().ConfigureAwait(false);
+                ReleaseSubscriptions();
             }
         }
     }

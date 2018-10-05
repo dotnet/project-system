@@ -302,7 +302,7 @@ Namespace Microsoft.VisualStudio.Editors
 
 #Region "Load/save project designer's last active tab"
         ''' <summary>
-        ''' Get the project guid (VSHPROPID_ProjectIDGuid) from a IVsHieararchy
+        ''' Get the project guid (VSHPROPID_ProjectIDGuid) from a IVsHierarchy
         ''' </summary>
         ''' <param name="hierarchy"></param>
         ''' <returns></returns>
@@ -369,10 +369,10 @@ Namespace Microsoft.VisualStudio.Editors
             Private _cookie As UInteger
 
             ' A handle to the IVsSolution service providing the events
-            Private _solution As IVsSolution
+            Private ReadOnly _solution As IVsSolution
 
             ' List of files to clean up when a ZIP project is discarded
-            Private _filesToCleanUp As New List(Of String)
+            Private ReadOnly _filesToCleanUp As New List(Of String)
 
             ''' <summary>
             ''' Create a new instance of this class
@@ -424,7 +424,7 @@ Namespace Microsoft.VisualStudio.Editors
             End Function
 
             ''' <summary>
-            ''' Before the solutin is closed, we check if this is a ZIP project, and if so make a list of all files
+            ''' Before the solution is closed, we check if this is a ZIP project, and if so make a list of all files
             ''' we'll delete when the solution is closed
             ''' </summary>
             ''' <param name="pUnkReserved"></param>

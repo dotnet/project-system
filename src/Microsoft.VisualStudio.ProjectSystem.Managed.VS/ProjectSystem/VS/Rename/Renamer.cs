@@ -71,16 +71,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             {
                 _workspace.WorkspaceChanged -= OnWorkspaceChangedAsync;
                 Project myNewProject = _workspace.CurrentSolution.Projects.Where(p => StringComparers.Paths.Equals(p.FilePath, _project.FilePath)).FirstOrDefault();
-                await RenameAsync(myNewProject).ConfigureAwait(false);
+                await RenameAsync(myNewProject);
             }
         }
 
         public async Task RenameAsync(Project project)
         {
-            bool isCaseSensitive = await IsCompilationCaseSensitiveAsync(project).ConfigureAwait(false);
+            bool isCaseSensitive = await IsCompilationCaseSensitiveAsync(project);
             IRenameStrategy renameStrategy = GetStrategy(project, isCaseSensitive);
             if (renameStrategy != null)
-                await renameStrategy.RenameAsync(project, _oldFilePath, _newFilePath, isCaseSensitive).ConfigureAwait(false);
+                await renameStrategy.RenameAsync(project, _oldFilePath, _newFilePath, isCaseSensitive);
         }
 
         private IRenameStrategy GetStrategy(Project project, bool isCaseSensitive)
@@ -95,7 +95,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
         private static async Task<bool> IsCompilationCaseSensitiveAsync(Project project)
         {
             bool isCaseSensitive = false;
-            Compilation compilation = await project.GetCompilationAsync().ConfigureAwait(false);
+            Compilation compilation = await project.GetCompilationAsync();
             if (compilation != null)
             {
                 isCaseSensitive = compilation.IsCaseSensitive;

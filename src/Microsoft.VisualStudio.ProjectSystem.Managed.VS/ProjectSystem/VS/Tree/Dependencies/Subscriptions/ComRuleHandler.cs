@@ -17,6 +17,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
     {
         public const string ProviderTypeString = "ComDependency";
 
+        private static readonly DependencyIconSet s_iconSet = new DependencyIconSet(
+            icon: ManagedImageMonikers.Component,
+            expandedIcon: ManagedImageMonikers.Component,
+            unresolvedIcon: ManagedImageMonikers.ComponentWarning,
+            unresolvedExpandedIcon: ManagedImageMonikers.ComponentWarning);
+
         protected override string UnresolvedRuleName { get; } = ComReference.SchemaName;
         protected override string ResolvedRuleName { get; } = ResolvedCOMReference.SchemaName;
         public override string ProviderType { get; } = ProviderTypeString;
@@ -26,8 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             return new SubTreeRootDependencyModel(
                 ProviderType,
                 VSResources.ComNodeName,
-                ManagedImageMonikers.Component,
-                ManagedImageMonikers.ComponentWarning,
+                s_iconSet,
                 DependencyTreeFlags.ComSubTreeRootNodeFlags);
         }
 

@@ -18,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         private readonly ImmutableDictionary<string, ConfiguredProject> _configuredProjectsByTargetFramework;
         private readonly string _activeTargetFramework;
         private readonly IUnconfiguredProjectHostObject _unconfiguredProjectHostObject;
-        private HashSet<IWorkspaceProjectContext> _disposedConfiguredProjectContexts;
+        private readonly HashSet<IWorkspaceProjectContext> _disposedConfiguredProjectContexts;
 
         public AggregateWorkspaceProjectContext(
             ImmutableDictionary<string, IWorkspaceProjectContext> configuredProjectContextsByTargetFramework,

@@ -25,7 +25,7 @@ namespace Microsoft.VisualStudio.Threading.Tasks
         /// </summary>
         public TimeSpan TaskDelayTime { get; set; }
 
-        // Task completetion source for cancelling a pending file update.
+        // Task completion source for cancelling a pending file update.
         private CancellationTokenSource PendingUpdateTokenSource { get; set; }
 
         private CancellationToken OriginalSourceToken { get; set; }
@@ -66,10 +66,7 @@ namespace Microsoft.VisualStudio.Threading.Tasks
                 CancellationToken token = PendingUpdateTokenSource.Token;
 
                 // We want to return a joinable task so wrap the function
-                LatestScheduledTask = _threadingService.JoinableTaskFactory.RunAsync(async () =>
-                {
-                    await ThrottleAsync(asyncFnctionToCall, token).ConfigureAwait(false);
-                });
+                LatestScheduledTask = _threadingService.JoinableTaskFactory.RunAsync(() => ThrottleAsync(asyncFnctionToCall, token));
                 return LatestScheduledTask;
             }
         }
@@ -81,12 +78,12 @@ namespace Microsoft.VisualStudio.Threading.Tasks
                 // First we wait the delay time. If another request has been made in the interval, then this task
                 // is cancelled. To avoid unnecessary OperationCanceled exceptions it tests to see if the token has
                 // been canceled
-                await Task.Delay(TaskDelayTime).ConfigureAwait(true);
+                await Task.Delay(TaskDelayTime);
 
                 bool isCanceled = token.IsCancellationRequested;
                 lock (_syncObject)
                 {
-                    // We want to clear any existing cancelation token IF it matches our token
+                    // We want to clear any existing cancellation token IF it matches our token
                     if (PendingUpdateTokenSource != null && PendingUpdateTokenSource.Token == token)
                     {
                         ClearPendingUpdates(cancel: false);
@@ -107,7 +104,7 @@ namespace Microsoft.VisualStudio.Threading.Tasks
             }
 
             // Execute the code
-            await asyncFnctionToCall(token).ConfigureAwait(true);
+            await asyncFnctionToCall(token);
         }
 
         /// <summary>

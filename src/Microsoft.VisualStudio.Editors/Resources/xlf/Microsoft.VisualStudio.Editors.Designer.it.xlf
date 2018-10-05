@@ -1367,7 +1367,7 @@ Errore:</target>
       </trans-unit>
       <trans-unit id="RSE_Err_BadIdentifier_2Arg">
         <source>The name of the resource '{0}' cannot be used as a valid identifier, because it contains one or more invalid characters: '{1}'.  Please remove or replace those characters and try again.</source>
-        <target state="translated">Il nome della risorsa '{0}' non può essere usato come identificatore valido perché contiene uno o più caratteri non validi: \'{1\}'. Rimuovere o sostituire tali caratteri e riprovare.</target>
+        <target state="translated">Il nome della risorsa '{0}' non può essere usato come identificatore valido perché contiene uno o più caratteri non validi: '{1}'. Rimuovere o sostituire tali caratteri e riprovare.</target>
         <note>{0} = Resource name</note>
       </trans-unit>
       <trans-unit id="RSE_Err_MaxFilesLimitation">
@@ -2767,6 +2767,16 @@ Aggiornare il valore nel file .settings?</target>
         <source>Unable to load '{0}' because it is not trusted.</source>
         <target state="translated">Non è possibile caricare '{0}' perché non è attendibile.</target>
         <note>{0} is resx file name that is blocked</note>
+      </trans-unit>
+      <trans-unit id="RSE_Type_WMF">
+        <source>Windows Metafile</source>
+        <target state="new">Windows Metafile</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RSE_Type_EMF">
+        <source>Extended Metafile</source>
+        <target state="new">Extended Metafile</target>
+        <note />
       </trans-unit>
     </body>
   </file>

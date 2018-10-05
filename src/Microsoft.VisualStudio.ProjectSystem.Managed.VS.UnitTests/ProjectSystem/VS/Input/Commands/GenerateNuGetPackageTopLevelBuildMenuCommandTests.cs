@@ -10,7 +10,6 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 {
-    [Trait("UnitTest", "ProjectSystem")]
     public class GenerateNuGetPackageTopLevelBuildMenuCommandTests : AbstractGenerateNuGetPackageCommandTests
     {
         internal override long GetCommandId() => ManagedProjectSystemCommandId.GenerateNuGetPackageTopLevelBuild;

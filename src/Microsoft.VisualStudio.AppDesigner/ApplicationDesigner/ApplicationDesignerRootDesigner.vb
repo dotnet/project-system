@@ -105,7 +105,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             If _view Is Nothing Then
                 _view = New ApplicationDesignerView(Me)
                 'Delaying out designer load prevents our IRootDesigner.GetView from getting called
-                'before we have initized the m_View local
+                'before we have initialized the m_View local
                 'm_View.InitView()
             End If
 
@@ -122,7 +122,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         End Function
 
         ''' <summary>
-        '''  Exposes GetService from ComponentDesigner to other classes in this assemlby to get a service.
+        '''  Exposes GetService from ComponentDesigner to other classes in this assembly to get a service.
         ''' </summary>
         ''' <param name="ServiceType">The type of the service being asked for.</param>
         ''' <returns>The requested service, if it exists.</returns>

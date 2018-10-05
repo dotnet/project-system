@@ -10,7 +10,6 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 {
-    [Trait("UnitTest", "ProjectSystem")]
     public abstract class AbstractOpenProjectDesignerCommandTests
     {
         [Fact]
@@ -37,9 +36,7 @@ Root (flags: {ProjectRoot})
 
             var nodes = ImmutableHashSet.Create(tree.Children[0]);
 
-#pragma warning disable RS0003 // Do not directly await a Task (see https://github.com/dotnet/roslyn/issues/6770)
             var result = await command.GetCommandStatusAsync(nodes, 1, true, "commandText", CommandStatus.Enabled);
-#pragma warning restore RS0003 // Do not directly await a Task
 
             Assert.False(result.Handled);
         }
@@ -56,9 +53,7 @@ Root (flags: {ProjectRoot})
 
             var nodes = ImmutableHashSet.Create(tree.Children[0]);
 
-#pragma warning disable RS0003 // Do not directly await a Task (see https://github.com/dotnet/roslyn/issues/6770)
             var result = await command.TryHandleCommandAsync(nodes, 1, true, 0, IntPtr.Zero, IntPtr.Zero);
-#pragma warning restore RS0003 // Do not directly await a Task
 
             Assert.False(result);
         }
@@ -75,9 +70,7 @@ Root (flags: {ProjectRoot})
 
             var nodes = ImmutableHashSet.Create(tree, tree.Children[0]);
 
-#pragma warning disable RS0003 // Do not directly await a Task (see https://github.com/dotnet/roslyn/issues/6770)
             var result = await command.GetCommandStatusAsync(nodes, GetCommandId(), true, "commandText", (CommandStatus)0);
-#pragma warning restore RS0003 // Do not directly await a Task
 
             Assert.False(result.Handled);
         }
@@ -95,9 +88,7 @@ Root (flags: {ProjectRoot})
 
             var nodes = ImmutableHashSet.Create(tree, tree.Children[0]);
 
-#pragma warning disable RS0003 // Do not directly await a Task (see https://github.com/dotnet/roslyn/issues/6770)
             var result = await command.TryHandleCommandAsync(nodes, GetCommandId(), true, 0, IntPtr.Zero, IntPtr.Zero);
-#pragma warning restore RS0003 // Do not directly await a Task
 
             Assert.False(result);
         }
@@ -114,9 +105,7 @@ Root (flags: {ProjectRoot})
 
             var nodes = ImmutableHashSet.Create(tree.Children[0]);
 
-#pragma warning disable RS0003 // Do not directly await a Task (see https://github.com/dotnet/roslyn/issues/6770)
             var result = await command.GetCommandStatusAsync(nodes, GetCommandId(), true, "commandText", (CommandStatus)0);
-#pragma warning restore RS0003 // Do not directly await a Task
 
             Assert.False(result.Handled);
         }
@@ -133,9 +122,7 @@ Root (flags: {ProjectRoot})
 
             var nodes = ImmutableHashSet.Create(tree.Children[0]);
 
-#pragma warning disable RS0003 // Do not directly await a Task (see https://github.com/dotnet/roslyn/issues/6770)
             var result = await command.TryHandleCommandAsync(nodes, GetCommandId(), true, 0, IntPtr.Zero, IntPtr.Zero);
-#pragma warning restore RS0003 // Do not directly await a Task
 
             Assert.False(result);
         }
@@ -152,9 +139,7 @@ Root (flags: {ProjectRoot})
 
             var nodes = ImmutableHashSet.Create(tree.Children[0]);
 
-#pragma warning disable RS0003 // Do not directly await a Task (see https://github.com/dotnet/roslyn/issues/6770)
             var result = await command.GetCommandStatusAsync(nodes, GetCommandId(), true, "commandText", (CommandStatus)0);
-#pragma warning restore RS0003 // Do not directly await a Task
 
             Assert.True(result.Handled);
             Assert.Equal("commandText", result.CommandText);
@@ -173,9 +158,7 @@ Root (flags: {ProjectRoot})
 
             var nodes = ImmutableHashSet.Create(tree.Children[0]);
 
-#pragma warning disable RS0003 // Do not directly await a Task (see https://github.com/dotnet/roslyn/issues/6770)
             var result = await command.TryHandleCommandAsync(nodes, GetCommandId(), true, 0, IntPtr.Zero, IntPtr.Zero);
-#pragma warning restore RS0003 // Do not directly await a Task
 
             Assert.True(result);
         }
@@ -195,9 +178,7 @@ Root (flags: {ProjectRoot})
 
             var nodes = ImmutableHashSet.Create(tree.Children[0]);
 
-#pragma warning disable RS0003 // Do not directly await a Task (see https://github.com/dotnet/roslyn/issues/6770)
             await command.TryHandleCommandAsync(nodes, GetCommandId(), true, 0, IntPtr.Zero, IntPtr.Zero);
-#pragma warning restore RS0003 // Do not directly await a Task
 
             Assert.Equal(1, callCount);
         }

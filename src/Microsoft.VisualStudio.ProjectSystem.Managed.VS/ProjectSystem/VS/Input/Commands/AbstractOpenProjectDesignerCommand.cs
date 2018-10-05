@@ -34,8 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         {
             if (node.Flags.Contains(ProjectTreeFlags.Common.AppDesignerFolder))
             {
-                await _designerService.ShowProjectDesignerAsync()
-                                      .ConfigureAwait(false);
+                await _designerService.ShowProjectDesignerAsync();
                 return true;
             }
 

@@ -130,7 +130,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Interop
                                       // in the Options dialog. Default value is VARIANT_FALSE.
         DisableStartPage = -8560,  // VARIANT_BOOL indicating whether we should disable the start page in the shell
         StartPageTheme = -8561,  // INT_PTR pointing to the memory containing the VSSTARTPAGETHEME struct. The memory should be allocated and de-allocated at the
-                                 // appid implemetation level.
+                                 // appid implementation level.
         LicenseGUID = -8562,  // Returns the highest applicable license GUID, if licenses are required.
                               // If no licenses are required, returns E_NOTIMPL.
         RegistrationDlgBanner = -8563,  // The banner on top of the Registration and Trial dialogs.
@@ -138,7 +138,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Interop
                                         // iff an AutoRecovery happened, before the DTEEvents::OnStartupComplete event is fired. An AppID should query this value
                                         // if they need to know if a Recovery took place to change their startup action, for example
         AboutBoxTheme = -8565,  // INT_PTR pointing to the memory containing the VSABOUTBOXTHEME struct. The memory should be allocated and de-allocated at the
-                                // appid implemetation level.
+                                // appid implementation level.
         SQMTitle = -8566,  // BSTR Title for the SQM optin dialog.
         AutoSaveNewUnsavedFiles = -8567,  // VARIANT_BOOL indicating whether the disaster recovery mechanism should save previously unsaved files.  The default is FALSE.
         Preview = -8568,  // I4 Enumeration indicating whether this is:
@@ -185,14 +185,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Interop
 
         VSAPROPID_ProductFamily         = -8590,    // I4. See PIDFamily enum in DDConfig.h for list of valid values.
         VSAPROPID_SplashScreenTheme     = -8591,    // INT_PTR pointing to the memory containing the VSSPLASHSCREENTHEME struct. The memory should be allocated and
-        // de-allocated at the appid implemetation level.
+        // de-allocated at the appid implementation level.
         VSAPROPID_RequiresElevation     = -8592,    // VT_BOOL. True means the appid always requires elevation
         //          False means the appid never requires elevation
         //          Default means the appid doesn't care, allow msenv to make the decision based on other factors (command line switches, etc.)
         VSAPROPID_ApplicationRootFolder     = -8593,    // BSTR Full path of root location of installation (e.g. drive>:\Program Files\Microsoft Visual Studio <version>\)
         VSAPROPID_ApplicationExtensionsFolder = -8594,    // BSTR Full path of folder for installing per-machine Extensions (e.g. Example: C:\Program Files\Microsoft Visual Studio <VS version>\Common7\IDE\Extensions)
         VSAPROPID_GenericTheme          = -8595,    // INT_PTR pointing to the memory containing the VSGENERICTHEME struct. The memory should be allocated and
-        // de-allocated at the appid implemetation level.
+        // de-allocated at the appid implementation level.
         VSAPROPID_ActivityLogPath       = -8596,    // VT_BSTR, Read-Only. Path to ActivityLog file.
         VSAPROPID_ReleaseVersion = -8597,    // VT_BSTR, Read-Only. The build version of the release and the branch/machine/user information used to build it (e.g. "10.0.30319.01 RTMRel" or "10.0.30128.1 BRANCHNAME(COMPUTERNAME-USERNAME)"). This is the same as the release string shown in Help/About.
         VSAPROPID_EnableSamples = -8598,    // VT_BOOL. Specifies whether samples are enabled. Defaults to false if not specified for Isolated Shell appids.
@@ -203,16 +203,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Interop
         VSAPROPID_AppShortBrandName = -8603,    // VT_BSTR. A short version of VSAPROPID_AppBrandName, less than 32 chars. E.g. "VS Pro 2012 RC" or "VS Express 2012 RC for Win8"
         VSAPROPID_SKUInfo = -8604,    // VT_BSTR. A localized text describing the current SKU (name, year, release type, etc). E.g. "Ultimate 2012 RC" or "Express 2012 RC for Web"
         VSAPROPID_GuidDefaultColorTheme = -8605,    // GUID representing the color theme that should be used by default for the appid. If unimplemented by the appid, or if the theme does not exist when the appid is launched, the default light theme is chosen.
-        VSAPROPID_ActivityLogServiceObject = -8606,    // VT_UNKNOWN. IUnknown the free thread acvity log serivce object.
+        VSAPROPID_ActivityLogServiceObject = -8606,    // VT_UNKNOWN. IUnknown the free thread activity log service object.
         VSAPROPID_AppUpdateIcon = -8607,    // VT_INT_PTR - HICON for SM_CXICON x SM_CYICON app update icon.
         VSAPROPID_AppUpdateSmallIcon = -8608,    // VT_INT_PTR - HICON for SM_CXSMICON x SM_CYSMICON app update icon.
         VSAPROPID_AppUpdate64Icon = -8609,    // VT_INT_PTR - HICON for 64 x 64 app update icon.
-        VSAPROPID_IsSubscriptionAware = -8610,    // VT_BOOL. Specifies whether the application supports subscription licensce from VS Online
+        VSAPROPID_IsSubscriptionAware = -8610,    // VT_BOOL. Specifies whether the application supports subscription license from VS Online
         VSAPROPID_SubscriptionLicenseId = -8611,    // GUID unique LicenseID that application specifies under $RootFolder$\Licenses for coordinating its VS Online subscription tokens.
         VSAPROPID_SubscriptionRightsName = -8612,    // VT_BSTR. Unique Name that identifies this application with the VS Online Licensing Service.
         VSAPROPID_SupportsConnectedUser = -8613,    // VT_BOOL. Specifies whether the application supports Connected User UI (e.g. Connected User sign-in, ID Card, roaming settings, first launch sign-in invitation, etc.)
         VSAPROPID_SettingsRegistryRoots = -8614,    // SafeArray of BSTRs, in order from earliest to latest, including current version, of registry roots checked during settings migration
-        VSAPROPID_EnableOfflineHelpNotification = -8615,    // VT_BOOL. Specifies whether the help notification should be published to the notification hub on fisrt launch
+        VSAPROPID_EnableOfflineHelpNotification = -8615,    // VT_BOOL. Specifies whether the help notification should be published to the notification hub on first launch
         VSAPROPID_DefaultProfile = -8616,    // VT_BSTR (optional). Specifies the default profile for the appid (e.g. "General")
         VSAPROPID_ThemeThumbnailProvider = -8617,    // VT_UNKNOWN (optional). Specifies an IUnknown from which the IVsThemeThumbnailProvider interface for the appid can be queried.
         VSAPROPID_CommunityEdition = -8618,    // VT_BOOL. Specifies whether VS is community edition. Only applicable to VS Professional.

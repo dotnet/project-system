@@ -7,7 +7,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
     /// <summary>
     /// Contains graph node ids and properties for Dependencies nodes
     /// </summary>
-    internal class DependenciesGraphSchema
+    internal static class DependenciesGraphSchema
     {
         public static readonly GraphSchema Schema = new GraphSchema("Microsoft.VisualStudio.ProjectSystem.VS.Tree.DependenciesSchema");
         public static readonly GraphCategory CategoryDependency = Schema.Categories.AddNewCategory(VSResources.GraphNodeCategoryDependency);

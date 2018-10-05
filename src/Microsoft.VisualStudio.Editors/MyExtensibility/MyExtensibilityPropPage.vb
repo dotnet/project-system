@@ -138,7 +138,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         ''' ;EnableButtonRemove
         ''' <summary>
-        ''' Enable / disalbe buttonRemove depending on the selected items in the list view.
+        ''' Enable / disable buttonRemove depending on the selected items in the list view.
         ''' </summary>
         Private Sub EnableButtonRemove()
             buttonRemove.Enabled = DataGridViewExtensions.SelectedRows.Count > 0

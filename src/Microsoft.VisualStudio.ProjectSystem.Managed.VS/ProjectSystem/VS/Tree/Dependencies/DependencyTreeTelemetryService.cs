@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
@@ -22,11 +21,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     [AppliesTo(ProjectCapability.DependenciesTree)]
     internal class DependencyTreeTelemetryService : IDependencyTreeTelemetryService
     {
-        private const string TelemetryEventName = "TreeUpdated";
-        private const string UnresolvedLabel = "Unresolved";
-        private const string ResolvedLabel = "Resolved";
-        private const string ProjectProperty = "Project";
-        private const string ObservedAllRulesProperty = "ObservedAllRules";
         private const int MaxEventCount = 10;
 
         private readonly UnconfiguredProject _project;
@@ -113,13 +107,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 InitializeProjectId();
             }
 
-            _telemetryService.PostProperties(
-                FormattableString.Invariant($"{TelemetryEventName}/{(hasUnresolvedDependency ? UnresolvedLabel : ResolvedLabel)}"),
-                new List<(string, object)>
+            if (hasUnresolvedDependency)
+            {
+                _telemetryService.PostProperties(TelemetryEventName.TreeUpdatedUnresolved, new[] 
                 {
-                    (ProjectProperty, _projectId),
-                    (ObservedAllRulesProperty, observedAllRules)
+                    (TelemetryPropertyName.TreeUpdatedUnresolvedProject, (object)_projectId),
+                    (TelemetryPropertyName.TreeUpdatedUnresolvedObservedAllRules, observedAllRules)
                 });
+            }
+            else
+            {
+                _telemetryService.PostProperties(TelemetryEventName.TreeUpdatedResolved, new[] 
+                {
+                    (TelemetryPropertyName.TreeUpdatedResolvedProject, (object)_projectId),
+                    (TelemetryPropertyName.TreeUpdatedResolvedObservedAllRules, observedAllRules)
+                });
+            }
         }
 
         private void InitializeProjectId()
@@ -146,7 +149,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// </summary>
         internal class TelemetryState
         {
-            private ConcurrentDictionary<string, bool> _observedRules = new ConcurrentDictionary<string, bool>(StringComparers.RuleNames);
+            private readonly ConcurrentDictionary<string, bool> _observedRules = new ConcurrentDictionary<string, bool>(StringComparers.RuleNames);
 
             internal bool InitializeRule(string rule) =>
                 _observedRules.TryAdd(rule, false);

@@ -4,7 +4,7 @@ using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
-    internal class IProjectServicesFactory
+    internal static class IProjectServicesFactory
     {
         public static IProjectServices Create(IProjectThreadingService threadingService = null, IProjectFaultHandlerService faultHandlerService = null, IProjectService projectService = null)
         {

@@ -6,7 +6,6 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
-    [Trait("UnitTest", "ProjectSystem")]
     public class LaunchProfileExtensionsTests
     {
         [Theory]

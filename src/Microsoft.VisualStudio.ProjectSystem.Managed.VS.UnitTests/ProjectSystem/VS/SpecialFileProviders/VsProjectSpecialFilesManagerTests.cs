@@ -9,7 +9,6 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.SpecialFilesProviders
 {
-    [Trait("UnitTest", "ProjectSystem")]
     public class VsProjectSpecialFilesManagerTests
     {
         [Fact]

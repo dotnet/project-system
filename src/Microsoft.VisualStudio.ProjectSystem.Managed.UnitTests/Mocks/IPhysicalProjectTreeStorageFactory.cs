@@ -4,7 +4,7 @@ using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
-    internal class IPhysicalProjectTreeStorageFactory
+    internal static class IPhysicalProjectTreeStorageFactory
     {
         public static IPhysicalProjectTreeStorage Create()
         {

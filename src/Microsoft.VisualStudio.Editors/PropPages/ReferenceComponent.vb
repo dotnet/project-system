@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
@@ -29,7 +29,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Property
 
         ''' <summary>
-        ''' Remove the referece from the project...
+        ''' Remove the reference from the project...
         ''' </summary>
         Private Sub Remove() Implements IReferenceComponent.Remove
             CodeReference.Remove()

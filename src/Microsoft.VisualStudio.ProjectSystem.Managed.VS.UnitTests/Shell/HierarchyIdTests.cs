@@ -4,7 +4,6 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.Shell
 {
-    [Trait("UnitTest", "ProjectSystem")]
     public class HierarchyIdTests
     {
         [Fact]

@@ -11,7 +11,6 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Configuration
 {
-    [Trait("UnitTest", "ProjectSystem")]
     public class ConfigurationProjectConfigurationDimensionProviderTests
     {
         private const string Configurations = nameof(Configurations);

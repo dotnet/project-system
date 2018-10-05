@@ -19,8 +19,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         public override async Task<string> OnGetEvaluatedPropertyValueAsync(string evaluatedPropertyValue, IProjectProperties defaultProperties)
         {
-            ConfigurationGeneral configuration = await _properties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(false);
-            string targetFrameworkMoniker = (string)await configuration.TargetFrameworkMoniker.GetValueAsync().ConfigureAwait(false);
+            ConfigurationGeneral configuration = await _properties.GetConfigurationGeneralPropertiesAsync();
+            string targetFrameworkMoniker = (string)await configuration.TargetFrameworkMoniker.GetValueAsync();
             if (targetFrameworkMoniker != null)
             {
                 var targetFramework = new FrameworkName(targetFrameworkMoniker);
@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 return propertyValue.ToString();
             }
 
-            return await base.OnGetEvaluatedPropertyValueAsync(evaluatedPropertyValue, defaultProperties).ConfigureAwait(false);
+            return await base.OnGetEvaluatedPropertyValueAsync(evaluatedPropertyValue, defaultProperties);
         }
     }
 }

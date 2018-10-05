@@ -25,10 +25,10 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 #Region "Private fields"
 
         ' Map from language specific names to the corresponding .NET FX type name
-        Private _languageSpecificToFxTypeName As Dictionary(Of String, String)
+        Private ReadOnly _languageSpecificToFxTypeName As Dictionary(Of String, String)
 
         ' Map from .NET FX type names to language specific type names
-        Private _fxTypeNameToLanguageSpecific As Dictionary(Of String, String)
+        Private ReadOnly _fxTypeNameToLanguageSpecific As Dictionary(Of String, String)
 
         ' Is the current language case-sensitive?
         Private ReadOnly _caseSensitive As Boolean

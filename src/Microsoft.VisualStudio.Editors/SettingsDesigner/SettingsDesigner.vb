@@ -26,7 +26,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         Private _settingsDesignerViewProperty As SettingsDesignerView
 
         ''' <summary>
-        ''' Trace switch used by all SettingsDesigner components - should be moved to the common Swithces file
+        ''' Trace switch used by all SettingsDesigner components - should be moved to the common Switches file
         ''' </summary>
         ''' <value></value>
         ''' <remarks></remarks>

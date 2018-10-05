@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
         private void ActiveConfiguredProject_Changed(object sender, ActiveConfigurationChangedEventArgs e) => GetLatestActivationTask();
 
         public bool IsValidToBuild => GetLatestActivationTask().IsCompleted;
-        public async Task WaitReadyToBuildAsync() => await GetLatestActivationTask().ConfigureAwait(false);
+        public Task WaitReadyToBuildAsync() => GetLatestActivationTask();
 
         private Task GetLatestActivationTask()
         {

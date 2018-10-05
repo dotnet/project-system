@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
     /// <summary>
     ///     Provides an implementation of <see cref="IVsDesignTimeAssemblyResolution"/> that sits over the top of VSLangProj.References.
     /// </summary>
-    [Export]
+    [ExportProjectNodeComService(typeof(IVsDesignTimeAssemblyResolution))]  // Need to override CPS's version, which it implements on the project node as IVsDesignTimeAssemblyResolution
     [ExportVsProfferedProjectService(typeof(SVsDesignTimeAssemblyResolution))]
     [AppliesTo(ProjectCapability.DotNet)]
     [Order(Order.Default)] // Before CPS's version
@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
         // a framework, so we assume that what the project is referencing represents the "framework" of accessible types. This is the same as what the legacy project system
         // does under the UWP flavor (when the DTARUseReferencesFromProject MSBuild property is set).
         // 
-        // This implmementation will work for .NET Core based projects, but we might run into unexpected behavior when bringing up legacy projects where designers/components
+        // This implementation will work for .NET Core based projects, but we might run into unexpected behavior when bringing up legacy projects where designers/components
         // expect to ask for/use types that are not currently referenced by the project. We should revisit at that time.
         //
         // Ideally this would sit on a simple wrapper over the top of project subscription service, however, CPS's internal ReferencesHostBridge, which populates VSLangProj.References,
@@ -47,16 +47,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
             Requires.NotNull(projectVsServices, nameof(projectVsServices));
 
             _projectVsServices = projectVsServices;
-        }
-
-        // BUG (https://devdiv.visualstudio.com/DevDiv/_workitems?id=367916): VS MEF rejects a part marked 
-        // with two Export/Metadata attributes where one is AllowMultiple=false
-        [ExportProjectNodeComService(typeof(IVsDesignTimeAssemblyResolution))]  // Need to override CPS's version, which it implements on the project node as IVsDesignTimeAssemblyResolution
-        [AppliesTo(ProjectCapability.DotNet)]
-        [Order(Order.Default)] // Before CPS's version
-        public IVsDesignTimeAssemblyResolution ComService
-        {
-            get { return this; }
         }
 
         public int GetTargetFramework(out string ppTargetFramework)

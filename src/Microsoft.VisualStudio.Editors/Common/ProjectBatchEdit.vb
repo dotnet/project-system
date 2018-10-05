@@ -23,7 +23,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
     Friend Class ProjectBatchEdit
         Implements IDisposable
 
-        Private _projectBuildSystem As IVsProjectBuildSystem
+        Private ReadOnly _projectBuildSystem As IVsProjectBuildSystem
         Private _batchCount As Integer
 
 

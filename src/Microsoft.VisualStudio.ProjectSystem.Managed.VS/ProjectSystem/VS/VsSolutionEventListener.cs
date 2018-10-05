@@ -17,12 +17,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     [Export(typeof(ILoadedInHostListener))]
     internal class VsSolutionEventListener : OnceInitializedOnceDisposedAsync, IVsSolutionEvents, IVsPrioritizedSolutionEvents, ILoadedInHostListener
     {
-        private readonly IVsService<IVsSolution> _solution;
+        private readonly IVsUIService<IVsSolution> _solution;
         private readonly IProjectThreadingService _threadingService;
         private uint _cookie = VSConstants.VSCOOKIE_NIL;
 
         [ImportingConstructor]
-        public VsSolutionEventListener(IVsService<SVsSolution, IVsSolution> solution, IProjectThreadingService threadingService)
+        public VsSolutionEventListener(IVsUIService<SVsSolution, IVsSolution> solution, IProjectThreadingService threadingService)
             : base(threadingService.JoinableTaskContext)
         {
             _solution = solution;

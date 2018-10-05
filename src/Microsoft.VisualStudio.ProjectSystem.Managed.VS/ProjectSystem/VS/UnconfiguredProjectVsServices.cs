@@ -57,9 +57,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             get { return _commonServices.ActiveConfiguredProjectProperties; }
         }
 
-        public IProjectLockService ProjectLockService
+        public IProjectAccessor ProjectAccessor
         {
-            get { return _commonServices.ProjectLockService; }
+            get { return _commonServices.ProjectAccessor; }
         }
     }
 }
