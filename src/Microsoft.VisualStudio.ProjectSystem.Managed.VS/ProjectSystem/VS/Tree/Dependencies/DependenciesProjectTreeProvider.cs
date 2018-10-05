@@ -337,7 +337,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                     //dependenciesNode = CreateOrUpdateSubTreeProviderNodes(dependenciesNode, 
                                     //                                                      cancellationToken);
 
-                                    return Task.FromResult(new TreeUpdateResult(dependenciesNode, true));
+                                    return Task.FromResult(new TreeUpdateResult(dependenciesNode));
                                 });
                         }
 
@@ -405,7 +405,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
                     // TODO We still are getting mismatched data sources and need to figure out better 
                     // way of merging, mute them for now and get to it in U1
-                    return new TreeUpdateResult(dependenciesNode, false, null);
+                    return new TreeUpdateResult(dependenciesNode, null);
                 });
 
             return Task.CompletedTask;

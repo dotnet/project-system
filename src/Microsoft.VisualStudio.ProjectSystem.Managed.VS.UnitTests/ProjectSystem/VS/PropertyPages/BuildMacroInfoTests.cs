@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         {
             var projectProperties = IProjectPropertiesFactory.CreateWithPropertyAndValue("MyBuildMacro", "MyBuildMacroValue");
             var propertiesProvider = IProjectPropertiesProviderFactory.Create(commonProps: projectProperties);
-            var configuredProjectServices = Mock.Of<IConfiguredProjectServices>(o =>
+            var configuredProjectServices = Mock.Of<ConfiguredProjectServices>(o =>
                 o.ProjectPropertiesProvider == propertiesProvider);
             var configuredProject = ConfiguredProjectFactory.Create(services: configuredProjectServices);
 

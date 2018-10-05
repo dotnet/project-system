@@ -17,7 +17,8 @@
     <VSWhereVersion>2.3.2</VSWhereVersion>
     <TRXUnitVersion>1.0.0-beta1</TRXUnitVersion>
     <MicrosoftDotNetIBCMergeVersion>4.7.1-alpha-00001</MicrosoftDotNetIBCMergeVersion>
-    <MicrosoftNetCompilersVersion>2.6.1</MicrosoftNetCompilersVersion>
+    <MicrosoftNetCompilersVersion>2.9.0</MicrosoftNetCompilersVersion>
+    <MicrosoftVSSDKBuildToolsVersion>15.8.3252</MicrosoftVSSDKBuildToolsVersion>
     <MicrosoftDiaSymReaderPdb2PdbVersion>1.1.0-beta1-62624-01</MicrosoftDiaSymReaderPdb2PdbVersion>
     <OpenCoverVersion>4.6.519</OpenCoverVersion>
     <CodecovVersion>1.1.0</CodecovVersion>
@@ -69,7 +70,7 @@
     <MicrosoftVisualStudioThreadingVersion>15.8.145</MicrosoftVisualStudioThreadingVersion>
     <MicrosoftVisualStudioThreadingAnalyzersVersion>15.8.145</MicrosoftVisualStudioThreadingAnalyzersVersion>
     <MicrosoftVisualStudioUtilitiesVersion>15.0.26607</MicrosoftVisualStudioUtilitiesVersion>
-    <MicrosoftVisualStudioValidationVersion>15.3.32</MicrosoftVisualStudioValidationVersion>
+    <MicrosoftVisualStudioValidationVersion>15.3.58</MicrosoftVisualStudioValidationVersion>
     <MicrosoftVisualStudioVsHelpVersion>15.0.26606-alpha</MicrosoftVisualStudioVsHelpVersion>
     <MicrosoftVisualStudioWCFReferenceInteropVersion>9.0.30729</MicrosoftVisualStudioWCFReferenceInteropVersion>
     <MicrosoftVisualStudioXmlEditorVersion>15.0.26606-alpha</MicrosoftVisualStudioXmlEditorVersion>
@@ -77,7 +78,7 @@
     <VsWebSiteInteropVersion>8.0.0-alpha</VsWebSiteInteropVersion>
 
     <!-- CPS -->
-    <MicrosoftVisualStudioProjectSystemSDKVersion>15.7.117-pre</MicrosoftVisualStudioProjectSystemSDKVersion>
+    <MicrosoftVisualStudioProjectSystemSDKVersion>16.0.201-pre-g7d366164d0</MicrosoftVisualStudioProjectSystemSDKVersion>
     <MicrosoftVisualStudioProjectSystemAnalyzersVersion>$(MicrosoftVisualStudioProjectSystemSDKVersion)</MicrosoftVisualStudioProjectSystemAnalyzersVersion>
     
     <!-- Roslyn -->
@@ -91,7 +92,7 @@
     <NuGetVisualStudioVersion>4.3.0</NuGetVisualStudioVersion>
 
     <!-- Msbuild -->
-    <MicrosoftBuildVersion>15.6.0-preview-000010-1174357</MicrosoftBuildVersion>
+    <MicrosoftBuildVersion>15.8.166</MicrosoftBuildVersion>
 
     <!-- Libs -->
     <NewtonsoftJsonVersion>9.0.1</NewtonsoftJsonVersion>
