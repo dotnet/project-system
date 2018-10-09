@@ -300,7 +300,7 @@ function RunIntegrationTests {
   }
 
   Write-Host "Using $VSTestExe"
-  & $VSTestExe /blame /logger:$LogFileArgs /ResultsDirectory:"$IntegrationTestTempDir" /Settings:$runSettings $TestAssembly
+  $exitCode = & $VSTestExe /blame /logger:$LogFileArgs /ResultsDirectory:"$IntegrationTestTempDir" /Settings:$runSettings $TestAssembly
   
   # Kill any VS processes left over
   Stop-Process-Name "devenv"
@@ -316,6 +316,8 @@ function RunIntegrationTests {
   # Uninstall extensions as other test runs could happen on the VM
   # NOTE: it sometimes takes 2 tries for it to succeed
   UninstallVSIXes $rootSuffix
+  
+  exit $exitCode
 }
 
 try {
