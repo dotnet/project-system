@@ -3,11 +3,11 @@ phases:
   queue:
     timeoutInMinutes: 90
   steps:
-    - script: build\CIBuild.cmd -configuration $(_configuration) -prepareMachine
+    - script: build\VSIBuild.cmd -configuration $(_configuration) -prepareMachine
     - task: PublishBuildArtifacts@1
       inputs:
         PathtoPublish: '$(Build.SourcesDirectory)\artifacts\$(_configuration)\log'
-        ArtifactName: '$(_configuration) unit test logs'
+        ArtifactName: '$(_configuration) logs folder'
         publishLocation: Container
       continueOnError: true
       condition: failed()
