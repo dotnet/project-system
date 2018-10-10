@@ -282,13 +282,13 @@ Pour déboguer ce projet, ajoutez à cette solution un projet exécutable qui fa
         <note />
       </trans-unit>
       <trans-unit id="PartialSupportedDotNetCoreProject">
-        <source>A newer version of Visual Studio is recommended for projects targetting .NET Core {0}.{1}.</source>
+        <source>A newer version of Visual Studio is recommended for projects targeting .NET Core {0}.{1}.</source>
         <target state="needs-review-translation">Visual Studio 2017 version 15.7 ou ultérieur est recommandé pour les projets .NET Core {0}.{1}.</target>
         <note />
       </trans-unit>
       <trans-unit id="NotSupportedDotNetCoreProject">
-        <source>Projects targeting versions newer than .NET Core {0}.{1} are not supported by this version of Visual Studio.</source>
-        <target state="translated">Les projets ciblant des versions plus récentes que .NET Core {0}.{1} ne sont pas pris en charge par cette version de Visual Studio.</target>
+        <source>Projects targeting .NET Core {0}.{1} or newer are not supported by this version of Visual Studio.</source>
+        <target state="needs-review-translation">Les projets ciblant des versions plus récentes que .NET Core {0}.{1} ne sont pas pris en charge par cette version de Visual Studio.</target>
         <note />
       </trans-unit>
       <trans-unit id="DontShowAgain">

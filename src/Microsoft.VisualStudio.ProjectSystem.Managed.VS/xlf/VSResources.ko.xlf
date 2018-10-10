@@ -282,13 +282,13 @@ In order to debug this project, add an executable project to this solution which
         <note />
       </trans-unit>
       <trans-unit id="PartialSupportedDotNetCoreProject">
-        <source>A newer version of Visual Studio is recommended for projects targetting .NET Core {0}.{1}.</source>
+        <source>A newer version of Visual Studio is recommended for projects targeting .NET Core {0}.{1}.</source>
         <target state="needs-review-translation">.NET Core {0}.{1} 프로젝트에는 Visual Studio 2017 버전 15.7 이상이 권장됩니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="NotSupportedDotNetCoreProject">
-        <source>Projects targeting versions newer than .NET Core {0}.{1} are not supported by this version of Visual Studio.</source>
-        <target state="translated">.NET Core {0}.{1} 이상의 버전을 대상으로 하는 프로젝트는 이 버전의 Visual Studio에서 지원되지 않습니다.</target>
+        <source>Projects targeting .NET Core {0}.{1} or newer are not supported by this version of Visual Studio.</source>
+        <target state="needs-review-translation">.NET Core {0}.{1} 이상의 버전을 대상으로 하는 프로젝트는 이 버전의 Visual Studio에서 지원되지 않습니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="DontShowAgain">
