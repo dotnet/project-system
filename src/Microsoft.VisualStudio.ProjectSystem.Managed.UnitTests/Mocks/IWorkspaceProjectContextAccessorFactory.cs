@@ -7,12 +7,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
     internal static class IWorkspaceProjectContextAccessorFactory
     {
-        public static IWorkspaceProjectContextAccessor ImplementContext(IWorkspaceProjectContext context)
+        public static IWorkspaceProjectContextAccessor ImplementContext(IWorkspaceProjectContext context, string contextId = null)
         {
             var mock = new Mock<IWorkspaceProjectContextAccessor>();
 
             mock.Setup(c => c.Context)
                 .Returns(context);
+
+            mock.Setup(c => c.ContextId)
+                .Returns(contextId);
 
             return mock.Object;
         }

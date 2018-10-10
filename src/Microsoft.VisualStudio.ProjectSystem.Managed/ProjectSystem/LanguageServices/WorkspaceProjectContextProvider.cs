@@ -23,21 +23,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         private readonly ITelemetryService _telemetryService;
         private readonly ISafeProjectGuidService _projectGuidService;
         private readonly Lazy<IWorkspaceProjectContextFactory> _workspaceProjectContextFactory;
-        private readonly IActiveWorkspaceProjectContextTracker _activeWorkspaceProjectContextTracker;
 
         [ImportingConstructor]
         public WorkspaceProjectContextProvider(UnconfiguredProject project,
                                                IProjectThreadingService threadingService,
                                                ISafeProjectGuidService projectGuidService,
                                                ITelemetryService telemetryService,
-                                               Lazy<IWorkspaceProjectContextFactory> workspaceProjectContextFactory,        // From Roslyn, so lazy
-                                               IActiveWorkspaceProjectContextTracker activeWorkspaceProjectContextTracker)
+                                               Lazy<IWorkspaceProjectContextFactory> workspaceProjectContextFactory)        // From Roslyn, so lazy
         {
             _project = project;
             _threadingService = threadingService;
             _telemetryService = telemetryService;
             _workspaceProjectContextFactory = workspaceProjectContextFactory;
-            _activeWorkspaceProjectContextTracker = activeWorkspaceProjectContextTracker;
             _projectGuidService = projectGuidService;
         }
 
@@ -55,16 +52,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             if (context == null)
                 return null;
 
-            _activeWorkspaceProjectContextTracker.RegisterContext(context, data.WorkspaceProjectContextId);
-
             return new WorkspaceProjectContextAccessor(data.WorkspaceProjectContextId, context, _threadingService);
         }
 
         public async Task ReleaseProjectContextAsync(IWorkspaceProjectContextAccessor accessor)
         {
             Requires.NotNull(accessor, nameof(accessor));
-
-            _activeWorkspaceProjectContextTracker.UnregisterContext(accessor.Context);
 
             // TODO: https://github.com/dotnet/project-system/issues/353.
             await _threadingService.SwitchToUIThread();

@@ -61,6 +61,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 if (_contextAccessor == null)
                     return;
 
+                _activeWorkspaceProjectContextTracker.RegisterContext(_contextAccessor.Context, _contextAccessor.ContextId);
+
                 _applyChangesToWorkspaceContext = _applyChangesToWorkspaceContextFactory.CreateExport();
                 _applyChangesToWorkspaceContext.Value.Initialize(_contextAccessor.Context);
 
@@ -83,6 +85,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
                     if (_contextAccessor != null)
                     {
+                        _activeWorkspaceProjectContextTracker.UnregisterContext(_contextAccessor.Context);
+
                         await _workspaceProjectContextProvider.ReleaseProjectContextAsync(_contextAccessor)
                                                               .ConfigureAwait(true);
                     }

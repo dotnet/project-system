@@ -4,7 +4,7 @@ using System;
 using System.ComponentModel.Composition;
 using System.Threading;
 using System.Threading.Tasks;
-
+using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Xunit;
 
 using static Microsoft.VisualStudio.ProjectSystem.LanguageServices.WorkspaceContextHost;
@@ -81,6 +81,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             Assert.Equal(0, callCount);
         }
 
+
+        [Fact]
+        public async Task InitializedAsync_WhenInitializedWithContext_RegistersContextWithTracker()
+        {
+            IWorkspaceProjectContext contextResult = null;
+            string contextIdResult = null;
+            var activeWorkspaceProjectContextTracker = IActiveWorkspaceProjectContextTrackerFactory.ImplementRegisterContext((c, id) => { contextResult = c; contextIdResult = id; });
+
+            var context = IWorkspaceProjectContextMockFactory.Create();
+            var accessor = IWorkspaceProjectContextAccessorFactory.ImplementContext(context, "ContextId");
+            var provider = new WorkspaceProjectContextProviderMock();
+            provider.ImplementCreateProjectContextAsync(project => accessor);
+
+            var instance = await CreateInitializedInstanceAsync(workspaceProjectContextProvider: provider.Object, activeWorkspaceProjectContextTracker: activeWorkspaceProjectContextTracker);
+
+            Assert.Same(context, contextResult);
+            Assert.Equal("ContextId", contextIdResult);
+        }
+
         [Fact]
         public async Task Dispose_WhenInitializedWithContext_ReleasesContext()
         {
@@ -96,6 +115,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             await instance.DisposeAsync();
 
             Assert.Same(accessor, result);
+        }
+
+        [Fact]
+        public async Task Dispose_WhenInitializedWithContext_UnregistersContextWithTracker()
+        {
+            IWorkspaceProjectContext result = null;
+            var activeWorkspaceProjectContextTracker = IActiveWorkspaceProjectContextTrackerFactory.ImplementReleaseContext(c => { result = c; });
+
+            var context = IWorkspaceProjectContextMockFactory.Create();
+            var accessor = IWorkspaceProjectContextAccessorFactory.ImplementContext(context);
+            var provider = new WorkspaceProjectContextProviderMock();
+            provider.ImplementCreateProjectContextAsync(project => accessor);
+
+            var instance = await CreateInitializedInstanceAsync(workspaceProjectContextProvider: provider.Object, activeWorkspaceProjectContextTracker: activeWorkspaceProjectContextTracker);
+
+            await instance.DisposeAsync();
+
+            Assert.Same(context, result);
         }
 
         [Theory]

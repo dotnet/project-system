@@ -189,23 +189,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         }
 
         [Fact]
-        public async Task CreateProjectContextAsync_RegistersContextWithTracker()
-        {
-            IWorkspaceProjectContext result = null;
-            var activeWorkspaceProjectContextTracker = IActiveWorkspaceProjectContextTrackerFactory.ImplementRegisterContext((c, id) => { result = c; });
-
-            var context = IWorkspaceProjectContextMockFactory.Create();
-            var workspaceProjectContextFactory = IWorkspaceProjectContextFactoryFactory.ImplementCreateProjectContext((_, __, ___, ____, ______, _______) => context);
-            var provider = CreateInstance(workspaceProjectContextFactory: workspaceProjectContextFactory, activeWorkspaceProjectContextTracker: activeWorkspaceProjectContextTracker);
-
-            var project = ConfiguredProjectFactory.ImplementProjectConfiguration("Debug|AnyCPU");
-
-            await provider.CreateProjectContextAsync(project);
-
-            Assert.NotNull(result);
-        }
-
-        [Fact]
         public async Task ReleaseProjectContextAsync_DisposesContext()
         {
             var provider = CreateInstance();
@@ -220,22 +203,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         }
 
         [Fact]
-        public async Task ReleaseProjectContextAsync_UnregistersContextWithTracker()
-        {
-            IWorkspaceProjectContext result = null;
-            var activeWorkspaceProjectContextTracker = IActiveWorkspaceProjectContextTrackerFactory.ImplementReleaseContext(c => { result = c; });
-
-            var provider = CreateInstance(activeWorkspaceProjectContextTracker: activeWorkspaceProjectContextTracker);
-
-            var context = IWorkspaceProjectContextMockFactory.Create();
-            var accessor = IWorkspaceProjectContextAccessorFactory.ImplementContext(context);
-
-            await provider.ReleaseProjectContextAsync(accessor);
-
-            Assert.Same(context, result);
-        }
-
-        [Fact]
         public async Task ReleaseProjectContextAsync_WhenContextThrows_SwallowsException()
         {
             var provider = CreateInstance();
@@ -246,7 +213,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             await provider.ReleaseProjectContextAsync(accessor);
         }
 
-        private static WorkspaceProjectContextProvider CreateInstance(UnconfiguredProject project = null, IProjectThreadingService threadingService = null, IWorkspaceProjectContextFactory workspaceProjectContextFactory = null, IActiveWorkspaceProjectContextTracker activeWorkspaceProjectContextTracker = null, ISafeProjectGuidService projectGuidService = null, IProjectRuleSnapshot projectRuleSnapshot = null)
+        private static WorkspaceProjectContextProvider CreateInstance(UnconfiguredProject project = null, IProjectThreadingService threadingService = null, IWorkspaceProjectContextFactory workspaceProjectContextFactory = null, ISafeProjectGuidService projectGuidService = null, IProjectRuleSnapshot projectRuleSnapshot = null)
         {
             projectRuleSnapshot = projectRuleSnapshot ?? IProjectRuleSnapshotFactory.FromJson(
 @"{
@@ -261,10 +228,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             project = project ?? UnconfiguredProjectFactory.Create();
             threadingService = threadingService ?? IProjectThreadingServiceFactory.Create();
             workspaceProjectContextFactory = workspaceProjectContextFactory ?? IWorkspaceProjectContextFactoryFactory.Create();
-            activeWorkspaceProjectContextTracker = activeWorkspaceProjectContextTracker ?? IActiveWorkspaceProjectContextTrackerFactory.Create();
             projectGuidService = projectGuidService ?? ISafeProjectGuidServiceFactory.ImplementGetProjectGuidAsync(Guid.NewGuid());
 
-            var mock = new Mock<WorkspaceProjectContextProvider>(project, threadingService, projectGuidService, telemetryService, workspaceProjectContextFactory.AsLazy(), activeWorkspaceProjectContextTracker);
+            var mock = new Mock<WorkspaceProjectContextProvider>(project, threadingService, projectGuidService, telemetryService, workspaceProjectContextFactory.AsLazy());
             mock.Protected().Setup<Task<IProjectRuleSnapshot>>("GetLatestSnapshotAsync", ItExpr.IsAny<ConfiguredProject>())
                             .ReturnsAsync(projectRuleSnapshot);
 
