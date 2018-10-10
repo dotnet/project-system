@@ -1,7 +1,6 @@
 phases:
 - phase: Windows
   queue:
-    name: Hosted VS2017
     timeoutInMinutes: 90
   steps:
     - script: build\CIBuild.cmd -configuration $(_configuration) -prepareMachine
