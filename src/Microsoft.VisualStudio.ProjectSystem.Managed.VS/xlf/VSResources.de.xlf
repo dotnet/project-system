@@ -282,13 +282,13 @@ Um das Projekt zu debuggen, fügen Sie dieser Projektmappe ein ausführbares Pro
         <note />
       </trans-unit>
       <trans-unit id="PartialSupportedDotNetCoreProject">
-        <source>A newer version of Visual Studio is recommended for projects targetting .NET Core {0}.{1}.</source>
+        <source>A newer version of Visual Studio is recommended for projects targeting .NET Core {0}.{1}.</source>
         <target state="needs-review-translation">Für .NET Core {0}.{1}-Projekte wird Visual Studio 2017, Version 15.7 oder höher, empfohlen.</target>
         <note />
       </trans-unit>
       <trans-unit id="NotSupportedDotNetCoreProject">
-        <source>Projects targeting versions newer than .NET Core {0}.{1} are not supported by this version of Visual Studio.</source>
-        <target state="translated">Projekte für höhere Versionen als .NET Core {0}.{1} werden von dieser Version von Visual Studio nicht unterstützt.</target>
+        <source>Projects targeting .NET Core {0}.{1} or newer are not supported by this version of Visual Studio.</source>
+        <target state="needs-review-translation">Projekte für höhere Versionen als .NET Core {0}.{1} werden von dieser Version von Visual Studio nicht unterstützt.</target>
         <note />
       </trans-unit>
       <trans-unit id="DontShowAgain">

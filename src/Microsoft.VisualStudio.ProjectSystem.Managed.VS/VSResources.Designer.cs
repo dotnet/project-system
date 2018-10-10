@@ -355,7 +355,7 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Projects targeting versions newer than .NET Core {0}.{1} are not supported by this version of Visual Studio..
+        ///   Looks up a localized string similar to Projects targeting .NET Core {0}.{1} or newer are not supported by this version of Visual Studio..
         /// </summary>
         internal static string NotSupportedDotNetCoreProject {
             get {
@@ -427,7 +427,7 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A newer version of Visual Studio is recommended for projects targetting .NET Core {0}.{1}..
+        ///   Looks up a localized string similar to A newer version of Visual Studio is recommended for projects targeting .NET Core {0}.{1}..
         /// </summary>
         internal static string PartialSupportedDotNetCoreProject {
             get {
