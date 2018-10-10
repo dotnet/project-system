@@ -53,7 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             return UnloadAsync();
         }
 
-        public async Task OpenContextForWriteAsync(Func<IWorkspaceProjectContext, Task> action)
+        public async Task OpenContextForWriteAsync(Func<IWorkspaceProjectContextAccessor, Task> action)
         {
             Requires.NotNull(action, nameof(action));
 

@@ -41,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             _projectGuidService = projectGuidService;
         }
 
-        public async Task<IWorkspaceProjectContext> CreateProjectContextAsync(ConfiguredProject project)
+        public async Task<IWorkspaceProjectContextAccessor> CreateProjectContextAsync(ConfiguredProject project)
         {
             Requires.NotNull(project, nameof(project));
 
@@ -55,26 +55,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             if (context == null)
                 return null;
 
-            // Wrap to enforce UI-thread
-            context = new ForegroundWorkspaceProjectContext(_threadingService, context);
-
             _activeWorkspaceProjectContextTracker.RegisterContext(context, data.WorkspaceProjectContextId);
 
-            return context;            
+            return new WorkspaceProjectContextAccessor(data.WorkspaceProjectContextId, context, _threadingService);
         }
 
-        public async Task ReleaseProjectContextAsync(IWorkspaceProjectContext projectContext)
+        public async Task ReleaseProjectContextAsync(IWorkspaceProjectContextAccessor accessor)
         {
-            Requires.NotNull(projectContext, nameof(projectContext));
+            Requires.NotNull(accessor, nameof(accessor));
 
-            _activeWorkspaceProjectContextTracker.UnregisterContext(projectContext);
+            _activeWorkspaceProjectContextTracker.UnregisterContext(accessor.Context);
 
             // TODO: https://github.com/dotnet/project-system/issues/353.
             await _threadingService.SwitchToUIThread();
 
             try
             {
-                projectContext.Dispose();
+                accessor.Context.Dispose();
             }
             catch (Exception ex) when(_telemetryService.PostFault(TelemetryEventName.LanguageServiceInitFault, ex))
             {

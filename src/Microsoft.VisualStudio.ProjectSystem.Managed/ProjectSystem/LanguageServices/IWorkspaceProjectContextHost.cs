@@ -36,6 +36,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         /// <exception cref="OperationCanceledException">
         ///     The result is awaited and the <see cref="ConfiguredProject"/> is unloaded.
         /// </exception>
-        Task OpenContextForWriteAsync(Func<IWorkspaceProjectContext, Task> action);
+        Task OpenContextForWriteAsync(Func<IWorkspaceProjectContextAccessor, Task> action);
     }
 }
