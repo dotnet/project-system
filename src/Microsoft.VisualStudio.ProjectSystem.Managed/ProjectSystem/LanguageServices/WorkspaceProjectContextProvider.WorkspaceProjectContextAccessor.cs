@@ -8,34 +8,40 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     {
         private class WorkspaceProjectContextAccessor : IWorkspaceProjectContextAccessor
         {
+            private readonly IWorkspaceProjectContext _context;
+            private readonly IProjectThreadingService _threadingService;
+            private readonly string _contextId;
+
             public WorkspaceProjectContextAccessor(string contextId, IWorkspaceProjectContext context, IProjectThreadingService threadingService)
             {
-                ContextId = contextId;
-
-                // Wrap to enforce UI-thread
-                Context = new ForegroundWorkspaceProjectContext(threadingService, context);
-                HostSpecificEditAndContinueService = context;
-                HostSpecificErrorReporter = context;
+                _contextId = contextId;
+                _context = context;
+                _threadingService = threadingService;
             }
 
             public string ContextId
             {
-                get;
+                get { return _contextId; }
             }
 
             public IWorkspaceProjectContext Context
             {
-                get;
+                get
+                {
+                    _threadingService.VerifyOnUIThread();
+
+                    return _context;
+                }
             }
 
             public object HostSpecificEditAndContinueService
             {
-                get;
+                get { return Context; }
             }
 
             public object HostSpecificErrorReporter
             {
-                get;
+                get { return Context; }
             }
         }
     }
