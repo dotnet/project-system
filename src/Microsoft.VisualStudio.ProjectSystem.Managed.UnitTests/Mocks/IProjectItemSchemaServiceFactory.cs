@@ -1,7 +1,5 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System.Threading.Tasks.Dataflow;
-
 using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem
@@ -13,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var projectItemSchemaService = new Mock<IProjectItemSchemaService>();
 
             projectItemSchemaService.SetupGet(o => o.SourceBlock)
-                .Returns(new BroadcastBlock<IProjectVersionedValue<IProjectItemSchema>>(null));
+                .Returns(DataflowBlockSlim.CreateBroadcastBlock<IProjectVersionedValue<IProjectItemSchema>>());
 
             return projectItemSchemaService.Object;
         }

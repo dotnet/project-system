@@ -21,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         private readonly ConfiguredProject _project;
         private readonly IProjectAsynchronousTasksService _tasksService;
         private readonly IActiveConfigurationGroupService _activeConfigurationGroupService;
-        private readonly ActionBlock<IProjectVersionedValue<IConfigurationGroup<ProjectConfiguration>>> _targetBlock;
+        private readonly ITargetBlock<IProjectVersionedValue<IConfigurationGroup<ProjectConfiguration>>> _targetBlock;
         private TaskCompletionSource<object> _isImplicitlyActiveSource = new TaskCompletionSource<object>();
         private IDisposable _subscription;
 
@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             _project = project;
             _activeConfigurationGroupService = activeConfigurationGroupService;
             _tasksService = tasksService;
-            _targetBlock = new ActionBlock<IProjectVersionedValue<IConfigurationGroup<ProjectConfiguration>>>(OnActiveConfigurationsChanged);
+            _targetBlock = DataflowBlockSlim.CreateActionBlock<IProjectVersionedValue<IConfigurationGroup<ProjectConfiguration>>>(OnActiveConfigurationsChanged);
 
             ImplicitlyActiveServices = new OrderPrecedenceImportCollection<IImplicitlyActiveService>(projectCapabilityCheckProvider: project);
         }
