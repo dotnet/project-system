@@ -91,7 +91,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                     return new ProjectVersionedValue<IReadOnlyList<IEnumValue>>(generatedResult, dataSources);
                 });
 
-            var broadcastBlock = new BroadcastBlock<IProjectVersionedValue<IReadOnlyList<IEnumValue>>>(b => b);
+            var broadcastBlock = DataflowBlockSlim.CreateBroadcastBlock<IProjectVersionedValue<IReadOnlyList<IEnumValue>>>();
 
             _launchProfileProviderLink = LaunchSettingProvider.SourceBlock.LinkTo(
                 debugProfilesBlock,

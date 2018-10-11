@@ -66,7 +66,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
         // The source for our dataflow
         private IReceivableSourceBlock<ILaunchSettings> _changedSourceBlock;
-        protected BroadcastBlock<ILaunchSettings> _broadcastBlock;
+        protected IBroadcastBlock<ILaunchSettings> _broadcastBlock;
 
         protected IFileSystem FileManager { get; set; }
 
@@ -173,7 +173,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         protected override void Initialize()
         {
             // Create our broadcast block for subscribers to get new ILaunchProfiles Information
-            _broadcastBlock = new BroadcastBlock<ILaunchSettings>(s => s);
+            _broadcastBlock = DataflowBlockSlim.CreateBroadcastBlock<ILaunchSettings>();
             _changedSourceBlock = _broadcastBlock.SafePublicize();
 
 
