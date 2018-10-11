@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.Build.Framework;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 using Microsoft.VisualStudio.Shell.Interop;
+using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
 {
@@ -23,7 +24,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         private static readonly Task<AddMessageResult> s_notHandled = Task.FromResult(AddMessageResult.NotHandled);
         private readonly UnconfiguredProject _project;
         private readonly IActiveWorkspaceProjectContextHost _projectContextHost;
-        private IVsLanguageServiceBuildErrorReporter2 _languageServiceBuildErrorReporter;
 
         [ImportingConstructor]
         public LanguageServiceErrorListProvider(UnconfiguredProject project, IActiveWorkspaceProjectContextHost projectContextHost)
@@ -52,32 +52,33 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
             // We only want to pass compiler, analyzers, etc to the language 
             // service, so we skip tasks that do not have a code
             if (!TryExtractErrorListDetails(error.BuildEventArgs, out ErrorListDetails details) || string.IsNullOrEmpty(details.Code))
-                return await s_notHandled.ConfigureAwait(false);
+                return AddMessageResult.NotHandled;
 
-            InitializeBuildErrorReporter();
-
-            bool handled = false;
-            if (_languageServiceBuildErrorReporter != null)
+            bool handled = await _projectContextHost.OpenContextForWriteAsync(accessor =>
             {
+                var errorReporter = (IVsLanguageServiceBuildErrorReporter2)accessor.HostSpecificErrorReporter;
+
                 try
                 {
-                    _languageServiceBuildErrorReporter.ReportError2(details.Message,
-                                                                    details.Code,
-                                                                    details.Priority,
-                                                                    details.LineNumberForErrorList,
-                                                                    details.ColumnNumberForErrorList,
-                                                                    details.EndLineNumberForErrorList,
-                                                                    details.EndColumnNumberForErrorList,
-                                                                    details.GetFileFullPath(_project.FullPath));
-                    handled = true;
+                    errorReporter.ReportError2(details.Message,
+                                               details.Code,
+                                               details.Priority,
+                                               details.LineNumberForErrorList,
+                                               details.ColumnNumberForErrorList,
+                                               details.EndLineNumberForErrorList,
+                                               details.EndColumnNumberForErrorList,
+                                               details.GetFileFullPath(_project.FullPath));
+                    return TaskResult.True;
                 }
                 catch (NotImplementedException)
                 {   // Language Service doesn't handle it, typically because file 
                     // isn't in the project or because it doesn't have line/column
                 }
-            }
 
-            return handled ? await s_handledAndStopProcessing.ConfigureAwait(false) : await s_notHandled.ConfigureAwait(false);
+                return TaskResult.False;
+            });
+
+            return handled ? AddMessageResult.HandledAndStopProcessing : AddMessageResult.NotHandled;
         }
 
         public Task ClearMessageFromTargetAsync(string targetName)
@@ -87,21 +88,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
 
         public Task ClearAllAsync()
         {
-            if (_languageServiceBuildErrorReporter != null)
+            return _projectContextHost.OpenContextForWriteAsync(accessor =>
             {
-                _languageServiceBuildErrorReporter.ClearErrors();
-            }
+                ((IVsLanguageServiceBuildErrorReporter2)accessor.HostSpecificErrorReporter).ClearErrors();
 
-            return Task.CompletedTask;
-        }
+                return Task.CompletedTask;
+            });
 
-        private void InitializeBuildErrorReporter()
-        {
-            // We defer grabbing error reporter the until the first build event, because the language service is initialized asynchronously
-            if (_languageServiceBuildErrorReporter == null)
-            {
-                _languageServiceBuildErrorReporter = (IVsLanguageServiceBuildErrorReporter2)_projectContextHost.HostSpecificErrorReporter;
-            }
         }
 
         /// <summary>
