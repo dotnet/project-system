@@ -81,7 +81,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
         protected override void Initialize()
         {
-            var debugProfilesBlock = new TransformBlock<ILaunchSettings, IProjectVersionedValue<IReadOnlyList<IEnumValue>>>(
+            var debugProfilesBlock = DataflowBlockSlim.CreateTransformBlock<ILaunchSettings, IProjectVersionedValue<IReadOnlyList<IEnumValue>>>(
                 update =>
                 {
                     // Compute the new enum values from the profile provider
