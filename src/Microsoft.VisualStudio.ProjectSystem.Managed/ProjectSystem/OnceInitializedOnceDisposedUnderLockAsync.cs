@@ -55,7 +55,44 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// <param name="cancellationToken">
         ///     The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.
         /// </param>
-        /// <returns></returns>
+        /// <returns>
+        ///     The result of <paramref name="action"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        ///     <paramref name="action"/> is <see langword="null"/>.
+        /// </exception>
+        /// <exception cref="OperationCanceledException">
+        ///     The result is awaited and <paramref name="cancellationToken"/> is cancelled.
+        ///     <para>
+        ///         -or-
+        ///     </para>
+        ///     The result is awaited and the <see cref="ThreadSafeOnceInitializedOnceDisposedAsync"/> 
+        ///     has been disposed of.
+        /// </exception>
+        protected Task<T> ExecuteUnderLockAsync<T>(Func<CancellationToken, Task<T>> action, CancellationToken cancellationToken = default)
+        {
+            Requires.NotNull(action, nameof(action));
+
+            return ExecuteUnderLockCoreAsync(action, cancellationToken);
+        }
+
+        /// <summary>
+        ///     Executes the specified action under a lock that prevents overlap with any currently executing actions passed to
+        ///     <see cref="ExecuteUnderLockAsync(Func{CancellationToken, Task}, CancellationToken)"/> and 
+        ///     <see cref="OnceInitializedOnceDisposedAsync.DisposeAsync"/>.
+        /// </summary>
+        /// <param name="action">
+        ///     The action to execute under the lock.
+        /// </param>
+        /// <param name="cancellationToken">
+        ///     The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.
+        /// </param>
+        /// <returns>
+        ///     The result of <paramref name="action"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        ///     <paramref name="action"/> is <see langword="null"/>.
+        /// </exception>
         /// <exception cref="OperationCanceledException">
         ///     The result is awaited and <paramref name="cancellationToken"/> is cancelled.
         ///     <para>
@@ -71,6 +108,30 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return ExecuteUnderLockCoreAsync(action, cancellationToken);
         }
 
+        private async Task<T> ExecuteUnderLockCoreAsync<T>(Func<CancellationToken, Task<T>> action, CancellationToken cancellationToken = default)
+        {
+            Requires.NotNull(action, nameof(action));
+
+            using (var source = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, DisposalToken))
+            {
+                CancellationToken jointCancellationToken = source.Token;
+
+                try
+                {
+                    T result = default;
+                    await _semaphore.ExecuteAsync(async () => { result = await action(jointCancellationToken); }, jointCancellationToken);
+
+                    return result;
+                }
+                catch (ObjectDisposedException)
+                {   // There's a tiny chance that between checking the cancellation token (wrapping DisposalToken) 
+                    // and checking if the underlying SemaphoreSlim has been disposed, that dispose for this instance 
+                    // (and hence _semaphore) has been run. Handle that and just treat it as a cancellation.
+                    throw new OperationCanceledException();
+                }
+            }
+        }
+
         private async Task ExecuteUnderLockCoreAsync(Func<CancellationToken, Task> action, CancellationToken cancellationToken = default)
         {
             using (var source = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, DisposalToken))
@@ -79,8 +140,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
                 try
                 {
-                    await _semaphore.ExecuteAsync(() => action(jointCancellationToken), jointCancellationToken)
-                                    .ConfigureAwait(true);
+                    await _semaphore.ExecuteAsync(() => action(jointCancellationToken), jointCancellationToken);
                 }
                 catch (ObjectDisposedException)
                 {   // There's a tiny chance that between checking the cancellation token (wrapping DisposalToken) 
