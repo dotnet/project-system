@@ -4,7 +4,7 @@ phases:
     name: Hosted VS2017
     timeoutInMinutes: 90
   steps:
-    - script: build\CIBuild.cmd -configuration $(_configuration) -prepareMachine
+    - script: build\CIBuild.cmd -configuration $(_configuration) -prepareMachine $(_additionalArgs)
     - task: PublishBuildArtifacts@1
       inputs:
         PathtoPublish: '$(Build.SourcesDirectory)\artifacts\$(_configuration)\log'
