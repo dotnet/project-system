@@ -9,9 +9,7 @@ phases:
       inputs:
         targetType: inline
         arguments: $(CODECOV_TOKEN)
-        script: |
-          Write-Host "##vso[task.setvariable variable=CODECOV_TOKEN;]$args[0]"
-          $env:CODECOV_TOKEN = $args[0]
+        script: Write-Host "##vso[task.setvariable variable=CODECOV_TOKEN;]$args[0]"
     - script: build\CIBuild.cmd -configuration $(_configuration) -prepareMachine
     - task: PublishBuildArtifacts@1
       inputs:
