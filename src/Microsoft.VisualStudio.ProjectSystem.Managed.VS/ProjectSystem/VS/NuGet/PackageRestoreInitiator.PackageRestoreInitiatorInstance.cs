@@ -104,7 +104,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                         });
 
                     Action<Tuple<ImmutableList<IProjectValueVersions>, TIdentityDictionary>> action = ProjectPropertyChanged;
-                    var target = new ActionBlock<Tuple<ImmutableList<IProjectValueVersions>, TIdentityDictionary>>(action);
+                    var target = DataflowBlockSlim.CreateActionBlock(action);
 
                     var targetLinkOptions = DataflowOption.PropagateCompletion;
 
