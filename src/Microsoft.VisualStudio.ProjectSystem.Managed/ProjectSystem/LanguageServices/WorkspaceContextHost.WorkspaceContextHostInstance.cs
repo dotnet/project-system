@@ -95,16 +95,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             public async Task OpenContextForWriteAsync(Func<IWorkspaceProjectContextAccessor, Task> action)
             {
-                await InitializationCompletion;
-                // If we failed to create a context, we treat it as a cancellation
-                if (_contextAccessor == null)
-                    throw new OperationCanceledException();
-                CancellationToken cancellationToken = _tasksService.UnloadCancellationToken;
+                await WaitUntilInitializedCompletedAsync();
 
                 // TODO: https://github.com/dotnet/project-system/issues/353
-                await _threadingService.SwitchToUIThread(cancellationToken);
+                await _threadingService.SwitchToUIThread(_tasksService.UnloadCancellationToken);
 
-                await ExecuteUnderLockAsync(_ => action(_contextAccessor), cancellationToken);
+                await ExecuteUnderLockAsync(_ => action(_contextAccessor), _tasksService.UnloadCancellationToken);
+            }
+
+            public async Task<T> OpenContextForWriteAsync<T>(Func<IWorkspaceProjectContextAccessor, Task<T>> action)
+            {
+                await WaitUntilInitializedCompletedAsync();
+
+                // TODO: https://github.com/dotnet/project-system/issues/353
+                await _threadingService.SwitchToUIThread(_tasksService.UnloadCancellationToken);
+
+                return await ExecuteUnderLockAsync(_ => action(_contextAccessor), _tasksService.UnloadCancellationToken);
             }
 
             internal async Task OnProjectChangedAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> update, bool evaluation)
@@ -134,6 +140,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 {
                     _applyChangesToWorkspaceContext.Value.ApplyProjectBuild(update, isActiveContext, cancellationToken);
                 }
+            }
+
+            private async Task WaitUntilInitializedCompletedAsync()
+            {
+                await InitializationCompletion;
+
+                // If we failed to create a context, we treat it as a cancellation
+                if (_contextAccessor == null)
+                    throw new OperationCanceledException();
             }
         }
     }
