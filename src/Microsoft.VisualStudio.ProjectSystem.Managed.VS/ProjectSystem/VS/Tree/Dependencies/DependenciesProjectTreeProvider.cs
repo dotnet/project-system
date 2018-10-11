@@ -204,7 +204,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             // Get the list of normal reference Item Nodes (this excludes any shared import nodes).
             IEnumerable<IProjectTree> referenceItemNodes = nodes.Except(sharedImportNodes);
 
-            using (ProjectWriteLockReleaser access = await ProjectLockService.WriteLockAsync())
+            await ProjectLockService.WriteLockAsync(async access =>
             {
                 Project project = await access.GetProjectAsync(ActiveConfiguredProject);
 
@@ -277,7 +277,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                         }
                     }
                 }
-            }
+            });
         }
 
         /// <summary>
