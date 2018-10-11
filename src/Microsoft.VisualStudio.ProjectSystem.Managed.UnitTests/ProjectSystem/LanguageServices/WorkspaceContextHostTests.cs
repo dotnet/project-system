@@ -4,8 +4,6 @@ using System;
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
 
-using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
-
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
@@ -110,7 +108,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             await Assert.ThrowsAsync<ArgumentNullException>("action", () =>
             {
-                return instance.OpenContextForWriteAsync((Func<IWorkspaceProjectContext, Task>)null);
+                return instance.OpenContextForWriteAsync((Func<IWorkspaceProjectContextAccessor, Task>)null);
             });
         }
 
@@ -121,7 +119,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             tasksService = tasksService ?? IUnconfiguredProjectTasksServiceFactory.Create();
             projectSubscriptionService = projectSubscriptionService ?? IProjectSubscriptionServiceFactory.Create();
             activeWorkspaceProjectContextTracker = activeWorkspaceProjectContextTracker ?? IActiveWorkspaceProjectContextTrackerFactory.Create();
-            workspaceProjectContextProvider = workspaceProjectContextProvider ?? IWorkspaceProjectContextProviderFactory.ImplementCreateProjectContextAsync(IWorkspaceProjectContextMockFactory.Create());
+            workspaceProjectContextProvider = workspaceProjectContextProvider ?? IWorkspaceProjectContextProviderFactory.ImplementCreateProjectContextAsync(IWorkspaceProjectContextAccessorFactory.Create());
             applyChangesToWorkspaceContext = applyChangesToWorkspaceContext ?? IApplyChangesToWorkspaceContextFactory.Create();
 
             return new WorkspaceContextHost(project,

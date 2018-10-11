@@ -4,9 +4,7 @@ using System;
 using System.ComponentModel.Composition;
 using System.Threading;
 using System.Threading.Tasks;
-
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
-
 using Xunit;
 
 using static Microsoft.VisualStudio.ProjectSystem.LanguageServices.WorkspaceContextHost;
@@ -28,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         [Fact]
         public async Task Dispose_WhenInitializedWithNoContext_DoesNotThrow()
         {
-            var workspaceProjectContextProvider = IWorkspaceProjectContextProviderFactory.ImplementCreateProjectContextAsync(context: null);
+            var workspaceProjectContextProvider = IWorkspaceProjectContextProviderFactory.ImplementCreateProjectContextAsync(accessor: null);
 
             var instance = await CreateInitializedInstanceAsync(workspaceProjectContextProvider: workspaceProjectContextProvider);
 
@@ -40,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         [Fact]
         public async Task OpenContextForWriteAsync_WhenInitializedWithNoContext_ThrowsOperationCanceled()
         {
-            var workspaceProjectContextProvider = IWorkspaceProjectContextProviderFactory.ImplementCreateProjectContextAsync(context: null);
+            var workspaceProjectContextProvider = IWorkspaceProjectContextProviderFactory.ImplementCreateProjectContextAsync(accessor: null);
 
             var instance = await CreateInitializedInstanceAsync(workspaceProjectContextProvider: workspaceProjectContextProvider);
 
@@ -53,23 +51,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         [Fact]
         public async Task OpenContextForWriteAsync_WhenInitializedWithContext_CallsAction()
         {
-            var context = IWorkspaceProjectContextMockFactory.Create();
-            var workspaceProjectContextProvider = IWorkspaceProjectContextProviderFactory.ImplementCreateProjectContextAsync(context: context);
+            var accessor = IWorkspaceProjectContextAccessorFactory.Create();
+            var workspaceProjectContextProvider = IWorkspaceProjectContextProviderFactory.ImplementCreateProjectContextAsync(accessor);
 
             var instance = await CreateInitializedInstanceAsync(workspaceProjectContextProvider: workspaceProjectContextProvider);
 
-            IWorkspaceProjectContext result = null;
-            await instance.OpenContextForWriteAsync(c => { result = c; return Task.CompletedTask; });
+            IWorkspaceProjectContextAccessor result = null;
+            await instance.OpenContextForWriteAsync(a => { result = a; return Task.CompletedTask; });
 
-            Assert.Same(context, result);
+            Assert.Same(accessor, result);
         }
 
         [Fact]
         public async Task OpenContextForWriteAsync_WhenProjectUnloaded_ThrowsOperationCanceled()
         {
             var tasksService = IUnconfiguredProjectTasksServiceFactory.ImplementUnloadCancellationToken(new CancellationToken(canceled: true));
-            var context = IWorkspaceProjectContextMockFactory.Create();
-            var workspaceProjectContextProvider = IWorkspaceProjectContextProviderFactory.ImplementCreateProjectContextAsync(context: context);
+            var accessor = IWorkspaceProjectContextAccessorFactory.Create();
+            var workspaceProjectContextProvider = IWorkspaceProjectContextProviderFactory.ImplementCreateProjectContextAsync(accessor);
 
             var instance = await CreateInitializedInstanceAsync(workspaceProjectContextProvider: workspaceProjectContextProvider, tasksService: tasksService);
 
@@ -83,17 +81,54 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             Assert.Equal(0, callCount);
         }
 
+
+        [Fact]
+        public async Task InitializedAsync_WhenInitializedWithContext_RegistersContextWithTracker()
+        {
+            IWorkspaceProjectContext contextResult = null;
+            string contextIdResult = null;
+            var activeWorkspaceProjectContextTracker = IActiveWorkspaceProjectContextTrackerFactory.ImplementRegisterContext((c, id) => { contextResult = c; contextIdResult = id; });
+
+            var context = IWorkspaceProjectContextMockFactory.Create();
+            var accessor = IWorkspaceProjectContextAccessorFactory.ImplementContext(context, "ContextId");
+            var provider = new WorkspaceProjectContextProviderMock();
+            provider.ImplementCreateProjectContextAsync(project => accessor);
+
+            var instance = await CreateInitializedInstanceAsync(workspaceProjectContextProvider: provider.Object, activeWorkspaceProjectContextTracker: activeWorkspaceProjectContextTracker);
+
+            Assert.Same(context, contextResult);
+            Assert.Equal("ContextId", contextIdResult);
+        }
+
         [Fact]
         public async Task Dispose_WhenInitializedWithContext_ReleasesContext()
         {
-            var context = IWorkspaceProjectContextMockFactory.Create();
+            var accessor = IWorkspaceProjectContextAccessorFactory.Create();
 
-            IWorkspaceProjectContext result = null;
+            IWorkspaceProjectContextAccessor result = null;
             var provider = new WorkspaceProjectContextProviderMock();
-            provider.ImplementCreateProjectContextAsync(project => context);
-            provider.ImplementReleaseProjectContextAsync(c => { result = c; });
+            provider.ImplementCreateProjectContextAsync(project => accessor);
+            provider.ImplementReleaseProjectContextAsync(a => { result = a; });
 
             var instance = await CreateInitializedInstanceAsync(workspaceProjectContextProvider: provider.Object);
+
+            await instance.DisposeAsync();
+
+            Assert.Same(accessor, result);
+        }
+
+        [Fact]
+        public async Task Dispose_WhenInitializedWithContext_UnregistersContextWithTracker()
+        {
+            IWorkspaceProjectContext result = null;
+            var activeWorkspaceProjectContextTracker = IActiveWorkspaceProjectContextTrackerFactory.ImplementReleaseContext(c => { result = c; });
+
+            var context = IWorkspaceProjectContextMockFactory.Create();
+            var accessor = IWorkspaceProjectContextAccessorFactory.ImplementContext(context);
+            var provider = new WorkspaceProjectContextProviderMock();
+            provider.ImplementCreateProjectContextAsync(project => accessor);
+
+            var instance = await CreateInitializedInstanceAsync(workspaceProjectContextProvider: provider.Object, activeWorkspaceProjectContextTracker: activeWorkspaceProjectContextTracker);
 
             await instance.DisposeAsync();
 
@@ -217,7 +252,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             tasksService = tasksService ?? IUnconfiguredProjectTasksServiceFactory.Create();
             projectSubscriptionService = projectSubscriptionService ?? IProjectSubscriptionServiceFactory.Create();
             activeWorkspaceProjectContextTracker = activeWorkspaceProjectContextTracker ?? IActiveWorkspaceProjectContextTrackerFactory.Create();
-            workspaceProjectContextProvider = workspaceProjectContextProvider ?? IWorkspaceProjectContextProviderFactory.ImplementCreateProjectContextAsync(IWorkspaceProjectContextMockFactory.Create());
+            workspaceProjectContextProvider = workspaceProjectContextProvider ?? IWorkspaceProjectContextProviderFactory.ImplementCreateProjectContextAsync(IWorkspaceProjectContextAccessorFactory.Create());
             applyChangesToWorkspaceContext = applyChangesToWorkspaceContext ?? IApplyChangesToWorkspaceContextFactory.Create();
 
             return new WorkspaceContextHostInstance(project,
