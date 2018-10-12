@@ -148,6 +148,9 @@
     <Compile Update="ProjectSystem\Rules\VisualBasic.NamespaceImport.cs">
       <DependentUpon>VisualBasic.NamespaceImport.xaml</DependentUpon>
     </Compile>
+    <Compile Update="ProjectSystem\Rules\Resource.cs">
+      <DependentUpon>Resource.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -262,6 +265,12 @@
     <XamlPropertyRule Include="ProjectSystem\Rules\ResolvedProjectReference.xaml">
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
+    </XamlPropertyRule>
+    <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\Resource.BrowseObject.xaml" />
+    <XamlPropertyRule Include="ProjectSystem\Rules\Resource.xaml">
+      <XlfInput>false</XlfInput>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
     </XamlPropertyRule>
     <XamlPropertyRule Include="ProjectSystem\Rules\AppDesigner.xaml">
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
