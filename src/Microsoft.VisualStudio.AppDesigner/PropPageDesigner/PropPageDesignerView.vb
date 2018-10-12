@@ -608,6 +608,9 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                     If PropPage IsNot Nothing Then
                         PropPage.GetPageInfo(Info)
                         PropertyPagePanel.AutoScrollMinSize = New Size(Info(0).SIZE.cx + Padding.Right + Padding.Left, Info(0).SIZE.cy + Padding.Top + Padding.Bottom)
+                        PropertyPagePanel.AutoScroll = True
+                        PropertyPagePanel.VerticalScroll.Value = 0
+                        PropertyPagePanel.HorizontalScroll.Value = 0
                     End If
 
                     PropPage.Activate(PropertyPagePanel.Handle, New OleInterop.RECT() {GetPageRect()}, 0)
