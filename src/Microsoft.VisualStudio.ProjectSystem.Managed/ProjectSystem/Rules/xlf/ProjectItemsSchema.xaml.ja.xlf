@@ -87,6 +87,16 @@
         <target state="new">Workflow definition</target>
         <note />
       </trans-unit>
+      <trans-unit id="ContentType|Resource|DisplayName">
+        <source>Resource</source>
+        <target state="new">Resource</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ItemType|Resource|DisplayName">
+        <source>Resource</source>
+        <target state="new">Resource</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>
