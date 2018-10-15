@@ -10,8 +10,6 @@ using Task = System.Threading.Tasks.Task;
 namespace Microsoft.VisualStudio.Threading.Tasks
 {
     /// <summary>
-    /// TaskDelayScheduler
-    ///
     /// Helper class which allows a task to be scheduled to run after some delay, but if a new task
     /// is scheduled before the delay runs out, the previous task is cancelled.
     /// </summary>
@@ -39,13 +37,7 @@ namespace Microsoft.VisualStudio.Threading.Tasks
             _threadingService = threadService;
         }
 
-        /// <summary>
-        /// Schedules a task to be run. Note that the returning Task represents
-        /// the current scheduled task but not necessarily represents the task that
-        /// ends up doing the actual work. If another task is scheduled later which causes
-        /// the cancellation of the current scheduled task, the caller will not know
-        /// and need to use that latest returned task instead.
-        /// </summary>
+        /// <inheritdoc />
         public JoinableTask ScheduleAsyncTask(Func<CancellationToken, Task> asyncFunctionToCall)
         {
             lock (_syncObject)
@@ -143,9 +135,7 @@ namespace Microsoft.VisualStudio.Threading.Tasks
             }
         }
 
-        /// <summary>
-        /// Mechanism that owners can use to cancel pending tasks.
-        /// </summary>
+        /// <inheritdoc />
         public void CancelPendingUpdates()
         {
             lock (_syncObject)
