@@ -18,20 +18,12 @@ namespace Microsoft.VisualStudio.Threading.Tasks
     internal sealed class TaskDelayScheduler : ITaskDelayScheduler
     {
         private readonly object _syncObject = new object();
+        private readonly TimeSpan _taskDelayTime;
+        private readonly CancellationToken _originalSourceToken;
         private readonly IProjectThreadingService _threadingService;
-
-        /// <summary>
-        /// Delay time can be adjusted after creation - mostly useful for unit tests. Won't affect any pending task
-        /// </summary>
-        public TimeSpan TaskDelayTime { get; set; }
 
         // Task completion source for cancelling a pending task
         private CancellationTokenSource PendingUpdateTokenSource { get; set; }
-
-        private CancellationToken OriginalSourceToken { get; set; }
-
-        // True if there is a pending task
-        public bool HasPendingUpdates { get { return PendingUpdateTokenSource != null; } }
 
         // Holds the latest scheduled task
         public JoinableTask LatestScheduledTask { get; private set; }
@@ -42,8 +34,8 @@ namespace Microsoft.VisualStudio.Threading.Tasks
         /// </summary>
         public TaskDelayScheduler(TimeSpan taskDelayTime, IProjectThreadingService threadService, CancellationToken originalSourceToken)
         {
-            TaskDelayTime = taskDelayTime;
-            OriginalSourceToken = originalSourceToken;
+            _taskDelayTime = taskDelayTime;
+            _originalSourceToken = originalSourceToken;
             _threadingService = threadService;
         }
 
@@ -62,7 +54,7 @@ namespace Microsoft.VisualStudio.Threading.Tasks
                 // submissions first.
                 ClearPendingUpdates(cancel: true);
 
-                PendingUpdateTokenSource = CancellationTokenSource.CreateLinkedTokenSource(OriginalSourceToken);
+                PendingUpdateTokenSource = CancellationTokenSource.CreateLinkedTokenSource(_originalSourceToken);
                 CancellationToken token = PendingUpdateTokenSource.Token;
 
                 // We want to return a joinable task so wrap the function
@@ -81,7 +73,7 @@ namespace Microsoft.VisualStudio.Threading.Tasks
                 {
                     if (!token.IsCancellationRequested)
                     {
-                        await Task.Delay(TaskDelayTime, token);
+                        await Task.Delay(_taskDelayTime, token);
                     }
                 }
                 catch (OperationCanceledException)
