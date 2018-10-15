@@ -51,7 +51,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             }
         }
 
-        public string ProviderType { get; protected set; }
+        public string ProviderType { get; }
         public string Name { get; protected set; }
         public string Caption { get; protected set; }
         public string OriginalItemSpec { get; }
