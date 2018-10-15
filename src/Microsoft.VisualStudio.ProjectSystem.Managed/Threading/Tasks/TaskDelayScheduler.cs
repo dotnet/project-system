@@ -123,14 +123,15 @@ namespace Microsoft.VisualStudio.Threading.Tasks
         {
             lock (_syncObject)
             {
-                if (PendingUpdateTokenSource != null)
+                CancellationTokenSource cts = PendingUpdateTokenSource;
+
+                if (cts != null)
                 {
                     // Cancel any previously scheduled processing if requested
                     if (cancel)
                     {
-                        PendingUpdateTokenSource.Cancel();
+                        cts.Cancel();
                     }
-                    CancellationTokenSource cts = PendingUpdateTokenSource;
                     PendingUpdateTokenSource = null;
                     cts.Dispose();
                 }
