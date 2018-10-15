@@ -72,14 +72,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             if (projectChanges.TryGetValue(UnresolvedRuleName, out IProjectChangeDescription unresolvedChanges))
             {
                 HandleChangesForRule(false /*unresolved*/,
-                    unresolvedChanges, context, isActiveContext, ruleChangeContext,
+                    unresolvedChanges, context, ruleChangeContext,
                         (itemSpec) => { return true; });
             }
 
             if (projectChanges.TryGetValue(ResolvedRuleName, out IProjectChangeDescription resolvedChanges))
             {
                 HandleChangesForRule(true /*resolved*/,
-                    resolvedChanges, context, isActiveContext, ruleChangeContext,
+                    resolvedChanges, context, ruleChangeContext,
                     (metadata) => { return DoesUnresolvedProjectItemExist(metadata.OriginalItemSpec, unresolvedChanges); });
             }
 
@@ -90,13 +90,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             bool resolved,
             IProjectChangeDescription projectChange,
             ITargetedProjectContext context,
-            bool isActiveContext,
             DependenciesRuleChangeContext ruleChangeContext,
             Func<IDependencyModel, bool> shouldProcess)
         {
             foreach (string removedItem in projectChange.Difference.RemovedItems)
             {
-                IDependencyModel model = CreateDependencyModelForRule(removedItem, resolved, projectChange.Before, context.TargetFramework);
+                IDependencyModel model = CreateDependencyModelForRule(removedItem, resolved, projectChange.Before);
                 if (shouldProcess(model))
                 {
                     ruleChangeContext.IncludeRemovedChange(context.TargetFramework, model);
@@ -105,7 +104,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
             foreach (string changedItem in projectChange.Difference.ChangedItems)
             {
-                IDependencyModel model = CreateDependencyModelForRule(changedItem, resolved, projectChange.After, context.TargetFramework);
+                IDependencyModel model = CreateDependencyModelForRule(changedItem, resolved, projectChange.After);
                 if (shouldProcess(model))
                 {
                     // For changes we try to add new dependency. If it is a resolved dependency, it would just override
@@ -117,7 +116,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
             foreach (string addedItem in projectChange.Difference.AddedItems)
             {
-                IDependencyModel model = CreateDependencyModelForRule(addedItem, resolved, projectChange.After, context.TargetFramework);
+                IDependencyModel model = CreateDependencyModelForRule(addedItem, resolved, projectChange.After);
                 if (shouldProcess(model))
                 {
                     ruleChangeContext.IncludeAddedChange(context.TargetFramework, model);
@@ -133,8 +132,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         private IDependencyModel CreateDependencyModelForRule(
             string itemSpec,
             bool resolved,
-            IProjectRuleSnapshot projectRuleSnapshot,
-            ITargetFramework targetFramework)
+            IProjectRuleSnapshot projectRuleSnapshot)
         {
             IImmutableDictionary<string, string> properties = GetProjectItemProperties(projectRuleSnapshot, itemSpec);
             string originalItemSpec = itemSpec;

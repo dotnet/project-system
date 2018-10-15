@@ -97,7 +97,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             {
                 IImmutableDictionary<string, string> properties = GetProjectItemProperties(projectChange.Before, removedItem);
                 IDependencyModel model = GetDependencyModel(removedItem, resolved,
-                                            properties, projectChange, unresolvedChanges, targetFramework);
+                                            properties, unresolvedChanges, targetFramework);
                 if (model == null)
                 {
                     continue;
@@ -110,7 +110,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             {
                 IImmutableDictionary<string, string> properties = GetProjectItemProperties(projectChange.After, changedItem);
                 IDependencyModel model = GetDependencyModel(changedItem, resolved,
-                                            properties, projectChange, unresolvedChanges, targetFramework);
+                                            properties, unresolvedChanges, targetFramework);
                 if (model == null)
                 {
                     continue;
@@ -124,7 +124,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             {
                 IImmutableDictionary<string, string> properties = GetProjectItemProperties(projectChange.After, addedItem);
                 IDependencyModel model = GetDependencyModel(addedItem, resolved,
-                                            properties, projectChange, unresolvedChanges, targetFramework);
+                                            properties, unresolvedChanges, targetFramework);
                 if (model == null)
                 {
                     continue;
@@ -138,7 +138,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             string itemSpec,
             bool resolved,
             IImmutableDictionary<string, string> properties,
-            IProjectChangeDescription projectChange,
             HashSet<string> unresolvedChanges,
             ITargetFramework targetFramework)
         {
