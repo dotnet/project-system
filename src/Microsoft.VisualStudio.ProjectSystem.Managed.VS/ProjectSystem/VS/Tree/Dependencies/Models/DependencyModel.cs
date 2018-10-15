@@ -70,7 +70,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
         public ImageMoniker UnresolvedExpandedIcon => IconSet.UnresolvedExpandedIcon;
         public IImmutableDictionary<string, string> Properties { get; protected set; }
         public IImmutableList<string> DependencyIDs { get; protected set; } = ImmutableList<string>.Empty;
-        public ProjectTreeFlags Flags { get; protected set; } = ProjectTreeFlags.Empty;
+        public ProjectTreeFlags Flags { get; protected set; }
 
         public DependencyIconSet IconSet { get; protected set; }
 
