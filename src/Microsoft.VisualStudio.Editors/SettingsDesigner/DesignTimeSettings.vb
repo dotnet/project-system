@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.ComponentModel
 
@@ -177,7 +177,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <returns></returns>
         ''' <remarks></remarks>
         Friend Shared Function EqualIdentifiers(Id1 As String, Id2 As String) As Boolean
-            Return String.Equals(Id1, Id2, StringComparison.OrdinalIgnoreCase)
+            Return StringComparers.SettingNames.Equals(Id1, Id2)
         End Function
 
         Friend Function CreateUniqueName(Optional Base As String = Nothing) As String
@@ -185,7 +185,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 Base = My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_DefaultSettingName
             End If
 
-            Dim ExistingNames As New Hashtable
+            Dim ExistingNames As New Hashtable(StringComparers.SettingNames)
             For Each Instance As DesignTimeSettingInstance In _settings
                 ExistingNames.Item(Instance.Name) = Nothing
             Next
