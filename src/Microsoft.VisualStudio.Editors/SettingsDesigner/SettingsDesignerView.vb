@@ -1140,12 +1140,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                     Return
                 End If
 
-                If Not InDesignMode() Then
-                    Return
-                End If
-
                 If Not EnsureCheckedOut() Then
-                    Debug.Fail("We shouldn't have to check out here since that was done when entering edit mode!?")
                     Return
                 End If
 
@@ -1252,8 +1247,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="e"></param>
         ''' <remarks></remarks>
         Private Sub OnSettingsGridViewCellBeginEdit(sender As Object, e As DataGridViewCellCancelEventArgs) Handles _settingsGridView.CellBeginEdit
-            ' Check out , but we can't check out if resource file is readonly
-            If (Not InDesignMode()) OrElse (Not EnsureCheckedOut()) Then
+            ' Check out , but we can't check out if settings file is readonly
+            If Not EnsureCheckedOut() Then
                 e.Cancel = True
             Else
                 Select Case e.ColumnIndex
@@ -1994,11 +1989,9 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="e"></param>
         ''' <remarks></remarks>
         Private Sub MenuEditCell(sender As Object, e As EventArgs)
-            If InDesignMode() Then
-                If _settingsGridView.CurrentCell IsNot Nothing AndAlso Not _settingsGridView.IsCurrentCellInEditMode Then
-                    If EnsureCheckedOut() Then
-                        _settingsGridView.BeginEdit(False)
-                    End If
+            If _settingsGridView.CurrentCell IsNot Nothing AndAlso Not _settingsGridView.IsCurrentCellInEditMode Then
+                If EnsureCheckedOut() Then
+                    _settingsGridView.BeginEdit(False)
                 End If
             End If
         End Sub
