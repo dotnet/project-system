@@ -200,8 +200,14 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                             Dim availableTypes As Type() = mtsrv.GetSupportedTypes(Node.Text, AddressOf GetAssemblyCallback)
                             For Each availableType As Type In availableTypes
 
-                                If availableType.FullName.Contains(".") AndAlso SettingTypeValidator.IsValidSettingType(mtsrv.GetRuntimeType(availableType)) Then
-                                    _typeTreeView.AddTypeNode(Node, availableType.FullName)
+                                If availableType.FullName.Contains(".") Then
+
+                                    ' NOTE that GetRuntimeType returns null when there's a failure resolving the type
+                                    Dim runtimeType = mtsrv.GetRuntimeType(availableType)
+                                    If runtimeType IsNot Nothing AndAlso SettingTypeValidator.IsValidSettingType(runtimeType) Then
+                                        _typeTreeView.AddTypeNode(Node, availableType.FullName)
+                                    End If
+
                                 End If
                             Next
                         End If
