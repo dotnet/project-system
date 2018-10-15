@@ -23,9 +23,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             unresolvedIcon: ManagedImageMonikers.SdkWarning,
             unresolvedExpandedIcon: ManagedImageMonikers.SdkWarning);
 
-        protected override string UnresolvedRuleName { get; } = SdkReference.SchemaName;
-        protected override string ResolvedRuleName { get; } = ResolvedSdkReference.SchemaName;
-        public override string ProviderType { get; } = ProviderTypeString;
+        protected override string UnresolvedRuleName => SdkReference.SchemaName;
+        protected override string ResolvedRuleName => ResolvedSdkReference.SchemaName;
+        public override string ProviderType => ProviderTypeString;
 
         public override IDependencyModel CreateRootDependencyNode()
         {

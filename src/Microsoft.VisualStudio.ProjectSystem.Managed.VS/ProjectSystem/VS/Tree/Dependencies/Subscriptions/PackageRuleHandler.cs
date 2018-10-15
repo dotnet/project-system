@@ -36,9 +36,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
         private ITargetFrameworkProvider TargetFrameworkProvider { get; }
 
-        protected override string UnresolvedRuleName { get; } = PackageReference.SchemaName;
-        protected override string ResolvedRuleName { get; } = ResolvedPackageReference.SchemaName;
-        public override string ProviderType { get; } = ProviderTypeString;
+        protected override string UnresolvedRuleName => PackageReference.SchemaName;
+        protected override string ResolvedRuleName => ResolvedPackageReference.SchemaName;
+        public override string ProviderType => ProviderTypeString;
 
         public override ImageMoniker GetImplicitIcon()
         {

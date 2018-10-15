@@ -67,18 +67,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             }
         }
 
-        private string _id;
-        public override string Id
-        {
-            get
-            {
-                if (_id == null)
-                {
-                    _id = OriginalItemSpec;
-                }
-
-                return _id;
-            }
-        }
+        public override string Id => OriginalItemSpec;
     }
 }
