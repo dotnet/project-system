@@ -127,12 +127,14 @@ namespace Microsoft.VisualStudio.Threading.Tasks
 
                 if (cts != null)
                 {
+                    PendingUpdateTokenSource = null;
+
                     // Cancel any previously scheduled processing if requested
                     if (cancel)
                     {
                         cts.Cancel();
                     }
-                    PendingUpdateTokenSource = null;
+
                     cts.Dispose();
                 }
             }
