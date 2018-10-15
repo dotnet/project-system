@@ -772,6 +772,14 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End If
         End Sub
 
+        Friend Function IsDesignerEditable() As Boolean
+
+            ' We are only editable if we're not debugging in any form 
+            ' (break state or running), or we're not building the project
+            Return InDesignMode() AndAlso Not IsReadOnly()
+
+        End Function
+
         Friend Function IsReadOnly() As Boolean
             Return _readOnly
         End Function

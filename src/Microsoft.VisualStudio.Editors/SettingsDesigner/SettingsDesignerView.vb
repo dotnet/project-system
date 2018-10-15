@@ -69,7 +69,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                     Return False
                 End If
 
-                Return designerLoader.InDesignMode AndAlso Not designerLoader.IsReadOnly
+                Return designerLoader.IsDesignerEditable()
             End Function
         End Class
 
@@ -1253,7 +1253,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <remarks></remarks>
         Private Sub OnSettingsGridViewCellBeginEdit(sender As Object, e As DataGridViewCellCancelEventArgs) Handles _settingsGridView.CellBeginEdit
             ' Check out , but we can't check out if resource file is readonly
-            If (Not InDesignMode()) OrElse (DesignerLoader.IsReadOnly) OrElse (Not EnsureCheckedOut()) Then
+            If (Not InDesignMode()) OrElse (Not EnsureCheckedOut()) Then
                 e.Cancel = True
             Else
                 Select Case e.ColumnIndex
