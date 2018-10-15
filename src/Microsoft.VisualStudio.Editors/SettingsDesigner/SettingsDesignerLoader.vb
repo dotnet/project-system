@@ -655,6 +655,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         End Sub
 
         Friend Function EnsureCheckedOut() As Boolean
+
+            If Not IsDesignerEditable() Then
+                Return False
+            End If
+
             Try
                 Dim ProjectReloaded As Boolean
                 ManualCheckOut(ProjectReloaded)
