@@ -66,7 +66,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
         // The source for our dataflow
         private IReceivableSourceBlock<ILaunchSettings> _changedSourceBlock;
-        protected IBroadcastBlock<ILaunchSettings> _broadcastBlock;
+        protected BroadcastBlock<ILaunchSettings> _broadcastBlock;
 
         protected IFileSystem FileManager { get; set; }
 
@@ -173,7 +173,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         protected override void Initialize()
         {
             // Create our broadcast block for subscribers to get new ILaunchProfiles Information
-            _broadcastBlock = DataflowBlockSlim.CreateBroadcastBlock<ILaunchSettings>();
+            _broadcastBlock = new BroadcastBlock<ILaunchSettings>(s => s);
             _changedSourceBlock = _broadcastBlock.SafePublicize();
 
 
@@ -184,7 +184,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 // The use of AsyncLazy with dataflow can allow state stored in the execution context to leak through. The downstream affect is
                 // calls to say, get properties, may fail. To avoid this, we capture the execution context here, and it will be reapplied when
                 // we get new subscription data from the dataflow.
-                var projectChangesBlock = DataflowBlockSlim.CreateActionBlock(
+                var projectChangesBlock = new ActionBlock<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectCapabilitiesSnapshot>>>(
                             DataflowUtilities.CaptureAndApplyExecutionContext<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectCapabilitiesSnapshot>>>(ProjectRuleBlock_ChangedAsync));
                 StandardRuleDataflowLinkOptions evaluationLinkOptions = DataflowOption.WithRuleNames(ProjectDebugger.SchemaName);
 

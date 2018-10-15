@@ -66,8 +66,6 @@ def imageName = "latest-dev15-5"
 
     def newJob = createJob(platform, configName, osName, imageName, isPR, manualTrigger, altTriggerPhrase)
 
-    Utilities.setMachineAffinity(newJob, 'Windows.10.Amd64.ClientRS4.DevEx.15.8.Open')
-
     newJob.with {
       wrappers {
         credentialsBinding {

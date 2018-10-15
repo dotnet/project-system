@@ -204,7 +204,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             // Get the list of normal reference Item Nodes (this excludes any shared import nodes).
             IEnumerable<IProjectTree> referenceItemNodes = nodes.Except(sharedImportNodes);
 
-            await ProjectLockService.WriteLockAsync(async access =>
+            using (ProjectWriteLockReleaser access = await ProjectLockService.WriteLockAsync())
             {
                 Project project = await access.GetProjectAsync(ActiveConfiguredProject);
 
@@ -277,7 +277,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                         }
                     }
                 }
-            });
+            }
         }
 
         /// <summary>
@@ -337,7 +337,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                     //dependenciesNode = CreateOrUpdateSubTreeProviderNodes(dependenciesNode, 
                                     //                                                      cancellationToken);
 
-                                    return Task.FromResult(new TreeUpdateResult(dependenciesNode));
+                                    return Task.FromResult(new TreeUpdateResult(dependenciesNode, true));
                                 });
                         }
 
@@ -405,7 +405,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
                     // TODO We still are getting mismatched data sources and need to figure out better 
                     // way of merging, mute them for now and get to it in U1
-                    return new TreeUpdateResult(dependenciesNode, null);
+                    return new TreeUpdateResult(dependenciesNode, false, null);
                 });
 
             return Task.CompletedTask;

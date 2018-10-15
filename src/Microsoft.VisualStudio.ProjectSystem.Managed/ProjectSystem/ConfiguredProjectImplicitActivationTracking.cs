@@ -21,8 +21,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
         private readonly ConfiguredProject _project;
         private readonly IProjectAsynchronousTasksService _tasksService;
         private readonly IActiveConfigurationGroupService _activeConfigurationGroupService;
-        private readonly ITargetBlock<IProjectVersionedValue<IConfigurationGroup<ProjectConfiguration>>> _targetBlock;
-        private TaskCompletionSource<object> _isImplicitlyActiveSource = new TaskCompletionSource<object>();
+        private readonly ActionBlock<IProjectVersionedValue<IConfigurationGroup<ProjectConfiguration>>> _targetBlock;
+        private TaskCompletionSource<object> _implicitlyActiveSource = new TaskCompletionSource<object>();
         private IDisposable _subscription;
 
         [ImportingConstructor]
@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             _project = project;
             _activeConfigurationGroupService = activeConfigurationGroupService;
             _tasksService = tasksService;
-            _targetBlock = DataflowBlockSlim.CreateActionBlock<IProjectVersionedValue<IConfigurationGroup<ProjectConfiguration>>>(OnActiveConfigurationsChanged);
+            _targetBlock = new ActionBlock<IProjectVersionedValue<IConfigurationGroup<ProjectConfiguration>>>(OnActiveConfigurationsChanged);
 
             ImplicitlyActiveServices = new OrderPrecedenceImportCollection<IImplicitlyActiveService>(projectCapabilityCheckProvider: project);
         }
@@ -57,7 +57,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             {
                 EnsureInitialized();
 
-                return _isImplicitlyActiveSource.Task.Status == TaskStatus.RanToCompletion;
+                return _implicitlyActiveSource.Task.Status == TaskStatus.RanToCompletion;
             }
         }
 
@@ -67,7 +67,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             {
                 EnsureInitialized();
 
-                return _isImplicitlyActiveSource.Task;
+                return _implicitlyActiveSource.Task;
             }
         }
 
@@ -119,7 +119,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         private Task OnImplicitlyActivated()
         {
-            _isImplicitlyActiveSource.TrySetResult(null);
+            _implicitlyActiveSource.TrySetResult(null);
 
             IEnumerable<Task> tasks = ImplicitlyActiveServices.Select(c => c.Value.ActivateAsync());
 
@@ -134,7 +134,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             // move to after we publish the value
             Thread.MemoryBarrier();
 
-            _isImplicitlyActiveSource = source;
+            _implicitlyActiveSource = source;
 
             IEnumerable<Task> tasks = ImplicitlyActiveServices.Select(c => c.Value.DeactivateAsync());
 
@@ -144,7 +144,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         private void OnCanceled()
         {
             // Notify anyone listening that we're never going to be active
-            _isImplicitlyActiveSource.TrySetCanceled();
+            _implicitlyActiveSource.TrySetCanceled();
         }
     }
 }
