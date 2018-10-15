@@ -199,7 +199,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                         If (mtsrv IsNot Nothing) Then
                             Dim typs As Type() = mtsrv.GetSupportedTypes(Node.Text, AddressOf GetAssemblyCallback)
                             For Each availableType As Type In typs
-                                'TypeTextBox.AutoCompleteCustomSource.Add(availableType.FullName)
+
                                 If availableType.FullName.Contains(".") AndAlso SettingTypeValidator.IsValidSettingType(mtsrv.GetRuntimeType(availableType)) Then
                                     _typeTreeView.AddTypeNode(Node, availableType.FullName)
                                 End If
