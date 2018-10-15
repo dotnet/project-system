@@ -117,26 +117,26 @@ namespace Microsoft.VisualStudio.Threading.Tasks
         }
 
         /// <summary>
-        /// Clears the PendingUpdateTokenSource and if cancel is true cancels the token
+        /// Clears the PendingUpdateTokenSource and if cancel is true cancels the token.
         /// </summary>
+        /// <remarks>
+        /// Callers must lock <see cref="_syncObject"/> before calling this method.
+        /// </remarks>
         private void ClearPendingUpdates(bool cancel)
         {
-            lock (_syncObject)
+            CancellationTokenSource cts = PendingUpdateTokenSource;
+
+            if (cts != null)
             {
-                CancellationTokenSource cts = PendingUpdateTokenSource;
+                PendingUpdateTokenSource = null;
 
-                if (cts != null)
+                // Cancel any previously scheduled processing if requested
+                if (cancel)
                 {
-                    PendingUpdateTokenSource = null;
-
-                    // Cancel any previously scheduled processing if requested
-                    if (cancel)
-                    {
-                        cts.Cancel();
-                    }
-
-                    cts.Dispose();
+                    cts.Cancel();
                 }
+
+                cts.Dispose();
             }
         }
 
@@ -145,7 +145,10 @@ namespace Microsoft.VisualStudio.Threading.Tasks
         /// </summary>
         public void Dispose()
         {
-            ClearPendingUpdates(true);
+            lock (_syncObject)
+            {
+                ClearPendingUpdates(cancel: true);
+            }
         }
 
         /// <summary>
@@ -153,7 +156,10 @@ namespace Microsoft.VisualStudio.Threading.Tasks
         /// </summary>
         public void CancelPendingUpdates()
         {
-            ClearPendingUpdates(true);
+            lock (_syncObject)
+            {
+                ClearPendingUpdates(cancel: true);
+            }
         }
     }
 }
