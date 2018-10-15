@@ -2,7 +2,6 @@
 
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Linq;
 
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 
@@ -47,9 +46,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             SchemaItemType = PackageReference.PrimaryDataSourceItemType;
             IconSet = isImplicit ? s_implicitIconSet : s_iconSet;
 
-            if (dependenciesIDs != null && dependenciesIDs.Any())
+            if (dependenciesIDs != null)
             {
-                DependencyIDs = ImmutableList.CreateRange(dependenciesIDs);
+                DependencyIDs = ImmutableArray.CreateRange(dependenciesIDs);
             }
 
             Flags = Flags.Union(DependencyTreeFlags.PackageNodeFlags)

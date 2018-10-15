@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Globalization;
@@ -102,13 +103,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             }
             else
             {
-                ImmutableList<string>.Builder normalizedDependencyIDs = ImmutableList.CreateBuilder<string>();
-                foreach (string id in dependencyModel.DependencyIDs)
-                {
-                    normalizedDependencyIDs.Add(GetID(TargetFramework, ProviderType, id));
-                }
-
-                DependencyIDs = normalizedDependencyIDs.ToImmutable();
+                IEnumerable<string> ids = dependencyModel.DependencyIDs.Select(
+                    id => GetID(TargetFramework, ProviderType, id));
+                DependencyIDs = ImmutableArray.CreateRange(ids);
             }
         }
 

@@ -2,7 +2,6 @@
 
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Linq;
 
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
@@ -36,9 +35,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             IconSet = s_iconSet;
             Priority = Dependency.UnresolvedReferenceNodePriority;
 
-            if (dependenciesIDs != null && dependenciesIDs.Any())
+            if (dependenciesIDs != null)
             {
-                DependencyIDs = ImmutableList.CreateRange(dependenciesIDs);
+                DependencyIDs = ImmutableArray.CreateRange(dependenciesIDs);
             }
         }
 
