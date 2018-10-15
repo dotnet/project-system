@@ -43,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             Requires.NotNull(source, nameof(source));
             Requires.NotNull(target, nameof(target));
 
-            return source.LinkTo(DataflowBlockSlim.CreateActionBlock(target),
+            return source.LinkTo(new ActionBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(target),
                                  DataflowOption.PropagateCompletion,
                                  initialDataAsNew: true,
                                  suppressVersionOnlyUpdates: suppressVersionOnlyUpdates,
@@ -80,7 +80,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             Requires.NotNull(source, nameof(source));
             Requires.NotNull(target, nameof(target));
 
-            return source.LinkTo(DataflowBlockSlim.CreateActionBlock(target),
+            return source.LinkTo(new ActionBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(target),
                                  DataflowOption.PropagateCompletion,
                                  initialDataAsNew: true,
                                  suppressVersionOnlyUpdates: suppressVersionOnlyUpdates,
@@ -117,7 +117,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             Requires.NotNull(source, nameof(source));
             Requires.NotNull(target, nameof(target));
 
-            return source.LinkTo(DataflowBlockSlim.CreateActionBlock(target),
+            return source.LinkTo(new ActionBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(target),
                                  DataflowOption.PropagateCompletion,
                                  initialDataAsNew: true,
                                  suppressVersionOnlyUpdates: suppressVersionOnlyUpdates,
@@ -154,7 +154,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             Requires.NotNull(source, nameof(source));
             Requires.NotNull(target, nameof(target));
 
-            return source.LinkTo(DataflowBlockSlim.CreateActionBlock(target),
+            return source.LinkTo(new ActionBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(target),
                                  DataflowOption.PropagateCompletion,
                                  initialDataAsNew: true,
                                  suppressVersionOnlyUpdates: suppressVersionOnlyUpdates,
@@ -180,7 +180,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             Requires.NotNull(source, nameof(source));
             Requires.NotNull(target, nameof(target));
 
-            return source.LinkTo(DataflowBlockSlim.CreateActionBlock(target), DataflowOption.PropagateCompletion);
+            return source.LinkTo(new ActionBlock<T>(target), DataflowOption.PropagateCompletion);
         }
 
         /// <summary>
@@ -202,7 +202,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             Requires.NotNull(source, nameof(source));
             Requires.NotNull(target, nameof(target));
 
-            return source.LinkTo(DataflowBlockSlim.CreateActionBlock(target), DataflowOption.PropagateCompletion);
+            return source.LinkTo(new ActionBlock<T>(target), DataflowOption.PropagateCompletion);
         }
 
         /// <summary>

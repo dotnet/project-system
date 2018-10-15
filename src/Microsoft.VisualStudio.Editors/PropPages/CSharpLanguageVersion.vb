@@ -29,8 +29,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private Const LanguageVersion_DisplayNameFor7_2 As String = "C# 7.2"
         Private Const LanguageVersion_7_3 As String = "7.3"
         Private Const LanguageVersion_DisplayNameFor7_3 As String = "C# 7.3"
-        Private Const LanguageVersion_8_0 As String = "8.0"
-        Private Const LanguageVersion_DisplayNameFor8_0 As String = "C# 8.0 (beta)"
 
         ''' <summary>
         ''' Stores the property value corresponding to the language version
@@ -184,16 +182,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Public Shared ReadOnly Property Version7_3() As CSharpLanguageVersion
             Get
                 Static value As New CSharpLanguageVersion(LanguageVersion_7_3, LanguageVersion_DisplayNameFor7_3)
-                Return value
-            End Get
-        End Property
-
-        ''' <summary>
-        ''' Return the C# 8.0 language version object
-        ''' </summary>
-        Public Shared ReadOnly Property Version8_0() As CSharpLanguageVersion
-            Get
-                Static value As New CSharpLanguageVersion(LanguageVersion_8_0, LanguageVersion_DisplayNameFor8_0)
                 Return value
             End Get
         End Property

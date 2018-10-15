@@ -32,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
         {
             JoinUpstreamDataSources(_orderedItemSource);
 
-            var providerProducerBlock = DataflowBlockSlim.CreateTransformBlock<IProjectVersionedValue<IReadOnlyCollection<ProjectItemIdentity>>, IProjectVersionedValue<IProjectTreePropertiesProvider>>(
+            var providerProducerBlock = new TransformBlock<IProjectVersionedValue<IReadOnlyCollection<ProjectItemIdentity>>, IProjectVersionedValue<IProjectTreePropertiesProvider>>(
                 orderedItems =>
                 {
                     return new ProjectVersionedValue<IProjectTreePropertiesProvider>(new TreeItemOrderPropertyProvider(orderedItems.Value, _project), orderedItems.DataSourceVersions);

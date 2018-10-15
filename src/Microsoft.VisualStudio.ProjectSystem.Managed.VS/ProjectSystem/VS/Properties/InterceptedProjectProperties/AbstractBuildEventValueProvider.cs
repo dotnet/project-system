@@ -2,7 +2,7 @@
 
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.Build.Construction;
+
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectProperties
@@ -23,15 +23,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
             _helper = helper;
         }
 
-        public override Task<string> OnGetEvaluatedPropertyValueAsync(
+        public override async Task<string> OnGetEvaluatedPropertyValueAsync(
             string evaluatedPropertyValue,
             IProjectProperties defaultProperties)
         {
-            return _projectLockService.ReadLockAsync(async access =>
+            using (ProjectLockReleaser access = await _projectLockService.ReadLockAsync())
             {
-                ProjectRootElement projectXml = await access.GetProjectXmlAsync(_unconfiguredProject.FullPath);
+                Microsoft.Build.Construction.ProjectRootElement projectXml = await access.GetProjectXmlAsync(_unconfiguredProject.FullPath);
                 return await _helper.GetPropertyAsync(projectXml, defaultProperties);
-            });
+            }
         }
 
         public override async Task<string> OnSetPropertyValueAsync(
@@ -39,11 +39,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
             IProjectProperties defaultProperties,
             IReadOnlyDictionary<string, string> dimensionalConditions = null)
         {
-            await _projectLockService.WriteLockAsync(async access =>
+            using (ProjectWriteLockReleaser access = await _projectLockService.WriteLockAsync())
             {
-                ProjectRootElement projectXml = await access.GetProjectXmlAsync(_unconfiguredProject.FullPath);
+                Microsoft.Build.Construction.ProjectRootElement projectXml = await access.GetProjectXmlAsync(_unconfiguredProject.FullPath);
                 await _helper.SetPropertyAsync(unevaluatedPropertyValue, defaultProperties, projectXml);
-            });
+            }
 
             return null;
         }

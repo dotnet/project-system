@@ -85,7 +85,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                     linkOptions: DataflowOption.PropagateCompletion));
 
             var actionBlock =
-                DataflowBlockSlim.CreateActionBlock<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectSharedFoldersSnapshot, IProjectCatalogSnapshot>>>
+                new ActionBlock<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectSharedFoldersSnapshot, IProjectCatalogSnapshot>>>
                     (e => OnProjectChangedAsync(e),
                     new ExecutionDataflowBlockOptions()
                     {

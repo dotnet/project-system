@@ -123,7 +123,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                     linkOptions: DataflowOption.PropagateCompletion));
 
             var actionBlockDesignTimeBuild =
-                DataflowBlockSlim.CreateActionBlock<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectCatalogSnapshot, IProjectCapabilitiesSnapshot>>>(
+                new ActionBlock<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectCatalogSnapshot, IProjectCapabilitiesSnapshot>>>(
                     e => OnProjectChangedAsync(e, configuredProject, RuleHandlerType.DesignTimeBuild),
                     new ExecutionDataflowBlockOptions()
                     {
@@ -131,7 +131,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                     });
 
             var actionBlockEvaluation =
-                DataflowBlockSlim.CreateActionBlock<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectCatalogSnapshot, IProjectCapabilitiesSnapshot>>>(
+                new ActionBlock<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectCatalogSnapshot, IProjectCapabilitiesSnapshot>>>(
                      e => OnProjectChangedAsync(e, configuredProject, RuleHandlerType.Evaluation),
                      new ExecutionDataflowBlockOptions()
                      {
