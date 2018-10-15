@@ -41,26 +41,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         /// If any standard provider has different OriginalItemSpec property name, 
         /// it could override this property, however currently all of them are the same.
         /// </summary>
-        protected virtual string OriginalItemSpecPropertyName
-        {
-            get
-            {
-                return ResolvedAssemblyReference.OriginalItemSpecProperty;
-            }
-        }
+        protected virtual string OriginalItemSpecPropertyName => ResolvedAssemblyReference.OriginalItemSpecProperty;
 
         public virtual bool SupportsHandlerType(RuleHandlerType handlerType)
         {
             return true;
         }
 
-        public virtual bool ReceiveUpdatesWithEmptyProjectChange
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public virtual bool ReceiveUpdatesWithEmptyProjectChange => false;
 
         public virtual Task HandleAsync(
             IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectCatalogSnapshot, IProjectCapabilitiesSnapshot>> e,
@@ -71,16 +59,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         {
             if (projectChanges.TryGetValue(UnresolvedRuleName, out IProjectChangeDescription unresolvedChanges))
             {
-                HandleChangesForRule(false /*unresolved*/,
-                    unresolvedChanges, context, ruleChangeContext,
-                        (itemSpec) => { return true; });
+                HandleChangesForRule(
+                    resolved: false, unresolvedChanges, context, ruleChangeContext,
+                    itemSpec => true);
             }
 
             if (projectChanges.TryGetValue(ResolvedRuleName, out IProjectChangeDescription resolvedChanges))
             {
-                HandleChangesForRule(true /*resolved*/,
-                    resolvedChanges, context, ruleChangeContext,
-                    (metadata) => { return DoesUnresolvedProjectItemExist(metadata.OriginalItemSpec, unresolvedChanges); });
+                HandleChangesForRule(
+                    resolved: true, resolvedChanges, context, ruleChangeContext,
+                    metadata => DoesUnresolvedProjectItemExist(metadata.OriginalItemSpec, unresolvedChanges));
             }
 
             return Task.CompletedTask;

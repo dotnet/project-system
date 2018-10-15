@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 {
     internal class PackageUnknownDependencyModel : DependencyModel
     {
-        private readonly static DependencyIconSet s_iconSet = new DependencyIconSet(
+        private static readonly DependencyIconSet s_iconSet = new DependencyIconSet(
             icon: KnownMonikers.QuestionMark,
             expandedIcon: KnownMonikers.QuestionMark,
             unresolvedIcon: KnownMonikers.QuestionMark,

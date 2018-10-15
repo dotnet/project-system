@@ -23,8 +23,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 
             ProviderType = providerType;
             Path = path;
-            Name = Path;
-            OriginalItemSpec = originalItemSpec ?? Path;
+            Name = path;
+            OriginalItemSpec = originalItemSpec ?? path;
             Resolved = resolved;
             Implicit = isImplicit;
             Properties = properties ?? ImmutableStringDictionary<string>.EmptyOrdinal;
@@ -96,29 +96,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 
         public override bool Equals(object obj)
         {
-            if (obj is IDependencyModel other)
-            {
-                return Equals(other);
-            }
-
-            return false;
+            return obj is IDependencyModel other && Equals(other);
         }
 
         public bool Equals(IDependencyModel other)
         {
-            if (other != null
-                && other.Id.Equals(Id, StringComparison.OrdinalIgnoreCase)
-                && other.ProviderType.Equals(ProviderType, StringComparison.OrdinalIgnoreCase))
-            {
-                return true;
-            }
-
-            return false;
+            return other != null
+                   && other.Id.Equals(Id, StringComparison.OrdinalIgnoreCase)
+                   && other.ProviderType.Equals(ProviderType, StringComparison.OrdinalIgnoreCase);
         }
 
-        public override string ToString()
-        {
-            return Id;
-        }
+        public override string ToString() => Id;
     }
 }

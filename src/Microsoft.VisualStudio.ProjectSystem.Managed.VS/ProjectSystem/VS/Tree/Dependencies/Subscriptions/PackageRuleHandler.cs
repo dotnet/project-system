@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
-using System.Linq;
 using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.Imaging.Interop;
@@ -153,7 +152,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                                  && unresolvedChanges.Contains(metadata.Name));
                 isTarget = metadata.IsTarget;
                 ITargetFramework packageTargetFramework = TargetFrameworkProvider.GetTargetFramework(metadata.Target);
-                if (!(packageTargetFramework?.Equals(targetFramework) == true))
+                if (packageTargetFramework?.Equals(targetFramework) != true)
                 {
                     return null;
                 }
@@ -174,11 +173,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 originalItemSpec = metadata.Name;
             }
 
-            IDependencyModel dependencyModel = null;
             switch (metadata.DependencyType)
             {
                 case DependencyType.Package:
-                    dependencyModel = new PackageDependencyModel(
+                    return new PackageDependencyModel(
                         ProviderType,
                         itemSpec,
                         originalItemSpec,
@@ -188,13 +186,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                         resolved,
                         metadata.IsImplicitlyDefined,
                         isTopLevel,
-                        !metadata.IsImplicitlyDefined /*visible*/,
+                        isVisible: !metadata.IsImplicitlyDefined,
                         properties,
                         metadata.DependenciesItemSpecs);
-                    break;
                 case DependencyType.Assembly:
                 case DependencyType.FrameworkAssembly:
-                    dependencyModel = new PackageAssemblyDependencyModel(
+                    return new PackageAssemblyDependencyModel(
                         ProviderType,
                         itemSpec,
                         originalItemSpec,
@@ -203,9 +200,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                         resolved,
                         properties,
                         metadata.DependenciesItemSpecs);
-                    break;
                 case DependencyType.AnalyzerAssembly:
-                    dependencyModel = new PackageAnalyzerAssemblyDependencyModel(
+                    return new PackageAnalyzerAssemblyDependencyModel(
                         ProviderType,
                         itemSpec,
                         originalItemSpec,
@@ -214,9 +210,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                         resolved,
                         properties,
                         metadata.DependenciesItemSpecs);
-                    break;
                 case DependencyType.Diagnostic:
-                    dependencyModel = new DiagnosticDependencyModel(
+                    return new DiagnosticDependencyModel(
                         ProviderType,
                         itemSpec,
                         metadata.Severity,
@@ -225,9 +220,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                         DependencyTreeFlags.NuGetSubTreeNodeFlags,
                         isVisible: true,
                         properties: properties);
-                    break;
                 default:
-                    dependencyModel = new PackageUnknownDependencyModel(
+                    return new PackageUnknownDependencyModel(
                         ProviderType,
                         itemSpec,
                         originalItemSpec,
@@ -236,10 +230,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                         resolved,
                         properties,
                         metadata.DependenciesItemSpecs);
-                    break;
             }
-
-            return dependencyModel;
         }
 
         public override IDependencyModel CreateRootDependencyNode()
