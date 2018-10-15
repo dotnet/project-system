@@ -61,7 +61,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             var delegateProvider = IProjectPropertiesProviderFactory.Create(null, delegatePropertiesMock.Object);
 
-            var configuredProjectServices = Mock.Of<IConfiguredProjectServices>(o =>
+            var configuredProjectServices = Mock.Of<ConfiguredProjectServices>(o =>
                 o.ProjectPropertiesProvider == delegateProvider);
 
             var configuredProject = Mock.Of<ConfiguredProject>(o =>
