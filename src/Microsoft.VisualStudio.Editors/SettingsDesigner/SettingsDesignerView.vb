@@ -933,17 +933,13 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End Try
         End Function
 
-        Private Function InDesignMode() As Boolean
+        Private Function IsDesignerEditable() As Boolean
             If DesignerLoader Is Nothing Then
                 Debug.Fail("Failed to get the IDesignerLoaderService from out settings site (or the IDesignerLoaderService wasn't a SettingsDesignerLoader :(")
                 Return False
             End If
 
-            Try
-                Return DesignerLoader.InDesignMode
-            Catch ex As Exception When ReportWithoutCrash(ex, NameOf(InDesignMode), NameOf(SettingsDesignerView))
-                Throw
-            End Try
+            Return DesignerLoader.IsDesignerEditable
         End Function
 
 #End Region
@@ -1633,9 +1629,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <returns></returns>
         ''' <remarks></remarks>
         Private Function MenuRemoveEnableHandler(MenuCommand As DesignerMenuCommand) As Boolean
-            ' If we are not in design mode or we are read-only we shouldn't allow 
-            ' removal of rows...
-            If Not InDesignMode() Or DesignerLoader.IsReadOnly Then
+            ' If we are not editable we shouldn't allow removal of rows...
+            If Not IsDesignerEditable() Then
                 Return False
             End If
 
@@ -1661,7 +1656,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <returns></returns>
         ''' <remarks></remarks>
         Private Function MenuEditCellEnableHandler(MenuCommand As DesignerMenuCommand) As Boolean
-            Return _settingsGridView.CurrentCell IsNot Nothing AndAlso Not _settingsGridView.IsCurrentCellInEditMode AndAlso InDesignMode() AndAlso Not _settingsGridView.CurrentCell.ReadOnly AndAlso Not DesignerLoader.IsReadOnly
+            Return _settingsGridView.CurrentCell IsNot Nothing AndAlso Not _settingsGridView.IsCurrentCellInEditMode AndAlso IsDesignerEditable() AndAlso Not _settingsGridView.CurrentCell.ReadOnly
         End Function
 
         ''' <summary>
@@ -1671,7 +1666,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <remarks></remarks>
         ''' <returns></returns>
         Private Function MenuViewCodeEnableHandler(MenuCommand As DesignerMenuCommand) As Boolean
-            If DesignerLoader.IsReadOnly Then
+            If Not IsDesignerEditable() Then
                 Return False
             End If
 
@@ -1715,14 +1710,13 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <returns></returns>
         ''' <remarks></remarks>
         Private Function MenuSynchronizeUserConfigEnableHandler(MenuCommand As DesignerMenuCommand) As Boolean
-            If DesignerLoader.IsReadOnly Then
+            If Not IsDesignerEditable() Then
                 Return False
             End If
 
             If _hierarchy IsNot Nothing Then
                 Dim proj As EnvDTE.Project = DTEUtils.EnvDTEProject(_hierarchy)
-                Return InDesignMode() _
-                    AndAlso proj IsNot Nothing _
+                Return proj IsNot Nothing _
                     AndAlso proj.ConfigurationManager IsNot Nothing
             End If
             Return False
@@ -1735,14 +1729,13 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <returns></returns>
         ''' <remarks></remarks>
         Private Function MenuLoadWebSettingsFromAppConfigEnableHandler(MenuCommand As DesignerMenuCommand) As Boolean
-            If DesignerLoader.IsReadOnly Then
+            If Not IsDesignerEditable() Then
                 Return False
             End If
 
             If _hierarchy IsNot Nothing Then
                 Dim proj As EnvDTE.Project = DTEUtils.EnvDTEProject(_hierarchy)
-                If InDesignMode() _
-                    AndAlso proj IsNot Nothing _
+                If proj IsNot Nothing _
                     AndAlso proj.ConfigurationManager IsNot Nothing _
                     AndAlso Settings IsNot Nothing _
                     AndAlso Settings.Site IsNot Nothing Then
@@ -1822,10 +1815,14 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="e"></param>
         ''' <remarks></remarks>
         Private Sub MenuLoadWebSettingsFromAppConfig(sender As Object, e As EventArgs)
+
+            If Not IsDesignerEditable() Then
+                Return
+            End If
+
             If _hierarchy IsNot Nothing Then
                 Dim proj As EnvDTE.Project = DTEUtils.EnvDTEProject(_hierarchy)
-                If InDesignMode() _
-                    AndAlso proj IsNot Nothing _
+                If proj IsNot Nothing _
                     AndAlso proj.ConfigurationManager IsNot Nothing _
                     AndAlso Settings IsNot Nothing _
                     AndAlso Settings.Site IsNot Nothing Then
@@ -1967,7 +1964,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <returns></returns>
         ''' <remarks></remarks>
         Private Function MenuAddSettingEnableHandler(menucommand As DesignerMenuCommand) As Boolean
-            Return InDesignMode() AndAlso Not DesignerLoader.IsReadOnly
+            Return IsDesignerEditable()
         End Function
 
         ''' <summary>
