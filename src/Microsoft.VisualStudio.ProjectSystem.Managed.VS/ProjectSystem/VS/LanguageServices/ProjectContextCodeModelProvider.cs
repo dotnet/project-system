@@ -2,6 +2,7 @@
 
 using System;
 using System.ComponentModel.Composition;
+using System.Threading.Tasks;
 
 using EnvDTE;
 
@@ -34,15 +35,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         {
             Requires.NotNull(project, nameof(project));
 
-            IWorkspaceProjectContext projectContext = _projectContextHost.ActiveProjectContext;
-            if (projectContext == null)
-                return null;
-
-            return _threadingService.ExecuteSynchronously(async () =>
+            return _threadingService.ExecuteSynchronously(() =>
             {
-                await _threadingService.SwitchToUIThread();
-
-                return _codeModelFactory.GetCodeModel(projectContext, project);
+                return GetCodeModelAsync(project);
             });
         }
 
@@ -50,23 +45,38 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         {
             Requires.NotNull(fileItem, nameof(fileItem));
 
-            IWorkspaceProjectContext projectContext = _projectContextHost.ActiveProjectContext;
-            if (projectContext == null)
-                return null;
-
-            return _threadingService.ExecuteSynchronously(async () =>
+            return _threadingService.ExecuteSynchronously(() =>
             {
-                await _threadingService.SwitchToUIThread();
+                return GetFileCodeModelAsync(fileItem);
+            });
+        }
 
+        private async Task<CodeModel> GetCodeModelAsync(Project project)
+        {
+            await _threadingService.SwitchToUIThread();
+
+            return await _projectContextHost.OpenContextForWriteAsync(accessor =>
+            {
+                return Task.FromResult(_codeModelFactory.GetCodeModel(accessor.Context, project));
+            });
+        }
+
+
+        private async Task<FileCodeModel> GetFileCodeModelAsync(ProjectItem fileItem)
+        {
+            await _threadingService.SwitchToUIThread();
+
+            return await _projectContextHost.OpenContextForWriteAsync(accessor =>
+            {
                 try
                 {
-                    return _codeModelFactory.GetFileCodeModel(projectContext, fileItem);
+                    return Task.FromResult(_codeModelFactory.GetFileCodeModel(accessor.Context, fileItem));
                 }
                 catch (NotImplementedException)
                 {   // Isn't a file that Roslyn knows about
                 }
 
-                return null;
+                return Task.FromResult<FileCodeModel>(null);
             });
         }
     }

@@ -3,7 +3,8 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
-
+using System.Threading.Tasks;
+using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.LanguageServices;
 using Microsoft.VisualStudio.LanguageServices.Implementation.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
@@ -31,10 +32,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             VisualStudioWorkspace workspace,
             IProjectThreadingService threadingService)
             : base(delegatedProvider, instanceProvider, interceptingValueProviders, project,
-                  getActiveProjectId: () => ((AbstractProject)projectContextHost.ActiveProjectContext)?.Id,
+                  getActiveProjectId: () => GetProjectId(threadingService, projectContextHost),
                   workspace: workspace,
                   threadingService: threadingService)
         {
+        }
+
+        private static ProjectId GetProjectId(IProjectThreadingService threadingService, IActiveWorkspaceProjectContextHost projectContextHost)
+        {
+            return threadingService.ExecuteSynchronously(() =>
+            {
+                return projectContextHost.OpenContextForWriteAsync(accessor =>
+                {
+                    return Task.FromResult(((AbstractProject)accessor.Context).Id);
+                });
+            });
         }
     }
 }

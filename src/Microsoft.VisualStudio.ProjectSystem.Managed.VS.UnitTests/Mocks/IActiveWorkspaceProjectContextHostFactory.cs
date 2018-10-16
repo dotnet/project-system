@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
-
+using System.Threading.Tasks;
 using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
@@ -15,11 +15,34 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
         public static IActiveWorkspaceProjectContextHost ImplementHostSpecificErrorReporter(Func<object> action)
         {
-            var mock = new Mock<IActiveWorkspaceProjectContextHost>();
-            mock.SetupGet(h => h.HostSpecificErrorReporter)
-                .Returns(action);
+            var accessor = IWorkspaceProjectContextAccessorFactory.ImplementHostSpecificErrorReporter(action);
 
-            return mock.Object;
+            return new ActiveWorkspaceProjectContextHost(accessor);
+        }
+
+        private class ActiveWorkspaceProjectContextHost : IActiveWorkspaceProjectContextHost
+        {
+            private readonly IWorkspaceProjectContextAccessor _accessor;
+
+            public ActiveWorkspaceProjectContextHost(IWorkspaceProjectContextAccessor accessor)
+            {
+                _accessor = accessor;
+            }
+
+            public Task Loaded
+            {
+                get { return Task.CompletedTask; }
+            }
+
+            public Task OpenContextForWriteAsync(Func<IWorkspaceProjectContextAccessor, Task> action)
+            {
+                return action(_accessor);
+            }
+
+            public Task<T> OpenContextForWriteAsync<T>(Func<IWorkspaceProjectContextAccessor, Task<T>> action)
+            {
+                return action(_accessor);
+            }
         }
     }
 }

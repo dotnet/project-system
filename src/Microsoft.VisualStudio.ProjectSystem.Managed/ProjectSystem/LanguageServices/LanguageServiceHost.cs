@@ -83,7 +83,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         [AppliesTo(ProjectCapability.DotNetLanguageService)]
         private Task OnProjectFactoryCompletedAsync()
         {
-            return InitializeAsync();
+            return Loaded;
         }
 
         protected override Task InitializeCoreAsync(CancellationToken cancellationToken)
@@ -99,9 +99,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             return Task.CompletedTask;
         }
 
-        public Task InitializeAsync()
+        public Task Loaded
         {
-            return InitializeAsync(CancellationToken.None);
+            get { return InitializeAsync(CancellationToken.None); }
+        }
+
+        public async Task OpenContextForWriteAsync(Func<IWorkspaceProjectContextAccessor, Task> action)
+        {
+            await Loaded;
+
+            await action(new WorkspaceProjectContextAccessor(ActiveProjectContext));
+        }
+
+        public async Task<T> OpenContextForWriteAsync<T>(Func<IWorkspaceProjectContextAccessor, Task<T>> action)
+        {
+            await Loaded;
+
+            return await action(new WorkspaceProjectContextAccessor(ActiveProjectContext));
         }
 
         private async Task OnProjectChangedCoreAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e, RuleHandlerType handlerType)
@@ -324,6 +338,36 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             _evaluationSubscriptionLinks.Clear();
             _designTimeBuildSubscriptionLinks.Clear();
             _projectConfigurationsWithSubscriptions.Clear();
+        }
+
+        private class WorkspaceProjectContextAccessor : IWorkspaceProjectContextAccessor
+        {
+            private readonly IWorkspaceProjectContext _context;
+
+            public WorkspaceProjectContextAccessor(IWorkspaceProjectContext context)
+            {
+                _context = context;
+            }
+
+            public string ContextId
+            {
+                get { throw new NotImplementedException(); }        // No one consumes so don't bother implementing as this code will be removed
+            }
+
+            public IWorkspaceProjectContext Context
+            {
+                get { return _context; }
+            }
+
+            public object HostSpecificEditAndContinueService
+            {
+                get { return Context; }
+            }
+
+            public object HostSpecificErrorReporter
+            {
+                get { return Context; }
+            }
         }
     }
 }

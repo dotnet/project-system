@@ -57,14 +57,31 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         {
             Requires.NotNull(action, nameof(action));
 
+            WorkspaceContextHostInstance instance = await GetLoadedInstanceAsync();
+
+            // Throws OperationCanceledException if 'instance' is Disposed
+            await instance.OpenContextForWriteAsync(action);
+        }
+
+        public async Task<T> OpenContextForWriteAsync<T>(Func<IWorkspaceProjectContextAccessor, Task<T>> action)
+        {
+            Requires.NotNull(action, nameof(action));
+
+            WorkspaceContextHostInstance instance = await GetLoadedInstanceAsync();
+
+            // Throws OperationCanceledException if 'instance' is Disposed
+            return await instance.OpenContextForWriteAsync(action);
+        }
+
+        private async Task<WorkspaceContextHostInstance> GetLoadedInstanceAsync()
+        {
             await Loaded;
 
             var instance = (WorkspaceContextHostInstance)Instance;
             if (instance == null)   // Unloaded between being Loaded and here
-                throw new OperationCanceledException();     
+                throw new OperationCanceledException();
 
-            // Throws OperationCanceledException if 'instance' is Disposed
-            await instance.OpenContextForWriteAsync(action);
+            return instance;
         }
 
         protected override IMultiLifetimeInstance CreateInstance()

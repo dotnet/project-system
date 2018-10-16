@@ -3,7 +3,7 @@
 using System;
 using System.ComponentModel.Composition;
 using System.Runtime.InteropServices;
-
+using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.TextManager.Interop;
@@ -120,13 +120,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.EditAndContinue
             {
                 await _threadingService.SwitchToUIThread();
 
-                var encProvider = (IVsENCRebuildableProjectCfg2)_projectContextHost?.HostSpecificEditAndContinueService;
-                if (encProvider != null)
+                return await _projectContextHost.OpenContextForWriteAsync(accessor =>
                 {
-                    return action(encProvider);
-                }
-
-                return HResult.Unexpected;
+                    return Task.FromResult(action((IVsENCRebuildableProjectCfg2)accessor.HostSpecificEditAndContinueService));
+                });
             });
         }
 
