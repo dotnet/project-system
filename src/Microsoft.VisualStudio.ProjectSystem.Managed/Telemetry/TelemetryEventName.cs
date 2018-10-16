@@ -44,6 +44,11 @@ namespace Microsoft.VisualStudio.Telemetry
         /// </summary>
         public static readonly string LanguageServiceInitFault = BuildEventName("LanguageServiceInit/Fault");
 
+        /// <summary>
+        ///     Indicates that .NET Core SDK version.
+        /// </summary>
+        public static readonly string SDKVersion = BuildEventName("SDKVersion");
+
         private static string BuildEventName(string eventName)
         {
             return Prefix + "/" + eventName.ToLowerInvariant();
