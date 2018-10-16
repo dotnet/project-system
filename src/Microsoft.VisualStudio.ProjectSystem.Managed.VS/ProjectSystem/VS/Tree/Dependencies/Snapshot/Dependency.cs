@@ -103,9 +103,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             }
             else
             {
-                IEnumerable<string> ids = dependencyModel.DependencyIDs.Select(
-                    id => GetID(TargetFramework, ProviderType, id));
-                DependencyIDs = ImmutableArray.CreateRange(ids);
+                int count = dependencyModel.DependencyIDs.Count;
+                ImmutableArray<string>.Builder ids = ImmutableArray.CreateBuilder<string>(count);
+                for (int i = 0; i < count; i++)
+                    ids.Add(GetID(TargetFramework, ProviderType, dependencyModel.DependencyIDs[i]));
+                DependencyIDs = ids.MoveToImmutable();
             }
         }
 

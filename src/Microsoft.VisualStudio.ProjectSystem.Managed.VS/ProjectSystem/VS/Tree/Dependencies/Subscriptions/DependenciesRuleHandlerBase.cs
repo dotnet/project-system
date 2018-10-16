@@ -61,14 +61,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             {
                 HandleChangesForRule(
                     resolved: false, unresolvedChanges, context, ruleChangeContext,
-                    itemSpec => true);
+                    shouldProcess: itemSpec => true);
             }
 
             if (projectChanges.TryGetValue(ResolvedRuleName, out IProjectChangeDescription resolvedChanges))
             {
                 HandleChangesForRule(
                     resolved: true, resolvedChanges, context, ruleChangeContext,
-                    metadata => DoesUnresolvedProjectItemExist(metadata.OriginalItemSpec, unresolvedChanges));
+                    shouldProcess: metadata => DoesUnresolvedProjectItemExist(metadata.OriginalItemSpec, unresolvedChanges));
             }
 
             return Task.CompletedTask;
