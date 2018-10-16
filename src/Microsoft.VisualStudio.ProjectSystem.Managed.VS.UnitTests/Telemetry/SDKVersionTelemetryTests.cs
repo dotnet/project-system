@@ -23,16 +23,16 @@ namespace Microsoft.VisualStudio.Telemetry
             var version = "42.42.42.42";
             var (success, result) = await CreateComponentAndGetResult(guid, version);
             Assert.True(success);
-            Assert.Equal("SDKVersion", result.EventName);
+            Assert.Equal("vs/projectsystem/managed/sdkversion", result.EventName);
             Assert.Collection(result.Properties,
                 args =>
                 {
-                    Assert.Equal("Project", args.propertyName);
+                    Assert.Equal("vs.projectsystem.managed.sdkversion.project", args.propertyName);
                     Assert.Equal(guid.ToString(), args.propertyValue as string);
                 },
                 args =>
                 {
-                    Assert.Equal("NETCoreSdkVersion", args.propertyName);
+                    Assert.Equal("vs.projectsystem.managed.sdkversion.netcoresdkversion", args.propertyName);
                     Assert.Equal(version, args.propertyValue);
                 });
         }

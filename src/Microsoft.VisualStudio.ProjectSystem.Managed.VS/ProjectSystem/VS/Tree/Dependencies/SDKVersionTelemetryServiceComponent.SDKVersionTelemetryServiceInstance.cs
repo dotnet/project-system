@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Threading;
 using System.Threading.Tasks;
@@ -13,11 +12,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     {
         protected class SDKVersionTelemetryServiceInstance : OnceInitializedOnceDisposedAsync, IMultiLifetimeInstance
         {
-            private const string TelemetryEventName = "SDKVersion";
-            private const string ProjectProperty = "Project";
-            private const string NameProperty = "Name";
-            private const string NETCoreSdkVersionProperty = "NETCoreSdkVersion";
-
             private readonly IUnconfiguredProjectVsServices _projectVsServices;
             private readonly ISafeProjectGuidService _projectGuidService;
             private readonly ITelemetryService _telemetryService;
@@ -57,13 +51,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                             return;
                         }
 
-                        _telemetryService.PostProperties(
-                            TelemetryEventName,
-                            new List<(string, object)>
-                            {
-                                (ProjectProperty, projectId),
-                                (NETCoreSdkVersionProperty, version)
-                            });
+                        _telemetryService.PostProperties(TelemetryEventName.SDKVersion, new []
+                        {
+                            (TelemetryPropertyName.SDKVersionProject, (object)projectId),
+                            (TelemetryPropertyName.SDKVersionNETCoreSdkVersion, version)
+                        });
                     });
                 }, cancellationToken);
 
