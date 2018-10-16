@@ -123,7 +123,6 @@
   </Rules>
   <Rules AnalyzerId="Microsoft.CodeAnalysis.CSharp.Features" RuleNamespace="Microsoft.CodeAnalysis.CSharp.Features">
                                                               <!-- Name:                                        Before:                                             After:                                -->
-    <Rule Id="IDE0001" Action="Error" />                      <!-- Simplify names                               System.Version version;                             Version version;                      -->
     <Rule Id="IDE0002" Action="Error" />                      <!-- Simplify (member access)                     System.Version.Equals("1", "2");                    Version.Equals("1", "2");             -->
     <Rule Id="IDE0003" Action="Error" />                      <!-- Remove qualification                         this.X = x;                                         X = x;                                -->
     <Rule Id="IDE0005" Action="Error" />                      <!-- Using directive is unnecessary               using System.Text;                                                                        -->
