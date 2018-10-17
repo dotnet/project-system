@@ -77,7 +77,7 @@
     <VsWebSiteInteropVersion>8.0.0-alpha</VsWebSiteInteropVersion>
 
     <!-- CPS -->
-    <MicrosoftVisualStudioProjectSystemSDKVersion>15.7.117-pre</MicrosoftVisualStudioProjectSystemSDKVersion>
+    <MicrosoftVisualStudioProjectSystemSDKVersion>15.8.235</MicrosoftVisualStudioProjectSystemSDKVersion>
     <MicrosoftVisualStudioProjectSystemAnalyzersVersion>$(MicrosoftVisualStudioProjectSystemSDKVersion)</MicrosoftVisualStudioProjectSystemAnalyzersVersion>
     
     <!-- Roslyn -->
