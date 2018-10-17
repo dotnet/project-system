@@ -10,28 +10,18 @@ using Task = System.Threading.Tasks.Task;
 namespace Microsoft.VisualStudio.Threading.Tasks
 {
     /// <summary>
-    /// TaskDelayScheduler
-    ///
     /// Helper class which allows a task to be scheduled to run after some delay, but if a new task
     /// is scheduled before the delay runs out, the previous task is cancelled.
     /// </summary>
     internal sealed class TaskDelayScheduler : ITaskDelayScheduler
     {
         private readonly object _syncObject = new object();
+        private readonly TimeSpan _taskDelayTime;
+        private readonly CancellationToken _originalSourceToken;
         private readonly IProjectThreadingService _threadingService;
-
-        /// <summary>
-        /// Delay time can be adjusted after creation - mostly useful for unit tests. Won't affect any pending task
-        /// </summary>
-        public TimeSpan TaskDelayTime { get; set; }
 
         // Task completion source for cancelling a pending task
         private CancellationTokenSource PendingUpdateTokenSource { get; set; }
-
-        private CancellationToken OriginalSourceToken { get; set; }
-
-        // True if there is a pending task
-        public bool HasPendingUpdates { get { return PendingUpdateTokenSource != null; } }
 
         // Holds the latest scheduled task
         public JoinableTask LatestScheduledTask { get; private set; }
@@ -42,18 +32,12 @@ namespace Microsoft.VisualStudio.Threading.Tasks
         /// </summary>
         public TaskDelayScheduler(TimeSpan taskDelayTime, IProjectThreadingService threadService, CancellationToken originalSourceToken)
         {
-            TaskDelayTime = taskDelayTime;
-            OriginalSourceToken = originalSourceToken;
+            _taskDelayTime = taskDelayTime;
+            _originalSourceToken = originalSourceToken;
             _threadingService = threadService;
         }
 
-        /// <summary>
-        /// Schedules a task to be run. Note that the returning Task represents
-        /// the current scheduled task but not necessarily represents the task that
-        /// ends up doing the actual work. If another task is scheduled later which causes
-        /// the cancellation of the current scheduled task, the caller will not know
-        /// and need to use that latest returned task instead.
-        /// </summary>
+        /// <inheritdoc />
         public JoinableTask ScheduleAsyncTask(Func<CancellationToken, Task> asyncFunctionToCall)
         {
             lock (_syncObject)
@@ -62,7 +46,7 @@ namespace Microsoft.VisualStudio.Threading.Tasks
                 // submissions first.
                 ClearPendingUpdates(cancel: true);
 
-                PendingUpdateTokenSource = CancellationTokenSource.CreateLinkedTokenSource(OriginalSourceToken);
+                PendingUpdateTokenSource = CancellationTokenSource.CreateLinkedTokenSource(_originalSourceToken);
                 CancellationToken token = PendingUpdateTokenSource.Token;
 
                 // We want to return a joinable task so wrap the function
@@ -81,7 +65,7 @@ namespace Microsoft.VisualStudio.Threading.Tasks
                 {
                     if (!token.IsCancellationRequested)
                     {
-                        await Task.Delay(TaskDelayTime, token);
+                        await Task.Delay(_taskDelayTime, token);
                     }
                 }
                 catch (OperationCanceledException)
@@ -117,23 +101,26 @@ namespace Microsoft.VisualStudio.Threading.Tasks
         }
 
         /// <summary>
-        /// Clears the PendingUpdateTokenSource and if cancel is true cancels the token
+        /// Clears the PendingUpdateTokenSource and if cancel is true cancels the token.
         /// </summary>
+        /// <remarks>
+        /// Callers must lock <see cref="_syncObject"/> before calling this method.
+        /// </remarks>
         private void ClearPendingUpdates(bool cancel)
         {
-            lock (_syncObject)
+            CancellationTokenSource cts = PendingUpdateTokenSource;
+
+            if (cts != null)
             {
-                if (PendingUpdateTokenSource != null)
+                PendingUpdateTokenSource = null;
+
+                // Cancel any previously scheduled processing if requested
+                if (cancel)
                 {
-                    // Cancel any previously scheduled processing if requested
-                    if (cancel)
-                    {
-                        PendingUpdateTokenSource.Cancel();
-                    }
-                    CancellationTokenSource cts = PendingUpdateTokenSource;
-                    PendingUpdateTokenSource = null;
-                    cts.Dispose();
+                    cts.Cancel();
                 }
+
+                cts.Dispose();
             }
         }
 
@@ -142,15 +129,19 @@ namespace Microsoft.VisualStudio.Threading.Tasks
         /// </summary>
         public void Dispose()
         {
-            ClearPendingUpdates(true);
+            lock (_syncObject)
+            {
+                ClearPendingUpdates(cancel: true);
+            }
         }
 
-        /// <summary>
-        /// Mechanism that owners can use to cancel pending tasks.
-        /// </summary>
+        /// <inheritdoc />
         public void CancelPendingUpdates()
         {
-            ClearPendingUpdates(true);
+            lock (_syncObject)
+            {
+                ClearPendingUpdates(cancel: true);
+            }
         }
     }
 }

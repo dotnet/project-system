@@ -19,11 +19,6 @@ namespace Microsoft.VisualStudio.Threading.Tasks
         JoinableTask ScheduleAsyncTask(Func<CancellationToken, Task> asyncFunctionToCall);
 
         /// <summary>
-        /// Returns true if updates are pending
-        /// </summary>
-        bool HasPendingUpdates { get; }
-
-        /// <summary>
         /// Cancels any pending updates
         /// </summary>
         void CancelPendingUpdates();
