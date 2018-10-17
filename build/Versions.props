@@ -91,7 +91,7 @@
     <NuGetVisualStudioVersion>4.3.0</NuGetVisualStudioVersion>
 
     <!-- Msbuild -->
-    <MicrosoftBuildVersion>15.6.0-preview-000010-1174357</MicrosoftBuildVersion>
+    <MicrosoftBuildVersion>15.6.82</MicrosoftBuildVersion>
 
     <!-- Libs -->
     <NewtonsoftJsonVersion>9.0.1</NewtonsoftJsonVersion>
