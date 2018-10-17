@@ -14,6 +14,7 @@ Param(
   [switch] $pack,
   [switch] $ci,
   [switch] $prepareMachine,
+  [switch] $optimize,
   [switch] $log,
   [switch] $help,
   [Parameter(ValueFromRemainingArguments=$true)][String[]]$properties
@@ -161,7 +162,7 @@ function Build {
   $useCodecov = $ci -and $env:CODECOV_TOKEN -and ($configuration -eq 'Debug') -and ($env:ghprbPullAuthorLogin -ne 'dotnet-bot')
   $useOpenCover = $useCodecov
 
-  & $MsbuildExe $ToolsetBuildProj /m /nologo /clp:Summary /nodeReuse:$nodeReuse /warnaserror /v:$verbosity $logCmd /p:Configuration=$configuration /p:SolutionPath=$solution /p:Restore=$restore /p:QuietRestore=true /p:Build=$build /p:Rebuild=$rebuild /p:Deploy=$deploy /p:Test=$test /p:IntegrationTest="false" /p:Sign=$sign /p:Pack=$pack /p:UseCodecov=$useCodecov /p:UseOpenCover=$useOpenCover /p:CIBuild=$ci /p:NuGetPackageRoot=$NuGetPackageRoot $properties
+  & $MsbuildExe $ToolsetBuildProj /m /nologo /clp:Summary /nodeReuse:$nodeReuse /warnaserror /v:$verbosity $logCmd /p:Configuration=$configuration /p:SolutionPath=$solution /p:Restore=$restore /p:QuietRestore=true /p:Build=$build /p:Rebuild=$rebuild /p:Deploy=$deploy /p:Test=$test /p:IntegrationTest="false" /p:Sign=$sign /p:Pack=$pack /p:UseCodecov=$useCodecov /p:UseOpenCover=$useOpenCover /p:CIBuild=$ci /p:Optimize=$optimize /p:NuGetPackageRoot=$NuGetPackageRoot $properties
   if ((-not $?) -or ($lastExitCode -ne 0)) {
     throw "Aborting after build failure."
   }
@@ -169,6 +170,23 @@ function Build {
   if ($useCodecov) {
     $CodecovProj = Join-Path $PSScriptRoot 'Codecov.proj'
     & $MsbuildExe $CodecovProj /m /nologo /clp:Summary /nodeReuse:$nodeReuse /warnaserror /v:diag /t:Codecov /p:Configuration=$configuration /p:UseCodecov=$useCodecov /p:NuGetPackageRoot=$NuGetPackageRoot $properties
+  }
+
+  # create suite.json file
+  $IntegrationTestDir = Join-Path (Join-Path $ArtifactsDir $configuration) "bin\IntegrationTests"
+  $testSuite = Join-Path $IntegrationTestDir "suite.json"
+  if (!(Test-Path $testSuite)) {
+    $testSuiteContents = @'
+{
+    "_comment":  "dotnet project-system built tests",
+    "testcontainer":  [
+                          {
+                              "name":  "Microsoft.VisualStudio.ProjectSystem.IntegrationTests.dll"
+                          }
+                      ]
+}
+'@
+    $testSuiteContents >> $testSuite
   }
 }
 

@@ -2,7 +2,6 @@
 
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Linq;
 
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
@@ -35,9 +34,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             TopLevel = false;
             IconSet = s_iconSet;
 
-            if (dependenciesIDs != null && dependenciesIDs.Any())
+            if (dependenciesIDs != null)
             {
-                DependencyIDs = ImmutableList.CreateRange(dependenciesIDs);
+                DependencyIDs = ImmutableArray.CreateRange(dependenciesIDs);
             }
 
             if (resolved)
@@ -50,18 +49,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             }
         }
 
-        private string _id;
-        public override string Id
-        {
-            get
-            {
-                if (_id == null)
-                {
-                    _id = OriginalItemSpec;
-                }
-
-                return _id;
-            }
-        }
+        public override string Id => OriginalItemSpec;
     }
 }

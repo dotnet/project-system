@@ -340,7 +340,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         If Trim(StartProgram.Text).Length = 0 Then
                             message = My.Resources.Microsoft_VisualStudio_Editors_Designer.PropPage_NeedExternalProgram
                             Return ValidationResult.Warning
-                        ElseIf Not Path.GetExtension(StartProgram.Text).Equals(".exe", StringComparison.OrdinalIgnoreCase) Then
+                        ElseIf Not StartProgram.Text.EndsWith(".exe", StringComparison.OrdinalIgnoreCase) Then
                             message = My.Resources.Microsoft_VisualStudio_Editors_Designer.PropPage_NotAnExeError
                             Return ValidationResult.Warning
                         End If

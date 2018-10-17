@@ -1,0 +1,37 @@
+phases:
+- phase: Windows
+  queue:
+    name: Hosted VS2017
+    timeoutInMinutes: 90
+  steps:
+    - script: build\CIBuild.cmd -configuration $(_configuration) -prepareMachine
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.SourcesDirectory)\artifacts\$(_configuration)\log'
+        ArtifactName: '$(_configuration) unit test logs'
+        publishLocation: Container
+      continueOnError: true
+      condition: failed()
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.SourcesDirectory)\artifacts\$(_configuration)\bin'
+        ArtifactName: '$(_configuration) bin folder'
+        publishLocation: Container
+      continueOnError: true
+      condition: failed()
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.SourcesDirectory)\artifacts\$(_configuration)\VSSetup'
+        ArtifactName: '$(_configuration) VSSetup folder'
+        publishLocation: Container
+      continueOnError: true
+      condition: failed()
+    - task: PublishTestResults@2
+      inputs:
+        testRunner: 'xUnit'
+        testResultsFiles: '**/*.xml' 
+        searchFolder: '$(Build.SourcesDirectory)\artifacts\$(_configuration)\TestResults'
+        configuration: '$(_configuration)'
+        publishRunAttachments: true
+      continueOnError: true
+      condition: always()

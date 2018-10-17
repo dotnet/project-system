@@ -2,7 +2,6 @@
 
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Linq;
 
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
@@ -11,7 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 {
     internal class PackageUnknownDependencyModel : DependencyModel
     {
-        private readonly static DependencyIconSet s_iconSet = new DependencyIconSet(
+        private static readonly DependencyIconSet s_iconSet = new DependencyIconSet(
             icon: KnownMonikers.QuestionMark,
             expandedIcon: KnownMonikers.QuestionMark,
             unresolvedIcon: KnownMonikers.QuestionMark,
@@ -36,24 +35,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             IconSet = s_iconSet;
             Priority = Dependency.UnresolvedReferenceNodePriority;
 
-            if (dependenciesIDs != null && dependenciesIDs.Any())
+            if (dependenciesIDs != null)
             {
-                DependencyIDs = ImmutableList.CreateRange(dependenciesIDs);
+                DependencyIDs = ImmutableArray.CreateRange(dependenciesIDs);
             }
         }
 
-        private string _id;
-        public override string Id
-        {
-            get
-            {
-                if (_id == null)
-                {
-                    _id = OriginalItemSpec;
-                }
-
-                return _id;
-            }
-        }
+        public override string Id => OriginalItemSpec;
     }
 }

@@ -924,8 +924,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
         internal bool IsNewProfileNameValid(string name)
         {
-            return LaunchProfiles.Where(
-                profile => LaunchProfile.IsSameProfileName(profile.Name, name)).Count() == 0;
+            return !LaunchProfiles.Any(
+                profile => LaunchProfile.IsSameProfileName(profile.Name, name));
         }
 
         internal string GetNewProfileName()

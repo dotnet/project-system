@@ -2,8 +2,6 @@
 
 using Microsoft.VisualStudio.Shell;
 
-using Xunit;
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 {
     public class AddClassProjectVBCommandTests : AbstractAddClassProjectCommandTests

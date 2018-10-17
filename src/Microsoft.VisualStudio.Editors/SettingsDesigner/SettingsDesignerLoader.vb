@@ -550,7 +550,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 SetReadOnlyMode(False, String.Empty)
                 _readOnly = False
             End If
-            If _modifiedDuringLoad AndAlso InDesignMode() Then
+            If _modifiedDuringLoad AndAlso IsDesignerEditable() Then
                 Try
                     OnModifying()
                     Modified = True
@@ -655,6 +655,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         End Sub
 
         Friend Function EnsureCheckedOut() As Boolean
+
+            If Not IsDesignerEditable() Then
+                Return False
+            End If
+
             Try
                 Dim ProjectReloaded As Boolean
                 ManualCheckOut(ProjectReloaded)
@@ -706,8 +711,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End Get
         End Property
 
-
-        Friend Function InDesignMode() As Boolean
+        Private Function InDesignMode() As Boolean
             Return _currentDebugMode = DBGMODE.DBGMODE_Design
         End Function
 
@@ -772,8 +776,15 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End If
         End Sub
 
-        Friend Function IsReadOnly() As Boolean
-            Return _readOnly
+        ''' <summary>
+        '''     Returns a value indicating whether the designer is currently editable; that is, 
+        '''     we're not debugging in any form and the solution is not currently building.
+        ''' </summary>
+        ''' <returns></returns>
+        Friend Function IsDesignerEditable() As Boolean
+
+            Return InDesignMode() AndAlso Not _readOnly
+
         End Function
 
         ''' <summary>

@@ -88,25 +88,31 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             internal async Task OnProjectChangedAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> update, bool evaluation)
             {
+                CancellationToken cancellationToken = _tasksService.UnloadCancellationToken;
+
                 // TODO: https://github.com/dotnet/project-system/issues/353
-                await _threadingService.SwitchToUIThread();
+                await _threadingService.SwitchToUIThread(cancellationToken);
 
-                await ExecuteUnderLockAsync(cancellationToken =>
+                await ExecuteUnderLockAsync(ct =>
                 {
-                    bool isActiveContext = _activeWorkspaceProjectContextTracker.IsActiveContext(_context);
-
-                    if (evaluation)
-                    {
-                        _applyChangesToWorkspaceContext.Value.ApplyProjectEvaluation(update, isActiveContext, cancellationToken);
-                    }
-                    else
-                    {
-                        _applyChangesToWorkspaceContext.Value.ApplyProjectBuild(update, isActiveContext, cancellationToken);
-                    }
+                    ApplyProjectChangesUnderLock(update, evaluation, ct);
 
                     return Task.CompletedTask;
+                }, cancellationToken);
+            }
 
-                }, _tasksService.UnloadCancellationToken);
+            private void ApplyProjectChangesUnderLock(IProjectVersionedValue<IProjectSubscriptionUpdate> update, bool evaluation, CancellationToken cancellationToken)
+            {
+                bool isActiveContext = _activeWorkspaceProjectContextTracker.IsActiveContext(_context);
+
+                if (evaluation)
+                {
+                    _applyChangesToWorkspaceContext.Value.ApplyProjectEvaluation(update, isActiveContext, cancellationToken);
+                }
+                else
+                {
+                    _applyChangesToWorkspaceContext.Value.ApplyProjectBuild(update, isActiveContext, cancellationToken);
+                }
             }
         }
     }

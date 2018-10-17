@@ -282,13 +282,13 @@ In order to debug this project, add an executable project to this solution which
         <note />
       </trans-unit>
       <trans-unit id="PartialSupportedDotNetCoreProject">
-        <source>A newer version of Visual Studio is recommended for projects targetting .NET Core {0}.{1}.</source>
+        <source>A newer version of Visual Studio is recommended for projects targeting .NET Core {0}.{1}.</source>
         <target state="needs-review-translation">建議在 .NET Core {0}.{1} 專案使用 Visual Studio 2017 15.7 以上的版本。</target>
         <note />
       </trans-unit>
       <trans-unit id="NotSupportedDotNetCoreProject">
-        <source>Projects targeting versions newer than .NET Core {0}.{1} are not supported by this version of Visual Studio.</source>
-        <target state="translated">這一版本的 Visual Studio 不支援以 .NET Core {0}.{1} 以上版本為目標的專案。</target>
+        <source>Projects targeting .NET Core {0}.{1} or newer are not supported by this version of Visual Studio.</source>
+        <target state="needs-review-translation">這一版本的 Visual Studio 不支援以 .NET Core {0}.{1} 以上版本為目標的專案。</target>
         <note />
       </trans-unit>
       <trans-unit id="DontShowAgain">

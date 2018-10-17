@@ -282,13 +282,13 @@ Bu projede hata ayıklamak için bu çözüme, kitaplık projesine başvuran bir
         <note />
       </trans-unit>
       <trans-unit id="PartialSupportedDotNetCoreProject">
-        <source>A newer version of Visual Studio is recommended for projects targetting .NET Core {0}.{1}.</source>
+        <source>A newer version of Visual Studio is recommended for projects targeting .NET Core {0}.{1}.</source>
         <target state="needs-review-translation">.NET Core {0}.{1} projeleri için Visual Studio 2017 sürüm 15.7 veya daha yeni bir sürüm önerilir.</target>
         <note />
       </trans-unit>
       <trans-unit id="NotSupportedDotNetCoreProject">
-        <source>Projects targeting versions newer than .NET Core {0}.{1} are not supported by this version of Visual Studio.</source>
-        <target state="translated">.NET Core {0}.{1} sürümünden daha yeni sürümleri hedefleyen projeler bu Visual Studio sürümünde desteklenmez.</target>
+        <source>Projects targeting .NET Core {0}.{1} or newer are not supported by this version of Visual Studio.</source>
+        <target state="needs-review-translation">.NET Core {0}.{1} sürümünden daha yeni sürümleri hedefleyen projeler bu Visual Studio sürümünde desteklenmez.</target>
         <note />
       </trans-unit>
       <trans-unit id="DontShowAgain">

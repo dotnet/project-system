@@ -47,6 +47,16 @@ namespace Microsoft.VisualStudio.Telemetry
         /// </summary>
         public static readonly string DesignTimeBuildCompleteTargets = BuildPropertyName(TelemetryEventName.DesignTimeBuildComplete, "Targets");
 
+        /// <summary>
+        ///     Indicates the project that contains the SDK version.
+        /// </summary>
+        public static readonly string SDKVersionProject = BuildPropertyName(TelemetryEventName.SDKVersion, "Project");
+
+        /// <summary>
+        ///     Indicates the actual underlying version of .NET Core SDK.
+        /// </summary>
+        public static readonly string SDKVersionNETCoreSdkVersion = BuildPropertyName(TelemetryEventName.SDKVersion, "NETCoreSdkVersion");
+
         private static string BuildPropertyName(string eventName, string propertyName)
         {
             // Property names use the event names, but with slashes replaced by periods.

@@ -3,7 +3,7 @@
                          xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                          xmlns:r="clr-namespace:My.Resources"
                          xmlns:local="clr-namespace:Microsoft.VisualStudio.Editors.OptionPages">
-    <ScrollViewer VerticalScrollBarVisibility="Auto">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" Focusable="false">
         <StackPanel>
             <GroupBox x:Uid="FastUpToDateGroupBox" Header="{x:Static r:GeneralOptionPageResources.General_FastUpToDateCheck_Title}">
                 <StackPanel Orientation="Vertical">

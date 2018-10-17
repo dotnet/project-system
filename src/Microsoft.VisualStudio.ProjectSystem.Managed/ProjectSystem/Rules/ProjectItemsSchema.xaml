@@ -66,12 +66,15 @@
 
     <ContentType Name="XamlAppDef" DisplayName="Workflow definition" ItemType="XamlAppDef" />
 
+    <ContentType Name="Resource" DisplayName="Resource" ItemType="Resource" />
+
     <ItemType Name="None" DisplayName="None"/>
     <ItemType Name="Content" DisplayName="Content" />
     <ItemType Name="EmbeddedResource" DisplayName="Embedded resource" />
     <ItemType Name="Page" DisplayName="Page" />
     <ItemType Name="ApplicationDefinition" DisplayName="Application definition" />
     <ItemType Name="XamlAppDef" DisplayName="Workflow definition" />
+    <ItemType Name="Resource" DisplayName="Resource" />
 
     <FileExtension Name=".asax" ContentType="Asax" />
     <FileExtension Name=".asmx" ContentType="HTML" />

@@ -20,153 +20,114 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.EditAndContinue
     internal class EditAndContinueProvider : IVsENCRebuildableProjectCfg, IVsENCRebuildableProjectCfg2, IVsENCRebuildableProjectCfg4, IDisposable
     {
         private ILanguageServiceHost _host;
+        private IProjectThreadingService _threadingService;
 
         [ImportingConstructor]
-        public EditAndContinueProvider(ILanguageServiceHost host)
+        public EditAndContinueProvider(ILanguageServiceHost host, IProjectThreadingService threadingService)
         {
             _host = host;
+            _threadingService = threadingService;
         }
 
         public int StartDebuggingPE()
         {
-            if (_host?.HostSpecificEditAndContinueService is IVsENCRebuildableProjectCfg2 encProvider)
-            {
-                return encProvider.StartDebuggingPE();
-            }
-
-            return HResult.Unexpected;
+            return Invoke(encProvider => encProvider.StartDebuggingPE());
         }
 
         public int EnterBreakStateOnPE(ENC_BREAKSTATE_REASON encBreakReason, ENC_ACTIVE_STATEMENT[] pActiveStatements, uint cActiveStatements)
         {
-            if (_host?.HostSpecificEditAndContinueService is IVsENCRebuildableProjectCfg2 encProvider)
-            {
-                return encProvider.EnterBreakStateOnPE(encBreakReason, pActiveStatements, cActiveStatements);
-            }
-
-            return HResult.Unexpected;
+            return Invoke(encProvider => encProvider.EnterBreakStateOnPE(encBreakReason, pActiveStatements, cActiveStatements));
         }
 
         public int BuildForEnc(object pUpdatePE)
         {
-            if (_host?.HostSpecificEditAndContinueService is IVsENCRebuildableProjectCfg2 encProvider)
-            {
-                return encProvider.BuildForEnc(pUpdatePE);
-            }
-
-            return HResult.Unexpected;
+            return Invoke(encProvider => encProvider.BuildForEnc(pUpdatePE));
         }
 
         public int ExitBreakStateOnPE()
         {
-            if (_host?.HostSpecificEditAndContinueService is IVsENCRebuildableProjectCfg2 encProvider)
-            {
-                return encProvider.ExitBreakStateOnPE();
-            }
-
-            return HResult.Unexpected;
+            return Invoke(encProvider => encProvider.ExitBreakStateOnPE());
         }
 
         public int StopDebuggingPE()
         {
-            if (_host?.HostSpecificEditAndContinueService is IVsENCRebuildableProjectCfg2 encProvider)
-            {
-                return encProvider.StopDebuggingPE();
-            }
-
-            return HResult.Unexpected;
+            return Invoke(encProvider => encProvider.StopDebuggingPE());
         }
 
         public int GetENCBuildState(ENC_BUILD_STATE[] pENCBuildState)
         {
-            if (_host?.HostSpecificEditAndContinueService is IVsENCRebuildableProjectCfg2 encProvider)
-            {
-                return encProvider.GetENCBuildState(pENCBuildState);
-            }
-
-            return HResult.Unexpected;
+            return Invoke(encProvider => encProvider.GetENCBuildState(pENCBuildState));
         }
 
         public int GetCurrentActiveStatementPosition(uint id, TextSpan[] ptsNewPosition)
         {
-            if (_host?.HostSpecificEditAndContinueService is IVsENCRebuildableProjectCfg2 encProvider)
-            {
-                return encProvider.GetCurrentActiveStatementPosition(id, ptsNewPosition);
-            }
-
-            return HResult.Unexpected;
+            return Invoke(encProvider => encProvider.GetCurrentActiveStatementPosition(id, ptsNewPosition));
         }
 
         public int GetPEidentity(Guid[] pMVID, string[] pbstrPEName)
         {
-            if (_host?.HostSpecificEditAndContinueService is IVsENCRebuildableProjectCfg2 encProvider)
-            {
-                return encProvider.GetPEidentity(pMVID, pbstrPEName);
-            }
-
-            return HResult.Unexpected;
+            return Invoke(encProvider => encProvider.GetPEidentity(pMVID, pbstrPEName));
         }
 
         public int GetExceptionSpanCount(out uint pcExceptionSpan)
         {
-            if (_host?.HostSpecificEditAndContinueService is IVsENCRebuildableProjectCfg2 encProvider)
-            {
-                return encProvider.GetExceptionSpanCount(out pcExceptionSpan);
-            }
+            uint pcExceptionSpanResult = 0;
+            HResult hr = Invoke(encProvider => encProvider.GetExceptionSpanCount(out pcExceptionSpanResult));
 
-            pcExceptionSpan = 0;
-            return HResult.Unexpected;
+            pcExceptionSpan = pcExceptionSpanResult;
+
+            return hr;
         }
 
         public int GetExceptionSpans(uint celt, ENC_EXCEPTION_SPAN[] rgelt, ref uint pceltFetched)
         {
-            if (_host?.HostSpecificEditAndContinueService is IVsENCRebuildableProjectCfg2 encProvider)
-            {
-                return encProvider.GetExceptionSpans(celt, rgelt, pceltFetched);
-            }
+            uint pceltFetchedResult = pceltFetched;
+            HResult hr = Invoke(encProvider => encProvider.GetExceptionSpans(celt, rgelt, ref pceltFetchedResult));
 
-            return HResult.Unexpected;
+            pceltFetched = pceltFetchedResult;
+
+            return hr;
         }
 
         public int GetCurrentExceptionSpanPosition(uint id, TextSpan[] ptsNewPosition)
         {
-            if (_host?.HostSpecificEditAndContinueService is IVsENCRebuildableProjectCfg2 encProvider)
-            {
-                return encProvider.GetCurrentExceptionSpanPosition(id, ptsNewPosition);
-            }
-
-            return HResult.Unexpected;
+            return Invoke(encProvider => encProvider.GetCurrentExceptionSpanPosition(id, ptsNewPosition));
         }
 
         public int EncApplySucceeded(int hrApplyResult)
         {
-            if (_host?.HostSpecificEditAndContinueService is IVsENCRebuildableProjectCfg2 encProvider)
-            {
-                return encProvider.EncApplySucceeded(hrApplyResult);
-            }
-
-            return HResult.Unexpected;
+            return Invoke(encProvider => encProvider.EncApplySucceeded(hrApplyResult));
         }
 
         public int GetPEBuildTimeStamp(OLE.Interop.FILETIME[] pTimeStamp)
         {
-            if (_host?.HostSpecificEditAndContinueService is IVsENCRebuildableProjectCfg2 encProvider)
-            {
-                return encProvider.GetPEBuildTimeStamp(pTimeStamp);
-            }
-
-            return HResult.Unexpected;
+            return Invoke(encProvider => encProvider.GetPEBuildTimeStamp(pTimeStamp));
         }
 
         public int HasCustomMetadataEmitter(out bool value)
         {
-            if (_host?.HostSpecificEditAndContinueService is IVsENCRebuildableProjectCfg4 encProvider)
-            {
-                return encProvider.HasCustomMetadataEmitter(out value);
-            }
+            bool valueResult = false;
+            HResult hr = Invoke(encProvider => ((IVsENCRebuildableProjectCfg4)encProvider).HasCustomMetadataEmitter(out valueResult));
 
-            value = false;
-            return HResult.Unexpected;
+            value = valueResult;
+
+            return hr;
+        }
+
+        private int Invoke(Func<IVsENCRebuildableProjectCfg2, HResult> action)
+        {
+            return _threadingService.ExecuteSynchronously(async () =>
+            {
+                await _threadingService.SwitchToUIThread();
+
+                var encProvider = (IVsENCRebuildableProjectCfg2)_host?.HostSpecificEditAndContinueService;
+                if (encProvider != null)
+                {
+                    return action(encProvider);
+                }
+
+                return HResult.Unexpected;
+            });
         }
 
         public void Dispose()
@@ -174,6 +135,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.EditAndContinue
             // Important for ProjectNodeComServices to null out fields to reduce the amount 
             // of data we leak when extensions incorrectly holds onto the IVsHierarchy.
             _host = null;
+            _threadingService = null;
         }
 
         // NOTE: Managed ENC always calls through IVsENCRebuildableProjectCfg2/IVsENCRebuildableProjectCfg4.

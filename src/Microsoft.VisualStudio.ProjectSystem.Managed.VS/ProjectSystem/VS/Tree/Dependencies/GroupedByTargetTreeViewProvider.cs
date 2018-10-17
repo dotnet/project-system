@@ -418,7 +418,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     propertySheet: null,
                     visible: true,
                     browseObjectProperties: rule,
-                    flags: viewModel.Flags,
+                    flags: flags,
                     icon: viewModel.Icon.ToProjectSystemType(),
                     expandedIcon: viewModel.ExpandedIcon.ToProjectSystemType());
             }
@@ -458,12 +458,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             ProjectTreeFlags? additionalFlags,
             ProjectTreeFlags? excludedFlags)
         {
-            if (additionalFlags != null && additionalFlags.HasValue)
+            if (additionalFlags.HasValue)
             {
                 flags = flags.Union(additionalFlags.Value);
             }
 
-            if (excludedFlags != null && excludedFlags.HasValue)
+            if (excludedFlags.HasValue)
             {
                 flags = flags.Except(excludedFlags.Value);
             }

@@ -36,7 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         ///     The returned <see cref="Task"/> is canceled when the <see cref="ConfiguredProject"/> 
         ///     is unloaded.
         /// </remarks>
-        Task IsImplicitlyActiveTask
+        Task ImplicitlyActive
         {
             get;
         }
