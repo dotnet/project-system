@@ -10,8 +10,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         private HashSet<IDependencyModel> Added { get; } = new HashSet<IDependencyModel>();
         private HashSet<IDependencyModel> Removed { get; } = new HashSet<IDependencyModel>();
 
-        public IImmutableList<IDependencyModel> AddedNodes => ImmutableList.CreateRange(Added);
-        public IImmutableList<IDependencyModel> RemovedNodes => ImmutableList.CreateRange(Removed);
+        public IImmutableList<IDependencyModel> AddedNodes => ImmutableArray.CreateRange(Added);
+        public IImmutableList<IDependencyModel> RemovedNodes => ImmutableArray.CreateRange(Removed);
 
         public void IncludeAddedChange(IDependencyModel model)
         {

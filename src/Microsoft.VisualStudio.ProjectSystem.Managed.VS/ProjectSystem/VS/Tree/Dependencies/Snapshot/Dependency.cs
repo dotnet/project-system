@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Globalization;
@@ -102,13 +103,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             }
             else
             {
-                ImmutableList<string>.Builder normalizedDependencyIDs = ImmutableList.CreateBuilder<string>();
-                foreach (string id in dependencyModel.DependencyIDs)
-                {
-                    normalizedDependencyIDs.Add(GetID(TargetFramework, ProviderType, id));
-                }
-
-                DependencyIDs = normalizedDependencyIDs.ToImmutable();
+                int count = dependencyModel.DependencyIDs.Count;
+                ImmutableArray<string>.Builder ids = ImmutableArray.CreateBuilder<string>(count);
+                for (int i = 0; i < count; i++)
+                    ids.Add(GetID(TargetFramework, ProviderType, dependencyModel.DependencyIDs[i]));
+                DependencyIDs = ids.MoveToImmutable();
             }
         }
 
@@ -368,11 +367,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             }
             finally
             {
-                sb.Clear();
-
                 // Prevent holding on to large builders
-                if (sb.Length < 1000)
+                if (sb?.Capacity < 1000)
                 {
+                    sb.Clear();
                     s_builderPool.Add(sb);
                 }
             }
