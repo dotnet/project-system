@@ -398,42 +398,45 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                             return;
                         }
 
-                        await BuildTreeForSnapshotAsync(snapshot);
+                        await BuildTreeForSnapshotAsync();
                     }).Task;
                 }
                 else
                 {
                     _treeUpdateQueueTask = _treeUpdateQueueTask.ContinueWith(
-                        t => BuildTreeForSnapshotAsync(snapshot), TaskScheduler.Default);
+                        t => BuildTreeForSnapshotAsync(), TaskScheduler.Default);
                 }
             }
-        }
 
-        private Task BuildTreeForSnapshotAsync(IDependenciesSnapshot snapshot)
-        {
-            Lazy<IDependenciesTreeViewProvider, IOrderPrecedenceMetadataView> viewProvider = ViewProviders.FirstOrDefault();
-            if (viewProvider == null)
+            return;
+
+            Task BuildTreeForSnapshotAsync()
             {
+                Lazy<IDependenciesTreeViewProvider, IOrderPrecedenceMetadataView> viewProvider = ViewProviders.FirstOrDefault();
+
+                if (viewProvider == null)
+                {
+                    return Task.CompletedTask;
+                }
+
+                Task<IProjectVersionedValue<IProjectTreeSnapshot>> nowait = SubmitTreeUpdateAsync(
+                    async (treeSnapshot, configuredProjectExports, cancellationToken) =>
+                    {
+                        IProjectTree dependenciesNode = treeSnapshot.Value.Tree;
+                        if (!cancellationToken.IsCancellationRequested)
+                        {
+                            dependenciesNode = await viewProvider.Value.BuildTreeAsync(dependenciesNode, snapshot, cancellationToken);
+
+                            _treeTelemetryService.ObserveTreeUpdateCompleted(snapshot.HasUnresolvedDependency);
+                        }
+
+                        // TODO We still are getting mismatched data sources and need to figure out better 
+                        // way of merging, mute them for now and get to it in U1
+                        return new TreeUpdateResult(dependenciesNode, false, null);
+                    });
+
                 return Task.CompletedTask;
             }
-
-            Task<IProjectVersionedValue<IProjectTreeSnapshot>> nowait = SubmitTreeUpdateAsync(
-                async (treeSnapshot, configuredProjectExports, cancellationToken) =>
-                {
-                    IProjectTree dependenciesNode = treeSnapshot.Value.Tree;
-                    if (!cancellationToken.IsCancellationRequested)
-                    {
-                        dependenciesNode = await viewProvider.Value.BuildTreeAsync(dependenciesNode, snapshot, cancellationToken);
-
-                        _treeTelemetryService.ObserveTreeUpdateCompleted(snapshot.HasUnresolvedDependency);
-                    }
-
-                    // TODO We still are getting mismatched data sources and need to figure out better 
-                    // way of merging, mute them for now and get to it in U1
-                    return new TreeUpdateResult(dependenciesNode, false, null);
-                });
-
-            return Task.CompletedTask;
         }
 
         private async Task<IImmutableDictionary<string, IPropertyPagesCatalog>> GetNamedCatalogsAsync(IProjectCatalogSnapshot catalogs)
