@@ -78,7 +78,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
         [ProjectAutoLoad(completeBy: ProjectLoadCheckpoint.ProjectFactoryCompleted)]
         [AppliesTo(ProjectCapability.DotNetLanguageService)]
-        private Task OnProjectFactoryCompletedAsync()
+        public Task OnProjectFactoryCompletedAsync()
         {
             return InitializeAsync();
         }

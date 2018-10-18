@@ -130,7 +130,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
         [ProjectAutoLoad(ProjectLoadCheckpoint.ProjectFactoryCompleted)]
         [AppliesTo(ProjectCapability.DependenciesTree)]
-        private Task OnProjectFactoryCompletedAsync()
+        public Task OnProjectFactoryCompletedAsync()
         {
             return AddInitialSubscriptionsAsync();
         }

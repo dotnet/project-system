@@ -2,7 +2,6 @@
 
 using System;
 using System.ComponentModel.Composition;
-using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -15,9 +14,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     [Export(typeof(IProjectSystemOptions))]
     internal class ProjectSystemOptions : IProjectSystemOptions
     {
-        [Guid("9B164E40-C3A2-4363-9BC5-EB4039DEF653")]
-        private class SVsSettingsPersistenceManager { }
-
         private const string FastUpToDateEnabledSettingKey = @"ManagedProjectSystem\FastUpToDateCheckEnabled";
         private const string FastUpToDateLogLevelSettingKey = @"ManagedProjectSystem\FastUpToDateLogLevel";
 
@@ -26,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         private bool? _isProjectOutputPaneEnabled;
 
         [ImportingConstructor]
-        private ProjectSystemOptions(IEnvironmentHelper environment, IVsUIService<SVsSettingsPersistenceManager, ISettingsManager> settingsManager)
+        public ProjectSystemOptions(IEnvironmentHelper environment, IVsUIService<SVsSettingsPersistenceManager, ISettingsManager> settingsManager)
         {
             _environment = environment;
             _settingsManager = settingsManager;
