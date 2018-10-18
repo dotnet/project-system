@@ -133,7 +133,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 return null;
             }
 
-            IProjectTree dependenciesNode = null;
+            IProjectTree dependenciesNode;
             if (root.Flags.Contains(DependencyTreeFlags.DependenciesRootNodeFlags))
             {
                 dependenciesNode = root;

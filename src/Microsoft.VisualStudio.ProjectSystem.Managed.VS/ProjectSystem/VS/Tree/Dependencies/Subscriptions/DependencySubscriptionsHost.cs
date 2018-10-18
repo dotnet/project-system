@@ -253,11 +253,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             ITargetFramework targetFramework =
                 string.IsNullOrEmpty(e.TargetShortOrFullName) || TargetFramework.Any.Equals(e.TargetShortOrFullName)
                     ? TargetFramework.Any
-                    : TargetFrameworkProvider.GetTargetFramework(e.TargetShortOrFullName);
-            if (targetFramework == null)
-            {
-                targetFramework = TargetFramework.Any;
-            }
+                    : TargetFrameworkProvider.GetTargetFramework(e.TargetShortOrFullName) ?? TargetFramework.Any;
 
             ImmutableDictionary<ITargetFramework, IDependenciesChanges> changes = ImmutableDictionary<ITargetFramework, IDependenciesChanges>.Empty.Add(targetFramework, e.Changes);
 
@@ -274,8 +270,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             IProjectCatalogSnapshot catalogs,
             ITargetFramework activeTargetFramework)
         {
-            DependenciesSnapshot newSnapshot;
-            bool anyChanges = false;
+            bool anyChanges;
 
             HashSet<string> projectItemSpecs = GetProjectItemSpecsFromSnapshot(catalogs);
 
@@ -283,7 +278,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             // ensure incremental updates are done in the correct order. This lock ensures that here.
             lock (_snapshotLock)
             {
-                newSnapshot = DependenciesSnapshot.FromChanges(
+                _currentSnapshot = DependenciesSnapshot.FromChanges(
                     CommonServices.Project.FullPath,
                     _currentSnapshot,
                     changes,
@@ -293,7 +288,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     SubTreeProviders.Select(x => x.Value),
                     projectItemSpecs,
                     out anyChanges);
-                _currentSnapshot = newSnapshot;
             }
 
             if (anyChanges)

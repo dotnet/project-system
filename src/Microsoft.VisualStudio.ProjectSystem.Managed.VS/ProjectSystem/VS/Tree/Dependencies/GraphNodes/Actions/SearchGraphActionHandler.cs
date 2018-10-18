@@ -146,7 +146,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
 
                             graphContext.Graph.Links.GetOrCreate(topLevelNode,
                                                                  matchedDependencyNode,
-                                                                 null /*label*/,
+                                                                 label: null,
                                                                  GraphCommonSchema.Contains);
                         }
 
@@ -190,7 +190,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
             return matchedDependencies;
         }
 
-        private HashSet<IDependency> GetMatchingResultsForDependency(
+        private static HashSet<IDependency> GetMatchingResultsForDependency(
             IDependency rootDependency,
             ITargetedDependenciesSnapshot snapshot,
             HashSet<IDependency> flatMatchingDependencies,
