@@ -349,7 +349,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     Flags = DependencyTreeFlags.DependenciesRootNodeFlags
                 };
 
-                ApplyProjectTreePropertiesCustomization(null, values);
+                // Allow property providers to perform customization
+                foreach (IProjectTreePropertiesProvider provider in ProjectTreePropertiesProviders.ExtensionValues())
+                {
+                    provider.CalculatePropertyValues(null, values);
+                }
 
                 // Note that all the parameters are specified so we can force this call to an
                 // overload of NewTree available prior to 15.5 versions of CPS. Once a 15.5 build
@@ -453,16 +457,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                                          .GetCatalogsAsync(CancellationToken.None);
 
             return NamedCatalogs;
-        }
-
-        private void ApplyProjectTreePropertiesCustomization(
-                        IProjectTreeCustomizablePropertyContext context,
-                        ReferencesProjectTreeCustomizablePropertyValues values)
-        {
-            foreach (IProjectTreePropertiesProvider provider in ProjectTreePropertiesProviders.ExtensionValues())
-            {
-                provider.CalculatePropertyValues(context, values);
-            }
         }
 
         /// <summary>
