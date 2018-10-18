@@ -8,12 +8,12 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
     /// <summary>
-    /// Abstracts tree nodes API and allows to use them outside of ProjectTreeProviderBase.
+    /// Abstracts tree nodes API and allows to use them outside of <see cref="ProjectTreeProviderBase"/>.
     /// </summary>
     internal interface IDependenciesTreeServices
     {
         /// <summary>
-        /// Creates IProjectItemTree - a tree node associated with a project item.
+        /// Creates <see cref="IProjectItemTree"/> - a tree node associated with a project item.
         /// </summary>
         /// <param name="caption"></param>
         /// <param name="itemContext"></param>
@@ -35,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             ProjectTreeFlags? flags = default);
 
         /// <summary>
-        /// Creates IProjectTree - a generic CPS tree node.
+        /// Creates <see cref="IProjectTree"/> - a generic CPS tree node.
         /// </summary>
         /// <param name="caption"></param>
         /// <param name="filePath"></param>
@@ -55,7 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             ProjectTreeFlags? flags = default);
 
         /// <summary>
-        /// Gets an IRule to attach to a project item, which would be used to 
+        /// Gets an <see cref="IRule"/> to attach to a project item, which would be used to 
         /// display browse object properties page.
         /// </summary>
         /// <param name="dependency"></param>

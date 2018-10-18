@@ -416,11 +416,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     caption: viewModel.Caption,
                     itemContext: itemContext,
                     propertySheet: null,
-                    visible: true,
                     browseObjectProperties: rule,
-                    flags: flags,
                     icon: viewModel.Icon.ToProjectSystemType(),
-                    expandedIcon: viewModel.ExpandedIcon.ToProjectSystemType());
+                    expandedIcon: viewModel.ExpandedIcon.ToProjectSystemType(),
+                    visible: true,
+                    flags: flags);
             }
             else
             {
