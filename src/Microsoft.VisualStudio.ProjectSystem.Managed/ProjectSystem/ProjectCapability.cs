@@ -22,7 +22,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public const string EditAndContinue = nameof(EditAndContinue);
         public const string LaunchProfiles = nameof(LaunchProfiles);
         public const string OpenProjectFile = nameof(OpenProjectFile);
-        public const string DoubleClickEditProjectFile = nameof(DoubleClickEditProjectFile);
         public const string HandlesOwnReload = ProjectCapabilities.HandlesOwnReload;
         public const string ReferenceManagerAssemblies = nameof(ReferenceManagerAssemblies);
         public const string ReferenceManagerBrowse = nameof(ReferenceManagerBrowse);
