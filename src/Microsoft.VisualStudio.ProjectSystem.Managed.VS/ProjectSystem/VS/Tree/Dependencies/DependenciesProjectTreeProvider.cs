@@ -325,7 +325,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                             Task<IProjectVersionedValue<IProjectTreeSnapshot>> nowait = SubmitTreeUpdateAsync(
                                 (treeSnapshot, configuredProjectExports, cancellationToken) =>
                                 {
-                                    IProjectTree dependenciesNode = CreateDependenciesFolder(null);
+                                    IProjectTree dependenciesNode = CreateDependenciesFolder();
 
                                     // TODO create providers nodes that can be visible when empty
                                     //dependenciesNode = CreateOrUpdateSubTreeProviderNodes(dependenciesNode, 
@@ -337,6 +337,32 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
                     },
                     registerFaultHandler: true);
+            }
+
+            IProjectTree CreateDependenciesFolder()
+            {
+                var values = new ReferencesProjectTreeCustomizablePropertyValues
+                {
+                    Caption = VSResources.DependenciesNodeName,
+                    Icon = ManagedImageMonikers.ReferenceGroup.ToProjectSystemType(),
+                    ExpandedIcon = ManagedImageMonikers.ReferenceGroup.ToProjectSystemType(),
+                    Flags = DependencyTreeFlags.DependenciesRootNodeFlags
+                };
+
+                ApplyProjectTreePropertiesCustomization(null, values);
+
+                // Note that all the parameters are specified so we can force this call to an
+                // overload of NewTree available prior to 15.5 versions of CPS. Once a 15.5 build
+                // is publicly available we can move this to an overload with default values for
+                // most of the parameters, and we'll only need to pass the interesting ones.
+                return NewTree(
+                    caption: values.Caption,
+                    filePath: null,
+                    browseObjectProperties: null,
+                    icon: values.Icon,
+                    expandedIcon: values.ExpandedIcon,
+                    visible: true,
+                    flags: values.Flags);
             }
         }
 
@@ -403,43 +429,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 });
 
             return Task.CompletedTask;
-        }
-
-        /// <summary>
-        /// Creates the loading References folder node.
-        /// </summary>
-        /// <returns>a new "Dependencies" tree node.</returns>
-        private IProjectTree CreateDependenciesFolder(IProjectTree oldNode)
-        {
-            if (oldNode == null)
-            {
-                var values = new ReferencesProjectTreeCustomizablePropertyValues
-                {
-                    Caption = VSResources.DependenciesNodeName,
-                    Icon = ManagedImageMonikers.ReferenceGroup.ToProjectSystemType(),
-                    ExpandedIcon = ManagedImageMonikers.ReferenceGroup.ToProjectSystemType(),
-                    Flags = DependencyTreeFlags.DependenciesRootNodeFlags
-                };
-
-                ApplyProjectTreePropertiesCustomization(null, values);
-
-                // Note that all the parameters are specified so we can force this call to an
-                // overload of NewTree available prior to 15.5 versions of CPS. Once a 15.5 build
-                // is publicly available we can move this to an overload with default values for
-                // most of the parameters, and we'll only need to pass the interesting ones.
-                return NewTree(
-                         caption: values.Caption,
-                         filePath: null,
-                         browseObjectProperties: null,
-                         icon: values.Icon,
-                         expandedIcon: values.ExpandedIcon,
-                         visible: true,
-                         flags: values.Flags);
-            }
-            else
-            {
-                return oldNode;
-            }
         }
 
         private async Task<IImmutableDictionary<string, IPropertyPagesCatalog>> GetNamedCatalogsAsync(IProjectCatalogSnapshot catalogs)
