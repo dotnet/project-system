@@ -18,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         {
             Castle.DynamicProxy.Generators.AttributesToAvoidReplicating.Add(typeof(System.Security.Permissions.UIPermissionAttribute));
 
-            var page = new Mock<PropertyPage>(false);
+            var page = new Mock<PropertyPage>();
             page.Protected().Setup<string>("PropertyPageName").Returns("MyPage");
             var pageInfoArray = new PROPPAGEINFO[1];
             page.Object.GetPageInfo(pageInfoArray);
@@ -39,7 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             Castle.DynamicProxy.Generators.AttributesToAvoidReplicating.Add(typeof(System.Security.Permissions.UIPermissionAttribute));
 
             var rect = new RECT[] { new RECT() { left = 25, top = 25 } };
-            var page = new Mock<PropertyPage>(false)
+            var page = new Mock<PropertyPage>()
             {
                 CallBase = true
             };
@@ -71,7 +71,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         {
             Castle.DynamicProxy.Generators.AttributesToAvoidReplicating.Add(typeof(System.Security.Permissions.UIPermissionAttribute));
 
-            var page = new Mock<PropertyPage>(false)
+            var page = new Mock<PropertyPage>()
             {
                 CallBase = true
             };
