@@ -9,7 +9,7 @@ For a list of behavior differences; see [Compability](compatibility.md).
 **Platforms**                                                               |
 .NET Standard                                                               |          | ●
 .NET Core                                                                   |          | ●
-.NET Framework                                                              | ●        | ◖  | No designer/AppModel support for new project system
+.NET Framework                                                              | ●        | ◖  | No ASP.NET AppModel support in new project system
 **App Models**                                                              |
 ASP.NET Core (.NET Framework & .NET Core)                                   |          | ●
 ASP.NET                                                                     | ●        |   
@@ -46,7 +46,7 @@ Automatically refresh Solution Explorer to reflect file system              |   
 Show items included in imports (.targets/.props)                            |          | ●
 **Dependencies**|
 Auto-restore packages on load and external edit                             |          | ● 
-PackageReference support                                                    | ◖ ● (15.9)        | ● | Start in 15.9, legacy reloads package targets file without VS restart and supports using MSBuild properties in name, version and metadata.
+PackageReference support                                                    | ◖ ● (15.9)        | ● | Starting in 15.9, legacy reloads package targets file without VS restart and supports using MSBuild properties in name, version and metadata.
 Dependency node showing package/project graph                               |          | ● 
 Transitive ProjectReference                                                 |          | ●
 Generate NuGet package on build                                             |          | ● 
