@@ -65,7 +65,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             TasksService = tasksService;
             _treeTelemetryService = treeTelemetryService;
 
+            // Hook this so we can unregister the snapshot change event when the project unloads
             unconfiguredProject.ProjectUnloading += OnUnconfiguredProjectUnloading;
+
+            Task OnUnconfiguredProjectUnloading(object sender, EventArgs args)
+            {
+                UnconfiguredProject.ProjectUnloading -= OnUnconfiguredProjectUnloading;
+                DependenciesSnapshotProvider.SnapshotChanged -= OnDependenciesSnapshotChanged;
+
+                return Task.CompletedTask;
+            }
         }
 
         /// <summary>
@@ -368,14 +377,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     visible: true,
                     flags: values.Flags);
             }
-        }
-
-        private Task OnUnconfiguredProjectUnloading(object sender, EventArgs args)
-        {
-            UnconfiguredProject.ProjectUnloading -= OnUnconfiguredProjectUnloading;
-            DependenciesSnapshotProvider.SnapshotChanged -= OnDependenciesSnapshotChanged;
-
-            return Task.CompletedTask;
         }
 
         private void OnDependenciesSnapshotChanged(object sender, SnapshotChangedEventArgs e)
