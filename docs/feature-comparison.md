@@ -39,21 +39,22 @@ Simplified project format                                                   |   
 Simplified configuration syntax                                             |          | ●    | `<Configurations>Debug;Release<Configurations>;<Platforms>AnyCPU;x64</Platforms>`
 Implicit configuration syntax                                               | ●        |      | `<PropertyGroup Condition="'$(Configuration)\|$(Platform)' == 'Debug\|AnyCPU'">`
 Edit project XML while loaded                                               |          | ●
+Find & Find in Files in project file                                        |          | [16.0](https://github.com/dotnet/project-system/issues/4061)
 Automatically reload project file with no prompts                           |          | ●
 Automatically reload targets files                                          |          | ●
 Automatically refresh Solution Explorer to reflect file system              |          | ●
 Show items included in imports (.targets/.props)                            |          | ●
 **Dependencies**|
 Auto-restore packages on load and external edit                             |          | ● 
-PackageReference support                                                    | ◖        | ● | Legacy does not reload package targets file without VS restart. Also does not support using MSBuild properties in name, version and metadata.
+PackageReference support                                                    | ◖ ● (15.9)        | ● | Start in 15.9, legacy reloads package targets file without VS restart and supports using MSBuild properties in name, version and metadata.
 Dependency node showing package/project graph                               |          | ● 
 Transitive ProjectReference                                                 |          | ●
 Generate NuGet package on build                                             |          | ● 
 **Features**|
 Add Service Reference                                                       | ●        | 
 Add Web Reference                                                           | ●        | 
-Add Data Source                                                             | ●        | 
-DataSet Designer                                                            | ●        |
+Add Data Source                                                             | ●        | 16.0
+DataSet Designer                                                            | ●        | 16.0
 "Initialize Interactive Window with Project"                                | ●        | ● (15.8) | Only when targeting .NET Framework.
 Class Diagrams                                                              | ●        | ● (15.8) |
 Code Analysis                                                               | ●        | 
