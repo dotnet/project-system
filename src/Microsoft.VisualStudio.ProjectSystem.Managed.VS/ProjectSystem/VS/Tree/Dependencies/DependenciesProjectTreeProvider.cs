@@ -36,8 +36,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         IDependenciesTreeServices
     {
         private readonly IDependencyTreeTelemetryService _treeTelemetryService;
-        private readonly object _treeUpdateLock = new object();
-        private Task _treeUpdateQueueTask;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DependenciesProjectTreeProvider"/> class.
@@ -387,28 +385,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 return;
             }
 
-            lock (_treeUpdateLock)
+            if (TasksService.UnloadCancellationToken.IsCancellationRequested)
             {
-                if (_treeUpdateQueueTask == null || _treeUpdateQueueTask.IsCompleted)
-                {
-                    _treeUpdateQueueTask = ThreadingService.JoinableTaskFactory.RunAsync(async () =>
-                    {
-                        if (TasksService.UnloadCancellationToken.IsCancellationRequested)
-                        {
-                            return Task.CompletedTask;
-                        }
-
-                        BuildTreeForSnapshot();
-
-                        return Task.CompletedTask;
-                    }).Task;
-                }
-                else
-                {
-                    _treeUpdateQueueTask = _treeUpdateQueueTask.ContinueWith(
-                        t => BuildTreeForSnapshot(), TaskScheduler.Default);
-                }
+                return;
             }
+
+            BuildTreeForSnapshot();
 
             return;
 
