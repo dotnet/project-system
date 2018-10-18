@@ -15,11 +15,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
         private const string FullPathProperty = "FullPath";
         private readonly Dictionary<string, int> _orderedMap = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
 
-        private readonly UnconfiguredProject _project;
 
         public TreeItemOrderPropertyProvider(IReadOnlyCollection<ProjectItemIdentity> orderedItems, UnconfiguredProject project)
         {
-            _project = project;
             _orderedMap = CreateOrderedMap(project, orderedItems);
         }
 
