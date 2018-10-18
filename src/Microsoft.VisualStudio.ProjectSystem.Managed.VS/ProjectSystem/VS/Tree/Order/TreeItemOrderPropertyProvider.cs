@@ -13,8 +13,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
     internal class TreeItemOrderPropertyProvider : IProjectTreePropertiesProvider
     {
         private const string FullPathProperty = "FullPath";
-        private readonly Dictionary<string, int> _orderedMap = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
 
+        private readonly Dictionary<string, int> _orderedMap;
 
         public TreeItemOrderPropertyProvider(IReadOnlyCollection<ProjectItemIdentity> orderedItems, UnconfiguredProject project)
         {
