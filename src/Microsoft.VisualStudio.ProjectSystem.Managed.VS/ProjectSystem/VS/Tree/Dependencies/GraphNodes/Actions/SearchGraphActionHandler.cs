@@ -176,13 +176,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
             IDependenciesSnapshot dependenciesSnapshot)
         {
             var matchedDependencies = new HashSet<IDependency>();
-            foreach (KeyValuePair<CrossTarget.ITargetFramework, ITargetedDependenciesSnapshot> targetedSnapshot in dependenciesSnapshot.Targets)
+            foreach (ITargetedDependenciesSnapshot targetedSnapshot in dependenciesSnapshot.Targets.Values)
             {
-                foreach (KeyValuePair<string, IDependency> dependency in targetedSnapshot.Value.DependenciesWorld)
+                foreach (IDependency dependency in targetedSnapshot.DependenciesWorld.Values)
                 {
-                    if (dependency.Value.Visible && dependency.Value.Caption.ToLowerInvariant().Contains(searchTerm))
+                    if (dependency.Visible && dependency.Caption.ToLowerInvariant().Contains(searchTerm))
                     {
-                        matchedDependencies.Add(dependency.Value);
+                        matchedDependencies.Add(dependency);
                     }
                 }
             }

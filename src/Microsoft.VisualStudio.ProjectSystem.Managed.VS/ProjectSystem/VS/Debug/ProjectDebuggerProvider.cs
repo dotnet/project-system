@@ -308,11 +308,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             // Collect all the variables as a null delimited list of key=value pairs.
             var result = new StringBuilder();
-            foreach (KeyValuePair<string, string> pair in environment)
+            foreach ((string key, string value) in environment)
             {
-                result.Append(pair.Key);
+                result.Append(key);
                 result.Append('=');
-                result.Append(pair.Value);
+                result.Append(value);
                 result.Append('\0');
             }
 

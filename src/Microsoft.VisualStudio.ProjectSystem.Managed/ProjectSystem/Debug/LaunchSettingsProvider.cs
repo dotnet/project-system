@@ -333,20 +333,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         {
             if (prevSnapshot.GlobalSettings != null)
             {
-                foreach (KeyValuePair<string, object> kvp in prevSnapshot.GlobalSettings)
+                foreach ((string key, object value) in prevSnapshot.GlobalSettings)
                 {
-                    if (kvp.Value.IsInMemoryObject())
+                    if (value.IsInMemoryObject())
                     {
                         if (newSnapshot.OtherSettings == null)
                         {
                             newSnapshot.OtherSettings = new Dictionary<string, object>
                             {
-                                [kvp.Key] = kvp.Value
+                                [key] = value
                             };
                         }
-                        else if (!newSnapshot.OtherSettings.TryGetValue(kvp.Key, out object existingValue))
+                        else if (!newSnapshot.OtherSettings.TryGetValue(key, out _))
                         {
-                            newSnapshot.OtherSettings[kvp.Key] = kvp.Value;
+                            newSnapshot.OtherSettings[key] = value;
                         }
                     }
                 }
@@ -449,9 +449,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 // serialize their section. Unfortunately, this means the data is string to object which is messy to deal with
                 var launchSettingsData = new LaunchSettingsData() { OtherSettings = new Dictionary<string, object>(StringComparer.Ordinal) };
                 var jsonObject = JObject.Parse(jsonString);
-                foreach (KeyValuePair<string, JToken> pair in jsonObject)
+                foreach ((string key, JToken jToken) in jsonObject)
                 {
-                    if (pair.Key.Equals(ProfilesSectionName, StringComparison.Ordinal) && pair.Value is JObject jObject)
+                    if (key.Equals(ProfilesSectionName, StringComparison.Ordinal) && jToken is JObject jObject)
                     {
                         Dictionary<string, LaunchProfileData> profiles = LaunchProfileData.DeserializeProfiles(jObject);
                         launchSettingsData.Profiles = FixupProfilesAndLogErrors(profiles);
@@ -459,17 +459,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                     else
                     {
                         // Find the matching json serialization handler for this section
-                        Lazy<ILaunchSettingsSerializationProvider, IJsonSection> handler = JsonSerializationProviders.FirstOrDefault(sp => string.Equals(sp.Metadata.JsonSection, pair.Key));
+                        Lazy<ILaunchSettingsSerializationProvider, IJsonSection> handler = JsonSerializationProviders.FirstOrDefault(sp => string.Equals(sp.Metadata.JsonSection, key));
                         if (handler != null)
                         {
-                            object sectionObject = JsonConvert.DeserializeObject(pair.Value.ToString(), handler.Metadata.SerializationType);
-                            launchSettingsData.OtherSettings.Add(pair.Key, sectionObject);
+                            object sectionObject = JsonConvert.DeserializeObject(jToken.ToString(), handler.Metadata.SerializationType);
+                            launchSettingsData.OtherSettings.Add(key, sectionObject);
                         }
                         else
                         {
                             // We still need to remember settings for which we don't have an extensibility component installed. For this we
                             // just keep the jObject which can be serialized back out when the file is written.
-                            launchSettingsData.OtherSettings.Add(pair.Key, pair.Value);
+                            launchSettingsData.OtherSettings.Add(key, jToken);
                         }
                     }
                 }
@@ -515,13 +515,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             }
 
             var validProfiles = new List<LaunchProfileData>();
-            foreach (KeyValuePair<string, LaunchProfileData> kvp in profilesData)
+            foreach ((string name, LaunchProfileData launchProfileData) in profilesData)
             {
-                if (!string.IsNullOrWhiteSpace(kvp.Key))
+                if (!string.IsNullOrWhiteSpace(name))
                 {
                     // The name is if the profile is set to the value key
-                    kvp.Value.Name = kvp.Key;
-                    validProfiles.Add(kvp.Value);
+                    launchProfileData.Name = name;
+                    validProfiles.Add(launchProfileData);
                 }
             }
 
@@ -603,11 +603,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             var dataToSave = new Dictionary<string, object>(StringComparer.Ordinal);
 
-            foreach (KeyValuePair<string, object> setting in curSettings.GlobalSettings)
+            foreach ((string key, object value) in curSettings.GlobalSettings)
             {
-                if (!setting.Value.IsInMemoryObject())
+                if (!value.IsInMemoryObject())
                 {
-                    dataToSave.Add(setting.Key, setting.Value);
+                    dataToSave.Add(key, value);
                 }
             }
 

@@ -31,17 +31,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             // ICloneable that is used, otherwise, it is serialized back to json, and a new object rehydrated from that
             if (settings.GlobalSettings != null)
             {
-                foreach (KeyValuePair<string, object> kvp in settings.GlobalSettings)
+                var jsonSerializerSettings = new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore };
+
+                foreach ((string key, object value) in settings.GlobalSettings)
                 {
-                    if (kvp.Value is ICloneable cloneableObject)
+                    if (value is ICloneable cloneableObject)
                     {
-                        GlobalSettings.Add(kvp.Key, cloneableObject.Clone());
+                        GlobalSettings.Add(key, cloneableObject.Clone());
                     }
                     else
                     {
-                        string jsonString = JsonConvert.SerializeObject(kvp.Value, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
-                        object clonedObject = JsonConvert.DeserializeObject(jsonString, kvp.Value.GetType());
-                        GlobalSettings.Add(kvp.Key, clonedObject);
+                        string jsonString = JsonConvert.SerializeObject(value, Formatting.Indented, jsonSerializerSettings);
+                        object clonedObject = JsonConvert.DeserializeObject(jsonString, value.GetType());
+                        GlobalSettings.Add(key, clonedObject);
                     }
                 }
             }

@@ -201,12 +201,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             ImmutableDictionary<ITargetFramework, ITargetedProjectContext>.Builder innerProjectContextsBuilder = ImmutableDictionary.CreateBuilder<ITargetFramework, ITargetedProjectContext>();
             ITargetFramework activeTargetFramework = TargetFramework.Empty;
 
-            foreach (KeyValuePair<string, ConfiguredProject> kvp in configuredProjectsMap)
+            foreach ((string tfm, ConfiguredProject configuredProject) in configuredProjectsMap)
             {
-                ConfiguredProject configuredProject = kvp.Value;
                 ProjectProperties projectProperties = configuredProject.Services.ExportProvider.GetExportedValue<ProjectProperties>();
                 ConfigurationGeneral configurationGeneralProperties = await projectProperties.GetConfigurationGeneralPropertiesAsync();
-                ITargetFramework targetFramework = await GetTargetFrameworkAsync(kvp.Key, configurationGeneralProperties);
+                ITargetFramework targetFramework = await GetTargetFrameworkAsync(tfm, configurationGeneralProperties);
 
                 if (!TryGetConfiguredProjectState(configuredProject, out ITargetedProjectContext targetedProjectContext))
                 {

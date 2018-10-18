@@ -228,10 +228,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             string activeTargetFramework = string.Empty;
             IConfiguredProjectHostObject activeIntellisenseProjectHostObject = null;
 
-            foreach (KeyValuePair<string, ConfiguredProject> kvp in configuredProjectsMap)
+            foreach ((string targetFramework, ConfiguredProject configuredProject) in configuredProjectsMap)
             {
-                string targetFramework = kvp.Key;
-                ConfiguredProject configuredProject = kvp.Value;
                 if (!TryGetConfiguredProjectState(configuredProject, out IWorkspaceProjectContext workspaceProjectContext, out IConfiguredProjectHostObject configuredProjectHostObject))
                 {
                     // Get the target path for the configured project.

@@ -96,9 +96,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
                 return;
             }
 
-            foreach (KeyValuePair<uint, IVsHierarchyEvents> eventSinkKvp in _hierEventSinks)
+            foreach (IVsHierarchyEvents eventSink in _hierEventSinks.Values)
             {
-                eventSinkKvp.Value.OnPropertyChanged(itemid, propid, flags);
+                eventSink.OnPropertyChanged(itemid, propid, flags);
             }
         }
 
