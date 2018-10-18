@@ -395,28 +395,30 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     {
                         if (TasksService.UnloadCancellationToken.IsCancellationRequested)
                         {
-                            return;
+                            return Task.CompletedTask;
                         }
 
-                        await BuildTreeForSnapshotAsync();
+                        BuildTreeForSnapshot();
+
+                        return Task.CompletedTask;
                     }).Task;
                 }
                 else
                 {
                     _treeUpdateQueueTask = _treeUpdateQueueTask.ContinueWith(
-                        t => BuildTreeForSnapshotAsync(), TaskScheduler.Default);
+                        t => BuildTreeForSnapshot(), TaskScheduler.Default);
                 }
             }
 
             return;
 
-            Task BuildTreeForSnapshotAsync()
+            void BuildTreeForSnapshot()
             {
                 Lazy<IDependenciesTreeViewProvider, IOrderPrecedenceMetadataView> viewProvider = ViewProviders.FirstOrDefault();
 
                 if (viewProvider == null)
                 {
-                    return Task.CompletedTask;
+                    return;
                 }
 
                 Task<IProjectVersionedValue<IProjectTreeSnapshot>> nowait = SubmitTreeUpdateAsync(
@@ -434,8 +436,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                         // way of merging, mute them for now and get to it in U1
                         return new TreeUpdateResult(dependenciesNode, false, null);
                     });
-
-                return Task.CompletedTask;
             }
         }
 
