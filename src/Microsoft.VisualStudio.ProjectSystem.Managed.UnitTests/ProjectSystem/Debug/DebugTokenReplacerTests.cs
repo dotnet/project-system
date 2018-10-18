@@ -88,7 +88,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
         private DebugTokenReplacer CreateInstance()
         {
-            var projectCommonServices = IUnconfiguredProjectCommonServicesFactory.Create();
             var environmentHelper = _envHelper.Object;
             var activeDebugFramework = Mock.Of<IActiveDebugFrameworkServices>();
 
@@ -103,7 +102,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 </PropertyGroup>
                 </Project>";
 
-            return new DebugTokenReplacer(projectCommonServices, environmentHelper, activeDebugFramework, IProjectAccessorFactory.Create(projectFile));
+            return new DebugTokenReplacer(environmentHelper, activeDebugFramework, IProjectAccessorFactory.Create(projectFile));
         }
     }
 }

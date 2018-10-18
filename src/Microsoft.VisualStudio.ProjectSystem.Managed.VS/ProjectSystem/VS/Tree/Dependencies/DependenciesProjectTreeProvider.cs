@@ -472,43 +472,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             return NamedCatalogs;
         }
 
-        /// <summary>
-        /// Gets the rule(s) that applies to a reference.
-        /// </summary>
-        /// <param name="itemType">The item type on the unresolved reference.</param>
-        /// <param name="resolved">
-        /// A value indicating whether to return rules for resolved or unresolved reference state.
-        /// </param>
-        /// <param name="namedCatalogs">The dictionary of catalogs.</param>
-        /// <returns>The sequence of matching rules.  Hopefully having exactly one element.</returns>
-        private IEnumerable<Rule> GetSchemaForReference(string itemType,
-                                                        bool resolved,
-                                                        IImmutableDictionary<string, IPropertyPagesCatalog> namedCatalogs)
-        {
-            Requires.NotNull(namedCatalogs, nameof(namedCatalogs));
-
-            // Note: usually for default/generic dependencies we have sets of 2 rule schemas:
-            //  - rule for unresolved dependency, they persist in ProjectFile
-            //  - rule for resolved dependency, they persist in ResolvedReference
-            // So to be able to find rule for resolved or unresolved reference we need to be consistent there 
-            // and make sure we do set ResolvedReference persistence for resolved dependencies, since we rely
-            // on that here when pick correct rule schema.
-            // (old code used to check if rule datasource has SourceType=TargetResults, which was true for Resolved,
-            // dependencies. However now we have custom logic for collecting unresolved dependencies too and use 
-            // DesignTime build results there too. That's why we switched to check for persistence).
-            IPropertyPagesCatalog browseObjectCatalog = namedCatalogs[PropertyPageContexts.BrowseObject];
-            IReadOnlyCollection<string> schemas = browseObjectCatalog.GetPropertyPagesSchemas(itemType);
-
-            return from schemaName in browseObjectCatalog.GetPropertyPagesSchemas(itemType)
-                   let schema = browseObjectCatalog.GetSchema(schemaName)
-                   where schema.DataSource != null
-                         && string.Equals(itemType, schema.DataSource.ItemType, StringComparison.OrdinalIgnoreCase)
-                         && (resolved == string.Equals(schema.DataSource.Persistence,
-                                                       RuleDataSourceTypes.PersistenceResolvedReference,
-                                                       StringComparison.OrdinalIgnoreCase))
-                   select schema;
-        }
-
         private void ApplyProjectTreePropertiesCustomization(
                         IProjectTreeCustomizablePropertyContext context,
                         ReferencesProjectTreeCustomizablePropertyValues values)

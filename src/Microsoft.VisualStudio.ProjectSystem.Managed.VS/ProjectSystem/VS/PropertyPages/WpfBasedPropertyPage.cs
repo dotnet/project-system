@@ -19,12 +19,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             InitializeComponent();
         }
 
-        // For unit testing
-        internal WpfBasedPropertyPage(bool useJoinableTaskFactory) : base(useJoinableTaskFactory)
-        {
-            InitializeComponent();
-        }
-
         protected abstract PropertyPageViewModel CreatePropertyPageViewModel();
 
         protected abstract PropertyPageControl CreatePropertyPageControl();

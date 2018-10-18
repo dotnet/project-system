@@ -27,7 +27,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             private readonly IUnconfiguredProjectVsServices _projectVsServices;
             private readonly IVsSolutionRestoreService _solutionRestoreService;
             private readonly IActiveConfigurationGroupService _activeConfigurationGroupService;
-            private readonly IActiveConfiguredProjectSubscriptionService _activeConfiguredProjectSubscriptionService;
             private readonly IProjectLogger _logger;
             private IDisposable _configurationsSubscription;
             private DisposableBag _designTimeBuildSubscriptionLink;
@@ -46,14 +45,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             public PackageRestoreInitiatorInstance(
                 IUnconfiguredProjectVsServices projectVsServices,
                 IVsSolutionRestoreService solutionRestoreService,
-                IActiveConfiguredProjectSubscriptionService activeConfiguredProjectSubscriptionService,
                 IActiveConfigurationGroupService activeConfigurationGroupService,
                 IProjectLogger logger)
                 : base(projectVsServices.ThreadingService.JoinableTaskContext)
             {
                 _projectVsServices = projectVsServices;
                 _solutionRestoreService = solutionRestoreService;
-                _activeConfiguredProjectSubscriptionService = activeConfiguredProjectSubscriptionService;
                 _activeConfigurationGroupService = activeConfigurationGroupService;
                 _logger = logger;
             }

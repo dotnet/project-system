@@ -13,12 +13,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
         private static readonly Lazy<HttpClient> s_client = new Lazy<HttpClient>(CreateClient);
 
         [ImportingConstructor]
-        public DefaultHttpClient(IProjectThreadingService threadingService)
+        public DefaultHttpClient()
         {
-            _threadingService = threadingService;
         }
-
-        private readonly IProjectThreadingService _threadingService;
 
         public Task<string> GetStringAsync(Uri uri)
         {

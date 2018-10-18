@@ -147,15 +147,5 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""
             fileChangeServiceMock.Verify(s => s.AdviseFileChange(It.IsAny<string>(), It.IsAny<uint>(), watcher, out cookie),
                                          Times.Never());
         }
-
-        private PropertyPageData CreateBaseIntermediateOutputPathProperty(object baseIntermediateOutputPath)
-        {
-            return new PropertyPageData
-            {
-                Category = ConfigurationGeneral.SchemaName,
-                PropertyName = ConfigurationGeneral.BaseIntermediateOutputPathProperty,
-                Value = baseIntermediateOutputPath
-            };
-        }
     }
 }
