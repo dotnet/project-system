@@ -11,7 +11,7 @@
     <UsingToolIbcOptimization>true</UsingToolIbcOptimization>
 
     <!-- Toolset -->
-    <RoslynToolsRepoToolsetVersion>1.0.0-beta-62705-01</RoslynToolsRepoToolsetVersion>
+    <RoslynToolsRepoToolsetVersion>1.0.0-msbuild-62811-02</RoslynToolsRepoToolsetVersion>
     <RoslynToolsVsixExpInstallerVersion>1.0.0-beta-62503-02</RoslynToolsVsixExpInstallerVersion>
     <RoslynDependenciesProjectSystemOptimizationDataVersion>2.6.0-beta1-62205-02</RoslynDependenciesProjectSystemOptimizationDataVersion>
     <VSWhereVersion>2.3.2</VSWhereVersion>
@@ -77,21 +77,21 @@
     <VsWebSiteInteropVersion>8.0.0-alpha</VsWebSiteInteropVersion>
 
     <!-- CPS -->
-    <MicrosoftVisualStudioProjectSystemSDKVersion>15.7.117-pre</MicrosoftVisualStudioProjectSystemSDKVersion>
+    <MicrosoftVisualStudioProjectSystemSDKVersion>15.8.235</MicrosoftVisualStudioProjectSystemSDKVersion>
     <MicrosoftVisualStudioProjectSystemAnalyzersVersion>$(MicrosoftVisualStudioProjectSystemSDKVersion)</MicrosoftVisualStudioProjectSystemAnalyzersVersion>
     
     <!-- Roslyn -->
-    <MicrosoftVisualStudioLanguageServicesVersion>2.6.0-beta1-62113-02</MicrosoftVisualStudioLanguageServicesVersion>
+    <MicrosoftVisualStudioLanguageServicesVersion>2.6.0-beta3</MicrosoftVisualStudioLanguageServicesVersion>
     <MicrosoftTestApexVisualStudioVersion>15.8.27703</MicrosoftTestApexVisualStudioVersion>
     <RoslynIntegrationVsixVersion>2.6.0.6211302</RoslynIntegrationVsixVersion>
-    <MicrosoftNetRoslynDiagnosticsVersion>2.6.1-beta1-62702-01</MicrosoftNetRoslynDiagnosticsVersion>
+    <MicrosoftNetRoslynDiagnosticsVersion>2.6.1</MicrosoftNetRoslynDiagnosticsVersion>
 
     <!-- NuGet -->
     <NuGetSolutionRestoreManagerInteropVersion>4.3.0</NuGetSolutionRestoreManagerInteropVersion>
     <NuGetVisualStudioVersion>4.3.0</NuGetVisualStudioVersion>
 
     <!-- Msbuild -->
-    <MicrosoftBuildVersion>15.6.0-preview-000010-1174357</MicrosoftBuildVersion>
+    <MicrosoftBuildVersion>15.6.82</MicrosoftBuildVersion>
 
     <!-- Libs -->
     <NewtonsoftJsonVersion>9.0.1</NewtonsoftJsonVersion>
