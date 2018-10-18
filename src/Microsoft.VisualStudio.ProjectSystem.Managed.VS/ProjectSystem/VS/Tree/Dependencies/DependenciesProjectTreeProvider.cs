@@ -439,30 +439,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             }
         }
 
-        private async Task<IImmutableDictionary<string, IPropertyPagesCatalog>> GetNamedCatalogsAsync(IProjectCatalogSnapshot catalogs)
-        {
-            if (catalogs != null)
-            {
-                return catalogs.NamedCatalogs;
-            }
-
-            if (NamedCatalogs != null)
-            {
-                return NamedCatalogs;
-            }
-
-
-            // Note: it is unlikely that we end up here, however for cases when node providers
-            // getting their node data not from Design time build events, we might have OnDependenciesChanged
-            // event coming before initial design time build event updates NamedCatalogs in this class.
-            // Thus, just in case, explicitly request it here (GetCatalogsAsync will acquire a project read lock)
-            NamedCatalogs = await ActiveConfiguredProject.Services
-                                                         .PropertyPagesCatalog
-                                                         .GetCatalogsAsync(CancellationToken.None);
-
-            return NamedCatalogs;
-        }
-
         /// <summary>
         /// Creates a new instance of the configured project exports class.
         /// </summary>
@@ -530,7 +506,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 : await DependenciesHost.GetConfiguredProject(dependency.TargetFramework) ?? ActiveConfiguredProject;
 
             ConfiguredProjectExports configuredProjectExports = GetActiveConfiguredProjectExports(project);
-            IImmutableDictionary<string, IPropertyPagesCatalog> namedCatalogs = await GetNamedCatalogsAsync(catalogs);
+            IImmutableDictionary<string, IPropertyPagesCatalog> namedCatalogs = await GetNamedCatalogsAsync();
             Requires.NotNull(namedCatalogs, nameof(namedCatalogs));
 
             IPropertyPagesCatalog browseObjectsCatalog = namedCatalogs[PropertyPageContexts.BrowseObject];
@@ -562,6 +538,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             }
 
             return browseObjectsCatalog.BindToContext(schema.Name, context);
+
+            async Task<IImmutableDictionary<string, IPropertyPagesCatalog>> GetNamedCatalogsAsync()
+            {
+                if (catalogs != null)
+                {
+                    return catalogs.NamedCatalogs;
+                }
+
+                if (NamedCatalogs == null)
+                {
+                    // Note: it is unlikely that we end up here, however for cases when node providers
+                    // getting their node data not from Design time build events, we might have OnDependenciesChanged
+                    // event coming before initial design time build event updates NamedCatalogs in this class.
+                    // Thus, just in case, explicitly request it here (GetCatalogsAsync will acquire a project read lock)
+                    NamedCatalogs = await ActiveConfiguredProject.Services
+                        .PropertyPagesCatalog
+                        .GetCatalogsAsync(CancellationToken.None);
+                }
+
+                return NamedCatalogs;
+            }
         }
 
         #endregion
