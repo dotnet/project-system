@@ -266,30 +266,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             return clone;
         }
 
-        public override int GetHashCode()
-        {
-            return StringComparer.OrdinalIgnoreCase.GetHashCode(Id);
-        }
+        public override int GetHashCode() 
+            => StringComparer.OrdinalIgnoreCase.GetHashCode(Id);
 
-        public override bool Equals(object obj)
-        {
-            if (obj is IDependency other)
-            {
-                return Equals(other);
-            }
+        public override bool Equals(object obj) 
+            => obj is IDependency other && Equals(other);
 
-            return false;
-        }
-
-        public bool Equals(IDependency other)
-        {
-            if (other != null && other.Id.Equals(Id, StringComparison.OrdinalIgnoreCase))
-            {
-                return true;
-            }
-
-            return false;
-        }
+        public bool Equals(IDependency other) 
+            => other != null && other.Id.Equals(Id, StringComparison.OrdinalIgnoreCase);
 
         public static bool operator ==(Dependency left, Dependency right)
             => left is null ? right is null : left.Equals(right);
