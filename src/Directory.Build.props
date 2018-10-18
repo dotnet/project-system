@@ -58,9 +58,4 @@
     <SuppressFromVsix Include="Microsoft.VisualStudio.DataTools.Interop.dll"/>
     <SuppressFromVsix Include="Microsoft.VisualStudio.XmlEditor.dll"/>
   </ItemGroup>
-  
-  <!-- Dogfood double click editing of project files: https://github.com/dotnet/project-system/issues/1224 -->
-  <ItemGroup>
-    <ProjectCapability Include="DoubleClickEditProjectFile"/>
-  </ItemGroup>
 </Project>
