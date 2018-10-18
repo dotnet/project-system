@@ -339,7 +339,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                     //                                                      cancellationToken);
 
                                     return Task.FromResult(new TreeUpdateResult(dependenciesNode, true));
-                                });
+                                },
+                                GetNextTreeUpdateCancellationToken());
                         }
 
                     },
@@ -380,6 +381,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         private void OnDependenciesSnapshotChanged(object sender, SnapshotChangedEventArgs e)
         {
             IDependenciesSnapshot snapshot = e.Snapshot;
+
             if (snapshot == null)
             {
                 return;
@@ -417,7 +419,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                         // TODO We still are getting mismatched data sources and need to figure out better 
                         // way of merging, mute them for now and get to it in U1
                         return new TreeUpdateResult(dependenciesNode, false, null);
-                    });
+                    },
+                    GetNextTreeUpdateCancellationToken());
             }
         }
 
@@ -541,6 +544,45 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
                 return NamedCatalogs;
             }
+        }
+
+        #endregion
+
+        #region Tree update cancellation
+
+        private CancellationTokenSource _treeUpdateCancellationTokenSource = new CancellationTokenSource();
+
+        private CancellationToken GetNextTreeUpdateCancellationToken()
+        {
+#pragma warning disable CA2000 // Dispose objects before losing scope
+            var nextSource = new CancellationTokenSource();
+#pragma warning restore CA2000 // Dispose objects before losing scope
+
+            CancellationToken nextToken = nextSource.Token;
+            CancellationTokenSource priorSource = Volatile.Read(ref _treeUpdateCancellationTokenSource);
+
+            // Loop until we succeed in swapping a known prior for our next.
+            // This ensures a proper sequence is observed, which is important
+            // as otherwise we may cancel a prior twice, which would coincide
+            // with a prior not being cancelled at all. We need a strict order
+            // to maintain one-in-one-out.
+            while (true)
+            {
+                CancellationTokenSource snapshot = Interlocked.CompareExchange(
+                    ref _treeUpdateCancellationTokenSource, nextSource, priorSource);
+
+                if (ReferenceEquals(snapshot, priorSource))
+                {
+                    break;
+                }
+
+                priorSource = snapshot;
+            }
+
+            priorSource.Cancel();
+            priorSource.Dispose();
+
+            return nextToken;
         }
 
         #endregion
