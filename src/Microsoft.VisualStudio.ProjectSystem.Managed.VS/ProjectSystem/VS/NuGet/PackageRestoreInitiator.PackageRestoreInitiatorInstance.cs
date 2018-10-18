@@ -103,7 +103,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                     Action<Tuple<ImmutableList<IProjectValueVersions>, TIdentityDictionary>> action = ProjectPropertyChanged;
                     var target = new ActionBlock<Tuple<ImmutableList<IProjectValueVersions>, TIdentityDictionary>>(action);
 
-                    var targetLinkOptions = DataflowOption.PropagateCompletion;
+                    DataflowLinkOptions targetLinkOptions = DataflowOption.PropagateCompletion;
 
                     ImmutableList<ProjectDataSources.SourceBlockAndLink<IProjectValueVersions>> sourceBlocksAndCapabilitiesOptions = sourceBlocks.ToImmutableList()
                         .Insert(0, _projectVsServices.Project.Capabilities.SourceBlock.SyncLinkOptions<IProjectValueVersions>());

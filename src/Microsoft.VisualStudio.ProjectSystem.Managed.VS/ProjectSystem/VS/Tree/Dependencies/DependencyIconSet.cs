@@ -66,7 +66,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
         public override int GetHashCode()
         {
-            var hashCode = Icon.Id.GetHashCode();
+            int hashCode = Icon.Id.GetHashCode();
             hashCode = hashCode * -1521134295 + Icon.Guid.GetHashCode();
             hashCode = hashCode * -1521134295 + ExpandedIcon.Id.GetHashCode();
             hashCode = hashCode * -1521134295 + ExpandedIcon.Guid.GetHashCode();
