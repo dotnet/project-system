@@ -142,33 +142,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 return null;
             }
 
-            IProjectTree dependenciesNode;
-            if (root.Flags.Contains(DependencyTreeFlags.DependenciesRootNodeFlags))
-            {
-                dependenciesNode = root;
-            }
-            else
-            {
-                dependenciesNode = root.GetSubTreeNode(DependencyTreeFlags.DependenciesRootNodeFlags);
-            }
+            IProjectTree dependenciesNode = root.Flags.Contains(DependencyTreeFlags.DependenciesRootNodeFlags) 
+                ? root 
+                : root.GetSubTreeNode(DependencyTreeFlags.DependenciesRootNodeFlags);
 
-            if (dependenciesNode == null)
-            {
-                return null;
-            }
-
-            return FindByPathInternal(dependenciesNode, path);
-        }
-
-        private static IProjectTree FindByPathInternal(IProjectTree root, string path)
-        {
-            foreach (IProjectTree node in root.GetSelfAndDescendentsBreadthFirst())
-            {
-                if (string.Equals(node.FilePath, path, StringComparison.OrdinalIgnoreCase))
-                    return node;
-            }
-
-            return null;
+            return dependenciesNode?.GetSelfAndDescendentsBreadthFirst()
+                .FirstOrDefault(node => string.Equals(node.FilePath, path, StringComparison.OrdinalIgnoreCase));
         }
 
         /// <summary>
