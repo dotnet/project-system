@@ -188,36 +188,37 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             foreach (IDependencyModel removed in changes.RemovedNodes)
             {
                 string targetedId = Dependency.GetID(TargetFramework, removed.ProviderType, removed.Id);
+
                 if (!worldBuilder.TryGetValue(targetedId, out IDependency dependency))
                 {
                     continue;
                 }
 
+                bool canRemove = true;
+
                 if (snapshotFilters != null)
                 {
                     foreach (IDependenciesSnapshotFilter filter in snapshotFilters)
                     {
-                        dependency = filter.BeforeRemove(
+                        canRemove = filter.BeforeRemove(
                             ProjectPath, TargetFramework, dependency, worldBuilder, topLevelBuilder, out bool filterAnyChanges);
 
                         anyChanges |= filterAnyChanges;
 
-                        if (dependency == null)
+                        if (!canRemove)
                         {
+                            // TODO breaking here denies later filters the opportunity to modify builders
                             break;
                         }
                     }
                 }
 
-                if (dependency == null)
+                if (canRemove)
                 {
-                    continue;
+                    anyChanges = true;
+                    worldBuilder.Remove(targetedId);
+                    topLevelBuilder.Remove(dependency);
                 }
-
-                anyChanges = true;
-
-                worldBuilder.Remove(targetedId);
-                topLevelBuilder.Remove(dependency);
             }
 
             Dictionary<string, IProjectDependenciesSubTreeProvider> subTreeProvidersMap = GetSubTreeProviderMap(subTreeProviders);

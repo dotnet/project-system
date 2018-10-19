@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
             return dependency;
         }
 
-        public virtual IDependency BeforeRemove(
+        public virtual bool BeforeRemove(
             string projectPath,
             ITargetFramework targetFramework,
             IDependency dependency,
@@ -35,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
             out bool filterAnyChanges)
         {
             filterAnyChanges = false;
-            return dependency;
+            return true;
         }
     }
 }

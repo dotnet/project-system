@@ -78,7 +78,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
             return resultDependency;
         }
 
-        public override IDependency BeforeRemove(
+        public override bool BeforeRemove(
             string projectPath,
             ITargetFramework targetFramework,
             IDependency dependency,
@@ -87,12 +87,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
             out bool filterAnyChanges)
         {
             filterAnyChanges = false;
-            if (!dependency.TopLevel || !dependency.Resolved)
-            {
-                return dependency;
-            }
 
-            if (dependency.Flags.Contains(DependencyTreeFlags.PackageNodeFlags))
+            if (dependency.TopLevel && 
+                dependency.Resolved && 
+                dependency.Flags.Contains(DependencyTreeFlags.PackageNodeFlags))
             {
                 // find sdk with the same name and clean dependencyIDs
                 string sdkModelId = dependency.Name;
@@ -113,7 +111,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
                 }
             }
 
-            return dependency;
+            return true;
         }
     }
 }
