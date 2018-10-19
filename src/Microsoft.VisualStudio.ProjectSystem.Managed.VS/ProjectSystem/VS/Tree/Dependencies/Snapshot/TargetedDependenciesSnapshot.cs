@@ -76,11 +76,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             {
                 if (_hasUnresolvedDependency == null)
                 {
-                    _hasUnresolvedDependency = TopLevelDependencies.Any(x => !x.Resolved);
-                    if (!_hasUnresolvedDependency.Value)
-                    {
-                        _hasUnresolvedDependency = DependenciesWorld.Values.Any(x => !x.Resolved);
-                    }
+                    _hasUnresolvedDependency = 
+                        TopLevelDependencies.Any(x => !x.Resolved) || 
+                        DependenciesWorld.Values.Any(x => !x.Resolved);
                 }
 
                 return _hasUnresolvedDependency.Value;
