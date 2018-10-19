@@ -81,9 +81,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             await _commonServices.ThreadingService.SwitchToUIThread();
 
             // We don't want to dispose the inner workspace contexts that are still being used by other active aggregate contexts.
-            bool shouldDisposeInnerContext(ITargetedProjectContext c) => !usedProjectContexts.Contains(c);
+            bool ShouldDisposeInnerContext(ITargetedProjectContext c) => !usedProjectContexts.Contains(c);
 
-            context.Dispose(shouldDisposeInnerContext);
+            context.Dispose(ShouldDisposeInnerContext);
         }
 
         // Clears saved host objects and project contexts for unused configured projects.

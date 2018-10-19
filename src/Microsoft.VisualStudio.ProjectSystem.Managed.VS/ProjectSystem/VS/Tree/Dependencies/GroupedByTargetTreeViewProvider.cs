@@ -47,8 +47,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             CancellationToken cancellationToken = default)
         {
             IProjectTree originalTree = dependenciesTree;
+
             var currentTopLevelNodes = new List<IProjectTree>();
-            IProjectTree rememberNewNodes(IProjectTree rootNode, IEnumerable<IProjectTree> currentNodes)
+            IProjectTree RememberNewNodes(IProjectTree rootNode, IEnumerable<IProjectTree> currentNodes)
             {
                 if (currentNodes != null)
                 {
@@ -72,7 +73,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                         snapshot.ActiveTarget,
                         targetedSnapshot,
                         targetedSnapshot.Catalogs,
-                        rememberNewNodes);
+                        RememberNewNodes);
                 }
             }
             else
@@ -91,7 +92,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                             snapshot.ActiveTarget,
                             targetedSnapshot,
                             targetedSnapshot.Catalogs,
-                            rememberNewNodes);
+                            RememberNewNodes);
                     }
                     else
                     {
