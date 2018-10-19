@@ -555,6 +555,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         private CancellationToken GetNextTreeUpdateCancellationToken()
         {
 #pragma warning disable CA2000 // Dispose objects before losing scope
+            // We can suppress this warning because nextSource will be
+            // assigned to a field before the method returns, and will
+            // later be disposed once it becomes priorSource.
             var nextSource = new CancellationTokenSource();
 #pragma warning restore CA2000 // Dispose objects before losing scope
 
