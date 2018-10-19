@@ -357,8 +357,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' Sets error code and error message through IVsUIShell interface
         ''' </summary>
         ''' <param name="hr">error code</param>
-        ''' <param name="error message">error message</param>
-        ''' <returns></returns>
+        ''' <param name="errorMessage">error message</param>
         Public Sub SetErrorInfo(sp As ServiceProvider, hr As Integer, errorMessage As String)
             Dim vsUIShell As Interop.IVsUIShell = Nothing
 

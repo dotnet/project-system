@@ -19,6 +19,9 @@ namespace Microsoft.VisualStudio.Threading.Tasks
         /// <param name="token">
         ///     The <see cref="CancellationToken"/> to register for cancellation.
         /// </param>
+        /// <param name="options">
+        ///     Options that control how the registration occurs.
+        /// </param>
         /// <param name="callback">
         ///     The delegate to be executed when the <see cref="CancellationToken"/> is canceled.
         /// </param>

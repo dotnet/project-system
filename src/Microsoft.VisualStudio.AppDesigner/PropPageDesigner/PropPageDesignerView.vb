@@ -1453,9 +1453,8 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 
         ''' <summary>
         ''' Returns the selection state of the configuration and platform comboboxes to the pre-undo/redo state.
-        ''' <param name="SelectedConfigName">The selected configuration in the drop-down combobox.  Empty string indicates "All Configurations".</param>
-        ''' <param name="SelectedPlatformName">The selected platform in the drop-down combobox.  Empty string indicates "All Platforms".</param>
         ''' </summary>
+        ''' <param name="MultiValues">Specifies the selected configuration and platform in the drop-down combobox.</param>
         ''' <remarks></remarks>
         Private Sub ReselectConfigurationsForUndoRedo(MultiValues As MultipleValuesStore)
             If Not IsConfigPage Then

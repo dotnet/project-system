@@ -3,6 +3,8 @@
 using System;
 using System.Threading.Tasks;
 
+using Microsoft.VisualStudio.ProjectSystem.VS;
+
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     /// <summary>
