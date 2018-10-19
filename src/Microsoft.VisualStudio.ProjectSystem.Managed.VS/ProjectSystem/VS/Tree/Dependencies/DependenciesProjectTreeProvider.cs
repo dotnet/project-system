@@ -328,6 +328,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                         {
                             Verify.NotDisposed(this);
 
+                            // Issue this token before hooking the SnapshotChanged event to prevent a race
+                            // where a snapshot tree is replaced by the initial, empty tree created below.
+                            // The handler will cancel this token before submitting its update.
+                            CancellationToken initialTreeCancellationToken = GetNextTreeUpdateCancellationToken();
+
                             DependenciesSnapshotProvider.SnapshotChanged += OnDependenciesSnapshotChanged;
 
                             Task<IProjectVersionedValue<IProjectTreeSnapshot>> nowait = SubmitTreeUpdateAsync(
@@ -341,7 +346,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
                                     return Task.FromResult(new TreeUpdateResult(dependenciesNode, lazyFill: true));
                                 },
-                                GetNextTreeUpdateCancellationToken());
+                                initialTreeCancellationToken);
                         }
 
                     },
