@@ -326,9 +326,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
                         lock (SyncObject)
                         {
+                            Verify.NotDisposed(this);
+
                             DependenciesSnapshotProvider.SnapshotChanged += OnDependenciesSnapshotChanged;
 
-                            Verify.NotDisposed(this);
                             Task<IProjectVersionedValue<IProjectTreeSnapshot>> nowait = SubmitTreeUpdateAsync(
                                 (treeSnapshot, configuredProjectExports, cancellationToken) =>
                                 {
