@@ -54,7 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
                 int adjustedLength = dependency.Caption.Length + " (".Length;
                 foreach (IDependency x in topLevelBuilder)
                 {
-                    if (!x.Id.Equals(dependency.Id)
+                    if (!x.Id.Equals(dependency.Id, StringComparison.OrdinalIgnoreCase)
                          && x.ProviderType.Equals(dependency.ProviderType, StringComparison.OrdinalIgnoreCase)
                          && x.Caption.StartsWith(dependency.Caption, StringComparison.OrdinalIgnoreCase)
                          && x.Caption.Length >= adjustedLength
