@@ -716,11 +716,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 try
                 {
                     FileWatcher = new SimpleFileWatcher(Path.GetDirectoryName(CommonProjectServices.Project.FullPath),
-                                                    true,
-                                                    NotifyFilters.FileName | NotifyFilters.Size | NotifyFilters.LastWrite,
-                                                    LaunchSettingsFilename,
-                                                    LaunchSettingsFile_Changed,
-                                                    LaunchSettingsFile_Changed);
+                                                        true,
+                                                        NotifyFilters.FileName | NotifyFilters.Size | NotifyFilters.LastWrite,
+                                                        LaunchSettingsFilename,
+                                                        LaunchSettingsFile_Changed,
+                                                        LaunchSettingsFile_Changed);
                 }
                 catch (Exception ex)  when (ex is IOException || ex is ArgumentException)
                 {
