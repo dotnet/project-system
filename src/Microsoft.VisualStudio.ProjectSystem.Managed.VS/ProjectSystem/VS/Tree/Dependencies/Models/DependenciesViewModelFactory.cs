@@ -44,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 
         private IProjectDependenciesSubTreeProvider GetProvider(string providerType)
         {
-            return SubTreeProviders.FirstOrDefault(x => x.Value.ProviderType.Equals(providerType)).Value;
+            return SubTreeProviders.First(x => x.Value.ProviderType.Equals(providerType)).Value;
         }
     }
 }
