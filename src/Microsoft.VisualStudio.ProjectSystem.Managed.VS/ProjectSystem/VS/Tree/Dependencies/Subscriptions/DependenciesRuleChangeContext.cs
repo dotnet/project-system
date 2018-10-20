@@ -45,9 +45,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         {
             lock (_changesLock)
             {
-                var change = GetChanges(targetFramework) as DependenciesChanges;
-                change?.ExcludeAddedChange(ruleMetadata);
-                change?.IncludeAddedChange(ruleMetadata);
+                DependenciesChanges change = GetChanges(targetFramework);
+                change.ExcludeAddedChange(ruleMetadata);
+                change.IncludeAddedChange(ruleMetadata);
             }
         }
 
@@ -56,13 +56,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         {
             lock (_changesLock)
             {
-                var change = GetChanges(targetFramework) as DependenciesChanges;
-                change?.ExcludeRemovedChange(ruleMetadata);
-                change?.IncludeRemovedChange(ruleMetadata);
+                DependenciesChanges change = GetChanges(targetFramework);
+                change.ExcludeRemovedChange(ruleMetadata);
+                change.IncludeRemovedChange(ruleMetadata);
             }
         }
 
-        private IDependenciesChanges GetChanges(ITargetFramework targetFramework)
+        private DependenciesChanges GetChanges(ITargetFramework targetFramework)
         {
             if (!_changes.TryGetValue(targetFramework, out IDependenciesChanges change))
             {
@@ -70,7 +70,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 _changes = _changes.Add(targetFramework, change);
             }
 
-            return change;
+            return (DependenciesChanges)change;
         }
     }
 }
