@@ -196,7 +196,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
 
             var actionHandlers = GraphActionHandlers.Select(x => x.Value).Where(x => x.CanHandleChanges()).ToList();
 
-            if (!actionHandlers.Any())
+            if (actionHandlers.Count == 0)
             {
                 return;
             }
