@@ -7,7 +7,6 @@ using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.GraphModel;
 using Microsoft.VisualStudio.GraphModel.CodeSchema;
@@ -65,10 +64,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
         [ImportMany]
         private OrderPrecedenceImportCollection<IDependenciesGraphActionHandler> GraphActionHandlers { get; }
 
-        private readonly object _changedContextsQueueLock = new object();
-        private readonly Dictionary<string, SnapshotChangedEventArgs> _changedContextsQueue =
-            new Dictionary<string, SnapshotChangedEventArgs>(StringComparer.OrdinalIgnoreCase);
-        private Task _trackChangesTask;
+        private readonly object _snapshotChangeHandlerLock = new object();
         private IVsImageService2 _imageService;
         private readonly object _expandedGraphContextsLock = new object();
 
@@ -173,44 +169,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
                 return;
             }
 
-            lock (_changedContextsQueueLock)
+            lock (_snapshotChangeHandlerLock)
             {
-                _changedContextsQueue[snapshot.ProjectPath] = e;
-
-                // schedule new track changes request in the queue
-                if (_trackChangesTask == null || _trackChangesTask.IsCompleted)
-                {
-                    _trackChangesTask = RunTrackChangesAsync();
-                }
-                else
-                {
-                    _trackChangesTask = _trackChangesTask.ContinueWith(t => RunTrackChangesAsync(), TaskScheduler.Default);
-                }
+                TrackChanges(e);
             }
-        }
-
-        /// <summary>
-        /// Does process queue of track changes requests.
-        /// </summary>
-        private Task RunTrackChangesAsync()
-        {
-            return ThreadHelper.JoinableTaskFactory.RunAsync(async () =>
-            {
-                // TODO We might want to check if project or solution unloaded and cancel updates 
-                // here, does not meet the bar at the moment.
-                List<SnapshotChangedEventArgs> queue;
-
-                lock (_changedContextsQueueLock)
-                {
-                    queue = _changedContextsQueue.Values.ToList();
-                    _changedContextsQueue.Clear();
-                }
-
-                foreach (SnapshotChangedEventArgs context in queue)
-                {
-                    await TrackChangesAsync(context);
-                }
-            }).Task;
         }
 
         /// <summary>
@@ -219,7 +181,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
         /// Tracking changes over all expanded contexts ensures that all levels are processed
         /// and updated when there are any changes in nodes data.
         /// </summary>
-        internal Task TrackChangesAsync(SnapshotChangedEventArgs updatedProjectContext)
+        private void TrackChanges(SnapshotChangedEventArgs updatedProjectContext)
         {
             IList<IGraphContext> expandedContexts;
             lock (_expandedGraphContextsLock)
@@ -229,13 +191,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
 
             if (expandedContexts.Count == 0)
             {
-                return Task.CompletedTask;
+                return;
             }
 
             IEnumerable<Lazy<IDependenciesGraphActionHandler, IOrderPrecedenceMetadataView>> actionHandlers = GraphActionHandlers.Where(x => x.Value.CanHandleChanges());
             if (!actionHandlers.Any())
             {
-                return Task.CompletedTask;
+                return;
             }
 
             foreach (IGraphContext graphContext in expandedContexts)
@@ -250,8 +212,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
                     graphContext.OnCompleted();
                 }
             }
-
-            return Task.CompletedTask;
         }
 
         private void RegisterIcons(IEnumerable<ImageMoniker> icons)
