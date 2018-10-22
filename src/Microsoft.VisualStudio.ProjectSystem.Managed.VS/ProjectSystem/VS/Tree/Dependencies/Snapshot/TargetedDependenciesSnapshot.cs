@@ -250,11 +250,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
                 anyChanges = true;
 
-                worldBuilder.Remove(newDependency.Id);
-                worldBuilder.Add(newDependency.Id, newDependency);
+                worldBuilder[newDependency.Id] = newDependency;
+
                 if (newDependency.TopLevel)
                 {
-                    topLevelBuilder.Remove(newDependency);
                     topLevelBuilder.Add(newDependency);
                 }
             }
