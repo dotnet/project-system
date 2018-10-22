@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     public interface IDependencyModel
     {
         /// <summary>
-        /// Includes information about dependency and it's target framework for identification
+        /// Includes information about dependency and its target framework for identification
         /// </summary>
         string Id { get; }
 

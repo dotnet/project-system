@@ -11,6 +11,7 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Filters
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
+    /// <inheritdoc />
     internal class DependenciesSnapshot : IDependenciesSnapshot
     {
         private DependenciesSnapshot(string projectPath,
@@ -37,13 +38,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             }
         }
 
+        /// <inheritdoc />
         public string ProjectPath { get; }
 
+        /// <inheritdoc />
         public ITargetFramework ActiveTarget { get; }
 
         private ImmutableDictionary<ITargetFramework, ITargetedDependenciesSnapshot> _targets =
             ImmutableDictionary<ITargetFramework, ITargetedDependenciesSnapshot>.Empty;
 
+        /// <inheritdoc />
         public IImmutableDictionary<ITargetFramework, ITargetedDependenciesSnapshot> Targets
         {
             get
@@ -56,8 +60,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             }
         }
 
+        /// <inheritdoc />
         public bool HasUnresolvedDependency => Targets.Any(x => x.Value.HasUnresolvedDependency);
 
+        /// <inheritdoc />
         public IDependency FindDependency(string id, bool topLevel = false)
         {
             if (string.IsNullOrEmpty(id))
@@ -136,6 +142,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             return anyChanges;
         }
 
+        /// <inheritdoc />
         public bool Equals(IDependenciesSnapshot other)
         {
             return other != null && other.ProjectPath.Equals(ProjectPath, StringComparison.OrdinalIgnoreCase);

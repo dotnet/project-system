@@ -8,27 +8,27 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
     /// <summary>
-    /// Immutable snapshot containing all dependencies for all of a project's target frameworks.
+    /// Immutable snapshot of all project dependencies across all target frameworks.
     /// </summary>
     internal interface IDependenciesSnapshot : IEquatable<IDependenciesSnapshot>
     {
         /// <summary>
-        /// Path to current project
+        /// Gets the path to the project whose dependencies this snapshot contains.
         /// </summary>
         string ProjectPath { get; }
 
         /// <summary>
-        /// Active target framework for project (first in the TargetFrameworks property)
+        /// Gets the active target framework for project (first in the <c>TargetFrameworks</c> property).
         /// </summary>
         ITargetFramework ActiveTarget { get; }
 
         /// <summary>
-        /// Hash table of snapshots of dependencies for individual target frameworks
+        /// Gets a dictionary of dependencies by target framework.
         /// </summary>
         IImmutableDictionary<ITargetFramework, ITargetedDependenciesSnapshot> Targets { get; }
 
         /// <summary>
-        /// Specifies is this snapshot contains at least one unresolved/broken dependency at any level
+        /// Gets whether this snapshot contains at least one unresolved/broken dependency at any level
         /// for any target framework.
         /// </summary>
         bool HasUnresolvedDependency { get; }
@@ -37,10 +37,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         /// Finds dependency for given id across all target frameworks.
         /// </summary>
         /// <param name="id">Unique id for dependency to be found.</param>
-        /// <param name="topLevel">Suggests that id is specified for top level dependency and 
-        /// different logic should be used, while searching for it.
-        /// </param>
-        /// <returns>IDependency object if given id was found, otherwise null.</returns>
+        /// <param name="topLevel">If <see langword="true"/>, search is first performed on top level
+        /// dependencies before searching all dependencies.</param>
+        /// <returns>The <see cref="IDependency"/> if found, otherwise <see langword="null"/>.</returns>
         IDependency FindDependency(string id, bool topLevel = false);
     }
 }

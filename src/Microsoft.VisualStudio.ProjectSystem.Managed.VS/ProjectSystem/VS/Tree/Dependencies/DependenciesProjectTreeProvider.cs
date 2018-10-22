@@ -354,7 +354,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     Flags = DependencyTreeFlags.DependenciesRootNodeFlags
                 };
 
-                // Allow property providers to perform customization
+                // Allow property providers to perform customization.
+                // These are ordered from lowest priority to highest, allowing higher priority
+                // providers to override lower priority providers.
                 foreach (IProjectTreePropertiesProvider provider in _projectTreePropertiesProviders.ExtensionValues())
                 {
                     provider.CalculatePropertyValues(null, values);
@@ -389,6 +391,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 return;
             }
 
+            // Take the highest priority view provider
             IDependenciesTreeViewProvider viewProvider = _viewProviders.FirstOrDefault()?.Value;
 
             if (viewProvider == null)
