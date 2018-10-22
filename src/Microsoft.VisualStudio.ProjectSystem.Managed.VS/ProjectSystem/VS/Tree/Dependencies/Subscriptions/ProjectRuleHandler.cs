@@ -37,19 +37,35 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                                   IDependenciesSnapshotProvider snapshotProvider,
                                   IUnconfiguredProjectCommonServices commonServices)
         {
-            AggregateSnapshotProvider = aggregateSnapshotProvider;
             SnapshotProvider = snapshotProvider;
-            CommonServices = commonServices;
 
-            AggregateSnapshotProvider.SnapshotChanged += OnSnapshotChanged;
-            AggregateSnapshotProvider.SnapshotProviderUnloading += OnSnapshotProviderUnloading;
+            aggregateSnapshotProvider.SnapshotChanged += OnAggregateSnapshotChanged;
+            aggregateSnapshotProvider.SnapshotProviderUnloading += OnAggregateSnapshotProviderUnloading;
 
-            CommonServices.Project.ProjectUnloading += OnUnconfiguredProjectUnloading;
+            // Unregister event handlers when the project unloads
+            commonServices.Project.ProjectUnloading += OnUnconfiguredProjectUnloading;
+
+            Task OnUnconfiguredProjectUnloading(object sender, EventArgs e)
+            {
+                commonServices.Project.ProjectUnloading -= OnUnconfiguredProjectUnloading;
+                aggregateSnapshotProvider.SnapshotChanged -= OnAggregateSnapshotChanged;
+                aggregateSnapshotProvider.SnapshotProviderUnloading -= OnAggregateSnapshotProviderUnloading;
+
+                return Task.CompletedTask;
+            }
+
+            void OnAggregateSnapshotChanged(object sender, SnapshotChangedEventArgs e)
+            {
+                OnOtherProjectDependenciesChanged(e.Snapshot, shouldBeResolved: true);
+            }
+
+            void OnAggregateSnapshotProviderUnloading(object sender, SnapshotProviderUnloadingEventArgs e)
+            {
+                OnOtherProjectDependenciesChanged(e.SnapshotProvider.CurrentSnapshot, shouldBeResolved: false);
+            }
         }
 
-        private IUnconfiguredProjectCommonServices CommonServices { get; }
         private IDependenciesSnapshotProvider SnapshotProvider { get; }
-        private IAggregateDependenciesSnapshotProvider AggregateSnapshotProvider { get; }
 
         public override IDependencyModel CreateRootDependencyNode()
         {
@@ -81,16 +97,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         public override ImageMoniker GetImplicitIcon()
         {
             return ManagedImageMonikers.ApplicationPrivate;
-        }
-
-        private void OnSnapshotChanged(object sender, SnapshotChangedEventArgs e)
-        {
-            OnOtherProjectDependenciesChanged(e.Snapshot, shouldBeResolved: true);
-        }
-
-        private void OnSnapshotProviderUnloading(object sender, SnapshotProviderUnloadingEventArgs e)
-        {
-            OnOtherProjectDependenciesChanged(e.SnapshotProvider.CurrentSnapshot, shouldBeResolved: false);
         }
 
         /// <summary>
@@ -168,15 +174,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                         catalogs: null,
                         dataSourceVersions: null));
             }
-        }
-
-        private Task OnUnconfiguredProjectUnloading(object sender, EventArgs args)
-        {
-            CommonServices.Project.ProjectUnloading -= OnUnconfiguredProjectUnloading;
-            AggregateSnapshotProvider.SnapshotChanged -= OnSnapshotChanged;
-            AggregateSnapshotProvider.SnapshotProviderUnloading -= OnSnapshotProviderUnloading;
-
-            return Task.CompletedTask;
         }
     }
 }
