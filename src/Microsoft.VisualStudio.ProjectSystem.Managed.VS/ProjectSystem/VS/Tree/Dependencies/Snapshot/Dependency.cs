@@ -342,6 +342,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 {
                     sb = new StringBuilder(length);
                 }
+                else
+                {
+                    sb.EnsureCapacity(length);
+                }
 
                 sb.Append(targetFramework.ShortName).Append('\\');
                 sb.Append(providerType).Append('\\');
