@@ -193,7 +193,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
             {
                 // TODO We might want to check if project or solution unloaded and cancel updates 
                 // here, does not meet the bar at the moment.
-                List<SnapshotChangedEventArgs> queue = null;
+                List<SnapshotChangedEventArgs> queue;
 
                 lock (_changedContextsQueueLock)
                 {
@@ -345,7 +345,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
                                        new Uri(modelId.ToLowerInvariant(), UriKind.RelativeOrAbsolute))
             };
 
-            string parents = string.Empty;
+            string parents;
             if (parentNode != null)
             {
                 // to ensure Graph id for node is unique we add a hashcodes for node's parents separated by ';'
