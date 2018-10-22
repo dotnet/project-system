@@ -75,7 +75,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
 
                 if (id.StartsWith(projectFolder, StringComparison.OrdinalIgnoreCase))
                 {
-                    id = id.Substring(projectFolder.Length).TrimStart('\\');
+                    int startIndex = projectFolder.Length;
+                    
+                    // Trim backslashes (without allocating)
+                    while (startIndex < id.Length && id[startIndex] == '\\')
+                    {
+                        startIndex++;
+                    }
+
+                    id = id.Substring(startIndex);
                 }
 
                 return GetTopLevelDependency(projectPath, id, out snapshot);
