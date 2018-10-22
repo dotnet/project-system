@@ -24,7 +24,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         private readonly IActiveConfiguredProjectSubscriptionService _activeConfiguredProjectSubscriptionService;
         private readonly IActiveProjectConfigurationRefreshService _activeProjectConfigurationRefreshService;
         private readonly ITargetFrameworkProvider _targetFrameworkProvider;
-        private readonly IUnconfiguredProjectTasksService _unconfiguredProjectTasksService;
         private readonly object _linksLock = new object();
         private readonly List<IDisposable> _evaluationSubscriptionLinks;
         private readonly object _initializationLock = new object();
@@ -41,8 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                                    [Import(ExportContractNames.Scopes.UnconfiguredProject)]IProjectAsynchronousTasksService tasksService,
                                    IActiveConfiguredProjectSubscriptionService activeConfiguredProjectSubscriptionService,
                                    IActiveProjectConfigurationRefreshService activeProjectConfigurationRefreshService,
-                                   ITargetFrameworkProvider targetFrameworkProvider,
-                                   IUnconfiguredProjectTasksService unconfiguredProjectTasksService)
+                                   ITargetFrameworkProvider targetFrameworkProvider)
             : base(commonServices.ThreadingService.JoinableTaskContext)
         {
             Requires.NotNull(contextProvider, nameof(contextProvider));
@@ -57,7 +55,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             _activeConfiguredProjectSubscriptionService = activeConfiguredProjectSubscriptionService;
             _activeProjectConfigurationRefreshService = activeProjectConfigurationRefreshService;
             _targetFrameworkProvider = targetFrameworkProvider;
-            _unconfiguredProjectTasksService = unconfiguredProjectTasksService;
             _evaluationSubscriptionLinks = new List<IDisposable>();
         }
 

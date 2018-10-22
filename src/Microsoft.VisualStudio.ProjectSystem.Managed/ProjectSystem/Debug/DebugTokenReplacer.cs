@@ -17,18 +17,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     [AppliesTo(ProjectCapability.LaunchProfiles)]
     internal class DebugTokenReplacer : IDebugTokenReplacer
     {
-
         [ImportingConstructor]
-        public DebugTokenReplacer(IUnconfiguredProjectCommonServices unconfiguredServices, IEnvironmentHelper environmentHelper,
-                                  IActiveDebugFrameworkServices activeDebugFrameworkService, IProjectAccessor projectAccessor)
+        public DebugTokenReplacer(IEnvironmentHelper environmentHelper, IActiveDebugFrameworkServices activeDebugFrameworkService, IProjectAccessor projectAccessor)
         {
-            UnconfiguredServices = unconfiguredServices;
             EnvironmentHelper = environmentHelper;
             ActiveDebugFrameworkService = activeDebugFrameworkService;
             ProjectAccessor = projectAccessor;
         }
 
-        private IUnconfiguredProjectCommonServices UnconfiguredServices { get; }
         private IEnvironmentHelper EnvironmentHelper { get; }
         private IActiveDebugFrameworkServices ActiveDebugFrameworkService { get; }
         private IProjectAccessor ProjectAccessor { get; }

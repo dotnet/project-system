@@ -12,16 +12,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
     [AppliesTo(ProjectCapability.DotNet)]
     internal class DialogServices : IDialogServices
     {
+        private readonly IUserNotificationServices _userNotificationServices;
+
         [ImportingConstructor]
-        public DialogServices(IProjectThreadingService threadHandling, IUserNotificationServices userNotificationServices)
+        public DialogServices(IUserNotificationServices userNotificationServices)
         {
-            _threadHandling = threadHandling;
             _userNotificationServices = userNotificationServices;
         }
-
-        // Only here to provide scope
-        private readonly IProjectThreadingService _threadHandling;
-        private readonly IUserNotificationServices _userNotificationServices;
 
         public MultiChoiceMsgBoxResult ShowMultiChoiceMsgBox(string dialogTitle, string errorText, string[] buttons)
         {

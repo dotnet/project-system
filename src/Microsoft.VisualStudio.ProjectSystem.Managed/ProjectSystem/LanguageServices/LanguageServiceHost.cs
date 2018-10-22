@@ -26,7 +26,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         private readonly IUnconfiguredProjectCommonServices _commonServices;
         private readonly Lazy<IProjectContextProvider> _contextProvider;
         private readonly IProjectAsynchronousTasksService _tasksService;
-        private readonly IActiveConfiguredProjectSubscriptionService _activeConfiguredProjectSubscriptionService;
         private readonly IActiveProjectConfigurationRefreshService _activeProjectConfigurationRefreshService;
         private readonly LanguageServiceHandlerManager _languageServiceHandlerManager;
         private readonly IUnconfiguredProjectTasksService _unconfiguredProjectTasksService;
@@ -55,7 +54,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         public LanguageServiceHost(IUnconfiguredProjectCommonServices commonServices,
                                    Lazy<IProjectContextProvider> contextProvider,
                                    [Import(ExportContractNames.Scopes.UnconfiguredProject)]IProjectAsynchronousTasksService tasksService,
-                                   IActiveConfiguredProjectSubscriptionService activeConfiguredProjectSubscriptionService,
                                    IActiveProjectConfigurationRefreshService activeProjectConfigurationRefreshService,
                                    LanguageServiceHandlerManager languageServiceHandlerManager,
                                    IUnconfiguredProjectTasksService unconfiguredProjectTasksService)
@@ -64,7 +62,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             _commonServices = commonServices;
             _contextProvider = contextProvider;
             _tasksService = tasksService;
-            _activeConfiguredProjectSubscriptionService = activeConfiguredProjectSubscriptionService;
             _activeProjectConfigurationRefreshService = activeProjectConfigurationRefreshService;
             _languageServiceHandlerManager = languageServiceHandlerManager;
             _unconfiguredProjectTasksService = unconfiguredProjectTasksService;
@@ -81,7 +78,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
         [ProjectAutoLoad(completeBy: ProjectLoadCheckpoint.ProjectFactoryCompleted)]
         [AppliesTo(ProjectCapability.DotNetLanguageService)]
-        private Task OnProjectFactoryCompletedAsync()
+        public Task OnProjectFactoryCompletedAsync()
         {
             return InitializeAsync();
         }
@@ -141,11 +138,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         private Task ExecuteWithinLockAsync(Func<Task> task)
         {
             return _gate.ExecuteWithinLockAsync(JoinableCollection, JoinableFactory, task);
-        }
-
-        private Task ExecuteWithinLockAsync(Action action)
-        {
-            return _gate.ExecuteWithinLockAsync(JoinableCollection, JoinableFactory, action);
         }
 
         /// <summary>

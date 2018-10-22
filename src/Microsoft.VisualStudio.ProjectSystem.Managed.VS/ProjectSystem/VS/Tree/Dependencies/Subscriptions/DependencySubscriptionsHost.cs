@@ -34,15 +34,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             IActiveConfiguredProjectSubscriptionService activeConfiguredProjectSubscriptionService,
             IActiveProjectConfigurationRefreshService activeProjectConfigurationRefreshService,
             ITargetFrameworkProvider targetFrameworkProvider,
-            IAggregateDependenciesSnapshotProvider aggregateSnapshotProvider,
-            IUnconfiguredProjectTasksService unconfiguredProjectTasksService)
+            IAggregateDependenciesSnapshotProvider aggregateSnapshotProvider)
             : base(commonServices,
                    contextProvider,
                    tasksService,
                    activeConfiguredProjectSubscriptionService,
                    activeProjectConfigurationRefreshService,
-                   targetFrameworkProvider,
-                   unconfiguredProjectTasksService)
+                   targetFrameworkProvider)
         {
             CommonServices = commonServices;
             DependencySubscribers = new OrderPrecedenceImportCollection<IDependencyCrossTargetSubscriber>(
@@ -132,7 +130,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
         [ProjectAutoLoad(ProjectLoadCheckpoint.ProjectFactoryCompleted)]
         [AppliesTo(ProjectCapability.DependenciesTree)]
-        private Task OnProjectFactoryCompletedAsync()
+        public Task OnProjectFactoryCompletedAsync()
         {
             return AddInitialSubscriptionsAsync();
         }

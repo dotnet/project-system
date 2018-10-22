@@ -20,19 +20,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         private IPropertyPageSite _site = null;
         private bool _isDirty = false;
         private readonly bool _ignoreEvents = false;
-        private bool _useJoinableTaskFactory = true;
         private IVsDebugger _debugger;
         private uint _debuggerCookie;
         private bool _isActivated = false;
         internal IProjectThreadingService _threadHandling;
 
         // WIN32 Constants
-        private const int
-            WM_KEYFIRST = 0x0100,
-            WM_KEYLAST = 0x0108,
-            WM_MOUSEFIRST = 0x0200,
-            WM_MOUSELAST = 0x020A,
-            SW_HIDE = 0;
+        private const int SW_HIDE = 0;
 
         internal static class NativeMethods
         {
@@ -45,12 +39,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         internal PropertyPage()
         {
             AutoScroll = false;
-        }
-
-        // For unit testing
-        internal PropertyPage(bool useJoinableTaskFactory)
-        {
-            _useJoinableTaskFactory = useJoinableTaskFactory;
         }
 
         internal UnconfiguredProject UnconfiguredProject { get; set; }

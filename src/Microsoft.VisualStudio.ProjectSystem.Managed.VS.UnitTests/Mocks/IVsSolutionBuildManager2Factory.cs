@@ -43,10 +43,5 @@ namespace Microsoft.VisualStudio.Shell.Interop
 
             return buildManager.Object;
         }
-
-        private static int DefaultBuildManagerBusy(int isBusy)
-        {
-            return VSConstants.S_OK;
-        }
     }
 }
