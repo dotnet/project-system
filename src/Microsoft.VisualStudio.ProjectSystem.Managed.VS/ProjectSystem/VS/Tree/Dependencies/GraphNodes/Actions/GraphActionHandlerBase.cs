@@ -62,6 +62,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
             }
 
             string projectFolder = Path.GetDirectoryName(projectPath);
+            if (projectFolder == null)
+            {
+                return null;
+            }
+
             string id = inputGraphNode.GetValue<string>(DependenciesGraphSchema.DependencyIdProperty);
             if (id == null)
             {
