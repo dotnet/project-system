@@ -177,10 +177,12 @@
       <SubType>Designer</SubType>
     </XamlPropertyRule>
     <XamlPropertyRule Include="ProjectSystem\Rules\ApplicationDefinition.xaml">
+      <XlfInput>false</XlfInput>
       <SubType>Designer</SubType>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
     </XamlPropertyRule>
     <XamlPropertyRule Include="ProjectSystem\Rules\Page.xaml">
+      <XlfInput>false</XlfInput>
       <SubType>Designer</SubType>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
     </XamlPropertyRule>
@@ -270,7 +272,6 @@
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
     </XamlPropertyRule>
-    <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\Resource.BrowseObject.xaml" />
     <XamlPropertyRule Include="ProjectSystem\Rules\Resource.xaml">
       <XlfInput>false</XlfInput>
       <SubType>Designer</SubType>
@@ -320,14 +321,19 @@
       <SubType>Designer</SubType>
     </XamlPropertyRule>
     <XamlPropertyRule Include="ProjectSystem\Rules\XamlAppDef.xaml">
+      <XlfInput>false</XlfInput>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
     </XamlPropertyRule>
-    <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\None.BrowseObject.xaml" />
+    <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\AdditionalFiles.BrowseObject.xaml" />
+    <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\ApplicationDefinition.BrowseObject.xaml" />
     <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\Compile.BrowseObject.xaml" />
     <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\Content.BrowseObject.xaml" />
-    <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\AdditionalFiles.BrowseObject.xaml" />
     <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\EmbeddedResource.BrowseObject.xaml" />
+    <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\None.BrowseObject.xaml" />
+    <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\Page.BrowseObject.xaml" />
+    <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\Resource.BrowseObject.xaml" />
+    <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\XamlAppDef.BrowseObject.xaml" />
     <XamlPropertyProjectItemsSchema Include="ProjectSystem\Rules\ProjectItemsSchema.xaml" />
     <XamlPropertyProjectItemsSchema Include="ProjectSystem\Rules\CSharp.ProjectItemsSchema.xaml" />
     <XamlPropertyProjectItemsSchema Include="ProjectSystem\Rules\VisualBasic.ProjectItemsSchema.xaml" />
@@ -343,5 +349,19 @@
   </ItemGroup>
   <ItemGroup>
     <DesignTimeTargetsFile Include="ProjectSystem\DesignTimeTargets\*.targets" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="ProjectSystem\Rules\ApplicationDefinition - Copy.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="ProjectSystem\Rules\ApplicationDefinition.BrowseObject.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="ProjectSystem\Rules\XamlAppDef - Copy.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="ProjectSystem\Rules\XamlAppDef.BrowseObject.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
   </ItemGroup>
 </Project>
