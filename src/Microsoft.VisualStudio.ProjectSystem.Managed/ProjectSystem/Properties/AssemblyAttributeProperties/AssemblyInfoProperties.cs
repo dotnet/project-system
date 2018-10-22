@@ -45,10 +45,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             IProjectThreadingService threadingService)
         {
             ImmutableDictionary<string, SourceAssemblyAttributePropertyValueProvider>.Builder builder = ImmutableDictionary.CreateBuilder<string, SourceAssemblyAttributePropertyValueProvider>();
-            foreach (KeyValuePair<string, (string attributeName, string generatePropertyInProjectFileName)> kvp in AssemblyPropertyInfoMap)
+            foreach ((string key, (string attributeName, _)) in AssemblyPropertyInfoMap)
             {
-                var provider = new SourceAssemblyAttributePropertyValueProvider(kvp.Value.attributeName, getActiveProjectId, workspace, threadingService);
-                builder.Add(kvp.Key, provider);
+                var provider = new SourceAssemblyAttributePropertyValueProvider(attributeName, getActiveProjectId, workspace, threadingService);
+                builder.Add(key, provider);
             }
 
             return builder.ToImmutable();

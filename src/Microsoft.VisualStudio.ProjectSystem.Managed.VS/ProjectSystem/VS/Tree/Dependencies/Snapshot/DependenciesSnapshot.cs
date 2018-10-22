@@ -75,9 +75,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             {
                 // if top level first try to find by top level id with full path,
                 // if found - return, if not - try regular Id in the DependenciesWorld
-                foreach (KeyValuePair<ITargetFramework, ITargetedDependenciesSnapshot> target in Targets)
+                foreach (ITargetedDependenciesSnapshot targetedDependencies in Targets.Values)
                 {
-                    IDependency dependency = target.Value.TopLevelDependencies.FirstOrDefault(
+                    IDependency dependency = targetedDependencies.TopLevelDependencies.FirstOrDefault(
                         x => x.GetTopLevelId().Equals(id, StringComparison.OrdinalIgnoreCase));
                     if (dependency != null)
                     {
@@ -86,9 +86,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 }
             }
 
-            foreach (KeyValuePair<ITargetFramework, ITargetedDependenciesSnapshot> target in Targets)
+            foreach (ITargetedDependenciesSnapshot targetedDependencies in Targets.Values)
             {
-                if (target.Value.DependenciesWorld.TryGetValue(id, out IDependency dependency))
+                if (targetedDependencies.DependenciesWorld.TryGetValue(id, out IDependency dependency))
                 {
                     return dependency;
                 }
@@ -106,20 +106,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         {
             bool anyChanges = false;
             var builder = _targets.ToBuilder();
-            foreach (KeyValuePair<ITargetFramework, IDependenciesChanges> change in changes)
+            foreach ((ITargetFramework targetFramework, IDependenciesChanges dependenciesChanges) in changes)
             {
-                builder.TryGetValue(change.Key, out ITargetedDependenciesSnapshot previousSnapshot);
+                builder.TryGetValue(targetFramework, out ITargetedDependenciesSnapshot previousSnapshot);
                 var newTargetedSnapshot = TargetedDependenciesSnapshot.FromChanges(
                                             ProjectPath,
-                                            change.Key,
+                                            targetFramework,
                                             previousSnapshot,
-                                            change.Value,
+                                            dependenciesChanges,
                                             catalogs,
                                             snapshotFilters,
                                             subTreeProviders,
                                             projectItemSpecs,
                                             out bool anyTfmChanges);
-                builder[change.Key] = newTargetedSnapshot;
+                builder[targetFramework] = newTargetedSnapshot;
 
                 if (anyTfmChanges)
                 {
@@ -128,12 +128,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             }
 
             // now get rid of empty target frameworks (if there no any dependencies for them)
-            foreach (KeyValuePair<ITargetFramework, ITargetedDependenciesSnapshot> targetKvp in builder.ToList())
+            foreach ((ITargetFramework targetFramework, ITargetedDependenciesSnapshot targetedDependencies) in builder.ToList())
             {
-                if (targetKvp.Value.DependenciesWorld.Count <= 0)
+                if (targetedDependencies.DependenciesWorld.Count <= 0)
                 {
                     anyChanges = true;
-                    builder.Remove(targetKvp.Key);
+                    builder.Remove(targetFramework);
                 }
             }
 

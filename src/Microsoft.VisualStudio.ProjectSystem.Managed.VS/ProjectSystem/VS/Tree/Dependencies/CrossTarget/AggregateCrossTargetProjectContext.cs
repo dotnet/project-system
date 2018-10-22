@@ -53,11 +53,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         public void SetProjectFilePathAndDisplayName(string projectFilePath, string displayName)
         {
             // Update the project file path and display name for all the inner project contexts.
-            foreach (KeyValuePair<ITargetFramework, ITargetedProjectContext> innerProjectContextKvp in _configuredProjectContextsByTargetFramework)
+            foreach ((ITargetFramework targetFramework, ITargetedProjectContext innerProjectContext) in _configuredProjectContextsByTargetFramework)
             {
-                ITargetFramework targetFramework = innerProjectContextKvp.Key;
-                ITargetedProjectContext innerProjectContext = innerProjectContextKvp.Value;
-
                 // For cross targeting projects, we ensure that the display name is unique per every target framework.
                 innerProjectContext.DisplayName = IsCrossTargeting ? $"{displayName}({targetFramework})" : displayName;
                 innerProjectContext.ProjectFilePath = projectFilePath;
