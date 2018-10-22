@@ -40,16 +40,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 
             if (Resolved)
             {
-                if (!string.IsNullOrEmpty(fusionName))
-                {
-                    var assemblyName = new AssemblyName(fusionName);
-                    Caption = assemblyName.Name;
-                }
-                else
-                {
-                    Caption = Name;
-                }
 
+                Caption = string.IsNullOrEmpty(fusionName) ? Name : new AssemblyName(fusionName).Name;
                 SchemaName = ResolvedAssemblyReference.SchemaName;
             }
             else
