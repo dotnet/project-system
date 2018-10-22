@@ -43,22 +43,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
             out bool filterAnyChanges)
         {
             filterAnyChanges = false;
-            IDependency resultDependency = dependency;
 
-            if (resultDependency.TopLevel
-                && resultDependency.Resolved
-                && resultDependency.Flags.Contains(DependencyTreeFlags.ProjectNodeFlags)
-                && !resultDependency.Flags.Contains(DependencyTreeFlags.SharedProjectFlags))
+            if (dependency.TopLevel
+                && dependency.Resolved
+                && dependency.Flags.Contains(DependencyTreeFlags.ProjectNodeFlags)
+                && !dependency.Flags.Contains(DependencyTreeFlags.SharedProjectFlags))
             {
-                ITargetedDependenciesSnapshot snapshot = GetSnapshot(resultDependency);
+                ITargetedDependenciesSnapshot snapshot = GetSnapshot(dependency);
                 if (snapshot != null && snapshot.HasUnresolvedDependency)
                 {
                     filterAnyChanges = true;
-                    resultDependency = resultDependency.ToUnresolved(ProjectReference.SchemaName);
+                    return dependency.ToUnresolved(ProjectReference.SchemaName);
                 }
             }
 
-            return resultDependency;
+            return dependency;
         }
 
         private ITargetedDependenciesSnapshot GetSnapshot(IDependency dependency)

@@ -32,43 +32,39 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
             out bool filterAnyChanges)
         {
             filterAnyChanges = false;
-            IDependency resultDependency = dependency;
 
-            if (!resultDependency.TopLevel
-                || resultDependency.Implicit
-                || !resultDependency.Resolved
-                || !resultDependency.Flags.Contains(DependencyTreeFlags.GenericDependencyFlags))
+            if (!dependency.TopLevel
+                || dependency.Implicit
+                || !dependency.Resolved
+                || !dependency.Flags.Contains(DependencyTreeFlags.GenericDependencyFlags))
             {
-                return resultDependency;
+                return dependency;
             }
 
-            if (projectItemSpecs == null)   // No data, so don't update
-                return resultDependency;
-
-            if (!projectItemSpecs.Contains(resultDependency.OriginalItemSpec))
+            if (projectItemSpecs == null)
             {
-                // it is an implicit dependency
-                if (!subTreeProviders.TryGetValue(resultDependency.ProviderType, out IProjectDependenciesSubTreeProvider provider))
-                {
-                    return resultDependency;
-                }
-
-                if (!(provider is IProjectDependenciesSubTreeProviderInternal internalProvider))
-                {
-                    return resultDependency;
-                }
-
-                DependencyIconSet implicitIconSet = resultDependency.IconSet
-                    .WithIcon(internalProvider.GetImplicitIcon())
-                    .WithExpandedIcon(internalProvider.GetImplicitIcon());
-
-                resultDependency = resultDependency.SetProperties(
-                    iconSet: implicitIconSet,
-                    isImplicit: true);
-                filterAnyChanges = true;
+                // No data, so don't update
+                return dependency;
             }
 
-            return resultDependency;
+            if (!projectItemSpecs.Contains(dependency.OriginalItemSpec))
+            {
+                // It is an implicit dependency
+                if (subTreeProviders.TryGetValue(dependency.ProviderType, out IProjectDependenciesSubTreeProvider provider) && 
+                    provider is IProjectDependenciesSubTreeProviderInternal internalProvider)
+                {
+                    DependencyIconSet implicitIconSet = dependency.IconSet
+                        .WithIcon(internalProvider.GetImplicitIcon())
+                        .WithExpandedIcon(internalProvider.GetImplicitIcon());
+
+                    filterAnyChanges = true;
+                    return dependency.SetProperties(
+                        iconSet: implicitIconSet,
+                        isImplicit: true);
+                }
+            }
+
+            return dependency;
         }
     }
 }
