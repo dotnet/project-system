@@ -390,7 +390,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 return;
             }
 
-            Lazy<IDependenciesTreeViewProvider, IOrderPrecedenceMetadataView> viewProvider = _viewProviders.FirstOrDefault();
+            IDependenciesTreeViewProvider viewProvider = _viewProviders.FirstOrDefault()?.Value;
 
             if (viewProvider == null)
             {
@@ -403,7 +403,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     IProjectTree dependenciesNode = treeSnapshot.Value.Tree;
                     if (!cancellationToken.IsCancellationRequested)
                     {
-                        dependenciesNode = await viewProvider.Value.BuildTreeAsync(dependenciesNode, snapshot, cancellationToken);
+                        dependenciesNode = await viewProvider.BuildTreeAsync(dependenciesNode, snapshot, cancellationToken);
 
                         _treeTelemetryService.ObserveTreeUpdateCompleted(snapshot.HasUnresolvedDependency);
                     }

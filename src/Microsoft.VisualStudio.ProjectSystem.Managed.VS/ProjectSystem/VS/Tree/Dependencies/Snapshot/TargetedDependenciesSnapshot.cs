@@ -164,12 +164,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
         private bool TryToFindDependency(string id, out IDependency dependency)
         {
-            if (DependenciesWorld.TryGetValue(id, out dependency))
-            {
-                return true;
-            }
-
-            return _topLevelDependenciesByPathMap.TryGetValue(id, out dependency);
+            return DependenciesWorld.TryGetValue(id, out dependency) || 
+                   _topLevelDependenciesByPathMap.TryGetValue(id, out dependency);
         }
 
         private bool MergeChanges(

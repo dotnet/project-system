@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                 return null;
             }
 
-            ITargetFramework targetFramework = null;
+            ITargetFramework targetFramework;
             try
             {
                 lock (_targetsLock)

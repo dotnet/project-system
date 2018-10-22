@@ -48,11 +48,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
                                     ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesLast);
         }
 
-        private static readonly GraphCommand[] s_containsGraphCommand = new[] { new GraphCommand(
+        private static readonly GraphCommand[] s_containsGraphCommand =
+        {
+            new GraphCommand(
                 GraphCommandDefinition.Contains,
                 targetCategories: null,
-                linkCategories: new[] { GraphCommonSchema.Contains },
-                trackChanges: true) };
+                linkCategories: new[] {GraphCommonSchema.Contains},
+                trackChanges: true)
+        };
 
         /// <summary>
         /// All icons that are used tree graph, register their monikers once to avoid extra UI thread switches.
@@ -126,13 +129,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
         /// <summary>
         /// IGraphProvider.Schema
         /// </summary>
-        public Graph Schema
-        {
-            get
-            {
-                return null;
-            }
-        }
+        public Graph Schema => null;
 
         internal async Task BeginGetGraphDataAsync(IGraphContext context)
         {

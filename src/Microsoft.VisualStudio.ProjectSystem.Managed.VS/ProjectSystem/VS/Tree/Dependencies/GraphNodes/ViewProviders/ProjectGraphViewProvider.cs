@@ -79,13 +79,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
         {
             dependencyProjectPath = dependency.FullPath;
 
-            IDependenciesSnapshotProvider snapshotProvider = AggregateSnapshotProvider.GetSnapshotProvider(dependencyProjectPath);
-            if (snapshotProvider == null)
-            {
-                return null;
-            }
+            IDependenciesSnapshot snapshot =
+                AggregateSnapshotProvider.GetSnapshotProvider(dependencyProjectPath)?.CurrentSnapshot;
 
-            IDependenciesSnapshot snapshot = snapshotProvider.CurrentSnapshot;
             if (snapshot == null)
             {
                 return null;
