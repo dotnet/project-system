@@ -138,9 +138,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
                 bool shouldTrackChanges = actionHandlers.Aggregate(
                     false, (previousTrackFlag, handler) => previousTrackFlag || handler.Value.HandleRequest(context));
 
+                if (!shouldTrackChanges)
+                {
+                    return;
+                }
+
                 lock (_expandedGraphContextsLock)
                 {
-                    if (shouldTrackChanges && !ExpandedGraphContexts.Contains(context))
+                    if (!ExpandedGraphContexts.Contains(context))
                     {
                         // Remember this graph context in order to track changes.
                         // When references change, we will adjust children of this graph as necessary
