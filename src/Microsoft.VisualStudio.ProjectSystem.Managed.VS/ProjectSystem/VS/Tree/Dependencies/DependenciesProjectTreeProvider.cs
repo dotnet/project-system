@@ -17,7 +17,6 @@ using Microsoft.VisualStudio.ProjectSystem.References;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions;
-using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Threading;
 
 using Task = System.Threading.Tasks.Task;

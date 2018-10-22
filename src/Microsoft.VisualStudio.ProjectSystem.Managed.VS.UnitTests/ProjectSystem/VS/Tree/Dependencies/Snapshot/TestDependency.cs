@@ -13,10 +13,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     [DebuggerDisplay("{" + nameof(Id) +",nq}")]
     internal class TestDependency : IDependency
     {
-        public TestDependency()
-        {
-        }
-
         public string ProviderType { get; set; }
         public string Name { get; set; }
         public string Caption { get; set; }

@@ -129,7 +129,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         public void Dependency_Id_NoSnapshotTargetFramework(string modelId, string expectedId)
         {
             var mockModel = IDependencyModelFactory.Implement(providerType: "xxx", id: modelId);
-            var mockSnapshot = ITargetedDependenciesSnapshotFactory.Create();
 
             var dependency = new Dependency(mockModel, ITargetFrameworkFactory.Implement("tfm1"), @"C:\Foo\Project.cspoj");
 

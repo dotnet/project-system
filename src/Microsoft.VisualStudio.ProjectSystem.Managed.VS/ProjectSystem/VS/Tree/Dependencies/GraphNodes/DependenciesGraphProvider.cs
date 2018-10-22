@@ -75,7 +75,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
         /// <summary>
         /// Remembers expanded graph nodes to track changes in their children.
         /// </summary>
-        protected WeakCollection<IGraphContext> ExpandedGraphContexts { get; set; } = new WeakCollection<IGraphContext>();
+        protected WeakCollection<IGraphContext> ExpandedGraphContexts { get; } = new WeakCollection<IGraphContext>();
 
         private IAggregateDependenciesSnapshotProvider AggregateSnapshotProvider { get; }
 

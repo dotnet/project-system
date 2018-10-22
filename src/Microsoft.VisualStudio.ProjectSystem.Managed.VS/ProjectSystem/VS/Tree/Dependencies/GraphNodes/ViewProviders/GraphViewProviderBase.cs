@@ -147,7 +147,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
             out IEnumerable<DependencyNodeInfo> nodesToAdd,
             out IEnumerable<DependencyNodeInfo> nodesToRemove)
         {
-            var comparer = new DependencyResolvedStateComparer();
             nodesToRemove = existingChildren.Except(updatedChildren).ToList();
             nodesToAdd = updatedChildren.Except(existingChildren).ToList();
             return nodesToAdd.Any() || nodesToRemove.Any();
