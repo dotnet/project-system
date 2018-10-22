@@ -51,6 +51,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// </summary>
         public void InitializeTargetFrameworkRules(ITargetFramework targetFramework, IEnumerable<string> rules)
         {
+            if (_stopTelemetry)
+                return;
+
             lock (_stateUpdateLock)
             {
                 if (_stopTelemetry)
@@ -72,6 +75,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// </summary>
         public void ObserveTargetFrameworkRules(ITargetFramework targetFramework, IEnumerable<string> rules)
         {
+            if (_stopTelemetry)
+                return;
+
             lock (_stateUpdateLock)
             {
                 if (_stopTelemetry)
@@ -93,6 +99,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// <param name="hasUnresolvedDependency">indicates if the snapshot used for the update had any unresolved dependencies</param>
         public void ObserveTreeUpdateCompleted(bool hasUnresolvedDependency)
         {
+            if (_stopTelemetry)
+                return;
+
             bool observedAllRules;
             lock (_stateUpdateLock)
             {
