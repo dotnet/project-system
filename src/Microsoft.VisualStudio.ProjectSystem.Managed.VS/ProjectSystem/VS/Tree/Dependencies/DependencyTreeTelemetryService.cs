@@ -160,10 +160,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             private readonly ConcurrentDictionary<string, bool> _observedRules = new ConcurrentDictionary<string, bool>(StringComparers.RuleNames);
 
-            internal bool InitializeRule(string rule) =>
+            internal void InitializeRule(string rule) =>
                 _observedRules.TryAdd(rule, false);
 
-            internal bool ObserveRule(string rule) =>
+            internal void ObserveRule(string rule) =>
                 _observedRules.TryUpdate(rule, true, false);
 
             internal bool ObservedAllRules() =>
