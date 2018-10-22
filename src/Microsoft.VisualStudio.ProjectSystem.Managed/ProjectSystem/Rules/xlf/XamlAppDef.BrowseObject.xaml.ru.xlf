@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
-  <file datatype="xml" source-language="en" target-language="it" original="../XamlAppDef.xaml">
+  <file datatype="xml" source-language="en" target-language="ru" original="../XamlAppDef.BrowseObject.xaml">
     <body>
       <trans-unit id="Rule|XamlAppDef|DisplayName">
         <source>General</source>
@@ -75,11 +75,6 @@
       <trans-unit id="StringProperty|CustomToolNamespace|Description">
         <source>The namespace into which the output of the custom tool is placed.</source>
         <target state="new">The namespace into which the output of the custom tool is placed.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|Identity|Description">
-        <source>The item specified in the Include attribute.</source>
-        <target state="new">The item specified in the Include attribute.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|FullPath|DisplayName">
