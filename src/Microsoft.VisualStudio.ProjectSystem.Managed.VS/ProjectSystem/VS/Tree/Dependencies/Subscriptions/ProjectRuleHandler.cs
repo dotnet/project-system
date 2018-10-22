@@ -117,9 +117,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             string otherProjectPath = otherProjectSnapshot.ProjectPath;
 
             var dependencyThatNeedChange = new List<IDependency>();
-            foreach (KeyValuePair<ITargetFramework, ITargetedDependenciesSnapshot> target in projectSnapshot.Targets)
+            foreach (ITargetedDependenciesSnapshot targetedDependencies in projectSnapshot.Targets.Values)
             {
-                foreach (IDependency dependency in target.Value.TopLevelDependencies)
+                foreach (IDependency dependency in targetedDependencies.TopLevelDependencies)
                 {
                     // We're only interested in project dependencies
                     if (!StringComparers.DependencyProviderTypes.Equals(dependency.ProviderType, ProviderTypeString))

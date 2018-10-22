@@ -380,7 +380,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         /// <summary>
         /// Moves child elements based on the reference element and move action.
         /// </summary>
+        /// <param name="elements"></param>
         /// <param name="referenceElement">element for which moved items will be above or below it</param>
+        /// <param name="moveAction"></param>
         /// <returns>true or false; 'true' if all elements were successfully moved. 'false' if just one element was not moved successfully.</returns>
         private static bool TryMoveElements(ImmutableArray<ProjectItemElement> elements, ProjectItemElement referenceElement, MoveAction moveAction)
         {

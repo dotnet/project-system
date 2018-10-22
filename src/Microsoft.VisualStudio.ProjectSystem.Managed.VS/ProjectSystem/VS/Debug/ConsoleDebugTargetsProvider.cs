@@ -303,9 +303,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             // Apply environment variables.
             if (resolvedProfile.EnvironmentVariables != null && resolvedProfile.EnvironmentVariables.Count > 0)
             {
-                foreach (KeyValuePair<string, string> kvp in resolvedProfile.EnvironmentVariables)
+                foreach ((string key, string value) in resolvedProfile.EnvironmentVariables)
                 {
-                    settings.Environment[kvp.Key] = kvp.Value;
+                    settings.Environment[key] = value;
                 }
             }
 

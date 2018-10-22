@@ -506,7 +506,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 return true;
             }
 
-            var markerFile = _configuredProject.UnconfiguredProject.MakeRooted(_markerFile);
+            string markerFile = _configuredProject.UnconfiguredProject.MakeRooted(_markerFile);
 
             logger.Verbose("Adding input reference copy markers:");
 

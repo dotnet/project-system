@@ -21,9 +21,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
     {
         public const int Order = 130;
 
-        private IAggregateDependenciesSnapshotProvider AggregateSnapshotProvider { get; }
-        private ITargetFrameworkProvider TargetFrameworkProvider { get; }
-
         public override IDependency BeforeAdd(
             string projectPath,
             ITargetFramework targetFramework,

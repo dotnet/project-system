@@ -9,7 +9,7 @@ namespace Microsoft.VisualStudio.Telemetry
     {
         /// <summary>
         ///     Posts a fault with the specified event name and exception, returning 
-        ///     <see cref="true"/> to that it can be used as an exception filter.
+        ///     <see langword="true" /> to that it can be used as an exception filter.
         /// </summary>
         /// <param name="eventName">
         ///     The name of the event.
@@ -18,7 +18,7 @@ namespace Microsoft.VisualStudio.Telemetry
         ///     The exception of the event.
         /// </param>
         /// <returns>
-        ///     Always returns <see cref="true"/>.
+        ///     Always returns <see langword="true" />.
         /// </returns>
         /// <exception cref="ArgumentNullException">
         ///     <paramref name="eventName"/> is <see langword="null"/>.

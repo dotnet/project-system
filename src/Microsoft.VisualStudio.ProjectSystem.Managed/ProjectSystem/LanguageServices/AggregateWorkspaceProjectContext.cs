@@ -57,11 +57,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         public void SetProjectFilePathAndDisplayName(string projectFilePath, string displayName)
         {
             // Update the project file path and display name for all the inner project contexts.
-            foreach (KeyValuePair<string, IWorkspaceProjectContext> innerProjectContextKvp in _configuredProjectContextsByTargetFramework)
+            foreach ((string targetFramework, IWorkspaceProjectContext innerProjectContext) in _configuredProjectContextsByTargetFramework)
             {
-                string targetFramework = innerProjectContextKvp.Key;
-                IWorkspaceProjectContext innerProjectContext = innerProjectContextKvp.Value;
-
                 // For cross targeting projects, we ensure that the display name is unique per every target framework.
                 innerProjectContext.DisplayName = IsCrossTargeting ? $"{displayName}({targetFramework})" : displayName;
                 innerProjectContext.ProjectFilePath = projectFilePath;

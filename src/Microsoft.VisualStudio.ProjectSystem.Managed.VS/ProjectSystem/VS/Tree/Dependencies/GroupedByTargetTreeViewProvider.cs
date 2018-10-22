@@ -60,7 +60,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             if (snapshot.Targets.Where(x => !x.Key.Equals(TargetFramework.Any)).Count() == 1)
             {
-                foreach (KeyValuePair<ITargetFramework, ITargetedDependenciesSnapshot> target in snapshot.Targets)
+                foreach (ITargetedDependenciesSnapshot targetedSnapshot in snapshot.Targets.Values)
                 {
                     if (cancellationToken.IsCancellationRequested)
                     {
@@ -70,40 +70,48 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     dependenciesTree = await BuildSubTreesAsync(
                         dependenciesTree,
                         snapshot.ActiveTarget,
-                        target.Value,
-                        target.Value.Catalogs,
+                        targetedSnapshot,
+                        targetedSnapshot.Catalogs,
                         rememberNewNodes);
                 }
             }
             else
             {
-                foreach (KeyValuePair<ITargetFramework, ITargetedDependenciesSnapshot> target in snapshot.Targets)
+                foreach ((ITargetFramework targetFramework, ITargetedDependenciesSnapshot targetedSnapshot) in snapshot.Targets)
                 {
                     if (cancellationToken.IsCancellationRequested)
                     {
                         return originalTree;
                     }
 
-                    if (target.Key.Equals(TargetFramework.Any))
+                    if (targetFramework.Equals(TargetFramework.Any))
                     {
-                        dependenciesTree = await BuildSubTreesAsync(dependenciesTree,
-                                                         snapshot.ActiveTarget,
-                                                         target.Value,
-                                                         target.Value.Catalogs,
-                                                         rememberNewNodes);
+                        dependenciesTree = await BuildSubTreesAsync(
+                            dependenciesTree,
+                            snapshot.ActiveTarget,
+                            targetedSnapshot,
+                            targetedSnapshot.Catalogs,
+                            rememberNewNodes);
                     }
                     else
                     {
-                        IProjectTree node = dependenciesTree.FindNodeByCaption(target.Key.FriendlyName);
+                        IProjectTree node = dependenciesTree.FindNodeByCaption(targetFramework.FriendlyName);
                         bool shouldAddTargetNode = node == null;
-                        IDependencyViewModel targetViewModel = ViewModelFactory.CreateTargetViewModel(target.Value);
+                        IDependencyViewModel targetViewModel = ViewModelFactory.CreateTargetViewModel(targetedSnapshot);
 
-                        node = CreateOrUpdateNode(node,
-                                                  targetViewModel,
-                                                  rule: null,
-                                                  isProjectItem: false,
-                                                  additionalFlags: ProjectTreeFlags.Create(ProjectTreeFlags.Common.BubbleUp));
-                        node = await BuildSubTreesAsync(node, snapshot.ActiveTarget, target.Value, target.Value.Catalogs, CleanupOldNodes);
+                        node = CreateOrUpdateNode(
+                            node,
+                            targetViewModel,
+                            rule: null,
+                            isProjectItem: false,
+                            additionalFlags: ProjectTreeFlags.Create(ProjectTreeFlags.Common.BubbleUp));
+
+                        node = await BuildSubTreesAsync(
+                            node, 
+                            snapshot.ActiveTarget, 
+                            targetedSnapshot, 
+                            targetedSnapshot.Catalogs, 
+                            CleanupOldNodes);
 
                         if (shouldAddTargetNode)
                         {
@@ -199,10 +207,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             }
 
             bool isActiveTarget = targetedSnapshot.TargetFramework.Equals(activeTarget);
-            foreach (KeyValuePair<string, List<IDependency>> dependencyGroup in groupedByProviderType)
+            foreach ((string providerType, List<IDependency> dependencies) in groupedByProviderType)
             {
                 IDependencyViewModel subTreeViewModel = ViewModelFactory.CreateRootViewModel(
-                    dependencyGroup.Key, targetedSnapshot.CheckForUnresolvedDependencies(dependencyGroup.Key));
+                    providerType, targetedSnapshot.CheckForUnresolvedDependencies(providerType));
                 IProjectTree subTreeNode = rootNode.FindNodeByCaption(subTreeViewModel.Caption);
                 bool isNewSubTreeNode = subTreeNode == null;
 
@@ -222,7 +230,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 subTreeNode = await BuildSubTreeAsync(
                     subTreeNode,
                     targetedSnapshot,
-                    dependencyGroup.Value,
+                    dependencies,
                     catalogs,
                     isActiveTarget,
                     shouldCleanup: !isNewSubTreeNode);

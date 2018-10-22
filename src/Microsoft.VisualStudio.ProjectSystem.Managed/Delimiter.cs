@@ -3,7 +3,7 @@
 namespace Microsoft.VisualStudio
 {
     /// <summary>
-    ///     Contains commonly-used delimiters used for splitting <see cref="String"/> instances.
+    ///     Contains commonly-used delimiters used for splitting <see cref="string"/> instances.
     /// </summary>
     internal static class Delimiter
     {

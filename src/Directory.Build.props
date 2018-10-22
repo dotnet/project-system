@@ -17,6 +17,10 @@
     <DebugType Condition="'$(_IsVisualStudioDeveloperBuild)' == 'true'">full</DebugType>
   </PropertyGroup>
   
+  <PropertyGroup>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+
   <PropertyGroup Condition="'$(Language)' == 'C#'">
     <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
     <!-- Build machines only have Visual Studio 15.5 -->
@@ -57,10 +61,5 @@
     <SuppressFromVsix Include="Microsoft.VSDesigner.dll"/>
     <SuppressFromVsix Include="Microsoft.VisualStudio.DataTools.Interop.dll"/>
     <SuppressFromVsix Include="Microsoft.VisualStudio.XmlEditor.dll"/>
-  </ItemGroup>
-  
-  <!-- Dogfood double click editing of project files: https://github.com/dotnet/project-system/issues/1224 -->
-  <ItemGroup>
-    <ProjectCapability Include="DoubleClickEditProjectFile"/>
   </ItemGroup>
 </Project>

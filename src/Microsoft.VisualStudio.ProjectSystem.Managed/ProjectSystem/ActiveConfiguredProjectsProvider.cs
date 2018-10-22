@@ -150,13 +150,13 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         private static bool IsActiveConfigurationCandidate(ProjectConfiguration activeSolutionConfiguration, ProjectConfiguration configuration, IImmutableSet<string> ignoredDimensionNames)
         {
-            foreach (KeyValuePair<string, string> dimension in activeSolutionConfiguration.Dimensions)
+            foreach ((string dimensionName, string dimensionValue) in activeSolutionConfiguration.Dimensions)
             {
-                if (ignoredDimensionNames.Contains(dimension.Key))
+                if (ignoredDimensionNames.Contains(dimensionName))
                     continue;
 
-                if (!configuration.Dimensions.TryGetValue(dimension.Key, out string otherDimensionValue) ||
-                    !string.Equals(dimension.Value, otherDimensionValue, StringComparison.Ordinal))
+                if (!configuration.Dimensions.TryGetValue(dimensionName, out string otherDimensionValue) ||
+                    !string.Equals(dimensionValue, otherDimensionValue, StringComparison.Ordinal))
                 {
                     return false;
                 }

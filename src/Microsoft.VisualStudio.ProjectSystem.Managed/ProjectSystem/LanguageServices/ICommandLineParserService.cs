@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
@@ -18,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         ///     arguments.
         /// </param>
         /// <param name="baseDirectory">
-        ///     A <see cref="String"/> containing the base directory used for qualifying file locations.
+        ///     A <see cref="string"/> containing the base directory used for qualifying file locations.
         /// </param>
         /// <returns>
         ///     An <see cref="BuildOptions"/> representing the result.

@@ -2,9 +2,9 @@
 
 using System.ComponentModel.Composition;
 
+using EnvDTE;
 using EnvDTE80;
 
-using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS

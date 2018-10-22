@@ -44,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
 
         private ImmutableArray<string> CalculateBuiltInImplicitlyActiveDimensions()
         {
-            var implicitlyActiveDimensions = ImmutableArray.CreateBuilder<string>();
+            ImmutableArray<string>.Builder implicitlyActiveDimensions = ImmutableArray.CreateBuilder<string>();
 
             foreach (Lazy<IProjectConfigurationDimensionsProvider, IConfigurationDimensionDescriptionMetadataView> provider in DimensionProviders)
             {

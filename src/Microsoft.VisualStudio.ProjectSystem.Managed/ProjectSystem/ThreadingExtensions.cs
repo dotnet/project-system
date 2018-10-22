@@ -17,6 +17,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// <param name="threading">
         ///     The <see cref="IProjectThreadingService"/> containing the <see cref="JoinableTaskFactory"/> to use.
         /// </param>
+        /// <param name="cancellationToken">
+        ///     A token whose cancellation signals lost interest in the result.
+        /// </param>
         /// <exception cref="ArgumentNullException">
         ///     <paramref name="threading"/> is <see langword="null"/>
         /// </exception>

@@ -20,7 +20,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
     {
         private readonly object _gate = new object();
         private readonly IUnconfiguredProjectCommonServices _commonServices;
-        private readonly IUnconfiguredProjectTasksService _tasksService;
         private readonly List<AggregateCrossTargetProjectContext> _contexts = new List<AggregateCrossTargetProjectContext>();
         private readonly IActiveConfiguredProjectsProvider _activeConfiguredProjectsProvider;
         private readonly Dictionary<ConfiguredProject, ITargetedProjectContext> _configuredProjectContextsMap = new Dictionary<ConfiguredProject, ITargetedProjectContext>();
@@ -29,13 +28,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         [ImportingConstructor]
         public AggregateCrossTargetProjectContextProvider(
             IUnconfiguredProjectCommonServices commonServices,
-            IUnconfiguredProjectTasksService tasksService,
             IActiveConfiguredProjectsProvider activeConfiguredProjectsProvider,
             ITargetFrameworkProvider targetFrameworkProvider)
             : base(synchronousDisposal: true)
         {
             _commonServices = commonServices;
-            _tasksService = tasksService;
             _activeConfiguredProjectsProvider = activeConfiguredProjectsProvider;
             _targetFrameworkProvider = targetFrameworkProvider;
         }
@@ -147,13 +144,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             return Task.CompletedTask;
         }
 
-
-        private async Task<string> GetTargetPathAsync()
-        {
-            ConfigurationGeneral properties = await _commonServices.ActiveConfiguredProjectProperties.GetConfigurationGeneralPropertiesAsync();
-            return (string)await properties.TargetPath.GetValueAsync();
-        }
-
         private ProjectData GetProjectData()
         {
             string filePath = _commonServices.Project.FullPath;
@@ -193,12 +183,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             ImmutableDictionary<ITargetFramework, ITargetedProjectContext>.Builder innerProjectContextsBuilder = ImmutableDictionary.CreateBuilder<ITargetFramework, ITargetedProjectContext>();
             ITargetFramework activeTargetFramework = TargetFramework.Empty;
 
-            foreach (KeyValuePair<string, ConfiguredProject> kvp in configuredProjectsMap)
+            foreach ((string tfm, ConfiguredProject configuredProject) in configuredProjectsMap)
             {
-                ConfiguredProject configuredProject = kvp.Value;
                 ProjectProperties projectProperties = configuredProject.Services.ExportProvider.GetExportedValue<ProjectProperties>();
                 ConfigurationGeneral configurationGeneralProperties = await projectProperties.GetConfigurationGeneralPropertiesAsync();
-                ITargetFramework targetFramework = await GetTargetFrameworkAsync(kvp.Key, configurationGeneralProperties);
+                ITargetFramework targetFramework = await GetTargetFrameworkAsync(tfm, configurationGeneralProperties);
 
                 if (!TryGetConfiguredProjectState(configuredProject, out ITargetedProjectContext targetedProjectContext))
                 {
