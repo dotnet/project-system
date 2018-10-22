@@ -336,7 +336,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             StringBuilder sb = null;
             try
             {
-                int length = targetFramework.ShortName.Length + providerType.Length + 2;
+                int length = targetFramework.ShortName.Length + providerType.Length + modelId.Length + 2;
+
                 if (!s_builderPool.TryTake(out sb))
                 {
                     sb = new StringBuilder(length);
