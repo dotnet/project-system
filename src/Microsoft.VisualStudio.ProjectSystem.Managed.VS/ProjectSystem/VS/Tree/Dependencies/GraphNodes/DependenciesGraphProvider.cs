@@ -205,7 +205,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
             {
                 try
                 {
-                    actionHandlers.ForEach(x => x.HandleChanges(graphContext, updatedProjectContext));
+                    foreach (IDependenciesGraphActionHandler actionHandler in actionHandlers)
+                    {
+                        actionHandler.HandleChanges(graphContext, updatedProjectContext);
+                    }
                 }
                 finally
                 {
