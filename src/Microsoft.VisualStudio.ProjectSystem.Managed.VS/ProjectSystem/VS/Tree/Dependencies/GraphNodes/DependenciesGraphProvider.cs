@@ -104,10 +104,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
         /// </summary>
         public void BeginGetGraphData(IGraphContext context)
         {
-            ThreadHelper.JoinableTaskFactory.RunAsync(async () =>
-            {
-                await BeginGetGraphDataAsync(context);
-            });
+            ThreadHelper.JoinableTaskFactory.RunAsync(() => BeginGetGraphDataAsync(context));
         }
 
         /// <summary>
