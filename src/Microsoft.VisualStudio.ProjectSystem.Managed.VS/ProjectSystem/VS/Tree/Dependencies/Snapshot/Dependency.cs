@@ -320,13 +320,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             }
         }
 
-        private static string Normalize(string id)
-        {
-            return id
-                .Replace('/', '\\')
-                .Replace("..", "__");
-        }
-
         public static string GetID(ITargetFramework targetFramework, string providerType, string modelId)
         {
             Requires.NotNull(targetFramework, nameof(targetFramework));
@@ -349,7 +342,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
                 sb.Append(targetFramework.ShortName).Append('\\');
                 sb.Append(providerType).Append('\\');
-                sb.Append(Normalize(modelId));
+                int offset = sb.Length;
+                sb.Append(modelId);
+                // normalize modelId (without allocating)
+                sb.Replace('/', '\\', offset, modelId.Length)
+                  .Replace("..", "__", offset, modelId.Length);
                 sb.TrimEnd(Delimiter.BackSlash);
                 return sb.ToString();
             }
