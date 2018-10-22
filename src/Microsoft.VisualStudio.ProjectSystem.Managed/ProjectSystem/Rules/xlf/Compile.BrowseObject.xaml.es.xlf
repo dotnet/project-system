@@ -47,11 +47,6 @@
         <target state="translated">Copiar si es posterior</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|Identity|Description">
-        <source>The item specified in the Include attribute.</source>
-        <target state="translated">El elemento especificado en el atributo Include.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|FullPath|DisplayName">
         <source>Full Path</source>
         <target state="translated">Ruta de acceso completa</target>

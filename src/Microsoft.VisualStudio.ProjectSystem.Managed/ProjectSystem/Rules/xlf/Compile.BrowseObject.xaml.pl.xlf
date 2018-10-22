@@ -47,11 +47,6 @@
         <target state="translated">Kopiuj, jeśli nowszy</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|Identity|Description">
-        <source>The item specified in the Include attribute.</source>
-        <target state="translated">Element wskazany w atrybucie Include.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|FullPath|DisplayName">
         <source>Full Path</source>
         <target state="translated">Pełna ścieżka</target>

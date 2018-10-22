@@ -42,9 +42,7 @@
   <StringProperty
       Name="Identity"
       Visible="false"
-      ReadOnly="true"
-      Category="Misc"
-      Description="The item specified in the Include attribute.">
+      ReadOnly="true">
     <StringProperty.DataSource>
       <DataSource Persistence="Intrinsic" ItemType="AdditionalFiles" PersistedName="Identity" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
@@ -89,10 +87,10 @@
       <DataSource Persistence="Intrinsic" ItemType="AdditionalFiles" PersistedName="Extension" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
-  <StringProperty Name="LastGenOutput" Visible="false" Description="The filename of the last file generated as a result of the SFG." />
-  <BoolProperty Name="DesignTime" Visible="false" Description="A value indicating whether this file has a designer." />
-  <BoolProperty Name="AutoGen" Visible="false" Description="A value indicating whether this is a generated file." />
-  <StringProperty Name="CustomTool" Visible="false" Description="DTE Property for accessing the Generator property.">
+  <StringProperty Name="LastGenOutput" Visible="false" />
+  <BoolProperty Name="DesignTime" Visible="false" />
+  <BoolProperty Name="AutoGen" Visible="false" />
+  <StringProperty Name="CustomTool" Visible="false">
     <StringProperty.DataSource>
       <DataSource Persistence="ProjectFile" ItemType="AdditionalFiles" PersistedName="Generator" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>

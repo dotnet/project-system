@@ -48,9 +48,7 @@
   <StringProperty
       Name="Identity"
       Visible="false"
-      ReadOnly="true"
-      Category="Misc"
-      Description="The item specified in the Include attribute.">
+      ReadOnly="true">
     <StringProperty.DataSource>
       <DataSource Persistence="Intrinsic" ItemType="Compile" PersistedName="Identity" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>

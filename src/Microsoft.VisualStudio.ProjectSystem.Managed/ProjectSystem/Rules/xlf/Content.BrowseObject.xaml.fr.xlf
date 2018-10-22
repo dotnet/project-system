@@ -57,11 +57,6 @@
         <target state="new">Copy if newer</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|Identity|Description">
-        <source>The item specified in the Include attribute.</source>
-        <target state="new">The item specified in the Include attribute.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|FullPath|DisplayName">
         <source>Full Path</source>
         <target state="new">Full Path</target>

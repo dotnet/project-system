@@ -47,11 +47,6 @@
         <target state="translated">有更新時才複製</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|Identity|Description">
-        <source>The item specified in the Include attribute.</source>
-        <target state="translated">Include 屬性中指定的項目。</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|FullPath|DisplayName">
         <source>Full Path</source>
         <target state="translated">完整路徑</target>

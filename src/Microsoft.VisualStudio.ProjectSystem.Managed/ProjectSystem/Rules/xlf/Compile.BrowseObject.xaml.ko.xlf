@@ -47,11 +47,6 @@
         <target state="translated">새 버전이면 복사</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|Identity|Description">
-        <source>The item specified in the Include attribute.</source>
-        <target state="translated">Include 특성에 지정된 항목입니다.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|FullPath|DisplayName">
         <source>Full Path</source>
         <target state="translated">전체 경로</target>

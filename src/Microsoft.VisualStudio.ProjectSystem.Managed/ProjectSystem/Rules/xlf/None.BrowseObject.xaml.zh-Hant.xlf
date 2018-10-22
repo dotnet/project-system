@@ -77,11 +77,6 @@
         <target state="new">The namespace into which the output of the custom tool is placed.</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|Identity|Description">
-        <source>The item specified in the Include attribute.</source>
-        <target state="new">The item specified in the Include attribute.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|FullPath|DisplayName">
         <source>Full Path</source>
         <target state="new">Full Path</target>
@@ -100,26 +95,6 @@
       <trans-unit id="StringProperty|FileNameAndExtension|Description">
         <source>Name of the file or folder.</source>
         <target state="new">Name of the file or folder.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|LastGenOutput|Description">
-        <source>The filename of the last file generated as a result of the SFG.</source>
-        <target state="new">The filename of the last file generated as a result of the SFG.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|DesignTime|Description">
-        <source>A value indicating whether this file has a designer.</source>
-        <target state="new">A value indicating whether this file has a designer.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|AutoGen|Description">
-        <source>A value indicating whether this is a generated file.</source>
-        <target state="new">A value indicating whether this is a generated file.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|CustomTool|Description">
-        <source>DTE Property for accessing the Generator property.</source>
-        <target state="new">DTE Property for accessing the Generator property.</target>
         <note />
       </trans-unit>
     </body>
