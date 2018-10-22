@@ -194,7 +194,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
                 return;
             }
 
-            IEnumerable<Lazy<IDependenciesGraphActionHandler, IOrderPrecedenceMetadataView>> actionHandlers = GraphActionHandlers.Where(x => x.Value.CanHandleChanges());
+            var actionHandlers = GraphActionHandlers.Select(x => x.Value).Where(x => x.CanHandleChanges()).ToList();
+
             if (!actionHandlers.Any())
             {
                 return;
@@ -204,7 +205,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
             {
                 try
                 {
-                    actionHandlers.ForEach(x => x.Value.HandleChanges(graphContext, updatedProjectContext));
+                    actionHandlers.ForEach(x => x.HandleChanges(graphContext, updatedProjectContext));
                 }
                 finally
                 {
