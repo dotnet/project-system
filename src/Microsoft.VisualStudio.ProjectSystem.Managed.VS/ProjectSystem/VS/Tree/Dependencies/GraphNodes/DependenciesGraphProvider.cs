@@ -233,7 +233,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
                 return Task.CompletedTask;
             }
 
-            foreach (IGraphContext graphContext in expandedContexts.ToList())
+            foreach (IGraphContext graphContext in expandedContexts)
             {
                 try
                 {
