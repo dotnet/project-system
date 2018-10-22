@@ -56,13 +56,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             }
         }
 
-        public bool HasUnresolvedDependency
-        {
-            get
-            {
-                return Targets.Any(x => x.Value.HasUnresolvedDependency);
-            }
-        }
+        public bool HasUnresolvedDependency => Targets.Any(x => x.Value.HasUnresolvedDependency);
 
         public IDependency FindDependency(string id, bool topLevel = false)
         {

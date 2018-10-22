@@ -32,13 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             }
         }
 
-        public bool AnyChanges
-        {
-            get
-            {
-                return Changes.Count > 0;
-            }
-        }
+        public bool AnyChanges => Changes.Count != 0;
 
         public void IncludeAddedChange(ITargetFramework targetFramework,
                                        IDependencyModel ruleMetadata)
