@@ -56,7 +56,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
             snapshot = null;
 
             string projectPath = inputGraphNode.Id.GetValue(CodeGraphNodeIdName.Assembly);
-            if (string.IsNullOrEmpty(projectPath))
+            if (string.IsNullOrWhiteSpace(projectPath))
             {
                 return null;
             }
