@@ -46,7 +46,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         public IProjectDependenciesSubTreeProvider Provider { get; }
-
         public string TargetShortOrFullName { get; }
         public IDependenciesChanges Changes { get; }
         public IProjectCatalogSnapshot Catalogs { get; }

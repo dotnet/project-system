@@ -38,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
     {
         [ImportingConstructor]
         public DependenciesGraphProvider(IAggregateDependenciesSnapshotProvider aggregateSnapshotProvider,
-                                         [Import(typeof(SAsyncServiceProvider))]IAsyncServiceProvider serviceProvider,
+                                         [Import(typeof(SAsyncServiceProvider))] IAsyncServiceProvider serviceProvider,
                                          JoinableTaskContext joinableTaskContext)
             : base(new JoinableTaskContextNode(joinableTaskContext))
         {
@@ -280,11 +280,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
             string projectPath,
             IDependencyViewModel viewModel)
         {
-
             Assumes.True(IsInitialized);
 
             GraphNodeId newNodeId = GetTopLevelGraphNodeId(projectPath, viewModel.OriginalModel.GetTopLevelId());
-            return DoAddGraphNode(newNodeId, graphContext, projectPath, parentNode: null, viewModel: viewModel);
+            return DoAddGraphNode(newNodeId, graphContext, projectPath, parentNode: null, viewModel);
         }
 
         private GraphNode DoAddGraphNode(
@@ -313,7 +312,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
 
             if (parentNode != null)
             {
-                graphContext.Graph.Links.GetOrCreate(parentNode, newNode, /*label*/ null, CodeLinkCategories.Contains);
+                graphContext.Graph.Links.GetOrCreate(parentNode, newNode, label: null, CodeLinkCategories.Contains);
             }
 
             return newNode;

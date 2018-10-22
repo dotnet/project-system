@@ -32,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
         {
             filterAnyChanges = false;
 
-            if (dependency.Resolved == false && worldBuilder.ContainsKey(dependency.Id))
+            if (!dependency.Resolved && worldBuilder.ContainsKey(dependency.Id))
             {
                 return null;
             }

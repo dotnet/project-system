@@ -20,7 +20,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             return snapshot.CheckForUnresolvedDependencies(self);
         }
 
-
         /// <summary>
         /// Returns true if this reference itself is unresolved or it has at least 
         /// one unresolved reference somewhere in the dependency chain.

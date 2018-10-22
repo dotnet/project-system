@@ -49,6 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             IProjectTree originalTree = dependenciesTree;
 
             var currentTopLevelNodes = new List<IProjectTree>();
+
             IProjectTree RememberNewNodes(IProjectTree rootNode, IEnumerable<IProjectTree> currentNodes)
             {
                 if (currentNodes != null)

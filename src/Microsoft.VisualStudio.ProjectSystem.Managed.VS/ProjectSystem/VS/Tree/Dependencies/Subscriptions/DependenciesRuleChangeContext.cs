@@ -21,6 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         public IProjectCatalogSnapshot Catalogs { get; }
         private ImmutableDictionary<ITargetFramework, IDependenciesChanges> _changes =
             ImmutableDictionary.Create<ITargetFramework, IDependenciesChanges>();
+
         public ImmutableDictionary<ITargetFramework, IDependenciesChanges> Changes
         {
             get

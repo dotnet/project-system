@@ -51,12 +51,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
         {
             string searchParametersTypeName = typeof(ISolutionSearchParameters).GUID.ToString();
             ISolutionSearchParameters searchParameters = graphContext.GetValue<ISolutionSearchParameters>(searchParametersTypeName);
-            if (searchParameters == null)
-            {
-                return;
-            }
 
-            string searchTerm = searchParameters.SearchQuery.SearchString?.ToLowerInvariant();
+            string searchTerm = searchParameters?.SearchQuery.SearchString?.ToLowerInvariant();
             if (searchTerm == null)
             {
                 return;
