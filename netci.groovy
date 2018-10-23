@@ -59,31 +59,6 @@ def imageName = "latest-dev15-5"
 
 [true, false].each { isPR ->
   ["debug", "release"].each { configName ->
-
-    def platform = "windows"
-    def manualTrigger = false
-    def altTriggerPhrase = ""
-
-    def newJob = createJob(platform, configName, osName, imageName, isPR, manualTrigger, altTriggerPhrase)
-
-    Utilities.setMachineAffinity(newJob, 'Windows.10.Amd64.ClientRS4.DevEx.15.8.Open')
-
-    newJob.with {
-      wrappers {
-        credentialsBinding {
-          string("CODECOV_TOKEN", "CODECOV_TOKEN_DOTNET_PROJECT_SYSTEM")
-        }
-      }
-      steps {
-        batchFile(".\\build\\CIBuild.cmd -configuration ${configName} -prepareMachine")
-      }
-    }
-  }
-}
-
-[true, false].each { isPR ->
-  ["debug"].each { configName ->
-
     def platform = "windows_integration"
     def manualTrigger = false
     def altTriggerPhrase = "vsi"
