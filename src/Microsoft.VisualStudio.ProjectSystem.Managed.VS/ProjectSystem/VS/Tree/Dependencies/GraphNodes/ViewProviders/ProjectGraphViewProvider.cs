@@ -111,9 +111,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
         {
             if (!AnyChanges(updatedDependency,
                             dependencyGraphNode,
-                            out IEnumerable<DependencyNodeInfo> nodesToAdd,
-                            out IEnumerable<DependencyNodeInfo> nodesToRemove,
-                            out IEnumerable<IDependency> updatedChildren,
+                            out IReadOnlyList<DependencyNodeInfo> nodesToAdd,
+                            out IReadOnlyList<DependencyNodeInfo> nodesToRemove,
+                            out System.Collections.Generic.IReadOnlyCollection<IDependency> updatedChildren,
                             out string dependencyProjectPath))
             {
                 return false;
@@ -189,9 +189,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
         private bool AnyChanges(
             IDependency updatedDependency,
             GraphNode dependencyGraphNode,
-            out IEnumerable<DependencyNodeInfo> nodesToAdd,
-            out IEnumerable<DependencyNodeInfo> nodesToRemove,
-            out IEnumerable<IDependency> updatedChildren,
+            out IReadOnlyList<DependencyNodeInfo> nodesToAdd,
+            out IReadOnlyList<DependencyNodeInfo> nodesToRemove,
+            out System.Collections.Generic.IReadOnlyCollection<IDependency> updatedChildren,
             out string dependencyProjectPath)
         {
             ITargetedDependenciesSnapshot snapshot = GetSnapshot(updatedDependency);
@@ -206,8 +206,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
 
             dependencyProjectPath = updatedDependency.FullPath;
             updatedChildren = snapshot.TopLevelDependencies;
-            IEnumerable<DependencyNodeInfo> existingChildren = GetExistingChildren(dependencyGraphNode);
-            IEnumerable<DependencyNodeInfo> updatedChildrenInfo = updatedChildren.Select(x => DependencyNodeInfo.FromDependency(x));
+            IReadOnlyList<DependencyNodeInfo> existingChildren = GetExistingChildren(dependencyGraphNode);
+            IReadOnlyList<DependencyNodeInfo> updatedChildrenInfo = updatedChildren.Select(x => DependencyNodeInfo.FromDependency(x)).ToList();
 
             return AnyChanges(existingChildren, updatedChildrenInfo, out nodesToAdd, out nodesToRemove);
         }

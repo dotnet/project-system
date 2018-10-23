@@ -77,8 +77,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
                             targetedSnapshot,
                             updatedDependency,
                             dependencyGraphNode,
-                            out IEnumerable<DependencyNodeInfo> nodesToAdd,
-                            out IEnumerable<DependencyNodeInfo> nodesToRemove))
+                            out IReadOnlyList<DependencyNodeInfo> nodesToAdd,
+                            out IReadOnlyList<DependencyNodeInfo> nodesToRemove))
             {
                 return false;
             }
@@ -126,29 +126,29 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
             ITargetedDependenciesSnapshot targetedSnapshot,
             IDependency updatedDependency,
             GraphNode dependencyGraphNode,
-            out IEnumerable<DependencyNodeInfo> nodesToAdd,
-            out IEnumerable<DependencyNodeInfo> nodesToRemove)
+            out IReadOnlyList<DependencyNodeInfo> nodesToAdd,
+            out IReadOnlyList<DependencyNodeInfo> nodesToRemove)
         {
-            IEnumerable<DependencyNodeInfo> existingChildrenInfo = GetExistingChildren(dependencyGraphNode);
+            IReadOnlyList<DependencyNodeInfo> existingChildrenInfo = GetExistingChildren(dependencyGraphNode);
             IEnumerable<IDependency> updatedChildren = targetedSnapshot.GetDependencyChildren(updatedDependency)
                 ?? Enumerable.Empty<IDependency>();
-            IEnumerable<DependencyNodeInfo> updatedChildrenInfo = updatedChildren.Select(x => DependencyNodeInfo.FromDependency(x));
+            IReadOnlyList<DependencyNodeInfo> updatedChildrenInfo = updatedChildren.Select(x => DependencyNodeInfo.FromDependency(x)).ToList();
 
             return AnyChanges(existingChildrenInfo, updatedChildrenInfo, out nodesToAdd, out nodesToRemove);
         }
 
         protected static bool AnyChanges(
-            IEnumerable<DependencyNodeInfo> existingChildren,
-            IEnumerable<DependencyNodeInfo> updatedChildren,
-            out IEnumerable<DependencyNodeInfo> nodesToAdd,
-            out IEnumerable<DependencyNodeInfo> nodesToRemove)
+            IReadOnlyList<DependencyNodeInfo> existingChildren,
+            IReadOnlyList<DependencyNodeInfo> updatedChildren,
+            out IReadOnlyList<DependencyNodeInfo> nodesToAdd,
+            out IReadOnlyList<DependencyNodeInfo> nodesToRemove)
         {
             nodesToRemove = existingChildren.Except(updatedChildren).ToList();
             nodesToAdd = updatedChildren.Except(existingChildren).ToList();
             return nodesToAdd.Any() || nodesToRemove.Any();
         }
 
-        protected static IEnumerable<DependencyNodeInfo> GetExistingChildren(GraphNode inputGraphNode)
+        protected static IReadOnlyList<DependencyNodeInfo> GetExistingChildren(GraphNode inputGraphNode)
         {
             var children = new List<DependencyNodeInfo>();
             foreach (GraphNode childNode in inputGraphNode.FindDescendants())
