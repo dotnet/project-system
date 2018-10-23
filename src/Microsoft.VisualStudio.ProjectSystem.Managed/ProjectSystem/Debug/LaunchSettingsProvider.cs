@@ -724,7 +724,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 }
                 catch (Exception ex)  when (ex is IOException || ex is ArgumentException)
                 {
-                    // IF the project folder is no longer available this will throw, which can happen during branch switching
+                    // If the project folder is no longer available this will throw, which can happen during branch switching
                 }
             }
         }
