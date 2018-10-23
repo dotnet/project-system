@@ -519,8 +519,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 If DeserializedPropertyValue.Property.PropertyType Is Nothing Then
                     DeserializedPropertyValue.Property.PropertyType = GetType(String)
                 End If
-                Dim serializer As New SettingsValueSerializer
-                Dim serializedAppConfigValue As String = serializer.Normalize(DirectCast(DeserializedPropertyValue.SerializedValue, String), DeserializedPropertyValue.Property.PropertyType)
+                Dim serializedAppConfigValue As String = SettingsValueSerializer.Normalize(DirectCast(DeserializedPropertyValue.SerializedValue, String), DeserializedPropertyValue.Property.PropertyType)
                 If Instance.Scope <> Scope OrElse Not String.Equals(Instance.SerializedValue, serializedAppConfigValue, StringComparison.Ordinal) Then
                     ' We have new mismatch between what's in the app.config file and what's in the .settings file - 
                     ' prompt the user!
