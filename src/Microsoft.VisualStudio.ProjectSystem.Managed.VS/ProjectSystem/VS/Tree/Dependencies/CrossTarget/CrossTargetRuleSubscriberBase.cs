@@ -27,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         private ICrossTargetSubscriptionsHost _host;
         private AggregateCrossTargetProjectContext _currentProjectContext;
 
-        public CrossTargetRuleSubscriberBase(
+        protected CrossTargetRuleSubscriberBase(
             IUnconfiguredProjectCommonServices commonServices,
             IProjectAsynchronousTasksService tasksService,
             IDependencyTreeTelemetryService treeTelemetryService)

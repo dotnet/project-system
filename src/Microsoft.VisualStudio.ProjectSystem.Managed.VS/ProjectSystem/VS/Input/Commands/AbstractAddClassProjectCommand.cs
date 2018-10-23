@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 
         protected abstract string DirName { get; }
 
-        public AbstractAddClassProjectCommand(IPhysicalProjectTree projectTree, IUnconfiguredProjectVsServices projectVsServices, SVsServiceProvider serviceProvider)
+        protected AbstractAddClassProjectCommand(IPhysicalProjectTree projectTree, IUnconfiguredProjectVsServices projectVsServices, SVsServiceProvider serviceProvider)
         {
             Requires.NotNull(projectTree, nameof(IPhysicalProjectTree));
             Requires.NotNull(projectVsServices, nameof(IUnconfiguredProjectVsServices));

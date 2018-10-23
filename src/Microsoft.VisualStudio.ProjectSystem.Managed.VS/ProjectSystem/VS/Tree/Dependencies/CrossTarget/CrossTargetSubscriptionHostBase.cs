@@ -35,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         /// </summary>
         private AggregateCrossTargetProjectContext _currentAggregateProjectContext;
 
-        public CrossTargetSubscriptionHostBase(IUnconfiguredProjectCommonServices commonServices,
+        protected CrossTargetSubscriptionHostBase(IUnconfiguredProjectCommonServices commonServices,
                                    Lazy<IAggregateCrossTargetProjectContextProvider> contextProvider,
                                    [Import(ExportContractNames.Scopes.UnconfiguredProject)]IProjectAsynchronousTasksService tasksService,
                                    IActiveConfiguredProjectSubscriptionService activeConfiguredProjectSubscriptionService,

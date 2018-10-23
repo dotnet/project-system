@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
     internal abstract class TreeViewProviderBase : IDependenciesTreeViewProvider
     {
-        public TreeViewProviderBase(UnconfiguredProject project)
+        protected TreeViewProviderBase(UnconfiguredProject project)
         {
             ProjectTreePropertiesProviders = new OrderPrecedenceImportCollection<IProjectTreePropertiesProvider>(
                             ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesLast,

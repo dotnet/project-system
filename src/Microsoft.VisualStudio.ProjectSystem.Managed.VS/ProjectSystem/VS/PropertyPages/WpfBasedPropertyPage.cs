@@ -14,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         private PropertyPageControl _control;
         private PropertyPageViewModel _viewModel;
 
-        public WpfBasedPropertyPage()
+        protected WpfBasedPropertyPage()
         {
             InitializeComponent();
         }

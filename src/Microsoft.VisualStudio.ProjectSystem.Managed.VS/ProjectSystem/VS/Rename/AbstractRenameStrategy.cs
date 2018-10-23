@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
         private bool _userPromptedOnce = false;
         private bool _userConfirmedRename = true;
 
-        public AbstractRenameStrategy(
+        protected AbstractRenameStrategy(
             IProjectThreadingService threadingService,
             IUserNotificationServices userNotificationService,
             IEnvironmentOptions environmentOptions,

@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
     {
         public int MaxCount { get; protected set; }
 
-        public DynamicMenuCommand(CommandID id, int maxCount)
+        protected DynamicMenuCommand(CommandID id, int maxCount)
             : base(ExecHandler, delegate
             { }, QueryStatusHandler, id)
         {

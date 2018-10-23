@@ -18,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         private readonly Workspace _workspace;
         private readonly IProjectThreadingService _threadingService;
 
-        public AbstractProjectFileOrAssemblyInfoPropertiesProvider(
+        protected AbstractProjectFileOrAssemblyInfoPropertiesProvider(
             IProjectPropertiesProvider delegatedProvider,
             IProjectInstancePropertiesProvider instanceProvider,
             IEnumerable<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>> interceptingValueProviders,

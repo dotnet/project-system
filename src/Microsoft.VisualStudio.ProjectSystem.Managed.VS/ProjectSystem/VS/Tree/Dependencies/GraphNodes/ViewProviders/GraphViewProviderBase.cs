@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
 {
     internal abstract class GraphViewProviderBase : IDependenciesGraphViewProvider
     {
-        public GraphViewProviderBase(IDependenciesGraphBuilder builder)
+        protected GraphViewProviderBase(IDependenciesGraphBuilder builder)
         {
             Builder = builder;
         }

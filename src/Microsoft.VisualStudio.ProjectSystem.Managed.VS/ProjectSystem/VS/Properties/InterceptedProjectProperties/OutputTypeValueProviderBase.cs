@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         protected abstract ImmutableDictionary<string, string> SetMap { get; }
         protected abstract string DefaultGetValue { get; }
 
-        public OutputTypeValueProviderBase(ProjectProperties properties)
+        protected OutputTypeValueProviderBase(ProjectProperties properties)
         {
             _properties = properties;
         }

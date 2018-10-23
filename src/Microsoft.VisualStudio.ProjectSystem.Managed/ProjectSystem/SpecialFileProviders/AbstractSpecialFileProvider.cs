@@ -29,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
 
         protected readonly IPhysicalProjectTree _projectTree;
 
-        public AbstractSpecialFileProvider(IPhysicalProjectTree projectTree,
+        protected AbstractSpecialFileProvider(IPhysicalProjectTree projectTree,
                                            [Import(ExportContractNames.ProjectItemProviders.SourceFiles)] IProjectItemProvider sourceItemsProvider,
                                            [Import(AllowDefault = true)] Lazy<ICreateFileFromTemplateService> templateFileCreationService,
                                            IFileSystem fileSystem,

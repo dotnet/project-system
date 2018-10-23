@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     {
         private readonly ImmutableArray<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>> _interceptingValueProviders;
 
-        public InterceptedProjectPropertiesProviderBase(
+        protected InterceptedProjectPropertiesProviderBase(
             IProjectPropertiesProvider provider,
             IProjectInstancePropertiesProvider instanceProvider,
             UnconfiguredProject project,
