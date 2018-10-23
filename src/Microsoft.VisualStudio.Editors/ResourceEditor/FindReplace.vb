@@ -71,7 +71,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <remarks></remarks>
         Public Sub New(RootDesigner As ResourceEditorRootDesigner)
             If RootDesigner Is Nothing Then
-                Throw New ArgumentNullException("RootDesigner")
+                Throw New ArgumentNullException(NameOf(RootDesigner))
             End If
             _rootDesigner = RootDesigner
         End Sub

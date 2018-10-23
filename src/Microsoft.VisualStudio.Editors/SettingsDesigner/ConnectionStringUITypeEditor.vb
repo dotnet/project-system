@@ -223,11 +223,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         Private Function GetConnectionString(ServiceProvider As IServiceProvider, Dialog As IVsDataConnectionDialog, PromptIfContainsSensitiveData As Boolean) As String
 
             If Dialog Is Nothing Then
-                Throw New ArgumentNullException("Dialog")
+                Throw New ArgumentNullException(NameOf(Dialog))
             End If
 
             If ServiceProvider Is Nothing Then
-                Throw New ArgumentNullException("ServiceProvider")
+                Throw New ArgumentNullException(NameOf(ServiceProvider))
             End If
 
             Dim SafeConnectionString As String = Dialog.SafeConnectionString

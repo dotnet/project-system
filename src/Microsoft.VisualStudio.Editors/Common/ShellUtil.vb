@@ -380,8 +380,8 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <param name="docCookie">OUT: A cookie for the doc, 0 if the doc isn't found in the RDT</param>
         ''' <remarks></remarks>
         Friend Shared Sub GetDocumentInfo(fileName As String, rdt As IVsRunningDocumentTable, ByRef hierarchy As IVsHierarchy, ByRef readLocks As UInteger, ByRef editLocks As UInteger, ByRef itemid As UInteger, ByRef docCookie As UInteger)
-            If fileName Is Nothing Then Throw New ArgumentNullException("fileName")
-            If rdt Is Nothing Then Throw New ArgumentNullException("rdt")
+            If fileName Is Nothing Then Throw New ArgumentNullException(NameOf(fileName))
+            If rdt Is Nothing Then Throw New ArgumentNullException(NameOf(rdt))
 
             '
             ' Initialize out parameters...
@@ -680,8 +680,8 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <returns>True if registered, false otherwise</returns>
         ''' <remarks></remarks>
         Friend Shared Function IsCustomToolRegistered(hierarchy As IVsHierarchy, customToolName As String) As Boolean
-            If hierarchy Is Nothing Then Throw New ArgumentNullException("hierarchy")
-            If customToolName Is Nothing Then Throw New ArgumentNullException("customToolName")
+            If hierarchy Is Nothing Then Throw New ArgumentNullException(NameOf(hierarchy))
+            If customToolName Is Nothing Then Throw New ArgumentNullException(NameOf(customToolName))
 
             ' All project systems support empty string (= no custom tool)
             If customToolName.Length = 0 Then Return True

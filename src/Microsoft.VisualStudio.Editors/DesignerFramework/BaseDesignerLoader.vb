@@ -738,7 +738,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <returns>The document's cookie, or 0 if it's not in the RDT</returns>
         Private Function GetDocCookie(filename As String) As UInteger
             If filename Is Nothing Then
-                Throw New ArgumentNullException("filename")
+                Throw New ArgumentNullException(NameOf(filename))
             End If
 
             Dim docCookie As UInteger = 0

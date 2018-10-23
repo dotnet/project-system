@@ -123,23 +123,23 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private Function OnAfterRenameFiles(cProjects As Integer, cFiles As Integer, rgpProjects() As IVsProject, rgFirstIndices() As Integer, rgszMkOldNames() As String, rgszMkNewNames() As String, rgFlags() As VSRENAMEFILEFLAGS) As Integer Implements IVsTrackProjectDocumentsEvents2.OnAfterRenameFiles
             ' Validate arguments....
             Debug.Assert(rgpProjects IsNot Nothing AndAlso rgpProjects.Length = cProjects, "null rgpProjects or bad-length array")
-            If (rgpProjects Is Nothing) Then Throw New ArgumentNullException("rgpProjects")
+            If (rgpProjects Is Nothing) Then Throw New ArgumentNullException(NameOf(rgpProjects))
             If (rgpProjects.Length <> cProjects) Then Throw Common.CreateArgumentException("rgpProjects")
 
             Debug.Assert(rgFirstIndices IsNot Nothing AndAlso rgFirstIndices.Length = cProjects, "null rgFirstIndices or bad-length array")
-            If (rgFirstIndices Is Nothing) Then Throw New ArgumentNullException("rgFirstIndices")
+            If (rgFirstIndices Is Nothing) Then Throw New ArgumentNullException(NameOf(rgFirstIndices))
             If (rgFirstIndices.Length <> cProjects) Then Throw Common.CreateArgumentException("rgFirstIndices")
 
             Debug.Assert(rgszMkOldNames IsNot Nothing AndAlso rgszMkOldNames.Length = cFiles, "null rgszMkOldNames or bad-length array")
-            If (rgszMkOldNames Is Nothing) Then Throw New ArgumentNullException("rgszMkOldNames")
+            If (rgszMkOldNames Is Nothing) Then Throw New ArgumentNullException(NameOf(rgszMkOldNames))
             If (rgszMkOldNames.Length <> cFiles) Then Throw Common.CreateArgumentException("rgszMkOldNames")
 
             Debug.Assert(rgszMkNewNames IsNot Nothing AndAlso rgszMkNewNames.Length = cFiles, "null rgszMkNewNames or bad-length array")
-            If (rgszMkNewNames Is Nothing) Then Throw New ArgumentNullException("rgszMkNewNames")
+            If (rgszMkNewNames Is Nothing) Then Throw New ArgumentNullException(NameOf(rgszMkNewNames))
             If (rgszMkNewNames.Length <> cFiles) Then Throw Common.CreateArgumentException("rgszMkNewNames")
 
             Debug.Assert(rgFlags IsNot Nothing AndAlso rgFlags.Length = cFiles, "null rgFlags or bad-length array")
-            If (rgFlags Is Nothing) Then Throw New ArgumentNullException("rgFlags")
+            If (rgFlags Is Nothing) Then Throw New ArgumentNullException(NameOf(rgFlags))
             If (rgFlags.Length <> cFiles) Then Throw Common.CreateArgumentException("rgFlags")
 
             For i As Integer = 0 To cFiles - 1

@@ -149,7 +149,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <remarks></remarks>
         Private Function Init(ProjectHierarchy As IVsHierarchy) As Integer Implements IVsMyAppManager.Init
             If ProjectHierarchy Is Nothing Then
-                Throw New ArgumentNullException("ProjectHierarchy")
+                Throw New ArgumentNullException(NameOf(ProjectHierarchy))
             End If
 
             SyncLock s_myPropertyInstances
@@ -314,7 +314,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             Dim obj As Object = Nothing
 
             If ProjectHierarchy Is Nothing Then
-                Throw New ArgumentNullException("ProjectHierarchy")
+                Throw New ArgumentNullException(NameOf(ProjectHierarchy))
             End If
 
             _projectHierarchy = ProjectHierarchy
@@ -563,7 +563,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                     ApplicationServices.ShutdownMode.AfterAllFormsClose
                         'Valid - continue
                     Case Else
-                        Throw New ArgumentOutOfRangeException("value")
+                        Throw New ArgumentOutOfRangeException(NameOf(value))
                 End Select
 
                 If _myAppData.ShutdownMode <> value Then
@@ -620,7 +620,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                     ApplicationServices.AuthenticationMode.ApplicationDefined
                         'Valid - continue
                     Case Else
-                        Throw New ArgumentOutOfRangeException("value")
+                        Throw New ArgumentOutOfRangeException(NameOf(value))
                 End Select
 
                 If _myAppData.AuthenticationMode <> value Then

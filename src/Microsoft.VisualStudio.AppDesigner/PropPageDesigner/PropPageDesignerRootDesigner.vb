@@ -72,7 +72,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' </remarks>
         Private Function RootDesigner_GetView(Technology As ViewTechnology) As Object Implements IRootDesigner.GetView
             If Technology <> ViewTechnology.Default Then
-                Throw New ArgumentException("Not a supported view technology", "Technology")
+                Throw New ArgumentException("Not a supported view technology", NameOf(Technology))
             End If
 
             If _view Is Nothing Then

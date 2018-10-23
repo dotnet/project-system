@@ -163,10 +163,10 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <remarks>The user is given the choice to cancel the operation when he is asked to overwrite an existing file or link.</remarks>
         Private Shared Function AddFileToProjectHelper(EditorName As String, Project As Project, ResXProjectItem As ProjectItem, MessageBoxOwner As IWin32Window, SourceFilePath As String, CopyFileIfExists As Boolean) As String
             If EditorName = "" Then
-                Throw New ArgumentNullException("EditorName")
+                Throw New ArgumentNullException(NameOf(EditorName))
             End If
             If SourceFilePath = "" Then
-                Throw New ArgumentNullException("SourceFilePath")
+                Throw New ArgumentNullException(NameOf(SourceFilePath))
             End If
             Debug.Assert(ResXProjectItem IsNot Nothing, "ResXProjectItem is Nothing!")
             Debug.Assert(Project IsNot Nothing, "Project is Nothing!")

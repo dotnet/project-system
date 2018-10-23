@@ -454,7 +454,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 ''' <remarks></remarks>
                 Public Sub AddPropertyToSerialize(Member As MemberDescriptor)
                     If Member Is Nothing Then
-                        Throw New ArgumentNullException("Member")
+                        Throw New ArgumentNullException(NameOf(Member))
                     End If
 
                     If TypeOf Member Is PropertyDescriptor Then

@@ -22,7 +22,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             Public Sub New(version As UInteger, description As String)
                 If description Is Nothing Then
-                    Throw New ArgumentNullException("description")
+                    Throw New ArgumentNullException(NameOf(description))
                 End If
 
                 _version = version

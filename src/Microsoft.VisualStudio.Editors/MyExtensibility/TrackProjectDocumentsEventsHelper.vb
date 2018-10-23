@@ -39,7 +39,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
 
         Private Sub New(serviceProvider As IServiceProvider)
             If serviceProvider Is Nothing Then
-                Throw New ArgumentNullException("serviceProvider")
+                Throw New ArgumentNullException(NameOf(serviceProvider))
             End If
 
             _serviceProvider = serviceProvider

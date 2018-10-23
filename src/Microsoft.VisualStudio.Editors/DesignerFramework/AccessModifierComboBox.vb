@@ -95,7 +95,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
             Public Sub New(customToolValue As String)
                 If customToolValue Is Nothing Then
-                    Throw New ArgumentNullException("customToolValue")
+                    Throw New ArgumentNullException(NameOf(customToolValue))
                 End If
                 _customToolValue = customToolValue
             End Sub
@@ -139,7 +139,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 MyBase.New(customToolValue)
 
                 If serviceProvider Is Nothing Then
-                    Throw New ArgumentNullException("serviceProvider")
+                    Throw New ArgumentNullException(NameOf(serviceProvider))
                 End If
 
                 _accessibility = accessibility
@@ -314,13 +314,13 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <remarks></remarks>
         Public Sub New(rootDesigner As BaseRootDesigner, serviceProvider As IServiceProvider, projectItem As EnvDTE.ProjectItem, namespaceToOverrideIfCustomToolIsEmpty As String)
             If rootDesigner Is Nothing Then
-                Throw New ArgumentNullException("rootDesigner")
+                Throw New ArgumentNullException(NameOf(rootDesigner))
             End If
             If projectItem Is Nothing Then
-                Throw New ArgumentNullException("projectItem")
+                Throw New ArgumentNullException(NameOf(projectItem))
             End If
             If serviceProvider Is Nothing Then
-                Throw New ArgumentNullException("serviceProvider")
+                Throw New ArgumentNullException(NameOf(serviceProvider))
             End If
 
             _rootDesigner = rootDesigner

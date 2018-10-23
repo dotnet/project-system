@@ -116,10 +116,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
 
             Public Sub New(buffer As IVsTextLines, debugLockCheck As IDebugLockCheck)
                 If buffer Is Nothing Then
-                    Throw New ArgumentNullException("buffer")
+                    Throw New ArgumentNullException(NameOf(buffer))
                 End If
                 If debugLockCheck Is Nothing Then
-                    Throw New ArgumentNullException("debugLockCheck")
+                    Throw New ArgumentNullException(NameOf(debugLockCheck))
                 End If
 
                 _buffer = buffer
@@ -181,7 +181,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
 
             Public Sub New(vsTextLines As IVsTextLines, startLocation As Location, endLocation As Location, unescapedValue As String, definitionIncludesQuotes As Boolean)
                 If vsTextLines Is Nothing Then
-                    Throw New ArgumentNullException("vsTextLines")
+                    Throw New ArgumentNullException(NameOf(vsTextLines))
                 End If
                 If startLocation Is Nothing Then
                     Throw New ArgumentNullException("nodeStart")
@@ -316,7 +316,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
                 MyBase.New(vsTextLines, elementStart, elementEnd, unescapedValue:="")
 
                 If fullyQualifiedPropertyName Is Nothing Then
-                    Throw New ArgumentNullException("fullyQualifiedPropertyName")
+                    Throw New ArgumentNullException(NameOf(fullyQualifiedPropertyName))
                 End If
 
                 _fullyQualifiedPropertyName = fullyQualifiedPropertyName
@@ -363,7 +363,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
 
         Public Sub New(vsTextLines As IVsTextLines)
             If vsTextLines Is Nothing Then
-                Throw New ArgumentNullException("vsTextLines")
+                Throw New ArgumentNullException(NameOf(vsTextLines))
             End If
             _vsTextLines = vsTextLines
         End Sub

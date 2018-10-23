@@ -1362,10 +1362,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
 
             Public Sub New(value As String, description As String)
                 If value Is Nothing Then
-                    Throw New ArgumentNullException("value")
+                    Throw New ArgumentNullException(NameOf(value))
                 End If
                 If description Is Nothing Then
-                    Throw New ArgumentNullException("description")
+                    Throw New ArgumentNullException(NameOf(description))
                 End If
 
                 _value = value

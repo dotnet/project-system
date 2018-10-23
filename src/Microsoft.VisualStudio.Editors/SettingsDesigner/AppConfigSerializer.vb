@@ -256,7 +256,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Common.Switches.TraceSDSerializeSettings(TraceLevel.Info, "Serializing {0} settings to App.Config", Settings.Count)
             If Settings Is Nothing Then
                 Debug.Fail("Can't serialize NULL settings instance!")
-                Throw New ArgumentNullException("Settings")
+                Throw New ArgumentNullException(NameOf(Settings))
             End If
 
             If ClassName = "" Then
@@ -266,12 +266,12 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
             If NamespaceName Is Nothing Then
                 Debug.Fail("Must provide a valid namespace name!")
-                Throw New ArgumentNullException("NamespaceName")
+                Throw New ArgumentNullException(NameOf(NamespaceName))
             End If
 
             If AppConfigDocData Is Nothing Then
                 Debug.Fail("Can't serialize to a NULL DocData")
-                Throw New ArgumentNullException("AppConfigDocData")
+                Throw New ArgumentNullException(NameOf(AppConfigDocData))
             End If
 
             Dim AppConfigReader As DocDataTextReader = Nothing

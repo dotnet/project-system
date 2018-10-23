@@ -725,7 +725,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <remarks></remarks>
         Public Sub SetInitialValues(AllInitialValues As Object())
             If AllInitialValues Is Nothing Then
-                Throw New ArgumentNullException("AllInitialValues")
+                Throw New ArgumentNullException(NameOf(AllInitialValues))
             End If
             If AllInitialValues.Length = 0 Then
                 Throw Common.CreateArgumentException("AllInitialValues")
@@ -1448,7 +1448,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             ValueOrIndeterminate = Nothing
 
             If Extenders Is Nothing Then
-                Throw New ArgumentNullException("Extenders")
+                Throw New ArgumentNullException(NameOf(Extenders))
             End If
 
             Dim ReturnValues As Object() = New Object(Extenders.Length - 1) {}
@@ -1487,7 +1487,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             'Determine if all the values are the same or not
             If Values Is Nothing OrElse Values.Length = 0 Then
                 Debug.Fail("Bad Values array")
-                Throw New ArgumentNullException("Values")
+                Throw New ArgumentNullException(NameOf(Values))
             End If
 
             Dim Value As Object = Values(0)

@@ -513,7 +513,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 ''' <remarks></remarks>
                 Public Sub AddPropertyToSerialize(Member As MemberDescriptor)
                     If Member Is Nothing Then
-                        Throw New ArgumentNullException("Member")
+                        Throw New ArgumentNullException(NameOf(Member))
                     End If
 
                     If TypeOf Member Is PropertyDescriptor Then

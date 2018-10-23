@@ -68,7 +68,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <remarks></remarks>
         Public Overrides Function ConvertTo(Context As ITypeDescriptorContext, Culture As CultureInfo, Value As Object, DestinationType As Type) As Object
             If DestinationType Is Nothing Then
-                Throw New ArgumentNullException("DestinationType")
+                Throw New ArgumentNullException(NameOf(DestinationType))
             End If
 
             If DestinationType.Equals(GetType(String)) AndAlso TypeOf Value Is SerializableEncoding Then
