@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 
 using Microsoft.VisualStudio.Imaging;
+using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 
 using Xunit;
@@ -360,6 +361,41 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var dependency2 = new Dependency(model2, targetFramework, @"C:\Foo\Project.csproj");
 
             Assert.True(ReferenceEquals(dependency1.IconSet, dependency2.IconSet));
+        }
+
+        [Fact]
+        public void GetID_ThrowsForInvalidArguments()
+        {
+            Assert.Throws<ArgumentNullException>(() => Dependency.GetID(null, "providerType", "modelId"));
+            Assert.Throws<ArgumentNullException>(() => Dependency.GetID(TargetFramework.Any, null, "modelId"));
+            Assert.Throws<ArgumentNullException>(() => Dependency.GetID(TargetFramework.Any, "providerType", null));
+
+            Assert.Throws<ArgumentException>(() => Dependency.GetID(TargetFramework.Any, "", "modelId"));
+            Assert.Throws<ArgumentException>(() => Dependency.GetID(TargetFramework.Any, "providerType", ""));
+        }
+
+        [Theory]
+        [InlineData(@"../../somepath", @"any\providerType\__\__\somepath")]
+        [InlineData(@"__\somepath..\", @"any\providerType\__\somepath__")]
+        [InlineData(@"somepath", @"any\providerType\somepath")]
+        public void GetID_CreatesCorrectString(string modelId, string expected)
+        {
+            Assert.Equal(expected, Dependency.GetID(TargetFramework.Any, "providerType", modelId));
+        }
+
+        [Fact]
+        public void IdEquals()
+        {
+            Assert.True(Dependency.IdEquals(@"any\providerType\modelId", TargetFramework.Any, "providerType", "modelId"));
+            Assert.True(Dependency.IdEquals(@"any\providerType\modelId", TargetFramework.Any, "providerType", "modelId/"));
+            Assert.True(Dependency.IdEquals(@"any\providerType\__\__\modelId", TargetFramework.Any, "providerType", "../../modelId"));
+            Assert.True(Dependency.IdEquals(@"any\providerType\__\__\modelId", TargetFramework.Any, "providerType", "..\\..\\modelId"));
+            Assert.True(Dependency.IdEquals(@"any\providerType\__\__\modelId", TargetFramework.Any, "providerType", "../../modelId/"));
+            Assert.True(Dependency.IdEquals(@"ANY\PROVIDERTYPE\MODELID", TargetFramework.Any, "providerType", "modelId"));
+            Assert.False(Dependency.IdEquals(@"any/providerType/modelId", TargetFramework.Any, "providerType", "modelId"));
+            Assert.False(Dependency.IdEquals(@"any/providerType/modelId/", TargetFramework.Any, "providerType", "modelId"));
+            Assert.False(Dependency.IdEquals(@"XXX\providerType\modelId", TargetFramework.Any, "providerType", "modelId"));
+            Assert.False(Dependency.IdEquals(@"any\XXX\modelId", TargetFramework.Any, "providerType", "modelId"));
         }
     }
 }

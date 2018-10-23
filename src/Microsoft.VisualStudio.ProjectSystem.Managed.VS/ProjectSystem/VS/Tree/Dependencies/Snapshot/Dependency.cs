@@ -320,6 +320,51 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             }
         }
 
+        /// <summary>
+        /// Determines whether <paramref name="id"/> is equal to the result of <see cref="GetID"/> when passed
+        /// <paramref name="targetFramework"/>, <paramref name="providerType"/> and <paramref name="modelId"/>.
+        /// </summary>
+        /// <remarks>
+        /// This method performs no heap allocations unless <paramref name="modelId"/> must be escaped.
+        /// </remarks>
+        public static bool IdEquals(string id, ITargetFramework targetFramework, string providerType, string modelId)
+        {
+            Requires.NotNull(targetFramework, nameof(targetFramework));
+            Requires.NotNullOrEmpty(providerType, nameof(providerType));
+            Requires.NotNullOrEmpty(modelId, nameof(modelId));
+
+            if (id == null)
+                return false;
+
+            int modelSlashCount = 0;
+            for (int i = modelId.Length - 1; i >= 0 && (modelId[i] == '\\' || modelId[i] == '/'); i--)
+                modelSlashCount++;
+            int length = targetFramework.ShortName.Length + providerType.Length + modelId.Length - modelSlashCount + 2;
+
+            if (id.Length != length)
+                return false;
+            if (!id.StartsWith(targetFramework.ShortName, StringComparison.OrdinalIgnoreCase))
+                return false;
+            int index = targetFramework.ShortName.Length;
+            if (id[index++] != '\\')
+                return false;
+            if (string.Compare(id, index, providerType, 0, providerType.Length, StringComparison.OrdinalIgnoreCase) != 0)
+                return false;
+            index += providerType.Length;
+            if (id[index++] != '\\')
+                return false;
+
+            // Escape model ID
+            // NOTE It doesn't seem possible to avoid the potential string allocation here without
+            // reimplementing OrdinalIgnoreCase comparison.
+            modelId = modelId.Replace('/', '\\').Replace("..", "__");
+
+            if (string.Compare(id, index, modelId, 0, modelId.Length - modelSlashCount, StringComparison.OrdinalIgnoreCase) != 0)
+                return false;
+            
+            return true;
+        }
+
         public static string GetID(ITargetFramework targetFramework, string providerType, string modelId)
         {
             Requires.NotNull(targetFramework, nameof(targetFramework));

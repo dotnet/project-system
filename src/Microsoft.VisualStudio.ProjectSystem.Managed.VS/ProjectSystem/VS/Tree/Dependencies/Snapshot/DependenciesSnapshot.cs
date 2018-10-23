@@ -78,7 +78,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 foreach (ITargetedDependenciesSnapshot targetedDependencies in Targets.Values)
                 {
                     IDependency dependency = targetedDependencies.TopLevelDependencies.FirstOrDefault(
-                        x => x.GetTopLevelId().Equals(id, StringComparison.OrdinalIgnoreCase));
+                        x => x.TopLevelIdEquals(id));
+
                     if (dependency != null)
                     {
                         return dependency;

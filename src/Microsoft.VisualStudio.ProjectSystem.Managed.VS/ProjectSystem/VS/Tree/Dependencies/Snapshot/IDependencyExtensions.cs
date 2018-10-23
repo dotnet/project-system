@@ -60,6 +60,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         }
 
         /// <summary>
+        /// Returns id having full path instead of OriginalItemSpec
+        /// </summary>
+        public static bool TopLevelIdEquals(this IDependency self, string id)
+        {
+            return string.IsNullOrEmpty(self.Path)
+                ? string.Equals(self.Id, id, StringComparison.OrdinalIgnoreCase)
+                : Dependency.IdEquals(id, self.TargetFramework, self.ProviderType, self.Path);
+        }
+
+        /// <summary>
         /// Returns all icons specified for given dependency.
         /// </summary>
         public static IEnumerable<ImageMoniker> GetIcons(this IDependency self)
