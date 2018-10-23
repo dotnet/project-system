@@ -181,10 +181,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
 
             IEnumerable<IDependency> targetedResultsFromContext =
                 contextResults.Where(x => nearestTargetFramework.Equals(x.TargetFramework));
-            if (targetedResultsFromContext != null)
-            {
-                topLevelDependencyMatches.AddRange(targetedResultsFromContext);
-            }
+            topLevelDependencyMatches.AddRange(targetedResultsFromContext);
 
             return true;
         }
