@@ -38,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
 
         public override bool HasChildren(string projectPath, IDependency dependency)
         {
-            ITargetedDependenciesSnapshot targetedSnapshot = GetSnapshot(projectPath, dependency, out string dependencyProjectPath);
+            ITargetedDependenciesSnapshot targetedSnapshot = GetSnapshot(dependency, out string dependencyProjectPath);
 
             return targetedSnapshot?.TopLevelDependencies.Count > 0;
         }
@@ -54,7 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
             dependencyGraphNode.SetValue(DependenciesGraphSchema.DependencyIdProperty, dependency.Id);
             dependencyGraphNode.SetValue(DependenciesGraphSchema.ResolvedProperty, dependency.Resolved);
 
-            ITargetedDependenciesSnapshot otherProjectTargetedSnapshot = GetSnapshot(projectPath, dependency, out string dependencyProjectPath);
+            ITargetedDependenciesSnapshot otherProjectTargetedSnapshot = GetSnapshot(dependency, out string dependencyProjectPath);
             if (otherProjectTargetedSnapshot == null)
             {
                 return;
@@ -75,7 +75,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
             }
         }
 
-        private ITargetedDependenciesSnapshot GetSnapshot(string projectPath, IDependency dependency, out string dependencyProjectPath)
+        private ITargetedDependenciesSnapshot GetSnapshot(IDependency dependency, out string dependencyProjectPath)
         {
             dependencyProjectPath = dependency.FullPath;
 
@@ -111,9 +111,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
                     GraphNode dependencyGraphNode,
                     ITargetedDependenciesSnapshot targetedSnapshot)
         {
-            if (!AnyChanges(projectPath,
-                            targetedSnapshot,
-                            updatedDependency,
+            if (!AnyChanges(updatedDependency,
                             dependencyGraphNode,
                             out IEnumerable<DependencyNodeInfo> nodesToAdd,
                             out IEnumerable<DependencyNodeInfo> nodesToRemove,
@@ -194,8 +192,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
         }
 
         private bool AnyChanges(
-            string projectPath,
-            ITargetedDependenciesSnapshot targetedSnapshot,
             IDependency updatedDependency,
             GraphNode dependencyGraphNode,
             out IEnumerable<DependencyNodeInfo> nodesToAdd,
@@ -203,7 +199,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
             out IEnumerable<IDependency> updatedChildren,
             out string dependencyProjectPath)
         {
-            ITargetedDependenciesSnapshot snapshot = GetSnapshot(projectPath, updatedDependency, out dependencyProjectPath);
+            ITargetedDependenciesSnapshot snapshot = GetSnapshot(updatedDependency, out dependencyProjectPath);
             if (snapshot == null)
             {
                 nodesToAdd = Enumerable.Empty<DependencyNodeInfo>();
