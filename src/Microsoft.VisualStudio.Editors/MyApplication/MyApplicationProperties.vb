@@ -149,7 +149,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <remarks></remarks>
         Private Function Init(ProjectHierarchy As IVsHierarchy) As Integer Implements IVsMyAppManager.Init
             If ProjectHierarchy Is Nothing Then
-                Throw New ArgumentNullException("ProjectHierarchy")
+                Throw New ArgumentNullException(NameOf(ProjectHierarchy))
             End If
 
             SyncLock s_myPropertyInstances
@@ -314,7 +314,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             Dim obj As Object = Nothing
 
             If ProjectHierarchy Is Nothing Then
-                Throw New ArgumentNullException("ProjectHierarchy")
+                Throw New ArgumentNullException(NameOf(ProjectHierarchy))
             End If
 
             _projectHierarchy = ProjectHierarchy
@@ -563,7 +563,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                     ApplicationServices.ShutdownMode.AfterAllFormsClose
                         'Valid - continue
                     Case Else
-                        Throw New ArgumentOutOfRangeException("value")
+                        Throw New ArgumentOutOfRangeException(NameOf(value))
                 End Select
 
                 If _myAppData.ShutdownMode <> value Then
@@ -620,7 +620,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                     ApplicationServices.AuthenticationMode.ApplicationDefined
                         'Valid - continue
                     Case Else
-                        Throw New ArgumentOutOfRangeException("value")
+                        Throw New ArgumentOutOfRangeException(NameOf(value))
                 End Select
 
                 If _myAppData.AuthenticationMode <> value Then
@@ -851,7 +851,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <param name="PropertyName">The name of the property to retrieve.</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function GetProjectItemProperty(ProjectItem As ProjectItem, PropertyName As String) As [Property]
+        Private Shared Function GetProjectItemProperty(ProjectItem As ProjectItem, PropertyName As String) As [Property]
             If ProjectItem.Properties Is Nothing Then
                 Return Nothing
             End If
@@ -870,7 +870,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         '''   generation is hooked up.
         ''' </summary>
         ''' <remarks>Caller is responsible for catching exceptions</remarks>
-        Private Sub SetCustomTool(ProjectItem As ProjectItem, Value As String)
+        Private Shared Sub SetCustomTool(ProjectItem As ProjectItem, Value As String)
             Dim ToolProperty As [Property] = GetProjectItemProperty(ProjectItem, PROJECTPROPERTY_CUSTOMTOOL)
             Dim NamespaceProperty As [Property] = GetProjectItemProperty(ProjectItem, PROJECTPROPERTY_CUSTOMTOOLNAMESPACE)
 
@@ -1300,7 +1300,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <param name="String2"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function StringPropertyValuesEqual(String1 As String, String2 As String) As Boolean
+        Private Shared Function StringPropertyValuesEqual(String1 As String, String2 As String) As Boolean
             Return NothingToEmptyString(String1).Equals(NothingToEmptyString(String2), StringComparison.Ordinal)
         End Function
 

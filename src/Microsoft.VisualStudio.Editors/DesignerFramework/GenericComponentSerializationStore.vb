@@ -360,7 +360,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ''' <remarks></remarks>
             Public Sub New(Value As Object)
                 If Value Is Nothing Then
-                    Throw New ArgumentNullException("Value")
+                    Throw New ArgumentNullException(NameOf(Value))
                 End If
 
                 ' If it is an IComponent, we'll try to get its name from 
@@ -465,7 +465,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ''' <remarks></remarks>
             Friend Sub New(Value As ObjectData)
                 If Value Is Nothing Then
-                    Throw New ArgumentNullException("Value")
+                    Throw New ArgumentNullException(NameOf(Value))
                 End If
                 _objectName = Value.Name
                 _serializedValue = SerializeObject(Value.Value)
@@ -478,10 +478,10 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ''' <remarks></remarks>
             Public Sub New(Value As ObjectData, [Property] As PropertyDescriptor)
                 If Value Is Nothing Then
-                    Throw New ArgumentNullException("Value")
+                    Throw New ArgumentNullException(NameOf(Value))
                 End If
                 If [Property] Is Nothing Then
-                    Throw New ArgumentNullException("Property")
+                    Throw New ArgumentNullException(NameOf([Property]))
                 End If
 
                 _objectName = Value.Name

@@ -11,9 +11,12 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
     ''' a culture info.
     ''' </summary>
     ''' <remarks></remarks>
-    Friend Class SettingsValueSerializer
+    Friend NotInheritable Class SettingsValueSerializer
 
-        Public Function Deserialize(ValueType As Type, serializedValue As String, culture As Globalization.CultureInfo) As Object
+        Private Sub SettingsValueSerializer()
+        End Sub
+
+        Public Shared Function Deserialize(ValueType As Type, serializedValue As String, culture As Globalization.CultureInfo) As Object
             If ValueType Is GetType(String) Then
                 ' VsWhidbey 270764:
                 ' Strings require special handling, since the ConfigHelper API assumes that all serialized representations
@@ -79,7 +82,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Return Nothing
         End Function
 
-        Public Function Serialize(value As Object, culture As Globalization.CultureInfo) As String
+        Public Shared Function Serialize(value As Object, culture As Globalization.CultureInfo) As String
             Dim serializedValue As String = Nothing
             Try
                 serializedValue = SerializeImpl(value, culture)
@@ -94,7 +97,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End If
         End Function
 
-        Private Function SerializeImpl(value As Object, culture As Globalization.CultureInfo) As String
+        Private Shared Function SerializeImpl(value As Object, culture As Globalization.CultureInfo) As String
             If value Is Nothing Then
                 Return ""
             ElseIf value.GetType().Equals(GetType(String)) Then

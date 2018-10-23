@@ -62,7 +62,7 @@ Namespace Microsoft.VisualStudio.Editors.VBAttributeEditor
             Return permissionSet
         End Function
 
-        Private Function DocDataToStream(doc As DocData) As Stream
+        Private Shared Function DocDataToStream(doc As DocData) As Stream
             Dim retStream As New MemoryStream()
             Using docReader As New DocDataTextReader(doc, False)
                 Dim writer As New StreamWriter(retStream)

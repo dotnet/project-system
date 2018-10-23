@@ -31,7 +31,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         ''' <remarks></remarks>
         Public Sub New(sp As IServiceProvider, Hierarchy As IVsHierarchy)
             If sp Is Nothing Then
-                Throw New ArgumentNullException("sp")
+                Throw New ArgumentNullException(NameOf(sp))
             End If
 
             _serviceProvider = sp
@@ -146,11 +146,11 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         ''' <remarks>Disallows in memory edits for IVsQueryEditQuerySave2</remarks>
         Public Shared Function QueryEditableFiles(sp As IServiceProvider, files As List(Of String), throwOnFailure As Boolean, checkOnly As Boolean, ByRef fileReloaded As Boolean, Optional allowInMemoryEdits As Boolean = True, Optional allowFileReload As Boolean = True) As Boolean
             If sp Is Nothing Then
-                Throw New ArgumentNullException("sp")
+                Throw New ArgumentNullException(NameOf(sp))
             End If
 
             If files Is Nothing Then
-                Throw New ArgumentNullException("files")
+                Throw New ArgumentNullException(NameOf(files))
             End If
 
             If files.Count = 0 Then
@@ -264,11 +264,11 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         ''' <remarks></remarks>
         Public Shared Function QuerySave(sp As IServiceProvider, files As List(Of String), throwOnFailure As Boolean) As Boolean
             If sp Is Nothing Then
-                Throw New ArgumentNullException("sp")
+                Throw New ArgumentNullException(NameOf(sp))
             End If
 
             If files Is Nothing Then
-                Throw New ArgumentNullException("files")
+                Throw New ArgumentNullException(NameOf(files))
             End If
 
             If files.Count = 0 Then

@@ -738,7 +738,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <returns>The document's cookie, or 0 if it's not in the RDT</returns>
         Private Function GetDocCookie(filename As String) As UInteger
             If filename Is Nothing Then
-                Throw New ArgumentNullException("filename")
+                Throw New ArgumentNullException(NameOf(filename))
             End If
 
             Dim docCookie As UInteger = 0
@@ -778,7 +778,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <summary>
         ''' Determines if two paths are equivalent (i.e. differ only by case)
         ''' </summary>
-        Private Function PathEquals(path1 As String, path2 As String) As Boolean
+        Private Shared Function PathEquals(path1 As String, path2 As String) As Boolean
             Return String.Equals(path1, path2, StringComparison.OrdinalIgnoreCase)
         End Function
 

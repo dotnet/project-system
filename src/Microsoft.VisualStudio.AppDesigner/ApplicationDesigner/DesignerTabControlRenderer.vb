@@ -129,7 +129,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <remarks></remarks>
         Public Sub New(owner As ProjectDesignerTabControl)
             If owner Is Nothing Then
-                Throw New ArgumentNullException("owner")
+                Throw New ArgumentNullException(NameOf(owner))
             End If
             _owner = owner
 

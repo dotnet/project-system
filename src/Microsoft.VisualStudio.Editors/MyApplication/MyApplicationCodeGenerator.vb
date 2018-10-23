@@ -734,7 +734,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <param name="phier">the IVsHierarchy to get the ProjectItem from</param>
         ''' <param name="itemId">the ItemId corresponding to the ProjectItem</param>
         ''' <returns>the ProjectItem found</returns>
-        Private Function GetDesignerProjectItem(phier As IVsHierarchy, itemId As UInteger) As ProjectItem
+        Private Shared Function GetDesignerProjectItem(phier As IVsHierarchy, itemId As UInteger) As ProjectItem
             ' retrieve the ProjectItem corresponding to the itemId; it's the generated code file
             Dim o As Object = Nothing
             VSErrorHandler.ThrowOnFailure(phier.GetProperty(itemId, __VSHPROPID.VSHPROPID_ExtObject, o))
@@ -754,7 +754,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' </summary>
         ''' <param name="dd">the DocData to load the ApplicationData from</param>
         ''' <returns>the ApplicationData loaded from the ProjectItem</returns>
-        Private Function GetApplicationData(dd As Shell.Design.Serialization.DocData) As MyApplicationData
+        Private Shared Function GetApplicationData(dd As Shell.Design.Serialization.DocData) As MyApplicationData
             Dim data As MyApplicationData = Nothing
             If (dd IsNot Nothing) Then
                 ' read the content of this ProjectItem into a MyApplicationData object
@@ -771,7 +771,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' </summary>
         ''' <param name="rqName">the aggregate name to parse</param>
         ''' <returns>the class name including sub-namespaces, but without the root namespace</returns>
-        Private Function GetSymbolNameNoRootNamespace(rqName As String, currentProject As Project) As String
+        Private Shared Function GetSymbolNameNoRootNamespace(rqName As String, currentProject As Project) As String
             ' extract the class name we want to change from the aggregate name provided by the language service
             Dim symbolName As String = RenamingHelper.ParseRQName(rqName)
 

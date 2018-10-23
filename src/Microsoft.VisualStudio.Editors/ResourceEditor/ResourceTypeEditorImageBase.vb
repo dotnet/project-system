@@ -32,7 +32,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '= METHODS =                                                          =
         '======================================================================
 
-        Private Overloads Sub ValidateResourceValue(Resource As IResource)
+        Private Overloads Shared Sub ValidateResourceValue(Resource As IResource)
             ValidateResourceValue(Resource, GetType(Image), GetType(Byte()))
         End Sub
 

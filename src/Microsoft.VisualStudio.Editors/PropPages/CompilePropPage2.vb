@@ -915,7 +915,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Concatenate an array of integers into a comma-separated string of numbers
         ''' </summary>
-        Private Function ConcatenateNumbers(numbers() As Integer) As String
+        Private Shared Function ConcatenateNumbers(numbers() As Integer) As String
             Dim strNumbers(numbers.Length - 1) As String
             For i As Integer = 0 To numbers.Length - 1
                 strNumbers(i) = numbers(i).ToString()
@@ -926,7 +926,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Split a comma-separated string into a sorted array of numbers
         ''' </summary>
-        Private Function SplitToNumbers(numberString As String) As Integer()
+        Private Shared Function SplitToNumbers(numberString As String) As Integer()
             If numberString Is Nothing Then
                 Debug.Fail("NULL Argument")
                 Throw New ArgumentNullException()
@@ -950,7 +950,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Return the intersection of the two *sorted* arrays set1 and set2
         ''' </summary>
         ''' <remarks>Both set1 and set2 must be sorted for this to work correctly!</remarks>
-        Private Function Intersect(set1() As Integer, set2() As Integer) As Integer()
+        Private Shared Function Intersect(set1() As Integer, set2() As Integer) As Integer()
             Dim indexSet1 As Integer = 0
             Dim indexSet2 As Integer = 0
 
@@ -978,7 +978,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Return the union of the two *sorted* arrays set1 and set2
         ''' </summary>
         ''' <remarks>Both set1 and set2 must be sorted for this to work correctly!</remarks>
-        Private Function Union(set1() As Integer, set2() As Integer) As Integer()
+        Private Shared Function Union(set1() As Integer, set2() As Integer) As Integer()
             Dim indexSet1 As Integer = 0
             Dim indexSet2 As Integer = 0
 
@@ -1021,7 +1021,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Remove any items in itemsToRemove from completeSet
         ''' </summary>
         ''' <remarks>Both set1 and set2 must be sorted for this to work correctly!</remarks>
-        Private Function RemoveItems(completeSet() As Integer, itemsToRemove() As Integer) As Integer()
+        Private Shared Function RemoveItems(completeSet() As Integer, itemsToRemove() As Integer) As Integer()
             Dim indexCompleteSet As Integer = 0
             Dim indexItemsToRemove As Integer = 0
 
@@ -1059,7 +1059,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Check if the numbers specified in SearchForNumbers are all included in the CompleteList
         ''' </summary>
-        Private Function AreNumbersInList(CompleteList As Integer(), SearchForNumbers As Integer()) As TriState
+        Private Shared Function AreNumbersInList(CompleteList As Integer(), SearchForNumbers As Integer()) As TriState
             Dim foundNumbers As Integer = Intersect(CompleteList, SearchForNumbers).Length
             Dim numberOfItemsToFind As Integer = SearchForNumbers.Length
 

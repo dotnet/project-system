@@ -40,7 +40,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <remarks>
         '''This should be done before attempting to persist.
         ''' </remarks>
-        Public Sub CommitAnyPendingChanges()
+        Public Shared Sub CommitAnyPendingChanges()
             'CONSIDER: We should force an apply here
             'GetView().CommitAnyPendingChanges()
         End Sub
@@ -72,7 +72,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' </remarks>
         Private Function RootDesigner_GetView(Technology As ViewTechnology) As Object Implements IRootDesigner.GetView
             If Technology <> ViewTechnology.Default Then
-                Throw New ArgumentException("Not a supported view technology", "Technology")
+                Throw New ArgumentException("Not a supported view technology", NameOf(Technology))
             End If
 
             If _view Is Nothing Then

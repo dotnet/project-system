@@ -36,8 +36,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Dim value As Object = Nothing
             If Not valueDictionary.TryGetValue(serializedValue, value) Then
                 ' Make sure we have an entry for the serialized value for this type
-                Dim serializer As New SettingsValueSerializer()
-                value = serializer.Deserialize(settingType, serializedValue, _culture)
+                value = SettingsValueSerializer.Deserialize(settingType, serializedValue, _culture)
                 valueDictionary(serializedValue) = value
             End If
             Return value

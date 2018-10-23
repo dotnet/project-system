@@ -231,7 +231,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <remarks></remarks>
         Private Function IRootDesigner_GetView(Technology As ViewTechnology) As Object Implements IRootDesigner.GetView
             If Technology <> ViewTechnology.Default Then
-                Throw New ArgumentException("Not a supported view technology", "Technology")
+                Throw New ArgumentException("Not a supported view technology", NameOf(Technology))
             End If
 
             If _view Is Nothing Then

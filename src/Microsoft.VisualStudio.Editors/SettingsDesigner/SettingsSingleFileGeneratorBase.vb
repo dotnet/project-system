@@ -338,7 +338,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="GenerateProgress"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function DeserializeSettings(InputString As String, GenerateProgress As IVsGeneratorProgress) As DesignTimeSettings
+        Private Shared Function DeserializeSettings(InputString As String, GenerateProgress As IVsGeneratorProgress) As DesignTimeSettings
             Dim Settings As New DesignTimeSettings()
             If InputString <> "" Then
                 ' We actually have some contents to deserialize.... 
@@ -464,7 +464,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 .Attributes = SettingsPropertyVisibility,
                 .Name = Instance.Name
             }
-            Dim fxTypeName As String = TypeNameResolver.PersistedSettingTypeNameToFxTypeName(Instance.SettingTypeName)
+            Dim fxTypeName As String = SettingTypeNameResolutionService.PersistedSettingTypeNameToFxTypeName(Instance.SettingTypeName)
 
             CodeProperty.Type = New CodeTypeReference(fxTypeName) With {
                 .Options = CodeTypeReferenceOptions.GlobalReference

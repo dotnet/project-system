@@ -124,8 +124,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                     scs = New SerializableConnectionString
                 End If
                 scs.ConnectionString = Text
-                Dim serializer As New SettingsValueSerializer()
-                Return serializer.Serialize(scs, System.Threading.Thread.CurrentThread.CurrentCulture)
+                Return SettingsValueSerializer.Serialize(scs, System.Threading.Thread.CurrentThread.CurrentCulture)
             Else
                 Return Text
             End If
@@ -272,8 +271,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             If ValueToFormat IsNot Nothing AndAlso ValueToFormat.GetType().Equals(GetType(SerializableConnectionString)) Then
                 Return DirectCast(ValueToFormat, SerializableConnectionString).ConnectionString
             Else
-                Dim serializer As New SettingsValueSerializer()
-                Return serializer.Serialize(ValueToFormat, System.Threading.Thread.CurrentThread.CurrentCulture)
+                Return SettingsValueSerializer.Serialize(ValueToFormat, System.Threading.Thread.CurrentThread.CurrentCulture)
             End If
         End Function
 
@@ -288,8 +286,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 retVal.ConnectionString = SerializedRepresentation
                 Return retVal
             Else
-                Dim serializer As New SettingsValueSerializer()
-                Return serializer.Deserialize(ValueType, SerializedRepresentation, System.Threading.Thread.CurrentThread.CurrentCulture)
+                Return SettingsValueSerializer.Deserialize(ValueType, SerializedRepresentation, System.Threading.Thread.CurrentThread.CurrentCulture)
             End If
         End Function
 

@@ -53,7 +53,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         Public Sub New(ServiceProvider As IServiceProvider)
             Debug.Assert(ServiceProvider IsNot Nothing, "ServiceProvider is NULL.")
             If ServiceProvider Is Nothing Then
-                Throw New ArgumentNullException("ServiceProvider")
+                Throw New ArgumentNullException(NameOf(ServiceProvider))
             End If
 
             _serviceProvider = ServiceProvider

@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.Collections.Specialized
 Imports System.Drawing.Design
@@ -62,7 +62,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="value"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function ConvertToUITypeEditorSource(value As Object) As Object
+        Private Shared Function ConvertToUITypeEditorSource(value As Object) As Object
             If value Is Nothing Then
                 Return Nothing
             End If
@@ -82,7 +82,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="value"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function ConvertToOriginal(value As Object) As Object
+        Private Shared Function ConvertToOriginal(value As Object) As Object
             If value Is Nothing Then
                 Return Nothing
             End If

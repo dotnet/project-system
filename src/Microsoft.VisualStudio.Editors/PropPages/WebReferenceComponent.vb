@@ -53,7 +53,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         <HelpKeyword("Folder Properties.UrlBehavior")>
         Public Property UrlBehavior() As UrlBehaviorType
             Get
-                Dim prop As EnvDTE.[Property] = GetItemProperty("UrlBehavior")
+                Dim prop As EnvDTE.[Property] = GetItemProperty(NameOf(UrlBehavior))
                 If prop IsNot Nothing Then
                     Return CType(CInt(prop.Value), UrlBehaviorType)
                 Else
@@ -62,7 +62,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 End If
             End Get
             Set(value As UrlBehaviorType)
-                Dim prop As EnvDTE.[Property] = GetItemProperty("UrlBehavior")
+                Dim prop As EnvDTE.[Property] = GetItemProperty(NameOf(UrlBehavior))
                 If prop IsNot Nothing Then
                     prop.Value = CInt(value)
                     _page.OnWebReferencePropertyChanged(Me)
@@ -83,7 +83,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         <MergableProperty(False)>
         Public Property WebReferenceURL() As String
             Get
-                Dim prop As EnvDTE.[Property] = GetItemProperty("WebReference")
+                Dim prop As EnvDTE.[Property] = GetItemProperty(NameOf(WebReference))
                 If prop IsNot Nothing Then
                     Return CStr(prop.Value)
                 Else
@@ -96,7 +96,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     value = String.Empty
                 End If
 
-                Dim prop As EnvDTE.[Property] = GetItemProperty("WebReference")
+                Dim prop As EnvDTE.[Property] = GetItemProperty(NameOf(WebReference))
                 If prop IsNot Nothing Then
                     prop.Value = value
                     _page.OnWebReferencePropertyChanged(Me)

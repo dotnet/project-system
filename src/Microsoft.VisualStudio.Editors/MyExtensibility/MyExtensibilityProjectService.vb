@@ -494,7 +494,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' <summary>
         ''' Set the final status of VS status bar to the names of the items added / removed.
         ''' </summary>
-        Private Sub SetExtensionsStatus(addSB As StringBuilder, removeSB As StringBuilder)
+        Private Shared Sub SetExtensionsStatus(addSB As StringBuilder, removeSB As StringBuilder)
             If addSB IsNot Nothing AndAlso addSB.Length > 0 Then
                 If removeSB IsNot Nothing AndAlso removeSB.Length > 0 Then
                     IdeStatusBar.SetText(String.Format(Res.StatusBar_Add_Remove_Finish, addSB.ToString(), removeSB.ToString()))

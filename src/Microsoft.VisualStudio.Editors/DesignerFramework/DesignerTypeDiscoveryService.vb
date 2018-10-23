@@ -24,8 +24,8 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="hierarchy"></param>
         ''' <remarks></remarks>
         Public Sub New(sp As IServiceProvider, hierarchy As IVsHierarchy)
-            If sp Is Nothing Then Throw New ArgumentNullException("sp")
-            If hierarchy Is Nothing Then Throw New ArgumentNullException("hierarchy")
+            If sp Is Nothing Then Throw New ArgumentNullException(NameOf(sp))
+            If hierarchy Is Nothing Then Throw New ArgumentNullException(NameOf(hierarchy))
 
             _serviceProvider = sp
             _hierarchy = hierarchy
@@ -102,7 +102,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         Protected Overridable Function GetProjectOutputs(provider As IServiceProvider, hierarchy As IVsHierarchy) As String()
             Try
                 Dim buildManager As IVsSolutionBuildManager = TryCast(provider.GetService(GetType(IVsSolutionBuildManager)), IVsSolutionBuildManager)
-                If buildManager Is Nothing Then Return New String() {}
+                If buildManager Is Nothing Then Return Array.Empty(Of String)()
 
                 Dim activeConfig(0) As IVsProjectCfg
                 Dim activeConfig2 As IVsProjectCfg2
@@ -143,7 +143,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <returns></returns>
         ''' <remarks></remarks>
         Protected Overridable Function AssemblyFromProjectOutput(typeResolutionService As ComponentModel.Design.ITypeResolutionService, projectOutput As String) As System.Reflection.Assembly
-            If typeResolutionService Is Nothing Then Throw New ArgumentNullException("typeResolutionService")
+            If typeResolutionService Is Nothing Then Throw New ArgumentNullException(NameOf(typeResolutionService))
 
             If typeResolutionService IsNot Nothing Then
                 Try

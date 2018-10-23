@@ -116,10 +116,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
 
             Public Sub New(buffer As IVsTextLines, debugLockCheck As IDebugLockCheck)
                 If buffer Is Nothing Then
-                    Throw New ArgumentNullException("buffer")
+                    Throw New ArgumentNullException(NameOf(buffer))
                 End If
                 If debugLockCheck Is Nothing Then
-                    Throw New ArgumentNullException("debugLockCheck")
+                    Throw New ArgumentNullException(NameOf(debugLockCheck))
                 End If
 
                 _buffer = buffer
@@ -181,7 +181,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
 
             Public Sub New(vsTextLines As IVsTextLines, startLocation As Location, endLocation As Location, unescapedValue As String, definitionIncludesQuotes As Boolean)
                 If vsTextLines Is Nothing Then
-                    Throw New ArgumentNullException("vsTextLines")
+                    Throw New ArgumentNullException(NameOf(vsTextLines))
                 End If
                 If startLocation Is Nothing Then
                     Throw New ArgumentNullException("nodeStart")
@@ -316,7 +316,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
                 MyBase.New(vsTextLines, elementStart, elementEnd, unescapedValue:="")
 
                 If fullyQualifiedPropertyName Is Nothing Then
-                    Throw New ArgumentNullException("fullyQualifiedPropertyName")
+                    Throw New ArgumentNullException(NameOf(fullyQualifiedPropertyName))
                 End If
 
                 _fullyQualifiedPropertyName = fullyQualifiedPropertyName
@@ -363,7 +363,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
 
         Public Sub New(vsTextLines As IVsTextLines)
             If vsTextLines Is Nothing Then
-                Throw New ArgumentNullException("vsTextLines")
+                Throw New ArgumentNullException(NameOf(vsTextLines))
             End If
             _vsTextLines = vsTextLines
         End Sub
@@ -574,7 +574,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' <param name="line"></param>
         ''' <returns>The index on the line where the closing angle bracket is found, or -1 if not found.</returns>
         ''' <remarks></remarks>
-        Public Function FindClosingAngleBracketHelper(line As String) As Integer
+        Public Shared Function FindClosingAngleBracketHelper(line As String) As Integer
             Dim index As Integer = 0
 
             Const SingleQuote As Char = "'"c
@@ -1060,7 +1060,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' </summary>
         ''' <param name="location"></param>
         ''' <remarks></remarks>
-        Private Sub ThrowUnexpectedFormatException(location As Location)
+        Private Shared Sub ThrowUnexpectedFormatException(location As Location)
             Throw New XamlReadWriteException(
                 My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_WPFApp_Xaml_UnexpectedFormat_2Args,
                     CStr(location.LineIndex + 1), CStr(location.CharIndex + 1)))
