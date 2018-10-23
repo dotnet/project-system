@@ -78,8 +78,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
                             updatedDependency,
                             dependencyGraphNode,
                             out IEnumerable<DependencyNodeInfo> nodesToAdd,
-                            out IEnumerable<DependencyNodeInfo> nodesToRemove,
-                            out string dependencyProjectPath))
+                            out IEnumerable<DependencyNodeInfo> nodesToRemove))
             {
                 return false;
             }
@@ -128,11 +127,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
             IDependency updatedDependency,
             GraphNode dependencyGraphNode,
             out IEnumerable<DependencyNodeInfo> nodesToAdd,
-            out IEnumerable<DependencyNodeInfo> nodesToRemove,
-            out string dependencyProjectPath)
+            out IEnumerable<DependencyNodeInfo> nodesToRemove)
         {
-            dependencyProjectPath = projectPath;
-
             IEnumerable<DependencyNodeInfo> existingChildrenInfo = GetExistingChildren(dependencyGraphNode);
             IEnumerable<IDependency> updatedChildren = targetedSnapshot.GetDependencyChildren(updatedDependency)
                 ?? Enumerable.Empty<IDependency>();

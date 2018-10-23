@@ -38,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
 
         public override bool HasChildren(string projectPath, IDependency dependency)
         {
-            ITargetedDependenciesSnapshot targetedSnapshot = GetSnapshot(dependency, out string dependencyProjectPath);
+            ITargetedDependenciesSnapshot targetedSnapshot = GetSnapshot(dependency);
 
             return targetedSnapshot?.TopLevelDependencies.Count > 0;
         }
@@ -54,7 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
             dependencyGraphNode.SetValue(DependenciesGraphSchema.DependencyIdProperty, dependency.Id);
             dependencyGraphNode.SetValue(DependenciesGraphSchema.ResolvedProperty, dependency.Resolved);
 
-            ITargetedDependenciesSnapshot otherProjectTargetedSnapshot = GetSnapshot(dependency, out string dependencyProjectPath);
+            ITargetedDependenciesSnapshot otherProjectTargetedSnapshot = GetSnapshot(dependency);
             if (otherProjectTargetedSnapshot == null)
             {
                 return;
@@ -69,18 +69,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
 
                 Builder.AddGraphNode(
                     graphContext,
-                    dependencyProjectPath,
+                    dependency.FullPath,
                     dependencyGraphNode,
                     childDependency.ToViewModel(otherProjectTargetedSnapshot));
             }
         }
 
-        private ITargetedDependenciesSnapshot GetSnapshot(IDependency dependency, out string dependencyProjectPath)
+        private ITargetedDependenciesSnapshot GetSnapshot(IDependency dependency)
         {
-            dependencyProjectPath = dependency.FullPath;
-
             IDependenciesSnapshot snapshot =
-                AggregateSnapshotProvider.GetSnapshotProvider(dependencyProjectPath)?.CurrentSnapshot;
+                AggregateSnapshotProvider.GetSnapshotProvider(dependency.FullPath)?.CurrentSnapshot;
 
             if (snapshot == null)
             {
@@ -199,7 +197,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
             out IEnumerable<IDependency> updatedChildren,
             out string dependencyProjectPath)
         {
-            ITargetedDependenciesSnapshot snapshot = GetSnapshot(updatedDependency, out dependencyProjectPath);
+            ITargetedDependenciesSnapshot snapshot = GetSnapshot(updatedDependency);
             if (snapshot == null)
             {
                 nodesToAdd = Enumerable.Empty<DependencyNodeInfo>();
@@ -209,6 +207,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
                 return false;
             }
 
+            dependencyProjectPath = updatedDependency.FullPath;
             updatedChildren = snapshot.TopLevelDependencies;
             IEnumerable<DependencyNodeInfo> existingChildren = GetExistingChildren(dependencyGraphNode);
             IEnumerable<DependencyNodeInfo> updatedChildrenInfo = updatedChildren.Select(x => DependencyNodeInfo.FromDependency(x));
