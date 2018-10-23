@@ -61,12 +61,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         public void ExecCommand_MultipleStartupProjects_VerifyCorrectFrameworkSet(int cmdIndex, bool expected)
         {
             var frameworks1 = new List<string>() { "net461", "netcoreapp1.0" };
-            var activeDebugFrameworkSvcs1 = new IActiveDebugFrameworkServicesFactory()
+            var activeDebugFrameworkSvcs1 = new IActiveDebugFrameworkServicesMock()
                                                .ImplementGetActiveDebuggingFrameworkPropertyAsync(null)
                                                .ImplementGetProjectFrameworksAsync(frameworks1);
 
             var frameworks2 = new List<string>() { "net461", "netcoreapp1.0" };
-            var activeDebugFrameworkSvcs2 = new IActiveDebugFrameworkServicesFactory()
+            var activeDebugFrameworkSvcs2 = new IActiveDebugFrameworkServicesMock()
                                                .ImplementGetActiveDebuggingFrameworkPropertyAsync(null)
                                                .ImplementGetProjectFrameworksAsync(frameworks2);
             if (expected)
@@ -171,10 +171,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         [Fact]
         public void QueryStatus_MultipleStartupProjects_NullFrameworks()
         {
-            var activeDebugFrameworkSvcs1 = new IActiveDebugFrameworkServicesFactory()
+            var activeDebugFrameworkSvcs1 = new IActiveDebugFrameworkServicesMock()
                                                .ImplementGetProjectFrameworksAsync(null);
 
-            var activeDebugFrameworkSvcs2 = new IActiveDebugFrameworkServicesFactory()
+            var activeDebugFrameworkSvcs2 = new IActiveDebugFrameworkServicesMock()
                                               .ImplementGetProjectFrameworksAsync(null);
 
             var startupHelper = new Mock<IStartupProjectHelper>();
@@ -198,10 +198,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         [InlineData(true)]
         public void QueryStatus_MultipleStartupProjects_LessThan2Frameworks(bool createList)
         {
-            var activeDebugFrameworkSvcs1 = new IActiveDebugFrameworkServicesFactory()
+            var activeDebugFrameworkSvcs1 = new IActiveDebugFrameworkServicesMock()
                                                .ImplementGetProjectFrameworksAsync(createList ? new List<string>() { "netcoreapp1.0" } : null);
 
-            var activeDebugFrameworkSvcs2 = new IActiveDebugFrameworkServicesFactory()
+            var activeDebugFrameworkSvcs2 = new IActiveDebugFrameworkServicesMock()
                                               .ImplementGetProjectFrameworksAsync(createList ? new List<string>() { "netcoreapp1.0" } : null);
 
             var startupHelper = new Mock<IStartupProjectHelper>();
@@ -223,11 +223,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         [Fact]
         public void QueryStatus_MultipleStartupProjects_OrderDifferent()
         {
-            var activeDebugFrameworkSvcs1 = new IActiveDebugFrameworkServicesFactory()
+            var activeDebugFrameworkSvcs1 = new IActiveDebugFrameworkServicesMock()
                                                .ImplementGetActiveDebuggingFrameworkPropertyAsync("netcoreapp1.0")
                                                .ImplementGetProjectFrameworksAsync(new List<string>() { "net461", "netcoreapp1.0" });
 
-            var activeDebugFrameworkSvcs2 = new IActiveDebugFrameworkServicesFactory()
+            var activeDebugFrameworkSvcs2 = new IActiveDebugFrameworkServicesMock()
                                              .ImplementGetActiveDebuggingFrameworkPropertyAsync("netcoreapp1.0")
                                              .ImplementGetProjectFrameworksAsync(new List<string>() { "netcoreapp1.0", "net461" });
 
@@ -250,11 +250,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         [Fact]
         public void QueryStatus_MultipleStartupProjects_DifferentFrameworks()
         {
-            var activeDebugFrameworkSvcs1 = new IActiveDebugFrameworkServicesFactory()
+            var activeDebugFrameworkSvcs1 = new IActiveDebugFrameworkServicesMock()
                                               .ImplementGetActiveDebuggingFrameworkPropertyAsync("netcoreapp1.0")
                                               .ImplementGetProjectFrameworksAsync(new List<string>() { "net461", "netcoreapp1.0" });
 
-            var activeDebugFrameworkSvcs2 = new IActiveDebugFrameworkServicesFactory()
+            var activeDebugFrameworkSvcs2 = new IActiveDebugFrameworkServicesMock()
                                              .ImplementGetActiveDebuggingFrameworkPropertyAsync("netcoreapp1.0")
                                              .ImplementGetProjectFrameworksAsync(new List<string>() { "net45", "netcoreapp1.0" });
 
@@ -277,15 +277,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         [Fact]
         public void QueryStatus_MultipleStartupProjects_OneSingleFramework()
         {
-            var activeDebugFrameworkSvcs1 = new IActiveDebugFrameworkServicesFactory()
+            var activeDebugFrameworkSvcs1 = new IActiveDebugFrameworkServicesMock()
                                      .ImplementGetActiveDebuggingFrameworkPropertyAsync("netcoreapp1.0")
                                      .ImplementGetProjectFrameworksAsync(new List<string>() { "net461", "netcoreapp1.0" });
 
-            var activeDebugFrameworkSvcs2 = new IActiveDebugFrameworkServicesFactory()
+            var activeDebugFrameworkSvcs2 = new IActiveDebugFrameworkServicesMock()
                                              .ImplementGetActiveDebuggingFrameworkPropertyAsync("netcoreapp1.0")
                                              .ImplementGetProjectFrameworksAsync(new List<string>() { "net461", "netcoreapp1.0" });
 
-            var activeDebugFrameworkSvcs3 = new IActiveDebugFrameworkServicesFactory()
+            var activeDebugFrameworkSvcs3 = new IActiveDebugFrameworkServicesMock()
                                       .ImplementGetActiveDebuggingFrameworkPropertyAsync("netcoreapp1.0")
                                       .ImplementGetProjectFrameworksAsync(new List<string>() { "netcoreapp1.0" });
 
@@ -315,13 +315,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         {
             var frameworks1 = new List<string>() { "netcoreapp1.0", "net461", "net462" };
 
-            var activeDebugFrameworkSvcs1 = new IActiveDebugFrameworkServicesFactory()
+            var activeDebugFrameworkSvcs1 = new IActiveDebugFrameworkServicesMock()
                                                .ImplementGetProjectFrameworksAsync(frameworks1)
                                                .ImplementGetActiveDebuggingFrameworkPropertyAsync(activeFramework);
 
             var frameworks2 = new List<string>() { "netcoreapp1.0", "net461", "net462" };
 
-            var activeDebugFrameworkSvcs2 = new IActiveDebugFrameworkServicesFactory()
+            var activeDebugFrameworkSvcs2 = new IActiveDebugFrameworkServicesMock()
                                                .ImplementGetProjectFrameworksAsync(frameworks2)
                                                .ImplementGetActiveDebuggingFrameworkPropertyAsync(activeFramework);
 
