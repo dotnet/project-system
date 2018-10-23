@@ -36,8 +36,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         IDependenciesTreeServices
     {
         private readonly IDependencyTreeTelemetryService _treeTelemetryService;
-        private readonly object _treeUpdateLock = new object();
-        private Task _treeUpdateQueueTask = null;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DependenciesProjectTreeProvider"/> class.
@@ -45,28 +43,36 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         [ImportingConstructor]
         public DependenciesProjectTreeProvider(
             IProjectThreadingService threadingService,
-            UnconfiguredProject project,
+            UnconfiguredProject unconfiguredProject,
             IDependenciesSnapshotProvider dependenciesSnapshotProvider,
-            [Import(DependencySubscriptionsHost.DependencySubscriptionsHostContract)]
-            ICrossTargetSubscriptionsHost dependenciesHost,
-            [Import(ExportContractNames.Scopes.UnconfiguredProject)]IProjectAsynchronousTasksService tasksService,
+            [Import(DependencySubscriptionsHost.DependencySubscriptionsHostContract)] ICrossTargetSubscriptionsHost dependenciesHost,
+            [Import(ExportContractNames.Scopes.UnconfiguredProject)] IProjectAsynchronousTasksService tasksService,
             IDependencyTreeTelemetryService treeTelemetryService)
-            : base(threadingService, project)
+            : base(threadingService, unconfiguredProject)
         {
             ProjectTreePropertiesProviders = new OrderPrecedenceImportCollection<IProjectTreePropertiesProvider>(
                 ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesLast,
-                projectCapabilityCheckProvider: project);
+                projectCapabilityCheckProvider: unconfiguredProject);
 
             ViewProviders = new OrderPrecedenceImportCollection<IDependenciesTreeViewProvider>(
-                                    ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst,
-                                    projectCapabilityCheckProvider: project);
+                ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst,
+                projectCapabilityCheckProvider: unconfiguredProject);
 
             DependenciesSnapshotProvider = dependenciesSnapshotProvider;
             DependenciesHost = dependenciesHost;
             TasksService = tasksService;
             _treeTelemetryService = treeTelemetryService;
 
-            project.ProjectUnloading += OnUnconfiguredProjectUnloading;
+            // Hook this so we can unregister the snapshot change event when the project unloads
+            unconfiguredProject.ProjectUnloading += OnUnconfiguredProjectUnloading;
+
+            Task OnUnconfiguredProjectUnloading(object sender, EventArgs args)
+            {
+                UnconfiguredProject.ProjectUnloading -= OnUnconfiguredProjectUnloading;
+                DependenciesSnapshotProvider.SnapshotChanged -= OnDependenciesSnapshotChanged;
+
+                return Task.CompletedTask;
+            }
         }
 
         /// <summary>
@@ -96,10 +102,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// <remarks>
         /// This stub defined for code contracts.
         /// </remarks>
-        IReceivableSourceBlock<IProjectVersionedValue<IProjectTreeSnapshot>> IProjectTreeProvider.Tree
-        {
-            get { return Tree; }
-        }
+        IReceivableSourceBlock<IProjectVersionedValue<IProjectTreeSnapshot>> IProjectTreeProvider.Tree 
+            => Tree;
 
         /// <summary>
         /// Gets a value indicating whether a given set of nodes can be copied or moved underneath some given node.
@@ -148,13 +152,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 return false;
             }
 
-            bool canRemove = true;
             foreach (IProjectTree node in nodes)
             {
                 if (!node.Flags.Contains(DependencyTreeFlags.SupportsRemove))
                 {
-                    canRemove = false;
-                    break;
+                    return false;
                 }
 
                 string filePath = UnconfiguredProject.GetRelativePath(node.FilePath);
@@ -166,12 +168,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 IDependency dependency = snapshot.FindDependency(filePath, topLevel: true);
                 if (dependency == null || dependency.Implicit)
                 {
-                    canRemove = false;
-                    break;
+                    return false;
                 }
             }
 
-            return canRemove;
+            return true;
         }
 
         /// <summary>
@@ -211,10 +212,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 // Handle the removal of normal reference Item Nodes (this excludes any shared import nodes).
                 foreach (IProjectTree node in referenceItemNodes)
                 {
-                    if (node.BrowseObjectProperties == null || node.BrowseObjectProperties.Context == null)
+                    if (node.BrowseObjectProperties?.Context == null)
                     {
                         // if node does not have an IRule with valid ProjectPropertiesContext we can not 
-                        // get it's itemsSpec. If nodes provided by custom IProjectDependenciesSubTreeProvider
+                        // get its itemsSpec. If nodes provided by custom IProjectDependenciesSubTreeProvider
                         // implementation, and have some custom IRule without context, it is not a problem,
                         // since they would not have DependencyNode.GenericDependencyFlags and we would not 
                         // end up here, since CanRemove would return false and Remove command would not show 
@@ -263,7 +264,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     // imports the project file whose full path matches the specified one.
                     IEnumerable<ResolvedImport> matchingImports = from import in project.Imports
                                                                   where import.ImportingElement.ContainingProject == projectXml
-                                                                  where PathHelper.IsSamePath(import.ImportedProject.FullPath, sharedFilePath)
+                                                                     && PathHelper.IsSamePath(import.ImportedProject.FullPath, sharedFilePath)
                                                                   select import;
                     foreach (ResolvedImport importToRemove in matchingImports)
                     {
@@ -325,71 +326,83 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
                         lock (SyncObject)
                         {
+                            Verify.NotDisposed(this);
+
+                            // Issue this token before hooking the SnapshotChanged event to prevent a race
+                            // where a snapshot tree is replaced by the initial, empty tree created below.
+                            // The handler will cancel this token before submitting its update.
+                            CancellationToken initialTreeCancellationToken = GetNextTreeUpdateCancellationToken();
+
                             DependenciesSnapshotProvider.SnapshotChanged += OnDependenciesSnapshotChanged;
 
-                            Verify.NotDisposed(this);
                             Task<IProjectVersionedValue<IProjectTreeSnapshot>> nowait = SubmitTreeUpdateAsync(
                                 (treeSnapshot, configuredProjectExports, cancellationToken) =>
                                 {
-                                    IProjectTree dependenciesNode = CreateDependenciesFolder(null);
+                                    IProjectTree dependenciesNode = CreateDependenciesFolder();
 
                                     // TODO create providers nodes that can be visible when empty
                                     //dependenciesNode = CreateOrUpdateSubTreeProviderNodes(dependenciesNode, 
                                     //                                                      cancellationToken);
 
-                                    return Task.FromResult(new TreeUpdateResult(dependenciesNode, true));
-                                });
+                                    return Task.FromResult(new TreeUpdateResult(dependenciesNode, lazyFill: true));
+                                },
+                                initialTreeCancellationToken);
                         }
 
                     },
                     registerFaultHandler: true);
             }
-        }
 
-        private Task OnUnconfiguredProjectUnloading(object sender, EventArgs args)
-        {
-            UnconfiguredProject.ProjectUnloading -= OnUnconfiguredProjectUnloading;
-            DependenciesSnapshotProvider.SnapshotChanged -= OnDependenciesSnapshotChanged;
+            IProjectTree CreateDependenciesFolder()
+            {
+                var values = new ReferencesProjectTreeCustomizablePropertyValues
+                {
+                    Caption = VSResources.DependenciesNodeName,
+                    Icon = ManagedImageMonikers.ReferenceGroup.ToProjectSystemType(),
+                    ExpandedIcon = ManagedImageMonikers.ReferenceGroup.ToProjectSystemType(),
+                    Flags = DependencyTreeFlags.DependenciesRootNodeFlags
+                };
 
-            return Task.CompletedTask;
+                // Allow property providers to perform customization
+                foreach (IProjectTreePropertiesProvider provider in ProjectTreePropertiesProviders.ExtensionValues())
+                {
+                    provider.CalculatePropertyValues(null, values);
+                }
+
+                // Note that all the parameters are specified so we can force this call to an
+                // overload of NewTree available prior to 15.5 versions of CPS. Once a 15.5 build
+                // is publicly available we can move this to an overload with default values for
+                // most of the parameters, and we'll only need to pass the interesting ones.
+                return NewTree(
+                    caption: values.Caption,
+                    filePath: null,
+                    browseObjectProperties: null,
+                    icon: values.Icon,
+                    expandedIcon: values.ExpandedIcon,
+                    visible: true,
+                    flags: values.Flags);
+            }
         }
 
         private void OnDependenciesSnapshotChanged(object sender, SnapshotChangedEventArgs e)
         {
             IDependenciesSnapshot snapshot = e.Snapshot;
+
             if (snapshot == null)
             {
                 return;
             }
 
-            lock (_treeUpdateLock)
+            if (TasksService.UnloadCancellationToken.IsCancellationRequested)
             {
-                if (_treeUpdateQueueTask == null || _treeUpdateQueueTask.IsCompleted)
-                {
-                    _treeUpdateQueueTask = ThreadingService.JoinableTaskFactory.RunAsync(async () =>
-                    {
-                        if (TasksService.UnloadCancellationToken.IsCancellationRequested)
-                        {
-                            return;
-                        }
-
-                        await BuildTreeForSnapshotAsync(snapshot);
-                    }).Task;
-                }
-                else
-                {
-                    _treeUpdateQueueTask = _treeUpdateQueueTask.ContinueWith(
-                        t => BuildTreeForSnapshotAsync(snapshot), TaskScheduler.Default);
-                }
+                return;
             }
-        }
 
-        private Task BuildTreeForSnapshotAsync(IDependenciesSnapshot snapshot)
-        {
             Lazy<IDependenciesTreeViewProvider, IOrderPrecedenceMetadataView> viewProvider = ViewProviders.FirstOrDefault();
+
             if (viewProvider == null)
             {
-                return Task.CompletedTask;
+                return;
             }
 
             Task<IProjectVersionedValue<IProjectTreeSnapshot>> nowait = SubmitTreeUpdateAsync(
@@ -405,81 +418,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
                     // TODO We still are getting mismatched data sources and need to figure out better 
                     // way of merging, mute them for now and get to it in U1
-                    return new TreeUpdateResult(dependenciesNode, false, null);
-                });
-
-            return Task.CompletedTask;
-        }
-
-        /// <summary>
-        /// Creates the loading References folder node.
-        /// </summary>
-        /// <returns>a new "Dependencies" tree node.</returns>
-        private IProjectTree CreateDependenciesFolder(IProjectTree oldNode)
-        {
-            if (oldNode == null)
-            {
-                var values = new ReferencesProjectTreeCustomizablePropertyValues
-                {
-                    Caption = VSResources.DependenciesNodeName,
-                    Icon = ManagedImageMonikers.ReferenceGroup.ToProjectSystemType(),
-                    ExpandedIcon = ManagedImageMonikers.ReferenceGroup.ToProjectSystemType(),
-                    Flags = DependencyTreeFlags.DependenciesRootNodeFlags
-                };
-
-                ApplyProjectTreePropertiesCustomization(null, values);
-
-                // Note that all the parameters are specified so we can force this call to an
-                // overload of NewTree available prior to 15.5 versions of CPS. Once a 15.5 build
-                // is publicly available we can move this to an overload with default values for
-                // most of the parameters, and we'll only need to pass the interesting ones.
-                return NewTree(
-                         caption: values.Caption,
-                         filePath: null,
-                         browseObjectProperties: null,
-                         icon: values.Icon,
-                         expandedIcon: values.ExpandedIcon,
-                         visible: true,
-                         flags: values.Flags);
-            }
-            else
-            {
-                return oldNode;
-            }
-        }
-
-        private async Task<IImmutableDictionary<string, IPropertyPagesCatalog>> GetNamedCatalogsAsync(IProjectCatalogSnapshot catalogs)
-        {
-            if (catalogs != null)
-            {
-                return catalogs.NamedCatalogs;
-            }
-
-            if (NamedCatalogs != null)
-            {
-                return NamedCatalogs;
-            }
-
-
-            // Note: it is unlikely that we end up here, however for cases when node providers
-            // getting their node data not from Design time build events, we might have OnDependenciesChanged
-            // event coming before initial design time build event updates NamedCatalogs in this class.
-            // Thus, just in case, explicitly request it here (GetCatalogsAsync will acquire a project read lock)
-            NamedCatalogs = await ActiveConfiguredProject.Services
-                                                         .PropertyPagesCatalog
-                                                         .GetCatalogsAsync(CancellationToken.None);
-
-            return NamedCatalogs;
-        }
-
-        private void ApplyProjectTreePropertiesCustomization(
-                        IProjectTreeCustomizablePropertyContext context,
-                        ReferencesProjectTreeCustomizablePropertyValues values)
-        {
-            foreach (IProjectTreePropertiesProvider provider in ProjectTreePropertiesProviders.ExtensionValues())
-            {
-                provider.CalculatePropertyValues(context, values);
-            }
+                    return new TreeUpdateResult(dependenciesNode, lazyFill: false);
+                },
+                GetNextTreeUpdateCancellationToken());
         }
 
         /// <summary>
@@ -544,18 +485,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             Requires.NotNull(dependency, nameof(dependency));
 
-            ConfiguredProject project = null;
-            if (dependency.TargetFramework.Equals(TargetFramework.Any))
-            {
-                project = ActiveConfiguredProject;
-            }
-            else
-            {
-                project = await DependenciesHost.GetConfiguredProject(dependency.TargetFramework) ?? ActiveConfiguredProject;
-            }
+            ConfiguredProject project = dependency.TargetFramework.Equals(TargetFramework.Any)
+                ? ActiveConfiguredProject
+                : await DependenciesHost.GetConfiguredProject(dependency.TargetFramework) ?? ActiveConfiguredProject;
 
             ConfiguredProjectExports configuredProjectExports = GetActiveConfiguredProjectExports(project);
-            IImmutableDictionary<string, IPropertyPagesCatalog> namedCatalogs = await GetNamedCatalogsAsync(catalogs);
+            IImmutableDictionary<string, IPropertyPagesCatalog> namedCatalogs = await GetNamedCatalogsAsync();
             Requires.NotNull(namedCatalogs, nameof(namedCatalogs));
 
             IPropertyPagesCatalog browseObjectsCatalog = namedCatalogs[PropertyPageContexts.BrowseObject];
@@ -565,35 +500,91 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 itemType: dependency.SchemaItemType,
                 itemName: itemSpec);
 
-            IRule rule = null;
-            if (schema != null)
-            {
-                if (dependency.Resolved)
-                {
-                    rule = configuredProjectExports.RuleFactory.CreateResolvedReferencePageRule(
-                                schema,
-                                context,
-                                dependency.Name,
-                                dependency.Properties);
-                }
-                else
-                {
-                    rule = browseObjectsCatalog.BindToContext(schema.Name, context);
-                }
-            }
-            else
+            if (schema == null)
             {
                 // Since we have no browse object, we still need to create *something* so
                 // that standard property pages can pop up.
                 Rule emptyRule = RuleExtensions.SynthesizeEmptyRule(context.ItemType);
                 return configuredProjectExports.PropertyPagesDataModelProvider.GetRule(
-                            emptyRule,
-                            context.File,
-                            context.ItemType,
-                            context.ItemName);
+                    emptyRule,
+                    context.File,
+                    context.ItemType,
+                    context.ItemName);
             }
 
-            return rule;
+            if (dependency.Resolved)
+            {
+                return configuredProjectExports.RuleFactory.CreateResolvedReferencePageRule(
+                    schema,
+                    context,
+                    dependency.Name,
+                    dependency.Properties);
+            }
+
+            return browseObjectsCatalog.BindToContext(schema.Name, context);
+
+            async Task<IImmutableDictionary<string, IPropertyPagesCatalog>> GetNamedCatalogsAsync()
+            {
+                if (catalogs != null)
+                {
+                    return catalogs.NamedCatalogs;
+                }
+
+                if (NamedCatalogs == null)
+                {
+                    // Note: it is unlikely that we end up here, however for cases when node providers
+                    // getting their node data not from Design time build events, we might have OnDependenciesChanged
+                    // event coming before initial design time build event updates NamedCatalogs in this class.
+                    // Thus, just in case, explicitly request it here (GetCatalogsAsync will acquire a project read lock)
+                    NamedCatalogs = await ActiveConfiguredProject.Services
+                        .PropertyPagesCatalog
+                        .GetCatalogsAsync(CancellationToken.None);
+                }
+
+                return NamedCatalogs;
+            }
+        }
+
+        #endregion
+
+        #region Tree update cancellation
+
+        private CancellationTokenSource _treeUpdateCancellationTokenSource = new CancellationTokenSource();
+
+        private CancellationToken GetNextTreeUpdateCancellationToken()
+        {
+#pragma warning disable CA2000 // Dispose objects before losing scope
+            // We can suppress this warning because nextSource will be
+            // assigned to a field before the method returns, and will
+            // later be disposed once it becomes priorSource.
+            var nextSource = new CancellationTokenSource();
+#pragma warning restore CA2000 // Dispose objects before losing scope
+
+            CancellationToken nextToken = nextSource.Token;
+            CancellationTokenSource priorSource = Volatile.Read(ref _treeUpdateCancellationTokenSource);
+
+            // Loop until we succeed in swapping a known prior for our next.
+            // This ensures a proper sequence is observed, which is important
+            // as otherwise we may cancel a prior twice, which would coincide
+            // with a prior not being cancelled at all. We need a strict order
+            // to maintain one-in-one-out.
+            while (true)
+            {
+                CancellationTokenSource snapshot = Interlocked.CompareExchange(
+                    ref _treeUpdateCancellationTokenSource, nextSource, priorSource);
+
+                if (ReferenceEquals(snapshot, priorSource))
+                {
+                    break;
+                }
+
+                priorSource = snapshot;
+            }
+
+            priorSource.Cancel();
+            priorSource.Dispose();
+
+            return nextToken;
         }
 
         #endregion

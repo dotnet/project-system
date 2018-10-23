@@ -141,7 +141,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 return null;
             }
 
-            IProjectTree dependenciesNode = null;
+            IProjectTree dependenciesNode;
             if (root.Flags.Contains(DependencyTreeFlags.DependenciesRootNodeFlags))
             {
                 dependenciesNode = root;
@@ -424,11 +424,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     caption: viewModel.Caption,
                     itemContext: itemContext,
                     propertySheet: null,
-                    visible: true,
                     browseObjectProperties: rule,
-                    flags: flags,
                     icon: viewModel.Icon.ToProjectSystemType(),
-                    expandedIcon: viewModel.ExpandedIcon.ToProjectSystemType());
+                    expandedIcon: viewModel.ExpandedIcon.ToProjectSystemType(),
+                    visible: true,
+                    flags: flags);
             }
             else
             {

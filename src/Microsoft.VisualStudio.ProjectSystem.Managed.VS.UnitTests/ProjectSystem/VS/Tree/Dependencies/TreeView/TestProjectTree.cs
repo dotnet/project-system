@@ -23,19 +23,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
         private void GetChildrenTestStats(StringBuilder builder)
         {
-            builder.AppendLine(GetStats(this));
+            builder.AppendLine(GetStats());
             foreach (var child in _children)
             {
                 child.GetChildrenTestStats(builder);
             }
         }
 
-        private string GetStats(IProjectTree node)
+        private string GetStats()
         {
             var stats = $"Caption={Caption}, FilePath={FilePath}, IconHash={Icon.GetHashCode()}, ExpandedIconHash={ExpandedIcon.GetHashCode()}, Rule={BrowseObjectProperties?.Name ?? ""}, IsProjectItem={IsProjectItem}, CustomTag={CustomTag}";
             if (Flags.Contains(ProjectTreeFlags.Common.BubbleUp))
             {
-                stats += $", BubbleUpFlag=True";
+                stats += ", BubbleUpFlag=True";
             }
 
             return stats;

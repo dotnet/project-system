@@ -69,21 +69,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             public bool ExistsOnDisk { get; set; }
 
-            public bool IsFolder
-            {
-                get
-                {
-                    return false;
-                }
-            }
+            public bool IsFolder => false;
 
-            public bool IsNonFileSystemProjectItem
-            {
-                get
-                {
-                    return true;
-                }
-            }
+            public bool IsNonFileSystemProjectItem => true;
 
             public IImmutableDictionary<string, string> ProjectTreeSettings { get; set; }
         }

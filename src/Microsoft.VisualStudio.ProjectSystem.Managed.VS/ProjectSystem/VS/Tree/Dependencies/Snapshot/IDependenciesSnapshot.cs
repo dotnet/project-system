@@ -8,7 +8,7 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
     /// <summary>
-    /// Immutable snapshot containing all dependencies for all project's target frameworks.
+    /// Immutable snapshot containing all dependencies for all of a project's target frameworks.
     /// </summary>
     internal interface IDependenciesSnapshot : IEquatable<IDependenciesSnapshot>
     {

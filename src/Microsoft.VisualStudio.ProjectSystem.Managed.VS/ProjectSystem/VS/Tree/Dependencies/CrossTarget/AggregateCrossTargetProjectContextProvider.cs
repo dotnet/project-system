@@ -159,15 +159,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         {
             lock (_gate)
             {
-                if (_configuredProjectContextsMap.TryGetValue(configuredProject, out targetedProjectContext))
-                {
-                    return true;
-                }
-                else
-                {
-                    targetedProjectContext = null;
-                    return false;
-                }
+                return _configuredProjectContextsMap.TryGetValue(configuredProject, out targetedProjectContext);
             }
         }
 

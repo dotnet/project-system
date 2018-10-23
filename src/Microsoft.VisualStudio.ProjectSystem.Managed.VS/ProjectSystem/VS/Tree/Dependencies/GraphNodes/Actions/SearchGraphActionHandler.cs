@@ -74,10 +74,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
                     continue;
                 }
 
-                searchResultsPerContext[snapshotProvider.ProjectFilePath] = SearchFlat(snapshotProvider.ProjectFilePath,
-                                                                                     searchTerm.ToLowerInvariant(),
-                                                                                     graphContext,
-                                                                                     snapshot);
+                searchResultsPerContext[snapshotProvider.ProjectFilePath] = SearchFlat(
+                    searchTerm.ToLowerInvariant(),
+                    snapshot);
             }
 
             foreach (IDependenciesSnapshotProvider snapshotProvider in snapshotProviders)
@@ -146,7 +145,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
 
                             graphContext.Graph.Links.GetOrCreate(topLevelNode,
                                                                  matchedDependencyNode,
-                                                                 null /*label*/,
+                                                                 label: null,
                                                                  GraphCommonSchema.Contains);
                         }
 
@@ -169,11 +168,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
         /// <summary>
         /// Does flat search among dependency world lists to find any dependencies that match search criteria.
         /// </summary>
-        private static HashSet<IDependency> SearchFlat(
-            string projectPath,
-            string searchTerm,
-            IGraphContext graphContext,
-            IDependenciesSnapshot dependenciesSnapshot)
+        private static HashSet<IDependency> SearchFlat(string searchTerm, IDependenciesSnapshot dependenciesSnapshot)
         {
             var matchedDependencies = new HashSet<IDependency>();
             foreach (ITargetedDependenciesSnapshot targetedSnapshot in dependenciesSnapshot.Targets.Values)
@@ -190,7 +185,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
             return matchedDependencies;
         }
 
-        private HashSet<IDependency> GetMatchingResultsForDependency(
+        private static HashSet<IDependency> GetMatchingResultsForDependency(
             IDependency rootDependency,
             ITargetedDependenciesSnapshot snapshot,
             HashSet<IDependency> flatMatchingDependencies,

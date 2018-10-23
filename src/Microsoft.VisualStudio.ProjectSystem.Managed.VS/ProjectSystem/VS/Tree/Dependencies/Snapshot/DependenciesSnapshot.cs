@@ -144,12 +144,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
         public bool Equals(IDependenciesSnapshot other)
         {
-            if (other != null && other.ProjectPath.Equals(ProjectPath, StringComparison.OrdinalIgnoreCase))
-            {
-                return true;
-            }
-
-            return false;
+            return other != null && other.ProjectPath.Equals(ProjectPath, StringComparison.OrdinalIgnoreCase);
         }
 
         public static DependenciesSnapshot CreateEmpty(string projectPath)
