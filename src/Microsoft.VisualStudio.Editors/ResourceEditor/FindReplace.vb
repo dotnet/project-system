@@ -413,7 +413,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="Flag">The option we want to know.</param>
         ''' <returns>Value of the option, TRUE or FALSE.</returns>
         ''' <remarks></remarks>
-        Private Function CheckFindOption(grfOptions As UInteger, Flag As __VSFINDOPTIONS) As Boolean
+        Private Shared Function CheckFindOption(grfOptions As UInteger, Flag As __VSFINDOPTIONS) As Boolean
             Return (CType(grfOptions, __VSFINDOPTIONS) And Flag) <> 0
         End Function
 
@@ -429,7 +429,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' This returns True for resources which are displayed in a listview, because there is no easy way to 
         '''   highlight separate parts of the resource.
         ''' </remarks>
-        Private Function ResourceIsSearchedAsSingleUnit(Resource As Resource) As Boolean
+        Private Shared Function ResourceIsSearchedAsSingleUnit(Resource As Resource) As Boolean
             Return Not Resource.ResourceTypeEditor.DisplayInStringTable()
         End Function
 
@@ -490,7 +490,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="Helper">The IVsFindHelper from VisualStudio</param>
         ''' <returns>TRUE if a match was found; otherwise, FALSE.</returns>
         ''' <remarks></remarks>
-        Private Function IsMatch(SearchPattern As String, SearchText As String,
+        Private Shared Function IsMatch(SearchPattern As String, SearchText As String,
                                     Helper As IVsFindHelper, grfFindOptions As UInteger) As Boolean
             If String.IsNullOrEmpty(SearchText) Then
                 Return False

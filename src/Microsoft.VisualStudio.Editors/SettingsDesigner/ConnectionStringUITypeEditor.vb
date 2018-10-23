@@ -177,7 +177,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="ConnectionString"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function ContainsSensitiveData(ProviderManager As IVsDataProviderManager, DataProvider As Guid, ConnectionString As String) As Boolean
+        Private Shared Function ContainsSensitiveData(ProviderManager As IVsDataProviderManager, DataProvider As Guid, ConnectionString As String) As Boolean
             If ConnectionString = "" Then
                 Return False
             End If
@@ -199,7 +199,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="ConnectionString"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function ContainsSensitiveData(ServiceProvider As IServiceProvider, DataProvider As Guid, ConnectionString As String) As Boolean
+        Private Shared Function ContainsSensitiveData(ServiceProvider As IServiceProvider, DataProvider As Guid, ConnectionString As String) As Boolean
             Dim providerManager As IVsDataProviderManager = DirectCast(ServiceProvider.GetService(GetType(IVsDataProviderManager)), IVsDataProviderManager)
             If providerManager IsNot Nothing Then
                 Return ContainsSensitiveData(providerManager, DataProvider, ConnectionString)
@@ -262,7 +262,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="ConnectionString"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function GetConnectionStringProperties(ProviderManager As IVsDataProviderManager, ProviderGUID As Guid, ConnectionString As String) As IVsDataConnectionProperties
+        Private Shared Function GetConnectionStringProperties(ProviderManager As IVsDataProviderManager, ProviderGUID As Guid, ConnectionString As String) As IVsDataConnectionProperties
             Dim provider As IVsDataProvider = Nothing
             If ProviderManager.Providers.ContainsKey(ProviderGUID) Then
                 provider = ProviderManager.Providers(ProviderGUID)
@@ -281,7 +281,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="ConnectionProperties"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function ContainsSensitiveData(ConnectionProperties As IVsDataConnectionProperties) As Boolean
+        Private Shared Function ContainsSensitiveData(ConnectionProperties As IVsDataConnectionProperties) As Boolean
             If ConnectionProperties Is Nothing Then
                 Debug.Fail("We can't tell if it contains sensitive data if we didn't get a bag of properties!")
                 Throw New ArgumentNullException()

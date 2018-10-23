@@ -59,13 +59,11 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             End Get
         End Property
 
-        Private ReadOnly Property UseVisualStyles() As Boolean
+        Private Shared ReadOnly Property UseVisualStyles() As Boolean
             Get
                 Return VisualStyleRenderer.IsSupported
             End Get
         End Property
-
-
 
     End Class
 End Namespace

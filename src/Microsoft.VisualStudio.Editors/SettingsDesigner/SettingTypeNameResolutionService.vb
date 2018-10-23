@@ -116,7 +116,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="typeName"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function PersistedSettingTypeNameToFxTypeName(typeName As String) As String
+        Public Shared Function PersistedSettingTypeNameToFxTypeName(typeName As String) As String
             If String.Equals(typeName, SettingsSerializer.CultureInvariantVirtualTypeNameConnectionString, StringComparison.Ordinal) Then
                 Return GetType(String).FullName
             ElseIf String.Equals(typeName, SettingsSerializer.CultureInvariantVirtualTypeNameWebReference, StringComparison.Ordinal) Then

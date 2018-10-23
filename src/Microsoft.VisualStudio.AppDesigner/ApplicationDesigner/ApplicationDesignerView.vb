@@ -935,7 +935,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="BrowseObject"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function GetPageGuids(BrowseObject As Object) As Guid()
+        Private Shared Function GetPageGuids(BrowseObject As Object) As Guid()
             If TypeOf BrowseObject Is IVsSpecifyProjectDesignerPages Then
                 Dim CauuidPages() As OleInterop.CAUUID = New OleInterop.CAUUID(1) {}
                 Try

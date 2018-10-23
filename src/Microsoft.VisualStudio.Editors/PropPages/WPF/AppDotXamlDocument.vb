@@ -574,7 +574,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' <param name="line"></param>
         ''' <returns>The index on the line where the closing angle bracket is found, or -1 if not found.</returns>
         ''' <remarks></remarks>
-        Public Function FindClosingAngleBracketHelper(line As String) As Integer
+        Public Shared Function FindClosingAngleBracketHelper(line As String) As Integer
             Dim index As Integer = 0
 
             Const SingleQuote As Char = "'"c
@@ -1060,7 +1060,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' </summary>
         ''' <param name="location"></param>
         ''' <remarks></remarks>
-        Private Sub ThrowUnexpectedFormatException(location As Location)
+        Private Shared Sub ThrowUnexpectedFormatException(location As Location)
             Throw New XamlReadWriteException(
                 My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_WPFApp_Xaml_UnexpectedFormat_2Args,
                     CStr(location.LineIndex + 1), CStr(location.CharIndex + 1)))

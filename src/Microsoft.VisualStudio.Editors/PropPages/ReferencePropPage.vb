@@ -519,7 +519,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="webRef"></param>
         ''' <return></return>
         ''' <remarks></remarks>
-        Private Function IsWebReferenceItem(webRef As EnvDTE.ProjectItem) As Boolean
+        Private Shared Function IsWebReferenceItem(webRef As EnvDTE.ProjectItem) As Boolean
             Dim webRefProperty As EnvDTE.Property = Nothing
             Dim properties As EnvDTE.Properties = webRef.Properties
             If properties IsNot Nothing Then
@@ -614,7 +614,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End Sub
         End Class
 
-        Private Function NamespaceIsReferenceableFromCompilation([namespace] As INamespaceSymbol, compilation As Compilation) As Boolean
+        Private Shared Function NamespaceIsReferenceableFromCompilation([namespace] As INamespaceSymbol, compilation As Compilation) As Boolean
             For Each typeMember In [namespace].GetTypeMembers()
                 If typeMember.CanBeReferencedByName Then
                     If typeMember.DeclaredAccessibility = CodeAnalysis.Accessibility.Public Then

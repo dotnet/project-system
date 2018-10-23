@@ -187,7 +187,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="DirectoryPath">The directory path to normalize</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function NormalizeDirectoryPath(DirectoryPath As String) As String
+        Private Shared Function NormalizeDirectoryPath(DirectoryPath As String) As String
             Debug.Assert(DirectoryPath <> "")
             DirectoryPath = GetFullPathTolerant(DirectoryPath)
             DirectoryPath = DirectoryPath.ToUpperInvariant()
@@ -368,7 +368,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' <param name="FileNameOnly">The file (no path) to normalize</param>
             ''' <returns></returns>
             ''' <remarks></remarks>
-            Private Function NormalizeFileName(FileNameOnly As String) As String
+            Private Shared Function NormalizeFileName(FileNameOnly As String) As String
                 Debug.Assert(Path.GetDirectoryName(FileNameOnly) = "" AndAlso Not Path.IsPathRooted(FileNameOnly),
                     "DirectoryWatcher does not accept paths with the filename - should be relative to the directory path in DirectoryWatcher")
                 Debug.Assert(Path.GetFileName(FileNameOnly) = FileNameOnly)

@@ -652,7 +652,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 ''' <param name="Object">The object to serialize</param>
                 ''' <returns>The binary serialized object.</returns>
                 ''' <remarks></remarks>
-                Private Function SerializeObject([Object] As Object) As Byte()
+                Private Shared Function SerializeObject([Object] As Object) As Byte()
                     Dim MemoryStream As New MemoryStream
                     Call (New BinaryFormatter).Serialize(MemoryStream, [Object])
                     Return MemoryStream.ToArray()

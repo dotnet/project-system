@@ -293,7 +293,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         ''' Disposes all objects in the given global object collection.
         ''' </summary>
         ''' <param name="col">collection of global-objects to dispose</param>
-        Private Sub DisposeGlobalObjects(col As GlobalObjectCollection)
+        Private Shared Sub DisposeGlobalObjects(col As GlobalObjectCollection)
 
             Debug.Assert(col IsNot Nothing, "don't call this with a null collection")
 
@@ -1025,7 +1025,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         ''' <param name="cFiles"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function GetCorrespondingProjects(rgpProjects() As IVsProject, rgFirstIndices() As Integer, cFiles As Integer) As IVsHierarchy()
+        Private Shared Function GetCorrespondingProjects(rgpProjects() As IVsProject, rgFirstIndices() As Integer, cFiles As Integer) As IVsHierarchy()
             ' We trust that someone has already checked these parameters, so we only ASSERT if something looks
             ' bogus....
             Debug.Assert(rgpProjects IsNot Nothing, "NULL rgpProjects passed in - this is a bug the SettingsGlobalObject!")
@@ -1975,7 +1975,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         '/     can't support.  For example, virtual types can't support
         '/     private members, so we remove them here.
         '/ </devdoc>
-        Private Sub ScrubCompileUnit(ccu As CodeCompileUnit)
+        Private Shared Sub ScrubCompileUnit(ccu As CodeCompileUnit)
 
             Dim allowed As MemberAttributes = SettingsSingleFileGeneratorBase.SettingsPropertyVisibility
 

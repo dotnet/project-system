@@ -994,7 +994,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <param name="controls"></param>
         ''' <remarks></remarks>
-        Private Sub SetControlsReadOnly(controls() As Control)
+        Private Shared Sub SetControlsReadOnly(controls() As Control)
             If controls IsNot Nothing Then
                 For Each control As Control In controls
                     If TypeOf control Is TextBoxBase Then
@@ -1013,7 +1013,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="Controls">The controls to hide.  May be Nothing or empty.</param>
         ''' <param name="Hide">If True, the controls are hidden, else they're disabled</param>
         ''' <remarks></remarks>
-        Protected Sub HideOrDisableControls(Controls() As Control, Hide As Boolean)
+        Protected Shared Sub HideOrDisableControls(Controls() As Control, Hide As Boolean)
             If Controls IsNot Nothing Then
                 For Each Control As Control In Controls
                     If Hide Then

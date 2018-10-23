@@ -184,7 +184,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         '''  Adds common menu commands owned by BaseRootDesigner.
         ''' </summary>
         ''' <remarks>Not currently used since we don't have any common menu commands yet.</remarks>
-        Private Sub AddCommonMenuCommands()
+        Private Shared Sub AddCommonMenuCommands()
         End Sub
 
         ' All the menu commands this designer exposes. Use MenuCommands to access this.

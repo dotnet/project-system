@@ -307,7 +307,7 @@ Namespace Microsoft.VisualStudio.Editors
         ''' <param name="hierarchy"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function ProjectGUID(hierarchy As IVsHierarchy) As Guid
+        Public Shared Function ProjectGUID(hierarchy As IVsHierarchy) As Guid
             Dim projGuid As Guid = Guid.Empty
             Try
                 If hierarchy IsNot Nothing Then

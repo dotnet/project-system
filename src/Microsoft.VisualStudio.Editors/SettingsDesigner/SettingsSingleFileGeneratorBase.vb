@@ -338,7 +338,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="GenerateProgress"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function DeserializeSettings(InputString As String, GenerateProgress As IVsGeneratorProgress) As DesignTimeSettings
+        Private Shared Function DeserializeSettings(InputString As String, GenerateProgress As IVsGeneratorProgress) As DesignTimeSettings
             Dim Settings As New DesignTimeSettings()
             If InputString <> "" Then
                 ' We actually have some contents to deserialize.... 

@@ -352,7 +352,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 
             Private Const Const_Configuration As String = "{Configuration}"
 
-            Private Sub SetProperty(component As Component, PropertyName As String, Value As Object)
+            Private Shared Sub SetProperty(component As Component, PropertyName As String, Value As Object)
                 Dim View As PropPageDesignerView
 
                 If TypeOf component Is PropPageDesignerRootComponent Then
@@ -574,7 +574,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 ''' <param name="Object">The object to serialize</param>
                 ''' <returns>The binary serialized object.</returns>
                 ''' <remarks></remarks>
-                Private Function SerializeObject([Object] As Object) As Byte()
+                Private Shared Function SerializeObject([Object] As Object) As Byte()
                     Dim MemoryStream As New MemoryStream
                     Call (New BinaryFormatter).Serialize(MemoryStream, [Object])
                     Return MemoryStream.ToArray()

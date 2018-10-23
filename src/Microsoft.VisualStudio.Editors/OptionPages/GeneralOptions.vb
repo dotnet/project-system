@@ -95,7 +95,7 @@ Namespace Microsoft.VisualStudio.Editors.OptionPages
         ''' Uses VS setup API, to determine if current VS instance came from Preview channel or not.
         ''' </summary>
         ''' <returns></returns>
-        Private Function IsPreview() As Boolean
+        Private Shared Function IsPreview() As Boolean
             Dim vsSetupConfig = New SetupConfiguration()
             Dim setupInstance = vsSetupConfig.GetInstanceForCurrentProcess()
             Dim setupInstanceCatalog = DirectCast(setupInstance, ISetupInstanceCatalog)

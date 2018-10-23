@@ -753,7 +753,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
             Return Results
         End Function
 
-        Private Sub AddAny(Match As Predicate(Of XmlIntellisenseMember), Results As List(Of XmlIntellisenseMember))
+        Private Shared Sub AddAny(Match As Predicate(Of XmlIntellisenseMember), Results As List(Of XmlIntellisenseMember))
             ' FindByNamespace and FindByName should always find Any members, as long as types match
             If Match(s_anyElement) Then
                 Results.Add(s_anyElement)
@@ -832,7 +832,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
             Return Nothing
         End Function
 
-        Private Function Concat(Left As XmlIntellisenseMember, Right As XmlIntellisenseMember) As XmlIntellisenseMember
+        Private Shared Function Concat(Left As XmlIntellisenseMember, Right As XmlIntellisenseMember) As XmlIntellisenseMember
             Dim Current As XmlIntellisenseMember = Left
 
             If Current Is Nothing Then
@@ -1274,7 +1274,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
             End If
         End Sub
 
-        Private Function AddUnique(Member As XmlIntellisenseMember, CheckUnique As MemberSet) As Boolean
+        Private Shared Function AddUnique(Member As XmlIntellisenseMember, CheckUnique As MemberSet) As Boolean
             If CheckUnique.ContainsKey(Member) Then
                 Return False
             End If

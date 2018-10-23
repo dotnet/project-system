@@ -131,7 +131,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             EnableReferencePathGroup()
         End Sub
 
-        Private Function IsValidFolderPath(ByRef Dir As String) As Boolean
+        Private Shared Function IsValidFolderPath(ByRef Dir As String) As Boolean
             Return IO.Directory.Exists(Dir)
         End Function
 
