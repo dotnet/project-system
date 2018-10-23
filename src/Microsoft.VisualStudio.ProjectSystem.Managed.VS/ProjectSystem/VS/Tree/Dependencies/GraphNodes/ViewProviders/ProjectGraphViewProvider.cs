@@ -197,10 +197,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
             ITargetedDependenciesSnapshot snapshot = GetSnapshot(updatedDependency);
             if (snapshot == null)
             {
-                nodesToAdd = Enumerable.Empty<DependencyNodeInfo>();
-                nodesToRemove = Enumerable.Empty<DependencyNodeInfo>();
-                updatedChildren = Enumerable.Empty<IDependency>();
-                dependencyProjectPath = string.Empty;
+                nodesToAdd = default;
+                nodesToRemove = default;
+                updatedChildren = default;
+                dependencyProjectPath = default;
                 return false;
             }
 
