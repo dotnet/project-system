@@ -83,24 +83,16 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         '''  TRUE to keep previously registered menu commands for this designer.
         '''  FALSE otherwise, the root designer will clear its menu commands list and add the new one.
         ''' </param>
-        ''' <param name="AddCommonMenuCommands">TRUE to add the common menu commands owned by BaseRootDesigner, 
-        '''      FALSE otherwise.</param>
         ''' <remarks>Child root designers call this method to register their own menu commands. 
         '''      See ResourceEditorRootDesigner.</remarks>
         Friend Sub RegisterMenuCommands(MenuCommands As ArrayList,
-                Optional KeepRegisteredMenuCommands As Boolean = True,
-                Optional AddCommonMenuCommands As Boolean = True)
+                Optional KeepRegisteredMenuCommands As Boolean = True)
             ' Clear the list of menu commands if specified.
             If Not KeepRegisteredMenuCommands Then
                 For Each MenuCommand As MenuCommand In Me.MenuCommands
                     MenuCommandService.RemoveCommand(MenuCommand)
                 Next
                 Me.MenuCommands.Clear()
-            End If
-
-            ' Add the common menu commands if specified.
-            If AddCommonMenuCommands Then
-                Me.AddCommonMenuCommands()
             End If
 
             ' Register the new ones
@@ -179,13 +171,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 Return _menuCommands
             End Get
         End Property
-
-        ''' <summary>
-        '''  Adds common menu commands owned by BaseRootDesigner.
-        ''' </summary>
-        ''' <remarks>Not currently used since we don't have any common menu commands yet.</remarks>
-        Private Shared Sub AddCommonMenuCommands()
-        End Sub
 
         ' All the menu commands this designer exposes. Use MenuCommands to access this.
         Private ReadOnly _menuCommands As New ArrayList

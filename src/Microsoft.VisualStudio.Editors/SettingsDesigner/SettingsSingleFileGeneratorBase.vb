@@ -464,7 +464,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 .Attributes = SettingsPropertyVisibility,
                 .Name = Instance.Name
             }
-            Dim fxTypeName As String = TypeNameResolver.PersistedSettingTypeNameToFxTypeName(Instance.SettingTypeName)
+            Dim fxTypeName As String = SettingTypeNameResolutionService.PersistedSettingTypeNameToFxTypeName(Instance.SettingTypeName)
 
             CodeProperty.Type = New CodeTypeReference(fxTypeName) With {
                 .Options = CodeTypeReferenceOptions.GlobalReference

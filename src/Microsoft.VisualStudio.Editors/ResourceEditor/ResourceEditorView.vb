@@ -4176,7 +4176,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 RootDesigner.DesignerLoader.ManualCheckOut()
 
                 Dim resourcePathAndName As String = RootDesigner.GetResXFileNameAndPath()
-                Dim projectGuid As Guid = VBPackage.Instance.ProjectGUID(GetVsHierarchy())
+                Dim projectGuid As Guid = VBPackage.ProjectGUID(GetVsHierarchy())
                 Dim addExistingFilePath As String = String.Empty
                 Dim resxFileToAddExistingBasePath As Dictionary(Of String, String) = Nothing
 

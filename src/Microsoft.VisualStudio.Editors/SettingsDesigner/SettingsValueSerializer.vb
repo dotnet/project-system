@@ -11,9 +11,12 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
     ''' a culture info.
     ''' </summary>
     ''' <remarks></remarks>
-    Friend Class SettingsValueSerializer
+    Friend NotInheritable Class SettingsValueSerializer
 
-        Public Function Deserialize(ValueType As Type, serializedValue As String, culture As Globalization.CultureInfo) As Object
+        Private Sub SettingsValueSerializer()
+        End Sub
+
+        Public Shared Function Deserialize(ValueType As Type, serializedValue As String, culture As Globalization.CultureInfo) As Object
             If ValueType Is GetType(String) Then
                 ' VsWhidbey 270764:
                 ' Strings require special handling, since the ConfigHelper API assumes that all serialized representations

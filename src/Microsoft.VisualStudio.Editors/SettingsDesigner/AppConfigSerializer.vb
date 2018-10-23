@@ -105,8 +105,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Dim DeserializedUserScopedSettingValues As SettingsPropertyValueCollection =
                 ConfigHelperService.ReadSettings(configFileMap, ConfigurationUserLevel.None, AppConfigDocData, SectionName, True, UserScopedSettingProps)
 
-            Dim valueSerializer As New SettingsValueSerializer()
-
             ' Then we go through each read setting to see if we have to add/change the setting
             For Each cs As ConnectionStringSettings In DeserializedConnectionStrings
                 Dim scs As New SerializableConnectionString With {
@@ -119,7 +117,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                     ' We already know about this guy - let's see if the values are different...
                     ' (by comparing the serialized values of the corresponding SerializedConnectionStrings)
                     Dim serializedValueInSettings As String = ExistingSettings.Item(cs.Name).SerializedValue
-                    Dim serializedValueInAppConfig As String = valueSerializer.Serialize(scs, Globalization.CultureInfo.InvariantCulture)
+                    Dim serializedValueInAppConfig As String = SettingsValueSerializer.Serialize(scs, Globalization.CultureInfo.InvariantCulture)
                     Dim valueChanged As Boolean = String.Compare(serializedValueInSettings, serializedValueInAppConfig, StringComparison.Ordinal) <> 0
                     If valueChanged Then
                         ' Yep! Ask the user what (s)he wants to do...
@@ -136,7 +134,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                             newValue.ProviderName = cs.ProviderName
                         End If
                         newValue.ConnectionString = cs.ConnectionString
-                        Instance.SetSerializedValue(valueSerializer.Serialize(newValue, Globalization.CultureInfo.InvariantCulture))
+                        Instance.SetSerializedValue(SettingsValueSerializer.Serialize(newValue, Globalization.CultureInfo.InvariantCulture))
                         Instance.SetScope(DesignTimeSettingInstance.SettingScope.Application)
                         Instance.SetName(cs.Name)
                         Instance.SetSettingTypeName(SettingsSerializer.CultureInvariantVirtualTypeNameConnectionString)

@@ -74,7 +74,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 
             If LoaderHost.RootComponent IsNot Nothing Then
                 ' Make sure the property page changes have been flushed from the UI
-                CType(LoaderHost.RootComponent, PropPageDesignerRootComponent).RootDesigner.CommitAnyPendingChanges()
+                PropPageDesignerRootDesigner.CommitAnyPendingChanges()
             Else
                 Debug.Fail("LoaderHost.RootComponent is Nothing")
             End If

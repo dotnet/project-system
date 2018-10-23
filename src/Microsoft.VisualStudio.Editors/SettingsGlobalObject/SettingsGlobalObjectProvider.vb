@@ -1325,8 +1325,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             ' instance around, though, since that is needed when we serialize the data later...
             Dim unresolvedTypesExist As Boolean = False
             For Each setting As DesignTimeSettingInstance In _dtSettings
-                Dim TypeNameResolutionComponent As New SettingTypeNameResolutionService("") ' We don't care about the code model
-                Dim settingType As Type = _typeCache.GetSettingType(TypeNameResolutionComponent.PersistedSettingTypeNameToFxTypeName(setting.SettingTypeName))
+                Dim settingType As Type = _typeCache.GetSettingType(SettingTypeNameResolutionService.PersistedSettingTypeNameToFxTypeName(setting.SettingTypeName))
                 If settingType Is Nothing Then
                     ' No setting type = failed to resolve type!
                     unresolvedTypesExist = True
@@ -2285,8 +2284,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                                 ' poke in the new value (which should set it as the value in
                                 '   the currently selected profile)
                                 '
-                                Dim serializer As New SettingsValueSerializer
-                                setting.SetSerializedValue(serializer.Serialize(value, Globalization.CultureInfo.InvariantCulture))
+                                setting.SetSerializedValue(SettingsValueSerializer.Serialize(value, Globalization.CultureInfo.InvariantCulture))
 
                                 ' now ask the file to persist the change
                                 '
@@ -2486,8 +2484,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                     '   that implies that all profiles should pick up this value). The last param to the ConfigHelper
                     '   call means that the SerializeAs property in the SettingsProperty is not necessarily valid and
                     '   the ConfigHelper should choose the best method for serializing this value.
-                    Dim serializer As New SettingsValueSerializer
-                    setting.SetSerializedValue(serializer.Serialize(prop.DefaultValue, Globalization.CultureInfo.InvariantCulture))
+                    setting.SetSerializedValue(SettingsValueSerializer.Serialize(prop.DefaultValue, Globalization.CultureInfo.InvariantCulture))
 
                     ' now ask the file to save itself
                     '

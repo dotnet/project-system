@@ -282,7 +282,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             ' Write (empty) Profiles element - Settings profiles were cut for Whidbey (VsWhidbey 483350)
             '
             SettingsWriter.WriteStartElement("Profiles")
-            Dim valueSerializer As New SettingsValueSerializer()
+
             SettingsWriter.WriteEndElement() ' End of Profiles element
 
             SettingsWriter.WriteStartElement("Settings")
@@ -315,7 +315,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 If String.Equals(Instance.SettingTypeName, CultureInvariantVirtualTypeNameConnectionString, StringComparison.Ordinal) Then
                     designTimeValue = Instance.SerializedValue
                     Dim scs As VSDesigner.VSDesignerPackage.SerializableConnectionString
-                    scs = DirectCast(valueSerializer.Deserialize(GetType(VSDesigner.VSDesignerPackage.SerializableConnectionString),
+                    scs = DirectCast(SettingsValueSerializer.Deserialize(GetType(VSDesigner.VSDesignerPackage.SerializableConnectionString),
                                                                 designTimeValue,
                                                                 Globalization.CultureInfo.InvariantCulture),
                                     VSDesigner.VSDesignerPackage.SerializableConnectionString)

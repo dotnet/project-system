@@ -53,8 +53,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 'Begin
                 Return DirectCast(value, VSDesigner.VSDesignerPackage.SerializableConnectionString).ConnectionString
             Else
-                Dim serializer As New SettingsValueSerializer()
-                Return serializer.Serialize(value, System.Threading.Thread.CurrentThread.CurrentCulture)
+                Return SettingsValueSerializer.Serialize(value, System.Threading.Thread.CurrentThread.CurrentCulture)
             End If
         End Function
 
@@ -97,8 +96,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 sgv.CommittingChanges = True
             End If
             Try
-                Dim serializer As New SettingsValueSerializer()
-                parsedValue = serializer.Deserialize(ValueType, StrFormattedValue, System.Threading.Thread.CurrentThread.CurrentCulture)
+                parsedValue = SettingsValueSerializer.Deserialize(ValueType, StrFormattedValue, System.Threading.Thread.CurrentThread.CurrentCulture)
             Finally
                 If sgv IsNot Nothing Then
                     sgv.CommittingChanges = oldCommittingChanges
