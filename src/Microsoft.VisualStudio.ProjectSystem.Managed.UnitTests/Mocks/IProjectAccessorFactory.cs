@@ -35,6 +35,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 _evaluationProject = project;
             }
 
+            public Task EnterWriteLockAsync(Func<ProjectCollection, CancellationToken, Task> action, CancellationToken cancellationToken = default)
+            {
+                throw new NotImplementedException();
+            }
+
             public Task<TResult> OpenProjectForReadAsync<TResult>(ConfiguredProject project, Func<Project, TResult> action, CancellationToken cancellationToken = default)
             {
                 var result = action(_evaluationProject);

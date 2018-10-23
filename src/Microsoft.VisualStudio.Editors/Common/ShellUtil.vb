@@ -264,7 +264,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         End Function
 
         ''' <summary>
-        ''' Given a hierarhy, determine if this is a devices project...
+        ''' Given a hierarchy, determine if this is a devices project...
         ''' </summary>
         ''' <param name="hierarchy"></param>
         ''' <returns></returns>
@@ -504,7 +504,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
 
             'Cookie for use with IVsShell.{Advise,Unadvise}BroadcastMessages
             Private _cookieBroadcastMessages As UInteger
-            Private _serviceProvider As IServiceProvider
+            Private ReadOnly _serviceProvider As IServiceProvider
 
             Friend Sub New(sp As IServiceProvider)
                 _serviceProvider = sp
@@ -539,7 +539,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
 #End Region
 
             ''' <summary>
-            ''' Forward to overridable OnBrodcastMessage handler
+            ''' Forward to overridable OnBroadcastMessage handler
             ''' </summary>
             ''' <param name="msg"></param>
             ''' <param name="wParam"></param>
@@ -604,7 +604,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
             Inherits BroadcastMessageEventsHelper
 
             ' Control that we are going to set the font on (if any)
-            Private _control As Control
+            Private ReadOnly _control As Control
 
             Private ReadOnly _serviceProvider As IServiceProvider
 

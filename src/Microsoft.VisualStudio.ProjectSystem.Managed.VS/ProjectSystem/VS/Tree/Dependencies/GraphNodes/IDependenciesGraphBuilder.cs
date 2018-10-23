@@ -5,6 +5,11 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
 {
+    /// <summary>
+    /// Handles the mechanics of adding and removing nodes from the graph.
+    /// Decisions about which nodes to add and where to add them are made by the
+    /// <see cref="ViewProviders.IDependenciesGraphViewProvider"/> implementations.
+    /// </summary>
     internal interface IDependenciesGraphBuilder
     {
         GraphNode AddGraphNode(

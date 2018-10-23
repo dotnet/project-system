@@ -12,7 +12,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Inherits ApplicationException
 
         Private ReadOnly _validationResult As ValidationResult
-        Private _control As Control
+        Private ReadOnly _control As Control
 
         Public Sub New(result As ValidationResult, message As String, Optional control As Control = Nothing, Optional InnerException As Exception = Nothing)
             MyBase.New(message, InnerException)

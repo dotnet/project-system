@@ -27,7 +27,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Protected Const INDEX_COMMANDLINEAPP As Integer = 1
         Protected Const INDEX_WINDOWSCLASSLIB As Integer = 2
         Private _rootNamespace As String
-        Private _outputTypeDefaultValues As OutputTypeComboBoxValue()
+        Private ReadOnly _outputTypeDefaultValues As OutputTypeComboBoxValue()
         Private _controlGroup As Control()()
 
         Public Sub New()
@@ -279,7 +279,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return Not GetPropertyControlData(VsProjPropId80.VBPROJPROPID_Win32ResourceFile).IsMissing
         End Function
 
-        Function SetIconAndWin32ResourceFile() As Boolean
+        Private Function SetIconAndWin32ResourceFile() As Boolean
             Dim obj As Object
             Dim propWin32ResourceFile As PropertyDescriptor
             Dim stWin32ResourceFile As String = Nothing

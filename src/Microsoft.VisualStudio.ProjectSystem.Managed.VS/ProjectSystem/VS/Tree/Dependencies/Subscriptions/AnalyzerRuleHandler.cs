@@ -18,6 +18,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
     {
         public const string ProviderTypeString = "AnalyzerDependency";
 
+        private static readonly DependencyIconSet s_iconSet = new DependencyIconSet(
+            icon: KnownMonikers.CodeInformation,
+            expandedIcon: KnownMonikers.CodeInformation,
+            unresolvedIcon: ManagedImageMonikers.CodeInformationWarning,
+            unresolvedExpandedIcon: ManagedImageMonikers.CodeInformationWarning);
+
         protected override string UnresolvedRuleName { get; } = AnalyzerReference.SchemaName;
         protected override string ResolvedRuleName { get; } = ResolvedAnalyzerReference.SchemaName;
         public override string ProviderType { get; } = ProviderTypeString;
@@ -27,8 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             return new SubTreeRootDependencyModel(
                 ProviderType,
                 VSResources.AnalyzersNodeName,
-                KnownMonikers.CodeInformation,
-                ManagedImageMonikers.CodeInformationWarning,
+                s_iconSet,
                 DependencyTreeFlags.AnalyzerSubTreeRootNodeFlags);
         }
 

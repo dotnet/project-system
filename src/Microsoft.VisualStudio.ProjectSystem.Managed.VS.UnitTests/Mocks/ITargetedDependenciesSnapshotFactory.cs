@@ -11,7 +11,7 @@ using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
-    internal class ITargetedDependenciesSnapshotFactory
+    internal static class ITargetedDependenciesSnapshotFactory
     {
         public static ITargetedDependenciesSnapshot Create()
         {

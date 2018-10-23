@@ -9,7 +9,6 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
 {
-    [Trait("UnitTest", "ProjectSystem")]
     public class MoveUpCommandTests : AbstractMoveCommandTests
     {
         [Fact]

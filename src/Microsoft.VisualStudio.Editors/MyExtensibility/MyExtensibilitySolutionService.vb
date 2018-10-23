@@ -344,9 +344,9 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         End Sub
 #End Region
 
-        Private _vbPackage As VBPackage
+        Private ReadOnly _vbPackage As VBPackage
         ' Collection of MyExtensibilityProjectServices for each known project.
-        Private _projectServices As New Dictionary(Of Project, MyExtensibilityProjectService)()
+        Private ReadOnly _projectServices As New Dictionary(Of Project, MyExtensibilityProjectService)()
         ' My Extensibility settings of the current VS. Lazy init.
         Private _extensibilitySettings As MyExtensibilitySettings
         ' Handle solution closing and project removal events.

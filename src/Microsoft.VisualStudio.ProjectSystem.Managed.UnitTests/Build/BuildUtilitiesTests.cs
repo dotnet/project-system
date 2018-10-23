@@ -9,7 +9,6 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.Build
 {
-    [Trait("UnitTest", "ProjectSystem")]
     public class BuildUtilitiesTests
     {
         [Fact]

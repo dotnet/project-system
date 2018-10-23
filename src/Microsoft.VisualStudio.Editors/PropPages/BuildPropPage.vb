@@ -99,7 +99,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             Dim PlatformEntries As New List(Of String)
 
-            ' Let's try to sniff the supported platforms from our hiearchy (if any)
+            ' Let's try to sniff the supported platforms from our hierarchy (if any)
             If ProjectHierarchy IsNot Nothing Then
                 Dim oCfgProv As Object = Nothing
                 Dim hr As Integer
@@ -299,7 +299,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         End If
                     End If
                 Else
-                    '// Indeterminate. Leave all the radio buttons unchecled
+                    '// Indeterminate. Leave all the radio buttons unchecked
                     bIndeterminateState = True
                 End If
 
@@ -538,7 +538,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     Dim stAssemblyName As String
                     Dim obj As Object = Nothing
 
-                    '// Get OutputPath for all configs. We're going to calcuate the documentation file
+                    '// Get OutputPath for all configs. We're going to calculate the documentation file
                     '// for each config (and the value is dependant on the OutputPath
 
                     Dim RawDocFiles() As Object = RawPropertiesObjects(GetPropertyControlData(VsProjPropId.VBPROJPROPID_DocumentationFile))
@@ -637,7 +637,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
 
         ''' <summary>
-        ''' Fired when the conditional compilations contants textbox has changed.  We are manually handling
+        ''' Fired when the conditional compilations constants textbox has changed.  We are manually handling
         '''   events associated with this control, so we need to recalculate related values
         ''' </summary>
         Private Sub DocumentationFile_TextChanged(sender As Object, e As EventArgs) Handles txtXMLDocumentationFile.TextChanged
@@ -671,7 +671,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '    should only affect the Debug configuration.
         '    For the TRACE constant checkbox, we want the normal behavior (show indeterminate if they're different, but they
         '    won't be for the default templates in simplified configs mode).
-        '    The conditional compilation textbox likewise should show indetermine if the debug and release values differ, but
+        '    The conditional compilation textbox likewise should show indeterminate if the debug and release values differ, but
         '    for the default templates they won't.
         '    This behavior is not easy to get, because the DEBUG/TRACE checkboxes are not actual properties in C# like they
         '    are in VB, but are rather parsed from the conditional compilation value.  The conditional compilation textbox
@@ -688,7 +688,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
 
         ''' <summary>
-        ''' Fired when the conditional compilations contants textbox has changed.  We are manually handling
+        ''' Fired when the conditional compilations constants textbox has changed.  We are manually handling
         '''   events associated with this control, so we need to recalculate related values
         ''' </summary>
         Private Sub DefineConstants_TextChanged(sender As Object, e As EventArgs) Handles txtConditionalCompilationSymbols.TextChanged
@@ -857,7 +857,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
                 'Figure out whether the values each configuration are the same or different.  For each
                 '  of these properties, get either the value which is the same across all of the values,
-                '  or get a value of Inderminate.
+                '  or get a value of Indeterminate.
                 Dim DebugDefined As Object = PropertyControlData.GetValueOrIndeterminateFromArray(DebugDefinedValues)
                 Dim TraceDefined As Object = PropertyControlData.GetValueOrIndeterminateFromArray(TraceDefinedValues)
                 Dim OtherConstants As Object = PropertyControlData.GetValueOrIndeterminateFromArray(OtherConstantsValues)

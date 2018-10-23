@@ -29,7 +29,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
     Friend NotInheritable Class ThumbnailCache
 
         'The ImageList which contains the thumbnail images
-        Private _imageList As ImageList
+        Private ReadOnly _imageList As ImageList
 
         'The number of reserved images at the bottom of the list of images, set by the user.
         '   These could be used for overlays, common images, etc.  They will never
@@ -49,7 +49,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '  replace an old image in the ImageList (without shifting other indices) does not allow you 
         '  to simultaneously change the key.  When we replace an image in the imagelist, we're also
         '  using a different key.
-        Private _keys As New Hashtable
+        Private ReadOnly _keys As New Hashtable
 
         'An Mru List we maintained to release the most less used item in the ImageList when we need load a new image.
         ' For performance reason, we implement the list table inside an array of structures. Each item contains a point (index)

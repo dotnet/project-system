@@ -18,7 +18,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         Implements OleInterop.IOleCommandTarget
         Implements IVsWindowFrameNotify3
 
-        Private _windowPane As ApplicationDesignerWindowPane
+        Private ReadOnly _windowPane As ApplicationDesignerWindowPane
 
         Public Sub New(WindowPane As ApplicationDesignerWindowPane)
             Debug.Assert(WindowPane IsNot Nothing)

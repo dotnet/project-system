@@ -175,7 +175,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlToSchema
 
         Private Function GetXmlTextReaderWithDtdProcessingProhibited(element As String) As XmlTextReader
             ' Required by Fxcop rule CA3054 - DoNotAllowDTDXmlTextReader
-            Dim reader As XmlTextReader = New XmlTextReader(element) With {
+            Return New XmlTextReader(element) With {
                 .DtdProcessing = DtdProcessing.Prohibit
             }
         End Function

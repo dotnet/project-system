@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Option Explicit On
 Option Strict On
@@ -39,7 +39,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private WithEvents _designerHost As IDesignerHost = Nothing
 
         ' Contains information about the current state of Find/Replace
-        Private _findReplace As New FindReplace(Me)
+        Private ReadOnly _findReplace As New FindReplace(Me)
 
         ' Indicates whether or not we are trying to register our view helper on a delayed basis
         Private _delayRegisteringViewHelper As Boolean
@@ -521,7 +521,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Specifies our editor's supported capabilities for Find / Replace.
         ''' </summary>
-        ''' <param name="pfImage">Set to True if supporting GetSearchImage - seaching in a text image.</param>
+        ''' <param name="pfImage">Set to True if supporting GetSearchImage - searching in a text image.</param>
         ''' <param name="pgrfOptions">Specifies supported options, syntax and options, taken from __VSFINDOPTIONS.</param>
         ''' <remarks></remarks>
         Private Function GetCapabilities(pfImage() As Boolean, pgrfOptions() As UInteger) As Integer Implements IVsFindTarget.GetCapabilities
@@ -570,7 +570,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="pszSearch">The search pattern.</param>
         ''' <param name="grfOptions">The options of the test (from __VSFINDOPTIONS).</param>
         ''' <param name="fResetStartPoint">1 means the find loop is reset, otherwise 0.</param>
-        ''' <param name="pHelper">IVsFindHelper interface containing utiliy methods for Find.</param>
+        ''' <param name="pHelper">IVsFindHelper interface containing utility methods for Find.</param>
         ''' <param name="pResult">Search result, values are taken from __VSFINDRESULT.</param>
         ''' <remarks> 
         ''' Find works as follow:
@@ -589,16 +589,16 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         '''  Requests a text string replace.
         ''' </summary>
-        ''' <param name="pszSearch">Pointer to a null teminated string containing the search text.</param>
-        ''' <param name="pszReplace">Pointer to a null teminated string containing the replacement text.</param>
+        ''' <param name="pszSearch">Pointer to a null terminated string containing the search text.</param>
+        ''' <param name="pszReplace">Pointer to a null terminated string containing the replacement text.</param>
         ''' <param name="grfOptions">Specifies the options. Values are from __VSFINDOPTIONS.</param>
         ''' <param name="fResetStartPoint">Flag to reset the search start point.</param>
         ''' <param name="pHelper">Pointer to an IVsFindHelper interface.</param>
         ''' <param name="pfReplaced">True if the replacement was successful.</param>
         ''' <remarks>
         ''' Replace works as follow:
-        ''' - From user perspective: If user clicks Replace right at the beginning, we select the first matching ojbect 
-        '''      but NOT replacing it. If user clicks Replace again, we replace that object and jump to the next matching ojbect.
+        ''' - From user perspective: If user clicks Replace right at the beginning, we select the first matching object 
+        '''      but NOT replacing it. If user clicks Replace again, we replace that object and jump to the next matching object.
         ''' - Implementation: User clicks Replace, shell will call our Replace. Right after that, shell will call our Find
         '''      to search for the next object. Therefore, at the beginning of Replace, we check to see Replace was clicked first.
         '''      If it's true, we don't do anything and let shell call our Find. The next time we will replace.
@@ -714,7 +714,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private Sub DesignerHost_TransactionOpening(sender As Object, e As EventArgs) Handles _designerHost.TransactionOpening
             If _undoEngine Is Nothing Then
                 _undoEngine = DirectCast(GetService(GetType(UndoEngine)), UndoEngine)
-                ' We get UndoEngine here, because we need monitor undo start/end event. But when this trasaction itself is caused by an UNDO operation,
+                ' We get UndoEngine here, because we need monitor undo start/end event. But when this transaction itself is caused by an UNDO operation,
                 ' it is already too late to hook up the event, and we lost the first UNDO start event. Here, we check whether the transaction
                 '  is caused by UNDO, and simulate the first UNDO start event.
                 If _undoEngine IsNot Nothing AndAlso _undoEngine.UndoInProgress Then

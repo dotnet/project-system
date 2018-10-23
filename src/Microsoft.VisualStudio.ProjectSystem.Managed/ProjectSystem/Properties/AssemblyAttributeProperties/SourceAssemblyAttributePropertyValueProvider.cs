@@ -59,7 +59,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 return null;
             }
 
-            AttributeData attribute = await GetAttributeAsync(_assemblyAttributeFullName, project).ConfigureAwait(false);
+            AttributeData attribute = await GetAttributeAsync(_assemblyAttributeFullName, project);
             if (attribute == null)
             {
                 return null;
@@ -81,13 +81,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 return;
             }
 
-            AttributeData attribute = await GetAttributeAsync(_assemblyAttributeFullName, project).ConfigureAwait(false);
+            AttributeData attribute = await GetAttributeAsync(_assemblyAttributeFullName, project);
             if (attribute == null)
             {
                 return;
             }
 
-            SyntaxNode attributeNode = await attribute.ApplicationSyntaxReference.GetSyntaxAsync().ConfigureAwait(false);
+            SyntaxNode attributeNode = await attribute.ApplicationSyntaxReference.GetSyntaxAsync();
             var syntaxGenerator = SyntaxGenerator.GetGenerator(project);
             IReadOnlyList<SyntaxNode> arguments = syntaxGenerator.GetAttributeArguments(attributeNode);
 
@@ -106,7 +106,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 }
 
                 newNode = newNode.WithTriviaFrom(argumentNode);
-                DocumentEditor editor = await DocumentEditor.CreateAsync(project.GetDocument(attributeNode.SyntaxTree)).ConfigureAwait(false);
+                DocumentEditor editor = await DocumentEditor.CreateAsync(project.GetDocument(attributeNode.SyntaxTree));
                 editor.ReplaceNode(argumentNode, newNode);
 
                 // Apply changes needs to happen on the UI Thread.
@@ -120,7 +120,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// </summary>
         private static async Task<AttributeData> GetAttributeAsync(string assemblyAttributeFullName, Project project)
         {
-            Compilation compilation = await project.GetCompilationAsync().ConfigureAwait(false);
+            Compilation compilation = await project.GetCompilationAsync();
             ImmutableArray<AttributeData> assemblyAttributes = compilation.Assembly.GetAttributes();
 
             INamedTypeSymbol attributeTypeSymbol = compilation.GetTypeByMetadataName(assemblyAttributeFullName);

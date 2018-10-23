@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.Drawing.Design
 Imports System.Windows.Forms
@@ -156,7 +156,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                         Return True
                     End If
                 Case Keys.Left
-                    ' If the end of the selection is at the begining of the string
+                    ' If the end of the selection is at the beginning of the string
                     ' or if the entire text is selected and we did not start editing
                     ' send this character to the dataGridView, else process the key event
                     If Not (SelectionLength = 0 AndAlso SelectionStart = 0) Then
@@ -325,7 +325,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         Private Class EditContext
             Implements System.ComponentModel.ITypeDescriptorContext
 
-            Private _instance As DesignTimeSettingInstance
+            Private ReadOnly _instance As DesignTimeSettingInstance
 
             Public Sub New(instance As DesignTimeSettingInstance)
                 _instance = instance

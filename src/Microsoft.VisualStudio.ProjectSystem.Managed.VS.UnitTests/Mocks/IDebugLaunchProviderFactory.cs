@@ -6,7 +6,7 @@ using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
-    public class IDebugLaunchProviderFactory
+    public static class IDebugLaunchProviderFactory
     {
         public static IDebugLaunchProvider ImplementCanLaunchAsync(Func<bool> action)
         {

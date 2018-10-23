@@ -8,8 +8,6 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-using Microsoft.VisualStudio.Threading.Tasks;
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 {
     /// <summary>
@@ -23,7 +21,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         private readonly object _gate = new object();
         private readonly IUnconfiguredProjectCommonServices _commonServices;
         private readonly IUnconfiguredProjectTasksService _tasksService;
-        private readonly ITaskScheduler _taskScheduler;
         private readonly List<AggregateCrossTargetProjectContext> _contexts = new List<AggregateCrossTargetProjectContext>();
         private readonly IActiveConfiguredProjectsProvider _activeConfiguredProjectsProvider;
         private readonly Dictionary<ConfiguredProject, ITargetedProjectContext> _configuredProjectContextsMap = new Dictionary<ConfiguredProject, ITargetedProjectContext>();
@@ -33,13 +30,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         public AggregateCrossTargetProjectContextProvider(
             IUnconfiguredProjectCommonServices commonServices,
             IUnconfiguredProjectTasksService tasksService,
-            ITaskScheduler taskScheduler,
             IActiveConfiguredProjectsProvider activeConfiguredProjectsProvider,
             ITargetFrameworkProvider targetFrameworkProvider)
+            : base(synchronousDisposal: true)
         {
             _commonServices = commonServices;
             _tasksService = tasksService;
-            _taskScheduler = taskScheduler;
             _activeConfiguredProjectsProvider = activeConfiguredProjectsProvider;
             _targetFrameworkProvider = targetFrameworkProvider;
         }
@@ -48,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         {
             EnsureInitialized();
 
-            AggregateCrossTargetProjectContext context = await CreateProjectContextAsyncCore().ConfigureAwait(false);
+            AggregateCrossTargetProjectContext context = await CreateProjectContextAsyncCore();
             if (context == null)
             {
                 return null;
@@ -154,10 +150,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
         private async Task<string> GetTargetPathAsync()
         {
-            ConfigurationGeneral properties = await _commonServices.ActiveConfiguredProjectProperties.GetConfigurationGeneralPropertiesAsync()
-                                                                                                     .ConfigureAwait(false);
-            return (string)await properties.TargetPath.GetValueAsync()
-                                                      .ConfigureAwait(false);
+            ConfigurationGeneral properties = await _commonServices.ActiveConfiguredProjectProperties.GetConfigurationGeneralPropertiesAsync();
+            return (string)await properties.TargetPath.GetValueAsync();
         }
 
         private ProjectData GetProjectData()
@@ -201,7 +195,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
             // Get the set of active configured projects ignoring target framework.
 #pragma warning disable CS0618 // Type or member is obsolete
-            ImmutableDictionary<string, ConfiguredProject> configuredProjectsMap = await _activeConfiguredProjectsProvider.GetActiveConfiguredProjectsMapAsync().ConfigureAwait(true);
+            ImmutableDictionary<string, ConfiguredProject> configuredProjectsMap = await _activeConfiguredProjectsProvider.GetActiveConfiguredProjectsMapAsync();
 #pragma warning restore CS0618 // Type or member is obsolete
             ProjectConfiguration activeProjectConfiguration = _commonServices.ActiveConfiguredProject.ProjectConfiguration;
             ImmutableDictionary<ITargetFramework, ITargetedProjectContext>.Builder innerProjectContextsBuilder = ImmutableDictionary.CreateBuilder<ITargetFramework, ITargetedProjectContext>();
@@ -211,13 +205,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             {
                 ConfiguredProject configuredProject = kvp.Value;
                 ProjectProperties projectProperties = configuredProject.Services.ExportProvider.GetExportedValue<ProjectProperties>();
-                ConfigurationGeneral configurationGeneralProperties = await projectProperties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(true);
-                ITargetFramework targetFramework = await GetTargetFrameworkAsync(kvp.Key, configurationGeneralProperties).ConfigureAwait(false);
+                ConfigurationGeneral configurationGeneralProperties = await projectProperties.GetConfigurationGeneralPropertiesAsync();
+                ITargetFramework targetFramework = await GetTargetFrameworkAsync(kvp.Key, configurationGeneralProperties);
 
                 if (!TryGetConfiguredProjectState(configuredProject, out ITargetedProjectContext targetedProjectContext))
                 {
                     // Get the target path for the configured project.
-                    string targetPath = (string)await configurationGeneralProperties.TargetPath.GetValueAsync().ConfigureAwait(true);
+                    string targetPath = (string)await configurationGeneralProperties.TargetPath.GetValueAsync();
                     string displayName = GetDisplayName(configuredProject, projectData, targetFramework.FullName);
 
                     targetedProjectContext = new TargetedProjectContext(targetFramework, projectData.FullPath, displayName, targetPath)
@@ -252,7 +246,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         {
             if (string.IsNullOrEmpty(shortOrFullName))
             {
-                object targetObject = await configurationGeneralProperties.TargetFramework.GetValueAsync().ConfigureAwait(false);
+                object targetObject = await configurationGeneralProperties.TargetFramework.GetValueAsync();
                 if (targetObject == null)
                 {
                     return TargetFramework.Empty;

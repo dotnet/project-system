@@ -60,12 +60,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         public override async Task<string> GetUnevaluatedPropertyValueAsync(string propertyName)
         {
             if (_attributeValueProviderMap.ContainsKey(propertyName) &&
-                !await IsAssemblyInfoPropertyGeneratedByBuild(propertyName).ConfigureAwait(true))
+                !await IsAssemblyInfoPropertyGeneratedByBuild(propertyName))
             {
-                return await GetPropertyValueFromSourceAttributeAsync(propertyName).ConfigureAwait(false);
+                return await GetPropertyValueFromSourceAttributeAsync(propertyName);
             }
 
-            return await base.GetUnevaluatedPropertyValueAsync(propertyName).ConfigureAwait(true);
+            return await base.GetUnevaluatedPropertyValueAsync(propertyName);
         }
 
         /// <summary>
@@ -74,12 +74,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         public override async Task<string> GetEvaluatedPropertyValueAsync(string propertyName)
         {
             if (_attributeValueProviderMap.ContainsKey(propertyName) &&
-                !await IsAssemblyInfoPropertyGeneratedByBuild(propertyName).ConfigureAwait(true))
+                !await IsAssemblyInfoPropertyGeneratedByBuild(propertyName))
             {
-                return await GetPropertyValueFromSourceAttributeAsync(propertyName).ConfigureAwait(false);
+                return await GetPropertyValueFromSourceAttributeAsync(propertyName);
             }
 
-            return await base.GetEvaluatedPropertyValueAsync(propertyName).ConfigureAwait(true);
+            return await base.GetEvaluatedPropertyValueAsync(propertyName);
         }
 
         /// <summary>
@@ -89,7 +89,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         {
             if (_attributeValueProviderMap.TryGetValue(propertyName, out SourceAssemblyAttributePropertyValueProvider provider))
             {
-                return await provider.GetPropertyValueAsync().ConfigureAwait(true);
+                return await provider.GetPropertyValueAsync();
             }
 
             return null;
@@ -101,14 +101,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         public override async Task SetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IReadOnlyDictionary<string, string> dimensionalConditions = null)
         {
             if (_attributeValueProviderMap.ContainsKey(propertyName) &&
-                !await IsAssemblyInfoPropertyGeneratedByBuild(propertyName).ConfigureAwait(true))
+                !await IsAssemblyInfoPropertyGeneratedByBuild(propertyName))
             {
                 SourceAssemblyAttributePropertyValueProvider provider = _attributeValueProviderMap[propertyName];
-                await provider.SetPropertyValueAsync(unevaluatedPropertyValue).ConfigureAwait(true);
+                await provider.SetPropertyValueAsync(unevaluatedPropertyValue);
             }
             else
             {
-                await base.SetPropertyValueAsync(propertyName, unevaluatedPropertyValue, dimensionalConditions).ConfigureAwait(true);
+                await base.SetPropertyValueAsync(propertyName, unevaluatedPropertyValue, dimensionalConditions);
             }
         }
 
@@ -119,13 +119,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             // Generate property in project file only if:
             // 1. "GenerateAssemblyInfo" is true AND
             // 2. "GenerateXXX" for this specific property is true.
-            string propertyValue = await base.GetEvaluatedPropertyValueAsync("GenerateAssemblyInfo").ConfigureAwait(true);
+            string propertyValue = await base.GetEvaluatedPropertyValueAsync("GenerateAssemblyInfo");
             if (!bool.TryParse(propertyValue, out bool value) || !value)
             {
                 return false;
             }
 
-            propertyValue = await base.GetEvaluatedPropertyValueAsync(generatePropertyInProjectFileName).ConfigureAwait(true);
+            propertyValue = await base.GetEvaluatedPropertyValueAsync(generatePropertyInProjectFileName);
             if (!bool.TryParse(propertyValue, out value) || !value)
             {
                 return false;

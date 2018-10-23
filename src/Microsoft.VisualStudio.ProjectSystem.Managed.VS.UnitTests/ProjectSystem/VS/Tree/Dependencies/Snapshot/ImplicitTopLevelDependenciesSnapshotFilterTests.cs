@@ -11,7 +11,6 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
-    [Trait("UnitTest", "ProjectSystem")]
     public class ImplicitTopLevelDependenciesSnapshotFilterTests
     {
         [Fact]
@@ -185,7 +184,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 resolved: true,
                 flags: DependencyTreeFlags.GenericDependencyFlags,
                 originalItemSpec: "myprojectitem",
-                setPropertiesImplicit: true);
+                setPropertiesImplicit: true,
+                iconSet: new DependencyIconSet(KnownMonikers.Reference, KnownMonikers.Reference, KnownMonikers.Reference, KnownMonikers.Reference),
+                setPropertiesIconSet: new DependencyIconSet(KnownMonikers.Abbreviation, KnownMonikers.Abbreviation, KnownMonikers.Reference, KnownMonikers.Reference));
 
             var worldBuilder = new Dictionary<string, IDependency>()
             {

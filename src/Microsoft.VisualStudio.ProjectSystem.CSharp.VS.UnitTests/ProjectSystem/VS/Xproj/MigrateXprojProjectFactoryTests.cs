@@ -20,7 +20,6 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
 {
-    [Trait("UnitTest", "ProjectSystem")]
     public class MigrateXprojProjectFactoryTests
     {
         private const string SlnLocation = @"C:\Temp";

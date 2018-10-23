@@ -6,7 +6,7 @@ using System.IO;
 namespace Microsoft.VisualStudio.IO
 {
     /// <summary>
-    /// Simple wrapper around the FilesystemWatcher.
+    /// Simple wrapper around the FileSystemWatcher.
     /// </summary>
     internal sealed class SimpleFileWatcher : IDisposable
     {

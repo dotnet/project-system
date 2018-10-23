@@ -65,11 +65,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         /// <returns>A task for the async operation.</returns>
         private async Task OnPlatformAddedAsync(UnconfiguredProject project, string platformName)
         {
-            string evaluatedPropertyValue = await GetPropertyValue(project).ConfigureAwait(false);
+            string evaluatedPropertyValue = await GetPropertyValue(project);
             await ProjectAccessor.OpenProjectXmlForWriteAsync(project, msbuildProject =>
             {
                 BuildUtilities.AppendPropertyValue(msbuildProject, evaluatedPropertyValue, PropertyName, platformName);
-            }).ConfigureAwait(false);
+            });
         }
 
         /// <summary>
@@ -80,11 +80,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         /// <returns>A task for the async operation.</returns>
         private async Task OnPlatformDeletedAsync(UnconfiguredProject project, string platformName)
         {
-            string evaluatedPropertyValue = await GetPropertyValue(project).ConfigureAwait(false);
+            string evaluatedPropertyValue = await GetPropertyValue(project);
             await ProjectAccessor.OpenProjectXmlForWriteAsync(project, msbuildProject =>
             {
                 BuildUtilities.RemovePropertyValue(msbuildProject, evaluatedPropertyValue, PropertyName, platformName);
-            }).ConfigureAwait(false);
+            });
         }
     }
 }

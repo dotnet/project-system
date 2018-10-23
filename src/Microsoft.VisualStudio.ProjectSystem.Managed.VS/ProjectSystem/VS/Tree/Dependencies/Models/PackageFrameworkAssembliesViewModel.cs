@@ -9,7 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
     internal class PackageFrameworkAssembliesViewModel : DependencyViewModel
     {
-        public static ImageMoniker RegularIcon = KnownMonikers.Library;
+        public static readonly ImageMoniker RegularIcon = KnownMonikers.Library;
 
         public PackageFrameworkAssembliesViewModel()
         {

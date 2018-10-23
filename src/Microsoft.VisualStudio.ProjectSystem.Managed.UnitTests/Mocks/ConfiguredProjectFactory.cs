@@ -6,7 +6,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal static class ConfiguredProjectFactory
     {
-        public static ConfiguredProject Create(IProjectCapabilitiesScope capabilities = null, ProjectConfiguration projectConfiguration = null, IConfiguredProjectServices services = null)
+        public static ConfiguredProject Create(IProjectCapabilitiesScope capabilities = null, ProjectConfiguration projectConfiguration = null, ConfiguredProjectServices services = null)
         {
             var mock = new Mock<ConfiguredProject>();
             mock.Setup(c => c.Capabilities).Returns(capabilities);
@@ -23,6 +23,15 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public static ConfiguredProject ImplementProjectConfiguration(ProjectConfiguration projectConfiguration)
         {
             return Create(projectConfiguration: projectConfiguration);
+        }
+
+        public static ConfiguredProject ImplementUnconfiguredProject(UnconfiguredProject project)
+        {
+            var mock = new Mock<ConfiguredProject>();
+            mock.SetupGet(p => p.UnconfiguredProject)
+                .Returns(project);
+
+            return mock.Object;
         }
     }
 }

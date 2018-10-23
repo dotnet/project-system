@@ -4,7 +4,7 @@ using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
-    internal class IProjectTreeCustomizablePropertyValuesFactory
+    internal static class IProjectTreeCustomizablePropertyValuesFactory
     {
         public static IProjectTreeCustomizablePropertyValues Create()
         {

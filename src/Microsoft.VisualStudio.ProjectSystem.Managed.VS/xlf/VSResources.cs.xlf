@@ -282,8 +282,8 @@ Pokud chcete projekt ladit, přidejte do řešení spustitelný projekt, který 
         <note />
       </trans-unit>
       <trans-unit id="PartialSupportedDotNetCoreProject">
-        <source>Visual Studio 2017 version 15.7 or newer is recommended for .NET Core {0}.{1} projects.</source>
-        <target state="translated">Pro projekty .NET Core {0}.{1} se doporučuje Visual Studio 2017 verze 15.7 nebo novější.</target>
+        <source>A newer version of Visual Studio is recommended for projects targetting .NET Core {0}.{1}.</source>
+        <target state="needs-review-translation">Pro projekty .NET Core {0}.{1} se doporučuje Visual Studio 2017 verze 15.7 nebo novější.</target>
         <note />
       </trans-unit>
       <trans-unit id="NotSupportedDotNetCoreProject">

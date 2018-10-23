@@ -153,7 +153,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         }
 
         /// <summary>
-        /// Helper to convert an ILaunchProfile back to its serializable form. Bascially, it
+        /// Helper to convert an ILaunchProfile back to its serializable form. Basically, it
         /// converts it to a dictionary of settings. This preserves custom values
         /// </summary>
         public static Dictionary<string, object> ToSerializableForm(ILaunchProfile profile)

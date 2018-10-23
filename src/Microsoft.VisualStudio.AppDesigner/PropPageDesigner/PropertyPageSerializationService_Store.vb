@@ -371,7 +371,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 
             ''' <summary>
             ''' Keeps track of everything that we want to serialized about a single
-            '''   Component instance (either the entire Resoure itself, or a set of
+            '''   Component instance (either the entire Resource itself, or a set of
             '''   its properties)
             ''' </summary>
             ''' <remarks></remarks>

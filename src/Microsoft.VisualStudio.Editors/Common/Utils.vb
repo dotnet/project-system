@@ -284,7 +284,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
 
 
         ''' <summary>
-        ''' Attempts to create a string represention of an object, for debug purposes.  Under retail,
+        ''' Attempts to create a string representation of an object, for debug purposes.  Under retail,
         '''   returns an empty string.
         ''' </summary>
         ''' <param name="Value">The value to turn into a displayable string.</param>
@@ -344,7 +344,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <summary>
         ''' Given an exception, returns True if it is a CheckOut exception.
         ''' </summary>
-        ''' <param name="ex">The exception to check rethrow if it's caused by cancaling checkout</param>
+        ''' <param name="ex">The exception to check rethrow if it's caused by canceling checkout</param>
         ''' <remarks></remarks>
         Public Function IsCheckoutCanceledException(ex As Exception) As Boolean
             If (TypeOf ex Is CheckoutException AndAlso ex.Equals(CheckoutException.Canceled)) _
@@ -924,7 +924,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 Return RemoveEndingSeparator(Path)
             End If
 
-            ' Use the algorith from URI.MakeRelative.
+            ' Use the algorithm from URI.MakeRelative.
             Dim Index As Integer = 0
             Dim CommonSeparatorPosition As Integer = -1
             ' Loop until the end of a path, or different characters at an index.
@@ -1428,7 +1428,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
             ' in this list. All unknown entries will be reported as &hFF
             '
             ' Add more entries to the end of this list. Do *not* put any new entries in the middle of the list!
-            Private Shared s_sqmOrder() As Guid = {
+            Private Shared ReadOnly s_sqmOrder() As Guid = {
                 KnownPropertyPageGuids.GuidApplicationPage_VB,
                 KnownPropertyPageGuids.GuidApplicationPage_CS,
                 KnownPropertyPageGuids.GuidApplicationPage_JS,
@@ -1735,6 +1735,8 @@ Namespace Microsoft.VisualStudio.Editors.Common
         Public Class TelemetryLogger
 
             Private Const InputXmlFormEventName As String = "vs/projectsystem/editors/inputxmlform"
+            Private Const UsePreviewSdkEventName As String = "vs/projectsystem/options/usepreviewsdk"
+
             Public Enum InputXmlFormEvent
                 FormOpened
                 FromFileButtonClicked
@@ -1751,6 +1753,14 @@ Namespace Microsoft.VisualStudio.Editors.Common
             Public Shared Sub LogInputXmlFormException(ex As Exception)
                 TelemetryService.DefaultSession.PostFault(InputXmlFormEventName, "Exception encountered during Xml Schema Inference", ex)
             End Sub
+
+            Public Shared Sub LogUsePreviewSdkEvent(usePreviewSdk As Boolean, isPreview As Boolean)
+                Dim userTask = New UserTaskEvent(UsePreviewSdkEventName, TelemetryResult.Success)
+                userTask.Properties("vs.projectsystem.options.usepreviewsdk") = usePreviewSdk
+                userTask.Properties("vs.projectsystem.options.ispreview") = isPreview
+                TelemetryService.DefaultSession.PostEvent(userTask)
+            End Sub
+
         End Class
 #End Region
     End Module

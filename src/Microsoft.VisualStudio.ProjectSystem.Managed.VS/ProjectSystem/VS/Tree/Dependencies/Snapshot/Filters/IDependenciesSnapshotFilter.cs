@@ -42,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
             out bool filterAnyChanges);
 
         /// <summary>
-        /// Is called before removing a given dependecy.
+        /// Is called before removing a given dependency.
         /// </summary>
         /// <param name="projectPath">Path to current project.</param>
         /// <param name="targetFramework">Target framework for which dependency was resolved.</param>

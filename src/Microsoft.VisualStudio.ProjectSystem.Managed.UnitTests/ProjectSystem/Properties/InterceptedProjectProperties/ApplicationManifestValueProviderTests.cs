@@ -7,7 +7,6 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
-    [Trait("UnitTest", "ProjectSystem")]
     public class ApplicationManifestValueProviderTests
     {
         [Theory]

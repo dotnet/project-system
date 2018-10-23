@@ -10,7 +10,6 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Configuration
 {
-    [Trait("UnitTest", "ProjectSystem")]
     public class TargetFrameworkProjectConfigurationDimensionProviderTests
     {
         private const string ProjectXmlTFM =

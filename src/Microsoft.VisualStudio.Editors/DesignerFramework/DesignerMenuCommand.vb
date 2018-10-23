@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.ComponentModel.Design
 Imports System.Runtime.InteropServices
@@ -166,7 +166,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             _statusValid = True
         End Sub 'UpdateStatus
 
-        Private _rootDesigner As BaseRootDesigner ' Pointer to the RootDesigner allowing refreshing all menu commands.
+        Private ReadOnly _rootDesigner As BaseRootDesigner ' Pointer to the RootDesigner allowing refreshing all menu commands.
         Private ReadOnly _commandEnabledHandler As CheckCommandStatusHandler ' Handler to check if the command should be enabled.
         Private ReadOnly _commandCheckedHandler As CheckCommandStatusHandler ' Handler to check if the command should be checked.
         Private ReadOnly _commandVisibleHandler As CheckCommandStatusHandler ' Handler to check if the command should be hidden.
@@ -174,7 +174,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         Private _statusValid As Boolean ' Whether the status of the command is still valid.
     End Class 'DesignerMenuCommand
 
-    Friend Delegate Function CheckCommandStatusHandler(MenuCommand As DesignerMenuCommand) As Boolean
+    Friend Delegate Function CheckCommandStatusHandler(menuCommand As DesignerMenuCommand) As Boolean
 
 
     ''' <summary>
@@ -330,7 +330,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         Inherits DesignerMenuCommand
 
         ''' <summary>
-        ''' Constructs an intance of an ImposterDesignerMenuCommand
+        ''' Constructs an instance of an ImposterDesignerMenuCommand
         ''' </summary>
         ''' <param name="commandId">Id of the command.</param>
         ''' <remarks>Sets the command invisible and disabled.</remarks>
@@ -357,7 +357,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
     ''' <remarks></remarks>
     Friend Class LatchedCommandGroup
 
-        Private _commands As New Dictionary(Of Integer, MenuCommand)
+        Private ReadOnly _commands As New Dictionary(Of Integer, MenuCommand)
 
         ''' <summary>
         ''' Add a command to the group

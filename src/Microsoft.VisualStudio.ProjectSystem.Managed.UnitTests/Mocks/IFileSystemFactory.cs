@@ -7,7 +7,7 @@ using Moq;
 
 namespace Microsoft.VisualStudio.IO
 {
-    internal class IFileSystemFactory
+    internal static class IFileSystemFactory
     {
         public static IFileSystem Create()
         {

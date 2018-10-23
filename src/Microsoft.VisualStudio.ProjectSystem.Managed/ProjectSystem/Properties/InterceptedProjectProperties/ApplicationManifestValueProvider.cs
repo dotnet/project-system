@@ -6,11 +6,6 @@ using System.ComponentModel.Composition;
 using System.IO;
 using System.Threading.Tasks;
 
-// CPS calls the IProjectPropertiesProvider under a write lock. If we try to read a property from the 
-// project, we will try to acquire a read lock. Taking a read lock from the same thread as the write lock
-// is fine but ConfigureAwait(false) will put us in a different thread and cause the lock-taking code to blow up.
-#pragma warning disable CA2007 // Do not directly await a Task
-
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
     [ExportInterceptingPropertyValueProvider("ApplicationManifest", ExportInterceptingPropertyValueProviderFile.ProjectFile)]
@@ -33,12 +28,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// Gets the application manifest property
         /// </summary>
         /// <remarks>
-        /// The Application Manifest's value is one of three possibilites:
+        /// The Application Manifest's value is one of three possibilities:
         ///     - It's either a path to file that is the manifest
         ///     - It's the value "NoManifest" which means the application doesn't have a manifest.
         ///     - It's the value "DefaultManifest" which means that the application will have a default manifest.
         ///     
-        /// These three values map to two MSBuild properties - ApplicationManifest (specified if it's a path) or NoWin32Manfiest 
+        /// These three values map to two MSBuild properties - ApplicationManifest (specified if it's a path) or NoWin32Manifest 
         /// which is true for the second case and false or non-existent for the third.
         /// </remarks>
         public override async Task<string> OnGetEvaluatedPropertyValueAsync(string evaluatedPropertyValue, IProjectProperties defaultProperties)
@@ -54,7 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 return NoManifestValue;
             }
 
-            // It doesnt matter if it is set to false or the value is not present. We default to "DefaultManifest" scenario.
+            // It doesn't matter if it is set to false or the value is not present. We default to "DefaultManifest" scenario.
             return DefaultManifestValue;
         }
 

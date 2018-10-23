@@ -8,10 +8,9 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
 {
-    [Trait("UnitTest", "ProjectSystem")]
     public class TreeItemOrderPropertyProviderTests
     {
-        private List<(string type, string include)> _simpleOrderFile = new List<(string type, string include)>
+        private readonly List<(string type, string include)> _simpleOrderFile = new List<(string type, string include)>
         {
             ("Compile", "Order.fs"),
             ("Compile", "Customer.fs"),
@@ -43,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
             Assert.Equal(expectedOrder, values.DisplayOrder);
         }
 
-        private List<(string type, string include)> _simpleOrderFileDuplicate = new List<(string type, string include)>
+        private readonly List<(string type, string include)> _simpleOrderFileDuplicate = new List<(string type, string include)>
         {
             ("Compile", "Order.fs"),
             ("Compile", "Customer.fs"),
@@ -184,7 +183,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
             }
         }
 
-        private List<(string type, string include)> _orderedWithDups = new List<(string type, string include)>
+        private readonly List<(string type, string include)> _orderedWithDups = new List<(string type, string include)>
         {
             ("Compile", "Common.fs"),
             ("Compile", "Tables\\Order.fs"),
@@ -219,7 +218,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
             Assert.Equal(expectedOrder, values.DisplayOrder);
         }
 
-        private List<(string type, string include, string linkPath)> _orderedWithLinkPaths = new List<(string type, string include, string linkPath)>
+        private readonly List<(string type, string include, string linkPath)> _orderedWithLinkPaths = new List<(string type, string include, string linkPath)>
         {
             ("Compile", "Common.fs", "Tables/Test.fs"),
             ("Compile", "Tables\\Order.fs", null),

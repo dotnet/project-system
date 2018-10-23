@@ -9,7 +9,6 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Logging
 {
-    [Trait("UnitTest", "ProjectSystem")]
     public class ProjectOutputWindowProjectLoggerTests
     {
         [Theory]

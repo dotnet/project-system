@@ -2,7 +2,7 @@
 
 Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
-    Partial Class AdvBuildSettingsPropPage
+    Partial Friend Class AdvBuildSettingsPropPage
 
         Private Class ComboItem
 

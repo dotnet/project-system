@@ -6,7 +6,6 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
 {
-    [Trait("UnitTest", "ProjectSystem")]
     public class VisualBasicExtenderCATIDProviderTests
     {
         [Fact]

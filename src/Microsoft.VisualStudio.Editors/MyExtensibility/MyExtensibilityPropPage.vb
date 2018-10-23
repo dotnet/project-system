@@ -51,16 +51,14 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 MyExtensibilitySolutionService.Instance.GetService(GetType(IMenuCommandService)),
                 IMenuCommandService)
             Debug.Assert(vsMenuService IsNot Nothing, "Could not get vsMenuService!")
-            listViewExtensions.MenuCommandService = vsMenuService
+            DataGridViewExtensions.MenuCommandService = vsMenuService
 
             RefreshExtensionsList()
 
-            ' Resize each columns based on its content.
-            If listViewExtensions.Items.Count > 0 Then
-                For i As Integer = 0 To listViewExtensions.Columns.Count - 1
-                    listViewExtensions.AutoResizeColumn(i, ColumnHeaderAutoResizeStyle.ColumnContent)
-                Next
-            End If
+            For Each column As DataGridViewColumn In DataGridViewExtensions.Columns
+                column.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
+            Next
+
         End Sub
 
         ''' <summary>
@@ -88,15 +86,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             InitializeComponent()
 
-            ' Support sorting.
-            _comparer = New ListViewComparer With {
-                .SortColumn = 0,
-                .Sorting = SortOrder.Ascending
-            }
-            listViewExtensions.ListViewItemSorter = _comparer
-            listViewExtensions.Sorting = SortOrder.Ascending
-
-            'Opt out of page scaling since we're using AutoScaleMode
             PageRequiresScaling = False
 
             linkLabelHelp.SetThemedColor(VsUIShell5Service, SupportsTheming)
@@ -114,23 +103,18 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             RemoveExtension()
         End Sub
 
-        Private Sub listViewExtensions_AddExtension(sender As Object, e As EventArgs) _
-                Handles listViewExtensions.AddExtension
+        Private Sub DataGridViewExtensions_AddExtension(sender As Object, e As EventArgs) _
+                Handles DataGridViewExtensions.AddExtension
             AddExtension()
         End Sub
 
-        Private Sub listViewExtensions_ColumnClick(sender As Object, e As ColumnClickEventArgs) _
-                Handles listViewExtensions.ColumnClick
-            ListViewComparer.HandleColumnClick(listViewExtensions, _comparer, e)
-        End Sub
-
-        Private Sub listViewExtensions_RemoveExtension(sender As Object, e As EventArgs) _
-                Handles listViewExtensions.RemoveExtension
+        Private Sub DataGridViewExtensions_RemoveExtension(sender As Object, e As EventArgs) _
+                Handles DataGridViewExtensions.RemoveExtension
             RemoveExtension()
         End Sub
 
-        Private Sub listViewExtensions_SelectedIndexChanged(sender As Object, e As EventArgs) _
-                Handles listViewExtensions.SelectedIndexChanged
+        Private Sub DataGridViewExtensions_SelectedIndexChanged(sender As Object, e As EventArgs) _
+                Handles DataGridViewExtensions.SelectionChanged
             EnableButtonRemove()
         End Sub
 
@@ -154,27 +138,36 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         ''' ;EnableButtonRemove
         ''' <summary>
-        ''' Enable / disalbe buttonRemove depending on the selected items in the list view.
+        ''' Enable / disable buttonRemove depending on the selected items in the list view.
         ''' </summary>
         Private Sub EnableButtonRemove()
-            buttonRemove.Enabled = listViewExtensions.SelectedItems.Count > 0
+            buttonRemove.Enabled = DataGridViewExtensions.SelectedRows.Count > 0
         End Sub
 
         ''' ;ExtensionProjectItemGroupToListViewItem
         ''' <summary>
         ''' Return the ListViewItem for the given extension code file.
         ''' </summary>
-        Private Function ExtensionProjectItemGroupToListViewItem(extensionProjectFile As MyExtensionProjectItemGroup) _
-                As ListViewItem
+        Private Function ExtensionProjectItemGroupToDataGridViewRow(extensionProjectFile As MyExtensionProjectItemGroup) _
+                As DataGridViewRow
             Debug.Assert(extensionProjectFile IsNot Nothing)
 
-            Dim listItem As New ListViewItem(extensionProjectFile.DisplayName) With {
+            Dim dataGridViewRow As New DataGridViewRow() With {
                 .Tag = extensionProjectFile
             }
-            listItem.SubItems.Add(extensionProjectFile.ExtensionVersion.ToString())
-            listItem.SubItems.Add(extensionProjectFile.ExtensionDescription)
 
-            Return listItem
+            dataGridViewRow.Cells.Add(New DataGridViewTextBoxCell() With {
+                .Value = extensionProjectFile.DisplayName
+            })
+            dataGridViewRow.Cells.Add(New DataGridViewTextBoxCell() With {
+                .Value = extensionProjectFile.ExtensionVersion.ToString()
+            })
+            dataGridViewRow.Cells.Add(New DataGridViewTextBoxCell() With {
+                .Value = extensionProjectFile.ExtensionDescription
+            })
+
+
+            Return dataGridViewRow
         End Function
 
         ''' ;RefreshExtensionsList
@@ -182,14 +175,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Refresh the extensions list view.
         ''' </summary>
         Private Sub RefreshExtensionsList()
-            listViewExtensions.Items.Clear()
+            DataGridViewExtensions.Rows.Clear()
             Dim extProjItemGroups As List(Of MyExtensionProjectItemGroup) =
                 _projectService.GetExtensionProjectItemGroups()
             If extProjItemGroups IsNot Nothing Then
                 For Each extProjItemGroup As MyExtensionProjectItemGroup In extProjItemGroups
-                    listViewExtensions.Items.Add(ExtensionProjectItemGroupToListViewItem(extProjItemGroup))
+                    DataGridViewExtensions.Rows.Add(ExtensionProjectItemGroupToDataGridViewRow(extProjItemGroup))
                 Next
-                listViewExtensions.Sort()
             End If
             EnableButtonRemove()
         End Sub
@@ -199,10 +191,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Remove the selected extensions.
         ''' </summary>
         Private Sub RemoveExtension()
-            Debug.Assert(listViewExtensions.SelectedItems.Count > 0)
+            Debug.Assert(DataGridViewExtensions.SelectedRows.Count > 0)
 
             Dim extProjItemGroups As New List(Of MyExtensionProjectItemGroup)
-            For Each item As ListViewItem In listViewExtensions.SelectedItems
+            For Each item As DataGridViewRow In DataGridViewExtensions.SelectedRows
                 Dim extProjItemGroup As MyExtensionProjectItemGroup = TryCast(item.Tag, MyExtensionProjectItemGroup)
                 If extProjItemGroup IsNot Nothing Then
                     extProjItemGroups.Add(extProjItemGroup)
@@ -222,24 +214,25 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 #Region "Windows Form Designer generated code"
         Friend WithEvents labelDescription As Label
         Friend WithEvents linkLabelHelp As VSThemedLinkLabel
-        Friend WithEvents listViewExtensions As MyExtensionListView
-        Friend WithEvents colHeaderExtensionName As ColumnHeader
+        Friend WithEvents DataGridViewExtensions As MyExtensionDataGridView
+        Friend WithEvents colHeaderExtensionName As DataGridViewTextBoxColumn
+        Friend WithEvents colHeaderExtensionVersion As DataGridViewTextBoxColumn
+        Friend WithEvents colHeaderExtensionDescription As DataGridViewTextBoxColumn
         Friend WithEvents tableLayoutAddRemoveButtons As TableLayoutPanel
         Friend WithEvents buttonRemove As Button
         Friend WithEvents buttonAdd As Button
         Private ReadOnly _components As System.ComponentModel.IContainer
-        Friend WithEvents colHeaderExtensionVersion As ColumnHeader
-        Friend WithEvents colHeaderExtensionDescription As ColumnHeader
+
 
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(MyExtensibilityPropPage))
             tableLayoutOverarching = New TableLayoutPanel
             labelDescription = New Label
             linkLabelHelp = New VSThemedLinkLabel
-            listViewExtensions = New MyExtensionListView
-            colHeaderExtensionName = New ColumnHeader
-            colHeaderExtensionVersion = New ColumnHeader
-            colHeaderExtensionDescription = New ColumnHeader
+            DataGridViewExtensions = New MyExtensionDataGridView
+            colHeaderExtensionName = New DataGridViewTextBoxColumn
+            colHeaderExtensionVersion = New DataGridViewTextBoxColumn
+            colHeaderExtensionDescription = New DataGridViewTextBoxColumn
             tableLayoutAddRemoveButtons = New TableLayoutPanel
             buttonRemove = New Button
             buttonAdd = New Button
@@ -252,7 +245,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             resources.ApplyResources(tableLayoutOverarching, "tableLayoutOverarching")
             tableLayoutOverarching.Controls.Add(labelDescription, 0, 0)
             tableLayoutOverarching.Controls.Add(linkLabelHelp, 0, 1)
-            tableLayoutOverarching.Controls.Add(listViewExtensions, 0, 2)
+            tableLayoutOverarching.Controls.Add(DataGridViewExtensions, 0, 2)
             tableLayoutOverarching.Controls.Add(tableLayoutAddRemoveButtons, 0, 3)
             tableLayoutOverarching.Name = "tableLayoutOverarching"
             '
@@ -267,17 +260,24 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             linkLabelHelp.Name = "linkLabelHelp"
             linkLabelHelp.TabStop = True
             '
-            'listViewExtensions
+            'DataGridViewExtensions
             '
-            listViewExtensions.AutoArrange = False
-            listViewExtensions.Columns.AddRange(New ColumnHeader() {colHeaderExtensionName, colHeaderExtensionVersion, colHeaderExtensionDescription})
-            resources.ApplyResources(listViewExtensions, "listViewExtensions")
-            listViewExtensions.FullRowSelect = True
-            listViewExtensions.HideSelection = False
-            listViewExtensions.Name = "listViewExtensions"
-            listViewExtensions.ShowItemToolTips = True
-            listViewExtensions.UseCompatibleStateImageBehavior = False
-            listViewExtensions.View = View.Details
+            DataGridViewExtensions.Columns.AddRange(New DataGridViewTextBoxColumn() {colHeaderExtensionName, colHeaderExtensionVersion, colHeaderExtensionDescription})
+            resources.ApplyResources(DataGridViewExtensions, "DataGridViewExtensions")
+            DataGridViewExtensions.SelectionMode = DataGridViewSelectionMode.CellSelect
+            DataGridViewExtensions.RowHeadersVisible = False
+
+            DataGridViewExtensions.Name = "DataGridViewExtensions"
+
+            DataGridViewExtensions.Dock = DockStyle.Fill
+            DataGridViewExtensions.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
+            DataGridViewExtensions.ReadOnly = True
+            DataGridViewExtensions.SelectionMode = DataGridViewSelectionMode.FullRowSelect
+            DataGridViewExtensions.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize
+            DataGridViewExtensions.AllowUserToAddRows = False
+            DataGridViewExtensions.CellBorderStyle = DataGridViewCellBorderStyle.None
+            DataGridViewExtensions.BackgroundColor = Drawing.SystemColors.Window
+            DataGridViewExtensions.AllowUserToResizeRows = False
             '
             'colHeaderExtensionName
             '

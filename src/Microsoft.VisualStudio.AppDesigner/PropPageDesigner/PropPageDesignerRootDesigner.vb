@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.ComponentModel.Design
 
@@ -92,7 +92,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         End Function
 
         ''' <summary>
-        '''  Exposes GetService from ComponentDesigner to other classes in this assemlby to get a service.
+        '''  Exposes GetService from ComponentDesigner to other classes in this assembly to get a service.
         ''' </summary>
         ''' <param name="ServiceType">The type of the service being asked for.</param>
         ''' <returns>The requested service, if it exists.</returns>

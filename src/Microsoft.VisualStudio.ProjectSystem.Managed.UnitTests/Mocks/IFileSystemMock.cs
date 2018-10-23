@@ -24,8 +24,8 @@ namespace Microsoft.VisualStudio.IO
             public Encoding FileEncoding = Encoding.Default;
         };
 
-        private Dictionary<string, FileData> _files = new Dictionary<string, FileData>(StringComparer.OrdinalIgnoreCase);
-        private HashSet<string> _folders = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        private readonly Dictionary<string, FileData> _files = new Dictionary<string, FileData>(StringComparer.OrdinalIgnoreCase);
+        private readonly HashSet<string> _folders = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         private string _currentDirectory;
 
         public Dictionary<string, FileData> Files { get => _files; }
@@ -54,6 +54,16 @@ namespace Microsoft.VisualStudio.IO
             {
                 data.LastWriteTime = data.LastWriteTime.AddMilliseconds(new Random().NextDouble() * 10000);
             }
+        }
+
+        public void AddFile(string path, DateTime? lastWriteTime = null)
+        {
+            _files[path] = new FileData
+            {
+                FileContents = "",
+                FileEncoding = Encoding.UTF8,
+                LastWriteTime = lastWriteTime ?? DateTime.Now
+            };
         }
 
         public void AddFolder(string path)

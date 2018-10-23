@@ -28,8 +28,21 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"></RowDefinition>
             </Grid.RowDefinitions>
-            <TextBlock x:Uid="NameLabel" Margin="10,10" Grid.Row="0" Grid.Column="0"  TextWrapping="NoWrap" Text="{x:Static Member=local:PropertyPageResources.ProfileName}" />
-            <TextBox x:Name="ProfileNameTextBox" Uid="ProfileNameTextBox" Margin="10,10" Grid.Row="0" Grid.Column="1" Text="{Binding UpdateSourceTrigger=PropertyChanged, Path=ProfileName}" />
+            <TextBlock 
+                x:Uid="NameLabel"
+                Margin="10,10"
+                Grid.Row="0"
+                Grid.Column="0"
+                TextWrapping="NoWrap"
+                Text="{x:Static Member=local:PropertyPageResources.ProfileName}"/>
+            <TextBox
+                x:Name="ProfileNameTextBox"
+                Uid="ProfileNameTextBox"
+                Margin="10,10"
+                Grid.Row="0"
+                Grid.Column="1"
+                Text="{Binding UpdateSourceTrigger=PropertyChanged, Path=ProfileName}"
+                AutomationProperties.Name="{x:Static Member=local:PropertyPageResources.ProfileName}"/>
         </Grid>
         <Grid x:Uid="ButtonGrid" Grid.Row="1" Margin="5" HorizontalAlignment="Right" >
             <Grid.RowDefinitions>

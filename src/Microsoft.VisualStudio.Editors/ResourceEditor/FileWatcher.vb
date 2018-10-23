@@ -37,11 +37,11 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   is based on directories, and allocates system resources per directory.
         ''' </summary>
         ''' <remarks></remarks>
-        Private _directoryWatchers As New Hashtable 'Key = Directory Path (upper-cased, with the backslash)
+        Private ReadOnly _directoryWatchers As New Hashtable 'Key = Directory Path (upper-cased, with the backslash)
 
         'Any Windows Forms control on the primary thread.  This is used for invoking 
         '  the system filewatch events (called on a secondary thread) back to the main thread.
-        Private _controlForSynchronizingThreads As Control
+        Private ReadOnly _controlForSynchronizingThreads As Control
 
 
 
@@ -119,7 +119,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
 
         ''' <summary>
-        ''' Stops watching a particuliar file.
+        ''' Stops watching a particular file.
         ''' </summary>
         ''' <param name="PathAndFileName">The full path and file to stop watching.</param>
         ''' <param name="Listener">The listener that wants to stop watching.</param>
@@ -156,7 +156,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Gets a DirectoryWatcher for this path.  If one doesn't already exist, a new one
         '''   will be created.
         ''' </summary>
-        ''' <param name="DirectoryPath">Directoy path to watch.</param>
+        ''' <param name="DirectoryPath">Directory path to watch.</param>
         ''' <param name="CreateIfNotFound">If True, will create a new DirectoryWatcher if none is found matching the file.</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
@@ -233,7 +233,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Private WithEvents _fileSystemWatcher As FileSystemWatcher
 
             'The parent FileWatcher class
-            Private _parentFileWatcher As FileWatcher
+            Private ReadOnly _parentFileWatcher As FileWatcher
 
 
             Public Sub New(DirectoryPath As String, ParentFileWatcher As FileWatcher)
@@ -384,6 +384,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' <param name="FileName">The file name (no path) of the file in this directory that has changed.</param>
             ''' <remarks></remarks>
             Private Sub OnFileChanged(FullDirectoryPath As String, FileName As String)
+                Debug.Assert(Not String.IsNullOrEmpty(FileName))
                 Debug.Assert(0 = String.Compare(Path.GetDirectoryName(FullDirectoryPath), _directoryPath, StringComparison.OrdinalIgnoreCase))
                 Debug.Assert(Path.IsPathRooted(FullDirectoryPath))
 
@@ -427,9 +428,19 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Private Sub FileSystemWatcher_Renamed(sender As Object, e As RenamedEventArgs) Handles _fileSystemWatcher.Renamed
                 Debug.WriteLineIf(Switches.RSEFileWatcher.TraceVerbose, "DirectoryWatcher: Raw renamed event: " & e.ChangeType & ", " & e.FullPath & ": " & e.Name & ", Thread = " & Hex(System.Threading.Thread.CurrentThread.GetHashCode))
 
-                'Both the old file and the new file might be interesting events.
-                OnFileChanged(e.FullPath, e.Name)
-                OnFileChanged(e.FullPath, e.OldName)
+                ' Both the old file and the new file might be interesting events.
+
+                ' ReadDirectoryChangesW/FileSystemWatcher.Rename can on occasion send on a rename with or without the new name or the old name, 
+                ' so make sure we handle this situation. See the comments in FileSystemWatcher.CompletionStatusChanged for more information.
+
+                If Not String.IsNullOrEmpty(e.Name) Then
+                    OnFileChanged(e.FullPath, e.Name)
+                End If
+
+                If Not String.IsNullOrEmpty(e.OldName) Then
+                    OnFileChanged(e.FullPath, e.OldName)
+                End If
+
             End Sub
 
 
@@ -473,7 +484,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Private ReadOnly _fileNameOnly As String
 
             'The parent DirectoryWatcher for this file.
-            Private _directoryWatcher As DirectoryWatcher
+            Private ReadOnly _directoryWatcher As DirectoryWatcher
 
             'A Windows Forms timer used to delay processing of the file changed
             '  event until it's likely that no more changes to the file are
@@ -486,7 +497,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             '  in multiples.
             Private Const DelayInMilliseconds As Integer = 400
 
-            Private _listeners As New ArrayList 'Of IFileWatchListener
+            Private ReadOnly _listeners As New ArrayList 'Of IFileWatchListener
 
 #If DEBUG Then
             'Hashcode of the last thread we fired notifications on.  Used to verify

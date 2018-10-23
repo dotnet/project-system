@@ -64,7 +64,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         Function Init(<[In]()> ProjectHierarchy As IVsHierarchy) As Integer 'Initialize the MyApplicationProperties object, etc.
 
         <PreserveSig()>
-        Function GetProperties(<Out(), MarshalAs(UnmanagedType.IDispatch)> ByRef MyAppProps As Object) As Integer 'Get MyAppliationProperties object
+        Function GetProperties(<Out(), MarshalAs(UnmanagedType.IDispatch)> ByRef MyAppProps As Object) As Integer 'Get MyApplicationProperties object
 
         <PreserveSig()>
         Function Save() As Integer 'Save any MyApplicationProperties changes to disk (in MyApplication.myapp), if dirty
@@ -138,7 +138,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
 
         'WeakReference list of MyApplicationProperties objects, one for each
         '  IVsHierarchy that we've been initialized against
-        Private Shared s_myPropertyInstances As New Hashtable
+        Private Shared ReadOnly s_myPropertyInstances As New Hashtable
 
 
         ''' <summary>
@@ -1221,7 +1221,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         End Function
 
         ''' <summary>
-        ''' Whenver the backing file changes, we better update ourselves...
+        ''' Whenever the backing file changes, we better update ourselves...
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>

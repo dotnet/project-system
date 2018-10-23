@@ -8,8 +8,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
     Friend Class PackagePropPage
         Inherits PropPageUserControlBase
 
-        Private _fileVersionTextBoxes As TextBox()
-        Private _assemblyVersionTextBoxes As TextBox()
+        Private ReadOnly _fileVersionTextBoxes As TextBox()
+        Private ReadOnly _assemblyVersionTextBoxes As TextBox()
 
         'After 65535, the project system doesn't complain, and in theory any value is allowed as
         '  the string version of this, but after this value the numeric version of the file version

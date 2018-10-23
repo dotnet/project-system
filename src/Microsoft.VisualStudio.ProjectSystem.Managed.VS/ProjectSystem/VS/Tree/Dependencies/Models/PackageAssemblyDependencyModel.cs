@@ -11,6 +11,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 {
     internal class PackageAssemblyDependencyModel : DependencyModel
     {
+        private static readonly DependencyIconSet s_iconSet = new DependencyIconSet(
+            icon: KnownMonikers.Reference,
+            expandedIcon: KnownMonikers.Reference,
+            unresolvedIcon: KnownMonikers.ReferenceWarning,
+            unresolvedExpandedIcon: KnownMonikers.ReferenceWarning);
+
         public PackageAssemblyDependencyModel(
             string providerType,
             string path,
@@ -27,10 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             Name = name;
             Caption = name;
             TopLevel = false;
-            Icon = KnownMonikers.Reference;
-            ExpandedIcon = Icon;
-            UnresolvedIcon = KnownMonikers.ReferenceWarning;
-            UnresolvedExpandedIcon = UnresolvedIcon;
+            IconSet = s_iconSet;
 
             if (dependenciesIDs != null && dependenciesIDs.Any())
             {

@@ -7,7 +7,7 @@ namespace Microsoft.VisualStudio.Threading
     /// <summary>
     ///     Provides sentinel Tasks that represent commonly returned values.
     /// </summary>
-    internal class TaskResult
+    internal static class TaskResult
     {
         /// <summary>
         ///     Represents a Task that's completed successfully with the result of <see langword="false"/>.

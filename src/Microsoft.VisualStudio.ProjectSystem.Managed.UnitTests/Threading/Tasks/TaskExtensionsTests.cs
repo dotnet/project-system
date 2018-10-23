@@ -6,7 +6,6 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.Threading.Tasks
 {
-    [Trait("UnitTest", "ProjectSystem")]
     public class TaskExtensionsTests
     {
         [Fact]

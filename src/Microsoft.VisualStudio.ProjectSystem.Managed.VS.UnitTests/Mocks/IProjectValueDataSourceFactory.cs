@@ -6,7 +6,7 @@ using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
-    public class IProjectValueDataSourceFactory
+    public static class IProjectValueDataSourceFactory
     {
         public static IProjectValueDataSource<T> CreateInstance<T>()
         {

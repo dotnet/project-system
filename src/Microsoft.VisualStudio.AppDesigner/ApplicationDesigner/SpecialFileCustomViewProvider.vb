@@ -16,7 +16,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         Private _view As Control
         Private ReadOnly _linkText As String
         Private WithEvents _designerView As ApplicationDesignerView
-        Private _designerPanel As ApplicationDesignerPanel
+        Private ReadOnly _designerPanel As ApplicationDesignerPanel
         Private ReadOnly _specialFileId As Integer
 
 
@@ -155,7 +155,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         Inherits CustomDocumentMonikerProvider
 
         Private ReadOnly _specialFileId As Integer
-        Private _designerView As ApplicationDesignerView
+        Private ReadOnly _designerView As ApplicationDesignerView
 
         ''' <summary>
         ''' Constructor.

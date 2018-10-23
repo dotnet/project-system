@@ -25,7 +25,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
     ''' This is the UI for the PropertyPageDesigner
     ''' The view implements IVsProjectDesignerPageSite to allow the property page to 
     ''' notify us of property changes.  The page then sends private change notifications
-    ''' which let us bubble the notifcation into the standard component changed mechanism.
+    ''' which let us bubble the notification into the standard component changed mechanism.
     ''' This will cause the normal undo mechanism to be invoked.
     ''' </summary>
     ''' <remarks></remarks>
@@ -536,7 +536,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 
         ''' <summary>
         ''' Update dirty state of the appdesigner (if any) after a transaction is closed
-        '''  Somtimes the we may have tried to update the dirty state when a transaction is open (i.e. when opening files
+        '''  Sometimes the we may have tried to update the dirty state when a transaction is open (i.e. when opening files
         '''  from SCC). It is not possible for us to update the dirty state while a transaction is active, so we have to wait
         '''  until the transaction is closed. 
         ''' </summary>
@@ -565,7 +565,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         End Sub
 
         ''' <summary>
-        ''' We've gotta tell the renderer whenver the system colors change...
+        ''' We've gotta tell the renderer whenever the system colors change...
         ''' </summary>
         ''' <param name="msg"></param>
         ''' <param name="wparam"></param>
@@ -1371,7 +1371,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 
                 'If any of the values being serialized is an unmanaged enum, the serialization stream will
                 '  contain a reference to the dll, which the deserializer may have trouble deserializing.  So
-                '  instead simply convert these to their underyling types (usually integer) to avoid complications.
+                '  instead simply convert these to their underlying types (usually integer) to avoid complications.
                 If TypeOf Value Is MultipleValuesStore Then
                     Dim Store As MultipleValuesStore = DirectCast(Value, MultipleValuesStore)
                     For i As Integer = 0 To Store.Values.Length - 1
@@ -1705,8 +1705,8 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             End If
 
             If isSetFocusMessage AndAlso _fInitialized Then
-                ' NOTE: we stop auto-scroll to the active control when the whole view gets Focus, so we won't change the scollbar posistion when the user switches between application and editors in the VS
-                '  We should auto-scroll to the posistion when the page is just loaded.
+                ' NOTE: we stop auto-scroll to the active control when the whole view gets Focus, so we won't change the scrollbar position when the user switches between application and editors in the VS
+                '  We should auto-scroll to the position when the page is just loaded.
                 '  We should still scroll to the right view when focus is moving within the page.
                 ' This is for vswhidbey: #517826
                 PropertyPagePanel.StopAutoScrollToControl(True)
@@ -1894,7 +1894,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 
         ''' <summary>
         '''   We need disable scroll to the active control when the user switches application. 
-        '''   We can do this by overriding ScrollToControl function, which is used to calculate prefered viewport position when one control is activated.
+        '''   We can do this by overriding ScrollToControl function, which is used to calculate preferred viewport position when one control is activated.
         ''' </summary>
         Public Class ScrollablePanel
             Inherits Panel

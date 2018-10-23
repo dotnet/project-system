@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Option Strict On
 Option Explicit On
@@ -17,7 +17,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
     '''       (see VSIP documents | Advanced VSPackage Support | Implementing Menu and Toolbar Commands).
     '''       -   Add some unique ID for your menu, group and command into VisualStudioEditorsID.h.
     '''       -   Add those groups, menus and commands into Menus.ctc file (see Command Table Format).
-    ''' 2.    Define those constants in vbpackage\Contants.vb - MenuConstants.
+    ''' 2.    Define those constants in vbpackage\Constants.vb - MenuConstants.
     '''       Only expose the final CommandID (combination of the GUID and the command ID).
     ''' 3.    BaseRootDesigner exposes utilities methods to allow you registering menus with the shells, 
     '''       and showing context menus. 

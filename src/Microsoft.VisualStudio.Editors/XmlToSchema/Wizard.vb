@@ -48,7 +48,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlToSchema
                 Dim savePath = Path.GetDirectoryName(acitveProject.FullName)
                 If Not Directory.Exists(savePath) Then
                     'For Website projects targeting IIS/IIS Express activeProject.FullName returns http path which is not a Valid Directory.
-                    'Instead we will use acitveProject.Properties.Item(FullPath).Value to give a chance for Website projects(IIS/IIS Express)
+                    'Instead we will use activeProject.Properties.Item(FullPath).Value to give a chance for Website projects(IIS/IIS Express)
                     'to see if valid directory exists before showing warning. We will keep this logic inside try/catch block
                     'since for projects which dont support "FullPath" property exception can be thrown.
                     Try

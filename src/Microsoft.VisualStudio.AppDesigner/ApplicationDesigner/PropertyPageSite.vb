@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports Microsoft.VisualStudio.Editors.AppDesInterop
 Imports OleInterop = Microsoft.VisualStudio.OLE.Interop
@@ -9,7 +9,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
 
     ''' <summary>
-    ''' Povides specific limited functionality we need from the owner of the
+    ''' Provides specific limited functionality we need from the owner of the
     '''   property page site (ApplicationDesignerView).
     ''' </summary>
     ''' <remarks></remarks>
@@ -118,7 +118,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         End Sub
 
         Public Sub GetPageContainer(ByRef ppunk As Object) Implements OleInterop.IPropertyPageSite.GetPageContainer
-            ' This method is not implemented as per MSDN guidlines for IPropertyPageSite
+            ' This method is not implemented as per MSDN guidelines for IPropertyPageSite
             Throw New NotImplementedException
         End Sub
 
@@ -178,7 +178,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                     _appDesView.DelayRefreshDirtyIndicators()
                 End If
             Finally
-                'Make sure to renable this code
+                'Make sure to re-enable this code
                 InsideOnStatusChange = False
             End Try
 

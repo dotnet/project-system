@@ -99,7 +99,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         Private _tabControlRect As Rectangle 'The entire area of the tab control, including the tabs and panel area
 
         'Pointer to the ProjectDesignerTabControl which owns this renderer.  May not be null
-        Private _owner As ProjectDesignerTabControl
+        Private ReadOnly _owner As ProjectDesignerTabControl
 
         'The service provider to use.  May be Nothing
         Private _serviceProvider As IServiceProvider
@@ -405,7 +405,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             minimumHeight = _owner.HostingPanel.MinimumSize.Height + 1 + _buttonPagePadding.Bottom + 1
             height = Math.Max(height, minimumHeight)
 
-            ' Calcuate the required height by tab button area...
+            ' Calculate the required height by tab button area...
             Dim panelMinimumHeight As Integer = _buttonHeight * _visibleButtonSlots + 1 + _buttonPagePadding.Bottom + 1
             height = Math.Max(height, panelMinimumHeight)
 
@@ -601,7 +601,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                     Dim previousSmoothingMode = g.SmoothingMode
                     g.SmoothingMode = SmoothingMode.HighQuality
 
-                    ' Draw the traingle part of the path
+                    ' Draw the triangle part of the path
                     g.FillPath(backgroundBrush, trianglePath)
                     g.SmoothingMode = previousSmoothingMode
 

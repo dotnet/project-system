@@ -43,8 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Logging
                 _threadingService.Fork(async () =>
                 {
 
-                    IVsOutputWindowPane pane = await _outputWindowProvider.GetOutputWindowPaneAsync()
-                                                                          .ConfigureAwait(true);
+                    IVsOutputWindowPane pane = await _outputWindowProvider.GetOutputWindowPaneAsync();
 
                     pane.OutputStringNoPump(text);
 

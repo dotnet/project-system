@@ -2768,6 +2768,16 @@ El nuevo valor del archivo app.config es '{1}'
         <target state="translated">No se puede cargar "{0}" porque no es de confianza.</target>
         <note>{0} is resx file name that is blocked</note>
       </trans-unit>
+      <trans-unit id="RSE_Type_WMF">
+        <source>Windows Metafile</source>
+        <target state="new">Windows Metafile</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RSE_Type_EMF">
+        <source>Extended Metafile</source>
+        <target state="new">Extended Metafile</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>

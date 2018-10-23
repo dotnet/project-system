@@ -12,10 +12,10 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         Inherits ContainerControl
 
         'A list of all buttons currently contained by the control
-        Private _buttonCollection As New List(Of ProjectDesignerTabButton)
+        Private ReadOnly _buttonCollection As New List(Of ProjectDesignerTabButton)
 
-        Private _renderer As ProjectDesignerTabRenderer 'The renderer to use for painting.  May not be Nothing.
-        Private _selectedItem As ProjectDesignerTabButton ' Currently-seleted item.  May be Nothing.
+        Private ReadOnly _renderer As ProjectDesignerTabRenderer 'The renderer to use for painting.  May not be Nothing.
+        Private _selectedItem As ProjectDesignerTabButton ' Currently-selected item.  May be Nothing.
         Private _hoverItem As ProjectDesignerTabButton ' Currently-hovered item.  May be Nothing.
         Private _hostingPanel As Panel
 
@@ -23,8 +23,8 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         Public WithEvents OverflowButton As Button
 
         'The overflow menu that gets displayed when the overflow button is pressed
-        Private _overflowMenu As New ContextMenuStrip
-        Private _overflowTooltip As New ToolTip
+        Private ReadOnly _overflowMenu As New ContextMenuStrip
+        Private ReadOnly _overflowTooltip As New ToolTip
 
         'Backs up the ServiceProvider property
         Private _serviceProvider As IServiceProvider
@@ -614,7 +614,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         End Sub
 
         ''' <summary>
-        ''' We've gotta tell the renderer whenver the system colors change...
+        ''' We've gotta tell the renderer whenever the system colors change...
         ''' </summary>
         ''' <param name="msg"></param>
         ''' <param name="wparam"></param>
@@ -644,7 +644,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             Public Sub New()
                 'We don't want it to get focus.  Also, if we don't do this, it will have
                 '  a border size too large when it does obtain focus (or thinks it does).  
-                '  Setting TabStop=False itsn't enough.
+                '  Setting TabStop=False isn't enough.
                 SetStyle(ControlStyles.Selectable, False)
 
                 FlatStyle = FlatStyle.Flat
@@ -697,7 +697,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             Inherits ControlAccessibleObject
 
             ' button which this accessible object belongs to
-            Private _tabControl As ProjectDesignerTabControl
+            Private ReadOnly _tabControl As ProjectDesignerTabControl
 
             Public Sub New(owner As ProjectDesignerTabControl)
                 MyBase.New(owner)

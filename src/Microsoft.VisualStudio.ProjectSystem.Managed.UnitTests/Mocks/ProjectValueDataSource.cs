@@ -10,7 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
     internal class ProjectValueDataSource<T> : ProjectValueDataSourceBase<T>
         where T : class
     {
-        private BroadcastBlock<IProjectVersionedValue<T>> _broadcastBlock;
+        private IBroadcastBlock<IProjectVersionedValue<T>> _broadcastBlock;
         private int _version;
 
         public ProjectValueDataSource(IProjectCommonServices services)
@@ -39,7 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             base.Initialize();
 
-            _broadcastBlock = new BroadcastBlock<IProjectVersionedValue<T>>(null);
+            _broadcastBlock = DataflowBlockSlim.CreateBroadcastBlock<IProjectVersionedValue<T>>(null);
         }
 
         public async Task SendAndCompleteAsync(T value, ITargetBlock<IProjectVersionedValue<IConfigurationGroup<ProjectConfiguration>>> targetBlock)

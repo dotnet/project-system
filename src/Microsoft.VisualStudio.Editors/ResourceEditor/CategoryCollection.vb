@@ -17,7 +17,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
 
         'A hashtable list of resources by name.
-        Private _innerHashByName As New Hashtable 'Of String (case-sensitive)
+        Private ReadOnly _innerHashByName As New Hashtable 'Of String (case-sensitive)
 
 
 

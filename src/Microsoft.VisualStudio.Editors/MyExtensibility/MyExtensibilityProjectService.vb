@@ -216,7 +216,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' <summary>
         ''' Use this method to handle reference add / remove events.
         ''' This method will verify that the change does not come from My Extensions page,
-        ''' and will hook up to the Application's Idle event if neccessary.
+        ''' and will hook up to the Application's Idle event if necessary.
         ''' Adding / removing extensions at the same time of the events will lead to 
         ''' compiler and MSBuild errors.
         ''' </summary>
@@ -275,7 +275,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
                 Exit Sub
             End If
 
-            ' Prompt the user if neccessary.
+            ' Prompt the user if necessary.
             Dim addExtensions As Boolean = True
             Dim assemblyOption As AssemblyOption = _extensibilitySettings.GetAssemblyAutoAdd(assemblyFullName)
             If assemblyOption = AssemblyOption.Prompt Then
@@ -346,7 +346,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
                 End If
             End If
 
-            ' Either there's a pending "Add Foo" activity or some project items to remove. Prompt if neccessary.
+            ' Either there's a pending "Add Foo" activity or some project items to remove. Prompt if necessary.
             Dim removeExtensions As Boolean = True
             Dim assemblyOption As AssemblyOption = _extensibilitySettings.GetAssemblyAutoRemove(assemblyFullName)
             If assemblyOption = AssemblyOption.Prompt Then
@@ -517,12 +517,12 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
 
         ' Service provider, current project, project hierarchy and solution.
         Private ReadOnly _vbPackage As VBPackage
-        Private _project As Project
-        Private _projectHierarchy As IVsHierarchy
+        Private ReadOnly _project As Project
+        Private ReadOnly _projectHierarchy As IVsHierarchy
         Private _projectTypeID As String
 
         ' Extension templates information.
-        Private _extensibilitySettings As MyExtensibilitySettings
+        Private ReadOnly _extensibilitySettings As MyExtensibilitySettings
         ' Managing extension code files in current project.
         Private WithEvents _projectSettings As MyExtensibilityProjectSettings
 
@@ -531,7 +531,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         Private _pendingAssemblyChangesList As List(Of AssemblyChange)
         '' List of templates being added through My Extension property pages. 
         '' These should be excluded from any reference added events resulting from the templates being added.
-        '' Scenario: Template T triggerred by A, also contains A. Add template T explicitly should not 
+        '' Scenario: Template T triggered by A, also contains A. Add template T explicitly should not 
         '' trigger template T again. 
         Private _excludedTemplates As List(Of MyExtensionTemplate)
 
@@ -592,8 +592,8 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
                 Return MyBase.Equals(obj)
             End Function
 
-            Private _assemblyName As String
-            Private _changeType As AddRemoveAction
+            Private ReadOnly _assemblyName As String
+            Private ReadOnly _changeType As AddRemoveAction
             Private _extensionTemplates As List(Of MyExtensionTemplate)
             Private _extensionProjectFiles As List(Of MyExtensionProjectItemGroup)
         End Class ' Private Class AssemblyChange

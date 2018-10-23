@@ -11,7 +11,6 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Input.Commands
 {
-    [Trait("UnitTest", "ProjectSystem")]
     public class ActiveDebugFrameworkServicesTests
     {
         [Theory]
@@ -81,7 +80,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Input.Commands
 
             var debugFrameworkSvcs = new ActiveDebugFrameworkServices(null, commonServices);
             await debugFrameworkSvcs.SetActiveDebuggingFrameworkPropertyAsync("netcoreapp1.0");
-            // Just verifies it doesn't throw. In other words, the function is trying to set the correct property. The way the proeprty mocks
+            // Just verifies it doesn't throw. In other words, the function is trying to set the correct property. The way the property mocks
             // are set up there is no easy way to capture the value being set without rewriting how they work.
         }
 

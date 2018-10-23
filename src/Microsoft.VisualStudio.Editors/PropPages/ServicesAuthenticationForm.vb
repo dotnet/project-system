@@ -7,8 +7,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
     Partial Friend Class ServicesAuthenticationForm
         Inherits Form
 
-        Private _serviceProvider As IServiceProvider
-        Private _authenticationUrl As String
+        Private ReadOnly _serviceProvider As IServiceProvider
+        Private ReadOnly _authenticationUrl As String
 
         <SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings")>
         Public Sub New(authenticationUrl As String, authenticationHost As String, serviceProvider As IServiceProvider)
