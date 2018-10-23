@@ -160,14 +160,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
                     continue;
                 }
 
-                var dependencyInfo = new DependencyNodeInfo
-                {
-                    Id = id,
-                    Caption = childNode.Label,
-                    Resolved = childNode.GetValue<bool>(DependenciesGraphSchema.ResolvedProperty)
-                };
-
-                children.Add(dependencyInfo);
+                children.Add(new DependencyNodeInfo(
+                    id, 
+                    childNode.Label, 
+                    childNode.GetValue<bool>(DependenciesGraphSchema.ResolvedProperty)));
             }
 
             return children;
