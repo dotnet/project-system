@@ -145,7 +145,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
         {
             nodesToRemove = existingChildren.Except(updatedChildren).ToList();
             nodesToAdd = updatedChildren.Except(existingChildren).ToList();
-            return nodesToAdd.Any() || nodesToRemove.Any();
+
+            return nodesToAdd.Count != 0 || nodesToRemove.Count != 0;
         }
 
         protected static IReadOnlyList<DependencyNodeInfo> GetExistingChildren(GraphNode inputGraphNode)
