@@ -220,7 +220,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' there exists sensitive information in the string and whether the user chooses to persist it
         '''</returns>
         ''' <remarks></remarks>
-        Private Function GetConnectionString(ServiceProvider As IServiceProvider, Dialog As IVsDataConnectionDialog, PromptIfContainsSensitiveData As Boolean) As String
+        Private Shared Function GetConnectionString(ServiceProvider As IServiceProvider, Dialog As IVsDataConnectionDialog, PromptIfContainsSensitiveData As Boolean) As String
 
             If Dialog Is Nothing Then
                 Throw New ArgumentNullException(NameOf(Dialog))

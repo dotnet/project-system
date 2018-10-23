@@ -144,7 +144,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="type"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function Normalize(serializedValue As String, type As Type) As String
+        Public Shared Function Normalize(serializedValue As String, type As Type) As String
             If SettingTypeValidator.IsTypeObsolete(type) Then
                 Return serializedValue
             Else
