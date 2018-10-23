@@ -115,7 +115,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         {
             // Get the active debug profile (timeout of 5s, though in reality is should never take this long as even in error conditions
             // a snapshot is produced).
-            ILaunchSettings currentProfiles = await LaunchSettingsProvider.WaitForFirstSnapshot(5000).ConfigureAwait(false);
+            ILaunchSettings currentProfiles = await LaunchSettingsProvider.WaitForFirstSnapshot(5000);
             ILaunchProfile activeProfile = currentProfiles?.ActiveProfile;
 
             // Should have a profile
@@ -131,11 +131,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             IReadOnlyList<IDebugLaunchSettings> launchSettings;
             if (fromDebugLaunch && launchProvider is IDebugProfileLaunchTargetsProvider2 launchProvider2)
             {
-                launchSettings = await launchProvider2.QueryDebugTargetsForDebugLaunchAsync(launchOptions, activeProfile).ConfigureAwait(false);
+                launchSettings = await launchProvider2.QueryDebugTargetsForDebugLaunchAsync(launchOptions, activeProfile);
             }
             else
             {
-                launchSettings = await launchProvider.QueryDebugTargetsAsync(launchOptions, activeProfile).ConfigureAwait(false);
+                launchSettings = await launchProvider.QueryDebugTargetsAsync(launchOptions, activeProfile);
             }
 
             LastLaunchProvider = launchProvider;
@@ -164,21 +164,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// </summary>
         public override async Task LaunchAsync(DebugLaunchOptions launchOptions)
         {
-            IReadOnlyList<IDebugLaunchSettings> targets = await QueryDebugTargetsInternalAsync(launchOptions, fromDebugLaunch: true).ConfigureAwait(false);
+            IReadOnlyList<IDebugLaunchSettings> targets = await QueryDebugTargetsInternalAsync(launchOptions, fromDebugLaunch: true);
 
             ILaunchProfile activeProfile = LaunchSettingsProvider.ActiveProfile;
 
             IDebugProfileLaunchTargetsProvider targetProfile = GetLaunchTargetsProvider(activeProfile);
             if (targetProfile != null)
             {
-                await targetProfile.OnBeforeLaunchAsync(launchOptions, activeProfile).ConfigureAwait(false);
+                await targetProfile.OnBeforeLaunchAsync(launchOptions, activeProfile);
             }
 
-            await DoLaunchAsync(targets.ToArray()).ConfigureAwait(false);
+            await DoLaunchAsync(targets.ToArray());
 
             if (targetProfile != null)
             {
-                await targetProfile.OnAfterLaunchAsync(launchOptions, activeProfile).ConfigureAwait(false);
+                await targetProfile.OnAfterLaunchAsync(launchOptions, activeProfile);
             }
         }
 
@@ -296,7 +296,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
         /// <summary>
         /// Converts the environment key value pairs to a valid environment string of the form
-        /// key=value/0key2=value2/0/0, with null's between each entry and a double null terminator.
+        /// key=value/0key2=value2/0/0, with nulls between each entry and a double null terminator.
         /// </summary>
         private static string GetSerializedEnvironmentString(IDictionary<string, string> environment)
         {
@@ -345,7 +345,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
         /// <summary>
         /// IDeployedProjectItemMappingProvider
-        /// Implementd so that we can map URL's back to local file item paths
+        /// Implemented so that we can map URL's back to local file item paths
         /// </summary>
         public bool TryGetProjectItemPathFromDeployedPath(string deployedPath, out string localPath)
         {

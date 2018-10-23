@@ -69,7 +69,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 Return oValue
             End If
 
-            ' If this is a local data file, we've gotta let the connecitonstrinconverter service
+            ' If this is a local data file, we've gotta let the connectionstringconverter service
             ' do it's magic to convert the path. Trying to convert a non-local data connection string
             ' should be a no-op, so we should be safe if we just try to get hold of the required services
             ' and give it a try...
@@ -132,7 +132,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
                         Dim oldConnectionStringProperties As IVsDataConnectionProperties = GetConnectionStringProperties(providerManager, providerGuid, normalizedConnectionString)
                         If oldConnectionStringProperties IsNot Nothing AndAlso ContainsSensitiveData(oldConnectionStringProperties) Then
-                            ' If we already had sensitive data in the string comming in to this function, we don't have to prompt again...
+                            ' If we already had sensitive data in the string coming in to this function, we don't have to prompt again...
                             containedSensitiveData = True
                         End If
                     ElseIf normalizedConnectionString <> "" Then
@@ -255,7 +255,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         End Function
 
         ''' <summary>
-        ''' Get connection string properties for a specific provider/connectoin string
+        ''' Get connection string properties for a specific provider/connection string
         ''' </summary>
         ''' <param name="ProviderManager"></param>
         ''' <param name="ProviderGUID"></param>

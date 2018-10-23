@@ -4,12 +4,9 @@ using System;
 using System.ComponentModel.Composition;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Threading.Tasks.Dataflow;
 
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.Shell.Interop;
-
-using IAsyncServiceProvider = Microsoft.VisualStudio.Shell.IAsyncServiceProvider;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 {
@@ -19,29 +16,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
     /// </summary>
     internal class StartupProjectRegistrar : OnceInitializedOnceDisposedAsync
     {
-        private readonly IAsyncServiceProvider _serviceProvider;
-        private readonly IProjectThreadingService _threadingService;
+        private readonly IVsService<IVsStartupProjectsListService> _startupProjectsListService;
         private readonly ISafeProjectGuidService _projectGuidService;
         private readonly IActiveConfiguredProjectSubscriptionService _projectSubscriptionService;
         private readonly ActiveConfiguredProject<DebuggerLaunchProviders> _launchProviders;
-        private IVsStartupProjectsListService _startupProjectsListService;
+        
         private Guid _projectGuid;
-#pragma warning disable CA2213 // OnceInitializedOnceDisposedAsync are not tracked corretly by the IDisposeable analyzer
         private IDisposable _subscription;
-#pragma warning restore CA2213
 
         [ImportingConstructor]
         public StartupProjectRegistrar(
             UnconfiguredProject project,
-            [Import(typeof(SAsyncServiceProvider))]IAsyncServiceProvider serviceProvider,
+            IVsService<SVsStartupProjectsListService, IVsStartupProjectsListService> startupProjectsListService,
             IProjectThreadingService threadingService,
             ISafeProjectGuidService projectGuidService,
             IActiveConfiguredProjectSubscriptionService projectSubscriptionService,
             ActiveConfiguredProject<DebuggerLaunchProviders> launchProviders)
         : base(threadingService.JoinableTaskContext)
         {
-            _serviceProvider = serviceProvider;
-            _threadingService = threadingService;
+            _startupProjectsListService = startupProjectsListService;
             _projectGuidService = projectGuidService;
             _projectSubscriptionService = projectSubscriptionService;
             _launchProviders = launchProviders;
@@ -56,20 +49,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
         protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
         {
-            _projectGuid = await _projectGuidService.GetProjectGuidAsync()
-                                                    .ConfigureAwait(false);
+            _projectGuid = await _projectGuidService.GetProjectGuidAsync();
 
             Assumes.False(_projectGuid == Guid.Empty);
 
-            _startupProjectsListService = (IVsStartupProjectsListService)await _serviceProvider.GetServiceAsync(typeof(SVsStartupProjectsListService))
-                                                                                               .ConfigureAwait(false);
-
-            Assumes.Present(_startupProjectsListService);
-
-            _subscription = _projectSubscriptionService.ProjectRuleSource.SourceBlock.LinkTo(
-                target: new ActionBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(OnProjectChangedAsync),
-                suppressVersionOnlyUpdates: true,
-                linkOptions: new DataflowLinkOptions() { PropagateCompletion = true });
+            _subscription = _projectSubscriptionService.ProjectRuleSource.SourceBlock.LinkToAsyncAction(
+                target: OnProjectChangedAsync);
         }
 
         protected override Task DisposeCoreAsync(bool initialized)
@@ -84,18 +69,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
         internal async Task OnProjectChangedAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e = null)
         {
-            bool isDebuggable = await _launchProviders.Value.IsDebuggableAsync()
-                                                            .ConfigureAwait(false);
+            bool isDebuggable = await _launchProviders.Value.IsDebuggableAsync();
+
+            IVsStartupProjectsListService startupProjectsListService = await _startupProjectsListService.GetValueAsync();
+
+            Assumes.Present(startupProjectsListService);
 
             if (isDebuggable)
             {
                 // If we're already registered, the service no-ops
-                _startupProjectsListService.AddProject(ref _projectGuid);
+                startupProjectsListService.AddProject(ref _projectGuid);
             }
             else
             {
                 // If we're already unregistered, the service no-ops
-                _startupProjectsListService.RemoveProject(ref _projectGuid);
+                startupProjectsListService.RemoveProject(ref _projectGuid);
             }
         }
 
@@ -118,8 +106,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             {
                 foreach (Lazy<IDebugLaunchProvider> provider in Debuggers)
                 {
-                    if (await provider.Value.CanLaunchAsync(DebugLaunchOptions.DesignTimeExpressionEvaluation)
-                                            .ConfigureAwait(false))
+                    if (await provider.Value.CanLaunchAsync(DebugLaunchOptions.DesignTimeExpressionEvaluation))
                     {
                         return true;
                     }

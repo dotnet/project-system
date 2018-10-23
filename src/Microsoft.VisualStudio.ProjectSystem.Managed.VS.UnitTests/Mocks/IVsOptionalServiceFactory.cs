@@ -4,22 +4,22 @@ using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
-    internal static class IVsOptionalServiceFactory
+    internal static class IVsServiceFactory
     {
-        public static IVsOptionalService<T> Create<T>(T value)
+        public static IVsService<T> Create<T>(T value)
         {
-            var mock = new Mock<IVsOptionalService<T>>();
-            mock.SetupGet(s => s.Value)
-                .Returns(() => value);
+            var mock = new Mock<IVsService<T>>();
+            mock.Setup(s => s.GetValueAsync())
+                .ReturnsAsync(() => value);
 
             return mock.Object;
         }
 
-        public static IVsOptionalService<TService, TInterface> Create<TService, TInterface>(TInterface value)
+        public static IVsService<TService, TInterface> Create<TService, TInterface>(TInterface value)
         {
-            var mock = new Mock<IVsOptionalService<TService, TInterface>>();
-            mock.SetupGet(s => s.Value)
-                .Returns(() => value);
+            var mock = new Mock<IVsService<TService, TInterface>>();
+            mock.Setup(s => s.GetValueAsync())
+                .ReturnsAsync(() => value);
 
             return mock.Object;
         }

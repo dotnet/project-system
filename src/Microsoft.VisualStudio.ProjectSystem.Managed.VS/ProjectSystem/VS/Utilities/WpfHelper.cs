@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
                 var cell = (DataGridCell)presenter.ItemContainerGenerator.ContainerFromIndex(column);
                 if (cell == null)
                 {
-                    // now try to bring into view and retreive the cell
+                    // now try to bring into view and retrieve the cell
                     dataGrid.ScrollIntoView(rowContainer, dataGrid.Columns[column]);
                     cell = (DataGridCell)presenter.ItemContainerGenerator.ContainerFromIndex(column);
                 }

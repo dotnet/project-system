@@ -10,6 +10,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal static class IUnconfiguredProjectTasksServiceFactory
     {
+        public static IUnconfiguredProjectTasksService Create()
+        {
+            return Mock.Of<IUnconfiguredProjectTasksService>();
+        }
+
         public static IUnconfiguredProjectTasksService ImplementPrioritizedProjectLoadedInHost(Func<Task> action)
         {
             var mock = new Mock<IUnconfiguredProjectTasksService>();
@@ -54,6 +59,15 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var mock = new Mock<IUnconfiguredProjectTasksService>();
             mock.Setup(t => t.LoadedProjectAsync(It.IsAny<Func<Task<T>>>()))
                 .Returns(action);
+
+            return mock.Object;
+        }
+
+        public static IUnconfiguredProjectTasksService ImplementUnloadCancellationToken(CancellationToken token)
+        {
+            var mock = new Mock<IUnconfiguredProjectTasksService>();
+            mock.Setup(t => t.UnloadCancellationToken)
+                .Returns(token);
 
             return mock.Object;
         }

@@ -12,7 +12,6 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 {
-    [Trait("UnitTest", "ProjectSystem")]
     public class DebugFrameworkMenuTextUpdaterTests
     {
         [Fact]
@@ -44,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         [Fact]
         public void QueryStatus_NullFrameworks()
         {
-            var activeDebugFrameworkSvcs = new IActiveDebugFrameworkServicesFactory()
+            var activeDebugFrameworkSvcs = new IActiveDebugFrameworkServicesMock()
                                                .ImplementGetActiveDebuggingFrameworkPropertyAsync(null)
                                                .ImplementGetProjectFrameworksAsync(null);
             var startupHelper = new Mock<IStartupProjectHelper>();
@@ -62,7 +61,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         [Fact]
         public void QueryStatus_FrameworksLessThan2()
         {
-            var activeDebugFrameworkSvcs = new IActiveDebugFrameworkServicesFactory()
+            var activeDebugFrameworkSvcs = new IActiveDebugFrameworkServicesMock()
                                                .ImplementGetActiveDebuggingFrameworkPropertyAsync(null)
                                                .ImplementGetProjectFrameworksAsync(new List<string>() { "net45" });
             var startupHelper = new Mock<IStartupProjectHelper>();
@@ -80,7 +79,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         [Fact]
         public void QueryStatus_FrameworkNoAciive()
         {
-            var activeDebugFrameworkSvcs = new IActiveDebugFrameworkServicesFactory()
+            var activeDebugFrameworkSvcs = new IActiveDebugFrameworkServicesMock()
                                                .ImplementGetActiveDebuggingFrameworkPropertyAsync(null)
                                                .ImplementGetProjectFrameworksAsync(new List<string>() { "net461", "netcoreapp1.0" });
             var startupHelper = new Mock<IStartupProjectHelper>();
@@ -97,7 +96,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         [Fact]
         public void QueryStatus_FrameworkNoMatchingAciive()
         {
-            var activeDebugFrameworkSvcs = new IActiveDebugFrameworkServicesFactory()
+            var activeDebugFrameworkSvcs = new IActiveDebugFrameworkServicesMock()
                                                .ImplementGetActiveDebuggingFrameworkPropertyAsync("net45")
                                                .ImplementGetProjectFrameworksAsync(new List<string>() { "net461", "netcoreapp1.0" });
             var startupHelper = new Mock<IStartupProjectHelper>();
@@ -115,7 +114,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         [Fact]
         public void QueryStatus_FrameworkValidAciive()
         {
-            var activeDebugFrameworkSvcs = new IActiveDebugFrameworkServicesFactory()
+            var activeDebugFrameworkSvcs = new IActiveDebugFrameworkServicesMock()
                                                .ImplementGetActiveDebuggingFrameworkPropertyAsync("netcoreapp1.0")
                                                .ImplementGetProjectFrameworksAsync(new List<string>() { "net461", "netcoreapp1.0" });
             var startupHelper = new Mock<IStartupProjectHelper>();

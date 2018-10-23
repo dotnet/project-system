@@ -2,7 +2,7 @@
 
 namespace System.Collections.Immutable
 {
-    internal class ImmutableStringDictionary<TValue>
+    internal static class ImmutableStringDictionary<TValue>
     {
         public static readonly ImmutableDictionary<string, TValue> EmptyOrdinal
             = ImmutableDictionary<string, TValue>.Empty;

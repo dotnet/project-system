@@ -4,7 +4,7 @@ using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
-    internal class IProjectTreeSnapshotFactory
+    internal static class IProjectTreeSnapshotFactory
     {
         public static IProjectTreeSnapshot Create(IProjectTree tree)
         {

@@ -6,7 +6,7 @@ using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
-    internal class IInterceptingPropertyValueProviderMetadataFactory
+    internal static class IInterceptingPropertyValueProviderMetadataFactory
     {
         public static IInterceptingPropertyValueProviderMetadata Create(string propertyName)
         {

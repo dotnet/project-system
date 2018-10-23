@@ -4,6 +4,8 @@ using System;
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
 
+using EnvDTE80;
+
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
@@ -16,14 +18,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     internal class CreateFileFromTemplateService : ICreateFileFromTemplateService
     {
         private readonly IUnconfiguredProjectVsServices _projectVsServices;
-        private readonly IDteServices _dteServices;
+        private readonly IVsUIService<DTE2> _dte;
         private readonly ProjectProperties _properties;
 
         [ImportingConstructor]
-        public CreateFileFromTemplateService(IUnconfiguredProjectVsServices projectVsServices, IDteServices dteServices, ProjectProperties properties)
+        public CreateFileFromTemplateService(IUnconfiguredProjectVsServices projectVsServices, IVsUIService<SDTE, DTE2> dte, ProjectProperties properties)
         {
             _projectVsServices = projectVsServices;
-            _dteServices = dteServices;
+            _dte = dte;
             _properties = properties;
         }
 
@@ -40,13 +42,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             Requires.NotNullOrEmpty(parentDocumentMoniker, nameof(parentDocumentMoniker));
             Requires.NotNull(fileName, nameof(fileName));
 
-            string templateLanguage = await GetTemplateLanguageAsync().ConfigureAwait(false);
+            string templateLanguage = await GetTemplateLanguageAsync();
             if (string.IsNullOrEmpty(templateLanguage))
                 return false;
 
             await _projectVsServices.ThreadingService.SwitchToUIThread();
 
-            string templateFilePath = _dteServices.Solution.GetProjectItemTemplate(templateFile, templateLanguage);
+            string templateFilePath = ((Solution2)_dte.Value.Solution).GetProjectItemTemplate(templateFile, templateLanguage);
 
             if (templateFilePath != null)
             {
@@ -66,11 +68,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         private async Task<string> GetTemplateLanguageAsync()
         {
-            ConfigurationGeneral general = await _properties.GetConfigurationGeneralPropertiesAsync()
-                                                            .ConfigureAwait(false);
+            ConfigurationGeneral general = await _properties.GetConfigurationGeneralPropertiesAsync();
 
-            return (string)await general.TemplateLanguage.GetValueAsync()
-                                                         .ConfigureAwait(false);
+            return (string)await general.TemplateLanguage.GetValueAsync();
         }
     }
 }

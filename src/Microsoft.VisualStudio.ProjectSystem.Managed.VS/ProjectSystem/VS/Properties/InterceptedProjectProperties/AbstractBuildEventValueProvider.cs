@@ -2,15 +2,15 @@
 
 using System.Collections.Generic;
 using System.Threading.Tasks;
-
+using Microsoft.Build.Construction;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectProperties
 {
     internal abstract partial class AbstractBuildEventValueProvider : InterceptingPropertyValueProviderBase
     {
-        protected readonly IProjectLockService _projectLockService;
-        protected readonly UnconfiguredProject _unconfiguredProject;
+        private readonly IProjectLockService _projectLockService;
+        private readonly UnconfiguredProject _unconfiguredProject;
         private readonly AbstractBuildEventHelper _helper;
 
         protected AbstractBuildEventValueProvider(
@@ -23,15 +23,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
             _helper = helper;
         }
 
-        public override async Task<string> OnGetEvaluatedPropertyValueAsync(
+        public override Task<string> OnGetEvaluatedPropertyValueAsync(
             string evaluatedPropertyValue,
             IProjectProperties defaultProperties)
         {
-            using (ProjectLockReleaser access = await _projectLockService.ReadLockAsync())
+            return _projectLockService.ReadLockAsync(async access =>
             {
-                Microsoft.Build.Construction.ProjectRootElement projectXml = await access.GetProjectXmlAsync(_unconfiguredProject.FullPath).ConfigureAwait(true);
-                return await _helper.GetPropertyAsync(projectXml, defaultProperties).ConfigureAwait(true);
-            }
+                ProjectRootElement projectXml = await access.GetProjectXmlAsync(_unconfiguredProject.FullPath);
+                return await _helper.GetPropertyAsync(projectXml, defaultProperties);
+            });
         }
 
         public override async Task<string> OnSetPropertyValueAsync(
@@ -39,11 +39,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
             IProjectProperties defaultProperties,
             IReadOnlyDictionary<string, string> dimensionalConditions = null)
         {
-            using (ProjectWriteLockReleaser access = await _projectLockService.WriteLockAsync())
+            await _projectLockService.WriteLockAsync(async access =>
             {
-                Microsoft.Build.Construction.ProjectRootElement projectXml = await access.GetProjectXmlAsync(_unconfiguredProject.FullPath).ConfigureAwait(true);
-                await _helper.SetPropertyAsync(unevaluatedPropertyValue, defaultProperties, projectXml).ConfigureAwait(true);
-            }
+                ProjectRootElement projectXml = await access.GetProjectXmlAsync(_unconfiguredProject.FullPath);
+                await _helper.SetPropertyAsync(unevaluatedPropertyValue, defaultProperties, projectXml);
+            });
 
             return null;
         }

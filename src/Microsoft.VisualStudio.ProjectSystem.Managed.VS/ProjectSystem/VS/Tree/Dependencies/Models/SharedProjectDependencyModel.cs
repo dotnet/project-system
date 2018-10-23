@@ -9,6 +9,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 {
     internal class SharedProjectDependencyModel : DependencyModel
     {
+        private static readonly DependencyIconSet s_iconSet = new DependencyIconSet(
+            icon: KnownMonikers.SharedProject,
+            expandedIcon: KnownMonikers.SharedProject,
+            unresolvedIcon: ManagedImageMonikers.SharedProjectWarning,
+            unresolvedExpandedIcon: ManagedImageMonikers.SharedProjectWarning);
+
+        private static readonly DependencyIconSet s_implicitIconSet = new DependencyIconSet(
+            icon: ManagedImageMonikers.SharedProjectPrivate,
+            expandedIcon: ManagedImageMonikers.SharedProjectPrivate,
+            unresolvedIcon: ManagedImageMonikers.SharedProjectWarning,
+            unresolvedExpandedIcon: ManagedImageMonikers.SharedProjectWarning);
+
         public SharedProjectDependencyModel(
             string providerType,
             string path,
@@ -33,10 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             Caption = System.IO.Path.GetFileNameWithoutExtension(Name);
             Priority = Dependency.ProjectNodePriority;
             SchemaItemType = ProjectReference.PrimaryDataSourceItemType;
-            Icon = isImplicit ? ManagedImageMonikers.SharedProjectPrivate : KnownMonikers.SharedProject;
-            ExpandedIcon = Icon;
-            UnresolvedIcon = ManagedImageMonikers.SharedProjectWarning;
-            UnresolvedExpandedIcon = UnresolvedIcon;
+            IconSet = isImplicit ? s_implicitIconSet : s_iconSet;
         }
     }
 }

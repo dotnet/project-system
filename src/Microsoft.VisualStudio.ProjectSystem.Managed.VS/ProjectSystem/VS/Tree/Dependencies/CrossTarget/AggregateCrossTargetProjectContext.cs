@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         private readonly ImmutableDictionary<ITargetFramework, ITargetedProjectContext> _configuredProjectContextsByTargetFramework;
         private readonly ImmutableDictionary<string, ConfiguredProject> _configuredProjectsByTargetFramework;
         private readonly ITargetFramework _activeTargetFramework;
-        private HashSet<ITargetedProjectContext> _disposedConfiguredProjectContexts;
+        private readonly HashSet<ITargetedProjectContext> _disposedConfiguredProjectContexts;
 
         public AggregateCrossTargetProjectContext(
             bool isCrossTargeting,

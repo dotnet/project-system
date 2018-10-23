@@ -42,7 +42,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         Private _inOnClose As Boolean
 
         Private _vsWindowFrame As IVsWindowFrame
-        Private _serviceProvider As IServiceProvider
+        Private ReadOnly _serviceProvider As IServiceProvider
 
         'Document related items
         Private _mkDocument As String
@@ -75,7 +75,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         Private _creatingDesigner As Boolean
 
         'The owning project designer
-        Private _view As ApplicationDesignerView
+        Private ReadOnly _view As ApplicationDesignerView
 
 
         ''' <summary>
@@ -306,7 +306,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
                                     'Is this file already opened in the specific editor we want to open it in?  If so, we will not be able to open it
                                     '  as a nested document window.
-                                    Dim hr As Integer = VsUIShellOpenDocument.IsSpecificDocumentViewOpen(VsUIHierarchy, ItemId, MkDocument, (EditorGuid), PhysicalView, 0UI, OpenHierachy, OpenItemId, OpenWindowFrame, fOpen)
+                                    Dim hr As Integer = VsUIShellOpenDocument.IsSpecificDocumentViewOpen(VsUIHierarchy, ItemId, MkDocument, (EditorGuid), PhysicalView, CUInt(__VSIDOFLAGS2.IDO_IncludeUninitializedFrames), OpenHierachy, OpenItemId, OpenWindowFrame, fOpen)
                                     Debug.Assert(VSErrorHandler.Succeeded(hr), "Unexpected failure from VsUIShellOpenDocument.IsSpecificDocumentViewOpen")
                                     If VSErrorHandler.Succeeded(hr) Then
                                         If fOpen <> 0 Then
@@ -489,7 +489,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         Protected Overridable Sub ShowWindowFrame()
             Common.Switches.TracePDFocus(TraceLevel.Warning, "ShowWindowFrame()")
             If VsWindowFrame IsNot Nothing Then
-                'Initialization should have happened first to allow the project designer to settle down before we try activing 
+                'Initialization should have happened first to allow the project designer to settle down before we try activating 
                 '  the window frame, otherwise it leads to lots of back and forth between the project designer and property 
                 '  page(designers) being the active designer.
                 Debug.Assert(_view.InitializationComplete)
@@ -864,7 +864,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' </summary>
         ''' <remarks></remarks>
         Protected Sub UpdateWindowFrameBounds()
-            'Note: don't need to wory about updating size of CustomView because it's set to dock fill
+            'Note: don't need to worry about updating size of CustomView because it's set to dock fill
             If VsWindowFrame IsNot Nothing Then
                 If Not _windowFrameShown Then
                     'SetFramePos will fail if the window frame is not yet visible, so nothing to do
@@ -1071,7 +1071,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 #End Region
 
         '''<summary>
-        ''' Initilize layout...
+        ''' Initialize layout...
         '''</summary>
         <DebuggerStepThrough()>
         Private Sub InitializeComponent()

@@ -12,7 +12,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
     ''' The DocData for the application Designer.
     ''' </summary>
     ''' <remarks>
-    ''' The Application Designer does not have a physical file for persistance 
+    ''' The Application Designer does not have a physical file for persistence 
     ''' since it uses the project system directly.  We use this to prevent VS looking for a file
     '''</remarks>
     <ComSourceInterfaces(GetType(IVsTextBufferDataEvents))>

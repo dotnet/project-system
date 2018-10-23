@@ -14,7 +14,6 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
-    [Trait("UnitTest", "ProjectSystem")]
     public class TargetedDependenciesSnapshotTests
     {
         [Fact]
@@ -650,7 +649,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 return this;
             }
 
-            private Dictionary<string, Tuple<IDependency, FilterAction>> _beforeAdd
+            private readonly Dictionary<string, Tuple<IDependency, FilterAction>> _beforeAdd
                 = new Dictionary<string, Tuple<IDependency, FilterAction>>(StringComparer.OrdinalIgnoreCase);
 
             public TestDependenciesSnapshotFilter ImplementBeforeRemoveResult(FilterAction action, string id, IDependency dependency)
@@ -660,7 +659,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 return this;
             }
 
-            private Dictionary<string, Tuple<IDependency, FilterAction>> _beforeRemove
+            private readonly Dictionary<string, Tuple<IDependency, FilterAction>> _beforeRemove
                 = new Dictionary<string, Tuple<IDependency, FilterAction>>(StringComparer.OrdinalIgnoreCase);
 
             public IDependency BeforeAdd(

@@ -11,7 +11,6 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 {
-    [Trait("UnitTest", "ProjectSystem")]
     public class ProjectAssetFileWatcherTests
     {
         private const string ProjectCurrentStateJson = @"{
@@ -36,13 +35,12 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""
     foo.project.json, FilePath: ""C:\Foo\foo.project.json""", @"C:\Foo\foo.project.lock.json")]
         public async Task VerifyFileWatcherRegistration(string inputTree, string fileToWatch)
         {
-            var spMock = new IAsyncServiceProviderMoq();
             uint adviseCookie = 100;
             var fileChangeService = IVsFileChangeExFactory.CreateWithAdviseUnadviseFileChange(adviseCookie);
-            spMock.AddService(typeof(SVsFileChangeEx), fileChangeService);
+            
             var tasksService = IUnconfiguredProjectTasksServiceFactory.ImplementLoadedProjectAsync<ConfiguredProject>(t => t());
 
-            var watcher = new ProjectAssetFileWatcher(spMock,
+            var watcher = new ProjectAssetFileWatcher(IVsServiceFactory.Create<SVsFileChangeEx,IVsFileChangeEx>(fileChangeService),
                                                      IProjectTreeProviderFactory.Create(),
                                                      IUnconfiguredProjectCommonServicesFactory.Create(threadingService: IProjectThreadingServiceFactory.Create()),
                                                      tasksService,
@@ -91,13 +89,12 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""
 
         public async Task VerifyFileWatcherRegistrationOnTreeChange(string inputTree, string changedTree, int numRegisterCalls, int numUnregisterCalls)
         {
-            var spMock = new IAsyncServiceProviderMoq();
             uint adviseCookie = 100;
             var fileChangeService = IVsFileChangeExFactory.CreateWithAdviseUnadviseFileChange(adviseCookie);
-            spMock.AddService(typeof(SVsFileChangeEx), fileChangeService);
+            
             var tasksService = IUnconfiguredProjectTasksServiceFactory.ImplementLoadedProjectAsync<ConfiguredProject>(t => t());
 
-            var watcher = new ProjectAssetFileWatcher(spMock,
+            var watcher = new ProjectAssetFileWatcher(IVsServiceFactory.Create<SVsFileChangeEx, IVsFileChangeEx>(fileChangeService),
                                                      IProjectTreeProviderFactory.Create(),
                                                      IUnconfiguredProjectCommonServicesFactory.Create(threadingService: IProjectThreadingServiceFactory.Create()),
                                                      tasksService,
@@ -121,12 +118,11 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""
         [Fact]
         public async Task WhenBaseIntermediateOutputPathNotSet_DoesNotAttemptToAdviseFileChange()
         {
-            var spMock = new IAsyncServiceProviderMoq();
             var fileChangeService = IVsFileChangeExFactory.CreateWithAdviseUnadviseFileChange(100);
-            spMock.AddService(typeof(SVsFileChangeEx), fileChangeService);
+            
             var tasksService = IUnconfiguredProjectTasksServiceFactory.ImplementLoadedProjectAsync<ConfiguredProject>(t => t());
 
-            var watcher = new ProjectAssetFileWatcher(spMock,
+            var watcher = new ProjectAssetFileWatcher(IVsServiceFactory.Create<SVsFileChangeEx, IVsFileChangeEx>(fileChangeService),
                                                      IProjectTreeProviderFactory.Create(),
                                                      IUnconfiguredProjectCommonServicesFactory.Create(threadingService: IProjectThreadingServiceFactory.Create()),
                                                      tasksService,

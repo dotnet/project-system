@@ -22,7 +22,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Private _cookieActiveCfg As NativeMethods.ConnectionPointCookie 'The connection cookie for IPropertyNotifySink
         Private _cookieInactiveCfg As NativeMethods.ConnectionPointCookie 'The connection cookie for ILangInactiveCfgPropertyNotifySink
-        Private _propPage As PropPageUserControlBase 'The property page to notify when a property changes
+        Private ReadOnly _propPage As PropPageUserControlBase 'The property page to notify when a property changes
 
 #If DEBUG Then
         Private ReadOnly _debugSourceName As String 'For debugging purposes: name of the properties object that is being listened to

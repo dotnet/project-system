@@ -330,7 +330,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Select Case controlData.DispId
                 Case VsProjPropId.VBPROJPROPID_StartProgram
                     If rbStartProgram.Checked Then
-                        'DO NOT Validate file existance if we are remote debugging, as they are local to the remote machine
+                        'DO NOT Validate file existence if we are remote debugging, as they are local to the remote machine
                         If Not RemoteDebugEnabled.Checked Then
                             If Not File.Exists(StartProgram.Text) Then
                                 message = My.Resources.Microsoft_VisualStudio_Editors_Designer.PropPage_ProgramNotExist

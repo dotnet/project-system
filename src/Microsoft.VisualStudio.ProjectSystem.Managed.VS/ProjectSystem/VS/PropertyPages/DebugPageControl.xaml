@@ -7,20 +7,16 @@
              xmlns:util="clr-namespace:Microsoft.VisualStudio.ProjectSystem.VS.Utilities"
              mc:Ignorable="d" 
              x:ClassModifier="internal"
-             d:DesignHeight="700" d:DesignWidth="1000">
+             d:DesignHeight="700"
+             d:DesignWidth="1000" 
+             d:DataContext="{d:DesignInstance local:DebugPageViewModel}">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="WatermarkStyle.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            <util:NotBoolConverter
-                x:Key="inverseConverter" />
             <BooleanToVisibilityConverter
                 x:Key="visibilityConverter" />
-            <util:InvertableBooleanToVisibilityConverter 
-                x:Key="invertableVisibiltyConverter"/>
-            <util:EnumMatchToBooleanConverter 
-                x:Key="enumToBooleanConverter"/>
             <util:MultiValueBoolToBool_And 
                 x:Key="MultiValueBoolToBoolAnd"/>
         </ResourceDictionary>

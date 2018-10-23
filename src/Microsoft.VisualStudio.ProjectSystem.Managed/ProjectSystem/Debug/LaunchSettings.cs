@@ -91,7 +91,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             {
                 if (_activeProfile == null)
                 {
-                    // If no active profile specifed, or the active one is no longer valid, assume the first one
+                    // If no active profile specified, or the active one is no longer valid, assume the first one
                     if (!string.IsNullOrWhiteSpace(_activeProfileName))
                     {
                         _activeProfile = Profiles.FirstOrDefault(p => LaunchProfile.IsSameProfileName(p.Name, _activeProfileName));

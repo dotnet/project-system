@@ -22,19 +22,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
     internal partial class PackageRestoreInitiator
     {
-        private class PackageRestoreInitiatorInstance : AbstractProjectDynamicLoadInstance
+        private class PackageRestoreInitiatorInstance : OnceInitializedOnceDisposedAsync, IMultiLifetimeInstance
         {
             private readonly IUnconfiguredProjectVsServices _projectVsServices;
             private readonly IVsSolutionRestoreService _solutionRestoreService;
             private readonly IActiveConfigurationGroupService _activeConfigurationGroupService;
             private readonly IActiveConfiguredProjectSubscriptionService _activeConfiguredProjectSubscriptionService;
             private readonly IProjectLogger _logger;
-#pragma warning disable CA2213 // OnceInitializedOnceDisposedAsync are not tracked correctly by the IDisposeable analyzer
             private IDisposable _configurationsSubscription;
             private DisposableBag _designTimeBuildSubscriptionLink;
-#pragma warning restore CA2213
 
-            private static ImmutableHashSet<string> s_designTimeBuildWatchedRules = Empty.OrdinalIgnoreCaseStringSet
+            private static readonly ImmutableHashSet<string> s_designTimeBuildWatchedRules = Empty.OrdinalIgnoreCaseStringSet
                 .Add(NuGetRestore.SchemaName)
                 .Add(ProjectReference.SchemaName)
                 .Add(PackageReference.SchemaName)
@@ -60,13 +58,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                 _logger = logger;
             }
 
+            public Task InitializeAsync()
+            {
+                return InitializeAsync(CancellationToken.None);
+            }
+
             protected override Task InitializeCoreAsync(CancellationToken cancellationToken)
             {
-                Action<IProjectVersionedValue<IConfigurationGroup<ConfiguredProject>>> target = OnActiveConfigurationsChanged;
-
-                _configurationsSubscription = _activeConfigurationGroupService.ActiveConfiguredProjectGroupSource.SourceBlock.LinkTo(
-                    target: new ActionBlock<IProjectVersionedValue<IConfigurationGroup<ConfiguredProject>>>(target),
-                    linkOptions: new DataflowLinkOptions() { PropagateCompletion = true });
+                _configurationsSubscription = _activeConfigurationGroupService.ActiveConfiguredProjectGroupSource.SourceBlock.LinkToAction(OnActiveConfigurationsChanged);
 
                 return Task.CompletedTask;
             }
@@ -88,11 +87,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
                 if (e.Value.Count > 0)
                 {
-                    var sourceLinkOptions = new StandardRuleDataflowLinkOptions
-                    {
-                        RuleNames = s_designTimeBuildWatchedRules,
-                        PropagateCompletion = true
-                    };
+                    StandardRuleDataflowLinkOptions sourceLinkOptions = DataflowOption.WithRuleNames(s_designTimeBuildWatchedRules);
 
                     var disposableBag = new DisposableBag(CancellationToken.None);
                     // We are taking source blocks from multiple configured projects and creating a SyncLink to combine the sources.
@@ -109,9 +104,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                         });
 
                     Action<Tuple<ImmutableList<IProjectValueVersions>, TIdentityDictionary>> action = ProjectPropertyChanged;
-                    var target = new ActionBlock<Tuple<ImmutableList<IProjectValueVersions>, TIdentityDictionary>>(action);
+                    var target = DataflowBlockSlim.CreateActionBlock(action);
 
-                    var targetLinkOptions = new DataflowLinkOptions { PropagateCompletion = true };
+                    var targetLinkOptions = DataflowOption.PropagateCompletion;
 
                     ImmutableList<ProjectDataSources.SourceBlockAndLink<IProjectValueVersions>> sourceBlocksAndCapabilitiesOptions = sourceBlocks.ToImmutableList()
                         .Insert(0, _projectVsServices.Project.Capabilities.SourceBlock.SyncLinkOptions<IProjectValueVersions>());
@@ -124,7 +119,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
             private static IPropagatorBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>, IProjectVersionedValue<IProjectSubscriptionUpdate>> CreateVersionDropperBlock()
             {
-                var transformBlock = new TransformBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>, IProjectVersionedValue<IProjectSubscriptionUpdate>>(data =>
+                var transformBlock = DataflowBlockSlim.CreateTransformBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>, IProjectVersionedValue<IProjectSubscriptionUpdate>>(data =>
                 {
                     return new ProjectVersionedValue<IProjectSubscriptionUpdate>(data.Value, data.DataSourceVersions.RemoveRange(s_keysToDrop));
                 });
@@ -154,8 +149,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
                             await _solutionRestoreService
                                    .NominateProjectAsync(_projectVsServices.Project.FullPath, projectRestoreInfo,
-                                        _projectVsServices.Project.Services.ProjectAsynchronousTasks.UnloadCancellationToken)
-                                   .ConfigureAwait(false);
+                                        _projectVsServices.Project.Services.ProjectAsynchronousTasks.UnloadCancellationToken);
 
                             CodeMarkers.Instance.CodeMarker(CodeMarkerTimerId.PerfPackageRestoreEnd);
 

@@ -1,18 +1,29 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using Moq;
+using System;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
-    internal class IProjectVersionedValueFactory<T>
+    internal static class IProjectVersionedValueFactory
     {
-        internal static IProjectVersionedValue<T> Create(T value)
+        public static IProjectVersionedValue<IProjectSubscriptionUpdate> CreateEmpty()
         {
-            var mock = new Mock<IProjectVersionedValue<T>>();
+            return FromJson("{}");
+        }
 
-            mock.SetupGet(p => p.Value).Returns(value);
+        public static IProjectVersionedValue<IProjectSubscriptionUpdate> FromJson(string jsonString)
+        {
+            return FromJson(version: 1, jsonString: jsonString);
+        }
 
-            return mock.Object;
+        public static IProjectVersionedValue<IProjectSubscriptionUpdate> FromJson(IComparable version, string jsonString)
+        {
+            var update = IProjectSubscriptionUpdateFactory.FromJson(jsonString);
+
+            // Every IProjectSubscriptionUpdate contains the version of the configured project
+            return IProjectVersionedValueFactory<IProjectSubscriptionUpdate>.Create(update,
+                                                                                    identity: ProjectDataSources.ConfiguredProjectVersion,
+                                                                                    version: version);
         }
     }
 }

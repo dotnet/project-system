@@ -202,6 +202,17 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             End If
         End Function
 
+        Protected Overrides Function ProcessDataGridViewKey(e As KeyEventArgs) As Boolean
+
+            ' SHIFT+Space usually selects entire row in DataGridView, prevent 
+            ' that in it in edit mode so that it behaves like a usual text box
+            If e.KeyCode = Keys.Space AndAlso e.Shift AndAlso IsCurrentCellInEditMode Then
+                Return False
+            Else
+                Return MyBase.ProcessDataGridViewKey(e)
+            End If
+
+        End Function
 
 
         ''' <summary>

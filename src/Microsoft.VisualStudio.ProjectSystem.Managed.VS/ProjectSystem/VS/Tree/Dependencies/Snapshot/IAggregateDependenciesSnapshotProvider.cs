@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         IEnumerable<IDependenciesSnapshotProvider> GetSnapshotProviders();
 
         /// <summary>
-        /// Fired when a snapshot chnaged in a snapshot provider
+        /// Fired when a snapshot changed in a snapshot provider
         /// </summary>
         event EventHandler<SnapshotChangedEventArgs> SnapshotChanged;
 

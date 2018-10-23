@@ -23,8 +23,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 
         public override async Task<string> OnGetEvaluatedPropertyValueAsync(string evaluatedPropertyValue, IProjectProperties defaultProperties)
         {
-            ConfigurationGeneral configuration = await _properties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(false);
-            string value = await configuration.OutputType.GetEvaluatedValueAtEndAsync().ConfigureAwait(false);
+            ConfigurationGeneral configuration = await _properties.GetConfigurationGeneralPropertiesAsync();
+            string value = await configuration.OutputType.GetEvaluatedValueAtEndAsync();
             if (GetMap.TryGetValue(value, out string returnValue))
             {
                 return returnValue;
@@ -37,8 +37,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         public override async Task<string> OnSetPropertyValueAsync(string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string> dimensionalConditions = null)
         {
             string value = SetMap[unevaluatedPropertyValue];
-            ConfigurationGeneral configuration = await _properties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(false);
-            await configuration.OutputType.SetValueAsync(value).ConfigureAwait(false);
+            ConfigurationGeneral configuration = await _properties.GetConfigurationGeneralPropertiesAsync();
+            await configuration.OutputType.SetValueAsync(value);
 
             // Since we have persisted the value of OutputType, we dont have to persist the incoming value
             return null;

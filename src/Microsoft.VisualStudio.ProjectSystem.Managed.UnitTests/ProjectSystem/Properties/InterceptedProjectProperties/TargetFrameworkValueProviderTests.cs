@@ -8,7 +8,6 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.ProjectPropertiesProviders
 {
-    [Trait("UnitTest", "ProjectSystem")]
     public class TargetFrameworkValueProviderTests
     {
         private const string TargetFrameworkPropertyName = "TargetFramework";

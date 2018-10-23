@@ -31,8 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         public async Task<Guid> GetProjectGuidAsync()
         {
-            await _tasksService.PrioritizedProjectLoadedInHost
-                               .ConfigureAwait(false);
+            await _tasksService.PrioritizedProjectLoadedInHost;
 
             IProjectGuidService projectGuidService = ProjectGuidServices.FirstOrDefault()?.Value;
             if (projectGuidService == null)
@@ -40,8 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             if (projectGuidService is IProjectGuidService2 projectGuidService2)
             {
-                return await projectGuidService2.GetProjectGuidAsync()
-                                                .ConfigureAwait(false);
+                return await projectGuidService2.GetProjectGuidAsync();
             }
 
             return projectGuidService.ProjectGuid;

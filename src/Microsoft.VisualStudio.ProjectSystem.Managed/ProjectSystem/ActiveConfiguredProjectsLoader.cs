@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         private readonly UnconfiguredProject _project;
         private readonly IActiveConfigurationGroupService _activeConfigurationGroupService;
         private readonly IUnconfiguredProjectTasksService _tasksService;
-        private ActionBlock<IProjectVersionedValue<IConfigurationGroup<ProjectConfiguration>>> _targetBlock;
+        private readonly ITargetBlock<IProjectVersionedValue<IConfigurationGroup<ProjectConfiguration>>> _targetBlock;
         private IDisposable _subscription;
 
         [ImportingConstructor]
@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             _project = project;
             _activeConfigurationGroupService = activeConfigurationGroupService;
             _tasksService = tasksService;
-            _targetBlock = new ActionBlock<IProjectVersionedValue<IConfigurationGroup<ProjectConfiguration>>>(OnActiveConfigurationsChanged);
+            _targetBlock = DataflowBlockSlim.CreateActionBlock<IProjectVersionedValue<IConfigurationGroup<ProjectConfiguration>>>(OnActiveConfigurationsChanged);
         }
 
         [ProjectAutoLoad(ProjectLoadCheckpoint.ProjectInitialCapabilitiesEstablished)]
@@ -43,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             _subscription = _activeConfigurationGroupService.ActiveConfigurationGroupSource.SourceBlock.LinkTo(
                 target: _targetBlock,
-                linkOptions: new DataflowLinkOptions() { PropagateCompletion = true });
+                linkOptions: DataflowOption.PropagateCompletion);
         }
 
         protected override void Dispose(bool disposing)
@@ -64,7 +64,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 {
                     return _project.LoadConfiguredProjectAsync(configuration);
 
-                }).ConfigureAwait(false);
+                });
             }
         }
     }

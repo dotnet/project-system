@@ -1,21 +1,35 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using Microsoft.VisualStudio.Shell.Interop;
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     internal interface IUserNotificationServices
     {
+        /// <summary>
+        ///     Shows a Yes/No confirmation box to the user.
+        /// </summary>
+        /// <returns>
+        ///     <see langword="true"/> if the user clicked the Yes button, otherwise; 
+        ///     <see langword="false"/> if the user clicked the No button.
+        /// </returns>
+        ///<exception cref="COMException">
+        ///     This method was not accessed from the UI thread.
+        /// </exception>
         bool Confirm(string message);
 
-        void NotifyFailure(string failureMessage);
-
-        void ReportErrorInfo(int hr);
+        /// <summary>
+        ///     Shows a warning to the user.
+        /// </summary>
+        ///<exception cref="COMException">
+        ///     This method was not accessed from the UI thread.
+        /// </exception>
+        void ShowWarning(string warning);
 
         /// <summary>
-        /// Note that typically you wan to set the title to null and have VS decide on the caption. If you do add a title it will
-        /// appear in the message box area above the message string
+        ///     Shows a error to the user.
         /// </summary>
-        int ShowMessageBox(string message, string title, OLEMSGICON icon, OLEMSGBUTTON msgButton, OLEMSGDEFBUTTON defaultButton);
+        ///<exception cref="COMException">
+        ///     This method was not accessed from the UI thread.
+        /// </exception>
+        void ShowError(string error);
     }
 }

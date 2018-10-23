@@ -9,7 +9,7 @@ using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
-    internal class IDependenciesChangesFactory
+    internal static class IDependenciesChangesFactory
     {
         public static IDependenciesChanges Create()
         {

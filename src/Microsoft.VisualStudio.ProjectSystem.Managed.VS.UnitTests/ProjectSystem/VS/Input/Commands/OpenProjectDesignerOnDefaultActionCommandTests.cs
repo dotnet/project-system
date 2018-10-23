@@ -9,7 +9,6 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 {
-    [Trait("UnitTest", "ProjectSystem")]
     public class OpenProjectDesignerOnDefaultActionCommandTests : AbstractOpenProjectDesignerCommandTests
     {
         [Fact]

@@ -6,7 +6,6 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
-    [Trait("UnitTest", "ProjectSystem")]
     public class UnconfiguredProjectTasksServiceTests
     {
         [Fact]
@@ -95,6 +94,20 @@ namespace Microsoft.VisualStudio.ProjectSystem
             service.OnPrioritizedProjectLoadedInHost();
 
             Assert.True(result.Status == TaskStatus.RanToCompletion);
+        }
+
+        [Fact]
+        public void UnloadCancellationToken_WhenUnderlyingUnloadCancellationTokenCancelled_IsCancelled()
+        {
+            var source = new CancellationTokenSource();
+            var tasksService = IProjectAsynchronousTasksServiceFactory.ImplementUnloadCancellationToken(source.Token);
+            var service = CreateInstance(tasksService);
+
+            Assert.False(tasksService.UnloadCancellationToken.IsCancellationRequested);
+
+            source.Cancel();
+
+            Assert.True(tasksService.UnloadCancellationToken.IsCancellationRequested);
         }
 
         [Fact]

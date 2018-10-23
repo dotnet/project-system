@@ -14,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
     /// </summary>
     [Export(ExportContractNames.Scopes.UnconfiguredProject, typeof(IProjectDynamicLoadComponent))]
     [AppliesTo(ProjectCapability.PackageReferences)]
-    internal partial class PackageRestoreInitiator : AbstractProjectDynamicLoadComponent
+    internal partial class PackageRestoreInitiator : AbstractMultiLifetimeComponent, IProjectDynamicLoadComponent
     {
         private readonly IUnconfiguredProjectVsServices _projectVsServices;
         private readonly IVsSolutionRestoreService _solutionRestoreService;
@@ -38,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             _logger = logger;
         }
 
-        protected override AbstractProjectDynamicLoadInstance CreateInstance()
+        protected override IMultiLifetimeInstance CreateInstance()
         {
             return new PackageRestoreInitiatorInstance(_projectVsServices, _solutionRestoreService, _activeConfiguredProjectSubscriptionService, _activeConfigurationGroupService, _logger);
         }

@@ -817,7 +817,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 #Region "Scope"
 
         ''' <summary>
-        ''' The scope for a setitng
+        ''' The scope for a setting
         ''' </summary>
         ''' <value></value>
         ''' <returns></returns>

@@ -26,9 +26,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         {
             if (profile.OtherSettings != null
                 && profile.OtherSettings.TryGetValue(NativeDebuggingProperty, out object nativeDebugging)
-                && nativeDebugging is bool)
+                && nativeDebugging is bool b)
             {
-                return (bool)nativeDebugging;
+                return b;
             }
 
             return false;

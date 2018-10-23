@@ -63,7 +63,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
         private OrderPrecedenceImportCollection<IDependenciesGraphActionHandler> GraphActionHandlers { get; }
 
         private readonly object _changedContextsQueueLock = new object();
-        private Dictionary<string, SnapshotChangedEventArgs> _changedContextsQueue =
+        private readonly Dictionary<string, SnapshotChangedEventArgs> _changedContextsQueue =
             new Dictionary<string, SnapshotChangedEventArgs>(StringComparer.OrdinalIgnoreCase);
         private Task _trackChangesTask;
         private IVsImageService2 _imageService;
@@ -82,8 +82,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
         {
             AggregateSnapshotProvider.SnapshotChanged += OnSnapshotChanged;
 
-            _imageService = (IVsImageService2)await ServiceProvider.GetServiceAsync(typeof(SVsImageService))
-                                                                   .ConfigureAwait(false); // Want to get off UI thread if switch to it
+            _imageService = (IVsImageService2)await ServiceProvider.GetServiceAsync(typeof(SVsImageService));
         }
 
         protected override Task DisposeCoreAsync(bool initialized)
@@ -95,7 +94,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
 
         /// <summary>
         /// IGraphProvider.BeginGetGraphData
-        /// Entry point for progression. Gets called everytime when progression
+        /// Entry point for progression. Gets called every time when progression
         ///  - Needs to know if a node has children
         ///  - Wants to get children for a node
         ///  - During solution explorer search
@@ -104,7 +103,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
         {
             ThreadHelper.JoinableTaskFactory.RunAsync(async () =>
             {
-                await BeginGetGraphDataAsync(context).ConfigureAwait(false);
+                await BeginGetGraphDataAsync(context);
             });
         }
 
@@ -139,7 +138,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
         {
             try
             {
-                await InitializeAsync().ConfigureAwait(false);
+                await InitializeAsync();
 
                 IEnumerable<Lazy<IDependenciesGraphActionHandler, IOrderPrecedenceMetadataView>> actionHandlers = GraphActionHandlers.Where(x => x.Value.CanHandleRequest(context));
                 bool shouldTrackChanges = actionHandlers.Aggregate(
@@ -163,7 +162,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
         }
 
         /// <summary>
-        /// ProjectContextChanged gets fired everytime dependencies change for projects accross solution.
+        /// ProjectContextChanged gets fired every time dependencies change for projects across solution.
         /// ExpandedGraphContexts contain all nodes that we need to check for potential updates in their 
         /// children dependencies.
         /// </summary>
@@ -210,7 +209,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
 
                 foreach (SnapshotChangedEventArgs context in queue)
                 {
-                    await TrackChangesAsync(context).ConfigureAwait(false);
+                    await TrackChangesAsync(context);
                 }
             }).Task;
         }

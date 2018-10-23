@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Immutable;
 
-using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
@@ -25,10 +24,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         string FullPath { get; }
 
         /// <summary>
-        /// Alias is used to de-dupe tree nodes in the CPS tree. If there are seberal nodes in the same
+        /// Alias is used to de-dupe tree nodes in the CPS tree. If there are several nodes in the same
         /// folder with the same name, we replace them all with: Alias = "Caption (OriginalItemSpec)".
         /// </summary>
         string Alias { get; }
+
+        DependencyIconSet IconSet { get; }
 
         /// <summary>
         /// IDependency is immutable and sometimes tree view provider or snapshot filters need 
@@ -41,8 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             ProjectTreeFlags? flags = null,
             string schemaName = null,
             IImmutableList<string> dependencyIDs = null,
-            ImageMoniker icon = default,
-            ImageMoniker expandedIcon = default,
+            DependencyIconSet iconSet = null,
             bool? isImplicit = null);
     }
 }

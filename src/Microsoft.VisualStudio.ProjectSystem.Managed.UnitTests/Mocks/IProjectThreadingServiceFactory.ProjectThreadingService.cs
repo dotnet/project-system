@@ -27,12 +27,12 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             public void ExecuteSynchronously(Func<Task> asyncAction)
             {
-                asyncAction().GetAwaiter().GetResult();
+                JoinableTaskFactory.Run(asyncAction);
             }
 
             public T ExecuteSynchronously<T>(Func<Task<T>> asyncAction)
             {
-                return asyncAction().GetAwaiter().GetResult();
+                return JoinableTaskFactory.Run(asyncAction);
             }
 
             public void VerifyOnUIThread()

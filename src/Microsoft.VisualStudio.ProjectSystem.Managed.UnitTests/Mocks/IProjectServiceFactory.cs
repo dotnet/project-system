@@ -4,13 +4,13 @@ using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
-    internal class IProjectServiceFactory
+    internal static class IProjectServiceFactory
     {
-        public static IProjectService Create(IProjectServices services = null)
+        public static IProjectService Create(ProjectServices services = null)
         {
             var mock = new Mock<IProjectService>();
 
-            services = services ?? IProjectServicesFactory.Create(projectService: mock.Object);
+            services = services ?? ProjectServicesFactory.Create(projectService: mock.Object);
 
             mock.Setup(p => p.Services)
                    .Returns(services);

@@ -18,6 +18,23 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return Create(UnconfiguredProjectFactory.Create());
         }
 
+        public static ProjectProperties Create(string category, string propertyName, string value)
+        {
+            var data = new PropertyPageData()
+            {
+                Category = category,
+                PropertyName = propertyName,
+                Value = value,
+            };
+
+            return Create(data);
+        }
+
+        public static ProjectProperties Create(params PropertyPageData[] data)
+        {
+            return Create(UnconfiguredProjectFactory.Create(), data);
+        }
+               
         public static ProjectProperties Create(UnconfiguredProject project, params PropertyPageData[] data)
         {
             var catalog = CreateCatalog(CreateCatalogLookup(data));
@@ -31,7 +48,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             IAdditionalRuleDefinitionsService ruleService = Mock.Of<IAdditionalRuleDefinitionsService>();
 
-            IConfiguredProjectServices configuredProjectServices = Mock.Of<IConfiguredProjectServices>(o =>
+            ConfiguredProjectServices configuredProjectServices = Mock.Of<ConfiguredProjectServices>(o =>
                 o.PropertyPagesCatalog == propertyPagesCatalogProvider &&
                 o.AdditionalRuleDefinitions == ruleService);
 

@@ -10,7 +10,7 @@ using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
-    internal class IDependenciesSnapshotFactory
+    internal static class IDependenciesSnapshotFactory
     {
         public static IDependenciesSnapshot Create()
         {

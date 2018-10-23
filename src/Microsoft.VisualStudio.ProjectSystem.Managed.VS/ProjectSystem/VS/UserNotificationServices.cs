@@ -1,11 +1,11 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System;
 using System.ComponentModel.Composition;
 
 using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
+using static Microsoft.VisualStudio.VSConstants;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
@@ -24,77 +24,29 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         public bool Confirm(string message)
         {
-            _threadingService.VerifyOnUIThread();
-            if (!VsShellUtilities.IsInAutomationFunction(_serviceProvider))
-            {
-                int result = VsShellUtilities.ShowMessageBox(_serviceProvider, message, null, OLEMSGICON.OLEMSGICON_QUERY,
-                             OLEMSGBUTTON.OLEMSGBUTTON_YESNO, OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
-                if (result == (int)VSConstants.MessageBoxResult.IDNO)
-                {
-                    return false;
-                }
-            }
-            return true;
+            MessageBoxResult result = ShowMessageBox(message, OLEMSGICON.OLEMSGICON_QUERY, OLEMSGBUTTON.OLEMSGBUTTON_YESNO, MessageBoxResult.IDYES);
+
+            return result == MessageBoxResult.IDYES;
         }
 
-        public void NotifyFailure(string failureMessage)
+        public void ShowWarning(string warning)
         {
-            _threadingService.VerifyOnUIThread();
-            if (!VsShellUtilities.IsInAutomationFunction(_serviceProvider))
-            {
-                int result = VsShellUtilities.ShowMessageBox(_serviceProvider, failureMessage, null, OLEMSGICON.OLEMSGICON_WARNING,
-                               OLEMSGBUTTON.OLEMSGBUTTON_OK, OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
-            }
+            ShowMessageBox(warning, OLEMSGICON.OLEMSGICON_WARNING, OLEMSGBUTTON.OLEMSGBUTTON_OK);
         }
 
-        /// <summary>
-        /// Uses IVsUIShell to display the error associated with the hr. Will look for an error string on the current thread that was
-        /// set by SetErrorInfo() and use that. Otherwise, tries to get the best error from the hResult.
-        /// </summary>
-        public void ReportErrorInfo(int hr)
+        public void ShowError(string error)
+        {
+            ShowMessageBox(error, OLEMSGICON.OLEMSGICON_CRITICAL, OLEMSGBUTTON.OLEMSGBUTTON_OK);
+        }
+
+        private MessageBoxResult ShowMessageBox(string message, OLEMSGICON icon, OLEMSGBUTTON button, MessageBoxResult defaultResult = MessageBoxResult.IDOK)
         {
             _threadingService.VerifyOnUIThread();
 
-            IVsUIShell vsUIShell = _serviceProvider.GetService<IVsUIShell, SVsUIShell>();
+            if (VsShellUtilities.IsInAutomationFunction(_serviceProvider))
+                return defaultResult;
 
-            int result = vsUIShell.ReportErrorInfo(hr);
-        }
-
-        /// <summary>
-        /// It is the responsibility of caller to call this method on UI Thread.
-        /// The method will throw if not called on UI Thread.
-        /// </summary>
-        public int ShowMessageBox(string message, string title, OLEMSGICON icon, OLEMSGBUTTON msgButton, OLEMSGDEFBUTTON defaultButton)
-        {
-            _threadingService.VerifyOnUIThread();
-
-            if (_serviceProvider == null)
-            {
-                throw new ArgumentException("serviceProvider");
-            }
-
-            if (!(_serviceProvider.GetService(typeof(IVsUIShell)) is IVsUIShell uiShell))
-            {
-                throw new InvalidOperationException();
-            }
-
-            Guid emptyGuid = Guid.Empty;
-            int result = 0;
-            if (!VsShellUtilities.IsInAutomationFunction(_serviceProvider))
-            {
-                ErrorHandler.ThrowOnFailure(uiShell.ShowMessageBox(0,
-                ref emptyGuid,
-                title,
-                message,
-                null,
-                0,
-                msgButton,
-                defaultButton,
-                icon,
-                0,
-                out result));
-            }
-            return result;
+            return (MessageBoxResult)VsShellUtilities.ShowMessageBox(_serviceProvider, message, null, icon, button, OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
         }
     }
 }

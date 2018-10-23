@@ -8,7 +8,6 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Logging
 {
-    [Trait("UnitTest", "ProjectSystem")]
     public class ProjectOutputWindowPaneProviderTests
     {
         [Fact]
@@ -64,7 +63,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Logging
         {
             threadingService = threadingService ?? IProjectThreadingServiceFactory.Create();
 
-            var outputWindowService = IVsOptionalServiceFactory.Create<SVsOutputWindow, IVsOutputWindow>(outputWindow);
+            var outputWindowService = IVsUIServiceFactory.Create<SVsOutputWindow, IVsOutputWindow>(outputWindow);
 
             return new ProjectOutputWindowPaneProvider(threadingService, outputWindowService);
         }

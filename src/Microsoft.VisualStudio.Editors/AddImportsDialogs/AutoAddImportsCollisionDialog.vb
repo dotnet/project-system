@@ -8,7 +8,7 @@ Namespace Microsoft.VisualStudio.Editors.AddImports
         Private _importMnemonic As Char? = Nothing
         Private _doNotImportMnemonic As Char? = Nothing
         Private _lastFocus As Control
-        Private _helpCallBack As IVBAddImportsDialogHelpCallback
+        Private ReadOnly _helpCallBack As IVBAddImportsDialogHelpCallback
 
         Public Sub New([namespace] As String, identifier As String, minimallyQualifiedName As String, callBack As IVBAddImportsDialogHelpCallback, isp As IServiceProvider)
             MyBase.New(isp)
@@ -57,7 +57,7 @@ Namespace Microsoft.VisualStudio.Editors.AddImports
             radioButtonToLayout.Text = dummyLabel.Text
 
 
-            ' need to add 4 since radiobuttons have defualt padding of 2px.
+            ' need to add 4 since radiobuttons have default padding of 2px.
             radioButtonToLayout.Height = dummyLabel.Height + 4
             ' Don't set width, that is done by setting the columnspan
 

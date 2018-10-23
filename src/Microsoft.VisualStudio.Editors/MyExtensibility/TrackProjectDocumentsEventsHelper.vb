@@ -118,7 +118,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
 
 #End Region
 
-        Private _serviceProvider As IServiceProvider
+        Private ReadOnly _serviceProvider As IServiceProvider
         Private _vsTrackProjectDocuments As IVsTrackProjectDocuments2
         Private _vsTrackProjectDocumentsEventsCookie As UInteger
     End Class

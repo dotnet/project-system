@@ -142,6 +142,9 @@
     <Compile Update="ProjectSystem\Rules\NuGetRestore.cs">
       <DependentUpon>NuGetRestore.xaml</DependentUpon>
     </Compile>
+    <Compile Update="ProjectSystem\Rules\XamlAppDef.cs">
+      <DependentUpon>XamlAppDef.xaml</DependentUpon>
+    </Compile>
     <Compile Update="ProjectSystem\Rules\VisualBasic.NamespaceImport.cs">
       <DependentUpon>VisualBasic.NamespaceImport.xaml</DependentUpon>
     </Compile>
@@ -302,6 +305,10 @@
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
     </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\XamlAppDef.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
     <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\Compile.BrowseObject.xaml" />
     <XamlPropertyProjectItemsSchema Include="ProjectSystem\Rules\ProjectItemsSchema.xaml" />
     <XamlPropertyProjectItemsSchema Include="ProjectSystem\Rules\CSharp.ProjectItemsSchema.xaml" />
@@ -318,5 +325,10 @@
   </ItemGroup>
   <ItemGroup>
     <DesignTimeTargetsFile Include="ProjectSystem\DesignTimeTargets\*.targets" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="ProjectSystem\Rules\XamlAppDef.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
   </ItemGroup>
 </Project>

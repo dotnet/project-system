@@ -12,7 +12,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
-    internal class IDependencyModelFactory
+    internal static class IDependencyModelFactory
     {
         public static IDependencyModel Create()
         {

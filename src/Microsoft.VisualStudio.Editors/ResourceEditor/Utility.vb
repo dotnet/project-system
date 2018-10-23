@@ -69,7 +69,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     End If
 
                     'First draw the "selection rectangle" area (actually, we draw the whole rect,
-                    '  but we'll eraase it with background afterwards)
+                    '  but we'll erase it with background afterwards)
                     ThumbnailGraphics.FillRectangle(New SolidBrush(AlmostTransparent), ImageRect)
 
                     '... then the border

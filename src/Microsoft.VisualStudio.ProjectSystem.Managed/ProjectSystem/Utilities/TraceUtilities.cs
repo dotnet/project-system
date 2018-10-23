@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
         internal static readonly TraceSource Source = new TraceSource("CPS");
 
         /// <summary>
-        /// Buffer to preserve lastest set of error messages to help diagnosing Watson bugs.
+        /// Buffer to preserve latest set of error messages to help diagnosing Watson bugs.
         /// </summary>
         private static readonly string[] s_criticalTraceBuffer = new string[CriticalTraceBufferSize];
         private static volatile int s_currentTraceIndex = 0;
@@ -113,9 +113,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
         {
             string message = e.ToString();
 
-            if (e is AggregateException)
+            if (e is AggregateException aggregateException)
             {
-                message = (e as AggregateException).Flatten().ToString();
+                message = aggregateException.Flatten().ToString();
             }
 
             if (!string.IsNullOrEmpty(formattedMessage))

@@ -5,7 +5,6 @@ using System.Windows;
 
 using Microsoft.VisualStudio.PlatformUI;
 using Microsoft.VisualStudio.Shell;
-using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 {
@@ -40,13 +39,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
             if (string.IsNullOrEmpty(newName))
             {
-                notifyService.ShowMessageBox(PropertyPageResources.ProfileNameRequired, null, OLEMSGICON.OLEMSGICON_CRITICAL,
-                                                  OLEMSGBUTTON.OLEMSGBUTTON_OK, OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
+                notifyService.ShowError(PropertyPageResources.ProfileNameRequired);
             }
             else if (!_validator(newName))
             {
-                notifyService.ShowMessageBox(PropertyPageResources.ProfileNameInvalid, null, OLEMSGICON.OLEMSGICON_CRITICAL,
-                                                  OLEMSGBUTTON.OLEMSGBUTTON_OK, OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
+                notifyService.ShowError(PropertyPageResources.ProfileNameInvalid);
             }
             else
             {

@@ -98,7 +98,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         ///     Concatenates the specified namespace names.
         /// </summary>
         /// <param name="namespaceNames">
-        ///     A <see cref="string"/> array containing the namespace names to be concatented.
+        ///     A <see cref="string"/> array containing the namespace names to be concatenated.
         /// </param>
         /// <returns>
         ///     A concatenated namespace name.

@@ -28,7 +28,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
         'A list of all Resource entries that are displayed in this string table (with the exception
         '  of the uncommitted resource, if any)
-        Private _virtualResourceList As New ArrayList
+        Private ReadOnly _virtualResourceList As New ArrayList
 
         'The row that is currently being removed, if any.
         Private _removingRow As DataGridViewRow
@@ -87,6 +87,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             AllowUserToDeleteRows = False
             EditMode = DataGridViewEditMode.EditOnKeystrokeOrF2
             AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
+            AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells
             DefaultCellStyle.WrapMode = DataGridViewTriState.True
 
             ' when the NullValue set to empty string, DataGridView will compare input string with it by using String.Compare.
@@ -477,7 +478,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 #Region "Validation"
 
         ''' <summary>
-        ''' Called for eror handling.  Shouldn't ever be called in our case, added just
+        ''' Called for error handling.  Shouldn't ever be called in our case, added just
         '''   to assert in case.
         ''' </summary>
         ''' <param name="e"></param>
@@ -787,7 +788,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                         Rows.Add(CreateNewResourceRow())
                     Else
                         'We will note that we need to create a shared row, but we want to
-                        '  accumulte and add them at once.
+                        '  accumulate and add them at once.
                         SharedRowsToAdd += 1
                     End If
                 Else
@@ -1800,7 +1801,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
         ''' <summary>
         '''  customized TextBox in the ResourceStringTable. The TextBox is used to edit cell value.
-        '''  However, it fires serveral OnDirty events when the customer types one character in the cell. We depend on this event to check out the file.
+        '''  However, it fires several OnDirty events when the customer types one character in the cell. We depend on this event to check out the file.
         '''  We don't want to prompt check out multiple times in a single event. But we don't know whether those OnDirty is caused by single action.
         '''  We overrides the EditingControl to see whether all those events are caused by one window message.
         ''' </summary>

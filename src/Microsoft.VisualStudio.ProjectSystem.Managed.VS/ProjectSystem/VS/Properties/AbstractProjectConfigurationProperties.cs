@@ -28,8 +28,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             {
                 return _threadingService.ExecuteSynchronously(async () =>
                 {
-                    ConfiguredBrowseObject browseObjectProperties = await _projectProperties.GetConfiguredBrowseObjectPropertiesAsync().ConfigureAwait(true);
-                    return await browseObjectProperties.LangVersion.GetEvaluatedValueAtEndAsync().ConfigureAwait(true);
+                    ConfiguredBrowseObject browseObjectProperties = await _projectProperties.GetConfiguredBrowseObjectPropertiesAsync();
+                    return await browseObjectProperties.LangVersion.GetEvaluatedValueAtEndAsync();
                 });
             }
 
@@ -37,8 +37,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             {
                 _threadingService.ExecuteSynchronously(async () =>
                 {
-                    ConfiguredBrowseObject browseObjectProperties = await _projectProperties.GetConfiguredBrowseObjectPropertiesAsync().ConfigureAwait(true);
-                    await browseObjectProperties.LangVersion.SetValueAsync(value).ConfigureAwait(true);
+                    ConfiguredBrowseObject browseObjectProperties = await _projectProperties.GetConfiguredBrowseObjectPropertiesAsync();
+                    await browseObjectProperties.LangVersion.SetValueAsync(value);
                 });
             }
         }
@@ -49,8 +49,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             {
                 return _threadingService.ExecuteSynchronously(async () =>
                 {
-                    ConfiguredBrowseObject browseObjectProperties = await _projectProperties.GetConfiguredBrowseObjectPropertiesAsync().ConfigureAwait(true);
-                    return await browseObjectProperties.CodeAnalysisRuleSet.GetEvaluatedValueAtEndAsync().ConfigureAwait(true);
+                    ConfiguredBrowseObject browseObjectProperties = await _projectProperties.GetConfiguredBrowseObjectPropertiesAsync();
+                    return await browseObjectProperties.CodeAnalysisRuleSet.GetEvaluatedValueAtEndAsync();
                 });
             }
 
@@ -58,8 +58,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             {
                 _threadingService.ExecuteSynchronously(async () =>
                 {
-                    ConfiguredBrowseObject browseObjectProperties = await _projectProperties.GetConfiguredBrowseObjectPropertiesAsync().ConfigureAwait(true);
-                    await browseObjectProperties.CodeAnalysisRuleSet.SetValueAsync(value).ConfigureAwait(true);
+                    ConfiguredBrowseObject browseObjectProperties = await _projectProperties.GetConfiguredBrowseObjectPropertiesAsync();
+                    await browseObjectProperties.CodeAnalysisRuleSet.SetValueAsync(value);
                 });
             }
         }
@@ -70,8 +70,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             {
                 return _threadingService.ExecuteSynchronously(async () =>
                 {
-                    ConfiguredBrowseObject browseObjectProperties = await _projectProperties.GetConfiguredBrowseObjectPropertiesAsync().ConfigureAwait(true);
-                    return await browseObjectProperties.OutputPath.GetEvaluatedValueAtEndAsync().ConfigureAwait(true);
+                    ConfiguredBrowseObject browseObjectProperties = await _projectProperties.GetConfiguredBrowseObjectPropertiesAsync();
+                    return await browseObjectProperties.OutputPath.GetEvaluatedValueAtEndAsync();
                 });
             }
 
@@ -79,8 +79,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             {
                 _threadingService.ExecuteSynchronously(async () =>
                 {
-                    ConfiguredBrowseObject browseObjectProperties = await _projectProperties.GetConfiguredBrowseObjectPropertiesAsync().ConfigureAwait(true);
-                    await browseObjectProperties.OutputPath.SetValueAsync(value).ConfigureAwait(true);
+                    ConfiguredBrowseObject browseObjectProperties = await _projectProperties.GetConfiguredBrowseObjectPropertiesAsync();
+                    await browseObjectProperties.OutputPath.SetValueAsync(value);
                 });
             }
         }
@@ -91,16 +91,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             {
                 return _threadingService.ExecuteSynchronously(async () =>
                 {
-                    ConfiguredBrowseObject browseObjectProperties = await _projectProperties.GetConfiguredBrowseObjectPropertiesAsync().ConfigureAwait(true);
-                    return await browseObjectProperties.PlatformTarget.GetEvaluatedValueAtEndAsync().ConfigureAwait(true);
+                    ConfiguredBrowseObject browseObjectProperties = await _projectProperties.GetConfiguredBrowseObjectPropertiesAsync();
+                    return await browseObjectProperties.PlatformTarget.GetEvaluatedValueAtEndAsync();
                 });
             }
             set
             {
                 _threadingService.ExecuteSynchronously(async () =>
                 {
-                    ConfiguredBrowseObject browseObjectProperties = await _projectProperties.GetConfiguredBrowseObjectPropertiesAsync().ConfigureAwait(true);
-                    await browseObjectProperties.PlatformTarget.SetValueAsync(value).ConfigureAwait(true);
+                    ConfiguredBrowseObject browseObjectProperties = await _projectProperties.GetConfiguredBrowseObjectPropertiesAsync();
+                    await browseObjectProperties.PlatformTarget.SetValueAsync(value);
                 });
             }
         }
@@ -111,16 +111,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             {
                 return _threadingService.ExecuteSynchronously(async () =>
                 {
-                    ConfiguredBrowseObject browseObjectProperties = await _projectProperties.GetConfiguredBrowseObjectPropertiesAsync().ConfigureAwait(true);
-                    return await browseObjectProperties.IntermediatePath.GetEvaluatedValueAtEndAsync().ConfigureAwait(true);
+                    ConfiguredBrowseObject browseObjectProperties = await _projectProperties.GetConfiguredBrowseObjectPropertiesAsync();
+                    return await browseObjectProperties.IntermediatePath.GetEvaluatedValueAtEndAsync();
                 });
             }
             set
             {
                 _threadingService.ExecuteSynchronously(async () =>
                 {
-                    ConfiguredBrowseObject browseObjectProperties = await _projectProperties.GetConfiguredBrowseObjectPropertiesAsync().ConfigureAwait(true);
-                    await browseObjectProperties.IntermediatePath.SetValueAsync(value).ConfigureAwait(true);
+                    ConfiguredBrowseObject browseObjectProperties = await _projectProperties.GetConfiguredBrowseObjectPropertiesAsync();
+                    await browseObjectProperties.IntermediatePath.SetValueAsync(value);
                 });
             }
         }

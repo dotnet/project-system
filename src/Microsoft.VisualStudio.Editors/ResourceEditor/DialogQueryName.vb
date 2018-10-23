@@ -11,7 +11,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
 
     ''' <summary>
-    ''' Requests a new resouce name from the user.
+    ''' Requests a new resource name from the user.
     ''' </summary>
     ''' <remarks></remarks>
     Friend NotInheritable Class DialogQueryName
@@ -154,7 +154,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
 
         ''' <summary>
-        ''' Requests a new resouce name from the user.
+        ''' Requests a new resource name from the user.
         ''' </summary>
         ''' <param name="SuggestedName">The default name to show in the dialog when it is first shown.</param>
         ''' <param name="UserCancel">[Out] True iff the user canceled the dialog.</param>

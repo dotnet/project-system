@@ -6,7 +6,7 @@ using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
 {
-    internal class AppDesignerFolderSpecialFileProviderFactory
+    internal static class AppDesignerFolderSpecialFileProviderFactory
     {
         public static AppDesignerFolderSpecialFileProvider ImplementGetFile(string result)
         {

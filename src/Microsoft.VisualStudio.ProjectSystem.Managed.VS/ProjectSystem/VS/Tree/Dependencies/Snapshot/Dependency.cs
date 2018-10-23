@@ -10,6 +10,7 @@ using System.Text;
 
 using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
+using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 using Microsoft.VisualStudio.Text;
 
@@ -18,7 +19,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
     [DebuggerDisplay("{" + nameof(Id) + ",nq}")]
     internal class Dependency : IDependency
     {
-        private static ConcurrentBag<StringBuilder> s_builderPool = new ConcurrentBag<StringBuilder>();
+        private static readonly ConcurrentBag<StringBuilder> s_builderPool = new ConcurrentBag<StringBuilder>();
+        private static readonly DependencyIconSetCache s_iconSetCache = new DependencyIconSetCache();
 
         // These priorities are for graph nodes only and are used to group graph nodes 
         // appropriately in order groups predefined order instead of alphabetically.
@@ -75,10 +77,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 Flags = Flags.Union(DependencyTreeFlags.UnresolvedFlags);
             }
 
-            Icon = dependencyModel.Icon;
-            ExpandedIcon = dependencyModel.ExpandedIcon;
-            UnresolvedIcon = dependencyModel.UnresolvedIcon;
-            UnresolvedExpandedIcon = dependencyModel.UnresolvedExpandedIcon;
+            // If this is one of our implementations of IDependencyModel then we can just reuse the icon
+            // set rather than creating a new one.
+            if (dependencyModel is Dependency dependency)
+            {
+                IconSet = dependency.IconSet;
+            }
+            else if (dependencyModel is DependencyModel model)
+            {
+                IconSet = model.IconSet;
+            }
+            else
+            {
+                IconSet = s_iconSetCache.GetOrAddIconSet(dependencyModel.Icon, dependencyModel.ExpandedIcon, dependencyModel.UnresolvedIcon, dependencyModel.UnresolvedExpandedIcon);
+            }
+
             Properties = dependencyModel.Properties ??
                             ImmutableStringDictionary<string>.EmptyOrdinal
                                                              .Add(Folder.IdentityProperty, Caption)
@@ -183,10 +196,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         public bool TopLevel { get; }
         public bool Implicit { get; private set; }
         public bool Visible { get; }
-        public ImageMoniker Icon { get; private set; }
-        public ImageMoniker ExpandedIcon { get; private set; }
-        public ImageMoniker UnresolvedIcon { get; }
-        public ImageMoniker UnresolvedExpandedIcon { get; }
+
+
+        public ImageMoniker Icon => IconSet.Icon;
+        public ImageMoniker ExpandedIcon => IconSet.ExpandedIcon;
+        public ImageMoniker UnresolvedIcon => IconSet.UnresolvedIcon;
+        public ImageMoniker UnresolvedExpandedIcon => IconSet.UnresolvedExpandedIcon;
+
+        public DependencyIconSet IconSet { get; private set; }
+
         public int Priority { get; }
         public ProjectTreeFlags Flags { get; set; }
 
@@ -206,8 +224,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             ProjectTreeFlags? flags = null,
             string schemaName = null,
             IImmutableList<string> dependencyIDs = null,
-            ImageMoniker icon = default,
-            ImageMoniker expandedIcon = default,
+            DependencyIconSet iconSet = null,
             bool? isImplicit = null)
         {
             var clone = new Dependency(this, _modelId);
@@ -237,14 +254,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 clone.DependencyIDs = dependencyIDs;
             }
 
-            if (icon.Id != 0 && icon.Guid != Guid.Empty)
+            if (iconSet != null)
             {
-                clone.Icon = icon;
-            }
-
-            if (expandedIcon.Id != 0 && expandedIcon.Guid != Guid.Empty)
-            {
-                clone.ExpandedIcon = expandedIcon;
+                clone.IconSet = s_iconSetCache.GetOrAddIconSet(iconSet);
             }
 
             if (isImplicit != null)

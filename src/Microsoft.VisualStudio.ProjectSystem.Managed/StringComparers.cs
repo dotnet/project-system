@@ -10,6 +10,11 @@ namespace Microsoft.VisualStudio
     /// </summary>
     internal static class StringComparers
     {
+        public static IEqualityComparer<string> WorkspaceProjectContextIds
+        {
+            get { return StringComparer.Ordinal; }
+        }
+
         public static IEqualityComparer<string> Paths
         {
             get { return StringComparer.OrdinalIgnoreCase; }
@@ -36,6 +41,11 @@ namespace Microsoft.VisualStudio
         }
 
         public static IEqualityComparer<string> DependencyProviderTypes
+        {
+            get { return StringComparer.OrdinalIgnoreCase; }
+        }
+
+        public static IEqualityComparer<string> ItemTypes
         {
             get { return StringComparer.OrdinalIgnoreCase; }
         }

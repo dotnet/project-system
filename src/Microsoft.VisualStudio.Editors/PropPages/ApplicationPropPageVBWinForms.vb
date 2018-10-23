@@ -30,12 +30,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Protected Const Const_MyApplication As String = "MyApplication"
 
 
-        Private _shutdownModeStringValues As String()
-        Private _authenticationModeStringValues As String()
-        Private _noneText As String
+        Private ReadOnly _shutdownModeStringValues As String()
+        Private ReadOnly _authenticationModeStringValues As String()
+        Private ReadOnly _noneText As String
         Private _myType As String
-        Private _startupObjectLabelText As String 'This one is in the form's resx when initialized
-        Private _startupFormLabelText As String 'This one we pull from resources
+        Private ReadOnly _startupObjectLabelText As String 'This one is in the form's resx when initialized
+        Private ReadOnly _startupFormLabelText As String 'This one we pull from resources
 
         'This is the (cached) MyApplication.MyApplicationProperties object returned by the project system
         Private _myApplicationPropertiesCache As IMyApplicationPropertiesInternal
@@ -66,7 +66,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Protected Const Const_SaveMySettingsOnExit As String = "SaveMySettingsOnExit"
 
         ' Shared list of all known application types and their properties...
-        Private Shared s_applicationTypes As New List(Of ApplicationTypeInfo)
+        Private Shared ReadOnly s_applicationTypes As New List(Of ApplicationTypeInfo)
 
         Private _settingApplicationType As Boolean
 
@@ -663,12 +663,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
                     If PopulateDropdown Then
                         Switches.TracePDPerf("*** Populating splash screen list from the project [may be slow for a large project]")
-                        Debug.Assert(Not m_fInsideInit, "PERFORMANCE ALERT: We shouldn't be populating the screen screen dropdown list during page initialization, it should be done later if needed.")
+                        Debug.Assert(Not m_fInsideInit, "PERFORMANCE ALERT: We shouldn't be populating the splash screen dropdown list during page initialization, it should be done later if needed.")
                         Using New WaitCursor
                             Dim CurrentMainForm As String = MyApplicationProperties.MainFormNoRootNamespace
 
-                            For Each FullName As String In GetFormEntryPoints(IncludeSplashScreen:=True)
-                                Dim SplashForm As String = RemoveCurrentRootNamespace(FullName)
+                            For Each SplashForm As String In GetFormEntryPoints(IncludeSplashScreen:=True) _
+                                .Select(Function(e) RemoveCurrentRootNamespace(e)) _
+                                .OrderBy(Function(n) n)
                                 'Only add forms to this list, skip 'Sub Main'
                                 If (Not SplashForm.Equals(Const_MyApplicationEntryPoint, StringComparison.OrdinalIgnoreCase)) AndAlso
                                     (Not SplashForm.Equals(Const_SubMain, StringComparison.OrdinalIgnoreCase)) Then
@@ -1565,7 +1566,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             ' Navigate to events may add a file to the project, which may in turn cause the
             ' project file to be checked out at a later version. This will cause the project
             ' file to be reloaded, which will dispose me and bad things will happen (unless I
-            ' tell myselft that I'm about to potentially check out stuff)
+            ' tell myself that I'm about to potentially check out stuff)
             EnterProjectCheckoutSection()
             Try
                 MyApplicationProperties.NavigateToEvents()

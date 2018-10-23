@@ -12,7 +12,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
     Public Class CpsPropertyDescriptorWrapper
         Inherits PropertyDescriptor
 
-        Private _defaultDescriptor As PropertyDescriptor
+        Private ReadOnly _defaultDescriptor As PropertyDescriptor
 
         Public Sub New(defaultDescriptor As PropertyDescriptor)
             MyBase.New(defaultDescriptor.Name, {})

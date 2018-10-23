@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.Threading
 
         public static async Task<SemaphoreDisposer> DisposableWaitAsync(this SemaphoreSlim semaphore, CancellationToken cancellationToken = default)
         {
-            await semaphore.WaitAsync(cancellationToken).ConfigureAwait(false);
+            await semaphore.WaitAsync(cancellationToken);
             return new SemaphoreDisposer(semaphore);
         }
 
@@ -27,14 +27,13 @@ namespace Microsoft.VisualStudio.Threading
             // is draining critical tasks and is waiting us.
             using (collection.Join())
             {
-                using (await semaphore.DisposableWaitAsync().ConfigureAwait(false))
+                using (await semaphore.DisposableWaitAsync())
                 {
                     // We do an inner JoinableTaskFactory.RunAsync here to workaround
                     // https://github.com/Microsoft/vs-threading/issues/132
                     JoinableTask<T> joinableTask = factory.RunAsync(task);
 
-                    return await joinableTask.Task
-                                             .ConfigureAwait(false);
+                    return await joinableTask.Task;
                 }
             }
         }
@@ -46,14 +45,13 @@ namespace Microsoft.VisualStudio.Threading
             // is draining critical tasks and is waiting us.
             using (collection.Join())
             {
-                using (await semaphore.DisposableWaitAsync().ConfigureAwait(false))
+                using (await semaphore.DisposableWaitAsync())
                 {
                     // We do an inner JoinableTaskFactory.RunAsync here to workaround
                     // https://github.com/Microsoft/vs-threading/issues/132
                     JoinableTask joinableTask = factory.RunAsync(task);
 
-                    await joinableTask.Task
-                                      .ConfigureAwait(false);
+                    await joinableTask.Task;
                 }
             }
         }
@@ -65,7 +63,7 @@ namespace Microsoft.VisualStudio.Threading
             // is draining critical tasks and is waiting us.
             using (collection.Join())
             {
-                using (await semaphore.DisposableWaitAsync().ConfigureAwait(false))
+                using (await semaphore.DisposableWaitAsync())
                 {
                     action();
                 }

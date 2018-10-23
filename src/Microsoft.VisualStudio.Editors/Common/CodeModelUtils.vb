@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports EnvDTE
 
@@ -18,7 +18,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         Public Const HR_E_CSHARP_USER_CANCEL As Integer = &H80040103
 
         ''' <summary>
-        ''' This is a shared class - disallow instantation.
+        ''' This is a shared class - disallow instantiation.
         ''' </summary>
         ''' <remarks></remarks>
         Private Sub New()

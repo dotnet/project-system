@@ -26,7 +26,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 CSharpLanguageVersion.Version7,
                 CSharpLanguageVersion.Version7_1,
                 CSharpLanguageVersion.Version7_2,
-                CSharpLanguageVersion.Version7_3}
+                CSharpLanguageVersion.Version7_3,
+                CSharpLanguageVersion.Version8_0}
 
         End Function
 

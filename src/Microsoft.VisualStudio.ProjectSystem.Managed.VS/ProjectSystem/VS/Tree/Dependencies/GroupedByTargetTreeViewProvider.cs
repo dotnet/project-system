@@ -72,7 +72,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                         snapshot.ActiveTarget,
                         target.Value,
                         target.Value.Catalogs,
-                        rememberNewNodes).ConfigureAwait(false);
+                        rememberNewNodes);
                 }
             }
             else
@@ -90,7 +90,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                                          snapshot.ActiveTarget,
                                                          target.Value,
                                                          target.Value.Catalogs,
-                                                         rememberNewNodes).ConfigureAwait(false);
+                                                         rememberNewNodes);
                     }
                     else
                     {
@@ -103,7 +103,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                                   rule: null,
                                                   isProjectItem: false,
                                                   additionalFlags: ProjectTreeFlags.Create(ProjectTreeFlags.Common.BubbleUp));
-                        node = await BuildSubTreesAsync(node, snapshot.ActiveTarget, target.Value, target.Value.Catalogs, CleanupOldNodes).ConfigureAwait(false);
+                        node = await BuildSubTreesAsync(node, snapshot.ActiveTarget, target.Value, target.Value.Catalogs, CleanupOldNodes);
 
                         if (shouldAddTargetNode)
                         {
@@ -225,7 +225,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     dependencyGroup.Value,
                     catalogs,
                     isActiveTarget,
-                    shouldCleanup: !isNewSubTreeNode).ConfigureAwait(false);
+                    shouldCleanup: !isNewSubTreeNode);
 
                 currentNodes.Add(subTreeNode);
 
@@ -273,7 +273,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     }
                 }
 
-                dependencyNode = await CreateOrUpdateNodeAsync(dependencyNode, dependency, targetedSnapshot, catalogs, isActiveTarget).ConfigureAwait(false);
+                dependencyNode = await CreateOrUpdateNodeAsync(dependencyNode, dependency, targetedSnapshot, catalogs, isActiveTarget);
                 currentNodes.Add(dependencyNode);
 
                 if (isNewDependencyNode)
@@ -322,8 +322,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             IRule rule = null;
             if (dependency.Flags.Contains(DependencyTreeFlags.SupportsRuleProperties))
             {
-                rule = await TreeServices.GetRuleAsync(dependency, catalogs)
-                                         .ConfigureAwait(false);
+                rule = await TreeServices.GetRuleAsync(dependency, catalogs);
             }
 
             return CreateOrUpdateNode(

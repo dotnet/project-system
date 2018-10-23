@@ -11,7 +11,6 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.ProjectPropertiesProviders
 {
-    [Trait("UnitTest", "ProjectSystem")]
     public class AssemblyOriginatorKeyFileValueProviderTests
     {
         private const string AssemblyOriginatorKeyFilePropertyName = "AssemblyOriginatorKeyFile";

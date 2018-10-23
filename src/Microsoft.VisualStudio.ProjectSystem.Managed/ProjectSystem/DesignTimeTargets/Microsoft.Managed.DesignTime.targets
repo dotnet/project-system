@@ -171,6 +171,10 @@
       <Context>File</Context>
     </PropertyPageSchema>
     
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)XamlAppDef.xaml">
+      <Context>File;BrowseObject</Context>
+    </PropertyPageSchema>
+
     <!-- Project related settings -->
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)AppDesigner.xaml">
       <Context>ProjectSubscriptionService</Context>

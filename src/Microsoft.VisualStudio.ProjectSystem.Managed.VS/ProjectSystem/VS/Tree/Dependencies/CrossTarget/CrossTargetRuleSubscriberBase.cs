@@ -10,17 +10,17 @@ using System.Threading.Tasks.Dataflow;
 
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
+using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 {
-    internal abstract class CrossTargetRuleSubscriberBase<T> : OnceInitializedOnceDisposedAsync, ICrossTargetSubscriber where T : IRuleChangeContext
+    internal abstract class CrossTargetRuleSubscriberBase<T> : OnceInitializedOnceDisposed, ICrossTargetSubscriber where T : IRuleChangeContext
     {
 #pragma warning disable CA2213 // OnceInitializedOnceDisposedAsync are not tracked corretly by the IDisposeable analyzer
         private readonly SemaphoreSlim _gate = new SemaphoreSlim(initialCount: 1);
+        private DisposableBag _subscriptions;
 #pragma warning restore CA2213
-        private readonly List<IDisposable> _evaluationSubscriptionLinks;
-        private readonly List<IDisposable> _designTimeBuildSubscriptionLinks;
         private readonly IUnconfiguredProjectCommonServices _commonServices;
         private readonly IProjectAsynchronousTasksService _tasksService;
         private readonly IDependencyTreeTelemetryService _treeTelemetryService;
@@ -31,22 +31,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             IUnconfiguredProjectCommonServices commonServices,
             IProjectAsynchronousTasksService tasksService,
             IDependencyTreeTelemetryService treeTelemetryService)
-            : base(commonServices.ThreadingService.JoinableTaskContext)
+            : base(synchronousDisposal: true)
         {
             _commonServices = commonServices;
             _tasksService = tasksService;
             _treeTelemetryService = treeTelemetryService;
-            _evaluationSubscriptionLinks = new List<IDisposable>();
-            _designTimeBuildSubscriptionLinks = new List<IDisposable>();
         }
 
         protected abstract OrderPrecedenceImportCollection<ICrossTargetRuleHandler<T>> Handlers { get; }
 
-        public async Task InitializeSubscriberAsync(ICrossTargetSubscriptionsHost host, IProjectSubscriptionService subscriptionService)
+        public void InitializeSubscriber(ICrossTargetSubscriptionsHost host, IProjectSubscriptionService subscriptionService)
         {
             _host = host;
 
-            await InitializeAsync().ConfigureAwait(false);
+            EnsureInitialized();
 
             IEnumerable<string> watchedEvaluationRules = GetWatchedRules(RuleHandlerType.Evaluation);
             IEnumerable<string> watchedDesignTimeBuildRules = GetWatchedRules(RuleHandlerType.DesignTimeBuild);
@@ -55,7 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                 _commonServices.ActiveConfiguredProject, subscriptionService, watchedEvaluationRules, watchedDesignTimeBuildRules);
         }
 
-        public Task AddSubscriptionsAsync(AggregateCrossTargetProjectContext newProjectContext)
+        public void AddSubscriptions(AggregateCrossTargetProjectContext newProjectContext)
         {
             Requires.NotNull(newProjectContext, nameof(newProjectContext));
 
@@ -76,31 +74,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                 SubscribeToConfiguredProject(
                     configuredProject, configuredProject.Services.ProjectSubscription, watchedEvaluationRules, watchedDesignTimeBuildRules);
             }
-
-            return Task.CompletedTask;
         }
 
-        public Task ReleaseSubscriptionsAsync()
+        public void ReleaseSubscriptions()
         {
             _currentProjectContext = null;
 
-            foreach (IDisposable link in _evaluationSubscriptionLinks.Concat(_designTimeBuildSubscriptionLinks))
-            {
-                link.Dispose();
-            }
-
-            _evaluationSubscriptionLinks.Clear();
-            _designTimeBuildSubscriptionLinks.Clear();
-
-            return Task.CompletedTask;
-        }
-
-        public async Task OnContextReleasedAsync(ITargetedProjectContext innerContext)
-        {
-            foreach (Lazy<ICrossTargetRuleHandler<T>, IOrderPrecedenceMetadataView> handler in Handlers)
-            {
-                await handler.Value.OnContextReleasedAsync(innerContext).ConfigureAwait(false);
-            }
+            // We can't re-use the DisposableBag after disposing it, so null it out
+            // to ensure we create a new one the next time we go to add subscriptions.
+            _subscriptions?.Dispose();
+            _subscriptions = null;
         }
 
         private void SubscribeToConfiguredProject(
@@ -123,22 +106,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                         NameFormat = "CrossTarget Intermediate Evaluation Input: {1}"
                     });
 
-            _designTimeBuildSubscriptionLinks.Add(
+            _subscriptions = _subscriptions ?? new DisposableBag();
+
+            _subscriptions.AddDisposable(
                 subscriptionService.JointRuleSource.SourceBlock.LinkTo(
                     intermediateBlockDesignTime,
                   ruleNames: watchedDesignTimeBuildRules.Union(watchedEvaluationRules),
                   suppressVersionOnlyUpdates: true,
-                  linkOptions: new DataflowLinkOptions { PropagateCompletion = true }));
+                  linkOptions: DataflowOption.PropagateCompletion));
 
-            _evaluationSubscriptionLinks.Add(
+            _subscriptions.AddDisposable(
                 subscriptionService.ProjectRuleSource.SourceBlock.LinkTo(
                     intermediateBlockEvaluation,
                     ruleNames: watchedEvaluationRules,
                     suppressVersionOnlyUpdates: true,
-                    linkOptions: new DataflowLinkOptions { PropagateCompletion = true }));
+                    linkOptions: DataflowOption.PropagateCompletion));
 
             var actionBlockDesignTimeBuild =
-                new ActionBlock<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectCatalogSnapshot, IProjectCapabilitiesSnapshot>>>(
+                DataflowBlockSlim.CreateActionBlock<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectCatalogSnapshot, IProjectCapabilitiesSnapshot>>>(
                     e => OnProjectChangedAsync(e, configuredProject, RuleHandlerType.DesignTimeBuild),
                     new ExecutionDataflowBlockOptions()
                     {
@@ -146,26 +131,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                     });
 
             var actionBlockEvaluation =
-                new ActionBlock<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectCatalogSnapshot, IProjectCapabilitiesSnapshot>>>(
+                DataflowBlockSlim.CreateActionBlock<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectCatalogSnapshot, IProjectCapabilitiesSnapshot>>>(
                      e => OnProjectChangedAsync(e, configuredProject, RuleHandlerType.Evaluation),
                      new ExecutionDataflowBlockOptions()
                      {
                          NameFormat = "CrossTarget Evaluation Input: {1}"
                      });
 
-            _designTimeBuildSubscriptionLinks.Add(ProjectDataSources.SyncLinkTo(
+            _subscriptions.AddDisposable(ProjectDataSources.SyncLinkTo(
                 intermediateBlockDesignTime.SyncLinkOptions(),
                 subscriptionService.ProjectCatalogSource.SourceBlock.SyncLinkOptions(),
                 configuredProject.Capabilities.SourceBlock.SyncLinkOptions(),
                 actionBlockDesignTimeBuild,
-                linkOptions: new DataflowLinkOptions { PropagateCompletion = true }));
+                linkOptions: DataflowOption.PropagateCompletion));
 
-            _evaluationSubscriptionLinks.Add(ProjectDataSources.SyncLinkTo(
+            _subscriptions.AddDisposable(ProjectDataSources.SyncLinkTo(
                 intermediateBlockEvaluation.SyncLinkOptions(),
                 subscriptionService.ProjectCatalogSource.SourceBlock.SyncLinkOptions(),
                 configuredProject.Capabilities.SourceBlock.SyncLinkOptions(),
                 actionBlockEvaluation,
-                linkOptions: new DataflowLinkOptions { PropagateCompletion = true }));
+                linkOptions: DataflowOption.PropagateCompletion));
         }
 
         private IEnumerable<string> GetWatchedRules(RuleHandlerType handlerType)
@@ -201,7 +186,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
                 using (ProjectCapabilitiesContext.CreateIsolatedContext(configuredProject, e.Value.Item3))
                 {
-                    await HandleAsync(e, handlerType).ConfigureAwait(false);
+                    await HandleAsync(e, handlerType);
                 }
             });
         }
@@ -210,7 +195,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                     IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectCatalogSnapshot, IProjectCapabilitiesSnapshot>> e,
                     RuleHandlerType handlerType)
         {
-            AggregateCrossTargetProjectContext currentAggregateContext = await _host.GetCurrentAggregateProjectContext().ConfigureAwait(false);
+            AggregateCrossTargetProjectContext currentAggregateContext = await _host.GetCurrentAggregateProjectContext();
             if (currentAggregateContext == null || _currentProjectContext != currentAggregateContext)
             {
                 return;
@@ -222,9 +207,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                                    .Where(h => h.SupportsHandlerType(handlerType));
 
             // We need to process the update within a lock to ensure that we do not release this context during processing.
-            // TODO: Enable concurrent execution of updates themeselves, i.e. two separate invocations of HandleAsync
+            // TODO: Enable concurrent execution of updates themselves, i.e. two separate invocations of HandleAsync
             //       should be able to run concurrently.
-            using (await _gate.DisposableWaitAsync().ConfigureAwait(true))
+            using (await _gate.DisposableWaitAsync())
             {
                 // Get the inner workspace project context to update for this change.
                 ITargetedProjectContext projectContextToUpdate = currentAggregateContext
@@ -264,12 +249,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                                                   projectChanges,
                                                   projectContextToUpdate,
                                                   isActiveContext,
-                                                  ruleChangeContext)
-                                     .ConfigureAwait(true);
+                                                  ruleChangeContext);
                     }
                 }
 
-                await CompleteHandleAsync(ruleChangeContext).ConfigureAwait(false);
+                await CompleteHandleAsync(ruleChangeContext);
 
                 // record all the rules that have occurred
                 _treeTelemetryService.ObserveTargetFrameworkRules(projectContextToUpdate.TargetFramework, update.ProjectChanges.Keys);
@@ -283,16 +267,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             return Task.CompletedTask;
         }
 
-        protected override Task InitializeCoreAsync(CancellationToken cancellationToken)
-        {
-            return Task.CompletedTask;
+        protected override void Initialize()
+        {   
         }
-
-        protected override async Task DisposeCoreAsync(bool initialized)
+        protected override void Dispose(bool disposing)
         {
-            if (initialized)
+            if (disposing)
             {
-                await ReleaseSubscriptionsAsync().ConfigureAwait(false);
+                ReleaseSubscriptions();
             }
         }
     }

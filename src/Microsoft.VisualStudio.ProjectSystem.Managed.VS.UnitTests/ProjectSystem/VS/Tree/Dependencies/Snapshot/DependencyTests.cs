@@ -11,7 +11,6 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
-    [Trait("UnitTest", "ProjectSystem")]
     public class DependencyTests
     {
         [Fact]
@@ -295,6 +294,73 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             Assert.True(dependency.HasUnresolvedDependency(mockSnapshot));
             Assert.True(dependency.IsOrHasUnresolvedDependency(mockSnapshot));
+        }
+
+        [Fact]
+        public void WhenSettingProperties_ExistingIconSetInstanceIsReused()
+        {
+            var mockModel = IDependencyModelFactory.Implement(
+                providerType: "providerType",
+                id: "someId");
+
+            var dependency = (new Dependency(mockModel, ITargetFrameworkFactory.Implement("tfm1"), @"C:\Foo\Project.csproj"))
+                .SetProperties(iconSet: new DependencyIconSet(KnownMonikers.Reference, KnownMonikers.Reference, KnownMonikers.Reference, KnownMonikers.Reference));
+
+            var dependencyWithUpdatedIconSet = dependency.SetProperties(iconSet: new DependencyIconSet(KnownMonikers.Reference, KnownMonikers.Reference, KnownMonikers.Reference, KnownMonikers.Reference));
+
+            Assert.True(ReferenceEquals(dependency.IconSet, dependencyWithUpdatedIconSet.IconSet));
+        }
+
+        [Fact]
+        public void WhenCreatingADependencyFromAnotherDependency_ExistingIconSetInstanceIsReused()
+        {
+            var mockModel = IDependencyModelFactory.Implement(
+                providerType: "providerType",
+                id: "someId");
+
+            var dependency = new Dependency(mockModel, ITargetFrameworkFactory.Implement("tfm1"), @"C:\Foo\Project.csproj")
+                .SetProperties(iconSet: new DependencyIconSet(KnownMonikers.Reference, KnownMonikers.Reference, KnownMonikers.Reference, KnownMonikers.Reference));
+
+            var newDependency = new Dependency(dependency, ITargetFrameworkFactory.Implement("tfm2"), @"C:\Foo\Project.csproj");
+
+            Assert.True(ReferenceEquals(dependency.IconSet, newDependency.IconSet));
+        }
+
+        [Fact]
+        public void WhenCreatingUnrelatedDependenciesWithSameIcons_BothUseSameIconSet()
+        {
+            const string jsonModel1 = @"
+{
+    ""ProviderType"": ""alpha"",
+    ""Id"": ""modelOne"",
+}";
+
+            const string jsonModel2 = @"
+{
+    ""ProviderType"": ""beta"",
+    ""Id"": ""modelTwo"",
+}";
+
+            var model1 = IDependencyModelFactory.FromJson(
+                jsonModel1,
+                icon: KnownMonikers.Path,
+                expandedIcon: KnownMonikers.PathIcon,
+                unresolvedIcon: KnownMonikers.PathListBox,
+                unresolvedExpandedIcon: KnownMonikers.PathListBoxItem);
+
+            var model2 = IDependencyModelFactory.FromJson(
+                jsonModel2,
+                icon: KnownMonikers.Path,
+                expandedIcon: KnownMonikers.PathIcon,
+                unresolvedIcon: KnownMonikers.PathListBox,
+                unresolvedExpandedIcon: KnownMonikers.PathListBoxItem);
+
+            var targetFramework = ITargetFrameworkFactory.Implement("Tfm1");
+
+            var dependency1 = new Dependency(model1, targetFramework, @"C:\Foo\Project.csproj");
+            var dependency2 = new Dependency(model2, targetFramework, @"C:\Foo\Project.csproj");
+
+            Assert.True(ReferenceEquals(dependency1.IconSet, dependency2.IconSet));
         }
     }
 }

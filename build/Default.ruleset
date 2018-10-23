@@ -46,8 +46,9 @@
     <Rule Id="CA1721" Action="None" />
     <Rule Id="CA1724" Action="None" />
     <Rule Id="CA1815" Action="None" />
-    <Rule Id="CA2007" Action="Warning" />
+    <Rule Id="CA2007" Action="None" />
     <Rule Id="CA2211" Action="None" />
+    <Rule Id="CA2213" Action="None" /> <!-- https://github.com/dotnet/roslyn-analyzers/issues/1796 -->
     <Rule Id="CA2218" Action="None" />
     <Rule Id="CA2222" Action="None" />
     <Rule Id="CA2224" Action="None" />
@@ -148,5 +149,8 @@
     <Rule Id="VSTHRD010" Action="None" />                       <!-- Visual Studio service should be used on main thread explicitly.-->
     <Rule Id="VSTHRD103" Action="None" />                       <!-- Call async methods when in an async method.-->
     <Rule Id="VSTHRD108" Action="None" />                       <!-- Thread affinity checks should be unconditional.-->
+  </Rules>
+  <Rules AnalyzerId="Microsoft.VisualStudio.SDK.Analyzers" RuleNamespace="Microsoft.VisualStudio.SDK.Analyzers">
+    <Rule Id="VSSDK006" Action="None" />                        <!-- Check whether the result of GetService calls is null -->
   </Rules>
 </RuleSet>

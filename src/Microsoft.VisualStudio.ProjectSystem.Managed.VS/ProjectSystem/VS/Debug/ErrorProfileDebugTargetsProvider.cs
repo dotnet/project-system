@@ -28,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             _configuredProject = configuredProject;
         }
 
-        private ConfiguredProject _configuredProject;
+        private readonly ConfiguredProject _configuredProject;
 
         /// <summary>
         /// This provider handles the NoAction profile
@@ -39,7 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         }
 
         /// <summary>
-        /// Called just prior to launch to do additionl work (put up ui, do special configuration etc).
+        /// Called just prior to launch to do additional work (put up ui, do special configuration etc).
         /// </summary>
         public Task OnBeforeLaunchAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile)
         {
@@ -48,7 +48,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         }
 
         /// <summary>
-        /// Called just prior to launch to do additionl work (put up ui, do special configuration etc).
+        /// Called just prior to launch to do additional work (put up ui, do special configuration etc).
         /// </summary>
         public Task OnAfterLaunchAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile)
         {
@@ -62,10 +62,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// </summary>
         public Task<IReadOnlyList<IDebugLaunchSettings>> QueryDebugTargetsAsync(DebugLaunchOptions launchOptions, ILaunchProfile activeProfile)
         {
-            if (activeProfile.OtherSettings.TryGetValue("ErrorString", out object oErrorString) && oErrorString is string)
+            if (activeProfile.OtherSettings.TryGetValue("ErrorString", out object objErrorString) && objErrorString is string errorString)
             {
-                throw new Exception(string.Format(VSResources.ErrorInProfilesFile2, Path.GetFileNameWithoutExtension(_configuredProject.UnconfiguredProject.FullPath), (string)oErrorString));
+                throw new Exception(string.Format(VSResources.ErrorInProfilesFile2, Path.GetFileNameWithoutExtension(_configuredProject.UnconfiguredProject.FullPath), errorString));
             }
+
             throw new Exception(string.Format(VSResources.ErrorInProfilesFile, Path.GetFileNameWithoutExtension(_configuredProject.UnconfiguredProject.FullPath)));
         }
     }

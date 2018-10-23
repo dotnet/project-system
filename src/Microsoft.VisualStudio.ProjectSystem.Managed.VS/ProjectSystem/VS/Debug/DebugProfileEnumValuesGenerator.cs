@@ -49,9 +49,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// <summary>
         /// See <see cref="IDynamicEnumValuesGenerator"/>
         /// </summary>
-        public async Task<ICollection<IEnumValue>> GetListedValuesAsync()
+        public Task<ICollection<IEnumValue>> GetListedValuesAsync()
         {
-            return await _listedValues.GetValueAsync().ConfigureAwait(true);
+            return _listedValues.GetValueAsync();
         }
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// </summary>
         public async Task<IEnumValue> TryCreateEnumValueAsync(string userSuppliedValue)
         {
-            return (await _listedValues.GetValueAsync().ConfigureAwait(true))
+            return (await _listedValues.GetValueAsync())
             .FirstOrDefault(v => LaunchProfile.IsSameProfileName(v.Name, userSuppliedValue));
         }
 

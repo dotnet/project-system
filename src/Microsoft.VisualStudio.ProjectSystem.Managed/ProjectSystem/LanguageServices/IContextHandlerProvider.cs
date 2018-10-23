@@ -5,13 +5,13 @@ using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
     /// <summary>
-    ///     Provides <see cref="ICommandLineHandler"/> and <see cref="IEvaluationHandler"/> instances for 
+    ///     Provides <see cref="ICommandLineHandler"/> and <see cref="IProjectEvaluationHandler"/> instances for 
     ///     <see cref="IWorkspaceProjectContext"/> instances.
     /// </summary>
     internal interface IContextHandlerProvider
     {
         /// <summary>
-        ///     Gets the evaluation rules for all <see cref="IEvaluationHandler"/> instances.
+        ///     Gets the evaluation rules for all <see cref="IProjectEvaluationHandler"/> instances.
         /// </summary>
         ImmutableArray<string> EvaluationRuleNames { get; }
 
@@ -24,13 +24,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         ImmutableArray<ICommandLineHandler> GetCommandLineHandlers(IWorkspaceProjectContext context);
 
         /// <summary>
-        ///     Returns the array of <see cref="IEvaluationHandler"/> instances and their evaluation rule names
+        ///     Returns the array of <see cref="IProjectEvaluationHandler"/> instances and their evaluation rule names
         ///     for the specified <see cref="IWorkspaceProjectContext"/>.
         /// </summary>
         /// <exception cref="ArgumentNullException">
         ///     <paramref name="context"/> is <see langword="null"/>.
         /// </exception>
-        ImmutableArray<(IEvaluationHandler handler, string evaluationRuleName)> GetEvaluationHandlers(IWorkspaceProjectContext context);
+        ImmutableArray<(IProjectEvaluationHandler handler, string evaluationRuleName)> GetEvaluationHandlers(IWorkspaceProjectContext context);
 
         /// <summary>
         ///     Releases the handlers for the specified <see cref="IWorkspaceProjectContext"/>.
