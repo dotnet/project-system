@@ -764,7 +764,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Try
                 Dim EntryPointProvider As Interop.IVBEntryPointProvider = CType(ServiceProvider.GetService(Interop.NativeMethods.VBCompilerGuid), Interop.IVBEntryPointProvider)
                 If EntryPointProvider IsNot Nothing Then
-                    Dim EntryPoints() As String = New String() {}
+                    Dim EntryPoints() As String = Array.Empty(Of String)()
                     Dim cEntryPointsAvailable As UInteger
 
                     'First call gets estimated number of entrypoints

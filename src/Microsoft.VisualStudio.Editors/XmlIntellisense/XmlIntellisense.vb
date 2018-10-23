@@ -353,7 +353,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
                     Dim ResolvedSet As IList(Of XmlSchemaReference) = data.Builder.ResolvedSet
 
                     If ResolvedSet.Count = 0 Then
-                        Dim TargetNamespaces(-1) As String
+                        Dim TargetNamespaces As String() = Array.Empty(Of String)
                         data.TargetNamespaces = TargetNamespaces
                     Else
                         For Index As Integer = 0 To ResolvedSet.Count - 1

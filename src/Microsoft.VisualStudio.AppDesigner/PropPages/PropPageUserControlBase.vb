@@ -1372,7 +1372,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         End If
 #End If
                         If TypeOf ExtendedCommonProperties(0) Is ICustomTypeDescriptor Then 'Extenders were found and added, so we need to get the property descriptors for the set of properties including extenders
-                            m_CommonPropertyDescriptors = DirectCast(ExtendedCommonProperties(0), ICustomTypeDescriptor).GetProperties(New Attribute() {})
+                            m_CommonPropertyDescriptors = DirectCast(ExtendedCommonProperties(0), ICustomTypeDescriptor).GetProperties(Array.Empty(Of Attribute)())
                             TraceTypeDescriptorCollection("*** Extended common properties collection", m_CommonPropertyDescriptors)
                         Else
                             'No extenders

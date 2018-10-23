@@ -2285,7 +2285,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         Return New String() {applicationDefinition}
                     End If
                 ElseIf (Flags And ControlDataFlags.NoOptimisticFileCheckout) <> 0 Then
-                    Return New String() {}
+                    Return Array.Empty(Of String)()
                 Else
                     'Default - Changing the property requires checking out the project file
                     Return New String() {m_PropPage.DTEProject.FullName}
