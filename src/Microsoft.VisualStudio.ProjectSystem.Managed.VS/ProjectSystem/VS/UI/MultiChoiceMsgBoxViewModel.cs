@@ -3,6 +3,7 @@
 using System;
 using System.Windows;
 using System.Windows.Input;
+using Microsoft.VisualStudio.PlatformUI;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
 {
@@ -41,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
             {
                 Button4Text = buttons[3];
             }
-            ButtonClickCommand = new RelayCommand((parameter) => { CloseDialog.Invoke(this, (MultiChoiceMsgBoxResult)(parameter)); });
+            ButtonClickCommand = new DelegateCommand((parameter) => { CloseDialog.Invoke(this, (MultiChoiceMsgBoxResult)(parameter)); });
 
         }
 
