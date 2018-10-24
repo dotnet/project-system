@@ -786,7 +786,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Given DefineConstants string, parse it into a DEBUG value, a TRACE value, and everything else
         ''' </summary>
-        Private Sub ParseConditionalCompilationConstants(DefineConstantsFullValue As String, ByRef DebugDefined As Boolean, ByRef TraceDefined As Boolean, ByRef OtherConstants As String)
+        Private Shared Sub ParseConditionalCompilationConstants(DefineConstantsFullValue As String, ByRef DebugDefined As Boolean, ByRef TraceDefined As Boolean, ByRef OtherConstants As String)
             'Start out with the full set of defined constants
             OtherConstants = DefineConstantsFullValue
 
@@ -960,7 +960,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Given a string containing conditional compilation constants, adds the given constant to it, if it
         '''   doesn't already exist.
         ''' </summary>
-        Public Function AddSymbol(stOldCondCompConstants As String, stSymbol As String) As String
+        Public Shared Function AddSymbol(stOldCondCompConstants As String, stSymbol As String) As String
             '// See if we find it
             Dim rgConstants() As String
             Dim bFound As Boolean = False
@@ -999,7 +999,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Given a string containing conditional compilation constants, determines if the given constant is defined in it
         ''' </summary>
-        Public Function FindSymbol(stOldCondCompConstants As String, stSymbol As String) As Boolean
+        Public Shared Function FindSymbol(stOldCondCompConstants As String, stSymbol As String) As Boolean
             '// See if we find it
             Dim rgConstants() As String
 
@@ -1024,7 +1024,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Given a string containing conditional compilation constants, removes the given constant from it, if it
         '''   is in the list.
         ''' </summary>
-        Public Function RemoveSymbol(stOldCondCompConstants As String, stSymbol As String) As String
+        Public Shared Function RemoveSymbol(stOldCondCompConstants As String, stSymbol As String) As String
             '// Look for the DEBUG constant
             Dim rgConstants() As String
             Dim stNewConstants As String = ""

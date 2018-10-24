@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Option Strict On
 Option Explicit On
@@ -62,7 +62,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <summary>
         '''  Get String Value of one column
         ''' </summary>
-        Private Function GetColumnValue(obj As Object, column As Integer) As String
+        Private Shared Function GetColumnValue(obj As Object, column As Integer) As String
             If TypeOf obj Is ListViewItem Then
                 Dim listItem As ListViewItem = CType(obj, ListViewItem)
                 Return listItem.SubItems.Item(column).Text

@@ -1445,7 +1445,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' </summary>
         ''' <param name="Value">[inout] The value to check and convert in place.</param>
         ''' <remarks></remarks>
-        Private Sub ConvertEnumToUnderlyingType(ByRef Value As Object)
+        Private Shared Sub ConvertEnumToUnderlyingType(ByRef Value As Object)
             If Value IsNot Nothing AndAlso Value.GetType().IsEnum Then
                 Value = Convert.ChangeType(Value, Type.GetTypeCode(Value.GetType().UnderlyingSystemType))
             End If

@@ -94,7 +94,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Format baseaddress value into VB hex notation
         ''' </summary>
-        Private Function ToHexAddress(BaseAddress As ULong) As String
+        Private Shared Function ToHexAddress(BaseAddress As ULong) As String
             Debug.Assert(BaseAddress >= 0 AndAlso BaseAddress <= UInteger.MaxValue, "Invalid baseaddress value")
 
             Return "&H" & String.Format("{0:X8}", CUInt(BaseAddress))
@@ -122,7 +122,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Converts the string BaseAddress text to the native property type of UInt32
         ''' Called by base class code through delegate
         ''' </summary>
-        Private Function GetBaseAddressFromControl(control As Control) As UInteger
+        Private Shared Function GetBaseAddressFromControl(control As Control) As UInteger
             Dim StringValue As String = Trim(control.Text)
             Dim LongValue As ULong = 0
 

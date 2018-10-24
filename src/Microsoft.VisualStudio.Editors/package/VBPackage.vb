@@ -307,7 +307,7 @@ Namespace Microsoft.VisualStudio.Editors
         ''' <param name="hierarchy"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function ProjectGUID(hierarchy As IVsHierarchy) As Guid
+        Public Shared Function ProjectGUID(hierarchy As IVsHierarchy) As Guid
             Dim projGuid As Guid = Guid.Empty
             Try
                 If hierarchy IsNot Nothing Then
@@ -479,12 +479,12 @@ Namespace Microsoft.VisualStudio.Editors
             End Function
 
             Public Function OnBeforeCloseProject(pHierarchy As IVsHierarchy, fRemoved As Integer) As Integer Implements IVsSolutionEvents.OnBeforeCloseProject
-                Instance.StickyProjectResourcePaths.Remove(Instance.ProjectGUID(pHierarchy))
+                Instance.StickyProjectResourcePaths.Remove(ProjectGUID(pHierarchy))
                 Return Interop.NativeMethods.S_OK
             End Function
 
             Public Function OnBeforeUnloadProject(pRealHierarchy As IVsHierarchy, pStubHierarchy As IVsHierarchy) As Integer Implements IVsSolutionEvents.OnBeforeUnloadProject
-                Instance.StickyProjectResourcePaths.Remove(Instance.ProjectGUID(pRealHierarchy))
+                Instance.StickyProjectResourcePaths.Remove(ProjectGUID(pRealHierarchy))
                 Return Interop.NativeMethods.S_OK
             End Function
 

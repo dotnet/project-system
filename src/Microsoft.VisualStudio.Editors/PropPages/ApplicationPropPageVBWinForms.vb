@@ -463,7 +463,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return True
         End Function
 
-        Private Function IsClassLibrary(AppType As ApplicationTypes) As Boolean
+        Private Shared Function IsClassLibrary(AppType As ApplicationTypes) As Boolean
             If (AppType = ApplicationTypes.WindowsClassLib OrElse AppType = ApplicationTypes.WebControl) Then
                 Return True
             End If
@@ -764,7 +764,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Try
                 Dim EntryPointProvider As Interop.IVBEntryPointProvider = CType(ServiceProvider.GetService(Interop.NativeMethods.VBCompilerGuid), Interop.IVBEntryPointProvider)
                 If EntryPointProvider IsNot Nothing Then
-                    Dim EntryPoints() As String = New String() {}
+                    Dim EntryPoints() As String = Array.Empty(Of String)()
                     Dim cEntryPointsAvailable As UInteger
 
                     'First call gets estimated number of entrypoints
@@ -1380,7 +1380,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <param name="AppType"></param>
         ''' <remarks></remarks>
-        Private Function MyTypeFromApplicationType(AppType As ApplicationTypes, CustomSubMain As Boolean) As String
+        Private Shared Function MyTypeFromApplicationType(AppType As ApplicationTypes, CustomSubMain As Boolean) As String
             Dim MyType As String
 
             Select Case AppType
@@ -1693,7 +1693,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Returns true if start-up objects other than "(None)" are supported for this app type
         ''' </summary>
-        Private Function StartUpObjectSupportedForApplicationType(AppType As ApplicationTypes) As Boolean
+        Private Shared Function StartUpObjectSupportedForApplicationType(AppType As ApplicationTypes) As Boolean
             Return Not IsClassLibrary(AppType)
         End Function
 

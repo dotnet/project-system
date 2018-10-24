@@ -520,7 +520,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return UACSettingsButtonSupported(CType(MyApplicationProperties.OutputTypeFromApplicationType(appType), VSLangProj.prjOutputType))
         End Function
 
-        Private Function AddApplicationManifestToProjectFromTemplate(SpecialProjectItems As IVsProjectSpecialFiles, ByRef ItemId As UInteger, ByRef MkDocument As String) As Boolean
+        Private Shared Function AddApplicationManifestToProjectFromTemplate(SpecialProjectItems As IVsProjectSpecialFiles, ByRef ItemId As UInteger, ByRef MkDocument As String) As Boolean
             ' This will trigger the application manifest item template and set the ApplicationManifest property
             ' Note: IVSProjectSpecialFiles is responsible for the SCC implications
             ' of adding the app.manifest file here. 

@@ -242,7 +242,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
             End Set
         End Property
 
-        Private Sub PaintArrow(g As Graphics, dropDownRect As Rectangle)
+        Private Shared Sub PaintArrow(g As Graphics, dropDownRect As Rectangle)
             Dim middle = New Point(Convert.ToInt32(dropDownRect.Left + dropDownRect.Width / 2), Convert.ToInt32(dropDownRect.Top + dropDownRect.Height / 2))
 
             ' if the width is odd - favor pushing it over one pixel right.

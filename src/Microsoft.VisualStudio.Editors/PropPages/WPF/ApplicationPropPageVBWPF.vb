@@ -1362,10 +1362,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
 
             Public Sub New(value As String, description As String)
                 If value Is Nothing Then
-                    Throw New ArgumentNullException("value")
+                    Throw New ArgumentNullException(NameOf(value))
                 End If
                 If description Is Nothing Then
-                    Throw New ArgumentNullException("description")
+                    Throw New ArgumentNullException(NameOf(description))
                 End If
 
                 _value = value
@@ -1646,7 +1646,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' <param name="extension"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function FindDependentFile(projectItem As ProjectItem, extension As String) As ProjectItem
+        Private Shared Function FindDependentFile(projectItem As ProjectItem, extension As String) As ProjectItem
             For Each dependentItem As ProjectItem In projectItem.ProjectItems
                 If dependentItem.FileNames(1) IsNot Nothing _
                         AndAlso IO.Path.GetExtension(dependentItem.Name).Equals(extension, StringComparison.OrdinalIgnoreCase) Then
@@ -1657,7 +1657,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
             Return Nothing
         End Function
 
-        Private Function GetExpectedApplicationEventsFileName(appDotXamlFilename As String) As String
+        Private Shared Function GetExpectedApplicationEventsFileName(appDotXamlFilename As String) As String
             Return appDotXamlFilename & VB_EXTENSION
         End Function
 

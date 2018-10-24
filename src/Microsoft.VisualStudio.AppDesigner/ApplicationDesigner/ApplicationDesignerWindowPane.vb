@@ -373,7 +373,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="flags"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function CloseFrameInternal(WindowFrame As IVsWindowFrame, flags As __FRAMECLOSE) As Integer
+        Private Shared Function CloseFrameInternal(WindowFrame As IVsWindowFrame, flags As __FRAMECLOSE) As Integer
             If WindowFrame IsNot Nothing Then
                 Dim hr As Integer = WindowFrame.CloseFrame(Common.NoOverflowCUInt(flags))
                 Return hr

@@ -725,7 +725,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <remarks></remarks>
         Public Sub SetInitialValues(AllInitialValues As Object())
             If AllInitialValues Is Nothing Then
-                Throw New ArgumentNullException("AllInitialValues")
+                Throw New ArgumentNullException(NameOf(AllInitialValues))
             End If
             If AllInitialValues.Length = 0 Then
                 Throw Common.CreateArgumentException("AllInitialValues")
@@ -994,7 +994,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <param name="controls"></param>
         ''' <remarks></remarks>
-        Private Sub SetControlsReadOnly(controls() As Control)
+        Private Shared Sub SetControlsReadOnly(controls() As Control)
             If controls IsNot Nothing Then
                 For Each control As Control In controls
                     If TypeOf control Is TextBoxBase Then
@@ -1013,7 +1013,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="Controls">The controls to hide.  May be Nothing or empty.</param>
         ''' <param name="Hide">If True, the controls are hidden, else they're disabled</param>
         ''' <remarks></remarks>
-        Protected Sub HideOrDisableControls(Controls() As Control, Hide As Boolean)
+        Protected Shared Sub HideOrDisableControls(Controls() As Control, Hide As Boolean)
             If Controls IsNot Nothing Then
                 For Each Control As Control In Controls
                     If Hide Then
@@ -1448,7 +1448,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             ValueOrIndeterminate = Nothing
 
             If Extenders Is Nothing Then
-                Throw New ArgumentNullException("Extenders")
+                Throw New ArgumentNullException(NameOf(Extenders))
             End If
 
             Dim ReturnValues As Object() = New Object(Extenders.Length - 1) {}
@@ -1487,7 +1487,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             'Determine if all the values are the same or not
             If Values Is Nothing OrElse Values.Length = 0 Then
                 Debug.Fail("Bad Values array")
-                Throw New ArgumentNullException("Values")
+                Throw New ArgumentNullException(NameOf(Values))
             End If
 
             Dim Value As Object = Values(0)
@@ -2285,7 +2285,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         Return New String() {applicationDefinition}
                     End If
                 ElseIf (Flags And ControlDataFlags.NoOptimisticFileCheckout) <> 0 Then
-                    Return New String() {}
+                    Return Array.Empty(Of String)()
                 Else
                     'Default - Changing the property requires checking out the project file
                     Return New String() {m_PropPage.DTEProject.FullName}

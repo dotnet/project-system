@@ -1661,7 +1661,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' <summary>
             '''  Get String Value of one column
             ''' </summary>
-            Private Function GetColumnValue(obj As Object, column As Integer) As String
+            Private Shared Function GetColumnValue(obj As Object, column As Integer) As String
                 If TypeOf obj Is Resource Then
                     Dim value As String = Nothing
                     value = GetResourceCellStringValue(DirectCast(obj, Resource), column)

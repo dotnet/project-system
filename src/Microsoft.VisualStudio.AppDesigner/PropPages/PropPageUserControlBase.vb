@@ -1088,7 +1088,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="ThisObj"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function GetProjectHierarchyFromObject(ThisObj As Object) As IVsHierarchy
+        Private Shared Function GetProjectHierarchyFromObject(ThisObj As Object) As IVsHierarchy
 
             Dim Hier As IVsHierarchy = Nothing
             Dim ItemId As UInteger
@@ -1128,7 +1128,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="Properties">The properties to print to trace output.</param>
         ''' <remarks></remarks>
         <Conditional("DEBUG")>
-        Private Sub TraceTypeDescriptorCollection(DebugMessage As String, Properties As PropertyDescriptorCollection)
+        Private Shared Sub TraceTypeDescriptorCollection(DebugMessage As String, Properties As PropertyDescriptorCollection)
 #If DEBUG Then
             If Common.Switches.PDExtenders.TraceVerbose Then
                 Trace.WriteLine("PDExtenders: " & DebugMessage)
@@ -1372,7 +1372,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         End If
 #End If
                         If TypeOf ExtendedCommonProperties(0) Is ICustomTypeDescriptor Then 'Extenders were found and added, so we need to get the property descriptors for the set of properties including extenders
-                            m_CommonPropertyDescriptors = DirectCast(ExtendedCommonProperties(0), ICustomTypeDescriptor).GetProperties(New Attribute() {})
+                            m_CommonPropertyDescriptors = DirectCast(ExtendedCommonProperties(0), ICustomTypeDescriptor).GetProperties(Array.Empty(Of Attribute)())
                             TraceTypeDescriptorCollection("*** Extended common properties collection", m_CommonPropertyDescriptors)
                         Else
                             'No extenders
@@ -3101,7 +3101,7 @@ NextControl:
         ''' <param name="ChildPage"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function GetPropPageHostDialog(ChildPage As PropPageUserControlBase) As PropPageHostDialog
+        Private Shared Function GetPropPageHostDialog(ChildPage As PropPageUserControlBase) As PropPageHostDialog
             Return TryCast(ChildPage.ParentForm, PropPageHostDialog)
         End Function
 
@@ -3583,7 +3583,7 @@ NextControl:
         ''' During undo/redo serialization/deserialization, enums may be converted to integral
         '''   types.  This converts them back to an enum so that undo code will work properly.
         ''' </remarks>
-        Private Sub ConvertToEnum(Prop As PropertyControlData, ByRef Value As Object)
+        Private Shared Sub ConvertToEnum(Prop As PropertyControlData, ByRef Value As Object)
             If Prop IsNot Nothing AndAlso Prop.PropDesc IsNot Nothing Then
                 If Prop.PropDesc.PropertyType.IsEnum AndAlso Value IsNot Nothing AndAlso Not Value.GetType.IsEnum Then
                     Value = Prop.PropDesc.Converter.ConvertTo(Value, Prop.PropDesc.PropertyType)
@@ -3647,7 +3647,7 @@ NextControl:
         ''' <param name="Data">The PropertyControlData to check for support.</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function SupportsMultipleValueUndo(Data As PropertyControlData) As Boolean
+        Private Shared Function SupportsMultipleValueUndo(Data As PropertyControlData) As Boolean
             If Data Is Nothing Then
                 Throw New ArgumentNullException
             End If

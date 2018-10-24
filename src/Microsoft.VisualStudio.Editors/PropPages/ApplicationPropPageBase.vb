@@ -368,7 +368,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="PictureBoxSize">The size into which the image needs to fit</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function IconToImage(Icon As Icon, PictureBoxSize As Size) As Image
+        Private Shared Function IconToImage(Icon As Icon, PictureBoxSize As Size) As Image
             ' We want to fit the icon into the picture box, but we'll keep it square
             ' so as not to distort it.
             Dim width As Integer = PictureBoxSize.Width

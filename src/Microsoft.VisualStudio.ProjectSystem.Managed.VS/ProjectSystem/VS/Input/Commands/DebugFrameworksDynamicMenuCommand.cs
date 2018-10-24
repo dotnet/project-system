@@ -2,9 +2,10 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Design;
-
+using System.Linq;
 using Microsoft.VisualStudio.Input;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.Shell;
@@ -38,16 +39,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         public override bool ExecCommand(int cmdIndex, EventArgs e)
         {
             bool handled = false;
-            IActiveDebugFrameworkServices activeDebugFramework = StartupProjectHelper.GetExportFromSingleDotNetStartupProject<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles);
-            if (activeDebugFramework != null)
+            ImmutableArray<IActiveDebugFrameworkServices> activeDebugFrameworks = StartupProjectHelper.GetExportFromDotNetStartupProjects<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles);
+            if (activeDebugFrameworks.Length > 0)
             {
                 ExecuteSynchronously(async () =>
                 {
-                    List<string> frameworks = await activeDebugFramework.GetProjectFrameworksAsync();
-                    if (frameworks != null && cmdIndex >= 0 && cmdIndex < frameworks.Count)
+                    foreach (IActiveDebugFrameworkServices activeDebugFramework in activeDebugFrameworks)
                     {
-                        await activeDebugFramework.SetActiveDebuggingFrameworkPropertyAsync(frameworks[cmdIndex]);
-                        handled = true;
+                        List<string> frameworks = await activeDebugFramework.GetProjectFrameworksAsync();
+                        if (frameworks != null && cmdIndex >= 0 && cmdIndex < frameworks.Count)
+                        {
+                            await activeDebugFramework.SetActiveDebuggingFrameworkPropertyAsync(frameworks[cmdIndex]);
+                            handled = true;
+                        }
                     }
                 });
             }
@@ -56,24 +60,43 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         }
 
         /// <summary>
-        /// Called by the base when one of our menu ids is queried for. If the index is 
+        /// Called by the base when one of our menu ids is queried for. If the index is
         /// is greater than the count we want to return false
-        /// </summary>       
+        /// </summary>
         public override bool QueryStatusCommand(int cmdIndex, EventArgs e)
         {
-            IActiveDebugFrameworkServices activeDebugFramework = StartupProjectHelper.GetExportFromSingleDotNetStartupProject<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles);
-            if (activeDebugFramework != null)
+            ImmutableArray<IActiveDebugFrameworkServices> activeDebugFrameworks = StartupProjectHelper.GetExportFromDotNetStartupProjects<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles);
+            if (activeDebugFrameworks.Length > 0)
             {
-                // See if this project supports at least two runtimes
+                // See if the projects support at least two runtimes
                 List<string> frameworks = null;
                 string activeFramework = null;
                 ExecuteSynchronously(async () =>
                 {
-                    frameworks = await activeDebugFramework.GetProjectFrameworksAsync();
+                    List<string> first = null;
+
+                    foreach (IActiveDebugFrameworkServices activeDebugFramework in activeDebugFrameworks)
+                    {
+                        frameworks = await activeDebugFramework.GetProjectFrameworksAsync();
+
+                        if (first == null)
+                        {
+                            first = frameworks;
+                        }
+                        else
+                        {
+                            if (!first.SequenceEqual(frameworks))
+                            {
+                                frameworks = null;
+                                break;
+                            }
+                        }
+                    }
+
                     if (frameworks != null && frameworks.Count > 1 && cmdIndex < frameworks.Count)
                     {
                         // Only call this if we will need it down below.
-                        activeFramework = await activeDebugFramework.GetActiveDebuggingFrameworkPropertyAsync();
+                        activeFramework = await activeDebugFrameworks[0].GetActiveDebuggingFrameworkPropertyAsync();
                     }
                 });
 

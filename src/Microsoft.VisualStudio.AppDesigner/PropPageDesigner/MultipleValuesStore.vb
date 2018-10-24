@@ -33,9 +33,9 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <remarks></remarks>
         Public Sub New(VsCfgProvider As IVsCfgProvider2, Objects() As Object, Values() As Object, SelectedConfigName As String, SelectedPlatformName As String)
             If Values Is Nothing Then
-                Throw New ArgumentNullException("Values")
+                Throw New ArgumentNullException(NameOf(Values))
             ElseIf Objects Is Nothing Then
-                Throw New ArgumentNullException("Objects")
+                Throw New ArgumentNullException(NameOf(Objects))
             End If
             If Values.Length <> Objects.Length Then
                 Debug.Fail("Bad array length returned from GetPropertyMultipleValues()")

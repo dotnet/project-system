@@ -319,7 +319,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Return Not view.ReadOnlyMode
             End Function
 
-            Private Function IsInDevice20Project(rootDesigner As BaseRootDesigner) As Boolean
+            Private Shared Function IsInDevice20Project(rootDesigner As BaseRootDesigner) As Boolean
                 Dim hierarchy As IVsHierarchy = DirectCast(rootDesigner.GetService(GetType(IVsHierarchy)), IVsHierarchy)
                 If hierarchy IsNot Nothing Then
                     If ShellUtil.IsDeviceProject(hierarchy) Then
@@ -608,7 +608,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function GetEnvironmentFont(ServiceProvider As IServiceProvider) As Font
+        Private Shared Function GetEnvironmentFont(ServiceProvider As IServiceProvider) As Font
             Dim UIService As IUIService = DirectCast(ServiceProvider.GetService(GetType(IUIService)), IUIService)
             If UIService IsNot Nothing Then
                 Dim Font As Font = DirectCast(UIService.Styles("DialogFont"), Font)
@@ -2834,7 +2834,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="MoveAllowed">Whether a move is currently allowed.</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function DetermineCopyOrMove(CopyAllowed As Boolean, MoveAllowed As Boolean) As DragDropEffects
+        Private Shared Function DetermineCopyOrMove(CopyAllowed As Boolean, MoveAllowed As Boolean) As DragDropEffects
             'Shift pressed - want to move
             If (ModifierKeys And Keys.Shift) <> 0 AndAlso MoveAllowed Then
                 Return DragDropEffects.Move
@@ -3169,7 +3169,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="Data"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function GetTextFromIDataObject(Data As IDataObject, ClipboardFormat As String) As String
+        Private Shared Function GetTextFromIDataObject(Data As IDataObject, ClipboardFormat As String) As String
             Dim RawData As Object = Data.GetData(ClipboardFormat)
             Dim Text As String = ""
             If TypeOf RawData Is String Then
@@ -3325,7 +3325,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="Resources"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function CanPlayResources(Resources() As Resource) As Boolean
+        Private Shared Function CanPlayResources(Resources() As Resource) As Boolean
             'The must be exactly one resource selected
             If Resources Is Nothing OrElse Resources.Length <> 1 Then
                 Return False
@@ -4176,7 +4176,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 RootDesigner.DesignerLoader.ManualCheckOut()
 
                 Dim resourcePathAndName As String = RootDesigner.GetResXFileNameAndPath()
-                Dim projectGuid As Guid = VBPackage.Instance.ProjectGUID(GetVsHierarchy())
+                Dim projectGuid As Guid = VBPackage.ProjectGUID(GetVsHierarchy())
                 Dim addExistingFilePath As String = String.Empty
                 Dim resxFileToAddExistingBasePath As Dictionary(Of String, String) = Nothing
 
@@ -5463,7 +5463,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="Project"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function GetDefaultNamespace(Hierarchy As IVsHierarchy, ItemId As UInteger, Project As Project) As String
+        Private Shared Function GetDefaultNamespace(Hierarchy As IVsHierarchy, ItemId As UInteger, Project As Project) As String
             Dim objDefaultNamespace As Object = Nothing
             Hierarchy.GetProperty(ItemId, __VSHPROPID.VSHPROPID_DefaultNamespace, objDefaultNamespace)
 
@@ -5484,7 +5484,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="Project"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function GetRootNamespace(Hierarchy As IVsHierarchy, ItemId As UInteger, Project As Project) As String
+        Private Shared Function GetRootNamespace(Hierarchy As IVsHierarchy, ItemId As UInteger, Project As Project) As String
             Dim RootNamespace As String = String.Empty
             If Project IsNot Nothing Then
                 Try
@@ -5508,7 +5508,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="FileName"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Friend Function GetGeneratedClassNameFromFileName(FileName As String) As String
+        Friend Shared Function GetGeneratedClassNameFromFileName(FileName As String) As String
             Return DesignUtil.GenerateValidLanguageIndependentIdentifier(Path.GetFileNameWithoutExtension(FileName))
         End Function
 

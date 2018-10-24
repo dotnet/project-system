@@ -166,7 +166,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <remarks></remarks>
         Public Sub New(DesignerView As ApplicationDesignerView, SpecialFileId As Integer)
             If DesignerView Is Nothing Then
-                Throw New ArgumentNullException("DesignerView")
+                Throw New ArgumentNullException(NameOf(DesignerView))
             End If
 
             _specialFileId = SpecialFileId

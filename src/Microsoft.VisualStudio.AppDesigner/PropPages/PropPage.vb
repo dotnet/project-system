@@ -368,7 +368,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private Sub GetPageInfo(pPageInfo() As PROPPAGEINFO)
 
             If (pPageInfo Is Nothing) Then
-                Throw New ArgumentNullException("pPageInfo")
+                Throw New ArgumentNullException(NameOf(pPageInfo))
             End If
 
             pPageInfo(0).cb = 4 + 4 + 8 + 4 + 4 + 4

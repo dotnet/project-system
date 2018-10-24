@@ -782,7 +782,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
         ''' <remarks></remarks>
         Friend Function CodeModelToCodeDomTypeAttributes(cc2 As EnvDTE80.CodeClass2) As TypeAttributes
             If cc2 Is Nothing Then
-                Throw New ArgumentNullException("cc2")
+                Throw New ArgumentNullException(NameOf(cc2))
             End If
 
             Dim returnValue As TypeAttributes = 0

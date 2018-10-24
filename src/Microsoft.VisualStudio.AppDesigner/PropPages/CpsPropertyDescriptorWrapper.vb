@@ -15,7 +15,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private ReadOnly _defaultDescriptor As PropertyDescriptor
 
         Public Sub New(defaultDescriptor As PropertyDescriptor)
-            MyBase.New(defaultDescriptor.Name, {})
+            MyBase.New(defaultDescriptor.Name, Array.Empty(Of Attribute)())
             _defaultDescriptor = defaultDescriptor
         End Sub
 

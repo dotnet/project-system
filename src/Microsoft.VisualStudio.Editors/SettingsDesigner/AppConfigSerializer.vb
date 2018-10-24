@@ -105,8 +105,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Dim DeserializedUserScopedSettingValues As SettingsPropertyValueCollection =
                 ConfigHelperService.ReadSettings(configFileMap, ConfigurationUserLevel.None, AppConfigDocData, SectionName, True, UserScopedSettingProps)
 
-            Dim valueSerializer As New SettingsValueSerializer()
-
             ' Then we go through each read setting to see if we have to add/change the setting
             For Each cs As ConnectionStringSettings In DeserializedConnectionStrings
                 Dim scs As New SerializableConnectionString With {
@@ -119,7 +117,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                     ' We already know about this guy - let's see if the values are different...
                     ' (by comparing the serialized values of the corresponding SerializedConnectionStrings)
                     Dim serializedValueInSettings As String = ExistingSettings.Item(cs.Name).SerializedValue
-                    Dim serializedValueInAppConfig As String = valueSerializer.Serialize(scs, Globalization.CultureInfo.InvariantCulture)
+                    Dim serializedValueInAppConfig As String = SettingsValueSerializer.Serialize(scs, Globalization.CultureInfo.InvariantCulture)
                     Dim valueChanged As Boolean = String.Compare(serializedValueInSettings, serializedValueInAppConfig, StringComparison.Ordinal) <> 0
                     If valueChanged Then
                         ' Yep! Ask the user what (s)he wants to do...
@@ -136,7 +134,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                             newValue.ProviderName = cs.ProviderName
                         End If
                         newValue.ConnectionString = cs.ConnectionString
-                        Instance.SetSerializedValue(valueSerializer.Serialize(newValue, Globalization.CultureInfo.InvariantCulture))
+                        Instance.SetSerializedValue(SettingsValueSerializer.Serialize(newValue, Globalization.CultureInfo.InvariantCulture))
                         Instance.SetScope(DesignTimeSettingInstance.SettingScope.Application)
                         Instance.SetName(cs.Name)
                         Instance.SetSettingTypeName(SettingsSerializer.CultureInvariantVirtualTypeNameConnectionString)
@@ -256,7 +254,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Common.Switches.TraceSDSerializeSettings(TraceLevel.Info, "Serializing {0} settings to App.Config", Settings.Count)
             If Settings Is Nothing Then
                 Debug.Fail("Can't serialize NULL settings instance!")
-                Throw New ArgumentNullException("Settings")
+                Throw New ArgumentNullException(NameOf(Settings))
             End If
 
             If ClassName = "" Then
@@ -266,12 +264,12 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
             If NamespaceName Is Nothing Then
                 Debug.Fail("Must provide a valid namespace name!")
-                Throw New ArgumentNullException("NamespaceName")
+                Throw New ArgumentNullException(NameOf(NamespaceName))
             End If
 
             If AppConfigDocData Is Nothing Then
                 Debug.Fail("Can't serialize to a NULL DocData")
-                Throw New ArgumentNullException("AppConfigDocData")
+                Throw New ArgumentNullException(NameOf(AppConfigDocData))
             End If
 
             Dim AppConfigReader As DocDataTextReader = Nothing
@@ -521,8 +519,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 If DeserializedPropertyValue.Property.PropertyType Is Nothing Then
                     DeserializedPropertyValue.Property.PropertyType = GetType(String)
                 End If
-                Dim serializer As New SettingsValueSerializer
-                Dim serializedAppConfigValue As String = serializer.Normalize(DirectCast(DeserializedPropertyValue.SerializedValue, String), DeserializedPropertyValue.Property.PropertyType)
+                Dim serializedAppConfigValue As String = SettingsValueSerializer.Normalize(DirectCast(DeserializedPropertyValue.SerializedValue, String), DeserializedPropertyValue.Property.PropertyType)
                 If Instance.Scope <> Scope OrElse Not String.Equals(Instance.SerializedValue, serializedAppConfigValue, StringComparison.Ordinal) Then
                     ' We have new mismatch between what's in the app.config file and what's in the .settings file - 
                     ' prompt the user!

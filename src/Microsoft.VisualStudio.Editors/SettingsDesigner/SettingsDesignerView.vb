@@ -1176,8 +1176,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                                 ' We only set the value in if the text in the validated cell
                                 ' is different from the previous value
                                 Debug.WriteLineIf(SettingsDesigner.TraceSwitch.TraceVerbose, "Changing value of setting " & Instance.Name)
-                                Dim serializer As New SettingsValueSerializer()
-                                Instance.SerializedValueProperty.SetValue(Instance, serializer.Serialize(cell.Value, CultureInfo.InvariantCulture))
+                                Instance.SerializedValueProperty.SetValue(Instance, SettingsValueSerializer.Serialize(cell.Value, CultureInfo.InvariantCulture))
                             End If
                     End Select
                 Catch ex As Exception
@@ -1358,7 +1357,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                     Instance.TypeNameProperty.SetValue(Instance, newTypeName)
                     If newType IsNot Nothing Then
                         Dim newValue As Object = _valueCache.GetValue(newType, Instance.SerializedValue)
-                        Dim serializer As New SettingsValueSerializer()
 
                         ' If we don't have a value, and the new type is a value type, we want to 
                         ' give an "empty" default value for the value type to avoid run time type
@@ -1371,7 +1369,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                                 ' It is now up to the user to specify an appropriate default value
                             End Try
                         End If
-                        Instance.SerializedValueProperty.SetValue(Instance, serializer.Serialize(newValue, CultureInfo.InvariantCulture))
+                        Instance.SerializedValueProperty.SetValue(Instance, SettingsValueSerializer.Serialize(newValue, CultureInfo.InvariantCulture))
                     End If
 
                     ' If we changed the type to a connection string, we should also make sure that the scope is application...

@@ -68,7 +68,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <remarks></remarks>
         Public Overrides Function ConvertTo(Context As ITypeDescriptorContext, Culture As CultureInfo, Value As Object, DestinationType As Type) As Object
             If DestinationType Is Nothing Then
-                Throw New ArgumentNullException("DestinationType")
+                Throw New ArgumentNullException(NameOf(DestinationType))
             End If
 
             If DestinationType.Equals(GetType(String)) AndAlso TypeOf Value Is SerializableEncoding Then
@@ -176,7 +176,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="Encoding"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function IsUnicodeEncoding(Encoding As Encoding) As Boolean
+        Private Shared Function IsUnicodeEncoding(Encoding As Encoding) As Boolean
             Return Encoding.Equals(Encoding.BigEndianUnicode) _
                 OrElse Encoding.Equals(Encoding.Unicode) _
                 OrElse Encoding.Equals(Encoding.UTF7) _
@@ -193,7 +193,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="Encoding">The encoding to check for validity.</param>
         ''' <returns>True if the encoding is valid.</returns>
         ''' <remarks></remarks>
-        Private Function IsValidEncoding(Encoding As Encoding) As Boolean
+        Private Shared Function IsValidEncoding(Encoding As Encoding) As Boolean
             If Interop.NativeMethods.IsValidCodePage(CUInt(Encoding.CodePage)) Then
                 Return True
             End If

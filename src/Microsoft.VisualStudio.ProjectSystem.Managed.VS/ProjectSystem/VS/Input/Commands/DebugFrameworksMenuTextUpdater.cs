@@ -2,9 +2,10 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Design;
-
+using System.Linq;
 using Microsoft.VisualStudio.Input;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.Shell;
@@ -59,25 +60,44 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 
         public void QueryStatus()
         {
-            IActiveDebugFrameworkServices activeDebugFramework = StartupProjectHelper.GetExportFromSingleDotNetStartupProject<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles);
-            if (activeDebugFramework != null)
+            ImmutableArray<IActiveDebugFrameworkServices> activeDebugFrameworks = StartupProjectHelper.GetExportFromDotNetStartupProjects<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles);
+            if (activeDebugFrameworks.Length > 0)
             {
                 string activeFramework = null;
                 List<string> frameworks = null;
                 ExecuteSynchronously(async () =>
                 {
-                    frameworks = await activeDebugFramework.GetProjectFrameworksAsync();
+                    List<string> first = null;
+
+                    foreach (IActiveDebugFrameworkServices activeDebugFramework in activeDebugFrameworks)
+                    {
+                        frameworks = await activeDebugFramework.GetProjectFrameworksAsync();
+
+                        if (first == null)
+                        {
+                            first = frameworks;
+                        }
+                        else
+                        {
+                            if (!first.SequenceEqual(frameworks))
+                            {
+                                frameworks = null;
+                                break;
+                            }
+                        }
+                    }
+
                     if (frameworks != null && frameworks.Count > 1)
                     {
                         // Only get this if we will need it down below
-                        activeFramework = await activeDebugFramework.GetActiveDebuggingFrameworkPropertyAsync();
+                        activeFramework = await activeDebugFrameworks[0].GetActiveDebuggingFrameworkPropertyAsync();
                     }
                 });
 
                 if (frameworks != null && frameworks.Count > 1)
                 {
                     // If no active framework or the current active property doesn't match any of the frameworks, then
-                    // st it to the first one.
+                    // set it to the first one.
                     if (!string.IsNullOrEmpty(activeFramework) && frameworks.Contains(activeFramework))
                     {
                         Text = string.Format(VSResources.DebugFrameworkMenuText, activeFramework);

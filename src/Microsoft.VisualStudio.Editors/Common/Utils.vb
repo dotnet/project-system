@@ -1299,7 +1299,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <remarks></remarks>
         Private Function IsWCFReferenceValidInProject(Hierarchy As IVsHierarchy) As Boolean
             If Hierarchy Is Nothing Then
-                Throw New ArgumentNullException("Hierarchy")
+                Throw New ArgumentNullException(NameOf(Hierarchy))
             End If
 
             If TryCast(Hierarchy, WCFReference.Interop.IVsWCFMetadataStorageProvider) IsNot Nothing Then
@@ -1330,7 +1330,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <remarks></remarks>
         Friend Function IsWebReferenceSupportedByDefaultInProject(Hierarchy As IVsHierarchy) As Boolean
             If Hierarchy Is Nothing Then
-                Throw New ArgumentNullException("Hierarchy")
+                Throw New ArgumentNullException(NameOf(Hierarchy))
             End If
 
             Dim objIsReferenceSupported As Object = Nothing
@@ -1359,7 +1359,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <remarks></remarks>
         Friend Function IsVbProject(Hierarchy As IVsHierarchy) As Boolean
             If Hierarchy Is Nothing Then
-                Throw New ArgumentNullException("Hierarchy")
+                Throw New ArgumentNullException(NameOf(Hierarchy))
             End If
 
             Dim langService As Guid = Guid.Empty
@@ -1684,7 +1684,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
 
         Friend Function GetSecurityZoneOfFile(path As String, serviceProvider As ServiceProvider) As Security.SecurityZone
             If path Is Nothing Then
-                Throw New ArgumentNullException("path")
+                Throw New ArgumentNullException(NameOf(path))
             End If
 
             If Not IO.Path.IsPathRooted(path) Then

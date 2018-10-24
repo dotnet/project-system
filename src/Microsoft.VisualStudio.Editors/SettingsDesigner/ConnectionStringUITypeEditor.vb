@@ -177,7 +177,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="ConnectionString"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function ContainsSensitiveData(ProviderManager As IVsDataProviderManager, DataProvider As Guid, ConnectionString As String) As Boolean
+        Private Shared Function ContainsSensitiveData(ProviderManager As IVsDataProviderManager, DataProvider As Guid, ConnectionString As String) As Boolean
             If ConnectionString = "" Then
                 Return False
             End If
@@ -199,7 +199,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="ConnectionString"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function ContainsSensitiveData(ServiceProvider As IServiceProvider, DataProvider As Guid, ConnectionString As String) As Boolean
+        Private Shared Function ContainsSensitiveData(ServiceProvider As IServiceProvider, DataProvider As Guid, ConnectionString As String) As Boolean
             Dim providerManager As IVsDataProviderManager = DirectCast(ServiceProvider.GetService(GetType(IVsDataProviderManager)), IVsDataProviderManager)
             If providerManager IsNot Nothing Then
                 Return ContainsSensitiveData(providerManager, DataProvider, ConnectionString)
@@ -220,14 +220,14 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' there exists sensitive information in the string and whether the user chooses to persist it
         '''</returns>
         ''' <remarks></remarks>
-        Private Function GetConnectionString(ServiceProvider As IServiceProvider, Dialog As IVsDataConnectionDialog, PromptIfContainsSensitiveData As Boolean) As String
+        Private Shared Function GetConnectionString(ServiceProvider As IServiceProvider, Dialog As IVsDataConnectionDialog, PromptIfContainsSensitiveData As Boolean) As String
 
             If Dialog Is Nothing Then
-                Throw New ArgumentNullException("Dialog")
+                Throw New ArgumentNullException(NameOf(Dialog))
             End If
 
             If ServiceProvider Is Nothing Then
-                Throw New ArgumentNullException("ServiceProvider")
+                Throw New ArgumentNullException(NameOf(ServiceProvider))
             End If
 
             Dim SafeConnectionString As String = Dialog.SafeConnectionString
@@ -262,7 +262,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="ConnectionString"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function GetConnectionStringProperties(ProviderManager As IVsDataProviderManager, ProviderGUID As Guid, ConnectionString As String) As IVsDataConnectionProperties
+        Private Shared Function GetConnectionStringProperties(ProviderManager As IVsDataProviderManager, ProviderGUID As Guid, ConnectionString As String) As IVsDataConnectionProperties
             Dim provider As IVsDataProvider = Nothing
             If ProviderManager.Providers.ContainsKey(ProviderGUID) Then
                 provider = ProviderManager.Providers(ProviderGUID)
@@ -281,7 +281,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="ConnectionProperties"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function ContainsSensitiveData(ConnectionProperties As IVsDataConnectionProperties) As Boolean
+        Private Shared Function ContainsSensitiveData(ConnectionProperties As IVsDataConnectionProperties) As Boolean
             If ConnectionProperties Is Nothing Then
                 Debug.Fail("We can't tell if it contains sensitive data if we didn't get a bag of properties!")
                 Throw New ArgumentNullException()
