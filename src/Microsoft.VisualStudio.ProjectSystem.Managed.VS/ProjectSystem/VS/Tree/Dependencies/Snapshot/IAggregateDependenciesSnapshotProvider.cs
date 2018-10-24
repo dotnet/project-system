@@ -28,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         /// Get all registered snapshot providers.
         /// </summary>
         /// <returns>A collection of <see cref="IDependenciesSnapshotProvider"/></returns>
-        IEnumerable<IDependenciesSnapshotProvider> GetSnapshotProviders();
+        IReadOnlyCollection<IDependenciesSnapshotProvider> GetSnapshotProviders();
 
         /// <summary>
         /// Fired when a snapshot changed in a snapshot provider

@@ -46,8 +46,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
             EnsureInitialized();
 
-            IEnumerable<string> watchedEvaluationRules = GetWatchedRules(RuleHandlerType.Evaluation);
-            IEnumerable<string> watchedDesignTimeBuildRules = GetWatchedRules(RuleHandlerType.DesignTimeBuild);
+            IReadOnlyCollection<string> watchedEvaluationRules = GetWatchedRules(RuleHandlerType.Evaluation);
+            IReadOnlyCollection<string> watchedDesignTimeBuildRules = GetWatchedRules(RuleHandlerType.DesignTimeBuild);
 
             SubscribeToConfiguredProject(
                 _commonServices.ActiveConfiguredProject, subscriptionService, watchedEvaluationRules, watchedDesignTimeBuildRules);
@@ -59,8 +59,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
             _currentProjectContext = newProjectContext;
 
-            IEnumerable<string> watchedEvaluationRules = GetWatchedRules(RuleHandlerType.Evaluation);
-            IEnumerable<string> watchedDesignTimeBuildRules = GetWatchedRules(RuleHandlerType.DesignTimeBuild);
+            IReadOnlyCollection<string> watchedEvaluationRules = GetWatchedRules(RuleHandlerType.Evaluation);
+            IReadOnlyCollection<string> watchedDesignTimeBuildRules = GetWatchedRules(RuleHandlerType.DesignTimeBuild);
 
             // initialize telemetry with all rules for each target framework
             foreach (ITargetedProjectContext projectContext in newProjectContext.InnerProjectContexts)
@@ -89,8 +89,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         private void SubscribeToConfiguredProject(
             ConfiguredProject configuredProject,
             IProjectSubscriptionService subscriptionService,
-            IEnumerable<string> watchedEvaluationRules,
-            IEnumerable<string> watchedDesignTimeBuildRules)
+            IReadOnlyCollection<string> watchedEvaluationRules,
+            IReadOnlyCollection<string> watchedDesignTimeBuildRules)
         {
             var intermediateBlockDesignTime =
                 new BufferBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(
@@ -153,7 +153,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                 linkOptions: DataflowOption.PropagateCompletion));
         }
 
-        private IEnumerable<string> GetWatchedRules(RuleHandlerType handlerType)
+        private IReadOnlyCollection<string> GetWatchedRules(RuleHandlerType handlerType)
         {
             IEnumerable<Lazy<ICrossTargetRuleHandler<T>, IOrderPrecedenceMetadataView>> supportedHandler = Handlers.Where(h => h.Value.SupportsHandlerType(handlerType));
             var uniqueRuleNames = new HashSet<string>(StringComparers.RuleNames);

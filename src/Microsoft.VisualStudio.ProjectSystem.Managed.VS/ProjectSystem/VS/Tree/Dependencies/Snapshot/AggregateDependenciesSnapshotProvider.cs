@@ -116,11 +116,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             }
         }
 
-        public IEnumerable<IDependenciesSnapshotProvider> GetSnapshotProviders()
+        public IReadOnlyCollection<IDependenciesSnapshotProvider> GetSnapshotProviders()
         {
             lock (_snapshotProvidersLock)
             {
-                return SnapshotProviders.Values;
+                return (IReadOnlyCollection<IDependenciesSnapshotProvider>)SnapshotProviders.Values;
             }
         }
     }

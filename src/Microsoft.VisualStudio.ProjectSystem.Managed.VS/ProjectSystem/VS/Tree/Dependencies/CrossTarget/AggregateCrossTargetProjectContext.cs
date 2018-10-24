@@ -96,7 +96,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         /// Returns true if this cross-targeting aggregate project context has the same set of target frameworks and active target framework as the given active and known configurations.
         /// </summary>
         public bool HasMatchingTargetFrameworks(ProjectConfiguration activeProjectConfiguration,
-                                                IEnumerable<ProjectConfiguration> knownProjectConfigurations)
+                                                IReadOnlyCollection<ProjectConfiguration> knownProjectConfigurations)
         {
             Assumes.True(IsCrossTargeting);
             Assumes.True(activeProjectConfiguration.IsCrossTargeting());
