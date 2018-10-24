@@ -306,14 +306,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
 
         private static GraphNodeId GetGraphNodeId(string projectPath, GraphNode parentNode, string modelId)
         {
-            var partialValues = new List<GraphNodeId>
-            {
-                GraphNodeId.GetPartial(CodeGraphNodeIdName.Assembly,
-                                       new Uri(projectPath, UriKind.RelativeOrAbsolute)),
-                GraphNodeId.GetPartial(CodeGraphNodeIdName.File,
-                                       new Uri(modelId.ToLowerInvariant(), UriKind.RelativeOrAbsolute))
-            };
-
             string parents;
             if (parentNode != null)
             {
@@ -331,24 +323,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
             }
 
             parents = parents + ";" + modelId.GetHashCode();
-            partialValues.Add(GraphNodeId.GetPartial(CodeGraphNodeIdName.Namespace, parents));
 
-            return GraphNodeId.GetNested(partialValues.ToArray());
+            return GraphNodeId.GetNested(
+                GraphNodeId.GetPartial(CodeGraphNodeIdName.Assembly, new Uri(projectPath, UriKind.RelativeOrAbsolute)),
+                GraphNodeId.GetPartial(CodeGraphNodeIdName.File, new Uri(modelId.ToLowerInvariant(), UriKind.RelativeOrAbsolute)),
+                GraphNodeId.GetPartial(CodeGraphNodeIdName.Namespace, parents));
         }
 
         private static GraphNodeId GetTopLevelGraphNodeId(string projectPath, string modelId)
         {
-            var partialValues = new List<GraphNodeId>
-            {
-                GraphNodeId.GetPartial(CodeGraphNodeIdName.Assembly, new Uri(projectPath, UriKind.RelativeOrAbsolute))
-            };
-
             string projectFolder = Path.GetDirectoryName(projectPath)?.ToLowerInvariant() ?? string.Empty;
             var filePath = new Uri(Path.Combine(projectFolder, modelId.ToLowerInvariant()), UriKind.RelativeOrAbsolute);
 
-            partialValues.Add(GraphNodeId.GetPartial(CodeGraphNodeIdName.File, filePath));
-
-            return GraphNodeId.GetNested(partialValues.ToArray());
+            return GraphNodeId.GetNested(
+                GraphNodeId.GetPartial(CodeGraphNodeIdName.Assembly, new Uri(projectPath, UriKind.RelativeOrAbsolute)),
+                GraphNodeId.GetPartial(CodeGraphNodeIdName.File, filePath));
         }
 
         private static string GetIconStringName(ImageMoniker icon)
