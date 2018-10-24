@@ -120,9 +120,13 @@
     </PropertyPageSchema>
 
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ApplicationDefinition.xaml">
-      <Context>File;BrowseObject</Context>
+      <Context>File</Context>
     </PropertyPageSchema>
-    
+
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ApplicationDefinition.BrowseObject.xaml">
+      <Context>BrowseObject</Context>
+    </PropertyPageSchema>
+
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)Compile.xaml;">
       <Context>File</Context>
     </PropertyPageSchema>
@@ -164,7 +168,11 @@
     </PropertyPageSchema>
 
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)Page.xaml">
-      <Context>File;BrowseObject</Context>
+      <Context>File</Context>
+    </PropertyPageSchema>
+
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)Page.BrowseObject.xaml">
+      <Context>BrowseObject</Context>
     </PropertyPageSchema>
 
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)SpecialFolder.xaml">
@@ -184,7 +192,11 @@
     </PropertyPageSchema>
     
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)XamlAppDef.xaml">
-      <Context>File;BrowseObject</Context>
+      <Context>File</Context>
+    </PropertyPageSchema>
+
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)XamlAppDef.BrowseObject.xaml">
+      <Context>BrowseObject</Context>
     </PropertyPageSchema>
 
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)Resource.xaml">
