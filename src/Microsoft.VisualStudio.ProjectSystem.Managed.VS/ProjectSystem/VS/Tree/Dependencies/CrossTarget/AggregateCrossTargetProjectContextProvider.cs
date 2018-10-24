@@ -60,7 +60,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             return context;
         }
 
-        public Task ReleaseProjectContextAsync(AggregateCrossTargetProjectContext context)
+        public void ReleaseProjectContext(AggregateCrossTargetProjectContext context)
         {
             Requires.NotNull(context, nameof(context));
 
@@ -73,8 +73,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                 // We can remove the ones which are only used by the current context being released.
                 RemoveUnusedConfiguredProjectsState_NoLock();
             }
-
-            return Task.CompletedTask;
         }
 
         // Clears saved host objects and project contexts for unused configured projects.

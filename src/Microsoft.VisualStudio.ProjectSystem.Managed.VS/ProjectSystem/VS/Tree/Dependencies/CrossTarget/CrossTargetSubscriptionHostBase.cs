@@ -224,7 +224,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                 // Dispose the old project context, if one exists.
                 if (previousContextToDispose != null)
                 {
-                    await DisposeAggregateProjectContextAsync(previousContextToDispose);
+                    DisposeAggregateProjectContext(previousContextToDispose);
                 }
 
                 // Create new project context.
@@ -236,9 +236,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             });
         }
 
-        private async Task DisposeAggregateProjectContextAsync(AggregateCrossTargetProjectContext projectContext)
+        private void DisposeAggregateProjectContext(AggregateCrossTargetProjectContext projectContext)
         {
-            await _contextProvider.Value.ReleaseProjectContextAsync(projectContext);
+            _contextProvider.Value.ReleaseProjectContext(projectContext);
         }
 
         private async Task AddSubscriptionsAsync(AggregateCrossTargetProjectContext newProjectContext)
@@ -291,11 +291,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             {
                 DisposeAndClearSubscriptions();
 
-                await ExecuteWithinLockAsync(async () =>
+                await ExecuteWithinLockAsync(() =>
                 {
                     if (_currentAggregateProjectContext != null)
                     {
-                        await _contextProvider.Value.ReleaseProjectContextAsync(_currentAggregateProjectContext);
+                        _contextProvider.Value.ReleaseProjectContext(_currentAggregateProjectContext);
                     }
                 });
             }
@@ -324,9 +324,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             return _gate.ExecuteWithinLockAsync(JoinableCollection, JoinableFactory, task);
         }
 
-        private Task ExecuteWithinLockAsync(Func<Task> task)
+        private Task ExecuteWithinLockAsync(Action action)
         {
-            return _gate.ExecuteWithinLockAsync(JoinableCollection, JoinableFactory, task);
+            return _gate.ExecuteWithinLockAsync(JoinableCollection, JoinableFactory, action);
         }
     }
 }
