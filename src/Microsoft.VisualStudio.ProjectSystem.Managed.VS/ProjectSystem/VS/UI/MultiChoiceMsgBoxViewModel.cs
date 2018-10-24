@@ -7,7 +7,7 @@ using System.Windows.Input;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
 {
 
-    internal partial class MultiChoiceMsgBoxViewModel
+    internal class MultiChoiceMsgBoxViewModel
     {
         /// <summary>
         /// Creates the dialog where the number of buttons specified indicates how many "choices"
