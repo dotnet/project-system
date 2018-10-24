@@ -131,7 +131,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             // now get rid of empty target frameworks (if there no any dependencies for them)
             foreach ((ITargetFramework targetFramework, ITargetedDependenciesSnapshot targetedDependencies) in builder.ToList())
             {
-                if (targetedDependencies.DependenciesWorld.Count <= 0)
+                if (targetedDependencies.DependenciesWorld.Count == 0)
                 {
                     anyChanges = true;
                     builder.Remove(targetFramework);
