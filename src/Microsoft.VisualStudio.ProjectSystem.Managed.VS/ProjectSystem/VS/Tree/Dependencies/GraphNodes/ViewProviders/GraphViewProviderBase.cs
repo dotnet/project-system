@@ -152,6 +152,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
         protected static IReadOnlyList<DependencyNodeInfo> GetExistingChildren(GraphNode inputGraphNode)
         {
             var children = new List<DependencyNodeInfo>();
+
             foreach (GraphNode childNode in inputGraphNode.FindDescendants())
             {
                 string id = childNode.GetValue<string>(DependenciesGraphSchema.DependencyIdProperty);

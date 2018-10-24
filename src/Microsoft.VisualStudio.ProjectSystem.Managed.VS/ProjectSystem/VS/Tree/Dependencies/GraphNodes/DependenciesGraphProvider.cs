@@ -163,8 +163,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
         /// </summary>
         private void OnSnapshotChanged(object sender, SnapshotChangedEventArgs e)
         {
-            IDependenciesSnapshot snapshot = e.Snapshot;
-            if (snapshot == null)
+            if (e.Snapshot == null)
             {
                 return;
             }
@@ -340,9 +339,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
                 GraphNodeId.GetPartial(CodeGraphNodeIdName.File, filePath));
         }
 
-        private static string GetIconStringName(ImageMoniker icon)
-        {
-            return $"{icon.Guid.ToString()};{icon.Id}";
-        }
+        private static string GetIconStringName(ImageMoniker icon) => $"{icon.Guid:D};{icon.Id}";
     }
 }

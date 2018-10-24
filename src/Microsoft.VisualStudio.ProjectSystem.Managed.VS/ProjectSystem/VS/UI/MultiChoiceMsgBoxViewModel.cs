@@ -6,7 +6,6 @@ using System.Windows.Input;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
 {
-
     internal class MultiChoiceMsgBoxViewModel
     {
         /// <summary>
@@ -61,6 +60,5 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
         public Visibility Button2Visibility { get { return Button2Text == null ? Visibility.Collapsed : Visibility.Visible; } }
         public Visibility Button3Visibility { get { return Button3Text == null ? Visibility.Collapsed : Visibility.Visible; } }
         public Visibility Button4Visibility { get { return Button4Text == null ? Visibility.Collapsed : Visibility.Visible; } }
-
     }
 }

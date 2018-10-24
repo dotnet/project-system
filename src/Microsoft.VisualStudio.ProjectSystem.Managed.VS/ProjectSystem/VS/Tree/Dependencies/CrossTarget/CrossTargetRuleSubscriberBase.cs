@@ -270,6 +270,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         protected override void Initialize()
         {   
         }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

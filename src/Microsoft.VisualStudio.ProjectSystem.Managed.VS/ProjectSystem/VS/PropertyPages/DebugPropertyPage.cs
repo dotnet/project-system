@@ -1,5 +1,5 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
-using System;
+
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using Microsoft.VisualStudio.Shell;
@@ -11,12 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
     [ProvideObject(typeof(DebugPropertyPage), RegisterUsing = RegistrationMethod.CodeBase)]
     internal class DebugPropertyPage : WpfBasedPropertyPage
     {
-
         internal static readonly string PageName = PropertyPageResources.DebugPropertyPageTitle;
-
-        public DebugPropertyPage()
-        {
-        }
 
         protected override PropertyPageViewModel CreatePropertyPageViewModel()
         {
@@ -28,15 +23,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             return new DebugPageControl();
         }
 
-        protected override string PropertyPageName
-        {
-            get
-            {
-                return PageName;
-            }
-        }
-
-
+        protected override string PropertyPageName => PageName;
     }
 }
-

@@ -87,6 +87,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
 
             ITargetFramework targetFramework = TargetFrameworkProvider.GetNearestFramework(
                                     dependency.TargetFramework, snapshot.Targets.Keys);
+
             if (targetFramework == null)
             {
                 return null;
@@ -195,6 +196,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
             out string dependencyProjectPath)
         {
             ITargetedDependenciesSnapshot snapshot = GetSnapshot(updatedDependency);
+
             if (snapshot == null)
             {
                 nodesToAdd = default;
