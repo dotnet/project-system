@@ -88,7 +88,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             // project directory  split it up into individual path components
             if (parentFolder.Length > 0)
             {
-                return parentFolder.Split(FileItemServices.PathSeparatorCharacters);
+                return parentFolder.Split(Delimiter.Path);
             }
 
             return null;
