@@ -21,20 +21,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             IDependencyTreeTelemetryService treeTelemetryService)
             : base(commonServices, tasksService, treeTelemetryService)
         {
-            DependencyRuleHandlers = new OrderPrecedenceImportCollection<ICrossTargetRuleHandler<DependenciesRuleChangeContext>>(
+            Handlers = new OrderPrecedenceImportCollection<ICrossTargetRuleHandler<DependenciesRuleChangeContext>>(
                 projectCapabilityCheckProvider: commonServices.Project);
         }
 
         [ImportMany(DependencyRulesSubscriberContract)]
-        public OrderPrecedenceImportCollection<ICrossTargetRuleHandler<DependenciesRuleChangeContext>> DependencyRuleHandlers { get; }
-
-        protected override OrderPrecedenceImportCollection<ICrossTargetRuleHandler<DependenciesRuleChangeContext>> Handlers
-        {
-            get
-            {
-                return DependencyRuleHandlers;
-            }
-        }
+        protected override OrderPrecedenceImportCollection<ICrossTargetRuleHandler<DependenciesRuleChangeContext>> Handlers { get; }
 
         protected override DependenciesRuleChangeContext CreateRuleChangeContext(
             ITargetFramework target,
