@@ -281,9 +281,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             return rootNode;
         }
 
-        /// <summary>
-        /// Updates or creates new node
-        /// </summary>
         private async Task<IProjectTree> CreateOrUpdateNodeAsync(
             IProjectTree node,
             IDependency dependency,
@@ -308,9 +305,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 excludedFlags);
         }
 
-        /// <summary>
-        /// Updates or creates new node
-        /// </summary>
         private IProjectTree CreateOrUpdateNode(
             IProjectTree node,
             IDependencyViewModel viewModel,
@@ -324,9 +318,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 : CreateOrUpdateProjectTreeNode(node, viewModel, rule, additionalFlags, excludedFlags);
         }
 
-        /// <summary>
-        /// Updates or creates new IProjectTree node
-        /// </summary>
         private IProjectTree CreateOrUpdateProjectTreeNode(
             IProjectTree node,
             IDependencyViewModel viewModel,
@@ -363,9 +354,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             return node;
         }
 
-        /// <summary>
-        /// Updates or creates new IProjectItemTree node
-        /// </summary>
         private IProjectTree CreateOrUpdateProjectItemTreeNode(
             IProjectTree node,
             IDependencyViewModel viewModel,
