@@ -13,4 +13,4 @@ coverage:
     - "build/src/::src/"
 
 comment:
-  layout: "diff, flags, files, footer"
+  layout: "diff"
