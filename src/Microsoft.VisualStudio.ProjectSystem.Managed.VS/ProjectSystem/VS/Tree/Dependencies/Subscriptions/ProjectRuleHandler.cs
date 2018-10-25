@@ -45,6 +45,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             // Unregister event handlers when the project unloads
             commonServices.Project.ProjectUnloading += OnUnconfiguredProjectUnloading;
 
+            return;
+
             Task OnUnconfiguredProjectUnloading(object sender, EventArgs e)
             {
                 commonServices.Project.ProjectUnloading -= OnUnconfiguredProjectUnloading;
