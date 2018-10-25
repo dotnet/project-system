@@ -245,11 +245,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                     if (handler.ReceiveUpdatesWithEmptyProjectChange
                         || projectChanges.Any(x => x.Value.Difference.AnyChanges))
                     {
-                        await handler.HandleAsync(e,
-                                                  projectChanges,
-                                                  projectContextToUpdate,
-                                                  isActiveContext,
-                                                  ruleChangeContext);
+                        handler.Handle(
+                            e,
+                            projectChanges,
+                            projectContextToUpdate,
+                            isActiveContext,
+                            ruleChangeContext);
                     }
                 }
 

@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Immutable;
-using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
@@ -50,7 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
         public virtual bool ReceiveUpdatesWithEmptyProjectChange => false;
 
-        public virtual Task HandleAsync(
+        public virtual void Handle(
             IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectCatalogSnapshot, IProjectCapabilitiesSnapshot>> e,
             IImmutableDictionary<string, IProjectChangeDescription> projectChanges,
             ITargetedProjectContext context,
@@ -70,8 +69,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     resolved: true, resolvedChanges, context, ruleChangeContext,
                     shouldProcess: metadata => DoesUnresolvedProjectItemExist(metadata.OriginalItemSpec, unresolvedChanges));
             }
-
-            return Task.CompletedTask;
         }
 
         private void HandleChangesForRule(

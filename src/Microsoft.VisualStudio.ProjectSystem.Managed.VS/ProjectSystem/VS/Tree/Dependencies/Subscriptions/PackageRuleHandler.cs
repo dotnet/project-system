@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
-using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
@@ -44,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             return ManagedImageMonikers.NuGetGreyPrivate;
         }
 
-        public override Task HandleAsync(
+        public override void Handle(
             IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectCatalogSnapshot, IProjectCapabilitiesSnapshot>> e,
             IImmutableDictionary<string, IProjectChangeDescription> projectChanges,
             ITargetedProjectContext context,
@@ -74,8 +73,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     resolved: true,
                     unresolvedChanges: caseInsensitiveUnresolvedChanges);
             }
-
-            return Task.CompletedTask;
         }
 
         private void HandleChangesForRule(
