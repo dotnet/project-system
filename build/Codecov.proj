@@ -31,4 +31,6 @@
     <Exec Condition="'$(UseCodecov)' == 'true'"
           Command="&quot;$(_CodecovPath)&quot; @(_CodecovArgs, ' ')" />
   </Target>
+
+  <Import Project="..\Packages.targets" />
 </Project>
