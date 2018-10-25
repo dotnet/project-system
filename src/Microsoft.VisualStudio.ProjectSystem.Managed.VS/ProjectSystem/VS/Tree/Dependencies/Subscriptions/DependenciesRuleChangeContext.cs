@@ -65,6 +65,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 _changes = _changes.Add(targetFramework, change);
             }
 
+            // We only add DependenciesChanges to this collection, so the cast is safe
             return (DependenciesChanges)change;
         }
     }
