@@ -23,15 +23,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
     {
         private readonly VSLangProj.VSProject _vsProject;
 
+        private readonly IUnconfiguredProjectCommonServices _unconfiguredProjectServices;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="VsBuildManager"/> class.
         /// </summary>
         [ImportingConstructor]
         internal VsBuildManager(
-            [Import(ExportContractNames.VsTypes.CpsVSProject)] VSLangProj.VSProject vsProject)
+            [Import(ExportContractNames.VsTypes.CpsVSProject)] VSLangProj.VSProject vsProject,
+            IUnconfiguredProjectCommonServices unconfiguredProjectServices)
         {
             AddEventSource(this as IEventSource<_dispBuildManagerEvents>);
             _vsProject = vsProject;
+            _unconfiguredProjectServices = unconfiguredProjectServices;
         }
 
         #region _dispBuildManagerEvents_Event Members
@@ -71,7 +75,32 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         {
             get
             {
-                throw new NotImplementedException();
+                var project = _unconfiguredProjectServices.ActiveConfiguredProject;
+                var ruleSource = project.Services.ProjectSubscription.ProjectRuleSource;
+                var update = _unconfiguredProjectServices.ThreadingService.ExecuteSynchronously(() => ruleSource.GetLatestVersionAsync(project, new string[] { Compile.SchemaName }));
+                var snapshot = update[Compile.SchemaName];
+
+                var monikers = new List<string>();
+                foreach (var item in snapshot.Items.Values)
+                {
+                    bool isLink = GetBooleanPropertyValue(item, Compile.LinkProperty);
+                    bool designTime = GetBooleanPropertyValue(item, Compile.DesignTimeProperty);
+
+                    if (!isLink && designTime)
+                    {
+                        if (item.TryGetValue(Compile.FullPathProperty, out string path))
+                        {
+                            monikers.Add(path);
+                        }
+                    }
+                }
+                
+                return monikers.ToArray();
+
+                bool GetBooleanPropertyValue(System.Collections.Immutable.IImmutableDictionary<string, string> item, string propertyName)
+                {
+                    return item.TryGetValue(propertyName, out string value) && StringComparers.PropertyValues.Equals(value, "true");
+                }
             }
         }
 
@@ -91,6 +120,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         /// </summary>
         public virtual string BuildDesignTimeOutput(string bstrOutputMoniker)
         {
+            var languageName = _unconfiguredProjectServices.ThreadingService.ExecuteSynchronously(async () =>
+            {
+                var property = await _unconfiguredProjectServices.ActiveConfiguredProjectProperties.GetConfigurationGeneralPropertiesAsync();
+                return await property.LanguageServiceName.GetValueAsync();
+            });
+
+            // TODO: Once Roslyn work is complete:
+            //
+            //   var compiler = _serviceProvider.GetService(typeof(Microsoft.VisualStudio.LanguageServices.Implementation.ProjectSystem.CPS.ITempPECompilerHost));
+            //  (after importing a service provider in the constructor as: [Import(typeof(SVsServiceProvider))]IServiceProvider serviceProvider)
+            //  (or maybe can just import a Lazy<ITempPECompilerHost> in the constructor?)
+            //
+            //   compiler.Compile(languageName ... );
+
             throw new NotImplementedException();
         }
 
