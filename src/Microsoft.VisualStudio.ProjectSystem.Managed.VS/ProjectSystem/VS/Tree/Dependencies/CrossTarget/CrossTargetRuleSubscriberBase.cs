@@ -254,7 +254,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                     }
                 }
 
-                await CompleteHandleAsync(ruleChangeContext);
+                CompleteHandle(ruleChangeContext);
 
                 // record all the rules that have occurred
                 _treeTelemetryService.ObserveTargetFrameworkRules(projectContextToUpdate.TargetFramework, update.ProjectChanges.Keys);
@@ -263,9 +263,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
         protected abstract T CreateRuleChangeContext(ITargetFramework target, IProjectCatalogSnapshot catalogs);
 
-        protected virtual Task CompleteHandleAsync(T ruleChangeContext)
+        protected virtual void CompleteHandle(T ruleChangeContext)
         {
-            return Task.CompletedTask;
         }
 
         protected override void Initialize()

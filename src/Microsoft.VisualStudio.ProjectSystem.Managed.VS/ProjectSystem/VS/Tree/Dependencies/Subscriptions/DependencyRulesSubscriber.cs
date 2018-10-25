@@ -2,7 +2,6 @@
 
 using System;
 using System.ComponentModel.Composition;
-using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
@@ -46,11 +45,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
         public event EventHandler<DependencySubscriptionChangedEventArgs> DependenciesChanged;
 
-        protected override Task CompleteHandleAsync(DependenciesRuleChangeContext ruleChangeContext)
+        protected override void CompleteHandle(DependenciesRuleChangeContext ruleChangeContext)
         {
             DependenciesChanged?.Invoke(this, new DependencySubscriptionChangedEventArgs(ruleChangeContext));
-
-            return Task.CompletedTask;
         }
     }
 }
