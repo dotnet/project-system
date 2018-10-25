@@ -73,9 +73,6 @@
     <Compile Update="ProjectSystem\VS\UI\DontShowAgainMessageBox.xaml.cs">
       <DependentUpon>DontShowAgainMessageBox.xaml</DependentUpon>
     </Compile>
-    <Compile Update="ProjectSystem\VS\UI\MultiChoiceMsgBox.Xaml.cs">
-      <DependentUpon>MultiChoiceMsgBox.xaml</DependentUpon>
-    </Compile>
     <Compile Update="VSResources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -102,10 +99,6 @@
     </Page>
     <Page Include="ProjectSystem\VS\UI\DontShowAgainMessageBox.xaml">
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ProjectSystem\VS\UI\MultiChoiceMsgBox.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Resource Include="Resources\Icons\LibraryWarning_16x.xaml">
       <Generator>MSBuild:Compile</Generator>

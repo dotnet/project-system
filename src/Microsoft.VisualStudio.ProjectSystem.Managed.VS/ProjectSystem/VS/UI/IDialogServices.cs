@@ -8,7 +8,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
     /// </summary>
     internal interface IDialogServices
     {
-        MultiChoiceMsgBoxResult ShowMultiChoiceMsgBox(string dialogTitle, string errorText, string[] buttons);
         bool DontShowAgainMessageBox(string caption, string message, string checkboxText, bool initialStateOfCheckbox, string learnMoreText, string learnMoreUrl);
     }
 }
