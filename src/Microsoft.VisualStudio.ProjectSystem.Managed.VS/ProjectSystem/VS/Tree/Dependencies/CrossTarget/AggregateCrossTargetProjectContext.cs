@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -15,7 +14,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         private readonly ImmutableDictionary<ITargetFramework, ITargetedProjectContext> _configuredProjectContextsByTargetFramework;
         private readonly ImmutableDictionary<string, ConfiguredProject> _configuredProjectsByTargetFramework;
         private readonly ITargetFramework _activeTargetFramework;
-        private readonly HashSet<ITargetedProjectContext> _disposedConfiguredProjectContexts;
 
         public AggregateCrossTargetProjectContext(
             bool isCrossTargeting,
@@ -34,15 +32,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             _configuredProjectContextsByTargetFramework = configuredProjectContextsByTargetFramework;
             _configuredProjectsByTargetFramework = configuredProjectsByTargetFramework;
             _activeTargetFramework = activeTargetFramework;
-            _disposedConfiguredProjectContexts = new HashSet<ITargetedProjectContext>();
             TargetFrameworkProvider = targetFrameworkProvider;
         }
 
         private ITargetFrameworkProvider TargetFrameworkProvider { get; }
 
         public IEnumerable<ITargetedProjectContext> InnerProjectContexts => _configuredProjectContextsByTargetFramework.Values;
-
-        public ImmutableArray<ITargetedProjectContext> DisposedInnerProjectContexts => _disposedConfiguredProjectContexts.ToImmutableArray();
 
         public IEnumerable<ConfiguredProject> InnerConfiguredProjects => _configuredProjectsByTargetFramework.Values;
 
@@ -128,25 +123,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             }
 
             return true;
-        }
-
-        public void Dispose(Func<ITargetedProjectContext, bool> shouldDisposeInnerContext)
-        {
-            // Dispose the inner project contexts.
-            var disposedContexts = new List<ITargetedProjectContext>();
-            foreach (ITargetedProjectContext innerProjectContext in InnerProjectContexts)
-            {
-                if (shouldDisposeInnerContext(innerProjectContext))
-                {
-                    innerProjectContext.Dispose();
-                    disposedContexts.Add(innerProjectContext);
-                }
-            }
-
-            lock (_disposedConfiguredProjectContexts)
-            {
-                _disposedConfiguredProjectContexts.AddRange(disposedContexts);
-            }
         }
     }
 }
