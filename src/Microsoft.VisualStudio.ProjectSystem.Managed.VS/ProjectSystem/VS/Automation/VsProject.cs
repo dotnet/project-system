@@ -30,18 +30,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         private readonly VSLangProj.VSProject _vsProject;
         private readonly IProjectThreadingService _threadingService;
         private readonly ActiveConfiguredProject<ProjectProperties> _projectProperties;
+        private readonly BuildManager _buildManager;
 
         [ImportingConstructor]
         internal VSProject(
             [Import(ExportContractNames.VsTypes.CpsVSProject)] VSLangProj.VSProject vsProject,
             IProjectThreadingService threadingService,
             ActiveConfiguredProject<ProjectProperties> projectProperties,
-            UnconfiguredProject project)
+            UnconfiguredProject project,
+            [Import(typeof(BuildManager))]BuildManager buildManager)
         {
             _vsProject = vsProject;
             _threadingService = threadingService;
             _projectProperties = projectProperties;
-
+            _buildManager = buildManager;
             ImportsImpl = new OrderPrecedenceImportCollection<Imports>(projectCapabilityCheckProvider: project);
             VSProjectEventsImpl = new OrderPrecedenceImportCollection<VSProjectEvents>(projectCapabilityCheckProvider: project);
         }
@@ -54,7 +56,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
 
         public VSLangProj.References References => _vsProject.References;
 
-        public BuildManager BuildManager => _vsProject.BuildManager;
+        public BuildManager BuildManager => _buildManager;
 
         public DTE DTE => _vsProject.DTE;
 
