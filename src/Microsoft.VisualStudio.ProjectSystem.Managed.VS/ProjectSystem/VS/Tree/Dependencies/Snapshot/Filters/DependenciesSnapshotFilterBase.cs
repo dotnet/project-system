@@ -18,15 +18,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
             IDependency dependency,
             ImmutableDictionary<string, IDependency>.Builder worldBuilder,
             ImmutableHashSet<IDependency>.Builder topLevelBuilder,
-            Dictionary<string, IProjectDependenciesSubTreeProvider> subTreeProviders,
-            HashSet<string> projectItemSpecs,
+            IReadOnlyDictionary<string, IProjectDependenciesSubTreeProvider> subTreeProviders,
+            IImmutableSet<string> projectItemSpecs,
             out bool filterAnyChanges)
         {
             filterAnyChanges = false;
             return dependency;
         }
 
-        public virtual IDependency BeforeRemove(
+        public virtual bool BeforeRemove(
             string projectPath,
             ITargetFramework targetFramework,
             IDependency dependency,
@@ -35,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
             out bool filterAnyChanges)
         {
             filterAnyChanges = false;
-            return dependency;
+            return true;
         }
     }
 }

@@ -668,8 +668,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 IDependency dependency,
                 ImmutableDictionary<string, IDependency>.Builder worldBuilder,
                 ImmutableHashSet<IDependency>.Builder topLevelBuilder,
-                Dictionary<string, IProjectDependenciesSubTreeProvider> subTreeProviders,
-                HashSet<string> projectItemSpecs,
+                IReadOnlyDictionary<string, IProjectDependenciesSubTreeProvider> subTreeProviders,
+                IImmutableSet<string> projectItemSpecs,
                 out bool filterAnyChanges)
             {
                 filterAnyChanges = _filterAnyChanges;
@@ -696,7 +696,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 return dependency;
             }
 
-            public IDependency BeforeRemove(
+            public bool BeforeRemove(
                 string projectPath,
                 ITargetFramework targetFramework,
                 IDependency dependency,
@@ -710,7 +710,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 {
                     if (info.Item2 == FilterAction.Cancel)
                     {
-                        return null;
+                        return false;
                     }
                     else if (info.Item2 == FilterAction.ShouldBeAdded)
                     {
@@ -724,7 +724,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     }
                 }
 
-                return dependency;
+                return true;
             }
         }
     }
