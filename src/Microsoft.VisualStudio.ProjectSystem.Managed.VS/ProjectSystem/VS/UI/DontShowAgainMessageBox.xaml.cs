@@ -2,10 +2,11 @@
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Input;
+using Microsoft.VisualStudio.PlatformUI;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
 {
-    internal partial class DontShowAgainMessageBox : PlatformUI.DialogWindow
+    internal partial class DontShowAgainMessageBox : DialogWindow
     {
 
         public DontShowAgainMessageBox(string caption, string message, string checkboxText, bool initialStateOfCheckbox,
@@ -33,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
             {
                 LearnMore.Visibility = Visibility.Visible;
                 LearnMoreText = learnMoreText;
-                LearnMoreCommand = new RelayCommand((parameter) =>
+                LearnMoreCommand = new DelegateCommand((parameter) =>
                 {
                     try
                     {

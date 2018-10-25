@@ -21,9 +21,5 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         public ITargetFramework TargetFramework { get; }
         public string TargetPath { get; }
         public bool LastDesignTimeBuildSucceeded { get; set; }
-
-        public void Dispose()
-        {
-        }
     }
 }

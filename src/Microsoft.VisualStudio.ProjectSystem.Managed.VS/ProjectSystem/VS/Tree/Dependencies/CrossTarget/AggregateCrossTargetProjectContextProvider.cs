@@ -60,11 +60,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             return context;
         }
 
-        public async Task ReleaseProjectContextAsync(AggregateCrossTargetProjectContext context)
+        public void ReleaseProjectContext(AggregateCrossTargetProjectContext context)
         {
             Requires.NotNull(context, nameof(context));
 
-            ImmutableHashSet<ITargetedProjectContext> usedProjectContexts;
             lock (_gate)
             {
                 if (!_contexts.Remove(context))
@@ -73,17 +72,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                 // Update the maps storing configured project host objects and project contexts which are shared across created contexts.
                 // We can remove the ones which are only used by the current context being released.
                 RemoveUnusedConfiguredProjectsState_NoLock();
-
-                usedProjectContexts = _configuredProjectContextsMap.Values.ToImmutableHashSet();
             }
-
-            // TODO: https://github.com/dotnet/roslyn-project-system/issues/353
-            await _commonServices.ThreadingService.SwitchToUIThread();
-
-            // We don't want to dispose the inner workspace contexts that are still being used by other active aggregate contexts.
-            bool ShouldDisposeInnerContext(ITargetedProjectContext c) => !usedProjectContexts.Contains(c);
-
-            context.Dispose(ShouldDisposeInnerContext);
         }
 
         // Clears saved host objects and project contexts for unused configured projects.
