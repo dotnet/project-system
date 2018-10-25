@@ -245,7 +245,7 @@ function ConvertTRXFiles([string] $folderPath) {
 function UninstallVSIXes([string] $hive){
   $vsid = Get-VisualStudioId
   
-  $extDir = Join-Path ${env:USERPROFILE} "AppData\Local\Microsoft\VisualStudio\15.0_$($vsid)$($hive)\Extensions"
+  $extDir = Join-Path ${env:USERPROFILE} "AppData\Local\Microsoft\VisualStudio\16.0_$($vsid)$($hive)\Extensions"
     if (Test-Path $extDir) {
         foreach ($dir in Get-ChildItem -Directory $extDir) {
             $name = Split-Path -leaf $dir
@@ -326,7 +326,7 @@ try {
   $ToolsetBuildProj = Join-Path $NuGetPackageRoot "RoslynTools.RepoToolset\$ToolsetVersion\tools\Build.proj"
 
   $vsInstallDir = LocateVisualStudio
-  $MsbuildExe = Join-Path $vsInstallDir "MSBuild\15.0\Bin\msbuild.exe"
+  $MsbuildExe = Join-Path $vsInstallDir "MSBuild\Current\Bin\msbuild.exe"
 
   if ($ci) {
     Create-Directory $TempDir
