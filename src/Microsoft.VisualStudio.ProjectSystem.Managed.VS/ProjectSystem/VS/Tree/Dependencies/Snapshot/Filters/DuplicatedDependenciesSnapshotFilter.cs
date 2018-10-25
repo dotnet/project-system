@@ -27,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
             IDependency dependency,
             ImmutableDictionary<string, IDependency>.Builder worldBuilder,
             ImmutableHashSet<IDependency>.Builder topLevelBuilder,
-            Dictionary<string, IProjectDependenciesSubTreeProvider> subTreeProviders,
+            IReadOnlyDictionary<string, IProjectDependenciesSubTreeProvider> subTreeProviders,
             HashSet<string> projectItemSpecs,
             out bool filterAnyChanges)
         {
