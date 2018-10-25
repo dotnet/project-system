@@ -20,18 +20,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
             _userNotificationServices = userNotificationServices;
         }
 
-        public MultiChoiceMsgBoxResult ShowMultiChoiceMsgBox(string dialogTitle, string errorText, string[] buttons)
-        {
-            var dlg = new MultiChoiceMsgBox(dialogTitle, errorText, buttons);
-            bool? result = dlg.ShowModal();
-            if (result == true)
-            {
-                return dlg.SelectedAction;
-            }
-
-            return MultiChoiceMsgBoxResult.Cancel;
-        }
-
         public bool DontShowAgainMessageBox(string caption, string message, string checkboxText, bool initialStateOfCheckbox, string learnMoreText, string learnMoreUrl)
         {
             var dlg = new DontShowAgainMessageBox(caption, message, checkboxText, initialStateOfCheckbox, learnMoreText, learnMoreUrl, _userNotificationServices);
