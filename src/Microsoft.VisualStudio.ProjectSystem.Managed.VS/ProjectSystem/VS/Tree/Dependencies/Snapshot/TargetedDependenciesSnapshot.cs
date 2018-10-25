@@ -178,7 +178,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             IDependenciesChanges changes,
             IEnumerable<IDependenciesSnapshotFilter> snapshotFilters,
             IEnumerable<IProjectDependenciesSubTreeProvider> subTreeProviders,
-            HashSet<string> projectItemSpecs)
+            IImmutableSet<string> projectItemSpecs)
         {
             var worldBuilder = DependenciesWorld.ToBuilder();
             var topLevelBuilder = TopLevelDependencies.ToBuilder();
@@ -295,7 +295,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             IProjectCatalogSnapshot catalogs,
             IEnumerable<IDependenciesSnapshotFilter> snapshotFilters,
             IEnumerable<IProjectDependenciesSubTreeProvider> subTreeProviders,
-            HashSet<string> projectItemSpecs,
+            IImmutableSet<string> projectItemSpecs,
             out bool anyChanges)
         {
             var newSnapshot = new TargetedDependenciesSnapshot(projectPath, targetFramework, previousSnapshot, catalogs);

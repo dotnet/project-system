@@ -164,7 +164,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 worldBuilder,
                 null,
                 null,
-                new HashSet<string>(new[] { "myprojectitem" }),
+                ImmutableHashSet.Create("myprojectitem"),
                 out bool filterAnyChanges);
 
             Assert.Equal(dependency.Object.Id, resultDependency.Id);
@@ -208,7 +208,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 {
                     { subTreeProvider.ProviderType, subTreeProvider }
                 },
-                new HashSet<string>(),
+                ImmutableHashSet<string>.Empty,
                 out bool filterAnyChanges);
 
             Assert.Equal(dependency.Object.Id, resultDependency.Id);

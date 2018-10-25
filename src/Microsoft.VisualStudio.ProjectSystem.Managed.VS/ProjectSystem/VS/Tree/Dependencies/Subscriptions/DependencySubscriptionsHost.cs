@@ -270,7 +270,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         {
             bool anyChanges;
 
-            HashSet<string> projectItemSpecs = GetProjectItemSpecsFromSnapshot(catalogs);
+            IImmutableSet<string> projectItemSpecs = GetProjectItemSpecsFromSnapshot(catalogs);
 
             // Note: we are updating existing snapshot, not receiving a complete new one. Thus we must
             // ensure incremental updates are done in the correct order. This lock ensures that here.
@@ -295,14 +295,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             }
         }
 
-        private static HashSet<string> GetProjectItemSpecsFromSnapshot(IProjectCatalogSnapshot catalogs)
+        private static IImmutableSet<string> GetProjectItemSpecsFromSnapshot(IProjectCatalogSnapshot catalogs)
         {
             // We don't have catalog snapshot, we're likely updating because one of our project 
             // dependencies changed. Just return 'no data'
             if (catalogs == null)
                 return null;
 
-            var projectItemSpecs = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            ImmutableHashSet<string>.Builder projectItemSpecs = ImmutableHashSet.CreateBuilder(StringComparer.OrdinalIgnoreCase);
 
             foreach (ProjectItemInstance item in catalogs.Project.ProjectInstance.Items)
             {
@@ -315,7 +315,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     projectItemSpecs.Add(itemSpec);
             }
 
-            return projectItemSpecs;
+            return projectItemSpecs.ToImmutable();
         }
 
         private void ScheduleDependenciesUpdate()

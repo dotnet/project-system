@@ -102,7 +102,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             IProjectCatalogSnapshot catalogs,
             IEnumerable<IDependenciesSnapshotFilter> snapshotFilters,
             IEnumerable<IProjectDependenciesSubTreeProvider> subTreeProviders,
-            HashSet<string> projectItemSpecs)
+            IImmutableSet<string> projectItemSpecs)
         {
             bool anyChanges = false;
             var builder = _targets.ToBuilder();
@@ -160,7 +160,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             ITargetFramework activeTargetFramework,
             IEnumerable<IDependenciesSnapshotFilter> snapshotFilters,
             IEnumerable<IProjectDependenciesSubTreeProvider> subTreeProviders,
-            HashSet<string> projectItemSpecs,
+            IImmutableSet<string> projectItemSpecs,
             out bool anyChanges)
         {
             var newSnapshot = new DependenciesSnapshot(projectPath, activeTargetFramework, previousSnapshot);
