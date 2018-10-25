@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.Linq;
 
 using Microsoft.VisualStudio.Shell;
@@ -108,24 +107,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         }
 
         /// <summary>
-        /// Finds direct child of IProjectTree by it's name
+        /// Gets the direct child of <paramref name="tree"/> with <paramref name="caption"/>
+        /// if found, otherwise <see langword="null"/>.
         /// </summary>
-        /// <param name="tree"></param>
-        /// <param name="caption"></param>
-        /// <returns></returns>
         public static IProjectTree FindNodeByCaption(this IProjectTree tree, string caption)
         {
-            return FindNodeHelper(tree, caption, child => child.Caption);
-        }
-
-        private static IProjectTree FindNodeHelper(this IProjectTree tree, string itemToFind,
-            Func<IProjectTree, string> childPropertyFunction)
-        {
-            Contract.Requires(tree != null);
-            Contract.Requires(!string.IsNullOrEmpty(itemToFind));
-
-            return tree.Children
-                .FirstOrDefault(child => string.Equals(itemToFind, childPropertyFunction(child), StringComparison.OrdinalIgnoreCase));
+            return tree.Children.FirstOrDefault(
+                child => string.Equals(caption, child.Caption, StringComparison.OrdinalIgnoreCase));
         }
 
         /// <summary>
