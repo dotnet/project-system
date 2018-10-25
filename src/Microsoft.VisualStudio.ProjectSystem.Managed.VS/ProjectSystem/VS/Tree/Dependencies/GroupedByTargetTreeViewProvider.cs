@@ -97,7 +97,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     }
                     else
                     {
-                        IProjectTree node = dependenciesTree.FindNodeByCaption(targetFramework.FriendlyName);
+                        IProjectTree node = dependenciesTree.GetChildWithCaption(targetFramework.FriendlyName);
                         bool shouldAddTargetNode = node == null;
                         IDependencyViewModel targetViewModel = ViewModelFactory.CreateTargetViewModel(targetedSnapshot);
 
@@ -192,7 +192,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             {
                 IDependencyViewModel subTreeViewModel = ViewModelFactory.CreateRootViewModel(
                     providerType, targetedSnapshot.CheckForUnresolvedDependencies(providerType));
-                IProjectTree subTreeNode = rootNode.FindNodeByCaption(subTreeViewModel.Caption);
+                IProjectTree subTreeNode = rootNode.GetChildWithCaption(subTreeViewModel.Caption);
                 bool isNewSubTreeNode = subTreeNode == null;
 
                 ProjectTreeFlags excludedFlags = targetedSnapshot.TargetFramework.Equals(TargetFramework.Any) 
@@ -238,7 +238,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var currentNodes = new List<IProjectTree>();
             foreach (IDependency dependency in dependencies)
             {
-                IProjectTree dependencyNode = rootNode.FindNodeByCaption(dependency.Caption);
+                IProjectTree dependencyNode = rootNode.GetChildWithCaption(dependency.Caption);
                 bool isNewDependencyNode = dependencyNode == null;
 
                 if (!isNewDependencyNode

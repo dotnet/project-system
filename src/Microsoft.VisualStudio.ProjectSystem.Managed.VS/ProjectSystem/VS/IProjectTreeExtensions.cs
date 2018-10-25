@@ -110,7 +110,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// Gets the direct child of <paramref name="tree"/> with <paramref name="caption"/>
         /// if found, otherwise <see langword="null"/>.
         /// </summary>
-        public static IProjectTree FindNodeByCaption(this IProjectTree tree, string caption)
+        public static IProjectTree GetChildWithCaption(this IProjectTree tree, string caption)
         {
             return tree.Children.FirstOrDefault(
                 child => string.Equals(caption, child.Caption, StringComparison.OrdinalIgnoreCase));
