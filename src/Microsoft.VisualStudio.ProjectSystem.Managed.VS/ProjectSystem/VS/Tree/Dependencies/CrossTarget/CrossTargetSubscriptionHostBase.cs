@@ -202,8 +202,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                     }
                     else
                     {
-                        string targetFrameworks = (string)await projectProperties.TargetFrameworks.GetValueAsync();
-
                         // Check if the current project context is up-to-date for the current active and known project configurations.
                         ProjectConfiguration activeProjectConfiguration = _commonServices.ActiveConfiguredProject.ProjectConfiguration;
                         IImmutableSet<ProjectConfiguration> knownProjectConfigurations = await _commonServices.Project.Services.ProjectConfigurationsService.GetKnownProjectConfigurationsAsync();
