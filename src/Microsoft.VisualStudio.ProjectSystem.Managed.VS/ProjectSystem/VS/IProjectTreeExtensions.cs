@@ -124,7 +124,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             Contract.Requires(tree != null);
             Contract.Requires(!string.IsNullOrEmpty(itemToFind));
 
-            return tree.Children.OfType<IProjectTree>()
+            return tree.Children
                 .FirstOrDefault(child => string.Equals(itemToFind, childPropertyFunction(child), StringComparison.OrdinalIgnoreCase));
         }
 
