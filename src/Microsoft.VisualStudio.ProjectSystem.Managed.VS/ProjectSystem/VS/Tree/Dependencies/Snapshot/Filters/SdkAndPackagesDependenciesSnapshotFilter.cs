@@ -11,9 +11,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
 {
     /// <summary>
     /// Sdk nodes are actually packages and their hierarchy of dependencies is resolved from
-    /// NuGet's assets json file. However Sdk them selves are brought by DesignTime build for rules
+    /// NuGet's assets json file. However Sdk themselves are brought by DesignTime build for rules
     /// SdkReference. This filter matches Sdk to their corresponding NuGet package and sets  
-    /// of top level sdk dependencies from the package. Packages are in visible to avoid visual
+    /// of top level sdk dependencies from the package. Packages are invisible to avoid visual
     /// duplication and confusion.
     /// </summary>
     [Export(typeof(IDependenciesSnapshotFilter))]
@@ -35,10 +35,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
         {
             filterAnyChanges = false;
 
-            IDependency resultDependency = dependency;
             if (!dependency.TopLevel)
             {
-                return resultDependency;
+                return dependency;
             }
 
             if (dependency.Flags.Contains(DependencyTreeFlags.SdkSubTreeNodeFlags))
@@ -50,7 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
                 if (worldBuilder.TryGetValue(packageId, out IDependency package) && package.Resolved)
                 {
                     filterAnyChanges = true;
-                    resultDependency = dependency.ToResolved(
+                    return dependency.ToResolved(
                         schemaName: ResolvedSdkReference.SchemaName,
                         dependencyIDs: package.DependencyIDs);
                 }
@@ -75,7 +74,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
                 }
             }
 
-            return resultDependency;
+            return dependency;
         }
 
         public override IDependency BeforeRemove(

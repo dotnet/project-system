@@ -13,10 +13,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     [DebuggerDisplay("{" + nameof(Id) +",nq}")]
     internal class TestDependency : IDependency
     {
-        public TestDependency()
-        {
-        }
-
         public string ProviderType { get; set; }
         public string Name { get; set; }
         public string Caption { get; set; }
@@ -55,30 +51,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             return this;
         }
 
-        public override int GetHashCode()
-        {
-            return StringComparer.OrdinalIgnoreCase.GetHashCode(Id);
-        }
+        public override int GetHashCode() 
+            => StringComparer.OrdinalIgnoreCase.GetHashCode(Id);
 
-        public override bool Equals(object obj)
-        {
-            if (obj is IDependency other)
-            {
-                return Equals(other);
-            }
+        public override bool Equals(object obj) 
+            => obj is IDependency other && Equals(other);
 
-            return false;
-        }
-
-        public bool Equals(IDependency other)
-        {
-            if (other != null && other.Id.Equals(Id, StringComparison.OrdinalIgnoreCase))
-            {
-                return true;
-            }
-
-            return false;
-        }
+        public bool Equals(IDependency other) 
+            => other != null && other.Id.Equals(Id, StringComparison.OrdinalIgnoreCase);
 
         public static bool operator ==(TestDependency left, TestDependency right)
             => left is null ? right is null : left.Equals(right);
@@ -98,14 +78,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         public static bool operator >=(TestDependency left, TestDependency right)
             => left is null ? right is null : left.CompareTo(right) >= 0;
 
-        public int CompareTo(IDependency other)
-        {
-            if (other == null)
-            {
-                return 1;
-            }
-
-            return StringComparer.OrdinalIgnoreCase.Compare(Id, other.Id);
-        }
+        public int CompareTo(IDependency other) 
+            => other == null ? 1 : StringComparer.OrdinalIgnoreCase.Compare(Id, other.Id);
     }
 }

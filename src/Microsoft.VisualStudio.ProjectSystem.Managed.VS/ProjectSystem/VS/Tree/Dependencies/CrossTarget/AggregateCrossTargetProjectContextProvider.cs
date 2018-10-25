@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
     ///     configurations of an <see cref="UnconfiguredProject"/>.
     /// </summary>
     [Export(typeof(IAggregateCrossTargetProjectContextProvider))]
-    internal partial class AggregateCrossTargetProjectContextProvider : OnceInitializedOnceDisposed, IAggregateCrossTargetProjectContextProvider
+    internal class AggregateCrossTargetProjectContextProvider : OnceInitializedOnceDisposed, IAggregateCrossTargetProjectContextProvider
     {
         private readonly object _gate = new object();
         private readonly IUnconfiguredProjectCommonServices _commonServices;

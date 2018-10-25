@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
     internal static class ManagedPathHelper
     {
         /// <summary>
-        /// Tests a path to see if it is absolute or not. More reliable than Path.IsPathRooted.
+        /// Tests a path to see if it is absolute or not. More reliable than <see cref="System.IO.Path.IsPathRooted"/>.
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>

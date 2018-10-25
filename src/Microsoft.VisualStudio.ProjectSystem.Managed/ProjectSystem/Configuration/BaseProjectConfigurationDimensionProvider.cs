@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         /// <param name="dimensionName">Name of the dimension.</param>
         /// <param name="propertyName">Name of the project property containing the dimension values.</param>
         /// <param name="dimensionDefaultValue">The default value of the dimension, for example "AnyCPU".</param>
-        public BaseProjectConfigurationDimensionProvider(IProjectAccessor projectAccessor, string dimensionName, string propertyName, string dimensionDefaultValue = null)
+        protected BaseProjectConfigurationDimensionProvider(IProjectAccessor projectAccessor, string dimensionName, string propertyName, string dimensionDefaultValue = null)
         {
             Requires.NotNull(projectAccessor, nameof(projectAccessor));
 

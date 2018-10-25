@@ -76,11 +76,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             {
                 if (_hasUnresolvedDependency == null)
                 {
-                    _hasUnresolvedDependency = TopLevelDependencies.Any(x => !x.Resolved);
-                    if (!_hasUnresolvedDependency.Value)
-                    {
-                        _hasUnresolvedDependency = DependenciesWorld.Values.Any(x => !x.Resolved);
-                    }
+                    _hasUnresolvedDependency = 
+                        TopLevelDependencies.Any(x => !x.Resolved) || 
+                        DependenciesWorld.Values.Any(x => !x.Resolved);
                 }
 
                 return _hasUnresolvedDependency.Value;
@@ -166,12 +164,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
         private bool TryToFindDependency(string id, out IDependency dependency)
         {
-            if (DependenciesWorld.TryGetValue(id, out dependency))
-            {
-                return true;
-            }
-
-            return _topLevelDependenciesByPathMap.TryGetValue(id, out dependency);
+            return DependenciesWorld.TryGetValue(id, out dependency) || 
+                   _topLevelDependenciesByPathMap.TryGetValue(id, out dependency);
         }
 
         private bool MergeChanges(
@@ -256,11 +250,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
                 anyChanges = true;
 
-                worldBuilder.Remove(newDependency.Id);
-                worldBuilder.Add(newDependency.Id, newDependency);
+                worldBuilder[newDependency.Id] = newDependency;
+
                 if (newDependency.TopLevel)
                 {
-                    topLevelBuilder.Remove(newDependency);
                     topLevelBuilder.Add(newDependency);
                 }
             }

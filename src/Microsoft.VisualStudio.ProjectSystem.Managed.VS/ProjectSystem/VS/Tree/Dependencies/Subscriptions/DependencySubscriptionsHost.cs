@@ -328,12 +328,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 }
 
                 IDependenciesSnapshot snapshot = CurrentSnapshot;
-                if (snapshot == null)
-                {
-                    return Task.CompletedTask;
-                }
 
-                OnDependenciesSnapshotChanged(snapshot);
+                if (snapshot != null)
+                {
+                    OnDependenciesSnapshotChanged(snapshot);
+                }
 
                 return Task.CompletedTask;
             });

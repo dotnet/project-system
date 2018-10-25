@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         private readonly SVsServiceProvider _serviceProvider;
         private readonly OrderAddItemHintReceiver _orderAddItemHintReceiver;
 
-        public AbstractAddItemCommand(
+        protected AbstractAddItemCommand(
             IPhysicalProjectTree projectTree,
             IUnconfiguredProjectVsServices projectVsServices,
             SVsServiceProvider serviceProvider,

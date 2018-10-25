@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         private readonly ConfiguredProject _configuredProject;
         private readonly IProjectAccessor _accessor;
 
-        public AbstractMoveCommand(IPhysicalProjectTree projectTree, SVsServiceProvider serviceProvider, ConfiguredProject configuredProject, IProjectAccessor accessor)
+        protected AbstractMoveCommand(IPhysicalProjectTree projectTree, SVsServiceProvider serviceProvider, ConfiguredProject configuredProject, IProjectAccessor accessor)
         {
             Requires.NotNull(projectTree, nameof(projectTree));
             Requires.NotNull(serviceProvider, nameof(serviceProvider));

@@ -7,15 +7,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
     internal interface ITargetFrameworkProvider
     {
         /// <summary>
-        /// Parses full tfm or short framework name and returns ITargetFramework instance.
-        /// Note: it can throw if framework name has invalid format so we catch it here and 
-        /// return null always, to avoid exception. Consumers should handle null.
+        /// Parses full tfm or short framework name and returns a corresponding <see cref="ITargetFramework"/>
+        /// instance, or <see langword="null" /> if the framework name has an invalid format.
         /// </summary>
         ITargetFramework GetTargetFramework(string shortOrFullName);
 
         /// <summary>
-        /// Given a target framework it tries to determine which of the given list of other frameworks 
-        /// is most compatible/closest to the target. If no compatible frameworks, returns null.
+        /// Returns the item in <paramref name="otherFrameworks"/> that is most compatible/closest to
+        /// <paramref name="targetFramework"/>, or <see langword="null" /> if none are compatible.
         /// </summary>
         ITargetFramework GetNearestFramework(ITargetFramework targetFramework, IEnumerable<ITargetFramework> otherFrameworks);
     }

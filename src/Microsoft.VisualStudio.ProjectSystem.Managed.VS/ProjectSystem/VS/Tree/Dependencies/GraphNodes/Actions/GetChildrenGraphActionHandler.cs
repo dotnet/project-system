@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System;
 using System.ComponentModel.Composition;
 using System.Linq;
 
@@ -57,7 +56,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
                     continue;
                 }
 
-                Lazy<IDependenciesGraphViewProvider, IOrderPrecedenceMetadataView> viewProvider = ViewProviders.FirstOrDefault(x => x.Value.SupportsDependency(dependency));
+                IDependenciesGraphViewProvider viewProvider = ViewProviders.FirstOrDefault(x => x.Value.SupportsDependency(dependency))?.Value;
+
                 if (viewProvider == null)
                 {
                     continue;
@@ -70,7 +70,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
 
                 using (var scope = new GraphTransactionScope())
                 {
-                    viewProvider.Value.BuildGraph(
+                    viewProvider.BuildGraph(
                         graphContext,
                         projectPath,
                         dependency,

@@ -51,12 +51,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
         {
             string searchParametersTypeName = typeof(ISolutionSearchParameters).GUID.ToString();
             ISolutionSearchParameters searchParameters = graphContext.GetValue<ISolutionSearchParameters>(searchParametersTypeName);
-            if (searchParameters == null)
-            {
-                return;
-            }
 
-            string searchTerm = searchParameters.SearchQuery.SearchString?.ToLowerInvariant();
+            string searchTerm = searchParameters?.SearchQuery.SearchString?.ToLowerInvariant();
             if (searchTerm == null)
             {
                 return;
@@ -65,7 +61,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
             var cachedDependencyToMatchingResultsMap = new Dictionary<string, HashSet<IDependency>>(StringComparer.OrdinalIgnoreCase);
             var searchResultsPerContext = new Dictionary<string, HashSet<IDependency>>(StringComparer.OrdinalIgnoreCase);
 
-            IEnumerable<IDependenciesSnapshotProvider> snapshotProviders = AggregateSnapshotProvider.GetSnapshotProviders();
+            System.Collections.Generic.IReadOnlyCollection<IDependenciesSnapshotProvider> snapshotProviders = AggregateSnapshotProvider.GetSnapshotProviders();
             foreach (IDependenciesSnapshotProvider snapshotProvider in snapshotProviders)
             {
                 IDependenciesSnapshot snapshot = snapshotProvider.CurrentSnapshot;
@@ -99,13 +95,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
                         if (!cachedDependencyToMatchingResultsMap
                                 .TryGetValue(topLevelDependency.Id, out HashSet<IDependency> topLevelDependencyMatches))
                         {
-                            Lazy<IDependenciesGraphViewProvider, IOrderPrecedenceMetadataView> viewProvider = ViewProviders.FirstOrDefault(x => x.Value.SupportsDependency(topLevelDependency));
+                            IDependenciesGraphViewProvider viewProvider = ViewProviders.FirstOrDefault(x => x.Value.SupportsDependency(topLevelDependency))?.Value;
                             if (viewProvider == null)
                             {
                                 continue;
                             }
 
-                            bool processed = viewProvider.Value.MatchSearchResults(
+                            bool processed = viewProvider.MatchSearchResults(
                                 snapshotProvider.ProjectFilePath,
                                 topLevelDependency,
                                 searchResultsPerContext,

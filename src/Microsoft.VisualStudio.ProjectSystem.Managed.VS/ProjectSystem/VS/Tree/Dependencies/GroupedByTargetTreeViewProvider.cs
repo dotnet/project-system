@@ -47,8 +47,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             CancellationToken cancellationToken = default)
         {
             IProjectTree originalTree = dependenciesTree;
+
             var currentTopLevelNodes = new List<IProjectTree>();
-            IProjectTree rememberNewNodes(IProjectTree rootNode, IEnumerable<IProjectTree> currentNodes)
+
+            IProjectTree RememberNewNodes(IProjectTree rootNode, IEnumerable<IProjectTree> currentNodes)
             {
                 if (currentNodes != null)
                 {
@@ -72,7 +74,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                         snapshot.ActiveTarget,
                         targetedSnapshot,
                         targetedSnapshot.Catalogs,
-                        rememberNewNodes);
+                        RememberNewNodes);
                 }
             }
             else
@@ -91,7 +93,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                             snapshot.ActiveTarget,
                             targetedSnapshot,
                             targetedSnapshot.Catalogs,
-                            rememberNewNodes);
+                            RememberNewNodes);
                     }
                     else
                     {
@@ -141,33 +143,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 return null;
             }
 
-            IProjectTree dependenciesNode;
-            if (root.Flags.Contains(DependencyTreeFlags.DependenciesRootNodeFlags))
-            {
-                dependenciesNode = root;
-            }
-            else
-            {
-                dependenciesNode = root.GetSubTreeNode(DependencyTreeFlags.DependenciesRootNodeFlags);
-            }
+            IProjectTree dependenciesNode = root.Flags.Contains(DependencyTreeFlags.DependenciesRootNodeFlags) 
+                ? root 
+                : root.GetSubTreeNode(DependencyTreeFlags.DependenciesRootNodeFlags);
 
-            if (dependenciesNode == null)
-            {
-                return null;
-            }
-
-            return FindByPathInternal(dependenciesNode, path);
-        }
-
-        private static IProjectTree FindByPathInternal(IProjectTree root, string path)
-        {
-            foreach (IProjectTree node in root.GetSelfAndDescendentsBreadthFirst())
-            {
-                if (string.Equals(node.FilePath, path, StringComparison.OrdinalIgnoreCase))
-                    return node;
-            }
-
-            return null;
+            return dependenciesNode?.GetSelfAndDescendentsBreadthFirst()
+                .FirstOrDefault(node => string.Equals(node.FilePath, path, StringComparison.OrdinalIgnoreCase));
         }
 
         /// <summary>
@@ -214,11 +195,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 IProjectTree subTreeNode = rootNode.FindNodeByCaption(subTreeViewModel.Caption);
                 bool isNewSubTreeNode = subTreeNode == null;
 
-                ProjectTreeFlags excludedFlags = ProjectTreeFlags.Empty;
-                if (targetedSnapshot.TargetFramework.Equals(TargetFramework.Any))
-                {
-                    excludedFlags = ProjectTreeFlags.Create(ProjectTreeFlags.Common.BubbleUp);
-                }
+                ProjectTreeFlags excludedFlags = targetedSnapshot.TargetFramework.Equals(TargetFramework.Any) 
+                    ? ProjectTreeFlags.Create(ProjectTreeFlags.Common.BubbleUp) 
+                    : ProjectTreeFlags.Empty;
 
                 subTreeNode = CreateOrUpdateNode(
                     subTreeNode,
@@ -237,14 +216,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
                 currentNodes.Add(subTreeNode);
 
-                if (isNewSubTreeNode)
-                {
-                    rootNode = rootNode.Add(subTreeNode).Parent;
-                }
-                else
-                {
-                    rootNode = subTreeNode.Parent;
-                }
+                rootNode = isNewSubTreeNode 
+                    ? rootNode.Add(subTreeNode).Parent 
+                    : subTreeNode.Parent;
             }
 
             return syncFunc(rootNode, currentNodes);
@@ -284,22 +258,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 dependencyNode = await CreateOrUpdateNodeAsync(dependencyNode, dependency, targetedSnapshot, catalogs, isActiveTarget);
                 currentNodes.Add(dependencyNode);
 
-                if (isNewDependencyNode)
-                {
-                    rootNode = rootNode.Add(dependencyNode).Parent;
-                }
-                else
-                {
-                    rootNode = dependencyNode.Parent;
-                }
+                rootNode = isNewDependencyNode
+                    ? rootNode.Add(dependencyNode).Parent
+                    : dependencyNode.Parent;
             }
 
-            if (shouldCleanup)
-            {
-                rootNode = CleanupOldNodes(rootNode, currentNodes);
-            }
-
-            return rootNode;
+            return shouldCleanup 
+                ? CleanupOldNodes(rootNode, currentNodes) 
+                : rootNode;
         }
 
         /// <summary>

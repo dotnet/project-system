@@ -5,6 +5,7 @@ using System.Linq;
 
 using Microsoft.VisualStudio.GraphModel;
 using Microsoft.VisualStudio.GraphModel.Schemas;
+using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.ViewProviders;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.Actions
@@ -56,20 +57,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
                     continue;
                 }
 
-                System.Lazy<ViewProviders.IDependenciesGraphViewProvider, IOrderPrecedenceMetadataView> viewProvider = ViewProviders.FirstOrDefault(x => x.Value.SupportsDependency(updatedDependency));
+                IDependenciesGraphViewProvider viewProvider = ViewProviders.FirstOrDefault(x => x.Value.SupportsDependency(updatedDependency))?.Value;
                 if (viewProvider == null)
                 {
                     continue;
                 }
 
-                if (!viewProvider.Value.ShouldTrackChanges(projectPath, snapshot.ProjectPath, updatedDependency))
+                if (!viewProvider.ShouldTrackChanges(projectPath, snapshot.ProjectPath, updatedDependency))
                 {
                     continue;
                 }
 
                 using (var scope = new GraphTransactionScope())
                 {
-                    viewProvider.Value.TrackChanges(
+                    viewProvider.TrackChanges(
                         graphContext,
                         projectPath,
                         updatedDependency,

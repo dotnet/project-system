@@ -37,19 +37,37 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                                   IDependenciesSnapshotProvider snapshotProvider,
                                   IUnconfiguredProjectCommonServices commonServices)
         {
-            AggregateSnapshotProvider = aggregateSnapshotProvider;
             SnapshotProvider = snapshotProvider;
-            CommonServices = commonServices;
 
-            AggregateSnapshotProvider.SnapshotChanged += OnSnapshotChanged;
-            AggregateSnapshotProvider.SnapshotProviderUnloading += OnSnapshotProviderUnloading;
+            aggregateSnapshotProvider.SnapshotChanged += OnAggregateSnapshotChanged;
+            aggregateSnapshotProvider.SnapshotProviderUnloading += OnAggregateSnapshotProviderUnloading;
 
-            CommonServices.Project.ProjectUnloading += OnUnconfiguredProjectUnloading;
+            // Unregister event handlers when the project unloads
+            commonServices.Project.ProjectUnloading += OnUnconfiguredProjectUnloading;
+
+            return;
+
+            Task OnUnconfiguredProjectUnloading(object sender, EventArgs e)
+            {
+                commonServices.Project.ProjectUnloading -= OnUnconfiguredProjectUnloading;
+                aggregateSnapshotProvider.SnapshotChanged -= OnAggregateSnapshotChanged;
+                aggregateSnapshotProvider.SnapshotProviderUnloading -= OnAggregateSnapshotProviderUnloading;
+
+                return Task.CompletedTask;
+            }
+
+            void OnAggregateSnapshotChanged(object sender, SnapshotChangedEventArgs e)
+            {
+                OnOtherProjectDependenciesChanged(e.Snapshot, shouldBeResolved: true);
+            }
+
+            void OnAggregateSnapshotProviderUnloading(object sender, SnapshotProviderUnloadingEventArgs e)
+            {
+                OnOtherProjectDependenciesChanged(e.SnapshotProvider.CurrentSnapshot, shouldBeResolved: false);
+            }
         }
 
-        private IUnconfiguredProjectCommonServices CommonServices { get; }
         private IDependenciesSnapshotProvider SnapshotProvider { get; }
-        private IAggregateDependenciesSnapshotProvider AggregateSnapshotProvider { get; }
 
         public override IDependencyModel CreateRootDependencyNode()
         {
@@ -83,16 +101,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             return ManagedImageMonikers.ApplicationPrivate;
         }
 
-        private void OnSnapshotChanged(object sender, SnapshotChangedEventArgs e)
-        {
-            OnOtherProjectDependenciesChanged(e.Snapshot, shouldBeResolved: true);
-        }
-
-        private void OnSnapshotProviderUnloading(object sender, SnapshotProviderUnloadingEventArgs e)
-        {
-            OnOtherProjectDependenciesChanged(e.SnapshotProvider.CurrentSnapshot, shouldBeResolved: false);
-        }
-
         /// <summary>
         /// When some other project's snapshot changed we need to check if our snapshot has a top level
         /// dependency on changed project. If it does we need to refresh those top level dependencies to 
@@ -100,7 +108,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         /// </summary>
         /// <param name="otherProjectSnapshot"></param>
         /// <param name="shouldBeResolved">
-        /// Specifies if top-level project dependencies resolved status. When other project just had it's dependencies
+        /// Specifies if top-level project dependencies resolved status. When other project just had its dependencies
         /// changed, it is resolved=true (we check target's support when we add project dependencies). However when 
         /// other project is unloaded, we should mark top-level dependencies as unresolved.
         /// </param>
@@ -168,15 +176,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                         catalogs: null,
                         dataSourceVersions: null));
             }
-        }
-
-        private Task OnUnconfiguredProjectUnloading(object sender, EventArgs args)
-        {
-            CommonServices.Project.ProjectUnloading -= OnUnconfiguredProjectUnloading;
-            AggregateSnapshotProvider.SnapshotChanged -= OnSnapshotChanged;
-            AggregateSnapshotProvider.SnapshotProviderUnloading -= OnSnapshotProviderUnloading;
-
-            return Task.CompletedTask;
         }
     }
 }

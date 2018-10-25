@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
     internal abstract class TreeViewProviderBase : IDependenciesTreeViewProvider
     {
-        public TreeViewProviderBase(UnconfiguredProject project)
+        protected TreeViewProviderBase(UnconfiguredProject project)
         {
             ProjectTreePropertiesProviders = new OrderPrecedenceImportCollection<IProjectTreePropertiesProvider>(
                             ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesLast,
@@ -25,8 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// that apply to the references tree.
         /// </summary>
         [ImportMany(ReferencesProjectTreeCustomizablePropertyValues.ContractName)]
-        private OrderPrecedenceImportCollection<IProjectTreePropertiesProvider> ProjectTreePropertiesProviders { get; set; }
-
+        private OrderPrecedenceImportCollection<IProjectTreePropertiesProvider> ProjectTreePropertiesProviders { get; }
 
         public abstract Task<IProjectTree> BuildTreeAsync(
             IProjectTree dependenciesTree,

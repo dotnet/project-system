@@ -3,7 +3,6 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
-using System.Linq;
 
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 
@@ -33,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
         {
             filterAnyChanges = false;
 
-            if (dependency.Resolved == false && worldBuilder.Keys.Contains(dependency.Id))
+            if (!dependency.Resolved && worldBuilder.ContainsKey(dependency.Id))
             {
                 return null;
             }

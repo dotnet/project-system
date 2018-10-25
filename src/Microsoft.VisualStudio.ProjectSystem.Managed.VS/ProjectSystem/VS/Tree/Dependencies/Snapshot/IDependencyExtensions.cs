@@ -20,7 +20,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             return snapshot.CheckForUnresolvedDependencies(self);
         }
 
-
         /// <summary>
         /// Returns true if this reference itself is unresolved or it has at least 
         /// one unresolved reference somewhere in the dependency chain.
@@ -58,6 +57,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             return string.IsNullOrEmpty(self.Path)
                 ? self.Id
                 : Dependency.GetID(self.TargetFramework, self.ProviderType, self.Path);
+        }
+
+        /// <summary>
+        /// Returns id having full path instead of OriginalItemSpec
+        /// </summary>
+        public static bool TopLevelIdEquals(this IDependency self, string id)
+        {
+            return string.IsNullOrEmpty(self.Path)
+                ? string.Equals(self.Id, id, StringComparison.OrdinalIgnoreCase)
+                : Dependency.IdEquals(id, self.TargetFramework, self.ProviderType, self.Path);
         }
 
         /// <summary>

@@ -35,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
         /// <summary>
         /// Flat hash table of all unique dependencies in the project (from all levels). Having this table,
-        /// a given dependency A can find it's actual <see cref="IDependency"/> children having their string
+        /// a given dependency A can find its actual <see cref="IDependency"/> children having their string
         /// ids.
         /// </summary>
         ImmutableDictionary<string, IDependency> DependenciesWorld { get; }

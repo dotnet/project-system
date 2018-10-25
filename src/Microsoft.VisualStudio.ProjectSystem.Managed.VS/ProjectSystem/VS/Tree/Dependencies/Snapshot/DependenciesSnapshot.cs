@@ -11,6 +11,7 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Filters
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
+    /// <inheritdoc />
     internal class DependenciesSnapshot : IDependenciesSnapshot
     {
         private DependenciesSnapshot(string projectPath,
@@ -37,13 +38,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             }
         }
 
+        /// <inheritdoc />
         public string ProjectPath { get; }
 
+        /// <inheritdoc />
         public ITargetFramework ActiveTarget { get; }
 
         private ImmutableDictionary<ITargetFramework, ITargetedDependenciesSnapshot> _targets =
             ImmutableDictionary<ITargetFramework, ITargetedDependenciesSnapshot>.Empty;
 
+        /// <inheritdoc />
         public IImmutableDictionary<ITargetFramework, ITargetedDependenciesSnapshot> Targets
         {
             get
@@ -56,14 +60,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             }
         }
 
-        public bool HasUnresolvedDependency
-        {
-            get
-            {
-                return Targets.Any(x => x.Value.HasUnresolvedDependency);
-            }
-        }
+        /// <inheritdoc />
+        public bool HasUnresolvedDependency => Targets.Any(x => x.Value.HasUnresolvedDependency);
 
+        /// <inheritdoc />
         public IDependency FindDependency(string id, bool topLevel = false)
         {
             if (string.IsNullOrEmpty(id))
@@ -78,7 +78,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 foreach (ITargetedDependenciesSnapshot targetedDependencies in Targets.Values)
                 {
                     IDependency dependency = targetedDependencies.TopLevelDependencies.FirstOrDefault(
-                        x => x.GetTopLevelId().Equals(id, StringComparison.OrdinalIgnoreCase));
+                        x => x.TopLevelIdEquals(id));
+
                     if (dependency != null)
                     {
                         return dependency;
@@ -130,7 +131,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             // now get rid of empty target frameworks (if there no any dependencies for them)
             foreach ((ITargetFramework targetFramework, ITargetedDependenciesSnapshot targetedDependencies) in builder.ToList())
             {
-                if (targetedDependencies.DependenciesWorld.Count <= 0)
+                if (targetedDependencies.DependenciesWorld.Count == 0)
                 {
                     anyChanges = true;
                     builder.Remove(targetFramework);
@@ -142,6 +143,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             return anyChanges;
         }
 
+        /// <inheritdoc />
         public bool Equals(IDependenciesSnapshot other)
         {
             return other != null && other.ProjectPath.Equals(ProjectPath, StringComparison.OrdinalIgnoreCase);

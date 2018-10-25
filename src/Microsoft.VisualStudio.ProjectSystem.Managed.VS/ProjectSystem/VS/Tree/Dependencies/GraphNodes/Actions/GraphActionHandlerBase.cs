@@ -56,12 +56,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
             snapshot = null;
 
             string projectPath = inputGraphNode.Id.GetValue(CodeGraphNodeIdName.Assembly);
-            if (string.IsNullOrEmpty(projectPath))
+            if (string.IsNullOrWhiteSpace(projectPath))
             {
                 return null;
             }
 
             string projectFolder = Path.GetDirectoryName(projectPath);
+            if (projectFolder == null)
+            {
+                return null;
+            }
+
             string id = inputGraphNode.GetValue<string>(DependenciesGraphSchema.DependencyIdProperty);
             if (id == null)
             {
@@ -75,7 +80,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
 
                 if (id.StartsWith(projectFolder, StringComparison.OrdinalIgnoreCase))
                 {
-                    id = id.Substring(projectFolder.Length).TrimStart('\\');
+                    int startIndex = projectFolder.Length;
+                    
+                    // Trim backslashes (without allocating)
+                    while (startIndex < id.Length && id[startIndex] == '\\')
+                    {
+                        startIndex++;
+                    }
+
+                    id = id.Substring(startIndex);
                 }
 
                 return GetTopLevelDependency(projectPath, id, out snapshot);

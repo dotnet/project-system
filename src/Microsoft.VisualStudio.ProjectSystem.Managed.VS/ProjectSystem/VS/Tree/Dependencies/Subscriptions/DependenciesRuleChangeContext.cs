@@ -21,6 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         public IProjectCatalogSnapshot Catalogs { get; }
         private ImmutableDictionary<ITargetFramework, IDependenciesChanges> _changes =
             ImmutableDictionary.Create<ITargetFramework, IDependenciesChanges>();
+
         public ImmutableDictionary<ITargetFramework, IDependenciesChanges> Changes
         {
             get
@@ -32,22 +33,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             }
         }
 
-        public bool AnyChanges
-        {
-            get
-            {
-                return Changes.Count > 0;
-            }
-        }
+        public bool AnyChanges => Changes.Count != 0;
 
         public void IncludeAddedChange(ITargetFramework targetFramework,
                                        IDependencyModel ruleMetadata)
         {
             lock (_changesLock)
             {
-                var change = GetChanges(targetFramework) as DependenciesChanges;
-                change?.ExcludeAddedChange(ruleMetadata);
-                change?.IncludeAddedChange(ruleMetadata);
+                DependenciesChanges change = GetChanges(targetFramework);
+                change.ExcludeAddedChange(ruleMetadata);
+                change.IncludeAddedChange(ruleMetadata);
             }
         }
 
@@ -56,13 +51,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         {
             lock (_changesLock)
             {
-                var change = GetChanges(targetFramework) as DependenciesChanges;
-                change?.ExcludeRemovedChange(ruleMetadata);
-                change?.IncludeRemovedChange(ruleMetadata);
+                DependenciesChanges change = GetChanges(targetFramework);
+                change.ExcludeRemovedChange(ruleMetadata);
+                change.IncludeRemovedChange(ruleMetadata);
             }
         }
 
-        private IDependenciesChanges GetChanges(ITargetFramework targetFramework)
+        private DependenciesChanges GetChanges(ITargetFramework targetFramework)
         {
             if (!_changes.TryGetValue(targetFramework, out IDependenciesChanges change))
             {
@@ -70,7 +65,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 _changes = _changes.Add(targetFramework, change);
             }
 
-            return change;
+            // We only add DependenciesChanges to this collection, so the cast is safe
+            return (DependenciesChanges)change;
         }
     }
 }

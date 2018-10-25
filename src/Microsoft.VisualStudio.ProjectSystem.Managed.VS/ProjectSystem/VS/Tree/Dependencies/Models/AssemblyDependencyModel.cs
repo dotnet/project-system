@@ -32,24 +32,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             IImmutableDictionary<string, string> properties)
             : base(providerType, path, originalItemSpec, flags, resolved, isImplicit, properties)
         {
-            string fusionName = null;
-            if (Properties != null)
-            {
-                Properties.TryGetValue(ResolvedAssemblyReference.FusionNameProperty, out fusionName);
-            }
-
             if (Resolved)
             {
-                if (!string.IsNullOrEmpty(fusionName))
-                {
-                    var assemblyName = new AssemblyName(fusionName);
-                    Caption = assemblyName.Name;
-                }
-                else
-                {
-                    Caption = Name;
-                }
+                string fusionName = null;
+                Properties?.TryGetValue(ResolvedAssemblyReference.FusionNameProperty, out fusionName);
 
+                Caption = string.IsNullOrEmpty(fusionName) ? Name : new AssemblyName(fusionName).Name;
                 SchemaName = ResolvedAssemblyReference.SchemaName;
             }
             else

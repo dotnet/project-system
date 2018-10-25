@@ -42,15 +42,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         /// <summary>
-        /// Indicate whether we have seen all rules we initialized with, in all target frameworks
-        /// </summary>
-        public bool ObservedAllRules() => _telemetryStates.All(state => state.Value.ObservedAllRules());
-
-        /// <summary>
         /// Initialize telemetry state with the set of rules we expect to observe for target framework
         /// </summary>
         public void InitializeTargetFrameworkRules(ITargetFramework targetFramework, IEnumerable<string> rules)
         {
+            if (_stopTelemetry)
+                return;
+
             lock (_stateUpdateLock)
             {
                 if (_stopTelemetry)
@@ -72,6 +70,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// </summary>
         public void ObserveTargetFrameworkRules(ITargetFramework targetFramework, IEnumerable<string> rules)
         {
+            if (_stopTelemetry)
+                return;
+
             lock (_stateUpdateLock)
             {
                 if (_stopTelemetry)
@@ -93,6 +94,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// <param name="hasUnresolvedDependency">indicates if the snapshot used for the update had any unresolved dependencies</param>
         public void ObserveTreeUpdateCompleted(bool hasUnresolvedDependency)
         {
+            if (_stopTelemetry)
+                return;
+
             bool observedAllRules;
             lock (_stateUpdateLock)
             {
@@ -123,18 +127,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     (TelemetryPropertyName.TreeUpdatedResolvedObservedAllRules, observedAllRules)
                 });
             }
-        }
 
-        private void InitializeProjectId()
-        {
-            IProjectGuidService projectGuidService = _project.Services.ExportProvider.GetExportedValueOrDefault<IProjectGuidService>();
-            if (projectGuidService != null)
+            return;
+
+            bool ObservedAllRules() => _telemetryStates.All(state => state.Value.ObservedAllRules());
+
+            void InitializeProjectId()
             {
-                SetProjectId(projectGuidService.ProjectGuid.ToString());
-            }
-            else
-            {
-                SetProjectId(_telemetryService.HashValue(_project.FullPath));
+                IProjectGuidService projectGuidService =
+                    _project.Services.ExportProvider.GetExportedValueOrDefault<IProjectGuidService>();
+                if (projectGuidService != null)
+                {
+                    SetProjectId(projectGuidService.ProjectGuid.ToString());
+                }
+                else
+                {
+                    SetProjectId(_telemetryService.HashValue(_project.FullPath));
+                }
             }
         }
 
@@ -151,10 +160,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             private readonly ConcurrentDictionary<string, bool> _observedRules = new ConcurrentDictionary<string, bool>(StringComparers.RuleNames);
 
-            internal bool InitializeRule(string rule) =>
+            internal void InitializeRule(string rule) =>
                 _observedRules.TryAdd(rule, false);
 
-            internal bool ObserveRule(string rule) =>
+            internal void ObserveRule(string rule) =>
                 _observedRules.TryUpdate(rule, true, false);
 
             internal bool ObservedAllRules() =>
