@@ -60,7 +60,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 return rootNode;
             }
 
-            if (snapshot.Targets.Where(x => !x.Key.Equals(TargetFramework.Any)).Count() == 1)
+            if (snapshot.Targets.Count(x => !x.Key.Equals(TargetFramework.Any)) == 1)
             {
                 foreach (ITargetedDependenciesSnapshot targetedSnapshot in snapshot.Targets.Values)
                 {

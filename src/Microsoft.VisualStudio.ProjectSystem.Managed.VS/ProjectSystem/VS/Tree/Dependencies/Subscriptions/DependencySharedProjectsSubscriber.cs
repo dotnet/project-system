@@ -194,8 +194,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             foreach (string removedSharedImportPath in removedSharedImportPaths)
             {
                 IDependency existingImportNode = currentSharedImportNodes
-                    .Where(node => PathHelper.IsSamePath(node.Path, removedSharedImportPath))
-                    .FirstOrDefault();
+                    .FirstOrDefault(node => PathHelper.IsSamePath(node.Path, removedSharedImportPath));
 
                 if (existingImportNode != null)
                 {
