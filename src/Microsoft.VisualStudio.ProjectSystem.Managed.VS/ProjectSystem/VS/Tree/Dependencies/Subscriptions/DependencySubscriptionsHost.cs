@@ -337,7 +337,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     return Task.FromCanceled(token);
                 }
 
-                IDependenciesSnapshot snapshot = CurrentSnapshot;
+                IDependenciesSnapshot snapshot = _currentSnapshot;
 
                 if (snapshot != null)
                 {
