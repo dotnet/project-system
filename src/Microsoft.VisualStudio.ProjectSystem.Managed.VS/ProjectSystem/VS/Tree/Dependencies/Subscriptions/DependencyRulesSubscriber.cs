@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         [ImportingConstructor]
         public DependencyRulesSubscriber(
             IUnconfiguredProjectCommonServices commonServices,
-            [Import(ExportContractNames.Scopes.UnconfiguredProject)]IProjectAsynchronousTasksService tasksService,
+            [Import(ExportContractNames.Scopes.UnconfiguredProject)] IProjectAsynchronousTasksService tasksService,
             IDependencyTreeTelemetryService treeTelemetryService)
             : base(commonServices, tasksService, treeTelemetryService)
         {

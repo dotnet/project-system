@@ -24,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 #pragma warning disable CA2213 // OnceInitializedOnceDisposedAsync are not tracked correctly by the IDisposeable analyzer
         private readonly SemaphoreSlim _gate = new SemaphoreSlim(initialCount: 1);
 #pragma warning restore CA2213
-        private readonly List<IDisposable> _subscriptionLinks;
+        private readonly List<IDisposable> _subscriptionLinks = new List<IDisposable>();
         private readonly IProjectAsynchronousTasksService _tasksService;
         private readonly IDependenciesSnapshotProvider _dependenciesSnapshotProvider;
         private ICrossTargetSubscriptionsHost _host;
@@ -32,13 +32,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         [ImportingConstructor]
         public DependencySharedProjectsSubscriber(
             IUnconfiguredProjectCommonServices commonServices,
-            [Import(ExportContractNames.Scopes.UnconfiguredProject)]IProjectAsynchronousTasksService tasksService,
+            [Import(ExportContractNames.Scopes.UnconfiguredProject)] IProjectAsynchronousTasksService tasksService,
             IDependenciesSnapshotProvider dependenciesSnapshotProvider)
             : base(synchronousDisposal: true)
         {
             _tasksService = tasksService;
             _dependenciesSnapshotProvider = dependenciesSnapshotProvider;
-            _subscriptionLinks = new List<IDisposable>();
         }
 
         public void InitializeSubscriber(ICrossTargetSubscriptionsHost host, IProjectSubscriptionService subscriptionService)
@@ -109,7 +108,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
             EnsureInitialized();
 
-
             await _tasksService.LoadedProjectAsync(() =>
             {
                 if (_tasksService.UnloadCancellationToken.IsCancellationRequested)
@@ -141,13 +139,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                 // Get the inner workspace project context to update for this change.
                 ITargetedProjectContext projectContextToUpdate = currentAggregateContext
                     .GetInnerProjectContext(projectUpdate.ProjectConfiguration, out bool isActiveContext);
+
                 if (projectContextToUpdate == null)
                 {
                     return;
                 }
 
                 var dependencyChangeContext = new DependenciesRuleChangeContext(
-                        currentAggregateContext.ActiveProjectContext.TargetFramework, catalogs);
+                    currentAggregateContext.ActiveProjectContext.TargetFramework, 
+                    catalogs);
 
                 ProcessSharedProjectsUpdates(sharedProjectsUpdate, projectContextToUpdate, dependencyChangeContext);
 

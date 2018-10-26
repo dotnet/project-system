@@ -102,12 +102,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         public static bool HasSameTarget(this IDependency self, IDependency other)
         {
             Requires.NotNull(other, nameof(other));
+
             return self.TargetFramework.Equals(other.TargetFramework);
         }
 
-        public static IDependency ToResolved(this IDependency dependency,
-                                             string schemaName = null,
-                                             IImmutableList<string> dependencyIDs = null)
+        public static IDependency ToResolved(
+            this IDependency dependency,
+            string schemaName = null,
+            IImmutableList<string> dependencyIDs = null)
         {
             return dependency.SetProperties(
                 resolved: true,
@@ -116,9 +118,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 dependencyIDs: dependencyIDs);
         }
 
-        public static IDependency ToUnresolved(this IDependency dependency,
-                                               string schemaName = null,
-                                               IImmutableList<string> dependencyIDs = null)
+        public static IDependency ToUnresolved(
+            this IDependency dependency,
+            string schemaName = null,
+            IImmutableList<string> dependencyIDs = null)
         {
             return dependency.SetProperties(
                 resolved: false,
@@ -129,14 +132,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
         public static ProjectTreeFlags GetResolvedFlags(this IDependency dependency)
         {
-            return dependency.Flags.Union(DependencyTreeFlags.ResolvedFlags)
-                                   .Except(DependencyTreeFlags.UnresolvedFlags);
+            return dependency.Flags
+                .Union(DependencyTreeFlags.ResolvedFlags)
+                .Except(DependencyTreeFlags.UnresolvedFlags);
         }
 
         public static ProjectTreeFlags GetUnresolvedFlags(this IDependency dependency)
         {
-            return dependency.Flags.Union(DependencyTreeFlags.UnresolvedFlags)
-                                   .Except(DependencyTreeFlags.ResolvedFlags);
+            return dependency.Flags
+                .Union(DependencyTreeFlags.UnresolvedFlags)
+                .Except(DependencyTreeFlags.ResolvedFlags);
         }
     }
 }

@@ -43,8 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
             if (dependency.Flags.Contains(DependencyTreeFlags.SdkSubTreeNodeFlags))
             {
                 // Try to find a package dependency with the same name
-                string packageModelId = dependency.Name;
-                string packageId = Dependency.GetID(targetFramework, PackageRuleHandler.ProviderTypeString, packageModelId);
+                string packageId = Dependency.GetID(targetFramework, PackageRuleHandler.ProviderTypeString, modelId: dependency.Name);
 
                 if (worldBuilder.TryGetValue(packageId, out IDependency package) && package.Resolved)
                 {
@@ -57,8 +56,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
             else if (dependency.Flags.Contains(DependencyTreeFlags.PackageNodeFlags) && dependency.Resolved)
             {
                 // Try to find an SDK dependency with the same name
-                string sdkModelId = dependency.Name;
-                string sdkId = Dependency.GetID(targetFramework, SdkRuleHandler.ProviderTypeString, sdkModelId);
+                string sdkId = Dependency.GetID(targetFramework, SdkRuleHandler.ProviderTypeString, modelId: dependency.Name);
 
                 if (worldBuilder.TryGetValue(sdkId, out IDependency sdk))
                 {
@@ -98,8 +96,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
                 dependency.Flags.Contains(DependencyTreeFlags.PackageNodeFlags))
             {
                 // Try to find an SDK dependency with the same name
-                string sdkModelId = dependency.Name;
-                string sdkId = Dependency.GetID(targetFramework, SdkRuleHandler.ProviderTypeString, sdkModelId);
+                string sdkId = Dependency.GetID(targetFramework, SdkRuleHandler.ProviderTypeString, modelId: dependency.Name);
 
                 if (worldBuilder.TryGetValue(sdkId, out IDependency sdk))
                 {

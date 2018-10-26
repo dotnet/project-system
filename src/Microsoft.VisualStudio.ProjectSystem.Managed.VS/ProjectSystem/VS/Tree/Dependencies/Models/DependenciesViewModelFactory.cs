@@ -16,8 +16,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
         public DependenciesViewModelFactory(UnconfiguredProject project)
         {
             SubTreeProviders = new OrderPrecedenceImportCollection<IProjectDependenciesSubTreeProvider>(
-                        ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesLast,
-                        projectCapabilityCheckProvider: project);
+                ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesLast,
+                projectCapabilityCheckProvider: project);
         }
 
         [ImportMany]

@@ -10,9 +10,9 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions
 {
-    internal abstract class DependenciesRuleHandlerBase :
-        ICrossTargetRuleHandler<DependenciesRuleChangeContext>,
-        IProjectDependenciesSubTreeProviderInternal
+    internal abstract class DependenciesRuleHandlerBase
+        : ICrossTargetRuleHandler<DependenciesRuleChangeContext>,
+          IProjectDependenciesSubTreeProviderInternal
     {
         #region ICrossTargetRuleHandler
 

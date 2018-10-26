@@ -13,45 +13,14 @@ namespace Microsoft.VisualStudio
     /// </remarks>
     internal static class StringComparers
     {
-        public static IEqualityComparer<string> WorkspaceProjectContextIds
-        {
-            get { return StringComparer.Ordinal; }
-        }
-
-        public static IEqualityComparer<string> Paths
-        {
-            get { return StringComparer.OrdinalIgnoreCase; }
-        }
-
-        public static IEqualityComparer<string> PropertyNames
-        {
-            get { return StringComparer.OrdinalIgnoreCase; }
-        }
-
-        public static IEqualityComparer<string> PropertyValues
-        {
-            get { return StringComparer.OrdinalIgnoreCase; }
-        }
-
-        public static IEqualityComparer<string> RuleNames
-        {
-            get { return StringComparer.OrdinalIgnoreCase; }
-        }
-
-        public static IEqualityComparer<string> ConfigurationDimensionNames
-        {
-            get { return StringComparer.Ordinal; }
-        }
-
-        public static IEqualityComparer<string> DependencyProviderTypes
-        {
-            get { return StringComparer.OrdinalIgnoreCase; }
-        }
-
-        public static IEqualityComparer<string> ItemTypes
-        {
-            get { return StringComparer.OrdinalIgnoreCase; }
-        }
+        public static IEqualityComparer<string> WorkspaceProjectContextIds => StringComparer.Ordinal;
+        public static IEqualityComparer<string> Paths => StringComparer.OrdinalIgnoreCase;
+        public static IEqualityComparer<string> PropertyNames => StringComparer.OrdinalIgnoreCase;
+        public static IEqualityComparer<string> PropertyValues => StringComparer.OrdinalIgnoreCase;
+        public static IEqualityComparer<string> RuleNames => StringComparer.OrdinalIgnoreCase;
+        public static IEqualityComparer<string> ConfigurationDimensionNames => StringComparer.Ordinal;
+        public static IEqualityComparer<string> DependencyProviderTypes => StringComparer.OrdinalIgnoreCase;
+        public static IEqualityComparer<string> ItemTypes => StringComparer.OrdinalIgnoreCase;
     }
 
     /// <summary>

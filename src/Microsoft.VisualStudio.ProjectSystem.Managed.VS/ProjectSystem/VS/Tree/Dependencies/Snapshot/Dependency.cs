@@ -92,10 +92,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 IconSet = s_iconSetCache.GetOrAddIconSet(dependencyModel.Icon, dependencyModel.ExpandedIcon, dependencyModel.UnresolvedIcon, dependencyModel.UnresolvedExpandedIcon);
             }
 
-            Properties = dependencyModel.Properties ??
-                            ImmutableStringDictionary<string>.EmptyOrdinal
-                                                             .Add(Folder.IdentityProperty, Caption)
-                                                             .Add(Folder.FullPathProperty, Path);
+            Properties = dependencyModel.Properties
+                ?? ImmutableStringDictionary<string>.EmptyOrdinal
+                     .Add(Folder.IdentityProperty, Caption)
+                     .Add(Folder.FullPathProperty, Path);
+
             if (dependencyModel.DependencyIDs == null)
             {
                 DependencyIDs = ImmutableList<string>.Empty;

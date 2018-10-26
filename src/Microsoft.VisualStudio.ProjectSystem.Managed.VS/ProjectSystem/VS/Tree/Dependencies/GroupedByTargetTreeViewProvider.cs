@@ -386,6 +386,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             IRule rule)
         {
             ProjectTreeCustomizablePropertyContext updatedNodeParentContext = GetCustomPropertyContext(node.Parent);
+
             var updatedValues = new ReferencesProjectTreeCustomizablePropertyValues
             {
                 Caption = viewModel.Caption,
@@ -397,11 +398,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             ApplyProjectTreePropertiesCustomization(updatedNodeParentContext, updatedValues);
 
             return node.SetProperties(
-                    caption: updatedValues.Caption,
-                    browseObjectProperties: rule,
-                    icon: updatedValues.Icon,
-                    expandedIcon: updatedValues.ExpandedIcon,
-                    flags: updatedValues.Flags);
+                caption: updatedValues.Caption,
+                browseObjectProperties: rule,
+                icon: updatedValues.Icon,
+                expandedIcon: updatedValues.ExpandedIcon,
+                flags: updatedValues.Flags);
         }
 
         private static ProjectTreeFlags FilterFlags(

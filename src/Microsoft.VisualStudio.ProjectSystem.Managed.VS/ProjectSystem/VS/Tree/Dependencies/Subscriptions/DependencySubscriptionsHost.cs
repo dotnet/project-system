@@ -24,13 +24,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
     internal class DependencySubscriptionsHost : CrossTargetSubscriptionHostBase, IDependenciesSnapshotProvider
     {
         public const string DependencySubscriptionsHostContract = "DependencySubscriptionsHostContract";
+
         private readonly TimeSpan _dependenciesUpdateThrottleInterval = TimeSpan.FromMilliseconds(250);
 
         [ImportingConstructor]
         public DependencySubscriptionsHost(
             IUnconfiguredProjectCommonServices commonServices,
             Lazy<IAggregateCrossTargetProjectContextProvider> contextProvider,
-            [Import(ExportContractNames.Scopes.UnconfiguredProject)]IProjectAsynchronousTasksService tasksService,
+            [Import(ExportContractNames.Scopes.UnconfiguredProject)] IProjectAsynchronousTasksService tasksService,
             IActiveConfiguredProjectSubscriptionService activeConfiguredProjectSubscriptionService,
             IActiveProjectConfigurationRefreshService activeProjectConfigurationRefreshService,
             ITargetFrameworkProvider targetFrameworkProvider,
@@ -43,6 +44,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                    targetFrameworkProvider)
         {
             CommonServices = commonServices;
+            TargetFrameworkProvider = targetFrameworkProvider;
+            AggregateSnapshotProvider = aggregateSnapshotProvider;
+
             DependencySubscribers = new OrderPrecedenceImportCollection<IDependencyCrossTargetSubscriber>(
                 projectCapabilityCheckProvider: commonServices.Project);
 
@@ -59,9 +63,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 commonServices.ThreadingService,
                 tasksService.UnloadCancellationToken);
 
-            TargetFrameworkProvider = targetFrameworkProvider;
-            AggregateSnapshotProvider = aggregateSnapshotProvider;
-            ProjectFilePath = CommonServices.Project.FullPath;
+            ProjectFilePath = commonServices.Project.FullPath;
         }
 
         private readonly object _snapshotLock = new object();
@@ -185,8 +187,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             return Task.CompletedTask;
         }
 
-        protected override void OnAggregateContextChanged(AggregateCrossTargetProjectContext oldContext,
-                                                          AggregateCrossTargetProjectContext newContext)
+        protected override void OnAggregateContextChanged(
+            AggregateCrossTargetProjectContext oldContext,
+            AggregateCrossTargetProjectContext newContext)
         {
             if (oldContext == null)
             {
@@ -320,7 +323,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
         private void ScheduleDependenciesUpdate()
         {
-            DependenciesUpdateScheduler.ScheduleAsyncTask((token) =>
+            DependenciesUpdateScheduler.ScheduleAsyncTask(token =>
             {
                 if (token.IsCancellationRequested || IsDisposing || IsDisposed)
                 {

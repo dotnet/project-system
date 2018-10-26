@@ -111,9 +111,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             _subscriptions.AddDisposable(
                 subscriptionService.JointRuleSource.SourceBlock.LinkTo(
                     intermediateBlockDesignTime,
-                  ruleNames: watchedDesignTimeBuildRules.Union(watchedEvaluationRules),
-                  suppressVersionOnlyUpdates: true,
-                  linkOptions: DataflowOption.PropagateCompletion));
+                    ruleNames: watchedDesignTimeBuildRules.Union(watchedEvaluationRules),
+                    suppressVersionOnlyUpdates: true,
+                    linkOptions: DataflowOption.PropagateCompletion));
 
             _subscriptions.AddDisposable(
                 subscriptionService.ProjectRuleSource.SourceBlock.LinkTo(
@@ -204,8 +204,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                 return;
             }
 
-            IEnumerable<ICrossTargetRuleHandler<T>> handlers = Handlers.Select(h => h.Value)
-                                   .Where(h => h.SupportsHandlerType(handlerType));
+            IEnumerable<ICrossTargetRuleHandler<T>> handlers 
+                = Handlers
+                    .Select(h => h.Value)
+                    .Where(h => h.SupportsHandlerType(handlerType));
 
             // We need to process the update within a lock to ensure that we do not release this context during processing.
             // TODO: Enable concurrent execution of updates themselves, i.e. two separate invocations of HandleAsync
