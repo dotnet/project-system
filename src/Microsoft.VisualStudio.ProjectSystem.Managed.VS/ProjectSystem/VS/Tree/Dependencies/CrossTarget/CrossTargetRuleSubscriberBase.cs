@@ -124,7 +124,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
             var actionBlockDesignTimeBuild =
                 new ActionBlock<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectCatalogSnapshot, IProjectCapabilitiesSnapshot>>>(
-                    e => OnProjectChangedAsync(e, configuredProject, RuleHandlerType.DesignTimeBuild),
+                    e => OnProjectChangedAsync(e.Value.Item1, e.Value.Item2, e.Value.Item3, configuredProject, RuleHandlerType.DesignTimeBuild),
                     new ExecutionDataflowBlockOptions()
                     {
                         NameFormat = "CrossTarget DesignTime Input: {1}"
@@ -132,7 +132,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
             var actionBlockEvaluation =
                 new ActionBlock<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectCatalogSnapshot, IProjectCapabilitiesSnapshot>>>(
-                     e => OnProjectChangedAsync(e, configuredProject, RuleHandlerType.Evaluation),
+                     e => OnProjectChangedAsync(e.Value.Item1, e.Value.Item2, e.Value.Item3, configuredProject, RuleHandlerType.Evaluation),
                      new ExecutionDataflowBlockOptions()
                      {
                          NameFormat = "CrossTarget Evaluation Input: {1}"
@@ -168,7 +168,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         }
 
         private async Task OnProjectChangedAsync(
-            IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectCatalogSnapshot, IProjectCapabilitiesSnapshot>> e,
+            IProjectSubscriptionUpdate projectUpdate,
+            IProjectCatalogSnapshot catalogSnapshot,
+            IProjectCapabilitiesSnapshot capabilities,
             ConfiguredProject configuredProject,
             RuleHandlerType handlerType)
         {
@@ -184,16 +186,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                     return;
                 }
 
-                using (ProjectCapabilitiesContext.CreateIsolatedContext(configuredProject, e.Value.Item3))
+                using (ProjectCapabilitiesContext.CreateIsolatedContext(configuredProject, capabilities))
                 {
-                    await HandleAsync(e, handlerType);
+                    await HandleAsync(projectUpdate, catalogSnapshot, handlerType);
                 }
             });
         }
 
         private async Task HandleAsync(
-                    IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectCatalogSnapshot, IProjectCapabilitiesSnapshot>> e,
-                    RuleHandlerType handlerType)
+            IProjectSubscriptionUpdate projectUpdate,
+            IProjectCatalogSnapshot catalogSnapshot,
+            RuleHandlerType handlerType)
         {
             AggregateCrossTargetProjectContext currentAggregateContext = await _host.GetCurrentAggregateProjectContext();
             if (currentAggregateContext == null || _currentProjectContext != currentAggregateContext)
@@ -201,8 +204,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                 return;
             }
 
-            IProjectSubscriptionUpdate update = e.Value.Item1;
-            IProjectCatalogSnapshot catalogs = e.Value.Item2;
             IEnumerable<ICrossTargetRuleHandler<T>> handlers = Handlers.Select(h => h.Value)
                                    .Where(h => h.SupportsHandlerType(handlerType));
 
@@ -213,7 +214,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             {
                 // Get the inner workspace project context to update for this change.
                 ITargetedProjectContext projectContextToUpdate = currentAggregateContext
-                    .GetInnerProjectContext(update.ProjectConfiguration, out bool isActiveContext);
+                    .GetInnerProjectContext(projectUpdate.ProjectConfiguration, out bool isActiveContext);
                 if (projectContextToUpdate == null)
                 {
                     return;
@@ -222,7 +223,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                 // Broken design time builds sometimes cause updates with no project changes and sometimes
                 // cause updates with a project change that has no difference.
                 // We handle the former case here, and the latter case is handled in the CommandLineItemHandler.
-                if (update.ProjectChanges.Count == 0)
+                if (projectUpdate.ProjectChanges.Count == 0)
                 {
                     if (handlerType == RuleHandlerType.DesignTimeBuild)
                     {
@@ -233,12 +234,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                 }
 
                 T ruleChangeContext = CreateRuleChangeContext(
-                    currentAggregateContext.ActiveProjectContext.TargetFramework, catalogs);
+                    currentAggregateContext.ActiveProjectContext.TargetFramework,
+                    catalogSnapshot);
+
                 foreach (ICrossTargetRuleHandler<T> handler in handlers)
                 {
                     ImmutableDictionary<string, IProjectChangeDescription>.Builder builder = ImmutableDictionary.CreateBuilder<string, IProjectChangeDescription>(StringComparers.RuleNames);
                     ImmutableHashSet<string> handlerRules = handler.GetRuleNames(handlerType);
-                    builder.AddRange(update.ProjectChanges.Where(
+                    builder.AddRange(projectUpdate.ProjectChanges.Where(
                         x => handlerRules.Contains(x.Key)));
                     ImmutableDictionary<string, IProjectChangeDescription> projectChanges = builder.ToImmutable();
 
@@ -252,7 +255,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                 CompleteHandle(ruleChangeContext);
 
                 // record all the rules that have occurred
-                _treeTelemetryService.ObserveTargetFrameworkRules(projectContextToUpdate.TargetFramework, update.ProjectChanges.Keys);
+                _treeTelemetryService.ObserveTargetFrameworkRules(projectContextToUpdate.TargetFramework, projectUpdate.ProjectChanges.Keys);
             }
         }
 

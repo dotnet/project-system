@@ -85,8 +85,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                     linkOptions: DataflowOption.PropagateCompletion));
 
             var actionBlock =
-                new ActionBlock<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectSharedFoldersSnapshot, IProjectCatalogSnapshot>>>
-                    (e => OnProjectChangedAsync(e),
+                new ActionBlock<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectSharedFoldersSnapshot, IProjectCatalogSnapshot>>>(
+                    e => OnProjectChangedAsync(e.Value),
                     new ExecutionDataflowBlockOptions()
                     {
                         NameFormat = "Dependencies Shared Projects Input: {1}"
@@ -100,8 +100,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                 linkOptions: DataflowOption.PropagateCompletion));
         }
 
-        private async Task OnProjectChangedAsync(
-            IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectSharedFoldersSnapshot, IProjectCatalogSnapshot>> e)
+        private async Task OnProjectChangedAsync(Tuple<IProjectSubscriptionUpdate, IProjectSharedFoldersSnapshot, IProjectCatalogSnapshot> e)
         {
             if (IsDisposing || IsDisposed)
             {
@@ -122,8 +121,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             });
         }
 
-        private async Task HandleAsync(
-            IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectSharedFoldersSnapshot, IProjectCatalogSnapshot>> e)
+        private async Task HandleAsync(Tuple<IProjectSubscriptionUpdate, IProjectSharedFoldersSnapshot, IProjectCatalogSnapshot> e)
         {
             AggregateCrossTargetProjectContext currentAggregateContext = await _host.GetCurrentAggregateProjectContext();
             if (currentAggregateContext == null)
@@ -131,9 +129,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                 return;
             }
 
-            IProjectSubscriptionUpdate projectUpdate = e.Value.Item1;
-            IProjectSharedFoldersSnapshot sharedProjectsUpdate = e.Value.Item2;
-            IProjectCatalogSnapshot catalogs = e.Value.Item3;
+            IProjectSubscriptionUpdate projectUpdate = e.Item1;
+            IProjectSharedFoldersSnapshot sharedProjectsUpdate = e.Item2;
+            IProjectCatalogSnapshot catalogs = e.Item3;
 
             // We need to process the update within a lock to ensure that we do not release this context during processing.
             // TODO: Enable concurrent execution of updates themselves, i.e. two separate invocations of HandleAsync
