@@ -281,9 +281,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             return rootNode;
         }
 
-        /// <summary>
-        /// Updates or creates new node
-        /// </summary>
         private async Task<IProjectTree> CreateOrUpdateNodeAsync(
             IProjectTree node,
             IDependency dependency,
@@ -308,9 +305,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 excludedFlags);
         }
 
-        /// <summary>
-        /// Updates or creates new node
-        /// </summary>
         private IProjectTree CreateOrUpdateNode(
             IProjectTree node,
             IDependencyViewModel viewModel,
@@ -319,89 +313,70 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             ProjectTreeFlags? additionalFlags = null,
             ProjectTreeFlags? excludedFlags = null)
         {
+            if (node != null)
+            {
+                return UpdateTreeNode(node, viewModel, rule);
+            }
+
             return isProjectItem
-                ? CreateOrUpdateProjectItemTreeNode(node, viewModel, rule, additionalFlags, excludedFlags)
-                : CreateOrUpdateProjectTreeNode(node, viewModel, rule, additionalFlags, excludedFlags);
+                ? CreateProjectItemTreeNode(viewModel, rule, additionalFlags, excludedFlags)
+                : CreateProjectTreeNode(viewModel, rule, additionalFlags, excludedFlags);
         }
 
-        /// <summary>
-        /// Updates or creates new IProjectTree node
-        /// </summary>
-        private IProjectTree CreateOrUpdateProjectTreeNode(
-            IProjectTree node,
+        private IProjectTree CreateProjectTreeNode(
             IDependencyViewModel viewModel,
             IRule rule,
             ProjectTreeFlags? additionalFlags = null,
             ProjectTreeFlags? excludedFlags = null)
         {
-            if (node == null)
-            {
-                // For IProjectTree remove ProjectTreeFlags.Common.Reference flag, otherwise CPS would fail to 
-                // map this node to graph node and GraphProvider would be never called. 
-                // Only IProjectItemTree can have this flag
-                ProjectTreeFlags flags = FilterFlags(viewModel.Flags.Except(DependencyTreeFlags.BaseReferenceFlags),
-                                        additionalFlags,
-                                        excludedFlags);
-                string filePath = (viewModel.OriginalModel != null && viewModel.OriginalModel.TopLevel && viewModel.OriginalModel.Resolved)
-                                ? viewModel.OriginalModel.GetTopLevelId()
-                                : viewModel.FilePath;
+            // For IProjectTree remove ProjectTreeFlags.Common.Reference flag, otherwise CPS would fail to 
+            // map this node to graph node and GraphProvider would be never called. 
+            // Only IProjectItemTree can have this flag
+            ProjectTreeFlags flags = FilterFlags(viewModel.Flags.Except(DependencyTreeFlags.BaseReferenceFlags),
+                additionalFlags,
+                excludedFlags);
+            string filePath = (viewModel.OriginalModel != null && viewModel.OriginalModel.TopLevel &&
+                               viewModel.OriginalModel.Resolved)
+                ? viewModel.OriginalModel.GetTopLevelId()
+                : viewModel.FilePath;
 
-                node = TreeServices.CreateTree(
-                    caption: viewModel.Caption,
-                    filePath: filePath,
-                    visible: true,
-                    browseObjectProperties: rule,
-                    flags: flags,
-                    icon: viewModel.Icon.ToProjectSystemType(),
-                    expandedIcon: viewModel.ExpandedIcon.ToProjectSystemType());
-            }
-            else
-            {
-                node = UpdateTreeNode(node, viewModel, rule);
-            }
-
-            return node;
+            return TreeServices.CreateTree(
+                caption: viewModel.Caption,
+                filePath: filePath,
+                visible: true,
+                browseObjectProperties: rule,
+                flags: flags,
+                icon: viewModel.Icon.ToProjectSystemType(),
+                expandedIcon: viewModel.ExpandedIcon.ToProjectSystemType());
         }
 
-        /// <summary>
-        /// Updates or creates new IProjectItemTree node
-        /// </summary>
-        private IProjectTree CreateOrUpdateProjectItemTreeNode(
-            IProjectTree node,
+        private IProjectTree CreateProjectItemTreeNode(
             IDependencyViewModel viewModel,
             IRule rule,
             ProjectTreeFlags? additionalFlags = null,
             ProjectTreeFlags? excludedFlags = null)
         {
-            if (node == null)
-            {
-                ProjectTreeFlags flags = FilterFlags(viewModel.Flags, additionalFlags, excludedFlags);
-                string filePath = (viewModel.OriginalModel != null && viewModel.OriginalModel.TopLevel && viewModel.OriginalModel.Resolved)
-                                    ? viewModel.OriginalModel.GetTopLevelId()
-                                    : viewModel.FilePath;
+            ProjectTreeFlags flags = FilterFlags(viewModel.Flags, additionalFlags, excludedFlags);
+            string filePath = (viewModel.OriginalModel != null && viewModel.OriginalModel.TopLevel &&
+                               viewModel.OriginalModel.Resolved)
+                ? viewModel.OriginalModel.GetTopLevelId()
+                : viewModel.FilePath;
 
-                var itemContext = ProjectPropertiesContext.GetContext(
-                    CommonServices.Project,
-                    file: filePath,
-                    itemType: viewModel.SchemaItemType,
-                    itemName: filePath);
+            var itemContext = ProjectPropertiesContext.GetContext(
+                CommonServices.Project,
+                file: filePath,
+                itemType: viewModel.SchemaItemType,
+                itemName: filePath);
 
-                node = TreeServices.CreateTree(
-                    caption: viewModel.Caption,
-                    itemContext: itemContext,
-                    propertySheet: null,
-                    browseObjectProperties: rule,
-                    icon: viewModel.Icon.ToProjectSystemType(),
-                    expandedIcon: viewModel.ExpandedIcon.ToProjectSystemType(),
-                    visible: true,
-                    flags: flags);
-            }
-            else
-            {
-                node = UpdateTreeNode(node, viewModel, rule);
-            }
-
-            return node;
+            return TreeServices.CreateTree(
+                caption: viewModel.Caption,
+                itemContext: itemContext,
+                propertySheet: null,
+                browseObjectProperties: rule,
+                icon: viewModel.Icon.ToProjectSystemType(),
+                expandedIcon: viewModel.ExpandedIcon.ToProjectSystemType(),
+                visible: true,
+                flags: flags);
         }
 
         private IProjectTree UpdateTreeNode(
