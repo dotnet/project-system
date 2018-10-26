@@ -135,7 +135,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 }
             }
 
-            _targets = builder.ToImmutableDictionary();
+            if (anyChanges)
+            {
+                _targets = builder.ToImmutableDictionary();
+            }
 
             return anyChanges;
         }
