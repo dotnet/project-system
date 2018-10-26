@@ -24,8 +24,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             unresolvedIcon: ManagedImageMonikers.CodeInformationWarning,
             unresolvedExpandedIcon: ManagedImageMonikers.CodeInformationWarning);
 
-        protected override string UnresolvedRuleName => AnalyzerReference.SchemaName;
-        protected override string ResolvedRuleName => ResolvedAnalyzerReference.SchemaName;
+        public AnalyzerRuleHandler()
+            : base(AnalyzerReference.SchemaName, ResolvedAnalyzerReference.SchemaName)
+        {
+        }
+
         public override string ProviderType => ProviderTypeString;
 
         public override IDependencyModel CreateRootDependencyNode()

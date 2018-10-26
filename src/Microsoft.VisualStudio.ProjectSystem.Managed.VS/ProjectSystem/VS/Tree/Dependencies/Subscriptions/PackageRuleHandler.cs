@@ -27,14 +27,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
         [ImportingConstructor]
         public PackageRuleHandler(ITargetFrameworkProvider targetFrameworkProvider)
+            : base(PackageReference.SchemaName, ResolvedPackageReference.SchemaName)
         {
             TargetFrameworkProvider = targetFrameworkProvider;
         }
 
         private ITargetFrameworkProvider TargetFrameworkProvider { get; }
 
-        protected override string UnresolvedRuleName => PackageReference.SchemaName;
-        protected override string ResolvedRuleName => ResolvedPackageReference.SchemaName;
         public override string ProviderType => ProviderTypeString;
 
         public override ImageMoniker GetImplicitIcon()

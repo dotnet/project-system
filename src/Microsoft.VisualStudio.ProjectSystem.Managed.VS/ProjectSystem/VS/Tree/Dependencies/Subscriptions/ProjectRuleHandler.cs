@@ -28,14 +28,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             unresolvedIcon: ManagedImageMonikers.ApplicationWarning,
             unresolvedExpandedIcon: ManagedImageMonikers.ApplicationWarning);
 
-        protected override string UnresolvedRuleName => ProjectReference.SchemaName;
-        protected override string ResolvedRuleName => ResolvedProjectReference.SchemaName;
         public override string ProviderType => ProviderTypeString;
 
         [ImportingConstructor]
         public ProjectRuleHandler(IAggregateDependenciesSnapshotProvider aggregateSnapshotProvider,
                                   IDependenciesSnapshotProvider snapshotProvider,
                                   IUnconfiguredProjectCommonServices commonServices)
+            : base(ProjectReference.SchemaName, ResolvedProjectReference.SchemaName)
         {
             SnapshotProvider = snapshotProvider;
 

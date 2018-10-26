@@ -14,26 +14,38 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         : ICrossTargetRuleHandler<DependenciesRuleChangeContext>,
           IProjectDependenciesSubTreeProviderInternal
     {
+        private readonly ImmutableHashSet<string> _evaluationRuleNames;
+        private readonly ImmutableHashSet<string> _designTimeBuildRuleNames;
+
+        protected string UnresolvedRuleName { get; }
+        protected string ResolvedRuleName { get; }
+
+        protected DependenciesRuleHandlerBase(
+            string unresolvedRuleName,
+            string resolvedRuleName)
+        {
+            UnresolvedRuleName = unresolvedRuleName;
+            ResolvedRuleName = resolvedRuleName;
+
+            _evaluationRuleNames = ImmutableStringHashSet.EmptyOrdinal.Add(unresolvedRuleName);
+            _designTimeBuildRuleNames = ImmutableStringHashSet.EmptyOrdinal.Add(unresolvedRuleName).Add(resolvedRuleName);
+        }
+
         #region ICrossTargetRuleHandler
 
         public ImmutableHashSet<string> GetRuleNames(RuleHandlerType handlerType)
         {
-            ImmutableHashSet<string> resultRules = ImmutableStringHashSet.EmptyOrdinal;
-            if (handlerType == RuleHandlerType.Evaluation)
+            switch (handlerType)
             {
-                resultRules = resultRules.Add(UnresolvedRuleName);
+                case RuleHandlerType.Evaluation:
+                    return _evaluationRuleNames;
+                case RuleHandlerType.DesignTimeBuild:
+                    return _designTimeBuildRuleNames;
+                default:
+                    return ImmutableStringHashSet.EmptyOrdinal;
             }
-            else if (handlerType == RuleHandlerType.DesignTimeBuild)
-            {
-                resultRules = resultRules.Add(UnresolvedRuleName)
-                                         .Add(ResolvedRuleName);
-            }
-
-            return resultRules;
         }
 
-        protected abstract string UnresolvedRuleName { get; }
-        protected abstract string ResolvedRuleName { get; }
         public abstract ImageMoniker GetImplicitIcon();
 
         /// <summary>
