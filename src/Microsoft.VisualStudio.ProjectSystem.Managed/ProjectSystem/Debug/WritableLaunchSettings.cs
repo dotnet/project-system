@@ -87,6 +87,5 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             // Check the global settings
             return !DictionaryEqualityComparer<string, object>.Instance.Equals(launchSettings.GlobalSettings.ToImmutableDictionary(), settingsToCompare.GlobalSettings.ToImmutableDictionary());
         }
-
     }
 }

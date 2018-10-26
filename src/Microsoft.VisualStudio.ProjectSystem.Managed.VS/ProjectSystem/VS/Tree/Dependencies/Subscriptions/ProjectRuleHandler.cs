@@ -31,9 +31,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         public override string ProviderType => ProviderTypeString;
 
         [ImportingConstructor]
-        public ProjectRuleHandler(IAggregateDependenciesSnapshotProvider aggregateSnapshotProvider,
-                                  IDependenciesSnapshotProvider snapshotProvider,
-                                  IUnconfiguredProjectCommonServices commonServices)
+        public ProjectRuleHandler(
+            IAggregateDependenciesSnapshotProvider aggregateSnapshotProvider,
+            IDependenciesSnapshotProvider snapshotProvider,
+            IUnconfiguredProjectCommonServices commonServices)
             : base(ProjectReference.SchemaName, ResolvedProjectReference.SchemaName)
         {
             SnapshotProvider = snapshotProvider;
@@ -149,12 +150,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             foreach (IDependency dependency in dependencyThatNeedChange)
             {
                 IDependencyModel model = CreateDependencyModel(
-                                ProviderType,
-                                dependency.Path,
-                                dependency.OriginalItemSpec,
-                                shouldBeResolved,
-                                dependency.Implicit,
-                                dependency.Properties);
+                    ProviderType,
+                    dependency.Path,
+                    dependency.OriginalItemSpec,
+                    shouldBeResolved,
+                    dependency.Implicit,
+                    dependency.Properties);
 
                 var changes = new DependenciesChanges();
 

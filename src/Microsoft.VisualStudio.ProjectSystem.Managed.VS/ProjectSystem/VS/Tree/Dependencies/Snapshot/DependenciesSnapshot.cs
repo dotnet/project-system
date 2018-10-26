@@ -14,9 +14,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
     /// <inheritdoc />
     internal class DependenciesSnapshot : IDependenciesSnapshot
     {
-        private DependenciesSnapshot(string projectPath,
-                                     ITargetFramework activeTarget = null,
-                                     DependenciesSnapshot previousSnapshot = null)
+        private DependenciesSnapshot(
+            string projectPath,
+            ITargetFramework activeTarget = null,
+            DependenciesSnapshot previousSnapshot = null)
         {
             Requires.NotNullOrEmpty(projectPath, nameof(projectPath));
 
@@ -50,14 +51,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         /// <inheritdoc />
         public IImmutableDictionary<ITargetFramework, ITargetedDependenciesSnapshot> Targets
         {
-            get
-            {
-                return _targets;
-            }
-            private set
-            {
-                _targets = value.ToImmutableDictionary();
-            }
+            get => _targets;
+            private set => _targets = value.ToImmutableDictionary();
         }
 
         /// <inheritdoc />
@@ -107,19 +102,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         {
             bool anyChanges = false;
             var builder = _targets.ToBuilder();
+
             foreach ((ITargetFramework targetFramework, IDependenciesChanges dependenciesChanges) in changes)
             {
                 builder.TryGetValue(targetFramework, out ITargetedDependenciesSnapshot previousSnapshot);
+
                 var newTargetedSnapshot = TargetedDependenciesSnapshot.FromChanges(
-                                            ProjectPath,
-                                            targetFramework,
-                                            previousSnapshot,
-                                            dependenciesChanges,
-                                            catalogs,
-                                            snapshotFilters,
-                                            subTreeProviders,
-                                            projectItemSpecs,
-                                            out bool anyTfmChanges);
+                    ProjectPath,
+                    targetFramework,
+                    previousSnapshot,
+                    dependenciesChanges,
+                    catalogs,
+                    snapshotFilters,
+                    subTreeProviders,
+                    projectItemSpecs,
+                    out bool anyTfmChanges);
                 builder[targetFramework] = newTargetedSnapshot;
 
                 if (anyTfmChanges)

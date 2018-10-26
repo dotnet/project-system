@@ -29,10 +29,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     [Export(ExportContractNames.ProjectTreeProviders.PhysicalViewRootGraft, typeof(IProjectTreeProvider))]
     [Export(typeof(IDependenciesTreeServices))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
-    internal class DependenciesProjectTreeProvider :
-        ProjectTreeProviderBase,
-        IProjectTreeProvider,
-        IDependenciesTreeServices
+    internal class DependenciesProjectTreeProvider
+        : ProjectTreeProviderBase,
+          IProjectTreeProvider,
+          IDependenciesTreeServices
     {
         /// <summary><see cref="IProjectTreePropertiesProvider"/> imports that apply to the references tree.</summary>
         [ImportMany(ReferencesProjectTreeCustomizablePropertyValues.ContractName)]
@@ -420,8 +420,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// <summary>
         /// Creates a new instance of the configured project exports class.
         /// </summary>
-        protected override ConfiguredProjectExports GetActiveConfiguredProjectExports(
-                                ConfiguredProject newActiveConfiguredProject)
+        protected override ConfiguredProjectExports GetActiveConfiguredProjectExports(ConfiguredProject newActiveConfiguredProject)
         {
             Requires.NotNull(newActiveConfiguredProject, nameof(newActiveConfiguredProject));
 

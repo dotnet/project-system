@@ -16,10 +16,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         private static readonly IReadOnlyDictionary<string, IProjectDependenciesSubTreeProvider> s_emptySubTreeProviderMap
             = ImmutableDictionary.Create<string, IProjectDependenciesSubTreeProvider>(StringComparers.DependencyProviderTypes);
 
-        protected TargetedDependenciesSnapshot(string projectPath,
-                                             ITargetFramework targetFramework,
-                                             ITargetedDependenciesSnapshot previousSnapshot = null,
-                                             IProjectCatalogSnapshot catalogs = null)
+        protected TargetedDependenciesSnapshot(
+            string projectPath,
+            ITargetFramework targetFramework,
+            ITargetedDependenciesSnapshot previousSnapshot = null,
+            IProjectCatalogSnapshot catalogs = null)
         {
             Requires.NotNullOrEmpty(projectPath, nameof(projectPath));
             Requires.NotNull(targetFramework, nameof(targetFramework));
@@ -55,22 +56,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
         public IProjectCatalogSnapshot Catalogs { get; }
 
-        public ImmutableHashSet<IDependency> TopLevelDependencies { get; private set; }
-            = ImmutableHashSet<IDependency>.Empty;
+        public ImmutableHashSet<IDependency> TopLevelDependencies { get; private set; } = ImmutableHashSet<IDependency>.Empty;
 
-        public ImmutableDictionary<string, IDependency> DependenciesWorld { get; private set; }
-            = ImmutableStringDictionary<IDependency>.EmptyOrdinalIgnoreCase;
+        public ImmutableDictionary<string, IDependency> DependenciesWorld { get; private set; } = ImmutableStringDictionary<IDependency>.EmptyOrdinalIgnoreCase;
 
         private readonly object _snapshotLock = new object();
 
-        private readonly Dictionary<string, IDependency> _topLevelDependenciesByPathMap
-            = new Dictionary<string, IDependency>(StringComparer.OrdinalIgnoreCase);
-
-        private readonly Dictionary<string, IList<IDependency>> _dependenciesChildrenMap
-            = new Dictionary<string, IList<IDependency>>(StringComparer.OrdinalIgnoreCase);
-
-        private readonly Dictionary<string, bool> _unresolvedDescendantsMap
-            = new Dictionary<string, bool>(StringComparer.OrdinalIgnoreCase);
+        private readonly Dictionary<string, IDependency> _topLevelDependenciesByPathMap = new Dictionary<string, IDependency>(StringComparer.OrdinalIgnoreCase);
+        private readonly Dictionary<string, IList<IDependency>> _dependenciesChildrenMap = new Dictionary<string, IList<IDependency>>(StringComparer.OrdinalIgnoreCase);
+        private readonly Dictionary<string, bool> _unresolvedDescendantsMap = new Dictionary<string, bool>(StringComparer.OrdinalIgnoreCase);
 
         private bool? _hasUnresolvedDependency;
 

@@ -16,8 +16,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         protected TreeViewProviderBase(UnconfiguredProject project)
         {
             ProjectTreePropertiesProviders = new OrderPrecedenceImportCollection<IProjectTreePropertiesProvider>(
-                            ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesLast,
-                            projectCapabilityCheckProvider: project);
+                ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesLast,
+                projectCapabilityCheckProvider: project);
         }
 
         /// <summary>
@@ -44,8 +44,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         protected void ApplyProjectTreePropertiesCustomization(
-                        IProjectTreeCustomizablePropertyContext context,
-                        ReferencesProjectTreeCustomizablePropertyValues values)
+            IProjectTreeCustomizablePropertyContext context,
+            ReferencesProjectTreeCustomizablePropertyValues values)
         {
             foreach (IProjectTreePropertiesProvider provider in ProjectTreePropertiesProviders.ExtensionValues())
             {

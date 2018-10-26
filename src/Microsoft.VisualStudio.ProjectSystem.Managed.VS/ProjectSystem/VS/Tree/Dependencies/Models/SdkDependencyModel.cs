@@ -34,23 +34,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             : base(providerType, path, originalItemSpec, flags, resolved, isImplicit, properties)
         {
             Flags = Flags.Union(DependencyTreeFlags.SupportsHierarchy);
-
-            if (Resolved)
-            {
-                SchemaName = ResolvedSdkReference.SchemaName;
-            }
-            else
-            {
-                SchemaName = SdkReference.SchemaName;
-            }
-
+            SchemaName = Resolved ? ResolvedSdkReference.SchemaName : SdkReference.SchemaName;
             SchemaItemType = SdkReference.PrimaryDataSourceItemType;
             Priority = Dependency.SdkNodePriority;
             IconSet = isImplicit ? s_implicitIconSet : s_iconSet;
             Version = properties != null && properties.ContainsKey(ProjectItemMetadata.Version)
-                        ? properties[ProjectItemMetadata.Version] : string.Empty;
+                ? properties[ProjectItemMetadata.Version] 
+                : string.Empty;
             string baseCaption = Path.Split(Delimiter.Comma, StringSplitOptions.RemoveEmptyEntries)
-                                .FirstOrDefault();
+                .FirstOrDefault();
             Caption = string.IsNullOrEmpty(Version) ? baseCaption : $"{baseCaption} ({Version})";
         }
 

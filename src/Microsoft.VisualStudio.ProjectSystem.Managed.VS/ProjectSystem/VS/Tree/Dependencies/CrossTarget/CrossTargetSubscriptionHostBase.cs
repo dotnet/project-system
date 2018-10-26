@@ -81,7 +81,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         {
             await _tasksService.LoadedProjectAsync(() =>
             {
-                SubscribeToConfiguredProject(_activeConfiguredProjectSubscriptionService,
+                SubscribeToConfiguredProject(
+                    _activeConfiguredProjectSubscriptionService,
                     e => OnProjectChangedAsync(e, RuleHandlerType.Evaluation));
 
                 foreach (Lazy<ICrossTargetSubscriber> subscriber in Subscribers)
@@ -242,8 +243,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                 {
                     foreach (ConfiguredProject configuredProject in newProjectContext.InnerConfiguredProjects)
                     {
-                        SubscribeToConfiguredProject(configuredProject.Services.ProjectSubscription,
-                                              e => OnProjectChangedCoreAsync(e, RuleHandlerType.Evaluation));
+                        SubscribeToConfiguredProject(
+                            configuredProject.Services.ProjectSubscription,
+                            e => OnProjectChangedCoreAsync(e, RuleHandlerType.Evaluation));
                     }
 
                     foreach (Lazy<ICrossTargetSubscriber> subscriber in Subscribers)

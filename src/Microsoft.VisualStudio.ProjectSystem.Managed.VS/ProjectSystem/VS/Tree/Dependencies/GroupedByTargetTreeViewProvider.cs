@@ -70,7 +70,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     }
 
                     dependenciesTree = await BuildSubTreesAsync(
-                        dependenciesTree,
+                        rootNode: dependenciesTree,
                         snapshot.ActiveTarget,
                         targetedSnapshot,
                         targetedSnapshot.Catalogs,
@@ -89,7 +89,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     if (targetFramework.Equals(TargetFramework.Any))
                     {
                         dependenciesTree = await BuildSubTreesAsync(
-                            dependenciesTree,
+                            rootNode: dependenciesTree,
                             snapshot.ActiveTarget,
                             targetedSnapshot,
                             targetedSnapshot.Catalogs,
@@ -109,20 +109,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                             additionalFlags: ProjectTreeFlags.Create(ProjectTreeFlags.Common.BubbleUp));
 
                         node = await BuildSubTreesAsync(
-                            node, 
+                            rootNode: node, 
                             snapshot.ActiveTarget, 
                             targetedSnapshot, 
                             targetedSnapshot.Catalogs, 
                             CleanupOldNodes);
 
-                        if (shouldAddTargetNode)
-                        {
-                            dependenciesTree = dependenciesTree.Add(node).Parent;
-                        }
-                        else
-                        {
-                            dependenciesTree = node.Parent;
-                        }
+                        dependenciesTree = shouldAddTargetNode 
+                            ? dependenciesTree.Add(node).Parent 
+                            : node.Parent;
 
                         currentTopLevelNodes.Add(node);
                     }

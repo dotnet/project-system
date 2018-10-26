@@ -206,8 +206,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
         private static IDependencyModel CreateDependencyModel(string itemSpec, bool resolved)
         {
-            ImmutableDictionary<string, string> properties = ImmutableStringDictionary<string>.EmptyOrdinal;
-
             return new SharedProjectDependencyModel(
                 ProjectRuleHandler.ProviderTypeString,
                 itemSpec,
@@ -215,7 +213,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                 DependencyTreeFlags.ProjectNodeFlags,
                 resolved,
                 false,
-                properties);
+                properties: ImmutableStringDictionary<string>.EmptyOrdinal);
         }
 
         public event EventHandler<DependencySubscriptionChangedEventArgs> DependenciesChanged;

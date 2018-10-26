@@ -235,8 +235,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 DependencyTreeFlags.NuGetSubTreeRootNodeFlags);
         }
 
-        private static PackageDependencyMetadata CreateUnresolvedMetadata(string itemSpec,
-                                                            IImmutableDictionary<string, string> properties)
+        private static PackageDependencyMetadata CreateUnresolvedMetadata(
+            string itemSpec,
+            IImmutableDictionary<string, string> properties)
         {
             // add this properties here since unresolved PackageReferences don't have it
             properties = properties.SetItem(ProjectItemMetadata.Resolved, "false");

@@ -36,15 +36,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
     internal class DependenciesGraphProvider : OnceInitializedOnceDisposedAsync, IGraphProvider, IDependenciesGraphBuilder
     {
         [ImportingConstructor]
-        public DependenciesGraphProvider(IAggregateDependenciesSnapshotProvider aggregateSnapshotProvider,
-                                         [Import(typeof(SAsyncServiceProvider))] IAsyncServiceProvider serviceProvider,
-                                         JoinableTaskContext joinableTaskContext)
+        public DependenciesGraphProvider(
+            IAggregateDependenciesSnapshotProvider aggregateSnapshotProvider,
+            [Import(typeof(SAsyncServiceProvider))] IAsyncServiceProvider serviceProvider,
+            JoinableTaskContext joinableTaskContext)
             : base(new JoinableTaskContextNode(joinableTaskContext))
         {
             AggregateSnapshotProvider = aggregateSnapshotProvider;
             ServiceProvider = serviceProvider;
             GraphActionHandlers = new OrderPrecedenceImportCollection<IDependenciesGraphActionHandler>(
-                                    ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesLast);
+                ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesLast);
         }
 
         private static readonly GraphCommand[] s_containsGraphCommand =
@@ -286,10 +287,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
             return newNode;
         }
 
-        public void RemoveGraphNode(IGraphContext graphContext,
-                                     string projectPath,
-                                     string modelId,
-                                     GraphNode parentNode)
+        public void RemoveGraphNode(
+            IGraphContext graphContext,
+            string projectPath,
+            string modelId,
+            GraphNode parentNode)
         {
             Assumes.True(IsInitialized);
 

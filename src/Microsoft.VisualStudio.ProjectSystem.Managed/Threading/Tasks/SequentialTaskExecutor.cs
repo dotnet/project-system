@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.Threading.Tasks
         private bool _disposed;
         private Task _taskAdded = Task.CompletedTask;
         private readonly object _syncObject = new object();
-#pragma warning disable CA2213 // Tests fail is this is disposed
+#pragma warning disable CA2213 // Tests fail if this is disposed
         private readonly CancellationTokenSource _disposedCancelTokenSource = new CancellationTokenSource();
 #pragma warning restore CA2213 
 
