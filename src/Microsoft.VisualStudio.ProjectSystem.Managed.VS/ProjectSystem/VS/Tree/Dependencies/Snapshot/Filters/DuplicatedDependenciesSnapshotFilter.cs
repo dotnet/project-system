@@ -72,9 +72,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
                 if (matchingDependency != null)
                 {
                     matchingDependency = matchingDependency.SetProperties(caption: matchingDependency.Alias);
-                    worldBuilder.Remove(matchingDependency.Id);
-                    worldBuilder.Add(matchingDependency.Id, matchingDependency);
-                    topLevelBuilder.Remove(matchingDependency);
+                    worldBuilder[matchingDependency.Id] = matchingDependency;
                     topLevelBuilder.Add(matchingDependency);
                 }
 

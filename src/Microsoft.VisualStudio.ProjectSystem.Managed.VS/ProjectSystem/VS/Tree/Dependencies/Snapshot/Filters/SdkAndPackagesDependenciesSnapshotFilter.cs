@@ -71,9 +71,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
                         schemaName: ResolvedSdkReference.SchemaName,
                         dependencyIDs: dependency.DependencyIDs);
 
-                    worldBuilder.Remove(sdk.Id);
-                    worldBuilder.Add(sdk.Id, sdk);
-                    topLevelBuilder.Remove(sdk);
+                    worldBuilder[sdk.Id] = sdk;
                     topLevelBuilder.Add(sdk);
                 }
             }
@@ -110,9 +108,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
                         schemaName: SdkReference.SchemaName,
                         dependencyIDs: ImmutableList<string>.Empty);
 
-                    worldBuilder.Remove(sdk.Id);
-                    worldBuilder.Add(sdk.Id, sdk);
-                    topLevelBuilder.Remove(sdk);
+                    worldBuilder[sdk.Id] = sdk;
                     topLevelBuilder.Add(sdk);
                 }
             }
