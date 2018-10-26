@@ -205,16 +205,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             }
 
             var targetsToClean = new HashSet<ITargetFramework>();
-            var oldTargets = oldContext.InnerProjectContexts.Select(x => x.TargetFramework)
-                                                            .Where(x => x != null).ToList();
+
+            IEnumerable<ITargetFramework> oldTargets = oldContext.InnerProjectContexts
+                .Select(x => x.TargetFramework)
+                .Where(x => x != null);
+
             if (newContext == null)
             {
                 targetsToClean.AddRange(oldTargets);
             }
             else
             {
-                var newTargets = newContext.InnerProjectContexts.Select(x => x.TargetFramework)
-                                                                .Where(x => x != null).ToList();
+                IEnumerable<ITargetFramework> newTargets = newContext.InnerProjectContexts
+                    .Select(x => x.TargetFramework)
+                    .Where(x => x != null);
+
                 targetsToClean.AddRange(oldTargets.Except(newTargets));
             }
 
