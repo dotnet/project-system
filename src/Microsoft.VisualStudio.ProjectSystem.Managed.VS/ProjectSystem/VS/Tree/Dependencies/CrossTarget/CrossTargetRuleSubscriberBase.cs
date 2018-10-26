@@ -239,11 +239,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
                 foreach (ICrossTargetRuleHandler<T> handler in handlers)
                 {
-                    ImmutableDictionary<string, IProjectChangeDescription>.Builder builder = ImmutableDictionary.CreateBuilder<string, IProjectChangeDescription>(StringComparers.RuleNames);
                     ImmutableHashSet<string> handlerRules = handler.GetRuleNames(handlerType);
-                    builder.AddRange(projectUpdate.ProjectChanges.Where(
-                        x => handlerRules.Contains(x.Key)));
-                    ImmutableDictionary<string, IProjectChangeDescription> projectChanges = builder.ToImmutable();
+
+                    var projectChanges = projectUpdate.ProjectChanges
+                        .Where(x => handlerRules.Contains(x.Key))
+                        .ToImmutableDictionary();
 
                     if (handler.ReceiveUpdatesWithEmptyProjectChange
                         || projectChanges.Any(x => x.Value.Difference.AnyChanges))
