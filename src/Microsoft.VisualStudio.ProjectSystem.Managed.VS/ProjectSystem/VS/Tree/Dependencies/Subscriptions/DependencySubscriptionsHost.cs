@@ -148,8 +148,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         {
             await base.InitializeCoreAsync(cancellationToken);
 
-            CommonServices.Project.ProjectUnloading += OnUnconfiguredProjectUnloading;
-            CommonServices.Project.ProjectRenamed += OnUnconfiguredProjectRenamed;
+            CommonServices.Project.ProjectUnloading += OnUnconfiguredProjectUnloadingAsync;
+            CommonServices.Project.ProjectRenamed += OnUnconfiguredProjectRenamedAsync;
 
             AggregateSnapshotProvider.RegisterSnapshotProvider(this);
 
@@ -161,16 +161,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
         protected override async Task DisposeCoreAsync(bool initialized)
         {
-            CommonServices.Project.ProjectUnloading -= OnUnconfiguredProjectUnloading;
-            CommonServices.Project.ProjectRenamed -= OnUnconfiguredProjectRenamed;
+            CommonServices.Project.ProjectUnloading -= OnUnconfiguredProjectUnloadingAsync;
+            CommonServices.Project.ProjectRenamed -= OnUnconfiguredProjectRenamedAsync;
 
             await base.DisposeCoreAsync(initialized);
         }
 
-        private Task OnUnconfiguredProjectUnloading(object sender, EventArgs args)
+        private Task OnUnconfiguredProjectUnloadingAsync(object sender, EventArgs args)
         {
-            CommonServices.Project.ProjectUnloading -= OnUnconfiguredProjectUnloading;
-            CommonServices.Project.ProjectRenamed -= OnUnconfiguredProjectRenamed;
+            CommonServices.Project.ProjectUnloading -= OnUnconfiguredProjectUnloadingAsync;
+            CommonServices.Project.ProjectRenamed -= OnUnconfiguredProjectRenamedAsync;
 
             SnapshotProviderUnloading?.Invoke(this, new SnapshotProviderUnloadingEventArgs(this));
 
@@ -187,7 +187,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             return Task.CompletedTask;
         }
 
-        private Task OnUnconfiguredProjectRenamed(object sender, ProjectRenamedEventArgs e)
+        private Task OnUnconfiguredProjectRenamedAsync(object sender, ProjectRenamedEventArgs e)
         {
             SnapshotRenamed?.Invoke(this, e);
 
