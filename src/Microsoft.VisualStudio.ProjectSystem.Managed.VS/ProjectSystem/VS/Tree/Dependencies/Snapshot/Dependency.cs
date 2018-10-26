@@ -5,7 +5,6 @@ using System.Collections.Concurrent;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Globalization;
-using System.Linq;
 using System.Text;
 
 using Microsoft.VisualStudio.Imaging.Interop;
@@ -121,7 +120,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             _modelId = modelId;
             _fullPath = model._fullPath; // Grab the cached value if we've already created it
 
-            if (model.DependencyIDs != null && model.DependencyIDs.Any())
+            if (model.DependencyIDs != null && model.DependencyIDs.Count != 0)
             {
                 DependencyIDs = model.DependencyIDs;
             }
