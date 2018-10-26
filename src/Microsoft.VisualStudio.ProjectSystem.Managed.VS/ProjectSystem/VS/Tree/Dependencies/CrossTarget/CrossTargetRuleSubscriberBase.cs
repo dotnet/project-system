@@ -155,16 +155,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
         private IReadOnlyCollection<string> GetWatchedRules(RuleHandlerType handlerType)
         {
-            IEnumerable<Lazy<ICrossTargetRuleHandler<T>, IOrderPrecedenceMetadataView>> supportedHandler = Handlers.Where(h => h.Value.SupportsHandlerType(handlerType));
-            var uniqueRuleNames = new HashSet<string>(StringComparers.RuleNames);
-            foreach (Lazy<ICrossTargetRuleHandler<T>, IOrderPrecedenceMetadataView> handler in supportedHandler)
-            {
-                foreach (string ruleName in handler.Value.GetRuleNames(handlerType))
-                {
-                    uniqueRuleNames.Add(ruleName);
-                }
-            }
-            return uniqueRuleNames;
+            return new HashSet<string>(
+                Handlers
+                    .Where(h => h.Value.SupportsHandlerType(handlerType))
+                    .SelectMany(h => h.Value.GetRuleNames(handlerType)),
+                StringComparers.RuleNames);
         }
 
         private async Task OnProjectChangedAsync(
