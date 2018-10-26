@@ -178,9 +178,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     new DependenciesChangedEventArgs(
                         this,
                         dependency.TargetFramework.FullName,
-                        changes,
-                        catalogs: null,
-                        dataSourceVersions: null));
+                        changes));
             }
         }
     }

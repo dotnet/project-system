@@ -270,7 +270,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
             ImmutableDictionary<ITargetFramework, IDependenciesChanges> changes = ImmutableDictionary<ITargetFramework, IDependenciesChanges>.Empty.Add(targetFramework, e.Changes);
 
-            UpdateDependenciesSnapshotAsync(changes, e.Catalogs, activeTargetFramework: null);
+            UpdateDependenciesSnapshotAsync(changes, catalogs: null, activeTargetFramework: null);
         }
 
         private void UpdateDependenciesSnapshotAsync(
