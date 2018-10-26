@@ -268,11 +268,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             UpdateDependenciesSnapshotAsync(changes, e.Catalogs, activeTargetFramework: null);
         }
 
-        private void OnDependenciesSnapshotChanged(IDependenciesSnapshot snapshot)
-        {
-            SnapshotChanged?.Invoke(this, new SnapshotChangedEventArgs(snapshot));
-        }
-
         private void UpdateDependenciesSnapshotAsync(
             ImmutableDictionary<ITargetFramework, IDependenciesChanges> changes,
             IProjectCatalogSnapshot catalogs,
@@ -341,7 +336,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
                 if (snapshot != null)
                 {
-                    OnDependenciesSnapshotChanged(snapshot);
+                    SnapshotChanged?.Invoke(this, new SnapshotChangedEventArgs(snapshot));
                 }
 
                 return Task.CompletedTask;
