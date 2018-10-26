@@ -125,15 +125,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 }
             }
 
-            // now get rid of empty target frameworks (if there no any dependencies for them)
-            foreach ((ITargetFramework targetFramework, ITargetedDependenciesSnapshot targetedDependencies) in builder.ToList())
-            {
-                if (targetedDependencies.DependenciesWorld.Count == 0)
-                {
-                    anyChanges = true;
-                    builder.Remove(targetFramework);
-                }
-            }
+            RemoveTargetFrameworksWithNoDependencies();
 
             if (anyChanges)
             {
@@ -141,6 +133,35 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             }
 
             return anyChanges;
+
+            void RemoveTargetFrameworksWithNoDependencies()
+            {
+                // This is a long-winded way of doing this that minimises allocations
+
+                List<ITargetFramework> emptyFrameworks = null;
+
+                foreach ((ITargetFramework targetFramework, ITargetedDependenciesSnapshot targetedSnapshot) in builder)
+                {
+                    if (targetedSnapshot.DependenciesWorld.Count == 0)
+                    {
+                        if (emptyFrameworks == null)
+                        {
+                            anyChanges = true;
+                            emptyFrameworks = new List<ITargetFramework>(builder.Count);
+                        }
+
+                        emptyFrameworks.Add(targetFramework);
+                    }
+                }
+
+                if (emptyFrameworks != null)
+                {
+                    foreach (ITargetFramework framework in emptyFrameworks)
+                    {
+                        builder.Remove(framework);
+                    }
+                }
+            }
         }
 
         /// <inheritdoc />
