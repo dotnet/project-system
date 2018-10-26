@@ -92,6 +92,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             IReadOnlyCollection<string> watchedEvaluationRules,
             IReadOnlyCollection<string> watchedDesignTimeBuildRules)
         {
+            // Use intermediate buffer blocks for project rule data to allow subsequent blocks
+            // to only observe specific rule name(s).
+
             var intermediateBlockDesignTime =
                 new BufferBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(
                     new ExecutionDataflowBlockOptions()

@@ -42,11 +42,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
 
             if (dependency.Flags.Contains(DependencyTreeFlags.SdkSubTreeNodeFlags))
             {
-                // Try to find a package dependency with the same name
+                // This is an SDK dependency.
+                //
+                // Try to find a package dependency with the same name.
+
                 string packageId = Dependency.GetID(targetFramework, PackageRuleHandler.ProviderTypeString, modelId: dependency.Name);
 
                 if (worldBuilder.TryGetValue(packageId, out IDependency package) && package.Resolved)
                 {
+                    // Set to resolved, and copy dependencies.
+
                     filterAnyChanges = true;
                     return dependency.ToResolved(
                         schemaName: ResolvedSdkReference.SchemaName,
@@ -55,7 +60,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
             }
             else if (dependency.Flags.Contains(DependencyTreeFlags.PackageNodeFlags) && dependency.Resolved)
             {
-                // Try to find an SDK dependency with the same name
+                // This is a package dependency.
+                //
+                // Try to find an SDK dependency with the same name.
+
                 string sdkId = Dependency.GetID(targetFramework, SdkRuleHandler.ProviderTypeString, modelId: dependency.Name);
 
                 if (worldBuilder.TryGetValue(sdkId, out IDependency sdk))
@@ -93,7 +101,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
                 dependency.Resolved && 
                 dependency.Flags.Contains(DependencyTreeFlags.PackageNodeFlags))
             {
-                // Try to find an SDK dependency with the same name
+                // This is a package dependency.
+                //
+                // Try to find an SDK dependency with the same name.
+
                 string sdkId = Dependency.GetID(targetFramework, SdkRuleHandler.ProviderTypeString, modelId: dependency.Name);
 
                 if (worldBuilder.TryGetValue(sdkId, out IDependency sdk))

@@ -69,6 +69,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
         private void SubscribeToConfiguredProject(IProjectSubscriptionService subscriptionService)
         {
+            // Use an intermediate buffer block for project rule data to allow subsequent blocks
+            // to only observe specific rule name(s).
+
             var intermediateBlock =
                 new BufferBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(
                     new ExecutionDataflowBlockOptions()
