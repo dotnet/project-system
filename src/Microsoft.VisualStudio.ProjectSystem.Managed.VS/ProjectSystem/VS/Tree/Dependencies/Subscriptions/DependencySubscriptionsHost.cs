@@ -75,11 +75,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         {
             get
             {
-                lock (_snapshotLock)
+                if (_currentSnapshot == null)
                 {
-                    if (_currentSnapshot == null)
+                    lock (_snapshotLock)
                     {
-                        _currentSnapshot = DependenciesSnapshot.CreateEmpty(CommonServices.Project.FullPath);
+                        if (_currentSnapshot == null)
+                        {
+                            _currentSnapshot = DependenciesSnapshot.CreateEmpty(CommonServices.Project.FullPath);
+                        }
                     }
                 }
 
@@ -114,19 +117,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         {
             get
             {
-                lock (_subscribersLock)
+                if (_subscribers == null)
                 {
-                    if (_subscribers == null)
+                    lock (_subscribersLock)
                     {
-                        foreach (Lazy<IDependencyCrossTargetSubscriber, IOrderPrecedenceMetadataView> subscriber in DependencySubscribers)
+                        if (_subscribers == null)
                         {
-                            subscriber.Value.DependenciesChanged += OnSubscriberDependenciesChanged;
-                        }
+                            foreach (Lazy<IDependencyCrossTargetSubscriber, IOrderPrecedenceMetadataView> subscriber in DependencySubscribers)
+                            {
+                                subscriber.Value.DependenciesChanged += OnSubscriberDependenciesChanged;
+                            }
 
-                        _subscribers = DependencySubscribers.Select(x => new Lazy<ICrossTargetSubscriber>(() => x.Value)).ToList();
+                            _subscribers = DependencySubscribers.Select(x => new Lazy<ICrossTargetSubscriber>(() => x.Value)).ToList();
+                        }
                     }
-                    return _subscribers;
                 }
+
+                return _subscribers;
             }
         }
 
