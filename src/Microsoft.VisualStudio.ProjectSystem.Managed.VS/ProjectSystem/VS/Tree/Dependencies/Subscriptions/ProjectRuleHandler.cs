@@ -72,7 +72,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         public override IDependencyModel CreateRootDependencyNode()
         {
             return new SubTreeRootDependencyModel(
-                ProviderType,
+                ProviderTypeString,
                 VSResources.ProjectsNodeName,
                 s_iconSet,
                 DependencyTreeFlags.ProjectSubTreeRootNodeFlags);
@@ -150,7 +150,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             foreach (IDependency dependency in dependencyThatNeedChange)
             {
                 IDependencyModel model = CreateDependencyModel(
-                    ProviderType,
+                    ProviderTypeString,
                     dependency.Path,
                     dependency.OriginalItemSpec,
                     shouldBeResolved,

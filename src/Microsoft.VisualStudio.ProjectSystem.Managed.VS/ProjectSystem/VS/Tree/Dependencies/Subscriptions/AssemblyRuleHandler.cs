@@ -34,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         public override IDependencyModel CreateRootDependencyNode()
         {
             return new SubTreeRootDependencyModel(
-                ProviderType,
+                ProviderTypeString,
                 VSResources.AssembliesNodeName,
                 s_iconSet,
                 DependencyTreeFlags.AssemblySubTreeRootNodeFlags);
