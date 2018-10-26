@@ -174,8 +174,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
         private bool MergeChanges(
             IDependenciesChanges changes,
-            IEnumerable<IDependenciesSnapshotFilter> snapshotFilters,
-            IEnumerable<IProjectDependenciesSubTreeProvider> subTreeProviders,
+            IReadOnlyCollection<IDependenciesSnapshotFilter> snapshotFilters,
+            IReadOnlyCollection<IProjectDependenciesSubTreeProvider> subTreeProviders,
             IImmutableSet<string> projectItemSpecs)
         {
             var worldBuilder = DependenciesWorld.ToBuilder();
@@ -292,8 +292,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             ITargetedDependenciesSnapshot previousSnapshot,
             IDependenciesChanges changes,
             IProjectCatalogSnapshot catalogs,
-            IEnumerable<IDependenciesSnapshotFilter> snapshotFilters,
-            IEnumerable<IProjectDependenciesSubTreeProvider> subTreeProviders,
+            IReadOnlyCollection<IDependenciesSnapshotFilter> snapshotFilters,
+            IReadOnlyCollection<IProjectDependenciesSubTreeProvider> subTreeProviders,
             IImmutableSet<string> projectItemSpecs,
             out bool anyChanges)
         {

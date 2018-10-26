@@ -292,8 +292,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     changes,
                     catalogs,
                     activeTargetFramework,
-                    SnapshotFilters.Select(x => x.Value),
-                    SubTreeProviders.Select(x => x.Value),
+                    SnapshotFilters.Select(x => x.Value).ToList(),
+                    SubTreeProviders.Select(x => x.Value).ToList(),
                     projectItemSpecs,
                     out anyChanges);
             }

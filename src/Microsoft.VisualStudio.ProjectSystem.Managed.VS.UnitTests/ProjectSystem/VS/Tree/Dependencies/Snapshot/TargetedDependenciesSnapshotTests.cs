@@ -67,7 +67,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var removedNodes = new List<IDependencyModel>();
             var changes = IDependenciesChangesFactory.Implement(addedNodes: addedNodes, removedNodes: removedNodes);
 
-            IEnumerable<IDependenciesSnapshotFilter> snapshotFilters = null;
+            IReadOnlyCollection<IDependenciesSnapshotFilter> snapshotFilters = null;
 
             var catalogs = IProjectCatalogSnapshotFactory.Create();
             var snapshot = TargetedDependenciesSnapshot.FromChanges(
@@ -128,7 +128,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var removedNodes = new List<IDependencyModel>();
             var changes = IDependenciesChangesFactory.Implement(addedNodes: addedNodes, removedNodes: removedNodes);
 
-            IEnumerable<IDependenciesSnapshotFilter> snapshotFilters = null;
+            IReadOnlyCollection<IDependenciesSnapshotFilter> snapshotFilters = null;
 
             var catalogs = IProjectCatalogSnapshotFactory.Create();
             var snapshot = TargetedDependenciesSnapshot.FromChanges(

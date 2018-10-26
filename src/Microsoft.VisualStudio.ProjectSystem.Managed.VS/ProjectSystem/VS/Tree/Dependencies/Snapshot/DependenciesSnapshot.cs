@@ -101,8 +101,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         private bool MergeChanges(
             ImmutableDictionary<ITargetFramework, IDependenciesChanges> changes,
             IProjectCatalogSnapshot catalogs,
-            IEnumerable<IDependenciesSnapshotFilter> snapshotFilters,
-            IEnumerable<IProjectDependenciesSubTreeProvider> subTreeProviders,
+            IReadOnlyCollection<IDependenciesSnapshotFilter> snapshotFilters,
+            IReadOnlyCollection<IProjectDependenciesSubTreeProvider> subTreeProviders,
             IImmutableSet<string> projectItemSpecs)
         {
             bool anyChanges = false;
@@ -160,8 +160,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             ImmutableDictionary<ITargetFramework, IDependenciesChanges> changes,
             IProjectCatalogSnapshot catalogs,
             ITargetFramework activeTargetFramework,
-            IEnumerable<IDependenciesSnapshotFilter> snapshotFilters,
-            IEnumerable<IProjectDependenciesSubTreeProvider> subTreeProviders,
+            IReadOnlyCollection<IDependenciesSnapshotFilter> snapshotFilters,
+            IReadOnlyCollection<IProjectDependenciesSubTreeProvider> subTreeProviders,
             IImmutableSet<string> projectItemSpecs,
             out bool anyChanges)
         {
