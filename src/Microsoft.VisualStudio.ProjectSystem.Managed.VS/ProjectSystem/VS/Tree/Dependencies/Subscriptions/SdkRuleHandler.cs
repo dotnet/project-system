@@ -44,8 +44,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             bool isImplicit,
             IImmutableDictionary<string, string> properties)
         {
-            // implicit sdk always mark as unresolved, they will be marked resolved when 
-            // snapshot filter matches them to corresponding packages
+            // Note that an implicit SDK is always created as unresolved. It will be resolved
+            // later when SdkAndPackagesDependenciesSnapshotFilter observes their corresponding
+            // package.
+
             return new SdkDependencyModel(
                 providerType,
                 path,

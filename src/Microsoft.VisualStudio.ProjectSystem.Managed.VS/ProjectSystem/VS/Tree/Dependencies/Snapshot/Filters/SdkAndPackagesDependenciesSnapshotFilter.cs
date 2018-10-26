@@ -42,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
 
             if (dependency.Flags.Contains(DependencyTreeFlags.SdkSubTreeNodeFlags))
             {
-                // find package with the same name
+                // Try to find a package dependency with the same name
                 string packageModelId = dependency.Name;
                 string packageId = Dependency.GetID(targetFramework, PackageRuleHandler.ProviderTypeString, packageModelId);
 
@@ -56,12 +56,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
             }
             else if (dependency.Flags.Contains(DependencyTreeFlags.PackageNodeFlags) && dependency.Resolved)
             {
-                // find sdk with the same name
+                // Try to find an SDK dependency with the same name
                 string sdkModelId = dependency.Name;
                 string sdkId = Dependency.GetID(targetFramework, SdkRuleHandler.ProviderTypeString, sdkModelId);
 
                 if (worldBuilder.TryGetValue(sdkId, out IDependency sdk))
                 {
+                    // We have an SDK dependency for this package. Such dependencies, when implicit, are created
+                    // as unresolved by SdkRuleHandler, and are only marked resolved here once we have resolved the
+                    // corresponding package.
+                    //
+                    // Set to resolved, and copy dependencies.
+
                     filterAnyChanges = true;
                     sdk = sdk.ToResolved(
                         schemaName: ResolvedSdkReference.SchemaName,
@@ -91,14 +97,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
                 dependency.Resolved && 
                 dependency.Flags.Contains(DependencyTreeFlags.PackageNodeFlags))
             {
-                // find sdk with the same name and clean dependencyIDs
+                // Try to find an SDK dependency with the same name
                 string sdkModelId = dependency.Name;
                 string sdkId = Dependency.GetID(targetFramework, SdkRuleHandler.ProviderTypeString, sdkModelId);
 
                 if (worldBuilder.TryGetValue(sdkId, out IDependency sdk))
                 {
+                    // We are removing the package dependency related to this SDK dependency
+                    // and must undo the changes made above in BeforeAdd.
+                    //
+                    // Set to unresolved, and clear dependencies.
+
                     filterAnyChanges = true;
-                    // clean up sdk when corresponding package is removing
                     sdk = sdk.ToUnresolved(
                         schemaName: SdkReference.SchemaName,
                         dependencyIDs: ImmutableList<string>.Empty);
