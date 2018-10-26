@@ -9,6 +9,9 @@
   </ItemGroup>
 
   <PropertyGroup>
+    <!-- Workaround for https://github.com/dotnet/sdk/issues/2288 -->
+    <LanguageTargets Condition="'$(MSBuildProjectExtension)' == '.proj'">$(MSBuildToolsPath)\Microsoft.Common.targets</LanguageTargets>
+
     <Configuration Condition="'$(Configuration)' == ''">Debug</Configuration>
 
     <RestoreSources>$(RestoreSources);https://dotnet.myget.org/F/roslyn-tools/api/v3/index.json</RestoreSources>
