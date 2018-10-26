@@ -193,10 +193,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             IEnumerable<string> removedSharedImportPaths = currentSharedImportNodePaths.Except(sharedFolderProjectPaths);
             foreach (string removedSharedImportPath in removedSharedImportPaths)
             {
-                IDependency existingImportNode = currentSharedImportNodes
-                    .FirstOrDefault(node => PathHelper.IsSamePath(node.Path, removedSharedImportPath));
+                bool exists = currentSharedImportNodes.Any(node => PathHelper.IsSamePath(node.Path, removedSharedImportPath));
 
-                if (existingImportNode != null)
+                if (exists)
                 {
                     IDependencyModel removed = CreateDependencyModel(removedSharedImportPath, resolved: true);
                     dependencyChangeContext.IncludeRemovedChange(targetContext.TargetFramework, removed);
