@@ -185,7 +185,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             IEnumerable<string> addedSharedImportPaths = sharedFolderProjectPaths.Except(currentSharedImportNodePaths);
             foreach (string addedSharedImportPath in addedSharedImportPaths)
             {
-                IDependencyModel added = CreateDependencyModel(addedSharedImportPath, targetContext.TargetFramework, resolved: true);
+                IDependencyModel added = CreateDependencyModel(addedSharedImportPath, resolved: true);
                 dependencyChangeContext.IncludeAddedChange(targetContext.TargetFramework, added);
             }
 
@@ -198,16 +198,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
                 if (existingImportNode != null)
                 {
-                    IDependencyModel removed = CreateDependencyModel(removedSharedImportPath, targetContext.TargetFramework, resolved: true);
+                    IDependencyModel removed = CreateDependencyModel(removedSharedImportPath, resolved: true);
                     dependencyChangeContext.IncludeRemovedChange(targetContext.TargetFramework, removed);
                 }
             }
         }
 
-        private static IDependencyModel CreateDependencyModel(
-                    string itemSpec,
-                    ITargetFramework targetFramework,
-                    bool resolved)
+        private static IDependencyModel CreateDependencyModel(string itemSpec, bool resolved)
         {
             ImmutableDictionary<string, string> properties = ImmutableStringDictionary<string>.EmptyOrdinal;
 
