@@ -117,10 +117,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                     subTreeProviders,
                     projectItemSpecs,
                     out bool anyTfmChanges);
-                builder[targetFramework] = newTargetedSnapshot;
 
                 if (anyTfmChanges)
                 {
+                    builder[targetFramework] = newTargetedSnapshot;
                     anyChanges = true;
                 }
             }
