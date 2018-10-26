@@ -145,14 +145,19 @@ function Get-VisualStudioId(){
 }
 
 function InstallToolset {
+  if ($ci -or $log) {
+    $logCmd = "/bl:" + (Join-Path $LogDir "RestoreToolset.binlog")
+  } else {
+    $logCmd = ""
+  }
+
   if (!(Test-Path $ToolsetBuildProj)) {
-    & $MsbuildExe $ToolsetRestoreProj /t:restore /m /nologo /clp:None /warnaserror /v:quiet /p:NuGetPackageRoot=$NuGetPackageRoot /p:BaseIntermediateOutputPath=$ToolsetDir /p:ExcludeRestorePackageImports=true
+    & $MsbuildExe $ToolsetRestoreProj /t:restore /m /nologo /clp:None /warnaserror /v:quiet /p:NuGetPackageRoot=$NuGetPackageRoot /p:BaseIntermediateOutputPath=$ToolsetDir /p:ExcludeRestorePackageImports=true $logCmd
   }
 }
 
 function Build {
   if ($ci -or $log) {
-    Create-Directory($logDir)
     $logCmd = "/bl:" + (Join-Path $LogDir "Build.binlog")
   } else {
     $logCmd = ""
@@ -309,6 +314,9 @@ try {
   $ArtifactsDir = Join-Path $RepoRoot "artifacts"
   $ToolsetDir = Join-Path $ArtifactsDir "toolset"
   $LogDir = Join-Path (Join-Path $ArtifactsDir $configuration) "log"
+  $BinDir = Join-Path (Join-Path $ArtifactsDir $configuration) "bin"
+  $VSSetupDir = Join-Path (Join-Path $ArtifactsDir $configuration) "VSSetup"
+  $TestResultsDir = Join-Path (Join-Path $ArtifactsDir $configuration) "TestResults"
   $TempDir = Join-Path (Join-Path $ArtifactsDir $configuration) "tmp"
   [xml]$VersionsXml = Get-Content(Join-Path $PSScriptRoot "Versions.props")
 
@@ -334,6 +342,15 @@ try {
     $env:TMP = $TempDir
 
     Write-Host "Using $MsbuildExe"
+  }
+
+  if ($ci -or $log) {
+    # Always create these directories so publish 
+    # and writes to these folders succeed
+    Create-Directory $LogDir
+    Create-Directory $BinDir
+    Create-Directory $VSSetupDir
+    Create-Directory $TestResultsDir
   }
 
   if (!$InVSEnvironment) {
