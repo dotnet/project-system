@@ -348,7 +348,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             int index = targetFramework.ShortName.Length;
             if (id[index++] != '\\')
                 return false;
-            if (string.Compare(id, index, providerType, 0, providerType.Length, StringComparison.OrdinalIgnoreCase) != 0)
+            if (string.Compare(id, index, providerType, 0, providerType.Length, StringComparisons.DependencyProviderTypes) != 0)
                 return false;
             index += providerType.Length;
             if (id[index++] != '\\')

@@ -85,7 +85,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         /// </summary>
         public static bool IsPackage(this IDependency self)
         {
-            return self.ProviderType.Equals(PackageRuleHandler.ProviderTypeString, StringComparison.OrdinalIgnoreCase);
+            return StringComparers.DependencyProviderTypes.Equals(self.ProviderType, PackageRuleHandler.ProviderTypeString);
         }
 
         /// <summary>
@@ -93,7 +93,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         /// </summary>
         public static bool IsProject(this IDependency self)
         {
-            return self.ProviderType.Equals(ProjectRuleHandler.ProviderTypeString, StringComparison.OrdinalIgnoreCase);
+            return StringComparers.DependencyProviderTypes.Equals(self.ProviderType, ProjectRuleHandler.ProviderTypeString);
         }
 
         /// <summary>

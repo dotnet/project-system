@@ -38,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
             foreach (IDependency x in topLevelBuilder)
             {
                 if (!x.Id.Equals(dependency.Id, StringComparison.OrdinalIgnoreCase)
-                     && x.ProviderType.Equals(dependency.ProviderType, StringComparison.OrdinalIgnoreCase)
+                     && StringComparers.DependencyProviderTypes.Equals(x.ProviderType, dependency.ProviderType)
                      && x.Caption.Equals(dependency.Caption, StringComparison.OrdinalIgnoreCase))
                 {
                     matchingDependency = x;
@@ -55,7 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
                 foreach (IDependency x in topLevelBuilder)
                 {
                     if (!x.Id.Equals(dependency.Id, StringComparison.OrdinalIgnoreCase)
-                         && x.ProviderType.Equals(dependency.ProviderType, StringComparison.OrdinalIgnoreCase)
+                         && StringComparers.DependencyProviderTypes.Equals(x.ProviderType, dependency.ProviderType)
                          && x.Caption.StartsWith(dependency.Caption, StringComparison.OrdinalIgnoreCase)
                          && x.Caption.Length >= adjustedLength
                          && string.Compare(x.Caption, adjustedLength, x.OriginalItemSpec, 0, x.OriginalItemSpec.Length, StringComparison.OrdinalIgnoreCase) == 0)

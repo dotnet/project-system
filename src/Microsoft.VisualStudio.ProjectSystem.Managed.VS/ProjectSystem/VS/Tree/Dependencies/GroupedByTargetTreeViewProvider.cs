@@ -163,7 +163,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Func<IProjectTree, IEnumerable<IProjectTree>, IProjectTree> syncFunc)
         {
             var currentNodes = new List<IProjectTree>();
-            var groupedByProviderType = new Dictionary<string, List<IDependency>>(StringComparer.OrdinalIgnoreCase);
+            var groupedByProviderType = new Dictionary<string, List<IDependency>>(StringComparers.DependencyProviderTypes);
+
             foreach (IDependency dependency in targetedSnapshot.TopLevelDependencies)
             {
                 if (!dependency.Visible)

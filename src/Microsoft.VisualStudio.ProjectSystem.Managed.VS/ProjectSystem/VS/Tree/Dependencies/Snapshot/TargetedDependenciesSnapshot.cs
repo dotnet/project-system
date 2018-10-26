@@ -13,6 +13,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
     internal class TargetedDependenciesSnapshot : ITargetedDependenciesSnapshot
     {
+        private static readonly IReadOnlyDictionary<string, IProjectDependenciesSubTreeProvider> s_emptySubTreeProviderMap
+            = ImmutableDictionary.Create<string, IProjectDependenciesSubTreeProvider>(StringComparers.DependencyProviderTypes);
+
         protected TargetedDependenciesSnapshot(string projectPath,
                                              ITargetFramework targetFramework,
                                              ITargetedDependenciesSnapshot previousSnapshot = null,
@@ -70,6 +73,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             = new Dictionary<string, bool>(StringComparer.OrdinalIgnoreCase);
 
         private bool? _hasUnresolvedDependency;
+
         public bool HasUnresolvedDependency
         {
             get
@@ -98,7 +102,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         public bool CheckForUnresolvedDependencies(string providerType)
         {
             return DependenciesWorld.Values.Any(
-                    x => x.ProviderType.Equals(providerType, StringComparison.OrdinalIgnoreCase) && !x.Resolved);
+                x => StringComparers.DependencyProviderTypes.Equals(x.ProviderType, providerType) && !x.Resolved);
         }
 
         public IEnumerable<IDependency> GetDependencyChildren(IDependency dependency)
@@ -215,7 +219,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 }
             }
 
-            Dictionary<string, IProjectDependenciesSubTreeProvider> subTreeProvidersMap = GetSubTreeProviderMap(subTreeProviders);
+            IReadOnlyDictionary<string, IProjectDependenciesSubTreeProvider> subTreeProvidersMap
+                = subTreeProviders?.ToDictionary(p => p.ProviderType, StringComparers.DependencyProviderTypes)
+                  ?? s_emptySubTreeProviderMap;
 
             foreach (IDependencyModel added in changes.AddedNodes)
             {
@@ -294,22 +300,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             var newSnapshot = new TargetedDependenciesSnapshot(projectPath, targetFramework, previousSnapshot, catalogs);
             anyChanges = newSnapshot.MergeChanges(changes, snapshotFilters, subTreeProviders, projectItemSpecs);
             return newSnapshot;
-        }
-
-        private static Dictionary<string, IProjectDependenciesSubTreeProvider> GetSubTreeProviderMap(
-            IEnumerable<IProjectDependenciesSubTreeProvider> subTreeProviders)
-        {
-            var subTreeProvidersMap = new Dictionary<string, IProjectDependenciesSubTreeProvider>(
-                StringComparer.OrdinalIgnoreCase);
-            if (subTreeProviders != null)
-            {
-                foreach (IProjectDependenciesSubTreeProvider provider in subTreeProviders)
-                {
-                    subTreeProvidersMap[provider.ProviderType] = provider;
-                }
-            }
-
-            return subTreeProvidersMap;
         }
     }
 }
