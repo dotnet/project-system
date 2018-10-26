@@ -69,18 +69,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
             await EnsureInitialized();
 
-            return await ExecuteWithinLockAsync(() =>
-            {
-                return Task.FromResult(_currentAggregateProjectContext);
-            });
+            return await ExecuteWithinLockAsync(() => _currentAggregateProjectContext);
         }
 
         public Task<ConfiguredProject> GetConfiguredProject(ITargetFramework target)
         {
-            return ExecuteWithinLockAsync(() =>
-            {
-                return Task.FromResult(_currentAggregateProjectContext.GetInnerConfiguredProject(target));
-            });
+            return ExecuteWithinLockAsync(() => _currentAggregateProjectContext.GetInnerConfiguredProject(target));
         }
 
         protected async Task AddInitialSubscriptionsAsync()
@@ -93,7 +87,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                 foreach (Lazy<ICrossTargetSubscriber> subscriber in Subscribers)
                 {
                     subscriber.Value.InitializeSubscriber(this, _activeConfiguredProjectSubscriptionService);
-                                          
                 }
 
                 return Task.CompletedTask;
@@ -158,10 +151,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
         private async Task UpdateProjectContextAndSubscriptionsAsync()
         {
-            AggregateCrossTargetProjectContext previousProjectContext = await ExecuteWithinLockAsync(() =>
-            {
-                return Task.FromResult(_currentAggregateProjectContext);
-            });
+            AggregateCrossTargetProjectContext previousProjectContext = await ExecuteWithinLockAsync(() => _currentAggregateProjectContext);
 
             AggregateCrossTargetProjectContext newProjectContext = await UpdateProjectContextAsync();
             if (previousProjectContext != newProjectContext)
@@ -202,8 +192,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                     }
                     else
                     {
-                        string targetFrameworks = (string)await projectProperties.TargetFrameworks.GetValueAsync();
-
                         // Check if the current project context is up-to-date for the current active and known project configurations.
                         ProjectConfiguration activeProjectConfiguration = _commonServices.ActiveConfiguredProject.ProjectConfiguration;
                         IImmutableSet<ProjectConfiguration> knownProjectConfigurations = await _commonServices.Project.Services.ProjectConfigurationsService.GetKnownProjectConfigurationsAsync();
@@ -327,6 +315,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         private Task ExecuteWithinLockAsync(Action action)
         {
             return _gate.ExecuteWithinLockAsync(JoinableCollection, JoinableFactory, action);
+        }
+
+        private Task<T> ExecuteWithinLockAsync<T>(Func<T> func)
+        {
+            return _gate.ExecuteWithinLockAsync(JoinableCollection, JoinableFactory, func);
         }
     }
 }

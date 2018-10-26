@@ -1,11 +1,8 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Immutable;
-using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
-using Microsoft.VisualStudio.ProjectSystem.Properties;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 {
@@ -38,10 +35,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         ///     Handles the specified set of changes to a rule, and applies them
         ///     to the given <see cref="ITargetedProjectContext"/>.
         /// </summary>
-        Task HandleAsync(IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectCatalogSnapshot, IProjectCapabilitiesSnapshot>> e,
-                         IImmutableDictionary<string, IProjectChangeDescription> projectChange,
-                         ITargetedProjectContext targetedProjectContext,
-                         bool isActiveContext,
-                         T ruleChangeContext);
+        void Handle(
+            IImmutableDictionary<string, IProjectChangeDescription> projectChange,
+            ITargetedProjectContext targetedProjectContext,
+            T ruleChangeContext);
     }
 }

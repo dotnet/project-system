@@ -4,10 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
-using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.Imaging.Interop;
-using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models;
 
@@ -44,11 +42,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             return ManagedImageMonikers.NuGetGreyPrivate;
         }
 
-        public override Task HandleAsync(
-            IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectCatalogSnapshot, IProjectCapabilitiesSnapshot>> e,
+        public override void Handle(
             IImmutableDictionary<string, IProjectChangeDescription> projectChanges,
             ITargetedProjectContext context,
-            bool isActiveContext,
             DependenciesRuleChangeContext ruleChangeContext)
         {
             if (projectChanges.TryGetValue(UnresolvedRuleName, out IProjectChangeDescription unresolvedChanges)
@@ -74,8 +70,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     resolved: true,
                     unresolvedChanges: caseInsensitiveUnresolvedChanges);
             }
-
-            return Task.CompletedTask;
         }
 
         private void HandleChangesForRule(

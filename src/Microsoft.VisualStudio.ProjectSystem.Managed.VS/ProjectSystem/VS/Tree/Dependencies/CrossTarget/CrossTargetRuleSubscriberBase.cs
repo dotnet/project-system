@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 {
     internal abstract class CrossTargetRuleSubscriberBase<T> : OnceInitializedOnceDisposed, ICrossTargetSubscriber where T : IRuleChangeContext
     {
-#pragma warning disable CA2213 // OnceInitializedOnceDisposedAsync are not tracked corretly by the IDisposeable analyzer
+#pragma warning disable CA2213 // OnceInitializedOnceDisposedAsync are not tracked correctly by the IDisposeable analyzer
         private readonly SemaphoreSlim _gate = new SemaphoreSlim(initialCount: 1);
         private DisposableBag _subscriptions;
 #pragma warning restore CA2213
@@ -245,15 +245,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                     if (handler.ReceiveUpdatesWithEmptyProjectChange
                         || projectChanges.Any(x => x.Value.Difference.AnyChanges))
                     {
-                        await handler.HandleAsync(e,
-                                                  projectChanges,
-                                                  projectContextToUpdate,
-                                                  isActiveContext,
-                                                  ruleChangeContext);
+                        handler.Handle(projectChanges, projectContextToUpdate, ruleChangeContext);
                     }
                 }
 
-                await CompleteHandleAsync(ruleChangeContext);
+                CompleteHandle(ruleChangeContext);
 
                 // record all the rules that have occurred
                 _treeTelemetryService.ObserveTargetFrameworkRules(projectContextToUpdate.TargetFramework, update.ProjectChanges.Keys);
@@ -262,9 +258,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
         protected abstract T CreateRuleChangeContext(ITargetFramework target, IProjectCatalogSnapshot catalogs);
 
-        protected virtual Task CompleteHandleAsync(T ruleChangeContext)
+        protected virtual void CompleteHandle(T ruleChangeContext)
         {
-            return Task.CompletedTask;
         }
 
         protected override void Initialize()
