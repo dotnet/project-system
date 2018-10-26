@@ -124,7 +124,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
             string otherProjectPath = otherProjectSnapshot.ProjectPath;
 
-            var dependencyThatNeedChange = new List<IDependency>();
+            List<IDependency> dependencyThatNeedChange = null;
+
             foreach (ITargetedDependenciesSnapshot targetedDependencies in projectSnapshot.Targets.Values)
             {
                 foreach (IDependency dependency in targetedDependencies.TopLevelDependencies)
@@ -136,12 +137,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     if (!StringComparers.Paths.Equals(otherProjectPath, dependency.FullPath))
                         continue;
 
+                    if (dependencyThatNeedChange == null)
+                    {
+                        dependencyThatNeedChange = new List<IDependency>();
+                    }
+
                     dependencyThatNeedChange.Add(dependency);
                     break;
                 }
             }
 
-            if (dependencyThatNeedChange.Count == 0)
+            if (dependencyThatNeedChange == null || dependencyThatNeedChange.Count == 0)
             {
                 // we don't have dependency on updated project
                 return;
