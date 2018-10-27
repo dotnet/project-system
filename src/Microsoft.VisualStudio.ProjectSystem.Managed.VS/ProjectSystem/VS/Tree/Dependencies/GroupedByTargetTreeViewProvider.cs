@@ -396,10 +396,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             ApplyProjectTreePropertiesCustomization(updatedNodeParentContext, updatedValues);
 
             return node.SetProperties(
-                    caption: viewModel.Caption,
+                    caption: updatedValues.Caption,
                     browseObjectProperties: rule,
-                    icon: viewModel.Icon.ToProjectSystemType(),
-                    expandedIcon: viewModel.ExpandedIcon.ToProjectSystemType());
+                    icon: updatedValues.Icon,
+                    expandedIcon: updatedValues.ExpandedIcon);
         }
 
         private static ProjectTreeFlags FilterFlags(
