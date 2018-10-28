@@ -4,6 +4,8 @@ phases:
     timeoutInMinutes: 90
   steps:
     - script: build\CIBuild.cmd -configuration $(_configuration) -prepareMachine $(_additionalArgs)
+      env:
+        CODECOV_TOKEN: $(CODECOV_TOKEN)
     - task: PublishBuildArtifacts@1
       inputs:
         PathtoPublish: '$(Build.SourcesDirectory)\artifacts\$(_configuration)\log'
