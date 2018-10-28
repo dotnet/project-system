@@ -109,6 +109,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
                 return children;
             });
+
+            bool TryToFindDependency(string id, out IDependency dep)
+            {
+                return DependenciesWorld.TryGetValue(id, out dep) ||
+                       _topLevelDependenciesByPathMap.TryGetValue(id, out dep);
+            }
         }
 
         private bool FindUnresolvedDependenciesRecursive(IDependency dependency)
@@ -148,12 +154,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
             _unresolvedDescendantsMap[dependency.Id] = unresolved;
             return unresolved;
-        }
-
-        private bool TryToFindDependency(string id, out IDependency dependency)
-        {
-            return DependenciesWorld.TryGetValue(id, out dependency) || 
-                   _topLevelDependenciesByPathMap.TryGetValue(id, out dependency);
         }
 
         private bool MergeChanges(
@@ -255,17 +255,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             ConstructTopLevelDependenciesByPathMap();
 
             return anyChanges;
-        }
 
-        private void ConstructTopLevelDependenciesByPathMap()
-        {
-            foreach (IDependency topLevelDependency in TopLevelDependencies)
+            void ConstructTopLevelDependenciesByPathMap()
             {
-                if (!string.IsNullOrEmpty(topLevelDependency.Path))
+                foreach (IDependency topLevelDependency in TopLevelDependencies)
                 {
-                    _topLevelDependenciesByPathMap.Add(
-                        Dependency.GetID(TargetFramework, topLevelDependency.ProviderType, topLevelDependency.Path),
-                        topLevelDependency);
+                    if (!string.IsNullOrEmpty(topLevelDependency.Path))
+                    {
+                        _topLevelDependenciesByPathMap.Add(
+                            Dependency.GetID(TargetFramework, topLevelDependency.ProviderType, topLevelDependency.Path),
+                            topLevelDependency);
+                    }
                 }
             }
         }
