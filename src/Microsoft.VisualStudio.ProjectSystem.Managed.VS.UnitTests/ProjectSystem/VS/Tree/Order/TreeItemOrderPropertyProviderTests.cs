@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 
+using Microsoft.VisualStudio.ProjectSystem.References;
+
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
@@ -266,20 +268,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
                 flags: flags,
                 metadata: metadata);
 
-        private static ProjectTreeCustomizablePropertyValues GetInitialValues() =>
-            new ProjectTreeCustomizablePropertyValues { DisplayOrder = 0 };
-
-        private class ProjectTreeCustomizablePropertyValues :
-            IProjectTreeCustomizablePropertyValues,
-            IProjectTreeCustomizablePropertyValues2
-        {
-            public ProjectTreeFlags Flags { get; set; }
-
-            public ProjectImageMoniker Icon { get; set; }
-
-            public ProjectImageMoniker ExpandedIcon { get; set; }
-
-            public int DisplayOrder { get; set; }
-        }
+        private static ReferencesProjectTreeCustomizablePropertyValues GetInitialValues() =>
+            new ReferencesProjectTreeCustomizablePropertyValues();
     }
 }
