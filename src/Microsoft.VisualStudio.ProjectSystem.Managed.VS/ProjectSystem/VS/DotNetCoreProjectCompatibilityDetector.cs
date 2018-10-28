@@ -352,7 +352,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             // Do we need to update our cached data? Note that since the download could take a long time like tens of seconds we don't really want to
             // start showing messages to the user well after their project is opened and they are interacting with it. Thus we start a task to update the 
             // file, so that the next time we come here, we have updated data.
-            if (_curVersionCompatibilityData != null && _timeCurVersionDataLastUpdatedUtc.AddHours(CacheFileValidHours).IsLaterThan(DateTime.UtcNow))
+            if (_curVersionCompatibilityData != null && _timeCurVersionDataLastUpdatedUtc.AddHours(CacheFileValidHours) > DateTime.UtcNow)
             {
                 return _curVersionCompatibilityData;
             }

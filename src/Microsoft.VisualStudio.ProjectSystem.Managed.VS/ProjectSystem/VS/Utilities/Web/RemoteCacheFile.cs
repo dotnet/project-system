@@ -28,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
         public bool CacheFileIsStale()
         {
             return !_fileSystem.FileExists(_cacheFilePath) ||
-                   _fileSystem.LastFileWriteTimeUtc(_cacheFilePath).Add(_cacheExpiration).IsEarlierThan(DateTime.UtcNow);
+                   _fileSystem.LastFileWriteTimeUtc(_cacheFilePath).Add(_cacheExpiration) < DateTime.UtcNow;
         }
 
         /// <summary>
