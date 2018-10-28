@@ -84,6 +84,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             if (checkForUnresolvedDependencies.HasValue)
             {
                 mock.Setup(x => x.CheckForUnresolvedDependencies(It.IsAny<string>())).Returns(checkForUnresolvedDependencies.Value);
+                mock.Setup(x => x.CheckForUnresolvedDependencies(It.IsAny<IDependency>())).Returns(checkForUnresolvedDependencies.Value);
             }
 
             return mock;

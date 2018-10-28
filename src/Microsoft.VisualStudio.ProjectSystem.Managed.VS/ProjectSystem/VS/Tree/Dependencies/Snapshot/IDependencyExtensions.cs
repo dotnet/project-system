@@ -34,6 +34,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         /// </summary>
         public static IDependencyViewModel ToViewModel(this IDependency self, ITargetedDependenciesSnapshot snapshot)
         {
+            bool showAsResolved = self.Resolved && !snapshot.CheckForUnresolvedDependencies(self);
+
             return new DependencyViewModel
             {
                 Caption = self.Caption,
@@ -41,8 +43,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 SchemaName = self.SchemaName,
                 SchemaItemType = self.SchemaItemType,
                 Priority = self.Priority,
-                Icon = self.IsOrHasUnresolvedDependency(snapshot) ? self.UnresolvedIcon : self.Icon,
-                ExpandedIcon = self.IsOrHasUnresolvedDependency(snapshot) ? self.UnresolvedExpandedIcon : self.ExpandedIcon,
+                Icon = showAsResolved ? self.Icon : self.UnresolvedIcon,
+                ExpandedIcon = showAsResolved ? self.ExpandedIcon : self.UnresolvedExpandedIcon,
                 Properties = self.Properties,
                 Flags = self.Flags,
                 OriginalModel = self
