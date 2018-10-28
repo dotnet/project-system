@@ -105,7 +105,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             {
                 if (!_dependenciesChildrenMap.TryGetValue(dependency.Id, out IList<IDependency> children))
                 {
-                    children = new List<IDependency>();
+                    children = new List<IDependency>(dependency.DependencyIDs.Count);
+
                     foreach (string id in dependency.DependencyIDs)
                     {
                         if (TryToFindDependency(id, out IDependency child))
