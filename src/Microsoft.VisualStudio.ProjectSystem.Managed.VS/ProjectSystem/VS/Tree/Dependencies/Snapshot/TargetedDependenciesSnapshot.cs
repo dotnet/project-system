@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -55,10 +56,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
         public ImmutableDictionary<string, IDependency> DependenciesWorld { get; private set; } = ImmutableStringDictionary<IDependency>.EmptyOrdinalIgnoreCase;
 
-        private readonly object _snapshotLock = new object();
-
         private readonly Dictionary<string, IDependency> _topLevelDependenciesByPathMap = new Dictionary<string, IDependency>(StringComparer.OrdinalIgnoreCase);
-        private readonly Dictionary<string, IList<IDependency>> _dependenciesChildrenMap = new Dictionary<string, IList<IDependency>>(StringComparer.OrdinalIgnoreCase);
+        private readonly ConcurrentDictionary<string, IList<IDependency>> _dependenciesChildrenMap = new ConcurrentDictionary<string, IList<IDependency>>(StringComparer.OrdinalIgnoreCase);
         private readonly Dictionary<string, bool> _unresolvedDescendantsMap = new Dictionary<string, bool>(StringComparer.OrdinalIgnoreCase);
 
         private bool? _hasUnresolvedDependency;
@@ -96,25 +95,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
         public IEnumerable<IDependency> GetDependencyChildren(IDependency dependency)
         {
-            lock (_snapshotLock)
+            return _dependenciesChildrenMap.GetOrAdd(dependency.Id, _ =>
             {
-                if (!_dependenciesChildrenMap.TryGetValue(dependency.Id, out IList<IDependency> children))
+                var children = new List<IDependency>(dependency.DependencyIDs.Count);
+
+                foreach (string id in dependency.DependencyIDs)
                 {
-                    children = new List<IDependency>(dependency.DependencyIDs.Count);
-
-                    foreach (string id in dependency.DependencyIDs)
+                    if (TryToFindDependency(id, out IDependency child))
                     {
-                        if (TryToFindDependency(id, out IDependency child))
-                        {
-                            children.Add(child);
-                        }
+                        children.Add(child);
                     }
-
-                    _dependenciesChildrenMap.Add(dependency.Id, children);
                 }
 
                 return children;
-            }
+            });
         }
 
         private bool FindUnresolvedDependenciesRecursive(IDependency dependency)
