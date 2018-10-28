@@ -41,13 +41,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         /// </summary>
         internal TargetedDependenciesSnapshot(IDictionary<string, IDependency> dependenciesWorld, IEnumerable<IDependency> topLevelDependencies)
         {
-            DependenciesWorld = ImmutableStringDictionary<IDependency>.EmptyOrdinalIgnoreCase.AddRange(dependenciesWorld);
-            ImmutableHashSet<IDependency> dependencies = ImmutableHashSet<IDependency>.Empty;
-            foreach (IDependency d in topLevelDependencies)
-            {
-                dependencies = dependencies.Add(d);
-            }
-            TopLevelDependencies = dependencies;
+            DependenciesWorld = dependenciesWorld.ToImmutableDictionary(StringComparer.OrdinalIgnoreCase);
+            TopLevelDependencies = topLevelDependencies.ToImmutableHashSet();
         }
 
         public string ProjectPath { get; }
