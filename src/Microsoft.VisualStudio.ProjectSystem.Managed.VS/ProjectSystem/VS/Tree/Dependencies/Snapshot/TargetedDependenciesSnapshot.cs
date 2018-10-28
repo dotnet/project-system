@@ -57,7 +57,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         public ImmutableDictionary<string, IDependency> DependenciesWorld { get; private set; } = ImmutableStringDictionary<IDependency>.EmptyOrdinalIgnoreCase;
 
         private readonly Dictionary<string, IDependency> _topLevelDependenciesByPathMap = new Dictionary<string, IDependency>(StringComparer.OrdinalIgnoreCase);
-        private readonly ConcurrentDictionary<string, IList<IDependency>> _dependenciesChildrenMap = new ConcurrentDictionary<string, IList<IDependency>>(StringComparer.OrdinalIgnoreCase);
+        private readonly ConcurrentDictionary<string, ImmutableArray<IDependency>> _dependenciesChildrenMap = new ConcurrentDictionary<string, ImmutableArray<IDependency>>(StringComparer.OrdinalIgnoreCase);
         private readonly ConcurrentDictionary<string, bool> _unresolvedDescendantsMap = new ConcurrentDictionary<string, bool>(StringComparer.OrdinalIgnoreCase);
 
         private bool? _hasUnresolvedDependency;
@@ -97,7 +97,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         {
             return _dependenciesChildrenMap.GetOrAdd(dependency.Id, _ =>
             {
-                var children = new List<IDependency>(dependency.DependencyIDs.Count);
+                ImmutableArray<IDependency>.Builder children =
+                    ImmutableArray.CreateBuilder<IDependency>(dependency.DependencyIDs.Count);
 
                 foreach (string id in dependency.DependencyIDs)
                 {
@@ -107,7 +108,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                     }
                 }
 
-                return children;
+                return children.Count == children.Capacity
+                    ? children.MoveToImmutable()
+                    : children.ToImmutable();
             });
 
             bool TryToFindDependency(string id, out IDependency dep)
