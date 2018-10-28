@@ -58,7 +58,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
         private readonly Dictionary<string, IDependency> _topLevelDependenciesByPathMap = new Dictionary<string, IDependency>(StringComparer.OrdinalIgnoreCase);
         private readonly ConcurrentDictionary<string, IList<IDependency>> _dependenciesChildrenMap = new ConcurrentDictionary<string, IList<IDependency>>(StringComparer.OrdinalIgnoreCase);
-        private readonly Dictionary<string, bool> _unresolvedDescendantsMap = new Dictionary<string, bool>(StringComparer.OrdinalIgnoreCase);
+        private readonly ConcurrentDictionary<string, bool> _unresolvedDescendantsMap = new ConcurrentDictionary<string, bool>(StringComparer.OrdinalIgnoreCase);
 
         private bool? _hasUnresolvedDependency;
 
