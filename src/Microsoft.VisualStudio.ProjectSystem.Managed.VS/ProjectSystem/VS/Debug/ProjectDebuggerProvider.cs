@@ -52,7 +52,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// Import the LaunchTargetProviders which know how to run profiles
         /// </summary>
         [ImportMany]
-        private OrderPrecedenceImportCollection<IDebugProfileLaunchTargetsProvider> ProfileLaunchTargetsProviders { get; set; }
+        private OrderPrecedenceImportCollection<IDebugProfileLaunchTargetsProvider> ProfileLaunchTargetsProviders { get; }
 
         private ILaunchSettingsProvider LaunchSettingsProvider { get; }
 

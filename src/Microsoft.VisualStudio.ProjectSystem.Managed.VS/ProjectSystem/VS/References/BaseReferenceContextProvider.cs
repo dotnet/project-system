@@ -51,12 +51,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
         /// </summary>
         [ImportMany]
         [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "Called by MEF")]
-        private OrderPrecedenceImportCollection<IVsReferenceManagerUserAsync, IVsReferenceManagerUserComponentMetadataView> VsReferenceManagerUsers { get; set; }
+        private OrderPrecedenceImportCollection<IVsReferenceManagerUserAsync, IVsReferenceManagerUserComponentMetadataView> VsReferenceManagerUsers { get; }
 
         /// <summary>
         /// Gets the configured project.
         /// </summary>
-        protected ConfiguredProject ConfiguredProject { get; private set; }
+        protected ConfiguredProject ConfiguredProject { get; }
 
         #region IVsReferenceManagerUserAsync
 

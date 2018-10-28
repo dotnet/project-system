@@ -42,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Snapshot = snapshot;
         }
 
-        public IDependenciesSnapshot Snapshot { get; private set; }
+        public IDependenciesSnapshot Snapshot { get; }
     }
 
     internal class SnapshotProviderUnloadingEventArgs : EventArgs
