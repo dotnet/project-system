@@ -48,10 +48,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
             return false;
         }
 
-        protected IDependency GetDependency(
-            IGraphContext graphContext,
-            GraphNode inputGraphNode,
-            out IDependenciesSnapshot snapshot)
+        protected IDependency GetDependency(GraphNode inputGraphNode, out IDependenciesSnapshot snapshot)
         {
             snapshot = null;
 
