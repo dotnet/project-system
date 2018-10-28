@@ -89,11 +89,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
         public bool CheckForUnresolvedDependencies(string providerType)
         {
-            return DependenciesWorld.Values.Any(
-                x => StringComparers.DependencyProviderTypes.Equals(x.ProviderType, providerType) && !x.Resolved);
+            foreach ((string _, IDependency dependency) in DependenciesWorld)
+            {
+                if (StringComparers.DependencyProviderTypes.Equals(dependency.ProviderType, providerType) && 
+                    !dependency.Resolved)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         public IEnumerable<IDependency> GetDependencyChildren(IDependency dependency)
+        {
+            return GetDependencyChildrenInternal(dependency);
+        }
+
+        private ImmutableArray<IDependency> GetDependencyChildrenInternal(IDependency dependency)
         {
             return _dependenciesChildrenMap.GetOrAdd(dependency.Id, _ =>
             {
@@ -126,7 +139,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
             if (dependency.DependencyIDs.Count > 0)
             {
-                foreach (IDependency child in GetDependencyChildren(dependency))
+                foreach (IDependency child in GetDependencyChildrenInternal(dependency))
                 {
                     if (!child.Resolved)
                     {
