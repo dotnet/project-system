@@ -11,9 +11,9 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.Actions
 {
-    internal class GraphActionHandlerBase : IDependenciesGraphActionHandler
+    internal abstract class GraphActionHandlerBase : IDependenciesGraphActionHandler
     {
-        public GraphActionHandlerBase(IDependenciesGraphBuilder builder,
+        protected GraphActionHandlerBase(IDependenciesGraphBuilder builder,
                                       IAggregateDependenciesSnapshotProvider aggregateSnapshotProvider)
         {
             Builder = builder;
