@@ -11,24 +11,32 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
     public class DependencyModelTests
     {
+        private class DependencyModelStub : DependencyModel
+        {
+            public DependencyModelStub(string providerType, string path, string originalItemSpec, ProjectTreeFlags flags, bool resolved, bool isImplicit, IImmutableDictionary<string, string> properties)
+                : base(providerType, path, originalItemSpec, flags, resolved, isImplicit, properties)
+            {
+            }
+        }
+
         [Fact]
         public void Constructor_WhenRequiredParamsNotProvided_ShouldThrow()
         {
             Assert.Throws<ArgumentNullException>("providerType", () =>
             {
-                new DependencyModel(null, null, "", ProjectTreeFlags.Empty, false, false, null);
+                new DependencyModelStub(null, null, "", ProjectTreeFlags.Empty, false, false, null);
             });
 
             Assert.Throws<ArgumentNullException>("path", () =>
             {
-                new DependencyModel("sometype", null, "", ProjectTreeFlags.Empty, false, false, null);
+                new DependencyModelStub("sometype", null, "", ProjectTreeFlags.Empty, false, false, null);
             });
         }
 
         [Fact]
         public void Constructor_WhenOptionalValuesNotProvided_ShouldSetDefaults()
         {
-            var model = new DependencyModel(
+            var model = new DependencyModelStub(
                 providerType: "somProvider",
                 path: "somePath",
                 originalItemSpec: null,
@@ -157,7 +165,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         [Fact]
         public void Visible_True()
         {
-            var dependencyModel = new DependencyModel(
+            var dependencyModel = new DependencyModelStub(
                 providerType: "someProvider",
                 path: "somePath",
                 originalItemSpec: "someItemSpec",
@@ -172,7 +180,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         [Fact]
         public void Visible_False()
         {
-            var dependencyModel = new DependencyModel(
+            var dependencyModel = new DependencyModelStub(
                 providerType: "someProvider",
                 path: "somePath",
                 originalItemSpec: "someItemSpec",
@@ -187,7 +195,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         [Fact]
         public void Visible_TrueWhenNotSpecified()
         {
-            var dependencyModel = new DependencyModel(
+            var dependencyModel = new DependencyModelStub(
                 providerType: "someProvider",
                 path: "somePath",
                 originalItemSpec: "someItemSpec",

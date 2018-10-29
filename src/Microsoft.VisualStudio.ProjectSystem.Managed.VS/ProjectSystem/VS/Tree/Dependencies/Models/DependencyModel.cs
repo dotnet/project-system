@@ -7,9 +7,9 @@ using Microsoft.VisualStudio.Imaging.Interop;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 {
-    internal class DependencyModel : IDependencyModel
+    internal abstract class DependencyModel : IDependencyModel
     {
-        public DependencyModel(
+        protected DependencyModel(
             string providerType,
             string path,
             string originalItemSpec,
