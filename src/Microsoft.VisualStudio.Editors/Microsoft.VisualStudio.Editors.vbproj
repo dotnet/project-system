@@ -18,6 +18,9 @@
     <PackageReference Include="Microsoft.VisualStudio.LanguageServices" />
     <PackageReference Include="Microsoft.VisualStudio.Setup.Configuration.Interop" />
     <PackageReference Include="Microsoft.Build.Tasks.Core" />
+    
+    <!-- Workaround https://github.com/NuGet/Home/issues/7446 -->
+    <Reference Include="$(NuGetPackageRoot)Microsoft.VisualStudio.Setup.Configuration.Interop\$(MicrosoftVisualStudioSetupConfigurationInteropVersion)\lib\net35\Microsoft.VisualStudio.Setup.Configuration.Interop.dll" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Microsoft.VisualStudio.AppDesigner\Microsoft.VisualStudio.AppDesigner.vbproj" />
