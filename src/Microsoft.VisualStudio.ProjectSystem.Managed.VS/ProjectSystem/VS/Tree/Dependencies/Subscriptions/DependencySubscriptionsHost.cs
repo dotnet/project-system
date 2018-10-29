@@ -273,7 +273,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         {
             bool anyChanges;
 
-            IImmutableSet<string> projectItemSpecs = GetProjectItemSpecsFromSnapshot(catalogs);
+            IImmutableSet<string> projectItemSpecs = GetProjectItemSpecsFromSnapshot();
 
             // Note: we are updating existing snapshot, not receiving a complete new one. Thus we must
             // ensure incremental updates are done in the correct order. This lock ensures that here.
@@ -296,29 +296,37 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 // avoid unnecessary tree updates
                 ScheduleDependenciesUpdate(token);
             }
-        }
 
-        private static IImmutableSet<string> GetProjectItemSpecsFromSnapshot(IProjectCatalogSnapshot catalogs)
-        {
-            // We don't have catalog snapshot, we're likely updating because one of our project 
-            // dependencies changed. Just return 'no data'
-            if (catalogs == null)
-                return null;
+            return;
 
-            ImmutableHashSet<string>.Builder projectItemSpecs = ImmutableHashSet.CreateBuilder(StringComparer.OrdinalIgnoreCase);
-
-            foreach (ProjectItemInstance item in catalogs.Project.ProjectInstance.Items)
+            IImmutableSet<string> GetProjectItemSpecsFromSnapshot()
             {
-                if (item.IsImported())
-                    continue;
+                // We don't have catalog snapshot, we're likely updating because one of our project 
+                // dependencies changed. Just return 'no data'
+                if (catalogs == null)
+                {
+                    return null;
+                }
 
-                // Returns unescaped evaluated include
-                string itemSpec = item.EvaluatedInclude;
-                if (itemSpec.Length > 0)
-                    projectItemSpecs.Add(itemSpec);
+                ImmutableHashSet<string>.Builder itemSpecs = ImmutableHashSet.CreateBuilder(StringComparer.OrdinalIgnoreCase);
+
+                foreach (ProjectItemInstance item in catalogs.Project.ProjectInstance.Items)
+                {
+                    if (item.IsImported())
+                    {
+                        continue;
+                    }
+
+                    // Returns unescaped evaluated include
+                    string itemSpec = item.EvaluatedInclude;
+                    if (itemSpec.Length != 0)
+                    {
+                        itemSpecs.Add(itemSpec);
+                    }
+                }
+
+                return itemSpecs.ToImmutable();
             }
-
-            return projectItemSpecs.ToImmutable();
         }
 
         private void ScheduleDependenciesUpdate(CancellationToken token = default)
