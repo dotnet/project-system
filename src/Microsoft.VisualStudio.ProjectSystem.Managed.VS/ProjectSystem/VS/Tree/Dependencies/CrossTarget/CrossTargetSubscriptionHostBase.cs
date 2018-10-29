@@ -129,10 +129,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
             await EnsureInitialized();
 
-            await OnProjectChangedCoreAsync(e, handlerType);
+            await OnProjectChangedCoreAsync(e);
         }
 
-        private async Task OnProjectChangedCoreAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e, RuleHandlerType handlerType)
+        private async Task OnProjectChangedCoreAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e)
         {
             // If "TargetFrameworks" property has changed, we need to refresh the project context and subscriptions.
             if (HasTargetFrameworksChanged(e))
@@ -235,7 +235,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                     {
                         SubscribeToConfiguredProject(
                             configuredProject.Services.ProjectSubscription,
-                            e => OnProjectChangedCoreAsync(e, RuleHandlerType.Evaluation));
+                            e => OnProjectChangedCoreAsync(e)); // evaluation
                     }
 
                     foreach (Lazy<ICrossTargetSubscriber> subscriber in Subscribers)
