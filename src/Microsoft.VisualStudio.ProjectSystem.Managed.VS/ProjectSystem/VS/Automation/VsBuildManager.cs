@@ -4,19 +4,17 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.ProjectSystem.VS.ConnectionPoint;
-using Microsoft.VisualStudio.ProjectSystem.VS.Interop;
-using Microsoft.VisualStudio.Shell;
 using VSLangProj;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
 {
     /// <summary>
-    /// Undocumented.
+    /// Manages the portable executable (PE) files produced by running custom tools.
     /// </summary>
     [Export(typeof(BuildManager))]
     [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
     [Order(Order.Default)]
-    internal class VsBuildManager : ConnectionPointContainer,
+    internal class VSBuildManager : ConnectionPointContainer,
                                     IEventSource<_dispBuildManagerEvents>,
                                     BuildManager,
                                     BuildManagerEvents
@@ -26,10 +24,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         private readonly IUnconfiguredProjectCommonServices _unconfiguredProjectServices;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="VsBuildManager"/> class.
+        /// Initializes a new instance of the <see cref="VSBuildManager"/> class.
         /// </summary>
         [ImportingConstructor]
-        internal VsBuildManager(
+        internal VSBuildManager(
             [Import(ExportContractNames.VsTypes.CpsVSProject)] VSLangProj.VSProject vsProject,
             IUnconfiguredProjectCommonServices unconfiguredProjectServices)
         {
@@ -41,37 +39,46 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         #region _dispBuildManagerEvents_Event Members
 
         /// <summary>
-        /// Undocumented.
+        /// Occurs when a design time output moniker is deleted.
         /// </summary>
         public event _dispBuildManagerEvents_DesignTimeOutputDeletedEventHandler DesignTimeOutputDeleted;
 
         /// <summary>
-        /// Undocumented.
+        /// Occurs when a design time output moniker is dirty.
         /// </summary>
         public event _dispBuildManagerEvents_DesignTimeOutputDirtyEventHandler DesignTimeOutputDirty;
 
         #endregion
 
         /// <summary>
-        /// Undocumented.
+        /// Gets the project of which the selected item is a part.
         /// </summary>
-        public virtual EnvDTE.Project ContainingProject
+        public EnvDTE.Project ContainingProject
         {
             get { return _vsProject.Project; }
         }
 
         /// <summary>
-        /// Undocumented.
+        /// Gets the top-level extensibility object.
         /// </summary>
-        public virtual EnvDTE.DTE DTE
+        public EnvDTE.DTE DTE
         {
             get { return _vsProject.DTE; }
         }
 
         /// <summary>
-        /// Undocumented.
+        /// Gets the immediate parent object of a given object.
         /// </summary>
-        public virtual object DesignTimeOutputMonikers
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1065:DoNotRaiseExceptionsInUnexpectedLocations")]
+        public object Parent
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        /// <summary>
+        /// Gets the temporary portable executable (PE) monikers for a project.
+        /// </summary>
+        public object DesignTimeOutputMonikers
         {
             get
             {
@@ -104,21 +111,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             }
         }
 
-        /// <summary>
-        /// Undocumented.
-        /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1065:DoNotRaiseExceptionsInUnexpectedLocations")]
-        public virtual object Parent
-        {
-            get { throw new NotImplementedException(); }
-        }
-
         #region BuildManager Members
 
         /// <summary>
-        /// Undocumented.
+        /// Builds a temporary portable executable (PE) and returns its description in an XML string.
         /// </summary>
-        public virtual string BuildDesignTimeOutput(string bstrOutputMoniker)
+        public string BuildDesignTimeOutput(string bstrOutputMoniker)
         {
             var languageName = _unconfiguredProjectServices.ThreadingService.ExecuteSynchronously(async () =>
             {
@@ -141,18 +139,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
 
         #region IEventSource<_dispBuildManagerEvents> Members
 
-        /// <summary>
-        /// Undocumented.
-        /// </summary>
         void IEventSource<_dispBuildManagerEvents>.OnSinkAdded(_dispBuildManagerEvents sink)
         {
             DesignTimeOutputDeleted += new _dispBuildManagerEvents_DesignTimeOutputDeletedEventHandler(sink.DesignTimeOutputDeleted);
             DesignTimeOutputDirty += new _dispBuildManagerEvents_DesignTimeOutputDirtyEventHandler(sink.DesignTimeOutputDirty);
         }
 
-        /// <summary>
-        /// Undocumented.
-        /// </summary>
         void IEventSource<_dispBuildManagerEvents>.OnSinkRemoved(_dispBuildManagerEvents sink)
         {
             DesignTimeOutputDeleted -= new _dispBuildManagerEvents_DesignTimeOutputDeletedEventHandler(sink.DesignTimeOutputDeleted);
@@ -162,17 +154,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         #endregion
 
         /// <summary>
-        /// Undocumented.
+        /// Occurs when a design time output moniker is deleted.
         /// </summary>
-        protected virtual void OnDesignTimeOutputDeleted(string outputMoniker)
+        protected void OnDesignTimeOutputDeleted(string outputMoniker)
         {
             DesignTimeOutputDeleted?.Invoke(outputMoniker);
         }
 
         /// <summary>
-        /// Undocumented.
+        /// Occurs when a design time output moniker is dirty.
         /// </summary>
-        protected virtual void OnDesignTimeOutputDirty(string outputMoniker)
+        protected void OnDesignTimeOutputDirty(string outputMoniker)
         {
             DesignTimeOutputDirty?.Invoke(outputMoniker);
         }
