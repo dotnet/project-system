@@ -34,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         public void ImportsAndEventsAsNull()
         {
             var imports = Mock.Of<Imports>();
-            var events = Mock.Of<VSProjectEvents>();
+            var events = Mock.Of<VSLangProj.VSProjectEvents>();
             var innerVSProjectMock = new Mock<VSLangProj.VSProject>();
 
             innerVSProjectMock.Setup(p => p.Imports)
@@ -61,10 +61,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             {
                 new Lazy<Imports, IOrderPrecedenceMetadataView>(() => imports, IOrderPrecedenceMetadataViewFactory.Create("VisualBasic"))
             };
-            var events = Mock.Of<VSProjectEvents>();
-            var vsProjectEventsImpl = new OrderPrecedenceImportCollection<VSProjectEvents>(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst, (UnconfiguredProject)null)
+            var events = Mock.Of<VSLangProj.VSProjectEvents>();
+            var vsProjectEventsImpl = new OrderPrecedenceImportCollection<VSLangProj.VSProjectEvents>(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst, (UnconfiguredProject)null)
             {
-                new Lazy<VSProjectEvents, IOrderPrecedenceMetadataView>(() => events, IOrderPrecedenceMetadataViewFactory.Create("VisualBasic"))
+                new Lazy<VSLangProj.VSProjectEvents, IOrderPrecedenceMetadataView>(() => events, IOrderPrecedenceMetadataViewFactory.Create("VisualBasic"))
             };
 
             var innerVSProjectMock = new Mock<VSLangProj.VSProject>();
@@ -239,7 +239,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
                 ImportsImpl = importsImpl;
             }
 
-            internal void SetVSProjectEventsImpl(OrderPrecedenceImportCollection<VSProjectEvents> vsProjectEventsImpl)
+            internal void SetVSProjectEventsImpl(OrderPrecedenceImportCollection<VSLangProj.VSProjectEvents> vsProjectEventsImpl)
             {
                 VSProjectEventsImpl = vsProjectEventsImpl;
             }

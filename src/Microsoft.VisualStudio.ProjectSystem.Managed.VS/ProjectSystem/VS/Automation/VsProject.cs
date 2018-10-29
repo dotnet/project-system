@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.ComponentModel.Composition;
@@ -45,14 +45,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             _projectProperties = projectProperties;
             _buildManager = buildManager;
             ImportsImpl = new OrderPrecedenceImportCollection<Imports>(projectCapabilityCheckProvider: project);
-            VSProjectEventsImpl = new OrderPrecedenceImportCollection<VSProjectEvents>(projectCapabilityCheckProvider: project);
+            VSProjectEventsImpl = new OrderPrecedenceImportCollection<VSLangProj.VSProjectEvents>(projectCapabilityCheckProvider: project);
         }
 
         [ImportMany]
         internal OrderPrecedenceImportCollection<Imports> ImportsImpl { get; set; }
 
         [ImportMany]
-        internal OrderPrecedenceImportCollection<VSProjectEvents> VSProjectEventsImpl { get; set; }
+        internal OrderPrecedenceImportCollection<VSLangProj.VSProjectEvents> VSProjectEventsImpl { get; set; }
 
         public VSLangProj.References References => _vsProject.References;
 
@@ -84,11 +84,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             }
         }
 
-        public VSProjectEvents Events
+        public VSLangProj.VSProjectEvents Events
         {
             get
             {
-                Lazy<VSProjectEvents, IOrderPrecedenceMetadataView> vsprojectevent = VSProjectEventsImpl.FirstOrDefault();
+                Lazy<VSLangProj.VSProjectEvents, IOrderPrecedenceMetadataView> vsprojectevent = VSProjectEventsImpl.FirstOrDefault();
                 if (vsprojectevent != null)
                 {
                     return vsprojectevent.Value;
