@@ -98,7 +98,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             // Check to see if a solution is already open. If so we set _solutionOpened to true so that subsequent projects added to 
             // this solution are processed.
             if (ErrorHandler.Succeeded(solution.GetProperty((int)__VSPROPID4.VSPROPID_IsSolutionFullyLoaded, out object isFullyLoaded)) &&
-                isFullyLoaded is true)
+                isFullyLoaded is bool isFullyLoadedBool && 
+                isFullyLoadedBool)
             {
                 _solutionOpened = true;
             }
