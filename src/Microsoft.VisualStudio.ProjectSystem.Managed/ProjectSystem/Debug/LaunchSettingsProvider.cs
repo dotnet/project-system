@@ -646,7 +646,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// file with the name LaunchSettings.json. We don't need to special case because, if a file with this name
         /// changes we will only check if the one we cared about was modified.
         /// </summary>
-        protected void LaunchSettingsFile_Changed(object sender, FileSystemEventArgs e)
+        private void LaunchSettingsFile_Changed(object sender, FileSystemEventArgs e)
+        {
+#pragma warning disable VSTHRD110 // Observe result of async calls
+            HandleLaunchSettingsFileChangedAsync();
+#pragma warning restore VSTHRD110 // Observe result of async calls
+        }
+        
+        protected Task HandleLaunchSettingsFileChangedAsync()
         {
             if (!IgnoreFileChanges)
             {
@@ -658,9 +665,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 // throttle.
                 if (!FileManager.FileExists(fileName) || FileManager.LastFileWriteTime(fileName) != LastSettingsFileSyncTime)
                 {
-                    FileChangeScheduler.ScheduleAsyncTask(async token =>
+                    return FileChangeScheduler.ScheduleAsyncTask(async token =>
                     {
-
                         if (token.IsCancellationRequested)
                         {
                             return;
@@ -671,9 +677,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                                         {
                                             await UpdateProfilesAsync(null);
                                         });
-                    });
+                    }).Task;
                 }
             }
+
+            return null;
         }
 
         /// <summary>

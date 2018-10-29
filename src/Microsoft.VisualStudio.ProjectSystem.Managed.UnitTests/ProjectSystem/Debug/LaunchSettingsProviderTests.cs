@@ -411,10 +411,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             // Write file and generate disk change
             var eventArgs = new FileSystemEventArgs(WatcherChangeTypes.Changed, Path.GetDirectoryName(provider.LaunchSettingsFile), Path.GetFileName(provider.LaunchSettingsFile));
             moqFS.WriteAllText(provider.LaunchSettingsFile, JsonString1);
-            provider.LaunchSettingsFile_ChangedTest(eventArgs);
-
             // Wait for completion of task
-            await provider.FileChangeScheduler.LatestScheduledTask;
+            await provider.LaunchSettingsFile_ChangedTest(eventArgs);
+
             Assert.NotNull(provider.CurrentSnapshot);
             Assert.Equal(4, provider.CurrentSnapshot.Profiles.Count);
         }
@@ -433,14 +432,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             // Set the ignore flag. It should be ignored.
             provider.LastSettingsFileSyncTimeTest = DateTime.MinValue;
             provider.SetIgnoreFileChanges(true);
-            provider.LaunchSettingsFile_ChangedTest(eventArgs);
-            Assert.Null(provider.FileChangeScheduler.LatestScheduledTask);
+            Assert.Null(provider.LaunchSettingsFile_ChangedTest(eventArgs));
             Assert.Null(provider.CurrentSnapshot);
 
             // Should run this time
             provider.SetIgnoreFileChanges(false);
-            provider.LaunchSettingsFile_ChangedTest(eventArgs);
-            await provider.FileChangeScheduler.LatestScheduledTask;
+            await provider.LaunchSettingsFile_ChangedTest(eventArgs);
             Assert.NotNull(provider.CurrentSnapshot);
             Assert.Equal(4, provider.CurrentSnapshot.Profiles.Count);
         }
@@ -454,20 +451,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             // Write file and generate disk change
             var eventArgs = new FileSystemEventArgs(WatcherChangeTypes.Changed, Path.GetDirectoryName(provider.LaunchSettingsFile), Path.GetFileName(provider.LaunchSettingsFile));
             moqFS.WriteAllText(provider.LaunchSettingsFile, JsonString1);
-            provider.LaunchSettingsFile_ChangedTest(eventArgs);
-            await provider.FileChangeScheduler.LatestScheduledTask;
+            await provider.LaunchSettingsFile_ChangedTest(eventArgs);
             Assert.Equal(4, provider.CurrentSnapshot.Profiles.Count);
 
             // Write new file, but set the timestamp to match
             moqFS.WriteAllText(provider.LaunchSettingsFile, JsonStringWithWebSettings);
             provider.LastSettingsFileSyncTimeTest = moqFS.LastFileWriteTime(provider.LaunchSettingsFile);
-            provider.LaunchSettingsFile_ChangedTest(eventArgs);
-            await provider.FileChangeScheduler.LatestScheduledTask;
+            Assert.Null(provider.LaunchSettingsFile_ChangedTest(eventArgs));
             AssertEx.CollectionLength(provider.CurrentSnapshot.Profiles, 4);
 
             moqFS.WriteAllText(provider.LaunchSettingsFile, JsonStringWithWebSettings);
-            provider.LaunchSettingsFile_ChangedTest(eventArgs);
-            await provider.FileChangeScheduler.LatestScheduledTask;
+            await provider.LaunchSettingsFile_ChangedTest(eventArgs);
             AssertEx.CollectionLength(provider.CurrentSnapshot.Profiles, 2);
 
         }
@@ -901,10 +895,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         public Task UpdateProfilesAsyncTest(string activeProfile) { return UpdateProfilesAsync(activeProfile); }
         public void SetIgnoreFileChanges(bool value) { IgnoreFileChanges = value; }
         public Task<bool> SettingsFileHasChangedAsyncTest() { return SettingsFileHasChangedAsync(); }
-        public void LaunchSettingsFile_ChangedTest(FileSystemEventArgs args)
-        {
-            LaunchSettingsFile_Changed(null, args);
-        }
+        public Task LaunchSettingsFile_ChangedTest(FileSystemEventArgs args) => HandleLaunchSettingsFileChangedAsync();
         public void CallDispose() { Dispose(true); }
         public bool DisposeObjectsAreNull()
         {

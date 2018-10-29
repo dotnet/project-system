@@ -15,16 +15,9 @@ namespace Microsoft.VisualStudio.Threading.Tasks
     /// </summary>
     internal sealed class TaskDelayScheduler : ITaskDelayScheduler
     {
-        private readonly object _syncObject = new object();
         private readonly TimeSpan _taskDelayTime;
-        private readonly CancellationToken _originalSourceToken;
         private readonly IProjectThreadingService _threadingService;
-
-        // Task completion source for cancelling a pending task
-        private CancellationTokenSource PendingUpdateTokenSource { get; set; }
-
-        // Holds the latest scheduled task
-        public JoinableTask LatestScheduledTask { get; private set; }
+        private readonly CancellationSeries _cancellationSeries;
 
         /// <summary>
         /// Creates an instance of the TaskDelayScheduler. If an originalSourceToken is passed, it will be linked to the PendingUpdateTokenSource so
@@ -33,115 +26,45 @@ namespace Microsoft.VisualStudio.Threading.Tasks
         public TaskDelayScheduler(TimeSpan taskDelayTime, IProjectThreadingService threadService, CancellationToken originalSourceToken)
         {
             _taskDelayTime = taskDelayTime;
-            _originalSourceToken = originalSourceToken;
             _threadingService = threadService;
+            _cancellationSeries = new CancellationSeries(originalSourceToken);
         }
 
         /// <inheritdoc />
-        public JoinableTask ScheduleAsyncTask(Func<CancellationToken, Task> asyncFunctionToCall)
+        public JoinableTask ScheduleAsyncTask(Func<CancellationToken, Task> operation)
         {
-            lock (_syncObject)
+            CancellationToken token = _cancellationSeries.GetToken();
+
+            // We want to return a joinable task so wrap the function
+            return _threadingService.JoinableTaskFactory.RunAsync(async () =>
             {
-                // A new submission is being requested to be scheduled, cancel previous
-                // submissions first.
-                ClearPendingUpdates(cancel: true);
-
-                PendingUpdateTokenSource = CancellationTokenSource.CreateLinkedTokenSource(_originalSourceToken);
-                CancellationToken token = PendingUpdateTokenSource.Token;
-
-                // We want to return a joinable task so wrap the function
-                LatestScheduledTask = _threadingService.JoinableTaskFactory.RunAsync(() => ThrottleAsync(asyncFunctionToCall, token));
-                return LatestScheduledTask;
-            }
-        }
-
-        private async Task ThrottleAsync(Func<CancellationToken, Task> asyncFunctionToCall, CancellationToken token)
-        {
-            try
-            {
-                // First we wait the delay time. If another request has been made in the interval, then this task
-                // is cancelled.
-                try
-                {
-                    if (!token.IsCancellationRequested)
-                    {
-                        await Task.Delay(_taskDelayTime, token);
-                    }
-                }
-                catch (OperationCanceledException)
-                {
-                    // fall through
-                }
-
-                bool isCanceled = token.IsCancellationRequested;
-                lock (_syncObject)
-                {
-                    // We want to clear any existing cancellation token IF it matches our token
-                    if (PendingUpdateTokenSource != null && PendingUpdateTokenSource.Token == token)
-                    {
-                        ClearPendingUpdates(cancel: false);
-                    }
-                }
-
-                if (isCanceled)
+                if (token.IsCancellationRequested)
                 {
                     return;
                 }
-            }
-            catch (ObjectDisposedException)
-            {
-                // Sometimes the CTS from which the token was obtained is canceled and disposed of
-                // while we're still running this task. But it's OK, it basically means this task shouldn't 
-                // be running any more. There is no point throwing a canceled exception
-                return;
-            }
 
-            // Execute the code
-            await asyncFunctionToCall(token);
-        }
-
-        /// <summary>
-        /// Clears the PendingUpdateTokenSource and if cancel is true cancels the token.
-        /// </summary>
-        /// <remarks>
-        /// Callers must lock <see cref="_syncObject"/> before calling this method.
-        /// </remarks>
-        private void ClearPendingUpdates(bool cancel)
-        {
-            CancellationTokenSource cts = PendingUpdateTokenSource;
-
-            if (cts != null)
-            {
-                PendingUpdateTokenSource = null;
-
-                // Cancel any previously scheduled processing if requested
-                if (cancel)
+                try
                 {
-                    cts.Cancel();
+                    await Task.Delay(_taskDelayTime, token);
+                }
+                catch (OperationCanceledException)
+                {
+                    return;
                 }
 
-                cts.Dispose();
-            }
+                if (!token.IsCancellationRequested)
+                {
+                    await operation(token);
+                }
+            });
         }
 
         /// <summary>
-        /// Cancels any pending tasks
+        /// Cancels any pending tasks and disposes this object.
         /// </summary>
         public void Dispose()
         {
-            lock (_syncObject)
-            {
-                ClearPendingUpdates(cancel: true);
-            }
-        }
-
-        /// <inheritdoc />
-        public void CancelPendingUpdates()
-        {
-            lock (_syncObject)
-            {
-                ClearPendingUpdates(cancel: true);
-            }
+            _cancellationSeries.Dispose();
         }
     }
 }

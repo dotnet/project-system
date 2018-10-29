@@ -11,7 +11,6 @@ using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.Threading.Tasks
 {
-
     public class TaskDelaySchedulerTests
     {
         [Fact]
@@ -77,24 +76,6 @@ namespace Microsoft.VisualStudio.Threading.Tasks
             });
 
             scheduler.Dispose();
-
-            await task;
-            Assert.False(taskRan);
-        }
-
-        [Fact]
-        public async Task CancelPendingUpdates_SkipsPendingTasks()
-        {
-            var scheduler = new TaskDelayScheduler(TimeSpan.FromMilliseconds(250), IProjectThreadingServiceFactory.Create(), CancellationToken.None);
-
-            bool taskRan = false;
-            var task = scheduler.ScheduleAsyncTask(ct =>
-            {
-                taskRan = true;
-                return Task.CompletedTask;
-            });
-
-            scheduler.CancelPendingUpdates();
 
             await task;
             Assert.False(taskRan);
