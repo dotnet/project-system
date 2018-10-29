@@ -16,6 +16,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     /// <summary>
     ///     Applies <see cref="IProjectVersionedValue{T}"/> values to a <see cref="IWorkspaceProjectContext"/>.
     /// </summary>
+    /// <remarks>
+    ///     This class is not thread-safe and it is up to callers to prevent overlapping of calls to 
+    ///     <see cref="ApplyProjectBuild(IProjectVersionedValue{IProjectSubscriptionUpdate}, bool, CancellationToken)"/> and
+    ///     <see cref="ApplyProjectEvaluation(IProjectVersionedValue{IProjectSubscriptionUpdate}, bool, CancellationToken)"/>.
+    /// </remarks>
     [Export(typeof(IApplyChangesToWorkspaceContext))]
     internal class ApplyChangesToWorkspaceContext : OnceInitializedOnceDisposed, IApplyChangesToWorkspaceContext
     {
@@ -46,35 +51,29 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         {
             Requires.NotNull(context, nameof(context));
 
-            lock (SyncObject)
-            {
-                if (_context != null)
-                    throw new InvalidOperationException("Already initialized.");
+            if (_context != null)
+                throw new InvalidOperationException("Already initialized.");
 
-                _context = context;
+            _context = context;
 
-                EnsureInitialized();
-            }
+            EnsureInitialized();
         }
 
         public void ApplyProjectBuild(IProjectVersionedValue<IProjectSubscriptionUpdate> update, bool isActiveContext, CancellationToken cancellationToken)
         {
             Requires.NotNull(update, nameof(update));
-            
-            lock (SyncObject)
+
+            VerifyInitializedAndNotDisposed();
+
+            IProjectChangeDescription projectChange = update.Value.ProjectChanges[ProjectBuildRuleName];
+
+            if (projectChange.Difference.AnyChanges)
             {
-                VerifyInitializedAndNotDisposed();
+                IComparable version = GetConfiguredProjectVersion(update);
 
-                IProjectChangeDescription projectChange = update.Value.ProjectChanges[ProjectBuildRuleName];
-
-                if (projectChange.Difference.AnyChanges)
-                {
-                    IComparable version = GetConfiguredProjectVersion(update);
-
-                    ProcessOptions(projectChange.After);
-                    ProcessCommandLine(version, projectChange.Difference, isActiveContext, cancellationToken);
-                    ProcessProjectBuildFailure(projectChange.After);
-                }
+                ProcessOptions(projectChange.After);
+                ProcessCommandLine(version, projectChange.Difference, isActiveContext, cancellationToken);
+                ProcessProjectBuildFailure(projectChange.After);
             }
         }
 
@@ -82,38 +81,29 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         {
             Requires.NotNull(update, nameof(update));
 
-            lock (SyncObject)
-            {
-                VerifyInitializedAndNotDisposed();
+            VerifyInitializedAndNotDisposed();
 
-                IComparable version = GetConfiguredProjectVersion(update);
+            IComparable version = GetConfiguredProjectVersion(update);
 
-                ProcessProjectEvaluationHandlers(version, update, isActiveContext, cancellationToken);
-            }
+            ProcessProjectEvaluationHandlers(version, update, isActiveContext, cancellationToken);
         }
 
         public IEnumerable<string> GetProjectEvaluationRules()
         {
-            lock (SyncObject)
-            {
-                VerifyInitializedAndNotDisposed();
+            VerifyInitializedAndNotDisposed();
 
-                return _handlers.Select(e => e.Value)
-                                .OfType<IProjectEvaluationHandler>()
-                                .Select(e => e.ProjectEvaluationRule)
-                                .Distinct(StringComparers.RuleNames)
-                                .ToArray();
-            }
+            return _handlers.Select(e => e.Value)
+                            .OfType<IProjectEvaluationHandler>()
+                            .Select(e => e.ProjectEvaluationRule)
+                            .Distinct(StringComparers.RuleNames)
+                            .ToArray();
         }
 
         public IEnumerable<string> GetProjectBuildRules()
         {
-            lock (SyncObject)
-            {
-                VerifyInitializedAndNotDisposed();
+            VerifyInitializedAndNotDisposed();
 
-                return new string[] { ProjectBuildRuleName };
-            }
+            return new string[] { ProjectBuildRuleName };
         }
 
         protected override void Dispose(bool disposing)
@@ -198,7 +188,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                     IProjectChangeDescription projectChange = update.Value.ProjectChanges[evaluationHandler.ProjectEvaluationRule];
                     if (!projectChange.Difference.AnyChanges)
                         continue;
-                    
+
                     evaluationHandler.Handle(version, projectChange, isActiveContext, _logger);
                 }
             }
