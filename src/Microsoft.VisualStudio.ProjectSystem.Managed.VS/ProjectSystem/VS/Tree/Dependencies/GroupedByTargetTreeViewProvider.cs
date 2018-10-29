@@ -399,7 +399,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     caption: updatedValues.Caption,
                     browseObjectProperties: rule,
                     icon: updatedValues.Icon,
-                    expandedIcon: updatedValues.ExpandedIcon);
+                    expandedIcon: updatedValues.ExpandedIcon,
+                    flags: updatedValues.Flags);
         }
 
         private static ProjectTreeFlags FilterFlags(
