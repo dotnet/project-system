@@ -58,8 +58,9 @@ namespace Microsoft.VisualStudio.Threading.Tasks
                         _executingTask.Value = false;
                     }
                 }, TaskScheduler.Default).Unwrap();
+
+                return _taskAdded;
             }
-            return _taskAdded;
         }
 
         /// <summary>
