@@ -253,12 +253,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
         private void OnSubtreeProviderDependenciesChanged(object sender, DependenciesChangedEventArgs e)
         {
-            if (IsDisposing || IsDisposed)
-            {
-                return;
-            }
-
-            if (!e.Changes.AnyChanges())
+            if (IsDisposing || IsDisposed || !e.Changes.AnyChanges() || e.Token.IsCancellationRequested)
             {
                 return;
             }
@@ -270,13 +265,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
             ImmutableDictionary<ITargetFramework, IDependenciesChanges> changes = ImmutableDictionary<ITargetFramework, IDependenciesChanges>.Empty.Add(targetFramework, e.Changes);
 
-            UpdateDependenciesSnapshotAsync(changes, catalogs: null, activeTargetFramework: null);
+            UpdateDependenciesSnapshotAsync(changes, catalogs: null, activeTargetFramework: null, e.Token);
         }
 
         private void UpdateDependenciesSnapshotAsync(
             ImmutableDictionary<ITargetFramework, IDependenciesChanges> changes,
             IProjectCatalogSnapshot catalogs,
-            ITargetFramework activeTargetFramework)
+            ITargetFramework activeTargetFramework,
+            CancellationToken token = default)
         {
             bool anyChanges;
 
@@ -301,7 +297,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             if (anyChanges)
             {
                 // avoid unnecessary tree updates
-                ScheduleDependenciesUpdate();
+                ScheduleDependenciesUpdate(token);
             }
         }
 
@@ -328,24 +324,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             return projectItemSpecs.ToImmutable();
         }
 
-        private void ScheduleDependenciesUpdate()
+        private void ScheduleDependenciesUpdate(CancellationToken token = default)
         {
-            DependenciesUpdateScheduler.ScheduleAsyncTask(token =>
+            DependenciesUpdateScheduler.ScheduleAsyncTask(ct =>
             {
-                if (token.IsCancellationRequested || IsDisposing || IsDisposed)
+                if (ct.IsCancellationRequested || IsDisposing || IsDisposed)
                 {
-                    return Task.FromCanceled(token);
+                    return Task.FromCanceled(ct);
                 }
 
                 IDependenciesSnapshot snapshot = _currentSnapshot;
 
                 if (snapshot != null)
                 {
-                    SnapshotChanged?.Invoke(this, new SnapshotChangedEventArgs(snapshot));
+                    SnapshotChanged?.Invoke(this, new SnapshotChangedEventArgs(snapshot, ct));
                 }
 
                 return Task.CompletedTask;
-            });
+            }, token);
         }
     }
 }

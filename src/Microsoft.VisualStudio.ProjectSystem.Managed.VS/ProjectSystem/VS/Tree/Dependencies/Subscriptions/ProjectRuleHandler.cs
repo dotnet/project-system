@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.Imaging;
@@ -56,12 +57,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
             void OnAggregateSnapshotChanged(object sender, SnapshotChangedEventArgs e)
             {
-                OnOtherProjectDependenciesChanged(snapshotProvider.CurrentSnapshot, e.Snapshot, shouldBeResolved: true);
+                OnOtherProjectDependenciesChanged(snapshotProvider.CurrentSnapshot, e.Snapshot, shouldBeResolved: true, e.Token);
             }
 
             void OnAggregateSnapshotProviderUnloading(object sender, SnapshotProviderUnloadingEventArgs e)
             {
-                OnOtherProjectDependenciesChanged(snapshotProvider.CurrentSnapshot, e.SnapshotProvider.CurrentSnapshot, shouldBeResolved: false);
+                OnOtherProjectDependenciesChanged(snapshotProvider.CurrentSnapshot, e.SnapshotProvider.CurrentSnapshot, shouldBeResolved: false, e.Token);
             }
         }
 
@@ -109,12 +110,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         /// changed, it is resolved=true (we check target's support when we add project dependencies). However when 
         /// other project is unloaded, we should mark top-level dependencies as unresolved.
         /// </param>
+        /// <param name="token"></param>
         private void OnOtherProjectDependenciesChanged(
             IDependenciesSnapshot thisProjectSnapshot,
             IDependenciesSnapshot otherProjectSnapshot,
-            bool shouldBeResolved)
+            bool shouldBeResolved,
+            CancellationToken token)
         {
-            if (StringComparers.Paths.Equals(thisProjectSnapshot.ProjectPath, otherProjectSnapshot.ProjectPath))
+            if (token.IsCancellationRequested || 
+                StringComparers.Paths.Equals(thisProjectSnapshot.ProjectPath, otherProjectSnapshot.ProjectPath))
             {
                 // if any of the snapshots is not provided or this is the same project - skip
                 return;
@@ -153,6 +157,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
             foreach (IDependency dependency in dependencyThatNeedChange)
             {
+                if (token.IsCancellationRequested)
+                {
+                    return;
+                }
+
                 IDependencyModel model = CreateDependencyModel(
                     ProviderTypeString,
                     dependency.Path,
@@ -176,7 +185,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     new DependenciesChangedEventArgs(
                         this,
                         dependency.TargetFramework.FullName,
-                        changes));
+                        changes,
+                        token));
             }
         }
     }
