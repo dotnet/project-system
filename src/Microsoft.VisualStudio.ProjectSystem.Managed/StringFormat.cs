@@ -8,7 +8,7 @@ namespace Microsoft.VisualStudio
     /// <summary>
     ///     Provides an object that allows a common way to format a set of objects, only allocating if needed.
     /// </summary>
-    internal struct StringFormat
+    internal readonly struct StringFormat
     {
         // Sentinel fixed-length arrays eliminate the need for a "count" field keeping this
         // struct down to just 4 fields. These are only used for their "Length" property,
