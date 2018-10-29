@@ -37,8 +37,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             IUnconfiguredProjectCommonServices commonServices)
             : base(ProjectReference.SchemaName, ResolvedProjectReference.SchemaName)
         {
-            SnapshotProvider = snapshotProvider;
-
             aggregateSnapshotProvider.SnapshotChanged += OnAggregateSnapshotChanged;
             aggregateSnapshotProvider.SnapshotProviderUnloading += OnAggregateSnapshotProviderUnloading;
 
@@ -58,16 +56,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
             void OnAggregateSnapshotChanged(object sender, SnapshotChangedEventArgs e)
             {
-                OnOtherProjectDependenciesChanged(e.Snapshot, shouldBeResolved: true);
+                OnOtherProjectDependenciesChanged(snapshotProvider.CurrentSnapshot, e.Snapshot, shouldBeResolved: true);
             }
 
             void OnAggregateSnapshotProviderUnloading(object sender, SnapshotProviderUnloadingEventArgs e)
             {
-                OnOtherProjectDependenciesChanged(e.SnapshotProvider.CurrentSnapshot, shouldBeResolved: false);
+                OnOtherProjectDependenciesChanged(snapshotProvider.CurrentSnapshot, e.SnapshotProvider.CurrentSnapshot, shouldBeResolved: false);
             }
         }
-
-        private IDependenciesSnapshotProvider SnapshotProvider { get; }
 
         public override IDependencyModel CreateRootDependencyNode()
         {
@@ -106,17 +102,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         /// dependency on changed project. If it does we need to refresh those top level dependencies to 
         /// reflect changes.
         /// </summary>
+        /// <param name="thisProjectSnapshot"></param>
         /// <param name="otherProjectSnapshot"></param>
         /// <param name="shouldBeResolved">
         /// Specifies if top-level project dependencies resolved status. When other project just had its dependencies
         /// changed, it is resolved=true (we check target's support when we add project dependencies). However when 
         /// other project is unloaded, we should mark top-level dependencies as unresolved.
         /// </param>
-        private void OnOtherProjectDependenciesChanged(IDependenciesSnapshot otherProjectSnapshot, bool shouldBeResolved)
+        private void OnOtherProjectDependenciesChanged(
+            IDependenciesSnapshot thisProjectSnapshot,
+            IDependenciesSnapshot otherProjectSnapshot,
+            bool shouldBeResolved)
         {
-            IDependenciesSnapshot projectSnapshot = SnapshotProvider.CurrentSnapshot;
-
-            if (otherProjectSnapshot == null || projectSnapshot == null || projectSnapshot.Equals(otherProjectSnapshot))
+            if (otherProjectSnapshot == null || thisProjectSnapshot == null || thisProjectSnapshot.Equals(otherProjectSnapshot))
             {
                 // if any of the snapshots is not provided or this is the same project - skip
                 return;
@@ -126,7 +124,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
             List<IDependency> dependencyThatNeedChange = null;
 
-            foreach (ITargetedDependenciesSnapshot targetedDependencies in projectSnapshot.Targets.Values)
+            foreach (ITargetedDependenciesSnapshot targetedDependencies in thisProjectSnapshot.Targets.Values)
             {
                 foreach (IDependency dependency in targetedDependencies.TopLevelDependencies)
                 {
