@@ -147,7 +147,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 }
             }
 
-            if (dependencyThatNeedChange == null || dependencyThatNeedChange.Count == 0)
+            if (dependencyThatNeedChange == null)
             {
                 // we don't have dependency on updated project
                 return;
