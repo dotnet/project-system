@@ -73,7 +73,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                         rootNode: dependenciesTree,
                         snapshot.ActiveTarget,
                         targetedSnapshot,
-                        targetedSnapshot.Catalogs,
                         RememberNewNodes);
                 }
             }
@@ -92,7 +91,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                             rootNode: dependenciesTree,
                             snapshot.ActiveTarget,
                             targetedSnapshot,
-                            targetedSnapshot.Catalogs,
                             RememberNewNodes);
                     }
                     else
@@ -112,7 +110,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                             rootNode: node, 
                             snapshot.ActiveTarget, 
                             targetedSnapshot, 
-                            targetedSnapshot.Catalogs, 
                             CleanupOldNodes);
 
                         dependenciesTree = shouldAddTargetNode 
@@ -154,7 +151,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             IProjectTree rootNode,
             ITargetFramework activeTarget,
             ITargetedDependenciesSnapshot targetedSnapshot,
-            IProjectCatalogSnapshot catalogs,
             Func<IProjectTree, IEnumerable<IProjectTree>, IProjectTree> syncFunc)
         {
             var currentNodes = new List<IProjectTree>();
@@ -206,7 +202,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     subTreeNode,
                     targetedSnapshot,
                     dependencies,
-                    catalogs,
                     isActiveTarget,
                     shouldCleanup: !isNewSubTreeNode);
 
@@ -227,7 +222,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             IProjectTree rootNode,
             ITargetedDependenciesSnapshot targetedSnapshot,
             IEnumerable<IDependency> dependencies,
-            IProjectCatalogSnapshot catalogs,
             bool isActiveTarget,
             bool shouldCleanup)
         {
@@ -251,7 +245,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     }
                 }
 
-                dependencyNode = await CreateOrUpdateNodeAsync(dependencyNode, dependency, targetedSnapshot, catalogs, isActiveTarget);
+                dependencyNode = await CreateOrUpdateNodeAsync(dependencyNode, dependency, targetedSnapshot, isActiveTarget);
                 currentNodes.Add(dependencyNode);
 
                 rootNode = isNewDependencyNode
@@ -281,7 +275,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             IProjectTree node,
             IDependency dependency,
             ITargetedDependenciesSnapshot targetedSnapshot,
-            IProjectCatalogSnapshot catalogs,
             bool isProjectItem,
             ProjectTreeFlags? additionalFlags = null,
             ProjectTreeFlags? excludedFlags = null)
@@ -289,7 +282,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             IRule rule = null;
             if (dependency.Flags.Contains(DependencyTreeFlags.SupportsRuleProperties))
             {
-                rule = await TreeServices.GetRuleAsync(dependency, catalogs);
+                rule = await TreeServices.GetRuleAsync(dependency, targetedSnapshot.Catalogs);
             }
 
             return CreateOrUpdateNode(
