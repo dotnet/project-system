@@ -122,23 +122,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
                 await ExecuteUnderLockAsync(ct =>
                 {
-                    ApplyProjectChangesUnderLock(update, evaluation, ct);
+                    return ApplyProjectChangesUnderLockAsync(update, evaluation, ct);
 
-                    return Task.CompletedTask;
                 }, cancellationToken);
             }
 
-            private void ApplyProjectChangesUnderLock(IProjectVersionedValue<IProjectSubscriptionUpdate> update, bool evaluation, CancellationToken cancellationToken)
+            private Task ApplyProjectChangesUnderLockAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> update, bool evaluation, CancellationToken cancellationToken)
             {
                 bool isActiveContext = _activeWorkspaceProjectContextTracker.IsActiveContext(_contextAccessor.Context);
 
                 if (evaluation)
                 {
-                    _applyChangesToWorkspaceContext.Value.ApplyProjectEvaluation(update, isActiveContext, cancellationToken);
+                    return _applyChangesToWorkspaceContext.Value.ApplyProjectEvaluationAsync(update, isActiveContext, cancellationToken);
                 }
                 else
                 {
-                    _applyChangesToWorkspaceContext.Value.ApplyProjectBuild(update, isActiveContext, cancellationToken);
+                    return _applyChangesToWorkspaceContext.Value.ApplyProjectBuildAsync(update, isActiveContext, cancellationToken);
                 }
             }
 
