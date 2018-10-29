@@ -31,30 +31,30 @@ namespace Microsoft.VisualStudio.Threading.Tasks
         }
 
         /// <inheritdoc />
-        public JoinableTask ScheduleAsyncTask(Func<CancellationToken, Task> operation)
+        public JoinableTask ScheduleAsyncTask(Func<CancellationToken, Task> operation, CancellationToken token = default)
         {
-            CancellationToken token = _cancellationSeries.GetToken();
+            CancellationToken nextToken = _cancellationSeries.GetToken(token);
 
             // We want to return a joinable task so wrap the function
             return _threadingService.JoinableTaskFactory.RunAsync(async () =>
             {
-                if (token.IsCancellationRequested)
+                if (nextToken.IsCancellationRequested)
                 {
                     return;
                 }
 
                 try
                 {
-                    await Task.Delay(_taskDelayTime, token);
+                    await Task.Delay(_taskDelayTime, nextToken);
                 }
                 catch (OperationCanceledException)
                 {
                     return;
                 }
 
-                if (!token.IsCancellationRequested)
+                if (!nextToken.IsCancellationRequested)
                 {
-                    await operation(token);
+                    await operation(nextToken);
                 }
             });
         }

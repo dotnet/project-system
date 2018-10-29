@@ -27,6 +27,6 @@ namespace Microsoft.VisualStudio.Threading.Tasks
         /// </para>
         /// </remarks>
         /// <exception cref="ObjectDisposedException">The object has been disposed.</exception>
-        JoinableTask ScheduleAsyncTask(Func<CancellationToken, Task> operation);
+        JoinableTask ScheduleAsyncTask(Func<CancellationToken, Task> operation, CancellationToken token = default);
     }
 }

@@ -99,5 +99,26 @@ namespace Microsoft.VisualStudio.Threading.Tasks
             await task;
             Assert.False(taskRan);
         }
+
+        [Fact]
+        public async Task ScheduleAsyncTask_Noop_RequestTokenCancelled()
+        {
+            var scheduler = new TaskDelayScheduler(TimeSpan.FromMilliseconds(250), IProjectThreadingServiceFactory.Create(), CancellationToken.None);
+
+            var cts = new CancellationTokenSource();
+            cts.Cancel();
+
+            bool taskRan = false;
+            var task = scheduler.ScheduleAsyncTask(
+                ct =>
+                {
+                    taskRan = true;
+                    return Task.CompletedTask;
+                },
+                cts.Token);
+
+            await task;
+            Assert.False(taskRan);
+        }
     }
 }
