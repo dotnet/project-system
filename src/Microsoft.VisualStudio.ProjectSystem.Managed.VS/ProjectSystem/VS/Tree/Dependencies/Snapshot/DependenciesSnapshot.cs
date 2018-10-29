@@ -14,9 +14,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
     /// <inheritdoc />
     internal class DependenciesSnapshot : IDependenciesSnapshot
     {
+        #region Factories and private constructor
+
         public static DependenciesSnapshot CreateEmpty(string projectPath)
         {
-            return new DependenciesSnapshot(projectPath);
+            return new DependenciesSnapshot(
+                projectPath,
+                activeTarget: TargetFramework.Empty,
+                targets: ImmutableDictionary<ITargetFramework, ITargetedDependenciesSnapshot>.Empty);
         }
 
         public static DependenciesSnapshot FromChanges(
@@ -30,42 +35,121 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             IImmutableSet<string> projectItemSpecs,
             out bool anyChanges)
         {
-            var newSnapshot = new DependenciesSnapshot(projectPath, activeTargetFramework, previousSnapshot);
-            anyChanges = newSnapshot.MergeChanges(changes, catalogs, snapshotFilters, subTreeProviders, projectItemSpecs);
-            return newSnapshot;
+            Requires.NotNull(previousSnapshot, nameof(previousSnapshot));
+            Requires.NotNull(changes, nameof(changes));
+
+            var builder = previousSnapshot.Targets.ToBuilder();
+
+            bool targetChanged = false;
+
+            foreach ((ITargetFramework targetFramework, IDependenciesChanges dependenciesChanges) in changes)
+            {
+                builder.TryGetValue(targetFramework, out ITargetedDependenciesSnapshot previousTargetedSnapshot);
+
+                var newTargetedSnapshot = TargetedDependenciesSnapshot.FromChanges(
+                    projectPath,
+                    targetFramework,
+                    previousTargetedSnapshot,
+                    dependenciesChanges,
+                    catalogs,
+                    snapshotFilters,
+                    subTreeProviders,
+                    projectItemSpecs,
+                    out bool anyTfmChanges);
+
+                if (anyTfmChanges)
+                {
+                    builder[targetFramework] = newTargetedSnapshot;
+                    targetChanged = true;
+                }
+            }
+
+            targetChanged |= RemoveTargetFrameworksWithNoDependencies();
+
+            ITargetFramework activeTarget = activeTargetFramework ?? previousSnapshot.ActiveTarget;
+
+            if (targetChanged)
+            {
+                // Targets have changed
+                anyChanges = true;
+                return new DependenciesSnapshot(
+                    previousSnapshot.ProjectPath,
+                    activeTarget,
+                    builder.ToImmutable());
+            }
+
+            if (activeTarget.Equals(previousSnapshot.ActiveTarget))
+            {
+                // Nothing has changed, so return the same snapshot
+                anyChanges = false;
+                return previousSnapshot;
+            }
+
+            // Active target differs
+            anyChanges = true;
+            return new DependenciesSnapshot(
+                previousSnapshot.ProjectPath,
+                activeTarget,
+                previousSnapshot.Targets);
+
+            bool RemoveTargetFrameworksWithNoDependencies()
+            {
+                // This is a long-winded way of doing this that minimises allocations
+
+                List<ITargetFramework> emptyFrameworks = null;
+                bool anythingRemoved = false;
+
+                foreach ((ITargetFramework targetFramework, ITargetedDependenciesSnapshot targetedSnapshot) in builder)
+                {
+                    if (targetedSnapshot.DependenciesWorld.Count == 0)
+                    {
+                        if (emptyFrameworks == null)
+                        {
+                            anythingRemoved = true;
+                            emptyFrameworks = new List<ITargetFramework>(builder.Count);
+                        }
+
+                        emptyFrameworks.Add(targetFramework);
+                    }
+                }
+
+                if (emptyFrameworks != null)
+                {
+                    foreach (ITargetFramework framework in emptyFrameworks)
+                    {
+                        builder.Remove(framework);
+                    }
+                }
+
+                return anythingRemoved;
+            }
         }
 
         public DependenciesSnapshot RemoveTargets(IEnumerable<ITargetFramework> targetToRemove)
         {
-            var newSnapshot = new DependenciesSnapshot(ProjectPath, ActiveTarget, this);
-            newSnapshot.Targets = newSnapshot.Targets.RemoveRange(targetToRemove);
-            return newSnapshot;
+            ImmutableDictionary<ITargetFramework, ITargetedDependenciesSnapshot> newTargets = Targets.RemoveRange(targetToRemove);
+
+            // Return this if no targets changed
+            return ReferenceEquals(newTargets, Targets) 
+                ? this 
+                : new DependenciesSnapshot(ProjectPath, ActiveTarget, newTargets);
         }
 
         private DependenciesSnapshot(
             string projectPath,
-            ITargetFramework activeTarget = null,
-            DependenciesSnapshot previousSnapshot = null)
+            ITargetFramework activeTarget,
+            ImmutableDictionary<ITargetFramework, ITargetedDependenciesSnapshot> targets)
         {
             Requires.NotNullOrEmpty(projectPath, nameof(projectPath));
+            Requires.NotNull(activeTarget, nameof(activeTarget));
+            Requires.NotNull(targets, nameof(targets));
 
             ProjectPath = projectPath;
             ActiveTarget = activeTarget;
-
-            if (previousSnapshot != null)
-            {
-                _targets = previousSnapshot._targets;
-                if (ActiveTarget == null)
-                {
-                    ActiveTarget = previousSnapshot.ActiveTarget;
-                }
-            }
-
-            if (ActiveTarget == null)
-            {
-                ActiveTarget = TargetFramework.Empty;
-            }
+            Targets = targets;
         }
+
+        #endregion
 
         /// <inheritdoc />
         public string ProjectPath { get; }
@@ -73,15 +157,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         /// <inheritdoc />
         public ITargetFramework ActiveTarget { get; }
 
-        private ImmutableDictionary<ITargetFramework, ITargetedDependenciesSnapshot> _targets =
-            ImmutableDictionary<ITargetFramework, ITargetedDependenciesSnapshot>.Empty;
-
         /// <inheritdoc />
-        public IImmutableDictionary<ITargetFramework, ITargetedDependenciesSnapshot> Targets
-        {
-            get => _targets;
-            private set => _targets = value.ToImmutableDictionary();
-        }
+        public ImmutableDictionary<ITargetFramework, ITargetedDependenciesSnapshot> Targets { get; }
 
         /// <inheritdoc />
         public bool HasUnresolvedDependency => Targets.Any(x => x.Value.HasUnresolvedDependency);
@@ -119,77 +196,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             }
 
             return null;
-        }
-
-        private bool MergeChanges(
-            ImmutableDictionary<ITargetFramework, IDependenciesChanges> changes,
-            IProjectCatalogSnapshot catalogs,
-            IReadOnlyCollection<IDependenciesSnapshotFilter> snapshotFilters,
-            IReadOnlyCollection<IProjectDependenciesSubTreeProvider> subTreeProviders,
-            IImmutableSet<string> projectItemSpecs)
-        {
-            bool anyChanges = false;
-            var builder = _targets.ToBuilder();
-
-            foreach ((ITargetFramework targetFramework, IDependenciesChanges dependenciesChanges) in changes)
-            {
-                builder.TryGetValue(targetFramework, out ITargetedDependenciesSnapshot previousSnapshot);
-
-                var newTargetedSnapshot = TargetedDependenciesSnapshot.FromChanges(
-                    ProjectPath,
-                    targetFramework,
-                    previousSnapshot,
-                    dependenciesChanges,
-                    catalogs,
-                    snapshotFilters,
-                    subTreeProviders,
-                    projectItemSpecs,
-                    out bool anyTfmChanges);
-
-                if (anyTfmChanges)
-                {
-                    builder[targetFramework] = newTargetedSnapshot;
-                    anyChanges = true;
-                }
-            }
-
-            RemoveTargetFrameworksWithNoDependencies();
-
-            if (anyChanges)
-            {
-                _targets = builder.ToImmutableDictionary();
-            }
-
-            return anyChanges;
-
-            void RemoveTargetFrameworksWithNoDependencies()
-            {
-                // This is a long-winded way of doing this that minimises allocations
-
-                List<ITargetFramework> emptyFrameworks = null;
-
-                foreach ((ITargetFramework targetFramework, ITargetedDependenciesSnapshot targetedSnapshot) in builder)
-                {
-                    if (targetedSnapshot.DependenciesWorld.Count == 0)
-                    {
-                        if (emptyFrameworks == null)
-                        {
-                            anyChanges = true;
-                            emptyFrameworks = new List<ITargetFramework>(builder.Count);
-                        }
-
-                        emptyFrameworks.Add(targetFramework);
-                    }
-                }
-
-                if (emptyFrameworks != null)
-                {
-                    foreach (ITargetFramework framework in emptyFrameworks)
-                    {
-                        builder.Remove(framework);
-                    }
-                }
-            }
         }
 
         /// <inheritdoc />
