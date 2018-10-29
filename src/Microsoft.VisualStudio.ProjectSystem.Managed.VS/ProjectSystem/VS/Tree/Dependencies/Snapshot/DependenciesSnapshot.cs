@@ -14,6 +14,34 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
     /// <inheritdoc />
     internal class DependenciesSnapshot : IDependenciesSnapshot
     {
+        public static DependenciesSnapshot CreateEmpty(string projectPath)
+        {
+            return new DependenciesSnapshot(projectPath);
+        }
+
+        public static DependenciesSnapshot FromChanges(
+            string projectPath,
+            DependenciesSnapshot previousSnapshot,
+            ImmutableDictionary<ITargetFramework, IDependenciesChanges> changes,
+            IProjectCatalogSnapshot catalogs,
+            ITargetFramework activeTargetFramework,
+            IReadOnlyCollection<IDependenciesSnapshotFilter> snapshotFilters,
+            IReadOnlyCollection<IProjectDependenciesSubTreeProvider> subTreeProviders,
+            IImmutableSet<string> projectItemSpecs,
+            out bool anyChanges)
+        {
+            var newSnapshot = new DependenciesSnapshot(projectPath, activeTargetFramework, previousSnapshot);
+            anyChanges = newSnapshot.MergeChanges(changes, catalogs, snapshotFilters, subTreeProviders, projectItemSpecs);
+            return newSnapshot;
+        }
+
+        public DependenciesSnapshot RemoveTargets(IEnumerable<ITargetFramework> targetToRemove)
+        {
+            var newSnapshot = new DependenciesSnapshot(ProjectPath, ActiveTarget, this);
+            newSnapshot.Targets = newSnapshot.Targets.RemoveRange(targetToRemove);
+            return newSnapshot;
+        }
+
         private DependenciesSnapshot(
             string projectPath,
             ITargetFramework activeTarget = null,
@@ -168,34 +196,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         public bool Equals(IDependenciesSnapshot other)
         {
             return other != null && other.ProjectPath.Equals(ProjectPath, StringComparison.OrdinalIgnoreCase);
-        }
-
-        public static DependenciesSnapshot CreateEmpty(string projectPath)
-        {
-            return new DependenciesSnapshot(projectPath);
-        }
-
-        public static DependenciesSnapshot FromChanges(
-            string projectPath,
-            DependenciesSnapshot previousSnapshot,
-            ImmutableDictionary<ITargetFramework, IDependenciesChanges> changes,
-            IProjectCatalogSnapshot catalogs,
-            ITargetFramework activeTargetFramework,
-            IReadOnlyCollection<IDependenciesSnapshotFilter> snapshotFilters,
-            IReadOnlyCollection<IProjectDependenciesSubTreeProvider> subTreeProviders,
-            IImmutableSet<string> projectItemSpecs,
-            out bool anyChanges)
-        {
-            var newSnapshot = new DependenciesSnapshot(projectPath, activeTargetFramework, previousSnapshot);
-            anyChanges = newSnapshot.MergeChanges(changes, catalogs, snapshotFilters, subTreeProviders, projectItemSpecs);
-            return newSnapshot;
-        }
-
-        public DependenciesSnapshot RemoveTargets(IEnumerable<ITargetFramework> targetToRemove)
-        {
-            var newSnapshot = new DependenciesSnapshot(ProjectPath, ActiveTarget, this);
-            newSnapshot.Targets = newSnapshot.Targets.RemoveRange(targetToRemove);
-            return newSnapshot;
         }
     }
 }
