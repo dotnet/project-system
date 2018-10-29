@@ -114,7 +114,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             IDependenciesSnapshot otherProjectSnapshot,
             bool shouldBeResolved)
         {
-            if (otherProjectSnapshot == null || thisProjectSnapshot == null || thisProjectSnapshot.Equals(otherProjectSnapshot))
+            if (thisProjectSnapshot.Equals(otherProjectSnapshot))
             {
                 // if any of the snapshots is not provided or this is the same project - skip
                 return;
