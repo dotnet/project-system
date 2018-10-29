@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.Text
         /// <exception cref="FormatException">
         ///     The format specification in <paramref name="format"/> is invalid.
         /// </exception>
-        public static void AppendFormat(this StringBuilder builder, StringFormat format)
+        public static void AppendFormat(this StringBuilder builder, in StringFormat format)
         {
             Requires.NotNull(builder, nameof(builder));
 
