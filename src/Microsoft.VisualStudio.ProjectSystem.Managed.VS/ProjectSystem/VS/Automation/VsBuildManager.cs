@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -107,19 +107,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         /// </summary>
         public string BuildDesignTimeOutput(string bstrOutputMoniker)
         {
-            var languageName = _unconfiguredProjectServices.ThreadingService.ExecuteSynchronously(async () =>
-            {
-                var property = await _unconfiguredProjectServices.ActiveConfiguredProjectProperties.GetConfigurationGeneralPropertiesAsync();
-                return await property.LanguageServiceName.GetValueAsync();
-            });
+            Requires.NotNull(bstrOutputMoniker, nameof(bstrOutputMoniker));
 
-            // TODO: Once Roslyn work is complete:
-            //
-            //   var compiler = _serviceProvider.GetService(typeof(Microsoft.VisualStudio.LanguageServices.Implementation.ProjectSystem.CPS.ITempPECompilerHost));
-            //  (after importing a service provider in the constructor as: [Import(typeof(SVsServiceProvider))]IServiceProvider serviceProvider)
-            //  (or maybe can just import a Lazy<ITempPECompilerHost> in the constructor?)
-            //
-            //   compiler.Compile(languageName ... );
+            // TODO:
+            // return _unconfiguredProjectServices.ThreadingService.ExecuteSynchronously(async () =>
+            // {
+            //     var property = await _unconfiguredProjectServices.ActiveConfiguredProjectProperties.GetConfigurationGeneralPropertiesAsync();
+            //     var languageName = await property.LanguageServiceName.GetValueAsync()?.ToString();
+            // 
+            //     Requires.NotNull(languageName, nameof(languageName);
+            // 
+            //     var compiler = _compilerHost; // From constructor: IVsUIService<Microsoft.VisualStudio.LanguageServices.Implementation.ProjectSystem.CPS.ITempPECompilerHost> compilerHost
+            // 
+            //     compiler.Compile(languageName ... );
+            // 
+            //     return <temp pe xml>;
+            // });
 
             throw new NotImplementedException();
         }
