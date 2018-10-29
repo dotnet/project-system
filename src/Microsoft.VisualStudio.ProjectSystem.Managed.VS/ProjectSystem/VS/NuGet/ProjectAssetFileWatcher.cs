@@ -254,7 +254,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             return _watchedFileResetCancellationToken.Token;
         }
 
-        private async Task HandleFileChangedAsync(CancellationToken cancellationToken = default)
+        private async Task HandleFileChangedAsync(CancellationToken cancellationToken)
         {
             try
             {
