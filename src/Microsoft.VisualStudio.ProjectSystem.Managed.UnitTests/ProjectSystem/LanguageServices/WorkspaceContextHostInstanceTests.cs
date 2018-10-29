@@ -151,7 +151,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 cancellationToken.ThrowIfCancellationRequested();
             }
 
-            var applyChangesToWorkspaceContext = evaluation ? IApplyChangesToWorkspaceContextFactory.ImplementApplyProjectEvaluation(applyChanges) : IApplyChangesToWorkspaceContextFactory.ImplementApplyProjectBuild(applyChanges);
+            var applyChangesToWorkspaceContext = evaluation ? IApplyChangesToWorkspaceContextFactory.ImplementApplyProjectEvaluationAsync(applyChanges) : IApplyChangesToWorkspaceContextFactory.ImplementApplyProjectBuildAsync(applyChanges);
 
             var instance = await CreateInitializedInstanceAsync(tasksService: tasksService, applyChangesToWorkspaceContext: applyChangesToWorkspaceContext);
 
@@ -177,7 +177,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 cancellationToken.ThrowIfCancellationRequested();
             }
 
-            var applyChangesToWorkspaceContext = evaluation ? IApplyChangesToWorkspaceContextFactory.ImplementApplyProjectEvaluation(applyChanges) : IApplyChangesToWorkspaceContextFactory.ImplementApplyProjectBuild(applyChanges);
+            var applyChangesToWorkspaceContext = evaluation ? IApplyChangesToWorkspaceContextFactory.ImplementApplyProjectEvaluationAsync(applyChanges) : IApplyChangesToWorkspaceContextFactory.ImplementApplyProjectBuildAsync(applyChanges);
 
             instance = await CreateInitializedInstanceAsync(applyChangesToWorkspaceContext: applyChangesToWorkspaceContext);
 
@@ -200,7 +200,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 updateResult = u;
             }
 
-            var applyChangesToWorkspaceContext = evaluation ? IApplyChangesToWorkspaceContextFactory.ImplementApplyProjectEvaluation(applyChanges) : IApplyChangesToWorkspaceContextFactory.ImplementApplyProjectBuild(applyChanges);
+            var applyChangesToWorkspaceContext = evaluation ? IApplyChangesToWorkspaceContextFactory.ImplementApplyProjectEvaluationAsync(applyChanges) : IApplyChangesToWorkspaceContextFactory.ImplementApplyProjectBuildAsync(applyChanges);
 
             var instance = await CreateInitializedInstanceAsync(applyChangesToWorkspaceContext: applyChangesToWorkspaceContext);
 
@@ -225,8 +225,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             }
 
             var activeWorkspaceProjectContextTracker = IActiveWorkspaceProjectContextTrackerFactory.ImplementIsActiveContext(context => isActiveContext);
-            var applyChangesToWorkspaceContext = evaluation ? IApplyChangesToWorkspaceContextFactory.ImplementApplyProjectEvaluation(applyChanges) : IApplyChangesToWorkspaceContextFactory.ImplementApplyProjectBuild(applyChanges);
-            
+            var applyChangesToWorkspaceContext = evaluation ? IApplyChangesToWorkspaceContextFactory.ImplementApplyProjectEvaluationAsync(applyChanges) : IApplyChangesToWorkspaceContextFactory.ImplementApplyProjectBuildAsync(applyChanges);
 
             var instance = await CreateInitializedInstanceAsync(applyChangesToWorkspaceContext: applyChangesToWorkspaceContext, activeWorkspaceProjectContextTracker: activeWorkspaceProjectContextTracker);
 

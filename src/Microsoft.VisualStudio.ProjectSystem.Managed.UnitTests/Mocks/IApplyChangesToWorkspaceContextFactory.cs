@@ -2,6 +2,7 @@
 
 using System;
 using System.Threading;
+using System.Threading.Tasks;
 using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
@@ -13,20 +14,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             return Mock.Of<IApplyChangesToWorkspaceContext>();
         }
 
-        public static IApplyChangesToWorkspaceContext ImplementApplyProjectBuild(Action<IProjectVersionedValue<IProjectSubscriptionUpdate>, bool, CancellationToken> action)
+        public static IApplyChangesToWorkspaceContext ImplementApplyProjectBuildAsync(Action<IProjectVersionedValue<IProjectSubscriptionUpdate>, bool, CancellationToken> action)
         {
             var mock = new Mock<IApplyChangesToWorkspaceContext>();
-            mock.Setup(c => c.ApplyProjectBuild(It.IsAny<IProjectVersionedValue<IProjectSubscriptionUpdate>>(), It.IsAny<bool>(), It.IsAny<CancellationToken>()))
-                .Callback(action);
+            mock.Setup(c => c.ApplyProjectBuildAsync(It.IsAny<IProjectVersionedValue<IProjectSubscriptionUpdate>>(), It.IsAny<bool>(), It.IsAny<CancellationToken>()))
+                .Callback(action)
+                .Returns(Task.CompletedTask);
 
             return mock.Object;
         }
 
-        public static IApplyChangesToWorkspaceContext ImplementApplyProjectEvaluation(Action<IProjectVersionedValue<IProjectSubscriptionUpdate>, bool, CancellationToken> action)
+        public static IApplyChangesToWorkspaceContext ImplementApplyProjectEvaluationAsync(Action<IProjectVersionedValue<IProjectSubscriptionUpdate>, bool, CancellationToken> action)
         {
             var mock = new Mock<IApplyChangesToWorkspaceContext>();
-            mock.Setup(c => c.ApplyProjectEvaluation(It.IsAny<IProjectVersionedValue<IProjectSubscriptionUpdate>>(), It.IsAny<bool>(), It.IsAny<CancellationToken>()))
-                .Callback(action);
+            mock.Setup(c => c.ApplyProjectEvaluationAsync(It.IsAny<IProjectVersionedValue<IProjectSubscriptionUpdate>>(), It.IsAny<bool>(), It.IsAny<CancellationToken>()))
+                .Callback(action)
+                .Returns(Task.CompletedTask);
 
             return mock.Object;
         }
