@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -19,22 +19,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
                                     BuildManager,
                                     BuildManagerEvents
     {
-        private readonly VSLangProj.VSProject _vsProject;
-
         private readonly IUnconfiguredProjectCommonServices _unconfiguredProjectServices;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="VSBuildManager"/> class.
         /// </summary>
         [ImportingConstructor]
-        internal VSBuildManager(
-            [Import(ExportContractNames.VsTypes.CpsVSProject)] VSLangProj.VSProject vsProject,
-            IUnconfiguredProjectCommonServices unconfiguredProjectServices)
+        internal VSBuildManager(IUnconfiguredProjectCommonServices unconfiguredProjectServices)
         {
             AddEventSource(this as IEventSource<_dispBuildManagerEvents>);
-            _vsProject = vsProject;
             _unconfiguredProjectServices = unconfiguredProjectServices;
+            Project = new OrderPrecedenceImportCollection<VSLangProj.VSProject>(projectCapabilityCheckProvider: _unconfiguredProjectServices.Project);
         }
+
+        [ImportMany(ExportContractNames.VsTypes.VSProject)]
+        internal OrderPrecedenceImportCollection<VSLangProj.VSProject> Project { get; set; }
 
         #region _dispBuildManagerEvents_Event Members
 
@@ -44,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         public event _dispBuildManagerEvents_DesignTimeOutputDeletedEventHandler DesignTimeOutputDeleted;
 
         /// <summary>
-        /// Occurs when a design time output moniker is dirty.
+        /// Occurs when a design time output moniker is dirty
         /// </summary>
         public event _dispBuildManagerEvents_DesignTimeOutputDirtyEventHandler DesignTimeOutputDirty;
 
@@ -53,27 +52,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         /// <summary>
         /// Gets the project of which the selected item is a part.
         /// </summary>
-        public EnvDTE.Project ContainingProject
-        {
-            get { return _vsProject.Project; }
-        }
+        public EnvDTE.Project ContainingProject => Project.FirstOrDefault()?.Value.Project;
 
         /// <summary>
         /// Gets the top-level extensibility object.
         /// </summary>
-        public EnvDTE.DTE DTE
-        {
-            get { return _vsProject.DTE; }
-        }
+        public EnvDTE.DTE DTE => Project.FirstOrDefault()?.Value.DTE;
 
         /// <summary>
         /// Gets the immediate parent object of a given object.
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1065:DoNotRaiseExceptionsInUnexpectedLocations")]
-        public object Parent
-        {
-            get { throw new NotImplementedException(); }
-        }
+        public object Parent => Project.FirstOrDefault()?.Value;
 
         /// <summary>
         /// Gets the temporary portable executable (PE) monikers for a project.
@@ -101,7 +90,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
                         }
                     }
                 }
-                
+
                 return monikers.ToArray();
 
                 bool GetBooleanPropertyValue(System.Collections.Immutable.IImmutableDictionary<string, string> item, string propertyName)
