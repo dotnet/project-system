@@ -26,8 +26,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         private readonly ITargetFrameworkProvider _targetFrameworkProvider;
         private readonly object _linksLock = new object();
         private readonly List<IDisposable> _evaluationSubscriptionLinks = new List<IDisposable>();
-        private readonly object _initializationLock = new object();
-        private bool _isInitialized;
+
+        private int _isInitialized;
 
         /// <summary>
         /// Current AggregateCrossTargetProjectContext - accesses to this field must be done with a lock.
@@ -108,17 +108,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         /// <returns></returns>
         private async Task EnsureInitialized()
         {
-            bool shouldInitialize = false;
-            lock (_initializationLock)
-            {
-                if (!_isInitialized)
-                {
-                    shouldInitialize = true;
-                    _isInitialized = true;
-                }
-            }
-
-            if (shouldInitialize)
+            if (Interlocked.CompareExchange(ref _isInitialized, 1, 0) == 0)
             {
                 await InitializeAsync();
             }
