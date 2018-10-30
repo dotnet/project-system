@@ -272,7 +272,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             => obj is IDependency other && Equals(other);
 
         public bool Equals(IDependency other) 
-            => other != null && other.Id.Equals(Id, StringComparison.OrdinalIgnoreCase);
+            => StringComparer.OrdinalIgnoreCase.Equals(Id, other?.Id);
 
         public static bool operator ==(Dependency left, Dependency right)
             => left is null ? right is null : left.Equals(right);
@@ -293,14 +293,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             => left is null ? right is null : left.CompareTo(right) >= 0;
 
         public int CompareTo(IDependency other)
-        {
-            if (other == null)
-            {
-                return 1;
-            }
-
-            return StringComparer.OrdinalIgnoreCase.Compare(Id, other.Id);
-        }
+            => StringComparer.OrdinalIgnoreCase.Compare(Id, other?.Id);
 
         public override string ToString()
         {
