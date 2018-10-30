@@ -21,6 +21,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 
         public override string Id => OriginalItemSpec;
 
+        public override int Priority => Resolved ? Dependency.PackageAssemblyNodePriority : Dependency.UnresolvedReferenceNodePriority;
+
         public override string ProviderType => PackageRuleHandler.ProviderTypeString;
 
         public PackageAssemblyDependencyModel(
@@ -42,15 +44,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             if (dependenciesIDs != null)
             {
                 DependencyIDs = ImmutableArray.CreateRange(dependenciesIDs);
-            }
-
-            if (resolved)
-            {
-                Priority = Dependency.PackageAssemblyNodePriority;
-            }
-            else
-            {
-                Priority = Dependency.UnresolvedReferenceNodePriority;
             }
         }
     }

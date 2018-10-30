@@ -26,6 +26,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 
         public override string Id => OriginalItemSpec;
 
+        public override int Priority => Resolved ? Dependency.PackageNodePriority : Dependency.UnresolvedReferenceNodePriority;
+
         public override string ProviderType => PackageRuleHandler.ProviderTypeString;
 
         public override string SchemaItemType => PackageReference.PrimaryDataSourceItemType;
@@ -62,12 +64,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 
             if (resolved)
             {
-                Priority = Dependency.PackageNodePriority;
                 SchemaName = ResolvedPackageReference.SchemaName;
             }
             else
             {
-                Priority = Dependency.UnresolvedReferenceNodePriority;
                 SchemaName = PackageReference.SchemaName;
             }
         }

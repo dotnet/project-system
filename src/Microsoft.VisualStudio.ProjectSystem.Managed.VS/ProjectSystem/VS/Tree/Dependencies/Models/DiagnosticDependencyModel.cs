@@ -28,9 +28,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             unresolvedIcon: ManagedImageMonikers.WarningSmall,
             unresolvedExpandedIcon: ManagedImageMonikers.WarningSmall);
 
-        public override DependencyIconSet IconSet { get; }
+        private readonly DiagnosticMessageSeverity _severity;
+
+        public override DependencyIconSet IconSet => _severity == DiagnosticMessageSeverity.Error
+            ? s_errorIconSet
+            : s_warningIconSet;
 
         public override string Id => OriginalItemSpec;
+
+        public override int Priority => _severity == DiagnosticMessageSeverity.Error
+            ? Dependency.DiagnosticsErrorNodePriority
+            : Dependency.DiagnosticsWarningNodePriority;
 
         public override string ProviderType => PackageRuleHandler.ProviderTypeString;
 
@@ -47,6 +55,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             Requires.NotNullOrEmpty(originalItemSpec, nameof(originalItemSpec));
             Requires.NotNullOrEmpty(message, nameof(message));
 
+            _severity = severity;
+
             code = code ?? string.Empty;
             Name = message;
             Caption = $"{code.ToUpperInvariant()} {message}".TrimStart();
@@ -56,15 +66,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 
             if (severity == DiagnosticMessageSeverity.Error)
             {
-                IconSet = s_errorIconSet;
                 Flags = Flags.Union(DependencyTreeFlags.DiagnosticErrorNodeFlags);
-                Priority = Dependency.DiagnosticsErrorNodePriority;
             }
             else
             {
-                IconSet = s_warningIconSet;
                 Flags = Flags.Union(DependencyTreeFlags.DiagnosticWarningNodeFlags);
-                Priority = Dependency.DiagnosticsWarningNodePriority;
             }
         }
     }

@@ -27,6 +27,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 
         public override string ProviderType => AssemblyRuleHandler.ProviderTypeString;
 
+        public override int Priority => Dependency.FrameworkAssemblyNodePriority;
+
         public override string SchemaItemType => AssemblyReference.PrimaryDataSourceItemType;
 
         public AssemblyDependencyModel(
@@ -51,8 +53,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
                 Caption = Name;
                 SchemaName = AssemblyReference.SchemaName;
             }
-
-            Priority = Dependency.FrameworkAssemblyNodePriority;
         }
     }
 }

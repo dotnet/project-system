@@ -27,6 +27,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 
         public override string Id => OriginalItemSpec;
 
+        public override int Priority => Dependency.SdkNodePriority;
+
         public override string ProviderType => SdkRuleHandler.ProviderTypeString;
 
         public override string SchemaItemType => SdkReference.PrimaryDataSourceItemType;
@@ -42,7 +44,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
         {
             Flags = Flags.Union(DependencyTreeFlags.SupportsHierarchy);
             SchemaName = Resolved ? ResolvedSdkReference.SchemaName : SdkReference.SchemaName;
-            Priority = Dependency.SdkNodePriority;
             Version = properties != null && properties.ContainsKey(ProjectItemMetadata.Version)
                 ? properties[ProjectItemMetadata.Version] 
                 : string.Empty;

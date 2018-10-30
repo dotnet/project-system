@@ -61,7 +61,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
         public bool TopLevel { get; protected set; } = true;
         public bool Implicit { get; protected set; } = false;
         public bool Visible { get; protected set; } = true;
-        public int Priority { get; protected set; } = 0;
+        public virtual int Priority => 0;
         public ImageMoniker Icon => IconSet.Icon;
         public ImageMoniker ExpandedIcon => IconSet.ExpandedIcon;
         public ImageMoniker UnresolvedIcon => IconSet.UnresolvedIcon;

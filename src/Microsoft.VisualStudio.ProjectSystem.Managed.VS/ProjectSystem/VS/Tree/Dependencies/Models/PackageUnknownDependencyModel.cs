@@ -21,6 +21,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 
         public override string Id => OriginalItemSpec;
 
+        public override int Priority => Dependency.UnresolvedReferenceNodePriority;
+
         public override string ProviderType => PackageRuleHandler.ProviderTypeString;
 
         public PackageUnknownDependencyModel(
@@ -38,7 +40,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             Name = name;
             Caption = name;
             TopLevel = false;
-            Priority = Dependency.UnresolvedReferenceNodePriority;
 
             if (dependenciesIDs != null)
             {

@@ -24,6 +24,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 
         public override DependencyIconSet IconSet => Implicit ? s_implicitIconSet : s_iconSet;
 
+        public override int Priority => Dependency.AnalyzerNodePriority;
+
         public override string ProviderType => AnalyzerRuleHandler.ProviderTypeString;
 
         public override string SchemaItemType => AnalyzerReference.PrimaryDataSourceItemType;
@@ -47,8 +49,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
                 Caption = Path;
                 SchemaName = AnalyzerReference.SchemaName;
             }
-
-            Priority = Dependency.AnalyzerNodePriority;
         }
     }
 }
