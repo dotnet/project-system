@@ -30,6 +30,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 
         public override string SchemaItemType => AnalyzerReference.PrimaryDataSourceItemType;
 
+        public override string SchemaName => Resolved ? ResolvedAnalyzerReference.SchemaName : AnalyzerReference.SchemaName;
+
         public AnalyzerDependencyModel(
             string path,
             string originalItemSpec,
@@ -42,12 +44,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             if (Resolved)
             {
                 Caption = System.IO.Path.GetFileNameWithoutExtension(Name);
-                SchemaName = ResolvedAnalyzerReference.SchemaName;
             }
             else
             {
                 Caption = Path;
-                SchemaName = AnalyzerReference.SchemaName;
             }
         }
     }

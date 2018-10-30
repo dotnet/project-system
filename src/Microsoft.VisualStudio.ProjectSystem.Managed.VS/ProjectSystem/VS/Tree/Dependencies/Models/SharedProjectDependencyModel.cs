@@ -30,6 +30,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 
         public override string SchemaItemType => ProjectReference.PrimaryDataSourceItemType;
 
+        public override string SchemaName => Resolved ? ResolvedProjectReference.SchemaName : ProjectReference.SchemaName;
+
         public SharedProjectDependencyModel(
             string path,
             string originalItemSpec,
@@ -39,15 +41,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             IImmutableDictionary<string, string> properties)
             : base(path, originalItemSpec, flags, resolved, isImplicit, properties)
         {
-            if (Resolved)
-            {
-                SchemaName = ResolvedProjectReference.SchemaName;
-            }
-            else
-            {
-                SchemaName = ProjectReference.SchemaName;
-            }
-
             Flags = Flags.Union(DependencyTreeFlags.SharedProjectFlags)
                          .Except(DependencyTreeFlags.SupportsRuleProperties);
             Caption = System.IO.Path.GetFileNameWithoutExtension(Name);

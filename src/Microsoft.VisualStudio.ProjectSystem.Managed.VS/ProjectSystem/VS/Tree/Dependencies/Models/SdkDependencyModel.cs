@@ -33,6 +33,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 
         public override string SchemaItemType => SdkReference.PrimaryDataSourceItemType;
 
+        public override string SchemaName => Resolved ? ResolvedSdkReference.SchemaName : SdkReference.SchemaName;
+
         public SdkDependencyModel(
             string path,
             string originalItemSpec,
@@ -43,7 +45,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             : base(path, originalItemSpec, flags, resolved, isImplicit, properties)
         {
             Flags = Flags.Union(DependencyTreeFlags.SupportsHierarchy);
-            SchemaName = Resolved ? ResolvedSdkReference.SchemaName : SdkReference.SchemaName;
             Version = properties != null && properties.ContainsKey(ProjectItemMetadata.Version)
                 ? properties[ProjectItemMetadata.Version] 
                 : string.Empty;

@@ -31,6 +31,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 
         public override string SchemaItemType => AssemblyReference.PrimaryDataSourceItemType;
 
+        public override string SchemaName => Resolved ? ResolvedAssemblyReference.SchemaName : AssemblyReference.SchemaName;
+
         public AssemblyDependencyModel(
             string path,
             string originalItemSpec,
@@ -46,12 +48,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
                 Properties?.TryGetValue(ResolvedAssemblyReference.FusionNameProperty, out fusionName);
 
                 Caption = string.IsNullOrEmpty(fusionName) ? Name : new AssemblyName(fusionName).Name;
-                SchemaName = ResolvedAssemblyReference.SchemaName;
             }
             else
             {
                 Caption = Name;
-                SchemaName = AssemblyReference.SchemaName;
             }
         }
     }

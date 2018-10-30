@@ -29,6 +29,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 
         public override string SchemaItemType => ComReference.PrimaryDataSourceItemType;
 
+        public override string SchemaName => Resolved ? ResolvedCOMReference.SchemaName : ComReference.SchemaName;
+
         public ComDependencyModel(
             string path,
             string originalItemSpec,
@@ -41,12 +43,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             if (Resolved)
             {
                 Caption = System.IO.Path.GetFileNameWithoutExtension(Name);
-                SchemaName = ResolvedCOMReference.SchemaName;
             }
             else
             {
                 Caption = Name;
-                SchemaName = ComReference.SchemaName;
             }
         }
     }

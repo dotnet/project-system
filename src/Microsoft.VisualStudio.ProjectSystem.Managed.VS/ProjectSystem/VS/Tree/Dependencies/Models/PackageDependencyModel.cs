@@ -32,6 +32,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 
         public override string SchemaItemType => PackageReference.PrimaryDataSourceItemType;
 
+        public override string SchemaName => Resolved ? ResolvedPackageReference.SchemaName : PackageReference.SchemaName;
+
         public PackageDependencyModel(
             string path,
             string originalItemSpec,
@@ -61,15 +63,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 
             Flags = Flags.Union(DependencyTreeFlags.PackageNodeFlags)
                          .Union(DependencyTreeFlags.SupportsHierarchy);
-
-            if (resolved)
-            {
-                SchemaName = ResolvedPackageReference.SchemaName;
-            }
-            else
-            {
-                SchemaName = PackageReference.SchemaName;
-            }
         }
     }
 }

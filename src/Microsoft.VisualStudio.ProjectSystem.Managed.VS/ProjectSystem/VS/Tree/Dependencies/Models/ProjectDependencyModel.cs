@@ -30,6 +30,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 
         public override string SchemaItemType => ProjectReference.PrimaryDataSourceItemType;
 
+        public override string SchemaName => Resolved ? ResolvedProjectReference.SchemaName : ProjectReference.SchemaName;
+
         public ProjectDependencyModel(
             string path,
             string originalItemSpec,
@@ -40,16 +42,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             : base(path, originalItemSpec, flags, resolved, isImplicit, properties)
         {
             Flags = Flags.Union(DependencyTreeFlags.SupportsHierarchy);
-
-            if (Resolved)
-            {
-                SchemaName = ResolvedProjectReference.SchemaName;
-            }
-            else
-            {
-                SchemaName = ProjectReference.SchemaName;
-            }
-
             Caption = System.IO.Path.GetFileNameWithoutExtension(Name);
         }
     }
