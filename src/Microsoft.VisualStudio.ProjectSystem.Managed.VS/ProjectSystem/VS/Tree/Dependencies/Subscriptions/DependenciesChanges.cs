@@ -5,32 +5,49 @@ using System.Collections.Immutable;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions
 {
-    internal class DependenciesChanges : IDependenciesChanges
+    internal sealed class DependenciesChanges : IDependenciesChanges
     {
-        private HashSet<IDependencyModel> Added { get; } = new HashSet<IDependencyModel>();
-        private HashSet<IDependencyModel> Removed { get; } = new HashSet<IDependencyModel>();
+        private readonly HashSet<IDependencyModel> _added = new HashSet<IDependencyModel>();
+        private readonly HashSet<IDependencyModel> _removed = new HashSet<IDependencyModel>();
 
-        public IImmutableList<IDependencyModel> AddedNodes => ImmutableArray.CreateRange(Added);
-        public IImmutableList<IDependencyModel> RemovedNodes => ImmutableArray.CreateRange(Removed);
+        public bool AnyChanges => _added.Count != 0 || _removed.Count != 0;
+
+        public ImmutableArray<IDependencyModel> AddedNodes
+        {
+            get
+            {
+                lock (_added)
+                {
+                    return ImmutableArray.CreateRange(_added);
+                }
+            }
+        }
+
+        public ImmutableArray<IDependencyModel> RemovedNodes
+        {
+            get
+            {
+                lock (_removed)
+                {
+                    return ImmutableArray.CreateRange(_removed);
+                }
+            }
+        }
 
         public void IncludeAddedChange(IDependencyModel model)
         {
-            Added.Add(model);
-        }
-
-        public void ExcludeAddedChange(IDependencyModel model)
-        {
-            Added.Remove(model);
+            lock (_added)
+            {
+                _added.Add(model);
+            }
         }
 
         public void IncludeRemovedChange(IDependencyModel model)
         {
-            Removed.Add(model);
-        }
-
-        public void ExcludeRemovedChange(IDependencyModel model)
-        {
-            Removed.Remove(model);
+            lock (_removed)
+            {
+                _removed.Add(model);
+            }
         }
     }
 }

@@ -26,12 +26,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             if (addedNodes != null)
             {
-                mock.Setup(x => x.AddedNodes).Returns(ImmutableList<IDependencyModel>.Empty.AddRange(addedNodes));
+                mock.Setup(x => x.AddedNodes).Returns(addedNodes.ToImmutableArray());
             }
 
             if (removedNodes != null)
             {
-                mock.Setup(x => x.RemovedNodes).Returns(ImmutableList<IDependencyModel>.Empty.AddRange(removedNodes));
+                mock.Setup(x => x.RemovedNodes).Returns(removedNodes.ToImmutableArray());
             }
 
             return mock.Object;

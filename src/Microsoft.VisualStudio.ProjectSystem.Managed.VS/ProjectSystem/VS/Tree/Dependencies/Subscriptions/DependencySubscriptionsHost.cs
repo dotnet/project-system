@@ -250,7 +250,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
         private void OnSubtreeProviderDependenciesChanged(object sender, DependenciesChangedEventArgs e)
         {
-            if (IsDisposing || IsDisposed || !e.Changes.AnyChanges() || e.Token.IsCancellationRequested)
+            if (IsDisposing || IsDisposed || !e.Changes.AnyChanges || e.Token.IsCancellationRequested)
             {
                 return;
             }
