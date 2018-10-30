@@ -62,11 +62,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         public virtual bool ReceiveUpdatesWithEmptyProjectChange => false;
 
         public virtual void Handle(
-            IImmutableDictionary<string, IProjectChangeDescription> projectChanges,
+            IImmutableDictionary<string, IProjectChangeDescription> changesByRuleName,
             ITargetFramework targetFramework,
             DependenciesRuleChangeContext ruleChangeContext)
         {
-            if (projectChanges.TryGetValue(UnresolvedRuleName, out IProjectChangeDescription unresolvedChanges))
+            if (changesByRuleName.TryGetValue(UnresolvedRuleName, out IProjectChangeDescription unresolvedChanges))
             {
                 HandleChangesForRule(
                     resolved: false, 
@@ -76,7 +76,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     shouldProcess: itemSpec => true);
             }
 
-            if (projectChanges.TryGetValue(ResolvedRuleName, out IProjectChangeDescription resolvedChanges))
+            if (changesByRuleName.TryGetValue(ResolvedRuleName, out IProjectChangeDescription resolvedChanges))
             {
                 HandleChangesForRule(
                     resolved: true, 

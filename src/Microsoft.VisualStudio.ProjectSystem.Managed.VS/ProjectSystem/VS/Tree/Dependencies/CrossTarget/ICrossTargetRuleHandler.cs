@@ -36,7 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         ///     to the given <see cref="ITargetedProjectContext"/>.
         /// </summary>
         void Handle(
-            IImmutableDictionary<string, IProjectChangeDescription> projectChange,
+            IImmutableDictionary<string, IProjectChangeDescription> changesByRuleName,
             ITargetFramework targetFramework,
             T ruleChangeContext);
     }
