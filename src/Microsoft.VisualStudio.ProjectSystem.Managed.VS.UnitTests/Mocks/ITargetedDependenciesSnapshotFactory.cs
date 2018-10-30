@@ -19,6 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         }
 
         public static ITargetedDependenciesSnapshot Implement(
+            string projectPath = null,
             ITargetFramework targetFramework = null,
             Dictionary<string, IDependency> dependenciesWorld = null,
             bool? hasUnresolvedDependency = null,
@@ -28,6 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             MockBehavior? mockBehavior = null)
         {
             return ImplementMock(
+                projectPath,
                 targetFramework,
                 dependenciesWorld,
                 hasUnresolvedDependency,
@@ -38,6 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         }
 
         public static Mock<ITargetedDependenciesSnapshot> ImplementMock(
+            string projectPath = null,
             ITargetFramework targetFramework = null,
             Dictionary<string, IDependency> dependenciesWorld = null,
             bool? hasUnresolvedDependency = null,
@@ -48,6 +51,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             var behavior = mockBehavior ?? MockBehavior.Default;
             var mock = new Mock<ITargetedDependenciesSnapshot>(behavior);
+
+            if (projectPath != null)
+            {
+                mock.Setup(x => x.ProjectPath).Returns(projectPath);
+            }
 
             if (targetFramework != null)
             {

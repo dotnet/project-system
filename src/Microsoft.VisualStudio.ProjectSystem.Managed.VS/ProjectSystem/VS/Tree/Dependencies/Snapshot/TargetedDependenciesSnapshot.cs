@@ -12,49 +12,193 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Filters
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
-    internal class TargetedDependenciesSnapshot : ITargetedDependenciesSnapshot
+    internal sealed class TargetedDependenciesSnapshot : ITargetedDependenciesSnapshot
     {
         private static readonly IReadOnlyDictionary<string, IProjectDependenciesSubTreeProvider> s_emptySubTreeProviderMap
             = ImmutableDictionary.Create<string, IProjectDependenciesSubTreeProvider>(StringComparers.DependencyProviderTypes);
 
-        protected TargetedDependenciesSnapshot(
+        #region Factories and internal constructor
+
+        public static ITargetedDependenciesSnapshot CreateEmpty(string projectPath, ITargetFramework targetFramework, IProjectCatalogSnapshot catalogs)
+        {
+            return new TargetedDependenciesSnapshot(
+                projectPath,
+                targetFramework,
+                catalogs,
+                ImmutableHashSet<IDependency>.Empty,
+                ImmutableStringDictionary<IDependency>.EmptyOrdinalIgnoreCase);
+        }
+
+        public static ITargetedDependenciesSnapshot FromChanges(
+            string projectPath,
+            ITargetedDependenciesSnapshot previousSnapshot,
+            IDependenciesChanges changes,
+            IProjectCatalogSnapshot catalogs,
+            IReadOnlyCollection<IDependenciesSnapshotFilter> snapshotFilters,
+            IReadOnlyCollection<IProjectDependenciesSubTreeProvider> subTreeProviders,
+            IImmutableSet<string> projectItemSpecs,
+            out bool anyChanges)
+        {
+            Requires.NotNullOrWhiteSpace(projectPath, nameof(projectPath));
+            Requires.NotNull(previousSnapshot, nameof(previousSnapshot));
+            Requires.NotNull(changes, nameof(changes));
+
+            anyChanges = false;
+
+            ITargetFramework targetFramework = previousSnapshot.TargetFramework;
+
+            var worldBuilder = previousSnapshot.DependenciesWorld.ToBuilder();
+            var topLevelBuilder = previousSnapshot.TopLevelDependencies.ToBuilder();
+
+            foreach (IDependencyModel removed in changes.RemovedNodes)
+            {
+                string targetedId = Dependency.GetID(targetFramework, removed.ProviderType, removed.Id);
+
+                if (!worldBuilder.TryGetValue(targetedId, out IDependency dependency))
+                {
+                    continue;
+                }
+
+                bool canRemove = true;
+
+                if (snapshotFilters != null)
+                {
+                    foreach (IDependenciesSnapshotFilter filter in snapshotFilters)
+                    {
+                        canRemove = filter.BeforeRemove(
+                            projectPath, targetFramework, dependency, worldBuilder, topLevelBuilder, out bool filterAnyChanges);
+
+                        anyChanges |= filterAnyChanges;
+
+                        if (!canRemove)
+                        {
+                            // TODO breaking here denies later filters the opportunity to modify builders
+                            break;
+                        }
+                    }
+                }
+
+                if (canRemove)
+                {
+                    anyChanges = true;
+                    worldBuilder.Remove(targetedId);
+                    topLevelBuilder.Remove(dependency);
+                }
+            }
+
+            IReadOnlyDictionary<string, IProjectDependenciesSubTreeProvider> subTreeProvidersMap
+                = subTreeProviders?.ToDictionary(p => p.ProviderType, StringComparers.DependencyProviderTypes)
+                  ?? s_emptySubTreeProviderMap;
+
+            foreach (IDependencyModel added in changes.AddedNodes)
+            {
+                IDependency newDependency = new Dependency(added, targetFramework, projectPath);
+
+                if (snapshotFilters != null)
+                {
+                    foreach (IDependenciesSnapshotFilter filter in snapshotFilters)
+                    {
+                        newDependency = filter.BeforeAdd(
+                            projectPath,
+                            targetFramework,
+                            newDependency,
+                            worldBuilder,
+                            topLevelBuilder,
+                            subTreeProvidersMap,
+                            projectItemSpecs,
+                            out bool filterAnyChanges);
+
+                        anyChanges |= filterAnyChanges;
+
+                        if (newDependency == null)
+                        {
+                            break;
+                        }
+                    }
+                }
+
+                if (newDependency == null)
+                {
+                    continue;
+                }
+
+                anyChanges = true;
+
+                worldBuilder[newDependency.Id] = newDependency;
+
+                if (newDependency.TopLevel)
+                {
+                    topLevelBuilder.Add(newDependency);
+                }
+            }
+
+            // Also factor in any changes to path/framework/catalogs
+            anyChanges =
+                anyChanges ||
+                !StringComparers.Paths.Equals(projectPath, previousSnapshot.ProjectPath) ||
+                !targetFramework.Equals(previousSnapshot.TargetFramework) ||
+                !Equals(catalogs, previousSnapshot.Catalogs);
+
+            if (anyChanges)
+            {
+                return new TargetedDependenciesSnapshot(
+                    projectPath,
+                    targetFramework,
+                    catalogs,
+                    topLevelBuilder.ToImmutable(),
+                    worldBuilder.ToImmutable());
+            }
+
+            return previousSnapshot;
+        }
+
+        // Internal, for test use -- normal code should use the factory methods
+        internal TargetedDependenciesSnapshot(
             string projectPath,
             ITargetFramework targetFramework,
-            ITargetedDependenciesSnapshot previousSnapshot = null,
-            IProjectCatalogSnapshot catalogs = null)
+            IProjectCatalogSnapshot catalogs,
+            ImmutableHashSet<IDependency> topLevelDependencies,
+            ImmutableDictionary<string, IDependency> dependenciesWorld)
         {
             Requires.NotNullOrEmpty(projectPath, nameof(projectPath));
             Requires.NotNull(targetFramework, nameof(targetFramework));
+            // catalogs can be null
+            Requires.NotNull(topLevelDependencies, nameof(topLevelDependencies));
+            Requires.NotNull(dependenciesWorld, nameof(dependenciesWorld));
 
             ProjectPath = projectPath;
             TargetFramework = targetFramework;
             Catalogs = catalogs;
+            TopLevelDependencies = topLevelDependencies;
+            DependenciesWorld = dependenciesWorld;
 
-            if (previousSnapshot != null)
+            foreach (IDependency topLevelDependency in TopLevelDependencies)
             {
-                TopLevelDependencies = previousSnapshot.TopLevelDependencies;
-                DependenciesWorld = previousSnapshot.DependenciesWorld;
+                if (!string.IsNullOrEmpty(topLevelDependency.Path))
+                {
+                    _topLevelDependenciesByPathMap.Add(
+                        Dependency.GetID(TargetFramework, topLevelDependency.ProviderType, topLevelDependency.Path),
+                        topLevelDependency);
+                }
             }
         }
 
-        /// <summary>
-        /// Internal for testing.
-        /// </summary>
-        internal TargetedDependenciesSnapshot(IDictionary<string, IDependency> dependenciesWorld, IEnumerable<IDependency> topLevelDependencies)
-        {
-            DependenciesWorld = dependenciesWorld.ToImmutableDictionary(StringComparer.OrdinalIgnoreCase);
-            TopLevelDependencies = topLevelDependencies.ToImmutableHashSet();
-        }
+        #endregion
 
+        /// <inheritdoc />
         public string ProjectPath { get; }
 
+        /// <inheritdoc />
         public ITargetFramework TargetFramework { get; }
 
+        /// <inheritdoc />
         public IProjectCatalogSnapshot Catalogs { get; }
 
-        public ImmutableHashSet<IDependency> TopLevelDependencies { get; private set; } = ImmutableHashSet<IDependency>.Empty;
+        /// <inheritdoc />
+        public ImmutableHashSet<IDependency> TopLevelDependencies { get; }
 
-        public ImmutableDictionary<string, IDependency> DependenciesWorld { get; private set; } = ImmutableStringDictionary<IDependency>.EmptyOrdinalIgnoreCase;
+        /// <inheritdoc />
+        public ImmutableDictionary<string, IDependency> DependenciesWorld { get; }
 
         private readonly Dictionary<string, IDependency> _topLevelDependenciesByPathMap = new Dictionary<string, IDependency>(StringComparer.OrdinalIgnoreCase);
         private readonly ConcurrentDictionary<string, ImmutableArray<IDependency>> _dependenciesChildrenMap = new ConcurrentDictionary<string, ImmutableArray<IDependency>>(StringComparer.OrdinalIgnoreCase);
@@ -62,6 +206,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
         private bool? _hasUnresolvedDependency;
 
+        /// <inheritdoc />
         public bool HasUnresolvedDependency
         {
             get
@@ -77,6 +222,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             }
         }
 
+        /// <inheritdoc />
         public bool CheckForUnresolvedDependencies(IDependency dependency)
         {
             if (_unresolvedDescendantsMap.TryGetValue(dependency.Id, out bool hasUnresolvedDescendants))
@@ -87,6 +233,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             return FindUnresolvedDependenciesRecursive(dependency);
         }
 
+        /// <inheritdoc />
         public bool CheckForUnresolvedDependencies(string providerType)
         {
             foreach ((string _, IDependency dependency) in DependenciesWorld)
@@ -101,6 +248,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             return false;
         }
 
+        /// <inheritdoc />
         public IEnumerable<IDependency> GetDependencyChildren(IDependency dependency)
         {
             return GetDependencyChildrenInternal(dependency);
@@ -170,136 +318,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
             _unresolvedDescendantsMap[dependency.Id] = unresolved;
             return unresolved;
-        }
-
-        private bool MergeChanges(
-            IDependenciesChanges changes,
-            IReadOnlyCollection<IDependenciesSnapshotFilter> snapshotFilters,
-            IReadOnlyCollection<IProjectDependenciesSubTreeProvider> subTreeProviders,
-            IImmutableSet<string> projectItemSpecs)
-        {
-            var worldBuilder = DependenciesWorld.ToBuilder();
-            var topLevelBuilder = TopLevelDependencies.ToBuilder();
-
-            bool anyChanges = false;
-
-            foreach (IDependencyModel removed in changes.RemovedNodes)
-            {
-                string targetedId = Dependency.GetID(TargetFramework, removed.ProviderType, removed.Id);
-
-                if (!worldBuilder.TryGetValue(targetedId, out IDependency dependency))
-                {
-                    continue;
-                }
-
-                bool canRemove = true;
-
-                if (snapshotFilters != null)
-                {
-                    foreach (IDependenciesSnapshotFilter filter in snapshotFilters)
-                    {
-                        canRemove = filter.BeforeRemove(
-                            ProjectPath, TargetFramework, dependency, worldBuilder, topLevelBuilder, out bool filterAnyChanges);
-
-                        anyChanges |= filterAnyChanges;
-
-                        if (!canRemove)
-                        {
-                            // TODO breaking here denies later filters the opportunity to modify builders
-                            break;
-                        }
-                    }
-                }
-
-                if (canRemove)
-                {
-                    anyChanges = true;
-                    worldBuilder.Remove(targetedId);
-                    topLevelBuilder.Remove(dependency);
-                }
-            }
-
-            IReadOnlyDictionary<string, IProjectDependenciesSubTreeProvider> subTreeProvidersMap
-                = subTreeProviders?.ToDictionary(p => p.ProviderType, StringComparers.DependencyProviderTypes)
-                  ?? s_emptySubTreeProviderMap;
-
-            foreach (IDependencyModel added in changes.AddedNodes)
-            {
-                IDependency newDependency = new Dependency(added, TargetFramework, ProjectPath);
-
-                if (snapshotFilters != null)
-                {
-                    foreach (IDependenciesSnapshotFilter filter in snapshotFilters)
-                    {
-                        newDependency = filter.BeforeAdd(
-                            ProjectPath,
-                            TargetFramework,
-                            newDependency,
-                            worldBuilder,
-                            topLevelBuilder,
-                            subTreeProvidersMap,
-                            projectItemSpecs,
-                            out bool filterAnyChanges);
-
-                        anyChanges |= filterAnyChanges;
-
-                        if (newDependency == null)
-                        {
-                            break;
-                        }
-                    }
-                }
-
-                if (newDependency == null)
-                {
-                    continue;
-                }
-
-                anyChanges = true;
-
-                worldBuilder[newDependency.Id] = newDependency;
-
-                if (newDependency.TopLevel)
-                {
-                    topLevelBuilder.Add(newDependency);
-                }
-            }
-
-            DependenciesWorld = worldBuilder.ToImmutable();
-            TopLevelDependencies = topLevelBuilder.ToImmutable();
-
-            ConstructTopLevelDependenciesByPathMap();
-
-            return anyChanges;
-
-            void ConstructTopLevelDependenciesByPathMap()
-            {
-                foreach (IDependency topLevelDependency in TopLevelDependencies)
-                {
-                    if (!string.IsNullOrEmpty(topLevelDependency.Path))
-                    {
-                        _topLevelDependenciesByPathMap.Add(
-                            Dependency.GetID(TargetFramework, topLevelDependency.ProviderType, topLevelDependency.Path),
-                            topLevelDependency);
-                    }
-                }
-            }
-        }
-
-        public static TargetedDependenciesSnapshot FromChanges(
-            string projectPath,
-            ITargetFramework targetFramework,
-            ITargetedDependenciesSnapshot previousSnapshot,
-            IDependenciesChanges changes,
-            IProjectCatalogSnapshot catalogs,
-            IReadOnlyCollection<IDependenciesSnapshotFilter> snapshotFilters,
-            IReadOnlyCollection<IProjectDependenciesSubTreeProvider> subTreeProviders,
-            IImmutableSet<string> projectItemSpecs,
-            out bool anyChanges)
-        {
-            var newSnapshot = new TargetedDependenciesSnapshot(projectPath, targetFramework, previousSnapshot, catalogs);
-            anyChanges = newSnapshot.MergeChanges(changes, snapshotFilters, subTreeProviders, projectItemSpecs);
-            return newSnapshot;
         }
     }
 }

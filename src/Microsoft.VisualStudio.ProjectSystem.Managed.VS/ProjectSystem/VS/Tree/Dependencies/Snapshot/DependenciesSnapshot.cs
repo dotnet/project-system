@@ -44,11 +44,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
             foreach ((ITargetFramework targetFramework, IDependenciesChanges dependenciesChanges) in changes)
             {
-                builder.TryGetValue(targetFramework, out ITargetedDependenciesSnapshot previousTargetedSnapshot);
+                if (!builder.TryGetValue(targetFramework, out ITargetedDependenciesSnapshot previousTargetedSnapshot))
+                {
+                    previousTargetedSnapshot = TargetedDependenciesSnapshot.CreateEmpty(projectPath, targetFramework, catalogs);
+                }
 
                 var newTargetedSnapshot = TargetedDependenciesSnapshot.FromChanges(
                     projectPath,
-                    targetFramework,
                     previousTargetedSnapshot,
                     dependenciesChanges,
                     catalogs,
