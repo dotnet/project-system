@@ -15,7 +15,6 @@ using Microsoft.VisualStudio.Text;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
-    [DebuggerDisplay("{" + nameof(Id) + ",nq}")]
     internal class Dependency : IDependency
     {
         private static readonly ConcurrentBag<StringBuilder> s_builderPool = new ConcurrentBag<StringBuilder>();
@@ -297,7 +296,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
         public override string ToString()
         {
-            return Id;
+            // Used for debugging only
+
+            var sb = new StringBuilder();
+
+            sb.Append("Id=\"").Append(Id).Append('"');
+
+            if (Resolved) sb.Append(" Resolved");
+            if (TopLevel) sb.Append(" TopLevel");
+            if (Implicit) sb.Append(" Implicit");
+            if (Visible)  sb.Append(" Visible");
+
+            return sb.ToString();
         }
 
         private static string GetAlias(IDependency dependency)
