@@ -2,6 +2,7 @@
   <Import Project="HostAgnostic.props"/>
 
   <ItemGroup>
+    <!-- VS SDK -->
     <PackageReference Include="VSLangProj" />
     <PackageReference Include="VSLangProj2" />
     <PackageReference Include="VSLangProj80" />
@@ -9,7 +10,6 @@
     <PackageReference Include="VSLangProj100" />
     <PackageReference Include="VSLangProj110" />
     <PackageReference Include="VSLangProj158" />
-
     <PackageReference Include="EnvDTE" />
     <PackageReference Include="EnvDTE80" />
     <PackageReference Include="EnvDTE90" />
@@ -17,13 +17,8 @@
     <PackageReference Include="Microsoft.VisualStudio.CoreUtility" />
     <PackageReference Include="Microsoft.VisualStudio.Data.Core" />
     <PackageReference Include="Microsoft.VisualStudio.Data.Services" />
-
-    <!--
-       Microsoft.VisualStudio.Diagnostics.PerformanceProvider.dll is needed by GraphProvider unit tests.
-       if it is not provided here, tests fail to load this assembly at runtime.
-    -->
     <PackageReference Include="Microsoft.VisualStudio.DataTools.Interop" />
-    <PackageReference Include="Microsoft.VisualStudio.Diagnostics.PerformanceProvider" />
+    <PackageReference Include="Microsoft.VisualStudio.Diagnostics.PerformanceProvider" /> <!-- Needed by Graph Provider unit tests-->
     <PackageReference Include="Microsoft.VisualStudio.Designer.Interfaces" />
     <PackageReference Include="Microsoft.VisualStudio.GraphModel" />
     <PackageReference Include="Microsoft.VisualStudio.Editor" />

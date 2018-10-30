@@ -2,7 +2,7 @@
 <Project>
   <Import Project="VisualStudio.props"/>
 
-  <!-- TODO: remove, the below references should be nuget packages -->
+    <!-- TODO: remove, the below references should be nuget packages -->
   <PropertyGroup Condition="'$(VSCOMNTOOLS)' == ''">
     <VSCOMNTOOLS>$([System.Environment]::ExpandEnvironmentVariables("%VS150COMNTOOLS%"))</VSCOMNTOOLS>
   </PropertyGroup>

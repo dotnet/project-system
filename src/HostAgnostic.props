@@ -1,6 +1,7 @@
 <!-- Copyright (c)  Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
 <Project>
   <ItemGroup>
+    <!-- Framework -->
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
@@ -9,20 +10,23 @@
     <Reference Include="System.Xml.Linq" />
     <Reference Include="PresentationFramework" />
 
-    <!-- CPS and Roslyn -->
+    <!-- CPS -->
     <PackageReference Include="Microsoft.VisualStudio.ProjectSystem.SDK" />
-    <PackageReference Include="Microsoft.VisualStudio.LanguageServices" />
     <PackageReference Include="Microsoft.VisualStudio.Validation" />
     <PackageReference Include="Microsoft.VisualStudio.Threading" />
-    <PackageReference Include="Microsoft.Net.RoslynDiagnostics" />
     <PackageReference Include="Microsoft.VisualStudio.ProjectSystem.Analyzers" />
+    
+    <!-- Roslyn -->
+    <PackageReference Include="Microsoft.Net.RoslynDiagnostics" />
+    <PackageReference Include="Microsoft.VisualStudio.LanguageServices" />
 
-    <!-- Msbuild -->
+    <!-- MSBuild -->
     <PackageReference Include="Microsoft.Build" />
     <PackageReference Include="Microsoft.Build.Utilities.Core" />
     <PackageReference Include="Microsoft.Build.Tasks.Core" />
     <PackageReference Include="Microsoft.Build.Engine" />
 
+    <!-- 3rd party -->
     <PackageReference Include="Newtonsoft.Json" />
   </ItemGroup>
 
