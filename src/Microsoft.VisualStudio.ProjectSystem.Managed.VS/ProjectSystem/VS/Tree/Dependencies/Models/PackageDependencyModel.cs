@@ -22,6 +22,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             unresolvedIcon: ManagedImageMonikers.NuGetGreyWarning,
             unresolvedExpandedIcon: ManagedImageMonikers.NuGetGreyWarning);
 
+        public override DependencyIconSet IconSet => Implicit ? s_implicitIconSet : s_iconSet;
+
+        public override string Id => OriginalItemSpec;
+
         public override string ProviderType => PackageRuleHandler.ProviderTypeString;
 
         public PackageDependencyModel(
@@ -46,7 +50,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             TopLevel = isTopLevel;
             Visible = isVisible;
             SchemaItemType = PackageReference.PrimaryDataSourceItemType;
-            IconSet = isImplicit ? s_implicitIconSet : s_iconSet;
 
             if (dependenciesIDs != null)
             {
@@ -67,7 +70,5 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
                 SchemaName = PackageReference.SchemaName;
             }
         }
-
-        public override string Id => OriginalItemSpec;
     }
 }

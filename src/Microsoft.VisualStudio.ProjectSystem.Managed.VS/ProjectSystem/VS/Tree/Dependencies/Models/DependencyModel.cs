@@ -70,7 +70,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
         public IImmutableList<string> DependencyIDs { get; protected set; } = ImmutableList<string>.Empty;
         public ProjectTreeFlags Flags { get; protected set; }
 
-        public DependencyIconSet IconSet { get; protected set; }
+        public abstract DependencyIconSet IconSet { get; }
 
         private string _id;
         public virtual string Id

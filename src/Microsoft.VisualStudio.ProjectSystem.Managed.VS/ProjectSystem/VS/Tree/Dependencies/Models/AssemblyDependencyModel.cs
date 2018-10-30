@@ -23,6 +23,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             unresolvedIcon: KnownMonikers.ReferenceWarning,
             unresolvedExpandedIcon: KnownMonikers.ReferenceWarning);
 
+        public override DependencyIconSet IconSet => Implicit ? s_implicitIconSet : s_iconSet;
+
         public override string ProviderType => AssemblyRuleHandler.ProviderTypeString;
 
         public AssemblyDependencyModel(
@@ -50,7 +52,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 
             SchemaItemType = AssemblyReference.PrimaryDataSourceItemType;
             Priority = Dependency.FrameworkAssemblyNodePriority;
-            IconSet = isImplicit ? s_implicitIconSet : s_iconSet;
         }
     }
 }

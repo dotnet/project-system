@@ -17,6 +17,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             unresolvedIcon: KnownMonikers.QuestionMark,
             unresolvedExpandedIcon: KnownMonikers.QuestionMark);
 
+        public override DependencyIconSet IconSet => s_iconSet;
+
+        public override string Id => OriginalItemSpec;
+
         public override string ProviderType => PackageRuleHandler.ProviderTypeString;
 
         public PackageUnknownDependencyModel(
@@ -34,7 +38,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             Name = name;
             Caption = name;
             TopLevel = false;
-            IconSet = s_iconSet;
             Priority = Dependency.UnresolvedReferenceNodePriority;
 
             if (dependenciesIDs != null)
@@ -42,7 +45,5 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
                 DependencyIDs = ImmutableArray.CreateRange(dependenciesIDs);
             }
         }
-
-        public override string Id => OriginalItemSpec;
     }
 }

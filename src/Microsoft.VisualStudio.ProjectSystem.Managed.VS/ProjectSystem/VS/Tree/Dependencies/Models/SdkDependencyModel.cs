@@ -23,6 +23,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             unresolvedIcon: ManagedImageMonikers.SdkWarning,
             unresolvedExpandedIcon: ManagedImageMonikers.SdkWarning);
 
+        public override DependencyIconSet IconSet => Implicit ? s_implicitIconSet : s_iconSet;
+
+        public override string Id => OriginalItemSpec;
+
         public override string ProviderType => SdkRuleHandler.ProviderTypeString;
 
         public SdkDependencyModel(
@@ -38,7 +42,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             SchemaName = Resolved ? ResolvedSdkReference.SchemaName : SdkReference.SchemaName;
             SchemaItemType = SdkReference.PrimaryDataSourceItemType;
             Priority = Dependency.SdkNodePriority;
-            IconSet = isImplicit ? s_implicitIconSet : s_iconSet;
             Version = properties != null && properties.ContainsKey(ProjectItemMetadata.Version)
                 ? properties[ProjectItemMetadata.Version] 
                 : string.Empty;
@@ -46,7 +49,5 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
                 .FirstOrDefault();
             Caption = string.IsNullOrEmpty(Version) ? baseCaption : $"{baseCaption} ({Version})";
         }
-
-        public override string Id => OriginalItemSpec;
     }
 }

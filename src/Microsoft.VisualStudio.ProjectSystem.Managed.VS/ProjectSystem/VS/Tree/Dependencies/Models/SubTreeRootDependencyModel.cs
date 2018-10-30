@@ -6,6 +6,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
     {
         public override string ProviderType { get; }
 
+        public override DependencyIconSet IconSet { get; }
+
         public SubTreeRootDependencyModel(
             string providerType,
             string name,

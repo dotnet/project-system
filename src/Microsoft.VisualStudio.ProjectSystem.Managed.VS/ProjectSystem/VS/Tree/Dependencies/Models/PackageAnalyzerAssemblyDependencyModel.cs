@@ -17,6 +17,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             unresolvedIcon: ManagedImageMonikers.CodeInformationWarning,
             unresolvedExpandedIcon: ManagedImageMonikers.CodeInformationWarning);
 
+        public override DependencyIconSet IconSet => s_iconSet;
+
+        public override string Id => OriginalItemSpec;
+
         public override string ProviderType => PackageRuleHandler.ProviderTypeString;
 
         public PackageAnalyzerAssemblyDependencyModel(
@@ -34,7 +38,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             Name = name;
             Caption = name;
             TopLevel = false;
-            IconSet = s_iconSet;
 
             if (dependenciesIDs != null)
             {
@@ -50,7 +53,5 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
                 Priority = Dependency.UnresolvedReferenceNodePriority;
             }
         }
-
-        public override string Id => OriginalItemSpec;
     }
 }

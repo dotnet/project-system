@@ -28,6 +28,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             unresolvedIcon: ManagedImageMonikers.WarningSmall,
             unresolvedExpandedIcon: ManagedImageMonikers.WarningSmall);
 
+        public override DependencyIconSet IconSet { get; }
+
+        public override string Id => OriginalItemSpec;
+
         public override string ProviderType => PackageRuleHandler.ProviderTypeString;
 
         public DiagnosticDependencyModel(
@@ -63,7 +67,5 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
                 Priority = Dependency.DiagnosticsWarningNodePriority;
             }
         }
-
-        public override string Id => OriginalItemSpec;
     }
 }

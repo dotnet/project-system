@@ -22,6 +22,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             unresolvedIcon: ManagedImageMonikers.CodeInformationWarning,
             unresolvedExpandedIcon: ManagedImageMonikers.CodeInformationWarning);
 
+        public override DependencyIconSet IconSet => Implicit ? s_implicitIconSet : s_iconSet;
+
         public override string ProviderType => AnalyzerRuleHandler.ProviderTypeString;
 
         public AnalyzerDependencyModel(
@@ -46,7 +48,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 
             SchemaItemType = AnalyzerReference.PrimaryDataSourceItemType;
             Priority = Dependency.AnalyzerNodePriority;
-            IconSet = isImplicit ? s_implicitIconSet : s_iconSet;
         }
     }
 }

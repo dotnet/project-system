@@ -21,6 +21,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             unresolvedIcon: ManagedImageMonikers.ComponentWarning,
             unresolvedExpandedIcon: ManagedImageMonikers.ComponentWarning);
 
+        public override DependencyIconSet IconSet => Implicit ? s_implicitIconSet : s_iconSet;
+
         public override string ProviderType => ComRuleHandler.ProviderTypeString;
 
         public ComDependencyModel(
@@ -45,7 +47,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 
             SchemaItemType = ComReference.PrimaryDataSourceItemType;
             Priority = Dependency.ComNodePriority;
-            IconSet = isImplicit ? s_implicitIconSet : s_iconSet;
         }
     }
 }

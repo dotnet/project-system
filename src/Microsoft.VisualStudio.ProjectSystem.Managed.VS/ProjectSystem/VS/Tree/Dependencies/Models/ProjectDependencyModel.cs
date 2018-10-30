@@ -22,6 +22,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             unresolvedIcon: ManagedImageMonikers.ApplicationWarning,
             unresolvedExpandedIcon: ManagedImageMonikers.ApplicationWarning);
 
+        public override DependencyIconSet IconSet => Implicit ? s_implicitIconSet : s_iconSet;
+
         public override string ProviderType => ProjectRuleHandler.ProviderTypeString;
 
         public ProjectDependencyModel(
@@ -47,7 +49,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             Caption = System.IO.Path.GetFileNameWithoutExtension(Name);
             SchemaItemType = ProjectReference.PrimaryDataSourceItemType;
             Priority = Dependency.ProjectNodePriority;
-            IconSet = isImplicit ? s_implicitIconSet : s_iconSet;
         }
     }
 }

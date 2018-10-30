@@ -15,6 +15,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             public override string ProviderType => "someProvider";
 
+            public override DependencyIconSet IconSet => null;
+
             public TestableDependencyModel(
                 string path, 
                 string originalItemSpec, 
