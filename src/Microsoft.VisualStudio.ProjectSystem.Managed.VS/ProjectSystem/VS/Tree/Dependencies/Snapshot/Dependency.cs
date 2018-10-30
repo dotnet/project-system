@@ -15,7 +15,7 @@ using Microsoft.VisualStudio.Text;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
-    internal class Dependency : IDependency
+    internal sealed class Dependency : IDependency
     {
         private static readonly ConcurrentBag<StringBuilder> s_builderPool = new ConcurrentBag<StringBuilder>();
         private static readonly DependencyIconSetCache s_iconSetCache = new DependencyIconSetCache();
@@ -150,9 +150,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         }
 
         public string ProviderType { get; }
-        public string Name { get; protected set; }
-        public string OriginalItemSpec { get; protected set; }
-        public string Path { get; protected set; }
+        public string Name { get; }
+        public string OriginalItemSpec { get; }
+        public string Path { get; }
         public string FullPath
         {
             get
@@ -167,8 +167,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 return _fullPath;
             }
         }
-        public string SchemaName { get; protected set; }
-        private string _schemaItemType;
+        public string SchemaName { get; private set; }
+
+        private readonly string _schemaItemType;
+
         public string SchemaItemType
         {
             get
@@ -180,10 +182,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 // tracking issue: https://github.com/dotnet/roslyn-project-system/issues/1102
                 bool isGenericNodeType = Flags.Contains(DependencyTreeFlags.GenericDependencyFlags);
                 return isGenericNodeType ? _schemaItemType : Folder.PrimaryDataSourceItemType;
-            }
-            protected set
-            {
-                _schemaItemType = value;
             }
         }
 
