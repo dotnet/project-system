@@ -43,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
         public override void Handle(
             IImmutableDictionary<string, IProjectChangeDescription> projectChanges,
-            ITargetedProjectContext context,
+            ITargetFramework targetFramework,
             DependenciesRuleChangeContext ruleChangeContext)
         {
             if (projectChanges.TryGetValue(UnresolvedRuleName, out IProjectChangeDescription unresolvedChanges)
@@ -52,7 +52,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 HandleChangesForRule(
                     unresolvedChanges,
                     ruleChangeContext,
-                    context.TargetFramework,
+                    targetFramework,
                     resolved: false);
             }
 
@@ -65,7 +65,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 HandleChangesForRule(
                     resolvedChanges,
                     ruleChangeContext,
-                    context.TargetFramework,
+                    targetFramework,
                     resolved: true,
                     unresolvedChanges: caseInsensitiveUnresolvedChanges);
             }
