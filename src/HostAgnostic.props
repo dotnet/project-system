@@ -17,6 +17,8 @@
     <!-- Roslyn -->
     <PackageReference Include="Microsoft.Net.RoslynDiagnostics" />
     <PackageReference Include="Microsoft.VisualStudio.LanguageServices" />
+    <PackageReference Include="Microsoft.CodeAnalysis" />
+    
 
     <!-- MSBuild -->
     <PackageReference Include="Microsoft.Build" />
