@@ -153,7 +153,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             ITargetedDependenciesSnapshot targetedSnapshot,
             Func<IProjectTree, IEnumerable<IProjectTree>, IProjectTree> syncFunc)
         {
-            var currentNodes = new List<IProjectTree>();
             var groupedByProviderType = new Dictionary<string, List<IDependency>>(StringComparers.DependencyProviderTypes);
 
             foreach (IDependency dependency in targetedSnapshot.TopLevelDependencies)
@@ -178,6 +177,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
                 dependencies.Add(dependency);
             }
+
+            var currentNodes = new List<IProjectTree>(capacity: groupedByProviderType.Count);
 
             bool isActiveTarget = targetedSnapshot.TargetFramework.Equals(activeTarget);
             foreach ((string providerType, List<IDependency> dependencies) in groupedByProviderType)
@@ -221,11 +222,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         private async Task<IProjectTree> BuildSubTreeAsync(
             IProjectTree rootNode,
             ITargetedDependenciesSnapshot targetedSnapshot,
-            IEnumerable<IDependency> dependencies,
+            List<IDependency> dependencies,
             bool isActiveTarget,
             bool shouldCleanup)
         {
-            var currentNodes = new List<IProjectTree>();
+            List<IProjectTree> currentNodes = shouldCleanup 
+                ? new List<IProjectTree>(capacity: dependencies.Count) 
+                : null;
+
             foreach (IDependency dependency in dependencies)
             {
                 IProjectTree dependencyNode = rootNode.FindChildWithCaption(dependency.Caption);
@@ -246,7 +250,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 }
 
                 dependencyNode = await CreateOrUpdateNodeAsync(dependencyNode, dependency, targetedSnapshot, isActiveTarget);
-                currentNodes.Add(dependencyNode);
+
+                currentNodes?.Add(dependencyNode);
 
                 rootNode = isNewDependencyNode
                     ? rootNode.Add(dependencyNode).Parent
