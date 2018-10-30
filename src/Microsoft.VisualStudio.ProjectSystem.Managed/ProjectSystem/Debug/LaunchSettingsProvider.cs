@@ -712,13 +712,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 // Create our scheduler for processing file changes
                 FileChangeScheduler = new TaskDelayScheduler(FileChangeProcessingDelay, CommonProjectServices.ThreadingService,
                     ProjectServices.ProjectAsynchronousTasks.UnloadCancellationToken);
-
-                FileWatcher = new SimpleFileWatcher(Path.GetDirectoryName(CommonProjectServices.Project.FullPath),
-                                                    true,
-                                                    NotifyFilters.FileName | NotifyFilters.Size | NotifyFilters.LastWrite,
-                                                    LaunchSettingsFilename,
-                                                    LaunchSettingsFile_Changed,
-                                                    LaunchSettingsFile_Changed);
+               
+                try
+                {
+                    FileWatcher = new SimpleFileWatcher(Path.GetDirectoryName(CommonProjectServices.Project.FullPath),
+                                                        true,
+                                                        NotifyFilters.FileName | NotifyFilters.Size | NotifyFilters.LastWrite,
+                                                        LaunchSettingsFilename,
+                                                        LaunchSettingsFile_Changed,
+                                                        LaunchSettingsFile_Changed);
+                }
+                catch (Exception ex)  when (ex is IOException || ex is ArgumentException)
+                {
+                    // If the project folder is no longer available this will throw, which can happen during branch switching
+                }
             }
         }
 
