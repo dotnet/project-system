@@ -28,6 +28,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 
         public override string ProviderType => PackageRuleHandler.ProviderTypeString;
 
+        public override string SchemaItemType => PackageReference.PrimaryDataSourceItemType;
+
         public PackageDependencyModel(
             string path,
             string originalItemSpec,
@@ -49,7 +51,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             Caption = string.IsNullOrEmpty(version) ? name : $"{name} ({version})";
             TopLevel = isTopLevel;
             Visible = isVisible;
-            SchemaItemType = PackageReference.PrimaryDataSourceItemType;
 
             if (dependenciesIDs != null)
             {

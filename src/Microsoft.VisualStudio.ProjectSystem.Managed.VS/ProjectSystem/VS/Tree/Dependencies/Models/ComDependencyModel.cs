@@ -25,6 +25,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 
         public override string ProviderType => ComRuleHandler.ProviderTypeString;
 
+        public override string SchemaItemType => ComReference.PrimaryDataSourceItemType;
+
         public ComDependencyModel(
             string path,
             string originalItemSpec,
@@ -45,7 +47,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
                 SchemaName = ComReference.SchemaName;
             }
 
-            SchemaItemType = ComReference.PrimaryDataSourceItemType;
             Priority = Dependency.ComNodePriority;
         }
     }

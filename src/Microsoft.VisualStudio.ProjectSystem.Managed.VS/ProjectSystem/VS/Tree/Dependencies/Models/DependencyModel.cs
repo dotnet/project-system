@@ -55,7 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
         public string OriginalItemSpec { get; }
         public string Path { get; protected set; }
         public string SchemaName { get; protected set; }
-        public string SchemaItemType { get; protected set; }
+        public virtual string SchemaItemType => null;
         public string Version { get; protected set; }
         public bool Resolved { get; protected set; } = false;
         public bool TopLevel { get; protected set; } = true;

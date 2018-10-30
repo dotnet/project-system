@@ -26,6 +26,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 
         public override string ProviderType => AnalyzerRuleHandler.ProviderTypeString;
 
+        public override string SchemaItemType => AnalyzerReference.PrimaryDataSourceItemType;
+
         public AnalyzerDependencyModel(
             string path,
             string originalItemSpec,
@@ -46,7 +48,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
                 SchemaName = AnalyzerReference.SchemaName;
             }
 
-            SchemaItemType = AnalyzerReference.PrimaryDataSourceItemType;
             Priority = Dependency.AnalyzerNodePriority;
         }
     }

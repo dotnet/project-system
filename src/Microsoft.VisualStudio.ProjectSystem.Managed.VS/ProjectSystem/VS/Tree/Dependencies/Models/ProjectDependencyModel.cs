@@ -26,6 +26,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 
         public override string ProviderType => ProjectRuleHandler.ProviderTypeString;
 
+        public override string SchemaItemType => ProjectReference.PrimaryDataSourceItemType;
+
         public ProjectDependencyModel(
             string path,
             string originalItemSpec,
@@ -47,7 +49,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             }
 
             Caption = System.IO.Path.GetFileNameWithoutExtension(Name);
-            SchemaItemType = ProjectReference.PrimaryDataSourceItemType;
             Priority = Dependency.ProjectNodePriority;
         }
     }
