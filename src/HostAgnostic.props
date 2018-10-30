@@ -5,10 +5,8 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="PresentationFramework" />
 
     <!-- CPS -->
     <PackageReference Include="Microsoft.VisualStudio.ProjectSystem.SDK" />
