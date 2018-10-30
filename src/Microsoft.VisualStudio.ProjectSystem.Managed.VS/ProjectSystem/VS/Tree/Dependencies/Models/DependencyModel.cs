@@ -25,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             Resolved = resolved;
             Implicit = isImplicit;
             Properties = properties ?? ImmutableStringDictionary<string>.EmptyOrdinal;
-            Caption = Name;
+            Caption = path;
 
             if (resolved)
             {
@@ -53,20 +53,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
         public string Name { get; protected set; }
         public string Caption { get; protected set; }
         public string OriginalItemSpec { get; }
-        public string Path { get; protected set; }
+        public string Path { get; }
         public virtual string SchemaName => null;
         public virtual string SchemaItemType => null;
         public virtual string Version => null;
-        public bool Resolved { get; protected set; } = false;
+        public bool Resolved { get; } = false;
         public bool TopLevel { get; protected set; } = true;
-        public bool Implicit { get; protected set; } = false;
+        public bool Implicit { get; } = false;
         public bool Visible { get; protected set; } = true;
         public virtual int Priority => 0;
         public ImageMoniker Icon => IconSet.Icon;
         public ImageMoniker ExpandedIcon => IconSet.ExpandedIcon;
         public ImageMoniker UnresolvedIcon => IconSet.UnresolvedIcon;
         public ImageMoniker UnresolvedExpandedIcon => IconSet.UnresolvedExpandedIcon;
-        public IImmutableDictionary<string, string> Properties { get; protected set; }
+        public IImmutableDictionary<string, string> Properties { get; }
         public IImmutableList<string> DependencyIDs { get; protected set; } = ImmutableList<string>.Empty;
         public ProjectTreeFlags Flags { get; protected set; }
 
