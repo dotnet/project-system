@@ -67,6 +67,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 set { UnderlyingContext.BinOutputPath = value; }
             }
 
+            public ProjectId Id
+            {
+                get { return UnderlyingContext.Id; }
+            }
+
             public void AddAdditionalFile(string filePath, bool isInCurrentContext = true)
             {
                 UnderlyingContext.AddAdditionalFile(filePath, isInCurrentContext);
@@ -75,6 +80,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             public void AddAnalyzerReference(string referencePath)
             {
                 UnderlyingContext.AddAnalyzerReference(referencePath);
+            }
+
+            public void AddDynamicFile(string filePath, IEnumerable<string> folderNames = null)
+            {
+                UnderlyingContext.AddDynamicFile(filePath, folderNames);
             }
 
             public void AddMetadataReference(string referencePath, MetadataReferenceProperties properties)
@@ -97,6 +107,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 UnderlyingContext.Dispose();
             }
 
+            public void EndBatch()
+            {
+                UnderlyingContext.EndBatch();
+            }
+
             public void RemoveAdditionalFile(string filePath)
             {
                 UnderlyingContext.RemoveAdditionalFile(filePath);
@@ -105,6 +120,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             public void RemoveAnalyzerReference(string referencePath)
             {
                 UnderlyingContext.RemoveAnalyzerReference(referencePath);
+            }
+
+            public void RemoveDynamicFile(string fullPath)
+            {
+                UnderlyingContext.RemoveDynamicFile(fullPath);
             }
 
             public void RemoveMetadataReference(string referencePath)
@@ -130,6 +150,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             public void SetRuleSetFile(string filePath)
             {
                 UnderlyingContext.SetRuleSetFile(filePath);
+            }
+
+            public void StartBatch()
+            {
+                UnderlyingContext.StartBatch();
             }
         }
     }

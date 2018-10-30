@@ -8,6 +8,8 @@ using System.Reflection;
 
 using Microsoft.VisualStudio.ProjectSystem;
 
+using DiagDebugger = System.Diagnostics.Debugger;
+
 namespace Microsoft.VisualStudio.Packaging
 {
     internal partial class ManagedProjectSystemPackage
@@ -20,9 +22,9 @@ namespace Microsoft.VisualStudio.Packaging
 
             public override void Write(string message)
             {
-                if (Debugger.IsLogging())
+                if (DiagDebugger.IsLogging())
                 {
-                    Debugger.Log(0, null, message);
+                    DiagDebugger.Log(0, null, message);
                 }
             }
 
