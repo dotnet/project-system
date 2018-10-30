@@ -72,22 +72,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 
         public abstract DependencyIconSet IconSet { get; }
 
-        private string _id;
-        public virtual string Id
-        {
-            get
-            {
-                if (_id == null)
-                {
-                    if (string.IsNullOrEmpty(Version))
-                        _id = OriginalItemSpec;
-                    else
-                        _id = $"{OriginalItemSpec}\\{Version}".TrimEnd(Delimiter.BackSlash);
-                }
-
-                return _id;
-            }
-        }
+        public string Id => OriginalItemSpec;
 
         public override int GetHashCode()
         {

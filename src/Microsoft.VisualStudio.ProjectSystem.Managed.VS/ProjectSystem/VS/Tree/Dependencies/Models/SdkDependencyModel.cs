@@ -25,8 +25,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 
         public override DependencyIconSet IconSet => Implicit ? s_implicitIconSet : s_iconSet;
 
-        public override string Id => OriginalItemSpec;
-
         public override int Priority => Dependency.SdkNodePriority;
 
         public override string ProviderType => SdkRuleHandler.ProviderTypeString;

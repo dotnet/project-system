@@ -17,19 +17,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             public override DependencyIconSet IconSet => null;
 
-            public override string Version { get; }
-
             public TestableDependencyModel(
                 string path, 
                 string originalItemSpec, 
                 ProjectTreeFlags flags, 
                 bool resolved, 
                 bool isImplicit, 
-                IImmutableDictionary<string, string> properties,
-                string version = null)
+                IImmutableDictionary<string, string> properties)
                 : base(path, originalItemSpec, flags, resolved, isImplicit, properties)
             {
-                Version = version;
             }
         }
 
@@ -66,10 +62,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 flags: ProjectTreeFlags.HiddenProjectItem,
                 resolved: false,
                 isImplicit: false,
-                properties: ImmutableStringDictionary<string>.EmptyOrdinal.Add("someProp1", "someVal1"),
-                version: "version1\\");
+                properties: ImmutableStringDictionary<string>.EmptyOrdinal.Add("someProp1", "someVal1"));
 
-            Assert.Equal("SomeItemSpec\\version1", model.Id);
+            Assert.Equal("SomeItemSpec", model.Id);
             Assert.Equal("someProvider", model.ProviderType);
             Assert.Equal("somePath", model.Path);
             Assert.Equal("SomeItemSpec", model.OriginalItemSpec);
@@ -89,10 +84,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 flags: ProjectTreeFlags.HiddenProjectItem,
                 resolved: true,
                 isImplicit: false,
-                properties: ImmutableStringDictionary<string>.EmptyOrdinal.Add("someProp1", "someVal1"),
-                version: "version1\\");
+                properties: ImmutableStringDictionary<string>.EmptyOrdinal.Add("someProp1", "someVal1"));
 
-            Assert.Equal("SomeItemSpec\\version1", model.Id);
+            Assert.Equal("SomeItemSpec", model.Id);
             Assert.Equal("someProvider", model.ProviderType);
             Assert.Equal("somePath", model.Path);
             Assert.Equal("SomeItemSpec", model.OriginalItemSpec);
@@ -112,10 +106,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 flags: ProjectTreeFlags.HiddenProjectItem,
                 resolved: true,
                 isImplicit: true,
-                properties: ImmutableStringDictionary<string>.EmptyOrdinal.Add("someProp1", "someVal1"),
-                version: "version1\\");
+                properties: ImmutableStringDictionary<string>.EmptyOrdinal.Add("someProp1", "someVal1"));
 
-            Assert.Equal("SomeItemSpec\\version1", model.Id);
+            Assert.Equal("SomeItemSpec", model.Id);
             Assert.Equal("someProvider", model.ProviderType);
             Assert.Equal("somePath", model.Path);
             Assert.Equal("SomeItemSpec", model.OriginalItemSpec);
@@ -136,8 +129,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 flags: ProjectTreeFlags.HiddenProjectItem,
                 resolved: true,
                 isImplicit: true,
-                properties: ImmutableStringDictionary<string>.EmptyOrdinal.Add("someProp1", "someVal1"),
-                version: "versio1\\");
+                properties: ImmutableStringDictionary<string>.EmptyOrdinal.Add("someProp1", "someVal1"));
 
             var model2 = new TestableDependencyModel(
                 path: "somePath",
@@ -145,8 +137,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 flags: ProjectTreeFlags.HiddenProjectItem,
                 resolved: true,
                 isImplicit: true,
-                properties: ImmutableStringDictionary<string>.EmptyOrdinal.Add("someProp1", "someVal1"),
-                version: "versio1\\");
+                properties: ImmutableStringDictionary<string>.EmptyOrdinal.Add("someProp1", "someVal1"));
 
             var model3 = new TestableDependencyModel(
                 path: "somePath",
@@ -154,8 +145,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 flags: ProjectTreeFlags.HiddenProjectItem,
                 resolved: true,
                 isImplicit: true,
-                properties: ImmutableStringDictionary<string>.EmptyOrdinal.Add("someProp1", "someVal1"),
-                version: "versio1\\");
+                properties: ImmutableStringDictionary<string>.EmptyOrdinal.Add("someProp1", "someVal1"));
 
             Assert.Equal(model1, model2);
             Assert.NotEqual(model1, model3);
