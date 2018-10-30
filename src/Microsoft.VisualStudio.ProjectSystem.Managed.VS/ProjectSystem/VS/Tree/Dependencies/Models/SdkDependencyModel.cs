@@ -35,6 +35,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 
         public override string SchemaName => Resolved ? ResolvedSdkReference.SchemaName : SdkReference.SchemaName;
 
+        public override string Version { get; }
+
         public SdkDependencyModel(
             string path,
             string originalItemSpec,

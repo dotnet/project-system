@@ -34,6 +34,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 
         public override string SchemaName => Resolved ? ResolvedPackageReference.SchemaName : PackageReference.SchemaName;
 
+        public override string Version { get; }
+
         public PackageDependencyModel(
             string path,
             string originalItemSpec,

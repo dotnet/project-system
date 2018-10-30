@@ -17,6 +17,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             public override DependencyIconSet IconSet => null;
 
+            public override string Version { get; }
+
             public TestableDependencyModel(
                 string path, 
                 string originalItemSpec, 
