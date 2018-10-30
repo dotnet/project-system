@@ -20,7 +20,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             Requires.NotNullOrEmpty(path, nameof(path));
 
             Path = path;
-            Name = path;
             OriginalItemSpec = originalItemSpec ?? path;
             Resolved = resolved;
             Implicit = isImplicit;
@@ -50,7 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 
         public abstract string ProviderType { get; }
 
-        public string Name { get; protected set; }
+        public virtual string Name => Path;
         public string Caption { get; protected set; }
         public string OriginalItemSpec { get; }
         public string Path { get; }

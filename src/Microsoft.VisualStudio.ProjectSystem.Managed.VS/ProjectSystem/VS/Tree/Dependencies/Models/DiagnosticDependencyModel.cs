@@ -34,6 +34,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             ? s_errorIconSet
             : s_warningIconSet;
 
+        public override string Name { get; }
+
         public override int Priority => _severity == DiagnosticMessageSeverity.Error
             ? Dependency.DiagnosticsErrorNodePriority
             : Dependency.DiagnosticsWarningNodePriority;

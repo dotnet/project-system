@@ -26,6 +26,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 
         public override DependencyIconSet IconSet => Implicit ? s_implicitIconSet : s_iconSet;
 
+        public override string Name { get; }
+
         public override int Priority => Resolved ? Dependency.PackageNodePriority : Dependency.UnresolvedReferenceNodePriority;
 
         public override string ProviderType => PackageRuleHandler.ProviderTypeString;
