@@ -40,7 +40,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         }
 
         protected override IDependencyModel CreateDependencyModel(
-            string providerType,
             string path,
             string originalItemSpec,
             bool resolved,
@@ -52,7 +51,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             // package.
 
             return new SdkDependencyModel(
-                providerType,
                 path,
                 originalItemSpec,
                 DependencyTreeFlags.SdkSubTreeNodeFlags,

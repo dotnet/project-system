@@ -5,6 +5,7 @@ using System.Collections.Immutable;
 
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
+using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 {
@@ -16,8 +17,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             unresolvedIcon: ManagedImageMonikers.CodeInformationWarning,
             unresolvedExpandedIcon: ManagedImageMonikers.CodeInformationWarning);
 
+        public override string ProviderType => PackageRuleHandler.ProviderTypeString;
+
         public PackageAnalyzerAssemblyDependencyModel(
-            string providerType,
             string path,
             string originalItemSpec,
             string name,
@@ -25,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             bool resolved,
             IImmutableDictionary<string, string> properties,
             IEnumerable<string> dependenciesIDs)
-            : base(providerType, path, originalItemSpec, flags, resolved, isImplicit: false, properties: properties)
+            : base(path, originalItemSpec, flags, resolved, isImplicit: false, properties: properties)
         {
             Requires.NotNullOrEmpty(name, nameof(name));
 

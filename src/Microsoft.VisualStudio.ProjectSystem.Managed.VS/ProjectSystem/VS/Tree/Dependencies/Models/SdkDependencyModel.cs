@@ -23,15 +23,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             unresolvedIcon: ManagedImageMonikers.SdkWarning,
             unresolvedExpandedIcon: ManagedImageMonikers.SdkWarning);
 
+        public override string ProviderType => SdkRuleHandler.ProviderTypeString;
+
         public SdkDependencyModel(
-            string providerType,
             string path,
             string originalItemSpec,
             ProjectTreeFlags flags,
             bool resolved,
             bool isImplicit,
             IImmutableDictionary<string, string> properties)
-            : base(providerType, path, originalItemSpec, flags, resolved, isImplicit, properties)
+            : base(path, originalItemSpec, flags, resolved, isImplicit, properties)
         {
             Flags = Flags.Union(DependencyTreeFlags.SupportsHierarchy);
             SchemaName = Resolved ? ResolvedSdkReference.SchemaName : SdkReference.SchemaName;

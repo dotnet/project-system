@@ -11,33 +11,37 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
     public class DependencyModelTests
     {
-        private class DependencyModelStub : DependencyModel
+        private class TestableDependencyModel : DependencyModel
         {
-            public DependencyModelStub(string providerType, string path, string originalItemSpec, ProjectTreeFlags flags, bool resolved, bool isImplicit, IImmutableDictionary<string, string> properties)
-                : base(providerType, path, originalItemSpec, flags, resolved, isImplicit, properties)
+            public override string ProviderType => "someProvider";
+
+            public TestableDependencyModel(
+                string path, 
+                string originalItemSpec, 
+                ProjectTreeFlags flags, 
+                bool resolved, 
+                bool isImplicit, 
+                IImmutableDictionary<string, string> properties,
+                string version = null)
+                : base(path, originalItemSpec, flags, resolved, isImplicit, properties)
             {
+                Version = version;
             }
         }
 
         [Fact]
         public void Constructor_WhenRequiredParamsNotProvided_ShouldThrow()
         {
-            Assert.Throws<ArgumentNullException>("providerType", () =>
-            {
-                new DependencyModelStub(null, null, "", ProjectTreeFlags.Empty, false, false, null);
-            });
-
             Assert.Throws<ArgumentNullException>("path", () =>
             {
-                new DependencyModelStub("sometype", null, "", ProjectTreeFlags.Empty, false, false, null);
+                new TestableDependencyModel(null, "", ProjectTreeFlags.Empty, false, false, null);
             });
         }
 
         [Fact]
         public void Constructor_WhenOptionalValuesNotProvided_ShouldSetDefaults()
         {
-            var model = new DependencyModelStub(
-                providerType: "somProvider",
+            var model = new TestableDependencyModel(
                 path: "somePath",
                 originalItemSpec: null,
                 flags: ProjectTreeFlags.Empty,
@@ -53,7 +57,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         public void Constructor_WhenValidParametersProvided_UnresolvedAndNotImplicit()
         {
             var model = new TestableDependencyModel(
-                providerType: "somProvider",
                 path: "somePath",
                 originalItemSpec: "SomeItemSpec",
                 flags: ProjectTreeFlags.HiddenProjectItem,
@@ -63,7 +66,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 version: "version1\\");
 
             Assert.Equal("SomeItemSpec\\version1", model.Id);
-            Assert.Equal("somProvider", model.ProviderType);
+            Assert.Equal("someProvider", model.ProviderType);
             Assert.Equal("somePath", model.Path);
             Assert.Equal("SomeItemSpec", model.OriginalItemSpec);
             Assert.True(model.Flags.Contains(ProjectTreeFlags.HiddenProjectItem));
@@ -77,7 +80,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         public void Constructor_WhenValidParametersProvided_ResolvedAndNotImplicit()
         {
             var model = new TestableDependencyModel(
-                providerType: "somProvider",
                 path: "somePath",
                 originalItemSpec: "SomeItemSpec",
                 flags: ProjectTreeFlags.HiddenProjectItem,
@@ -87,7 +89,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 version: "version1\\");
 
             Assert.Equal("SomeItemSpec\\version1", model.Id);
-            Assert.Equal("somProvider", model.ProviderType);
+            Assert.Equal("someProvider", model.ProviderType);
             Assert.Equal("somePath", model.Path);
             Assert.Equal("SomeItemSpec", model.OriginalItemSpec);
             Assert.True(model.Flags.Contains(ProjectTreeFlags.HiddenProjectItem));
@@ -101,7 +103,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         public void Constructor_WhenValidParametersProvided_ResolvedAndImplicit()
         {
             var model = new TestableDependencyModel(
-                providerType: "somProvider",
                 path: "somePath",
                 originalItemSpec: "SomeItemSpec",
                 flags: ProjectTreeFlags.HiddenProjectItem,
@@ -111,7 +112,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 version: "version1\\");
 
             Assert.Equal("SomeItemSpec\\version1", model.Id);
-            Assert.Equal("somProvider", model.ProviderType);
+            Assert.Equal("someProvider", model.ProviderType);
             Assert.Equal("somePath", model.Path);
             Assert.Equal("SomeItemSpec", model.OriginalItemSpec);
             Assert.True(model.Flags.Contains(ProjectTreeFlags.HiddenProjectItem));
@@ -126,7 +127,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         public void EqualsAndGetHashCode()
         {
             var model1 = new TestableDependencyModel(
-                providerType: "somProvider",
                 path: "somePath",
                 originalItemSpec: "SomeItemSpec1",
                 flags: ProjectTreeFlags.HiddenProjectItem,
@@ -136,7 +136,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 version: "versio1\\");
 
             var model2 = new TestableDependencyModel(
-                providerType: "somProvider",
                 path: "somePath",
                 originalItemSpec: "SomeItemSpec1",
                 flags: ProjectTreeFlags.HiddenProjectItem,
@@ -146,7 +145,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 version: "versio1\\");
 
             var model3 = new TestableDependencyModel(
-                providerType: "somProvider",
                 path: "somePath",
                 originalItemSpec: "SomeItemSpec2",
                 flags: ProjectTreeFlags.HiddenProjectItem,
@@ -165,8 +163,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         [Fact]
         public void Visible_True()
         {
-            var dependencyModel = new DependencyModelStub(
-                providerType: "someProvider",
+            var dependencyModel = new TestableDependencyModel(
                 path: "somePath",
                 originalItemSpec: "someItemSpec",
                 flags: ProjectTreeFlags.Empty,
@@ -180,8 +177,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         [Fact]
         public void Visible_False()
         {
-            var dependencyModel = new DependencyModelStub(
-                providerType: "someProvider",
+            var dependencyModel = new TestableDependencyModel(
                 path: "somePath",
                 originalItemSpec: "someItemSpec",
                 flags: ProjectTreeFlags.Empty,
@@ -195,8 +191,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         [Fact]
         public void Visible_TrueWhenNotSpecified()
         {
-            var dependencyModel = new DependencyModelStub(
-                providerType: "someProvider",
+            var dependencyModel = new TestableDependencyModel(
                 path: "somePath",
                 originalItemSpec: "someItemSpec",
                 flags: ProjectTreeFlags.Empty,
@@ -205,23 +200,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 properties: null);
 
             Assert.True(dependencyModel.Visible);
-        }
-
-        private class TestableDependencyModel : DependencyModel
-        {
-            public TestableDependencyModel(
-                string providerType,
-                string path,
-                string originalItemSpec,
-                ProjectTreeFlags flags,
-                bool resolved,
-                bool isImplicit,
-                IImmutableDictionary<string, string> properties,
-                string version)
-                : base(providerType, path, originalItemSpec, flags, resolved, isImplicit, properties)
-            {
-                Version = version;
-            }
         }
     }
 }

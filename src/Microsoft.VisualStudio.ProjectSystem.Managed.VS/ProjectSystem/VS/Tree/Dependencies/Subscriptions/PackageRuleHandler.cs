@@ -170,7 +170,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             {
                 case DependencyType.Package:
                     return new PackageDependencyModel(
-                        ProviderType,
                         itemSpec,
                         originalItemSpec,
                         metadata.Name,
@@ -185,7 +184,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 case DependencyType.Assembly:
                 case DependencyType.FrameworkAssembly:
                     return new PackageAssemblyDependencyModel(
-                        ProviderType,
                         itemSpec,
                         originalItemSpec,
                         metadata.Name,
@@ -195,7 +193,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                         metadata.DependenciesItemSpecs);
                 case DependencyType.AnalyzerAssembly:
                     return new PackageAnalyzerAssemblyDependencyModel(
-                        ProviderType,
                         itemSpec,
                         originalItemSpec,
                         metadata.Name,
@@ -205,7 +202,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                         metadata.DependenciesItemSpecs);
                 case DependencyType.Diagnostic:
                     return new DiagnosticDependencyModel(
-                        ProviderType,
                         itemSpec,
                         metadata.Severity,
                         metadata.DiagnosticCode,
@@ -215,7 +211,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                         properties: properties);
                 default:
                     return new PackageUnknownDependencyModel(
-                        ProviderType,
                         itemSpec,
                         originalItemSpec,
                         metadata.Name,

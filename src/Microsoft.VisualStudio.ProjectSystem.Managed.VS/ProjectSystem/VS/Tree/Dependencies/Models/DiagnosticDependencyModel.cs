@@ -3,6 +3,7 @@
 using System.Collections.Immutable;
 
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
+using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 {
@@ -27,8 +28,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             unresolvedIcon: ManagedImageMonikers.WarningSmall,
             unresolvedExpandedIcon: ManagedImageMonikers.WarningSmall);
 
+        public override string ProviderType => PackageRuleHandler.ProviderTypeString;
+
         public DiagnosticDependencyModel(
-            string providerType,
             string originalItemSpec,
             DiagnosticMessageSeverity severity,
             string code,
@@ -36,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             ProjectTreeFlags flags,
             bool isVisible,
             IImmutableDictionary<string, string> properties)
-            : base(providerType, originalItemSpec, originalItemSpec, flags, resolved: false, isImplicit: false, properties: properties)
+            : base(originalItemSpec, originalItemSpec, flags, resolved: false, isImplicit: false, properties: properties)
         {
             Requires.NotNullOrEmpty(originalItemSpec, nameof(originalItemSpec));
             Requires.NotNullOrEmpty(message, nameof(message));

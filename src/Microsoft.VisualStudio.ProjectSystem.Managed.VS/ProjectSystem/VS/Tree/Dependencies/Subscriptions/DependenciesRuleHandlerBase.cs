@@ -151,7 +151,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             }
 
             return CreateDependencyModel(
-                ProviderType,
                 itemSpec,
                 originalItemSpec,
                 resolved,
@@ -160,7 +159,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         }
 
         protected virtual IDependencyModel CreateDependencyModel(
-            string providerType,
             string path,
             string originalItemSpec,
             bool resolved,

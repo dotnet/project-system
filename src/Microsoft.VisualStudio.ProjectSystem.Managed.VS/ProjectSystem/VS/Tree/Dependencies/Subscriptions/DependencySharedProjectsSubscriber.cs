@@ -207,7 +207,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         private static IDependencyModel CreateDependencyModel(string itemSpec, bool resolved)
         {
             return new SharedProjectDependencyModel(
-                ProjectRuleHandler.ProviderTypeString,
                 itemSpec,
                 itemSpec,
                 DependencyTreeFlags.ProjectNodeFlags,

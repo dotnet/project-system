@@ -10,7 +10,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
     internal abstract class DependencyModel : IDependencyModel
     {
         protected DependencyModel(
-            string providerType,
             string path,
             string originalItemSpec,
             ProjectTreeFlags flags,
@@ -18,10 +17,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             bool isImplicit,
             IImmutableDictionary<string, string> properties)
         {
-            Requires.NotNullOrEmpty(providerType, nameof(providerType));
             Requires.NotNullOrEmpty(path, nameof(path));
 
-            ProviderType = providerType;
             Path = path;
             Name = path;
             OriginalItemSpec = originalItemSpec ?? path;
@@ -51,7 +48,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             }
         }
 
-        public string ProviderType { get; }
+        public abstract string ProviderType { get; }
+
         public string Name { get; protected set; }
         public string Caption { get; protected set; }
         public string OriginalItemSpec { get; }

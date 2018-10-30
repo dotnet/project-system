@@ -76,7 +76,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         }
 
         protected override IDependencyModel CreateDependencyModel(
-            string providerType,
             string path,
             string originalItemSpec,
             bool resolved,
@@ -84,7 +83,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             IImmutableDictionary<string, string> properties)
         {
             return new ProjectDependencyModel(
-                providerType,
                 path,
                 originalItemSpec,
                 DependencyTreeFlags.ProjectNodeFlags,
@@ -163,7 +161,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 }
 
                 IDependencyModel model = CreateDependencyModel(
-                    ProviderTypeString,
                     dependency.Path,
                     dependency.OriginalItemSpec,
                     shouldBeResolved,

@@ -5,6 +5,7 @@ using System.Collections.Immutable;
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
+using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions;
 
 using Xunit;
 
@@ -20,7 +21,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             var flag = ProjectTreeFlags.Create("MyCustomFlag");
             var model = new PackageUnknownDependencyModel(
-                providerType: "myProvider",
                 path: "c:\\myPath",
                 originalItemSpec: "myOriginalItemSpec",
                 name: "myPath",
@@ -29,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 properties: properties,
                 dependenciesIDs: dependencyIDs);
 
-            Assert.Equal("myProvider", model.ProviderType);
+            Assert.Equal(PackageRuleHandler.ProviderTypeString, model.ProviderType);
             Assert.Equal("c:\\myPath", model.Path);
             Assert.Equal("myPath", model.Name);
             Assert.Equal("myOriginalItemSpec", model.OriginalItemSpec);
