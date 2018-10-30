@@ -1,4 +1,6 @@
 <Project>
+  <Import Project="HostAgnostic.props"/>
+
   <ItemGroup>
     <PackageReference Include="VSLangProj" />
     <PackageReference Include="VSLangProj2" />

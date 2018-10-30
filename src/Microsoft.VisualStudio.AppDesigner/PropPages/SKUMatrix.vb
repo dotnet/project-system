@@ -1,7 +1,10 @@
 ﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-Imports VSLangProj80
+Imports System.Diagnostics.CodeAnalysis
+
 Imports Microsoft.VisualStudio.Shell
+
+Imports VSLangProj80
 
 Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
@@ -17,7 +20,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             'Disallow creation
         End Sub
 
-        <CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2233:OperationsShouldNotOverflow", MessageId:="PropertyId-10063")>
+        <SuppressMessage("Microsoft.Usage", "CA2233:OperationsShouldNotOverflow", MessageId:="PropertyId-10063")>
         Public Shared Function IsHidden(PropertyId As Integer) As Boolean
 
             If VSProductSKU.IsExpress Then
