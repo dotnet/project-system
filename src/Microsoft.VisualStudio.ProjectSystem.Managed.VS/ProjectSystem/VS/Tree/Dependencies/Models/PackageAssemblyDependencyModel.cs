@@ -17,6 +17,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             unresolvedIcon: KnownMonikers.ReferenceWarning,
             unresolvedExpandedIcon: KnownMonikers.ReferenceWarning);
 
+        public override IImmutableList<string> DependencyIDs { get; }
+
         public override DependencyIconSet IconSet => s_iconSet;
 
         public override int Priority => Resolved ? Dependency.PackageAssemblyNodePriority : Dependency.UnresolvedReferenceNodePriority;
