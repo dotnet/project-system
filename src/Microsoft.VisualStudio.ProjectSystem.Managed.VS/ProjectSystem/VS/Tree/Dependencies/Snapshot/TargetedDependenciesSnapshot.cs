@@ -39,8 +39,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             ITargetedDependenciesSnapshot previousSnapshot,
             IDependenciesChanges changes,
             IProjectCatalogSnapshot catalogs,
-            IReadOnlyCollection<IDependenciesSnapshotFilter> snapshotFilters,
-            IReadOnlyCollection<IProjectDependenciesSubTreeProvider> subTreeProviders,
+            IReadOnlyList<IDependenciesSnapshotFilter> snapshotFilters,
+            IReadOnlyList<IProjectDependenciesSubTreeProvider> subTreeProviders,
             IImmutableSet<string> projectItemSpecs)
         {
             Requires.NotNullOrWhiteSpace(projectPath, nameof(projectPath));

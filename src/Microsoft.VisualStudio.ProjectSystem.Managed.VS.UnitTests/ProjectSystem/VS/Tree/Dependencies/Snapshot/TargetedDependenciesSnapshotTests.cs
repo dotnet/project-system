@@ -58,14 +58,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 addedNodes: Array.Empty<IDependencyModel>(), 
                 removedNodes: Array.Empty<IDependencyModel>());
 
-            IReadOnlyCollection<IDependenciesSnapshotFilter> snapshotFilters = null;
-
             var snapshot = TargetedDependenciesSnapshot.FromChanges(
                 projectPath,
                 previousSnapshot,
                 changes,
                 catalogs,
-                snapshotFilters,
                 null,
                 null,
                 null);
