@@ -1426,7 +1426,11 @@
 <Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.DesignerFramework.GenericComponentSerializationStore.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)")>
 <Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.ResourceEditor.Resource.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)")>
 <Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.ResourceEditor.SerializableEncoding.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)")>
+<Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.ResourceEditor.ResourceSerializationService.ResourceSerializationStore.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)")>
 
 ' https://github.com/dotnet/roslyn-analyzers/issues/1871
-<Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Justification:="<Pending>", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.PropertyPages.ServiceReferenceComponent.ShouldSerializeNamespace~System.Boolean")>
-<Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Justification:="<Pending>", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.PropertyPages.ServiceReferenceComponent.ShouldSerializeServiceReferenceURL~System.Boolean")>
+<Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.PropertyPages.ServiceReferenceComponent.ShouldSerializeNamespace~System.Boolean")>
+<Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.PropertyPages.ServiceReferenceComponent.ShouldSerializeServiceReferenceURL~System.Boolean")>
+
+' https://github.com/dotnet/roslyn/issues/30882
+<Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsValueSerializer.SettingsValueSerializer")>
