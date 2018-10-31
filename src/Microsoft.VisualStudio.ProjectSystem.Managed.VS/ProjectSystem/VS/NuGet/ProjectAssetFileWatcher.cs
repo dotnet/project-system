@@ -280,7 +280,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                                     project.MarkDirty();
                                     configuredProject.NotifyProjectChange();
 
-                                }, cancellationToken); // Stay on same thread that took lock
+                                }, ProjectCheckoutOption.DoNotCheckout, cancellationToken); // Stay on same thread that took lock
                             }
                         }, cancellationToken); // Stay on same thread that took lock
                     });

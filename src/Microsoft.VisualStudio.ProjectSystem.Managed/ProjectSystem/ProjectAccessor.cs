@@ -107,14 +107,17 @@ namespace Microsoft.VisualStudio.ProjectSystem
             }
         }
 
-        public async Task OpenProjectForWriteAsync(ConfiguredProject project, Action<Project> action, CancellationToken cancellationToken = default)
+        public async Task OpenProjectForWriteAsync(ConfiguredProject project, Action<Project> action, ProjectCheckoutOption option = ProjectCheckoutOption.Checkout, CancellationToken cancellationToken = default)
         {
             Requires.NotNull(project, nameof(project));
             Requires.NotNull(project, nameof(action));
 
             using (ProjectWriteLockReleaser access = await _projectLockService.WriteLockAsync(cancellationToken))
             {
-                await access.CheckoutAsync(project.UnconfiguredProject.FullPath);
+                if (option == ProjectCheckoutOption.Checkout)
+                {
+                    await access.CheckoutAsync(project.UnconfiguredProject.FullPath);
+                }
 
                 Project evaluatedProject = await access.GetProjectAsync(project, cancellationToken);
 
