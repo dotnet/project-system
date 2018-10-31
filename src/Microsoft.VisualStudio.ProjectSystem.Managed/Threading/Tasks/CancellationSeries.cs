@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.Threading.Tasks
     {
         private CancellationTokenSource _cts = new CancellationTokenSource();
 
-        private readonly CancellationToken[] _superToken;
+        private readonly CancellationToken _superToken;
 
         /// <summary>
         /// Initializes a new instance of <see cref="CancellationSeries"/>.
@@ -26,9 +26,7 @@ namespace Microsoft.VisualStudio.Threading.Tasks
         /// issued token and causes any subsequent tokens to be issued in a cancelled state.</param>
         public CancellationSeries(CancellationToken token = default)
         {
-            _superToken = token == default 
-                ? null 
-                : new[] { token };
+            _superToken = token;
         }
 
         /// <summary>
@@ -49,19 +47,8 @@ namespace Microsoft.VisualStudio.Threading.Tasks
         /// <exception cref="ObjectDisposedException">This object has been disposed.</exception>
         public CancellationToken GetToken(CancellationToken token = default)
         {
-            // Create the next CTS. There are four scenarios, depending upon whether
-            // a super token was given to the constructor, and whether a token was
-            // passed to this method.
+            var nextSource = CancellationTokenSource.CreateLinkedTokenSource(token, _superToken);
 
-            CancellationTokenSource nextSource = _superToken == null
-                ? token == default
-                    ? new CancellationTokenSource()
-                    : CancellationTokenSource.CreateLinkedTokenSource(token)
-                : token == default
-                    ? CancellationTokenSource.CreateLinkedTokenSource(_superToken)
-                    : CancellationTokenSource.CreateLinkedTokenSource(token, _superToken[0]);
-
-            CancellationToken nextToken = nextSource.Token;
             CancellationTokenSource priorSource = Volatile.Read(ref _cts);
 
             // Loop until we succeed in swapping a known prior for our next.
@@ -91,7 +78,7 @@ namespace Microsoft.VisualStudio.Threading.Tasks
             priorSource.Cancel();
             priorSource.Dispose();
 
-            return nextToken;
+            return nextSource.Token;
         }
 
         /// <inheritdoc />
