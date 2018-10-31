@@ -271,15 +271,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             ITargetFramework activeTargetFramework,
             CancellationToken token)
         {
-            bool anyChanges;
-
             IImmutableSet<string> projectItemSpecs = GetProjectItemSpecsFromSnapshot();
 
+            bool anyChanges = false;
+            
             // Note: we are updating existing snapshot, not receiving a complete new one. Thus we must
             // ensure incremental updates are done in the correct order. This lock ensures that here.
+
             lock (_snapshotLock)
             {
-                _currentSnapshot = DependenciesSnapshot.FromChanges(
+                var updatedSnapshot = DependenciesSnapshot.FromChanges(
                     _commonServices.Project.FullPath,
                     _currentSnapshot,
                     changes,
@@ -287,8 +288,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     activeTargetFramework,
                     _snapshotFilters.Select(x => x.Value).ToList(),
                     _subTreeProviders.Select(x => x.Value).ToList(),
-                    projectItemSpecs,
-                    out anyChanges);
+                    projectItemSpecs);
+
+                if (!ReferenceEquals(_currentSnapshot, updatedSnapshot))
+                {
+                    _currentSnapshot = updatedSnapshot;
+                    anyChanges = true;
+                }
             }
 
             if (anyChanges)

@@ -29,6 +29,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 ImmutableStringDictionary<IDependency>.EmptyOrdinalIgnoreCase);
         }
 
+        /// <summary>
+        /// Applies changes to <paramref name="previousSnapshot"/> and produces a new snapshot if required.
+        /// If no changes are made, <paramref name="previousSnapshot"/> is returned unmodified.
+        /// </summary>
+        /// <returns>An updated snapshot, or <paramref name="previousSnapshot"/> if no changes occured.</returns>
         public static ITargetedDependenciesSnapshot FromChanges(
             string projectPath,
             ITargetedDependenciesSnapshot previousSnapshot,
@@ -36,14 +41,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             IProjectCatalogSnapshot catalogs,
             IReadOnlyCollection<IDependenciesSnapshotFilter> snapshotFilters,
             IReadOnlyCollection<IProjectDependenciesSubTreeProvider> subTreeProviders,
-            IImmutableSet<string> projectItemSpecs,
-            out bool anyChanges)
+            IImmutableSet<string> projectItemSpecs)
         {
             Requires.NotNullOrWhiteSpace(projectPath, nameof(projectPath));
             Requires.NotNull(previousSnapshot, nameof(previousSnapshot));
             Requires.NotNull(changes, nameof(changes));
 
-            anyChanges = false;
+            bool anyChanges = false;
 
             ITargetFramework targetFramework = previousSnapshot.TargetFramework;
 

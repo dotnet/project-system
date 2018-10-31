@@ -68,15 +68,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 snapshotFilters,
                 null,
                 null,
-                out bool anyChanges);
+                null);
 
-            Assert.NotNull(snapshot.TargetFramework);
-            Assert.Equal("tfm1", snapshot.TargetFramework.FullName);
-            Assert.Equal(projectPath, snapshot.ProjectPath);
-            Assert.Equal(catalogs, snapshot.Catalogs);
-            Assert.False(anyChanges);
-            Assert.Empty(snapshot.TopLevelDependencies);
-            Assert.Empty(snapshot.DependenciesWorld);
+            Assert.Same(previousSnapshot, snapshot);
         }
 
         [Fact]
@@ -128,16 +122,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 catalogs,
                 null,
                 null,
-                null,
-                out bool anyChanges);
+                null);
 
-            Assert.NotNull(snapshot.TargetFramework);
-            Assert.Equal("tfm1", snapshot.TargetFramework.FullName);
-            Assert.Equal(projectPath, snapshot.ProjectPath);
-            Assert.Equal(catalogs, snapshot.Catalogs);
-            Assert.False(anyChanges);
-            Assert.Single(snapshot.TopLevelDependencies);
-            AssertEx.CollectionLength(snapshot.DependenciesWorld, 2);
+            Assert.Same(previousSnapshot, snapshot);
         }
 
         [Fact]
@@ -192,16 +179,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 catalogs,
                 new[] { snapshotFilter },
                 null,
-                null,
-                out bool anyChanges);
+                null);
 
-            Assert.NotNull(snapshot.TargetFramework);
-            Assert.Equal("tfm1", snapshot.TargetFramework.FullName);
-            Assert.Equal(projectPath, snapshot.ProjectPath);
-            Assert.Equal(catalogs, snapshot.Catalogs);
-            Assert.False(anyChanges);
-            Assert.Single(snapshot.TopLevelDependencies);
-            AssertEx.CollectionLength(snapshot.DependenciesWorld, 2);
+            Assert.Same(previousSnapshot, snapshot);
         }
 
         [Fact]
@@ -267,14 +247,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 catalogs,
                 new[] { snapshotFilter },
                 null,
-                null,
-                out bool anyChanges);
+                null);
 
-            Assert.NotNull(snapshot.TargetFramework);
-            Assert.Equal("tfm1", snapshot.TargetFramework.FullName);
-            Assert.Equal(projectPath, snapshot.ProjectPath);
-            Assert.Equal(catalogs, snapshot.Catalogs);
-            Assert.True(anyChanges);
+            Assert.NotSame(previousSnapshot, snapshot);
+
+            Assert.Same(previousSnapshot.TargetFramework, snapshot.TargetFramework);
+            Assert.Same(projectPath, snapshot.ProjectPath);
+            Assert.Same(catalogs, snapshot.Catalogs);
             Assert.Single(snapshot.TopLevelDependencies);
             AssertEx.CollectionLength(snapshot.DependenciesWorld, 2);
         }
@@ -340,16 +319,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 catalogs,
                 new[] { snapshotFilter },
                 null,
-                null,
-                out bool anyChanges);
+                null);
 
-            Assert.NotNull(snapshot.TargetFramework);
-            Assert.Equal("tfm1", snapshot.TargetFramework.FullName);
-            Assert.Equal(projectPath, snapshot.ProjectPath);
-            Assert.Equal(catalogs, snapshot.Catalogs);
-            Assert.False(anyChanges);
-            Assert.Single(snapshot.TopLevelDependencies);
-            AssertEx.CollectionLength(snapshot.DependenciesWorld, 2);
+            Assert.Same(previousSnapshot, snapshot);
         }
 
         [Fact]
@@ -414,14 +386,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 catalogs,
                 new[] { snapshotFilter },
                 null,
-                null,
-                out bool anyChanges);
+                null);
 
-            Assert.NotNull(snapshot.TargetFramework);
-            Assert.Equal("tfm1", snapshot.TargetFramework.FullName);
-            Assert.Equal(projectPath, snapshot.ProjectPath);
-            Assert.Equal(catalogs, snapshot.Catalogs);
-            Assert.True(anyChanges);
+            Assert.NotSame(previousSnapshot, snapshot);
+
+            Assert.Same(previousSnapshot.TargetFramework, snapshot.TargetFramework);
+            Assert.Same(projectPath, snapshot.ProjectPath);
+            Assert.Same(catalogs, snapshot.Catalogs);
             Assert.Single(snapshot.TopLevelDependencies);
             AssertEx.CollectionLength(snapshot.DependenciesWorld, 2);
         }
@@ -552,14 +523,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 catalogs,
                 new[] { snapshotFilter },
                 null,
-                null,
-                out bool anyChanges);
+                null);
 
-            Assert.NotNull(snapshot.TargetFramework);
-            Assert.Equal("tfm1", snapshot.TargetFramework.FullName);
-            Assert.Equal(projectPath, snapshot.ProjectPath);
-            Assert.Equal(catalogs, snapshot.Catalogs);
-            Assert.True(anyChanges);
+            Assert.NotSame(previousSnapshot, snapshot);
+
+            Assert.Same(previousSnapshot.TargetFramework, snapshot.TargetFramework);
+            Assert.Same(projectPath, snapshot.ProjectPath);
+            Assert.Same(catalogs, snapshot.Catalogs);
             AssertEx.CollectionLength(snapshot.TopLevelDependencies, 2);
             Assert.Contains(snapshot.TopLevelDependencies, x => x.Id.Equals(@"topdependency1"));
             Assert.Contains(snapshot.TopLevelDependencies, x => x.Id.Equals(@"tfm1\xxx\addeddependency2") && x.Caption.Equals("AddedDependency2Changed"));

@@ -24,6 +24,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 targets: ImmutableDictionary<ITargetFramework, ITargetedDependenciesSnapshot>.Empty);
         }
 
+        /// <summary>
+        /// Applies changes to <paramref name="previousSnapshot"/> and produces a new snapshot if required.
+        /// If no changes are made, <paramref name="previousSnapshot"/> is returned unmodified.
+        /// </summary>
+        /// <returns>An updated snapshot, or <paramref name="previousSnapshot"/> if no changes occured.</returns>
         public static DependenciesSnapshot FromChanges(
             string projectPath,
             DependenciesSnapshot previousSnapshot,
@@ -32,9 +37,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             ITargetFramework activeTargetFramework,
             IReadOnlyCollection<IDependenciesSnapshotFilter> snapshotFilters,
             IReadOnlyCollection<IProjectDependenciesSubTreeProvider> subTreeProviders,
-            IImmutableSet<string> projectItemSpecs,
-            out bool anyChanges)
+            IImmutableSet<string> projectItemSpecs)
         {
+            Requires.NotNullOrWhiteSpace(projectPath, nameof(projectPath));
             Requires.NotNull(previousSnapshot, nameof(previousSnapshot));
             Requires.NotNull(changes, nameof(changes));
 
@@ -56,10 +61,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                     catalogs,
                     snapshotFilters,
                     subTreeProviders,
-                    projectItemSpecs,
-                    out bool anyTfmChanges);
+                    projectItemSpecs);
 
-                if (anyTfmChanges)
+                if (!ReferenceEquals(previousTargetedSnapshot, newTargetedSnapshot))
                 {
                     builder[targetFramework] = newTargetedSnapshot;
                     targetChanged = true;
@@ -73,26 +77,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             if (targetChanged)
             {
                 // Targets have changed
-                anyChanges = true;
                 return new DependenciesSnapshot(
                     previousSnapshot.ProjectPath,
                     activeTarget,
                     builder.ToImmutable());
             }
 
-            if (activeTarget.Equals(previousSnapshot.ActiveTarget))
+            if (!activeTarget.Equals(previousSnapshot.ActiveTarget))
             {
-                // Nothing has changed, so return the same snapshot
-                anyChanges = false;
-                return previousSnapshot;
+                // The active target changed
+                return new DependenciesSnapshot(
+                    previousSnapshot.ProjectPath,
+                    activeTarget,
+                    previousSnapshot.Targets);
             }
 
+            // Nothing has changed, so return the same snapshot
+            return previousSnapshot;
+
             // Active target differs
-            anyChanges = true;
-            return new DependenciesSnapshot(
-                previousSnapshot.ProjectPath,
-                activeTarget,
-                previousSnapshot.Targets);
 
             bool RemoveTargetFrameworksWithNoDependencies()
             {
