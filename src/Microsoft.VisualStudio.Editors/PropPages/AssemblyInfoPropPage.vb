@@ -21,7 +21,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         'After 65535, the project system doesn't complain, but you get a compile error.
         Private Const MaxAssemblyVersionPartValue As UInteger = 65534
 
-        Private _neutralLanguageNoneText As String 'Text for "None" in the neutral language combobox (stored in case thread language changes)
+        Private ReadOnly _neutralLanguageNoneText As String 'Text for "None" in the neutral language combobox (stored in case thread language changes)
 
         ''' <summary>
         ''' Customizable processing done before the class has populated controls in the ControlData array

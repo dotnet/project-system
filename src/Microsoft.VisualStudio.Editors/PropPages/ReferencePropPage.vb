@@ -38,7 +38,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Friend WithEvents UpdateUserImportButton As Button
         Friend WithEvents UserImportTextBox As TextBox
         'To contain list of VSLangProj.Reference objects
-        Private _refreshListsAfterApply As Boolean
+        Private ReadOnly _refreshListsAfterApply As Boolean
 
         Private _referencesEventsCookie As NativeMethods.ConnectionPointCookie
         Private _importsEventsCookie As NativeMethods.ConnectionPointCookie

@@ -10,8 +10,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
     Friend NotInheritable Class BuildEventCommandLineDialog
         Inherits Form
 
-        Private Shared s_defaultInstance As BuildEventCommandLineDialog
-        Private Shared s_syncObject As New Object
+        Private Shared ReadOnly s_defaultInstance As BuildEventCommandLineDialog
+        Private Shared ReadOnly s_syncObject As New Object
         Private _eventCommandLine As String
         Private _tokens() As String
         Private _values() As String

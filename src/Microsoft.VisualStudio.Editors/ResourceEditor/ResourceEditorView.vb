@@ -531,7 +531,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 #Region " Windows Form Designer generated code "
 
         'Required by the Windows Form Designer
-        Private _components As System.ComponentModel.IContainer
+        Private ReadOnly _components As System.ComponentModel.IContainer
 
         'NOTE: The following procedure is required by the Windows Form Designer
         'It can be modified using the Windows Form Designer.  
