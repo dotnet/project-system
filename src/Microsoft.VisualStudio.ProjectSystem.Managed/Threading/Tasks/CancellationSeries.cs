@@ -49,30 +49,13 @@ namespace Microsoft.VisualStudio.Threading.Tasks
         {
             var nextSource = CancellationTokenSource.CreateLinkedTokenSource(token, _superToken);
 
-            CancellationTokenSource priorSource = Volatile.Read(ref _cts);
+            CancellationTokenSource priorSource = Interlocked.Exchange(ref _cts, nextSource);
 
-            // Loop until we succeed in swapping a known prior for our next.
-            // This ensures a proper sequence is observed, which is important
-            // as otherwise we may cancel a prior twice, which would coincide
-            // with a prior not being cancelled at all. We need a strict order
-            // to maintain one-in-one-out.
-            while (true)
+            if (priorSource == null)
             {
-                if (priorSource == null)
-                {
-                    nextSource.Dispose();
+                nextSource.Dispose();
 
-                    throw new ObjectDisposedException(nameof(CancellationSeries));
-                }
-
-                CancellationTokenSource snapshot = Interlocked.CompareExchange(ref _cts, nextSource, priorSource);
-
-                if (ReferenceEquals(snapshot, priorSource))
-                {
-                    break;
-                }
-
-                priorSource = snapshot;
+                throw new ObjectDisposedException(nameof(CancellationSeries));
             }
 
             priorSource.Cancel();
