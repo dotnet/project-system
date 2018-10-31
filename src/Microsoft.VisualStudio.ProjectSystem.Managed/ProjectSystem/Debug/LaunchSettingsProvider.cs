@@ -648,9 +648,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// </summary>
         private void LaunchSettingsFile_Changed(object sender, FileSystemEventArgs e)
         {
-#pragma warning disable VSTHRD110 // Observe result of async calls
-            HandleLaunchSettingsFileChangedAsync();
-#pragma warning restore VSTHRD110 // Observe result of async calls
+            HandleLaunchSettingsFileChangedAsync().Forget();
         }
         
         protected Task HandleLaunchSettingsFileChangedAsync()

@@ -28,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             ResolvedRuleName = resolvedRuleName;
 
             _evaluationRuleNames = ImmutableStringHashSet.EmptyOrdinal.Add(unresolvedRuleName);
-            _designTimeBuildRuleNames = ImmutableStringHashSet.EmptyOrdinal.Add(unresolvedRuleName).Add(resolvedRuleName);
+            _designTimeBuildRuleNames = _evaluationRuleNames.Add(resolvedRuleName);
         }
 
         #region ICrossTargetRuleHandler

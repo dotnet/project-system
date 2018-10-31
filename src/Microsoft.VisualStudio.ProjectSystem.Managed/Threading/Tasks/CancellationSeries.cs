@@ -94,9 +94,6 @@ namespace Microsoft.VisualStudio.Threading.Tasks
             return nextToken;
         }
 
-        /// <summary>Gets whether this object has been disposed.</summary>
-        public bool IsDisposed => Volatile.Read(ref _cts) == null;
-
         /// <inheritdoc />
         public void Dispose()
         {

@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Immutable;
-using System.Diagnostics;
 using System.Globalization;
 using System.Text;
 
@@ -167,6 +166,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 return _fullPath;
             }
         }
+
         public string SchemaName { get; private set; }
 
         private readonly string _schemaItemType;

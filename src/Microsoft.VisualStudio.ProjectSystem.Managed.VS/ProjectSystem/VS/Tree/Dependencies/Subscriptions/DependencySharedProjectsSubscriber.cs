@@ -113,10 +113,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
             await _tasksService.LoadedProjectAsync(() =>
             {
-                if (_tasksService.UnloadCancellationToken.IsCancellationRequested)
-                {
-                    return Task.CompletedTask;
-                }
+                _tasksService.UnloadCancellationToken.ThrowIfCancellationRequested();
 
                 return HandleAsync(e);
             });

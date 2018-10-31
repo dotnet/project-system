@@ -245,12 +245,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 return;
             }
 
-            UpdateDependenciesSnapshotAsync(e.Context.Changes, e.Context.Catalogs, e.Context.ActiveTarget);
+            UpdateDependenciesSnapshotAsync(e.Context.Changes, e.Context.Catalogs, e.Context.ActiveTarget, CancellationToken.None);
         }
 
         private void OnSubtreeProviderDependenciesChanged(object sender, DependenciesChangedEventArgs e)
         {
-            if (IsDisposing || IsDisposed || !e.Changes.AnyChanges || e.Token.IsCancellationRequested)
+            if (IsDisposing || IsDisposed || !e.Changes.AnyChanges)
             {
                 return;
             }
@@ -269,7 +269,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             ImmutableDictionary<ITargetFramework, IDependenciesChanges> changes,
             IProjectCatalogSnapshot catalogs,
             ITargetFramework activeTargetFramework,
-            CancellationToken token = default)
+            CancellationToken token)
         {
             bool anyChanges;
 
