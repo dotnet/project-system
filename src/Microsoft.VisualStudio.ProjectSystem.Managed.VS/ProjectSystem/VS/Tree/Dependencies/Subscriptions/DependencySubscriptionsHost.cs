@@ -287,7 +287,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     catalogs,
                     activeTargetFramework,
                     _snapshotFilters.Select(x => x.Value).ToList(),
-                    _subTreeProviders.Select(x => x.Value).ToList(),
+                    _subTreeProviders.ToDictionary(p => p.Value.ProviderType, p => p.Value),
                     projectItemSpecs);
 
                 if (!ReferenceEquals(_currentSnapshot, updatedSnapshot))

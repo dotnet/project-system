@@ -10,7 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
     /// <summary>
     /// Base class for all snapshot filters.
     /// </summary>
-    internal class DependenciesSnapshotFilterBase : IDependenciesSnapshotFilter
+    internal abstract class DependenciesSnapshotFilterBase : IDependenciesSnapshotFilter
     {
         public virtual IDependency BeforeAdd(
             string projectPath,
@@ -18,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
             IDependency dependency,
             ImmutableDictionary<string, IDependency>.Builder worldBuilder,
             ImmutableHashSet<IDependency>.Builder topLevelBuilder,
-            IReadOnlyDictionary<string, IProjectDependenciesSubTreeProvider> subTreeProviders,
+            IReadOnlyDictionary<string, IProjectDependenciesSubTreeProvider> subTreeProviderByProviderType,
             IImmutableSet<string> projectItemSpecs,
             out bool filterAnyChanges)
         {

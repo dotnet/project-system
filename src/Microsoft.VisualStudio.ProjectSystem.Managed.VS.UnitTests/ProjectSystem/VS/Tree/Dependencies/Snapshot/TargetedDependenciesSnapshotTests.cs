@@ -63,8 +63,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 previousSnapshot,
                 changes,
                 catalogs,
-                null,
-                null,
+                Array.Empty<IDependenciesSnapshotFilter>(),
+                new Dictionary<string, IProjectDependenciesSubTreeProvider>(),
                 null);
 
             Assert.Same(previousSnapshot, snapshot);
@@ -117,8 +117,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 previousSnapshot,
                 changes,
                 catalogs,
-                null,
-                null,
+                Array.Empty<IDependenciesSnapshotFilter>(),
+                new Dictionary<string, IProjectDependenciesSubTreeProvider>(),
                 null);
 
             Assert.Same(previousSnapshot, snapshot);
@@ -175,7 +175,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 changes,
                 catalogs,
                 new[] { snapshotFilter },
-                null,
+                new Dictionary<string, IProjectDependenciesSubTreeProvider>(),
                 null);
 
             Assert.Same(previousSnapshot, snapshot);
@@ -243,7 +243,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 changes,
                 catalogs,
                 new[] { snapshotFilter },
-                null,
+                new Dictionary<string, IProjectDependenciesSubTreeProvider>(),
                 null);
 
             Assert.NotSame(previousSnapshot, snapshot);
@@ -315,7 +315,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 changes,
                 catalogs,
                 new[] { snapshotFilter },
-                null,
+                new Dictionary<string, IProjectDependenciesSubTreeProvider>(),
                 null);
 
             Assert.Same(previousSnapshot, snapshot);
@@ -382,7 +382,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 changes,
                 catalogs,
                 new[] { snapshotFilter },
-                null,
+                new Dictionary<string, IProjectDependenciesSubTreeProvider>(),
                 null);
 
             Assert.NotSame(previousSnapshot, snapshot);
@@ -519,7 +519,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 changes,
                 catalogs,
                 new[] { snapshotFilter },
-                null,
+                new Dictionary<string, IProjectDependenciesSubTreeProvider>(),
                 null);
 
             Assert.NotSame(previousSnapshot, snapshot);
@@ -625,7 +625,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 IDependency dependency,
                 ImmutableDictionary<string, IDependency>.Builder worldBuilder,
                 ImmutableHashSet<IDependency>.Builder topLevelBuilder,
-                IReadOnlyDictionary<string, IProjectDependenciesSubTreeProvider> subTreeProviders,
+                IReadOnlyDictionary<string, IProjectDependenciesSubTreeProvider> subTreeProviderByProviderType,
                 IImmutableSet<string> projectItemSpecs,
                 out bool filterAnyChanges)
             {

@@ -14,9 +14,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
     internal sealed class TargetedDependenciesSnapshot : ITargetedDependenciesSnapshot
     {
-        private static readonly IReadOnlyDictionary<string, IProjectDependenciesSubTreeProvider> s_emptySubTreeProviderMap
-            = ImmutableDictionary.Create<string, IProjectDependenciesSubTreeProvider>(StringComparers.DependencyProviderTypes);
-
         #region Factories and internal constructor
 
         public static ITargetedDependenciesSnapshot CreateEmpty(string projectPath, ITargetFramework targetFramework, IProjectCatalogSnapshot catalogs)
@@ -40,12 +37,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             IDependenciesChanges changes,
             IProjectCatalogSnapshot catalogs,
             IReadOnlyList<IDependenciesSnapshotFilter> snapshotFilters,
-            IReadOnlyList<IProjectDependenciesSubTreeProvider> subTreeProviders,
+            IReadOnlyDictionary<string, IProjectDependenciesSubTreeProvider> subTreeProviderByProviderType,
             IImmutableSet<string> projectItemSpecs)
         {
             Requires.NotNullOrWhiteSpace(projectPath, nameof(projectPath));
             Requires.NotNull(previousSnapshot, nameof(previousSnapshot));
+            // catalogs can be null
             Requires.NotNull(changes, nameof(changes));
+            Requires.NotNull(snapshotFilters, nameof(snapshotFilters));
+            Requires.NotNull(subTreeProviderByProviderType, nameof(subTreeProviderByProviderType));
+            // projectItemSpecs can be null
 
             bool anyChanges = false;
 
@@ -90,10 +91,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 }
             }
 
-            IReadOnlyDictionary<string, IProjectDependenciesSubTreeProvider> subTreeProvidersMap
-                = subTreeProviders?.ToDictionary(p => p.ProviderType, StringComparers.DependencyProviderTypes)
-                  ?? s_emptySubTreeProviderMap;
-
             foreach (IDependencyModel added in changes.AddedNodes)
             {
                 IDependency newDependency = new Dependency(added, targetFramework, projectPath);
@@ -108,7 +105,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                             newDependency,
                             worldBuilder,
                             topLevelBuilder,
-                            subTreeProvidersMap,
+                            subTreeProviderByProviderType,
                             projectItemSpecs,
                             out bool filterAnyChanges);
 
