@@ -440,3 +440,7 @@
 <Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerPanel.PageHostingPanel_HandleCreated(System.Object,System.EventArgs)")>
 <Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerPanel.PageHostingPanel_Layout(System.Object,System.Windows.Forms.LayoutEventArgs)")>
 <Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.AppDesDesignerFramework.ErrorControl.ErrorText_GotFocus(System.Object,System.EventArgs)")>
+
+' https://github.com/dotnet/roslyn-analyzers/issues/1874
+<Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.PropertyPages.ProjectReloadedException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)")>
+<Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.PropPageDesigner.PropertyPageSerializationService.PropertyPageSerializationStore.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)")>
