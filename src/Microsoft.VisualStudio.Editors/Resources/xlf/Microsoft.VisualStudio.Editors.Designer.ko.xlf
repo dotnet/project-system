@@ -1367,7 +1367,7 @@ Error:</source>
       </trans-unit>
       <trans-unit id="RSE_Err_BadIdentifier_2Arg">
         <source>The name of the resource '{0}' cannot be used as a valid identifier, because it contains one or more invalid characters: '{1}'.  Please remove or replace those characters and try again.</source>
-        <target state="translated">'{0}' 리소스의 이름에 잘못된 문자({1})가 하나 이상 있으므로 이 이름을 올바른 식별자로 사용할 수 없습니다.  해당 문자를 제거하거나 바꾸고 다시 시도하세요.</target>
+        <target state="translated">'{0}' 리소스의 이름에 잘못된 문자('{1}')가 하나 이상 있으므로 이 이름을 유효한 식별자로 사용할 수 없습니다. 해당 문자를 제거하거나 바꾸고 다시 시도하세요.</target>
         <note>{0} = Resource name</note>
       </trans-unit>
       <trans-unit id="RSE_Err_MaxFilesLimitation">
