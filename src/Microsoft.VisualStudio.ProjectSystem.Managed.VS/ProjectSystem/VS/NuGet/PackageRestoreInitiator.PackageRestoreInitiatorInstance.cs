@@ -101,7 +101,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                         });
 
                     Action<Tuple<ImmutableList<IProjectValueVersions>, TIdentityDictionary>> action = ProjectPropertyChanged;
-                    var target = new ActionBlock<Tuple<ImmutableList<IProjectValueVersions>, TIdentityDictionary>>(action);
+                    var target = DataflowBlockSlim.CreateActionBlock(action);
 
                     DataflowLinkOptions targetLinkOptions = DataflowOption.PropagateCompletion;
 
@@ -116,7 +116,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
             private static IPropagatorBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>, IProjectVersionedValue<IProjectSubscriptionUpdate>> CreateVersionDropperBlock()
             {
-                var transformBlock = new TransformBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>, IProjectVersionedValue<IProjectSubscriptionUpdate>>(data =>
+                var transformBlock = DataflowBlockSlim.CreateTransformBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>, IProjectVersionedValue<IProjectSubscriptionUpdate>>(data =>
                 {
                     return new ProjectVersionedValue<IProjectSubscriptionUpdate>(data.Value, data.DataSourceVersions.RemoveRange(s_keysToDrop));
                 });

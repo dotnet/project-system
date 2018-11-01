@@ -4,14 +4,14 @@ using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
-    internal static class IProjectServicesFactory
+    internal static class ProjectServicesFactory
     {
-        public static IProjectServices Create(IProjectThreadingService threadingService = null, IProjectFaultHandlerService faultHandlerService = null, IProjectService projectService = null)
+        public static ProjectServices Create(IProjectThreadingService threadingService = null, IProjectFaultHandlerService faultHandlerService = null, IProjectService projectService = null)
         {
             threadingService = threadingService ?? IProjectThreadingServiceFactory.Create();
             faultHandlerService = faultHandlerService ?? IProjectFaultHandlerServiceFactory.Create();
 
-            var projectServices = new Mock<IProjectServices>();
+            var projectServices = new Mock<ProjectServices>();
             projectServices.Setup(u => u.ThreadingPolicy)
                                .Returns(threadingService);
 

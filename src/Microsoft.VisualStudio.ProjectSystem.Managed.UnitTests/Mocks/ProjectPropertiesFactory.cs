@@ -48,7 +48,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             IAdditionalRuleDefinitionsService ruleService = Mock.Of<IAdditionalRuleDefinitionsService>();
 
-            IConfiguredProjectServices configuredProjectServices = Mock.Of<IConfiguredProjectServices>(o =>
+            ConfiguredProjectServices configuredProjectServices = Mock.Of<ConfiguredProjectServices>(o =>
                 o.PropertyPagesCatalog == propertyPagesCatalogProvider &&
                 o.AdditionalRuleDefinitions == ruleService);
 
