@@ -44,7 +44,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private Const NotifyColumnMinScrollingWidth As Integer = 100 'non-resizable column
 
         ' Cached extended objects for all configurations...
-        Private _cachedExtendedObjects() As Object
+        Private ReadOnly _cachedExtendedObjects() As Object
 
         Private _optionStrictCustomText As String
         Private _optionStrictOnText As String

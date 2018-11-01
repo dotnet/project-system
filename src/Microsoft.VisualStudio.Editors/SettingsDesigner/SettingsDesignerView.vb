@@ -231,7 +231,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         End Sub
 
         'Required by the Windows Form Designer
-        Private _components As IContainer
+        Private ReadOnly _components As IContainer
 
         'NOTE: The following procedure is required by the Windows Form Designer
         'It can be modified using the Windows Form Designer.  

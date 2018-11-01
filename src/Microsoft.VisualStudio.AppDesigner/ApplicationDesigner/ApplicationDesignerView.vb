@@ -41,7 +41,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         End Sub
 
         'Required by the Windows Form Designer
-        Private _components As System.ComponentModel.IContainer
+        Private ReadOnly _components As System.ComponentModel.IContainer
 
         'NOTE: The following procedure is required by the Windows Form Designer
         'It can be modified using the Windows Form Designer.  
