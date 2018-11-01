@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+using System.Diagnostics;
 using System.Threading;
 
 namespace Microsoft.VisualStudio.Threading.Tasks
@@ -28,6 +29,13 @@ namespace Microsoft.VisualStudio.Threading.Tasks
         {
             _superToken = token;
         }
+
+#if DEBUG
+        ~CancellationSeries()
+        {
+            Debug.Assert(_cts == null, "Instance of CancellationSeries not disposed before being finalized");
+        }
+#endif
 
         /// <summary>
         /// Gets the next <see cref="CancellationToken"/> in the series, ensuring the last issued
