@@ -1012,7 +1012,7 @@
 <Assembly: CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSerializer.Serialize(Microsoft.VisualStudio.Editors.SettingsDesigner.DesignTimeSettings,System.String,System.String,System.IO.TextWriter,System.Text.Encoding)")>
 <Assembly: CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGeneratorBase.AddDefaultInstance(System.CodeDom.CodeTypeDeclaration,Microsoft.VisualStudio.Shell.Interop.IVsGeneratorProgress,System.Boolean,System.Boolean)")>
 <Assembly: CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGeneratorBase.AddDefaultValueAttribute(System.CodeDom.CodeMemberProperty,System.String)")>
-<Assembly: CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGeneratorBase.AddManagebilityAttribue(System.CodeDom.CodeMemberProperty,System.Configuration.SettingsManageability)")>
+<Assembly: CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGeneratorBase.AddManageabilityAttribute(System.CodeDom.CodeMemberProperty,System.Configuration.SettingsManageability)")>
 <Assembly: CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGeneratorBase.AddMyModule(System.CodeDom.CodeCompileUnit,System.String,System.String)")>
 <Assembly: CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGeneratorBase.AddRequiredReferences(Microsoft.VisualStudio.Shell.Interop.IVsGeneratorProgress)")>
 <Assembly: CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGeneratorBase.CodeDomPropertyFromSettingInstance(Microsoft.VisualStudio.Editors.SettingsDesigner.SettingTypeNameResolutionService,Microsoft.VisualStudio.Editors.SettingsDesigner.DesignTimeSettingInstance,System.Boolean,Microsoft.VisualStudio.Shell.Interop.IVsGeneratorProgress)~System.CodeDom.CodeMemberProperty")>
@@ -1421,6 +1421,8 @@
 <Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.PropertyPages.ApplicationPropPageVBWinForms.ApplicationTypeComboBox_SelectionChangeCommitted(System.Object,System.EventArgs)")>
 <Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.PropertyPages.ApplicationPropPageVBWinForms.IconCombobox_SelectionChangeCommitted(System.Object,System.EventArgs)")>
 <Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.PropertyPages.ApplicationPropPageVBWinForms.StartupObjectComboBox_SelectionChangeCommitted(System.Object,System.EventArgs)")>
+<Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.PropertyPages.UnusedReferencePropPage.OnUnusedReferenceListColumnClick(System.Object,System.Windows.Forms.ColumnClickEventArgs)")>
+<Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.XmlToSchema.InputXmlForm._listViewKeyPress(System.Object,System.Windows.Forms.KeyEventArgs)")>
 
 ' https://github.com/dotnet/roslyn-analyzers/issues/1874
 <Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.DesignerFramework.GenericComponentSerializationStore.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)")>
@@ -1434,3 +1436,14 @@
 
 ' https://github.com/dotnet/roslyn/issues/30882
 <Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsValueSerializer.SettingsValueSerializer")>
+<Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Scope:="member", Target:="~M:Microsoft.VisualStudio.StringComparers.StringComparers")>
+
+' https://github.com/dotnet/roslyn/issues/30894
+<Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0052:Remove unread private members", Scope:="member", Target:="~P:Microsoft.VisualStudio.Editors.ResourceEditor.Resource.CommentWithoutUndo")>
+<Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0052:Remove unread private members", Scope:="member", Target:="~P:Microsoft.VisualStudio.Editors.ResourceEditor.Resource.EncodingWithoutUndo")>
+<Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0052:Remove unread private members", Scope:="member", Target:="~P:Microsoft.VisualStudio.Editors.ResourceEditor.Resource.FileNameWithoutUndo")>
+<Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0052:Remove unread private members", Scope:="member", Target:="~P:Microsoft.VisualStudio.Editors.ResourceEditor.Resource.FileTypeWithoutUndo")>
+<Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0052:Remove unread private members", Scope:="member", Target:="~P:Microsoft.VisualStudio.Editors.ResourceEditor.Resource.PersistenceWithoutUndo")>
+
+' https://github.com/dotnet/roslyn/issues/30895
+<Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0052:Remove unread private members", Scope:="member", Target:="~P:Microsoft.VisualStudio.Editors.ResourceEditor.ResourceEditorRootDesigner._buildEvents")>
