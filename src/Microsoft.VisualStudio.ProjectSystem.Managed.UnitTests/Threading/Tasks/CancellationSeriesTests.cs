@@ -10,11 +10,11 @@ namespace Microsoft.VisualStudio.Threading.Tasks
     public sealed class CancellationSeriesTests
     {
         [Fact]
-        public void GetToken_ReturnsNonCancelledToken()
+        public void CreateNext_ReturnsNonCancelledToken()
         {
             using (var series = new CancellationSeries())
             {
-                var token = series.GetToken();
+                var token = series.CreateNext();
 
                 Assert.False(token.IsCancellationRequested);
                 Assert.True(token.CanBeCanceled);
@@ -22,20 +22,20 @@ namespace Microsoft.VisualStudio.Threading.Tasks
         }
 
         [Fact]
-        public void GetToken_CancelsPreviousToken()
+        public void CreateNext_CancelsPreviousToken()
         {
             using (var series = new CancellationSeries())
             {
-                var token1 = series.GetToken();
+                var token1 = series.CreateNext();
 
                 Assert.False(token1.IsCancellationRequested);
 
-                var token2 = series.GetToken();
+                var token2 = series.CreateNext();
 
                 Assert.True(token1.IsCancellationRequested);
                 Assert.False(token2.IsCancellationRequested);
 
-                var token3 = series.GetToken();
+                var token3 = series.CreateNext();
 
                 Assert.True(token2.IsCancellationRequested);
                 Assert.False(token3.IsCancellationRequested);
@@ -43,17 +43,17 @@ namespace Microsoft.VisualStudio.Threading.Tasks
         }
 
         [Fact]
-        public void GetToken_ThrowsIfDisposed()
+        public void CreateNext_ThrowsIfDisposed()
         {
             var series = new CancellationSeries();
 
             series.Dispose();
 
-            Assert.Throws<ObjectDisposedException>(() => series.GetToken());
+            Assert.Throws<ObjectDisposedException>(() => series.CreateNext());
         }
 
         [Fact]
-        public void GetToken_ReturnsCancelledTokenIfSuperTokenAlreadyCancelled()
+        public void CreateNext_ReturnsCancelledTokenIfSuperTokenAlreadyCancelled()
         {
             var cts = new CancellationTokenSource();
 
@@ -61,14 +61,14 @@ namespace Microsoft.VisualStudio.Threading.Tasks
             {
                 cts.Cancel();
 
-                var token = series.GetToken();
+                var token = series.CreateNext();
 
                 Assert.True(token.IsCancellationRequested);
             }
         }
 
         [Fact]
-        public void GetToken_ReturnsCancelledTokenIfInputTokenAlreadyCancelled()
+        public void CreateNext_ReturnsCancelledTokenIfInputTokenAlreadyCancelled()
         {
             var cts = new CancellationTokenSource();
 
@@ -76,7 +76,7 @@ namespace Microsoft.VisualStudio.Threading.Tasks
             {
                 cts.Cancel();
 
-                var token = series.GetToken(cts.Token);
+                var token = series.CreateNext(cts.Token);
 
                 Assert.True(token.IsCancellationRequested);
             }
@@ -89,7 +89,7 @@ namespace Microsoft.VisualStudio.Threading.Tasks
 
             using (var series = new CancellationSeries(cts.Token))
             {
-                var token = series.GetToken();
+                var token = series.CreateNext();
 
                 Assert.False(token.IsCancellationRequested);
 
@@ -106,7 +106,7 @@ namespace Microsoft.VisualStudio.Threading.Tasks
 
             using (var series = new CancellationSeries())
             {
-                var token = series.GetToken(cts.Token);
+                var token = series.CreateNext(cts.Token);
 
                 Assert.False(token.IsCancellationRequested);
 

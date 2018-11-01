@@ -38,22 +38,22 @@ namespace Microsoft.VisualStudio.Threading.Tasks
 #endif
 
         /// <summary>
-        /// Gets the next <see cref="CancellationToken"/> in the series, ensuring the last issued
-        /// token (if any) is cancelled before this method returns.
+        /// Creates the next <see cref="CancellationToken"/> in the series, ensuring the last issued
+        /// token (if any) is cancelled first.
         /// </summary>
         /// <param name="token">An optional cancellation token that, when cancelled, cancels the
         /// returned token.</param>
         /// <returns>
         /// A cancellation token that will be cancelled when either:
         /// <list type="bullet">
-        /// <item><see cref="GetToken"/> is called again</item>
+        /// <item><see cref="CreateNext"/> is called again</item>
         /// <item>The token passed to this method (if any) is cancelled</item>
         /// <item>The token passed to the constructor (if any) is cancelled</item>
         /// <item><see cref="Dispose"/> is called</item>
         /// </list>
         /// </returns>
         /// <exception cref="ObjectDisposedException">This object has been disposed.</exception>
-        public CancellationToken GetToken(CancellationToken token = default)
+        public CancellationToken CreateNext(CancellationToken token = default)
         {
             var nextSource = CancellationTokenSource.CreateLinkedTokenSource(token, _superToken);
 

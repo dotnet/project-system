@@ -325,7 +325,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                             // Issue this token before hooking the SnapshotChanged event to prevent a race
                             // where a snapshot tree is replaced by the initial, empty tree created below.
                             // The handler will cancel this token before submitting its update.
-                            CancellationToken initialTreeCancellationToken = _treeUpdateCancellationSeries.GetToken();
+                            CancellationToken initialTreeCancellationToken = _treeUpdateCancellationSeries.CreateNext();
 
                             _dependenciesSnapshotProvider.SnapshotChanged += OnDependenciesSnapshotChanged;
 
@@ -427,7 +427,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     // way of merging, mute them for now and get to it in U1
                     return new TreeUpdateResult(dependenciesNode, lazyFill: false);
                 },
-                _treeUpdateCancellationSeries.GetToken());
+                _treeUpdateCancellationSeries.CreateNext());
         }
 
         /// <summary>
