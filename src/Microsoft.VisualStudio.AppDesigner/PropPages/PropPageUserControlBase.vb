@@ -1926,8 +1926,8 @@ NextControl:
 
         End Sub
 
+        <Conditional("DEBUG")>
         Private Sub VerifyPropertiesWhichMayReloadProjectAreLast()
-#If DEBUG Then
             Dim APreviousPropertyHadProjectMayBeReloadedDuringPropertySetFlag As Boolean = False
             For Each _controlData As PropertyControlData In ControlData
                 Dim ProjectMayBeReloadedDuringPropertySet As Boolean = (0 <> (_controlData.GetFlags() And ControlDataFlags.ProjectMayBeReloadedDuringPropertySet))
@@ -1941,7 +1941,6 @@ NextControl:
                     Return
                 End If
             Next
-#End If
         End Sub
 
         ''' <summary>

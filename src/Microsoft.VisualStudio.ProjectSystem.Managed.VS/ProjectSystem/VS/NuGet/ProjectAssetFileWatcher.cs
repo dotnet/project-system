@@ -23,11 +23,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
     /// <summary>
     ///     Watches for writes to the project.assets.json, triggering a evaluation if it changes.
     /// </summary>
-    internal class ProjectAssetFileWatcher : OnceInitializedOnceDisposedAsync, IVsFreeThreadedFileChangeEvents
+    internal class ProjectAssetFileWatcher : OnceInitializedOnceDisposedAsync, IVsFreeThreadedFileChangeEvents2
     {
         private static readonly TimeSpan s_notifyDelay = TimeSpan.FromMilliseconds(100);
 
-        private readonly IVsService<IVsFileChangeEx> _fileChangeService;
+        private readonly IVsService<IVsAsyncFileChangeEx> _fileChangeService;
         private readonly IUnconfiguredProjectCommonServices _projectServices;
         private readonly IUnconfiguredProjectTasksService _projectTasksService;
         private readonly IActiveConfiguredProjectSubscriptionService _activeConfiguredProjectSubscriptionService;
@@ -42,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
         [ImportingConstructor]
         public ProjectAssetFileWatcher(
-            IVsService<SVsFileChangeEx, IVsFileChangeEx> fileChangeService,
+            IVsService<SVsFileChangeEx, IVsAsyncFileChangeEx> fileChangeService,
             [Import(ContractNames.ProjectTreeProviders.FileSystemDirectoryTree)] IProjectTreeProvider fileSystemTreeProvider,
             IUnconfiguredProjectCommonServices projectServices,
             IUnconfiguredProjectTasksService projectTasksService,
@@ -215,10 +215,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                     _projectServices.ThreadingService,
                     CreateLinkedCancellationToken());
 
-                IVsFileChangeEx fileChangeService = await _fileChangeService.GetValueAsync();
-
-                int hr = fileChangeService.AdviseFileChange(projectLockJsonFilePath, (uint)(_VSFILECHANGEFLAGS.VSFILECHG_Time | _VSFILECHANGEFLAGS.VSFILECHG_Size | _VSFILECHANGEFLAGS.VSFILECHG_Add | _VSFILECHANGEFLAGS.VSFILECHG_Del), this, out _filechangeCookie);
-                ErrorHandler.ThrowOnFailure(hr);
+                IVsAsyncFileChangeEx fileChangeService = await _fileChangeService.GetValueAsync();
+                _filechangeCookie = await fileChangeService.AdviseFileChangeAsync(
+                    projectLockJsonFilePath,
+                    _VSFILECHANGEFLAGS.VSFILECHG_Time | _VSFILECHANGEFLAGS.VSFILECHG_Size | _VSFILECHANGEFLAGS.VSFILECHG_Add | _VSFILECHANGEFLAGS.VSFILECHG_Del,
+                    sink: this);
             }
 
             _fileBeingWatched = projectLockJsonFilePath;
@@ -229,10 +230,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             // Note file change service is free-threaded
             if (_filechangeCookie != VSConstants.VSCOOKIE_NIL)
             {
-                IVsFileChangeEx fileChangeService = await _fileChangeService.GetValueAsync();
+                IVsAsyncFileChangeEx fileChangeService = await _fileChangeService.GetValueAsync();
 
                 // There's nothing for us to do if this fails. So ignore the return value.
-                fileChangeService.UnadviseFileChange(_filechangeCookie);
+                await fileChangeService.UnadviseFileChangeAsync(_filechangeCookie);
                 _watchedFileResetCancellationToken?.Cancel();
                 _watchedFileResetCancellationToken?.Dispose();
                 _taskDelayScheduler?.Dispose();
@@ -314,6 +315,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         }
 
         public int DirectoryChangedEx(string pszDirectory, string pszFile)
+        {
+            return VSConstants.E_NOTIMPL;
+        }
+
+        public int DirectoryChangedEx2(string pszDirectory, uint cChanges, string[] rgpszFile, uint[] rggrfChange)
         {
             return VSConstants.E_NOTIMPL;
         }
