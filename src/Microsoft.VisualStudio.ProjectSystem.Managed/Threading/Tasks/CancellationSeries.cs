@@ -33,7 +33,9 @@ namespace Microsoft.VisualStudio.Threading.Tasks
 #if DEBUG
         ~CancellationSeries()
         {
-            Debug.Assert(_cts == null, "Instance of CancellationSeries not disposed before being finalized");
+            Debug.Assert(
+                Environment.HasShutdownStarted || _cts == null,
+                "Instance of CancellationSeries not disposed before being finalized");
         }
 #endif
 
@@ -83,6 +85,10 @@ namespace Microsoft.VisualStudio.Threading.Tasks
         /// <inheritdoc />
         public void Dispose()
         {
+#if DEBUG
+            GC.SuppressFinalize(this);
+#endif
+
             CancellationTokenSource source = Interlocked.Exchange(ref _cts, null);
 
             if (source == null)
