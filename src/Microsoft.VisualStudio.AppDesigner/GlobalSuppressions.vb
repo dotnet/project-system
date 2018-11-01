@@ -412,3 +412,8 @@
 <Assembly: CodeAnalysis.SuppressMessage("Design", "CA1063:Implement IDisposable Correctly", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.ApplicationDesigner.PropertyPageSite.Dispose")>
 <Assembly: CodeAnalysis.SuppressMessage("Design", "CA1063:Implement IDisposable Correctly", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.ApplicationDesigner.CustomViewProvider.Dispose")>
 <Assembly: CodeAnalysis.SuppressMessage("Design", "CA1063:Implement IDisposable Correctly", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.ApplicationDesigner.PropertyPageSite.Dispose(System.Boolean)")>
+
+' https://github.com/dotnet/roslyn-analyzers/issues/1878
+<Assembly: CodeAnalysis.SuppressMessage("Performance", "CA1812:Avoid uninstantiated internal classes", Scope:="type", Target:="~T:Microsoft.VisualStudio.Editors.AppDesCommon.DTEUtils")>
+<Assembly: CodeAnalysis.SuppressMessage("Performance", "CA1812:Avoid uninstantiated internal classes", Scope:="type", Target:="~T:Microsoft.VisualStudio.Editors.AppDesDesignerFramework.DesignUtil")>
+<Assembly: CodeAnalysis.SuppressMessage("Performance", "CA1812:Avoid uninstantiated internal classes", Scope:="type", Target:="~T:Microsoft.VisualStudio.Editors.Constants.MenuConstants")>
