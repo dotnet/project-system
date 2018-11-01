@@ -450,3 +450,10 @@
 <Assembly: CodeAnalysis.SuppressMessage("Performance", "CA1812:Avoid uninstantiated internal classes", Scope:="type", Target:="~T:Microsoft.VisualStudio.Editors.AppDesDesignerFramework.DesignUtil")>
 <Assembly: CodeAnalysis.SuppressMessage("Performance", "CA1812:Avoid uninstantiated internal classes", Scope:="type", Target:="~T:Microsoft.VisualStudio.Editors.Constants.MenuConstants")>
 
+' https://github.com/dotnet/roslyn/issues/30882
+<Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.AppDesDesignerFramework.DesignUtil.DesignUtil")>
+<Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.Constants.MenuConstants.MenuConstants")>
+
+' https://github.com/dotnet/roslyn/issues/30895
+<Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0052:Remove unread private members", Scope:="member", Target:="~P:Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerView._broadcastMessageEventsHelper")>
+<Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0052:Remove unread private members", Scope:="member", Target:="~P:Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase._buildEvents")>
