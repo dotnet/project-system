@@ -412,7 +412,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
                     // TODO We still are getting mismatched data sources and need to figure out better 
                     // way of merging, mute them for now and get to it in U1
-                    return new TreeUpdateResult(dependenciesNode, lazyFill: false);
+                    return new TreeUpdateResult(dependenciesNode);
                 },
                 GetNextTreeUpdateCancellationToken());
         }
