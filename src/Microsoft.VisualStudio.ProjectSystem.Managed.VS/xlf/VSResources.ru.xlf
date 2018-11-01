@@ -288,7 +288,7 @@ In order to debug this project, add an executable project to this solution which
       </trans-unit>
       <trans-unit id="NotSupportedDotNetCoreProject">
         <source>Projects targeting versions newer than .NET Core {0}.{1} are not supported by this version of Visual Studio.</source>
-        <target state="translated">Эта версия Visual Studio не поддерживает проекты, нацеленные на версии новее .NET Core {0}.{1}.</target>
+        <target state="translated">Эта версия Visual Studio не поддерживает проекты, нацеленные на версии новее .NET Core {0}.{1}.</target>
         <note />
       </trans-unit>
       <trans-unit id="DontShowAgain">
