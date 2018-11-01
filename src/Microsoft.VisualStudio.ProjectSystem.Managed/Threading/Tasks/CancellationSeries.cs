@@ -66,8 +66,16 @@ namespace Microsoft.VisualStudio.Threading.Tasks
                 throw new ObjectDisposedException(nameof(CancellationSeries));
             }
 
-            priorSource.Cancel();
-            priorSource.Dispose();
+            try
+            {
+                priorSource.Cancel();
+            }
+            finally
+            {
+                // A registered action on the token may throw, which would surface here.
+                // Ensure we always dispose the prior CTS.
+                priorSource.Dispose();
+            }
 
             return nextSource.Token;
         }

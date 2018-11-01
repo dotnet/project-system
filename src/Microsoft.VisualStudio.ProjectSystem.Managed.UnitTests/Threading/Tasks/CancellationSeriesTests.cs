@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+using System.Linq;
 using System.Threading;
 
 using Xunit;
@@ -113,6 +114,24 @@ namespace Microsoft.VisualStudio.Threading.Tasks
                 cts.Cancel();
 
                 Assert.True(token.IsCancellationRequested);
+            }
+        }
+
+        [Fact]
+        public void CreateNext_HandlesExceptionsFromPreviousTokenRegistration()
+        {
+            using (var series = new CancellationSeries())
+            {
+                var token1 = series.CreateNext();
+
+                var exception = new Exception();
+
+                token1.Register(() => throw exception);
+
+                var aggregateException = Assert.Throws<AggregateException>(() => series.CreateNext());
+
+                Assert.Same(exception, aggregateException.InnerExceptions.Single());
+                Assert.True(token1.IsCancellationRequested);
             }
         }
     }
