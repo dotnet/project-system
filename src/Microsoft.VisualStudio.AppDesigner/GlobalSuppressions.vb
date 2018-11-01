@@ -444,3 +444,9 @@
 ' https://github.com/dotnet/roslyn-analyzers/issues/1874
 <Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.PropertyPages.ProjectReloadedException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)")>
 <Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.PropPageDesigner.PropertyPageSerializationService.PropertyPageSerializationStore.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)")>
+
+' https://github.com/dotnet/roslyn-analyzers/issues/1878
+<Assembly: CodeAnalysis.SuppressMessage("Performance", "CA1812:Avoid uninstantiated internal classes", Scope:="type", Target:="~T:Microsoft.VisualStudio.Editors.AppDesCommon.DTEUtils")>
+<Assembly: CodeAnalysis.SuppressMessage("Performance", "CA1812:Avoid uninstantiated internal classes", Scope:="type", Target:="~T:Microsoft.VisualStudio.Editors.AppDesDesignerFramework.DesignUtil")>
+<Assembly: CodeAnalysis.SuppressMessage("Performance", "CA1812:Avoid uninstantiated internal classes", Scope:="type", Target:="~T:Microsoft.VisualStudio.Editors.Constants.MenuConstants")>
+

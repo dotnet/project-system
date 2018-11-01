@@ -15,6 +15,9 @@ Namespace Microsoft.VisualStudio.Editors
     Partial Public Class Constants
         Friend NotInheritable Class MenuConstants
 
+            Private Sub MenuConstants()
+            End Sub
+
             ' Constants for menu command IDs and GUIDs. 
             ' *** These must match the constants in designerui\VisualStudioEditorsID.h *****
 
