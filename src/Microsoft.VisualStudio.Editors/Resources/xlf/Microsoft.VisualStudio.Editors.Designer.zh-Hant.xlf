@@ -1367,7 +1367,7 @@ Error:</source>
       </trans-unit>
       <trans-unit id="RSE_Err_BadIdentifier_2Arg">
         <source>The name of the resource '{0}' cannot be used as a valid identifier, because it contains one or more invalid characters: '{1}'.  Please remove or replace those characters and try again.</source>
-        <target state="translated">資源 '{0}' 的名稱無法作為有效的識別碼，因為它含有一或多個無效的字元: '{1}'。請移除或取代這些字元後再試一次。</target>
+        <target state="translated">資源的名稱 '{0}' 無法用作有效的識別碼，因為其中有一或多個無效的字元: '{1}'。請移除或取代這些字元，然後再試一次。</target>
         <note>{0} = Resource name</note>
       </trans-unit>
       <trans-unit id="RSE_Err_MaxFilesLimitation">
