@@ -97,8 +97,14 @@ namespace Microsoft.VisualStudio.Threading.Tasks
                 return;
             }
 
-            source.Cancel();
-            source.Dispose();
+            try
+            {
+                source.Cancel();
+            }
+            finally
+            {
+                source.Dispose();
+            }
         }
     }
 }
