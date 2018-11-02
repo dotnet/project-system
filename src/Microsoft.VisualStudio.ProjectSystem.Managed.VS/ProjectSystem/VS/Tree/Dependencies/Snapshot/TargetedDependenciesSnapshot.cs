@@ -250,12 +250,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         }
 
         /// <inheritdoc />
-        public IEnumerable<IDependency> GetDependencyChildren(IDependency dependency)
-        {
-            return GetDependencyChildrenInternal(dependency);
-        }
-
-        private ImmutableArray<IDependency> GetDependencyChildrenInternal(IDependency dependency)
+        public ImmutableArray<IDependency> GetDependencyChildren(IDependency dependency)
         {
             return _dependenciesChildrenMap.GetOrAdd(dependency.Id, _ =>
             {
@@ -288,7 +283,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
             if (dependency.DependencyIDs.Count > 0)
             {
-                foreach (IDependency child in GetDependencyChildrenInternal(dependency))
+                foreach (IDependency child in GetDependencyChildren(dependency))
                 {
                     if (!child.Resolved)
                     {

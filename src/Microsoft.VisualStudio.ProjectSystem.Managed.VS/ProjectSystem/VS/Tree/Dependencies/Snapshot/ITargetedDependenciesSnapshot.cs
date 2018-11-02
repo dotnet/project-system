@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System.Collections.Generic;
 using System.Collections.Immutable;
 
 using Microsoft.VisualStudio.ProjectSystem.Properties;
@@ -64,6 +63,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         /// </summary>
         /// <param name="dependency"></param>
         /// <returns></returns>
-        IEnumerable<IDependency> GetDependencyChildren(IDependency dependency);
+        ImmutableArray<IDependency> GetDependencyChildren(IDependency dependency);
     }
 }

@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 
 using Microsoft.VisualStudio.GraphModel;
@@ -40,8 +41,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
             dependencyGraphNode.SetValue(DependenciesGraphSchema.DependencyIdProperty, dependency.Id);
             dependencyGraphNode.SetValue(DependenciesGraphSchema.ResolvedProperty, dependency.Resolved);
 
-            IEnumerable<IDependency> children = targetedSnapshot.GetDependencyChildren(dependency);
-            if (children == null)
+            ImmutableArray<IDependency> children = targetedSnapshot.GetDependencyChildren(dependency);
+            if (children.IsEmpty)
             {
                 return;
             }
@@ -130,8 +131,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
             out IReadOnlyList<DependencyNodeInfo> nodesToRemove)
         {
             IReadOnlyList<DependencyNodeInfo> existingChildrenInfo = GetExistingChildren(dependencyGraphNode);
-            IEnumerable<IDependency> updatedChildren = targetedSnapshot.GetDependencyChildren(updatedDependency)
-                ?? Enumerable.Empty<IDependency>();
+            ImmutableArray<IDependency> updatedChildren = targetedSnapshot.GetDependencyChildren(updatedDependency);
             IReadOnlyList<DependencyNodeInfo> updatedChildrenInfo = updatedChildren.Select(x => DependencyNodeInfo.FromDependency(x)).ToList();
 
             return AnyChanges(existingChildrenInfo, updatedChildrenInfo, out nodesToAdd, out nodesToRemove);
