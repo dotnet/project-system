@@ -138,6 +138,19 @@ function LocateVisualStudio {
   return $vsInstallDir
 }
 
+function LocateMSBuild {
+
+  # Dev15
+  $msbuildExe = Join-Path $vsInstallDir "MSBuild\15.0\Bin\msbuild.exe"
+  
+  if (Test-Path $msbuildExe) {
+     return $msbuildExe
+  }
+
+  # Dev16
+  return Join-Path $vsInstallDir "MSBuild\Current\Bin\msbuild.exe"
+}
+
 function Get-VisualStudioId(){
   $vsWhereExe = GetVsWhereExe
   $vsinstanceId = & $vsWhereExe -all -latest -prerelease -property instanceId -requires Microsoft.Component.MSBuild -requires Microsoft.VisualStudio.Component.VSSDK -requires Microsoft.Net.Component.4.6.TargetingPack -requires Microsoft.VisualStudio.Component.Roslyn.Compiler
@@ -343,7 +356,7 @@ try {
   $ToolsetBuildProj = Join-Path $NuGetPackageRoot "RoslynTools.RepoToolset\$ToolsetVersion\tools\Build.proj"
 
   $vsInstallDir = LocateVisualStudio
-  $MsbuildExe = Join-Path $vsInstallDir "MSBuild\15.0\Bin\msbuild.exe"
+  $MsbuildExe = LocateMSBuild
 
   if ($ci) {
     Create-Directory $TempDir
