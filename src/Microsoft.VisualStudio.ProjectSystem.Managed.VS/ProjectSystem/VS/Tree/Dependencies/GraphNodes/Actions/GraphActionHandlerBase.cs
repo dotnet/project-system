@@ -43,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
             return false;
         }
 
-        public virtual bool HandleChanges(IGraphContext graphContext, SnapshotChangedEventArgs changes)
+        public virtual bool HandleChanges(IGraphContext graphContext, SnapshotChangedEventArgs e)
         {
             return false;
         }

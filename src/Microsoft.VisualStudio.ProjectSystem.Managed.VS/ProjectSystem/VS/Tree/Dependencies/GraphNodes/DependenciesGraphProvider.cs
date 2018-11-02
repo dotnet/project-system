@@ -164,7 +164,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
         /// </summary>
         private void OnSnapshotChanged(object sender, SnapshotChangedEventArgs e)
         {
-            if (e.Snapshot == null)
+            if (e.Snapshot == null || e.Token.IsCancellationRequested)
             {
                 return;
             }

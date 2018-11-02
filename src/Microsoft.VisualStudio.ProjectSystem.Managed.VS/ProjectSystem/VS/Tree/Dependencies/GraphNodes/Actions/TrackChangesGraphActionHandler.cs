@@ -29,10 +29,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
             return true;
         }
 
-        public override bool HandleChanges(IGraphContext graphContext, SnapshotChangedEventArgs changes)
+        public override bool HandleChanges(IGraphContext graphContext, SnapshotChangedEventArgs e)
         {
-            IDependenciesSnapshot snapshot = changes.Snapshot;
-            if (snapshot == null)
+            IDependenciesSnapshot snapshot = e.Snapshot;
+
+            if (snapshot == null || e.Token.IsCancellationRequested)
             {
                 return false;
             }

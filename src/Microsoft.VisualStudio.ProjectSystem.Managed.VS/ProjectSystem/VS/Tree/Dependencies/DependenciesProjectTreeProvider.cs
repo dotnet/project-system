@@ -399,7 +399,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 return;
             }
 
-            if (_tasksService.UnloadCancellationToken.IsCancellationRequested)
+            if (_tasksService.UnloadCancellationToken.IsCancellationRequested || e.Token.IsCancellationRequested)
             {
                 return;
             }
@@ -427,7 +427,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     // way of merging, mute them for now and get to it in U1
                     return new TreeUpdateResult(dependenciesNode, lazyFill: false);
                 },
-                _treeUpdateCancellationSeries.CreateNext());
+                _treeUpdateCancellationSeries.CreateNext(e.Token));
         }
 
         /// <summary>
