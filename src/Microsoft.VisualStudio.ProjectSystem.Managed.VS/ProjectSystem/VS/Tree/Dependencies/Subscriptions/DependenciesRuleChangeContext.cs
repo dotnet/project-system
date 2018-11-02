@@ -9,7 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 {
     internal sealed class DependenciesRuleChangeContext : IRuleChangeContext
     {
-        private readonly object _changesLock = new object();
+        private ImmutableDictionary<ITargetFramework, IDependenciesChanges> _changes = ImmutableDictionary.Create<ITargetFramework, IDependenciesChanges>();
 
         public DependenciesRuleChangeContext(ITargetFramework activeTarget, IProjectCatalogSnapshot catalogs)
         {
@@ -21,9 +21,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
         public IProjectCatalogSnapshot Catalogs { get; }
 
-        public ImmutableDictionary<ITargetFramework, IDependenciesChanges> Changes { get; private set; } = ImmutableDictionary.Create<ITargetFramework, IDependenciesChanges>();
+        public ImmutableDictionary<ITargetFramework, IDependenciesChanges> Changes => _changes;
 
-        public bool AnyChanges => Changes.Count != 0;
+        public bool AnyChanges => _changes.Count != 0;
 
         public void IncludeAddedChange(ITargetFramework targetFramework, IDependencyModel ruleMetadata)
         {
@@ -37,17 +37,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
         private DependenciesChanges GetChanges(ITargetFramework targetFramework)
         {
-            lock (_changesLock)
-            {
-                if (!Changes.TryGetValue(targetFramework, out IDependenciesChanges change))
-                {
-                    change = new DependenciesChanges();
-                    Changes = Changes.Add(targetFramework, change);
-                }
-
-                // We only add DependenciesChanges to this collection, so the cast is safe
-                return (DependenciesChanges)change;
-            }
+            // We only add DependenciesChanges to this collection, so the cast is safe
+            return (DependenciesChanges)ImmutableInterlocked.GetOrAdd(
+                ref _changes, 
+                targetFramework, 
+                _ => new DependenciesChanges());
         }
     }
 }
