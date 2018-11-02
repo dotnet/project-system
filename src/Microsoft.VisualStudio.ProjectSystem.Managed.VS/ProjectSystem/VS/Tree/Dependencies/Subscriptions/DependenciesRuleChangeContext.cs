@@ -11,9 +11,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
     {
         private readonly object _changesLock = new object();
 
-        public DependenciesRuleChangeContext(ITargetFramework target, IProjectCatalogSnapshot catalogs)
+        public DependenciesRuleChangeContext(ITargetFramework activeTarget, IProjectCatalogSnapshot catalogs)
         {
-            ActiveTarget = target;
+            ActiveTarget = activeTarget;
             Catalogs = catalogs;
         }
 

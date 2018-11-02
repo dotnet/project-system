@@ -259,7 +259,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             }
         }
 
-        protected abstract T CreateRuleChangeContext(ITargetFramework target, IProjectCatalogSnapshot catalogs);
+        protected abstract T CreateRuleChangeContext(ITargetFramework activeTarget, IProjectCatalogSnapshot catalogs);
 
         protected virtual void CompleteHandle(T ruleChangeContext)
         {
