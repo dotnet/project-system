@@ -294,6 +294,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         /// <inheritdoc />
         public ImmutableArray<IDependency> GetDependencyChildren(IDependency dependency)
         {
+            if (dependency.DependencyIDs.Count == 0)
+            {
+                return ImmutableArray<IDependency>.Empty;
+            }
+
             lock (SyncLock)
             {
                 if (!_dependenciesChildrenMap.TryGetValue(dependency.Id, out ImmutableArray<IDependency> children))
