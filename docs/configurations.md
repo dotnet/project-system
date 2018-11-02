@@ -40,8 +40,10 @@ If you had a project that had configurations like this:
 
 change the project to have two properties like this:
 ```xml
-<Configurations>MyDebug;Debug;Release</Configurations>
-<Platforms>AnyCPU;x86</Platforms>
+<PropertyGroup>
+   <Configurations>MyDebug;Debug;Release</Configurations>
+   <Platforms>AnyCPU;x86</Platforms>
+</PropertyGroup>
 ```
 
 ### Details
