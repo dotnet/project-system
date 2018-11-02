@@ -226,12 +226,48 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         /// <inheritdoc />
         public bool CheckForUnresolvedDependencies(IDependency dependency)
         {
-            if (_unresolvedDescendantsMap.TryGetValue(dependency.Id, out bool hasUnresolvedDescendants))
-            {
-                return hasUnresolvedDescendants;
-            }
+            return _unresolvedDescendantsMap.GetOrAdd(
+                dependency.Id, 
+                _ => FindUnresolvedDependenciesRecursive(dependency));
 
-            return FindUnresolvedDependenciesRecursive(dependency);
+            bool FindUnresolvedDependenciesRecursive(IDependency parent)
+            {
+                bool unresolved = false;
+
+                if (parent.DependencyIDs.Count > 0)
+                {
+                    foreach (IDependency child in GetDependencyChildren(parent))
+                    {
+                        if (!child.Resolved)
+                        {
+                            unresolved = true;
+                            break;
+                        }
+
+                        // If the dependency is already in the child map, it is resolved
+                        // Checking here will prevent a stack overflow due to rechecking the same dependencies
+                        if (_dependenciesChildrenMap.ContainsKey(child.Id))
+                        {
+                            unresolved = false;
+                            break;
+                        }
+
+                        if (!_unresolvedDescendantsMap.TryGetValue(child.Id, out bool depthFirstResult))
+                        {
+                            depthFirstResult = FindUnresolvedDependenciesRecursive(child);
+                        }
+
+                        if (depthFirstResult)
+                        {
+                            unresolved = true;
+                            break;
+                        }
+                    }
+                }
+
+                _unresolvedDescendantsMap[parent.Id] = unresolved;
+                return unresolved;
+            }
         }
 
         /// <inheritdoc />
@@ -275,45 +311,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 return DependenciesWorld.TryGetValue(id, out dep) ||
                        _topLevelDependenciesByPathMap.TryGetValue(id, out dep);
             }
-        }
-
-        private bool FindUnresolvedDependenciesRecursive(IDependency dependency)
-        {
-            bool unresolved = false;
-
-            if (dependency.DependencyIDs.Count > 0)
-            {
-                foreach (IDependency child in GetDependencyChildren(dependency))
-                {
-                    if (!child.Resolved)
-                    {
-                        unresolved = true;
-                        break;
-                    }
-
-                    // If the dependency is already in the child map, it is resolved
-                    // Checking here will prevent a stack overflow due to rechecking the same dependencies
-                    if (_dependenciesChildrenMap.ContainsKey(child.Id))
-                    {
-                        unresolved = false;
-                        break;
-                    }
-
-                    if (!_unresolvedDescendantsMap.TryGetValue(child.Id, out bool depthFirstResult))
-                    {
-                        depthFirstResult = FindUnresolvedDependenciesRecursive(child);
-                    }
-
-                    if (depthFirstResult)
-                    {
-                        unresolved = true;
-                        break;
-                    }
-                }
-            }
-
-            _unresolvedDescendantsMap[dependency.Id] = unresolved;
-            return unresolved;
         }
     }
 }
