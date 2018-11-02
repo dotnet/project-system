@@ -236,14 +236,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                     return;
                 }
 
+                // Get the subclass-specific context that will aggregate data during the processing of rule data by handlers.
                 T ruleChangeContext = CreateRuleChangeContext(
                     currentAggregateContext.ActiveProjectContext.TargetFramework,
                     catalogSnapshot);
 
+                // Give each handler a chance to modify the rule change context.
                 foreach (ICrossTargetRuleHandler<T> handler in handlers)
                 {
                     ImmutableHashSet<string> handlerRules = handler.GetRuleNames(handlerType);
 
+                    // Slice project changes to include only rules the handler claims an interest in.
                     var projectChanges = projectUpdate.ProjectChanges
                         .Where(x => handlerRules.Contains(x.Key))
                         .ToImmutableDictionary();
@@ -251,10 +254,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                     if (handler.ReceiveUpdatesWithEmptyProjectChange
                         || projectChanges.Any(x => x.Value.Difference.AnyChanges))
                     {
+                        // Handlers respond to rule changes in a way that's specific to the rule change context
+                        // type (T). For example, DependencyRulesSubscriber uses DependenciesRuleChangeContext
+                        // which holds IDependencyModel, so its ICrossTargetRuleHandler<DependenciesRuleChangeContext>
+                        // implementations will produce IDependencyModel objects in response to rule changes.
                         handler.Handle(projectChanges, projectContextToUpdate.TargetFramework, ruleChangeContext);
                     }
                 }
 
+                // Notify the subclass that their rule change context object is ready for finalization.
                 CompleteHandle(ruleChangeContext);
             }
 

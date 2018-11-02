@@ -154,7 +154,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         /// <summary>
-        /// Maintain state for each target framework
+        /// Maintain state for a single target framework.
         /// </summary>
         internal class TelemetryState
         {
