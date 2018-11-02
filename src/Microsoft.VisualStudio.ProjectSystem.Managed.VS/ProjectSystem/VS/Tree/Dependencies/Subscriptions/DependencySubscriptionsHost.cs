@@ -240,12 +240,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 return;
             }
 
-            if (!e.Context.AnyChanges)
+            if (!e.AnyChanges)
             {
                 return;
             }
 
-            UpdateDependenciesSnapshotAsync(e.Context.Changes, e.Context.Catalogs, e.Context.ActiveTarget, CancellationToken.None);
+            UpdateDependenciesSnapshotAsync(e.Changes, e.Catalogs, e.ActiveTarget, CancellationToken.None);
         }
 
         private void OnSubtreeProviderDependenciesChanged(object sender, DependenciesChangedEventArgs e)
