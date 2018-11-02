@@ -125,7 +125,7 @@ function InstallVSIX([string] $vsixExpInstalleExe, [string] $rootsuffix, [string
 
 function LocateVisualStudio {
   if ($InVSEnvironment) {
-    return Join-Path $env:VS150COMNTOOLS "..\.."
+    return $env:VSINSTALLDIR
   }
 
   $vsWhereExe = GetVsWhereExe
@@ -319,7 +319,7 @@ function RunIntegrationTests {
 }
 
 try {
-  $InVSEnvironment = !($env:VS150COMNTOOLS -eq $null) -and (Test-Path $env:VS150COMNTOOLS)
+  $InVSEnvironment = !($env:VSINSTALLDIR -eq $null) -and (Test-Path $env:VSINSTALLDIR)
   $RepoRoot = Join-Path $PSScriptRoot "..\"
   $ToolsRoot = Join-Path $RepoRoot ".tools"
   $ToolsetRestoreProj = Join-Path $PSScriptRoot "Toolset.proj"
@@ -354,8 +354,6 @@ try {
   }
 
   if (!$InVSEnvironment) {
-    $env:VS150COMNTOOLS = Join-Path $vsInstallDir "Common7\Tools\"
-    $env:VSSDK150Install = Join-Path $vsInstallDir "VSSDK\"
     $env:VSSDKInstall = Join-Path $vsInstallDir "VSSDK\"
   }
 
