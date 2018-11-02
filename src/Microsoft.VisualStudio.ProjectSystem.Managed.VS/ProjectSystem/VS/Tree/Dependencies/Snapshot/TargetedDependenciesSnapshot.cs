@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -202,8 +201,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         public ImmutableDictionary<string, IDependency> DependenciesWorld { get; }
 
         private readonly Dictionary<string, IDependency> _topLevelDependenciesByPathMap = new Dictionary<string, IDependency>(StringComparer.OrdinalIgnoreCase);
-        private readonly ConcurrentDictionary<string, ImmutableArray<IDependency>> _dependenciesChildrenMap = new ConcurrentDictionary<string, ImmutableArray<IDependency>>(StringComparer.OrdinalIgnoreCase);
-        private readonly ConcurrentDictionary<string, bool> _unresolvedDescendantsMap = new ConcurrentDictionary<string, bool>(StringComparer.OrdinalIgnoreCase);
+        private readonly Dictionary<string, ImmutableArray<IDependency>> _dependenciesChildrenMap = new Dictionary<string, ImmutableArray<IDependency>>(StringComparer.OrdinalIgnoreCase);
+        private readonly Dictionary<string, bool> _unresolvedDescendantsMap = new Dictionary<string, bool>(StringComparer.OrdinalIgnoreCase);
+
+        /// <summary>Re-use an existing, private, object reference for locking, rather than allocating a dedicated object.</summary>
+        private object SyncLock => _dependenciesChildrenMap;
 
         private bool? _hasUnresolvedDependency;
 
@@ -226,47 +228,51 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         /// <inheritdoc />
         public bool CheckForUnresolvedDependencies(IDependency dependency)
         {
-            return _unresolvedDescendantsMap.GetOrAdd(
-                dependency.Id, 
-                _ => FindUnresolvedDependenciesRecursive(dependency));
+            lock (SyncLock)
+            {
+                if (!_unresolvedDescendantsMap.TryGetValue(dependency.Id, out bool unresolved))
+                {
+                    unresolved = _unresolvedDescendantsMap[dependency.Id] = FindUnresolvedDependenciesRecursive(dependency);
+                }
+
+                return unresolved;
+            }
 
             bool FindUnresolvedDependenciesRecursive(IDependency parent)
             {
-                bool unresolved = false;
-
-                if (parent.DependencyIDs.Count > 0)
+                if (parent.DependencyIDs.Count == 0)
                 {
-                    foreach (IDependency child in GetDependencyChildren(parent))
+                    return false;
+                }
+
+                foreach (IDependency child in GetDependencyChildren(parent))
+                {
+                    if (!child.Resolved)
                     {
-                        if (!child.Resolved)
-                        {
-                            unresolved = true;
-                            break;
-                        }
+                        return true;
+                    }
 
-                        // If the dependency is already in the child map, it is resolved
-                        // Checking here will prevent a stack overflow due to rechecking the same dependencies
-                        if (_dependenciesChildrenMap.ContainsKey(child.Id))
-                        {
-                            unresolved = false;
-                            break;
-                        }
+                    // If the dependency is already in the child map, it is resolved
+                    // Checking here will prevent a stack overflow due to rechecking the same dependencies
+                    if (_dependenciesChildrenMap.ContainsKey(child.Id))
+                    {
+                        return false;
+                    }
 
-                        if (!_unresolvedDescendantsMap.TryGetValue(child.Id, out bool depthFirstResult))
-                        {
-                            depthFirstResult = FindUnresolvedDependenciesRecursive(child);
-                        }
+                    if (!_unresolvedDescendantsMap.TryGetValue(child.Id, out bool depthFirstResult))
+                    {
+                        depthFirstResult = FindUnresolvedDependenciesRecursive(child);
+                        _unresolvedDescendantsMap[parent.Id] = depthFirstResult;
+                        return depthFirstResult;
+                    }
 
-                        if (depthFirstResult)
-                        {
-                            unresolved = true;
-                            break;
-                        }
+                    if (depthFirstResult)
+                    {
+                        return true;
                     }
                 }
 
-                _unresolvedDescendantsMap[parent.Id] = unresolved;
-                return unresolved;
+                return false;
             }
         }
 
@@ -288,14 +294,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         /// <inheritdoc />
         public ImmutableArray<IDependency> GetDependencyChildren(IDependency dependency)
         {
-            return _dependenciesChildrenMap.GetOrAdd(dependency.Id, _ =>
+            lock (SyncLock)
+            {
+                if (!_dependenciesChildrenMap.TryGetValue(dependency.Id, out ImmutableArray<IDependency> children))
+                {
+                    children = _dependenciesChildrenMap[dependency.Id] = BuildChildren();
+                }
+
+                return children;
+            }
+
+            ImmutableArray<IDependency> BuildChildren()
             {
                 ImmutableArray<IDependency>.Builder children =
                     ImmutableArray.CreateBuilder<IDependency>(dependency.DependencyIDs.Count);
 
                 foreach (string id in dependency.DependencyIDs)
                 {
-                    if (TryToFindDependency(id, out IDependency child))
+                    if (DependenciesWorld.TryGetValue(id, out IDependency child) ||
+                        _topLevelDependenciesByPathMap.TryGetValue(id, out child))
                     {
                         children.Add(child);
                     }
@@ -304,12 +321,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 return children.Count == children.Capacity
                     ? children.MoveToImmutable()
                     : children.ToImmutable();
-            });
-
-            bool TryToFindDependency(string id, out IDependency dep)
-            {
-                return DependenciesWorld.TryGetValue(id, out dep) ||
-                       _topLevelDependenciesByPathMap.TryGetValue(id, out dep);
             }
         }
     }
