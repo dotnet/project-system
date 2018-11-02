@@ -207,14 +207,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                     .Select(h => h.Value)
                     .Where(h => h.SupportsHandlerType(handlerType));
 
+            ITargetedProjectContext projectContextToUpdate;
+
             // We need to process the update within a lock to ensure that we do not release this context during processing.
             // TODO: Enable concurrent execution of updates themselves, i.e. two separate invocations of HandleAsync
             //       should be able to run concurrently.
             using (await _gate.DisposableWaitAsync())
             {
                 // Get the inner workspace project context to update for this change.
-                ITargetedProjectContext projectContextToUpdate = currentAggregateContext
+                projectContextToUpdate = currentAggregateContext
                     .GetInnerProjectContext(projectUpdate.ProjectConfiguration, out bool isActiveContext);
+
                 if (projectContextToUpdate == null)
                 {
                     return;
@@ -253,10 +256,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                 }
 
                 CompleteHandle(ruleChangeContext);
-
-                // record all the rules that have occurred
-                _treeTelemetryService.ObserveTargetFrameworkRules(projectContextToUpdate.TargetFramework, projectUpdate.ProjectChanges.Keys);
             }
+
+            // record all the rules that have occurred
+            _treeTelemetryService.ObserveTargetFrameworkRules(projectContextToUpdate.TargetFramework, projectUpdate.ProjectChanges.Keys);
         }
 
         protected abstract T CreateRuleChangeContext(ITargetFramework activeTarget, IProjectCatalogSnapshot catalogs);
