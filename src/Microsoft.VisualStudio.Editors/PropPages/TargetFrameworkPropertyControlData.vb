@@ -34,25 +34,29 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Return
             End If
 
-            Dim serviceProvider As New Shell.ServiceProvider(Site)
-            Dim vsUIShellOpenDocument As IVsUIShellOpenDocument = TryCast(serviceProvider.GetService(GetType(SVsUIShellOpenDocument).GUID), IVsUIShellOpenDocument)
+            Using serviceProvider As New Shell.ServiceProvider(Site)
 
-            If vsUIShellOpenDocument Is Nothing Then
-                ' Can't do anything without a IVsUIShellOpenDocument
-                Debug.Fail("Why is there no IVsUIShellOpenDocument service?")
-                Return
-            End If
+                Dim vsUIShellOpenDocument As IVsUIShellOpenDocument = TryCast(serviceProvider.GetService(GetType(SVsUIShellOpenDocument).GUID), IVsUIShellOpenDocument)
 
-            Dim flags As UInteger = 0
-            Dim url As String = My.Resources.Strings.InstallOtherFrameworksFWLink
-            Dim resolution As VSPREVIEWRESOLUTION = VSPREVIEWRESOLUTION.PR_Default
-            Dim reserved As UInteger = 0
+                If vsUIShellOpenDocument Is Nothing Then
+                    ' Can't do anything without a IVsUIShellOpenDocument
+                    Debug.Fail("Why is there no IVsUIShellOpenDocument service?")
+                    Return
+                End If
 
-            If ErrorHandler.Failed(vsUIShellOpenDocument.OpenStandardPreviewer(flags, url, resolution, reserved)) Then
-                ' Behavior for OpenStandardPreviewer with no flags is to show a message box if
-                ' it fails (will always return S_OK)
-                Debug.Fail("IVsUIShellOpenDocument.OpenStandardPreviewer failed!")
-            End If
+                Dim flags As UInteger = 0
+                Dim url As String = My.Resources.Strings.InstallOtherFrameworksFWLink
+                Dim resolution As VSPREVIEWRESOLUTION = VSPREVIEWRESOLUTION.PR_Default
+                Dim reserved As UInteger = 0
+
+                If ErrorHandler.Failed(vsUIShellOpenDocument.OpenStandardPreviewer(flags, url, resolution, reserved)) Then
+                    ' Behavior for OpenStandardPreviewer with no flags is to show a message box if
+                    ' it fails (will always return S_OK)
+                    Debug.Fail("IVsUIShellOpenDocument.OpenStandardPreviewer failed!")
+                End If
+
+            End Using
+
 
         End Sub
 
