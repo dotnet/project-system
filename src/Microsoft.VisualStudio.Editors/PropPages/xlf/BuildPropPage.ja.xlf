@@ -137,6 +137,16 @@
         <target state="translated">DEBUG 定数の定義(&amp;U)</target>
         <note />
       </trans-unit>
+      <trans-unit id="txtSpecificWarnings.AccessibleName">
+        <source>Specific Warnings To Treat As Errors</source>
+        <target state="new">Specific Warnings To Treat As Errors</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="txtXMLDocumentationFile.AccessibleName">
+        <source>XML Document File Path</source>
+        <target state="new">XML Document File Path</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>
