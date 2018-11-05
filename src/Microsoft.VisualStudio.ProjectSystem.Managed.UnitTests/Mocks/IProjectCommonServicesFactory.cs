@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             threadingService = threadingService ?? IProjectThreadingServiceFactory.Create();
 
-            var services = IProjectServicesFactory.Create(threadingService);
+            var services = ProjectServicesFactory.Create(threadingService);
             var projectService = IProjectServiceFactory.Create(services);
 
             var mock = new Mock<IProjectCommonServices>();

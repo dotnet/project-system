@@ -106,7 +106,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 
         <Conditional("DEBUG")>
         Public Sub DebugTrace(Message As String)
-#If DEBUG Then
             Debug.Assert(ConfigNames.Length = PlatformNames.Length AndAlso PlatformNames.Length = Values.Length)
             Common.Switches.TracePDUndo(Message)
             Trace.Indent()
@@ -114,7 +113,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 Common.Switches.TracePDUndo("[" & ConfigNames(i) & "|" & PlatformNames(i) & "] Value=" & Common.DebugToString(Values(i)))
             Next
             Trace.Unindent()
-#End If
         End Sub
 
     End Class

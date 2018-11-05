@@ -154,7 +154,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|NETCoreSdkVersion|Description">
         <source>Represents the version of the dotnet sdk being used (if any).</source>
-        <target state="new">Represents the version of the dotnet sdk being used (if any).</target>
+        <target state="translated">사용 중인 dotnet sdk의 버전을 나타냅니다(있는 경우).</target>
         <note />
       </trans-unit>
     </body>

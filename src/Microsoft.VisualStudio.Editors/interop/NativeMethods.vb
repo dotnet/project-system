@@ -101,7 +101,7 @@ Namespace Microsoft.VisualStudio.Editors.Interop
             Private _cookie As UInteger
 #If DEBUG Then
             Private ReadOnly _callStack As String
-            Private _eventInterface As Type
+            Private ReadOnly _eventInterface As Type
 #End If
 
 

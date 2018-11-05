@@ -5,9 +5,9 @@ Imports System.Windows.Forms
 
 Namespace Microsoft.VisualStudio.Editors.AddImports
     Friend Class AutoAddImportsCollisionDialog
-        Private _importMnemonic As Char? = Nothing
-        Private _doNotImportMnemonic As Char? = Nothing
-        Private _lastFocus As Control
+        Private ReadOnly _importMnemonic As Char? = Nothing
+        Private ReadOnly _doNotImportMnemonic As Char? = Nothing
+        Private ReadOnly _lastFocus As Control
         Private ReadOnly _helpCallBack As IVBAddImportsDialogHelpCallback
 
         Public Sub New([namespace] As String, identifier As String, minimallyQualifiedName As String, callBack As IVBAddImportsDialogHelpCallback, isp As IServiceProvider)

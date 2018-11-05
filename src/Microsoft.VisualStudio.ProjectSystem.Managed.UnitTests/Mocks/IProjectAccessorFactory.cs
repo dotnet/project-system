@@ -61,7 +61,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 return Task.CompletedTask;
             }
 
-            public Task OpenProjectForWriteAsync(ConfiguredProject project, Action<Project> action, CancellationToken cancellationToken = default)
+            public Task OpenProjectForWriteAsync(ConfiguredProject project, Action<Project> action, ProjectCheckoutOption option, CancellationToken cancellationToken = default)
             {
                 action(_evaluationProject);
 

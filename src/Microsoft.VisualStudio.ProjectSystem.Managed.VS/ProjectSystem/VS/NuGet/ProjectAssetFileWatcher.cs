@@ -8,9 +8,9 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Threading.Tasks.Dataflow;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Threading;
 using Microsoft.VisualStudio.Threading.Tasks;
@@ -22,11 +22,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
     /// <summary>
     ///     Watches for writes to the project.assets.json, triggering a evaluation if it changes.
     /// </summary>
-    internal class ProjectAssetFileWatcher : OnceInitializedOnceDisposedAsync, IVsFreeThreadedFileChangeEvents
+    internal class ProjectAssetFileWatcher : OnceInitializedOnceDisposedAsync, IVsFreeThreadedFileChangeEvents2
     {
         private static readonly TimeSpan s_notifyDelay = TimeSpan.FromMilliseconds(100);
 
-        private readonly IVsService<IVsFileChangeEx> _fileChangeService;
+        private readonly IVsService<IVsAsyncFileChangeEx> _fileChangeService;
         private readonly IUnconfiguredProjectCommonServices _projectServices;
         private readonly IUnconfiguredProjectTasksService _projectTasksService;
         private readonly IActiveConfiguredProjectSubscriptionService _activeConfiguredProjectSubscriptionService;
@@ -41,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
         [ImportingConstructor]
         public ProjectAssetFileWatcher(
-            IVsService<SVsFileChangeEx, IVsFileChangeEx> fileChangeService,
+            IVsService<SVsFileChangeEx, IVsAsyncFileChangeEx> fileChangeService,
             [Import(ContractNames.ProjectTreeProviders.FileSystemDirectoryTree)] IProjectTreeProvider fileSystemTreeProvider,
             IUnconfiguredProjectCommonServices projectServices,
             IUnconfiguredProjectTasksService projectTasksService,
@@ -121,7 +121,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                     StandardRuleDataflowLinkOptions sourceLinkOptions = DataflowOption.WithRuleNames(ConfigurationGeneral.SchemaName);
 
                     ProjectDataSources.SourceBlockAndLink<IProjectVersionedValue<IProjectSubscriptionUpdate>> propertySource = _activeConfiguredProjectSubscriptionService.ProjectRuleSource.SourceBlock.SyncLinkOptions(sourceLinkOptions);
-                    var target = new ActionBlock<IProjectVersionedValue<Tuple<IProjectTreeSnapshot, IProjectSubscriptionUpdate>>>(DataFlow_ChangedAsync);
+                    var target = DataflowBlockSlim.CreateActionBlock<IProjectVersionedValue<Tuple<IProjectTreeSnapshot, IProjectSubscriptionUpdate>>>(DataFlow_ChangedAsync);
 
                     // Join the two sources so that we get synchronized versions of the data.
                     _treeWatcher = ProjectDataSources.SyncLinkTo(treeSource, propertySource, target);
@@ -214,10 +214,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                     _projectServices.ThreadingService,
                     CreateLinkedCancellationToken());
 
-                IVsFileChangeEx fileChangeService = await _fileChangeService.GetValueAsync();
-
-                int hr = fileChangeService.AdviseFileChange(projectLockJsonFilePath, (uint)(_VSFILECHANGEFLAGS.VSFILECHG_Time | _VSFILECHANGEFLAGS.VSFILECHG_Size | _VSFILECHANGEFLAGS.VSFILECHG_Add | _VSFILECHANGEFLAGS.VSFILECHG_Del), this, out _filechangeCookie);
-                ErrorHandler.ThrowOnFailure(hr);
+                IVsAsyncFileChangeEx fileChangeService = await _fileChangeService.GetValueAsync();
+                _filechangeCookie = await fileChangeService.AdviseFileChangeAsync(
+                    projectLockJsonFilePath,
+                    _VSFILECHANGEFLAGS.VSFILECHG_Time | _VSFILECHANGEFLAGS.VSFILECHG_Size | _VSFILECHANGEFLAGS.VSFILECHG_Add | _VSFILECHANGEFLAGS.VSFILECHG_Del,
+                    sink: this);
             }
 
             _fileBeingWatched = projectLockJsonFilePath;
@@ -228,10 +229,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             // Note file change service is free-threaded
             if (_filechangeCookie != VSConstants.VSCOOKIE_NIL)
             {
-                IVsFileChangeEx fileChangeService = await _fileChangeService.GetValueAsync();
+                IVsAsyncFileChangeEx fileChangeService = await _fileChangeService.GetValueAsync();
 
                 // There's nothing for us to do if this fails. So ignore the return value.
-                fileChangeService.UnadviseFileChange(_filechangeCookie);
+                await fileChangeService.UnadviseFileChangeAsync(_filechangeCookie);
                 _watchedFileResetCancellationToken?.Cancel();
                 _watchedFileResetCancellationToken?.Dispose();
                 _taskDelayScheduler?.Dispose();
@@ -279,7 +280,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                                     project.MarkDirty();
                                     configuredProject.NotifyProjectChange();
 
-                                }, cancellationToken); // Stay on same thread that took lock
+                                }, ProjectCheckoutOption.DoNotCheckout, cancellationToken); // Stay on same thread that took lock
                             }
                         }, cancellationToken); // Stay on same thread that took lock
                     });
@@ -313,6 +314,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         }
 
         public int DirectoryChangedEx(string pszDirectory, string pszFile)
+        {
+            return VSConstants.E_NOTIMPL;
+        }
+
+        public int DirectoryChangedEx2(string pszDirectory, uint cChanges, string[] rgpszFile, uint[] rggrfChange)
         {
             return VSConstants.E_NOTIMPL;
         }

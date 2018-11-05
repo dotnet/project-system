@@ -154,8 +154,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// <param name="action">
         ///     The <see cref="Action{T}"/> to run while holding the lock.
         /// </param>
+        /// <param name="option">
+        ///     Indicates whether to checkout the project from source control. The default is <see cref="ProjectCheckoutOption.Checkout"/>.
+        /// </param>
         /// <param name="cancellationToken">
-        ///     A token whose cancellation signals lost interest in the result.
+        ///     A token whose cancellation signals lost interest in the result. The default is <see cref="CancellationToken.None"/>.
         /// </param>
         /// <returns>
         ///     The result of executing <paramref name="action"/> over the <see cref="Project"/>.
@@ -170,6 +173,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// <remarks>
         ///     NOTE: To avoid deadlocks, do not call arbitrary services or asynchronous code within <paramref name="action"/>.
         /// </remarks>
-        Task OpenProjectForWriteAsync(ConfiguredProject project, Action<Project> action, CancellationToken cancellationToken = default);
+        Task OpenProjectForWriteAsync(ConfiguredProject project, Action<Project> action, ProjectCheckoutOption option = ProjectCheckoutOption.Checkout, CancellationToken cancellationToken = default);
     }
 }

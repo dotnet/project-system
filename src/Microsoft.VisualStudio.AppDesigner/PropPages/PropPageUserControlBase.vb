@@ -123,7 +123,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
 
         'Required by the Windows Form Designer
-        Private _components As IContainer
+        Private ReadOnly _components As IContainer
 
         'NOTE: The following procedure is required by the Windows Form Designer
         'It can be modified using the Windows Form Designer.  
@@ -1926,8 +1926,8 @@ NextControl:
 
         End Sub
 
+        <Conditional("DEBUG")>
         Private Sub VerifyPropertiesWhichMayReloadProjectAreLast()
-#If DEBUG Then
             Dim APreviousPropertyHadProjectMayBeReloadedDuringPropertySetFlag As Boolean = False
             For Each _controlData As PropertyControlData In ControlData
                 Dim ProjectMayBeReloadedDuringPropertySet As Boolean = (0 <> (_controlData.GetFlags() And ControlDataFlags.ProjectMayBeReloadedDuringPropertySet))
@@ -1941,7 +1941,6 @@ NextControl:
                     Return
                 End If
             Next
-#End If
         End Sub
 
         ''' <summary>

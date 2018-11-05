@@ -66,7 +66,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
         // The source for our dataflow
         private IReceivableSourceBlock<ILaunchSettings> _changedSourceBlock;
-        protected BroadcastBlock<ILaunchSettings> _broadcastBlock;
+        protected IBroadcastBlock<ILaunchSettings> _broadcastBlock;
 
         protected IFileSystem FileManager { get; set; }
 
@@ -173,7 +173,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         protected override void Initialize()
         {
             // Create our broadcast block for subscribers to get new ILaunchProfiles Information
-            _broadcastBlock = new BroadcastBlock<ILaunchSettings>(s => s);
+            _broadcastBlock = DataflowBlockSlim.CreateBroadcastBlock<ILaunchSettings>();
             _changedSourceBlock = _broadcastBlock.SafePublicize();
 
 
@@ -184,7 +184,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 // The use of AsyncLazy with dataflow can allow state stored in the execution context to leak through. The downstream affect is
                 // calls to say, get properties, may fail. To avoid this, we capture the execution context here, and it will be reapplied when
                 // we get new subscription data from the dataflow.
-                var projectChangesBlock = new ActionBlock<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectCapabilitiesSnapshot>>>(
+                var projectChangesBlock = DataflowBlockSlim.CreateActionBlock(
                             DataflowUtilities.CaptureAndApplyExecutionContext<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectCapabilitiesSnapshot>>>(ProjectRuleBlock_ChangedAsync));
                 StandardRuleDataflowLinkOptions evaluationLinkOptions = DataflowOption.WithRuleNames(ProjectDebugger.SchemaName);
 
@@ -715,13 +715,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 // Create our scheduler for processing file changes
                 FileChangeScheduler = new TaskDelayScheduler(FileChangeProcessingDelay, CommonProjectServices.ThreadingService,
                     ProjectServices.ProjectAsynchronousTasks.UnloadCancellationToken);
-
-                FileWatcher = new SimpleFileWatcher(Path.GetDirectoryName(CommonProjectServices.Project.FullPath),
-                                                    true,
-                                                    NotifyFilters.FileName | NotifyFilters.Size | NotifyFilters.LastWrite,
-                                                    LaunchSettingsFilename,
-                                                    LaunchSettingsFile_Changed,
-                                                    LaunchSettingsFile_Changed);
+               
+                try
+                {
+                    FileWatcher = new SimpleFileWatcher(Path.GetDirectoryName(CommonProjectServices.Project.FullPath),
+                                                        true,
+                                                        NotifyFilters.FileName | NotifyFilters.Size | NotifyFilters.LastWrite,
+                                                        LaunchSettingsFilename,
+                                                        LaunchSettingsFile_Changed,
+                                                        LaunchSettingsFile_Changed);
+                }
+                catch (Exception ex)  when (ex is IOException || ex is ArgumentException)
+                {
+                    // If the project folder is no longer available this will throw, which can happen during branch switching
+                }
             }
         }
 
