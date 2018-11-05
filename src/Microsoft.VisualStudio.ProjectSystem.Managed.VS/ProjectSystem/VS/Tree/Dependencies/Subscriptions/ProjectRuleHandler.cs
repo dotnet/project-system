@@ -139,7 +139,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
                     if (dependencyThatNeedChange == null)
                     {
-                        dependencyThatNeedChange = new List<IDependency>();
+                        dependencyThatNeedChange = new List<IDependency>(capacity: thisProjectSnapshot.Targets.Count);
                     }
 
                     dependencyThatNeedChange.Add(dependency);
