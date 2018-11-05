@@ -29,7 +29,7 @@
       </trans-unit>
       <trans-unit id="EnumProperty|ImageClrType|Description">
         <source>The 'hidden' property we pass to debuggers to let them know if this is a managed project.</source>
-        <target state="translated">プロジェクトがマネージ プロジェクトであるかどうかを示すためにデバッガーに渡す 'hidden' プロパティです。</target>
+        <target state="translated">プロジェクトがマネージド プロジェクトであるかどうかを示すためにデバッガーに渡す 'hidden' プロパティです。</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|ImageClrType.Native|DisplayName">
@@ -49,17 +49,17 @@
       </trans-unit>
       <trans-unit id="EnumValue|ImageClrType.Mixed|Description">
         <source>The executable image to debug is a mixture of native and managed code.</source>
-        <target state="translated">デバッグ対象の実行可能イメージは、ネイティブ コードとマネージ コードの混合です。</target>
+        <target state="translated">デバッグ対象の実行可能イメージは、ネイティブ コードとマネージド コードの混合です。</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|ImageClrType.Managed|DisplayName">
         <source>Managed Image</source>
-        <target state="translated">マネージ イメージ</target>
+        <target state="translated">マネージド イメージ</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|ImageClrType.Managed|Description">
         <source>The executable image to debug is a fully managed application.</source>
-        <target state="translated">デバッグ対象の実行可能イメージは、完全なマネージ アプリケーションです。</target>
+        <target state="translated">デバッグ対象の実行可能イメージは、完全なマネージド アプリケーションです。</target>
         <note />
       </trans-unit>
     </body>

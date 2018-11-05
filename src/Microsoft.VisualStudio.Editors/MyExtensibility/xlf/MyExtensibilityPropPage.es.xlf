@@ -24,17 +24,17 @@
       </trans-unit>
       <trans-unit id="colHeaderExtensionName.HeaderText">
         <source>Name</source>
-        <target state="new">Name</target>
+        <target state="translated">Nombre</target>
         <note />
       </trans-unit>
       <trans-unit id="colHeaderExtensionVersion.HeaderText">
         <source>Version</source>
-        <target state="new">Version</target>
+        <target state="translated">Versión</target>
         <note />
       </trans-unit>
       <trans-unit id="colHeaderExtensionDescription.HeaderText">
         <source>Description</source>
-        <target state="new">Description</target>
+        <target state="translated">Descripción</target>
         <note />
       </trans-unit>
     </body>
