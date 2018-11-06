@@ -101,7 +101,7 @@ project-system> set ROOTSUFFIX=RoslynDev
 project-system> devenv ProjectSystem.sln
 ```
 
-Also, both `build.cmd` and `launch.cmd` provide a `/rootsuffix` switch:
+Alternatively, both `build.cmd` and `launch.cmd` provide a `/rootsuffix` switch:
 
 ``` 
 project-system> build.cmd /rootsuffix RoslynDev
