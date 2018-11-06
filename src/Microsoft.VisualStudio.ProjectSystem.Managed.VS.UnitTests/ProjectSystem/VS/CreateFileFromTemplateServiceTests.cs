@@ -36,14 +36,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         }
 
         [Fact]
-        public async Task CreateFile_EmptyAsParentNode_ThrowsArgument()
+        public void CreateFile_EmptyAsParentNode_ThrowsArgument()
         {
-            var service = CreateInstance();
-
-            await Assert.ThrowsAsync<ArgumentException>("parentDocumentMoniker", () =>
-            {
-                return service.CreateFileAsync("SomeFile", string.Empty, "FileName");
-            });
+            Assert.True(false);
         }
 
         [Fact]
