@@ -125,7 +125,7 @@ function InstallVSIX([string] $vsixExpInstalleExe, [string] $rootsuffix, [string
 
 function LocateVisualStudio {
   if ($InVSEnvironment) {
-    return Join-Path $env:VS150COMNTOOLS "..\.."
+    return $env:VSINSTALLDIR
   }
 
   $vsWhereExe = GetVsWhereExe
@@ -136,6 +136,19 @@ function LocateVisualStudio {
   }
 
   return $vsInstallDir
+}
+
+function LocateMSBuild {
+
+  # Dev15
+  $msbuildExe = Join-Path $vsInstallDir "MSBuild\15.0\Bin\msbuild.exe"
+  
+  if (Test-Path $msbuildExe) {
+     return $msbuildExe
+  }
+
+  # Dev16
+  return Join-Path $vsInstallDir "MSBuild\Current\Bin\msbuild.exe"
 }
 
 function Get-VisualStudioId(){
@@ -324,7 +337,7 @@ function RunIntegrationTests {
 }
 
 try {
-  $InVSEnvironment = !($env:VS150COMNTOOLS -eq $null) -and (Test-Path $env:VS150COMNTOOLS)
+  $InVSEnvironment = !($env:VSINSTALLDIR -eq $null) -and (Test-Path $env:VSINSTALLDIR)
   $RepoRoot = Join-Path $PSScriptRoot "..\"
   $ToolsRoot = Join-Path $RepoRoot ".tools"
   $ToolsetRestoreProj = Join-Path $PSScriptRoot "Toolset.proj"
@@ -351,7 +364,7 @@ try {
   $ToolsetBuildProj = Join-Path $NuGetPackageRoot "RoslynTools.RepoToolset\$ToolsetVersion\tools\Build.proj"
 
   $vsInstallDir = LocateVisualStudio
-  $MsbuildExe = Join-Path $vsInstallDir "MSBuild\15.0\Bin\msbuild.exe"
+  $MsbuildExe = LocateMSBuild
 
   if ($ci) {
     Create-Directory $TempDir
@@ -371,8 +384,6 @@ try {
   }
 
   if (!$InVSEnvironment) {
-    $env:VS150COMNTOOLS = Join-Path $vsInstallDir "Common7\Tools\"
-    $env:VSSDK150Install = Join-Path $vsInstallDir "VSSDK\"
     $env:VSSDKInstall = Join-Path $vsInstallDir "VSSDK\"
   }
 
