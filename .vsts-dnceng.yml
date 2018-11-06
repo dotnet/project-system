@@ -25,6 +25,13 @@ phases:
         publishLocation: Container
       continueOnError: true
       condition: failed()
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.SourcesDirectory)\artifacts\$(_configuration)\TestResults'
+        ArtifactName: '$(_configuration) Test Result Logs'
+        publishLocation: Container
+      continueOnError: true
+      condition: failed()
     - task: PublishTestResults@2
       inputs:
         testRunner: 'xUnit'
