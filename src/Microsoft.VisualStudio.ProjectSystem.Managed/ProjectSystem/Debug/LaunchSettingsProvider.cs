@@ -712,6 +712,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         {
             if (FileWatcher == null)
             {
+                FileChangeScheduler?.Dispose();
+
                 // Create our scheduler for processing file changes
                 FileChangeScheduler = new TaskDelayScheduler(FileChangeProcessingDelay, CommonProjectServices.ThreadingService,
                     ProjectServices.ProjectAsynchronousTasks.UnloadCancellationToken);

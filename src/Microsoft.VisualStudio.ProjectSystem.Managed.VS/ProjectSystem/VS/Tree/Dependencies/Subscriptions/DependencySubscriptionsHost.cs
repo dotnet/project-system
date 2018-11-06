@@ -161,6 +161,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             _commonServices.Project.ProjectUnloading -= OnUnconfiguredProjectUnloadingAsync;
             _commonServices.Project.ProjectRenamed -= OnUnconfiguredProjectRenamedAsync;
 
+            _dependenciesUpdateScheduler.Dispose();
+
             await base.DisposeCoreAsync(initialized);
         }
 
