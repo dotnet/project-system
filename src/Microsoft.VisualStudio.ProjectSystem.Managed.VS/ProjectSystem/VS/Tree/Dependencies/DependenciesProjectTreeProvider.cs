@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
+
 using Microsoft.Build.Construction;
 using Microsoft.Build.Evaluation;
 using Microsoft.Build.Framework.XamlTypes;
@@ -18,6 +19,7 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions;
 using Microsoft.VisualStudio.Threading;
+using Microsoft.VisualStudio.Threading.Tasks;
 
 using Task = System.Threading.Tasks.Task;
 
@@ -29,10 +31,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     [Export(ExportContractNames.ProjectTreeProviders.PhysicalViewRootGraft, typeof(IProjectTreeProvider))]
     [Export(typeof(IDependenciesTreeServices))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
-    internal class DependenciesProjectTreeProvider :
-        ProjectTreeProviderBase,
-        IProjectTreeProvider,
-        IDependenciesTreeServices
+    internal class DependenciesProjectTreeProvider
+        : ProjectTreeProviderBase,
+          IProjectTreeProvider,
+          IDependenciesTreeServices
     {
         /// <summary><see cref="IProjectTreePropertiesProvider"/> imports that apply to the references tree.</summary>
         [ImportMany(ReferencesProjectTreeCustomizablePropertyValues.ContractName)]
@@ -41,6 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         [ImportMany]
         private readonly OrderPrecedenceImportCollection<IDependenciesTreeViewProvider> _viewProviders;
 
+        private readonly CancellationSeries _treeUpdateCancellationSeries = new CancellationSeries();
         private readonly ICrossTargetSubscriptionsHost _dependenciesHost;
         private readonly IDependenciesSnapshotProvider _dependenciesSnapshotProvider;
         private readonly IProjectAsynchronousTasksService _tasksService;
@@ -322,7 +325,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                             // Issue this token before hooking the SnapshotChanged event to prevent a race
                             // where a snapshot tree is replaced by the initial, empty tree created below.
                             // The handler will cancel this token before submitting its update.
-                            CancellationToken initialTreeCancellationToken = GetNextTreeUpdateCancellationToken();
+                            CancellationToken initialTreeCancellationToken = _treeUpdateCancellationSeries.CreateNext();
 
                             _dependenciesSnapshotProvider.SnapshotChanged += OnDependenciesSnapshotChanged;
 
@@ -377,6 +380,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             }
         }
 
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _treeUpdateCancellationSeries.Dispose();
+            }
+
+            base.Dispose(disposing);
+        }
+
         private void OnDependenciesSnapshotChanged(object sender, SnapshotChangedEventArgs e)
         {
             IDependenciesSnapshot snapshot = e.Snapshot;
@@ -386,7 +399,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 return;
             }
 
-            if (_tasksService.UnloadCancellationToken.IsCancellationRequested)
+            if (_tasksService.UnloadCancellationToken.IsCancellationRequested || e.Token.IsCancellationRequested)
             {
                 return;
             }
@@ -414,14 +427,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     // way of merging, mute them for now and get to it in U1
                     return new TreeUpdateResult(dependenciesNode);
                 },
-                GetNextTreeUpdateCancellationToken());
+                _treeUpdateCancellationSeries.CreateNext(e.Token));
         }
 
         /// <summary>
         /// Creates a new instance of the configured project exports class.
         /// </summary>
-        protected override ConfiguredProjectExports GetActiveConfiguredProjectExports(
-                                ConfiguredProject newActiveConfiguredProject)
+        protected override ConfiguredProjectExports GetActiveConfiguredProjectExports(ConfiguredProject newActiveConfiguredProject)
         {
             Requires.NotNull(newActiveConfiguredProject, nameof(newActiveConfiguredProject));
 
@@ -537,48 +549,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
                 return _namedCatalogs;
             }
-        }
-
-        #endregion
-
-        #region Tree update cancellation
-
-        private CancellationTokenSource _treeUpdateCancellationTokenSource = new CancellationTokenSource();
-
-        private CancellationToken GetNextTreeUpdateCancellationToken()
-        {
-#pragma warning disable CA2000 // Dispose objects before losing scope
-            // We can suppress this warning because nextSource will be
-            // assigned to a field before the method returns, and will
-            // later be disposed once it becomes priorSource.
-            var nextSource = new CancellationTokenSource();
-#pragma warning restore CA2000 // Dispose objects before losing scope
-
-            CancellationToken nextToken = nextSource.Token;
-            CancellationTokenSource priorSource = Volatile.Read(ref _treeUpdateCancellationTokenSource);
-
-            // Loop until we succeed in swapping a known prior for our next.
-            // This ensures a proper sequence is observed, which is important
-            // as otherwise we may cancel a prior twice, which would coincide
-            // with a prior not being cancelled at all. We need a strict order
-            // to maintain one-in-one-out.
-            while (true)
-            {
-                CancellationTokenSource snapshot = Interlocked.CompareExchange(
-                    ref _treeUpdateCancellationTokenSource, nextSource, priorSource);
-
-                if (ReferenceEquals(snapshot, priorSource))
-                {
-                    break;
-                }
-
-                priorSource = snapshot;
-            }
-
-            priorSource.Cancel();
-            priorSource.Dispose();
-
-            return nextToken;
         }
 
         #endregion

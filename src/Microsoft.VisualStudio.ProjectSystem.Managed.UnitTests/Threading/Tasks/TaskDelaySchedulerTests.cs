@@ -11,112 +11,119 @@ using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.Threading.Tasks
 {
-
     public class TaskDelaySchedulerTests
     {
         [Fact]
         public async Task ScheduleAsyncTask_RunsAsyncMethod()
         {
-            var scheduler = new TaskDelayScheduler(TimeSpan.FromMilliseconds(10), IProjectThreadingServiceFactory.Create(), CancellationToken.None);
+            using (var scheduler = new TaskDelayScheduler(TimeSpan.FromMilliseconds(10), IProjectThreadingServiceFactory.Create(), CancellationToken.None))
+            { 
+                bool taskRan = false;
+                var task = scheduler.ScheduleAsyncTask(ct =>
+                {
+                    taskRan = true;
+                    return Task.CompletedTask;
+                });
 
-            bool taskRan = false;
-            var task = scheduler.ScheduleAsyncTask(ct =>
-            {
-                taskRan = true;
-                return Task.CompletedTask;
-            });
+                await task;
 
-            await task;
-
-            Assert.True(taskRan);
+                Assert.True(taskRan);
+            }
         }
 
         [Fact]
         public async Task ScheduleAsyncTask_SkipsPendingTasks()
         {
-            var scheduler = new TaskDelayScheduler(TimeSpan.FromMilliseconds(250), IProjectThreadingServiceFactory.Create(), CancellationToken.None);
+            using (var scheduler = new TaskDelayScheduler(TimeSpan.FromMilliseconds(250), IProjectThreadingServiceFactory.Create(), CancellationToken.None))
+            { 
+                var tasksRun = new bool[3];
+                var task1 = scheduler.ScheduleAsyncTask(ct =>
+                {
+                    tasksRun[0] = true;
+                    return Task.CompletedTask;
+                });
 
-            var tasksRun = new bool[3];
-            var task1 = scheduler.ScheduleAsyncTask(ct =>
-            {
-                tasksRun[0] = true;
-                return Task.CompletedTask;
-            });
+                var task2 = scheduler.ScheduleAsyncTask(ct =>
+                {
+                    tasksRun[1] = true;
+                    return Task.CompletedTask;
+                });
 
-            var task2 = scheduler.ScheduleAsyncTask(ct =>
-            {
-                tasksRun[1] = true;
-                return Task.CompletedTask;
-            });
+                var task3 = scheduler.ScheduleAsyncTask(ct =>
+                {
+                    tasksRun[2] = true;
+                    return Task.CompletedTask;
+                });
 
-            var task3 = scheduler.ScheduleAsyncTask(ct =>
-            {
-                tasksRun[2] = true;
-                return Task.CompletedTask;
-            });
+                await task1;
+                await task2;
+                await task3;
 
-            await task1;
-            await task2;
-            await task3;
-
-            Assert.False(tasksRun[0]);
-            Assert.False(tasksRun[1]);
-            Assert.True(tasksRun[2]);
+                Assert.False(tasksRun[0]);
+                Assert.False(tasksRun[1]);
+                Assert.True(tasksRun[2]);
+            }
         }
 
         [Fact]
         public async Task Dispose_SkipsPendingTasks()
         {
-            var scheduler = new TaskDelayScheduler(TimeSpan.FromMilliseconds(250), IProjectThreadingServiceFactory.Create(), CancellationToken.None);
-
-            bool taskRan = false;
-            var task = scheduler.ScheduleAsyncTask(ct =>
+            using (var scheduler = new TaskDelayScheduler(TimeSpan.FromMilliseconds(250), IProjectThreadingServiceFactory.Create(), CancellationToken.None))
             {
-                taskRan = true;
-                return Task.CompletedTask;
-            });
+                bool taskRan = false;
+                var task = scheduler.ScheduleAsyncTask(ct =>
+                {
+                    taskRan = true;
+                    return Task.CompletedTask;
+                });
 
-            scheduler.Dispose();
+                scheduler.Dispose();
 
-            await task;
-            Assert.False(taskRan);
-        }
-
-        [Fact]
-        public async Task CancelPendingUpdates_SkipsPendingTasks()
-        {
-            var scheduler = new TaskDelayScheduler(TimeSpan.FromMilliseconds(250), IProjectThreadingServiceFactory.Create(), CancellationToken.None);
-
-            bool taskRan = false;
-            var task = scheduler.ScheduleAsyncTask(ct =>
-            {
-                taskRan = true;
-                return Task.CompletedTask;
-            });
-
-            scheduler.CancelPendingUpdates();
-
-            await task;
-            Assert.False(taskRan);
+                await task;
+                Assert.False(taskRan);
+            }
         }
 
         [Fact]
         public async Task ScheduleAsyncTask_Noop_OriginalSourceTokenCancelled()
         {
             var cts = new CancellationTokenSource();
-            var scheduler = new TaskDelayScheduler(TimeSpan.FromMilliseconds(250), IProjectThreadingServiceFactory.Create(), cts.Token);
-
-            cts.Cancel();
-
-            bool taskRan = false;
-            var task = scheduler.ScheduleAsyncTask(ct =>
+            using (var scheduler = new TaskDelayScheduler(TimeSpan.FromMilliseconds(250), IProjectThreadingServiceFactory.Create(), cts.Token))
             {
-                taskRan = true;
-                return Task.CompletedTask;
-            });
+                cts.Cancel();
 
-            await task;
-            Assert.False(taskRan);
+                bool taskRan = false;
+                var task = scheduler.ScheduleAsyncTask(ct =>
+                {
+                    taskRan = true;
+                    return Task.CompletedTask;
+                });
+
+                await task;
+                Assert.False(taskRan);
+            }
+        }
+
+        [Fact]
+        public async Task ScheduleAsyncTask_Noop_RequestTokenCancelled()
+        {
+            using (var scheduler = new TaskDelayScheduler(TimeSpan.FromMilliseconds(250), IProjectThreadingServiceFactory.Create(), CancellationToken.None))
+            {
+                var cts = new CancellationTokenSource();
+                cts.Cancel();
+
+                bool taskRan = false;
+                var task = scheduler.ScheduleAsyncTask(
+                    ct =>
+                    {
+                        taskRan = true;
+                        return Task.CompletedTask;
+                    },
+                    cts.Token);
+
+                await task;
+                Assert.False(taskRan);
+            }
         }
     }
 }

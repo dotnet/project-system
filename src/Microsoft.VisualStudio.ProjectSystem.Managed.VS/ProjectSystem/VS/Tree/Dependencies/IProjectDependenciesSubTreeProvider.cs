@@ -1,9 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
-using System.Collections.Immutable;
-
-using Microsoft.VisualStudio.ProjectSystem.Properties;
+using System.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
@@ -30,25 +28,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         event EventHandler<DependenciesChangedEventArgs> DependenciesChanged;
     }
 
-    public class DependenciesChangedEventArgs
+    public sealed class DependenciesChangedEventArgs
     {
-        public DependenciesChangedEventArgs(IProjectDependenciesSubTreeProvider provider,
-                                            string targetShortOrFullName,
-                                            IDependenciesChanges changes,
-                                            IProjectCatalogSnapshot catalogs,
-                                            IImmutableDictionary<NamedIdentity, IComparable> dataSourceVersions)
+        public DependenciesChangedEventArgs(
+            IProjectDependenciesSubTreeProvider provider,
+            string targetShortOrFullName,
+            IDependenciesChanges changes,
+            CancellationToken token)
         {
             Provider = provider;
             TargetShortOrFullName = targetShortOrFullName;
             Changes = changes;
-            Catalogs = catalogs;
-            DataSourceVersions = dataSourceVersions;
+            Token = token;
         }
 
         public IProjectDependenciesSubTreeProvider Provider { get; }
         public string TargetShortOrFullName { get; }
         public IDependenciesChanges Changes { get; }
-        public IProjectCatalogSnapshot Catalogs { get; }
-        public IImmutableDictionary<NamedIdentity, IComparable> DataSourceVersions { get; }
+        public CancellationToken Token { get; }
     }
 }

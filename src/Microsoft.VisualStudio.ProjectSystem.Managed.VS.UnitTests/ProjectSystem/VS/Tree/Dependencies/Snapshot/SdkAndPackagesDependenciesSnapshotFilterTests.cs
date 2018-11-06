@@ -8,6 +8,8 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Filters;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions;
 
+using Moq;
+
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
@@ -195,15 +197,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 resolved: true);
 
             var flags = DependencyTreeFlags.SdkSubTreeNodeFlags
-                                           .Union(DependencyTreeFlags.UnresolvedFlags)
-                                           .Except(DependencyTreeFlags.ResolvedFlags);
+               .Union(DependencyTreeFlags.UnresolvedFlags)
+               .Except(DependencyTreeFlags.ResolvedFlags);
+
             var sdkDependency = IDependencyFactory.Implement(
-                    id: $"tfm\\{SdkRuleHandler.ProviderTypeString}\\mydependency1",
-                    flags: DependencyTreeFlags.SdkSubTreeNodeFlags.Union(DependencyTreeFlags.ResolvedFlags), // to see if resolved is fixed
-                    setPropertiesDependencyIDs: dependencyIDs,
-                    setPropertiesResolved: false,
-                    setPropertiesSchemaName: SdkReference.SchemaName,
-                    setPropertiesFlags: flags);
+                id: $"tfm\\{SdkRuleHandler.ProviderTypeString}\\mydependency1",
+                flags: DependencyTreeFlags.SdkSubTreeNodeFlags.Union(DependencyTreeFlags.ResolvedFlags), // to see if resolved is fixed
+                setPropertiesDependencyIDs: dependencyIDs,
+                setPropertiesResolved: false,
+                setPropertiesSchemaName: SdkReference.SchemaName,
+                setPropertiesFlags: flags,
+                mockBehavior: MockBehavior.Loose);
 
             var worldBuilder = new Dictionary<string, IDependency>()
             {

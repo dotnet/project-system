@@ -5,6 +5,7 @@ using System.Collections.Immutable;
 
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
+using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 {
@@ -16,8 +17,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             unresolvedIcon: KnownMonikers.ReferenceWarning,
             unresolvedExpandedIcon: KnownMonikers.ReferenceWarning);
 
+        public override IImmutableList<string> DependencyIDs { get; }
+
+        public override DependencyIconSet IconSet => s_iconSet;
+
+        public override string Name { get; }
+
+        public override int Priority => Resolved ? Dependency.PackageAssemblyNodePriority : Dependency.UnresolvedReferenceNodePriority;
+
+        public override string ProviderType => PackageRuleHandler.ProviderTypeString;
+
         public PackageAssemblyDependencyModel(
-            string providerType,
             string path,
             string originalItemSpec,
             string name,
@@ -25,30 +35,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             bool resolved,
             IImmutableDictionary<string, string> properties,
             IEnumerable<string> dependenciesIDs)
-            : base(providerType, path, originalItemSpec, flags, resolved, isImplicit: false, properties: properties)
+            : base(path, originalItemSpec, flags, resolved, isImplicit: false, properties: properties)
         {
             Requires.NotNullOrEmpty(name, nameof(name));
 
             Name = name;
             Caption = name;
             TopLevel = false;
-            IconSet = s_iconSet;
 
             if (dependenciesIDs != null)
             {
                 DependencyIDs = ImmutableArray.CreateRange(dependenciesIDs);
             }
-
-            if (resolved)
-            {
-                Priority = Dependency.PackageAssemblyNodePriority;
-            }
-            else
-            {
-                Priority = Dependency.UnresolvedReferenceNodePriority;
-            }
         }
-
-        public override string Id => OriginalItemSpec;
     }
 }

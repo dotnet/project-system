@@ -3,6 +3,7 @@
 using System.Collections.Immutable;
 
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
+using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 {
@@ -27,8 +28,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             unresolvedIcon: ManagedImageMonikers.WarningSmall,
             unresolvedExpandedIcon: ManagedImageMonikers.WarningSmall);
 
+        private readonly DiagnosticMessageSeverity _severity;
+
+        public override DependencyIconSet IconSet => _severity == DiagnosticMessageSeverity.Error
+            ? s_errorIconSet
+            : s_warningIconSet;
+
+        public override string Name { get; }
+
+        public override int Priority => _severity == DiagnosticMessageSeverity.Error
+            ? Dependency.DiagnosticsErrorNodePriority
+            : Dependency.DiagnosticsWarningNodePriority;
+
+        public override string ProviderType => PackageRuleHandler.ProviderTypeString;
+
         public DiagnosticDependencyModel(
-            string providerType,
             string originalItemSpec,
             DiagnosticMessageSeverity severity,
             string code,
@@ -36,10 +50,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             ProjectTreeFlags flags,
             bool isVisible,
             IImmutableDictionary<string, string> properties)
-            : base(providerType, originalItemSpec, originalItemSpec, flags, resolved: false, isImplicit: false, properties: properties)
+            : base(originalItemSpec, originalItemSpec, flags, resolved: false, isImplicit: false, properties: properties)
         {
             Requires.NotNullOrEmpty(originalItemSpec, nameof(originalItemSpec));
             Requires.NotNullOrEmpty(message, nameof(message));
+
+            _severity = severity;
 
             code = code ?? string.Empty;
             Name = message;
@@ -50,18 +66,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 
             if (severity == DiagnosticMessageSeverity.Error)
             {
-                IconSet = s_errorIconSet;
                 Flags = Flags.Union(DependencyTreeFlags.DiagnosticErrorNodeFlags);
-                Priority = Dependency.DiagnosticsErrorNodePriority;
             }
             else
             {
-                IconSet = s_warningIconSet;
                 Flags = Flags.Union(DependencyTreeFlags.DiagnosticWarningNodeFlags);
-                Priority = Dependency.DiagnosticsWarningNodePriority;
             }
         }
-
-        public override string Id => OriginalItemSpec;
     }
 }

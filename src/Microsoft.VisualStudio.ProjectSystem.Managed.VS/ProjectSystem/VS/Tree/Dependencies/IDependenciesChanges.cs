@@ -6,7 +6,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
     public interface IDependenciesChanges
     {
-        IImmutableList<IDependencyModel> AddedNodes { get; }
-        IImmutableList<IDependencyModel> RemovedNodes { get; }
+        bool AnyChanges { get; }
+
+        ImmutableArray<IDependencyModel> AddedNodes { get; }
+
+        ImmutableArray<IDependencyModel> RemovedNodes { get; }
     }
 }

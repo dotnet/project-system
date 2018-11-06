@@ -27,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
             IDependency dependency,
             ImmutableDictionary<string, IDependency>.Builder worldBuilder,
             ImmutableHashSet<IDependency>.Builder topLevelBuilder,
-            IReadOnlyDictionary<string, IProjectDependenciesSubTreeProvider> subTreeProviders,
+            IReadOnlyDictionary<string, IProjectDependenciesSubTreeProvider> subTreeProviderByProviderType,
             IImmutableSet<string> projectItemSpecs,
             out bool filterAnyChanges)
         {
@@ -38,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
             foreach (IDependency x in topLevelBuilder)
             {
                 if (!x.Id.Equals(dependency.Id, StringComparison.OrdinalIgnoreCase)
-                     && x.ProviderType.Equals(dependency.ProviderType, StringComparison.OrdinalIgnoreCase)
+                     && StringComparers.DependencyProviderTypes.Equals(x.ProviderType, dependency.ProviderType)
                      && x.Caption.Equals(dependency.Caption, StringComparison.OrdinalIgnoreCase))
                 {
                     matchingDependency = x;
@@ -55,7 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
                 foreach (IDependency x in topLevelBuilder)
                 {
                     if (!x.Id.Equals(dependency.Id, StringComparison.OrdinalIgnoreCase)
-                         && x.ProviderType.Equals(dependency.ProviderType, StringComparison.OrdinalIgnoreCase)
+                         && StringComparers.DependencyProviderTypes.Equals(x.ProviderType, dependency.ProviderType)
                          && x.Caption.StartsWith(dependency.Caption, StringComparison.OrdinalIgnoreCase)
                          && x.Caption.Length >= adjustedLength
                          && string.Compare(x.Caption, adjustedLength, x.OriginalItemSpec, 0, x.OriginalItemSpec.Length, StringComparison.OrdinalIgnoreCase) == 0)
@@ -72,9 +72,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
                 if (matchingDependency != null)
                 {
                     matchingDependency = matchingDependency.SetProperties(caption: matchingDependency.Alias);
-                    worldBuilder.Remove(matchingDependency.Id);
-                    worldBuilder.Add(matchingDependency.Id, matchingDependency);
-                    topLevelBuilder.Remove(matchingDependency);
+                    worldBuilder[matchingDependency.Id] = matchingDependency;
                     topLevelBuilder.Add(matchingDependency);
                 }
 

@@ -7,10 +7,9 @@ using Microsoft.VisualStudio.Imaging.Interop;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 {
-    internal class DependencyModel : IDependencyModel
+    internal abstract class DependencyModel : IDependencyModel
     {
-        public DependencyModel(
-            string providerType,
+        protected DependencyModel(
             string path,
             string originalItemSpec,
             ProjectTreeFlags flags,
@@ -18,17 +17,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             bool isImplicit,
             IImmutableDictionary<string, string> properties)
         {
-            Requires.NotNullOrEmpty(providerType, nameof(providerType));
             Requires.NotNullOrEmpty(path, nameof(path));
 
-            ProviderType = providerType;
             Path = path;
-            Name = path;
             OriginalItemSpec = originalItemSpec ?? path;
             Resolved = resolved;
             Implicit = isImplicit;
             Properties = properties ?? ImmutableStringDictionary<string>.EmptyOrdinal;
-            Caption = Name;
+            Caption = path;
 
             if (resolved)
             {
@@ -51,50 +47,37 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             }
         }
 
-        public string ProviderType { get; }
-        public string Name { get; protected set; }
+        public abstract string ProviderType { get; }
+
+        public virtual string Name => Path;
         public string Caption { get; protected set; }
         public string OriginalItemSpec { get; }
-        public string Path { get; protected set; }
-        public string SchemaName { get; protected set; }
-        public string SchemaItemType { get; protected set; }
-        public string Version { get; protected set; }
-        public bool Resolved { get; protected set; } = false;
+        public string Path { get; }
+        public virtual string SchemaName => null;
+        public virtual string SchemaItemType => null;
+        public virtual string Version => null;
+        public bool Resolved { get; } = false;
         public bool TopLevel { get; protected set; } = true;
-        public bool Implicit { get; protected set; } = false;
+        public bool Implicit { get; } = false;
         public bool Visible { get; protected set; } = true;
-        public int Priority { get; protected set; } = 0;
+        public virtual int Priority => 0;
         public ImageMoniker Icon => IconSet.Icon;
         public ImageMoniker ExpandedIcon => IconSet.ExpandedIcon;
         public ImageMoniker UnresolvedIcon => IconSet.UnresolvedIcon;
         public ImageMoniker UnresolvedExpandedIcon => IconSet.UnresolvedExpandedIcon;
-        public IImmutableDictionary<string, string> Properties { get; protected set; }
-        public IImmutableList<string> DependencyIDs { get; protected set; } = ImmutableList<string>.Empty;
+        public IImmutableDictionary<string, string> Properties { get; }
+        public virtual IImmutableList<string> DependencyIDs => ImmutableList<string>.Empty;
         public ProjectTreeFlags Flags { get; protected set; }
 
-        public DependencyIconSet IconSet { get; protected set; }
+        public abstract DependencyIconSet IconSet { get; }
 
-        private string _id;
-        public virtual string Id
-        {
-            get
-            {
-                if (_id == null)
-                {
-                    if (string.IsNullOrEmpty(Version))
-                        _id = OriginalItemSpec;
-                    else
-                        _id = $"{OriginalItemSpec}\\{Version}".TrimEnd(Delimiter.BackSlash);
-                }
-
-                return _id;
-            }
-        }
+        public string Id => OriginalItemSpec;
 
         public override int GetHashCode()
         {
-            return unchecked(StringComparer.OrdinalIgnoreCase.GetHashCode(Id)
-                             + StringComparer.OrdinalIgnoreCase.GetHashCode(ProviderType));
+            return unchecked(
+                StringComparer.OrdinalIgnoreCase.GetHashCode(Id) +
+                StringComparers.DependencyProviderTypes.GetHashCode(ProviderType));
         }
 
         public override bool Equals(object obj)
@@ -105,8 +88,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
         public bool Equals(IDependencyModel other)
         {
             return other != null
-                   && other.Id.Equals(Id, StringComparison.OrdinalIgnoreCase)
-                   && other.ProviderType.Equals(ProviderType, StringComparison.OrdinalIgnoreCase);
+                && other.Id.Equals(Id, StringComparison.OrdinalIgnoreCase)
+                && StringComparers.DependencyProviderTypes.Equals(other.ProviderType, ProviderType);
         }
 
         public override string ToString() => Id;

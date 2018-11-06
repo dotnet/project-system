@@ -19,6 +19,5 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
         IImmutableDictionary<string, string> Properties { get; }
         ProjectTreeFlags Flags { get; }
         IDependency OriginalModel { get; }
-
     }
 }

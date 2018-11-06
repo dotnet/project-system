@@ -60,7 +60,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 return rootNode;
             }
 
-            if (snapshot.Targets.Where(x => !x.Key.Equals(TargetFramework.Any)).Count() == 1)
+            if (snapshot.Targets.Count(x => !x.Key.Equals(TargetFramework.Any)) == 1)
             {
                 foreach (ITargetedDependenciesSnapshot targetedSnapshot in snapshot.Targets.Values)
                 {
@@ -70,10 +70,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     }
 
                     dependenciesTree = await BuildSubTreesAsync(
-                        dependenciesTree,
+                        rootNode: dependenciesTree,
                         snapshot.ActiveTarget,
                         targetedSnapshot,
-                        targetedSnapshot.Catalogs,
                         RememberNewNodes);
                 }
             }
@@ -89,10 +88,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     if (targetFramework.Equals(TargetFramework.Any))
                     {
                         dependenciesTree = await BuildSubTreesAsync(
-                            dependenciesTree,
+                            rootNode: dependenciesTree,
                             snapshot.ActiveTarget,
                             targetedSnapshot,
-                            targetedSnapshot.Catalogs,
                             RememberNewNodes);
                     }
                     else
@@ -109,20 +107,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                             additionalFlags: ProjectTreeFlags.Create(ProjectTreeFlags.Common.BubbleUp));
 
                         node = await BuildSubTreesAsync(
-                            node, 
+                            rootNode: node, 
                             snapshot.ActiveTarget, 
                             targetedSnapshot, 
-                            targetedSnapshot.Catalogs, 
                             CleanupOldNodes);
 
-                        if (shouldAddTargetNode)
-                        {
-                            dependenciesTree = dependenciesTree.Add(node).Parent;
-                        }
-                        else
-                        {
-                            dependenciesTree = node.Parent;
-                        }
+                        dependenciesTree = shouldAddTargetNode 
+                            ? dependenciesTree.Add(node).Parent 
+                            : node.Parent;
 
                         currentTopLevelNodes.Add(node);
                     }
@@ -159,11 +151,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             IProjectTree rootNode,
             ITargetFramework activeTarget,
             ITargetedDependenciesSnapshot targetedSnapshot,
-            IProjectCatalogSnapshot catalogs,
             Func<IProjectTree, IEnumerable<IProjectTree>, IProjectTree> syncFunc)
         {
-            var currentNodes = new List<IProjectTree>();
-            var groupedByProviderType = new Dictionary<string, List<IDependency>>(StringComparer.OrdinalIgnoreCase);
+            var groupedByProviderType = new Dictionary<string, List<IDependency>>(StringComparers.DependencyProviderTypes);
+
             foreach (IDependency dependency in targetedSnapshot.TopLevelDependencies)
             {
                 if (!dependency.Visible)
@@ -186,6 +177,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
                 dependencies.Add(dependency);
             }
+
+            var currentNodes = new List<IProjectTree>(capacity: groupedByProviderType.Count);
 
             bool isActiveTarget = targetedSnapshot.TargetFramework.Equals(activeTarget);
             foreach ((string providerType, List<IDependency> dependencies) in groupedByProviderType)
@@ -210,7 +203,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     subTreeNode,
                     targetedSnapshot,
                     dependencies,
-                    catalogs,
                     isActiveTarget,
                     shouldCleanup: !isNewSubTreeNode);
 
@@ -230,12 +222,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         private async Task<IProjectTree> BuildSubTreeAsync(
             IProjectTree rootNode,
             ITargetedDependenciesSnapshot targetedSnapshot,
-            IEnumerable<IDependency> dependencies,
-            IProjectCatalogSnapshot catalogs,
+            List<IDependency> dependencies,
             bool isActiveTarget,
             bool shouldCleanup)
         {
-            var currentNodes = new List<IProjectTree>();
+            List<IProjectTree> currentNodes = shouldCleanup 
+                ? new List<IProjectTree>(capacity: dependencies.Count) 
+                : null;
+
             foreach (IDependency dependency in dependencies)
             {
                 IProjectTree dependencyNode = rootNode.FindChildWithCaption(dependency.Caption);
@@ -255,8 +249,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     }
                 }
 
-                dependencyNode = await CreateOrUpdateNodeAsync(dependencyNode, dependency, targetedSnapshot, catalogs, isActiveTarget);
-                currentNodes.Add(dependencyNode);
+                dependencyNode = await CreateOrUpdateNodeAsync(dependencyNode, dependency, targetedSnapshot, isActiveTarget);
+
+                currentNodes?.Add(dependencyNode);
 
                 rootNode = isNewDependencyNode
                     ? rootNode.Add(dependencyNode).Parent
@@ -285,7 +280,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             IProjectTree node,
             IDependency dependency,
             ITargetedDependenciesSnapshot targetedSnapshot,
-            IProjectCatalogSnapshot catalogs,
             bool isProjectItem,
             ProjectTreeFlags? additionalFlags = null,
             ProjectTreeFlags? excludedFlags = null)
@@ -293,7 +287,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             IRule rule = null;
             if (dependency.Flags.Contains(DependencyTreeFlags.SupportsRuleProperties))
             {
-                rule = await TreeServices.GetRuleAsync(dependency, catalogs);
+                rule = await TreeServices.GetRuleAsync(dependency, targetedSnapshot.Catalogs);
             }
 
             return CreateOrUpdateNode(
@@ -385,6 +379,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             IRule rule)
         {
             ProjectTreeCustomizablePropertyContext updatedNodeParentContext = GetCustomPropertyContext(node.Parent);
+
             var updatedValues = new ReferencesProjectTreeCustomizablePropertyValues
             {
                 Caption = viewModel.Caption,
@@ -396,11 +391,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             ApplyProjectTreePropertiesCustomization(updatedNodeParentContext, updatedValues);
 
             return node.SetProperties(
-                    caption: updatedValues.Caption,
-                    browseObjectProperties: rule,
-                    icon: updatedValues.Icon,
-                    expandedIcon: updatedValues.ExpandedIcon,
-                    flags: updatedValues.Flags);
+                caption: updatedValues.Caption,
+                browseObjectProperties: rule,
+                icon: updatedValues.Icon,
+                expandedIcon: updatedValues.ExpandedIcon,
+                flags: updatedValues.Flags);
         }
 
         private static ProjectTreeFlags FilterFlags(

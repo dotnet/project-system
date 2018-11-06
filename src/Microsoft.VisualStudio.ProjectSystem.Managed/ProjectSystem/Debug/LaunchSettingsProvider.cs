@@ -646,7 +646,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// file with the name LaunchSettings.json. We don't need to special case because, if a file with this name
         /// changes we will only check if the one we cared about was modified.
         /// </summary>
-        protected void LaunchSettingsFile_Changed(object sender, FileSystemEventArgs e)
+        private void LaunchSettingsFile_Changed(object sender, FileSystemEventArgs e)
+        {
+            HandleLaunchSettingsFileChangedAsync().Forget();
+        }
+        
+        protected Task HandleLaunchSettingsFileChangedAsync()
         {
             if (!IgnoreFileChanges)
             {
@@ -658,22 +663,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 // throttle.
                 if (!FileManager.FileExists(fileName) || FileManager.LastFileWriteTime(fileName) != LastSettingsFileSyncTime)
                 {
-                    FileChangeScheduler.ScheduleAsyncTask(async token =>
+                    return FileChangeScheduler.ScheduleAsyncTask(token =>
                     {
-
                         if (token.IsCancellationRequested)
                         {
-                            return;
+                            return Task.CompletedTask;
                         }
 
                         // Updates need to be sequenced
-                        await _sequentialTaskQueue.ExecuteTask(async () =>
-                                        {
-                                            await UpdateProfilesAsync(null);
-                                        });
-                    });
+                        return _sequentialTaskQueue.ExecuteTask(() => UpdateProfilesAsync(null));
+                    }).Task;
                 }
             }
+
+            return null;
         }
 
         /// <summary>
@@ -709,6 +712,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         {
             if (FileWatcher == null)
             {
+                FileChangeScheduler?.Dispose();
+
                 // Create our scheduler for processing file changes
                 FileChangeScheduler = new TaskDelayScheduler(FileChangeProcessingDelay, CommonProjectServices.ThreadingService,
                     ProjectServices.ProjectAsynchronousTasks.UnloadCancellationToken);
@@ -769,14 +774,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// made, the file will be checked out and saved. Note it ignores the value of the active profile
         /// as this setting is controlled by a user property.
         /// </summary>
-        public async Task UpdateAndSaveSettingsAsync(ILaunchSettings newSettings)
+        public Task UpdateAndSaveSettingsAsync(ILaunchSettings newSettings)
         {
             // Updates need to be sequenced. Do not call this version from within an ExecuteTask as it
             // will deadlock
-            await _sequentialTaskQueue.ExecuteTask(async () =>
-            {
-                await UpdateAndSaveSettingsInternalAsync(newSettings);
-            });
+            return _sequentialTaskQueue.ExecuteTask(() => UpdateAndSaveSettingsInternalAsync(newSettings));
         }
 
         /// <summary>
@@ -822,10 +824,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// their just added profile to be listed first in the start menu. If addToFront is false but there is
         /// an existing profile, the new one will be inserted at the same location rather than at the end.
         /// </summary>
-        public async Task AddOrUpdateProfileAsync(ILaunchProfile profile, bool addToFront)
+        public Task AddOrUpdateProfileAsync(ILaunchProfile profile, bool addToFront)
         {
             // Updates need to be sequenced
-            await _sequentialTaskQueue.ExecuteTask(async () =>
+            return _sequentialTaskQueue.ExecuteTask(async () =>
             {
                 ILaunchSettings currentSettings = await GetSnapshotThrowIfErrors();
                 ILaunchProfile existingProfile = null;
@@ -873,10 +875,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// <summary>
         /// Removes the specified profile from the list and saves to disk.
         /// </summary>
-        public async Task RemoveProfileAsync(string profileName)
+        public Task RemoveProfileAsync(string profileName)
         {
             // Updates need to be sequenced
-            await _sequentialTaskQueue.ExecuteTask(async () =>
+            return _sequentialTaskQueue.ExecuteTask(async () =>
             {
                 ILaunchSettings currentSettings = await GetSnapshotThrowIfErrors();
                 ILaunchProfile existingProfile = currentSettings.Profiles.FirstOrDefault(p => LaunchProfile.IsSameProfileName(p.Name, profileName));
@@ -896,10 +898,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// Adds or updates the global settings represented by settingName. Saves the
         /// updated settings to disk. Note that the settings object must be serializable.
         /// </summary>
-        public async Task AddOrUpdateGlobalSettingAsync(string settingName, object settingContent)
+        public Task AddOrUpdateGlobalSettingAsync(string settingName, object settingContent)
         {
             // Updates need to be sequenced
-            await _sequentialTaskQueue.ExecuteTask(async () =>
+            return _sequentialTaskQueue.ExecuteTask(async () =>
             {
                 ILaunchSettings currentSettings = await GetSnapshotThrowIfErrors();
                 ImmutableDictionary<string, object> globalSettings = ImmutableStringDictionary<object>.EmptyOrdinal;
@@ -922,10 +924,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// <summary>
         /// Removes the specified global setting and saves the settings to disk
         /// </summary>
-        public async Task RemoveGlobalSettingAsync(string settingName)
+        public Task RemoveGlobalSettingAsync(string settingName)
         {
             // Updates need to be sequenced
-            await _sequentialTaskQueue.ExecuteTask(async () =>
+            return _sequentialTaskQueue.ExecuteTask(async () =>
             {
                 ILaunchSettings currentSettings = await GetSnapshotThrowIfErrors();
                 if (currentSettings.GlobalSettings.TryGetValue(settingName, out object currentValue))

@@ -27,14 +27,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
         [ImportingConstructor]
         public PackageRuleHandler(ITargetFrameworkProvider targetFrameworkProvider)
+            : base(PackageReference.SchemaName, ResolvedPackageReference.SchemaName)
         {
             TargetFrameworkProvider = targetFrameworkProvider;
         }
 
         private ITargetFrameworkProvider TargetFrameworkProvider { get; }
 
-        protected override string UnresolvedRuleName => PackageReference.SchemaName;
-        protected override string ResolvedRuleName => ResolvedPackageReference.SchemaName;
         public override string ProviderType => ProviderTypeString;
 
         public override ImageMoniker GetImplicitIcon()
@@ -43,30 +42,30 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         }
 
         public override void Handle(
-            IImmutableDictionary<string, IProjectChangeDescription> projectChanges,
-            ITargetedProjectContext context,
+            IImmutableDictionary<string, IProjectChangeDescription> changesByRuleName,
+            ITargetFramework targetFramework,
             DependenciesRuleChangeContext ruleChangeContext)
         {
-            if (projectChanges.TryGetValue(UnresolvedRuleName, out IProjectChangeDescription unresolvedChanges)
+            if (changesByRuleName.TryGetValue(UnresolvedRuleName, out IProjectChangeDescription unresolvedChanges)
                 && unresolvedChanges.Difference.AnyChanges)
             {
                 HandleChangesForRule(
                     unresolvedChanges,
                     ruleChangeContext,
-                    context.TargetFramework,
+                    targetFramework,
                     resolved: false);
             }
 
             var caseInsensitiveUnresolvedChanges = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             caseInsensitiveUnresolvedChanges.AddRange(unresolvedChanges.After.Items.Keys);
 
-            if (projectChanges.TryGetValue(ResolvedRuleName, out IProjectChangeDescription resolvedChanges)
+            if (changesByRuleName.TryGetValue(ResolvedRuleName, out IProjectChangeDescription resolvedChanges)
                 && resolvedChanges.Difference.AnyChanges)
             {
                 HandleChangesForRule(
                     resolvedChanges,
                     ruleChangeContext,
-                    context.TargetFramework,
+                    targetFramework,
                     resolved: true,
                     unresolvedChanges: caseInsensitiveUnresolvedChanges);
             }
@@ -171,7 +170,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             {
                 case DependencyType.Package:
                     return new PackageDependencyModel(
-                        ProviderType,
                         itemSpec,
                         originalItemSpec,
                         metadata.Name,
@@ -186,7 +184,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 case DependencyType.Assembly:
                 case DependencyType.FrameworkAssembly:
                     return new PackageAssemblyDependencyModel(
-                        ProviderType,
                         itemSpec,
                         originalItemSpec,
                         metadata.Name,
@@ -196,7 +193,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                         metadata.DependenciesItemSpecs);
                 case DependencyType.AnalyzerAssembly:
                     return new PackageAnalyzerAssemblyDependencyModel(
-                        ProviderType,
                         itemSpec,
                         originalItemSpec,
                         metadata.Name,
@@ -206,7 +202,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                         metadata.DependenciesItemSpecs);
                 case DependencyType.Diagnostic:
                     return new DiagnosticDependencyModel(
-                        ProviderType,
                         itemSpec,
                         metadata.Severity,
                         metadata.DiagnosticCode,
@@ -216,7 +211,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                         properties: properties);
                 default:
                     return new PackageUnknownDependencyModel(
-                        ProviderType,
                         itemSpec,
                         originalItemSpec,
                         metadata.Name,
@@ -236,8 +230,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 DependencyTreeFlags.NuGetSubTreeRootNodeFlags);
         }
 
-        private static PackageDependencyMetadata CreateUnresolvedMetadata(string itemSpec,
-                                                            IImmutableDictionary<string, string> properties)
+        private static PackageDependencyMetadata CreateUnresolvedMetadata(
+            string itemSpec,
+            IImmutableDictionary<string, string> properties)
         {
             // add this properties here since unresolved PackageReferences don't have it
             properties = properties.SetItem(ProjectItemMetadata.Resolved, "false");

@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         [ImportingConstructor]
         public DependencyRulesSubscriber(
             IUnconfiguredProjectCommonServices commonServices,
-            [Import(ExportContractNames.Scopes.UnconfiguredProject)]IProjectAsynchronousTasksService tasksService,
+            [Import(ExportContractNames.Scopes.UnconfiguredProject)] IProjectAsynchronousTasksService tasksService,
             IDependencyTreeTelemetryService treeTelemetryService)
             : base(commonServices, tasksService, treeTelemetryService)
         {
@@ -29,10 +29,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         protected override OrderPrecedenceImportCollection<ICrossTargetRuleHandler<DependenciesRuleChangeContext>> Handlers { get; }
 
         protected override DependenciesRuleChangeContext CreateRuleChangeContext(
-            ITargetFramework target,
+            ITargetFramework activeTarget,
             IProjectCatalogSnapshot catalogs)
         {
-            return new DependenciesRuleChangeContext(target, catalogs);
+            return new DependenciesRuleChangeContext(activeTarget, catalogs);
         }
 
         public event EventHandler<DependencySubscriptionChangedEventArgs> DependenciesChanged;

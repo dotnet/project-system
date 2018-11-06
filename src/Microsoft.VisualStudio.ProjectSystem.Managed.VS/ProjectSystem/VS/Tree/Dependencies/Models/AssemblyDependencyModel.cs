@@ -5,6 +5,7 @@ using System.Reflection;
 
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
+using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 {
@@ -22,15 +23,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             unresolvedIcon: KnownMonikers.ReferenceWarning,
             unresolvedExpandedIcon: KnownMonikers.ReferenceWarning);
 
+        public override DependencyIconSet IconSet => Implicit ? s_implicitIconSet : s_iconSet;
+
+        public override string ProviderType => AssemblyRuleHandler.ProviderTypeString;
+
+        public override int Priority => Dependency.FrameworkAssemblyNodePriority;
+
+        public override string SchemaItemType => AssemblyReference.PrimaryDataSourceItemType;
+
+        public override string SchemaName => Resolved ? ResolvedAssemblyReference.SchemaName : AssemblyReference.SchemaName;
+
         public AssemblyDependencyModel(
-            string providerType,
             string path,
             string originalItemSpec,
             ProjectTreeFlags flags,
             bool resolved,
             bool isImplicit,
             IImmutableDictionary<string, string> properties)
-            : base(providerType, path, originalItemSpec, flags, resolved, isImplicit, properties)
+            : base(path, originalItemSpec, flags, resolved, isImplicit, properties)
         {
             if (Resolved)
             {
@@ -38,17 +48,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
                 Properties?.TryGetValue(ResolvedAssemblyReference.FusionNameProperty, out fusionName);
 
                 Caption = string.IsNullOrEmpty(fusionName) ? Name : new AssemblyName(fusionName).Name;
-                SchemaName = ResolvedAssemblyReference.SchemaName;
             }
             else
             {
                 Caption = Name;
-                SchemaName = AssemblyReference.SchemaName;
             }
-
-            SchemaItemType = AssemblyReference.PrimaryDataSourceItemType;
-            Priority = Dependency.FrameworkAssemblyNodePriority;
-            IconSet = isImplicit ? s_implicitIconSet : s_iconSet;
         }
     }
 }

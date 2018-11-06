@@ -4,13 +4,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 {
     internal class SubTreeRootDependencyModel : DependencyModel
     {
+        public override string ProviderType { get; }
+
+        public override DependencyIconSet IconSet { get; }
+
         public SubTreeRootDependencyModel(
             string providerType,
             string name,
             DependencyIconSet iconSet,
             ProjectTreeFlags flags)
-            : base(providerType, name, name, flags, true, false, null)
+            : base(name, name, flags, true, false, null)
         {
+            ProviderType = providerType;
             IconSet = iconSet;
             Flags = flags.Union(DependencyTreeFlags.DependencyFlags)
                          .Union(DependencyTreeFlags.SubTreeRootNodeFlags)

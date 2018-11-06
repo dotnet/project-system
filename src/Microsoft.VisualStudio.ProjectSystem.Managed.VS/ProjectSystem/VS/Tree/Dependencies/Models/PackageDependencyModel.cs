@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
+using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 {
@@ -21,8 +22,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             unresolvedIcon: ManagedImageMonikers.NuGetGreyWarning,
             unresolvedExpandedIcon: ManagedImageMonikers.NuGetGreyWarning);
 
+        public override IImmutableList<string> DependencyIDs { get; }
+
+        public override DependencyIconSet IconSet => Implicit ? s_implicitIconSet : s_iconSet;
+
+        public override string Name { get; }
+
+        public override int Priority => Resolved ? Dependency.PackageNodePriority : Dependency.UnresolvedReferenceNodePriority;
+
+        public override string ProviderType => PackageRuleHandler.ProviderTypeString;
+
+        public override string SchemaItemType => PackageReference.PrimaryDataSourceItemType;
+
+        public override string SchemaName => Resolved ? ResolvedPackageReference.SchemaName : PackageReference.SchemaName;
+
+        public override string Version { get; }
+
         public PackageDependencyModel(
-            string providerType,
             string path,
             string originalItemSpec,
             string name,
@@ -34,7 +50,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             bool isVisible,
             IImmutableDictionary<string, string> properties,
             IEnumerable<string> dependenciesIDs)
-            : base(providerType, path, originalItemSpec, flags, resolved, isImplicit, properties)
+            : base(path, originalItemSpec, flags, resolved, isImplicit, properties)
         {
             Requires.NotNullOrEmpty(name, nameof(name));
 
@@ -43,8 +59,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             Caption = string.IsNullOrEmpty(version) ? name : $"{name} ({version})";
             TopLevel = isTopLevel;
             Visible = isVisible;
-            SchemaItemType = PackageReference.PrimaryDataSourceItemType;
-            IconSet = isImplicit ? s_implicitIconSet : s_iconSet;
 
             if (dependenciesIDs != null)
             {
@@ -53,19 +67,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 
             Flags = Flags.Union(DependencyTreeFlags.PackageNodeFlags)
                          .Union(DependencyTreeFlags.SupportsHierarchy);
-
-            if (resolved)
-            {
-                Priority = Dependency.PackageNodePriority;
-                SchemaName = ResolvedPackageReference.SchemaName;
-            }
-            else
-            {
-                Priority = Dependency.UnresolvedReferenceNodePriority;
-                SchemaName = PackageReference.SchemaName;
-            }
         }
-
-        public override string Id => OriginalItemSpec;
     }
 }

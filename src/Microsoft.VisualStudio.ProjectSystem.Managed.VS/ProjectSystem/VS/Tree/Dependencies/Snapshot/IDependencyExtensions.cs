@@ -34,6 +34,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         /// </summary>
         public static IDependencyViewModel ToViewModel(this IDependency self, ITargetedDependenciesSnapshot snapshot)
         {
+            bool showAsResolved = self.Resolved && !snapshot.CheckForUnresolvedDependencies(self);
+
             return new DependencyViewModel
             {
                 Caption = self.Caption,
@@ -41,8 +43,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 SchemaName = self.SchemaName,
                 SchemaItemType = self.SchemaItemType,
                 Priority = self.Priority,
-                Icon = self.IsOrHasUnresolvedDependency(snapshot) ? self.UnresolvedIcon : self.Icon,
-                ExpandedIcon = self.IsOrHasUnresolvedDependency(snapshot) ? self.UnresolvedExpandedIcon : self.ExpandedIcon,
+                Icon = showAsResolved ? self.Icon : self.UnresolvedIcon,
+                ExpandedIcon = showAsResolved ? self.ExpandedIcon : self.UnresolvedExpandedIcon,
                 Properties = self.Properties,
                 Flags = self.Flags,
                 OriginalModel = self
@@ -85,7 +87,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         /// </summary>
         public static bool IsPackage(this IDependency self)
         {
-            return self.ProviderType.Equals(PackageRuleHandler.ProviderTypeString, StringComparison.OrdinalIgnoreCase);
+            return StringComparers.DependencyProviderTypes.Equals(self.ProviderType, PackageRuleHandler.ProviderTypeString);
         }
 
         /// <summary>
@@ -93,7 +95,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         /// </summary>
         public static bool IsProject(this IDependency self)
         {
-            return self.ProviderType.Equals(ProjectRuleHandler.ProviderTypeString, StringComparison.OrdinalIgnoreCase);
+            return StringComparers.DependencyProviderTypes.Equals(self.ProviderType, ProjectRuleHandler.ProviderTypeString);
         }
 
         /// <summary>
@@ -102,12 +104,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         public static bool HasSameTarget(this IDependency self, IDependency other)
         {
             Requires.NotNull(other, nameof(other));
+
             return self.TargetFramework.Equals(other.TargetFramework);
         }
 
-        public static IDependency ToResolved(this IDependency dependency,
-                                             string schemaName = null,
-                                             IImmutableList<string> dependencyIDs = null)
+        public static IDependency ToResolved(
+            this IDependency dependency,
+            string schemaName = null,
+            IImmutableList<string> dependencyIDs = null)
         {
             return dependency.SetProperties(
                 resolved: true,
@@ -116,9 +120,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 dependencyIDs: dependencyIDs);
         }
 
-        public static IDependency ToUnresolved(this IDependency dependency,
-                                               string schemaName = null,
-                                               IImmutableList<string> dependencyIDs = null)
+        public static IDependency ToUnresolved(
+            this IDependency dependency,
+            string schemaName = null,
+            IImmutableList<string> dependencyIDs = null)
         {
             return dependency.SetProperties(
                 resolved: false,
@@ -129,14 +134,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
         public static ProjectTreeFlags GetResolvedFlags(this IDependency dependency)
         {
-            return dependency.Flags.Union(DependencyTreeFlags.ResolvedFlags)
-                                   .Except(DependencyTreeFlags.UnresolvedFlags);
+            return dependency.Flags
+                .Union(DependencyTreeFlags.ResolvedFlags)
+                .Except(DependencyTreeFlags.UnresolvedFlags);
         }
 
         public static ProjectTreeFlags GetUnresolvedFlags(this IDependency dependency)
         {
-            return dependency.Flags.Union(DependencyTreeFlags.UnresolvedFlags)
-                                   .Except(DependencyTreeFlags.ResolvedFlags);
+            return dependency.Flags
+                .Union(DependencyTreeFlags.UnresolvedFlags)
+                .Except(DependencyTreeFlags.ResolvedFlags);
         }
     }
 }

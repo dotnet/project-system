@@ -10,30 +10,42 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions
 {
-    internal abstract class DependenciesRuleHandlerBase :
-        ICrossTargetRuleHandler<DependenciesRuleChangeContext>,
-        IProjectDependenciesSubTreeProviderInternal
+    internal abstract class DependenciesRuleHandlerBase
+        : ICrossTargetRuleHandler<DependenciesRuleChangeContext>,
+          IProjectDependenciesSubTreeProviderInternal
     {
+        private readonly ImmutableHashSet<string> _evaluationRuleNames;
+        private readonly ImmutableHashSet<string> _designTimeBuildRuleNames;
+
+        protected string UnresolvedRuleName { get; }
+        protected string ResolvedRuleName { get; }
+
+        protected DependenciesRuleHandlerBase(
+            string unresolvedRuleName,
+            string resolvedRuleName)
+        {
+            UnresolvedRuleName = unresolvedRuleName;
+            ResolvedRuleName = resolvedRuleName;
+
+            _evaluationRuleNames = ImmutableStringHashSet.EmptyOrdinal.Add(unresolvedRuleName);
+            _designTimeBuildRuleNames = _evaluationRuleNames.Add(resolvedRuleName);
+        }
+
         #region ICrossTargetRuleHandler
 
         public ImmutableHashSet<string> GetRuleNames(RuleHandlerType handlerType)
         {
-            ImmutableHashSet<string> resultRules = ImmutableStringHashSet.EmptyOrdinal;
-            if (handlerType == RuleHandlerType.Evaluation)
+            switch (handlerType)
             {
-                resultRules = resultRules.Add(UnresolvedRuleName);
+                case RuleHandlerType.Evaluation:
+                    return _evaluationRuleNames;
+                case RuleHandlerType.DesignTimeBuild:
+                    return _designTimeBuildRuleNames;
+                default:
+                    return ImmutableStringHashSet.EmptyOrdinal;
             }
-            else if (handlerType == RuleHandlerType.DesignTimeBuild)
-            {
-                resultRules = resultRules.Add(UnresolvedRuleName)
-                                         .Add(ResolvedRuleName);
-            }
-
-            return resultRules;
         }
 
-        protected abstract string UnresolvedRuleName { get; }
-        protected abstract string ResolvedRuleName { get; }
         public abstract ImageMoniker GetImplicitIcon();
 
         /// <summary>
@@ -50,21 +62,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         public virtual bool ReceiveUpdatesWithEmptyProjectChange => false;
 
         public virtual void Handle(
-            IImmutableDictionary<string, IProjectChangeDescription> projectChanges,
-            ITargetedProjectContext context,
+            IImmutableDictionary<string, IProjectChangeDescription> changesByRuleName,
+            ITargetFramework targetFramework,
             DependenciesRuleChangeContext ruleChangeContext)
         {
-            if (projectChanges.TryGetValue(UnresolvedRuleName, out IProjectChangeDescription unresolvedChanges))
+            if (changesByRuleName.TryGetValue(UnresolvedRuleName, out IProjectChangeDescription unresolvedChanges))
             {
                 HandleChangesForRule(
-                    resolved: false, unresolvedChanges, context, ruleChangeContext,
+                    resolved: false, 
+                    projectChange: unresolvedChanges, 
+                    targetFramework, 
+                    ruleChangeContext, 
                     shouldProcess: itemSpec => true);
             }
 
-            if (projectChanges.TryGetValue(ResolvedRuleName, out IProjectChangeDescription resolvedChanges))
+            if (changesByRuleName.TryGetValue(ResolvedRuleName, out IProjectChangeDescription resolvedChanges))
             {
                 HandleChangesForRule(
-                    resolved: true, resolvedChanges, context, ruleChangeContext,
+                    resolved: true, 
+                    projectChange: resolvedChanges, 
+                    targetFramework, 
+                    ruleChangeContext, 
                     shouldProcess: metadata => DoesUnresolvedProjectItemExist(metadata.OriginalItemSpec, unresolvedChanges));
             }
         }
@@ -72,7 +90,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         private void HandleChangesForRule(
             bool resolved,
             IProjectChangeDescription projectChange,
-            ITargetedProjectContext context,
+            ITargetFramework targetFramework,
             DependenciesRuleChangeContext ruleChangeContext,
             Func<IDependencyModel, bool> shouldProcess)
         {
@@ -81,7 +99,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 IDependencyModel model = CreateDependencyModelForRule(removedItem, resolved, projectChange.Before);
                 if (shouldProcess(model))
                 {
-                    ruleChangeContext.IncludeRemovedChange(context.TargetFramework, model);
+                    ruleChangeContext.IncludeRemovedChange(targetFramework, model);
                 }
             }
 
@@ -93,7 +111,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     // For changes we try to add new dependency. If it is a resolved dependency, it would just override
                     // old one with new properties. If it is unresolved dependency, it would be added only when there no
                     // resolved version in the snapshot.
-                    ruleChangeContext.IncludeAddedChange(context.TargetFramework, model);
+                    ruleChangeContext.IncludeAddedChange(targetFramework, model);
                 }
             }
 
@@ -102,7 +120,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 IDependencyModel model = CreateDependencyModelForRule(addedItem, resolved, projectChange.After);
                 if (shouldProcess(model))
                 {
-                    ruleChangeContext.IncludeAddedChange(context.TargetFramework, model);
+                    ruleChangeContext.IncludeAddedChange(targetFramework, model);
                 }
             }
         }
@@ -133,7 +151,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             }
 
             return CreateDependencyModel(
-                ProviderType,
                 itemSpec,
                 originalItemSpec,
                 resolved,
@@ -142,7 +159,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         }
 
         protected virtual IDependencyModel CreateDependencyModel(
-            string providerType,
             string path,
             string originalItemSpec,
             bool resolved,

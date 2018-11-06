@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+using System.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
@@ -35,23 +36,31 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         event EventHandler<SnapshotProviderUnloadingEventArgs> SnapshotProviderUnloading;
     }
 
-    internal class SnapshotChangedEventArgs
+    internal sealed class SnapshotChangedEventArgs
     {
-        public SnapshotChangedEventArgs(IDependenciesSnapshot snapshot)
+        public SnapshotChangedEventArgs(IDependenciesSnapshot snapshot, CancellationToken token)
         {
+            Requires.NotNull(snapshot, nameof(snapshot));
+
             Snapshot = snapshot;
+            Token = token;
         }
 
-        public IDependenciesSnapshot Snapshot { get; private set; }
+        public IDependenciesSnapshot Snapshot { get; }
+        public CancellationToken Token { get; }
     }
 
-    internal class SnapshotProviderUnloadingEventArgs : EventArgs
+    internal sealed class SnapshotProviderUnloadingEventArgs : EventArgs
     {
-        public SnapshotProviderUnloadingEventArgs(IDependenciesSnapshotProvider snapshotProvider)
+        public SnapshotProviderUnloadingEventArgs(IDependenciesSnapshotProvider snapshotProvider, CancellationToken token = default)
         {
+            Requires.NotNull(snapshotProvider, nameof(snapshotProvider));
+
             SnapshotProvider = snapshotProvider;
+            Token = token;
         }
 
         public IDependenciesSnapshotProvider SnapshotProvider { get; }
+        public CancellationToken Token { get; }
     }
 }

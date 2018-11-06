@@ -7,66 +7,41 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions
 {
-    internal class DependenciesRuleChangeContext : IRuleChangeContext
+    internal sealed class DependenciesRuleChangeContext : IRuleChangeContext
     {
-        private readonly object _changesLock = new object();
+        private ImmutableDictionary<ITargetFramework, IDependenciesChanges> _changes = ImmutableDictionary.Create<ITargetFramework, IDependenciesChanges>();
 
-        public DependenciesRuleChangeContext(ITargetFramework target, IProjectCatalogSnapshot catalogs)
+        public DependenciesRuleChangeContext(ITargetFramework activeTarget, IProjectCatalogSnapshot catalogs)
         {
-            ActiveTarget = target;
+            ActiveTarget = activeTarget;
             Catalogs = catalogs;
         }
 
         public ITargetFramework ActiveTarget { get; }
+
         public IProjectCatalogSnapshot Catalogs { get; }
-        private ImmutableDictionary<ITargetFramework, IDependenciesChanges> _changes =
-            ImmutableDictionary.Create<ITargetFramework, IDependenciesChanges>();
 
-        public ImmutableDictionary<ITargetFramework, IDependenciesChanges> Changes
+        public ImmutableDictionary<ITargetFramework, IDependenciesChanges> Changes => _changes;
+
+        public bool AnyChanges => _changes.Count != 0;
+
+        public void IncludeAddedChange(ITargetFramework targetFramework, IDependencyModel ruleMetadata)
         {
-            get
-            {
-                lock (_changesLock)
-                {
-                    return _changes;
-                }
-            }
+            GetChanges(targetFramework).IncludeAddedChange(ruleMetadata);
         }
 
-        public bool AnyChanges => Changes.Count != 0;
-
-        public void IncludeAddedChange(ITargetFramework targetFramework,
-                                       IDependencyModel ruleMetadata)
+        public void IncludeRemovedChange(ITargetFramework targetFramework, IDependencyModel ruleMetadata)
         {
-            lock (_changesLock)
-            {
-                DependenciesChanges change = GetChanges(targetFramework);
-                change.ExcludeAddedChange(ruleMetadata);
-                change.IncludeAddedChange(ruleMetadata);
-            }
-        }
-
-        public void IncludeRemovedChange(ITargetFramework targetFramework,
-                                         IDependencyModel ruleMetadata)
-        {
-            lock (_changesLock)
-            {
-                DependenciesChanges change = GetChanges(targetFramework);
-                change.ExcludeRemovedChange(ruleMetadata);
-                change.IncludeRemovedChange(ruleMetadata);
-            }
+            GetChanges(targetFramework).IncludeRemovedChange(ruleMetadata);
         }
 
         private DependenciesChanges GetChanges(ITargetFramework targetFramework)
         {
-            if (!_changes.TryGetValue(targetFramework, out IDependenciesChanges change))
-            {
-                change = new DependenciesChanges();
-                _changes = _changes.Add(targetFramework, change);
-            }
-
             // We only add DependenciesChanges to this collection, so the cast is safe
-            return (DependenciesChanges)change;
+            return (DependenciesChanges)ImmutableInterlocked.GetOrAdd(
+                ref _changes, 
+                targetFramework, 
+                _ => new DependenciesChanges());
         }
     }
 }

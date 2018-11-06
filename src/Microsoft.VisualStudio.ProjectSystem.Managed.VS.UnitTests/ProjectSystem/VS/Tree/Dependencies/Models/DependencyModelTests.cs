@@ -11,25 +11,37 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
     public class DependencyModelTests
     {
+        private class TestableDependencyModel : DependencyModel
+        {
+            public override string ProviderType => "someProvider";
+
+            public override DependencyIconSet IconSet => null;
+
+            public TestableDependencyModel(
+                string path, 
+                string originalItemSpec, 
+                ProjectTreeFlags flags, 
+                bool resolved, 
+                bool isImplicit, 
+                IImmutableDictionary<string, string> properties)
+                : base(path, originalItemSpec, flags, resolved, isImplicit, properties)
+            {
+            }
+        }
+
         [Fact]
         public void Constructor_WhenRequiredParamsNotProvided_ShouldThrow()
         {
-            Assert.Throws<ArgumentNullException>("providerType", () =>
-            {
-                new DependencyModel(null, null, "", ProjectTreeFlags.Empty, false, false, null);
-            });
-
             Assert.Throws<ArgumentNullException>("path", () =>
             {
-                new DependencyModel("sometype", null, "", ProjectTreeFlags.Empty, false, false, null);
+                new TestableDependencyModel(null, "", ProjectTreeFlags.Empty, false, false, null);
             });
         }
 
         [Fact]
         public void Constructor_WhenOptionalValuesNotProvided_ShouldSetDefaults()
         {
-            var model = new DependencyModel(
-                providerType: "somProvider",
+            var model = new TestableDependencyModel(
                 path: "somePath",
                 originalItemSpec: null,
                 flags: ProjectTreeFlags.Empty,
@@ -45,17 +57,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         public void Constructor_WhenValidParametersProvided_UnresolvedAndNotImplicit()
         {
             var model = new TestableDependencyModel(
-                providerType: "somProvider",
                 path: "somePath",
                 originalItemSpec: "SomeItemSpec",
                 flags: ProjectTreeFlags.HiddenProjectItem,
                 resolved: false,
                 isImplicit: false,
-                properties: ImmutableStringDictionary<string>.EmptyOrdinal.Add("someProp1", "someVal1"),
-                version: "version1\\");
+                properties: ImmutableStringDictionary<string>.EmptyOrdinal.Add("someProp1", "someVal1"));
 
-            Assert.Equal("SomeItemSpec\\version1", model.Id);
-            Assert.Equal("somProvider", model.ProviderType);
+            Assert.Equal("SomeItemSpec", model.Id);
+            Assert.Equal("someProvider", model.ProviderType);
             Assert.Equal("somePath", model.Path);
             Assert.Equal("SomeItemSpec", model.OriginalItemSpec);
             Assert.True(model.Flags.Contains(ProjectTreeFlags.HiddenProjectItem));
@@ -69,17 +79,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         public void Constructor_WhenValidParametersProvided_ResolvedAndNotImplicit()
         {
             var model = new TestableDependencyModel(
-                providerType: "somProvider",
                 path: "somePath",
                 originalItemSpec: "SomeItemSpec",
                 flags: ProjectTreeFlags.HiddenProjectItem,
                 resolved: true,
                 isImplicit: false,
-                properties: ImmutableStringDictionary<string>.EmptyOrdinal.Add("someProp1", "someVal1"),
-                version: "version1\\");
+                properties: ImmutableStringDictionary<string>.EmptyOrdinal.Add("someProp1", "someVal1"));
 
-            Assert.Equal("SomeItemSpec\\version1", model.Id);
-            Assert.Equal("somProvider", model.ProviderType);
+            Assert.Equal("SomeItemSpec", model.Id);
+            Assert.Equal("someProvider", model.ProviderType);
             Assert.Equal("somePath", model.Path);
             Assert.Equal("SomeItemSpec", model.OriginalItemSpec);
             Assert.True(model.Flags.Contains(ProjectTreeFlags.HiddenProjectItem));
@@ -93,17 +101,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         public void Constructor_WhenValidParametersProvided_ResolvedAndImplicit()
         {
             var model = new TestableDependencyModel(
-                providerType: "somProvider",
                 path: "somePath",
                 originalItemSpec: "SomeItemSpec",
                 flags: ProjectTreeFlags.HiddenProjectItem,
                 resolved: true,
                 isImplicit: true,
-                properties: ImmutableStringDictionary<string>.EmptyOrdinal.Add("someProp1", "someVal1"),
-                version: "version1\\");
+                properties: ImmutableStringDictionary<string>.EmptyOrdinal.Add("someProp1", "someVal1"));
 
-            Assert.Equal("SomeItemSpec\\version1", model.Id);
-            Assert.Equal("somProvider", model.ProviderType);
+            Assert.Equal("SomeItemSpec", model.Id);
+            Assert.Equal("someProvider", model.ProviderType);
             Assert.Equal("somePath", model.Path);
             Assert.Equal("SomeItemSpec", model.OriginalItemSpec);
             Assert.True(model.Flags.Contains(ProjectTreeFlags.HiddenProjectItem));
@@ -118,34 +124,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         public void EqualsAndGetHashCode()
         {
             var model1 = new TestableDependencyModel(
-                providerType: "somProvider",
                 path: "somePath",
                 originalItemSpec: "SomeItemSpec1",
                 flags: ProjectTreeFlags.HiddenProjectItem,
                 resolved: true,
                 isImplicit: true,
-                properties: ImmutableStringDictionary<string>.EmptyOrdinal.Add("someProp1", "someVal1"),
-                version: "versio1\\");
+                properties: ImmutableStringDictionary<string>.EmptyOrdinal.Add("someProp1", "someVal1"));
 
             var model2 = new TestableDependencyModel(
-                providerType: "somProvider",
                 path: "somePath",
                 originalItemSpec: "SomeItemSpec1",
                 flags: ProjectTreeFlags.HiddenProjectItem,
                 resolved: true,
                 isImplicit: true,
-                properties: ImmutableStringDictionary<string>.EmptyOrdinal.Add("someProp1", "someVal1"),
-                version: "versio1\\");
+                properties: ImmutableStringDictionary<string>.EmptyOrdinal.Add("someProp1", "someVal1"));
 
             var model3 = new TestableDependencyModel(
-                providerType: "somProvider",
                 path: "somePath",
                 originalItemSpec: "SomeItemSpec2",
                 flags: ProjectTreeFlags.HiddenProjectItem,
                 resolved: true,
                 isImplicit: true,
-                properties: ImmutableStringDictionary<string>.EmptyOrdinal.Add("someProp1", "someVal1"),
-                version: "versio1\\");
+                properties: ImmutableStringDictionary<string>.EmptyOrdinal.Add("someProp1", "someVal1"));
 
             Assert.Equal(model1, model2);
             Assert.NotEqual(model1, model3);
@@ -157,8 +157,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         [Fact]
         public void Visible_True()
         {
-            var dependencyModel = new DependencyModel(
-                providerType: "someProvider",
+            var dependencyModel = new TestableDependencyModel(
                 path: "somePath",
                 originalItemSpec: "someItemSpec",
                 flags: ProjectTreeFlags.Empty,
@@ -172,8 +171,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         [Fact]
         public void Visible_False()
         {
-            var dependencyModel = new DependencyModel(
-                providerType: "someProvider",
+            var dependencyModel = new TestableDependencyModel(
                 path: "somePath",
                 originalItemSpec: "someItemSpec",
                 flags: ProjectTreeFlags.Empty,
@@ -187,8 +185,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         [Fact]
         public void Visible_TrueWhenNotSpecified()
         {
-            var dependencyModel = new DependencyModel(
-                providerType: "someProvider",
+            var dependencyModel = new TestableDependencyModel(
                 path: "somePath",
                 originalItemSpec: "someItemSpec",
                 flags: ProjectTreeFlags.Empty,
@@ -197,23 +194,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 properties: null);
 
             Assert.True(dependencyModel.Visible);
-        }
-
-        private class TestableDependencyModel : DependencyModel
-        {
-            public TestableDependencyModel(
-                string providerType,
-                string path,
-                string originalItemSpec,
-                ProjectTreeFlags flags,
-                bool resolved,
-                bool isImplicit,
-                IImmutableDictionary<string, string> properties,
-                string version)
-                : base(providerType, path, originalItemSpec, flags, resolved, isImplicit, properties)
-            {
-                Version = version;
-            }
         }
     }
 }

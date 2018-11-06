@@ -24,21 +24,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             unresolvedIcon: ManagedImageMonikers.CodeInformationWarning,
             unresolvedExpandedIcon: ManagedImageMonikers.CodeInformationWarning);
 
-        protected override string UnresolvedRuleName => AnalyzerReference.SchemaName;
-        protected override string ResolvedRuleName => ResolvedAnalyzerReference.SchemaName;
+        public AnalyzerRuleHandler()
+            : base(AnalyzerReference.SchemaName, ResolvedAnalyzerReference.SchemaName)
+        {
+        }
+
         public override string ProviderType => ProviderTypeString;
 
         public override IDependencyModel CreateRootDependencyNode()
         {
             return new SubTreeRootDependencyModel(
-                ProviderType,
+                ProviderTypeString,
                 VSResources.AnalyzersNodeName,
                 s_iconSet,
                 DependencyTreeFlags.AnalyzerSubTreeRootNodeFlags);
         }
 
         protected override IDependencyModel CreateDependencyModel(
-            string providerType,
             string path,
             string originalItemSpec,
             bool resolved,
@@ -46,7 +48,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             IImmutableDictionary<string, string> properties)
         {
             return new AnalyzerDependencyModel(
-                providerType,
                 path,
                 originalItemSpec,
                 DependencyTreeFlags.AnalyzerSubTreeNodeFlags,

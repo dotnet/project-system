@@ -288,7 +288,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 id: "someId1",
                 resolved: true);
 
-            var mockSnapshot = ITargetedDependenciesSnapshotFactory.ImplementHasUnresolvedDependency(@"tfm1\providerType\someid1", true);
+            var mockSnapshot = ITargetedDependenciesSnapshotFactory.ImplementHasUnresolvedDependency(@"tfm1\providerType\someid1", hasUnresolvedDependency: true);
 
             var dependency = new Dependency(mockModel1, ITargetFrameworkFactory.Implement("tfm1"), @"C:\Foo\Project.csproj");
 

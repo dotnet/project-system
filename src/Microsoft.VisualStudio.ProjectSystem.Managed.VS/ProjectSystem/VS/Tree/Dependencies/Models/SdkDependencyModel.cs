@@ -23,37 +23,34 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             unresolvedIcon: ManagedImageMonikers.SdkWarning,
             unresolvedExpandedIcon: ManagedImageMonikers.SdkWarning);
 
+        public override DependencyIconSet IconSet => Implicit ? s_implicitIconSet : s_iconSet;
+
+        public override int Priority => Dependency.SdkNodePriority;
+
+        public override string ProviderType => SdkRuleHandler.ProviderTypeString;
+
+        public override string SchemaItemType => SdkReference.PrimaryDataSourceItemType;
+
+        public override string SchemaName => Resolved ? ResolvedSdkReference.SchemaName : SdkReference.SchemaName;
+
+        public override string Version { get; }
+
         public SdkDependencyModel(
-            string providerType,
             string path,
             string originalItemSpec,
             ProjectTreeFlags flags,
             bool resolved,
             bool isImplicit,
             IImmutableDictionary<string, string> properties)
-            : base(providerType, path, originalItemSpec, flags, resolved, isImplicit, properties)
+            : base(path, originalItemSpec, flags, resolved, isImplicit, properties)
         {
             Flags = Flags.Union(DependencyTreeFlags.SupportsHierarchy);
-
-            if (Resolved)
-            {
-                SchemaName = ResolvedSdkReference.SchemaName;
-            }
-            else
-            {
-                SchemaName = SdkReference.SchemaName;
-            }
-
-            SchemaItemType = SdkReference.PrimaryDataSourceItemType;
-            Priority = Dependency.SdkNodePriority;
-            IconSet = isImplicit ? s_implicitIconSet : s_iconSet;
             Version = properties != null && properties.ContainsKey(ProjectItemMetadata.Version)
-                        ? properties[ProjectItemMetadata.Version] : string.Empty;
+                ? properties[ProjectItemMetadata.Version] 
+                : string.Empty;
             string baseCaption = Path.Split(Delimiter.Comma, StringSplitOptions.RemoveEmptyEntries)
-                                .FirstOrDefault();
+                .FirstOrDefault();
             Caption = string.IsNullOrEmpty(Version) ? baseCaption : $"{baseCaption} ({Version})";
         }
-
-        public override string Id => OriginalItemSpec;
     }
 }

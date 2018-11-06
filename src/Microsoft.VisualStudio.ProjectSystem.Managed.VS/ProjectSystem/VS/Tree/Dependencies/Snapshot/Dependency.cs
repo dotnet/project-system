@@ -3,9 +3,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Immutable;
-using System.Diagnostics;
 using System.Globalization;
-using System.Linq;
 using System.Text;
 
 using Microsoft.VisualStudio.Imaging.Interop;
@@ -16,8 +14,7 @@ using Microsoft.VisualStudio.Text;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
-    [DebuggerDisplay("{" + nameof(Id) + ",nq}")]
-    internal class Dependency : IDependency
+    internal sealed class Dependency : IDependency
     {
         private static readonly ConcurrentBag<StringBuilder> s_builderPool = new ConcurrentBag<StringBuilder>();
         private static readonly DependencyIconSetCache s_iconSetCache = new DependencyIconSetCache();
@@ -92,10 +89,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 IconSet = s_iconSetCache.GetOrAddIconSet(dependencyModel.Icon, dependencyModel.ExpandedIcon, dependencyModel.UnresolvedIcon, dependencyModel.UnresolvedExpandedIcon);
             }
 
-            Properties = dependencyModel.Properties ??
-                            ImmutableStringDictionary<string>.EmptyOrdinal
-                                                             .Add(Folder.IdentityProperty, Caption)
-                                                             .Add(Folder.FullPathProperty, Path);
+            Properties = dependencyModel.Properties
+                ?? ImmutableStringDictionary<string>.EmptyOrdinal
+                     .Add(Folder.IdentityProperty, Caption)
+                     .Add(Folder.FullPathProperty, Path);
+
             if (dependencyModel.DependencyIDs == null)
             {
                 DependencyIDs = ImmutableList<string>.Empty;
@@ -120,7 +118,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             _modelId = modelId;
             _fullPath = model._fullPath; // Grab the cached value if we've already created it
 
-            if (model.DependencyIDs != null && model.DependencyIDs.Any())
+            if (model.DependencyIDs != null && model.DependencyIDs.Count != 0)
             {
                 DependencyIDs = model.DependencyIDs;
             }
@@ -151,9 +149,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         }
 
         public string ProviderType { get; }
-        public string Name { get; protected set; }
-        public string OriginalItemSpec { get; protected set; }
-        public string Path { get; protected set; }
+        public string Name { get; }
+        public string OriginalItemSpec { get; }
+        public string Path { get; }
         public string FullPath
         {
             get
@@ -168,8 +166,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 return _fullPath;
             }
         }
-        public string SchemaName { get; protected set; }
-        private string _schemaItemType;
+
+        public string SchemaName { get; private set; }
+
+        private readonly string _schemaItemType;
+
         public string SchemaItemType
         {
             get
@@ -181,10 +182,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 // tracking issue: https://github.com/dotnet/roslyn-project-system/issues/1102
                 bool isGenericNodeType = Flags.Contains(DependencyTreeFlags.GenericDependencyFlags);
                 return isGenericNodeType ? _schemaItemType : Folder.PrimaryDataSourceItemType;
-            }
-            protected set
-            {
-                _schemaItemType = value;
             }
         }
 
@@ -272,7 +269,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             => obj is IDependency other && Equals(other);
 
         public bool Equals(IDependency other) 
-            => other != null && other.Id.Equals(Id, StringComparison.OrdinalIgnoreCase);
+            => StringComparer.OrdinalIgnoreCase.Equals(Id, other?.Id);
 
         public static bool operator ==(Dependency left, Dependency right)
             => left is null ? right is null : left.Equals(right);
@@ -293,18 +290,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             => left is null ? right is null : left.CompareTo(right) >= 0;
 
         public int CompareTo(IDependency other)
-        {
-            if (other == null)
-            {
-                return 1;
-            }
-
-            return StringComparer.OrdinalIgnoreCase.Compare(Id, other.Id);
-        }
+            => StringComparer.OrdinalIgnoreCase.Compare(Id, other?.Id);
 
         public override string ToString()
         {
-            return Id;
+            // Used for debugging only
+
+            var sb = new StringBuilder();
+
+            sb.Append("Id=\"").Append(Id).Append('"');
+
+            if (Resolved) sb.Append(" Resolved");
+            if (TopLevel) sb.Append(" TopLevel");
+            if (Implicit) sb.Append(" Implicit");
+            if (Visible)  sb.Append(" Visible");
+
+            return sb.ToString();
         }
 
         private static string GetAlias(IDependency dependency)
@@ -348,7 +349,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             int index = targetFramework.ShortName.Length;
             if (id[index++] != '\\')
                 return false;
-            if (string.Compare(id, index, providerType, 0, providerType.Length, StringComparison.OrdinalIgnoreCase) != 0)
+            if (string.Compare(id, index, providerType, 0, providerType.Length, StringComparisons.DependencyProviderTypes) != 0)
                 return false;
             index += providerType.Length;
             if (id[index++] != '\\')

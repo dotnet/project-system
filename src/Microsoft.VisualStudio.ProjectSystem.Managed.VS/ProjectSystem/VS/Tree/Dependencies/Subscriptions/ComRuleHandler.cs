@@ -23,21 +23,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             unresolvedIcon: ManagedImageMonikers.ComponentWarning,
             unresolvedExpandedIcon: ManagedImageMonikers.ComponentWarning);
 
-        protected override string UnresolvedRuleName => ComReference.SchemaName;
-        protected override string ResolvedRuleName => ResolvedCOMReference.SchemaName;
+        public ComRuleHandler()
+            : base(ComReference.SchemaName, ResolvedCOMReference.SchemaName)
+        {
+        }
+
         public override string ProviderType => ProviderTypeString;
 
         public override IDependencyModel CreateRootDependencyNode()
         {
             return new SubTreeRootDependencyModel(
-                ProviderType,
+                ProviderTypeString,
                 VSResources.ComNodeName,
                 s_iconSet,
                 DependencyTreeFlags.ComSubTreeRootNodeFlags);
         }
 
         protected override IDependencyModel CreateDependencyModel(
-            string providerType,
             string path,
             string originalItemSpec,
             bool resolved,
@@ -45,7 +47,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             IImmutableDictionary<string, string> properties)
         {
             return new ComDependencyModel(
-                providerType,
                 path,
                 originalItemSpec,
                 DependencyTreeFlags.ComSubTreeNodeFlags,

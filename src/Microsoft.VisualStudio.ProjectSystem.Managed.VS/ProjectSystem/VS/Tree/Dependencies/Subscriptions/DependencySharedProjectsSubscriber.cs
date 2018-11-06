@@ -21,10 +21,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
     [AppliesTo(ProjectCapability.DependenciesTree)]
     internal class DependencySharedProjectsSubscriber : OnceInitializedOnceDisposed, IDependencyCrossTargetSubscriber
     {
-#pragma warning disable CA2213 // OnceInitializedOnceDisposedAsync are not tracked corretly by the IDisposeable analyzer
+#pragma warning disable CA2213 // OnceInitializedOnceDisposedAsync are not tracked correctly by the IDisposeable analyzer
         private readonly SemaphoreSlim _gate = new SemaphoreSlim(initialCount: 1);
 #pragma warning restore CA2213
-        private readonly List<IDisposable> _subscriptionLinks;
+        private readonly List<IDisposable> _subscriptionLinks = new List<IDisposable>();
         private readonly IProjectAsynchronousTasksService _tasksService;
         private readonly IDependenciesSnapshotProvider _dependenciesSnapshotProvider;
         private ICrossTargetSubscriptionsHost _host;
@@ -32,13 +32,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         [ImportingConstructor]
         public DependencySharedProjectsSubscriber(
             IUnconfiguredProjectCommonServices commonServices,
-            [Import(ExportContractNames.Scopes.UnconfiguredProject)]IProjectAsynchronousTasksService tasksService,
+            [Import(ExportContractNames.Scopes.UnconfiguredProject)] IProjectAsynchronousTasksService tasksService,
             IDependenciesSnapshotProvider dependenciesSnapshotProvider)
             : base(synchronousDisposal: true)
         {
             _tasksService = tasksService;
             _dependenciesSnapshotProvider = dependenciesSnapshotProvider;
-            _subscriptionLinks = new List<IDisposable>();
         }
 
         public void InitializeSubscriber(ICrossTargetSubscriptionsHost host, IProjectSubscriptionService subscriptionService)
@@ -70,6 +69,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
         private void SubscribeToConfiguredProject(IProjectSubscriptionService subscriptionService)
         {
+            // Use an intermediate buffer block for project rule data to allow subsequent blocks
+            // to only observe specific rule name(s).
+
             var intermediateBlock =
                 new BufferBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(
                     new ExecutionDataflowBlockOptions()
@@ -85,8 +87,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                     linkOptions: DataflowOption.PropagateCompletion));
 
             var actionBlock =
-                DataflowBlockSlim.CreateActionBlock<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectSharedFoldersSnapshot, IProjectCatalogSnapshot>>>
-                    (e => OnProjectChangedAsync(e),
+                DataflowBlockSlim.CreateActionBlock<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectSharedFoldersSnapshot, IProjectCatalogSnapshot>>>(
+                    e => OnProjectChangedAsync(e.Value),
                     new ExecutionDataflowBlockOptions()
                     {
                         NameFormat = "Dependencies Shared Projects Input: {1}"
@@ -100,8 +102,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                 linkOptions: DataflowOption.PropagateCompletion));
         }
 
-        private async Task OnProjectChangedAsync(
-            IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectSharedFoldersSnapshot, IProjectCatalogSnapshot>> e)
+        private async Task OnProjectChangedAsync(Tuple<IProjectSubscriptionUpdate, IProjectSharedFoldersSnapshot, IProjectCatalogSnapshot> e)
         {
             if (IsDisposing || IsDisposed)
             {
@@ -110,20 +111,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
             EnsureInitialized();
 
-
-            await _tasksService.LoadedProjectAsync(async () =>
+            await _tasksService.LoadedProjectAsync(() =>
             {
-                if (_tasksService.UnloadCancellationToken.IsCancellationRequested)
-                {
-                    return;
-                }
+                _tasksService.UnloadCancellationToken.ThrowIfCancellationRequested();
 
-                await HandleAsync(e);
+                return HandleAsync(e);
             });
         }
 
-        private async Task HandleAsync(
-            IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectSharedFoldersSnapshot, IProjectCatalogSnapshot>> e)
+        private async Task HandleAsync(Tuple<IProjectSubscriptionUpdate, IProjectSharedFoldersSnapshot, IProjectCatalogSnapshot> e)
         {
             AggregateCrossTargetProjectContext currentAggregateContext = await _host.GetCurrentAggregateProjectContext();
             if (currentAggregateContext == null)
@@ -131,9 +127,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                 return;
             }
 
-            IProjectSubscriptionUpdate projectUpdate = e.Value.Item1;
-            IProjectSharedFoldersSnapshot sharedProjectsUpdate = e.Value.Item2;
-            IProjectCatalogSnapshot catalogs = e.Value.Item3;
+            IProjectSubscriptionUpdate projectUpdate = e.Item1;
+            IProjectSharedFoldersSnapshot sharedProjectsUpdate = e.Item2;
+            IProjectCatalogSnapshot catalogs = e.Item3;
 
             // We need to process the update within a lock to ensure that we do not release this context during processing.
             // TODO: Enable concurrent execution of updates themselves, i.e. two separate invocations of HandleAsync
@@ -143,13 +139,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                 // Get the inner workspace project context to update for this change.
                 ITargetedProjectContext projectContextToUpdate = currentAggregateContext
                     .GetInnerProjectContext(projectUpdate.ProjectConfiguration, out bool isActiveContext);
+
                 if (projectContextToUpdate == null)
                 {
                     return;
                 }
 
                 var dependencyChangeContext = new DependenciesRuleChangeContext(
-                        currentAggregateContext.ActiveProjectContext.TargetFramework, catalogs);
+                    currentAggregateContext.ActiveProjectContext.TargetFramework, 
+                    catalogs);
 
                 ProcessSharedProjectsUpdates(sharedProjectsUpdate, projectContextToUpdate, dependencyChangeContext);
 
@@ -185,7 +183,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             IEnumerable<string> addedSharedImportPaths = sharedFolderProjectPaths.Except(currentSharedImportNodePaths);
             foreach (string addedSharedImportPath in addedSharedImportPaths)
             {
-                IDependencyModel added = CreateDependencyModel(addedSharedImportPath, targetContext.TargetFramework, resolved: true);
+                IDependencyModel added = CreateDependencyModel(addedSharedImportPath, resolved: true);
                 dependencyChangeContext.IncludeAddedChange(targetContext.TargetFramework, added);
             }
 
@@ -193,33 +191,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             IEnumerable<string> removedSharedImportPaths = currentSharedImportNodePaths.Except(sharedFolderProjectPaths);
             foreach (string removedSharedImportPath in removedSharedImportPaths)
             {
-                IDependency existingImportNode = currentSharedImportNodes
-                    .Where(node => PathHelper.IsSamePath(node.Path, removedSharedImportPath))
-                    .FirstOrDefault();
+                bool exists = currentSharedImportNodes.Any(node => PathHelper.IsSamePath(node.Path, removedSharedImportPath));
 
-                if (existingImportNode != null)
+                if (exists)
                 {
-                    IDependencyModel removed = CreateDependencyModel(removedSharedImportPath, targetContext.TargetFramework, resolved: true);
+                    IDependencyModel removed = CreateDependencyModel(removedSharedImportPath, resolved: true);
                     dependencyChangeContext.IncludeRemovedChange(targetContext.TargetFramework, removed);
                 }
             }
         }
 
-        private static IDependencyModel CreateDependencyModel(
-                    string itemSpec,
-                    ITargetFramework targetFramework,
-                    bool resolved)
+        private static IDependencyModel CreateDependencyModel(string itemSpec, bool resolved)
         {
-            ImmutableDictionary<string, string> properties = ImmutableStringDictionary<string>.EmptyOrdinal;
-
             return new SharedProjectDependencyModel(
-                ProjectRuleHandler.ProviderTypeString,
                 itemSpec,
                 itemSpec,
                 DependencyTreeFlags.ProjectNodeFlags,
                 resolved,
                 false,
-                properties);
+                properties: ImmutableStringDictionary<string>.EmptyOrdinal);
         }
 
         public event EventHandler<DependencySubscriptionChangedEventArgs> DependenciesChanged;

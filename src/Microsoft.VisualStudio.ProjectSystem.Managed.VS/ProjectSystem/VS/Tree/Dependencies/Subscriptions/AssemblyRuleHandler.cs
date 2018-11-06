@@ -24,21 +24,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             unresolvedIcon: KnownMonikers.ReferenceWarning,
             unresolvedExpandedIcon: KnownMonikers.ReferenceWarning);
 
-        protected override string UnresolvedRuleName => AssemblyReference.SchemaName;
-        protected override string ResolvedRuleName => ResolvedAssemblyReference.SchemaName;
+        public AssemblyRuleHandler()
+            : base(AssemblyReference.SchemaName, ResolvedAssemblyReference.SchemaName)
+        {
+        }
+
         public override string ProviderType => ProviderTypeString;
 
         public override IDependencyModel CreateRootDependencyNode()
         {
             return new SubTreeRootDependencyModel(
-                ProviderType,
+                ProviderTypeString,
                 VSResources.AssembliesNodeName,
                 s_iconSet,
                 DependencyTreeFlags.AssemblySubTreeRootNodeFlags);
         }
 
         protected override IDependencyModel CreateDependencyModel(
-            string providerType,
             string path,
             string originalItemSpec,
             bool resolved,
@@ -46,7 +48,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             IImmutableDictionary<string, string> properties)
         {
             return new AssemblyDependencyModel(
-                providerType,
                 path,
                 originalItemSpec,
                 DependencyTreeFlags.AssemblySubTreeNodeFlags,

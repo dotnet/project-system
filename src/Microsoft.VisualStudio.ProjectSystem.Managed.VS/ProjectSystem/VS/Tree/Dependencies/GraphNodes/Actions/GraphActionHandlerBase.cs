@@ -11,9 +11,9 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.Actions
 {
-    internal class GraphActionHandlerBase : IDependenciesGraphActionHandler
+    internal abstract class GraphActionHandlerBase : IDependenciesGraphActionHandler
     {
-        public GraphActionHandlerBase(IDependenciesGraphBuilder builder,
+        protected GraphActionHandlerBase(IDependenciesGraphBuilder builder,
                                       IAggregateDependenciesSnapshotProvider aggregateSnapshotProvider)
         {
             Builder = builder;
@@ -43,15 +43,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
             return false;
         }
 
-        public virtual bool HandleChanges(IGraphContext graphContext, SnapshotChangedEventArgs changes)
+        public virtual bool HandleChanges(IGraphContext graphContext, SnapshotChangedEventArgs e)
         {
             return false;
         }
 
-        protected IDependency GetDependency(
-            IGraphContext graphContext,
-            GraphNode inputGraphNode,
-            out IDependenciesSnapshot snapshot)
+        protected IDependency GetDependency(GraphNode inputGraphNode, out IDependenciesSnapshot snapshot)
         {
             snapshot = null;
 

@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 
 using Microsoft.VisualStudio.GraphModel;
@@ -38,8 +39,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
             dependencyGraphNode.SetValue(DependenciesGraphSchema.DependencyIdProperty, dependency.Id);
             dependencyGraphNode.SetValue(DependenciesGraphSchema.ResolvedProperty, dependency.Resolved);
 
-            IEnumerable<IDependency> children = targetedSnapshot.GetDependencyChildren(dependency);
-            if (children == null)
+            ImmutableArray<IDependency> children = targetedSnapshot.GetDependencyChildren(dependency);
+            if (children.IsEmpty)
             {
                 return;
             }

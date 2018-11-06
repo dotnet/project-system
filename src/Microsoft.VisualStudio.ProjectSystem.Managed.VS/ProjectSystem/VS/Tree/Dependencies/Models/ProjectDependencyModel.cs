@@ -4,6 +4,7 @@ using System.Collections.Immutable;
 
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
+using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 {
@@ -21,31 +22,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             unresolvedIcon: ManagedImageMonikers.ApplicationWarning,
             unresolvedExpandedIcon: ManagedImageMonikers.ApplicationWarning);
 
+        public override DependencyIconSet IconSet => Implicit ? s_implicitIconSet : s_iconSet;
+
+        public override int Priority => Dependency.ProjectNodePriority;
+
+        public override string ProviderType => ProjectRuleHandler.ProviderTypeString;
+
+        public override string SchemaItemType => ProjectReference.PrimaryDataSourceItemType;
+
+        public override string SchemaName => Resolved ? ResolvedProjectReference.SchemaName : ProjectReference.SchemaName;
+
         public ProjectDependencyModel(
-            string providerType,
             string path,
             string originalItemSpec,
             ProjectTreeFlags flags,
             bool resolved,
             bool isImplicit,
             IImmutableDictionary<string, string> properties)
-            : base(providerType, path, originalItemSpec, flags, resolved, isImplicit, properties)
+            : base(path, originalItemSpec, flags, resolved, isImplicit, properties)
         {
             Flags = Flags.Union(DependencyTreeFlags.SupportsHierarchy);
-
-            if (Resolved)
-            {
-                SchemaName = ResolvedProjectReference.SchemaName;
-            }
-            else
-            {
-                SchemaName = ProjectReference.SchemaName;
-            }
-
             Caption = System.IO.Path.GetFileNameWithoutExtension(Name);
-            SchemaItemType = ProjectReference.PrimaryDataSourceItemType;
-            Priority = Dependency.ProjectNodePriority;
-            IconSet = isImplicit ? s_implicitIconSet : s_iconSet;
         }
     }
 }

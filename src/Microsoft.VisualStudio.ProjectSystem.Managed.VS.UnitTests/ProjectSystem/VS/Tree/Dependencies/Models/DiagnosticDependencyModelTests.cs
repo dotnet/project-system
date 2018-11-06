@@ -4,6 +4,7 @@ using System.Collections.Immutable;
 
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
+using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions;
 
 using Xunit;
 
@@ -18,7 +19,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             var flag = ProjectTreeFlags.Create("MyCustomFlag");
             var model = new DiagnosticDependencyModel(
-                "myProvider",
                 "myOriginalItemSpec",
                 DiagnosticMessageSeverity.Error,
                 "nu1002",
@@ -27,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 isVisible: true,
                 properties: properties);
 
-            Assert.Equal("myProvider", model.ProviderType);
+            Assert.Equal(PackageRuleHandler.ProviderTypeString, model.ProviderType);
             Assert.Equal("myOriginalItemSpec", model.Path);
             Assert.Equal("myOriginalItemSpec", model.OriginalItemSpec);
             Assert.Equal("myOriginalItemSpec", model.Id);
@@ -55,7 +55,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             var flag = ProjectTreeFlags.Create("MyCustomFlag");
             var model = new DiagnosticDependencyModel(
-                 "myProvider",
                  "myOriginalItemSpec",
                  DiagnosticMessageSeverity.Warning,
                  "nu1002",
@@ -64,7 +63,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                  isVisible: true,
                  properties: properties);
 
-            Assert.Equal("myProvider", model.ProviderType);
+            Assert.Equal(PackageRuleHandler.ProviderTypeString, model.ProviderType);
             Assert.Equal("myOriginalItemSpec", model.Path);
             Assert.Equal("myOriginalItemSpec", model.OriginalItemSpec);
             Assert.Equal("myOriginalItemSpec", model.Id);

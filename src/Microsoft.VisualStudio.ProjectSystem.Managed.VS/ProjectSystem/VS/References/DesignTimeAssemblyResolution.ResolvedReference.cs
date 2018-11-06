@@ -6,7 +6,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
 {
     internal partial class DesignTimeAssemblyResolution
     {
-        private struct ResolvedReference
+        private readonly struct ResolvedReference
         {
             public ResolvedReference(string resolvedPath, Version version)
             {

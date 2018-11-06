@@ -134,6 +134,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         {
             if (initialized)
             {
+                _taskDelayScheduler?.Dispose();
                 _treeWatcher.Dispose();
                 await UnregisterFileWatcherIfAnyAsync();
             }
@@ -209,6 +210,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             if (projectLockJsonFilePath != null)
             {
                 _previousContentsHash = GetFileHashOrNull(projectLockJsonFilePath);
+                _taskDelayScheduler?.Dispose();
                 _taskDelayScheduler = new TaskDelayScheduler(
                     s_notifyDelay,
                     _projectServices.ThreadingService,
@@ -255,7 +257,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             return _watchedFileResetCancellationToken.Token;
         }
 
-        private async Task HandleFileChangedAsync(CancellationToken cancellationToken = default)
+        private async Task HandleFileChangedAsync(CancellationToken cancellationToken)
         {
             try
             {

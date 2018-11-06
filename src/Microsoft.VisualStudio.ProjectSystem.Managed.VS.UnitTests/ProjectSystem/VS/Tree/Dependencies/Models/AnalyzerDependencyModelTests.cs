@@ -5,6 +5,7 @@ using System.Collections.Immutable;
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
+using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions;
 
 using Xunit;
 
@@ -19,7 +20,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             var flag = ProjectTreeFlags.Create("MyCustomFlag");
             var model = new AnalyzerDependencyModel(
-                "myProvider",
                 "c:\\myPath",
                 "myOriginalItemSpec",
                 flags: flag,
@@ -27,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 isImplicit: false,
                 properties: properties);
 
-            Assert.Equal("myProvider", model.ProviderType);
+            Assert.Equal(AnalyzerRuleHandler.ProviderTypeString, model.ProviderType);
             Assert.Equal("c:\\myPath", model.Path);
             Assert.Equal("myOriginalItemSpec", model.OriginalItemSpec);
             Assert.Equal("myPath", model.Caption);
@@ -51,7 +51,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             var flag = ProjectTreeFlags.Create("MyCustomFlag");
             var model = new AnalyzerDependencyModel(
-                "myProvider",
                 "c:\\myPath",
                 "myOriginalItemSpec",
                 flags: flag,
@@ -59,7 +58,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 isImplicit: false,
                 properties: properties);
 
-            Assert.Equal("myProvider", model.ProviderType);
+            Assert.Equal(AnalyzerRuleHandler.ProviderTypeString, model.ProviderType);
             Assert.Equal("c:\\myPath", model.Path);
             Assert.Equal("myOriginalItemSpec", model.OriginalItemSpec);
             Assert.Equal("c:\\myPath", model.Caption);
@@ -83,7 +82,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             var flag = ProjectTreeFlags.Create("MyCustomFlag");
             var model = new AnalyzerDependencyModel(
-                "myProvider",
                 "c:\\myPath",
                 "myOriginalItemSpec",
                 flags: flag,
@@ -91,7 +89,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 isImplicit: true,
                 properties: properties);
 
-            Assert.Equal("myProvider", model.ProviderType);
+            Assert.Equal(AnalyzerRuleHandler.ProviderTypeString, model.ProviderType);
             Assert.Equal("c:\\myPath", model.Path);
             Assert.Equal("myOriginalItemSpec", model.OriginalItemSpec);
             Assert.Equal("myPath", model.Caption);
