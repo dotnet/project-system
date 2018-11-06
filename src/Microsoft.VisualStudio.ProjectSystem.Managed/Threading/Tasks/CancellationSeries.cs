@@ -28,14 +28,23 @@ namespace Microsoft.VisualStudio.Threading.Tasks
         public CancellationSeries(CancellationToken token = default)
         {
             _superToken = token;
+
+#if DEBUG
+            _ctorStack = new StackTrace();
+#endif
         }
 
 #if DEBUG
+        private readonly StackTrace _ctorStack;
+
         ~CancellationSeries()
         {
             Debug.Assert(
                 Environment.HasShutdownStarted || _cts == null,
-                "Instance of CancellationSeries not disposed before being finalized");
+                "Instance of CancellationSeries not disposed before being finalized",
+                "Stack at construction:{0}{1}",
+                Environment.NewLine,
+                _ctorStack);
         }
 #endif
 
