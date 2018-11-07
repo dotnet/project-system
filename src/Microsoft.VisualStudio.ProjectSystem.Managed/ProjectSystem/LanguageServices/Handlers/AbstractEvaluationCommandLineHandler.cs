@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Linq;
 
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.Logging;
@@ -114,7 +113,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             if (!difference.AnyChanges)
                 return;
 
-            difference = NormalizeDifferences(difference);
+            difference = HandlerServices.NormalizeRenames(difference);
             EnqueueProjectEvaluation(version, difference);
 
             ApplyChangesToContext(version, difference, metadata, isActiveContext, logger);
@@ -144,7 +143,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             if (!difference.AnyChanges)
                 return;
 
-            difference = NormalizeDifferences(difference);
+            difference = HandlerServices.NormalizeRenames(difference);
             difference = ResolveProjectBuildConflicts(version, difference);
 
             ApplyChangesToContext(version, difference, ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal, isActiveContext, logger);
@@ -253,22 +252,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             Assumes.False(_projectEvaluations.Count > 0 && version.IsEarlierThanOrEqualTo(_projectEvaluations.Peek().Version), "Attempted to push a project evaluation that regressed in version.");
 
             _projectEvaluations.Enqueue(new VersionedProjectChangeDiff(version, evaluationDifference));
-        }
-
-        private static IProjectChangeDiff NormalizeDifferences(IProjectChangeDiff difference)
-        {
-            // Optimize for common case
-            if (difference.RenamedItems.Count == 0)
-                return difference;
-
-            // Treat renamed items as just as an Add and Remove, makes finding conflicts easier
-            IEnumerable<string> renamedNewNames = difference.RenamedItems.Select(r => r.Value);
-            IEnumerable<string> renamedOldNames = difference.RenamedItems.Select(e => e.Key);
-
-            IImmutableSet<string> added = difference.AddedItems.Union(renamedNewNames);
-            IImmutableSet<string> removed = difference.RemovedItems.Union(renamedOldNames);
-
-            return new ProjectChangeDiff(added, removed, difference.ChangedItems);
         }
     }
 }

@@ -59,7 +59,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
         protected override void AddToContext(string fullPath, IImmutableDictionary<string, string> metadata, bool isActiveContext, IProjectLogger logger)
         {
-            string[] folderNames = GetFolderNames(fullPath, metadata);
+            string[] folderNames = FileItemServices.GetLogicalFolderNames(Path.GetDirectoryName(_project.FullPath), fullPath, metadata);
 
             logger.WriteLine("Adding source file '{0}'", fullPath);
             Context.AddSourceFile(fullPath, isInCurrentContext: isActiveContext, folderNames: folderNames);
@@ -69,43 +69,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         {
             logger.WriteLine("Removing source file '{0}'", fullPath);
             Context.RemoveSourceFile(fullPath);
-        }
-
-        private string[] GetFolderNames(string fullPath, IImmutableDictionary<string, string> metadata)
-        {
-            // Roslyn wants the effective set of folders from the source up to, but not including the project 
-            // root to handle the cases where linked files have a different path in the tree than what its path 
-            // on disk is. It uses these folders for code actions that create files alongside others, such as 
-            // extract interface.
-
-            // First we check for a linked item, and we use its effective folder in 
-            // the tree, otherwise, we just use the parent folder of the file itself
-            string parentFolder = GetLinkedParentFolder(metadata);
-            if (parentFolder == null)
-                parentFolder = GetParentFolder(fullPath);
-
-            // We now have a folder in the form of `Folder1\Folder2` relative to the
-            // project directory  split it up into individual path components
-            if (parentFolder.Length > 0)
-            {
-                return parentFolder.Split(FileItemServices.PathSeparatorCharacters);
-            }
-
-            return null;
-        }
-
-        private static string GetLinkedParentFolder(IImmutableDictionary<string, string> metadata)
-        {
-            string linkFilePath = FileItemServices.GetLinkFilePath(metadata);
-            if (linkFilePath != null)
-                return Path.GetDirectoryName(linkFilePath);
-
-            return null;
-        }
-
-        private string GetParentFolder(string fullPath)
-        {
-            return Path.GetDirectoryName(_project.MakeRelative(fullPath));
         }
 
         private IProjectChangeDiff ConvertToProjectDiff(BuildOptions added, BuildOptions removed)
