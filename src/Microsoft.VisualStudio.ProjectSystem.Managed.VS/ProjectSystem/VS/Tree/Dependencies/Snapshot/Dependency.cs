@@ -164,6 +164,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 }
 
                 return _fullPath;
+
+                string GetFullPath(string originalItemSpec, string containingProjectPath)
+                {
+                    if (string.IsNullOrEmpty(originalItemSpec) || ManagedPathHelper.IsRooted(originalItemSpec))
+                        return originalItemSpec ?? string.Empty;
+
+                    return ManagedPathHelper.TryMakeRooted(containingProjectPath, originalItemSpec);
+                }
             }
         }
 
@@ -191,7 +199,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         public bool TopLevel { get; }
         public bool Implicit { get; private set; }
         public bool Visible { get; }
-
 
         public ImageMoniker Icon => IconSet.Icon;
         public ImageMoniker ExpandedIcon => IconSet.ExpandedIcon;
@@ -405,14 +412,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                     s_builderPool.Add(sb);
                 }
             }
-        }
-
-        private static string GetFullPath(string originalItemSpec, string containingProjectPath)
-        {
-            if (string.IsNullOrEmpty(originalItemSpec) || ManagedPathHelper.IsRooted(originalItemSpec))
-                return originalItemSpec ?? string.Empty;
-
-            return ManagedPathHelper.TryMakeRooted(containingProjectPath, originalItemSpec);
         }
     }
 }
