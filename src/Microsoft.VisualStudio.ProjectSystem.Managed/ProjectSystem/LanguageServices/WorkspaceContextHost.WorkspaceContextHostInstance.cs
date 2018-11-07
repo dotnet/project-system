@@ -118,15 +118,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             private Task ApplyProjectChangesUnderLockAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> update, bool evaluation, CancellationToken cancellationToken)
             {
-                bool isActiveContext = _activeWorkspaceProjectContextTracker.IsActiveContext(_contextAccessor.Context);
+                IWorkspaceProjectContext context = _contextAccessor.Context;
 
-                if (evaluation)
+                context.StartBatch();
+
+                try
                 {
-                    return _applyChangesToWorkspaceContext.Value.ApplyProjectEvaluationAsync(update, isActiveContext, cancellationToken);
+                    bool isActiveContext = _activeWorkspaceProjectContextTracker.IsActiveContext(context);
+
+                    if (evaluation)
+                    {
+                        return _applyChangesToWorkspaceContext.Value.ApplyProjectEvaluationAsync(update, isActiveContext, cancellationToken);
+                    }
+                    else
+                    {
+                        return _applyChangesToWorkspaceContext.Value.ApplyProjectBuildAsync(update, isActiveContext, cancellationToken);
+                    }
                 }
-                else
+                finally
                 {
-                    return _applyChangesToWorkspaceContext.Value.ApplyProjectBuildAsync(update, isActiveContext, cancellationToken);
+                    context.EndBatch();
                 }
             }
 

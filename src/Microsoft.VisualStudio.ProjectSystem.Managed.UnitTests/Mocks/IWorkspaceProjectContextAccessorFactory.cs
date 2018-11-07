@@ -33,7 +33,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
         public static IWorkspaceProjectContextAccessor Create()
         {
-            return Mock.Of<IWorkspaceProjectContextAccessor>();
+            var context = IWorkspaceProjectContextMockFactory.Create();
+
+            return ImplementContext(context);
         }
     }
 }
