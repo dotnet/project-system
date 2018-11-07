@@ -52,7 +52,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             if (context == null)
                 return null;
 
-            return new WorkspaceProjectContextAccessor(data.WorkspaceProjectContextId, context, _threadingService);
+            return new WorkspaceProjectContextAccessor(data.WorkspaceProjectContextId, context);
         }
 
         public async Task ReleaseProjectContextAsync(IWorkspaceProjectContextAccessor accessor)
