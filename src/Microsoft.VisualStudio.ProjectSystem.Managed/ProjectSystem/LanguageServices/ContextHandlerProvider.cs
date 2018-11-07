@@ -86,9 +86,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             // Factory                                             EvaluationRuleName                  Description
 
             // Evaluation and Command-line
-            (project => new SourceItemHandler(project),            Compile.SchemaName),                // <Compile /> item
+            (project => new SourceItemHandler(project),            Compile.SchemaName),                // <Compile /> items
 
             // Evaluation only
+            (project => new DynamicItemHandler(project),           Content.SchemaName),                // <Content Include="*.cshtml" />  items
             (project => new ProjectPropertiesItemHandler(project), ConfigurationGeneral.SchemaName),   // <ProjectGuid>, <TargetPath> properties
 
             // Command-line only
