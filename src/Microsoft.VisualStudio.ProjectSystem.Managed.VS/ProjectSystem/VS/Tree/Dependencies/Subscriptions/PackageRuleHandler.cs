@@ -25,6 +25,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             unresolvedIcon: ManagedImageMonikers.NuGetGreyWarning,
             unresolvedExpandedIcon: ManagedImageMonikers.NuGetGreyWarning);
 
+        private static readonly SubTreeRootDependencyModel s_rootModel = new SubTreeRootDependencyModel(
+            ProviderTypeString,
+            VSResources.NuGetPackagesNodeName,
+            s_iconSet,
+            DependencyTreeFlags.NuGetSubTreeRootNodeFlags);
+
         [ImportingConstructor]
         public PackageRuleHandler(ITargetFrameworkProvider targetFrameworkProvider)
             : base(PackageReference.SchemaName, ResolvedPackageReference.SchemaName)
@@ -221,14 +227,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             }
         }
 
-        public override IDependencyModel CreateRootDependencyNode()
-        {
-            return new SubTreeRootDependencyModel(
-                ProviderType,
-                VSResources.NuGetPackagesNodeName,
-                s_iconSet,
-                DependencyTreeFlags.NuGetSubTreeRootNodeFlags);
-        }
+        public override IDependencyModel CreateRootDependencyNode() => s_rootModel;
 
         private static PackageDependencyMetadata CreateUnresolvedMetadata(
             string itemSpec,

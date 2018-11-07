@@ -24,6 +24,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             unresolvedIcon: ManagedImageMonikers.CodeInformationWarning,
             unresolvedExpandedIcon: ManagedImageMonikers.CodeInformationWarning);
 
+        private static readonly SubTreeRootDependencyModel s_rootModel = new SubTreeRootDependencyModel(
+            ProviderTypeString,
+            VSResources.AnalyzersNodeName,
+            s_iconSet,
+            DependencyTreeFlags.AnalyzerSubTreeRootNodeFlags);
+
         public AnalyzerRuleHandler()
             : base(AnalyzerReference.SchemaName, ResolvedAnalyzerReference.SchemaName)
         {
@@ -31,14 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
         public override string ProviderType => ProviderTypeString;
 
-        public override IDependencyModel CreateRootDependencyNode()
-        {
-            return new SubTreeRootDependencyModel(
-                ProviderTypeString,
-                VSResources.AnalyzersNodeName,
-                s_iconSet,
-                DependencyTreeFlags.AnalyzerSubTreeRootNodeFlags);
-        }
+        public override IDependencyModel CreateRootDependencyNode() => s_rootModel;
 
         protected override IDependencyModel CreateDependencyModel(
             string path,
