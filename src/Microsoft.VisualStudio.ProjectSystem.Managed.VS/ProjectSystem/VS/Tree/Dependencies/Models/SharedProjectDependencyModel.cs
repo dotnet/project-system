@@ -43,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
         {
             Flags = Flags.Union(DependencyTreeFlags.SharedProjectFlags)
                          .Except(DependencyTreeFlags.SupportsRuleProperties);
-            Caption = System.IO.Path.GetFileNameWithoutExtension(Name);
+            Caption = System.IO.Path.GetFileNameWithoutExtension(path);
         }
     }
 }

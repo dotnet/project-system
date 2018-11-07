@@ -42,16 +42,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             IImmutableDictionary<string, string> properties)
             : base(path, originalItemSpec, flags, resolved, isImplicit, properties)
         {
-            if (Resolved)
+            if (resolved)
             {
                 string fusionName = null;
                 Properties?.TryGetValue(ResolvedAssemblyReference.FusionNameProperty, out fusionName);
 
-                Caption = string.IsNullOrEmpty(fusionName) ? Name : new AssemblyName(fusionName).Name;
+                Caption = string.IsNullOrEmpty(fusionName) ? path : new AssemblyName(fusionName).Name;
             }
             else
             {
-                Caption = Name;
+                Caption = path;
             }
         }
     }

@@ -41,14 +41,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             IImmutableDictionary<string, string> properties)
             : base(path, originalItemSpec, flags, resolved, isImplicit, properties)
         {
-            if (Resolved)
-            {
-                Caption = System.IO.Path.GetFileNameWithoutExtension(Name);
-            }
-            else
-            {
-                Caption = Path;
-            }
+            Caption = resolved 
+                ? System.IO.Path.GetFileNameWithoutExtension(path) 
+                : path;
         }
     }
 }
