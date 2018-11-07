@@ -1,0 +1,91 @@
+const Microsoft.VisualStudio.ProjectSystem.Debug.UIProfilePropertyName.Arguments = "Arguments" -> string
+const Microsoft.VisualStudio.ProjectSystem.Debug.UIProfilePropertyName.EnvironmentVariables = "EnvironmentVariables" -> string
+const Microsoft.VisualStudio.ProjectSystem.Debug.UIProfilePropertyName.Executable = "Executable" -> string
+const Microsoft.VisualStudio.ProjectSystem.Debug.UIProfilePropertyName.LaunchUrl = "LaunchUrl" -> string
+const Microsoft.VisualStudio.ProjectSystem.Debug.UIProfilePropertyName.WorkingDirectory = "WorkingDirectory" -> string
+Microsoft.VisualStudio.ProjectSystem.Configuration.IConfigurationDimensionDescriptionMetadataView
+Microsoft.VisualStudio.ProjectSystem.Configuration.IConfigurationDimensionDescriptionMetadataView.DimensionName.get -> string[]
+Microsoft.VisualStudio.ProjectSystem.Configuration.IConfigurationDimensionDescriptionMetadataView.IsVariantDimension.get -> bool[]
+Microsoft.VisualStudio.ProjectSystem.Debug.IActiveDebugFrameworkServices
+Microsoft.VisualStudio.ProjectSystem.Debug.IActiveDebugFrameworkServices.GetActiveDebuggingFrameworkPropertyAsync() -> System.Threading.Tasks.Task<string>
+Microsoft.VisualStudio.ProjectSystem.Debug.IActiveDebugFrameworkServices.GetConfiguredProjectForActiveFrameworkAsync() -> System.Threading.Tasks.Task<Microsoft.VisualStudio.ProjectSystem.ConfiguredProject>
+Microsoft.VisualStudio.ProjectSystem.Debug.IActiveDebugFrameworkServices.GetProjectFrameworksAsync() -> System.Threading.Tasks.Task<System.Collections.Generic.List<string>>
+Microsoft.VisualStudio.ProjectSystem.Debug.IActiveDebugFrameworkServices.SetActiveDebuggingFrameworkPropertyAsync(string activeFramework) -> System.Threading.Tasks.Task
+Microsoft.VisualStudio.ProjectSystem.Debug.IDebugTokenReplacer
+Microsoft.VisualStudio.ProjectSystem.Debug.IDebugTokenReplacer.ReplaceTokensInProfileAsync(Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile profile) -> System.Threading.Tasks.Task<Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile>
+Microsoft.VisualStudio.ProjectSystem.Debug.IDebugTokenReplacer.ReplaceTokensInStringAsync(string rawString, bool expandEnvironmentVars) -> System.Threading.Tasks.Task<string>
+Microsoft.VisualStudio.ProjectSystem.Debug.IJsonSection
+Microsoft.VisualStudio.ProjectSystem.Debug.IJsonSection.JsonSection.get -> string
+Microsoft.VisualStudio.ProjectSystem.Debug.IJsonSection.SerializationType.get -> System.Type
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile.CommandLineArgs.get -> string
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile.CommandName.get -> string
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile.EnvironmentVariables.get -> System.Collections.Immutable.ImmutableDictionary<string, string>
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile.ExecutablePath.get -> string
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile.LaunchBrowser.get -> bool
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile.LaunchUrl.get -> string
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile.Name.get -> string
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile.OtherSettings.get -> System.Collections.Immutable.ImmutableDictionary<string, object>
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile.WorkingDirectory.get -> string
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettings
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettings.ActiveProfile.get -> Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettings.GetGlobalSetting(string settingsName) -> object
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettings.GlobalSettings.get -> System.Collections.Immutable.ImmutableDictionary<string, object>
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettings.Profiles.get -> System.Collections.Immutable.ImmutableList<Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile>
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettingsProvider
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettingsProvider.ActiveProfile.get -> Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettingsProvider.AddOrUpdateGlobalSettingAsync(string settingName, object settingContent) -> System.Threading.Tasks.Task
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettingsProvider.AddOrUpdateProfileAsync(Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile profile, bool addToFront) -> System.Threading.Tasks.Task
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettingsProvider.CurrentSnapshot.get -> Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettings
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettingsProvider.LaunchSettingsFile.get -> string
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettingsProvider.RemoveGlobalSettingAsync(string settingName) -> System.Threading.Tasks.Task
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettingsProvider.RemoveProfileAsync(string profileName) -> System.Threading.Tasks.Task
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettingsProvider.SetActiveProfileAsync(string profileName) -> System.Threading.Tasks.Task
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettingsProvider.SourceBlock.get -> System.Threading.Tasks.Dataflow.IReceivableSourceBlock<Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettings>
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettingsProvider.UpdateAndSaveSettingsAsync(Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettings profiles) -> System.Threading.Tasks.Task
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettingsProvider.WaitForFirstSnapshot(int timeout) -> System.Threading.Tasks.Task<Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettings>
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettingsProvider2
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettingsProvider2.GetLaunchSettingsFilePathAsync() -> System.Threading.Tasks.Task<string>
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettingsSerializationProvider
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettingsUIProvider
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettingsUIProvider.CommandName.get -> string
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettingsUIProvider.CustomUI.get -> System.Windows.Controls.UserControl
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettingsUIProvider.FriendlyName.get -> string
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettingsUIProvider.ProfileSelected(Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchSettings curSettings) -> void
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettingsUIProvider.ShouldEnableProperty(string propertyName) -> bool
+Microsoft.VisualStudio.ProjectSystem.Debug.IPersistOption
+Microsoft.VisualStudio.ProjectSystem.Debug.IPersistOption.DoNotPersist.get -> bool
+Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchProfile
+Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchProfile.CommandLineArgs.get -> string
+Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchProfile.CommandLineArgs.set -> void
+Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchProfile.CommandName.get -> string
+Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchProfile.CommandName.set -> void
+Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchProfile.EnvironmentVariables.get -> System.Collections.Generic.Dictionary<string, string>
+Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchProfile.ExecutablePath.get -> string
+Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchProfile.ExecutablePath.set -> void
+Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchProfile.LaunchBrowser.get -> bool
+Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchProfile.LaunchBrowser.set -> void
+Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchProfile.LaunchUrl.get -> string
+Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchProfile.LaunchUrl.set -> void
+Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchProfile.Name.get -> string
+Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchProfile.Name.set -> void
+Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchProfile.OtherSettings.get -> System.Collections.Generic.Dictionary<string, object>
+Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchProfile.ToLaunchProfile() -> Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile
+Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchProfile.WorkingDirectory.get -> string
+Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchProfile.WorkingDirectory.set -> void
+Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchSettings
+Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchSettings.ActiveProfile.get -> Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchProfile
+Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchSettings.ActiveProfile.set -> void
+Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchSettings.GlobalSettings.get -> System.Collections.Generic.Dictionary<string, object>
+Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchSettings.Profiles.get -> System.Collections.Generic.List<Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchProfile>
+Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchSettings.ToLaunchSettings() -> Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettings
+Microsoft.VisualStudio.ProjectSystem.Debug.IWritablePersistOption
+Microsoft.VisualStudio.ProjectSystem.Debug.IWritablePersistOption.DoNotPersist.get -> bool
+Microsoft.VisualStudio.ProjectSystem.Debug.IWritablePersistOption.DoNotPersist.set -> void
+Microsoft.VisualStudio.ProjectSystem.Debug.UIProfilePropertyName
+Microsoft.VisualStudio.ProjectSystem.Properties.IInterceptingPropertyValueProviderMetadata
+Microsoft.VisualStudio.ProjectSystem.Properties.IInterceptingPropertyValueProviderMetadata.PropertyName.get -> string
+Microsoft.VisualStudio.Threading.Tasks.CancellationSeries
+Microsoft.VisualStudio.Threading.Tasks.CancellationSeries.CancellationSeries(System.Threading.CancellationToken token = default(System.Threading.CancellationToken)) -> void
+Microsoft.VisualStudio.Threading.Tasks.CancellationSeries.CreateNext(System.Threading.CancellationToken token = default(System.Threading.CancellationToken)) -> System.Threading.CancellationToken
+Microsoft.VisualStudio.Threading.Tasks.CancellationSeries.Dispose() -> void

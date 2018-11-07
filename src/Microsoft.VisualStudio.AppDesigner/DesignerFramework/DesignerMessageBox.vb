@@ -28,11 +28,13 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         ''' <param name="Caption">The text to display in the title bar of the message box.</param>
         ''' <param name="HelpLink">Link to the help topic for this message box.</param>
         ''' <remarks></remarks>
+#Disable Warning RS0026 ' Do not add multiple public overloads with optional parameters
         Public Shared Function Show(RootDesigner As BaseRootDesigner, Message As String,
                 Caption As String, Buttons As MessageBoxButtons, Icon As MessageBoxIcon,
                 Optional DefaultButton As MessageBoxDefaultButton = MessageBoxDefaultButton.Button1,
                 Optional HelpLink As String = Nothing
         ) As DialogResult
+#Enable Warning RS0026 ' Do not add multiple public overloads with optional parameters
             Return Show(DirectCast(RootDesigner, IServiceProvider), Message, Caption, Buttons, Icon, DefaultButton, HelpLink)
         End Function 'Show
 
@@ -45,8 +47,10 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         ''' <param name="Caption">The text to display in the title bar of the message box.</param>
         ''' <param name="HelpLink">Link to the help topic for this message box.</param>
         ''' <remarks></remarks>
+#Disable Warning RS0026 ' Do not add multiple public overloads with optional parameters
         Public Shared Sub Show(ServiceProvider As IServiceProvider, ex As Exception,
                 Caption As String, Optional HelpLink As String = Nothing)
+#Enable Warning RS0026 ' Do not add multiple public overloads with optional parameters
             Show(ServiceProvider, Nothing, ex, Caption, HelpLink)
         End Sub
 
@@ -62,8 +66,10 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         ''' <remarks>
         ''' The exception's message will be on a second line after errorMessage.
         ''' </remarks>
+#Disable Warning RS0026 ' Do not add multiple public overloads with optional parameters
         Public Shared Sub Show(ServiceProvider As IServiceProvider, Message As String, ex As Exception,
                 Caption As String, Optional HelpLink As String = Nothing)
+#Enable Warning RS0026 ' Do not add multiple public overloads with optional parameters
 
             If ex Is Nothing Then
                 Debug.Fail("ex should not be Nothing")
@@ -116,11 +122,13 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         ''' <param name="HelpLink">Link to the help topic for this message box.</param>
         ''' <param name="DefaultButton">One of the MessageBoxDefaultButton values that specifies the default button of the message box.</param>
         ''' <remarks></remarks>
+#Disable Warning RS0026 ' Do not add multiple public overloads with optional parameters
         Public Shared Function Show(ServiceProvider As IServiceProvider, Message As String,
                 Caption As String, Buttons As MessageBoxButtons, Icon As MessageBoxIcon,
                 Optional DefaultButton As MessageBoxDefaultButton = MessageBoxDefaultButton.Button1,
                 Optional HelpLink As String = Nothing
         ) As DialogResult
+#Enable Warning RS0026 ' Do not add multiple public overloads with optional parameters
             Return ShowHelper(ServiceProvider, Message, Caption, Buttons, Icon, DefaultButton, HelpLink)
         End Function 'Show
 

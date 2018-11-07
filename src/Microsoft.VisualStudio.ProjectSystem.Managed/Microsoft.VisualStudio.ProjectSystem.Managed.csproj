@@ -350,4 +350,8 @@
   <ItemGroup>
     <DesignTimeTargetsFile Include="ProjectSystem\DesignTimeTargets\*.targets" />
   </ItemGroup>
+  <ItemGroup>
+    <AdditionalFiles Include="PublicAPI.Shipped.txt" />
+    <AdditionalFiles Include="PublicAPI.Unshipped.txt" />
+  </ItemGroup>
 </Project>
