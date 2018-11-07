@@ -44,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             {
                 return projectContextHost.OpenContextForWriteAsync(accessor =>
                 {
-                    return Task.FromResult(((AbstractProject)accessor.Context).Id);
+                    return Task.FromResult(accessor.Context.Id);
                 });
             });
         }
