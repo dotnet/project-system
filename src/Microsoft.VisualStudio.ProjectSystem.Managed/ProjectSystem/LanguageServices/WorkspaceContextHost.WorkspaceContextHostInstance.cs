@@ -95,9 +95,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             {
                 await WaitUntilInitializedCompletedAsync();
 
-                // TODO: https://github.com/dotnet/project-system/issues/353
-                await _threadingService.SwitchToUIThread(_tasksService.UnloadCancellationToken);
-
                 await ExecuteUnderLockAsync(_ => action(_contextAccessor), _tasksService.UnloadCancellationToken);
             }
 
@@ -105,18 +102,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             {
                 await WaitUntilInitializedCompletedAsync();
 
-                // TODO: https://github.com/dotnet/project-system/issues/353
-                await _threadingService.SwitchToUIThread(_tasksService.UnloadCancellationToken);
-
                 return await ExecuteUnderLockAsync(_ => action(_contextAccessor), _tasksService.UnloadCancellationToken);
             }
 
             internal async Task OnProjectChangedAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> update, bool evaluation)
             {
                 CancellationToken cancellationToken = _tasksService.UnloadCancellationToken;
-
-                // TODO: https://github.com/dotnet/project-system/issues/353
-                await _threadingService.SwitchToUIThread(cancellationToken);
 
                 await ExecuteUnderLockAsync(ct =>
                 {
