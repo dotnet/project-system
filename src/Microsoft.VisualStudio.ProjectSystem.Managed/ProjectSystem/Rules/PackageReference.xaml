@@ -84,10 +84,10 @@
                     DisplayName="Suppress warnings"
                     Description="Comma-delimited list of warnings that should be suppressed for this package" />
 
-    <StringProperty Name="GeneratePathProperty" 
+    <BoolProperty Name="GeneratePathProperty" 
                     Visible="True"
-                    DisplayName="Generate Path Property"
-                    Description="Generates msbuild property to the path of this reference" />
+                    DisplayName="Generate path property"
+                    Description="Indicates whether to generate an MSBuild property with the location of the package's root directory. The generated property name is in the form of 'Pkg[PackageID]', where '[PackageID]' is the ID of the package with any periods '.' replaced with underscores '_'." />
 
     <BoolProperty Name="Visible"
                   Visible="False"
