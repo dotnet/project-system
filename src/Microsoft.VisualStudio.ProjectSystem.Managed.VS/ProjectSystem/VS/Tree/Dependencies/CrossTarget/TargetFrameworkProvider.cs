@@ -71,12 +71,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         public ITargetFramework GetNearestFramework(ITargetFramework targetFramework,
                                                     IEnumerable<ITargetFramework> otherFrameworks)
         {
-            if (targetFramework == null || otherFrameworks == null)
+            if (targetFramework?.FrameworkName == null || otherFrameworks == null)
             {
                 return null;
             }
 
-            var others = otherFrameworks.ToList();
+            var others = otherFrameworks.Where(other => other.FrameworkName != null).ToList();
 
             if (others.Count == 0)
             {
