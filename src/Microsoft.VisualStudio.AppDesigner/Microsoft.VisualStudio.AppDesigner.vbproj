@@ -115,4 +115,8 @@
   <ItemGroup>
     <None Include="**\*.xlf" />
   </ItemGroup>
+  <ItemGroup>
+    <AdditionalFiles Include="PublicAPI.Shipped.txt" />
+    <AdditionalFiles Include="PublicAPI.Unshipped.txt" />
+  </ItemGroup>
 </Project>
