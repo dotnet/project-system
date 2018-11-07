@@ -45,8 +45,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             : base(path, originalItemSpec, flags, resolved, isImplicit, properties)
         {
             Flags = Flags.Union(DependencyTreeFlags.SupportsHierarchy);
-            Version = properties != null && properties.ContainsKey(ProjectItemMetadata.Version)
-                ? properties[ProjectItemMetadata.Version] 
+            Version = properties != null && properties.TryGetValue(ProjectItemMetadata.Version, out string version)
+                ? version
                 : string.Empty;
             string baseCaption = Path.Split(Delimiter.Comma, StringSplitOptions.RemoveEmptyEntries)
                 .FirstOrDefault();

@@ -295,11 +295,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 IsImplicitlyDefined = GetBoolMetadata(ProjectItemMetadata.IsImplicitlyDefined) ?? false;
 
                 var dependenciesHashSet = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-                if (properties.ContainsKey(ProjectItemMetadata.Dependencies)
-                    && properties[ProjectItemMetadata.Dependencies] != null)
+                if (properties.TryGetValue(ProjectItemMetadata.Dependencies, out string dependencies) && dependencies != null)
                 {
-                    string[] dependencyIds = properties[ProjectItemMetadata.Dependencies]
-                        .Split(Delimiter.Semicolon, StringSplitOptions.RemoveEmptyEntries);
+                    string[] dependencyIds = dependencies.Split(Delimiter.Semicolon, StringSplitOptions.RemoveEmptyEntries);
+
                     // store only unique dependency IDs
                     foreach (string dependencyId in dependencyIds)
                     {
