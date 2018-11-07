@@ -84,6 +84,11 @@
                     DisplayName="Suppress warnings"
                     Description="Comma-delimited list of warnings that should be suppressed for this package" />
 
+    <StringProperty Name="GeneratePathProperty" 
+                    Visible="True"
+                    DisplayName="Generate Path Property"
+                    Description="Generates msbuild property to the path of this reference" />
+
     <BoolProperty Name="Visible"
                   Visible="False"
                   ReadOnly="True" />

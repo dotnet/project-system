@@ -112,11 +112,6 @@
                     Description="Version of reference.">
     </StringProperty>
 
-    <StringProperty Name="GeneratePathProperty" 
-                    Visible="True"
-                    DisplayName="GeneratePathProperty"
-                    Description="Generates msbuild property to the path of this reference" />
-
     <!-- Hidden properties -->
     <BoolProperty Name="LinkLibraryDependencies"
                   Visible="False" />
