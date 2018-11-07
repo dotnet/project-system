@@ -57,9 +57,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 
             _severity = severity;
 
-            code = code ?? string.Empty;
             Name = message;
-            Caption = $"{code.ToUpperInvariant()} {message}".TrimStart();
+            Caption = string.IsNullOrWhiteSpace(code) ? message : string.Concat(code.ToUpperInvariant(), " ", message);
             TopLevel = false;
             Visible = isVisible;
             Flags = Flags.Union(DependencyTreeFlags.DiagnosticNodeFlags);
