@@ -9,7 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                                           IEquatable<string>
     {
         /// <summary>
-        /// Basic target framework info
+        /// Basic target framework info. Can be <see langword="null" /> if the framework is unknown.
         /// </summary>
         FrameworkName FrameworkName { get; }
 
