@@ -77,6 +77,16 @@
         <target state="translated">Расположение пакета, на который указывает ссылка.</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|GeneratePathProperty|DisplayName">
+        <source>Generate Path Property</source>
+        <target state="new">Generate Path Property</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|GeneratePathProperty|Description">
+        <source>Generates msbuild property to the path of this reference</source>
+        <target state="new">Generates msbuild property to the path of this reference</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>
