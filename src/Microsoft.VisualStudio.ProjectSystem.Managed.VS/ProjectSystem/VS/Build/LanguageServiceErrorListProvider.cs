@@ -47,7 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
             return AddMessageCoreAsync(error);
         }
 
-        private Task<AddMessageResult> AddMessageCoreAsync(TargetGeneratedError error)
+        private async Task<AddMessageResult> AddMessageCoreAsync(TargetGeneratedError error)
         {
             // We only want to pass compiler, analyzers, etc to the language 
             // service, so we skip tasks that do not have a code

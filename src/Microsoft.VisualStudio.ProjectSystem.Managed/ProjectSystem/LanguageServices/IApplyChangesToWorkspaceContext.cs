@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
         /// <summary>
         ///     Returns an enumerable of project build rules that should passed to
-        ///     <see cref="ApplyProjectBuild(IProjectVersionedValue{IProjectSubscriptionUpdate}, bool, CancellationToken)"/>.
+        ///     <see cref="ApplyProjectBuildAsync(IProjectVersionedValue{IProjectSubscriptionUpdate}, bool, CancellationToken)"/>.
         /// </summary>
         IEnumerable<string> GetProjectBuildRules();
 

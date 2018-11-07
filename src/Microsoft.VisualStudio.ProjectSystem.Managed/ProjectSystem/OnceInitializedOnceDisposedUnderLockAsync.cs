@@ -65,7 +65,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         ///     <para>
         ///         -or-
         ///     </para>
-        ///     The result is awaited and the <see cref="ThreadSafeOnceInitializedOnceDisposedAsync"/> 
+        ///     The result is awaited and the <see cref="OnceInitializedOnceDisposedUnderLockAsync"/> 
         ///     has been disposed of.
         /// </exception>
         protected Task<T> ExecuteUnderLockAsync<T>(Func<CancellationToken, Task<T>> action, CancellationToken cancellationToken = default)
