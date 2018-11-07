@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System;
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
 
@@ -13,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     /// </summary>
     [Export(typeof(IImplicitlyActiveService))]
     [AppliesTo(ProjectCapability.DotNetLanguageService2)]
-    internal partial class WorkspaceContextHost : AbstractMultiLifetimeComponent, IImplicitlyActiveService
+    internal partial class WorkspaceContextHost : AbstractMultiLifetimeComponent, IImplicitlyActiveService, IWorkspaceProjectContextHost
     {
         private readonly ConfiguredProject _project;
         private readonly IProjectThreadingService _threadingService;
@@ -50,6 +51,37 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         public Task DeactivateAsync()
         {
             return UnloadAsync();
+        }
+
+        public async Task OpenContextForWriteAsync(Func<IWorkspaceProjectContextAccessor, Task> action)
+        {
+            Requires.NotNull(action, nameof(action));
+
+            WorkspaceContextHostInstance instance = await GetLoadedInstanceAsync();
+
+            // Throws OperationCanceledException if 'instance' is Disposed
+            await instance.OpenContextForWriteAsync(action);
+        }
+
+        public async Task<T> OpenContextForWriteAsync<T>(Func<IWorkspaceProjectContextAccessor, Task<T>> action)
+        {
+            Requires.NotNull(action, nameof(action));
+
+            WorkspaceContextHostInstance instance = await GetLoadedInstanceAsync();
+
+            // Throws OperationCanceledException if 'instance' is Disposed
+            return await instance.OpenContextForWriteAsync(action);
+        }
+
+        private async Task<WorkspaceContextHostInstance> GetLoadedInstanceAsync()
+        {
+            await Loaded;
+
+            var instance = (WorkspaceContextHostInstance)Instance;
+            if (instance == null)   // Unloaded between being Loaded and here
+                throw new OperationCanceledException();
+
+            return instance;
         }
 
         protected override IMultiLifetimeInstance CreateInstance()

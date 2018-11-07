@@ -3,6 +3,8 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
+
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
@@ -14,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     {
         /// <summary>
         ///     Returns an enumerable of project evaluation rules that should passed to
-        ///     <see cref="ApplyProjectEvaluation(IProjectVersionedValue{IProjectSubscriptionUpdate}, bool, CancellationToken)"/>.
+        ///     <see cref="ApplyProjectEvaluationAsync(IProjectVersionedValue{IProjectSubscriptionUpdate}, bool, CancellationToken)"/>.
         /// </summary>
         IEnumerable<string> GetProjectEvaluationRules();
 
@@ -47,13 +49,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         /// <exception cref="ObjectDisposedException">
         ///     The <see cref="IApplyChangesToWorkspaceContext"/> has been disposed of.
         /// </exception>
+        /// <exception cref="OperationCanceledException">
+        ///     The result is awaited and <paramref name="cancellationToken"/> is cancelled.
+        /// </exception>
         /// <remarks>
         ///     Note: Cancelling the <paramref name="cancellationToken"/> may result in the underlying
         ///     <see cref="IWorkspaceProjectContext"/> to be left in an inconsistent state with respect
         ///     to the project snapshot state. The cancellation token should only be cancelled with the
         ///     intention that the <see cref="IWorkspaceProjectContext"/> will be immediately disposed.
         /// </remarks>
-        void ApplyProjectEvaluation(IProjectVersionedValue<IProjectSubscriptionUpdate> update, bool isActiveContext, CancellationToken cancellationToken);
+        Task ApplyProjectEvaluationAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> update, bool isActiveContext, CancellationToken cancellationToken);
 
         /// <summary>
         ///     Applies project build changes to the underlying <see cref="IWorkspaceProjectContext"/>.
@@ -67,12 +72,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         /// <exception cref="ObjectDisposedException">
         ///     The <see cref="IApplyChangesToWorkspaceContext"/> has been disposed of.
         /// </exception>
+        /// <exception cref="OperationCanceledException">
+        ///     The result is awaited and <paramref name="cancellationToken"/> is cancelled.
+        /// </exception>
         /// <remarks>
         ///     Note: Cancelling the <paramref name="cancellationToken"/> may result in the underlying
         ///     <see cref="IWorkspaceProjectContext"/> to be left in an inconsistent state with respect
         ///     to the project snapshot state. The cancellation token should only be cancelled with the
         ///     intention that the <see cref="IWorkspaceProjectContext"/> will be immediately disposed.
         /// </remarks>
-        void ApplyProjectBuild(IProjectVersionedValue<IProjectSubscriptionUpdate> update, bool isActiveContext, CancellationToken cancellationToken);
+        Task ApplyProjectBuildAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> update, bool isActiveContext, CancellationToken cancellationToken);
     }
 }

@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System;
 using System.ComponentModel.Composition;
 using System.Threading;
 using System.Threading.Tasks;
@@ -26,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             private readonly ExportFactory<IApplyChangesToWorkspaceContext> _applyChangesToWorkspaceContextFactory;
 
             private DisposableBag _subscriptions;
-            private IWorkspaceProjectContext _context;
+            private IWorkspaceProjectContextAccessor _contextAccessor;
             private ExportLifetimeContext<IApplyChangesToWorkspaceContext> _applyChangesToWorkspaceContext;
 
             public WorkspaceContextHostInstance(ConfiguredProject project,
@@ -54,13 +55,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
             {
-                _context = await _workspaceProjectContextProvider.CreateProjectContextAsync(_project);
+                _contextAccessor = await _workspaceProjectContextProvider.CreateProjectContextAsync(_project);                                                                         
 
-                if (_context == null)
+                if (_contextAccessor == null)
                     return;
 
+                _activeWorkspaceProjectContextTracker.RegisterContext(_contextAccessor.Context, _contextAccessor.ContextId);
+
                 _applyChangesToWorkspaceContext = _applyChangesToWorkspaceContextFactory.CreateExport();
-                _applyChangesToWorkspaceContext.Value.Initialize(_context);
+                _applyChangesToWorkspaceContext.Value.Initialize(_contextAccessor.Context);
 
                 _subscriptions = new DisposableBag(CancellationToken.None);
                 _subscriptions.AddDisposable(_projectSubscriptionService.ProjectRuleSource.SourceBlock.LinkToAsyncAction(
@@ -79,11 +82,33 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                     _subscriptions?.Dispose();
                     _applyChangesToWorkspaceContext?.Dispose();
 
-                    if (_context != null)
+                    if (_contextAccessor != null)
                     {
-                        await _workspaceProjectContextProvider.ReleaseProjectContextAsync(_context);
+                        _activeWorkspaceProjectContextTracker.UnregisterContext(_contextAccessor.Context);
+
+                        await _workspaceProjectContextProvider.ReleaseProjectContextAsync(_contextAccessor);
                     }
                 }
+            }
+
+            public async Task OpenContextForWriteAsync(Func<IWorkspaceProjectContextAccessor, Task> action)
+            {
+                await WaitUntilInitializedCompletedAsync();
+
+                // TODO: https://github.com/dotnet/project-system/issues/353
+                await _threadingService.SwitchToUIThread(_tasksService.UnloadCancellationToken);
+
+                await ExecuteUnderLockAsync(_ => action(_contextAccessor), _tasksService.UnloadCancellationToken);
+            }
+
+            public async Task<T> OpenContextForWriteAsync<T>(Func<IWorkspaceProjectContextAccessor, Task<T>> action)
+            {
+                await WaitUntilInitializedCompletedAsync();
+
+                // TODO: https://github.com/dotnet/project-system/issues/353
+                await _threadingService.SwitchToUIThread(_tasksService.UnloadCancellationToken);
+
+                return await ExecuteUnderLockAsync(_ => action(_contextAccessor), _tasksService.UnloadCancellationToken);
             }
 
             internal async Task OnProjectChangedAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> update, bool evaluation)
@@ -95,24 +120,32 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
                 await ExecuteUnderLockAsync(ct =>
                 {
-                    ApplyProjectChangesUnderLock(update, evaluation, ct);
+                    return ApplyProjectChangesUnderLockAsync(update, evaluation, ct);
 
-                    return Task.CompletedTask;
                 }, cancellationToken);
             }
 
-            private void ApplyProjectChangesUnderLock(IProjectVersionedValue<IProjectSubscriptionUpdate> update, bool evaluation, CancellationToken cancellationToken)
+            private Task ApplyProjectChangesUnderLockAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> update, bool evaluation, CancellationToken cancellationToken)
             {
-                bool isActiveContext = _activeWorkspaceProjectContextTracker.IsActiveContext(_context);
+                bool isActiveContext = _activeWorkspaceProjectContextTracker.IsActiveContext(_contextAccessor.Context);
 
                 if (evaluation)
                 {
-                    _applyChangesToWorkspaceContext.Value.ApplyProjectEvaluation(update, isActiveContext, cancellationToken);
+                    return _applyChangesToWorkspaceContext.Value.ApplyProjectEvaluationAsync(update, isActiveContext, cancellationToken);
                 }
                 else
                 {
-                    _applyChangesToWorkspaceContext.Value.ApplyProjectBuild(update, isActiveContext, cancellationToken);
+                    return _applyChangesToWorkspaceContext.Value.ApplyProjectBuildAsync(update, isActiveContext, cancellationToken);
                 }
+            }
+
+            private async Task WaitUntilInitializedCompletedAsync()
+            {
+                await InitializationCompletion;
+
+                // If we failed to create a context, we treat it as a cancellation
+                if (_contextAccessor == null)
+                    throw new OperationCanceledException();
             }
         }
     }

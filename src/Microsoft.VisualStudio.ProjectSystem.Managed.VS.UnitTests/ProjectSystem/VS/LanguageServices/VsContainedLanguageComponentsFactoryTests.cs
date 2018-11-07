@@ -110,7 +110,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             Assert.Equal((uint)VSConstants.VSITEMID.Nil, itemid);
         }
 
-        private static VsContainedLanguageComponentsFactory CreateInstance(IVsContainedLanguageFactory containedLanguageFactory = null, IVsProject4 project = null, ProjectProperties properties = null, IConfiguredProjectHostObject hostObject = null, ILanguageServiceHost languageServiceHost = null)
+        private static VsContainedLanguageComponentsFactory CreateInstance(IVsContainedLanguageFactory containedLanguageFactory = null, IVsProject4 project = null, ProjectProperties properties = null, IConfiguredProjectHostObject hostObject = null, IActiveWorkspaceProjectContextHost projectContextHost = null)
         {
             var hostProvider = IProjectHostProviderFactory.ImplementActiveIntellisenseProjectHostObject(hostObject);
             var serviceProvider = IOleAsyncServiceProviderFactory.ImplementQueryServiceAsync(containedLanguageFactory, new Guid(LanguageServiceId));
@@ -120,19 +120,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             projectVsServices.ImplementThreadingService(IProjectThreadingServiceFactory.Create());
             projectVsServices.ImplementActiveConfiguredProjectProperties(properties);
 
-            return CreateInstance(serviceProvider, projectVsServices.Object, hostProvider, languageServiceHost);
+            return CreateInstance(serviceProvider, projectVsServices.Object, hostProvider, projectContextHost);
         }
 
-        private static VsContainedLanguageComponentsFactory CreateInstance(IOleAsyncServiceProvider serviceProvider = null, IUnconfiguredProjectVsServices projectVsServices = null, IProjectHostProvider projectHostProvider = null, ILanguageServiceHost languageServiceHost = null)
+        private static VsContainedLanguageComponentsFactory CreateInstance(IOleAsyncServiceProvider serviceProvider = null, IUnconfiguredProjectVsServices projectVsServices = null, IProjectHostProvider projectHostProvider = null, IActiveWorkspaceProjectContextHost projectContextHost = null)
         {
             projectVsServices = projectVsServices ?? IUnconfiguredProjectVsServicesFactory.Create();
             projectHostProvider = projectHostProvider ?? IProjectHostProviderFactory.Create();
-            languageServiceHost = languageServiceHost ?? ILanguageServiceHostFactory.Create();
+            projectContextHost = projectContextHost ?? IActiveWorkspaceProjectContextHostFactory.Create();
 
             return new VsContainedLanguageComponentsFactory(IVsServiceFactory.Create<SAsyncServiceProvider, IOleAsyncServiceProvider>(serviceProvider),
                                                             projectVsServices,
                                                             projectHostProvider,
-                                                            languageServiceHost);
+                                                            projectContextHost);
         }
     }
 }

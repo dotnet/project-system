@@ -16,9 +16,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     /// <summary>
     ///     Hosts a <see cref="IWorkspaceProjectContext"/> and handles the interaction between the project system and the language service.
     /// </summary>
-    [Export(typeof(ILanguageServiceHost))]
+    [Export(typeof(IActiveWorkspaceProjectContextHost))]
     [AppliesTo(ProjectCapability.DotNetLanguageService)]
-    internal partial class LanguageServiceHost : OnceInitializedOnceDisposedAsync, ILanguageServiceHost
+    internal partial class LanguageServiceHost : OnceInitializedOnceDisposedAsync, IActiveWorkspaceProjectContextHost
     {
 #pragma warning disable CA2213 // OnceInitializedOnceDisposedAsync are not tracked correctly by the IDisposeable analyzer
         private readonly SemaphoreSlim _gate = new SemaphoreSlim(initialCount: 1);
@@ -80,7 +80,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         [AppliesTo(ProjectCapability.DotNetLanguageService)]
         public Task OnProjectFactoryCompletedAsync()
         {
-            return InitializeAsync();
+            return Loaded;
         }
 
         protected override Task InitializeCoreAsync(CancellationToken cancellationToken)
@@ -96,9 +96,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             return Task.CompletedTask;
         }
 
-        public Task InitializeAsync()
+        public Task Loaded
         {
-            return InitializeAsync(CancellationToken.None);
+            get { return InitializeAsync(CancellationToken.None); }
+        }
+
+        public async Task OpenContextForWriteAsync(Func<IWorkspaceProjectContextAccessor, Task> action)
+        {
+            await Loaded;
+
+            await action(new WorkspaceProjectContextAccessor(ActiveProjectContext));
+        }
+
+        public async Task<T> OpenContextForWriteAsync<T>(Func<IWorkspaceProjectContextAccessor, Task<T>> action)
+        {
+            await Loaded;
+
+            return await action(new WorkspaceProjectContextAccessor(ActiveProjectContext));
         }
 
         private async Task OnProjectChangedCoreAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e, RuleHandlerType handlerType)
@@ -316,6 +330,36 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             _evaluationSubscriptionLinks.Clear();
             _designTimeBuildSubscriptionLinks.Clear();
             _projectConfigurationsWithSubscriptions.Clear();
+        }
+
+        private class WorkspaceProjectContextAccessor : IWorkspaceProjectContextAccessor
+        {
+            private readonly IWorkspaceProjectContext _context;
+
+            public WorkspaceProjectContextAccessor(IWorkspaceProjectContext context)
+            {
+                _context = context;
+            }
+
+            public string ContextId
+            {
+                get { throw new NotImplementedException(); }        // No one consumes so don't bother implementing as this code will be removed
+            }
+
+            public IWorkspaceProjectContext Context
+            {
+                get { return _context; }
+            }
+
+            public object HostSpecificEditAndContinueService
+            {
+                get { return Context; }
+            }
+
+            public object HostSpecificErrorReporter
+            {
+                get { return Context; }
+            }
         }
     }
 }
