@@ -37,6 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 
             if (isImplicit)
             {
+                // Cannot remove implicit dependencies
                 Flags = Flags.Except(DependencyTreeFlags.SupportsRemove);
             }
 
