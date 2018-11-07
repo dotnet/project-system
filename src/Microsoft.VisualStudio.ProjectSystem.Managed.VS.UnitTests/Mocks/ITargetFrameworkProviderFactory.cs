@@ -17,10 +17,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         public static ITargetFrameworkProvider Implement(
             ITargetFramework getNearestFramework = null,
-            MockBehavior? mockBehavior = null)
+            MockBehavior mockBehavior = MockBehavior.Default)
         {
-            var behavior = mockBehavior ?? MockBehavior.Default;
-            var mock = new Mock<ITargetFrameworkProvider>(behavior);
+            var mock = new Mock<ITargetFrameworkProvider>(mockBehavior);
 
             if (getNearestFramework != null)
             {

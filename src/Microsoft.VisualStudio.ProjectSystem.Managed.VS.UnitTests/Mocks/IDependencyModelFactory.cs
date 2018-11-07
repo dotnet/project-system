@@ -26,10 +26,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                                                  string caption = null,
                                                  IEnumerable<string> dependencyIDs = null,
                                                  bool? resolved = null,
-                                                 MockBehavior? mockBehavior = null)
+                                                 MockBehavior mockBehavior = MockBehavior.Default)
         {
-            var behavior = mockBehavior ?? MockBehavior.Default;
-            var mock = new Mock<IDependencyModel>(behavior);
+            var mock = new Mock<IDependencyModel>(mockBehavior);
 
             if (providerType != null)
             {

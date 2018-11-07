@@ -22,10 +22,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             ImageMoniker? getDependenciesRootIcon = null,
             IEnumerable<IDependencyModel> createRootViewModel = null,
             IEnumerable<IDependencyModel> createTargetViewModel = null,
-            MockBehavior? mockBehavior = null)
+            MockBehavior mockBehavior = MockBehavior.Strict)
         {
-            var behavior = mockBehavior ?? MockBehavior.Strict;
-            var mock = new Mock<IDependenciesViewModelFactory>(behavior);
+            var mock = new Mock<IDependenciesViewModelFactory>(mockBehavior);
 
             if (getDependenciesRootIcon.HasValue)
             {

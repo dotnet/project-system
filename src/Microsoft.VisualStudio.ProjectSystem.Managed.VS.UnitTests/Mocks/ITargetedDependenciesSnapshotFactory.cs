@@ -30,7 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             IProjectCatalogSnapshot catalogs = null,
             IEnumerable<IDependency> topLevelDependencies = null,
             bool? checkForUnresolvedDependencies = null,
-            MockBehavior? mockBehavior = null)
+            MockBehavior mockBehavior = MockBehavior.Default)
         {
             return ImplementMock(
                 projectPath,
@@ -51,10 +51,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             IProjectCatalogSnapshot catalogs = null,
             IEnumerable<IDependency> topLevelDependencies = null,
             bool? checkForUnresolvedDependencies = null,
-            MockBehavior? mockBehavior = null)
+            MockBehavior mockBehavior = MockBehavior.Default)
         {
-            var behavior = mockBehavior ?? MockBehavior.Default;
-            var mock = new Mock<ITargetedDependenciesSnapshot>(behavior);
+            var mock = new Mock<ITargetedDependenciesSnapshot>(mockBehavior);
 
             if (projectPath != null)
             {
@@ -102,10 +101,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         public static ITargetedDependenciesSnapshot ImplementHasUnresolvedDependency(
             string id,
             bool hasUnresolvedDependency,
-            MockBehavior? mockBehavior = null)
+            MockBehavior mockBehavior = MockBehavior.Default)
         {
-            var behavior = mockBehavior ?? MockBehavior.Default;
-            var mock = new Mock<ITargetedDependenciesSnapshot>(behavior);
+            var mock = new Mock<ITargetedDependenciesSnapshot>(mockBehavior);
 
             mock.Setup(x => x.CheckForUnresolvedDependencies(It.Is<IDependency>(y => y.Id.Equals(id, StringComparison.OrdinalIgnoreCase))))
                 .Returns(hasUnresolvedDependency);
