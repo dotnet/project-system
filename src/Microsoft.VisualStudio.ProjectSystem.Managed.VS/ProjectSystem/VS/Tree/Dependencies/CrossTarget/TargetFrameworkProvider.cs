@@ -71,20 +71,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         public ITargetFramework GetNearestFramework(ITargetFramework targetFramework,
                                                     IEnumerable<ITargetFramework> otherFrameworks)
         {
-            if (targetFramework == null || otherFrameworks == null || !otherFrameworks.Any())
+            if (targetFramework == null || otherFrameworks == null)
+            {
+                return null;
+            }
+
+            var others = otherFrameworks.ToList();
+
+            if (others.Count == 0)
             {
                 return null;
             }
 
             FrameworkName nearestFrameworkName = _nuGetComparer.GetNearest(
-                targetFramework.FrameworkName, otherFrameworks.Select(x => x.FrameworkName));
+                targetFramework.FrameworkName, others.Select(x => x.FrameworkName));
 
             if (nearestFrameworkName == null)
             {
                 return null;
             }
 
-            return otherFrameworks.FirstOrDefault(x => nearestFrameworkName.Equals(x.FrameworkName));
+            return others.FirstOrDefault(x => nearestFrameworkName.Equals(x.FrameworkName));
         }
     }
 }
