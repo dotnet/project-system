@@ -53,15 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             ITargetFramework targetFramework,
             DependenciesRuleChangeContext ruleChangeContext)
         {
-            if (changesByRuleName.TryGetValue(UnresolvedRuleName, out IProjectChangeDescription unresolvedChanges)
-                && unresolvedChanges.Difference.AnyChanges)
-            {
-                HandleChangesForRule(
-                    unresolvedChanges,
-                    ruleChangeContext,
-                    targetFramework,
-                    resolved: false);
-            }
+            changesByRuleName.TryGetValue(UnresolvedRuleName, out IProjectChangeDescription unresolvedChanges);
 
             var caseInsensitiveUnresolvedChanges = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             caseInsensitiveUnresolvedChanges.AddRange(unresolvedChanges.After.Items.Keys);
@@ -73,7 +65,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     resolvedChanges,
                     ruleChangeContext,
                     targetFramework,
-                    resolved: true,
                     unresolvedChanges: caseInsensitiveUnresolvedChanges);
             }
         }
@@ -82,7 +73,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             IProjectChangeDescription projectChange,
             DependenciesRuleChangeContext ruleChangeContext,
             ITargetFramework targetFramework,
-            bool resolved,
             HashSet<string> unresolvedChanges = null)
         {
             Requires.NotNull(targetFramework, nameof(targetFramework));
@@ -95,7 +85,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             foreach (string removedItem in projectChange.Difference.RemovedItems)
             {
                 IImmutableDictionary<string, string> properties = projectChange.Before.GetProjectItemProperties(removedItem);
-                IDependencyModel model = GetDependencyModel(removedItem, resolved,
+                IDependencyModel model = GetDependencyModel(removedItem,
                                             properties, unresolvedChanges, targetFramework);
                 if (model == null)
                 {
@@ -108,7 +98,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             foreach (string changedItem in projectChange.Difference.ChangedItems)
             {
                 IImmutableDictionary<string, string> properties = projectChange.After.GetProjectItemProperties(changedItem);
-                IDependencyModel model = GetDependencyModel(changedItem, resolved,
+                IDependencyModel model = GetDependencyModel(changedItem,
                                             properties, unresolvedChanges, targetFramework);
                 if (model == null)
                 {
@@ -122,7 +112,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             foreach (string addedItem in projectChange.Difference.AddedItems)
             {
                 IImmutableDictionary<string, string> properties = projectChange.After.GetProjectItemProperties(addedItem);
-                IDependencyModel model = GetDependencyModel(addedItem, resolved,
+                IDependencyModel model = GetDependencyModel(addedItem,
                                             properties, unresolvedChanges, targetFramework);
                 if (model == null)
                 {
@@ -135,40 +125,29 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
         private IDependencyModel GetDependencyModel(
             string itemSpec,
-            bool resolved,
             IImmutableDictionary<string, string> properties,
             HashSet<string> unresolvedChanges,
             ITargetFramework targetFramework)
         {
-            PackageDependencyMetadata metadata;
-            bool isTopLevel = true;
-            bool isTarget = false;
-            if (resolved)
+            var metadata = new PackageDependencyMetadata(itemSpec, properties);
+            bool isTopLevel = metadata.IsImplicitlyDefined
+                              || (metadata.DependencyType == DependencyType.Package
+                                  && unresolvedChanges != null
+                                  && unresolvedChanges.Contains(metadata.Name));
+
+            if (metadata.IsTarget)
             {
-                metadata = new PackageDependencyMetadata(itemSpec, properties);
-                isTopLevel = metadata.IsImplicitlyDefined
-                             || (metadata.DependencyType == DependencyType.Package
-                                 && unresolvedChanges != null
-                                 && unresolvedChanges.Contains(metadata.Name));
-                isTarget = metadata.IsTarget;
-                ITargetFramework packageTargetFramework = TargetFrameworkProvider.GetTargetFramework(metadata.Target);
-                if (packageTargetFramework?.Equals(targetFramework) != true)
-                {
-                    return null;
-                }
-            }
-            else
-            {
-                metadata = CreateUnresolvedMetadata(itemSpec, properties);
+                return null;
             }
 
-            if (isTarget)
+            ITargetFramework packageTargetFramework = TargetFrameworkProvider.GetTargetFramework(metadata.Target);
+            if (packageTargetFramework?.Equals(targetFramework) != true)
             {
                 return null;
             }
 
             string originalItemSpec = itemSpec;
-            if (resolved && isTopLevel)
+            if (isTopLevel)
             {
                 originalItemSpec = metadata.Name;
             }
@@ -182,7 +161,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                         metadata.Name,
                         DependencyTreeFlags.NuGetSubTreeNodeFlags,
                         metadata.Version,
-                        resolved,
+                        resolved: true,
                         metadata.IsImplicitlyDefined,
                         isTopLevel,
                         isVisible: !metadata.IsImplicitlyDefined,
@@ -195,7 +174,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                         originalItemSpec,
                         metadata.Name,
                         DependencyTreeFlags.NuGetSubTreeNodeFlags,
-                        resolved,
+                        resolved: true,
                         properties,
                         metadata.DependenciesItemSpecs);
                 case DependencyType.AnalyzerAssembly:
@@ -204,7 +183,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                         originalItemSpec,
                         metadata.Name,
                         DependencyTreeFlags.NuGetSubTreeNodeFlags,
-                        resolved,
+                        resolved: true,
                         properties,
                         metadata.DependenciesItemSpecs);
                 case DependencyType.Diagnostic:
@@ -222,7 +201,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                         originalItemSpec,
                         metadata.Name,
                         DependencyTreeFlags.NuGetSubTreeNodeFlags,
-                        resolved,
+                        resolved: true,
                         properties,
                         metadata.DependenciesItemSpecs);
             }
