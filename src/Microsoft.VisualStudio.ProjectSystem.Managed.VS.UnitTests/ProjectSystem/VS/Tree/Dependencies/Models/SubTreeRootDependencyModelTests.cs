@@ -37,6 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                                 .Except(DependencyTreeFlags.SupportsRemove)));
             Assert.True(model.Flags.Contains(DependencyTreeFlags.SubTreeRootNodeFlags));
             Assert.False(model.Flags.Contains(DependencyTreeFlags.SupportsRuleProperties));
+            Assert.False(model.Flags.Contains(DependencyTreeFlags.SupportsRemove));
             Assert.True(model.Flags.Contains(flag));
         }
     }
