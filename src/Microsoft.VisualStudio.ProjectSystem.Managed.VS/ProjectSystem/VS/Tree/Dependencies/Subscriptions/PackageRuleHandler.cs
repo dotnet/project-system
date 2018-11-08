@@ -9,6 +9,7 @@ using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
+using Microsoft.VisualStudio.Text;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions
 {
@@ -158,7 +159,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                                  && unresolvedChanges != null
                                  && unresolvedChanges.Contains(name));
 
-                bool isTarget = !itemSpec.Contains("/");
+                bool isTarget = itemSpec.IndexOf('/') == -1;
 
                 if (isTarget)
                 {
@@ -238,15 +239,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
             string GetTargetFromDependencyId(string dependencyId)
             {
-                string[] idParts = dependencyId.Split(Delimiter.ForwardSlash, StringSplitOptions.RemoveEmptyEntries);
-                Requires.NotNull(idParts, nameof(idParts));
-                if (idParts.Length == 0)
+                var idParts = new LazyStringSplit(dependencyId, '/');
+
+                string firstPart = idParts.FirstOrDefault();
+
+                if (firstPart == null)
                 {
                     // should never happen
-                    throw new ArgumentException(nameof(idParts));
+                    throw new ArgumentException(nameof(dependencyId));
                 }
 
-                return idParts[0];
+                return firstPart;
             }
 
             IEnumerable<string> GetDependencyItemSpecs()
@@ -254,7 +257,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 var dependenciesItemSpecs = new HashSet<string>(StringComparers.PropertyValues);
                 if (properties.TryGetValue(ProjectItemMetadata.Dependencies, out string dependencies) && dependencies != null)
                 {
-                    string[] dependencyIds = dependencies.Split(Delimiter.Semicolon, StringSplitOptions.RemoveEmptyEntries);
+                    var dependencyIds = new LazyStringSplit(dependencies, ';');
 
                     // store only unique dependency IDs
                     foreach (string dependencyId in dependencyIds)

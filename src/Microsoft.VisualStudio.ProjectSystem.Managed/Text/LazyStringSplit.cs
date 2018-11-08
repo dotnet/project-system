@@ -93,4 +93,21 @@ namespace Microsoft.VisualStudio.Text
             void IDisposable.Dispose() {}
         }
     }
+
+    internal static class LazyStringSplitExtensions
+    {
+        /// <remarks>
+        ///     This extension method has special knowledge of the <see cref="LazyStringSplit"/> type and
+        ///     can compute its result without allocation.
+        /// </remarks>
+        /// <inheritdoc cref="System.Linq.Enumerable.FirstOrDefault{TSource}(IEnumerable{TSource})"/>
+        public static string FirstOrDefault(this LazyStringSplit lazyStringSplit)
+        {
+            LazyStringSplit.Enumerator enumerator = lazyStringSplit.GetEnumerator();
+
+            return enumerator.MoveNext()
+                ? enumerator.Current
+                : null;
+        }
+    }
 }
