@@ -24,6 +24,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             unresolvedIcon: KnownMonikers.ReferenceWarning,
             unresolvedExpandedIcon: KnownMonikers.ReferenceWarning);
 
+        private static readonly SubTreeRootDependencyModel s_rootModel = new SubTreeRootDependencyModel(
+            ProviderTypeString,
+            VSResources.AssembliesNodeName,
+            s_iconSet,
+            DependencyTreeFlags.AssemblySubTreeRootNodeFlags);
+
         public AssemblyRuleHandler()
             : base(AssemblyReference.SchemaName, ResolvedAssemblyReference.SchemaName)
         {
@@ -31,14 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
         public override string ProviderType => ProviderTypeString;
 
-        public override IDependencyModel CreateRootDependencyNode()
-        {
-            return new SubTreeRootDependencyModel(
-                ProviderTypeString,
-                VSResources.AssembliesNodeName,
-                s_iconSet,
-                DependencyTreeFlags.AssemblySubTreeRootNodeFlags);
-        }
+        public override IDependencyModel CreateRootDependencyNode() => s_rootModel;
 
         protected override IDependencyModel CreateDependencyModel(
             string path,

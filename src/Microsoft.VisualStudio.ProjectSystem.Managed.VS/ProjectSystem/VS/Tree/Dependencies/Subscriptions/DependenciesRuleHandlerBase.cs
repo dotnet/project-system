@@ -7,6 +7,7 @@ using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
+using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions
 {
@@ -135,20 +136,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             bool resolved,
             IProjectRuleSnapshot projectRuleSnapshot)
         {
-            IImmutableDictionary<string, string> properties = GetProjectItemProperties(projectRuleSnapshot, itemSpec);
-            string originalItemSpec = itemSpec;
-            if (resolved)
-            {
-                originalItemSpec = GetOriginalItemSpec(properties);
-            }
+            IImmutableDictionary<string, string> properties = projectRuleSnapshot.GetProjectItemProperties(itemSpec);
 
-            bool isImplicit = false;
-            if (properties != null
-                && properties.TryGetValue(ProjectItemMetadata.IsImplicitlyDefined, out string isImplicitlyDefinedString)
-                && bool.TryParse(isImplicitlyDefinedString, out bool isImplicitlyDefined))
-            {
-                isImplicit = isImplicitlyDefined;
-            }
+            string originalItemSpec = resolved
+                ? properties.GetStringProperty(OriginalItemSpecPropertyName)
+                : itemSpec;
+
+            bool isImplicit = properties.GetBoolProperty(ProjectItemMetadata.IsImplicitlyDefined) ?? false;
 
             return CreateDependencyModel(
                 itemSpec,
@@ -184,34 +178,5 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         }
 
         #endregion
-
-        protected virtual string GetOriginalItemSpec(IImmutableDictionary<string, string> properties)
-        {
-            if (properties != null && properties.TryGetValue(OriginalItemSpecPropertyName, out string originalItemSpec)
-                && !string.IsNullOrEmpty(originalItemSpec))
-            {
-                return originalItemSpec;
-            }
-
-            return null;
-        }
-
-        /// <summary>
-        /// Finds the resolved reference item for a given unresolved reference.
-        /// </summary>
-        /// <param name="projectRuleSnapshot">Resolved reference project items snapshot to search.</param>
-        /// <param name="itemSpec">The unresolved reference item name.</param>
-        /// <returns>The key is item name and the value is the metadata dictionary.</returns>
-        protected static IImmutableDictionary<string, string> GetProjectItemProperties(
-            IProjectRuleSnapshot projectRuleSnapshot,
-            string itemSpec)
-        {
-            Requires.NotNull(projectRuleSnapshot, nameof(projectRuleSnapshot));
-            Requires.NotNullOrEmpty(itemSpec, nameof(itemSpec));
-
-            projectRuleSnapshot.Items.TryGetValue(itemSpec, out IImmutableDictionary<string, string> properties);
-
-            return properties;
-        }
     }
 }

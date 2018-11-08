@@ -29,6 +29,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             unresolvedIcon: ManagedImageMonikers.ApplicationWarning,
             unresolvedExpandedIcon: ManagedImageMonikers.ApplicationWarning);
 
+        private static readonly SubTreeRootDependencyModel s_rootModel = new SubTreeRootDependencyModel(
+            ProviderTypeString,
+            VSResources.ProjectsNodeName,
+            s_iconSet,
+            DependencyTreeFlags.ProjectSubTreeRootNodeFlags);
+
         public override string ProviderType => ProviderTypeString;
 
         [ImportingConstructor]
@@ -66,14 +72,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             }
         }
 
-        public override IDependencyModel CreateRootDependencyNode()
-        {
-            return new SubTreeRootDependencyModel(
-                ProviderTypeString,
-                VSResources.ProjectsNodeName,
-                s_iconSet,
-                DependencyTreeFlags.ProjectSubTreeRootNodeFlags);
-        }
+        public override IDependencyModel CreateRootDependencyNode() => s_rootModel;
 
         protected override IDependencyModel CreateDependencyModel(
             string path,

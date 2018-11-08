@@ -42,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             : base(path, originalItemSpec, flags, resolved, isImplicit, properties)
         {
             Flags = Flags.Union(DependencyTreeFlags.SupportsHierarchy);
-            Caption = System.IO.Path.GetFileNameWithoutExtension(Name);
+            Caption = System.IO.Path.GetFileNameWithoutExtension(path);
         }
     }
 }

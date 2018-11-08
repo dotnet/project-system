@@ -50,18 +50,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             ProjectTreeFlags flags,
             bool isVisible,
             IImmutableDictionary<string, string> properties)
-            : base(originalItemSpec, originalItemSpec, flags, resolved: false, isImplicit: false, properties: properties)
+            : base(originalItemSpec, originalItemSpec, flags, isResolved: false, isImplicit: false, properties: properties, isTopLevel: false, isVisible: isVisible)
         {
             Requires.NotNullOrEmpty(originalItemSpec, nameof(originalItemSpec));
             Requires.NotNullOrEmpty(message, nameof(message));
 
             _severity = severity;
 
-            code = code ?? string.Empty;
             Name = message;
-            Caption = $"{code.ToUpperInvariant()} {message}".TrimStart();
-            TopLevel = false;
-            Visible = isVisible;
+            Caption = string.IsNullOrWhiteSpace(code) ? message : string.Concat(code.ToUpperInvariant(), " ", message);
+
             Flags = Flags.Union(DependencyTreeFlags.DiagnosticNodeFlags);
 
             if (severity == DiagnosticMessageSeverity.Error)

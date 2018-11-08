@@ -35,13 +35,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             bool resolved,
             IImmutableDictionary<string, string> properties,
             IEnumerable<string> dependenciesIDs)
-            : base(path, originalItemSpec, flags, resolved, isImplicit: false, properties: properties)
+            : base(path, originalItemSpec, flags, resolved, isImplicit: false, properties: properties, isTopLevel: false)
         {
             Requires.NotNullOrEmpty(name, nameof(name));
 
             Name = name;
             Caption = name;
-            TopLevel = false;
 
             if (dependenciesIDs != null)
             {

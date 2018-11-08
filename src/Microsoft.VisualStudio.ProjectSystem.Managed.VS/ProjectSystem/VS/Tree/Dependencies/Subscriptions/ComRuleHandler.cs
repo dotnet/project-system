@@ -23,6 +23,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             unresolvedIcon: ManagedImageMonikers.ComponentWarning,
             unresolvedExpandedIcon: ManagedImageMonikers.ComponentWarning);
 
+        private static readonly SubTreeRootDependencyModel s_rootModel = new SubTreeRootDependencyModel(
+            ProviderTypeString,
+            VSResources.ComNodeName,
+            s_iconSet,
+            DependencyTreeFlags.ComSubTreeRootNodeFlags);
+
         public ComRuleHandler()
             : base(ComReference.SchemaName, ResolvedCOMReference.SchemaName)
         {
@@ -30,14 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
         public override string ProviderType => ProviderTypeString;
 
-        public override IDependencyModel CreateRootDependencyNode()
-        {
-            return new SubTreeRootDependencyModel(
-                ProviderTypeString,
-                VSResources.ComNodeName,
-                s_iconSet,
-                DependencyTreeFlags.ComSubTreeRootNodeFlags);
-        }
+        public override IDependencyModel CreateRootDependencyNode() => s_rootModel;
 
         protected override IDependencyModel CreateDependencyModel(
             string path,

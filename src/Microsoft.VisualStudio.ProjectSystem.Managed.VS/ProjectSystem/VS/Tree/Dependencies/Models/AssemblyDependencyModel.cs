@@ -6,6 +6,7 @@ using System.Reflection;
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions;
+using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 {
@@ -42,16 +43,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             IImmutableDictionary<string, string> properties)
             : base(path, originalItemSpec, flags, resolved, isImplicit, properties)
         {
-            if (Resolved)
+            if (resolved)
             {
-                string fusionName = null;
-                Properties?.TryGetValue(ResolvedAssemblyReference.FusionNameProperty, out fusionName);
+                string fusionName = Properties.GetStringProperty(ResolvedAssemblyReference.FusionNameProperty);
 
-                Caption = string.IsNullOrEmpty(fusionName) ? Name : new AssemblyName(fusionName).Name;
+                Caption = fusionName == null ? path : new AssemblyName(fusionName).Name;
             }
             else
             {
-                Caption = Name;
+                Caption = path;
             }
         }
     }

@@ -50,15 +50,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             bool isVisible,
             IImmutableDictionary<string, string> properties,
             IEnumerable<string> dependenciesIDs)
-            : base(path, originalItemSpec, flags, resolved, isImplicit, properties)
+            : base(path, originalItemSpec, flags, resolved, isImplicit, properties, isTopLevel, isVisible)
         {
             Requires.NotNullOrEmpty(name, nameof(name));
 
             Name = name;
             Version = version;
             Caption = string.IsNullOrEmpty(version) ? name : $"{name} ({version})";
-            TopLevel = isTopLevel;
-            Visible = isVisible;
 
             if (dependenciesIDs != null)
             {
