@@ -69,10 +69,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Protected m_isCommitingChange As Boolean
 #Enable Warning IDE1006 ' Naming Styles
 
-        'Used by PropertyDescriptorSetValue to know whether or not the 
-        '  OnValueChanged event fired on the property descriptor
-        Private ReadOnly _onValueChangedWasFired As Boolean
-
         'True if the controls associated with this property can be enabled/disabled
         '  (will be false e.g. if the property is hidden or read-only)
         Private _controlsCanBeEnabled As Boolean = True
@@ -1791,39 +1787,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Function
 
 #End Region
-
 #Region "Common property getter/setter helpers"
-
-
-        '----
-        ' About 'common' properties
-        '----
-        '
-        '  "Common" properties are properties which are not given to the page through SetObjects
-        '  but rather are picked up from the project itself.  For non-configuration-specific
-        '  property pages, the notion of "common" properties doesn't really mean anything - the
-        '  common properties are the ones that were passed in (configuration-specific properties
-        '  are not accessible to a non-configuration-specific page).
-        '  But for a configuration-specific page, only the properties which are configuration-specific 
-        '  are passed in.  Sometimes a page needs to access non-configuration-specific ("common")
-        '  properties (an example is the VB Compile page, which access properties like "Option Explicit"
-        '  which is not configuration-specific, and many pages also access the "FullPath" property via
-        '  PropPageUserControlBase.ProjectPath().  These properties are pulled directly from the project system
-        '  rather than taken from the objects passed in to the property page.
-
-
-
-        ''' <summary>
-        ''' Returns the PropertyDescriptor of a common property using the name of the property
-        ''' </summary>
-        ''' <param name="PropertyName"></param>
-        ''' <returns></returns>
-        ''' <remarks>
-        ''' See comments "About 'common' properties"
-        ''' </remarks>
-        Private Function GetCommonPropertyDescriptor(PropertyName As String) As PropertyDescriptor
-            Return m_PropPage.GetCommonPropertyDescriptor(PropertyName)
-        End Function
 
 
         ''' <summary>
@@ -1889,22 +1853,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 End If
             End If
             Return value
-        End Function
-
-
-        ''' <summary>
-        ''' Retrieves the current value of this property in the project (not the current value 
-        '''   in the control on the property page as it has been edited by the user).
-        ''' The value retrieved is converted using the property's type converter.
-        ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks>
-        ''' See comments "About 'common' properties"
-        ''' </remarks>
-        Private Function GetCommonPropertyValue() As Object
-            Debug.Assert(PropDesc IsNot Nothing, "Calling GetCommonPropertyValue() on a property that could not be found [PropDesc Is Nothing]")
-            Debug.Assert(IsCommonProperty)
-            Return GetCommonPropertyValue(PropDesc, CommonPropertiesObject)
         End Function
 
 

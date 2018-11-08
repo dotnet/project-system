@@ -7,7 +7,6 @@ Option Explicit On
 Imports System.ComponentModel.Design
 Imports System.Windows.Forms
 #If Not WINFORMEDITOR Then
-Imports Microsoft.VisualStudio.Editors.Common
 Imports Microsoft.VisualStudio.Editors.DesignerFramework
 Imports Microsoft.VisualStudio.Editors.MyExtensibility
 #End If
@@ -208,7 +207,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
         Private WithEvents _projectService As MyExtensibilityProjectService = Nothing
-        Private ReadOnly _comparer As ListViewComparer
 #End If
 
 #Region "Windows Form Designer generated code"
@@ -221,8 +219,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Friend WithEvents tableLayoutAddRemoveButtons As TableLayoutPanel
         Friend WithEvents buttonRemove As Button
         Friend WithEvents buttonAdd As Button
-        Private ReadOnly _components As System.ComponentModel.IContainer
-
 
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(MyExtensibilityPropPage))

@@ -89,12 +89,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         Private _visibleButtonSlots As Integer '# of button positions we are currently displaying (min = 1), the rest go into overflow when not enough room
         Private _buttonPagePadding As Padding
 
-        'The width/height of the downward-slanting line underneath the buttons (not including the two curved ends' (arcs') width/height)
-
-        Private Const ButtonBorderWidth As Integer = 1   'Thickness of each half of the separators between buttons
-
         Private Const OverflowButtonTopOffset As Integer = 2 'Offset of overflow button (the button's edge, not the glyph inside it) from the bottom of the bottommost button
-        Private Const OverflowButtonRightOffset As Integer = 2 'Offset of right edge of overflow button from vertical line 3
 
         Private _tabControlRect As Rectangle 'The entire area of the tab control, including the tabs and panel area
 

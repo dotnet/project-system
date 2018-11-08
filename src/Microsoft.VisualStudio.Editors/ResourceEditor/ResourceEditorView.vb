@@ -5238,16 +5238,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         End Function
 
         ''' <summary>
-        ''' Returns true if the given project is a C++ project
-        ''' </summary>
-        ''' <param name="Project"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Private Function IsCppProject(Project As Project) As Boolean
-            Return Project IsNot Nothing AndAlso (New Guid(Project.Kind).Equals(_projectGuid_CPlusPlus))
-        End Function
-
-        ''' <summary>
         ''' Returns true if the given project is a VB project (or a VB for smart devices project)
         ''' </summary>
         ''' <param name="Project"></param>

@@ -26,7 +26,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         Private _loadAlreadyAttempted As Boolean 'Whether or not we've attempted to load this property page
 
         Private Const REGKEY_CachedPageTitles As String = "\ProjectDesigner\CachedPageTitles"
-        Private Const REGVALUE_CachedLocaleId As String = "LocaleID"
 
         ''' <summary>
         ''' Constructor

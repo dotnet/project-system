@@ -29,7 +29,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         Private Shared ReadOnly s_noneText As String '(None)" in the startup object combobox
         Private Shared ReadOnly s_startupObjectLabelText As String 'The label text to use for a startup object
         Private Shared ReadOnly s_startupUriLabelText As String 'The label text to use for a startup Uri
-        Private ReadOnly _errorControl As AppDotXamlErrorControl
 
         Protected Const STARTUPOBJECT_SubMain As String = "Sub Main"
 

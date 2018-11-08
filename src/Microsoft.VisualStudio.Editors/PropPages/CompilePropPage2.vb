@@ -35,16 +35,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private ReadOnly _notifyWarning As String
         Private Const ConditionColumnIndex As Integer = 0
         Private Const NotifyColumnIndex As Integer = 1
-        Private Const ConditionColumnWidthPercentage As Integer = 35 'non-resizable column
-        Private Const NotifyColumnWidthPercentage As Integer = 100
-
-        'Minimum scrolling widths - widths below which resizing the settings designer will cause a horizontal
-        '  scrollbar to appear rather than sizing the column below this size
-        Private Const ConditionColumnMinScrollingWidth As Integer = 100
-        Private Const NotifyColumnMinScrollingWidth As Integer = 100 'non-resizable column
-
-        ' Cached extended objects for all configurations...
-        Private ReadOnly _cachedExtendedObjects() As Object
 
         Private _optionStrictCustomText As String
         Private _optionStrictOnText As String

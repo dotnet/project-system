@@ -204,9 +204,6 @@ Namespace Microsoft.Runtime.Hosting
             End Get
         End Property
 
-
-        ' Fields
-        Private Const S_OK As Integer = 0
         <SecurityCritical()>
         <ThreadStatic()>
         Private Shared s_strongName As IClrStrongName
