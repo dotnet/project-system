@@ -169,10 +169,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             {
                 isTopLevel = true;
                 isTarget = false;
-                if (dependencyType == DependencyType.Unknown)
-                {
-                    dependencyType = DependencyType.Package;
-                }
             }
 
             if (isTarget)
@@ -186,6 +182,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
             switch (dependencyType)
             {
+                case DependencyType.Unknown when !resolved:
                 case DependencyType.Package:
                     return new PackageDependencyModel(
                         itemSpec,
