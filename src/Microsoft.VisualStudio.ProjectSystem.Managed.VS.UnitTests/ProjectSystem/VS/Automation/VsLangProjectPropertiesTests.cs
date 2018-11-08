@@ -34,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         public void ImportsAndEventsAsNull()
         {
             var imports = Mock.Of<Imports>();
-            var events = Mock.Of<VSProjectEvents>();
+            var events = Mock.Of<VSLangProj.VSProjectEvents>();
             var innerVSProjectMock = new Mock<VSLangProj.VSProject>();
 
             innerVSProjectMock.Setup(p => p.Imports)
@@ -61,10 +61,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             {
                 new Lazy<Imports, IOrderPrecedenceMetadataView>(() => imports, IOrderPrecedenceMetadataViewFactory.Create("VisualBasic"))
             };
-            var events = Mock.Of<VSProjectEvents>();
-            var vsProjectEventsImpl = new OrderPrecedenceImportCollection<VSProjectEvents>(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst, (UnconfiguredProject)null)
+            var events = Mock.Of<VSLangProj.VSProjectEvents>();
+            var vsProjectEventsImpl = new OrderPrecedenceImportCollection<VSLangProj.VSProjectEvents>(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst, (UnconfiguredProject)null)
             {
-                new Lazy<VSProjectEvents, IOrderPrecedenceMetadataView>(() => events, IOrderPrecedenceMetadataViewFactory.Create("VisualBasic"))
+                new Lazy<VSLangProj.VSProjectEvents, IOrderPrecedenceMetadataView>(() => events, IOrderPrecedenceMetadataViewFactory.Create("VisualBasic"))
             };
 
             var innerVSProjectMock = new Mock<VSLangProj.VSProject>();
@@ -73,11 +73,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             unconfiguredProjectMock.Setup(p => p.Capabilities)
                                    .Returns((IProjectCapabilitiesScope)null);
 
+            var buildManager = new Mock<BuildManager>();
+
             var vsproject = new VSProjectTestImpl(
                                 innerVSProjectMock.Object,
                                 threadingService: Mock.Of<IProjectThreadingService>(),
                                 projectProperties: Mock.Of<ActiveConfiguredProject<ProjectProperties>>(),
-                                project: unconfiguredProjectMock.Object);
+                                project: unconfiguredProjectMock.Object,
+                                buildManager: buildManager.Object);
 
             vsproject.SetImportsImpl(importsImpl);
             vsproject.SetVSProjectEventsImpl(vsProjectEventsImpl);
@@ -199,7 +202,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             var vsproject = CreateInstance(
                 Mock.Of<VSLangProj.VSProject>(),
                 threadingService: Mock.Of<IProjectThreadingService>(),
-                projectProperties: Mock.Of<ActiveConfiguredProject<ProjectProperties>>());
+                projectProperties: Mock.Of<ActiveConfiguredProject<ProjectProperties>>(),
+                buildManager: Mock.Of<BuildManager>());
             Assert.Null(vsproject.ExtenderCATID);
         }
 
@@ -207,14 +211,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             VSLangProj.VSProject vsproject = null,
             IProjectThreadingService threadingService = null,
             ActiveConfiguredProject<ProjectProperties> projectProperties = null,
-            UnconfiguredProject project = null)
+            UnconfiguredProject project = null,
+            BuildManager buildManager = null)
         {
             if (project == null)
             {
                 project = UnconfiguredProjectFactory.Create();
             }
 
-            return new VSProject(vsproject, threadingService, projectProperties, project);
+            return new VSProject(vsproject, threadingService, projectProperties, project, buildManager);
         }
 
         internal class VSProjectTestImpl : VSProject
@@ -223,8 +228,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
                 VSLangProj.VSProject vsProject,
                 IProjectThreadingService threadingService,
                 ActiveConfiguredProject<ProjectProperties> projectProperties,
-                UnconfiguredProject project)
-                : base(vsProject, threadingService, projectProperties, project)
+                UnconfiguredProject project,
+                BuildManager buildManager)
+                : base(vsProject, threadingService, projectProperties, project, buildManager)
             {
             }
 
@@ -233,7 +239,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
                 ImportsImpl = importsImpl;
             }
 
-            internal void SetVSProjectEventsImpl(OrderPrecedenceImportCollection<VSProjectEvents> vsProjectEventsImpl)
+            internal void SetVSProjectEventsImpl(OrderPrecedenceImportCollection<VSLangProj.VSProjectEvents> vsProjectEventsImpl)
             {
                 VSProjectEventsImpl = vsProjectEventsImpl;
             }
