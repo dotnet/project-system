@@ -52,7 +52,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             return new SdkDependencyModel(
                 path,
                 originalItemSpec,
-                DependencyTreeFlags.SdkSubTreeNodeFlags,
                 resolved && !isImplicit,
                 isImplicit,
                 properties);

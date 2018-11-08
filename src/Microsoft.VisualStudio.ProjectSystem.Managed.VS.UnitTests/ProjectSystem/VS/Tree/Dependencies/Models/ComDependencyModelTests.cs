@@ -20,8 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var model = new ComDependencyModel(
                 "c:\\myPath.dll",
                 "myOriginalItemSpec",
-                flags: DependencyTreeFlags.ComSubTreeNodeFlags,
-                resolved: true,
+                isResolved: true,
                 isImplicit: false,
                 properties: properties);
 
@@ -53,8 +52,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var model = new ComDependencyModel(
                 "c:\\myPath.dll",
                 "myOriginalItemSpec",
-                flags: DependencyTreeFlags.ComSubTreeNodeFlags,
-                resolved: false,
+                isResolved: false,
                 isImplicit: false,
                 properties: properties);
 
@@ -86,8 +84,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var model = new ComDependencyModel(
                 "c:\\myPath.dll",
                 "myOriginalItemSpec",
-                flags: DependencyTreeFlags.ComSubTreeNodeFlags,
-                resolved: true,
+                isResolved: true,
                 isImplicit: true,
                 properties: properties);
 

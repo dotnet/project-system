@@ -11,6 +11,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 {
     internal class SdkDependencyModel : DependencyModel
     {
+        private static readonly DependencyFlagCache s_flagCache = new DependencyFlagCache(
+            add: DependencyTreeFlags.SdkSubTreeNodeFlags +
+                 DependencyTreeFlags.SupportsHierarchy);
+
         private static readonly DependencyIconSet s_iconSet = new DependencyIconSet(
             icon: ManagedImageMonikers.Sdk,
             expandedIcon: ManagedImageMonikers.Sdk,
@@ -38,13 +42,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
         public SdkDependencyModel(
             string path,
             string originalItemSpec,
-            ProjectTreeFlags flags,
-            bool resolved,
+            bool isResolved,
             bool isImplicit,
             IImmutableDictionary<string, string> properties)
-            : base(path, originalItemSpec, flags, resolved, isImplicit, properties)
+            : base(
+                path,
+                originalItemSpec,
+                flags: s_flagCache.Get(isResolved, isImplicit),
+                isResolved,
+                isImplicit,
+                properties)
         {
-            Flags = Flags.Union(DependencyTreeFlags.SupportsHierarchy);
             Version = properties.GetStringProperty(ProjectItemMetadata.Version) ?? string.Empty;
             string baseCaption = new LazyStringSplit(path, ',').FirstOrDefault();
             Caption = string.IsNullOrEmpty(Version) ? baseCaption : $"{baseCaption} ({Version})";

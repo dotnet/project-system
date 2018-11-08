@@ -20,8 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var model = new SdkDependencyModel(
                 "c:\\myPath.dll",
                 "myOriginalItemSpec",
-                flags: DependencyTreeFlags.SdkSubTreeNodeFlags,
-                resolved: true,
+                isResolved: true,
                 isImplicit: false,
                 properties: properties);
 
@@ -55,8 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var model = new SdkDependencyModel(
                 "c:\\myPath.dll",
                 "myOriginalItemSpec",
-                flags: DependencyTreeFlags.SdkSubTreeNodeFlags,
-                resolved: false,
+                isResolved: false,
                 isImplicit: false,
                 properties: properties);
 
@@ -90,8 +88,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var model = new SdkDependencyModel(
                 "c:\\myPath.dll",
                 "myOriginalItemSpec",
-                flags: DependencyTreeFlags.SdkSubTreeNodeFlags,
-                resolved: true,
+                isResolved: true,
                 isImplicit: true,
                 properties: properties);
 

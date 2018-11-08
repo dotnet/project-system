@@ -21,7 +21,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var model = new AnalyzerDependencyModel(
                 "c:\\myPath",
                 "myOriginalItemSpec",
-                flags: DependencyTreeFlags.AnalyzerSubTreeNodeFlags,
                 resolved: true,
                 isImplicit: false,
                 properties: properties);
@@ -54,7 +53,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var model = new AnalyzerDependencyModel(
                 "c:\\myPath",
                 "myOriginalItemSpec",
-                flags: DependencyTreeFlags.AnalyzerSubTreeNodeFlags,
                 resolved: false,
                 isImplicit: false,
                 properties: properties);
@@ -87,7 +85,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var model = new AnalyzerDependencyModel(
                 "c:\\myPath",
                 "myOriginalItemSpec",
-                flags: DependencyTreeFlags.AnalyzerSubTreeNodeFlags,
                 resolved: true,
                 isImplicit: true,
                 properties: properties);

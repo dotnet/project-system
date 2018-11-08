@@ -23,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 path: "c:\\myPath",
                 originalItemSpec: "myOriginalItemSpec",
                 name: "myPath",
-                resolved: true,
+                isResolved: true,
                 properties: properties,
                 dependenciesIDs: dependencyIDs);
 
@@ -60,7 +60,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 path: "c:\\myPath",
                 originalItemSpec: "myOriginalItemSpec",
                 name: "myPath",
-                resolved: false,
+                isResolved: false,
                 properties: properties,
                 dependenciesIDs: dependencyIDs);
 

@@ -18,6 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 unresolvedIcon: KnownMonikers.AbsolutePosition,
                 unresolvedExpandedIcon: KnownMonikers.AbsolutePosition);
             var flag = ProjectTreeFlags.Create("MyCustomFlag");
+
             var model = new SubTreeRootDependencyModel(
                 "myProvider",
                 "myRoot",
@@ -28,17 +29,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal("myRoot", model.Path);
             Assert.Equal("myRoot", model.OriginalItemSpec);
             Assert.Equal("myRoot", model.Caption);
+            Assert.Same(iconSet, model.IconSet);
             Assert.Equal(KnownMonikers.AboutBox, model.Icon);
             Assert.Equal(KnownMonikers.AboutBox, model.ExpandedIcon);
             Assert.Equal(KnownMonikers.AbsolutePosition, model.UnresolvedIcon);
             Assert.Equal(KnownMonikers.AbsolutePosition, model.UnresolvedExpandedIcon);
-            Assert.True(model.Flags.Contains(DependencyTreeFlags.DependencyFlags
-                                                .Except(DependencyTreeFlags.SupportsRuleProperties)
-                                                .Except(DependencyTreeFlags.SupportsRemove)));
-            Assert.True(model.Flags.Contains(DependencyTreeFlags.SubTreeRootNodeFlags));
-            Assert.False(model.Flags.Contains(DependencyTreeFlags.SupportsRuleProperties));
-            Assert.False(model.Flags.Contains(DependencyTreeFlags.SupportsRemove));
-            Assert.True(model.Flags.Contains(flag));
+            Assert.Equal(
+                flag + 
+                DependencyTreeFlags.GenericResolvedDependencyFlags + 
+                DependencyTreeFlags.DependencyFlags +
+                DependencyTreeFlags.SubTreeRootNodeFlags -
+                DependencyTreeFlags.SupportsRuleProperties -
+                DependencyTreeFlags.SupportsRemove,
+                model.Flags);
         }
     }
 }

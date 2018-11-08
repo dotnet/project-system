@@ -10,6 +10,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 {
     internal class PackageDependencyModel : DependencyModel
     {
+        private static readonly DependencyFlagCache s_flagCache = new DependencyFlagCache(
+            add: DependencyTreeFlags.NuGetSubTreeNodeFlags +
+                 DependencyTreeFlags.PackageNodeFlags + 
+                 DependencyTreeFlags.SupportsHierarchy);
+
         private static readonly DependencyIconSet s_iconSet = new DependencyIconSet(
             icon: ManagedImageMonikers.NuGetGrey,
             expandedIcon: ManagedImageMonikers.NuGetGrey,
@@ -43,7 +48,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             string originalItemSpec,
             string name,
             string version,
-            bool resolved,
+            bool isResolved,
             bool isImplicit,
             bool isTopLevel,
             bool isVisible,
@@ -51,11 +56,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             IEnumerable<string> dependenciesIDs)
             : base(
                 path, 
-                originalItemSpec, 
-                flags: DependencyTreeFlags.NuGetSubTreeNodeFlags +
-                       DependencyTreeFlags.PackageNodeFlags +
-                       DependencyTreeFlags.SupportsHierarchy, 
-                resolved, 
+                originalItemSpec,
+                flags: s_flagCache.Get(isResolved, isImplicit),
+                isResolved, 
                 isImplicit, 
                 properties, 
                 isTopLevel, 

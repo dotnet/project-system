@@ -21,8 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var model = new AssemblyDependencyModel(
                 "c:\\myPath",
                 "myOriginalItemSpec",
-                flags: DependencyTreeFlags.AssemblySubTreeNodeFlags,
-                resolved: true,
+                isResolved: true,
                 isImplicit: false,
                 properties: properties);
 
@@ -54,8 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var model = new AssemblyDependencyModel(
                 "c:\\myPath",
                 "myOriginalItemSpec",
-                flags: DependencyTreeFlags.AssemblySubTreeNodeFlags,
-                resolved: true,
+                isResolved: true,
                 isImplicit: false,
                 properties: properties);
 
@@ -87,8 +85,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var model = new AssemblyDependencyModel(
                 "c:\\myPath",
                 "myOriginalItemSpec",
-                flags: DependencyTreeFlags.AssemblySubTreeNodeFlags,
-                resolved: false,
+                isResolved: false,
                 isImplicit: false,
                 properties: properties);
 
@@ -120,8 +117,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var model = new AssemblyDependencyModel(
                 "c:\\myPath",
                 "myOriginalItemSpec",
-                flags: DependencyTreeFlags.AssemblySubTreeNodeFlags,
-                resolved: true,
+                isResolved: true,
                 isImplicit: true,
                 properties: properties);
 

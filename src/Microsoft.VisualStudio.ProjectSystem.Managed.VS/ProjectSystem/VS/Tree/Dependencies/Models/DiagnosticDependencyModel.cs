@@ -16,6 +16,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 
     internal class DiagnosticDependencyModel : DependencyModel
     {
+        private static readonly ProjectTreeFlags s_errorFlags = new DependencyFlagCache(
+            add: DependencyTreeFlags.NuGetSubTreeNodeFlags + 
+                 DependencyTreeFlags.DiagnosticNodeFlags + 
+                 DependencyTreeFlags.DiagnosticErrorNodeFlags).Get(isResolved: false, isImplicit: false);
+
+        private static readonly ProjectTreeFlags s_warningFlags = new DependencyFlagCache(
+            add: DependencyTreeFlags.NuGetSubTreeNodeFlags + 
+                 DependencyTreeFlags.DiagnosticNodeFlags + 
+                 DependencyTreeFlags.DiagnosticWarningNodeFlags).Get(isResolved: false, isImplicit: false);
+
         private static readonly DependencyIconSet s_errorIconSet = new DependencyIconSet(
             icon: ManagedImageMonikers.ErrorSmall,
             expandedIcon: ManagedImageMonikers.ErrorSmall,
@@ -52,11 +62,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             : base(
                 originalItemSpec,
                 originalItemSpec,
-                flags: DependencyTreeFlags.NuGetSubTreeNodeFlags +
-                       DependencyTreeFlags.DiagnosticNodeFlags +
-                       (severity == DiagnosticMessageSeverity.Error
-                           ? DependencyTreeFlags.DiagnosticErrorNodeFlags
-                           : DependencyTreeFlags.DiagnosticWarningNodeFlags),
+                flags: severity == DiagnosticMessageSeverity.Error
+                    ? s_errorFlags
+                    : s_warningFlags,
                 isResolved: false,
                 isImplicit: false,
                 properties: properties,

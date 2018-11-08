@@ -68,8 +68,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal("someProvider", model.ProviderType);
             Assert.Equal("somePath", model.Path);
             Assert.Equal("SomeItemSpec", model.OriginalItemSpec);
-            Assert.True(model.Flags.Contains(ProjectTreeFlags.HiddenProjectItem));
-            Assert.True(model.Flags.Contains(DependencyTreeFlags.GenericUnresolvedDependencyFlags));
+            Assert.Equal(ProjectTreeFlags.HiddenProjectItem, model.Flags);
             Assert.False(model.Resolved);
             Assert.False(model.Implicit);
             Assert.Single(model.Properties);
@@ -90,8 +89,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal("someProvider", model.ProviderType);
             Assert.Equal("somePath", model.Path);
             Assert.Equal("SomeItemSpec", model.OriginalItemSpec);
-            Assert.True(model.Flags.Contains(ProjectTreeFlags.HiddenProjectItem));
-            Assert.True(model.Flags.Contains(DependencyTreeFlags.GenericResolvedDependencyFlags));
+            Assert.Equal(ProjectTreeFlags.HiddenProjectItem, model.Flags);
             Assert.True(model.Resolved);
             Assert.False(model.Implicit);
             Assert.Single(model.Properties);
@@ -112,9 +110,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal("someProvider", model.ProviderType);
             Assert.Equal("somePath", model.Path);
             Assert.Equal("SomeItemSpec", model.OriginalItemSpec);
-            Assert.True(model.Flags.Contains(ProjectTreeFlags.HiddenProjectItem));
-            Assert.True(model.Flags.Contains(DependencyTreeFlags.GenericResolvedDependencyFlags.Except(DependencyTreeFlags.SupportsRemove)));
-            Assert.False(model.Flags.Contains(DependencyTreeFlags.SupportsRemove));
+            Assert.Equal(ProjectTreeFlags.HiddenProjectItem, model.Flags);
             Assert.True(model.Resolved);
             Assert.True(model.Implicit);
             Assert.Single(model.Properties);

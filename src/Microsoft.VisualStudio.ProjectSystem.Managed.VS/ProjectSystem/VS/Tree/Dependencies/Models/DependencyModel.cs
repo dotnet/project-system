@@ -19,6 +19,29 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             Visible  = 1 << 3
         }
 
+        protected readonly struct DependencyFlagCache
+        {
+            private readonly ProjectTreeFlags[] _lookup;
+
+            public DependencyFlagCache(ProjectTreeFlags add = default, ProjectTreeFlags remove = default)
+            {
+                ProjectTreeFlags resolved = DependencyTreeFlags.GenericResolvedDependencyFlags.Union(add).Except(remove);
+                ProjectTreeFlags unresolved = DependencyTreeFlags.GenericUnresolvedDependencyFlags.Union(add).Except(remove);
+
+                // Cannot remove implicit dependencies
+
+                _lookup = new ProjectTreeFlags[4];
+                _lookup[Index(true,  false)] = resolved;
+                _lookup[Index(true,  true )] = resolved.Except(DependencyTreeFlags.SupportsRemove);
+                _lookup[Index(false, false)] = unresolved;
+                _lookup[Index(false, true )] = unresolved.Except(DependencyTreeFlags.SupportsRemove);
+            }
+
+            public ProjectTreeFlags Get(bool isResolved, bool isImplicit) => _lookup[Index(isResolved, isImplicit)];
+
+            private static int Index(bool isResolved, bool isImplicit) => (isResolved ? 2 : 0) | (isImplicit ? 1 : 0);
+        }
+
         protected DependencyModel(
             string path,
             string originalItemSpec,
@@ -35,17 +58,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             OriginalItemSpec = originalItemSpec ?? path;
             Properties = properties ?? ImmutableStringDictionary<string>.EmptyOrdinal;
             Caption = path;
-
-            flags += isResolved 
-                ? DependencyTreeFlags.GenericResolvedDependencyFlags 
-                : DependencyTreeFlags.GenericUnresolvedDependencyFlags;
-
-            if (isImplicit)
-            {
-                // Cannot remove implicit dependencies
-                flags -= DependencyTreeFlags.SupportsRemove;
-            }
-
             Flags = flags;
 
             if (Properties.TryGetBoolProperty("Visible", out bool visibleProperty))

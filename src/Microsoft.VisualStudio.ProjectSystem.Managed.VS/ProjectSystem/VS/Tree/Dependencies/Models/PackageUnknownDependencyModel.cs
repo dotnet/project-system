@@ -11,6 +11,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 {
     internal class PackageUnknownDependencyModel : DependencyModel
     {
+        private static readonly DependencyFlagCache s_flagCache = new DependencyFlagCache(add: DependencyTreeFlags.NuGetSubTreeNodeFlags);
+
         private static readonly DependencyIconSet s_iconSet = new DependencyIconSet(
             icon: KnownMonikers.QuestionMark,
             expandedIcon: KnownMonikers.QuestionMark,
@@ -31,14 +33,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             string path,
             string originalItemSpec,
             string name,
-            bool resolved,
+            bool isResolved,
             IImmutableDictionary<string, string> properties,
             IEnumerable<string> dependenciesIDs)
             : base(
                 path,
                 originalItemSpec,
-                flags: DependencyTreeFlags.NuGetSubTreeNodeFlags,
-                resolved,
+                flags: s_flagCache.Get(isResolved, isImplicit: false),
+                isResolved,
                 isImplicit: false,
                 properties,
                 isTopLevel: false)

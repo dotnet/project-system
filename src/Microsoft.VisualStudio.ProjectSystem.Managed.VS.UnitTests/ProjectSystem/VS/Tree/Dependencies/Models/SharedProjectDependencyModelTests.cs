@@ -21,8 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var model = new SharedProjectDependencyModel(
                 "c:\\myPath.dll",
                 "myOriginalItemSpec",
-                flags: DependencyTreeFlags.ProjectNodeFlags,
-                resolved: true,
+                isResolved: true,
                 isImplicit: false,
                 properties: properties);
 
@@ -58,8 +57,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var model = new SharedProjectDependencyModel(
                 "c:\\myPath.dll",
                 "myOriginalItemSpec",
-                flags: DependencyTreeFlags.ProjectNodeFlags,
-                resolved: false,
+                isResolved: false,
                 isImplicit: false,
                 properties: properties);
 
@@ -93,8 +91,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var model = new SharedProjectDependencyModel(
                 "c:\\myPath.dll",
                 "myOriginalItemSpec",
-                flags: DependencyTreeFlags.ProjectNodeFlags,
-                resolved: true,
+                isResolved: true,
                 isImplicit: true,
                 properties: properties);
 

@@ -49,7 +49,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             return new AssemblyDependencyModel(
                 path,
                 originalItemSpec,
-                DependencyTreeFlags.AssemblySubTreeNodeFlags,
                 resolved,
                 isImplicit,
                 properties);
