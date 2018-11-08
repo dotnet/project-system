@@ -19,12 +19,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var properties = ImmutableStringDictionary<string>.EmptyOrdinal.Add("myProp", "myVal");
             var dependencyIDs = new[] { "id1", "id2" };
 
-            var flag = ProjectTreeFlags.Create("MyCustomFlag");
             var model = new PackageAssemblyDependencyModel(
                 path: "c:\\myPath",
                 originalItemSpec: "myOriginalItemSpec",
                 name: "myPath",
-                flags: flag,
                 resolved: true,
                 properties: properties,
                 dependenciesIDs: dependencyIDs);
@@ -46,7 +44,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(KnownMonikers.ReferenceWarning, model.UnresolvedIcon);
             Assert.Equal(KnownMonikers.ReferenceWarning, model.UnresolvedExpandedIcon);
             AssertEx.CollectionLength(model.DependencyIDs, 2);
-            Assert.True(model.Flags.Contains(flag));
+            Assert.Equal(
+                DependencyTreeFlags.NuGetSubTreeNodeFlags +
+                DependencyTreeFlags.GenericResolvedDependencyFlags,
+                model.Flags);
         }
 
         [Fact]
@@ -55,12 +56,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var properties = ImmutableStringDictionary<string>.EmptyOrdinal.Add("myProp", "myVal");
             var dependencyIDs = new[] { "id1", "id2" };
 
-            var flag = ProjectTreeFlags.Create("MyCustomFlag");
             var model = new PackageAssemblyDependencyModel(
                 path: "c:\\myPath",
                 originalItemSpec: "myOriginalItemSpec",
                 name: "myPath",
-                flags: flag,
                 resolved: false,
                 properties: properties,
                 dependenciesIDs: dependencyIDs);
@@ -82,7 +81,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(KnownMonikers.ReferenceWarning, model.UnresolvedIcon);
             Assert.Equal(KnownMonikers.ReferenceWarning, model.UnresolvedExpandedIcon);
             AssertEx.CollectionLength(model.DependencyIDs, 2);
-            Assert.True(model.Flags.Contains(flag));
+            Assert.Equal(
+                DependencyTreeFlags.NuGetSubTreeNodeFlags +
+                DependencyTreeFlags.GenericUnresolvedDependencyFlags,
+                model.Flags);
         }
     }
 }

@@ -47,10 +47,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             DiagnosticMessageSeverity severity,
             string code,
             string message,
-            ProjectTreeFlags flags,
             bool isVisible,
             IImmutableDictionary<string, string> properties)
-            : base(originalItemSpec, originalItemSpec, flags, isResolved: false, isImplicit: false, properties: properties, isTopLevel: false, isVisible: isVisible)
+            : base(
+                originalItemSpec,
+                originalItemSpec,
+                flags: DependencyTreeFlags.NuGetSubTreeNodeFlags +
+                       DependencyTreeFlags.DiagnosticNodeFlags +
+                       (severity == DiagnosticMessageSeverity.Error
+                           ? DependencyTreeFlags.DiagnosticErrorNodeFlags
+                           : DependencyTreeFlags.DiagnosticWarningNodeFlags),
+                isResolved: false,
+                isImplicit: false,
+                properties: properties,
+                isTopLevel: false,
+                isVisible: isVisible)
         {
             Requires.NotNullOrEmpty(originalItemSpec, nameof(originalItemSpec));
             Requires.NotNullOrEmpty(message, nameof(message));
@@ -59,17 +70,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 
             Name = message;
             Caption = string.IsNullOrWhiteSpace(code) ? message : string.Concat(code.ToUpperInvariant(), " ", message);
-
-            Flags = Flags.Union(DependencyTreeFlags.DiagnosticNodeFlags);
-
-            if (severity == DiagnosticMessageSeverity.Error)
-            {
-                Flags = Flags.Union(DependencyTreeFlags.DiagnosticErrorNodeFlags);
-            }
-            else
-            {
-                Flags = Flags.Union(DependencyTreeFlags.DiagnosticWarningNodeFlags);
-            }
         }
     }
 }

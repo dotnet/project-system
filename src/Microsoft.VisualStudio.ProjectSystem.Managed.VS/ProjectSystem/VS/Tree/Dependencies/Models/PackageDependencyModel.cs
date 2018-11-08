@@ -42,7 +42,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             string path,
             string originalItemSpec,
             string name,
-            ProjectTreeFlags flags,
             string version,
             bool resolved,
             bool isImplicit,
@@ -50,7 +49,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             bool isVisible,
             IImmutableDictionary<string, string> properties,
             IEnumerable<string> dependenciesIDs)
-            : base(path, originalItemSpec, flags, resolved, isImplicit, properties, isTopLevel, isVisible)
+            : base(
+                path, 
+                originalItemSpec, 
+                flags: DependencyTreeFlags.NuGetSubTreeNodeFlags +
+                       DependencyTreeFlags.PackageNodeFlags +
+                       DependencyTreeFlags.SupportsHierarchy, 
+                resolved, 
+                isImplicit, 
+                properties, 
+                isTopLevel, 
+                isVisible)
         {
             Requires.NotNullOrEmpty(name, nameof(name));
 
@@ -62,9 +71,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             {
                 DependencyIDs = ImmutableArray.CreateRange(dependenciesIDs);
             }
-
-            Flags = Flags.Union(DependencyTreeFlags.PackageNodeFlags)
-                         .Union(DependencyTreeFlags.SupportsHierarchy);
         }
     }
 }

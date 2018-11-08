@@ -31,11 +31,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             string path,
             string originalItemSpec,
             string name,
-            ProjectTreeFlags flags,
             bool resolved,
             IImmutableDictionary<string, string> properties,
             IEnumerable<string> dependenciesIDs)
-            : base(path, originalItemSpec, flags, resolved, isImplicit: false, properties: properties, isTopLevel: false)
+            : base(
+                path,
+                originalItemSpec,
+                flags: DependencyTreeFlags.NuGetSubTreeNodeFlags,
+                resolved,
+                isImplicit: false,
+                properties,
+                isTopLevel: false)
         {
             Requires.NotNullOrEmpty(name, nameof(name));
 

@@ -193,7 +193,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                         itemSpec,
                         originalItemSpec,
                         name,
-                        DependencyTreeFlags.NuGetSubTreeNodeFlags,
                         version: properties.GetStringProperty(ProjectItemMetadata.Version) ?? string.Empty,
                         resolved,
                         isImplicitlyDefined,
@@ -207,7 +206,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                         itemSpec,
                         originalItemSpec,
                         name,
-                        DependencyTreeFlags.NuGetSubTreeNodeFlags,
                         resolved,
                         properties,
                         dependenciesIDs: GetDependencyItemSpecs());
@@ -216,7 +214,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                         itemSpec,
                         originalItemSpec,
                         name,
-                        DependencyTreeFlags.NuGetSubTreeNodeFlags,
                         resolved,
                         properties,
                         dependenciesIDs: GetDependencyItemSpecs());
@@ -226,7 +223,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                         severity: properties.GetEnumProperty<DiagnosticMessageSeverity>(ProjectItemMetadata.Severity) ?? DiagnosticMessageSeverity.Info,
                         code: properties.GetStringProperty(ProjectItemMetadata.DiagnosticCode) ?? string.Empty,
                         name,
-                        DependencyTreeFlags.NuGetSubTreeNodeFlags,
                         isVisible: true,
                         properties: properties);
                 default:
@@ -234,7 +230,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                         itemSpec,
                         originalItemSpec,
                         name,
-                        DependencyTreeFlags.NuGetSubTreeNodeFlags,
                         resolved,
                         properties,
                         dependenciesIDs: GetDependencyItemSpecs());
