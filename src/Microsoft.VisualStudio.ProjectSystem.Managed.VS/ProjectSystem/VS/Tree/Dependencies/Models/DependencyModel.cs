@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
     internal abstract class DependencyModel : IDependencyModel
     {
         [Flags]
-        private enum DependencyFlags
+        private enum DependencyFlags : byte
         {
             Resolved = 1 << 0,
             TopLevel = 1 << 1,
