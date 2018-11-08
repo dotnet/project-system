@@ -54,18 +54,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             ITargetFramework targetFramework,
             DependenciesRuleChangeContext ruleChangeContext)
         {
-            if (changesByRuleName.TryGetValue(UnresolvedRuleName, out IProjectChangeDescription unresolvedChanges)
-                && unresolvedChanges.Difference.AnyChanges)
-            {
-                HandleChangesForRule(
-                    unresolvedChanges,
-                    ruleChangeContext,
-                    targetFramework,
-                    resolved: false);
-            }
-
             var caseInsensitiveUnresolvedChanges = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-            caseInsensitiveUnresolvedChanges.AddRange(unresolvedChanges.After.Items.Keys);
+
+            if (changesByRuleName.TryGetValue(UnresolvedRuleName, out IProjectChangeDescription unresolvedChanges))
+            {
+                caseInsensitiveUnresolvedChanges.AddRange(unresolvedChanges.After.Items.Keys);
+
+                if (unresolvedChanges.Difference.AnyChanges)
+                {
+                    HandleChangesForRule(
+                        unresolvedChanges,
+                        ruleChangeContext,
+                        targetFramework,
+                        resolved: false);
+                }
+            }
 
             if (changesByRuleName.TryGetValue(ResolvedRuleName, out IProjectChangeDescription resolvedChanges)
                 && resolvedChanges.Difference.AnyChanges)
