@@ -20,7 +20,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         {
             private readonly ConfiguredProject _project;
             private readonly IProjectSubscriptionService _projectSubscriptionService;
-            private readonly IProjectThreadingService _threadingService;
             private readonly IUnconfiguredProjectTasksService _tasksService;
             private readonly IWorkspaceProjectContextProvider _workspaceProjectContextProvider;
             private readonly IActiveWorkspaceProjectContextTracker _activeWorkspaceProjectContextTracker;
@@ -41,7 +40,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             {
                 _project = project;
                 _projectSubscriptionService = projectSubscriptionService;
-                _threadingService = threadingService;
                 _tasksService = tasksService;
                 _workspaceProjectContextProvider = workspaceProjectContextProvider;
                 _applyChangesToWorkspaceContextFactory = applyChangesToWorkspaceContextFactory;

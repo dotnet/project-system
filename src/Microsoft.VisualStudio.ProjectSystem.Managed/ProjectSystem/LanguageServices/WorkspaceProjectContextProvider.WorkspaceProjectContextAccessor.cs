@@ -9,14 +9,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         private class WorkspaceProjectContextAccessor : IWorkspaceProjectContextAccessor
         {
             private readonly IWorkspaceProjectContext _context;
-            private readonly IProjectThreadingService _threadingService;
             private readonly string _contextId;
 
-            public WorkspaceProjectContextAccessor(string contextId, IWorkspaceProjectContext context, IProjectThreadingService threadingService)
+            public WorkspaceProjectContextAccessor(string contextId, IWorkspaceProjectContext context)
             {
                 _contextId = contextId;
                 _context = context;
-                _threadingService = threadingService;
             }
 
             public string ContextId
@@ -26,22 +24,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             public IWorkspaceProjectContext Context
             {
-                get
-                {
-                    _threadingService.VerifyOnUIThread();
-
-                    return _context;
-                }
+                get { return _context; }
             }
 
             public object HostSpecificEditAndContinueService
             {
-                get { return Context; }
+                get { return _context; }
             }
 
             public object HostSpecificErrorReporter
             {
-                get { return Context; }
+                get { return _context; }
             }
         }
     }

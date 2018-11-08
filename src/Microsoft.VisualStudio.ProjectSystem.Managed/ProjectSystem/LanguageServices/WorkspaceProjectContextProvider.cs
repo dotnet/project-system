@@ -52,12 +52,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             if (context == null)
                 return null;
 
-            return new WorkspaceProjectContextAccessor(data.WorkspaceProjectContextId, context, _threadingService);
+            return new WorkspaceProjectContextAccessor(data.WorkspaceProjectContextId, context);
         }
 
-        public Task ReleaseProjectContextAsync(IWorkspaceProjectContextAccessor accessor)
+        public async Task ReleaseProjectContextAsync(IWorkspaceProjectContextAccessor accessor)
         {
             Requires.NotNull(accessor, nameof(accessor));
+
+            // TODO: https://github.com/dotnet/project-system/issues/353.
+            await _threadingService.SwitchToUIThread();
 
             try
             {
@@ -66,8 +69,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             catch (Exception ex) when(_telemetryService.PostFault(TelemetryEventName.LanguageServiceInitFault, ex))
             {
             }
-
-            return Task.CompletedTask;
         }
 
         private async Task<IWorkspaceProjectContext> CreateProjectContextHandlingFaultAsync(ProjectContextInitData data, object hostObject)
