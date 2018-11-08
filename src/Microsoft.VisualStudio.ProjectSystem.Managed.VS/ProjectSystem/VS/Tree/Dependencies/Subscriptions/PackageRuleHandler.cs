@@ -8,6 +8,7 @@ using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models;
+using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions
 {
@@ -93,7 +94,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
             foreach (string removedItem in projectChange.Difference.RemovedItems)
             {
-                IImmutableDictionary<string, string> properties = GetProjectItemProperties(projectChange.Before, removedItem);
+                IImmutableDictionary<string, string> properties = projectChange.Before.GetProjectItemProperties(removedItem);
                 IDependencyModel model = GetDependencyModel(removedItem, resolved,
                                             properties, unresolvedChanges, targetFramework);
                 if (model == null)
@@ -106,7 +107,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
             foreach (string changedItem in projectChange.Difference.ChangedItems)
             {
-                IImmutableDictionary<string, string> properties = GetProjectItemProperties(projectChange.After, changedItem);
+                IImmutableDictionary<string, string> properties = projectChange.After.GetProjectItemProperties(changedItem);
                 IDependencyModel model = GetDependencyModel(changedItem, resolved,
                                             properties, unresolvedChanges, targetFramework);
                 if (model == null)
@@ -120,7 +121,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
             foreach (string addedItem in projectChange.Difference.AddedItems)
             {
-                IImmutableDictionary<string, string> properties = GetProjectItemProperties(projectChange.After, addedItem);
+                IImmutableDictionary<string, string> properties = projectChange.After.GetProjectItemProperties(addedItem);
                 IDependencyModel model = GetDependencyModel(addedItem, resolved,
                                             properties, unresolvedChanges, targetFramework);
                 if (model == null)
@@ -281,17 +282,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 Requires.NotNull(properties, nameof(properties));
                 Properties = properties;
 
-                DependencyType = GetEnumMetadata<DependencyType>(ProjectItemMetadata.Type) ?? DependencyType.Unknown;
-                Name = GetStringMetadata(ProjectItemMetadata.Name);
-                if (string.IsNullOrEmpty(Name))
-                {
-                    Name = ItemSpec;
-                }
-
-                Version = GetStringMetadata(ProjectItemMetadata.Version);
-                Path = GetStringMetadata(ProjectItemMetadata.Path);
-                Resolved = GetBoolMetadata(ProjectItemMetadata.Resolved) ?? true;
-                IsImplicitlyDefined = GetBoolMetadata(ProjectItemMetadata.IsImplicitlyDefined) ?? false;
+                DependencyType = properties.GetEnumProperty<DependencyType>(ProjectItemMetadata.Type) ?? DependencyType.Unknown;
+                Name = properties.GetStringProperty(ProjectItemMetadata.Name) ?? ItemSpec;
+                Version = properties.GetStringProperty(ProjectItemMetadata.Version) ?? string.Empty;
+                Path = properties.GetStringProperty(ProjectItemMetadata.Path) ?? string.Empty;
+                Resolved = properties.GetBoolProperty(ProjectItemMetadata.Resolved) ?? true;
+                IsImplicitlyDefined = properties.GetBoolProperty(ProjectItemMetadata.IsImplicitlyDefined) ?? false;
 
                 var dependenciesHashSet = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
                 if (properties.TryGetValue(ProjectItemMetadata.Dependencies, out string dependencies) && dependencies != null)
@@ -309,32 +305,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
                 if (DependencyType == DependencyType.Diagnostic)
                 {
-                    Severity = GetEnumMetadata<DiagnosticMessageSeverity>(ProjectItemMetadata.Severity) ?? DiagnosticMessageSeverity.Info;
-                    DiagnosticCode = GetStringMetadata(ProjectItemMetadata.DiagnosticCode);
+                    Severity = properties.GetEnumProperty<DiagnosticMessageSeverity>(ProjectItemMetadata.Severity) ?? DiagnosticMessageSeverity.Info;
+                    DiagnosticCode = properties.GetStringProperty(ProjectItemMetadata.DiagnosticCode) ?? string.Empty;
                 }
             }
 
-            private string GetStringMetadata(string metadataName)
-            {
-                if (Properties.TryGetValue(metadataName, out string value))
-                {
-                    return value;
-                }
-
-                return string.Empty;
-            }
-
-            private T? GetEnumMetadata<T>(string metadataName) where T : struct
-            {
-                string enumString = GetStringMetadata(metadataName);
-                return Enum.TryParse(enumString, ignoreCase: true, out T enumValue) ? enumValue : (T?)null;
-            }
-
-            private bool? GetBoolMetadata(string metadataName)
-            {
-                string boolString = GetStringMetadata(metadataName);
-                return bool.TryParse(boolString, out bool boolValue) ? boolValue : (bool?)null;
-            }
 
             public static string GetTargetFromDependencyId(string dependencyId)
             {

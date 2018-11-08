@@ -4,6 +4,7 @@ using System;
 using System.Collections.Immutable;
 
 using Microsoft.VisualStudio.Imaging.Interop;
+using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 {
@@ -47,10 +48,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 
             Flags = flags;
 
-            if (Properties.TryGetValue("Visible", out string visibleString)
-                && bool.TryParse(visibleString, out bool visibleBool))
+            if (Properties.TryGetBoolProperty("Visible", out bool visibleProperty))
             {
-                isVisible = visibleBool;
+                isVisible = visibleProperty;
             }
 
             DependencyFlags depFlags = 0;
