@@ -61,7 +61,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 originalItemSpec: "myOriginalItemSpec",
                 name: "myPath",
                 flags: flag,
-                resolved: true,
+                resolved: false,
                 properties: properties,
                 dependenciesIDs: dependencyIDs);
 
@@ -73,10 +73,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Null(model.SchemaName);
             Assert.False(model.TopLevel);
             Assert.True(model.Visible);
-            Assert.True(model.Resolved);
+            Assert.False(model.Resolved);
             Assert.False(model.Implicit);
             Assert.Equal(properties, model.Properties);
-            Assert.Equal(Dependency.PackageAssemblyNodePriority, model.Priority);
+            Assert.Equal(Dependency.UnresolvedReferenceNodePriority, model.Priority);
             Assert.Equal(KnownMonikers.Reference, model.Icon);
             Assert.Equal(KnownMonikers.Reference, model.ExpandedIcon);
             Assert.Equal(KnownMonikers.ReferenceWarning, model.UnresolvedIcon);
