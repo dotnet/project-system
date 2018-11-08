@@ -49,7 +49,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         Private _hierarchy As IVsHierarchy
         Private _itemId As UInteger
         Private _docCookie As UInteger
-        Private ReadOnly _ownerCaption As String
         Private _docData As Object
         'The DocView for the designer, if we were able to retrieve it (if we understood the designer type).  This would
         '  be a PropPageDesignerView for our hosted property pages, ResourceEditorView for the resource editor, etc.
@@ -115,7 +114,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             _view = View
             _hierarchy = Hierarchy
             _itemId = ItemId
-            _ownerCaption = "%1"
 
             SuspendLayout()
 

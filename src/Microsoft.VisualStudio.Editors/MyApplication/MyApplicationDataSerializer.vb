@@ -54,7 +54,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         End Sub 'Write3_MyApplicationData 
 
         Private _publicMethods As Hashtable = Nothing
-        Private ReadOnly _hashTableLock As New Object
 
         Public Function GetPublicMethods() As Hashtable
             If _publicMethods Is Nothing Then
@@ -234,7 +233,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         End Sub 'InitIDs 
 
         Private _publicMethods As Hashtable = Nothing
-        Private ReadOnly _lockObject As New Object
 
         Public Function GetPublicMethods() As Hashtable
             If _publicMethods Is Nothing Then

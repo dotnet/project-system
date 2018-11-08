@@ -1434,7 +1434,7 @@
 <Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.ResourceEditor.ResourceEditorView.StringTable_RowStateChanged(System.Object,System.Windows.Forms.DataGridViewRowStateChangedEventArgs)")>
 <Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.ResourceEditor.ResourceEditorView.Category_XXX_ResourcesExistChanged(System.Object,System.EventArgs)")>
 <Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.XmlToSchema.InputXmlForm._listViewKeyPress(System.Object,System.Windows.Forms.KeyEventArgs)")>
-<Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Justification:="<Pending>", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.PropertyPages.CompilePropPage2.EnsureNotConflictingSettings(System.Object,System.Windows.Forms.DataGridViewCellCancelEventArgs)")>
+<Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.PropertyPages.CompilePropPage2.EnsureNotConflictingSettings(System.Object,System.Windows.Forms.DataGridViewCellCancelEventArgs)")>
 
 ' https://github.com/dotnet/roslyn-analyzers/issues/1874
 <Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.DesignerFramework.GenericComponentSerializationStore.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)")>
@@ -1459,4 +1459,4 @@
 
 ' https://github.com/dotnet/roslyn/issues/30895
 <Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0052:Remove unread private members", Scope:="member", Target:="~P:Microsoft.VisualStudio.Editors.ResourceEditor.ResourceEditorRootDesigner._buildEvents")>
-
+<Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0052:Remove unread private members", Scope:="member", Target:="~P:Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsDesignerLoader._buildEvents")>

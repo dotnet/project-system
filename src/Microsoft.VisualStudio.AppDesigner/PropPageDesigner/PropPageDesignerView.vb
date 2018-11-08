@@ -263,11 +263,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <remarks></remarks>
         Public Sub New(RootDesigner As PropPageDesignerRootDesigner)
             Me.New()
-#If DEBUG Then
-            s_propPageDesignerViewCount += 1
-            s_instanceCount += 1
-            _myInstanceCount = s_instanceCount
-#End If
             SetSite(RootDesigner)
         End Sub
 
@@ -292,22 +287,10 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 Catch ex As Exception When ReportWithoutCrash(ex, NameOf(Dispose), NameOf(PropPageDesignerView))
                     'Don't throw here trying to cleanup
                 End Try
-#If DEBUG Then
-                s_propPageDesignerViewCount -= 1
-#End If
             End If
             MyBase.Dispose(disposing)
         End Sub
 #End Region
-
-
-#If DEBUG Then
-        'These are placed here to prevent breaking the WinForms designer
-        'resulting from the #if DEBUG
-        Private Shared s_propPageDesignerViewCount As Integer = 0
-        Private Shared s_instanceCount As Integer
-        Private ReadOnly _myInstanceCount As Integer
-#End If
 
         ''' <summary>
         ''' Get DesignerHost

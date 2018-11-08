@@ -1401,7 +1401,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Friend Class ConfigurationObjectCache
                 ' Cached properties for the extended and raw config objects
                 Private _extendedObjects() As Object
-                Private _rawObjects() As Object
 
                 ' Cached instance of our IVsCfgProvider2 instance
                 Private _vscfgprovider As IVsCfgProvider2
@@ -1428,7 +1427,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         _hierarchy = Hierarchy
                         _serviceProvider = ServiceProvider
                         _extendedObjects = Nothing
-                        _rawObjects = Nothing
                         _vscfgprovider = Nothing
                     End If
                 End Sub
