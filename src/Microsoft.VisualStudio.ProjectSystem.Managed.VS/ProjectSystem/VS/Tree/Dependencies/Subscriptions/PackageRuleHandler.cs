@@ -252,7 +252,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
             IEnumerable<string> GetDependencyItemSpecs()
             {
-                var dependenciesItemSpecs = new HashSet<string>(StringComparers.PropertyValues);
+                var dependenciesItemSpecs = new StackLazy<HashSet<string>>(() => new HashSet<string>(StringComparers.PropertyValues));
+
                 if (properties.TryGetValue(ProjectItemMetadata.Dependencies, out string dependencies) && dependencies != null)
                 {
                     var dependencyIds = new LazyStringSplit(dependencies, ';');
@@ -260,11 +261,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     // store only unique dependency IDs
                     foreach (string dependencyId in dependencyIds)
                     {
-                        dependenciesItemSpecs.Add($"{target}/{dependencyId}");
+                        dependenciesItemSpecs.Value.Add($"{target}/{dependencyId}");
                     }
                 }
 
-                return dependenciesItemSpecs;
+                return (IEnumerable<string>)dependenciesItemSpecs.ValueOrDefault ?? Array.Empty<string>();
             }
         }
 
@@ -279,6 +280,31 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             Assembly,
             FrameworkAssembly,
             AnalyzerAssembly
+        }
+
+        private ref struct StackLazy<T>
+        {
+            private readonly Func<T> _func;
+            private T _value;
+            private bool _isCreated;
+
+            public StackLazy(Func<T> func) : this() => _func = func;
+
+            public T Value
+            {
+                get
+                {
+                    if (!_isCreated)
+                    {
+                        _value = _func();
+                        _isCreated = true;
+                    }
+
+                    return _value;
+                }
+            }
+
+            public T ValueOrDefault => _value;
         }
     }
 }
