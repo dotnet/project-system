@@ -144,7 +144,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             Requires.NotNull(properties, nameof(properties));
 
             bool isTopLevel;
-            bool isTarget;
 
             string target = GetTargetFromDependencyId(itemSpec);
 
@@ -158,8 +157,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                              || (dependencyType == DependencyType.Package
                                  && unresolvedChanges != null
                                  && unresolvedChanges.Contains(name));
-                isTarget = !itemSpec.Contains("/");
+
+                bool isTarget = !itemSpec.Contains("/");
+
+                if (isTarget)
+                {
+                    return null;
+                }
+
                 ITargetFramework packageTargetFramework = TargetFrameworkProvider.GetTargetFramework(target);
+
                 if (packageTargetFramework?.Equals(targetFramework) != true)
                 {
                     return null;
@@ -168,12 +175,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             else
             {
                 isTopLevel = true;
-                isTarget = false;
-            }
-
-            if (isTarget)
-            {
-                return null;
             }
 
             string originalItemSpec = resolved && isTopLevel 
