@@ -224,7 +224,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
 
             foreach (ImageMoniker icon in icons)
             {
-                if (ThreadingTools.ApplyChangeOptimistically(ref _knownIcons, knownIcons => knownIcons.Add(icon)))
+                if (ImmutableInterlocked.Update(ref _knownIcons, (knownIcons, arg) => knownIcons.Add(arg), icon))
                 {
                     _imageService.TryAssociateNameWithMoniker(GetIconStringName(icon), icon);
                 }

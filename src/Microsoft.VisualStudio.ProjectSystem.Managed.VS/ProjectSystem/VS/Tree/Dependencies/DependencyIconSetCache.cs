@@ -2,7 +2,6 @@
 
 using System.Collections.Immutable;
 using Microsoft.VisualStudio.Imaging.Interop;
-using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
@@ -18,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
         public DependencyIconSet GetOrAddIconSet(DependencyIconSet iconSet)
         {
-            if (ThreadingTools.ApplyChangeOptimistically(ref _iconSets, iconSets => iconSets.Add(iconSet)))
+            if (ImmutableInterlocked.Update(ref _iconSets, (iconSets, arg) => iconSets.Add(arg), iconSet))
             {
                 // The cache did not already contain an equivalent icon set; use the one passed in.
                 return iconSet;
