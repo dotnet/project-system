@@ -32,7 +32,7 @@ Launch with remote debugging                                                | �
 Launch with Azure Snapshot Debugger                                         |          | ●
 **Publish**                                                                 |
 Publish to Azure                                                            |          | ●
-ClickOnce Publish                                                           | ●        |   
+ClickOnce Publish                                                           | ●        | 16.0  
 **Project**                                                                 |
 Globbing support                                                            |          | ●    | `<Compile Include="*.cs" />`
 Simplified project format                                                   |          | ●    | `<Project Sdk="Microsoft.Net.Sdk">`
