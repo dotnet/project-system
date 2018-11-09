@@ -60,12 +60,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
 #End Region
 
-#If DEBUG Then
-        Private Shared s_applicationDesignerViewCount As Integer = 0
-        Private Shared s_instanceCount As Integer = 0
-        Private ReadOnly _myInstanceCount As Integer
-#End If
-
         ' explicitly hard-coding these strings since that's what QA's
         '   automation will look for in order to find our various tabs
         '
@@ -146,12 +140,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 #If DEBUG Then
             AddHandler HostingPanel.Layout, AddressOf HostingPanel_Layout
             AddHandler HostingPanel.SizeChanged, AddressOf HostingPanel_SizeChanged
-
-            s_applicationDesignerViewCount += 1
-            s_instanceCount += 1
-            _myInstanceCount = s_instanceCount
-            'Need to allow for multiple VB projects in this assert
-            'Debug.Assert(ApplicationDesignerViewCount = 1, "Multiple ApplicationDesigners created!")
 #End If
 
             HostingPanel.ResumeLayout(False)
@@ -497,10 +485,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                     _configurationState.Dispose()
                     _configurationState = Nothing
                 End If
-
-#If DEBUG Then
-                s_applicationDesignerViewCount -= 1
-#End If
             End If
             MyBase.Dispose(disposing)
         End Sub

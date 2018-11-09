@@ -53,10 +53,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         'The project guid for VB (Project.Kind)
         Private ReadOnly _projectGuid_VB As New Guid("F184B08F-C81C-45F6-A57F-5ABD9991F28F")
 
-        'Indicates whether the UI has actually been initialized yet (useful because many events fire during
-        '  form load, and we may not be ready to handle them  yet)
-        Private _uiInitialized As Boolean
-
         'The set of categories handled by this instance of the resource editor.
         Private ReadOnly _categories As New CategoryCollection
 
@@ -599,7 +595,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private Sub InitializeUI(ServiceProvider As IServiceProvider)
             AllowDrop = True
             StringTable.RowHeadersWidth = DpiHelper.LogicalToDeviceUnitsX(35)
-            _uiInitialized = True
         End Sub
 
 
@@ -4856,14 +4851,12 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Private ReadOnly _errorGlyphState As Image
             Private ReadOnly _sortUpGlyph As Image
             Private ReadOnly _sortDownGlyph As Image
-            Private ReadOnly _backgroundColor As Color
 
             ''' <summary>
             ''' Constructor
             ''' </summary>
             ''' <remarks></remarks>
             Public Sub New(background As Color)
-                _backgroundColor = background
                 _errorGlyphLarge = GetImageFromImageService(KnownMonikers.Blank, 96, 96, background)
                 _errorGlyphSmall = GetImageFromImageService(KnownMonikers.Blank, 16, 16, background)
                 _errorGlyphState = GetImageFromImageService(KnownMonikers.StatusError, 12, 12, background)

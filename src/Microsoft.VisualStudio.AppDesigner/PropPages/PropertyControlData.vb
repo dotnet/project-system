@@ -484,12 +484,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
                     Try
                         m_isCommitingChange = True
-                        IsDirtyCore = True
+                        SetIsDirtyCore(True)
                     Finally
                         m_isCommitingChange = False
                     End Try
                 Else
-                    IsDirtyCore = False
+                    SetIsDirtyCore(False)
                 End If
             End Set
         End Property
@@ -497,22 +497,15 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' True iff this property instance is currently dirty
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
-        Private Property IsDirtyCore() As Boolean
-            Get
-                Return ((Me.Flags And ControlDataFlags.Dirty) = ControlDataFlags.Dirty)
-            End Get
-            Set(Value As Boolean)
-                If Value Then
-                    Common.Switches.TracePDProperties(TraceLevel.Error, "IsDirty := True (" & PropertyName & ")")
-                    Flags = Flags Or ControlDataFlags.Dirty
-                Else
-                    Common.Switches.TracePDProperties(TraceLevel.Error, "IsDirty := False (" & PropertyName & ")")
-                    Flags = Flags And (Not ControlDataFlags.Dirty)
-                End If
-            End Set
-        End Property
+        Private Sub SetIsDirtyCore(dirty As Boolean)
+            If dirty Then
+                Common.Switches.TracePDProperties(TraceLevel.Error, "IsDirty := True (" & PropertyName & ")")
+                Flags = Flags Or ControlDataFlags.Dirty
+            Else
+                Common.Switches.TracePDProperties(TraceLevel.Error, "IsDirty := False (" & PropertyName & ")")
+                Flags = Flags And (Not ControlDataFlags.Dirty)
+            End If
+        End Sub
 
         ''' <summary>
         ''' The special value constant that indicates that the
@@ -1789,6 +1782,21 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 #End Region
 #Region "Common property getter/setter helpers"
 
+        '----	
+        ' About 'common' properties	
+        '----	
+        '	
+        '  "Common" properties are properties which are not given to the page through SetObjects	
+        '  but rather are picked up from the project itself.  For non-configuration-specific	
+        '  property pages, the notion of "common" properties doesn't really mean anything - the	
+        '  common properties are the ones that were passed in (configuration-specific properties	
+        '  are not accessible to a non-configuration-specific page).	
+        '  But for a configuration-specific page, only the properties which are configuration-specific 	
+        '  are passed in.  Sometimes a page needs to access non-configuration-specific ("common")	
+        '  properties (an example is the VB Compile page, which access properties like "Option Explicit"	
+        '  which is not configuration-specific, and many pages also access the "FullPath" property via	
+        '  PropPageUserControlBase.ProjectPath().  These properties are pulled directly from the project system	
+        '  rather than taken from the objects passed in to the property page.
 
         ''' <summary>
         ''' Retrieves the current value of this property in the project (not the current value in the 

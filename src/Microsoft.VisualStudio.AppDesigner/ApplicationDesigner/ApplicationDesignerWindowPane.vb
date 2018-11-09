@@ -24,8 +24,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
         'The main view (the ApplicationDesignerView will be a child of this control)
         Private _view As ApplicationDesignerWindowPaneControl
-
-        Private ReadOnly _host As IDesignerHost
         Private _viewHelper As CmdTargetHelper
         Private _uiShellService As IVsUIShell
         Private _uiShell2Service As IVsUIShell2
@@ -50,7 +48,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             AddHandler _view.GotFocus, AddressOf OnViewFocus
             OnThemeChanged()
 
-            _host = TryCast(GetService(GetType(IDesignerHost)), IDesignerHost)
             _broadcastMessageEventsHelper = New Common.ShellUtil.BroadcastMessageEventsHelper(Me)
 
             AddHandler surface.Unloaded, AddressOf OnSurfaceUnloaded

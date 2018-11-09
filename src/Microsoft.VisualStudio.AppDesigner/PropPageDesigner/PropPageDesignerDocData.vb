@@ -40,9 +40,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         Private _siteProvider As IServiceProvider
 
         ' IVsHierarchy, ItemId, and cookie passed in on registration
-        Private _vsHierarchy As IVsHierarchy
-        Private _itemId As UInteger
-        Private _docCookie As UInteger
         Private _mkDocument As String
 
         ' Dirty and readonly state
@@ -225,9 +222,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         End Function
 
         Public Function OnRegisterDocData2(docCookie As UInteger, pHierNew As IVsHierarchy, itemidNew As UInteger) As Integer Implements IVsPersistDocData2.OnRegisterDocData
-            _docCookie = docCookie
-            _vsHierarchy = pHierNew
-            _itemId = itemidNew
         End Function
 
         Public Function ReloadDocData2(grfFlags As UInteger) As Integer Implements IVsPersistDocData2.ReloadDocData
@@ -360,7 +354,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                     End If
                     _vsTextBuffer = Nothing
                 End If
-                _vsHierarchy = Nothing
             End If
             ' Call the appropriate methods to clean up 
             ' unmanaged resources here.

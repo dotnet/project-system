@@ -49,7 +49,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ' Tab button hover foreground/background
         Private _hoverButtonForegroundColor As Color
         Private _hoverButtonBackgroundColor As Color
-        Private _hoverButtonBorderColor As Color
 
 #End Region
 
@@ -259,7 +258,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
                 _hoverButtonForegroundColor = Common.ShellUtil.GetProjectDesignerThemeColor(VsUIShell, "MouseOverCategoryTab", __THEMEDCOLORTYPE.TCT_Foreground, SystemColors.HighlightText)
                 _hoverButtonBackgroundColor = Common.ShellUtil.GetProjectDesignerThemeColor(VsUIShell, "MouseOverCategoryTab", __THEMEDCOLORTYPE.TCT_Background, SystemColors.HotTrack)
-                _hoverButtonBorderColor = _hoverButtonForegroundColor
 
                 'Get GDI objects
                 _controlBackgroundBrush = New SolidBrush(_controlBackgroundColor)

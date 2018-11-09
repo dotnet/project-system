@@ -4,7 +4,6 @@ Option Explicit On
 Option Strict On
 Option Compare Binary
 Imports System.Collections.Specialized
-Imports System.Drawing
 
 Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
@@ -32,9 +31,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             'Widths of the columns in the string table (whether or not the stringtable is currently showing)
             Private _stringTableColumnWidths() As Integer
-
-            'Current cell in the string table (if string table is currently showing)
-            Private _stringTableCurrentCellAddress As Point
 
             'Current listview view (thumbnail, icons, etc.) for each category, hashed by category name (whether or not these categories are showing)
             Private ReadOnly _resourceViewHash As New ListDictionary
@@ -76,7 +72,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 _currentCategoryName = Nothing
                 _selectedResourceNames = Nothing
                 _stringTableColumnWidths = Nothing
-                _stringTableCurrentCellAddress = New Point(0, 0)
                 _resourceViewHash.Clear()
                 _categorySorter.Clear()
                 _listViewColumnWidths = Nothing
@@ -113,11 +108,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     For i As Integer = 0 To View.StringTable.ColumnCount - 1
                         _stringTableColumnWidths(i) = View.StringTable.Columns(i).Width
                     Next
-
-                    'Current cell in the string table (if shown)
-                    If View.StringTable.Visible Then
-                        _stringTableCurrentCellAddress = View.StringTable.CurrentCellAddress
-                    End If
 
                     'ListView column widths
                     ReDim _listViewColumnWidths(View._resourceListView.Columns.Count - 1)
@@ -207,11 +197,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                                 End If
                             Next
                             View.HighlightResources(ResourcesToSelect, SelectInPropertyGrid:=True)
-                        End If
-
-                        'Current cell in the string table (if shown)
-                        If View.StringTable.Visible Then
-                            _stringTableCurrentCellAddress = View.StringTable.CurrentCellAddress
                         End If
 
                     Catch ex As Exception When Common.ReportWithoutCrash(ex, "Exception saving editor state - state will not be saved", $"{NameOf(ResourceEditorView)}-{NameOf(EditorState)}")

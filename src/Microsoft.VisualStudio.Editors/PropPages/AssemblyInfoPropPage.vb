@@ -21,8 +21,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         'After 65535, the project system doesn't complain, but you get a compile error.
         Private Const MaxAssemblyVersionPartValue As UInteger = 65534
 
-        Private ReadOnly _neutralLanguageNoneText As String 'Text for "None" in the neutral language combobox (stored in case thread language changes)
-
         ''' <summary>
         ''' Customizable processing done before the class has populated controls in the ControlData array
         ''' </summary>
@@ -52,7 +50,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 FileVersionMajorTextBox, FileVersionMinorTextBox, FileVersionBuildTextBox, FileVersionRevisionTextBox}
             _assemblyVersionTextBoxes = New TextBox(3) {
                 AssemblyVersionMajorTextBox, AssemblyVersionMinorTextBox, AssemblyVersionBuildTextBox, AssemblyVersionRevisionTextBox}
-            _neutralLanguageNoneText = My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_NeutralLanguage_None
         End Sub
 
         Protected Overrides ReadOnly Property ControlData() As PropertyControlData()

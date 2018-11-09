@@ -229,10 +229,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private _serviceProvider As ServiceProvider 'Cached service provider
         Private _projectHierarchy As IVsHierarchy 'The IVsHierarchy for the current project
 
-        'Debug mode stuff
-
-        Private _currentDebugMode As DBGMODE
-
         ' Cached IVsDebugger from shell in case we don't have a service provider at
         ' shutdown so we can undo our event handler
         Private _vsDebugger As IVsDebugger
@@ -4184,7 +4180,6 @@ NextControl:
         ''' <param name="mode"></param>
         ''' <remarks></remarks>
         Private Sub UpdateDebuggerStatus(mode As DBGMODE)
-            _currentDebugMode = mode
             If DisableOnDebug AndAlso DisableWhenDebugMode(mode) Then
                 _pageEnabledPerDebugMode = False
             Else
