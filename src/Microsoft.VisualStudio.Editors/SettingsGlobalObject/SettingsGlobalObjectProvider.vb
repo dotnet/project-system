@@ -1528,15 +1528,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             Return Nothing
         End Function 'GetSerializerCore
 
-        ''' <summary>
-        ''' 
-        ''' </summary>
-        ''' <param name="service"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Private Function GetService(service As Type) As Object
-            Return DirectCast(_provider, IServiceProvider).GetService(service)
-        End Function
 
         ''' <summary>
         ''' Loads a DesignTimeSettings object from the given fileName

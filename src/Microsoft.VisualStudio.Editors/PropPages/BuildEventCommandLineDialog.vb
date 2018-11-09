@@ -3,14 +3,12 @@
 Imports System.Text
 Imports System.Windows.Forms
 Imports System.Windows.Forms.Design
-Imports System.Drawing
 
 Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
     Friend NotInheritable Class BuildEventCommandLineDialog
         Inherits Form
 
-        Private Shared ReadOnly s_defaultInstance As BuildEventCommandLineDialog
         Private Shared ReadOnly s_syncObject As New Object
         Private _eventCommandLine As String
         Private _tokens() As String
@@ -18,7 +16,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private _dte As EnvDTE.DTE
         Private _serviceProvider As IServiceProvider
         Private _page As PropPageUserControlBase
-        Private _initialFormSize As Size
         Private _helpTopic As String
 
         Public Sub New()

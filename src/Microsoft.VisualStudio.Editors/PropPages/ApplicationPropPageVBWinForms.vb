@@ -1278,24 +1278,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Function
 
 
-
-        ''' <summary>
-        ''' Get the current value of MyType from the UI
-        ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Private Function GetMyTypeFromUI() As String
-
-            Dim MyTypeObject As Object = Nothing
-            MyTypeGet(Nothing, Nothing, MyTypeObject)
-
-            Dim MyType As String
-            MyType = TryCast(MyTypeObject, String)
-
-            Return MyType
-        End Function
-
-
         ''' <summary>
         ''' Get the current value of MyType from the project properties
         ''' </summary>

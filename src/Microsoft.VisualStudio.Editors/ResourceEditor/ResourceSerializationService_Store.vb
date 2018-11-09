@@ -145,7 +145,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             'Serialization keys for ISerializable
             Private Const KEY_STATE As String = "State"
-            Private Const KEY_OBJECTNAMES As String = "ObjectNames"
 
             ''' <summary>
             '''     Implements the save part of ISerializable.

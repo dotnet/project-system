@@ -28,10 +28,6 @@ Namespace Microsoft.VisualStudio.Editors.AddImports
             Close()
         End Sub
 
-        Private Function GetTextBoxWidth() As Integer
-            Return CInt(pnlLayout_.Width - (pnlLayout_.ColumnStyles(0).Width + pnlLayout_.ColumnStyles(4).Width))
-        End Function
-
         Private Sub ButtonGotFocus(sender As Object, e As EventArgs) Handles btnOk_.GotFocus, btnCancel_.GotFocus
             _lastFocus = CType(sender, Control)
         End Sub

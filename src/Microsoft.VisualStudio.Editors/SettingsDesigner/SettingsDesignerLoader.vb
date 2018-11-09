@@ -28,8 +28,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
         Private _flushing As Boolean
 
-        Private Const PrjKindVenus As String = "{E24C65DC-7377-472b-9ABA-BC803B73C61A}"
-
         ' Set flag if we make changes to the settings object during load that should
         ' set the docdata to dirty immediately after we have loaded.
         Private _modifiedDuringLoad As Boolean
@@ -253,17 +251,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                     Debug.Fail("Our loader host is disposed!")
                     Throw
                 End Try
-            End Get
-        End Property
-
-        ''' <summary>
-        ''' Get the current EndDTE.Project instance for the project containing the .settings
-        ''' file
-        ''' </summary>
-        ''' <remarks></remarks>
-        Private ReadOnly Property EnvDTEProject() As EnvDTE.Project
-            Get
-                Return DTEUtils.EnvDTEProject(VsHierarchy)
             End Get
         End Property
 

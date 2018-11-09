@@ -684,31 +684,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         End Sub
 
         ''' <summary>
-        ''' Fixup the window styles so the mnemonics work on the new property page window
-        ''' </summary>
-        ''' <param name="Hwnd"></param>
-        ''' <remarks></remarks>
-        Private Sub UpdateWindowStyles(Hwnd As IntPtr)
-            Dim HwndPage As IntPtr = NativeMethods.GetTopWindow(Hwnd)
-            Dim StyleValue, PreviousStyle As IntPtr
-            Dim PreviousExStyle As IntPtr
-            Dim ExStyleValue As Long
-
-            If (Not HwndPage.Equals(IntPtr.Zero)) Then
-                PreviousStyle = NativeMethods.GetWindowLong(HwndPage, NativeMethods.GWL_STYLE)
-                StyleValue = New IntPtr(PreviousStyle.ToInt64() And (Not (NativeMethods.DS_CONTROL Or NativeMethods.WS_TABSTOP)))
-
-                NativeMethods.SetWindowLong(HwndPage, NativeMethods.GWL_STYLE, StyleValue)
-
-                PreviousExStyle = NativeMethods.GetWindowLong(HwndPage, NativeMethods.GWL_EXSTYLE)
-                '// if WS_EX_CONTROLPARENT isn't on, then mnemonics for buttons on the frame
-                '// won't work if your focus is inside the sheet
-                ExStyleValue = PreviousExStyle.ToInt64() Or NativeMethods.WS_EX_CONTROLPARENT
-                NativeMethods.SetWindowLong(HwndPage, NativeMethods.GWL_EXSTYLE, New IntPtr(ExStyleValue))
-            End If
-        End Sub
-
-        ''' <summary>
         ''' Hide and deactivate the property page
         ''' </summary>
         ''' <remarks></remarks>

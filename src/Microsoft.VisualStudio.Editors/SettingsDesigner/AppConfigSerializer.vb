@@ -463,26 +463,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         End Sub
 
         ''' <summary>
-        ''' Load the contents of the stream pointed to by Reader into a XML DOM Document
-        ''' </summary>
-        ''' <param name="Reader"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Private Shared Function LoadAppConfigDocument(Reader As TextReader) As XmlDocument
-            Dim AppConfigXmlDoc As New XmlDocument With {
-                .PreserveWhitespace = False
-            }
-            ' Load App.Config into XML Doc
-            ' Required by Fxcop rule CA3054 - DoNotAllowDTDXmlTextReader
-            Dim XmlAppConfigReader As New XmlTextReader(Reader) With {
-                .DtdProcessing = DtdProcessing.Prohibit,
-                .WhitespaceHandling = WhitespaceHandling.All
-            }
-            AppConfigXmlDoc.Load(XmlAppConfigReader)
-            Return AppConfigXmlDoc
-        End Function
-
-        ''' <summary>
         ''' If the value in the app.config file differs from the value in the .settings file,
         ''' or the scope has been changed,
         ''' propmpt the user if (s)he wants to update the value in the .settings file

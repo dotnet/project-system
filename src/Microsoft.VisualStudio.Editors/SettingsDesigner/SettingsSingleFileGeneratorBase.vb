@@ -634,27 +634,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         End Function
 
         ''' <summary>
-        ''' Generates a SuppressMessageAttribute for the given memberName
-        ''' </summary>
-        ''' <param name="memberName"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Private Shared Function GenerateSuppressMessageAttribute(memberName As String) As CodeAttributeDeclaration
-
-            Dim suppressMessageAttribute As New CodeAttributeDeclaration(CreateGlobalCodeTypeReference(GetType(System.Diagnostics.CodeAnalysis.SuppressMessageAttribute)))
-
-            Dim categoryArgument As New CodeAttributeArgument(New CodePrimitiveExpression("Microsoft.Performance"))
-            Dim checkIdArgument As New CodeAttributeArgument(New CodePrimitiveExpression("CA1811:AvoidUncalledPrivateCode"))
-            Dim scopeArgument As New CodeAttributeArgument("Scope", New CodePrimitiveExpression("member"))
-            Dim targetArgument As New CodeAttributeArgument("Target", New CodePrimitiveExpression(memberName))
-
-            suppressMessageAttribute.Arguments.AddRange(New CodeAttributeArgument() {categoryArgument, checkIdArgument, scopeArgument, targetArgument})
-
-            Return suppressMessageAttribute
-
-        End Function
-
-        ''' <summary>
         ''' Add required references to the project - currently only adding a reference to the settings base class assembly
         ''' </summary>
         ''' <param name="GenerateProgress"></param>

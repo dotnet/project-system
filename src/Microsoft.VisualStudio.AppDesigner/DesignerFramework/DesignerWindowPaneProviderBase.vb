@@ -443,24 +443,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
                 _view.ResumeLayout()
             End Sub
 
-            ''' <summary>
-            ''' Pick font to use
-            ''' </summary>
-            ''' <value></value>
-            ''' <remarks></remarks>
-            Private ReadOnly Property GetDialogFont() As Font
-                Get
-                    Dim uiSvc As Design.IUIService = CType(GetService(GetType(Design.IUIService)), Design.IUIService)
-                    If uiSvc IsNot Nothing Then
-                        Return CType(uiSvc.Styles("DialogFont"), Font)
-                    End If
-
-                    Debug.Fail("Couldn't get a IUIService... cheating instead :)")
-
-                    Return Control.DefaultFont
-                End Get
-            End Property
-
 
 #Region "IVsWindowPaneCommit"
             ''' <summary>

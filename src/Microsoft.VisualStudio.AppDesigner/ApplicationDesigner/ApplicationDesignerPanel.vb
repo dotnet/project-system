@@ -28,7 +28,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         Private _editorCaption As String
         Private _physicalView As String
         Private _editFlags As UInteger
-        Private _pageHostingPanelLastSize As Drawing.Size
         Private _windowFrameLastSize As Drawing.Size
         Private _windowFrameShown As Boolean 'True iff ShowWindowFrame() has been called
 #Disable Warning IDE1006 ' Naming Styles (Compat)

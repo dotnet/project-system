@@ -255,19 +255,5 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             End Select
         End Function 'MessageBoxIconToOleIcon 
 
-        '**************************************************************************
-        ';EmptyOrSpace
-        '
-        'Summary:
-        '   Check if a string is empty string or only contains spaces.
-        'Params:
-        '   Str: The string to check.
-        'Returns:
-        '   True if the string is empty string or only contains spaces. Otherwise false.
-        '**************************************************************************
-        Private Shared Function EmptyOrSpace(Str As String) As Boolean
-            Return Str = "" OrElse Str.Trim.Length <= 0
-        End Function
-
     End Class 'DesignerMessageBox 
 End Namespace
