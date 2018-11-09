@@ -9,7 +9,6 @@ using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
-using Microsoft.VisualStudio.Text;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions
 {
@@ -17,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             typeof(ICrossTargetRuleHandler<DependenciesRuleChangeContext>))]
     [Export(typeof(IProjectDependenciesSubTreeProvider))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
-    internal class PackageRuleHandler : DependenciesRuleHandlerBase
+    internal sealed partial class PackageRuleHandler : DependenciesRuleHandlerBase
     {
         public const string ProviderTypeString = "NuGetDependency";
 
@@ -93,213 +92,51 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
             foreach (string removedItem in projectChange.Difference.RemovedItems)
             {
-                IImmutableDictionary<string, string> properties = projectChange.Before.GetProjectItemProperties(removedItem);
-                IDependencyModel model = GetDependencyModel(removedItem, resolved,
-                                            properties, unresolvedChanges, targetFramework);
-                if (model == null)
+                if (PackageDependencyMetadata.TryGetMetadata(
+                    removedItem,
+                    resolved,
+                    properties: projectChange.Before.GetProjectItemProperties(removedItem),
+                    unresolvedChanges,
+                    targetFramework,
+                    TargetFrameworkProvider,
+                    out PackageDependencyMetadata metadata))
                 {
-                    continue;
+                    ruleChangeContext.IncludeRemovedChange(targetFramework, metadata.CreateDependencyModel());
                 }
-
-                ruleChangeContext.IncludeRemovedChange(targetFramework, model);
             }
 
             foreach (string changedItem in projectChange.Difference.ChangedItems)
             {
-                IImmutableDictionary<string, string> properties = projectChange.After.GetProjectItemProperties(changedItem);
-                IDependencyModel model = GetDependencyModel(changedItem, resolved,
-                                            properties, unresolvedChanges, targetFramework);
-                if (model == null)
+                if (PackageDependencyMetadata.TryGetMetadata(
+                    changedItem,
+                    resolved,
+                    properties: projectChange.After.GetProjectItemProperties(changedItem),
+                    unresolvedChanges,
+                    targetFramework,
+                    TargetFrameworkProvider,
+                    out PackageDependencyMetadata metadata))
                 {
-                    continue;
+                    ruleChangeContext.IncludeRemovedChange(targetFramework, metadata.CreateDependencyModel());
+                    ruleChangeContext.IncludeAddedChange(targetFramework, metadata.CreateDependencyModel());
                 }
-
-                ruleChangeContext.IncludeRemovedChange(targetFramework, model);
-                ruleChangeContext.IncludeAddedChange(targetFramework, model);
             }
 
             foreach (string addedItem in projectChange.Difference.AddedItems)
             {
-                IImmutableDictionary<string, string> properties = projectChange.After.GetProjectItemProperties(addedItem);
-                IDependencyModel model = GetDependencyModel(addedItem, resolved,
-                                            properties, unresolvedChanges, targetFramework);
-                if (model == null)
+                if (PackageDependencyMetadata.TryGetMetadata(
+                    addedItem,
+                    resolved,
+                    properties: projectChange.After.GetProjectItemProperties(addedItem),
+                    unresolvedChanges,
+                    targetFramework,
+                    TargetFrameworkProvider,
+                    out PackageDependencyMetadata metadata))
                 {
-                    continue;
+                    ruleChangeContext.IncludeAddedChange(targetFramework, metadata.CreateDependencyModel());
                 }
-
-                ruleChangeContext.IncludeAddedChange(targetFramework, model);
-            }
-        }
-
-        private IDependencyModel GetDependencyModel(
-            string itemSpec,
-            bool resolved,
-            IImmutableDictionary<string, string> properties,
-            HashSet<string> unresolvedChanges,
-            ITargetFramework targetFramework)
-        {
-            Requires.NotNull(itemSpec, nameof(itemSpec));
-            Requires.NotNull(properties, nameof(properties));
-
-            bool isTopLevel;
-
-            string target = GetTargetFromDependencyId(itemSpec);
-
-            DependencyType dependencyType = properties.GetEnumProperty<DependencyType>(ProjectItemMetadata.Type) ?? DependencyType.Unknown;
-            string name = properties.GetStringProperty(ProjectItemMetadata.Name) ?? itemSpec;
-            bool isImplicitlyDefined = properties.GetBoolProperty(ProjectItemMetadata.IsImplicitlyDefined) ?? false;
-
-            if (resolved)
-            {
-                isTopLevel = isImplicitlyDefined
-                             || (dependencyType == DependencyType.Package
-                                 && unresolvedChanges != null
-                                 && unresolvedChanges.Contains(name));
-
-                bool isTarget = itemSpec.IndexOf('/') == -1;
-
-                if (isTarget)
-                {
-                    return null;
-                }
-
-                ITargetFramework packageTargetFramework = TargetFrameworkProvider.GetTargetFramework(target);
-
-                if (packageTargetFramework?.Equals(targetFramework) != true)
-                {
-                    return null;
-                }
-            }
-            else
-            {
-                isTopLevel = true;
-            }
-
-            string originalItemSpec = resolved && isTopLevel 
-                ? name 
-                : itemSpec;
-
-            switch (dependencyType)
-            {
-                case DependencyType.Unknown when !resolved:
-                case DependencyType.Package:
-                    return new PackageDependencyModel(
-                        itemSpec,
-                        originalItemSpec,
-                        name,
-                        version: properties.GetStringProperty(ProjectItemMetadata.Version) ?? string.Empty,
-                        resolved,
-                        isImplicitlyDefined,
-                        isTopLevel,
-                        isVisible: !isImplicitlyDefined,
-                        properties,
-                        dependenciesIDs: GetDependencyItemSpecs());
-                case DependencyType.Assembly:
-                case DependencyType.FrameworkAssembly:
-                    return new PackageAssemblyDependencyModel(
-                        itemSpec,
-                        originalItemSpec,
-                        name,
-                        resolved,
-                        properties,
-                        dependenciesIDs: GetDependencyItemSpecs());
-                case DependencyType.AnalyzerAssembly:
-                    return new PackageAnalyzerAssemblyDependencyModel(
-                        itemSpec,
-                        originalItemSpec,
-                        name,
-                        resolved,
-                        properties,
-                        dependenciesIDs: GetDependencyItemSpecs());
-                case DependencyType.Diagnostic:
-                    return new DiagnosticDependencyModel(
-                        originalItemSpec,
-                        severity: properties.GetEnumProperty<DiagnosticMessageSeverity>(ProjectItemMetadata.Severity) ?? DiagnosticMessageSeverity.Info,
-                        code: properties.GetStringProperty(ProjectItemMetadata.DiagnosticCode) ?? string.Empty,
-                        name,
-                        isVisible: true,
-                        properties: properties);
-                default:
-                    return new PackageUnknownDependencyModel(
-                        itemSpec,
-                        originalItemSpec,
-                        name,
-                        resolved,
-                        properties,
-                        dependenciesIDs: GetDependencyItemSpecs());
-            }
-
-            string GetTargetFromDependencyId(string dependencyId)
-            {
-                var idParts = new LazyStringSplit(dependencyId, '/');
-
-                string firstPart = idParts.FirstOrDefault();
-
-                if (firstPart == null)
-                {
-                    // should never happen
-                    throw new ArgumentException(nameof(dependencyId));
-                }
-
-                return firstPart;
-            }
-
-            IEnumerable<string> GetDependencyItemSpecs()
-            {
-                var dependenciesItemSpecs = new StackLazy<HashSet<string>>(() => new HashSet<string>(StringComparers.PropertyValues));
-
-                if (properties.TryGetValue(ProjectItemMetadata.Dependencies, out string dependencies) && dependencies != null)
-                {
-                    var dependencyIds = new LazyStringSplit(dependencies, ';');
-
-                    // store only unique dependency IDs
-                    foreach (string dependencyId in dependencyIds)
-                    {
-                        dependenciesItemSpecs.Value.Add($"{target}/{dependencyId}");
-                    }
-                }
-
-                return (IEnumerable<string>)dependenciesItemSpecs.ValueOrDefault ?? Array.Empty<string>();
             }
         }
 
         public override IDependencyModel CreateRootDependencyNode() => s_rootModel;
-
-        private enum DependencyType
-        {
-            Unknown,
-            Target,
-            Diagnostic,
-            Package,
-            Assembly,
-            FrameworkAssembly,
-            AnalyzerAssembly
-        }
-
-        private ref struct StackLazy<T>
-        {
-            private readonly Func<T> _func;
-            private T _value;
-            private bool _isCreated;
-
-            public StackLazy(Func<T> func) : this() => _func = func;
-
-            public T Value
-            {
-                get
-                {
-                    if (!_isCreated)
-                    {
-                        _value = _func();
-                        _isCreated = true;
-                    }
-
-                    return _value;
-                }
-            }
-
-            public T ValueOrDefault => _value;
-        }
     }
 }
