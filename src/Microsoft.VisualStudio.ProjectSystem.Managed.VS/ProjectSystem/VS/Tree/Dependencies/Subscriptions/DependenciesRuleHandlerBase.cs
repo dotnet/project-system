@@ -159,7 +159,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             bool isImplicit,
             IImmutableDictionary<string, string> properties)
         {
-            return null;
+            // Should be overridden by subclasses, unless they override and replace 'Handle'.
+            // Not 'abstract' because a subclass could replace 'Handle', in which case they don't need this method.
+            throw new NotImplementedException();
         }
 
         #endregion
