@@ -23,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             private readonly IProjectThreadingService _threadingService;
             private readonly IUnconfiguredProjectTasksService _tasksService;
             private readonly IWorkspaceProjectContextProvider _workspaceProjectContextProvider;
-            private readonly IActiveWorkspaceProjectContextTracker _activeWorkspaceProjectContextTracker;
+            private readonly IActiveEditorContextTracker _activeWorkspaceProjectContextTracker;
             private readonly ExportFactory<IApplyChangesToWorkspaceContext> _applyChangesToWorkspaceContextFactory;
 
             private DisposableBag _subscriptions;
@@ -35,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                                                 IUnconfiguredProjectTasksService tasksService,
                                                 IProjectSubscriptionService projectSubscriptionService,
                                                 IWorkspaceProjectContextProvider workspaceProjectContextProvider,
-                                                IActiveWorkspaceProjectContextTracker activeWorkspaceProjectContextTracker,
+                                                IActiveEditorContextTracker activeWorkspaceProjectContextTracker,
                                                 ExportFactory<IApplyChangesToWorkspaceContext> applyChangesToWorkspaceContextFactory)
                 : base(threadingService.JoinableTaskContext)
             {
@@ -124,7 +124,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
                 try
                 {
-                    bool isActiveContext = _activeWorkspaceProjectContextTracker.IsActiveContext(context);
+                    bool isActiveContext = _activeWorkspaceProjectContextTracker.IsActiveEditorContext(context);
 
                     if (evaluation)
                     {

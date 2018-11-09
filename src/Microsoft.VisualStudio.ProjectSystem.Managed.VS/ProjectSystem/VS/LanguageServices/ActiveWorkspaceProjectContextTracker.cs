@@ -13,19 +13,20 @@ using Microsoft.VisualStudio.Threading;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 {
     /// <summary>
-    ///     Provides an implementation of <see cref="IActiveWorkspaceProjectContextTracker"/> that tracks the 
-    ///     "active" context by handling the VSHPROPID_ActiveIntellisenseProjectContext IVsHierarchy property.
+    ///     Provides an implementation of <see cref="IActiveEditorContextTracker"/> that tracks the 
+    ///     "active" context for the editor by handling the VSHPROPID_ActiveIntellisenseProjectContext 
+    ///     hierarchy property.
     /// </summary>
     [Export(typeof(IActiveIntellisenseProjectProvider))]
-    [Export(typeof(IActiveWorkspaceProjectContextTracker))]
+    [Export(typeof(IActiveEditorContextTracker))]
     [ExportProjectNodeComService(typeof(IVsContainedLanguageProjectNameProvider))]
     [AppliesTo(ProjectCapability.DotNetLanguageService2)]
-    internal class ActiveWorkspaceProjectContextTracker : IActiveIntellisenseProjectProvider, IVsContainedLanguageProjectNameProvider, IActiveWorkspaceProjectContextTracker
+    internal class ActiveEditorContextTracker : IActiveIntellisenseProjectProvider, IVsContainedLanguageProjectNameProvider, IActiveEditorContextTracker
     {
         private ImmutableDictionary<IWorkspaceProjectContext, string> _contexts = ImmutableDictionary<IWorkspaceProjectContext, string>.Empty;
 
         [ImportingConstructor]
-        public ActiveWorkspaceProjectContextTracker(UnconfiguredProject project) // For scoping
+        public ActiveEditorContextTracker(UnconfiguredProject project) // For scoping
         {
         }
 
@@ -48,7 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             return HResult.OK;
         }
 
-        public bool IsActiveContext(IWorkspaceProjectContext context)
+        public bool IsActiveEditorContext(IWorkspaceProjectContext context)
         {
             Requires.NotNull(context, nameof(context));
 
