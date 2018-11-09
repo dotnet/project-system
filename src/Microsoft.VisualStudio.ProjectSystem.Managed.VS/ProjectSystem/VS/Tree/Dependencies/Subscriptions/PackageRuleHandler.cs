@@ -91,11 +91,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         {
             Requires.NotNull(targetFramework, nameof(targetFramework));
 
-            if (targetFramework == null)
-            {
-                return;
-            }
-
             foreach (string removedItem in projectChange.Difference.RemovedItems)
             {
                 IImmutableDictionary<string, string> properties = projectChange.Before.GetProjectItemProperties(removedItem);
