@@ -101,7 +101,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     TargetFrameworkProvider,
                     out PackageDependencyMetadata metadata))
                 {
-                    ruleChangeContext.IncludeRemovedChange(targetFramework, metadata.CreateDependencyModel());
+                    ruleChangeContext.IncludeRemovedChange(targetFramework, ProviderTypeString, metadata.OriginalItemSpec);
                 }
             }
 
@@ -116,7 +116,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     TargetFrameworkProvider,
                     out PackageDependencyMetadata metadata))
                 {
-                    ruleChangeContext.IncludeRemovedChange(targetFramework, metadata.CreateDependencyModel());
+                    ruleChangeContext.IncludeRemovedChange(targetFramework, ProviderTypeString, metadata.OriginalItemSpec);
                     ruleChangeContext.IncludeAddedChange(targetFramework, metadata.CreateDependencyModel());
                 }
             }

@@ -10,6 +10,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
         ImmutableArray<IDependencyModel> AddedNodes { get; }
 
-        ImmutableArray<IDependencyModel> RemovedNodes { get; }
+        ImmutableArray<(string providerType, string dependencyId)> RemovedNodes { get; }
     }
 }

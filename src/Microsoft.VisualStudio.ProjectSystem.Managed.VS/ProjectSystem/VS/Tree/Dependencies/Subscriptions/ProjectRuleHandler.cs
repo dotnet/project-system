@@ -171,7 +171,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 // but remove would require removing item from the tree instead of in-place upgrade.
                 if (!shouldBeResolved)
                 {
-                    changes.IncludeRemovedChange(model);
+                    changes.IncludeRemovedChange(ProviderTypeString, model.Id);
                 }
 
                 changes.IncludeAddedChange(model);

@@ -447,7 +447,7 @@ Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.DependencyTreeFlags
 Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependenciesChanges
 Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependenciesChanges.AddedNodes.get -> System.Collections.Immutable.ImmutableArray<Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel>
 Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependenciesChanges.AnyChanges.get -> bool
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependenciesChanges.RemovedNodes.get -> System.Collections.Immutable.ImmutableArray<Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel>
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependenciesChanges.RemovedNodes.get -> System.Collections.Immutable.ImmutableArray<(string providerType, string dependencyId)>
 Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel
 Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel.Caption.get -> string
 Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel.DependencyIDs.get -> System.Collections.Immutable.IImmutableList<string>
