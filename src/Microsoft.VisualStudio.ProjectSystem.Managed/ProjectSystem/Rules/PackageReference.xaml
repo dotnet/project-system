@@ -82,7 +82,7 @@
 
     <StringProperty Name="NoWarn" 
                     Visible="True"
-                    DisplayName="Warnings to suppress"
+                    DisplayName="Suppress warnings"
                     Description="Comma-delimited list of warnings that should be suppressed for this package" />
 
     <BoolProperty Name="Visible"
