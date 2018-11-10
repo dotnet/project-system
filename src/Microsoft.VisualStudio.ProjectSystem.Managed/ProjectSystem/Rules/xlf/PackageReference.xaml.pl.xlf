@@ -68,7 +68,7 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|NoWarn|DisplayName">
-        <source>Warnings to suppress</source>
+        <source>Suppress warnings</source>
         <target state="needs-review-translation">NoWarn</target>
         <note />
       </trans-unit>
