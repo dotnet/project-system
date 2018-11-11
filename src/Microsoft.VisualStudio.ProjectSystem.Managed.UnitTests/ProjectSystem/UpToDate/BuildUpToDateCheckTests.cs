@@ -63,13 +63,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             projectSubscriptionService.SetupGet(o => o.JointRuleSource).Returns(jointRuleSource);
             projectSubscriptionService.SetupGet(o => o.SourceItemsRuleSource).Returns(sourceItemsRuleSource);
 
-            var configuredProjectServices = new Mock<ConfiguredProjectServices>();
-            configuredProjectServices.SetupGet(p => p.ProjectSubscription)
-                .Returns(projectSubscriptionService.Object);
+            var configuredProjectServices = ConfiguredProjectServicesFactory.Create(projectSubscriptionService: projectSubscriptionService.Object);
 
             var configuredProject = new Mock<ConfiguredProject>();
             configuredProject.SetupGet(c => c.ProjectVersion).Returns(() => _projectVersion);
-            configuredProject.SetupGet(c => c.Services).Returns(configuredProjectServices.Object);
+            configuredProject.SetupGet(c => c.Services).Returns(configuredProjectServices);
             configuredProject.SetupGet(c => c.UnconfiguredProject).Returns(UnconfiguredProjectFactory.Create(filePath: _projectFullPath));
 
             var projectAsynchronousTasksService = new Mock<IProjectAsynchronousTasksService>();
