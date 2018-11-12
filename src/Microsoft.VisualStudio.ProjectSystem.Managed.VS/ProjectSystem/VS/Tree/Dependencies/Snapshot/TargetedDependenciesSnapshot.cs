@@ -128,6 +128,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
                 if (newDependency.TopLevel)
                 {
+                    topLevelBuilder.Remove(newDependency);
                     topLevelBuilder.Add(newDependency);
                 }
             }
