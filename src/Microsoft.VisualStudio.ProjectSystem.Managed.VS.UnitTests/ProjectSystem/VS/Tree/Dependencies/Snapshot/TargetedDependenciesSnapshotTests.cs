@@ -585,7 +585,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             var changes = IDependenciesChangesFactory.Implement(
                 addedNodes: new[] { dependencyModelTopAdded },
-                removedNodes: Array.Empty<IDependencyModel>());
+                removedNodes: Array.Empty<RemovedDependencyIdentity>());
 
             var snapshotFilter = new TestDependenciesSnapshotFilter()
                     .ImplementBeforeAddResult(FilterAction.ShouldBeAdded, @"tfm1\xxx\topdependency1", dependencyModelTopUpdated);
