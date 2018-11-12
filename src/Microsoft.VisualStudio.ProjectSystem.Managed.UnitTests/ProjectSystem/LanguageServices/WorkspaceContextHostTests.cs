@@ -112,13 +112,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             });
         }
 
-        private WorkspaceContextHost CreateInstance(ConfiguredProject project = null, IProjectThreadingService threadingService = null, IUnconfiguredProjectTasksService tasksService = null, IProjectSubscriptionService projectSubscriptionService = null, IActiveWorkspaceProjectContextTracker activeWorkspaceProjectContextTracker = null, IWorkspaceProjectContextProvider workspaceProjectContextProvider = null, IApplyChangesToWorkspaceContext applyChangesToWorkspaceContext = null)
+        private WorkspaceContextHost CreateInstance(ConfiguredProject project = null, IProjectThreadingService threadingService = null, IUnconfiguredProjectTasksService tasksService = null, IProjectSubscriptionService projectSubscriptionService = null, IActiveEditorContextTracker activeWorkspaceProjectContextTracker = null, IWorkspaceProjectContextProvider workspaceProjectContextProvider = null, IApplyChangesToWorkspaceContext applyChangesToWorkspaceContext = null)
         {
             project = project ?? ConfiguredProjectFactory.Create();
             threadingService = threadingService ?? IProjectThreadingServiceFactory.Create();
             tasksService = tasksService ?? IUnconfiguredProjectTasksServiceFactory.Create();
             projectSubscriptionService = projectSubscriptionService ?? IProjectSubscriptionServiceFactory.Create();
-            activeWorkspaceProjectContextTracker = activeWorkspaceProjectContextTracker ?? IActiveWorkspaceProjectContextTrackerFactory.Create();
+            activeWorkspaceProjectContextTracker = activeWorkspaceProjectContextTracker ?? IActiveEditorContextTrackerFactory.Create();
             workspaceProjectContextProvider = workspaceProjectContextProvider ?? IWorkspaceProjectContextProviderFactory.ImplementCreateProjectContextAsync(IWorkspaceProjectContextAccessorFactory.Create());
             applyChangesToWorkspaceContext = applyChangesToWorkspaceContext ?? IApplyChangesToWorkspaceContextFactory.Create();
 

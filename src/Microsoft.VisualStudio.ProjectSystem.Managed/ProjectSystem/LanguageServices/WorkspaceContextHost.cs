@@ -21,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         private readonly IUnconfiguredProjectTasksService _tasksService;
         private readonly IProjectSubscriptionService _projectSubscriptionService;
         private readonly IWorkspaceProjectContextProvider _workspaceProjectContextProvider;
-        private readonly IActiveWorkspaceProjectContextTracker _activeWorkspaceProjectContextTracker;
+        private readonly IActiveEditorContextTracker _activeWorkspaceProjectContextTracker;
         private readonly ExportFactory<IApplyChangesToWorkspaceContext> _applyChangesToWorkspaceContextFactory;
 
         [ImportingConstructor]
@@ -30,7 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                                     IUnconfiguredProjectTasksService tasksService,
                                     IProjectSubscriptionService projectSubscriptionService,
                                     IWorkspaceProjectContextProvider workspaceProjectContextProvider,
-                                    IActiveWorkspaceProjectContextTracker activeWorkspaceProjectContextTracker,
+                                    IActiveEditorContextTracker activeWorkspaceProjectContextTracker,
                                     ExportFactory<IApplyChangesToWorkspaceContext> applyChangesToWorkspaceContextFactory)
             : base(threadingService.JoinableTaskContext)
         {

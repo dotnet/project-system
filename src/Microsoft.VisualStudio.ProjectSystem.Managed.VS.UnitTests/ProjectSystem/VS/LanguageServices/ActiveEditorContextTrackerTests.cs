@@ -7,16 +7,16 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 {
-    public class ActiveWorkspaceProjectContextTrackerTests
+    public class ActiveEditorContextTrackerTests
     {
         [Fact]
-        public void IsActiveContext_NullAsContext_ThrowsArgumentNull()
+        public void IsActiveEditorContext_NullAsContext_ThrowsArgumentNull()
         {
             var instance = CreateInstance();
 
             Assert.Throws<ArgumentNullException>("context", () =>
             {
-                instance.IsActiveContext((IWorkspaceProjectContext)null);
+                instance.IsActiveEditorContext((IWorkspaceProjectContext)null);
             });
         }
 
@@ -83,7 +83,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         }
 
         [Fact]
-        public void IsActiveContext_UnregisteredContextAsContext_ThrowsInvalidOperation()
+        public void IsActiveEditorContext_UnregisteredContextAsContext_ThrowsInvalidOperation()
         {
             var instance = CreateInstance();
 
@@ -91,7 +91,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 
             Assert.Throws<InvalidOperationException>(() =>
             {
-                instance.IsActiveContext(context);
+                instance.IsActiveEditorContext(context);
             });
         }
 
@@ -135,7 +135,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             instance.UnregisterContext(context);
 
             // Should be unregistered
-            Assert.Throws<InvalidOperationException>(() => instance.IsActiveContext(context));
+            Assert.Throws<InvalidOperationException>(() => instance.IsActiveEditorContext(context));
         }
 
         [Theory]
@@ -143,7 +143,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         [InlineData("")]
         [InlineData("AnotherContextId")]
         [InlineData("contextId")]           // Case-sensitive
-        public void IsActiveContext_WhenActiveIntellisenseProjectContextDoesNotMatch_ReturnsFalse(string activeIntellisenseProjectContext)
+        public void IsActiveEditorContext_WhenActiveIntellisenseProjectContextDoesNotMatch_ReturnsFalse(string activeIntellisenseProjectContext)
         {
             var instance = CreateInstance();
 
@@ -152,13 +152,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 
             instance.ActiveIntellisenseProjectContext = activeIntellisenseProjectContext;
 
-            var result = instance.IsActiveContext(context);
+            var result = instance.IsActiveEditorContext(context);
 
             Assert.False(result);
         }
 
         [Fact]
-        public void IsActiveContext_WhenActiveIntellisenseProjectContextMatches_ReturnsTrue()
+        public void IsActiveEditorContext_WhenActiveIntellisenseProjectContextMatches_ReturnsTrue()
         {
             var instance = CreateInstance();
 
@@ -167,7 +167,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 
             instance.ActiveIntellisenseProjectContext = "ContextId";
 
-            var result = instance.IsActiveContext(context);
+            var result = instance.IsActiveEditorContext(context);
 
             Assert.True(result);
         }
@@ -187,9 +187,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             Assert.Equal(activeIntellisenseProjectContext, result);
         }
 
-        private static ActiveWorkspaceProjectContextTracker CreateInstance()
+        private static ActiveEditorContextTracker CreateInstance()
         {
-            return new ActiveWorkspaceProjectContextTracker(UnconfiguredProjectFactory.Create());
+            return new ActiveEditorContextTracker(UnconfiguredProjectFactory.Create());
         }
     }
 }
