@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
@@ -341,6 +342,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
                 GraphNodeId.GetPartial(CodeGraphNodeIdName.File, filePath));
         }
 
-        private static string GetIconStringName(ImageMoniker icon) => $"{icon.Guid:D};{icon.Id}";
+        private static readonly ConcurrentDictionary<(int id, Guid guid), string> s_iconNameCache = new ConcurrentDictionary<(int id, Guid guid), string>();
+
+        private static string GetIconStringName(ImageMoniker icon)
+        {
+            return s_iconNameCache.GetOrAdd((icon.Id, icon.Guid), i => $"{i.guid:D};{i.id}");
+        }
     }
 }
