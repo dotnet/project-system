@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
@@ -536,6 +537,70 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.True(snapshot.DependenciesWorld.ContainsKey(@"tfm1\xxx\addeddependency2"));
             Assert.True(snapshot.DependenciesWorld.ContainsKey(@"tfm1\xxx\InsteadRemoveddependency1"));
             Assert.True(snapshot.DependenciesWorld.ContainsKey(@"tfm1\xxx\addeddependency3"));
+        }
+
+        [Fact]
+        public void TFromChanges_UpdatesTopLevelDependencies()
+        {
+            const string projectPath = @"c:\somefolder\someproject\a.csproj";
+            var targetFramework = ITargetFrameworkFactory.Implement("tfm1");
+
+            var dependencyModelTopPrevious = IDependencyFactory.FromJson(@"
+            {
+                ""ProviderType"": ""Xxx"",
+                ""Id"": ""tfm1\\xxx\\topdependency1"",
+                ""Name"": ""TopDependency1"",
+                ""Caption"": ""TopDependency1"",
+                ""SchemaItemType"": ""Xxx"",
+                ""Resolved"": ""true""
+            }", icon: KnownMonikers.Uninstall, expandedIcon: KnownMonikers.Uninstall);
+
+            var dependencyModelTopAdded = IDependencyFactory.FromJson(@"
+            {
+                ""ProviderType"": ""Xxx"",
+                ""Id"": ""topdependency1"",
+                ""Name"": ""TopDependency1"",
+                ""Caption"": ""TopDependency1"",
+                ""SchemaItemType"": ""Xxx"",
+                ""Resolved"": ""true""
+            }", icon: KnownMonikers.Uninstall, expandedIcon: KnownMonikers.Uninstall);
+
+            var dependencyModelTopUpdated = IDependencyFactory.FromJson(@"
+            {
+                ""ProviderType"": ""Xxx"",
+                ""Id"": ""tfm1\\xxx\\topdependency1"",
+                ""Name"": ""TopDependency1"",
+                ""Caption"": ""TopDependency1"",
+                ""SchemaItemType"": ""Xxx"",
+                ""Resolved"": ""true""
+            }", icon: KnownMonikers.Uninstall, expandedIcon: KnownMonikers.Uninstall);
+
+            var catalogs = IProjectCatalogSnapshotFactory.Create();
+            var previousSnapshot = ITargetedDependenciesSnapshotFactory.Implement(
+                projectPath: projectPath,
+                targetFramework: targetFramework,
+                catalogs: catalogs,
+                dependenciesWorld: new Dictionary<string, IDependency>(StringComparer.OrdinalIgnoreCase),
+                topLevelDependencies: new[] { dependencyModelTopPrevious });
+
+            var changes = IDependenciesChangesFactory.Implement(
+                addedNodes: new[] { dependencyModelTopAdded },
+                removedNodes: Array.Empty<IDependencyModel>());
+
+            var snapshotFilter = new TestDependenciesSnapshotFilter()
+                    .ImplementBeforeAddResult(FilterAction.ShouldBeAdded, @"tfm1\xxx\topdependency1", dependencyModelTopUpdated);
+
+            var snapshot = TargetedDependenciesSnapshot.FromChanges(
+                projectPath,
+                previousSnapshot,
+                changes,
+                catalogs,
+                new[] { snapshotFilter },
+                new Dictionary<string, IProjectDependenciesSubTreeProvider>(),
+                null);
+
+            Assert.NotSame(previousSnapshot, snapshot);
+            Assert.Same(dependencyModelTopUpdated, snapshot.TopLevelDependencies.Single());
         }
 
         /// <summary>
