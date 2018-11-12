@@ -9,6 +9,7 @@ using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
+using Microsoft.VisualStudio.Text;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions
 {
@@ -53,18 +54,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             ITargetFramework targetFramework,
             DependenciesRuleChangeContext ruleChangeContext)
         {
-            if (changesByRuleName.TryGetValue(UnresolvedRuleName, out IProjectChangeDescription unresolvedChanges)
-                && unresolvedChanges.Difference.AnyChanges)
-            {
-                HandleChangesForRule(
-                    unresolvedChanges,
-                    ruleChangeContext,
-                    targetFramework,
-                    resolved: false);
-            }
-
             var caseInsensitiveUnresolvedChanges = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-            caseInsensitiveUnresolvedChanges.AddRange(unresolvedChanges.After.Items.Keys);
+
+            if (changesByRuleName.TryGetValue(UnresolvedRuleName, out IProjectChangeDescription unresolvedChanges))
+            {
+                caseInsensitiveUnresolvedChanges.AddRange(unresolvedChanges.After.Items.Keys);
+
+                if (unresolvedChanges.Difference.AnyChanges)
+                {
+                    HandleChangesForRule(
+                        unresolvedChanges,
+                        ruleChangeContext,
+                        targetFramework,
+                        resolved: false);
+                }
+            }
 
             if (changesByRuleName.TryGetValue(ResolvedRuleName, out IProjectChangeDescription resolvedChanges)
                 && resolvedChanges.Difference.AnyChanges)
@@ -140,18 +144,33 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             HashSet<string> unresolvedChanges,
             ITargetFramework targetFramework)
         {
-            PackageDependencyMetadata metadata;
-            bool isTopLevel = true;
-            bool isTarget = false;
+            Requires.NotNull(itemSpec, nameof(itemSpec));
+            Requires.NotNull(properties, nameof(properties));
+
+            bool isTopLevel;
+
+            string target = GetTargetFromDependencyId(itemSpec);
+
+            DependencyType dependencyType = properties.GetEnumProperty<DependencyType>(ProjectItemMetadata.Type) ?? DependencyType.Unknown;
+            string name = properties.GetStringProperty(ProjectItemMetadata.Name) ?? itemSpec;
+            bool isImplicitlyDefined = properties.GetBoolProperty(ProjectItemMetadata.IsImplicitlyDefined) ?? false;
+
             if (resolved)
             {
-                metadata = new PackageDependencyMetadata(itemSpec, properties);
-                isTopLevel = metadata.IsImplicitlyDefined
-                             || (metadata.DependencyType == DependencyType.Package
+                isTopLevel = isImplicitlyDefined
+                             || (dependencyType == DependencyType.Package
                                  && unresolvedChanges != null
-                                 && unresolvedChanges.Contains(metadata.Name));
-                isTarget = metadata.IsTarget;
-                ITargetFramework packageTargetFramework = TargetFrameworkProvider.GetTargetFramework(metadata.Target);
+                                 && unresolvedChanges.Contains(name));
+
+                bool isTarget = itemSpec.IndexOf('/') == -1;
+
+                if (isTarget)
+                {
+                    return null;
+                }
+
+                ITargetFramework packageTargetFramework = TargetFrameworkProvider.GetTargetFramework(target);
+
                 if (packageTargetFramework?.Equals(targetFramework) != true)
                 {
                     return null;
@@ -159,173 +178,101 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             }
             else
             {
-                metadata = CreateUnresolvedMetadata(itemSpec, properties);
+                isTopLevel = true;
             }
 
-            if (isTarget)
-            {
-                return null;
-            }
+            string originalItemSpec = resolved && isTopLevel 
+                ? name 
+                : itemSpec;
 
-            string originalItemSpec = itemSpec;
-            if (resolved && isTopLevel)
+            switch (dependencyType)
             {
-                originalItemSpec = metadata.Name;
-            }
-
-            switch (metadata.DependencyType)
-            {
+                case DependencyType.Unknown when !resolved:
                 case DependencyType.Package:
                     return new PackageDependencyModel(
                         itemSpec,
                         originalItemSpec,
-                        metadata.Name,
-                        DependencyTreeFlags.NuGetSubTreeNodeFlags,
-                        metadata.Version,
+                        name,
+                        version: properties.GetStringProperty(ProjectItemMetadata.Version) ?? string.Empty,
                         resolved,
-                        metadata.IsImplicitlyDefined,
+                        isImplicitlyDefined,
                         isTopLevel,
-                        isVisible: !metadata.IsImplicitlyDefined,
+                        isVisible: !isImplicitlyDefined,
                         properties,
-                        metadata.DependenciesItemSpecs);
+                        dependenciesIDs: GetDependencyItemSpecs());
                 case DependencyType.Assembly:
                 case DependencyType.FrameworkAssembly:
                     return new PackageAssemblyDependencyModel(
                         itemSpec,
                         originalItemSpec,
-                        metadata.Name,
-                        DependencyTreeFlags.NuGetSubTreeNodeFlags,
+                        name,
                         resolved,
                         properties,
-                        metadata.DependenciesItemSpecs);
+                        dependenciesIDs: GetDependencyItemSpecs());
                 case DependencyType.AnalyzerAssembly:
                     return new PackageAnalyzerAssemblyDependencyModel(
                         itemSpec,
                         originalItemSpec,
-                        metadata.Name,
-                        DependencyTreeFlags.NuGetSubTreeNodeFlags,
+                        name,
                         resolved,
                         properties,
-                        metadata.DependenciesItemSpecs);
+                        dependenciesIDs: GetDependencyItemSpecs());
                 case DependencyType.Diagnostic:
                     return new DiagnosticDependencyModel(
-                        itemSpec,
-                        metadata.Severity,
-                        metadata.DiagnosticCode,
-                        metadata.Name,
-                        DependencyTreeFlags.NuGetSubTreeNodeFlags,
+                        originalItemSpec,
+                        severity: properties.GetEnumProperty<DiagnosticMessageSeverity>(ProjectItemMetadata.Severity) ?? DiagnosticMessageSeverity.Info,
+                        code: properties.GetStringProperty(ProjectItemMetadata.DiagnosticCode) ?? string.Empty,
+                        name,
                         isVisible: true,
                         properties: properties);
                 default:
                     return new PackageUnknownDependencyModel(
                         itemSpec,
                         originalItemSpec,
-                        metadata.Name,
-                        DependencyTreeFlags.NuGetSubTreeNodeFlags,
+                        name,
                         resolved,
                         properties,
-                        metadata.DependenciesItemSpecs);
+                        dependenciesIDs: GetDependencyItemSpecs());
+            }
+
+            string GetTargetFromDependencyId(string dependencyId)
+            {
+                var idParts = new LazyStringSplit(dependencyId, '/');
+
+                string firstPart = idParts.FirstOrDefault();
+
+                if (firstPart == null)
+                {
+                    // should never happen
+                    throw new ArgumentException(nameof(dependencyId));
+                }
+
+                return firstPart;
+            }
+
+            IEnumerable<string> GetDependencyItemSpecs()
+            {
+                if (properties.TryGetValue(ProjectItemMetadata.Dependencies, out string dependencies) && !string.IsNullOrWhiteSpace(dependencies))
+                {
+                    var dependenciesItemSpecs = new HashSet<string>(StringComparers.PropertyValues);
+                    var dependencyIds = new LazyStringSplit(dependencies, ';');
+
+                    // store only unique dependency IDs
+                    foreach (string dependencyId in dependencyIds)
+                    {
+                        dependenciesItemSpecs.Add($"{target}/{dependencyId}");
+                    }
+
+                    return dependenciesItemSpecs;
+                }
+
+                return Array.Empty<string>();
             }
         }
 
         public override IDependencyModel CreateRootDependencyNode() => s_rootModel;
 
-        private static PackageDependencyMetadata CreateUnresolvedMetadata(
-            string itemSpec,
-            IImmutableDictionary<string, string> properties)
-        {
-            // add this properties here since unresolved PackageReferences don't have it
-            properties = properties.SetItem(ProjectItemMetadata.Resolved, "false");
-            properties = properties.SetItem(ProjectItemMetadata.Type, DependencyType.Package.ToString());
-
-            return new PackageDependencyMetadata(itemSpec, properties);
-        }
-
-        protected class PackageDependencyMetadata
-        {
-            public PackageDependencyMetadata(string itemSpec, IImmutableDictionary<string, string> properties)
-            {
-                Requires.NotNull(itemSpec, nameof(itemSpec));
-
-                ItemSpec = itemSpec;
-                Target = GetTargetFromDependencyId(ItemSpec);
-
-                SetProperties(properties);
-            }
-
-            public string Name { get; private set; }
-            public string Version { get; private set; }
-            public DependencyType DependencyType { get; private set; }
-            public string Path { get; private set; }
-            public bool Resolved { get; private set; }
-            public string ItemSpec { get; set; }
-            public string Target { get; }
-            public bool IsTarget
-            {
-                get
-                {
-                    return !ItemSpec.Contains("/");
-                }
-            }
-
-            public bool IsImplicitlyDefined { get; private set; }
-
-            public IImmutableDictionary<string, string> Properties { get; set; }
-
-            public HashSet<string> DependenciesItemSpecs { get; private set; }
-
-            public DiagnosticMessageSeverity Severity { get; private set; }
-            public string DiagnosticCode { get; private set; }
-
-            public void SetProperties(IImmutableDictionary<string, string> properties)
-            {
-                Requires.NotNull(properties, nameof(properties));
-                Properties = properties;
-
-                DependencyType = properties.GetEnumProperty<DependencyType>(ProjectItemMetadata.Type) ?? DependencyType.Unknown;
-                Name = properties.GetStringProperty(ProjectItemMetadata.Name) ?? ItemSpec;
-                Version = properties.GetStringProperty(ProjectItemMetadata.Version) ?? string.Empty;
-                Path = properties.GetStringProperty(ProjectItemMetadata.Path) ?? string.Empty;
-                Resolved = properties.GetBoolProperty(ProjectItemMetadata.Resolved) ?? true;
-                IsImplicitlyDefined = properties.GetBoolProperty(ProjectItemMetadata.IsImplicitlyDefined) ?? false;
-
-                var dependenciesHashSet = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-                if (properties.TryGetValue(ProjectItemMetadata.Dependencies, out string dependencies) && dependencies != null)
-                {
-                    string[] dependencyIds = dependencies.Split(Delimiter.Semicolon, StringSplitOptions.RemoveEmptyEntries);
-
-                    // store only unique dependency IDs
-                    foreach (string dependencyId in dependencyIds)
-                    {
-                        dependenciesHashSet.Add($"{Target}/{dependencyId}");
-                    }
-                }
-
-                DependenciesItemSpecs = dependenciesHashSet;
-
-                if (DependencyType == DependencyType.Diagnostic)
-                {
-                    Severity = properties.GetEnumProperty<DiagnosticMessageSeverity>(ProjectItemMetadata.Severity) ?? DiagnosticMessageSeverity.Info;
-                    DiagnosticCode = properties.GetStringProperty(ProjectItemMetadata.DiagnosticCode) ?? string.Empty;
-                }
-            }
-
-
-            public static string GetTargetFromDependencyId(string dependencyId)
-            {
-                string[] idParts = dependencyId.Split(Delimiter.ForwardSlash, StringSplitOptions.RemoveEmptyEntries);
-                Requires.NotNull(idParts, nameof(idParts));
-                if (idParts.Length == 0)
-                {
-                    // should never happen
-                    throw new ArgumentException(nameof(idParts));
-                }
-
-                return idParts[0];
-            }
-        }
-
-        protected enum DependencyType
+        private enum DependencyType
         {
             Unknown,
             Target,

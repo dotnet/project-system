@@ -1,17 +1,20 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Immutable;
-using System.Linq;
 
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
+using Microsoft.VisualStudio.Text;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 {
     internal class SdkDependencyModel : DependencyModel
     {
+        private static readonly DependencyFlagCache s_flagCache = new DependencyFlagCache(
+            add: DependencyTreeFlags.SdkSubTreeNodeFlags +
+                 DependencyTreeFlags.SupportsHierarchy);
+
         private static readonly DependencyIconSet s_iconSet = new DependencyIconSet(
             icon: ManagedImageMonikers.Sdk,
             expandedIcon: ManagedImageMonikers.Sdk,
@@ -39,16 +42,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
         public SdkDependencyModel(
             string path,
             string originalItemSpec,
-            ProjectTreeFlags flags,
-            bool resolved,
+            bool isResolved,
             bool isImplicit,
             IImmutableDictionary<string, string> properties)
-            : base(path, originalItemSpec, flags, resolved, isImplicit, properties)
+            : base(
+                path,
+                originalItemSpec,
+                flags: s_flagCache.Get(isResolved, isImplicit),
+                isResolved,
+                isImplicit,
+                properties)
         {
-            Flags = Flags.Union(DependencyTreeFlags.SupportsHierarchy);
             Version = properties.GetStringProperty(ProjectItemMetadata.Version) ?? string.Empty;
-            string baseCaption = Path.Split(Delimiter.Comma, StringSplitOptions.RemoveEmptyEntries)
-                .FirstOrDefault();
+            string baseCaption = new LazyStringSplit(path, ',').FirstOrDefault();
             Caption = string.IsNullOrEmpty(Version) ? baseCaption : $"{baseCaption} ({Version})";
         }
     }

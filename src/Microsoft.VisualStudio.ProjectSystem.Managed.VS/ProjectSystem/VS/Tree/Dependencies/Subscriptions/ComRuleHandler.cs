@@ -48,7 +48,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             return new ComDependencyModel(
                 path,
                 originalItemSpec,
-                DependencyTreeFlags.ComSubTreeNodeFlags,
                 resolved,
                 isImplicit,
                 properties);

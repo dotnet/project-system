@@ -11,6 +11,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 {
     internal class PackageAssemblyDependencyModel : DependencyModel
     {
+        private static readonly DependencyFlagCache s_flagCache = new DependencyFlagCache(add: DependencyTreeFlags.NuGetSubTreeNodeFlags);
+
         private static readonly DependencyIconSet s_iconSet = new DependencyIconSet(
             icon: KnownMonikers.Reference,
             expandedIcon: KnownMonikers.Reference,
@@ -31,11 +33,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             string path,
             string originalItemSpec,
             string name,
-            ProjectTreeFlags flags,
-            bool resolved,
+            bool isResolved,
             IImmutableDictionary<string, string> properties,
             IEnumerable<string> dependenciesIDs)
-            : base(path, originalItemSpec, flags, resolved, isImplicit: false, properties: properties, isTopLevel: false)
+            : base(
+                path,
+                originalItemSpec,
+                flags: s_flagCache.Get(isResolved, isImplicit: false),
+                isResolved,
+                isImplicit: false,
+                properties: properties,
+                isTopLevel: false)
         {
             Requires.NotNullOrEmpty(name, nameof(name));
 

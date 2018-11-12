@@ -18,12 +18,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             var properties = ImmutableStringDictionary<string>.EmptyOrdinal.Add("myProp", "myVal");
 
-            var flag = ProjectTreeFlags.Create("MyCustomFlag");
             var model = new SharedProjectDependencyModel(
                 "c:\\myPath.dll",
                 "myOriginalItemSpec",
-                flags: flag,
-                resolved: true,
+                isResolved: true,
                 isImplicit: false,
                 properties: properties);
 
@@ -43,7 +41,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(ManagedImageMonikers.SharedProjectWarning, model.UnresolvedExpandedIcon);
             Assert.True(model.Flags.Contains(DependencyTreeFlags.SharedProjectFlags));
             Assert.False(model.Flags.Contains(DependencyTreeFlags.SupportsRuleProperties));
-            Assert.True(model.Flags.Contains(flag));
+            Assert.Equal(
+                DependencyTreeFlags.ProjectNodeFlags +
+                DependencyTreeFlags.SharedProjectFlags +
+                DependencyTreeFlags.GenericResolvedDependencyFlags -
+                DependencyTreeFlags.SupportsRuleProperties,
+                model.Flags);
         }
 
         [Fact]
@@ -51,12 +54,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             var properties = ImmutableStringDictionary<string>.EmptyOrdinal.Add("myProp", "myVal");
 
-            var flag = ProjectTreeFlags.Create("MyCustomFlag");
             var model = new SharedProjectDependencyModel(
                 "c:\\myPath.dll",
                 "myOriginalItemSpec",
-                flags: flag,
-                resolved: false,
+                isResolved: false,
                 isImplicit: false,
                 properties: properties);
 
@@ -74,9 +75,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(KnownMonikers.SharedProject, model.ExpandedIcon);
             Assert.Equal(ManagedImageMonikers.SharedProjectWarning, model.UnresolvedIcon);
             Assert.Equal(ManagedImageMonikers.SharedProjectWarning, model.UnresolvedExpandedIcon);
-            Assert.True(model.Flags.Contains(DependencyTreeFlags.SharedProjectFlags));
-            Assert.False(model.Flags.Contains(DependencyTreeFlags.SupportsRuleProperties));
-            Assert.True(model.Flags.Contains(flag));
+            Assert.Equal(
+                DependencyTreeFlags.ProjectNodeFlags +
+                DependencyTreeFlags.SharedProjectFlags +
+                DependencyTreeFlags.GenericUnresolvedDependencyFlags -
+                DependencyTreeFlags.SupportsRuleProperties,
+                model.Flags);
         }
 
         [Fact]
@@ -84,12 +88,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             var properties = ImmutableStringDictionary<string>.EmptyOrdinal.Add("myProp", "myVal");
 
-            var flag = ProjectTreeFlags.Create("MyCustomFlag");
             var model = new SharedProjectDependencyModel(
                 "c:\\myPath.dll",
                 "myOriginalItemSpec",
-                flags: flag,
-                resolved: true,
+                isResolved: true,
                 isImplicit: true,
                 properties: properties);
 
@@ -107,9 +109,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(ManagedImageMonikers.SharedProjectPrivate, model.ExpandedIcon);
             Assert.Equal(ManagedImageMonikers.SharedProjectWarning, model.UnresolvedIcon);
             Assert.Equal(ManagedImageMonikers.SharedProjectWarning, model.UnresolvedExpandedIcon);
-            Assert.True(model.Flags.Contains(DependencyTreeFlags.SharedProjectFlags));
-            Assert.False(model.Flags.Contains(DependencyTreeFlags.SupportsRuleProperties));
-            Assert.True(model.Flags.Contains(flag));
+            Assert.Equal(
+                DependencyTreeFlags.ProjectNodeFlags +
+                DependencyTreeFlags.SharedProjectFlags +
+                DependencyTreeFlags.GenericResolvedDependencyFlags -
+                DependencyTreeFlags.SupportsRuleProperties -
+                DependencyTreeFlags.SupportsRemove,
+                model.Flags);
         }
     }
 }

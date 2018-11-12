@@ -10,6 +10,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 {
     internal class SharedProjectDependencyModel : DependencyModel
     {
+        private static readonly DependencyFlagCache s_flagCache = new DependencyFlagCache(
+            add: DependencyTreeFlags.ProjectNodeFlags +
+                 DependencyTreeFlags.SharedProjectFlags,
+            remove: DependencyTreeFlags.SupportsRuleProperties);
+
         private static readonly DependencyIconSet s_iconSet = new DependencyIconSet(
             icon: KnownMonikers.SharedProject,
             expandedIcon: KnownMonikers.SharedProject,
@@ -35,14 +40,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
         public SharedProjectDependencyModel(
             string path,
             string originalItemSpec,
-            ProjectTreeFlags flags,
-            bool resolved,
+            bool isResolved,
             bool isImplicit,
             IImmutableDictionary<string, string> properties)
-            : base(path, originalItemSpec, flags, resolved, isImplicit, properties)
+            : base(
+                path,
+                originalItemSpec,
+                flags: s_flagCache.Get(isResolved, isImplicit),
+                isResolved,
+                isImplicit,
+                properties)
         {
-            Flags = Flags.Union(DependencyTreeFlags.SharedProjectFlags)
-                         .Except(DependencyTreeFlags.SupportsRuleProperties);
             Caption = System.IO.Path.GetFileNameWithoutExtension(path);
         }
     }

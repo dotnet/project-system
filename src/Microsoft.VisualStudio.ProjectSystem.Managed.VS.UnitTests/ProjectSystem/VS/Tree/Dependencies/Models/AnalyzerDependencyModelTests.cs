@@ -18,11 +18,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             var properties = ImmutableStringDictionary<string>.EmptyOrdinal.Add("myProp", "myVal");
 
-            var flag = ProjectTreeFlags.Create("MyCustomFlag");
             var model = new AnalyzerDependencyModel(
                 "c:\\myPath",
                 "myOriginalItemSpec",
-                flags: flag,
                 resolved: true,
                 isImplicit: false,
                 properties: properties);
@@ -41,7 +39,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(KnownMonikers.CodeInformation, model.ExpandedIcon);
             Assert.Equal(ManagedImageMonikers.CodeInformationWarning, model.UnresolvedIcon);
             Assert.Equal(ManagedImageMonikers.CodeInformationWarning, model.UnresolvedExpandedIcon);
-            Assert.True(model.Flags.Contains(flag));
+            Assert.Equal(
+                DependencyTreeFlags.AnalyzerSubTreeNodeFlags +
+                DependencyTreeFlags.GenericResolvedDependencyFlags,
+                model.Flags);
         }
 
         [Fact]
@@ -49,11 +50,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             var properties = ImmutableStringDictionary<string>.EmptyOrdinal.Add("myProp", "myVal");
 
-            var flag = ProjectTreeFlags.Create("MyCustomFlag");
             var model = new AnalyzerDependencyModel(
                 "c:\\myPath",
                 "myOriginalItemSpec",
-                flags: flag,
                 resolved: false,
                 isImplicit: false,
                 properties: properties);
@@ -72,7 +71,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(KnownMonikers.CodeInformation, model.ExpandedIcon);
             Assert.Equal(ManagedImageMonikers.CodeInformationWarning, model.UnresolvedIcon);
             Assert.Equal(ManagedImageMonikers.CodeInformationWarning, model.UnresolvedExpandedIcon);
-            Assert.True(model.Flags.Contains(flag));
+            Assert.Equal(
+                DependencyTreeFlags.AnalyzerSubTreeNodeFlags +
+                DependencyTreeFlags.GenericUnresolvedDependencyFlags,
+                model.Flags);
         }
 
         [Fact]
@@ -80,11 +82,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             var properties = ImmutableStringDictionary<string>.EmptyOrdinal.Add("myProp", "myVal");
 
-            var flag = ProjectTreeFlags.Create("MyCustomFlag");
             var model = new AnalyzerDependencyModel(
                 "c:\\myPath",
                 "myOriginalItemSpec",
-                flags: flag,
                 resolved: true,
                 isImplicit: true,
                 properties: properties);
@@ -103,7 +103,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(ManagedImageMonikers.CodeInformationPrivate, model.ExpandedIcon);
             Assert.Equal(ManagedImageMonikers.CodeInformationWarning, model.UnresolvedIcon);
             Assert.Equal(ManagedImageMonikers.CodeInformationWarning, model.UnresolvedExpandedIcon);
-            Assert.True(model.Flags.Contains(flag));
+            Assert.Equal(
+                DependencyTreeFlags.AnalyzerSubTreeNodeFlags +
+                DependencyTreeFlags.GenericResolvedDependencyFlags -
+                DependencyTreeFlags.SupportsRemove,
+                model.Flags);
         }
     }
 }

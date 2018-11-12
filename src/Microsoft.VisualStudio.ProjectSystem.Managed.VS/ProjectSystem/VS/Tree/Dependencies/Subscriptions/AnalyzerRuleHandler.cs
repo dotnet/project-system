@@ -49,7 +49,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             return new AnalyzerDependencyModel(
                 path,
                 originalItemSpec,
-                DependencyTreeFlags.AnalyzerSubTreeNodeFlags,
                 resolved,
                 isImplicit,
                 properties);

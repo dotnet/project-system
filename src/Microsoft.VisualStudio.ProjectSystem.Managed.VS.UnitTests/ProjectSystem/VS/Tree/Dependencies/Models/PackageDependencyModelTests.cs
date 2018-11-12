@@ -18,14 +18,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var properties = ImmutableStringDictionary<string>.EmptyOrdinal.Add("myProp", "myVal");
             var dependencyIDs = new[] { "id1", "id2" };
 
-            var flag = ProjectTreeFlags.Create("MyCustomFlag");
             var model = new PackageDependencyModel(
                 path: "c:\\myPath",
                 originalItemSpec: "myOriginalItemSpec",
                 name: "myPath",
-                flags: flag,
                 version: "myVersion",
-                resolved: true,
+                isResolved: true,
                 isImplicit: false,
                 properties: properties,
                 isTopLevel: true,
@@ -52,9 +50,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(ManagedImageMonikers.NuGetGreyWarning, model.UnresolvedIcon);
             Assert.Equal(ManagedImageMonikers.NuGetGreyWarning, model.UnresolvedExpandedIcon);
             AssertEx.CollectionLength(model.DependencyIDs, 2);
-            Assert.True(model.Flags.Contains(DependencyTreeFlags.PackageNodeFlags));
-            Assert.True(model.Flags.Contains(DependencyTreeFlags.SupportsHierarchy));
-            Assert.True(model.Flags.Contains(flag));
+            Assert.Equal(
+                DependencyTreeFlags.NuGetSubTreeNodeFlags +
+                DependencyTreeFlags.PackageNodeFlags +
+                DependencyTreeFlags.SupportsHierarchy +
+                DependencyTreeFlags.GenericResolvedDependencyFlags,
+                model.Flags);
         }
 
         [Fact]
@@ -63,14 +64,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var properties = ImmutableStringDictionary<string>.EmptyOrdinal.Add("myProp", "myVal");
             var dependencyIDs = new[] { "id1", "id2" };
 
-            var flag = ProjectTreeFlags.Create("MyCustomFlag");
             var model = new PackageDependencyModel(
                 path: "c:\\myPath",
                 originalItemSpec: "myOriginalItemSpec",
                 name: "myPath",
-                flags: flag,
                 version: "myVersion",
-                resolved: false,
+                isResolved: false,
                 isImplicit: false,
                 properties: properties,
                 isTopLevel: true,
@@ -97,9 +96,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(ManagedImageMonikers.NuGetGreyWarning, model.UnresolvedIcon);
             Assert.Equal(ManagedImageMonikers.NuGetGreyWarning, model.UnresolvedExpandedIcon);
             AssertEx.CollectionLength(model.DependencyIDs, 2);
-            Assert.True(model.Flags.Contains(DependencyTreeFlags.PackageNodeFlags));
-            Assert.True(model.Flags.Contains(DependencyTreeFlags.SupportsHierarchy));
-            Assert.True(model.Flags.Contains(flag));
+            Assert.Equal(
+                DependencyTreeFlags.NuGetSubTreeNodeFlags +
+                DependencyTreeFlags.PackageNodeFlags +
+                DependencyTreeFlags.SupportsHierarchy +
+                DependencyTreeFlags.GenericUnresolvedDependencyFlags,
+                model.Flags);
         }
 
         [Fact]
@@ -108,14 +110,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var properties = ImmutableStringDictionary<string>.EmptyOrdinal.Add("myProp", "myVal");
             var dependencyIDs = new[] { "id1", "id2" };
 
-            var flag = ProjectTreeFlags.Create("MyCustomFlag");
             var model = new PackageDependencyModel(
                 path: "c:\\myPath",
                 originalItemSpec: "myOriginalItemSpec",
                 name: "myPath",
-                flags: flag,
                 version: "",
-                resolved: true,
+                isResolved: true,
                 isImplicit: true,
                 properties: properties,
                 isTopLevel: true,
@@ -142,9 +142,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(ManagedImageMonikers.NuGetGreyWarning, model.UnresolvedIcon);
             Assert.Equal(ManagedImageMonikers.NuGetGreyWarning, model.UnresolvedExpandedIcon);
             AssertEx.CollectionLength(model.DependencyIDs, 2);
-            Assert.True(model.Flags.Contains(DependencyTreeFlags.PackageNodeFlags));
-            Assert.True(model.Flags.Contains(DependencyTreeFlags.SupportsHierarchy));
-            Assert.True(model.Flags.Contains(flag));
+            Assert.Equal(
+                DependencyTreeFlags.NuGetSubTreeNodeFlags +
+                DependencyTreeFlags.PackageNodeFlags +
+                DependencyTreeFlags.SupportsHierarchy +
+                DependencyTreeFlags.GenericResolvedDependencyFlags -
+                DependencyTreeFlags.SupportsRemove,
+                model.Flags);
         }
     }
 }

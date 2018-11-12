@@ -16,6 +16,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 
     internal class DiagnosticDependencyModel : DependencyModel
     {
+        private static readonly ProjectTreeFlags s_errorFlags = new DependencyFlagCache(
+            add: DependencyTreeFlags.NuGetSubTreeNodeFlags + 
+                 DependencyTreeFlags.DiagnosticNodeFlags + 
+                 DependencyTreeFlags.DiagnosticErrorNodeFlags).Get(isResolved: false, isImplicit: false);
+
+        private static readonly ProjectTreeFlags s_warningFlags = new DependencyFlagCache(
+            add: DependencyTreeFlags.NuGetSubTreeNodeFlags + 
+                 DependencyTreeFlags.DiagnosticNodeFlags + 
+                 DependencyTreeFlags.DiagnosticWarningNodeFlags).Get(isResolved: false, isImplicit: false);
+
         private static readonly DependencyIconSet s_errorIconSet = new DependencyIconSet(
             icon: ManagedImageMonikers.ErrorSmall,
             expandedIcon: ManagedImageMonikers.ErrorSmall,
@@ -47,10 +57,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             DiagnosticMessageSeverity severity,
             string code,
             string message,
-            ProjectTreeFlags flags,
             bool isVisible,
             IImmutableDictionary<string, string> properties)
-            : base(originalItemSpec, originalItemSpec, flags, isResolved: false, isImplicit: false, properties: properties, isTopLevel: false, isVisible: isVisible)
+            : base(
+                originalItemSpec,
+                originalItemSpec,
+                flags: severity == DiagnosticMessageSeverity.Error
+                    ? s_errorFlags
+                    : s_warningFlags,
+                isResolved: false,
+                isImplicit: false,
+                properties: properties,
+                isTopLevel: false,
+                isVisible: isVisible)
         {
             Requires.NotNullOrEmpty(originalItemSpec, nameof(originalItemSpec));
             Requires.NotNullOrEmpty(message, nameof(message));
@@ -59,17 +78,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 
             Name = message;
             Caption = string.IsNullOrWhiteSpace(code) ? message : string.Concat(code.ToUpperInvariant(), " ", message);
-
-            Flags = Flags.Union(DependencyTreeFlags.DiagnosticNodeFlags);
-
-            if (severity == DiagnosticMessageSeverity.Error)
-            {
-                Flags = Flags.Union(DependencyTreeFlags.DiagnosticErrorNodeFlags);
-            }
-            else
-            {
-                Flags = Flags.Union(DependencyTreeFlags.DiagnosticWarningNodeFlags);
-            }
         }
     }
 }

@@ -10,6 +10,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 {
     internal class AnalyzerDependencyModel : DependencyModel
     {
+        private static readonly DependencyFlagCache s_flagCache = new DependencyFlagCache(add: DependencyTreeFlags.AnalyzerSubTreeNodeFlags);
+
         private static readonly DependencyIconSet s_iconSet = new DependencyIconSet(
             icon: KnownMonikers.CodeInformation,
             expandedIcon: KnownMonikers.CodeInformation,
@@ -35,11 +37,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
         public AnalyzerDependencyModel(
             string path,
             string originalItemSpec,
-            ProjectTreeFlags flags,
             bool resolved,
             bool isImplicit,
             IImmutableDictionary<string, string> properties)
-            : base(path, originalItemSpec, flags, resolved, isImplicit, properties)
+            : base(
+                path,
+                originalItemSpec,
+                flags: s_flagCache.Get(resolved, isImplicit),
+                resolved,
+                isImplicit,
+                properties)
         {
             Caption = resolved 
                 ? System.IO.Path.GetFileNameWithoutExtension(path) 

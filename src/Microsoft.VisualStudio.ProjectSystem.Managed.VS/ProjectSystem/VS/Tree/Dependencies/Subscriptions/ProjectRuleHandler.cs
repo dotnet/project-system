@@ -84,7 +84,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             return new ProjectDependencyModel(
                 path,
                 originalItemSpec,
-                DependencyTreeFlags.ProjectNodeFlags,
                 resolved,
                 isImplicit,
                 properties);
