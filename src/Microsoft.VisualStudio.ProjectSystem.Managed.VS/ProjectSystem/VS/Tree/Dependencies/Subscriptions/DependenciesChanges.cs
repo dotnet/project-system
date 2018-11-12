@@ -8,7 +8,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
     internal sealed class DependenciesChanges : IDependenciesChanges
     {
         private readonly HashSet<IDependencyModel> _added = new HashSet<IDependencyModel>();
-        private readonly HashSet<(string providerType, string dependencyId)> _removed = new HashSet<(string providerType, string dependencyId)>();
+        private readonly HashSet<RemovedDependencyIdentity> _removed = new HashSet<RemovedDependencyIdentity>();
 
         public bool AnyChanges => _added.Count != 0 || _removed.Count != 0;
 
@@ -23,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             }
         }
 
-        public ImmutableArray<(string providerType, string dependencyId)> RemovedNodes
+        public ImmutableArray<RemovedDependencyIdentity> RemovedNodes
         {
             get
             {
@@ -46,7 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         {
             lock (_removed)
             {
-                _removed.Add((providerType, dependencyId));
+                _removed.Add(new RemovedDependencyIdentity(providerType, dependencyId));
             }
         }
     }
