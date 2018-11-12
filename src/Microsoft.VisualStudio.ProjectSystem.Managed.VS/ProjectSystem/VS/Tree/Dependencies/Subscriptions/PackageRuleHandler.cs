@@ -252,20 +252,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
             IEnumerable<string> GetDependencyItemSpecs()
             {
-                var dependenciesItemSpecs = new StackLazy<HashSet<string>>(() => new HashSet<string>(StringComparers.PropertyValues));
-
-                if (properties.TryGetValue(ProjectItemMetadata.Dependencies, out string dependencies) && dependencies != null)
+                if (properties.TryGetValue(ProjectItemMetadata.Dependencies, out string dependencies) && !string.IsNullOrWhiteSpace(dependencies))
                 {
+                    var dependenciesItemSpecs = new HashSet<string>(StringComparers.PropertyValues);
                     var dependencyIds = new LazyStringSplit(dependencies, ';');
 
                     // store only unique dependency IDs
                     foreach (string dependencyId in dependencyIds)
                     {
-                        dependenciesItemSpecs.Value.Add($"{target}/{dependencyId}");
+                        dependenciesItemSpecs.Add($"{target}/{dependencyId}");
                     }
+
+                    return dependenciesItemSpecs;
                 }
 
-                return (IEnumerable<string>)dependenciesItemSpecs.ValueOrDefault ?? Array.Empty<string>();
+                return Array.Empty<string>();
             }
         }
 
@@ -280,31 +281,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             Assembly,
             FrameworkAssembly,
             AnalyzerAssembly
-        }
-
-        private ref struct StackLazy<T>
-        {
-            private readonly Func<T> _func;
-            private T _value;
-            private bool _isCreated;
-
-            public StackLazy(Func<T> func) : this() => _func = func;
-
-            public T Value
-            {
-                get
-                {
-                    if (!_isCreated)
-                    {
-                        _value = _func();
-                        _isCreated = true;
-                    }
-
-                    return _value;
-                }
-            }
-
-            public T ValueOrDefault => _value;
         }
     }
 }
