@@ -18,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         public static IDependenciesChanges Implement(
             IEnumerable<IDependencyModel> addedNodes = null,
-            IEnumerable<IDependencyModel> removedNodes = null,
+            IEnumerable<RemovedDependencyIdentity> removedNodes = null,
             MockBehavior? mockBehavior = null)
         {
             var behavior = mockBehavior ?? MockBehavior.Strict;

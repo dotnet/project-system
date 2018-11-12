@@ -25,14 +25,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
         public bool AnyChanges => _changes.Count != 0;
 
-        public void IncludeAddedChange(ITargetFramework targetFramework, IDependencyModel ruleMetadata)
+        public void IncludeAddedChange(ITargetFramework targetFramework, IDependencyModel model)
         {
-            GetChanges(targetFramework).IncludeAddedChange(ruleMetadata);
+            GetChanges(targetFramework).IncludeAddedChange(model);
         }
 
-        public void IncludeRemovedChange(ITargetFramework targetFramework, IDependencyModel ruleMetadata)
+        public void IncludeRemovedChange(ITargetFramework targetFramework, string providerType, string dependencyId)
         {
-            GetChanges(targetFramework).IncludeRemovedChange(ruleMetadata);
+            GetChanges(targetFramework).IncludeRemovedChange(providerType, dependencyId);
         }
 
         private DependenciesChanges GetChanges(ITargetFramework targetFramework)

@@ -57,7 +57,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             var changes = IDependenciesChangesFactory.Implement(
                 addedNodes: Array.Empty<IDependencyModel>(), 
-                removedNodes: Array.Empty<IDependencyModel>());
+                removedNodes: Array.Empty<RemovedDependencyIdentity>());
 
             var snapshot = TargetedDependenciesSnapshot.FromChanges(
                 projectPath,
@@ -111,7 +111,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             var changes = IDependenciesChangesFactory.Implement(
                 addedNodes: Array.Empty<IDependencyModel>(), 
-                removedNodes: Array.Empty<IDependencyModel>());
+                removedNodes: Array.Empty<RemovedDependencyIdentity>());
 
             var snapshot = TargetedDependenciesSnapshot.FromChanges(
                 projectPath,
@@ -165,7 +165,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             var changes = IDependenciesChangesFactory.Implement(
                 addedNodes: Array.Empty<IDependencyModel>(), 
-                removedNodes: new [] { dependencyModelTop1 });
+                removedNodes: new [] { new RemovedDependencyIdentity(dependencyModelTop1.ProviderType, dependencyModelTop1.Id ) });
 
             var snapshotFilter = new TestDependenciesSnapshotFilter()
                     .ImplementBeforeRemoveResult(FilterAction.Cancel, @"tfm1\xxx\newdependency1", null);
@@ -230,9 +230,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 },
                 topLevelDependencies: new [] { dependencyModelTop1 });
 
-            var addedNodes = new List<IDependencyModel>();
-            var removedNodes = new List<IDependencyModel> { dependencyModelTop1Removed };
-            var changes = IDependenciesChangesFactory.Implement(addedNodes: addedNodes, removedNodes: removedNodes);
+            var changes = IDependenciesChangesFactory.Implement(
+                addedNodes: Array.Empty<IDependencyModel>(), 
+                removedNodes: new [] { new RemovedDependencyIdentity(dependencyModelTop1Removed.ProviderType, dependencyModelTop1Removed.Id ) });
 
             var snapshotFilter = new TestDependenciesSnapshotFilter()
                     .ImplementBeforeRemoveResult(FilterAction.Cancel, @"tfm1\xxx\topdependency1", null)
@@ -305,7 +305,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             var changes = IDependenciesChangesFactory.Implement(
                 addedNodes: new [] { dependencyModelNew1 }, 
-                removedNodes: Array.Empty<IDependencyModel>());
+                removedNodes: Array.Empty<RemovedDependencyIdentity>());
 
             var snapshotFilter = new TestDependenciesSnapshotFilter()
                     .ImplementBeforeAddResult(FilterAction.Cancel, @"tfm1\xxx\newdependency1", null);
@@ -371,7 +371,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             var changes = IDependenciesChangesFactory.Implement(
                 addedNodes: new [] { dependencyModelNew1 }, 
-                removedNodes: Array.Empty<IDependencyModel>());
+                removedNodes: Array.Empty<RemovedDependencyIdentity>());
 
             var snapshotFilter = new TestDependenciesSnapshotFilter()
                     .ImplementBeforeAddResult(FilterAction.Cancel, @"tfm1\xxx\newdependency1", null)
@@ -506,8 +506,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 topLevelDependencies: new [] { dependencyModelTop1 });
 
             var changes = IDependenciesChangesFactory.Implement(
-                addedNodes: new [] { dependencyModelAdded1, dependencyModelAdded2, dependencyModelAdded3 }, 
-                removedNodes: new [] { dependencyModelRemoved1 });
+                addedNodes: new [] { dependencyModelAdded1, dependencyModelAdded2, dependencyModelAdded3 },
+                removedNodes: new[] { new RemovedDependencyIdentity(dependencyModelRemoved1.ProviderType, dependencyModelRemoved1.Id) });
 
             var snapshotFilter = new TestDependenciesSnapshotFilter()
                 .ImplementBeforeAddResult(FilterAction.Cancel, @"tfm1\xxx\addeddependency1", null)

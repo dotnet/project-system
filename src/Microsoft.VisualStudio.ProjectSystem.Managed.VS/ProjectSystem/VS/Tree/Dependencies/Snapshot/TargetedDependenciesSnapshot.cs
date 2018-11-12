@@ -54,9 +54,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             var worldBuilder = previousSnapshot.DependenciesWorld.ToBuilder();
             var topLevelBuilder = previousSnapshot.TopLevelDependencies.ToBuilder();
 
-            foreach (IDependencyModel removed in changes.RemovedNodes)
+            foreach ((string providerType, string dependencyId) in changes.RemovedNodes)
             {
-                string targetedId = Dependency.GetID(targetFramework, removed.ProviderType, removed.Id);
+                string targetedId = Dependency.GetID(targetFramework, providerType, dependencyId);
 
                 if (!worldBuilder.TryGetValue(targetedId, out IDependency dependency))
                 {

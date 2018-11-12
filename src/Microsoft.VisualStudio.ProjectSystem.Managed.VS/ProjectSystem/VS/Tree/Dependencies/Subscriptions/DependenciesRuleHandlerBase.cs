@@ -74,7 +74,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     projectChange: unresolvedChanges, 
                     targetFramework, 
                     ruleChangeContext, 
-                    shouldProcess: itemSpec => true);
+                    shouldProcess: dependencyId => true);
             }
 
             if (changesByRuleName.TryGetValue(ResolvedRuleName, out IProjectChangeDescription resolvedChanges))
@@ -84,7 +84,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     projectChange: resolvedChanges, 
                     targetFramework, 
                     ruleChangeContext, 
-                    shouldProcess: metadata => DoesUnresolvedProjectItemExist(metadata.OriginalItemSpec, unresolvedChanges));
+                    shouldProcess: dependencyId => DoesUnresolvedProjectItemExist(dependencyId));
+            }
+
+            bool DoesUnresolvedProjectItemExist(string dependencyId)
+            {
+                return unresolvedChanges != null && unresolvedChanges.After.Items.ContainsKey(dependencyId);
             }
         }
 
@@ -93,21 +98,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             IProjectChangeDescription projectChange,
             ITargetFramework targetFramework,
             DependenciesRuleChangeContext ruleChangeContext,
-            Func<IDependencyModel, bool> shouldProcess)
+            Func<string, bool> shouldProcess)
         {
             foreach (string removedItem in projectChange.Difference.RemovedItems)
             {
-                IDependencyModel model = CreateDependencyModelForRule(removedItem, resolved, projectChange.Before);
-                if (shouldProcess(model))
+                string dependencyId = resolved
+                    ? projectChange.Before.GetProjectItemProperties(removedItem).GetStringProperty(OriginalItemSpecPropertyName)
+                    : removedItem;
+
+                if (shouldProcess(dependencyId))
                 {
-                    ruleChangeContext.IncludeRemovedChange(targetFramework, model);
+                    ruleChangeContext.IncludeRemovedChange(targetFramework, ProviderType, removedItem);
                 }
             }
 
             foreach (string changedItem in projectChange.Difference.ChangedItems)
             {
                 IDependencyModel model = CreateDependencyModelForRule(changedItem, resolved, projectChange.After);
-                if (shouldProcess(model))
+                if (shouldProcess(model.Id))
                 {
                     // For changes we try to add new dependency. If it is a resolved dependency, it would just override
                     // old one with new properties. If it is unresolved dependency, it would be added only when there no
@@ -119,16 +127,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             foreach (string addedItem in projectChange.Difference.AddedItems)
             {
                 IDependencyModel model = CreateDependencyModelForRule(addedItem, resolved, projectChange.After);
-                if (shouldProcess(model))
+                if (shouldProcess(model.Id))
                 {
                     ruleChangeContext.IncludeAddedChange(targetFramework, model);
                 }
             }
-        }
-
-        protected static bool DoesUnresolvedProjectItemExist(string itemSpec, IProjectChangeDescription unresolvedChanges)
-        {
-            return unresolvedChanges != null && unresolvedChanges.After.Items.ContainsKey(itemSpec);
         }
 
         private IDependencyModel CreateDependencyModelForRule(
@@ -159,7 +162,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             bool isImplicit,
             IImmutableDictionary<string, string> properties)
         {
-            return null;
+            // Should be overridden by subclasses, unless they override and replace 'Handle'.
+            // Not 'abstract' because a subclass could replace 'Handle', in which case they don't need this method.
+            throw new NotImplementedException();
         }
 
         #endregion

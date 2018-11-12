@@ -447,7 +447,7 @@ Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.DependencyTreeFlags
 Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependenciesChanges
 Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependenciesChanges.AddedNodes.get -> System.Collections.Immutable.ImmutableArray<Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel>
 Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependenciesChanges.AnyChanges.get -> bool
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependenciesChanges.RemovedNodes.get -> System.Collections.Immutable.ImmutableArray<Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel>
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependenciesChanges.RemovedNodes.get -> System.Collections.Immutable.ImmutableArray<Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.RemovedDependencyIdentity>
 Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel
 Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel.Caption.get -> string
 Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel.DependencyIDs.get -> System.Collections.Immutable.IImmutableList<string>
@@ -474,6 +474,11 @@ Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IProjectDependenciesSu
 Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IProjectDependenciesSubTreeProvider.CreateRootDependencyNode() -> Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel
 Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IProjectDependenciesSubTreeProvider.DependenciesChanged -> System.EventHandler<Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.DependenciesChangedEventArgs>
 Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IProjectDependenciesSubTreeProvider.ProviderType.get -> string
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.RemovedDependencyIdentity
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.RemovedDependencyIdentity.Deconstruct(out string providerType, out string dependencyId) -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.RemovedDependencyIdentity.DependencyId.get -> string
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.RemovedDependencyIdentity.ProviderType.get -> string
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.RemovedDependencyIdentity.RemovedDependencyIdentity(string providerType, string dependencyId) -> void
 Microsoft.VisualStudio.ProjectSystem.VS.Utilities.FocusAttacher
 Microsoft.VisualStudio.ProjectSystem.VS.Utilities.FocusAttacher.FocusAttacher() -> void
 static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.ApplicationPrivate.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
