@@ -182,20 +182,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
             private IEnumerable<string> GetDependencyItemSpecs()
             {
-                var dependenciesItemSpecs = new StackLazy<HashSet<string>>(() => new HashSet<string>(StringComparers.PropertyValues));
-
-                if (Properties.TryGetValue(ProjectItemMetadata.Dependencies, out string dependencies) && dependencies != null)
+                if (Properties.TryGetValue(ProjectItemMetadata.Dependencies, out string dependencies) && !string.IsNullOrWhiteSpace(dependencies))
                 {
+                    var dependenciesItemSpecs = new HashSet<string>(StringComparers.PropertyValues);
                     var dependencyIds = new LazyStringSplit(dependencies, ';');
 
                     // store only unique dependency IDs
                     foreach (string dependencyId in dependencyIds)
                     {
-                        dependenciesItemSpecs.Value.Add($"{Target}/{dependencyId}");
+                        dependenciesItemSpecs.Add($"{Target}/{dependencyId}");
                     }
                 }
 
-                return (IEnumerable<string>)dependenciesItemSpecs.ValueOrDefault ?? Array.Empty<string>();
+                return Array.Empty<string>();
             }
 
             private enum DependencyType
@@ -207,32 +206,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 FrameworkAssembly,
                 AnalyzerAssembly
             }
-
-            private ref struct StackLazy<T>
-            {
-                private readonly Func<T> _func;
-                private T _value;
-                private bool _isCreated;
-
-                public StackLazy(Func<T> func) : this() => _func = func;
-
-                public T Value
-                {
-                    get
-                    {
-                        if (!_isCreated)
-                        {
-                            _value = _func();
-                            _isCreated = true;
-                        }
-
-                        return _value;
-                    }
-                }
-
-                public T ValueOrDefault => _value;
-            }
         }
-
     }
 }
