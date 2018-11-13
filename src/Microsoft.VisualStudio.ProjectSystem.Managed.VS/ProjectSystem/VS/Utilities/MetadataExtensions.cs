@@ -97,7 +97,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
         /// <param name="enumValue">The enum value of the property if found and successfully parsed, otherwise <see langword="null"/>.</param>
         /// <returns><see langword="true"/> if the property was found with successfully parsed as enum type <typeparamref name="T"/>, otherwise <see langword="false"/>.</returns>
         /// <typeparam name="T">The enum type.</typeparam>
-        public static bool TryGetEnumProperty<T>(this IImmutableDictionary<string, string> properties, string key, out T enumValue) where T : struct
+        public static bool TryGetEnumProperty<T>(this IImmutableDictionary<string, string> properties, string key, out T enumValue) where T : struct, Enum
         {
             if (properties.TryGetStringProperty(key, out string valueString) &&
                 Enum.TryParse(valueString, ignoreCase: true, out enumValue))
@@ -116,7 +116,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
         /// <param name="key">The key that identifies the property to look up.</param>
         /// <returns>The enum value if found and successfully parsed as enum type <typeparamref name="T"/>, otherwise <see langword="null"/>.</returns>
         /// <typeparam name="T">The enum type.</typeparam>
-        public static T? GetEnumProperty<T>(this IImmutableDictionary<string, string> properties, string key) where T : struct
+        public static T? GetEnumProperty<T>(this IImmutableDictionary<string, string> properties, string key) where T : struct, Enum
         {
             return properties.TryGetEnumProperty(key, out T value) ? value : default;
         }
