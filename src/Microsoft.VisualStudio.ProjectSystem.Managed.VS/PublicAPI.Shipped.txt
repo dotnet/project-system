@@ -479,6 +479,11 @@ Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.RemovedDependencyIdent
 Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.RemovedDependencyIdentity.DependencyId.get -> string
 Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.RemovedDependencyIdentity.ProviderType.get -> string
 Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.RemovedDependencyIdentity.RemovedDependencyIdentity(string providerType, string dependencyId) -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.RemovedDependencyIdentity.Equals(Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.RemovedDependencyIdentity other) -> bool
+override Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.RemovedDependencyIdentity.Equals(object obj) -> bool
+override Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.RemovedDependencyIdentity.GetHashCode() -> int
+static Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.RemovedDependencyIdentity.operator !=(Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.RemovedDependencyIdentity left, Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.RemovedDependencyIdentity right) -> bool
+static Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.RemovedDependencyIdentity.operator ==(Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.RemovedDependencyIdentity left, Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.RemovedDependencyIdentity right) -> bool
 Microsoft.VisualStudio.ProjectSystem.VS.Utilities.FocusAttacher
 Microsoft.VisualStudio.ProjectSystem.VS.Utilities.FocusAttacher.FocusAttacher() -> void
 static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.ApplicationPrivate.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
