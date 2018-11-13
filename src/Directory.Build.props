@@ -24,7 +24,7 @@
   <PropertyGroup Condition="'$(Language)' == 'C#'">
     <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
     <!-- Build machines only have Visual Studio 15.5 -->
-    <LangVersion>7.2</LangVersion>
+    <LangVersion>7.3</LangVersion>
     <Features>strict</Features>
   </PropertyGroup>
 
