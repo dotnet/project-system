@@ -38,15 +38,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         {
             lock (_added)
             {
+                _added.Remove(model);
                 _added.Add(model);
             }
         }
 
         public void IncludeRemovedChange(string providerType, string dependencyId)
         {
+            var identity = new RemovedDependencyIdentity(providerType, dependencyId);
+
             lock (_removed)
             {
-                _removed.Add(new RemovedDependencyIdentity(providerType, dependencyId));
+                _removed.Remove(identity);
+                _removed.Add(identity);
             }
         }
     }
