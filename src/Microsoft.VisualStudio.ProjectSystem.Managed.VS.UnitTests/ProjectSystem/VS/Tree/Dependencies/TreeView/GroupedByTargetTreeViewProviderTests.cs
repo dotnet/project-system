@@ -671,12 +671,6 @@ Caption=YyyDependencyRoot, FilePath=YyyDependencyRoot, IconHash=0, ExpandedIconH
     ""Name"":""tfm2"",
     ""Caption"":""tfm2""
 }");
-            var targetAny = IDependencyFactory.FromJson(@"
-{
-    ""Id"": ""any"",
-    ""Name"":""any"",
-    ""Caption"":""any""
-}");
 
             var treeViewModelFactory = IMockDependenciesViewModelFactory.Implement(
                 getDependenciesRootIcon: KnownMonikers.AboutBox,
@@ -734,13 +728,6 @@ Caption=Dependency1, FilePath=tfm1\Xxx\dependencyxxxpath, IconHash=325249260, Ex
             var project = UnconfiguredProjectFactory.Create();
             var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(project: project);
 
-            var dependenciesRoot = new TestProjectTree
-            {
-                Caption = "MyDependencies",
-                FilePath = "",
-                Flags = ProjectTreeFlags.Empty
-            };
-
             // Act
             var provider = new GroupedByTargetTreeViewProvider(treeServices, treeViewModelFactory, commonServices);
             var resultTree = provider.FindByPath(null, Path.Combine(projectFolder, @"somenode"));
@@ -780,9 +767,6 @@ Caption=Dependency1, FilePath=tfm1\Xxx\dependencyxxxpath, IconHash=325249260, Ex
         public void WhenFindByPathAndAbsoluteNodePath_ShouldFind()
         {
             // Arrange
-            const string projectPath = @"c:\myfolder\mysubfolder\myproject.csproj";
-            var projectFolder = Path.GetDirectoryName(projectPath);
-
             var treeServices = new MockIDependenciesTreeServices();
             var treeViewModelFactory = IMockDependenciesViewModelFactory.Implement();
             var project = UnconfiguredProjectFactory.Create();
