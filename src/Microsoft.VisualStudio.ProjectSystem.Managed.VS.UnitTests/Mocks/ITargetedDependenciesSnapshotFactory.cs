@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 
@@ -21,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         public static ITargetedDependenciesSnapshot Implement(
             string projectPath = null,
             ITargetFramework targetFramework = null,
-            Dictionary<string, IDependency> dependenciesWorld = null,
+            IEnumerable<IDependency> dependenciesWorld = null,
             bool? hasUnresolvedDependency = null,
             IProjectCatalogSnapshot catalogs = null,
             IEnumerable<IDependency> topLevelDependencies = null,
@@ -42,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         public static Mock<ITargetedDependenciesSnapshot> ImplementMock(
             string projectPath = null,
             ITargetFramework targetFramework = null,
-            Dictionary<string, IDependency> dependenciesWorld = null,
+            IEnumerable<IDependency> dependenciesWorld = null,
             bool? hasUnresolvedDependency = null,
             IProjectCatalogSnapshot catalogs = null,
             IEnumerable<IDependency> topLevelDependencies = null,
@@ -65,7 +66,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             if (dependenciesWorld != null)
             {
                 mock.Setup(x => x.DependenciesWorld)
-                    .Returns(ImmutableStringDictionary<IDependency>.EmptyOrdinalIgnoreCase.AddRange(dependenciesWorld));
+                    .Returns(dependenciesWorld.ToImmutableDictionary(d => d.Id, StringComparer.OrdinalIgnoreCase));
             }
 
             if (hasUnresolvedDependency.HasValue)
@@ -106,7 +107,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             var behavior = mockBehavior ?? MockBehavior.Default;
             var mock = new Mock<ITargetedDependenciesSnapshot>(behavior);
 
-            mock.Setup(x => x.CheckForUnresolvedDependencies(It.Is<IDependency>(y => y.Id.Equals(id, System.StringComparison.OrdinalIgnoreCase))))
+            mock.Setup(x => x.CheckForUnresolvedDependencies(It.Is<IDependency>(y => y.Id.Equals(id, StringComparison.OrdinalIgnoreCase))))
                 .Returns(hasUnresolvedDependency);
 
             return mock.Object;

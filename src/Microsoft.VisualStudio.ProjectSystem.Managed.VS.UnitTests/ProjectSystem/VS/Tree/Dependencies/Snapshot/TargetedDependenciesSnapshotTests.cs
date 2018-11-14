@@ -106,11 +106,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 projectPath: projectPath,
                 targetFramework: targetFramework,
                 catalogs: catalogs,
-                dependenciesWorld: new Dictionary<string, IDependency>(StringComparer.OrdinalIgnoreCase)
-                {
-                    { dependencyTop1.Id, dependencyTop1 },
-                    { dependencyChild1.Id, dependencyChild1 },
-                },
+                dependenciesWorld: new [] { dependencyTop1, dependencyChild1 },
                 topLevelDependencies: new [] { dependencyTop1 });
 
             var changes = IDependenciesChangesFactory.Implement(
@@ -164,11 +160,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 projectPath: projectPath,
                 targetFramework: targetFramework,
                 catalogs: catalogs,
-                dependenciesWorld: new Dictionary<string, IDependency>(StringComparer.OrdinalIgnoreCase)
-                {
-                    { dependencyTop1.Id, dependencyTop1 },
-                    { dependencyChild1.Id, dependencyChild1 },
-                },
+                dependenciesWorld: new [] { dependencyTop1, dependencyChild1 },
                 topLevelDependencies: new [] { dependencyTop1 });
 
             var changes = IDependenciesChangesFactory.Implement(
@@ -225,11 +217,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 projectPath: projectPath,
                 targetFramework: targetFramework,
                 catalogs: catalogs,
-                dependenciesWorld: new Dictionary<string, IDependency>(StringComparer.OrdinalIgnoreCase)
-                {
-                    { dependencyTop1.Id, dependencyTop1 },
-                    { dependencyChild1.Id, dependencyChild1 },
-                },
+                dependenciesWorld: new [] { dependencyTop1, dependencyChild1 },
                 topLevelDependencies: new [] { dependencyTop1 });
 
             var changes = IDependenciesChangesFactory.Implement(
@@ -305,11 +293,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 projectPath: projectPath,
                 targetFramework: targetFramework,
                 catalogs: catalogs,
-                dependenciesWorld: new Dictionary<string, IDependency>(StringComparer.OrdinalIgnoreCase)
-                {
-                    { dependencyTop1.Id, dependencyTop1 },
-                    { dependencyChild1.Id, dependencyChild1 },
-                },
+                dependenciesWorld: new [] { dependencyTop1, dependencyChild1 },
                 topLevelDependencies: new [] { dependencyTop1 });
 
             var changes = IDependenciesChangesFactory.Implement(
@@ -378,11 +362,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 projectPath: projectPath,
                 targetFramework: targetFramework,
                 catalogs: catalogs,
-                dependenciesWorld: new Dictionary<string, IDependency>(StringComparer.OrdinalIgnoreCase)
-                {
-                    { dependencyTop1.Id, dependencyTop1 },
-                    { dependencyChild1.Id, dependencyChild1 },
-                },
+                dependenciesWorld: new [] { dependencyTop1, dependencyChild1 },
                 topLevelDependencies: new [] { dependencyTop1 });
 
             var changes = IDependenciesChangesFactory.Implement(
@@ -530,12 +510,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 projectPath: projectPath,
                 targetFramework: targetFramework,
                 catalogs: catalogs,
-                dependenciesWorld: new Dictionary<string, IDependency>(StringComparer.OrdinalIgnoreCase)
-                {
-                    { dependencyTop1.Id, dependencyTop1 },
-                    { dependencyChild1.Id, dependencyChild1 },
-                    { dependencyRemoved1.Id, dependencyRemoved1 },
-                },
+                dependenciesWorld: new [] { dependencyTop1, dependencyChild1, dependencyRemoved1 },
                 topLevelDependencies: new [] { dependencyTop1 });
 
             var changes = IDependenciesChangesFactory.Implement(
