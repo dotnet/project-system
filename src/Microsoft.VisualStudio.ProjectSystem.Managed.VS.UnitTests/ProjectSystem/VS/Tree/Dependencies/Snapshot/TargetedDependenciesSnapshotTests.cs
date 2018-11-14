@@ -424,7 +424,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     ""Name"":""TopDependency1"",
                     ""Caption"":""TopDependency1"",
                     ""SchemaItemType"":""Xxx"",
-                    ""Resolved"":""true""
+                    ""Resolved"":""true"",
+                    ""TopLevel"":""true""
                 }",
                 icon: KnownMonikers.Uninstall,
                 expandedIcon: KnownMonikers.Uninstall);
@@ -436,7 +437,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     ""Name"":""ChildDependency1"",
                     ""Caption"":""ChildDependency1"",
                     ""SchemaItemType"":""Xxx"",
-                    ""Resolved"":""true""
+                    ""Resolved"":""true"",
+                    ""TopLevel"":""false""
                 }",
                 icon: KnownMonikers.Uninstall,
                 expandedIcon: KnownMonikers.Uninstall);
@@ -448,7 +450,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     ""Name"":""AddedDependency1"",
                     ""Caption"":""AddedDependency1"",
                     ""SchemaItemType"":""Xxx"",
-                    ""Resolved"":""true""
+                    ""Resolved"":""true"",
+                    ""TopLevel"":""false""
                 }",
                 icon: KnownMonikers.Uninstall,
                 expandedIcon: KnownMonikers.Uninstall);
@@ -460,7 +463,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     ""Name"":""AddedDependency2"",
                     ""Caption"":""AddedDependency2"",
                     ""SchemaItemType"":""Xxx"",
-                    ""Resolved"":""true""
+                    ""Resolved"":""true"",
+                    ""TopLevel"":""false""
                 }",
                 icon: KnownMonikers.Uninstall,
                 expandedIcon: KnownMonikers.Uninstall);
@@ -485,7 +489,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     ""Name"":""AddedDependency2Changed"",
                     ""Caption"":""AddedDependency2Changed"",
                     ""SchemaItemType"":""Xxx"",
-                    ""Resolved"":""true""
+                    ""Resolved"":""true"",
+                    ""TopLevel"":""true""
                 }",
                 icon: KnownMonikers.Uninstall,
                 expandedIcon: KnownMonikers.Uninstall);
@@ -497,7 +502,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     ""Name"":""RemovedDependency1"",
                     ""Caption"":""RemovedDependency1"",
                     ""SchemaItemType"":""Xxx"",
-                    ""Resolved"":""true""
+                    ""Resolved"":""true"",
+                    ""TopLevel"":""false""
                 }",
                 icon: KnownMonikers.Uninstall,
                 expandedIcon: KnownMonikers.Uninstall);
@@ -509,10 +515,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     ""Name"":""InsteadRemovedDependency1"",
                     ""Caption"":""InsteadRemovedDependency1"",
                     ""SchemaItemType"":""Xxx"",
-                    ""Resolved"":""true""
+                    ""Resolved"":""true"",
+                    ""TopLevel"":""false""
                 }",
                 icon: KnownMonikers.Uninstall,
                 expandedIcon: KnownMonikers.Uninstall);
+
+            Assert.True(dependencyTop1.TopLevel);
+            Assert.False(dependencyChild1.TopLevel);
+            Assert.False(dependencyRemoved1.TopLevel);
 
             var catalogs = IProjectCatalogSnapshotFactory.Create();
             var previousSnapshot = ITargetedDependenciesSnapshotFactory.Implement(
@@ -521,9 +532,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 catalogs: catalogs,
                 dependenciesWorld: new Dictionary<string, IDependency>(StringComparer.OrdinalIgnoreCase)
                 {
-                    { @"tfm1\xxx\topdependency1", dependencyTop1 },
-                    { @"tfm1\xxx\childdependency1", dependencyChild1 },
-                    { @"tfm1\xxx\Removeddependency1", dependencyRemoved1 },
+                    { dependencyTop1.Id, dependencyTop1 },
+                    { dependencyChild1.Id, dependencyChild1 },
+                    { dependencyRemoved1.Id, dependencyRemoved1 },
                 },
                 topLevelDependencies: new [] { dependencyTop1 });
 
@@ -646,6 +657,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     ""Caption"":""TopDependency1"",
                     ""SchemaItemType"":""Xxx"",
                     ""Resolved"":""true"",
+                    ""TopLevel"":""true"",
                     ""DependencyIDs"": [ ""tfm1\\xxx\\topdependency2"" ]
                 }",
                 icon: KnownMonikers.Uninstall,
@@ -659,6 +671,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     ""Caption"":""TopDependency2"",
                     ""SchemaItemType"":""Xxx"",
                     ""Resolved"":""true"",
+                    ""TopLevel"":""false"",
                     ""DependencyIDs"": [ ""tfm1\\xxx\\topdependency1"" ]
                 }",
                 icon: KnownMonikers.Uninstall,
@@ -738,6 +751,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     {
                         worldBuilder.Remove(info.Item1.Id);
                         worldBuilder.Add(info.Item1.Id, info.Item1);
+
+                        if (info.Item1.TopLevel)
+                        {
+                            topLevelBuilder.Remove(info.Item1);
+                            topLevelBuilder.Add(info.Item1);
+                        }
+
                         return info.Item1;
                     }
                     else
