@@ -20,8 +20,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         public static IDependenciesViewModelFactory Implement(
             ImageMoniker? getDependenciesRootIcon = null,
-            IEnumerable<IDependency> createRootViewModel = null,
-            IEnumerable<IDependency> createTargetViewModel = null,
+            IEnumerable<IDependencyModel> createRootViewModel = null,
+            IEnumerable<IDependencyModel> createTargetViewModel = null,
             MockBehavior? mockBehavior = null)
         {
             var behavior = mockBehavior ?? MockBehavior.Strict;
