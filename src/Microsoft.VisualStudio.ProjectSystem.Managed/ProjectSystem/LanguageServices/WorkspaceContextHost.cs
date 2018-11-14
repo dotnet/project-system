@@ -14,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     /// </summary>
     [Export(typeof(IImplicitlyActiveService))]
     [AppliesTo(ProjectCapability.DotNetLanguageService2)]
-    internal partial class WorkspaceContextHost : AbstractMultiLifetimeComponent, IImplicitlyActiveService, IWorkspaceProjectContextHost
+    internal partial class WorkspaceContextHost : AbstractMultiLifetimeComponent<WorkspaceContextHost.WorkspaceContextHostInstance>, IImplicitlyActiveService, IWorkspaceProjectContextHost
     {
         private readonly ConfiguredProject _project;
         private readonly IProjectThreadingService _threadingService;
@@ -77,14 +77,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         {
             await Loaded;
 
-            var instance = (WorkspaceContextHostInstance)Instance;
+            WorkspaceContextHostInstance instance = Instance;
             if (instance == null)   // Unloaded between being Loaded and here
                 throw new OperationCanceledException();
 
             return instance;
         }
 
-        protected override IMultiLifetimeInstance CreateInstance()
+        protected override WorkspaceContextHostInstance CreateInstance()
         {
             return new WorkspaceContextHostInstance(_project, _threadingService, _tasksService, _projectSubscriptionService, _workspaceProjectContextProvider, _activeWorkspaceProjectContextTracker, _applyChangesToWorkspaceContextFactory);
         }

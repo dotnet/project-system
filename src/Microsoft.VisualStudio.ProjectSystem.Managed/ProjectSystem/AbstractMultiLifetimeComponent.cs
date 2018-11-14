@@ -11,28 +11,29 @@ namespace Microsoft.VisualStudio.ProjectSystem
     ///     An <see langword="abstract"/> base class that simplifies the lifetime of 
     ///     a component that is loaded and unloaded multiple times.
     /// </summary>
-    internal abstract class AbstractMultiLifetimeComponent : OnceInitializedOnceDisposedAsync
+    internal abstract class AbstractMultiLifetimeComponent<T> : OnceInitializedOnceDisposedAsync
+        where T : IMultiLifetimeInstance
     {
         private readonly object _lock = new object();
         private TaskCompletionSource<object> _loadedSource = new TaskCompletionSource<object>();
-        private IMultiLifetimeInstance _instance;
+        private T _instance;
 
         protected AbstractMultiLifetimeComponent(JoinableTaskContextNode joinableTaskContextNode)
             : base(joinableTaskContextNode)
         {
         }
 
-        public IMultiLifetimeInstance Instance
+        public T Instance
         {
             get { return _instance; }
         }
 
         /// <summary>
-        ///     Gets a task that is completed when current <see cref="AbstractMultiLifetimeComponent"/> has 
+        ///     Gets a task that is completed when current <see cref="AbstractMultiLifetimeComponent{T}"/> has 
         ///     completed loading.
         /// </summary>
         /// <remarks>
-        ///     The returned <see cref="Task"/> is canceled when the <see cref="AbstractMultiLifetimeComponent"/> 
+        ///     The returned <see cref="Task"/> is canceled when the <see cref="AbstractMultiLifetimeComponent{T}"/> 
         ///     is disposed.
         /// </remarks>
         public Task Loaded
@@ -77,7 +78,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 if (_instance != null)
                 {
                     instance = _instance;
-                    _instance = null;
+                    _instance = default;
                     _loadedSource = new TaskCompletionSource<object>();
                 }
             }
@@ -105,6 +106,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// <summary>
         ///     Creates a new instance of the underlying <see cref="IMultiLifetimeInstance"/>.
         /// </summary>
-        protected abstract IMultiLifetimeInstance CreateInstance();
+        protected abstract T CreateInstance();
     }
 }

@@ -14,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return new MultiLifetimeComponent(joinableTaskContextNode);
         }
 
-        public class MultiLifetimeComponent : AbstractMultiLifetimeComponent
+        public class MultiLifetimeComponent : AbstractMultiLifetimeComponent<IMultiLifetimeInstance>
         {
             public MultiLifetimeComponent(JoinableTaskContextNode joinableTaskContextNode) 
                 : base(joinableTaskContextNode)

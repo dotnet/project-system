@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     /// </summary>
     [Export(ExportContractNames.Scopes.UnconfiguredProject, typeof(IProjectDynamicLoadComponent))]
     [AppliesTo(ProjectCapability.DotNet)]
-    internal partial class SDKVersionTelemetryServiceComponent : AbstractMultiLifetimeComponent, IProjectDynamicLoadComponent
+    internal partial class SDKVersionTelemetryServiceComponent : AbstractMultiLifetimeComponent<SDKVersionTelemetryServiceComponent.SDKVersionTelemetryServiceInstance>, IProjectDynamicLoadComponent
     {
         private readonly IUnconfiguredProjectVsServices _projectVsServices;
         private readonly ITelemetryService _telemetryService;
@@ -32,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             _unconfiguredProjectTasksService = unconfiguredProjectTasksService;
         }
 
-        protected override IMultiLifetimeInstance CreateInstance()
+        protected override SDKVersionTelemetryServiceInstance CreateInstance()
             => new SDKVersionTelemetryServiceInstance(
                 _projectVsServices,
                 _projectGuidService,
