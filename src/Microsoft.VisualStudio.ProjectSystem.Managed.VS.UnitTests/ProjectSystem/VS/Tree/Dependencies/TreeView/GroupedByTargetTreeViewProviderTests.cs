@@ -143,7 +143,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 { tfm1, dependencies }
             };
 
-            var project = UnconfiguredProjectFactory.Create(filePath: @"c:\somefodler\someproject.csproj");
+            var project = UnconfiguredProjectFactory.Create(filePath: @"c:\somefolder\someproject.csproj");
             var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(project: project);
 
             var provider = new GroupedByTargetTreeViewProvider(
@@ -229,7 +229,7 @@ Caption=Dependency1, FilePath=tfm1\Xxx\dependencyXxxpath, IconHash=325249260, Ex
                 { tfm1, dependencies }
             };
 
-            var project = UnconfiguredProjectFactory.Create(filePath: @"c:\somefodler\someproject.csproj");
+            var project = UnconfiguredProjectFactory.Create(filePath: @"c:\somefolder\someproject.csproj");
             var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(project: project);
 
             var provider = new GroupedByTargetTreeViewProvider(
@@ -311,7 +311,7 @@ Caption=DependencyExisting, FilePath=tfm1\Yyy\dependencyExistingpath, IconHash=3
                 { ITargetFrameworkFactory.Implement(moniker: "tfm1"), dependencies }
             };
 
-            var project = UnconfiguredProjectFactory.Create(filePath: @"c:\somefodler\someproject.csproj");
+            var project = UnconfiguredProjectFactory.Create(filePath: @"c:\somefolder\someproject.csproj");
             var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(project: project);
 
             var provider = new GroupedByTargetTreeViewProvider(
@@ -390,7 +390,7 @@ Caption=DependencyExisting, FilePath=tfm1\yyy\dependencyExisting, IconHash=32524
                 { ITargetFrameworkFactory.Implement(moniker: "tfm1"), dependencies }
             };
 
-            var project = UnconfiguredProjectFactory.Create(filePath: @"c:\somefodler\someproject.csproj");
+            var project = UnconfiguredProjectFactory.Create(filePath: @"c:\somefolder\someproject.csproj");
             var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(project: project);
 
             var provider = new GroupedByTargetTreeViewProvider(
@@ -459,7 +459,7 @@ Caption=DependencyExisting, FilePath=tfm1\yyy\dependencyExisting, IconHash=32524
                 { ITargetFrameworkFactory.Implement(moniker: "tfm1"), dependencies }
             };
 
-            var project = UnconfiguredProjectFactory.Create(filePath: @"c:\somefodler\someproject.csproj");
+            var project = UnconfiguredProjectFactory.Create(filePath: @"c:\somefolder\someproject.csproj");
             var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(project: project);
 
             var provider = new GroupedByTargetTreeViewProvider(
@@ -527,7 +527,7 @@ Caption=YyyDependencyRoot, FilePath=YyyDependencyRoot, IconHash=0, ExpandedIconH
                 { ITargetFrameworkFactory.Implement(moniker: "tfm1"), dependencies }
             };
 
-            var project = UnconfiguredProjectFactory.Create(filePath: @"c:\somefodler\someproject.csproj");
+            var project = UnconfiguredProjectFactory.Create(filePath: @"c:\somefolder\someproject.csproj");
             var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(project: project);
 
             var provider = new GroupedByTargetTreeViewProvider(
@@ -684,7 +684,7 @@ Caption=YyyDependencyRoot, FilePath=YyyDependencyRoot, IconHash=0, ExpandedIconH
                 { tfmAny, dependenciesAny }
             };
 
-            var project = UnconfiguredProjectFactory.Create(filePath: @"c:\somefodler\someproject.csproj");
+            var project = UnconfiguredProjectFactory.Create(filePath: @"c:\somefolder\someproject.csproj");
             var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(project: project);
 
             var provider = new GroupedByTargetTreeViewProvider(
