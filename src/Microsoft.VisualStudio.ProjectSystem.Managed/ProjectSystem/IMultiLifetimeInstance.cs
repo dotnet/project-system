@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     /// <summary>
-    ///     Represents an instance that is automatically initialized when its parent <see cref="AbstractMultiLifetimeComponent{Task}"/>
+    ///     Represents an instance that is automatically initialized when its parent <see cref="AbstractMultiLifetimeComponent{T}"/>
     ///     is loaded, or disposed when it is unloaded.
     /// </summary>
     internal interface IMultiLifetimeInstance

@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
@@ -13,17 +14,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     internal interface IWorkspaceProjectContextHost
     {
         /// <summary>
-        ///     Gets a task that is completed when current <see cref="IWorkspaceProjectContextHost"/> has 
-        ///     completed loading.
+        ///     Returns a task that will complete when current <see cref="IWorkspaceProjectContextHost"/> has completed
+        ///     loading.
         /// </summary>
         /// <exception cref="OperationCanceledException">
         ///     The result is awaited and the <see cref="ConfiguredProject"/> is unloaded.
+        ///     <para>
+        ///         -or
+        ///     </para>
+        ///     The result is awaited and <paramref name="cancellationToken"/> is cancelled.
         /// </exception>
-        Task Loaded
-        {
-            get;
-        }
-
+        /// <remarks>
+        ///     This method does not initiate loading of the <see cref="IWorkspaceProjectContextHost"/>, however,
+        ///     it will join the load when it starts.
+        /// </remarks>
+        Task PublishAsync(CancellationToken cancellationToken = default);
+               
         /// <summary>
         ///     Opens the <see cref="IWorkspaceProjectContext"/>, passing it to the specified action for writing.
         /// </summary>
@@ -37,7 +43,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         ///     The result is awaited and the <see cref="ConfiguredProject"/> is unloaded.
         /// </exception>
         Task OpenContextForWriteAsync(Func<IWorkspaceProjectContextAccessor, Task> action);
-
 
         /// <summary>
         ///     Opens the <see cref="IWorkspaceProjectContext"/>, passing it to the specified action for writing.

@@ -11,57 +11,67 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     public class WorkspaceContextHostTests
     {
         [Fact]
-        public void Loaded_WhenNotActivated_ReturnsNonCompletedTask()
+        public void PublishAsync_WhenNotActivated_ReturnsNonCompletedTask()
         {
             var component = CreateInstance();
 
-            Assert.False(component.Loaded.IsCanceled);
-            Assert.False(component.Loaded.IsCompleted);
-            Assert.False(component.Loaded.IsFaulted);
+            var result = component.PublishAsync();
+
+            Assert.False(result.IsCanceled);
+            Assert.False(result.IsCompleted);
+            Assert.False(result.IsFaulted);
         }
 
         [Fact]
-        public async Task Loaded_WhenActivated_ReturnsCompletedTask()
+        public async Task PublishAsync_WhenActivated_ReturnsCompletedTask()
         {
             var component = CreateInstance();
 
             await component.ActivateAsync();
 
-            Assert.True(component.Loaded.IsCompleted);
+            var result = component.PublishAsync();
+
+            Assert.True(result.IsCompleted);
         }
 
         [Fact]
-        public async Task Loaded_WhenDeactivated_ReturnsNonCompletedTask()
+        public async Task PublishAsync_WhenDeactivated_ReturnsNonCompletedTask()
         {
             var component = CreateInstance();
 
             await component.ActivateAsync();
             await component.UnloadAsync();
 
-            Assert.False(component.Loaded.IsCanceled);
-            Assert.False(component.Loaded.IsCompleted);
-            Assert.False(component.Loaded.IsFaulted);
+            var result = component.PublishAsync();
+
+            Assert.False(result.IsCanceled);
+            Assert.False(result.IsCompleted);
+            Assert.False(result.IsFaulted);
         }
 
         [Fact]
-        public async Task Loaded_DisposedWhenNotActivated_ReturnsCancelledTask()
+        public async Task PublishAsync_DisposedWhenNotActivated_ReturnsCancelledTask()
         {
             var component = CreateInstance();
 
             await component.DisposeAsync();
 
-            Assert.True(component.Loaded.IsCanceled);
+            var result = component.PublishAsync();
+
+            Assert.True(result.IsCanceled);
         }
 
         [Fact]
-        public async Task Loaded_DisposedWhenActivated_ReturnsCancelledTask()
+        public async Task PublishAsync_DisposedWhenActivated_ReturnsCancelledTask()
         {
             var component = CreateInstance();
 
             await component.ActivateAsync();
             await component.DisposeAsync();
 
-            Assert.True(component.Loaded.IsCanceled);
+            var result = component.PublishAsync();
+
+            Assert.True(result.IsCanceled);
         }
 
         [Fact]

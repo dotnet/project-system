@@ -2,6 +2,7 @@
 
 using System;
 using System.ComponentModel.Composition;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
@@ -53,11 +54,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             return UnloadAsync();
         }
 
+        public Task PublishAsync(CancellationToken cancellationToken = default)
+        {
+            return PublishInstanceAsync(cancellationToken);
+        }
+
         public async Task OpenContextForWriteAsync(Func<IWorkspaceProjectContextAccessor, Task> action)
         {
             Requires.NotNull(action, nameof(action));
 
-            WorkspaceContextHostInstance instance = await GetLoadedInstanceAsync();
+            WorkspaceContextHostInstance instance = await PublishInstanceAsync();
 
             // Throws OperationCanceledException if 'instance' is Disposed
             await instance.OpenContextForWriteAsync(action);
@@ -67,21 +73,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         {
             Requires.NotNull(action, nameof(action));
 
-            WorkspaceContextHostInstance instance = await GetLoadedInstanceAsync();
+            WorkspaceContextHostInstance instance = await PublishInstanceAsync();
 
             // Throws OperationCanceledException if 'instance' is Disposed
             return await instance.OpenContextForWriteAsync(action);
-        }
-
-        private async Task<WorkspaceContextHostInstance> GetLoadedInstanceAsync()
-        {
-            await Loaded;
-
-            WorkspaceContextHostInstance instance = Instance;
-            if (instance == null)   // Unloaded between being Loaded and here
-                throw new OperationCanceledException();
-
-            return instance;
         }
 
         protected override WorkspaceContextHostInstance CreateInstance()
