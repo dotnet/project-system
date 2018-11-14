@@ -78,24 +78,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var targetFramework = ITargetFrameworkFactory.Implement("tfm1");
 
             var dependencyTop1 = IDependencyFactory.FromJson(@"
-{
-    ""ProviderType"": ""Xxx"",
-    ""Id"": ""tfm1\\xxx\\topdependency1"",
-    ""Name"":""TopDependency1"",
-    ""Caption"":""TopDependency1"",
-    ""SchemaItemType"":""Xxx"",
-    ""Resolved"":""true""
-}", icon: KnownMonikers.Uninstall, expandedIcon: KnownMonikers.Uninstall);
+                {
+                    ""ProviderType"": ""Xxx"",
+                    ""Id"": ""tfm1\\xxx\\topdependency1"",
+                    ""Name"":""TopDependency1"",
+                    ""Caption"":""TopDependency1"",
+                    ""SchemaItemType"":""Xxx"",
+                    ""Resolved"":""true""
+                }",
+                icon: KnownMonikers.Uninstall,
+                expandedIcon: KnownMonikers.Uninstall);
 
             var dependencyChild1 = IDependencyFactory.FromJson(@"
-{
-    ""ProviderType"": ""Xxx"",
-    ""Id"": ""tfm1\\xxx\\childdependency1"",
-    ""Name"":""ChildDependency1"",
-    ""Caption"":""ChildDependency1"",
-    ""SchemaItemType"":""Xxx"",
-    ""Resolved"":""true""
-}", icon: KnownMonikers.Uninstall, expandedIcon: KnownMonikers.Uninstall);
+                {
+                    ""ProviderType"": ""Xxx"",
+                    ""Id"": ""tfm1\\xxx\\childdependency1"",
+                    ""Name"":""ChildDependency1"",
+                    ""Caption"":""ChildDependency1"",
+                    ""SchemaItemType"":""Xxx"",
+                    ""Resolved"":""true""
+                }",
+                icon: KnownMonikers.Uninstall,
+                expandedIcon: KnownMonikers.Uninstall);
 
             var catalogs = IProjectCatalogSnapshotFactory.Create();
             var previousSnapshot = ITargetedDependenciesSnapshotFactory.Implement(
@@ -132,24 +136,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var targetFramework = ITargetFrameworkFactory.Implement("tfm1");
 
             var dependencyTop1 = IDependencyFactory.FromJson(@"
-{
-    ""ProviderType"": ""Xxx"",
-    ""Id"": ""tfm1\\xxx\\topdependency1"",
-    ""Name"":""TopDependency1"",
-    ""Caption"":""TopDependency1"",
-    ""SchemaItemType"":""Xxx"",
-    ""Resolved"":""true""
-}", icon: KnownMonikers.Uninstall, expandedIcon: KnownMonikers.Uninstall);
+                {
+                    ""ProviderType"": ""Xxx"",
+                    ""Id"": ""tfm1\\xxx\\topdependency1"",
+                    ""Name"":""TopDependency1"",
+                    ""Caption"":""TopDependency1"",
+                    ""SchemaItemType"":""Xxx"",
+                    ""Resolved"":""true""
+                }",
+                icon: KnownMonikers.Uninstall,
+                expandedIcon: KnownMonikers.Uninstall);
 
             var dependencyChild1 = IDependencyFactory.FromJson(@"
-{
-    ""ProviderType"": ""Xxx"",
-    ""Id"": ""tfm1\\xxx\\childdependency1"",
-    ""Name"":""ChildDependency1"",
-    ""Caption"":""ChildDependency1"",
-    ""SchemaItemType"":""Xxx"",
-    ""Resolved"":""true""
-}", icon: KnownMonikers.Uninstall, expandedIcon: KnownMonikers.Uninstall);
+                {
+                    ""ProviderType"": ""Xxx"",
+                    ""Id"": ""tfm1\\xxx\\childdependency1"",
+                    ""Name"":""ChildDependency1"",
+                    ""Caption"":""ChildDependency1"",
+                    ""SchemaItemType"":""Xxx"",
+                    ""Resolved"":""true""
+                }",
+                icon: KnownMonikers.Uninstall,
+                expandedIcon: KnownMonikers.Uninstall);
 
             var catalogs = IProjectCatalogSnapshotFactory.Create();
             var previousSnapshot = ITargetedDependenciesSnapshotFactory.Implement(
@@ -189,24 +197,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var targetFramework = ITargetFrameworkFactory.Implement("tfm1");
 
             var dependencyTop1 = IDependencyFactory.FromJson(@"
-{
-    ""ProviderType"": ""Xxx"",
-    ""Id"": ""tfm1\\xxx\\topdependency1"",
-    ""Name"":""TopDependency1"",
-    ""Caption"":""TopDependency1"",
-    ""SchemaItemType"":""Xxx"",
-    ""Resolved"":""true""
-}", icon: KnownMonikers.Uninstall, expandedIcon: KnownMonikers.Uninstall);
+                {
+                    ""ProviderType"": ""Xxx"",
+                    ""Id"": ""tfm1\\xxx\\topdependency1"",
+                    ""Name"":""TopDependency1"",
+                    ""Caption"":""TopDependency1"",
+                    ""SchemaItemType"":""Xxx"",
+                    ""Resolved"":""true""
+                }",
+                icon: KnownMonikers.Uninstall,
+                expandedIcon: KnownMonikers.Uninstall);
 
             var dependencyChild1 = IDependencyFactory.FromJson(@"
-{
-    ""ProviderType"": ""Xxx"",
-    ""Id"": ""tfm1\\xxx\\childdependency1"",
-    ""Name"":""ChildDependency1"",
-    ""Caption"":""ChildDependency1"",
-    ""SchemaItemType"":""Xxx"",
-    ""Resolved"":""true""
-}", icon: KnownMonikers.Uninstall, expandedIcon: KnownMonikers.Uninstall);
+                {
+                    ""ProviderType"": ""Xxx"",
+                    ""Id"": ""tfm1\\xxx\\childdependency1"",
+                    ""Name"":""ChildDependency1"",
+                    ""Caption"":""ChildDependency1"",
+                    ""SchemaItemType"":""Xxx"",
+                    ""Resolved"":""true""
+                }",
+                icon: KnownMonikers.Uninstall,
+                expandedIcon: KnownMonikers.Uninstall);
 
             var catalogs = IProjectCatalogSnapshotFactory.Create();
             var previousSnapshot = ITargetedDependenciesSnapshotFactory.Implement(
@@ -253,34 +265,41 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var targetFramework = ITargetFrameworkFactory.Implement("tfm1");
 
             var dependencyTop1 = IDependencyFactory.FromJson(@"
-{
-    ""ProviderType"": ""Xxx"",
-    ""Id"": ""tfm1\\xxx\\topdependency1"",
-    ""Name"":""TopDependency1"",
-    ""Caption"":""TopDependency1"",
-    ""SchemaItemType"":""Xxx"",
-    ""Resolved"":""true""
-}", icon: KnownMonikers.Uninstall, expandedIcon: KnownMonikers.Uninstall);
+                {
+                    ""ProviderType"": ""Xxx"",
+                    ""Id"": ""tfm1\\xxx\\topdependency1"",
+                    ""Name"":""TopDependency1"",
+                    ""Caption"":""TopDependency1"",
+                    ""SchemaItemType"":""Xxx"",
+                    ""Resolved"":""true""
+                }",
+                icon: KnownMonikers.Uninstall,
+                expandedIcon: KnownMonikers.Uninstall);
 
             var dependencyChild1 = IDependencyFactory.FromJson(@"
-{
-    ""ProviderType"": ""Xxx"",
-    ""Id"": ""tfm1\\xxx\\childdependency1"",
-    ""Name"":""ChildDependency1"",
-    ""Caption"":""ChildDependency1"",
-    ""SchemaItemType"":""Xxx"",
-    ""Resolved"":""true""
-}", icon: KnownMonikers.Uninstall, expandedIcon: KnownMonikers.Uninstall);
+                {
+                    ""ProviderType"": ""Xxx"",
+                    ""Id"": ""tfm1\\xxx\\childdependency1"",
+                    ""Name"":""ChildDependency1"",
+                    ""Caption"":""ChildDependency1"",
+                    ""SchemaItemType"":""Xxx"",
+                    ""Resolved"":""true""
+                }",
+                icon: KnownMonikers.Uninstall,
+                expandedIcon: KnownMonikers.Uninstall);
 
             var dependencyModelNew1 = IDependencyModelFactory.FromJson(@"
-{
-    ""ProviderType"": ""Xxx"",
-    ""Id"": ""newdependency1"",
-    ""Name"":""NewDependency1"",
-    ""Caption"":""NewDependency1"",
-    ""SchemaItemType"":""Xxx"",
-    ""Resolved"":""true""
-}", icon: KnownMonikers.Uninstall, expandedIcon: KnownMonikers.Uninstall);
+                {
+                    ""ProviderType"": ""Xxx"",
+                    ""Id"": ""newdependency1"",
+                    ""Name"":""NewDependency1"",
+                    ""Caption"":""NewDependency1"",
+                    ""SchemaItemType"":""Xxx"",
+                    ""Resolved"":""true""
+                }",
+                icon: KnownMonikers.Uninstall,
+                expandedIcon: KnownMonikers.Uninstall);
+
             var catalogs = IProjectCatalogSnapshotFactory.Create();
             var previousSnapshot = ITargetedDependenciesSnapshotFactory.Implement(
                 projectPath: projectPath,
@@ -319,34 +338,40 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var targetFramework = ITargetFrameworkFactory.Implement("tfm1");
 
             var dependencyTop1 = IDependencyFactory.FromJson(@"
-{
-    ""ProviderType"": ""Xxx"",
-    ""Id"": ""tfm1\\xxx\\topdependency1"",
-    ""Name"":""TopDependency1"",
-    ""Caption"":""TopDependency1"",
-    ""SchemaItemType"":""Xxx"",
-    ""Resolved"":""true""
-}", icon: KnownMonikers.Uninstall, expandedIcon: KnownMonikers.Uninstall);
+                {
+                    ""ProviderType"": ""Xxx"",
+                    ""Id"": ""tfm1\\xxx\\topdependency1"",
+                    ""Name"":""TopDependency1"",
+                    ""Caption"":""TopDependency1"",
+                    ""SchemaItemType"":""Xxx"",
+                    ""Resolved"":""true""
+                }",
+                icon: KnownMonikers.Uninstall,
+                expandedIcon: KnownMonikers.Uninstall);
 
             var dependencyChild1 = IDependencyFactory.FromJson(@"
-{
-    ""ProviderType"": ""Xxx"",
-    ""Id"": ""tfm1\\xxx\\childdependency1"",
-    ""Name"":""ChildDependency1"",
-    ""Caption"":""ChildDependency1"",
-    ""SchemaItemType"":""Xxx"",
-    ""Resolved"":""true""
-}", icon: KnownMonikers.Uninstall, expandedIcon: KnownMonikers.Uninstall);
+                {
+                    ""ProviderType"": ""Xxx"",
+                    ""Id"": ""tfm1\\xxx\\childdependency1"",
+                    ""Name"":""ChildDependency1"",
+                    ""Caption"":""ChildDependency1"",
+                    ""SchemaItemType"":""Xxx"",
+                    ""Resolved"":""true""
+                }",
+                icon: KnownMonikers.Uninstall,
+                expandedIcon: KnownMonikers.Uninstall);
 
             var dependencyModelNew1 = IDependencyModelFactory.FromJson(@"
-{
-    ""ProviderType"": ""Xxx"",
-    ""Id"": ""newdependency1"",
-    ""Name"":""NewDependency1"",
-    ""Caption"":""NewDependency1"",
-    ""SchemaItemType"":""Xxx"",
-    ""Resolved"":""true""
-}", icon: KnownMonikers.Uninstall, expandedIcon: KnownMonikers.Uninstall);
+                {
+                    ""ProviderType"": ""Xxx"",
+                    ""Id"": ""newdependency1"",
+                    ""Name"":""NewDependency1"",
+                    ""Caption"":""NewDependency1"",
+                    ""SchemaItemType"":""Xxx"",
+                    ""Resolved"":""true""
+                }",
+                icon: KnownMonikers.Uninstall,
+                expandedIcon: KnownMonikers.Uninstall);
 
             var catalogs = IProjectCatalogSnapshotFactory.Create();
             var previousSnapshot = ITargetedDependenciesSnapshotFactory.Implement(
@@ -393,85 +418,101 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var targetFramework = ITargetFrameworkFactory.Implement("tfm1");
 
             var dependencyTop1 = IDependencyFactory.FromJson(@"
-{
-    ""ProviderType"": ""Xxx"",
-    ""Id"": ""topdependency1"",
-    ""Name"":""TopDependency1"",
-    ""Caption"":""TopDependency1"",
-    ""SchemaItemType"":""Xxx"",
-    ""Resolved"":""true""
-}", icon: KnownMonikers.Uninstall, expandedIcon: KnownMonikers.Uninstall);
+                {
+                    ""ProviderType"": ""Xxx"",
+                    ""Id"": ""topdependency1"",
+                    ""Name"":""TopDependency1"",
+                    ""Caption"":""TopDependency1"",
+                    ""SchemaItemType"":""Xxx"",
+                    ""Resolved"":""true""
+                }",
+                icon: KnownMonikers.Uninstall,
+                expandedIcon: KnownMonikers.Uninstall);
 
             var dependencyChild1 = IDependencyFactory.FromJson(@"
-{
-    ""ProviderType"": ""Xxx"",
-    ""Id"": ""childdependency1"",
-    ""Name"":""ChildDependency1"",
-    ""Caption"":""ChildDependency1"",
-    ""SchemaItemType"":""Xxx"",
-    ""Resolved"":""true""
-}", icon: KnownMonikers.Uninstall, expandedIcon: KnownMonikers.Uninstall);
+                {
+                    ""ProviderType"": ""Xxx"",
+                    ""Id"": ""childdependency1"",
+                    ""Name"":""ChildDependency1"",
+                    ""Caption"":""ChildDependency1"",
+                    ""SchemaItemType"":""Xxx"",
+                    ""Resolved"":""true""
+                }",
+                icon: KnownMonikers.Uninstall,
+                expandedIcon: KnownMonikers.Uninstall);
 
             var dependencyModelAdded1 = IDependencyModelFactory.FromJson(@"
-{
-    ""ProviderType"": ""Xxx"",
-    ""Id"": ""addeddependency1"",
-    ""Name"":""AddedDependency1"",
-    ""Caption"":""AddedDependency1"",
-    ""SchemaItemType"":""Xxx"",
-    ""Resolved"":""true""
-}", icon: KnownMonikers.Uninstall, expandedIcon: KnownMonikers.Uninstall);
+                {
+                    ""ProviderType"": ""Xxx"",
+                    ""Id"": ""addeddependency1"",
+                    ""Name"":""AddedDependency1"",
+                    ""Caption"":""AddedDependency1"",
+                    ""SchemaItemType"":""Xxx"",
+                    ""Resolved"":""true""
+                }",
+                icon: KnownMonikers.Uninstall,
+                expandedIcon: KnownMonikers.Uninstall);
 
             var dependencyModelAdded2 = IDependencyModelFactory.FromJson(@"
-{
-    ""ProviderType"": ""Xxx"",
-    ""Id"": ""addeddependency2"",
-    ""Name"":""AddedDependency2"",
-    ""Caption"":""AddedDependency2"",
-    ""SchemaItemType"":""Xxx"",
-    ""Resolved"":""true""
-}", icon: KnownMonikers.Uninstall, expandedIcon: KnownMonikers.Uninstall);
+                {
+                    ""ProviderType"": ""Xxx"",
+                    ""Id"": ""addeddependency2"",
+                    ""Name"":""AddedDependency2"",
+                    ""Caption"":""AddedDependency2"",
+                    ""SchemaItemType"":""Xxx"",
+                    ""Resolved"":""true""
+                }",
+                icon: KnownMonikers.Uninstall,
+                expandedIcon: KnownMonikers.Uninstall);
 
             var dependencyModelAdded3 = IDependencyModelFactory.FromJson(@"
-{
-    ""ProviderType"": ""Xxx"",
-    ""Id"": ""addeddependency3"",
-    ""Name"":""AddedDependency3"",
-    ""Caption"":""AddedDependency3"",
-    ""SchemaItemType"":""Xxx"",
-    ""Resolved"":""true"",
-    ""TopLevel"":""false""
-}", icon: KnownMonikers.Uninstall, expandedIcon: KnownMonikers.Uninstall);
+                {
+                    ""ProviderType"": ""Xxx"",
+                    ""Id"": ""addeddependency3"",
+                    ""Name"":""AddedDependency3"",
+                    ""Caption"":""AddedDependency3"",
+                    ""SchemaItemType"":""Xxx"",
+                    ""Resolved"":""true"",
+                    ""TopLevel"":""false""
+                }",
+                icon: KnownMonikers.Uninstall,
+                expandedIcon: KnownMonikers.Uninstall);
 
             var dependencyAdded2Changed = IDependencyFactory.FromJson(@"
-{
-    ""ProviderType"": ""Xxx"",
-    ""Id"": ""tfm1\\xxx\\addeddependency2"",
-    ""Name"":""AddedDependency2Changed"",
-    ""Caption"":""AddedDependency2Changed"",
-    ""SchemaItemType"":""Xxx"",
-    ""Resolved"":""true""
-}", icon: KnownMonikers.Uninstall, expandedIcon: KnownMonikers.Uninstall);
+                {
+                    ""ProviderType"": ""Xxx"",
+                    ""Id"": ""tfm1\\xxx\\addeddependency2"",
+                    ""Name"":""AddedDependency2Changed"",
+                    ""Caption"":""AddedDependency2Changed"",
+                    ""SchemaItemType"":""Xxx"",
+                    ""Resolved"":""true""
+                }",
+                icon: KnownMonikers.Uninstall,
+                expandedIcon: KnownMonikers.Uninstall);
 
             var dependencyRemoved1 = IDependencyFactory.FromJson(@"
-{
-    ""ProviderType"": ""Xxx"",
-    ""Id"": ""tfm1\\xxx\\Removeddependency1"",
-    ""Name"":""RemovedDependency1"",
-    ""Caption"":""RemovedDependency1"",
-    ""SchemaItemType"":""Xxx"",
-    ""Resolved"":""true""
-}", icon: KnownMonikers.Uninstall, expandedIcon: KnownMonikers.Uninstall);
+                {
+                    ""ProviderType"": ""Xxx"",
+                    ""Id"": ""tfm1\\xxx\\Removeddependency1"",
+                    ""Name"":""RemovedDependency1"",
+                    ""Caption"":""RemovedDependency1"",
+                    ""SchemaItemType"":""Xxx"",
+                    ""Resolved"":""true""
+                }",
+                icon: KnownMonikers.Uninstall,
+                expandedIcon: KnownMonikers.Uninstall);
 
             var dependencyInsteadRemoved1 = IDependencyFactory.FromJson(@"
-{
-    ""ProviderType"": ""Xxx"",
-    ""Id"": ""tfm1\\xxx\\InsteadRemoveddependency1"",
-    ""Name"":""InsteadRemovedDependency1"",
-    ""Caption"":""InsteadRemovedDependency1"",
-    ""SchemaItemType"":""Xxx"",
-    ""Resolved"":""true""
-}", icon: KnownMonikers.Uninstall, expandedIcon: KnownMonikers.Uninstall);
+                {
+                    ""ProviderType"": ""Xxx"",
+                    ""Id"": ""tfm1\\xxx\\InsteadRemoveddependency1"",
+                    ""Name"":""InsteadRemovedDependency1"",
+                    ""Caption"":""InsteadRemovedDependency1"",
+                    ""SchemaItemType"":""Xxx"",
+                    ""Resolved"":""true""
+                }",
+                icon: KnownMonikers.Uninstall,
+                expandedIcon: KnownMonikers.Uninstall);
 
             var catalogs = IProjectCatalogSnapshotFactory.Create();
             var previousSnapshot = ITargetedDependenciesSnapshotFactory.Implement(
@@ -527,34 +568,40 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var targetFramework = ITargetFrameworkFactory.Implement("tfm1");
 
             var dependencyTopPrevious = IDependencyFactory.FromJson(@"
-            {
-                ""ProviderType"": ""Xxx"",
-                ""Id"": ""tfm1\\xxx\\topdependency1"",
-                ""Name"": ""TopDependency1"",
-                ""Caption"": ""TopDependency1"",
-                ""SchemaItemType"": ""Xxx"",
-                ""Resolved"": ""true""
-            }", icon: KnownMonikers.Uninstall, expandedIcon: KnownMonikers.Uninstall);
+                {
+                    ""ProviderType"": ""Xxx"",
+                    ""Id"": ""tfm1\\xxx\\topdependency1"",
+                    ""Name"": ""TopDependency1"",
+                    ""Caption"": ""TopDependency1"",
+                    ""SchemaItemType"": ""Xxx"",
+                    ""Resolved"": ""true""
+                }",
+                icon: KnownMonikers.Uninstall,
+                expandedIcon: KnownMonikers.Uninstall);
 
             var dependencyModelTopAdded = IDependencyModelFactory.FromJson(@"
-            {
-                ""ProviderType"": ""Xxx"",
-                ""Id"": ""topdependency1"",
-                ""Name"": ""TopDependency1"",
-                ""Caption"": ""TopDependency1"",
-                ""SchemaItemType"": ""Xxx"",
-                ""Resolved"": ""true""
-            }", icon: KnownMonikers.Uninstall, expandedIcon: KnownMonikers.Uninstall);
+                {
+                    ""ProviderType"": ""Xxx"",
+                    ""Id"": ""topdependency1"",
+                    ""Name"": ""TopDependency1"",
+                    ""Caption"": ""TopDependency1"",
+                    ""SchemaItemType"": ""Xxx"",
+                    ""Resolved"": ""true""
+                }",
+                icon: KnownMonikers.Uninstall,
+                expandedIcon: KnownMonikers.Uninstall);
 
             var dependencyTopUpdated = IDependencyFactory.FromJson(@"
-            {
-                ""ProviderType"": ""Xxx"",
-                ""Id"": ""tfm1\\xxx\\topdependency1"",
-                ""Name"": ""TopDependency1"",
-                ""Caption"": ""TopDependency1"",
-                ""SchemaItemType"": ""Xxx"",
-                ""Resolved"": ""true""
-            }", icon: KnownMonikers.Uninstall, expandedIcon: KnownMonikers.Uninstall);
+                {
+                    ""ProviderType"": ""Xxx"",
+                    ""Id"": ""tfm1\\xxx\\topdependency1"",
+                    ""Name"": ""TopDependency1"",
+                    ""Caption"": ""TopDependency1"",
+                    ""SchemaItemType"": ""Xxx"",
+                    ""Resolved"": ""true""
+                }",
+                icon: KnownMonikers.Uninstall,
+                expandedIcon: KnownMonikers.Uninstall);
 
             var catalogs = IProjectCatalogSnapshotFactory.Create();
             var previousSnapshot = ITargetedDependenciesSnapshotFactory.Implement(
@@ -592,26 +639,30 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         public void TCheckForUnresolvedDependencies_CircularDependency_DoesNotRecurseInfinitely()
         {
             var dependencyTop1 = IDependencyFactory.FromJson(@"
-            {
-                ""ProviderType"": ""Xxx"",
-                ""Id"": ""tfm1\\xxx\\topdependency1"",
-                ""Name"":""TopDependency1"",
-                ""Caption"":""TopDependency1"",
-                ""SchemaItemType"":""Xxx"",
-                ""Resolved"":""true"",
-                ""DependencyIDs"": [ ""tfm1\\xxx\\topdependency2"" ]
-            }", icon: KnownMonikers.Uninstall, expandedIcon: KnownMonikers.Uninstall);
+                {
+                    ""ProviderType"": ""Xxx"",
+                    ""Id"": ""tfm1\\xxx\\topdependency1"",
+                    ""Name"":""TopDependency1"",
+                    ""Caption"":""TopDependency1"",
+                    ""SchemaItemType"":""Xxx"",
+                    ""Resolved"":""true"",
+                    ""DependencyIDs"": [ ""tfm1\\xxx\\topdependency2"" ]
+                }",
+                icon: KnownMonikers.Uninstall,
+                expandedIcon: KnownMonikers.Uninstall);
 
             var dependencyTop2 = IDependencyFactory.FromJson(@"
-            {
-                ""ProviderType"": ""Xxx"",
-                ""Id"": ""tfm1\\xxx\\topdependency2"",
-                ""Name"":""TopDependency2"",
-                ""Caption"":""TopDependency2"",
-                ""SchemaItemType"":""Xxx"",
-                ""Resolved"":""true"",
-                ""DependencyIDs"": [ ""tfm1\\xxx\\topdependency1"" ]
-            }", icon: KnownMonikers.Uninstall, expandedIcon: KnownMonikers.Uninstall);
+                {
+                    ""ProviderType"": ""Xxx"",
+                    ""Id"": ""tfm1\\xxx\\topdependency2"",
+                    ""Name"":""TopDependency2"",
+                    ""Caption"":""TopDependency2"",
+                    ""SchemaItemType"":""Xxx"",
+                    ""Resolved"":""true"",
+                    ""DependencyIDs"": [ ""tfm1\\xxx\\topdependency1"" ]
+                }",
+                icon: KnownMonikers.Uninstall,
+                expandedIcon: KnownMonikers.Uninstall);
 
             var previousSnapshot = new TargetedDependenciesSnapshot(
                 "ProjectPath",
