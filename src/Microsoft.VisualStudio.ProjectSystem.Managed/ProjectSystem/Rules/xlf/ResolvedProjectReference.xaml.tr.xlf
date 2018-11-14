@@ -62,31 +62,6 @@
         <target state="translated">Bu bütünleştirilmiş kodda tanımlanan türlerin hedef bütünleştirilmiş koda katıştırılıp katıştırılmayacağını belirtir.</target>
         <note />
       </trans-unit>
-      <trans-unit id="EnumProperty|FileType|DisplayName">
-        <source>File Type</source>
-        <target state="translated">Dosya Türü</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumProperty|FileType|Description">
-        <source>The file type of the reference.</source>
-        <target state="translated">Başvurunun dosya türü.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|FileType.Assembly|DisplayName">
-        <source>.NET assembly</source>
-        <target state="translated">.NET derlemesi</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|FileType.ActiveX|DisplayName">
-        <source>COM type library</source>
-        <target state="translated">COM türü kitaplık</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|FileType.Native Assembly|DisplayName">
-        <source>Native Assembly</source>
-        <target state="translated">Yerel Bütünleştirilmiş Kod</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|Identity|DisplayName">
         <source>Identity</source>
         <target state="translated">Kimlik</target>
@@ -107,36 +82,6 @@
         <target state="translated">Başvurulan dosyanın konumu.</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|RuntimeVersion|DisplayName">
-        <source>Runtime Version</source>
-        <target state="translated">Çalışma Zamanı Sürümü</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|RuntimeVersion|Description">
-        <source>Version of the .NET runtime this assembly was compiled against.</source>
-        <target state="translated">Bu bütünleştirilmiş kodun üzerinde derlendiği .NET çalışma zamanı modülünün sürümü.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|SpecificVersion|DisplayName">
-        <source>Specific Version</source>
-        <target state="translated">Belirli Bir Sürüm</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|SpecificVersion|Description">
-        <source>Indicates whether this assembly can be resolved without regard to multi-targeting rules for assembly resolution.</source>
-        <target state="translated">Bu bütünleştirilmiş kodun, bütünleştirilmiş kod çözümlemesine yönelik çoklu sürüm desteği kurallarına bağlı kalmadan çözümlenip çözümlenemeyeceğini belirtir.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|StrongName|DisplayName">
-        <source>Strong Name</source>
-        <target state="translated">Tanımlayıcı Ad</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|StrongName|Description">
-        <source>True indicates that the reference has been signed with a key-pair.</source>
-        <target state="translated">True, başvurunun bir anahtar çiftiyle imzalanmış olduğunu belirtir.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|Version|DisplayName">
         <source>Version</source>
         <target state="translated">Sürüm</target>
@@ -145,31 +90,6 @@
       <trans-unit id="StringProperty|Version|Description">
         <source>Version of reference.</source>
         <target state="translated">Başvurunun sürümü.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|RequiredTargetFramework|DisplayName">
-        <source>Required Target Framework</source>
-        <target state="translated">Gerekli Hedef Çerçeve</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|IsWinMDFile|Description">
-        <source>Indicates whether the project system ascertained that this is a WinMD (as opposed to an assembly)</source>
-        <target state="translated">Proje sisteminin bunun bir WinMD olduğunu (bir derlemeye karşılık) doğrulayıp doğrulamadığını gösterir</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|Project|Description">
-        <source>the Guid the solution tracks an individual project reference target with</source>
-        <target state="translated">Çözümün tek bir proje başvuru hedefini birlikte izlediği Guid</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|WinMDFile|Description">
-        <source>Indicates whether the build system ascertained that this is a WinMD (as opposed to an assembly)</source>
-        <target state="translated">Oluşturma sisteminin (bir derlemeden farklı olarak), bunun bir WinMD olduğunu doğrulayıp doğrulamadığını gösterir</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|OriginalItemSpec|Description">
-        <source>The evaluated item name of the original reference item whose resolution resulted in this resolved reference item.</source>
-        <target state="translated">Çözümlemesi, bu çözümlenen başvuru öğesiyle sonuçlanmış olan orijinal başvuru öğesinin değerlendirilen öğe adı.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|CopyLocalSatelliteAssemblies|DisplayName">

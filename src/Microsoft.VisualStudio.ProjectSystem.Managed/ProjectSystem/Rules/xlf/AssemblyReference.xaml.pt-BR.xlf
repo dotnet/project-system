@@ -52,21 +52,6 @@
         <target state="translated">Indica se este assembly pode ser resolvido sem considerar as regras de multiplataforma para a resolução do assembly.</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|RequiredTargetFramework|DisplayName">
-        <source>Required Target Framework</source>
-        <target state="translated">Estrutura de Destino Necessária</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|ImageRuntime|DisplayName">
-        <source>Runtime Version</source>
-        <target state="translated">Versão de Tempo de Execução</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|ImageRuntime|Description">
-        <source>The CLR runtime version targeted by this assembly.</source>
-        <target state="translated">A versão de tempo de execução do CLR de destino deste assembly.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|Identity|DisplayName">
         <source>Identity</source>
         <target state="translated">Identidade</target>

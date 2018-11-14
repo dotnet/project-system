@@ -52,21 +52,6 @@
         <target state="translated">Wskazuje, czy ten zestaw może zostać rozpoznany bez uwzględnienia reguł wielowersyjności kodu dla rozpoznawania zestawu.</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|RequiredTargetFramework|DisplayName">
-        <source>Required Target Framework</source>
-        <target state="translated">Wymagana platforma docelowa</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|ImageRuntime|DisplayName">
-        <source>Runtime Version</source>
-        <target state="translated">Wersja wykonawcza</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|ImageRuntime|Description">
-        <source>The CLR runtime version targeted by this assembly.</source>
-        <target state="translated">Wersja środowiska uruchomieniowego CLR będąca celem tego zestawu.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|Identity|DisplayName">
         <source>Identity</source>
         <target state="translated">Tożsamość</target>

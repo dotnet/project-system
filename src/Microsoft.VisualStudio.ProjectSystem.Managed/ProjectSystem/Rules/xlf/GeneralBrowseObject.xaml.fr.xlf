@@ -22,61 +22,6 @@
         <target state="translated">Général</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|ApplicationIcon|DisplayName">
-        <source>Application Icon</source>
-        <target state="translated">Icône d'application</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|TargetFrameworkMoniker|DisplayName">
-        <source>Target Framework Moniker</source>
-        <target state="translated">Moniker du Framework cible</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|AssemblyName|DisplayName">
-        <source>Assembly Name</source>
-        <target state="translated">Nom de l'assembly</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|RootNamespace|DisplayName">
-        <source>Root namespace</source>
-        <target state="translated">Espace de noms racine</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|DefaultNamespace|DisplayName">
-        <source>Default namespace</source>
-        <target state="translated">Espace de noms par défaut</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|TargetFrameworks|DisplayName">
-        <source>Target Frameworks</source>
-        <target state="translated">Frameworks cibles</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|ApplicationManifest|DisplayName">
-        <source>Application Manifest</source>
-        <target state="translated">Manifeste d'application</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|Win32ResourceFile|DisplayName">
-        <source>Win32 Resource File</source>
-        <target state="translated">Fichier de ressources Win32</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|PreBuildEvent|DisplayName">
-        <source>Pre Build Event</source>
-        <target state="translated">Événement pré-build</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|PostBuildEvent|DisplayName">
-        <source>Post Build Event</source>
-        <target state="translated">Événement post-build</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumProperty|RunPostBuildEvent|DisplayName">
-        <source>Run Post Build Event</source>
-        <target state="translated">Exécuter l'événement post-build</target>
-        <note />
-      </trans-unit>
       <trans-unit id="EnumValue|RunPostBuildEvent.Always|DisplayName">
         <source>Always</source>
         <target state="translated">Toujours</target>
@@ -92,11 +37,6 @@
         <target state="translated">Lorsque la build met à jour la sortie du projet</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|ReferencePath|DisplayName">
-        <source>Reference Path</source>
-        <target state="translated">Chemin de référence</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|FileName|DisplayName">
         <source>File Name</source>
         <target state="translated">Nom de fichier</target>
@@ -107,139 +47,9 @@
         <target state="translated">Dossier du projet</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|Description|DisplayName">
-        <source>Assembly Description</source>
-        <target state="translated">Description de l'assembly</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|Product|DisplayName">
-        <source>Product</source>
-        <target state="translated">Produit</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|Copyright|DisplayName">
-        <source>Copyright</source>
-        <target state="translated">Copyright</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|AssemblyVersion|DisplayName">
-        <source>Assembly Version</source>
-        <target state="translated">Version de l'assembly</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|SignAssembly|DisplayName">
-        <source>Sign the assembly</source>
-        <target state="translated">Signer l'assembly</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|DelaySign|DisplayName">
-        <source>Delay sign only</source>
-        <target state="translated">Différer la signature uniquement</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|AssemblyOriginatorKeyFile|DisplayName">
-        <source>Strong name key file</source>
-        <target state="translated">Fichier de clé de nom fort</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|GeneratePackageOnBuild|DisplayName">
-        <source>Generate Package On Build</source>
-        <target state="translated">Générer le package en même temps que la build</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|PackageId|DisplayName">
         <source>Package Id</source>
         <target state="translated">ID de package</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|Version|DisplayName">
-        <source>Package Version</source>
-        <target state="translated">Version du package</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|Authors|DisplayName">
-        <source>Authors</source>
-        <target state="translated">Auteurs</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|PackageRequireLicenseAcceptance|DisplayName">
-        <source>Package Require License Acceptance</source>
-        <target state="translated">Le package nécessite l'acceptation de la licence</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|PackageLicenseUrl|DisplayName">
-        <source>Package License Url</source>
-        <target state="translated">URL de licence du package</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|PackageProjectUrl|DisplayName">
-        <source>Package Project Url</source>
-        <target state="translated">URL de projet du package</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|PackageIconUrl|DisplayName">
-        <source>Package Icon Url</source>
-        <target state="translated">URL d'icône du package</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|PackageTags|DisplayName">
-        <source>Package Tags</source>
-        <target state="translated">Étiquettes du package</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|PackageReleaseNotes|DisplayName">
-        <source>Release Notes</source>
-        <target state="translated">Notes de publication</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|RepositoryUrl|DisplayName">
-        <source>Repository Url</source>
-        <target state="translated">URL de dépôt</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|RepositoryType|DisplayName">
-        <source>Repository Type</source>
-        <target state="translated">Type de dépôt</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|Company|DisplayName">
-        <source>Assembly Company</source>
-        <target state="translated">Société de l'assembly</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|FileVersion|DisplayName">
-        <source>Assembly File Version</source>
-        <target state="translated">Version du fichier d'assembly</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|NeutralLanguage|DisplayName">
-        <source>Neutral Resources Language</source>
-        <target state="translated">Langage de ressources neutres</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|TargetFrameworkMonikers|DisplayName">
-        <source>Target Framework Monikers</source>
-        <target state="translated">Monikers du framework cible</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="DynamicEnumProperty|SupportedTargetFrameworks|DisplayName">
-        <source>Supported TargetFrameworks</source>
-        <target state="translated">TargetFrameworks pris en charge</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="IntProperty|OutputType|DisplayName">
-        <source>Output Type</source>
-        <target state="translated">Type de sortie</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="IntProperty|OutputTypeEx|DisplayName">
-        <source>Output Type Ex</source>
-        <target state="translated">Exemple de type de sortie</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="DynamicEnumProperty|StartupObject|DisplayName">
-        <source>Type that contains the entry point</source>
-        <target state="translated">Type contenant le point d'entrée</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|FileName|Description">
@@ -260,11 +70,6 @@
       <trans-unit id="StringProperty|FullProjectFileName|Description">
         <source>Full name of the project file.</source>
         <target state="translated">Nom complet du fichier projet.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|AutoGenerateBindingRedirects|DisplayName">
-        <source>Auto-Generate Binding Redirects</source>
-        <target state="translated">Générer automatiquement les redirections de liaison</target>
         <note />
       </trans-unit>
     </body>

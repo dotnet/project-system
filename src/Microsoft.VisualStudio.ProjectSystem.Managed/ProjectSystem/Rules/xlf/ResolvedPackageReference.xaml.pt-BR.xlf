@@ -32,21 +32,6 @@
         <target state="translated">Versão da independência.</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|OriginalItemSpec|Description">
-        <source>The evaluated item name of the original reference item whose resolution resulted in this resolved reference item.</source>
-        <target state="translated">O nome do item avaliado do item de referência original cuja resolução resultou nesse item de referência resolvido.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringListProperty|Dependencies|DisplayName">
-        <source>Dependencies</source>
-        <target state="translated">Dependências</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringListProperty|Dependencies|Description">
-        <source>A semicolon-delimited list of direct dependencies of current dependency.</source>
-        <target state="translated">Uma lista separada por ponto e vírgula de dependências diretas da dependência atual.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|NoWarn|DisplayName">
         <source>NoWarn</source>
         <target state="translated">NoWarn</target>

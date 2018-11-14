@@ -52,21 +52,6 @@
         <target state="translated">指出這個組件是否可以解析 (不考慮組件解析的多目標規則)。</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|RequiredTargetFramework|DisplayName">
-        <source>Required Target Framework</source>
-        <target state="translated">需要的目標 Framework</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|ImageRuntime|DisplayName">
-        <source>Runtime Version</source>
-        <target state="translated">執行階段版本</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|ImageRuntime|Description">
-        <source>The CLR runtime version targeted by this assembly.</source>
-        <target state="translated">此組件的目標 CLR 執行階段版本。</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|Identity|DisplayName">
         <source>Identity</source>
         <target state="translated">識別</target>

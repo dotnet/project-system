@@ -62,31 +62,6 @@
         <target state="translated">このアセンブリ内で定義される型をターゲット アセンブリに埋め込むかどうかを示します。</target>
         <note />
       </trans-unit>
-      <trans-unit id="EnumProperty|FileType|DisplayName">
-        <source>File Type</source>
-        <target state="translated">ファイルの種類</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumProperty|FileType|Description">
-        <source>The file type of the reference.</source>
-        <target state="translated">参照のファイルの種類です。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|FileType.Assembly|DisplayName">
-        <source>.NET assembly</source>
-        <target state="translated">.NET アセンブリ</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|FileType.ActiveX|DisplayName">
-        <source>COM type library</source>
-        <target state="translated">COM タイプ ライブラリ</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|FileType.Native Assembly|DisplayName">
-        <source>Native Assembly</source>
-        <target state="translated">ネイティブ アセンブリ</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|Identity|DisplayName">
         <source>Identity</source>
         <target state="translated">ID</target>
@@ -107,36 +82,6 @@
         <target state="translated">参照されているファイルの場所です。</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|RuntimeVersion|DisplayName">
-        <source>Runtime Version</source>
-        <target state="translated">ランタイム バージョン</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|RuntimeVersion|Description">
-        <source>Version of the .NET runtime this assembly was compiled against.</source>
-        <target state="translated">このアセンブリをコンパイルした .NET ランタイムのバージョンです。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|SpecificVersion|DisplayName">
-        <source>Specific Version</source>
-        <target state="translated">特定バージョン</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|SpecificVersion|Description">
-        <source>Indicates whether this assembly can be resolved without regard to multi-targeting rules for assembly resolution.</source>
-        <target state="translated">アセンブリ解像度のマルチターゲット ルールに関係なく、このアセンブリを解決できるかどうかを示します。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|StrongName|DisplayName">
-        <source>Strong Name</source>
-        <target state="translated">厳密な名前</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|StrongName|Description">
-        <source>True indicates that the reference has been signed with a key-pair.</source>
-        <target state="translated">True は、参照がキー ペアで署名されたことを示します。</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|Version|DisplayName">
         <source>Version</source>
         <target state="translated">バージョン</target>
@@ -145,31 +90,6 @@
       <trans-unit id="StringProperty|Version|Description">
         <source>Version of reference.</source>
         <target state="translated">参照のバージョンです。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|RequiredTargetFramework|DisplayName">
-        <source>Required Target Framework</source>
-        <target state="translated">必要なターゲット フレームワーク</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|IsWinMDFile|Description">
-        <source>Indicates whether the project system ascertained that this is a WinMD (as opposed to an assembly)</source>
-        <target state="translated">プロジェクト システムが (アセンブリではなく) WinMD であることを確認したかどうかを示します</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|Project|Description">
-        <source>the Guid the solution tracks an individual project reference target with</source>
-        <target state="translated">個々のプロジェクトの参照先を追跡するためにソリューションで使用する GUID</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|WinMDFile|Description">
-        <source>Indicates whether the build system ascertained that this is a WinMD (as opposed to an assembly)</source>
-        <target state="translated">ビルド システムが (アセンブリではなく) WinMD であることを確認したかどうかを示します</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|OriginalItemSpec|Description">
-        <source>The evaluated item name of the original reference item whose resolution resulted in this resolved reference item.</source>
-        <target state="translated">結果がこの解決済みの参照項目であった元の参照項目の評価済み項目名です。</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|CopyLocalSatelliteAssemblies|DisplayName">

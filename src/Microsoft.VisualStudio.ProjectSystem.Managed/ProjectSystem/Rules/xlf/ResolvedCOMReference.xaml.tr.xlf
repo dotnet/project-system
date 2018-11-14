@@ -12,16 +12,6 @@
         <target state="translated">COM Başvurusu Özellikleri</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|Guid|DisplayName">
-        <source>CLSID</source>
-        <target state="translated">CLSID</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|Guid|Description">
-        <source>The GUID of the COM server.</source>
-        <target state="translated">COM sunucusunun GUID'i.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringListProperty|Aliases|DisplayName">
         <source>Aliases</source>
         <target state="translated">Diğer Adlar</target>
@@ -42,26 +32,6 @@
         <target state="translated">Başvurunun çıkış dizinine kopyalanıp kopyalanmayacağını gösterir.</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|Culture|DisplayName">
-        <source>Culture</source>
-        <target state="translated">Kültür</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|Culture|Description">
-        <source>The value of the culture field from the assembly metadata.</source>
-        <target state="translated">Derleme meta verilerindeki kültür alanının değeri.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|Description|DisplayName">
-        <source>Description</source>
-        <target state="translated">Açıklama</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|Description|Description">
-        <source>The value of the Title field from the assembly metadata.</source>
-        <target state="translated">Bütünleştirilmiş kod meta verisinin Title (Başlık) alanının değeri.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="BoolProperty|EmbedInteropTypes|DisplayName">
         <source>Embed Interop Types</source>
         <target state="translated">Birlikte Çalışma Türlerini Ekle</target>
@@ -70,16 +40,6 @@
       <trans-unit id="BoolProperty|EmbedInteropTypes|Description">
         <source>Indicates whether types defined in this assembly will be embedded into the target assembly.</source>
         <target state="translated">Bu bütünleştirilmiş kodda tanımlanan türlerin hedef bütünleştirilmiş koda katıştırılıp katıştırılmayacağını belirtir.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumProperty|FileType|DisplayName">
-        <source>File Type</source>
-        <target state="translated">Dosya Türü</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumProperty|FileType|Description">
-        <source>The file type of the reference.</source>
-        <target state="translated">Başvurunun dosya türü.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|FileType.Assembly|DisplayName">
@@ -117,36 +77,6 @@
         <target state="translated">Başvurulan dosyanın konumu.</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|RuntimeVersion|DisplayName">
-        <source>Runtime Version</source>
-        <target state="translated">Çalışma Zamanı Sürümü</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|RuntimeVersion|Description">
-        <source>Version of the .NET runtime this assembly was compiled against.</source>
-        <target state="translated">Bu bütünleştirilmiş kodun üzerinde derlendiği .NET çalışma zamanı modülünün sürümü.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|SpecificVersion|DisplayName">
-        <source>Specific Version</source>
-        <target state="translated">Belirli Bir Sürüm</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|SpecificVersion|Description">
-        <source>Indicates whether this assembly can be resolved without regard to multi-targeting rules for assembly resolution.</source>
-        <target state="translated">Bu bütünleştirilmiş kodun, bütünleştirilmiş kod çözümlemesine yönelik çoklu sürüm desteği kurallarına bağlı kalmadan çözümlenip çözümlenemeyeceğini belirtir.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|StrongName|DisplayName">
-        <source>Strong Name</source>
-        <target state="translated">Tanımlayıcı Ad</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|StrongName|Description">
-        <source>True indicates that the reference has been signed with a key-pair.</source>
-        <target state="translated">True, başvurunun bir anahtar çiftiyle imzalanmış olduğunu belirtir.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|Version|DisplayName">
         <source>Version</source>
         <target state="translated">Sürüm</target>
@@ -155,26 +85,6 @@
       <trans-unit id="StringProperty|Version|Description">
         <source>Version of reference.</source>
         <target state="translated">Başvurunun sürümü.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|RequiredTargetFramework|DisplayName">
-        <source>Required Target Framework</source>
-        <target state="translated">Gerekli Hedef Çerçeve</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|IsWinMDFile|Description">
-        <source>Indicates whether the project system ascertained that this is a WinMD (as opposed to an assembly)</source>
-        <target state="translated">Proje sisteminin bunun bir WinMD olduğunu (bir derlemeye karşılık) doğrulayıp doğrulamadığını gösterir</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|WinMDFile|Description">
-        <source>Indicates whether the build system ascertained that this is a WinMD (as opposed to an assembly)</source>
-        <target state="translated">Oluşturma sisteminin (bir derlemeden farklı olarak), bunun bir WinMD olduğunu doğrulayıp doğrulamadığını gösterir</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|OriginalItemSpec|Description">
-        <source>The evaluated item name of the original reference item whose resolution resulted in this resolved reference item.</source>
-        <target state="translated">Çözümlemesi, bu çözümlenen başvuru öğesiyle sonuçlanmış olan orijinal başvuru öğesinin değerlendirilen öğe adı.</target>
         <note />
       </trans-unit>
     </body>

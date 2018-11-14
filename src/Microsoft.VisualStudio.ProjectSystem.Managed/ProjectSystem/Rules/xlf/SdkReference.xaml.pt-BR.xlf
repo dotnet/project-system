@@ -52,11 +52,6 @@
         <target state="translated">Assemblies de Referência Expandidos do Local da Cópia</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|DisplayName|DisplayName">
-        <source>Display Name</source>
-        <target state="translated">Nome de Exibição</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|Name|DisplayName">
         <source>Name</source>
         <target state="translated">Nome</target>

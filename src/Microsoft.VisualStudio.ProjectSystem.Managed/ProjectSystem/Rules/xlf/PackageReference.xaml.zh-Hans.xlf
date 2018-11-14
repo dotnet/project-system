@@ -62,11 +62,6 @@
         <target state="translated">此引用中的私有资产</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|OriginalItemSpec|Description">
-        <source>The evaluated item name of the original reference item whose resolution resulted in this resolved reference item.</source>
-        <target state="translated">经解析得到此解析的引用项的原始引用项的计算项名称。</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|NoWarn|DisplayName">
         <source>Suppress warnings</source>
         <target state="needs-review-translation">NoWarn</target>

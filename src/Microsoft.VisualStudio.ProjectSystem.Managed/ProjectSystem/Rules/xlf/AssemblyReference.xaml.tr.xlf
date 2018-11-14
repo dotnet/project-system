@@ -52,21 +52,6 @@
         <target state="translated">Bu bütünleştirilmiş kodun, bütünleştirilmiş kod çözümlemesine yönelik çoklu sürüm desteği kurallarına bağlı kalmadan çözümlenip çözümlenemeyeceğini belirtir.</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|RequiredTargetFramework|DisplayName">
-        <source>Required Target Framework</source>
-        <target state="translated">Gerekli Hedef Çerçeve</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|ImageRuntime|DisplayName">
-        <source>Runtime Version</source>
-        <target state="translated">Çalışma Zamanı Sürümü</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|ImageRuntime|Description">
-        <source>The CLR runtime version targeted by this assembly.</source>
-        <target state="translated">Bu derleme tarafından hedeflenen CLR çalışma zamanı sürümü.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|Identity|DisplayName">
         <source>Identity</source>
         <target state="translated">Kimlik</target>

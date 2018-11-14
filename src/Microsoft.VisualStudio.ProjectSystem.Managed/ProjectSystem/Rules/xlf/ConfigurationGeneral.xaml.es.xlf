@@ -107,26 +107,6 @@
         <target state="translated">True para compilar simplemente proyectos no actualizados sin pedir confirmación al usuario.</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|SharedProjectAppliesTo|Description">
-        <source>Capability match expression that at a minimum tests for the language of the Shared Project; used to filter Add Shared Project Reference choices.</source>
-        <target state="translated">Expresión de coincidencia de funcionalidad que como mínimo prueba el idioma del proyecto compartido; se usa para filtrar selecciones de Agregar referencia de proyecto compartido.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|AlwaysUseNumericalSuffixInItemNames|Description">
-        <source>Indicates if names of newly added items should always be suffixed with a number.</source>
-        <target state="translated">Indica si los nombres de los nuevos elementos agregados debe incluir un sufijo con un número.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|LanguageServiceName|Description">
-        <source>Represents the LanguageName that is passed to Roslyn</source>
-        <target state="translated">Representa el elemento LanguageName que se pasa a Roslyn</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|TemplateLanguage|Description">
-        <source>Represent the language that is persisted in items and project templates</source>
-        <target state="translated">Representa el lenguaje que se mantiene en los elementos y las plantillas de proyecto</target>
-        <note />
-      </trans-unit>
       <trans-unit id="EnumValue|OutputType.Exe|DisplayName">
         <source>Console Application</source>
         <target state="translated">Aplicación de consola</target>
@@ -137,11 +117,6 @@
         <target state="translated">Aplicación Windows</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|LanguageServiceId|Description">
-        <source>Represents the GUID of object that implements the language service for the project.</source>
-        <target state="translated">Representa el GUID del objeto que implementa el servicio de lenguaje para el proyecto.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|TargetFrameworkMonikers|DisplayName">
         <source>Target Framework Monikers</source>
         <target state="translated">Monikers de la plataforma de destino</target>
@@ -150,11 +125,6 @@
       <trans-unit id="BoolProperty|DisableFastUpToDateCheck|DisplayName">
         <source>Disable Fast Up To Date Check</source>
         <target state="translated">Deshabilitar la comprobación rápida de actualizaciones</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|NETCoreSdkVersion|Description">
-        <source>Represents the version of the dotnet sdk being used (if any).</source>
-        <target state="translated">Representa la versión del SDK de DotNet en uso (si lo hay).</target>
         <note />
       </trans-unit>
     </body>

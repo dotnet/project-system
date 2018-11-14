@@ -32,16 +32,6 @@
         <target state="translated">참조 대상의 위성 어셈블리를 이 프로젝트의 출력 디렉터리에 복사해야 하는지 여부를 나타냅니다.</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|Project|Description">
-        <source>the Guid the solution tracks an individual project reference target with</source>
-        <target state="translated">솔루션이 개별 프로젝트 참조 대상을 추적할 때 사용하는 GUID</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|ReferencedProjectIdentifier|Description">
-        <source>The old (VS2010 beta) way to store the Guid the solution tracks an individual project reference target with</source>
-        <target state="translated">솔루션이 개별 프로젝트 참조 대상을 추적할 때 사용하는 GUID를 저장하는 예전의(VS2010 베타) 방법</target>
-        <note />
-      </trans-unit>
       <trans-unit id="BoolProperty|CopyLocal|DisplayName">
         <source>Copy Local</source>
         <target state="translated">로컬 복사</target>

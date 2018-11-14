@@ -22,11 +22,6 @@
         <target state="translated">FrameworkIdentity</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|DisplayName|DisplayName">
-        <source>Display Name</source>
-        <target state="translated">顯示名稱</target>
-        <note />
-      </trans-unit>
       <trans-unit id="BoolProperty|CopyPayload|DisplayName">
         <source>Copy Payload</source>
         <target state="translated">複製承載</target>
