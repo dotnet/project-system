@@ -49,13 +49,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         public async Task WhenOneTargetSnapshotWithExistingDependencies_ShouldApplyChanges()
         {
             var tfm1 = ITargetFrameworkFactory.Implement(moniker: "tfm1");
-            var dependencyRootXxx = IDependencyFactory.FromJson(@"
+            var dependencyModelRootXxx = IDependencyModelFactory.FromJson(@"
 {
     ""ProviderType"": ""Xxx"",
     ""Id"": ""XxxDependencyRoot"",
     ""Name"":""XxxDependencyRoot"",
     ""Caption"":""XxxDependencyRoot"",
     ""Resolved"":""true""
+}");
+
+            var dependencyModelRootYyy = IDependencyModelFactory.FromJson(@"
+{
+    ""ProviderType"": ""Yyy"",
+    ""Id"": ""YyyDependencyRoot"",
+    ""Name"":""YyyDependencyRoot"",
+    ""Caption"":""YyyDependencyRoot""
 }");
 
             var dependencyXxx1 = IDependencyFactory.FromJson(@"
@@ -68,14 +76,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     ""SchemaItemType"":""Xxx"",
     ""Resolved"":""true""
 }", icon: KnownMonikers.Uninstall, expandedIcon: KnownMonikers.Uninstall, targetFramework: tfm1);
-
-            var dependencyRootYyy = IDependencyFactory.FromJson(@"
-{
-    ""ProviderType"": ""Yyy"",
-    ""Id"": ""YyyDependencyRoot"",
-    ""Name"":""YyyDependencyRoot"",
-    ""Caption"":""YyyDependencyRoot""
-}");
 
             var dependencyYyy1 = IDependencyFactory.FromJson(@"
 {
@@ -136,7 +136,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             var treeViewModelFactory = IMockDependenciesViewModelFactory.Implement(
                 getDependenciesRootIcon: KnownMonikers.AboutBox,
-                createRootViewModel: new[] { dependencyRootXxx, dependencyRootYyy });
+                createRootViewModel: new[] { dependencyModelRootXxx, dependencyModelRootYyy });
 
             var testData = new Dictionary<ITargetFramework, List<IDependency>>
             {
@@ -481,7 +481,7 @@ Caption=YyyDependencyRoot, FilePath=YyyDependencyRoot, IconHash=0, ExpandedIconH
         [Fact]
         public async Task WheEmptySnapshotAndVisibilityMarkerNotProvided_ShouldHideSubTreeRoot()
         {
-            var dependencyRootYyy = IDependencyFactory.FromJson(@"
+            var dependencyModelRootYyy = IDependencyModelFactory.FromJson(@"
 {
     ""ProviderType"": ""Yyy"",
     ""Id"": ""YyyDependencyRoot"",
@@ -520,7 +520,7 @@ Caption=YyyDependencyRoot, FilePath=YyyDependencyRoot, IconHash=0, ExpandedIconH
 
             var treeViewModelFactory = IMockDependenciesViewModelFactory.Implement(
                 getDependenciesRootIcon: KnownMonikers.AboutBox,
-                createRootViewModel: new[] { dependencyRootYyy });
+                createRootViewModel: new[] { dependencyModelRootYyy });
 
             var testData = new Dictionary<ITargetFramework, List<IDependency>>
             {
@@ -552,7 +552,7 @@ Caption=YyyDependencyRoot, FilePath=YyyDependencyRoot, IconHash=0, ExpandedIconH
             var tfm2 = ITargetFrameworkFactory.Implement(moniker: "tfm2");
             var tfmAny = ITargetFrameworkFactory.Implement(moniker: "any");
 
-            var dependencyRootXxx = IDependencyFactory.FromJson(@"
+            var dependencyModelRootXxx = IDependencyModelFactory.FromJson(@"
 {
     ""ProviderType"": ""Xxx"",
     ""Id"": ""XxxDependencyRoot"",
@@ -572,7 +572,7 @@ Caption=YyyDependencyRoot, FilePath=YyyDependencyRoot, IconHash=0, ExpandedIconH
     ""Resolved"":""true""
 }", icon: KnownMonikers.Uninstall, expandedIcon: KnownMonikers.Uninstall, targetFramework: tfm1);
 
-            var dependencyRootYyy = IDependencyFactory.FromJson(@"
+            var dependencyModelRootYyy = IDependencyModelFactory.FromJson(@"
 {
     ""ProviderType"": ""Yyy"",
     ""Id"": ""YyyDependencyRoot"",
@@ -602,7 +602,7 @@ Caption=YyyDependencyRoot, FilePath=YyyDependencyRoot, IconHash=0, ExpandedIconH
     ""Resolved"":""true""
 }", icon: KnownMonikers.Uninstall, expandedIcon: KnownMonikers.Uninstall, targetFramework: tfm1);
 
-            var dependencyRootZzz = IDependencyFactory.FromJson(@"
+            var dependencyModelRootZzz = IDependencyModelFactory.FromJson(@"
 {
     ""ProviderType"": ""Zzz"",
     ""Id"": ""ZzzDependencyRoot"",
@@ -659,13 +659,13 @@ Caption=YyyDependencyRoot, FilePath=YyyDependencyRoot, IconHash=0, ExpandedIconH
             dependenciesRoot.Add(oldRootChildToBeRemoved);
             dependenciesRoot.Add(dependencyRootYyyTree);
 
-            var target1 = IDependencyFactory.FromJson(@"
+            var targetModel1 = IDependencyModelFactory.FromJson(@"
 {
     ""Id"": ""tfm1"",
     ""Name"":""tfm1"",
     ""Caption"":""tfm1""
 }");
-            var target2 = IDependencyFactory.FromJson(@"
+            var targetModel2 = IDependencyModelFactory.FromJson(@"
 {
     ""Id"": ""tfm2"",
     ""Name"":""tfm2"",
@@ -674,8 +674,8 @@ Caption=YyyDependencyRoot, FilePath=YyyDependencyRoot, IconHash=0, ExpandedIconH
 
             var treeViewModelFactory = IMockDependenciesViewModelFactory.Implement(
                 getDependenciesRootIcon: KnownMonikers.AboutBox,
-                createRootViewModel: new[] { dependencyRootXxx, dependencyRootYyy, dependencyRootZzz },
-                createTargetViewModel: new[] { target1, target2 });
+                createRootViewModel: new[] { dependencyModelRootXxx, dependencyModelRootYyy, dependencyModelRootZzz },
+                createTargetViewModel: new[] { targetModel1, targetModel2 });
 
             var testData = new Dictionary<ITargetFramework, List<IDependency>>
             {
