@@ -52,11 +52,6 @@
         <target state="translated">확장된 로컬 참조 어셈블리 복사</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|DisplayName|DisplayName">
-        <source>Display Name</source>
-        <target state="translated">표시 이름</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|Name|DisplayName">
         <source>Name</source>
         <target state="translated">이름</target>

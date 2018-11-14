@@ -32,16 +32,6 @@
         <target state="translated">Указывает, должны ли вспомогательные сборки ссылочной целевой сборки копироваться в выходной каталог проекта.</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|Project|Description">
-        <source>the Guid the solution tracks an individual project reference target with</source>
-        <target state="translated">идентификатор GUID, с помощью которого решение отслеживает ссылочную целевую сборку отдельного проекта</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|ReferencedProjectIdentifier|Description">
-        <source>The old (VS2010 beta) way to store the Guid the solution tracks an individual project reference target with</source>
-        <target state="translated">Старый (из бета-версии VS2010) способ хранения идентификатора GUID, с помощью которого решение отслеживает ссылочную целевую сборку отдельного проекта</target>
-        <note />
-      </trans-unit>
       <trans-unit id="BoolProperty|CopyLocal|DisplayName">
         <source>Copy Local</source>
         <target state="translated">Копировать локально</target>

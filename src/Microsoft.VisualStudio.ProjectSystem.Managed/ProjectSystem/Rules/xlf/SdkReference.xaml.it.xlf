@@ -52,11 +52,6 @@
         <target state="translated">Copia assembly di riferimento espansi locali</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|DisplayName|DisplayName">
-        <source>Display Name</source>
-        <target state="translated">Nome visualizzato</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|Name|DisplayName">
         <source>Name</source>
         <target state="translated">Nome</target>

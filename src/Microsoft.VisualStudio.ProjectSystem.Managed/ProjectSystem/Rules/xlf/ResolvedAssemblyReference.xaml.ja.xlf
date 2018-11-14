@@ -32,26 +32,6 @@
         <target state="translated">参照が出力ディレクトリにコピーされるかどうかを示します。</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|Culture|DisplayName">
-        <source>Culture</source>
-        <target state="translated">カルチャ</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|Culture|Description">
-        <source>The value of the culture field from the assembly metadata.</source>
-        <target state="translated">アセンブリ メタデータの Culture フィールドの値です。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|Description|DisplayName">
-        <source>Description</source>
-        <target state="translated">説明</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|Description|Description">
-        <source>The value of the Title field from the assembly metadata.</source>
-        <target state="translated">アセンブリ メタデータの Title フィールドの値です。</target>
-        <note />
-      </trans-unit>
       <trans-unit id="BoolProperty|EmbedInteropTypes|DisplayName">
         <source>Embed Interop Types</source>
         <target state="translated">相互運用型の埋め込み</target>
@@ -60,16 +40,6 @@
       <trans-unit id="BoolProperty|EmbedInteropTypes|Description">
         <source>Indicates whether types defined in this assembly will be embedded into the target assembly.</source>
         <target state="translated">このアセンブリ内で定義される型をターゲット アセンブリに埋め込むかどうかを示します。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumProperty|FileType|DisplayName">
-        <source>File Type</source>
-        <target state="translated">ファイルの種類</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumProperty|FileType|Description">
-        <source>The file type of the reference.</source>
-        <target state="translated">参照のファイルの種類です。</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|FileType.Assembly|DisplayName">
@@ -107,16 +77,6 @@
         <target state="translated">参照されているファイルの場所です。</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|RuntimeVersion|DisplayName">
-        <source>Runtime Version</source>
-        <target state="translated">ランタイム バージョン</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|RuntimeVersion|Description">
-        <source>Version of the .NET runtime this assembly was compiled against.</source>
-        <target state="translated">このアセンブリをコンパイルした .NET ランタイムのバージョンです。</target>
-        <note />
-      </trans-unit>
       <trans-unit id="BoolProperty|SpecificVersion|DisplayName">
         <source>Specific Version</source>
         <target state="translated">特定バージョン</target>
@@ -127,16 +87,6 @@
         <target state="translated">アセンブリ解像度のマルチターゲット ルールに関係なく、このアセンブリを解決できるかどうかを示します。</target>
         <note />
       </trans-unit>
-      <trans-unit id="BoolProperty|StrongName|DisplayName">
-        <source>Strong Name</source>
-        <target state="translated">厳密な名前</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|StrongName|Description">
-        <source>True indicates that the reference has been signed with a key-pair.</source>
-        <target state="translated">True は、参照がキー ペアで署名されたことを示します。</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|Version|DisplayName">
         <source>Version</source>
         <target state="translated">バージョン</target>
@@ -145,46 +95,6 @@
       <trans-unit id="StringProperty|Version|Description">
         <source>Version of reference.</source>
         <target state="translated">参照のバージョンです。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|RequiredTargetFramework|DisplayName">
-        <source>Required Target Framework</source>
-        <target state="translated">必要なターゲット フレームワーク</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|IsWinMDFile|Description">
-        <source>Indicates whether the project system ascertained that this is a WinMD (as opposed to an assembly)</source>
-        <target state="translated">プロジェクト システムが (アセンブリではなく) WinMD であることを確認したかどうかを示します</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|WinMDFile|Description">
-        <source>Indicates whether the build system ascertained that this is a WinMD (as opposed to an assembly)</source>
-        <target state="translated">ビルド システムが (アセンブリではなく) WinMD であることを確認したかどうかを示します</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|OriginalItemSpec|Description">
-        <source>The evaluated item name of the original reference item whose resolution resulted in this resolved reference item.</source>
-        <target state="translated">結果がこの解決済みの参照項目であった元の参照項目の評価済み項目名です。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|ReferenceFromSDK|Description">
-        <source>The SDK that this reference came from when using the expand SDK target.</source>
-        <target state="translated">拡張 SDK の参照を使用するときにこの参照が属していた SDK です。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|FusionName|Description">
-        <source>The full fusion name of the resolved assembly.</source>
-        <target state="translated">解決済みアセンブリの完全な fusion 名です。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|ResolvedFrom|Description">
-        <source>{}What repository held the reference that was used to resolve this.  ("{GAC}" if it was in the GAC).</source>
-        <target state="translated">{}これを解決するために参照を保持していたリポジトリを示します (GAC の場合は "{GAC}")。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|FrameworkFile|Description">
-        <source>Is this file a framework file. Ie Found in the target framework directory or in the redist list.</source>
-        <target state="translated">ファイルが Framework ファイルかどうかを示します。つまり、ファイルが Framework のターゲット ディレクトリと再頒布リストのどちらにあったかを示します。</target>
         <note />
       </trans-unit>
     </body>

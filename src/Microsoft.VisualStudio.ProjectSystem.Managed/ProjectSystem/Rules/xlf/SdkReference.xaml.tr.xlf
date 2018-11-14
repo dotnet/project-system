@@ -52,11 +52,6 @@
         <target state="translated">Yerel Genişletilmiş Başvuru Derlemelerini Kopyala</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|DisplayName|DisplayName">
-        <source>Display Name</source>
-        <target state="translated">Görünen Ad</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|Name|DisplayName">
         <source>Name</source>
         <target state="translated">Ad</target>

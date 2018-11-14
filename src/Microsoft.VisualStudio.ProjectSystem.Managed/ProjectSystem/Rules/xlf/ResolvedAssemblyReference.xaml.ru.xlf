@@ -32,26 +32,6 @@
         <target state="translated">Указывает, будет ли ссылочная сборка скопирована в выходной каталог.</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|Culture|DisplayName">
-        <source>Culture</source>
-        <target state="translated">Культура</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|Culture|Description">
-        <source>The value of the culture field from the assembly metadata.</source>
-        <target state="translated">Значение поля культуры из метаданных сборки.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|Description|DisplayName">
-        <source>Description</source>
-        <target state="translated">Описание</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|Description|Description">
-        <source>The value of the Title field from the assembly metadata.</source>
-        <target state="translated">Значение поля заголовка из метаданных сборки.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="BoolProperty|EmbedInteropTypes|DisplayName">
         <source>Embed Interop Types</source>
         <target state="translated">Внедрить типы взаимодействия</target>
@@ -60,16 +40,6 @@
       <trans-unit id="BoolProperty|EmbedInteropTypes|Description">
         <source>Indicates whether types defined in this assembly will be embedded into the target assembly.</source>
         <target state="translated">Указывает, будут ли типы, определенные в этой сборке, внедрены в целевую сборку.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumProperty|FileType|DisplayName">
-        <source>File Type</source>
-        <target state="translated">Тип файла</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumProperty|FileType|Description">
-        <source>The file type of the reference.</source>
-        <target state="translated">Тип файла ссылки.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|FileType.Assembly|DisplayName">
@@ -107,16 +77,6 @@
         <target state="translated">Расположение файла, на который указывает ссылка.</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|RuntimeVersion|DisplayName">
-        <source>Runtime Version</source>
-        <target state="translated">Версия среды выполнения</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|RuntimeVersion|Description">
-        <source>Version of the .NET runtime this assembly was compiled against.</source>
-        <target state="translated">Версия среды выполнения .NET, для которой была скомпилирована эта сборка.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="BoolProperty|SpecificVersion|DisplayName">
         <source>Specific Version</source>
         <target state="translated">Конкретная версия</target>
@@ -127,16 +87,6 @@
         <target state="translated">Определяет, может ли эта сборка быть разрешена без применения правил настройки разрешения сборки для различных версий.</target>
         <note />
       </trans-unit>
-      <trans-unit id="BoolProperty|StrongName|DisplayName">
-        <source>Strong Name</source>
-        <target state="translated">Строгое имя</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|StrongName|Description">
-        <source>True indicates that the reference has been signed with a key-pair.</source>
-        <target state="translated">Значение true указывает, что ссылочная сборка была подписана с помощью пары ключей.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|Version|DisplayName">
         <source>Version</source>
         <target state="translated">Версия</target>
@@ -145,46 +95,6 @@
       <trans-unit id="StringProperty|Version|Description">
         <source>Version of reference.</source>
         <target state="translated">Версия ссылочной сборки.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|RequiredTargetFramework|DisplayName">
-        <source>Required Target Framework</source>
-        <target state="translated">Требуемая версия .NET Framework</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|IsWinMDFile|Description">
-        <source>Indicates whether the project system ascertained that this is a WinMD (as opposed to an assembly)</source>
-        <target state="translated">Указывает, действительно ли система проекта подтвердила, что файл является WinMD-файлом (а не сборкой)</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|WinMDFile|Description">
-        <source>Indicates whether the build system ascertained that this is a WinMD (as opposed to an assembly)</source>
-        <target state="translated">Указывает, действительно ли система сборки подтвердила, что файл является WinMD-файлом (а не сборкой)</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|OriginalItemSpec|Description">
-        <source>The evaluated item name of the original reference item whose resolution resulted in this resolved reference item.</source>
-        <target state="translated">Вычисленное имя исходного ссылочного элемента, в результате разрешения которого был получен данный разрешенный ссылочный элемент.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|ReferenceFromSDK|Description">
-        <source>The SDK that this reference came from when using the expand SDK target.</source>
-        <target state="translated">Пакет SDK, из которого получена эта ссылочная сборка, при использовании расширенной целевой сборки SDK.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|FusionName|Description">
-        <source>The full fusion name of the resolved assembly.</source>
-        <target state="translated">Полное fusion-имя разрешенной сборки.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|ResolvedFrom|Description">
-        <source>{}What repository held the reference that was used to resolve this.  ("{GAC}" if it was in the GAC).</source>
-        <target state="translated">{}Репозиторий, в котором хранилась ссылка, с помощью которой было выполнено данное разрешение. ("{GAC}", если репозиторием был глобальный кэш сборок).</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|FrameworkFile|Description">
-        <source>Is this file a framework file. Ie Found in the target framework directory or in the redist list.</source>
-        <target state="translated">Является ли этот файл файлом платформы. Т. е. находится в каталоге или списке распространения целевой платформы.</target>
         <note />
       </trans-unit>
     </body>

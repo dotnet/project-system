@@ -62,31 +62,6 @@
         <target state="translated">Wskazuje, czy typy zdefiniowane w tym zestawie będą osadzone w zestawie docelowym.</target>
         <note />
       </trans-unit>
-      <trans-unit id="EnumProperty|FileType|DisplayName">
-        <source>File Type</source>
-        <target state="translated">Typ pliku</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumProperty|FileType|Description">
-        <source>The file type of the reference.</source>
-        <target state="translated">Typ pliku odwołania.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|FileType.Assembly|DisplayName">
-        <source>.NET assembly</source>
-        <target state="translated">Zestaw .NET</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|FileType.ActiveX|DisplayName">
-        <source>COM type library</source>
-        <target state="translated">Biblioteka typów COM</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|FileType.Native Assembly|DisplayName">
-        <source>Native Assembly</source>
-        <target state="translated">Zestaw natywny</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|Identity|DisplayName">
         <source>Identity</source>
         <target state="translated">Tożsamość</target>
@@ -107,36 +82,6 @@
         <target state="translated">Lokalizacja pliku, którego dotyczy odwołanie.</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|RuntimeVersion|DisplayName">
-        <source>Runtime Version</source>
-        <target state="translated">Wersja wykonawcza</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|RuntimeVersion|Description">
-        <source>Version of the .NET runtime this assembly was compiled against.</source>
-        <target state="translated">Wersja środowiska uruchomieniowego .NET, za pomocą którego został skompilowany ten zestaw.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|SpecificVersion|DisplayName">
-        <source>Specific Version</source>
-        <target state="translated">Określona wersja</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|SpecificVersion|Description">
-        <source>Indicates whether this assembly can be resolved without regard to multi-targeting rules for assembly resolution.</source>
-        <target state="translated">Wskazuje, czy ten zestaw może zostać rozpoznany bez uwzględnienia reguł wielowersyjności kodu dla rozpoznawania zestawu.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|StrongName|DisplayName">
-        <source>Strong Name</source>
-        <target state="translated">Silna nazwa</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|StrongName|Description">
-        <source>True indicates that the reference has been signed with a key-pair.</source>
-        <target state="translated">Wartość true wskazuje, że odwołanie zostało podpisane parą kluczy.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|Version|DisplayName">
         <source>Version</source>
         <target state="translated">Wersja</target>
@@ -145,31 +90,6 @@
       <trans-unit id="StringProperty|Version|Description">
         <source>Version of reference.</source>
         <target state="translated">Wersja odwołania.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|RequiredTargetFramework|DisplayName">
-        <source>Required Target Framework</source>
-        <target state="translated">Wymagana platforma docelowa</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|IsWinMDFile|Description">
-        <source>Indicates whether the project system ascertained that this is a WinMD (as opposed to an assembly)</source>
-        <target state="translated">Wskazuje, czy system projektu upewnił się że jest to WinMD (w przeciwieństwie do zestawu)</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|Project|Description">
-        <source>the Guid the solution tracks an individual project reference target with</source>
-        <target state="translated">identyfikator Guid rozwiązania śledzi docelowe odwołanie pojedynczego projektu za pomocą</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|WinMDFile|Description">
-        <source>Indicates whether the build system ascertained that this is a WinMD (as opposed to an assembly)</source>
-        <target state="translated">Wskazuje, czy system kompilacji upewnił się że jest to WinMD (w przeciwieństwie do zestawu)</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|OriginalItemSpec|Description">
-        <source>The evaluated item name of the original reference item whose resolution resulted in this resolved reference item.</source>
-        <target state="translated">Sprawdzona nazwa elementu oryginalnego elementu odwołania, którego rozpoznanie spowodowało rozpoznanie tego elementu odwołania.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|CopyLocalSatelliteAssemblies|DisplayName">

@@ -62,11 +62,6 @@
         <target state="translated">이 참조에서 private인 자산입니다.</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|OriginalItemSpec|Description">
-        <source>The evaluated item name of the original reference item whose resolution resulted in this resolved reference item.</source>
-        <target state="translated">확인 결과 이 확인된 참조 항목으로 드러난 원래 참조 항목의 평가 항목 이름입니다.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|NoWarn|DisplayName">
         <source>Suppress warnings</source>
         <target state="needs-review-translation">NoWarn</target>

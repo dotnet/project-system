@@ -32,9 +32,7 @@
                     ReadOnly="True" />
 
     <StringProperty Name="OriginalItemSpec" 
-                    Visible="False" 
-                    ReadOnly="True" 
-                    Description="The evaluated item name of the original reference item whose resolution resulted in this resolved reference item." />
+                    Visible="False" />
 
     <StringProperty Name="Path" 
                     Visible="True"
@@ -114,9 +112,7 @@
     </StringProperty>
 
     <StringListProperty Name="Dependencies"
-                        DisplayName="Dependencies"
                         Visible="false"
-                        Description="A semicolon-delimited list of direct dependencies of current dependency."
                         Separator=";">
         <StringListProperty.DataSource>
             <DataSource Persistence="ResolvedReference" ItemType="PackageReference" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />

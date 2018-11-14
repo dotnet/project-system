@@ -32,26 +32,6 @@
         <target state="translated">Určuje, jestli se odkaz zkopíruje do výstupního adresáře.</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|Culture|DisplayName">
-        <source>Culture</source>
-        <target state="translated">Jazyková verze</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|Culture|Description">
-        <source>The value of the culture field from the assembly metadata.</source>
-        <target state="translated">Hodnota pole Jazyková verze z metadat sestavení</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|Description|DisplayName">
-        <source>Description</source>
-        <target state="translated">Popis</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|Description|Description">
-        <source>The value of the Title field from the assembly metadata.</source>
-        <target state="translated">Hodnota pole Název z metadat sestavení</target>
-        <note />
-      </trans-unit>
       <trans-unit id="BoolProperty|EmbedInteropTypes|DisplayName">
         <source>Embed Interop Types</source>
         <target state="translated">Vložit typy spolupráce</target>
@@ -60,16 +40,6 @@
       <trans-unit id="BoolProperty|EmbedInteropTypes|Description">
         <source>Indicates whether types defined in this assembly will be embedded into the target assembly.</source>
         <target state="translated">Určuje, zda typy definované v tomto sestavení budou vloženy do cílového sestavení.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumProperty|FileType|DisplayName">
-        <source>File Type</source>
-        <target state="translated">Typ souboru</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumProperty|FileType|Description">
-        <source>The file type of the reference.</source>
-        <target state="translated">Typ souboru odkazu</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|FileType.Assembly|DisplayName">
@@ -107,16 +77,6 @@
         <target state="translated">Umístění odkazovaného souboru</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|RuntimeVersion|DisplayName">
-        <source>Runtime Version</source>
-        <target state="translated">Verze modulu runtime</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|RuntimeVersion|Description">
-        <source>Version of the .NET runtime this assembly was compiled against.</source>
-        <target state="translated">Verze modulu runtime .NET, pro kterou bylo toto sestavení zkompilováno</target>
-        <note />
-      </trans-unit>
       <trans-unit id="BoolProperty|SpecificVersion|DisplayName">
         <source>Specific Version</source>
         <target state="translated">Specifická verze</target>
@@ -127,16 +87,6 @@
         <target state="translated">Určuje, zda toto sestavení může být vyřešeno bez ohledu na pravidla cílení na více verzí pro vyřešení sestavení.</target>
         <note />
       </trans-unit>
-      <trans-unit id="BoolProperty|StrongName|DisplayName">
-        <source>Strong Name</source>
-        <target state="translated">Silný název</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|StrongName|Description">
-        <source>True indicates that the reference has been signed with a key-pair.</source>
-        <target state="translated">Hodnota True určuje, že odkaz byl podepsán pomocí páru klíčů.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|Version|DisplayName">
         <source>Version</source>
         <target state="translated">Verze</target>
@@ -145,46 +95,6 @@
       <trans-unit id="StringProperty|Version|Description">
         <source>Version of reference.</source>
         <target state="translated">Verze odkazu</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|RequiredTargetFramework|DisplayName">
-        <source>Required Target Framework</source>
-        <target state="translated">Požadované cílové rozhraní</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|IsWinMDFile|Description">
-        <source>Indicates whether the project system ascertained that this is a WinMD (as opposed to an assembly)</source>
-        <target state="translated">Určuje, zda projektový systém zjistil, že se jedná o soubor WinMD (na rozdíl od sestavení).</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|WinMDFile|Description">
-        <source>Indicates whether the build system ascertained that this is a WinMD (as opposed to an assembly)</source>
-        <target state="translated">Určuje, zda systém sestavení zjistil, že se jedná o soubor WinMD (na rozdíl od sestavení).</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|OriginalItemSpec|Description">
-        <source>The evaluated item name of the original reference item whose resolution resulted in this resolved reference item.</source>
-        <target state="translated">Vyhodnocený název původní položky odkazu, jejíž překlad vedl ke vzniku tohoto nerozpoznaného odkazu</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|ReferenceFromSDK|Description">
-        <source>The SDK that this reference came from when using the expand SDK target.</source>
-        <target state="translated">Sada SDK, z níž pochází tento odkaz, při použití rozbalení cíle sady SDK</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|FusionName|Description">
-        <source>The full fusion name of the resolved assembly.</source>
-        <target state="translated">Úplný název Fusion rozpoznaného sestavení</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|ResolvedFrom|Description">
-        <source>{}What repository held the reference that was used to resolve this.  ("{GAC}" if it was in the GAC).</source>
-        <target state="translated">{}V jakém úložišti byl uložen odkaz, který byl použit při překladu ("{GAC}", pokud byl uložen v globální mezipaměti sestavení)</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|FrameworkFile|Description">
-        <source>Is this file a framework file. Ie Found in the target framework directory or in the redist list.</source>
-        <target state="translated">Jedná se o soubor platformy. To znamená, že se nachází v adresáři cílové platformy nebo v seznamu redistribuce.</target>
         <note />
       </trans-unit>
     </body>

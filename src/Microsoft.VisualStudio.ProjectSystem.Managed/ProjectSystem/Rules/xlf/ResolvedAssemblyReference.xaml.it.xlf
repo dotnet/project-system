@@ -32,26 +32,6 @@
         <target state="translated">Indica se il riferimento verrà copiato nella directory di output.</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|Culture|DisplayName">
-        <source>Culture</source>
-        <target state="translated">Impostazioni cultura</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|Culture|Description">
-        <source>The value of the culture field from the assembly metadata.</source>
-        <target state="translated">Valore del campo Impostazioni cultura dei metadati dell'assembly.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|Description|DisplayName">
-        <source>Description</source>
-        <target state="translated">Descrizione</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|Description|Description">
-        <source>The value of the Title field from the assembly metadata.</source>
-        <target state="translated">Valore del campo Titolo dei metadati dell'assembly.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="BoolProperty|EmbedInteropTypes|DisplayName">
         <source>Embed Interop Types</source>
         <target state="translated">Incorpora tipi di interoperabilità</target>
@@ -60,16 +40,6 @@
       <trans-unit id="BoolProperty|EmbedInteropTypes|Description">
         <source>Indicates whether types defined in this assembly will be embedded into the target assembly.</source>
         <target state="translated">Indica se i tipi definiti nell'assembly corrente verranno incorporati nell'assembly di destinazione.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumProperty|FileType|DisplayName">
-        <source>File Type</source>
-        <target state="translated">Tipo di file</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumProperty|FileType|Description">
-        <source>The file type of the reference.</source>
-        <target state="translated">Il tipo di file del riferimento.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|FileType.Assembly|DisplayName">
@@ -107,16 +77,6 @@
         <target state="translated">Percorso del file a cui viene fatto riferimento.</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|RuntimeVersion|DisplayName">
-        <source>Runtime Version</source>
-        <target state="translated">Versione runtime</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|RuntimeVersion|Description">
-        <source>Version of the .NET runtime this assembly was compiled against.</source>
-        <target state="translated">Versione del runtime .NET con cui è stato compilato l'assembly.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="BoolProperty|SpecificVersion|DisplayName">
         <source>Specific Version</source>
         <target state="translated">Versione specifica</target>
@@ -127,16 +87,6 @@
         <target state="translated">Indica se è possibile risolvere l'assembly senza tener conto delle regole di multitargeting.</target>
         <note />
       </trans-unit>
-      <trans-unit id="BoolProperty|StrongName|DisplayName">
-        <source>Strong Name</source>
-        <target state="translated">Nome sicuro</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|StrongName|Description">
-        <source>True indicates that the reference has been signed with a key-pair.</source>
-        <target state="translated">Se ha valore True, significa che il riferimento è stato firmato con una coppia di chiavi.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|Version|DisplayName">
         <source>Version</source>
         <target state="translated">Versione</target>
@@ -145,46 +95,6 @@
       <trans-unit id="StringProperty|Version|Description">
         <source>Version of reference.</source>
         <target state="translated">Versione del riferimento.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|RequiredTargetFramework|DisplayName">
-        <source>Required Target Framework</source>
-        <target state="translated">Framework di destinazione necessario</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|IsWinMDFile|Description">
-        <source>Indicates whether the project system ascertained that this is a WinMD (as opposed to an assembly)</source>
-        <target state="translated">Indica se il sistema del progetto ha accertato che si tratta di un WinMD (in contrapposizione a un assembly)</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|WinMDFile|Description">
-        <source>Indicates whether the build system ascertained that this is a WinMD (as opposed to an assembly)</source>
-        <target state="translated">Indica se il sistema di compilazione ha accertato che si tratta di un WinMD (in contrapposizione a un assembly)</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|OriginalItemSpec|Description">
-        <source>The evaluated item name of the original reference item whose resolution resulted in this resolved reference item.</source>
-        <target state="translated">Nome di elemento valutato dell'elemento di riferimento originale la cui risoluzione ha restituito questo elemento di riferimento risolto.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|ReferenceFromSDK|Description">
-        <source>The SDK that this reference came from when using the expand SDK target.</source>
-        <target state="translated">SDK da cui proviene questo riferimento quando si usa la destinazione SDK di espansione.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|FusionName|Description">
-        <source>The full fusion name of the resolved assembly.</source>
-        <target state="translated">Nome Fusion completo dell'assembly risolto.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|ResolvedFrom|Description">
-        <source>{}What repository held the reference that was used to resolve this.  ("{GAC}" if it was in the GAC).</source>
-        <target state="translated">{}Repository in cui era contenuto il riferimento usato per risolverlo. È "{GAC}" se si trovava nella GAC.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|FrameworkFile|Description">
-        <source>Is this file a framework file. Ie Found in the target framework directory or in the redist list.</source>
-        <target state="translated">Indica se si tratta di un file di framework, ossia se è stato trovato nella directory del framework di destinazione o nell'elenco redist.</target>
         <note />
       </trans-unit>
     </body>

@@ -62,11 +62,6 @@
         <target state="translated">Composants privés dans cette référence</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|OriginalItemSpec|Description">
-        <source>The evaluated item name of the original reference item whose resolution resulted in this resolved reference item.</source>
-        <target state="translated">Nom d'élément évalué de l'élément de référence d'origine dont la résolution a eu pour résultat cet élément de référence résolu.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|NoWarn|DisplayName">
         <source>Suppress warnings</source>
         <target state="needs-review-translation">NoWarn</target>

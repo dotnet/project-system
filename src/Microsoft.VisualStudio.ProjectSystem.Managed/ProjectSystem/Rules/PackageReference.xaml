@@ -48,8 +48,7 @@
 
     <StringProperty Name="OriginalItemSpec" 
                     Visible="False" 
-                    ReadOnly="True" 
-                    Description="The evaluated item name of the original reference item whose resolution resulted in this resolved reference item." />
+                    ReadOnly="True" />
 
     <StringProperty Name="Path" 
                     Visible="True" 

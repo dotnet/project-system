@@ -32,16 +32,6 @@
         <target state="translated">表示是否應將參考目標的附屬組件複製到這個專案的輸出目錄。</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|Project|Description">
-        <source>the Guid the solution tracks an individual project reference target with</source>
-        <target state="translated">方案藉以追蹤個別專案參考目標的 GUID</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|ReferencedProjectIdentifier|Description">
-        <source>The old (VS2010 beta) way to store the Guid the solution tracks an individual project reference target with</source>
-        <target state="translated">儲存方案藉以追蹤個別專案參考目標之 GUID 的舊 (VS2010 Beta) 方式</target>
-        <note />
-      </trans-unit>
       <trans-unit id="BoolProperty|CopyLocal|DisplayName">
         <source>Copy Local</source>
         <target state="translated">複製到本機</target>

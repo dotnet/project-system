@@ -52,21 +52,6 @@
         <target state="translated">指示是否可以解析此程序集，无论程序集解析的多定向规则是什么。</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|RequiredTargetFramework|DisplayName">
-        <source>Required Target Framework</source>
-        <target state="translated">需要目标框架</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|ImageRuntime|DisplayName">
-        <source>Runtime Version</source>
-        <target state="translated">运行时版本</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|ImageRuntime|Description">
-        <source>The CLR runtime version targeted by this assembly.</source>
-        <target state="translated">此程序集的目标 CLR 运行时版本。</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|Identity|DisplayName">
         <source>Identity</source>
         <target state="translated">标识</target>

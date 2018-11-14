@@ -118,64 +118,51 @@
 
     <EnumProperty Name="FileType"
                   ReadOnly="True"
-                  Visible="False"
-                  DisplayName="File Type"
-                  Description="The file type of the reference.">
-        <EnumValue Name="Assembly" DisplayName=".NET assembly" />
-        <EnumValue Name="ActiveX" DisplayName="COM type library" />
-        <EnumValue Name="Native Assembly" DisplayName="Native Assembly" />
+                  Visible="False">
+        <EnumValue Name="Assembly" />
+        <EnumValue Name="ActiveX" />
+        <EnumValue Name="Native Assembly" />
     </EnumProperty>
 
     <StringProperty Name="HintPath"
                     Visible="false" />
 
     <StringProperty Name="RequiredTargetFramework"
-                    DisplayName="Required Target Framework"
                     Visible="False" />
 
     <StringProperty Name="RuntimeVersion"
                     ReadOnly="True"
-                    Visible="False"
-                    DisplayName="Runtime Version"
-                    Description="Version of the .NET runtime this assembly was compiled against.">
+                    Visible="False">
     </StringProperty>
 
     <StringProperty Name="SDKIdentity"
                     Visible="false" />
 
     <BoolProperty Name="SpecificVersion" 
-                  DisplayName="Specific Version"
-                  Visible="False"
-                  Description="Indicates whether this assembly can be resolved without regard to multi-targeting rules for assembly resolution." />
+                  Visible="False" />
 
     <BoolProperty Name="StrongName"
                   ReadOnly="True"
-                  Visible="False"
-                  DisplayName="Strong Name"
-                  Description="True indicates that the reference has been signed with a key-pair.">
+                  Visible="False">
     </BoolProperty>
 
     <!-- This is the metadata we store on the reference item when we add it. -->
 
     <BoolProperty Name="IsWinMDFile"
-                  Visible="false"
-                  Description="Indicates whether the project system ascertained that this is a WinMD (as opposed to an assembly)" />
+                  Visible="false" />
 
     <StringProperty Name="Project" 
-                    Visible="False"
-                    Description="the Guid the solution tracks an individual project reference target with" />
+                    Visible="False" />
 
     <!-- These are metadata added to the resolved item by MSBuild that we don't show to the user but use internally. -->
 
     <BoolProperty Name="WinMDFile"
                   Visible="false"
-                  ReadOnly="True"
-                  Description="Indicates whether the build system ascertained that this is a WinMD (as opposed to an assembly)" />
+                  ReadOnly="True" />
 
     <StringProperty Name="OriginalItemSpec"
                     Visible="False"
-                    ReadOnly="True"
-                    Description="The evaluated item name of the original reference item whose resolution resulted in this resolved reference item." />
+                    ReadOnly="True" />
 
     <StringProperty Name="FusionName"
                     Visible="False"

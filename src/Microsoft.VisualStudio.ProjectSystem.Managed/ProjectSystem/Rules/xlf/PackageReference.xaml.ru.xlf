@@ -62,11 +62,6 @@
         <target state="translated">Ресурсы, являющиеся закрытыми в этой ссылке</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|OriginalItemSpec|Description">
-        <source>The evaluated item name of the original reference item whose resolution resulted in this resolved reference item.</source>
-        <target state="translated">Вычисленное имя исходного ссылочного элемента, в результате разрешения которого был получен данный разрешенный ссылочный элемент.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|NoWarn|DisplayName">
         <source>Suppress warnings</source>
         <target state="needs-review-translation">NoWarn</target>

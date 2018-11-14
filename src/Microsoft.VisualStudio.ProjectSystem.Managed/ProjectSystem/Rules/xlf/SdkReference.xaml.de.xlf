@@ -52,11 +52,6 @@
         <target state="translated">Lokale erweiterte Verweisassemblys kopieren</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|DisplayName|DisplayName">
-        <source>Display Name</source>
-        <target state="translated">Anzeigename</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|Name|DisplayName">
         <source>Name</source>
         <target state="translated">Name</target>

@@ -62,31 +62,6 @@
         <target state="translated">Указывает, будут ли типы, определенные в этой сборке, внедрены в целевую сборку.</target>
         <note />
       </trans-unit>
-      <trans-unit id="EnumProperty|FileType|DisplayName">
-        <source>File Type</source>
-        <target state="translated">Тип файла</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumProperty|FileType|Description">
-        <source>The file type of the reference.</source>
-        <target state="translated">Тип файла ссылки.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|FileType.Assembly|DisplayName">
-        <source>.NET assembly</source>
-        <target state="translated">Сборка .NET</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|FileType.ActiveX|DisplayName">
-        <source>COM type library</source>
-        <target state="translated">Библиотека типов COM</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|FileType.Native Assembly|DisplayName">
-        <source>Native Assembly</source>
-        <target state="translated">Машинная сборка</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|Identity|DisplayName">
         <source>Identity</source>
         <target state="translated">Идентификатор</target>
@@ -107,36 +82,6 @@
         <target state="translated">Расположение файла, на который указывает ссылка.</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|RuntimeVersion|DisplayName">
-        <source>Runtime Version</source>
-        <target state="translated">Версия среды выполнения</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|RuntimeVersion|Description">
-        <source>Version of the .NET runtime this assembly was compiled against.</source>
-        <target state="translated">Версия среды выполнения .NET, для которой была скомпилирована эта сборка.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|SpecificVersion|DisplayName">
-        <source>Specific Version</source>
-        <target state="translated">Конкретная версия</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|SpecificVersion|Description">
-        <source>Indicates whether this assembly can be resolved without regard to multi-targeting rules for assembly resolution.</source>
-        <target state="translated">Определяет, может ли эта сборка быть разрешена без применения правил настройки разрешения сборки для различных версий.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|StrongName|DisplayName">
-        <source>Strong Name</source>
-        <target state="translated">Строгое имя</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|StrongName|Description">
-        <source>True indicates that the reference has been signed with a key-pair.</source>
-        <target state="translated">Значение true указывает, что ссылочная сборка была подписана с помощью пары ключей.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|Version|DisplayName">
         <source>Version</source>
         <target state="translated">Версия</target>
@@ -145,31 +90,6 @@
       <trans-unit id="StringProperty|Version|Description">
         <source>Version of reference.</source>
         <target state="translated">Версия ссылочной сборки.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|RequiredTargetFramework|DisplayName">
-        <source>Required Target Framework</source>
-        <target state="translated">Требуемая версия .NET Framework</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|IsWinMDFile|Description">
-        <source>Indicates whether the project system ascertained that this is a WinMD (as opposed to an assembly)</source>
-        <target state="translated">Указывает, действительно ли система проекта подтвердила, что файл является WinMD-файлом (а не сборкой)</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|Project|Description">
-        <source>the Guid the solution tracks an individual project reference target with</source>
-        <target state="translated">идентификатор GUID, с помощью которого решение отслеживает ссылочную целевую сборку отдельного проекта</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|WinMDFile|Description">
-        <source>Indicates whether the build system ascertained that this is a WinMD (as opposed to an assembly)</source>
-        <target state="translated">Указывает, действительно ли система сборки подтвердила, что файл является WinMD-файлом (а не сборкой)</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|OriginalItemSpec|Description">
-        <source>The evaluated item name of the original reference item whose resolution resulted in this resolved reference item.</source>
-        <target state="translated">Вычисленное имя исходного ссылочного элемента, в результате разрешения которого был получен данный разрешенный ссылочный элемент.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|CopyLocalSatelliteAssemblies|DisplayName">

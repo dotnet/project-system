@@ -62,11 +62,6 @@
         <target state="translated">Risorse private in questo riferimento</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|OriginalItemSpec|Description">
-        <source>The evaluated item name of the original reference item whose resolution resulted in this resolved reference item.</source>
-        <target state="translated">Nome di elemento valutato dell'elemento di riferimento originale la cui risoluzione ha restituito questo elemento di riferimento risolto.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|NoWarn|DisplayName">
         <source>Suppress warnings</source>
         <target state="needs-review-translation">NoWarn</target>
