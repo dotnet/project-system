@@ -39,6 +39,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 var mockModel = IDependencyModelFactory.Implement(providerType: "someprovider", id: "id");
                 new Dependency(mockModel, null, null);
             });
+
+            Assert.Throws<ArgumentNullException>("containingProjectPath", () =>
+            {
+                var mockModel = IDependencyModelFactory.Implement(providerType: "someprovider", id: "id", originalItemSpec: "originalItemSpec");
+                new Dependency(mockModel, targetFramework: new TargetFramework("tfm"), containingProjectPath: null);
+            });
         }
 
         [Fact]
