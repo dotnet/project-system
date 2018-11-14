@@ -58,7 +58,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                     previousTargetedSnapshot = TargetedDependenciesSnapshot.CreateEmpty(projectPath, targetFramework, catalogs);
                 }
 
-                var newTargetedSnapshot = TargetedDependenciesSnapshot.FromChanges(
+                ITargetedDependenciesSnapshot newTargetedSnapshot = TargetedDependenciesSnapshot.FromChanges(
                     projectPath,
                     previousTargetedSnapshot,
                     dependenciesChanges,

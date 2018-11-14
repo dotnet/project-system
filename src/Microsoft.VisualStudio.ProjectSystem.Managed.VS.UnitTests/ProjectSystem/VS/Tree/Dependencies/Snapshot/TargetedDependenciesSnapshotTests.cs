@@ -357,6 +357,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     ""SchemaItemType"":""Xxx"",
     ""Resolved"":""true""
 }", icon: KnownMonikers.Uninstall, expandedIcon: KnownMonikers.Uninstall);
+
             var catalogs = IProjectCatalogSnapshotFactory.Create();
             var previousSnapshot = ITargetedDependenciesSnapshotFactory.Implement(
                 projectPath: projectPath,

@@ -50,12 +50,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         [Fact]
         public void Dependency_Constructor_WhenOptionalValuesNotProvided_ShouldSetDefaults()
         {
-            const string jsonModel = @"
-{
-    ""ProviderType"": ""xxx"",
-    ""Id"": ""mymodel""
-}";
-            var mockModel = IDependencyModelFactory.FromJson(jsonModel);
+            var mockModel = IDependencyModelFactory.FromJson(@"
+            {
+                ""ProviderType"": ""xxx"",
+                ""Id"": ""mymodel""
+            }");
 
             var dependency = new Dependency(mockModel, ITargetFrameworkFactory.Implement("tfm1"), @"C:\Foo\Project.csproj");
 
@@ -76,26 +75,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         [Fact]
         public void Dependency_Constructor_WhenValidModelProvided_ShouldSetAllProperties()
         {
-            const string jsonModel = @"
-{
-    ""ProviderType"": ""xxx"",
-    ""Id"": ""mymodelid"",
-    ""Name"": ""mymodelname"",
-    ""Version"": ""2.0.0-1"",
-    ""Caption"": ""mymodel"",
-    ""OriginalItemSpec"": ""mymodeloriginal"",
-    ""Path"": ""mymodelpath"",
-    ""SchemaName"": ""MySchema"",
-    ""SchemaItemType"": ""MySchemaItemType"",
-    ""Resolved"": ""true"",
-    ""TopLevel"": ""true"",
-    ""Implicit"": ""true"",
-    ""Visible"": ""true"",
-    ""Priority"": ""3""
-}";
-
-            var mockModel = IDependencyModelFactory.FromJson(
-                jsonModel,
+            var mockModel = IDependencyModelFactory.FromJson(@"
+                {
+                    ""ProviderType"": ""xxx"",
+                    ""Id"": ""mymodelid"",
+                    ""Name"": ""mymodelname"",
+                    ""Version"": ""2.0.0-1"",
+                    ""Caption"": ""mymodel"",
+                    ""OriginalItemSpec"": ""mymodeloriginal"",
+                    ""Path"": ""mymodelpath"",
+                    ""SchemaName"": ""MySchema"",
+                    ""SchemaItemType"": ""MySchemaItemType"",
+                    ""Resolved"": ""true"",
+                    ""TopLevel"": ""true"",
+                    ""Implicit"": ""true"",
+                    ""Visible"": ""true"",
+                    ""Priority"": ""3""
+                }",
                 flags: DependencyTreeFlags.DependencyFlags.Union(DependencyTreeFlags.GenericDependencyFlags),
                 icon: KnownMonikers.Path,
                 expandedIcon: KnownMonikers.PathIcon,
@@ -198,6 +194,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             Assert.Equal(dependency1, dependency2);
             Assert.NotEqual(dependency1, dependency3);
+            Assert.False(dependency1.Equals(other: null));
             Assert.Equal(dependency1.GetHashCode(), dependency2.GetHashCode());
             Assert.NotEqual(dependency1.GetHashCode(), dependency3.GetHashCode());
         }
@@ -335,27 +332,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         [Fact]
         public void WhenCreatingUnrelatedDependenciesWithSameIcons_BothUseSameIconSet()
         {
-            const string jsonModel1 = @"
-{
-    ""ProviderType"": ""alpha"",
-    ""Id"": ""modelOne"",
-}";
-
-            const string jsonModel2 = @"
-{
-    ""ProviderType"": ""beta"",
-    ""Id"": ""modelTwo"",
-}";
-
-            var model1 = IDependencyModelFactory.FromJson(
-                jsonModel1,
+            var model1 = IDependencyModelFactory.FromJson(@"
+                {
+                    ""ProviderType"": ""alpha"",
+                    ""Id"": ""modelOne"",
+                }",
                 icon: KnownMonikers.Path,
                 expandedIcon: KnownMonikers.PathIcon,
                 unresolvedIcon: KnownMonikers.PathListBox,
                 unresolvedExpandedIcon: KnownMonikers.PathListBoxItem);
 
-            var model2 = IDependencyModelFactory.FromJson(
-                jsonModel2,
+            var model2 = IDependencyModelFactory.FromJson(@"
+                {
+                    ""ProviderType"": ""beta"",
+                    ""Id"": ""modelTwo"",
+                }",
                 icon: KnownMonikers.Path,
                 expandedIcon: KnownMonikers.PathIcon,
                 unresolvedIcon: KnownMonikers.PathListBox,

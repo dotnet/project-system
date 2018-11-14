@@ -15,11 +15,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         [Fact]
         public void WhenThereNoMatchingDependencies_ShouldNotUpdateCaption()
         {
-            const string caption = "MyCaption";
             var dependency = IDependencyFactory.Implement(
                 providerType: "myprovider",
                 id: "mydependency1",
-                caption: caption);
+                caption: "MyCaption");
 
             var otherDependency = IDependencyFactory.Implement(
                     providerType: "myprovider",

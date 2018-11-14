@@ -701,7 +701,7 @@ Caption=YyyDependencyRoot, FilePath=YyyDependencyRoot, IconHash=0, ExpandedIconH
             // Act
             var resultTree = await provider.BuildTreeAsync(dependenciesRoot, GetSnapshot(testData));
 
-            // Assert            
+            // Assert
             var expectedFlatHierarchy =
 @"Caption=MyDependencies, FilePath=, IconHash=325248080, ExpandedIconHash=325248080, Rule=, IsProjectItem=False, CustomTag=
 Caption=ZzzDependencyRoot, FilePath=ZzzDependencyRoot, IconHash=0, ExpandedIconHash=0, Rule=, IsProjectItem=False, CustomTag=
@@ -1021,20 +1021,22 @@ Caption=Dependency1, FilePath=tfm1\Xxx\dependencyxxxpath, IconHash=325249260, Ex
             Assert.Null(result);
         }
 
-        private IDependenciesSnapshot GetSnapshot(Dictionary<ITargetFramework, List<IDependency>> testData)
+        private static IDependenciesSnapshot GetSnapshot(Dictionary<ITargetFramework, List<IDependency>> testData)
         {
             var catalogs = IProjectCatalogSnapshotFactory.Create();
             var targets = new Dictionary<ITargetFramework, ITargetedDependenciesSnapshot>();
-            foreach (var kvp in testData)
+
+            foreach ((ITargetFramework targetFramework, List<IDependency> dependencies) in testData)
             {
                 var targetedSnapshot = ITargetedDependenciesSnapshotFactory.Implement(
                     catalogs: catalogs,
-                    topLevelDependencies: kvp.Value,
+                    topLevelDependencies: dependencies,
                     checkForUnresolvedDependencies: false,
-                    targetFramework: kvp.Key);
+                    targetFramework: targetFramework);
 
-                targets.Add(kvp.Key, targetedSnapshot);
+                targets.Add(targetFramework, targetedSnapshot);
             }
+
             return IDependenciesSnapshotFactory.Implement(
                 targets: targets,
                 hasUnresolvedDependency: false,
