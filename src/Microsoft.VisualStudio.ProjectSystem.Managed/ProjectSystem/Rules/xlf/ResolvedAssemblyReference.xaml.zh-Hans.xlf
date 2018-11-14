@@ -42,21 +42,6 @@
         <target state="translated">指示是否将此程序集中定义的类型嵌入目标程序集。</target>
         <note />
       </trans-unit>
-      <trans-unit id="EnumValue|FileType.Assembly|DisplayName">
-        <source>.NET assembly</source>
-        <target state="translated">.NET 程序集</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|FileType.ActiveX|DisplayName">
-        <source>COM type library</source>
-        <target state="translated">COM 类型库</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|FileType.Native Assembly|DisplayName">
-        <source>Native Assembly</source>
-        <target state="translated">本机程序集</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|Identity|DisplayName">
         <source>Identity</source>
         <target state="translated">标识</target>

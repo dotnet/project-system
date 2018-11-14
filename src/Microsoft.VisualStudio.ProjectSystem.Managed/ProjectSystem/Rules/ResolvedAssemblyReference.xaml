@@ -103,9 +103,9 @@
     <EnumProperty Name="FileType"
                   ReadOnly="True"
                   Visible="False">
-        <EnumValue Name="Assembly" DisplayName=".NET assembly" />
-        <EnumValue Name="ActiveX" DisplayName="COM type library" />
-        <EnumValue Name="Native Assembly" DisplayName="Native Assembly" />
+        <EnumValue Name="Assembly" />
+        <EnumValue Name="ActiveX" />
+        <EnumValue Name="Native Assembly" />
     </EnumProperty>
 
     <StringProperty Name="HintPath" Visible="false" />

@@ -42,21 +42,6 @@
         <target state="translated">Wskazuje, czy typy zdefiniowane w tym zestawie będą osadzone w zestawie docelowym.</target>
         <note />
       </trans-unit>
-      <trans-unit id="EnumValue|FileType.Assembly|DisplayName">
-        <source>.NET assembly</source>
-        <target state="translated">Zestaw .NET</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|FileType.ActiveX|DisplayName">
-        <source>COM type library</source>
-        <target state="translated">Biblioteka typów COM</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|FileType.Native Assembly|DisplayName">
-        <source>Native Assembly</source>
-        <target state="translated">Zestaw natywny</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|Identity|DisplayName">
         <source>Identity</source>
         <target state="translated">Tożsamość</target>

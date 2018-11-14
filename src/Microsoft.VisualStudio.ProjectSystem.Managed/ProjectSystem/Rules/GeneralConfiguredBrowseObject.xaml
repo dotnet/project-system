@@ -51,9 +51,9 @@
   </StringProperty>
   <StringProperty Name="DocumentationFile" Visible="False"/>
   <EnumProperty Name="GenerateSerializationAssemblies" Visible="False">
-    <EnumValue Name="Auto" DisplayName="Auto" IsDefault="True" />
-    <EnumValue Name="On" DisplayName="On" />
-    <EnumValue Name="Off" DisplayName="Off" />
+    <EnumValue Name="Auto" IsDefault="True" />
+    <EnumValue Name="On" />
+    <EnumValue Name="Off" />
   </EnumProperty>
   <!-- ** removed for RTM: needs translation
   <BoolProperty Name="RegisterForComInterop" Default="False" DisplayName="Register for COM Interop" Visible="False"/>

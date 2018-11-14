@@ -12,21 +12,6 @@
         <target state="translated">全般</target>
         <note />
       </trans-unit>
-      <trans-unit id="EnumValue|GenerateSerializationAssemblies.Auto|DisplayName">
-        <source>Auto</source>
-        <target state="translated">自動</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|GenerateSerializationAssemblies.On|DisplayName">
-        <source>On</source>
-        <target state="translated">オン</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|GenerateSerializationAssemblies.Off|DisplayName">
-        <source>Off</source>
-        <target state="translated">オフ</target>
-        <note />
-      </trans-unit>
       <trans-unit id="Rule|ConfiguredBrowseObject|DisplayName">
         <source>General</source>
         <target state="translated">全般</target>

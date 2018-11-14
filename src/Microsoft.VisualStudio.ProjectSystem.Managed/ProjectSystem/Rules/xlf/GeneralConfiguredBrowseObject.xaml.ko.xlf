@@ -12,21 +12,6 @@
         <target state="translated">일반</target>
         <note />
       </trans-unit>
-      <trans-unit id="EnumValue|GenerateSerializationAssemblies.Auto|DisplayName">
-        <source>Auto</source>
-        <target state="translated">자동</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|GenerateSerializationAssemblies.On|DisplayName">
-        <source>On</source>
-        <target state="translated">설정</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|GenerateSerializationAssemblies.Off|DisplayName">
-        <source>Off</source>
-        <target state="translated">해제</target>
-        <note />
-      </trans-unit>
       <trans-unit id="Rule|ConfiguredBrowseObject|DisplayName">
         <source>General</source>
         <target state="translated">일반</target>

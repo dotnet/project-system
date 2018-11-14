@@ -42,21 +42,6 @@
         <target state="translated">Určuje, zda typy definované v tomto sestavení budou vloženy do cílového sestavení.</target>
         <note />
       </trans-unit>
-      <trans-unit id="EnumValue|FileType.Assembly|DisplayName">
-        <source>.NET assembly</source>
-        <target state="translated">Sestavení .NET</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|FileType.ActiveX|DisplayName">
-        <source>COM type library</source>
-        <target state="translated">Knihovna typů COM</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|FileType.Native Assembly|DisplayName">
-        <source>Native Assembly</source>
-        <target state="translated">Nativní sestavení</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|Identity|DisplayName">
         <source>Identity</source>
         <target state="translated">Identita</target>

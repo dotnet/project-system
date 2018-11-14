@@ -42,21 +42,6 @@
         <target state="translated">Bu bütünleştirilmiş kodda tanımlanan türlerin hedef bütünleştirilmiş koda katıştırılıp katıştırılmayacağını belirtir.</target>
         <note />
       </trans-unit>
-      <trans-unit id="EnumValue|FileType.Assembly|DisplayName">
-        <source>.NET assembly</source>
-        <target state="translated">.NET derlemesi</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|FileType.ActiveX|DisplayName">
-        <source>COM type library</source>
-        <target state="translated">COM türü kitaplık</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|FileType.Native Assembly|DisplayName">
-        <source>Native Assembly</source>
-        <target state="translated">Yerel Bütünleştirilmiş Kod</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|Identity|DisplayName">
         <source>Identity</source>
         <target state="translated">Kimlik</target>
