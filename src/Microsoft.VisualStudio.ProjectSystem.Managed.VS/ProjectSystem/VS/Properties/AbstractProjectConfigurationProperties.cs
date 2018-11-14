@@ -131,8 +131,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
                 return _threadingService.ExecuteSynchronously(async () =>
                 {
                     ConfiguredBrowseObject browseObjectProperties = await _projectProperties.GetConfiguredBrowseObjectPropertiesAsync();
-                    string value = await browseObjectProperties.RunCodeAnalysis.GetEvaluatedValueAtEndAsync();
-                    return string.Equals(value, bool.TrueString, StringComparisons.PropertyValues);
+                    var value = await browseObjectProperties.RunCodeAnalysis.GetValueAsync();
+                    return ((bool?)value).GetValueOrDefault();
                 });
             }
             set
