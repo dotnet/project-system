@@ -580,7 +580,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             await AssertNotUpToDateAsync(
                 new[]
                 {
-                    $"Checking build output file '{sourcePath}':",
+                    $"Checking copied output ({UpToDateCheckBuilt.SchemaName} with {UpToDateCheckBuilt.OriginalProperty} property) file '{sourcePath}':",
                     $"    Source {sourceTime.ToLocalTime()}: '{sourcePath}'.",
                     $"    Destination {destinationTime.ToLocalTime()}: '{destinationPath}'.",
                     "Source is newer than build output destination, not up to date."
@@ -611,7 +611,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             await AssertNotUpToDateAsync(
                 new[]
                 {
-                    $"Checking build output file '{sourcePath}':",
+                    $"Checking copied output ({UpToDateCheckBuilt.SchemaName} with {UpToDateCheckBuilt.OriginalProperty} property) file '{sourcePath}':",
                     $"Source '{sourcePath}' does not exist, not up to date."
                 },
                 "CopyOutput");
@@ -642,7 +642,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             await AssertNotUpToDateAsync(
                 new[]
                 {
-                    $"Checking build output file '{sourcePath}':",
+                    $"Checking copied output ({UpToDateCheckBuilt.SchemaName} with {UpToDateCheckBuilt.OriginalProperty} property) file '{sourcePath}':",
                     $"    Source {sourceTime.ToLocalTime()}: '{sourcePath}'.",
                     $"Destination '{destinationPath}' does not exist, not up to date."
                 },

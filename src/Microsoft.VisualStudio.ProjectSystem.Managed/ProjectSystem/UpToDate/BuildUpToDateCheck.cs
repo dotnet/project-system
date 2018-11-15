@@ -557,7 +557,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 string source = _configuredProject.UnconfiguredProject.MakeRooted(sourceRelative);
                 string destination = _configuredProject.UnconfiguredProject.MakeRooted(destinationRelative);
 
-                logger.Info("Checking build output file '{0}':", source);
+                logger.Info("Checking copied output (" + UpToDateCheckBuilt.SchemaName + " with " + UpToDateCheckBuilt.OriginalProperty + " property) file '{0}':", source);
 
                 DateTime? sourceTime = GetTimestampUtc(source, timestampCache);
 
