@@ -542,7 +542,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 return true;
             }
 
-            if (outputMarkerTime <= latestInputMarkerTime)
+            if (outputMarkerTime < latestInputMarkerTime)
             {
                 return Fail(logger, "Marker", "Input marker is newer than output marker, not up to date.");
             }
