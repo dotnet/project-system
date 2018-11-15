@@ -583,7 +583,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     $"Checking build output file '{sourcePath}':",
                     $"    Source {sourceTime.ToLocalTime()}: '{sourcePath}'.",
                     $"    Destination {destinationTime.ToLocalTime()}: '{destinationPath}'.",
-                    "Build output destination is newer than source, not up to date."
+                    "Source is newer than build output destination, not up to date."
                 },
                 "CopyOutput");
         }

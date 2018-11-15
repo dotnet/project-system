@@ -583,7 +583,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 if (destinationTime < sourceTime)
                 {
-                    return Fail(logger, "CopyOutput", "Build output destination is newer than source, not up to date.");
+                    return Fail(logger, "CopyOutput", "Source is newer than build output destination, not up to date.");
                 }
             }
 
