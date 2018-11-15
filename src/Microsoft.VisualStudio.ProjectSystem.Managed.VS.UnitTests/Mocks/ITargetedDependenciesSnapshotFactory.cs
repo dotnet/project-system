@@ -3,12 +3,15 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 
 using Moq;
+
+using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
@@ -81,13 +84,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             if (topLevelDependencies != null)
             {
-                var dependencies = ImmutableHashSet<IDependency>.Empty;
-                foreach (var d in topLevelDependencies)
-                {
-                    dependencies = dependencies.Add(d);
-                }
+                Assert.True(topLevelDependencies.All(d => d.TopLevel));
 
-                mock.Setup(x => x.TopLevelDependencies).Returns(dependencies);
+                mock.Setup(x => x.TopLevelDependencies)
+                    .Returns(ImmutableHashSet.CreateRange(topLevelDependencies));
             }
 
             if (checkForUnresolvedDependencies.HasValue)
