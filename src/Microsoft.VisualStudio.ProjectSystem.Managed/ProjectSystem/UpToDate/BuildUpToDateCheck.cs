@@ -432,10 +432,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             return (latest, latestPath);
         }
 
+        /// <summary>
+        /// Returns one of:
+        /// <list type="bullet">
+        ///     <item><c>(time, path)</c> describing the earliest output when all were found</item>
+        ///     <item><c>(null, path)</c> where <c>path</c> is the first output that could not be found</item>
+        ///     <item><c>(null, null)</c> when there were no outputs</item>
+        /// </list>
+        /// </summary>
         private (DateTime? time, string path) GetEarliestOutput(IEnumerable<string> outputs, IDictionary<string, DateTime> timestampCache)
         {
             DateTime? earliest = DateTime.MaxValue;
             string earliestPath = null;
+            bool hasOutput = false;
 
             foreach (string output in outputs)
             {
@@ -451,9 +460,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     earliest = time;
                     earliestPath = output;
                 }
+
+                hasOutput = true;
             }
 
-            return (earliest, earliestPath);
+            return hasOutput
+                ? (earliest, earliestPath)
+                : (null, null);
         }
 
         private bool CheckOutputs(BuildUpToDateCheckLogger logger, IDictionary<string, DateTime> timestampCache)
@@ -485,9 +498,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     }
                 }
             }
-            else
+            else if (outputPath != null)
             {
                 return Fail(logger, "Outputs", "Output '{0}' does not exist, not up to date.", outputPath);
+            }
+            else
+            {
+                logger.Info("No build outputs defined.");
             }
 
             return true;
