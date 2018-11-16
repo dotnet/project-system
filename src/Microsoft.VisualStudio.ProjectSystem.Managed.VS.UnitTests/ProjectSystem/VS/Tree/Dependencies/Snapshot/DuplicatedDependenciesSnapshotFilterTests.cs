@@ -13,15 +13,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     public class DuplicatedDependenciesSnapshotFilterTests
     {
         [Fact]
-        public void WhenThereNoMatchingDependencies_ShouldNotUpdateCaption()
+        public void BeforeAdd_NoDuplicate_ShouldNotUpdateCaption()
         {
+            // Both top level
+            // Same provider type
+            // Different captions
+            //   -> No change
+
+            const string providerType = "myprovider";
+
             var dependency = IDependencyFactory.Implement(
-                providerType: "myprovider",
+                providerType: providerType,
                 id: "mydependency1",
                 caption: "MyCaption");
 
             var otherDependency = IDependencyFactory.Implement(
-                    providerType: "myprovider",
+                    providerType: providerType,
                     id: "mydependency2",
                     caption: "otherCaption");
 
@@ -53,18 +60,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         [Fact]
-        public void WhenThereIsMatchingDependencies_ShouldUpdateCaptionForAll()
+        public void BeforeAdd_WhenThereIsMatchingDependencies_ShouldUpdateCaptionForAll()
         {
+            // Both top level
+            // Same provider type
+            // Same captions
+            //   -> Changes caption for both to match alias
+
+            const string providerType = "myprovider";
             const string caption = "MyCaption";
+
             var dependency = IDependencyFactory.Implement(
-                providerType: "myprovider",
+                providerType: providerType,
                 id: "mydependency1",
                 caption: caption,
                 alias: "mydependency1 (mydependency1ItemSpec)",
                 setPropertiesCaption: "mydependency1 (mydependency1ItemSpec)");
 
             var otherDependency = IDependencyFactory.Implement(
-                    providerType: "myprovider",
+                    providerType: providerType,
                     id: "mydependency2",
                     caption: caption,
                     alias: "mydependency2 (mydependency2ItemSpec)",
@@ -99,11 +113,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         [Fact]
-        public void WhenThereIsMatchingDependencyWithAliasApplied_ShouldUpdateCaptionForCurrentDependency()
+        public void BeforeAdd_WhenThereIsMatchingDependencyWithAliasApplied_ShouldUpdateCaptionForCurrentDependency()
         {
+            // Both top level
+            // Same provider type
+            // Duplicate caption, though with parenthesized text after one instance
+            //   -> Changes caption of non-parenthesized
+
+            const string providerType = "myprovider";
             const string caption = "MyCaption";
+
             var dependency = IDependencyFactory.Implement(
-                providerType: "myprovider",
+                providerType: providerType,
                 id: "mydependency1",
                 caption: caption,
                 alias: "mydependency1 (mydependency1ItemSpec)",
@@ -111,7 +132,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             var otherDependency = IDependencyFactory.Implement(
                    originalItemSpec: "mydependency2ItemSpec",
-                    providerType: "myprovider",
+                    providerType: providerType,
                     id: "mydependency2",
                     caption: $"{caption} (mydependency2ItemSpec)");
 
@@ -143,16 +164,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         [Fact]
-        public void WhenThereIsMatchingDependency_WithSubstringCaption()
+        public void BeforeAdd_WhenThereIsMatchingDependency_WithSubstringCaption()
         {
+            // Both top level
+            // Same provider type
+            // Duplicate caption, though with parenthesized text after one instance
+            //   -> Changes caption of non-parenthesized
+
+            const string providerType = "myprovider";
             const string caption = "MyCaption";
+
             var dependency = IDependencyFactory.Implement(
-                providerType: "myprovider",
+                providerType: providerType,
                 id: "mydependency1",
                 caption: caption);
 
             var otherDependency = IDependencyFactory.Implement(
-                    providerType: "myprovider",
+                    providerType: providerType,
                     id: "mydependency2",
                     caption: caption + "X");
 

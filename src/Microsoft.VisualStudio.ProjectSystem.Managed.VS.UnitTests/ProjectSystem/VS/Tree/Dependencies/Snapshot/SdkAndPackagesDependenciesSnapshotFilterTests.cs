@@ -23,10 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 id: "mydependency1",
                 topLevel: false);
 
-            var worldBuilder = new Dictionary<string, IDependency>()
-            {
-                { dependency.Object.Id, dependency.Object },
-            }.ToImmutableDictionary().ToBuilder();
+            var worldBuilder = new [] { dependency.Object }.ToImmutableDictionary(d => d.Id).ToBuilder();
 
             var filter = new SdkAndPackagesDependenciesSnapshotFilter();
 
@@ -46,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         [Fact]
         public void WhenSdk_ShouldFindMatchingPackageAndSetProperties()
         {
-            var dependencyIDs = new List<string> { "id1", "id2" }.ToImmutableList();
+            var dependencyIDs = new [] { "id1", "id2" }.ToImmutableList();
 
             var mockTargetFramework = ITargetFrameworkFactory.Implement(moniker: "tfm");
 
@@ -69,11 +66,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     dependencyIDs: dependencyIDs);
 
             var topLevelBuilder = ImmutableHashSet<IDependency>.Empty.Add(sdkDependency.Object).ToBuilder();
-            var worldBuilder = new Dictionary<string, IDependency>()
-            {
-                { sdkDependency.Object.Id, sdkDependency.Object },
-                { otherDependency.Object.Id, otherDependency.Object }
-            }.ToImmutableDictionary().ToBuilder();
+            var worldBuilder = new[] { sdkDependency.Object, otherDependency.Object }.ToImmutableDictionary(d => d.Id).ToBuilder();
 
             var filter = new SdkAndPackagesDependenciesSnapshotFilter();
 
@@ -94,8 +87,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         [Fact]
         public void WhenSdkAndPackageUnresolved_ShouldDoNothing()
         {
-            var dependencyIDs = new List<string> { "id1", "id2" }.ToImmutableList();
-
             var mockTargetFramework = ITargetFrameworkFactory.Implement(moniker: "tfm");
 
             var dependency = IDependencyFactory.Implement(
@@ -133,7 +124,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         [Fact]
         public void WhenPackage_ShouldFindMatchingSdkAndSetProperties()
         {
-            var dependencyIDs = new List<string> { "id1", "id2" }.ToImmutableList();
+            var dependencyIDs = new [] { "id1", "id2" }.ToImmutableList();
 
             var mockTargetFramework = ITargetFrameworkFactory.Implement(moniker: "tfm");
 
@@ -157,11 +148,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     setPropertiesSchemaName: ResolvedSdkReference.SchemaName,
                     equals: true);
 
-            var worldBuilder = new Dictionary<string, IDependency>()
-            {
-                { dependency.Object.Id, dependency.Object },
-                { sdkDependency.Object.Id, sdkDependency.Object }
-            }.ToImmutableDictionary().ToBuilder();
+            var worldBuilder = new[] { dependency.Object, sdkDependency.Object }.ToImmutableDictionary(d => d.Id).ToBuilder();
 
             var topLevelBuilder = ImmutableHashSet<IDependency>.Empty.Add(sdkDependency.Object).ToBuilder();
             var filter = new SdkAndPackagesDependenciesSnapshotFilter();

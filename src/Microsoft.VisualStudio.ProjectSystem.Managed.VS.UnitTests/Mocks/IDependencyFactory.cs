@@ -142,7 +142,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                     .Returns(mock.Object);
             }
 
-            if (equals.HasValue && equals.Value)
+            if (equals == true)
             {
                 mock.Setup(x => x.Equals(It.IsAny<IDependency>())).Returns(true);
             }
