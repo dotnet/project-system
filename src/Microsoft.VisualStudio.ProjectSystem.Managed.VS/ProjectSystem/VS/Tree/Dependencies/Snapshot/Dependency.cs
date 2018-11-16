@@ -89,7 +89,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                      .Add(Folder.IdentityProperty, Caption)
                      .Add(Folder.FullPathProperty, Path);
 
-            if (dependencyModel.DependencyIDs == null)
+            if (dependencyModel.DependencyIDs == null || dependencyModel.DependencyIDs.Count == 0)
             {
                 DependencyIDs = ImmutableList<string>.Empty;
             }
