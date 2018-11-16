@@ -106,17 +106,39 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         /// <summary>
         /// Private constructor used to clone Dependency
         /// </summary>
-        private Dependency(Dependency model, string modelId)
-            : this(model, model.TargetFramework, model._containingProjectPath)
+        private Dependency(
+            Dependency dependency,
+            string caption,
+            bool? resolved,
+            ProjectTreeFlags? flags,
+            string schemaName,
+            IImmutableList<string> dependencyIDs,
+            DependencyIconSet iconSet,
+            bool? isImplicit)
         {
-            // since this is a clone make the modelId and dependencyIds match the original model
-            _modelId = modelId;
-            _fullPath = model._fullPath; // Grab the cached value if we've already created it
+            // Copy values as necessary to create a clone with any properties overridden
 
-            if (model.DependencyIDs != null && model.DependencyIDs.Count != 0)
-            {
-                DependencyIDs = model.DependencyIDs;
-            }
+            _modelId = dependency._modelId;
+            _fullPath = dependency._fullPath;
+            TargetFramework = dependency.TargetFramework;
+            _containingProjectPath = dependency._containingProjectPath;
+            ProviderType = dependency.ProviderType;
+            Name = dependency.Name;
+            Version = dependency.Version;
+            OriginalItemSpec = dependency.OriginalItemSpec;
+            Path = dependency.Path;
+            _schemaItemType = dependency.SchemaItemType;
+            TopLevel = dependency.TopLevel;
+            Visible = dependency.Visible;
+            Priority = dependency.Priority;
+            Properties = dependency.Properties;
+            Caption = caption ?? dependency.Caption;
+            Resolved = resolved ?? dependency.Resolved;
+            Flags = flags ?? dependency.Flags;
+            SchemaName = schemaName ?? dependency.SchemaName;
+            DependencyIDs = dependencyIDs ?? dependency.DependencyIDs;
+            IconSet = iconSet != null ? s_iconSetCache.GetOrAddIconSet(iconSet) : dependency.IconSet;
+            Implicit = isImplicit ?? dependency.Implicit;
         }
 
         #region IDependencyModel
@@ -170,7 +192,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             }
         }
 
-        public string SchemaName { get; private set; }
+        public string SchemaName { get; }
 
         private readonly string _schemaItemType;
 
@@ -188,11 +210,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             }
         }
 
-        public string Caption { get; private set; }
+        public string Caption { get; }
         public string Version { get; }
-        public bool Resolved { get; private set; }
+        public bool Resolved { get; }
         public bool TopLevel { get; }
-        public bool Implicit { get; private set; }
+        public bool Implicit { get; }
         public bool Visible { get; }
 
         public ImageMoniker Icon => IconSet.Icon;
@@ -200,14 +222,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         public ImageMoniker UnresolvedIcon => IconSet.UnresolvedIcon;
         public ImageMoniker UnresolvedExpandedIcon => IconSet.UnresolvedExpandedIcon;
 
-        public DependencyIconSet IconSet { get; private set; }
+        public DependencyIconSet IconSet { get; }
 
         public int Priority { get; }
-        public ProjectTreeFlags Flags { get; set; }
+        public ProjectTreeFlags Flags { get; }
 
         public IImmutableDictionary<string, string> Properties { get; }
 
-        public IImmutableList<string> DependencyIDs { get; private set; }
+        public IImmutableList<string> DependencyIDs { get; }
 
         #endregion
 
@@ -224,44 +246,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             DependencyIconSet iconSet = null,
             bool? isImplicit = null)
         {
-            var clone = new Dependency(this, _modelId);
-
-            if (caption != null)
-            {
-                clone.Caption = caption;
-            }
-
-            if (resolved != null)
-            {
-                clone.Resolved = resolved.Value;
-            }
-
-            if (flags != null)
-            {
-                clone.Flags = flags.Value;
-            }
-
-            if (schemaName != null)
-            {
-                clone.SchemaName = schemaName;
-            }
-
-            if (dependencyIDs != null)
-            {
-                clone.DependencyIDs = dependencyIDs;
-            }
-
-            if (iconSet != null)
-            {
-                clone.IconSet = s_iconSetCache.GetOrAddIconSet(iconSet);
-            }
-
-            if (isImplicit != null)
-            {
-                clone.Implicit = isImplicit.Value;
-            }
-
-            return clone;
+            return new Dependency(this, caption, resolved, flags, schemaName, dependencyIDs, iconSet, isImplicit);
         }
 
         public override int GetHashCode() 
