@@ -132,7 +132,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Visible = dependency.Visible;
             Priority = dependency.Priority;
             Properties = dependency.Properties;
-            Caption = caption ?? dependency.Caption;
+            Caption = caption ?? dependency.Caption; // TODO if Properties contains "Folder.IdentityProperty" should we update it? (see public ctor)
             Resolved = resolved ?? dependency.Resolved;
             Flags = flags ?? dependency.Flags;
             SchemaName = schemaName ?? dependency.SchemaName;
