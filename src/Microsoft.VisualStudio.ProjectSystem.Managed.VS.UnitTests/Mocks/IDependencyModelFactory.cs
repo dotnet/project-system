@@ -127,10 +127,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         private class TestDependencyModel : IDependencyModel
         {
-            public TestDependencyModel()
-            {
-            }
-
             public string ProviderType { get; set; }
             public string Name { get; set; }
             public string Caption { get; set; }

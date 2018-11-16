@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Linq;
 
 using Microsoft.VisualStudio.ProjectSystem.Properties;
@@ -46,6 +47,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Requires.NotNull(snapshotFilters, nameof(snapshotFilters));
             Requires.NotNull(subTreeProviderByProviderType, nameof(subTreeProviderByProviderType));
             // projectItemSpecs can be null
+
+#if DEBUG
+            ValidateDependencies(previousSnapshot.TopLevelDependencies, previousSnapshot.DependenciesWorld);
+#endif
 
             bool anyChanges = false;
 
@@ -174,6 +179,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             TopLevelDependencies = topLevelDependencies;
             DependenciesWorld = dependenciesWorld;
 
+#if DEBUG
+            ValidateDependencies(topLevelDependencies, dependenciesWorld);
+#endif
+
             foreach (IDependency topLevelDependency in TopLevelDependencies)
             {
                 if (!string.IsNullOrEmpty(topLevelDependency.Path))
@@ -183,6 +192,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                         topLevelDependency);
                 }
             }
+        }
+
+        [Conditional("DEBUG")]
+        public static void ValidateDependencies(ImmutableHashSet<IDependency> topLevelDependencies, ImmutableDictionary<string, IDependency> dependenciesWorld)
+        {
+            System.Diagnostics.Debug.Assert(
+                topLevelDependencies.IsSubsetOf(dependenciesWorld.Values),
+                "Received topLevelDependencies is not a subset of dependenciesWorld");
+            System.Diagnostics.Debug.Assert(
+                topLevelDependencies.SetEquals(dependenciesWorld.Values.Where(d => d.TopLevel)),
+                "Received topLevelDependencies do not match dependenciesWorld having TopLevel==true");
+            System.Diagnostics.Debug.Assert(
+                dependenciesWorld.All(pair => string.Equals(pair.Key, pair.Value.Id, StringComparison.OrdinalIgnoreCase)),
+                "dependenciesWorld dictionary has entries whose keys don't match the value's ID");
         }
 
         #endregion
