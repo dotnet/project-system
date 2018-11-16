@@ -235,7 +235,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
         public ITargetFramework TargetFramework { get; }
 
-        public string Alias => GetAlias(this);
+        public string Alias
+        {
+            get
+            {
+                string path = OriginalItemSpec ?? Path;
+
+                return string.IsNullOrEmpty(path) || path.Equals(Caption, StringComparison.OrdinalIgnoreCase)
+                    ? Caption
+                    : string.Format(CultureInfo.CurrentCulture, "{0} ({1})", Caption, path);
+            }
+        }
 
         public IDependency SetProperties(
             string caption = null,
@@ -293,19 +303,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             if (Visible)  sb.Append(" Visible");
 
             return sb.ToString();
-        }
-
-        private static string GetAlias(IDependency dependency)
-        {
-            string path = dependency.OriginalItemSpec ?? dependency.Path;
-            if (string.IsNullOrEmpty(path) || path.Equals(dependency.Caption, StringComparison.OrdinalIgnoreCase))
-            {
-                return dependency.Caption;
-            }
-            else
-            {
-                return string.Format(CultureInfo.CurrentCulture, "{0} ({1})", dependency.Caption, path);
-            }
         }
 
         /// <summary>
