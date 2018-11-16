@@ -64,10 +64,14 @@ namespace Microsoft.VisualStudio.Threading.Tasks
         /// </list>
         /// </returns>
         /// <exception cref="ObjectDisposedException">This object has been disposed.</exception>
-        /// <exception cref="OperationCanceledException">Another call to this method caused the token to be cancelled before it could be returned.</exception>
         public CancellationToken CreateNext(CancellationToken token = default)
         {
             var nextSource = CancellationTokenSource.CreateLinkedTokenSource(token, _superToken);
+
+            // Obtain the token before exchange, as otherwise the CTS may be cancelled before
+            // we request the Token, which will result in an ObjectDisposedException.
+            // This way we would return a cancelled token, which is reasonable.
+            CancellationToken nextToken = nextSource.Token;
 
             CancellationTokenSource priorSource = Interlocked.Exchange(ref _cts, nextSource);
 
@@ -89,16 +93,7 @@ namespace Microsoft.VisualStudio.Threading.Tasks
                 priorSource.Dispose();
             }
 
-            try
-            {
-                return nextSource.Token;
-            }
-            catch (ObjectDisposedException ex)
-            {
-                throw new OperationCanceledException(
-                    "The token was cancelled by subsequent request before it could be returned.",
-                    ex);
-            }
+            return nextToken;
         }
 
         /// <inheritdoc />
