@@ -9,6 +9,7 @@ using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Filters;
+using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions;
 
 using Xunit;
 
@@ -57,7 +58,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             var changes = IDependenciesChangesFactory.Implement(
                 addedNodes: Array.Empty<IDependencyModel>(), 
-                removedNodes: Array.Empty<RemovedDependencyIdentity>());
+                removedNodes: Array.Empty<IDependencyModel>());
 
             var snapshot = TargetedDependenciesSnapshot.FromChanges(
                 projectPath,
@@ -113,7 +114,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             var changes = IDependenciesChangesFactory.Implement(
                 addedNodes: Array.Empty<IDependencyModel>(), 
-                removedNodes: Array.Empty<RemovedDependencyIdentity>());
+                removedNodes: Array.Empty<IDependencyModel>());
 
             var snapshot = TargetedDependenciesSnapshot.FromChanges(
                 projectPath,
@@ -167,9 +168,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 dependenciesWorld: new [] { dependencyTop1, dependencyChild1 },
                 topLevelDependencies: new [] { dependencyTop1 });
 
-            var changes = IDependenciesChangesFactory.Implement(
-                addedNodes: Array.Empty<IDependencyModel>(), 
-                removedNodes: new [] { new RemovedDependencyIdentity(dependencyTop1.ProviderType, dependencyTop1.Id ) });
+            var changes = new DependenciesChanges();
+            changes.IncludeRemovedChange(dependencyTop1.ProviderType, dependencyTop1.Id);
 
             var snapshotFilter = new TestDependenciesSnapshotFilter()
                     .ImplementBeforeRemoveResult(FilterAction.Cancel, @"tfm1\xxx\newdependency1", null);
@@ -226,9 +226,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 dependenciesWorld: new [] { dependencyTop1, dependencyChild1 },
                 topLevelDependencies: new [] { dependencyTop1 });
 
-            var changes = IDependenciesChangesFactory.Implement(
-                addedNodes: Array.Empty<IDependencyModel>(), 
-                removedNodes: new [] { new RemovedDependencyIdentity("Xxx", "topdependency1") });
+            var changes = new DependenciesChanges();
+            changes.IncludeRemovedChange("Xxx", "topdependency1");
 
             var snapshotFilter = new TestDependenciesSnapshotFilter()
                     .ImplementBeforeRemoveResult(FilterAction.Cancel, @"tfm1\xxx\topdependency1", null)
@@ -304,9 +303,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 dependenciesWorld: new [] { dependencyTop1, dependencyChild1 },
                 topLevelDependencies: new [] { dependencyTop1 });
 
-            var changes = IDependenciesChangesFactory.Implement(
-                addedNodes: new [] { dependencyModelNew1 }, 
-                removedNodes: Array.Empty<RemovedDependencyIdentity>());
+            var changes = new DependenciesChanges();
+            changes.IncludeAddedChange(dependencyModelNew1);
 
             var snapshotFilter = new TestDependenciesSnapshotFilter()
                     .ImplementBeforeAddResult(FilterAction.Cancel, @"tfm1\xxx\newdependency1", null);
@@ -377,7 +375,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             var changes = IDependenciesChangesFactory.Implement(
                 addedNodes: new [] { dependencyModelNew1 }, 
-                removedNodes: Array.Empty<RemovedDependencyIdentity>());
+                removedNodes: Array.Empty<IDependencyModel>());
 
             var snapshotFilter = new TestDependenciesSnapshotFilter()
                     .ImplementBeforeAddResult(FilterAction.Cancel, @"tfm1\xxx\newdependency1", null)
@@ -523,9 +521,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 dependenciesWorld: new [] { dependencyTop1, dependencyChild1, dependencyRemoved1 },
                 topLevelDependencies: new [] { dependencyTop1 });
 
-            var changes = IDependenciesChangesFactory.Implement(
-                addedNodes: new [] { dependencyModelAdded1, dependencyModelAdded2, dependencyModelAdded3 },
-                removedNodes: new[] { new RemovedDependencyIdentity("Xxx", "Removeddependency1") });
+            var changes = new DependenciesChanges();
+            changes.IncludeAddedChange(dependencyModelAdded1);
+            changes.IncludeAddedChange(dependencyModelAdded2);
+            changes.IncludeAddedChange(dependencyModelAdded3);
+            changes.IncludeRemovedChange("Xxx", "Removeddependency1");
 
             var snapshotFilter = new TestDependenciesSnapshotFilter()
                 .ImplementBeforeAddResult(FilterAction.Cancel, @"tfm1\xxx\addeddependency1", null)
@@ -609,7 +609,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             var changes = IDependenciesChangesFactory.Implement(
                 addedNodes: new[] { dependencyModelTopAdded },
-                removedNodes: Array.Empty<RemovedDependencyIdentity>());
+                removedNodes: Array.Empty<IDependencyModel>());
 
             var snapshotFilter = new TestDependenciesSnapshotFilter()
                     .ImplementBeforeAddResult(FilterAction.ShouldBeAdded, @"tfm1\xxx\topdependency1", dependencyTopUpdated);
