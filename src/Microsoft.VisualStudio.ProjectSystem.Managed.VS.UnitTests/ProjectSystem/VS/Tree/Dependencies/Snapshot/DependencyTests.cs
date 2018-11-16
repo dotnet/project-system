@@ -234,7 +234,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var expectedDependencyId = "tfm1\\providerType\\glass";
 
             Assert.Equal(expectedId, dependency.Id);
-            AssertEx.CollectionLength(dependency.DependencyIDs, 1);
+            Assert.Single(dependency.DependencyIDs);
             Assert.Equal(expectedDependencyId, dependency.DependencyIDs[0]);
 
             var newDependency = dependency.SetProperties(
