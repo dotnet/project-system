@@ -113,7 +113,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             {
                 // Run through once so we know things are considered up to date before running further tests.
                 // Most tests will assert that the project is not up to date, so this provides a good baseline.
-                await AssertUpToDateAsync();
+                await AssertUpToDateAsync("No build outputs defined.");
             }
         }
 
@@ -243,7 +243,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             _projectVersion--;
 
-            await AssertUpToDateAsync();
+            await AssertUpToDateAsync("No build outputs defined.");
         }
 
         [Fact]
@@ -467,6 +467,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             await AssertNotUpToDateAsync(
                 new[]
                 {
+                    "No build outputs defined.",
                     $"Latest write timestamp on input marker is {outputTime.AddMinutes(2).ToLocalTime()} on 'Reference1OriginalPath'.",
                     $"Write timestamp on output marker is {outputTime.ToLocalTime()} on 'C:\\Dev\\Solution\\Project\\Marker'.",
                     "Input marker is newer than output marker, not up to date."
@@ -580,10 +581,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             await AssertNotUpToDateAsync(
                 new[]
                 {
-                    $"Checking build output file '{sourcePath}':",
+                    "No build outputs defined.",
+                    $"Checking copied output ({UpToDateCheckBuilt.SchemaName} with {UpToDateCheckBuilt.OriginalProperty} property) file '{sourcePath}':",
                     $"    Source {sourceTime.ToLocalTime()}: '{sourcePath}'.",
                     $"    Destination {destinationTime.ToLocalTime()}: '{destinationPath}'.",
-                    "Build output destination is newer than source, not up to date."
+                    "Source is newer than build output destination, not up to date."
                 },
                 "CopyOutput");
         }
@@ -611,7 +613,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             await AssertNotUpToDateAsync(
                 new[]
                 {
-                    $"Checking build output file '{sourcePath}':",
+                    "No build outputs defined.",
+                    $"Checking copied output ({UpToDateCheckBuilt.SchemaName} with {UpToDateCheckBuilt.OriginalProperty} property) file '{sourcePath}':",
                     $"Source '{sourcePath}' does not exist, not up to date."
                 },
                 "CopyOutput");
@@ -642,7 +645,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             await AssertNotUpToDateAsync(
                 new[]
                 {
-                    $"Checking build output file '{sourcePath}':",
+                    "No build outputs defined.",
+                    $"Checking copied output ({UpToDateCheckBuilt.SchemaName} with {UpToDateCheckBuilt.OriginalProperty} property) file '{sourcePath}':",
                     $"    Source {sourceTime.ToLocalTime()}: '{sourcePath}'.",
                     $"Destination '{destinationPath}' does not exist, not up to date."
                 },
@@ -676,6 +680,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             await AssertNotUpToDateAsync(
                 new[]
                 {
+                    "No build outputs defined.",
                     $"Checking PreserveNewest file '{sourcePath}':",
                     $"    Source {sourceTime.ToLocalTime()}: '{sourcePath}'.",
                     $"    Destination {destinationTime.ToLocalTime()}: '{destinationPath}'.",
@@ -709,6 +714,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             await AssertNotUpToDateAsync(
                 new[]
                 {
+                    "No build outputs defined.",
                     $"Checking PreserveNewest file '{sourcePath}':",
                     $"Source '{sourcePath}' does not exist, not up to date."
                 },
@@ -740,6 +746,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             await AssertNotUpToDateAsync(
                 new[]
                 {
+                    "No build outputs defined.",
                     $"Checking PreserveNewest file '{sourcePath}':",
                     $"    Source {sourceTime.ToLocalTime()}: '{sourcePath}'.",
                     $"Destination '{destinationPath}' does not exist, not up to date."
@@ -776,9 +783,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             writer.Assert();
         }
 
-        private async Task AssertUpToDateAsync()
+        private async Task AssertUpToDateAsync(params string[] logMessages)
         {
-            var writer = new AssertWriter { "Project is up to date." };
+            var writer = new AssertWriter();
+
+            if (logMessages != null)
+            {
+                foreach (var logMessage in logMessages)
+                {
+                    writer.Add(logMessage);
+                }
+            }
+
+            writer.Add("Project is up to date.");
+
             Assert.True(await _buildUpToDateCheck.IsUpToDateAsync(BuildAction.Build, writer));
             AssertTelemetrySuccessEvent();
             writer.Assert();
