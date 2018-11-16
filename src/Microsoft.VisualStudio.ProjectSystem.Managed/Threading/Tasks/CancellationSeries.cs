@@ -68,6 +68,11 @@ namespace Microsoft.VisualStudio.Threading.Tasks
         {
             var nextSource = CancellationTokenSource.CreateLinkedTokenSource(token, _superToken);
 
+            // Obtain the token before exchange, as otherwise the CTS may be cancelled before
+            // we request the Token, which will result in an ObjectDisposedException.
+            // This way we would return a cancelled token, which is reasonable.
+            CancellationToken nextToken = nextSource.Token;
+
             CancellationTokenSource priorSource = Interlocked.Exchange(ref _cts, nextSource);
 
             if (priorSource == null)
@@ -88,7 +93,7 @@ namespace Microsoft.VisualStudio.Threading.Tasks
                 priorSource.Dispose();
             }
 
-            return nextSource.Token;
+            return nextToken;
         }
 
         /// <inheritdoc />
