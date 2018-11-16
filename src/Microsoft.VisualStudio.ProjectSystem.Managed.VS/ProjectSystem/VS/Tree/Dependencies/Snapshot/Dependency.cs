@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Immutable;
-using System.Globalization;
 using System.Text;
 
 using Microsoft.VisualStudio.Imaging.Interop;
@@ -243,7 +242,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
                 return string.IsNullOrEmpty(path) || path.Equals(Caption, StringComparison.OrdinalIgnoreCase)
                     ? Caption
-                    : string.Format(CultureInfo.CurrentCulture, "{0} ({1})", Caption, path);
+                    : string.Concat(Caption, " (", path, ")");
             }
         }
 
