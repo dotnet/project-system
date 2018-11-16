@@ -48,6 +48,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         [Fact]
+        public void TCreateEmpty()
+        {
+            const string projectPath = @"c:\somefolder\someproject\a.csproj";
+            var targetFramework = ITargetFrameworkFactory.Implement("tfm1");
+            var catalogs = IProjectCatalogSnapshotFactory.Create();
+
+            var snapshot = TargetedDependenciesSnapshot.CreateEmpty(projectPath, targetFramework, catalogs);
+
+            Assert.Same(projectPath, snapshot.ProjectPath);
+            Assert.Same(catalogs, snapshot.Catalogs);
+            Assert.Same(targetFramework, snapshot.TargetFramework);
+            Assert.False(snapshot.HasUnresolvedDependency);
+            Assert.Empty(snapshot.DependenciesWorld);
+            Assert.Empty(snapshot.TopLevelDependencies);
+            Assert.False(snapshot.CheckForUnresolvedDependencies("foo"));
+            Assert.Empty(snapshot.GetDependencyChildren(new TestDependency()));
+        }
+
+        [Fact]
         public void TFromChanges_Empty()
         {
             const string projectPath = @"c:\somefolder\someproject\a.csproj";
@@ -125,6 +144,67 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 null);
 
             Assert.Same(previousSnapshot, snapshot);
+        }
+
+        [Fact]
+        public void TFromChanges_AddingToEmpty()
+        {
+            const string projectPath = @"c:\somefolder\someproject\a.csproj";
+            var targetFramework = ITargetFrameworkFactory.Implement("tfm1");
+
+            var catalogs = IProjectCatalogSnapshotFactory.Create();
+            var previousSnapshot = TargetedDependenciesSnapshot.CreateEmpty(projectPath, targetFramework, catalogs);
+
+            var resolvedTop = IDependencyModelFactory.FromJson(@"
+                {
+                    ""ProviderType"": ""Xxx"",
+                    ""Id"": ""dependency1"",
+                    ""Name"": ""Dependency1"",
+                    ""Caption"": ""Dependency1"",
+                    ""SchemaItemType"": ""Xxx"",
+                    ""Resolved"": ""true"",
+                    ""TopLevel"": ""true""
+                }",
+                icon: KnownMonikers.Uninstall,
+                expandedIcon: KnownMonikers.Uninstall);
+
+            var unresolved = IDependencyModelFactory.FromJson(@"
+                {
+                    ""ProviderType"": ""Xxx"",
+                    ""Id"": ""dependency2"",
+                    ""Name"": ""Dependency2"",
+                    ""Caption"": ""Dependency2"",
+                    ""SchemaItemType"": ""Xxx"",
+                    ""Resolved"": ""false"",
+                    ""TopLevel"": ""false""
+                }",
+                icon: KnownMonikers.Uninstall,
+                expandedIcon: KnownMonikers.Uninstall);
+
+            var changes = IDependenciesChangesFactory.Implement(
+                addedNodes: new[] { resolvedTop, unresolved },
+                removedNodes: Array.Empty<RemovedDependencyIdentity>());
+
+            const string updatedProjectPath = "updatedProjectPath";
+
+            var snapshot = TargetedDependenciesSnapshot.FromChanges(
+                updatedProjectPath,
+                previousSnapshot,
+                changes,
+                catalogs,
+                Array.Empty<IDependenciesSnapshotFilter>(),
+                new Dictionary<string, IProjectDependenciesSubTreeProvider>(),
+                null);
+
+            Assert.NotSame(previousSnapshot, snapshot);
+            Assert.Same(updatedProjectPath, snapshot.ProjectPath);
+            Assert.Same(catalogs, snapshot.Catalogs);
+            Assert.True(snapshot.HasUnresolvedDependency);
+            AssertEx.CollectionLength(snapshot.DependenciesWorld, 2);
+            AssertEx.CollectionLength(snapshot.TopLevelDependencies, 1);
+            Assert.Same(resolvedTop, snapshot.TopLevelDependencies.Single());
+            Assert.Same(resolvedTop, snapshot.DependenciesWorld[resolvedTop.Id]);
+            Assert.Same(unresolved, snapshot.DependenciesWorld[unresolved.Id]);
         }
 
         [Fact]
