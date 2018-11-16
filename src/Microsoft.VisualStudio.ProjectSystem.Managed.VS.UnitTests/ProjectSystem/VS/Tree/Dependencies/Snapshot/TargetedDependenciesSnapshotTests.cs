@@ -56,9 +56,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var catalogs = IProjectCatalogSnapshotFactory.Create();
             var previousSnapshot = TargetedDependenciesSnapshot.CreateEmpty(projectPath, targetFramework, catalogs);
 
-            var changes = IDependenciesChangesFactory.Implement(
-                addedNodes: Array.Empty<IDependencyModel>(), 
-                removedNodes: Array.Empty<IDependencyModel>());
+            var changes = new DependenciesChanges();
 
             var snapshot = TargetedDependenciesSnapshot.FromChanges(
                 projectPath,
@@ -112,9 +110,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 dependenciesWorld: new [] { dependencyTop1, dependencyChild1 },
                 topLevelDependencies: new [] { dependencyTop1 });
 
-            var changes = IDependenciesChangesFactory.Implement(
-                addedNodes: Array.Empty<IDependencyModel>(), 
-                removedNodes: Array.Empty<IDependencyModel>());
+            var changes = new DependenciesChanges();
 
             var snapshot = TargetedDependenciesSnapshot.FromChanges(
                 projectPath,
@@ -373,9 +369,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 dependenciesWorld: new [] { dependencyTop1, dependencyChild1 },
                 topLevelDependencies: new [] { dependencyTop1 });
 
-            var changes = IDependenciesChangesFactory.Implement(
-                addedNodes: new [] { dependencyModelNew1 }, 
-                removedNodes: Array.Empty<IDependencyModel>());
+            var changes = new DependenciesChanges();
+            changes.IncludeAddedChange(dependencyModelNew1);
 
             var snapshotFilter = new TestDependenciesSnapshotFilter()
                     .ImplementBeforeAddResult(FilterAction.Cancel, @"tfm1\xxx\newdependency1", null)
@@ -607,9 +602,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 dependenciesWorld: new[] { dependencyTopPrevious },
                 topLevelDependencies: new[] { dependencyTopPrevious });
 
-            var changes = IDependenciesChangesFactory.Implement(
-                addedNodes: new[] { dependencyModelTopAdded },
-                removedNodes: Array.Empty<IDependencyModel>());
+            var changes = new DependenciesChanges();
+            changes.IncludeAddedChange(dependencyModelTopAdded);
 
             var snapshotFilter = new TestDependenciesSnapshotFilter()
                     .ImplementBeforeAddResult(FilterAction.ShouldBeAdded, @"tfm1\xxx\topdependency1", dependencyTopUpdated);
