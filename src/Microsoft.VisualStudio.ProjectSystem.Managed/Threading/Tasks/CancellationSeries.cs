@@ -64,6 +64,7 @@ namespace Microsoft.VisualStudio.Threading.Tasks
         /// </list>
         /// </returns>
         /// <exception cref="ObjectDisposedException">This object has been disposed.</exception>
+        /// <exception cref="OperationCanceledException">Another call to this method caused the token to be cancelled before it could be returned.</exception>
         public CancellationToken CreateNext(CancellationToken token = default)
         {
             var nextSource = CancellationTokenSource.CreateLinkedTokenSource(token, _superToken);
@@ -88,7 +89,16 @@ namespace Microsoft.VisualStudio.Threading.Tasks
                 priorSource.Dispose();
             }
 
-            return nextSource.Token;
+            try
+            {
+                return nextSource.Token;
+            }
+            catch (ObjectDisposedException ex)
+            {
+                throw new OperationCanceledException(
+                    "The token was cancelled by subsequent request before it could be returned.",
+                    ex);
+            }
         }
 
         /// <inheritdoc />
