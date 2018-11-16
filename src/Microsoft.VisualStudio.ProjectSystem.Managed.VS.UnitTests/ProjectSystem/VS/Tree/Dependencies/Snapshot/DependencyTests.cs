@@ -311,7 +311,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             var dependencyWithUpdatedIconSet = dependency.SetProperties(iconSet: new DependencyIconSet(KnownMonikers.Reference, KnownMonikers.Reference, KnownMonikers.Reference, KnownMonikers.Reference));
 
-            Assert.True(ReferenceEquals(dependency.IconSet, dependencyWithUpdatedIconSet.IconSet));
+            Assert.Same(dependency.IconSet, dependencyWithUpdatedIconSet.IconSet);
         }
 
         [Fact]
@@ -326,7 +326,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             var newDependency = new Dependency(dependency, ITargetFrameworkFactory.Implement("tfm2"), @"C:\Foo\Project.csproj");
 
-            Assert.True(ReferenceEquals(dependency.IconSet, newDependency.IconSet));
+            Assert.Same(dependency.IconSet, newDependency.IconSet);
         }
 
         [Fact]
@@ -357,7 +357,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var dependency1 = new Dependency(model1, targetFramework, @"C:\Foo\Project.csproj");
             var dependency2 = new Dependency(model2, targetFramework, @"C:\Foo\Project.csproj");
 
-            Assert.True(ReferenceEquals(dependency1.IconSet, dependency2.IconSet));
+            Assert.Same(dependency1.IconSet, dependency2.IconSet);
         }
 
         [Fact]
