@@ -221,7 +221,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     ProjectItem unresolvedReferenceItem = project.GetItemsByEvaluatedInclude(nodeItemContext.ItemName)
                         .FirstOrDefault(item => string.Equals(item.ItemType,
                                                               nodeItemContext.ItemType,
-                                                              StringComparison.OrdinalIgnoreCase));
+                                                              StringComparisons.ItemTypes));
 
                     Report.IfNot(unresolvedReferenceItem != null, "Cannot find reference to remove.");
                     if (unresolvedReferenceItem != null)
