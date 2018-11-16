@@ -267,9 +267,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         public bool Equals(IDependency other) 
             => StringComparer.OrdinalIgnoreCase.Equals(Id, other?.Id);
 
-        public int CompareTo(IDependency other)
-            => StringComparer.OrdinalIgnoreCase.Compare(Id, other?.Id);
-
         public override string ToString()
         {
             // Used for debugging only

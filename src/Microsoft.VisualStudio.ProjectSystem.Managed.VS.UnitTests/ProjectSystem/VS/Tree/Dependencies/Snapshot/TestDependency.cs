@@ -59,8 +59,5 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
         public bool Equals(IDependency other) 
             => other != null && other.Id.Equals(Id, StringComparison.OrdinalIgnoreCase);
-
-        public int CompareTo(IDependency other) 
-            => other == null ? 1 : StringComparer.OrdinalIgnoreCase.Compare(Id, other.Id);
     }
 }
