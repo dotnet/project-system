@@ -24,8 +24,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         private Guid _projectGuid;
         private IDisposable _subscription;
 
+        /// <remarks>
+        /// <see cref="UnconfiguredProject"/> must be imported in the contructor in order for scope of this class' export to be correct.
+        /// </remarks>
         [ImportingConstructor]
         public StartupProjectRegistrar(
+            UnconfiguredProject project,
             IVsService<SVsStartupProjectsListService, IVsStartupProjectsListService> startupProjectsListService,
             IProjectThreadingService threadingService,
             ISafeProjectGuidService projectGuidService,

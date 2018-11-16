@@ -163,21 +163,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         }
 
         private async Task<StartupProjectRegistrar> CreateInitializedInstanceAsync(
-           UnconfiguredProject project = null,
            IVsStartupProjectsListService vsStartupProjectsListService = null,
            IProjectThreadingService threadingService = null,
            ISafeProjectGuidService projectGuidService = null,
            IActiveConfiguredProjectSubscriptionService projectSubscriptionService = null,
            ActiveConfiguredProject<DebuggerLaunchProviders> launchProviders = null)
         {
-            var instance = CreateInstance(project, vsStartupProjectsListService, threadingService, projectGuidService, projectSubscriptionService, launchProviders);
+            var instance = CreateInstance(vsStartupProjectsListService, threadingService, projectGuidService, projectSubscriptionService, launchProviders);
             await instance.InitializeAsync();
 
             return instance;
         }
 
         private StartupProjectRegistrar CreateInstance(
-            UnconfiguredProject project = null,
             IVsStartupProjectsListService vsStartupProjectsListService = null,
             IProjectThreadingService threadingService = null,
             ISafeProjectGuidService projectGuidService = null,
@@ -185,6 +183,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             ActiveConfiguredProject<DebuggerLaunchProviders> launchProviders = null)
         {
             var instance = new StartupProjectRegistrar(
+                null,
                 IVsServiceFactory.Create<SVsStartupProjectsListService, IVsStartupProjectsListService>(vsStartupProjectsListService),
                 threadingService ?? IProjectThreadingServiceFactory.Create(),
                 projectGuidService ?? ISafeProjectGuidServiceFactory.ImplementGetProjectGuidAsync(Guid.NewGuid()),
