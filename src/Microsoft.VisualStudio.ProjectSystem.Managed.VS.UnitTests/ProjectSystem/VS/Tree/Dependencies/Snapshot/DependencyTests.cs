@@ -66,10 +66,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(string.Empty, dependency.Path);
             Assert.Equal("Folder", dependency.SchemaName);
             Assert.Equal("Folder", dependency.SchemaItemType);
-            Assert.True(dependency.Properties.Count == 2);
+            AssertEx.CollectionLength(dependency.Properties, 2);
             Assert.True(dependency.Properties.ContainsKey("Identity"));
             Assert.True(dependency.Properties.ContainsKey("FullPath"));
-            Assert.True(dependency.DependencyIDs.Count == 0);
+            Assert.Empty(dependency.DependencyIDs);
         }
 
         [Fact]
@@ -117,9 +117,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(mockModel.Implicit, dependency.Implicit);
             Assert.Equal(mockModel.Visible, dependency.Visible);
             Assert.Equal(mockModel.Priority, dependency.Priority);
-            Assert.True(dependency.Properties.Count == 1);
+            Assert.Single(dependency.Properties);
             Assert.True(dependency.Properties.ContainsKey("prop1"));
-            Assert.True(dependency.DependencyIDs.Count == 1);
+            Assert.Single(dependency.DependencyIDs);
             Assert.Equal("Tfm1\\xxx\\otherid", dependency.DependencyIDs[0]);
             Assert.True(dependency.Flags.Contains(DependencyTreeFlags.ResolvedFlags));
             Assert.True(dependency.Flags.Contains(DependencyTreeFlags.DependencyFlags));
@@ -217,7 +217,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal("newcaption", newDependency.Caption);
             Assert.True(newDependency.Resolved);
             Assert.True(newDependency.Flags.Equals(DependencyTreeFlags.BaseReferenceFlags));
-            Assert.True(newDependency.DependencyIDs.Count == 1);
+            Assert.Single(newDependency.DependencyIDs);
             Assert.Equal("aaa", newDependency.DependencyIDs[0]);
         }
 
@@ -234,7 +234,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var expectedDependencyId = "tfm1\\providerType\\glass";
 
             Assert.Equal(expectedId, dependency.Id);
-            Assert.True(dependency.DependencyIDs.Count == 1);
+            AssertEx.CollectionLength(dependency.DependencyIDs, 1);
             Assert.Equal(expectedDependencyId, dependency.DependencyIDs[0]);
 
             var newDependency = dependency.SetProperties(
