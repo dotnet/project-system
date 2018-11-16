@@ -26,7 +26,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
         [ImportingConstructor]
         public StartupProjectRegistrar(
-            UnconfiguredProject project,
             IVsService<SVsStartupProjectsListService, IVsStartupProjectsListService> startupProjectsListService,
             IProjectThreadingService threadingService,
             ISafeProjectGuidService projectGuidService,

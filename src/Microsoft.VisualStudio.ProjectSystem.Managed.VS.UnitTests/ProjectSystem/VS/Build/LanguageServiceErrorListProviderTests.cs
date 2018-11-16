@@ -351,7 +351,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         {
             host = host ?? ILanguageServiceHostFactory.Create();
 
-            var provider = new LanguageServiceErrorListProvider(UnconfiguredProjectFactory.Create(), host);
+            var provider = new LanguageServiceErrorListProvider(host);
 
             return provider;
         }

@@ -25,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         private IVsLanguageServiceBuildErrorReporter2 _languageServiceBuildErrorReporter;
 
         [ImportingConstructor]
-        public LanguageServiceErrorListProvider(UnconfiguredProject project, ILanguageServiceHost host)
+        public LanguageServiceErrorListProvider(ILanguageServiceHost host)
         {
             _host = host;
         }

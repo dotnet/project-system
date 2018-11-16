@@ -185,7 +185,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             ActiveConfiguredProject<DebuggerLaunchProviders> launchProviders = null)
         {
             var instance = new StartupProjectRegistrar(
-                project ?? UnconfiguredProjectFactory.Create(),
                 IVsServiceFactory.Create<SVsStartupProjectsListService, IVsStartupProjectsListService>(vsStartupProjectsListService),
                 threadingService ?? IProjectThreadingServiceFactory.Create(),
                 projectGuidService ?? ISafeProjectGuidServiceFactory.ImplementGetProjectGuidAsync(Guid.NewGuid()),
