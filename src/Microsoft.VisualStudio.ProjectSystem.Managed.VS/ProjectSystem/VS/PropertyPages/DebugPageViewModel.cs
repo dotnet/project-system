@@ -451,9 +451,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 if (_environmentVariablesValid != value)
                 {
                     _environmentVariablesValid = value;
-                    if (value == true && ClearEnvironmentVariablesGridError != null)
+                    if (value == true)
                     {
-                        ClearEnvironmentVariablesGridError.Invoke(this, EventArgs.Empty);
+                        ClearEnvironmentVariablesGridError?.Invoke(this, EventArgs.Empty);
                     }
                     OnPropertyChanged(nameof(EnvironmentVariablesValid), suppressInvalidation: true);
                 }
@@ -772,10 +772,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                         EnvironmentVariables.Add(newRow);
                         EnvironmentVariablesRowSelectedIndex = EnvironmentVariables.Count - 1;
                         //Raise event to focus on 
-                        if (FocusEnvironmentVariablesGridRow != null)
-                        {
-                            FocusEnvironmentVariablesGridRow.Invoke(this, EventArgs.Empty);
-                        }
+                        FocusEnvironmentVariablesGridRow?.Invoke(this, EventArgs.Empty);
                     }));
             }
         }
