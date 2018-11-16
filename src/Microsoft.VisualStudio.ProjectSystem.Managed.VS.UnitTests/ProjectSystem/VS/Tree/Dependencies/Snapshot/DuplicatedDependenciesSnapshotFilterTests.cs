@@ -1,9 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System.Collections.Generic;
 using System.Collections.Immutable;
 
-using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Filters;
 
 using Xunit;
@@ -25,21 +23,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var dependency = IDependencyFactory.Implement(
                 providerType: providerType,
                 id: "mydependency1",
-                caption: "MyCaption");
+                caption: "MyCaption",
+                topLevel: true);
 
             var otherDependency = IDependencyFactory.Implement(
                     providerType: providerType,
                     id: "mydependency2",
-                    caption: "otherCaption");
+                    caption: "otherCaption",
+                    topLevel: true);
 
-            var worldBuilder = new Dictionary<string, IDependency>()
-            {
-                { dependency.Object.Id, dependency.Object }
-            }.ToImmutableDictionary().ToBuilder();
-            var topLevelBuilder = ImmutableHashSet<IDependency>.Empty
-                                                               .Add(dependency.Object)
-                                                               .Add(otherDependency.Object)
-                                                               .ToBuilder();
+            var worldBuilder = new[] { dependency.Object, otherDependency.Object }.ToImmutableDictionary(d => d.Id).ToBuilder();
 
             var filter = new DuplicatedDependenciesSnapshotFilter();
 
@@ -48,15 +41,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 null,
                 dependency.Object,
                 worldBuilder,
-                topLevelBuilder,
                 null,
                 null,
                 out bool filterAnyChanges);
 
-            Assert.False(worldBuilder.ContainsKey(otherDependency.Object.Id));
-
             dependency.VerifyAll();
             otherDependency.VerifyAll();
+
+            Assert.False(filterAnyChanges);
+            Assert.Same(dependency.Object, resultDependency);
+            Assert.Same(dependency.Object, worldBuilder[dependency.Object.Id]);
+            Assert.Same(otherDependency.Object, worldBuilder[otherDependency.Object.Id]);
         }
 
         [Fact]
@@ -75,24 +70,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 id: "mydependency1",
                 caption: caption,
                 alias: "mydependency1 (mydependency1ItemSpec)",
-                setPropertiesCaption: "mydependency1 (mydependency1ItemSpec)");
+                setPropertiesCaption: "mydependency1 (mydependency1ItemSpec)", // should set caption to its alias
+                topLevel: true);
 
             var otherDependency = IDependencyFactory.Implement(
                     providerType: providerType,
                     id: "mydependency2",
                     caption: caption,
                     alias: "mydependency2 (mydependency2ItemSpec)",
-                    setPropertiesCaption: "mydependency2 (mydependency2ItemSpec)",
-                    equals: true);
+                    setPropertiesCaption: "mydependency2 (mydependency2ItemSpec)", // should set caption to its alias
+                    equals: true,
+                    topLevel: true);
 
-            var worldBuilder = new Dictionary<string, IDependency>()
-            {
-                { dependency.Object.Id, dependency.Object }
-            }.ToImmutableDictionary().ToBuilder();
-            var topLevelBuilder = ImmutableHashSet<IDependency>.Empty
-                                                               .Add(dependency.Object)
-                                                               .Add(otherDependency.Object)
-                                                               .ToBuilder();
+            var worldBuilder = new[] { dependency.Object, otherDependency.Object }.ToImmutableDictionary(d => d.Id).ToBuilder();
 
             var filter = new DuplicatedDependenciesSnapshotFilter();
 
@@ -101,7 +91,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 null,
                 dependency.Object,
                 worldBuilder,
-                topLevelBuilder,
                 null,
                 null,
                 out bool filterAnyChanges);
@@ -123,27 +112,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             const string providerType = "myprovider";
             const string caption = "MyCaption";
 
+            var dependencyReplacement = IDependencyFactory.Create();
+
             var dependency = IDependencyFactory.Implement(
                 providerType: providerType,
                 id: "mydependency1",
                 caption: caption,
                 alias: "mydependency1 (mydependency1ItemSpec)",
-                setPropertiesCaption: "mydependency1 (mydependency1ItemSpec)");
+                setPropertiesCaption: "mydependency1 (mydependency1ItemSpec)", // should set caption to its alias
+                setPropertiesReturn: dependencyReplacement,
+                topLevel: true);
 
             var otherDependency = IDependencyFactory.Implement(
                    originalItemSpec: "mydependency2ItemSpec",
                     providerType: providerType,
                     id: "mydependency2",
-                    caption: $"{caption} (mydependency2ItemSpec)");
+                    caption: $"{caption} (mydependency2ItemSpec)", // caption already includes alias
+                    topLevel: true);
 
-            var worldBuilder = new Dictionary<string, IDependency>()
-            {
-                { dependency.Object.Id, dependency.Object }
-            }.ToImmutableDictionary().ToBuilder();
-            var topLevelBuilder = ImmutableHashSet<IDependency>.Empty
-                                                               .Add(dependency.Object)
-                                                               .Add(otherDependency.Object)
-                                                               .ToBuilder();
+            var worldBuilder = new[] { dependency.Object, otherDependency.Object }.ToImmutableDictionary(d => d.Id).ToBuilder();
 
             var filter = new DuplicatedDependenciesSnapshotFilter();
 
@@ -152,15 +139,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 null,
                 dependency.Object,
                 worldBuilder,
-                topLevelBuilder,
                 null,
                 null,
                 out bool filterAnyChanges);
 
-            Assert.False(worldBuilder.ContainsKey(otherDependency.Object.Id));
-
             dependency.VerifyAll();
             otherDependency.VerifyAll();
+
+            Assert.True(filterAnyChanges);
+            Assert.Same(dependencyReplacement, resultDependency);
+            Assert.Same(dependency.Object, worldBuilder[dependency.Object.Id]); // doesn't update worldBuilder
+            Assert.Same(otherDependency.Object, worldBuilder[otherDependency.Object.Id]);
         }
 
         [Fact]
@@ -177,21 +166,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var dependency = IDependencyFactory.Implement(
                 providerType: providerType,
                 id: "mydependency1",
-                caption: caption);
+                caption: caption,
+                topLevel: true);
 
             var otherDependency = IDependencyFactory.Implement(
                     providerType: providerType,
                     id: "mydependency2",
-                    caption: caption + "X");
+                    caption: caption + "X",
+                    topLevel: true);
 
-            var worldBuilder = new Dictionary<string, IDependency>()
-            {
-                { dependency.Object.Id, dependency.Object }
-            }.ToImmutableDictionary().ToBuilder();
-            var topLevelBuilder = ImmutableHashSet<IDependency>.Empty
-                                                               .Add(dependency.Object)
-                                                               .Add(otherDependency.Object)
-                                                               .ToBuilder();
+            var worldBuilder = new[] { dependency.Object, otherDependency.Object }.ToImmutableDictionary(d => d.Id).ToBuilder();
 
             var filter = new DuplicatedDependenciesSnapshotFilter();
 
@@ -200,15 +184,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 null,
                 dependency.Object,
                 worldBuilder,
-                topLevelBuilder,
                 null,
                 null,
                 out bool filterAnyChanges);
 
-            Assert.False(worldBuilder.ContainsKey(otherDependency.Object.Id));
-
             dependency.VerifyAll();
             otherDependency.VerifyAll();
+
+            Assert.False(filterAnyChanges);
+            Assert.Same(dependency.Object, resultDependency);
         }
     }
 }

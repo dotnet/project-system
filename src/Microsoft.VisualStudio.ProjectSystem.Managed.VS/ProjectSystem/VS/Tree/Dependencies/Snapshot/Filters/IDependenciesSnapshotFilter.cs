@@ -25,10 +25,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
         /// <param name="targetFramework">Target framework for which dependency was resolved.</param>
         /// <param name="dependency">The dependency to which filter should be applied.</param>
         /// <param name="worldBuilder">Builder for immutable world dictionary of updating snapshot.</param>
-        /// <param name="topLevelBuilder">Top level dependencies list builder of updating snapshot.</param>
         /// <param name="subTreeProviderByProviderType">All dictionary of subtree providers keyed by <see cref="IProjectDependenciesSubTreeProvider.ProviderType"/>.</param>
         /// <param name="projectItemSpecs">List of all items contained in project's xml at given moment, otherwise, <see langword="null"/> if we do not have any data.</param>
-        /// <param name="filterAnyChanges"><see langword="true"/> if the returned dependency differs from <paramref name="dependency"/>, or if <paramref name="worldBuilder"/> or <paramref name="topLevelBuilder"/> changed, otherwise <see langword="false"/>.</param>
+        /// <param name="filterAnyChanges"><see langword="true"/> if the returned dependency differs from <paramref name="dependency"/>, or if <paramref name="worldBuilder"/> changed, otherwise <see langword="false"/>.</param>
         /// <returns>
         /// The dependency to be added, or <see langword="null"/> if the filter prohibits adding the dependency.
         /// Implementations may return a modified dependency to be added to the snapshot.
@@ -38,7 +37,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
             ITargetFramework targetFramework,
             IDependency dependency,
             ImmutableDictionary<string, IDependency>.Builder worldBuilder,
-            ImmutableHashSet<IDependency>.Builder topLevelBuilder,
             IReadOnlyDictionary<string, IProjectDependenciesSubTreeProvider> subTreeProviderByProviderType,
             IImmutableSet<string> projectItemSpecs,
             out bool filterAnyChanges);
@@ -50,15 +48,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
         /// <param name="targetFramework">Target framework for which dependency was resolved.</param>
         /// <param name="dependency">The dependency to which filter should be applied.</param>
         /// <param name="worldBuilder">Builder for immutable world dictionary of updating snapshot.</param>
-        /// <param name="topLevelBuilder">Top level dependencies list builder of updating snapshot.</param>
-        /// <param name="filterAnyChanges"><see langword="true"/> if <paramref name="worldBuilder"/> or <paramref name="topLevelBuilder"/> changed, otherwise <see langword="false"/>.</param>
+        /// <param name="filterAnyChanges"><see langword="true"/> if <paramref name="worldBuilder"/> changed, otherwise <see langword="false"/>.</param>
         /// <returns><see langword="true"/> if removal is approved, or <see langword="false"/> if <paramref name="dependency"/> should not be removed.</returns>
         bool BeforeRemove(
             string projectPath,
             ITargetFramework targetFramework,
             IDependency dependency,
             ImmutableDictionary<string, IDependency>.Builder worldBuilder,
-            ImmutableHashSet<IDependency>.Builder topLevelBuilder,
             out bool filterAnyChanges);
     }
 }

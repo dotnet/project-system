@@ -36,7 +36,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 worldBuilder,
                 null,
                 null,
-                null,
                 out bool filterAnyChanges);
 
             Assert.Null(resultDependency);
@@ -65,7 +64,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 worldBuilder,
                 null,
                 null,
-                null,
                 out bool filterAnyChanges);
 
             Assert.NotNull(resultDependency);
@@ -87,7 +85,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 null,
                 null,
                 dependency.Object,
-                null,
                 null,
                 null,
                 null,
