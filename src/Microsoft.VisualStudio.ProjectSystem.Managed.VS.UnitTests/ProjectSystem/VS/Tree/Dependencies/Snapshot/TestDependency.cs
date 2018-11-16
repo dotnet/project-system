@@ -60,24 +60,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         public bool Equals(IDependency other) 
             => other != null && other.Id.Equals(Id, StringComparison.OrdinalIgnoreCase);
 
-        public static bool operator ==(TestDependency left, TestDependency right)
-            => left is null ? right is null : left.Equals(right);
-
-        public static bool operator !=(TestDependency left, TestDependency right)
-            => !(left == right);
-
-        public static bool operator <(TestDependency left, TestDependency right)
-            => left is null ? !(right is null) : left.CompareTo(right) < 0;
-
-        public static bool operator <=(TestDependency left, TestDependency right)
-            => left is null || left.CompareTo(right) <= 0;
-
-        public static bool operator >(TestDependency left, TestDependency right)
-            => !(left is null) && left.CompareTo(right) > 0;
-
-        public static bool operator >=(TestDependency left, TestDependency right)
-            => left is null ? right is null : left.CompareTo(right) >= 0;
-
         public int CompareTo(IDependency other) 
             => other == null ? 1 : StringComparer.OrdinalIgnoreCase.Compare(Id, other.Id);
     }
