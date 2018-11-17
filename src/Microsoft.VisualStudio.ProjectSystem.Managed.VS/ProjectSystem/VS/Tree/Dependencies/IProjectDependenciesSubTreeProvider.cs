@@ -1,7 +1,10 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Immutable;
 using System.Threading;
+
+using Microsoft.VisualStudio.ProjectSystem.Properties;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
@@ -30,6 +33,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
     public sealed class DependenciesChangedEventArgs
     {
+        [Obsolete("Constructor includes unused properties")]
+        public DependenciesChangedEventArgs(
+            IProjectDependenciesSubTreeProvider provider,
+            string targetShortOrFullName,
+            IDependenciesChanges changes,
+            IProjectCatalogSnapshot catalogs,
+            IImmutableDictionary<NamedIdentity, IComparable> dataSourceVersions)
+            : this(provider, targetShortOrFullName, changes, CancellationToken.None)
+        {
+        }
+
         public DependenciesChangedEventArgs(
             IProjectDependenciesSubTreeProvider provider,
             string targetShortOrFullName,
