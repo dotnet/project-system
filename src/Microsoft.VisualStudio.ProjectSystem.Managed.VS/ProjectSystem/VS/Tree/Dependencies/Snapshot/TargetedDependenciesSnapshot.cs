@@ -62,20 +62,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
                 bool canRemove = true;
 
-                if (snapshotFilters != null)
+                foreach (IDependenciesSnapshotFilter filter in snapshotFilters)
                 {
-                    foreach (IDependenciesSnapshotFilter filter in snapshotFilters)
+                    canRemove = filter.BeforeRemove(
+                        projectPath, targetFramework, dependency, worldBuilder, out bool filterAnyChanges);
+
+                    anyChanges |= filterAnyChanges;
+
+                    if (!canRemove)
                     {
-                        canRemove = filter.BeforeRemove(
-                            projectPath, targetFramework, dependency, worldBuilder, out bool filterAnyChanges);
-
-                        anyChanges |= filterAnyChanges;
-
-                        if (!canRemove)
-                        {
-                            // TODO breaking here denies later filters the opportunity to modify builders
-                            break;
-                        }
+                        // TODO breaking here denies later filters the opportunity to modify builders
+                        break;
                     }
                 }
 
@@ -90,25 +87,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             {
                 IDependency newDependency = new Dependency(added, targetFramework, projectPath);
 
-                if (snapshotFilters != null)
+                foreach (IDependenciesSnapshotFilter filter in snapshotFilters)
                 {
-                    foreach (IDependenciesSnapshotFilter filter in snapshotFilters)
+                    newDependency = filter.BeforeAdd(
+                        projectPath,
+                        targetFramework,
+                        newDependency,
+                        worldBuilder,
+                        subTreeProviderByProviderType,
+                        projectItemSpecs,
+                        out bool filterAnyChanges);
+
+                    anyChanges |= filterAnyChanges;
+
+                    if (newDependency == null)
                     {
-                        newDependency = filter.BeforeAdd(
-                            projectPath,
-                            targetFramework,
-                            newDependency,
-                            worldBuilder,
-                            subTreeProviderByProviderType,
-                            projectItemSpecs,
-                            out bool filterAnyChanges);
-
-                        anyChanges |= filterAnyChanges;
-
-                        if (newDependency == null)
-                        {
-                            break;
-                        }
+                        break;
                     }
                 }
 
