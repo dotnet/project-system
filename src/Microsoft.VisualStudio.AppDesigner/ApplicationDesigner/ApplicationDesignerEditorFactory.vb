@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.Runtime.InteropServices
 Imports Common = Microsoft.VisualStudio.Editors.AppDesCommon
@@ -216,21 +216,18 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         Public Function MapLogicalView(ByRef rguidLogicalView As Guid, ByRef pbstrPhysicalView As String) As Integer Implements IVsEditorFactory.MapLogicalView
             pbstrPhysicalView = Nothing
 
-            ' Normal logic for MapLogicalView is to return E_NOTIMPL for any rguidLogicalView values
-            '   that this editor does not support. However, the project-designer is a bit different in
-            '   that one of our NYI features is to treat the logical-view passed in as the initial
-            '   property-page to display, and given that the possible set of pages is not known until
-            '   runtime, we can't code something to look for known values. Therefore, we're returning
-            '   S_OK no matter what logical view is being passed in.
-            '
-            ' Note that my comment above isn't fully accurate because while that is the design, we know
-            '   that the VSCore project system currently only passes LOGVIEWID_Primary. We are adding
-            '   this assert so that if that changes on the project-system side, they're aware that it
-            '   won't work yet.
-            '
-            'Debug.Assert(rguidLogicalView.Equals(LOGVIEWID.LOGVIEWID_Primary), "NYI: Project Designer does not yet support choosing the initial property page thru the logical-view passed to our editor factory.")
+            ' The designer nominally supports VSConstants.LOGVIEWID.Designer_guid however it is also called with other GUIDs
+            ' that are for the various sub-tabs of the property pages
+            ' Rather than hard code those here, we simply allow through everything except Primary and TextView, as those are
+            ' used when opening files for text editing, and we want the project file to be editable as XML for those
 
-            Return NativeMethods.S_OK
+            If rguidLogicalView = VSConstants.LOGVIEWID.TextView_guid OrElse rguidLogicalView = VSConstants.LOGVIEWID.Primary_guid Then
+                Return NativeMethods.E_NOTIMPL
+            Else
+                pbstrPhysicalView = ""
+                Return NativeMethods.S_OK
+            End If
+
         End Function
 
         ''' <summary>
