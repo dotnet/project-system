@@ -85,8 +85,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
             token.ThrowIfCancellationRequested();
 
-            return contents;
-        }
+            var files = new HashSet<string>(await GetDesignTimeOutputFilenamesAsync(true), StringComparers.Paths);
+            files.Add(fileName);
 
             var property = await _unconfiguredProjectServices.ActiveConfiguredProjectProperties.GetConfiguredBrowseObjectPropertiesAsync();
 
@@ -96,7 +96,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             var outputFileName = inputFileName + ".dll";
             var outputPath = Path.Combine(basePath, objPath, "TempPE");
 
-            var result = await _compiler.CompileAsync(_languageServiceHost.ActiveProjectContext, Path.Combine(outputPath, outputFileName), files.ToArray(), token);
+            var result = await _compiler.CompileAsync(_languageServiceHost.ActiveProjectContext, Path.Combine(outputPath, outputFileName), files, token);
 
             // VSTypeResolutionService is the only consumer, and it only uses the codebase element so just default most of them
             return $@"<root>  
