@@ -3,8 +3,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Diagnostics;
-using System.Linq;
 
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
@@ -22,7 +20,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 projectPath,
                 targetFramework,
                 catalogs,
-                ImmutableHashSet<IDependency>.Empty,
                 ImmutableStringDictionary<IDependency>.EmptyOrdinalIgnoreCase);
         }
 
@@ -48,16 +45,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Requires.NotNull(subTreeProviderByProviderType, nameof(subTreeProviderByProviderType));
             // projectItemSpecs can be null
 
-#if DEBUG
-            ValidateDependencies(previousSnapshot.TopLevelDependencies, previousSnapshot.DependenciesWorld);
-#endif
-
             bool anyChanges = false;
 
             ITargetFramework targetFramework = previousSnapshot.TargetFramework;
 
             var worldBuilder = previousSnapshot.DependenciesWorld.ToBuilder();
-            var topLevelBuilder = previousSnapshot.TopLevelDependencies.ToBuilder();
 
             foreach (IDependencyModel removedNode in changes.RemovedNodes)
             {
@@ -75,7 +67,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                     foreach (IDependenciesSnapshotFilter filter in snapshotFilters)
                     {
                         canRemove = filter.BeforeRemove(
-                            projectPath, targetFramework, dependency, worldBuilder, topLevelBuilder, out bool filterAnyChanges);
+                            projectPath, targetFramework, dependency, worldBuilder, out bool filterAnyChanges);
 
                         anyChanges |= filterAnyChanges;
 
@@ -91,7 +83,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 {
                     anyChanges = true;
                     worldBuilder.Remove(targetedId);
-                    topLevelBuilder.Remove(dependency);
                 }
             }
 
@@ -108,7 +99,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                             targetFramework,
                             newDependency,
                             worldBuilder,
-                            topLevelBuilder,
                             subTreeProviderByProviderType,
                             projectItemSpecs,
                             out bool filterAnyChanges);
@@ -131,12 +121,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
                 worldBuilder.Remove(newDependency.Id);
                 worldBuilder.Add(newDependency.Id, newDependency);
-
-                if (newDependency.TopLevel)
-                {
-                    topLevelBuilder.Remove(newDependency);
-                    topLevelBuilder.Add(newDependency);
-                }
             }
 
             // Also factor in any changes to path/framework/catalogs
@@ -152,7 +136,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                     projectPath,
                     targetFramework,
                     catalogs,
-                    topLevelBuilder.ToImmutable(),
                     worldBuilder.ToImmutable());
             }
 
@@ -164,48 +147,48 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             string projectPath,
             ITargetFramework targetFramework,
             IProjectCatalogSnapshot catalogs,
-            ImmutableHashSet<IDependency> topLevelDependencies,
             ImmutableDictionary<string, IDependency> dependenciesWorld)
         {
             Requires.NotNullOrEmpty(projectPath, nameof(projectPath));
             Requires.NotNull(targetFramework, nameof(targetFramework));
             // catalogs can be null
-            Requires.NotNull(topLevelDependencies, nameof(topLevelDependencies));
             Requires.NotNull(dependenciesWorld, nameof(dependenciesWorld));
 
             ProjectPath = projectPath;
             TargetFramework = targetFramework;
             Catalogs = catalogs;
-            TopLevelDependencies = topLevelDependencies;
             DependenciesWorld = dependenciesWorld;
 
-#if DEBUG
-            ValidateDependencies(topLevelDependencies, dependenciesWorld);
-#endif
+            bool hasUnresolvedDependency = false;
+            ImmutableHashSet<IDependency>.Builder topLevelDependencies = ImmutableHashSet.CreateBuilder<IDependency>();
 
-            foreach (IDependency topLevelDependency in TopLevelDependencies)
+            foreach ((string id, IDependency dependency) in dependenciesWorld)
             {
-                if (!string.IsNullOrEmpty(topLevelDependency.Path))
+                System.Diagnostics.Debug.Assert(
+                    string.Equals(id, dependency.Id),
+                    "dependenciesWorld dictionary entry keys must match their value's ids.");
+
+                if (!dependency.Resolved)
                 {
-                    _topLevelDependenciesByPathMap.Add(
-                        Dependency.GetID(TargetFramework, topLevelDependency.ProviderType, topLevelDependency.Path),
-                        topLevelDependency);
+                    hasUnresolvedDependency = true;
+                }
+
+                if (dependency.TopLevel)
+                {
+                    bool added = topLevelDependencies.Add(dependency);
+                    System.Diagnostics.Debug.Assert(added, "Duplicate top level dependency found.");
+
+                    if (!string.IsNullOrEmpty(dependency.Path))
+                    {
+                        _topLevelDependenciesByPathMap.Add(
+                            Dependency.GetID(TargetFramework, dependency.ProviderType, dependency.Path),
+                            dependency);
+                    }
                 }
             }
-        }
 
-        [Conditional("DEBUG")]
-        public static void ValidateDependencies(ImmutableHashSet<IDependency> topLevelDependencies, ImmutableDictionary<string, IDependency> dependenciesWorld)
-        {
-            System.Diagnostics.Debug.Assert(
-                topLevelDependencies.IsSubsetOf(dependenciesWorld.Values),
-                "Received topLevelDependencies is not a subset of dependenciesWorld");
-            System.Diagnostics.Debug.Assert(
-                topLevelDependencies.SetEquals(dependenciesWorld.Values.Where(d => d.TopLevel)),
-                "Received topLevelDependencies do not match dependenciesWorld having TopLevel==true");
-            System.Diagnostics.Debug.Assert(
-                dependenciesWorld.All(pair => string.Equals(pair.Key, pair.Value.Id, StringComparison.OrdinalIgnoreCase)),
-                "dependenciesWorld dictionary has entries whose keys don't match the value's ID");
+            HasUnresolvedDependency = hasUnresolvedDependency;
+            TopLevelDependencies = topLevelDependencies.ToImmutable();
         }
 
         #endregion
@@ -232,23 +215,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         /// <summary>Re-use an existing, private, object reference for locking, rather than allocating a dedicated object.</summary>
         private object SyncLock => _dependenciesChildrenMap;
 
-        private bool? _hasUnresolvedDependency;
-
         /// <inheritdoc />
-        public bool HasUnresolvedDependency
-        {
-            get
-            {
-                if (_hasUnresolvedDependency == null)
-                {
-                    _hasUnresolvedDependency = 
-                        TopLevelDependencies.Any(x => !x.Resolved) || 
-                        DependenciesWorld.Values.Any(x => !x.Resolved);
-                }
-
-                return _hasUnresolvedDependency.Value;
-            }
-        }
+        public bool HasUnresolvedDependency { get; }
 
         /// <inheritdoc />
         public bool CheckForUnresolvedDependencies(IDependency dependency)

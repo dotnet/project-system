@@ -34,7 +34,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 worldBuilder,
                 null,
                 null,
-                null,
                 out bool filterAnyChanges);
 
             Assert.Equal(dependency.Object.Id, resultDependency.Id);
@@ -63,7 +62,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 null,
                 dependency.Object,
                 worldBuilder,
-                null,
                 null,
                 null,
                 out bool filterAnyChanges);
@@ -95,7 +93,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 null,
                 dependency.Object,
                 worldBuilder,
-                null,
                 null,
                 null,
                 out bool filterAnyChanges);
@@ -130,7 +127,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 worldBuilder,
                 null,
                 null,
-                null,
                 out bool filterAnyChanges);
 
             Assert.Equal(dependency.Object.Id, resultDependency.Id);
@@ -162,7 +158,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 null,
                 dependency.Object,
                 worldBuilder,
-                null,
                 null,
                 ImmutableHashSet.Create("myprojectitem"),
                 out bool filterAnyChanges);
@@ -203,7 +198,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 null,
                 dependency.Object,
                 worldBuilder,
-                null,
                 new Dictionary<string, IProjectDependenciesSubTreeProvider>
                 {
                     { subTreeProvider.ProviderType, subTreeProvider }

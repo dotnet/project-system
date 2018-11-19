@@ -28,7 +28,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
             ITargetFramework targetFramework,
             IDependency dependency,
             ImmutableDictionary<string, IDependency>.Builder worldBuilder,
-            ImmutableHashSet<IDependency>.Builder topLevelBuilder,
             IReadOnlyDictionary<string, IProjectDependenciesSubTreeProvider> subTreeProviderByProviderType,
             IImmutableSet<string> projectItemSpecs,
             out bool filterAnyChanges)
@@ -80,7 +79,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
                         dependencyIDs: dependency.DependencyIDs);
 
                     worldBuilder[sdk.Id] = sdk;
-                    topLevelBuilder.Add(sdk);
                 }
             }
 
@@ -92,7 +90,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
             ITargetFramework targetFramework,
             IDependency dependency,
             ImmutableDictionary<string, IDependency>.Builder worldBuilder,
-            ImmutableHashSet<IDependency>.Builder topLevelBuilder,
             out bool filterAnyChanges)
         {
             filterAnyChanges = false;
@@ -114,13 +111,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
                     //
                     // Set to unresolved, and clear dependencies.
 
-                    filterAnyChanges = true;
-                    sdk = sdk.ToUnresolved(
+                    worldBuilder[sdk.Id] = sdk.ToUnresolved(
                         schemaName: SdkReference.SchemaName,
                         dependencyIDs: ImmutableList<string>.Empty);
 
-                    worldBuilder[sdk.Id] = sdk;
-                    topLevelBuilder.Add(sdk);
+                    filterAnyChanges = true;
                 }
             }
 

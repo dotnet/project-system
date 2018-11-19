@@ -2,9 +2,12 @@
 
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 
 using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
+using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
+using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 
 using Moq;
 
@@ -69,7 +72,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             return mock.Object;
         }
 
-        public static IDependencyModel FromJson(
+        public static TestDependencyModel FromJson(
             string jsonString,
             ProjectTreeFlags? flags = null,
             ImageMoniker? icon = null,
@@ -89,8 +92,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             if (flags.HasValue)
             {
-                data.Flags = data.Flags.Union(flags.Value);
+                data.Flags += flags.Value;
             }
+
+            data.Flags += data.Resolved
+                ? DependencyTreeFlags.ResolvedFlags
+                : DependencyTreeFlags.UnresolvedFlags;
 
             if (icon.HasValue)
             {
@@ -125,7 +132,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             return data;
         }
 
-        private class TestDependencyModel : IDependencyModel
+        public class TestDependencyModel : IDependencyModel
         {
             public string ProviderType { get; set; }
             public string Name { get; set; }
@@ -148,6 +155,48 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             public IImmutableList<string> DependencyIDs { get; set; } = ImmutableList<string>.Empty;
             public ProjectTreeFlags Flags { get; set; } = ProjectTreeFlags.Empty;
             public string Id { get; set; }
+
+            public bool Matches(IDependency dependency, ITargetFramework tfm)
+            {
+                return Dependency.GetID(tfm, ProviderType, Id) == dependency.Id
+                    && ProviderType == dependency.ProviderType
+                    && Flags == dependency.Flags
+                    && (Name == null || Name == dependency.Name)
+                    && (Caption == null || Caption == dependency.Caption)
+                    && (OriginalItemSpec == null || OriginalItemSpec == dependency.OriginalItemSpec)
+                    && (Path == null || OriginalItemSpec == dependency.Path)
+                    && (SchemaName == null || SchemaName == dependency.SchemaName)
+                    && (SchemaItemType == null || !Flags.Contains(DependencyTreeFlags.GenericDependencyFlags) || SchemaItemType == dependency.SchemaItemType)
+                    && (Version == null || Version == dependency.Version)
+                    && Resolved == dependency.Resolved
+                    && TopLevel == dependency.TopLevel
+                    && Implicit == dependency.Implicit
+                    && Visible == dependency.Visible
+                    && Priority == dependency.Priority
+                    && Equals(Icon, dependency.Icon)
+                    && Equals(ExpandedIcon, dependency.ExpandedIcon)
+                    && Equals(UnresolvedIcon, dependency.UnresolvedIcon)
+                    && Equals(UnresolvedExpandedIcon, dependency.UnresolvedExpandedIcon)
+                    && Equals(Properties, dependency.Properties)
+                    && SetEquals(DependencyIDs, dependency.DependencyIDs);
+            }
+
+            private static bool SetEquals(IImmutableList<string> a, IImmutableList<string> b)
+            {
+                return a.Count == b.Count && new HashSet<string>(a).SetEquals(b);
+            }
+
+            private static bool Equals(IImmutableDictionary<string, string> a, IImmutableDictionary<string, string> b)
+            {
+                // Allow b to have whatever if we didn't specify any properties
+                if (a == null || a.Count == 0)
+                    return true;
+
+                return a.Count == b.Count &&
+                       a.All(pair => b.TryGetValue(pair.Key, out var value) && value == pair.Value);
+            }
+
+            private static bool Equals(ImageMoniker a, ImageMoniker b) => a.Id == b.Id && a.Guid == b.Guid;
         }
     }
 }

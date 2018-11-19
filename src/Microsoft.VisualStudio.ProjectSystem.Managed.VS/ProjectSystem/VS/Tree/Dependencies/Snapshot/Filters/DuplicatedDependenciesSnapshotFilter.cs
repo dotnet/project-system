@@ -26,18 +26,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
             ITargetFramework targetFramework,
             IDependency dependency,
             ImmutableDictionary<string, IDependency>.Builder worldBuilder,
-            ImmutableHashSet<IDependency>.Builder topLevelBuilder,
             IReadOnlyDictionary<string, IProjectDependenciesSubTreeProvider> subTreeProviderByProviderType,
             IImmutableSet<string> projectItemSpecs,
             out bool filterAnyChanges)
         {
             filterAnyChanges = false;
-            IDependency resultDependency = dependency;
 
             IDependency matchingDependency = null;
-            foreach (IDependency x in topLevelBuilder)
+            foreach ((string _, IDependency x) in worldBuilder)
             {
-                if (!x.Id.Equals(dependency.Id, StringComparison.OrdinalIgnoreCase)
+                if (x.TopLevel 
+                     && !x.Id.Equals(dependency.Id, StringComparison.OrdinalIgnoreCase)
                      && StringComparers.DependencyProviderTypes.Equals(x.ProviderType, dependency.ProviderType)
                      && x.Caption.Equals(dependency.Caption, StringComparison.OrdinalIgnoreCase))
                 {
@@ -52,9 +51,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
             if (!shouldApplyAlias)
             {
                 int adjustedLength = dependency.Caption.Length + " (".Length;
-                foreach (IDependency x in topLevelBuilder)
+                foreach ((string _, IDependency x) in worldBuilder)
                 {
-                    if (!x.Id.Equals(dependency.Id, StringComparison.OrdinalIgnoreCase)
+                    if (x.TopLevel
+                         && !x.Id.Equals(dependency.Id, StringComparison.OrdinalIgnoreCase)
                          && StringComparers.DependencyProviderTypes.Equals(x.ProviderType, dependency.ProviderType)
                          && x.Caption.StartsWith(dependency.Caption, StringComparison.OrdinalIgnoreCase)
                          && x.Caption.Length >= adjustedLength
@@ -71,15 +71,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
                 filterAnyChanges = true;
                 if (matchingDependency != null)
                 {
-                    matchingDependency = matchingDependency.SetProperties(caption: matchingDependency.Alias);
-                    worldBuilder[matchingDependency.Id] = matchingDependency;
-                    topLevelBuilder.Add(matchingDependency);
+                    worldBuilder[matchingDependency.Id] = matchingDependency.SetProperties(caption: matchingDependency.Alias);
                 }
 
-                resultDependency = resultDependency.SetProperties(caption: dependency.Alias);
+                return dependency.SetProperties(caption: dependency.Alias);
             }
 
-            return resultDependency;
+            return dependency;
         }
     }
 }

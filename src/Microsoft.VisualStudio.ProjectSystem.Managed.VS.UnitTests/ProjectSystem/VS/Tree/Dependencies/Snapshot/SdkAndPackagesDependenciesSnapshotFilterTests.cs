@@ -1,10 +1,8 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Linq;
 
-using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
+using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Filters;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions;
 
@@ -23,10 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 id: "mydependency1",
                 topLevel: false);
 
-            var worldBuilder = new Dictionary<string, IDependency>()
-            {
-                { dependency.Object.Id, dependency.Object },
-            }.ToImmutableDictionary().ToBuilder();
+            var worldBuilder = new [] { dependency.Object }.ToImmutableDictionary(d => d.Id).ToBuilder();
 
             var filter = new SdkAndPackagesDependenciesSnapshotFilter();
 
@@ -37,7 +32,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 worldBuilder,
                 null,
                 null,
-                null,
                 out bool filterAnyChanges);
 
             dependency.VerifyAll();
@@ -46,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         [Fact]
         public void WhenSdk_ShouldFindMatchingPackageAndSetProperties()
         {
-            var dependencyIDs = new List<string> { "id1", "id2" }.ToImmutableList();
+            var dependencyIDs = new [] { "id1", "id2" }.ToImmutableList();
 
             var mockTargetFramework = ITargetFrameworkFactory.Implement(moniker: "tfm");
 
@@ -68,12 +62,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     resolved: true,
                     dependencyIDs: dependencyIDs);
 
-            var topLevelBuilder = ImmutableHashSet<IDependency>.Empty.Add(sdkDependency.Object).ToBuilder();
-            var worldBuilder = new Dictionary<string, IDependency>()
-            {
-                { sdkDependency.Object.Id, sdkDependency.Object },
-                { otherDependency.Object.Id, otherDependency.Object }
-            }.ToImmutableDictionary().ToBuilder();
+            var worldBuilder = new[] { sdkDependency.Object, otherDependency.Object }.ToImmutableDictionary(d => d.Id).ToBuilder();
 
             var filter = new SdkAndPackagesDependenciesSnapshotFilter();
 
@@ -82,7 +71,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 mockTargetFramework,
                 sdkDependency.Object,
                 worldBuilder,
-                topLevelBuilder,
                 null,
                 null,
                 out bool filterAnyChanges);
@@ -94,8 +82,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         [Fact]
         public void WhenSdkAndPackageUnresolved_ShouldDoNothing()
         {
-            var dependencyIDs = new List<string> { "id1", "id2" }.ToImmutableList();
-
             var mockTargetFramework = ITargetFrameworkFactory.Implement(moniker: "tfm");
 
             var dependency = IDependencyFactory.Implement(
@@ -108,11 +94,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     id: $"tfm\\{PackageRuleHandler.ProviderTypeString}\\mydependency1",
                     resolved: false);
 
-            var worldBuilder = new Dictionary<string, IDependency>()
-            {
-                { dependency.Object.Id, dependency.Object },
-                { otherDependency.Object.Id, otherDependency.Object }
-            }.ToImmutableDictionary().ToBuilder();
+            var worldBuilder = new[] { dependency.Object, otherDependency.Object }.ToImmutableDictionary(d => d.Id).ToBuilder();
 
             var filter = new SdkAndPackagesDependenciesSnapshotFilter();
 
@@ -121,7 +103,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 mockTargetFramework,
                 dependency.Object,
                 worldBuilder,
-                null,
                 null,
                 null,
                 out bool filterAnyChanges);
@@ -133,7 +114,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         [Fact]
         public void WhenPackage_ShouldFindMatchingSdkAndSetProperties()
         {
-            var dependencyIDs = new List<string> { "id1", "id2" }.ToImmutableList();
+            var dependencyIDs = new [] { "id1", "id2" }.ToImmutableList();
 
             var mockTargetFramework = ITargetFrameworkFactory.Implement(moniker: "tfm");
 
@@ -157,13 +138,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     setPropertiesSchemaName: ResolvedSdkReference.SchemaName,
                     equals: true);
 
-            var worldBuilder = new Dictionary<string, IDependency>()
-            {
-                { dependency.Object.Id, dependency.Object },
-                { sdkDependency.Object.Id, sdkDependency.Object }
-            }.ToImmutableDictionary().ToBuilder();
+            var worldBuilder = new[] { dependency.Object, sdkDependency.Object }.ToImmutableDictionary(d => d.Id).ToBuilder();
 
-            var topLevelBuilder = ImmutableHashSet<IDependency>.Empty.Add(sdkDependency.Object).ToBuilder();
             var filter = new SdkAndPackagesDependenciesSnapshotFilter();
 
             var resultDependency = filter.BeforeAdd(
@@ -171,67 +147,64 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 mockTargetFramework,
                 dependency.Object,
                 worldBuilder,
-                topLevelBuilder,
                 null,
                 null,
                 out bool filterAnyChanges);
 
             dependency.VerifyAll();
             sdkDependency.VerifyAll();
-
-            Assert.Equal(topLevelBuilder.First().Id, sdkDependency.Object.Id);
         }
 
         [Fact]
         public void WhenPackageRemoving_ShouldCleanupSdk()
         {
-            var dependencyIDs = ImmutableList<string>.Empty;
+            var resolvedFlags = DependencyTreeFlags.SdkSubTreeNodeFlags.Union(DependencyTreeFlags.ResolvedFlags);
+            var unresolvedFlags = DependencyTreeFlags.SdkSubTreeNodeFlags.Union(DependencyTreeFlags.UnresolvedFlags).Except(DependencyTreeFlags.ResolvedFlags);
 
-            var mockTargetFramework = ITargetFrameworkFactory.Implement(moniker: "tfm");
+            var targetFramework = new TargetFramework("tfm");
 
-            var dependency = IDependencyFactory.Implement(
+            var packageName = "mydependency1";
+
+            var packageDependency = IDependencyFactory.Implement(
                 id: "mydependency1id",
                 flags: DependencyTreeFlags.PackageNodeFlags,
-                name: "mydependency1",
+                name: packageName,
                 topLevel: true,
                 resolved: true);
 
-            var flags = DependencyTreeFlags.SdkSubTreeNodeFlags
-               .Union(DependencyTreeFlags.UnresolvedFlags)
-               .Except(DependencyTreeFlags.ResolvedFlags);
+            var modifiedSdkDependency = IDependencyFactory.Implement().Object;
 
             var sdkDependency = IDependencyFactory.Implement(
-                id: $"tfm\\{SdkRuleHandler.ProviderTypeString}\\mydependency1",
-                flags: DependencyTreeFlags.SdkSubTreeNodeFlags.Union(DependencyTreeFlags.ResolvedFlags), // to see if resolved is fixed
-                setPropertiesDependencyIDs: dependencyIDs,
+                id: $"{targetFramework.ShortName}\\{SdkRuleHandler.ProviderTypeString}\\{packageName}",
+                flags: resolvedFlags,
+                setPropertiesDependencyIDs: ImmutableList<string>.Empty,
                 setPropertiesResolved: false,
                 setPropertiesSchemaName: SdkReference.SchemaName,
-                setPropertiesFlags: flags,
+                setPropertiesFlags: unresolvedFlags,
+                setPropertiesReturn: modifiedSdkDependency,
                 mockBehavior: MockBehavior.Loose);
 
-            var worldBuilder = new Dictionary<string, IDependency>()
-            {
-                { dependency.Object.Id, dependency.Object },
-                { sdkDependency.Object.Id, sdkDependency.Object },
-            }.ToImmutableDictionary().ToBuilder();
-
-            // try to have empty top level hash set - no error should happen when removing sdk and reading 
-            var topLevelBuilder = ImmutableHashSet<IDependency>.Empty.ToBuilder();
+            var worldBuilder = new[] { packageDependency.Object, sdkDependency.Object }.ToImmutableDictionary(d => d.Id).ToBuilder();
 
             var filter = new SdkAndPackagesDependenciesSnapshotFilter();
 
-            filter.BeforeRemove(
-                null,
-                mockTargetFramework,
-                dependency.Object,
+            Assert.True(filter.BeforeRemove(
+                projectPath: null,
+                targetFramework,
+                packageDependency.Object,
                 worldBuilder,
-                topLevelBuilder,
-                out bool filterAnyChanges);
+                out bool filterAnyChanges));
 
-            dependency.VerifyAll();
+            packageDependency.VerifyAll();
             sdkDependency.VerifyAll();
 
-            Assert.Equal(topLevelBuilder.First().Id, sdkDependency.Object.Id);
+            Assert.True(filterAnyChanges);
+
+            Assert.True(worldBuilder.TryGetValue(packageDependency.Object.Id, out var afterPackageDependency));
+            Assert.Same(packageDependency.Object, afterPackageDependency);
+
+            Assert.True(worldBuilder.TryGetValue(sdkDependency.Object.Id, out var afterSdkDependency));
+            Assert.Same(modifiedSdkDependency, afterSdkDependency);
         }
     }
 }

@@ -48,7 +48,32 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             DependencyIconSet iconSet = null,
             bool? isImplicit = null)
         {
-            return this;
+            return new TestDependency
+            {
+                ProviderType = ProviderType,
+                Name = Name,
+                Caption = caption ?? Caption,
+                OriginalItemSpec = OriginalItemSpec,
+                Path = Path,
+                FullPath = FullPath,
+                SchemaName = schemaName ?? SchemaName,
+                SchemaItemType = SchemaItemType,
+                Version = Version,
+                Resolved = resolved ?? Resolved,
+                TopLevel = TopLevel,
+                Implicit = isImplicit ?? Implicit,
+                Visible = Visible,
+                Priority = Priority,
+                Icon = iconSet?.Icon ?? Icon,
+                ExpandedIcon = iconSet?.ExpandedIcon ?? ExpandedIcon,
+                UnresolvedIcon = iconSet?.UnresolvedIcon ?? UnresolvedIcon,
+                UnresolvedExpandedIcon = iconSet?.UnresolvedExpandedIcon ?? UnresolvedExpandedIcon,
+                Properties = Properties,
+                DependencyIDs = dependencyIDs ?? DependencyIDs,
+                Flags = flags ?? Flags,
+                Id = Id,
+                Alias = Alias
+            };
         }
 
         public override int GetHashCode() 

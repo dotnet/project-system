@@ -20,10 +20,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         [Fact]
         public void TConstructor_WhenRequiredParamsNotProvided_ShouldThrow()
         {
-            Assert.Throws<ArgumentNullException>("projectPath", () => new TargetedDependenciesSnapshot(null, null, null, null, null));
-            Assert.Throws<ArgumentNullException>("targetFramework", () => new TargetedDependenciesSnapshot("path", null, null, null, null));
-            Assert.Throws<ArgumentNullException>("topLevelDependencies", () => new TargetedDependenciesSnapshot("path", TargetFramework.Any, null, null, null));
-            Assert.Throws<ArgumentNullException>("dependenciesWorld", () => new TargetedDependenciesSnapshot("path", TargetFramework.Any, null, ImmutableHashSet<IDependency>.Empty, null));
+            Assert.Throws<ArgumentNullException>("projectPath", () => new TargetedDependenciesSnapshot(projectPath: null, null, null, null));
+            Assert.Throws<ArgumentNullException>("targetFramework", () => new TargetedDependenciesSnapshot("path", targetFramework: null, null, null));
+            Assert.Throws<ArgumentNullException>("dependenciesWorld", () => new TargetedDependenciesSnapshot("path", TargetFramework.Any, null, dependenciesWorld: null));
         }
 
         [Fact]
@@ -37,7 +36,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 projectPath,
                 targetFramework,
                 catalogs,
-                ImmutableHashSet<IDependency>.Empty, 
                 ImmutableDictionary<string, IDependency>.Empty);
 
             Assert.NotNull(snapshot.TargetFramework);
@@ -46,6 +44,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(catalogs, snapshot.Catalogs);
             Assert.Empty(snapshot.TopLevelDependencies);
             Assert.Empty(snapshot.DependenciesWorld);
+        }
+
+        [Fact]
+        public void TCreateEmpty()
+        {
+            const string projectPath = @"c:\somefolder\someproject\a.csproj";
+            var targetFramework = ITargetFrameworkFactory.Implement("tfm1");
+            var catalogs = IProjectCatalogSnapshotFactory.Create();
+
+            var snapshot = TargetedDependenciesSnapshot.CreateEmpty(projectPath, targetFramework, catalogs);
+
+            Assert.Same(projectPath, snapshot.ProjectPath);
+            Assert.Same(catalogs, snapshot.Catalogs);
+            Assert.Same(targetFramework, snapshot.TargetFramework);
+            Assert.False(snapshot.HasUnresolvedDependency);
+            Assert.Empty(snapshot.DependenciesWorld);
+            Assert.Empty(snapshot.TopLevelDependencies);
+            Assert.False(snapshot.CheckForUnresolvedDependencies("foo"));
+            Assert.Empty(snapshot.GetDependencyChildren(new TestDependency()));
         }
 
         [Fact]
@@ -122,6 +139,65 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 null);
 
             Assert.Same(previousSnapshot, snapshot);
+        }
+
+        [Fact]
+        public void TFromChanges_AddingToEmpty()
+        {
+            const string projectPath = @"c:\somefolder\someproject\a.csproj";
+            var targetFramework = ITargetFrameworkFactory.Implement("tfm1");
+
+            var catalogs = IProjectCatalogSnapshotFactory.Create();
+            var previousSnapshot = TargetedDependenciesSnapshot.CreateEmpty(projectPath, targetFramework, catalogs);
+
+            var resolvedTop = IDependencyModelFactory.FromJson(@"
+                {
+                    ""ProviderType"": ""Xxx"",
+                    ""Id"": ""dependency1"",
+                    ""Name"": ""Dependency1"",
+                    ""Caption"": ""Dependency1"",
+                    ""Resolved"": ""true"",
+                    ""TopLevel"": ""true""
+                }",
+                icon: KnownMonikers.Uninstall,
+                expandedIcon: KnownMonikers.Uninstall);
+
+            var unresolved = IDependencyModelFactory.FromJson(@"
+                {
+                    ""ProviderType"": ""Xxx"",
+                    ""Id"": ""dependency2"",
+                    ""Name"": ""Dependency2"",
+                    ""Caption"": ""Dependency2"",
+                    ""Resolved"": ""false"",
+                    ""TopLevel"": ""false""
+                }",
+                icon: KnownMonikers.Uninstall,
+                expandedIcon: KnownMonikers.Uninstall);
+
+            var changes = IDependenciesChangesFactory.Implement(
+                addedNodes: new[] { resolvedTop, unresolved },
+                removedNodes: Array.Empty<RemovedDependencyIdentity>());
+
+            const string updatedProjectPath = "updatedProjectPath";
+
+            var snapshot = TargetedDependenciesSnapshot.FromChanges(
+                updatedProjectPath,
+                previousSnapshot,
+                changes,
+                catalogs,
+                Array.Empty<IDependenciesSnapshotFilter>(),
+                new Dictionary<string, IProjectDependenciesSubTreeProvider>(),
+                null);
+
+            Assert.NotSame(previousSnapshot, snapshot);
+            Assert.Same(updatedProjectPath, snapshot.ProjectPath);
+            Assert.Same(catalogs, snapshot.Catalogs);
+            Assert.True(snapshot.HasUnresolvedDependency);
+            AssertEx.CollectionLength(snapshot.DependenciesWorld, 2);
+            AssertEx.CollectionLength(snapshot.TopLevelDependencies, 1);
+            Assert.True(resolvedTop.Matches(snapshot.TopLevelDependencies.Single(), targetFramework));
+            Assert.True(resolvedTop.Matches(snapshot.DependenciesWorld["tfm1\\Xxx\\dependency1"], targetFramework));
+            Assert.True(unresolved.Matches(snapshot.DependenciesWorld["tfm1\\Xxx\\dependency2"], targetFramework));
         }
 
         [Fact]
@@ -664,8 +740,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 {
                     { dependencyTop1.Id, dependencyTop1 },
                     { dependencyTop2.Id, dependencyTop2 },
-                }.ToImmutableDictionary(),
-                topLevelDependencies: new List<IDependency>() { dependencyTop1 }.ToImmutableHashSet());
+                }.ToImmutableDictionary());
 
             // verify it doesn't stack overflow
             previousSnapshot.CheckForUnresolvedDependencies(dependencyTop1);   
@@ -674,7 +749,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         internal enum FilterAction
         {
             Cancel,
-            ShouldBeRemoved,
             ShouldBeAdded
         }
 
@@ -713,7 +787,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 ITargetFramework targetFramework,
                 IDependency dependency,
                 ImmutableDictionary<string, IDependency>.Builder worldBuilder,
-                ImmutableHashSet<IDependency>.Builder topLevelBuilder,
                 IReadOnlyDictionary<string, IProjectDependenciesSubTreeProvider> subTreeProviderByProviderType,
                 IImmutableSet<string> projectItemSpecs,
                 out bool filterAnyChanges)
@@ -731,18 +804,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                         worldBuilder.Remove(info.Item1.Id);
                         worldBuilder.Add(info.Item1.Id, info.Item1);
 
-                        if (info.Item1.TopLevel)
-                        {
-                            topLevelBuilder.Remove(info.Item1);
-                            topLevelBuilder.Add(info.Item1);
-                        }
-
                         return info.Item1;
                     }
                     else
                     {
-                        worldBuilder.Remove(dependency.Id);
-                        topLevelBuilder.Remove(dependency);
+                        throw new NotSupportedException();
                     }
                 }
 
@@ -754,7 +820,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 ITargetFramework targetFramework,
                 IDependency dependency,
                 ImmutableDictionary<string, IDependency>.Builder worldBuilder,
-                ImmutableHashSet<IDependency>.Builder topLevelBuilder,
                 out bool filterAnyChanges)
             {
                 filterAnyChanges = _filterAnyChanges;
@@ -772,8 +837,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     }
                     else
                     {
-                        worldBuilder.Remove(dependency.Id);
-                        topLevelBuilder.Remove(dependency);
+                        throw new NotSupportedException();
                     }
                 }
 
