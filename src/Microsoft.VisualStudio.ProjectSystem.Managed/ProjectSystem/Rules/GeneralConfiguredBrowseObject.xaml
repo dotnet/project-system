@@ -33,6 +33,7 @@
     </StringProperty.DataSource>
   </StringProperty>
 
+  <BoolProperty Name="RunCodeAnalysis" Visible="False" />
   <BoolProperty Name="Prefer32Bit" Visible="False"/>
   <BoolProperty Name="AllowUnsafeBlocks"  Default="False"  Visible="False"/>
   <BoolProperty Name="Optimize" Visible="False"/>
