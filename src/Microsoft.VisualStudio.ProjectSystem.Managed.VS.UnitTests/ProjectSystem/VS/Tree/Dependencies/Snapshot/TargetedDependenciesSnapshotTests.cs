@@ -174,9 +174,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 icon: KnownMonikers.Uninstall,
                 expandedIcon: KnownMonikers.Uninstall);
 
-            var changes = IDependenciesChangesFactory.Implement(
-                addedNodes: new[] { resolvedTop, unresolved },
-                removedNodes: Array.Empty<RemovedDependencyIdentity>());
+            var changes = new DependenciesChanges();
+            changes.IncludeAddedChange(resolvedTop);
+            changes.IncludeAddedChange(unresolved);
 
             const string updatedProjectPath = "updatedProjectPath";
 
