@@ -50,7 +50,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 
         public async Task<AggregateWorkspaceProjectContext> CreateProjectContextAsync()
         {
-            await EnsureInitializedAsync();
+            await InitializeAsync();
 
             AggregateWorkspaceProjectContext context = await CreateProjectContextAsyncCore();
             if (context == null)

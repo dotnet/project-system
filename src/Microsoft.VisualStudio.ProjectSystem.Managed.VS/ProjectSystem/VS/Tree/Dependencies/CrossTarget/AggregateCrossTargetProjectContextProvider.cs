@@ -42,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
         public async Task<AggregateCrossTargetProjectContext> CreateProjectContextAsync()
         {
-            await EnsureInitializedAsync();
+            await InitializeAsync();
 
             AggregateCrossTargetProjectContext context = await CreateProjectContextAsyncCore();
             if (context == null)

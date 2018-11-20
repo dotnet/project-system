@@ -12,11 +12,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         private int _isInitialized;
 
-        protected Task EnsureInitializedAsync()
+        protected new Task InitializeAsync(CancellationToken cancellationToken = default)
         {
             if (Interlocked.Exchange(ref _isInitialized, 1) == 0)
             {
-                return InitializeAsync();
+                return base.InitializeAsync();
             }
 
             return Task.CompletedTask;

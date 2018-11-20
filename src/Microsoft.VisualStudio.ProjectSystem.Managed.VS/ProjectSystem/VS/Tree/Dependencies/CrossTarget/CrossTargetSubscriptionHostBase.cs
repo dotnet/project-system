@@ -65,7 +65,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                 return null;
             }
 
-            await EnsureInitializedAsync();
+            await InitializeAsync();
 
             return await ExecuteWithinLockAsync(() => _currentAggregateProjectContext);
         }
@@ -112,7 +112,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                 return;
             }
 
-            await EnsureInitializedAsync();
+            await InitializeAsync();
 
             await OnProjectChangedCoreAsync(e);
         }

@@ -42,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public async Task LoadAsync()
         {
-            await EnsureInitializedAsync();
+            await InitializeAsync();
 
             await LoadCoreAsync();
         }
