@@ -11,7 +11,7 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
-    public class UnsupportedProjectsSnapshotFilterTests
+    public sealed class UnsupportedProjectsSnapshotFilterTests
     {
         [Fact]
         public void UnsupportedProjectsSnapshotFilter_WhenDependencyNotRecognized_ShouldDoNothing()

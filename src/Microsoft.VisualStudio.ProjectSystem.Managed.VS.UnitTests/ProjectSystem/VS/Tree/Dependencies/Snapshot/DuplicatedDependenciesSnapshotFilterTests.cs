@@ -8,7 +8,7 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
-    public class DuplicatedDependenciesSnapshotFilterTests
+    public sealed class DuplicatedDependenciesSnapshotFilterTests
     {
         [Fact]
         public void BeforeAdd_NoDuplicate_ShouldNotUpdateCaption()

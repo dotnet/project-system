@@ -10,7 +10,7 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
-    public class UnresolvedDependenciesSnapshotFilterTests
+    public sealed class UnresolvedDependenciesSnapshotFilterTests
     {
         [Fact]
         public void WhenUnresolvedAndExistsResolvedInSnapshot_ShouldReturnNull()

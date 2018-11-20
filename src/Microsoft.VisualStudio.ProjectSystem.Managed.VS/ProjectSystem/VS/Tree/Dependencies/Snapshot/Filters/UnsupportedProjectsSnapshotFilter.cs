@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
     [Export(typeof(IDependenciesSnapshotFilter))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
     [Order(Order)]
-    internal class UnsupportedProjectsSnapshotFilter : DependenciesSnapshotFilterBase
+    internal sealed class UnsupportedProjectsSnapshotFilter : DependenciesSnapshotFilterBase
     {
         public const int Order = 120;
 

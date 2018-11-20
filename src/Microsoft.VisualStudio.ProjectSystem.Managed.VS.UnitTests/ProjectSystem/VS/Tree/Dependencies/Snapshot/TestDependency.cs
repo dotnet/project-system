@@ -11,7 +11,7 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
     [DebuggerDisplay("{" + nameof(Id) +",nq}")]
-    internal class TestDependency : IDependency
+    internal sealed class TestDependency : IDependency
     {
         public string ProviderType { get; set; }
         public string Name { get; set; }

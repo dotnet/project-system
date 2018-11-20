@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
     [Export(typeof(IDependenciesSnapshotFilter))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
     [Order(Order)]
-    internal class SdkAndPackagesDependenciesSnapshotFilter : DependenciesSnapshotFilterBase
+    internal sealed class SdkAndPackagesDependenciesSnapshotFilter : DependenciesSnapshotFilterBase
     {
         public const int Order = 110;
 

@@ -15,7 +15,7 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
-    public class TargetedDependenciesSnapshotTests
+    public sealed class TargetedDependenciesSnapshotTests
     {
         [Fact]
         public void TConstructor_WhenRequiredParamsNotProvided_ShouldThrow()
