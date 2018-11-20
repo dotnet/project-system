@@ -6,7 +6,10 @@ using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
+
+using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 {
@@ -16,9 +19,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
     ///     configurations of an <see cref="UnconfiguredProject"/>.
     /// </summary>
     [Export(typeof(IAggregateCrossTargetProjectContextProvider))]
-    internal class AggregateCrossTargetProjectContextProvider : OnceInitializedOnceDisposed, IAggregateCrossTargetProjectContextProvider
+    internal class AggregateCrossTargetProjectContextProvider : OnceInitializedOnceDisposedAsync, IAggregateCrossTargetProjectContextProvider
     {
-        private readonly object _gate = new object();
+        private readonly SemaphoreSlim _gate = new SemaphoreSlim(initialCount: 1);
         private readonly IUnconfiguredProjectCommonServices _commonServices;
         private readonly List<AggregateCrossTargetProjectContext> _contexts = new List<AggregateCrossTargetProjectContext>();
         private readonly IActiveConfiguredProjectsProvider _activeConfiguredProjectsProvider;
@@ -30,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             IUnconfiguredProjectCommonServices commonServices,
             IActiveConfiguredProjectsProvider activeConfiguredProjectsProvider,
             ITargetFrameworkProvider targetFrameworkProvider)
-            : base(synchronousDisposal: true)
+            : base(commonServices.ThreadingService.JoinableTaskContext)
         {
             _commonServices = commonServices;
             _activeConfiguredProjectsProvider = activeConfiguredProjectsProvider;
@@ -39,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
         public async Task<AggregateCrossTargetProjectContext> CreateProjectContextAsync()
         {
-            EnsureInitialized();
+            await EnsureInitialized();
 
             AggregateCrossTargetProjectContext context = await CreateProjectContextAsyncCore();
             if (context == null)
@@ -47,7 +50,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                 return null;
             }
 
-            lock (_gate)
+            await ExecuteWithinLockAsync(() =>
             {
                 // There's a race here, by the time we've created the project context,
                 // the project could have been renamed, handle this.
@@ -55,7 +58,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
                 context.SetProjectFilePathAndDisplayName(projectData.FullPath, projectData.DisplayName);
                 _contexts.Add(context);
-            }
+            });
 
             return context;
         }
@@ -64,7 +67,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         {
             Requires.NotNull(context, nameof(context));
 
-            lock (_gate)
+            using (_gate.DisposableWait())
             {
                 if (!_contexts.Remove(context))
                     throw new ArgumentException("Specified context was not created by this instance, or has already been unregistered.");
@@ -100,14 +103,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             }
         }
 
-        protected override void Initialize()
+        protected override Task InitializeCoreAsync(CancellationToken cancellationToken)
         {
             _commonServices.Project.ProjectRenamed += OnProjectRenamed;
             _commonServices.Project.ProjectUnloading += OnUnconfiguredProjectUnloading;
+            return Task.CompletedTask;
         }
 
-        protected override void Dispose(bool disposing)
+        protected override Task DisposeCoreAsync(bool initialized)
         {
+            _gate.Dispose();
+            return Task.CompletedTask;
         }
 
         private Task OnUnconfiguredProjectUnloading(object sender, EventArgs args)
@@ -120,7 +126,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
         private Task OnProjectRenamed(object sender, ProjectRenamedEventArgs args)
         {
-            lock (_gate)
+            return ExecuteWithinLockAsync(() =>
             {
                 ProjectData projectData = GetProjectData();
 
@@ -128,9 +134,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                 {
                     context.SetProjectFilePathAndDisplayName(projectData.FullPath, projectData.DisplayName);
                 }
-            }
-
-            return Task.CompletedTask;
+            });
         }
 
         private ProjectData GetProjectData()
@@ -146,7 +150,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
         private bool TryGetConfiguredProjectState(ConfiguredProject configuredProject, out ITargetedProjectContext targetedProjectContext)
         {
-            lock (_gate)
+            using (_gate.DisposableWait())
             {
                 return _configuredProjectContextsMap.TryGetValue(configuredProject, out targetedProjectContext);
             }
@@ -154,7 +158,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
         private void AddConfiguredProjectState(ConfiguredProject configuredProject, ITargetedProjectContext projectContext)
         {
-            lock (_gate)
+            using (_gate.DisposableWait())
             {
                 _configuredProjectContextsMap.Add(configuredProject, projectContext);
             }
@@ -239,6 +243,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             return configuredProject.ProjectConfiguration.IsCrossTargeting() ?
                 $"{projectData.DisplayName}({targetFramework})" :
                 projectData.DisplayName;
+        }
+
+        private Task ExecuteWithinLockAsync(Action action) => _gate.ExecuteWithinLockAsync(JoinableCollection, JoinableFactory, action);
+
+        private int _isInitialized;
+
+        private async Task EnsureInitialized()
+        {
+            if (Interlocked.CompareExchange(ref _isInitialized, 1, 0) == 0)
+            {
+                await InitializeAsync();
+            }
         }
 
         private struct ProjectData

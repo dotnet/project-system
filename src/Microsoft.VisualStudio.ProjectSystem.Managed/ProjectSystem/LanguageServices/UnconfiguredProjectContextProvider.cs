@@ -5,10 +5,12 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
+using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 {
@@ -17,9 +19,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
     ///     based on the unique TargetFramework configurations of an <see cref="UnconfiguredProject"/>.
     /// </summary>
     [Export(typeof(IProjectContextProvider))]
-    internal partial class UnconfiguredProjectContextProvider : OnceInitializedOnceDisposed, IProjectContextProvider
+    internal partial class UnconfiguredProjectContextProvider : OnceInitializedOnceDisposedAsync, IProjectContextProvider
     {
-        private readonly object _gate = new object();
+        private readonly SemaphoreSlim _gate = new SemaphoreSlim(initialCount: 1);
         private readonly IUnconfiguredProjectCommonServices _commonServices;
         private readonly Lazy<IWorkspaceProjectContextFactory> _contextFactory;
         private readonly List<AggregateWorkspaceProjectContext> _contexts = new List<AggregateWorkspaceProjectContext>();
@@ -36,6 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
                                                  IProjectHostProvider projectHostProvider,
                                                  IActiveConfiguredProjectsProvider activeConfiguredProjectsProvider,
                                                  ISafeProjectGuidService projectGuidService)
+            : base(commonServices.ThreadingService.JoinableTaskContext)
         {
             _commonServices = commonServices;
             _contextFactory = contextFactory;
@@ -47,13 +50,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 
         public async Task<AggregateWorkspaceProjectContext> CreateProjectContextAsync()
         {
-            EnsureInitialized();
+            await EnsureInitialized();
 
             AggregateWorkspaceProjectContext context = await CreateProjectContextAsyncCore();
             if (context == null)
                 return null;
 
-            lock (_gate)
+            await ExecuteWithinLockAsync(() =>
             {
                 // There's a race here, by the time we've created the project context,
                 // the project could have been renamed, handle this.
@@ -61,7 +64,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 
                 context.SetProjectFilePathAndDisplayName(projectData.FullPath, projectData.DisplayName);
                 _contexts.Add(context);
-            }
+            });
 
             return context;
         }
@@ -70,8 +73,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         {
             Requires.NotNull(context, nameof(context));
 
-            ImmutableHashSet<IWorkspaceProjectContext> usedProjectContexts;
-            lock (_gate)
+            ImmutableHashSet<IWorkspaceProjectContext> usedProjectContexts = null;
+            await ExecuteWithinLockAsync(() =>
             {
                 if (!_contexts.Remove(context))
                     throw new ArgumentException("Specified context was not created by this instance, or has already been unregistered.");
@@ -81,7 +84,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
                 RemoveUnusedConfiguredProjectsState_NoLock();
 
                 usedProjectContexts = _configuredProjectContextsMap.Values.ToImmutableHashSet();
-            }
+            });
 
             // TODO: https://github.com/dotnet/roslyn-project-system/issues/353
             await _commonServices.ThreadingService.SwitchToUIThread();
@@ -119,20 +122,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             }
         }
 
-        protected override void Initialize()
+        protected override Task InitializeCoreAsync(CancellationToken cancellationToken)
         {
             _commonServices.Project.ProjectRenamed += OnProjectRenamed;
+            return Task.CompletedTask;
         }
-
-        protected override void Dispose(bool disposing)
+        protected override Task DisposeCoreAsync(bool initialized)
         {
             _commonServices.Project.ProjectRenamed -= OnProjectRenamed;
             _unconfiguredProjectHostObject.Dispose();
+            _gate.Dispose();
+            return Task.CompletedTask;
         }
 
         private Task OnProjectRenamed(object sender, ProjectRenamedEventArgs args)
         {
-            lock (_gate)
+            return ExecuteWithinLockAsync(() =>
             {
                 ProjectData projectData = GetProjectData();
 
@@ -140,9 +145,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
                 {
                     context.SetProjectFilePathAndDisplayName(projectData.FullPath, projectData.DisplayName);
                 }
-            }
-
-            return Task.CompletedTask;
+            });
         }
 
         // Returns the name that is the handshake between Roslyn and the csproj/vbproj
@@ -172,7 +175,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 
         private bool TryGetConfiguredProjectState(ConfiguredProject configuredProject, out IWorkspaceProjectContext workspaceProjectContext, out IConfiguredProjectHostObject configuredProjectHostObject)
         {
-            lock (_gate)
+            using (_gate.DisposableWait())
             {
                 if (_configuredProjectContextsMap.TryGetValue(configuredProject, out workspaceProjectContext))
                 {
@@ -190,7 +193,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 
         private void AddConfiguredProjectState(ConfiguredProject configuredProject, IWorkspaceProjectContext workspaceProjectContext, IConfiguredProjectHostObject configuredProjectHostObject)
         {
-            lock (_gate)
+            using (_gate.DisposableWait())
             {
                 _configuredProjectContextsMap.Add(configuredProject, workspaceProjectContext);
                 _configuredProjectHostObjectsMap.Add(configuredProject, configuredProjectHostObject);
@@ -292,6 +295,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             return configuredProject.ProjectConfiguration.IsCrossTargeting() ?
                 $"{projectData.DisplayName} ({targetFramework})" :
                 projectData.DisplayName;
+        }
+
+        private Task ExecuteWithinLockAsync(Action action) => _gate.ExecuteWithinLockAsync(JoinableCollection, JoinableFactory, action);
+
+        private int _isInitialized;
+
+        private async Task EnsureInitialized()
+        {
+            if (Interlocked.CompareExchange(ref _isInitialized, 1, 0) == 0)
+            {
+                await InitializeAsync();
+            }
         }
 
         private struct ProjectData
