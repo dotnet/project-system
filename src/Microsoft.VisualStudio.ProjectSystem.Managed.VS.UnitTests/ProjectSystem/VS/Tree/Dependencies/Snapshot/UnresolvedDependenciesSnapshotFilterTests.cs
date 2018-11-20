@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System.Collections.Generic;
 using System.Collections.Immutable;
 
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
@@ -13,87 +12,82 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     public sealed class UnresolvedDependenciesSnapshotFilterTests
     {
         [Fact]
-        public void WhenUnresolvedAndExistsResolvedInSnapshot_ShouldReturnNull()
+        public void BeforeAddOrUpdate_WhenUnresolvedAndExistsResolvedInSnapshot_ShouldReturnNull()
         {
-            var dependency = IDependencyFactory.Implement(
-                id: "mydependency2",
-                resolved: false);
+            var unresolvedDependency = new TestDependency { Id = "dependency", Resolved = false };
+            var resolvedDependency   = new TestDependency { Id = "dependency", Resolved = true  };
 
-            var otherDependency = IDependencyFactory.Implement(
-                    id: "mydependency2");
+            var worldBuilder = new IDependency[] { resolvedDependency }.ToImmutableDictionary(d => d.Id).ToBuilder();
 
-            var worldBuilder = new Dictionary<string, IDependency>()
-            {
-                { otherDependency.Object.Id, otherDependency.Object }
-            }.ToImmutableDictionary().ToBuilder();
+            var context = new AddDependencyContext(worldBuilder);
 
             var filter = new UnresolvedDependenciesSnapshotFilter();
 
-            var resultDependency = filter.BeforeAdd(
+            filter.BeforeAddOrUpdate(
                 null,
                 null,
-                dependency.Object,
-                worldBuilder,
+                unresolvedDependency,
                 null,
                 null,
-                out bool filterAnyChanges);
+                context);
 
-            Assert.Null(resultDependency);
+            // Dependency rejected
+            Assert.Null(context.GetResult(filter));
 
-            dependency.VerifyAll();
-            otherDependency.VerifyAll();
+            // Nothing else changed
+            Assert.False(context.Changed);
         }
 
         [Fact]
-        public void WhenUnresolvedAndNotExistsResolvedInSnapshot_ShouldReturnDependency()
+        public void BeforeAddOrUpdate_WhenUnresolvedAndNotExistsResolvedInSnapshot_ShouldReturnDependency()
         {
-            var dependency = IDependencyFactory.Implement(
-                id: "mydependency2",
-                resolved: false);
+            var unresolvedDependency = new TestDependency { Id = "dependency", Resolved = false };
 
-            var worldBuilder = new Dictionary<string, IDependency>()
-            {
-            }.ToImmutableDictionary().ToBuilder();
+            var worldBuilder = ImmutableDictionary<string, IDependency>.Empty.ToBuilder();
+
+            var context = new AddDependencyContext(worldBuilder);
 
             var filter = new UnresolvedDependenciesSnapshotFilter();
 
-            var resultDependency = filter.BeforeAdd(
+            filter.BeforeAddOrUpdate(
                 null,
                 null,
-                dependency.Object,
-                worldBuilder,
+                unresolvedDependency,
                 null,
                 null,
-                out bool filterAnyChanges);
+                context);
 
-            Assert.NotNull(resultDependency);
-            Assert.Equal("mydependency2", resultDependency.Id);
+            // Dependency accepted unchanged
+            Assert.Same(unresolvedDependency, context.GetResult(filter));
 
-            dependency.VerifyAll();
+            // Nothing else changed
+            Assert.False(context.Changed);
         }
 
         [Fact]
-        public void WhenResolved_ShouldReturnDependency()
+        public void BeforeAddOrUpdate_WhenResolved_ShouldReturnDependency()
         {
-            var dependency = IDependencyFactory.Implement(
-                id: "mydependency2",
-                resolved: true);
+            var resolvedDependency = new TestDependency { Id = "dependency", Resolved = true };
+
+            var worldBuilder = ImmutableDictionary<string, IDependency>.Empty.ToBuilder();
+
+            var context = new AddDependencyContext(worldBuilder);
 
             var filter = new UnresolvedDependenciesSnapshotFilter();
 
-            var resultDependency = filter.BeforeAdd(
+            filter.BeforeAddOrUpdate(
                 null,
                 null,
-                dependency.Object,
+                resolvedDependency,
                 null,
                 null,
-                null,
-                out bool filterAnyChanges);
+                context);
 
-            Assert.NotNull(resultDependency);
-            Assert.Equal("mydependency2", resultDependency.Id);
+            // Dependency accepted unchanged
+            Assert.Same(resolvedDependency, context.GetResult(filter));
 
-            dependency.VerifyAll();
+            // Nothing else changed
+            Assert.False(context.Changed);
         }
     }
 }

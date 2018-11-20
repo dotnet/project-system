@@ -202,7 +202,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var dependency2 = IDependencyFactory.Implement(targetFramework: targetFramework1).Object;
             var dependency3 = IDependencyFactory.Implement(targetFramework: targetFramework2).Object;
 
-
             Assert.True(dependency1.HasSameTarget(dependency2));
             Assert.False(dependency1.HasSameTarget(dependency3));
         }

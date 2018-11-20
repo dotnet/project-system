@@ -23,49 +23,47 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
     {
         public const int Order = 110;
 
-        public override IDependency BeforeAdd(
+        public override void BeforeAddOrUpdate(
             string projectPath,
             ITargetFramework targetFramework,
             IDependency dependency,
-            ImmutableDictionary<string, IDependency>.Builder worldBuilder,
             IReadOnlyDictionary<string, IProjectDependenciesSubTreeProvider> subTreeProviderByProviderType,
             IImmutableSet<string> projectItemSpecs,
-            out bool filterAnyChanges)
+            IAddDependencyContext context)
         {
-            filterAnyChanges = false;
-
             if (!dependency.TopLevel)
             {
-                return dependency;
+                context.Accept(dependency);
+                return;
             }
 
             if (dependency.Flags.Contains(DependencyTreeFlags.SdkSubTreeNodeFlags))
             {
                 // This is an SDK dependency.
                 //
-                // Try to find a package dependency with the same name.
+                // Try to find a resolved package dependency with the same name.
 
                 string packageId = Dependency.GetID(targetFramework, PackageRuleHandler.ProviderTypeString, modelId: dependency.Name);
 
-                if (worldBuilder.TryGetValue(packageId, out IDependency package) && package.Resolved)
+                if (context.TryGetDependency(packageId, out IDependency package) && package.Resolved)
                 {
                     // Set to resolved, and copy dependencies.
 
-                    filterAnyChanges = true;
-                    return dependency.ToResolved(
+                    context.Accept(dependency.ToResolved(
                         schemaName: ResolvedSdkReference.SchemaName,
-                        dependencyIDs: package.DependencyIDs);
+                        dependencyIDs: package.DependencyIDs));
+                    return;
                 }
             }
             else if (dependency.Flags.Contains(DependencyTreeFlags.PackageNodeFlags) && dependency.Resolved)
             {
-                // This is a package dependency.
+                // This is a resolved package dependency.
                 //
                 // Try to find an SDK dependency with the same name.
 
                 string sdkId = Dependency.GetID(targetFramework, SdkRuleHandler.ProviderTypeString, modelId: dependency.Name);
 
-                if (worldBuilder.TryGetValue(sdkId, out IDependency sdk))
+                if (context.TryGetDependency(sdkId, out IDependency sdk))
                 {
                     // We have an SDK dependency for this package. Such dependencies, when implicit, are created
                     // as unresolved by SdkRuleHandler, and are only marked resolved here once we have resolved the
@@ -73,27 +71,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
                     //
                     // Set to resolved, and copy dependencies.
 
-                    filterAnyChanges = true;
-                    sdk = sdk.ToResolved(
+                    context.AddOrUpdate(sdk.ToResolved(
                         schemaName: ResolvedSdkReference.SchemaName,
-                        dependencyIDs: dependency.DependencyIDs);
-
-                    worldBuilder[sdk.Id] = sdk;
+                        dependencyIDs: dependency.DependencyIDs));
                 }
             }
 
-            return dependency;
+            context.Accept(dependency);
         }
 
-        public override bool BeforeRemove(
+        public override void BeforeRemove(
             string projectPath,
             ITargetFramework targetFramework,
             IDependency dependency,
-            ImmutableDictionary<string, IDependency>.Builder worldBuilder,
-            out bool filterAnyChanges)
+            IRemoveDependencyContext context)
         {
-            filterAnyChanges = false;
-
             if (dependency.TopLevel && 
                 dependency.Resolved && 
                 dependency.Flags.Contains(DependencyTreeFlags.PackageNodeFlags))
@@ -104,22 +96,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
 
                 string sdkId = Dependency.GetID(targetFramework, SdkRuleHandler.ProviderTypeString, modelId: dependency.Name);
 
-                if (worldBuilder.TryGetValue(sdkId, out IDependency sdk))
+                if (context.TryGetDependency(sdkId, out IDependency sdk))
                 {
                     // We are removing the package dependency related to this SDK dependency
                     // and must undo the changes made above in BeforeAdd.
                     //
                     // Set to unresolved, and clear dependencies.
 
-                    worldBuilder[sdk.Id] = sdk.ToUnresolved(
+                    context.AddOrUpdate(sdk.ToUnresolved(
                         schemaName: SdkReference.SchemaName,
-                        dependencyIDs: ImmutableList<string>.Empty);
-
-                    filterAnyChanges = true;
+                        dependencyIDs: ImmutableList<string>.Empty));
                 }
             }
 
-            return true;
+            context.Accept();
         }
     }
 }

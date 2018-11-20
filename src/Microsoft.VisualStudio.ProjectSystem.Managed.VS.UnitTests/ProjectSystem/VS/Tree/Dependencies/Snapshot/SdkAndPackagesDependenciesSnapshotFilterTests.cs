@@ -3,6 +3,7 @@
 using System.Collections.Immutable;
 
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
+using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Filters;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions;
 
@@ -12,199 +13,223 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
-    public class SdkAndPackagesDependenciesSnapshotFilterTests
+    public sealed class SdkAndPackagesDependenciesSnapshotFilterTests : DependenciesSnapshotFilterTestsBase
     {
+        private protected override IDependenciesSnapshotFilter CreateFilter() => new SdkAndPackagesDependenciesSnapshotFilter();
+
         [Fact]
-        public void WhenNotTopLevelOrResolved_ShouldDoNothing()
+        public void BeforeAddOrUpdate_WhenNotTopLevelOrResolved_ShouldDoNothing()
         {
-            var dependency = IDependencyFactory.Implement(
-                id: "mydependency1",
-                topLevel: false);
-
-            var worldBuilder = new [] { dependency.Object }.ToImmutableDictionary(d => d.Id).ToBuilder();
-
-            var filter = new SdkAndPackagesDependenciesSnapshotFilter();
-
-            var resultDependency = filter.BeforeAdd(
-                null,
-                null,
-                dependency.Object,
-                worldBuilder,
-                null,
-                null,
-                out bool filterAnyChanges);
-
-            dependency.VerifyAll();
+            VerifyUnchangedOnAdd(new TestDependency
+            {
+                Id = "dependency1",
+                TopLevel = false,
+                Flags = DependencyTreeFlags.SdkSubTreeNodeFlags
+            });
         }
 
         [Fact]
-        public void WhenSdk_ShouldFindMatchingPackageAndSetProperties()
+        public void BeforeAddOrUpdate_WhenSdk_ShouldFindMatchingPackageAndSetProperties()
         {
-            var dependencyIDs = new [] { "id1", "id2" }.ToImmutableList();
-
-            var mockTargetFramework = ITargetFrameworkFactory.Implement(moniker: "tfm");
-
-            var flags = DependencyTreeFlags.SdkSubTreeNodeFlags
-                               .Union(DependencyTreeFlags.ResolvedFlags)
-                                .Except(DependencyTreeFlags.UnresolvedFlags);
-            var sdkDependency = IDependencyFactory.Implement(
-                flags: DependencyTreeFlags.SdkSubTreeNodeFlags,
-                id: "mydependency1id",
-                name: "mydependency1",
-                topLevel: true,
-                setPropertiesDependencyIDs: dependencyIDs,
-                setPropertiesResolved: true,
-                setPropertiesSchemaName: ResolvedSdkReference.SchemaName,
-                setPropertiesFlags: flags);
-
-            var otherDependency = IDependencyFactory.Implement(
-                    id: $"tfm\\{PackageRuleHandler.ProviderTypeString}\\mydependency1",
-                    resolved: true,
-                    dependencyIDs: dependencyIDs);
-
-            var worldBuilder = new[] { sdkDependency.Object, otherDependency.Object }.ToImmutableDictionary(d => d.Id).ToBuilder();
-
-            var filter = new SdkAndPackagesDependenciesSnapshotFilter();
-
-            var resultDependency = filter.BeforeAdd(
-                null,
-                mockTargetFramework,
-                sdkDependency.Object,
-                worldBuilder,
-                null,
-                null,
-                out bool filterAnyChanges);
-
-            sdkDependency.VerifyAll();
-            otherDependency.VerifyAll();
-        }
-
-        [Fact]
-        public void WhenSdkAndPackageUnresolved_ShouldDoNothing()
-        {
-            var mockTargetFramework = ITargetFrameworkFactory.Implement(moniker: "tfm");
-
-            var dependency = IDependencyFactory.Implement(
-                flags: DependencyTreeFlags.SdkSubTreeNodeFlags,
-                id: "mydependency1id",
-                name: "mydependency1",
-                topLevel: true);
-
-            var otherDependency = IDependencyFactory.Implement(
-                    id: $"tfm\\{PackageRuleHandler.ProviderTypeString}\\mydependency1",
-                    resolved: false);
-
-            var worldBuilder = new[] { dependency.Object, otherDependency.Object }.ToImmutableDictionary(d => d.Id).ToBuilder();
-
-            var filter = new SdkAndPackagesDependenciesSnapshotFilter();
-
-            var resultDependency = filter.BeforeAdd(
-                null,
-                mockTargetFramework,
-                dependency.Object,
-                worldBuilder,
-                null,
-                null,
-                out bool filterAnyChanges);
-
-            dependency.VerifyAll();
-            otherDependency.VerifyAll();
-        }
-
-        [Fact]
-        public void WhenPackage_ShouldFindMatchingSdkAndSetProperties()
-        {
-            var dependencyIDs = new [] { "id1", "id2" }.ToImmutableList();
-
-            var mockTargetFramework = ITargetFrameworkFactory.Implement(moniker: "tfm");
-
-            var dependency = IDependencyFactory.Implement(
-                id: "mydependency1id",
-                flags: DependencyTreeFlags.PackageNodeFlags,
-                name: "mydependency1",
-                topLevel: true,
-                resolved: true,
-                dependencyIDs: dependencyIDs);
-
-            var flags = DependencyTreeFlags.PackageNodeFlags
-                                           .Union(DependencyTreeFlags.ResolvedFlags)
-                                           .Except(DependencyTreeFlags.UnresolvedFlags);
-            var sdkDependency = IDependencyFactory.Implement(
-                    id: $"tfm\\{SdkRuleHandler.ProviderTypeString}\\mydependency1",
-                    flags: DependencyTreeFlags.PackageNodeFlags.Union(DependencyTreeFlags.UnresolvedFlags), // to see if unresolved is fixed
-                    setPropertiesResolved: true,
-                    setPropertiesDependencyIDs: dependencyIDs,
-                    setPropertiesFlags: flags,
-                    setPropertiesSchemaName: ResolvedSdkReference.SchemaName,
-                    equals: true);
-
-            var worldBuilder = new[] { dependency.Object, sdkDependency.Object }.ToImmutableDictionary(d => d.Id).ToBuilder();
-
-            var filter = new SdkAndPackagesDependenciesSnapshotFilter();
-
-            var resultDependency = filter.BeforeAdd(
-                null,
-                mockTargetFramework,
-                dependency.Object,
-                worldBuilder,
-                null,
-                null,
-                out bool filterAnyChanges);
-
-            dependency.VerifyAll();
-            sdkDependency.VerifyAll();
-        }
-
-        [Fact]
-        public void WhenPackageRemoving_ShouldCleanupSdk()
-        {
-            var resolvedFlags = DependencyTreeFlags.SdkSubTreeNodeFlags.Union(DependencyTreeFlags.ResolvedFlags);
-            var unresolvedFlags = DependencyTreeFlags.SdkSubTreeNodeFlags.Union(DependencyTreeFlags.UnresolvedFlags).Except(DependencyTreeFlags.ResolvedFlags);
+            var dependencyIDs = ImmutableList.Create("id1", "id2");
 
             var targetFramework = new TargetFramework("tfm");
 
-            var packageName = "mydependency1";
+            const string sdkName = "sdkName";
 
-            var packageDependency = IDependencyFactory.Implement(
-                id: "mydependency1id",
-                flags: DependencyTreeFlags.PackageNodeFlags,
-                name: packageName,
-                topLevel: true,
-                resolved: true);
+            var sdkDependency = new TestDependency
+            {
+                Id = "dependency1Id",
+                Name = sdkName,
+                TopLevel = true,
+                Resolved = false,
+                Flags = DependencyTreeFlags.SdkSubTreeNodeFlags
+            };
 
-            var modifiedSdkDependency = IDependencyFactory.Implement().Object;
+            var packageDependency = new TestDependency
+            {
+                Id = Dependency.GetID(targetFramework, PackageRuleHandler.ProviderTypeString, sdkName),
+                Resolved = true,
+                DependencyIDs = dependencyIDs,
+                Flags = DependencyTreeFlags.PackageNodeFlags
+            };
 
-            var sdkDependency = IDependencyFactory.Implement(
-                id: $"{targetFramework.ShortName}\\{SdkRuleHandler.ProviderTypeString}\\{packageName}",
-                flags: resolvedFlags,
-                setPropertiesDependencyIDs: ImmutableList<string>.Empty,
-                setPropertiesResolved: false,
-                setPropertiesSchemaName: SdkReference.SchemaName,
-                setPropertiesFlags: unresolvedFlags,
-                setPropertiesReturn: modifiedSdkDependency,
-                mockBehavior: MockBehavior.Loose);
+            var worldBuilder = new IDependency[] { sdkDependency, packageDependency }.ToImmutableDictionary(d => d.Id).ToBuilder();
 
-            var worldBuilder = new[] { packageDependency.Object, sdkDependency.Object }.ToImmutableDictionary(d => d.Id).ToBuilder();
+            var context = new AddDependencyContext(worldBuilder);
 
             var filter = new SdkAndPackagesDependenciesSnapshotFilter();
 
-            Assert.True(filter.BeforeRemove(
-                projectPath: null,
+            filter.BeforeAddOrUpdate(
+                null,
                 targetFramework,
-                packageDependency.Object,
-                worldBuilder,
-                out bool filterAnyChanges));
+                sdkDependency,
+                null,
+                null,
+                context);
 
-            packageDependency.VerifyAll();
-            sdkDependency.VerifyAll();
+            var acceptedDependency = context.GetResult(filter);
 
-            Assert.True(filterAnyChanges);
+            // Dependency should be accepted, but converted to resolved state
+            Assert.NotNull(acceptedDependency);
+            Assert.NotSame(sdkDependency, acceptedDependency);
+            acceptedDependency.AssertEqualTo(
+                sdkDependency.ToResolved(
+                    schemaName: ResolvedSdkReference.SchemaName,
+                    dependencyIDs: dependencyIDs));
 
-            Assert.True(worldBuilder.TryGetValue(packageDependency.Object.Id, out var afterPackageDependency));
-            Assert.Same(packageDependency.Object, afterPackageDependency);
+            // No changes other than the filtered dependency
+            Assert.False(context.Changed);
+        }
 
-            Assert.True(worldBuilder.TryGetValue(sdkDependency.Object.Id, out var afterSdkDependency));
-            Assert.Same(modifiedSdkDependency, afterSdkDependency);
+        [Fact]
+        public void BeforeAddOrUpdate_WhenSdkAndPackageUnresolved_ShouldDoNothing()
+        {
+            var targetFramework = new TargetFramework("tfm");
+
+            const string sdkName = "sdkName";
+
+            var sdkDependency = new TestDependency
+            {
+                Id = "dependency1",
+                Name = sdkName,
+                TopLevel = false,
+                Resolved = true,
+                Flags = DependencyTreeFlags.SdkSubTreeNodeFlags
+            };
+
+            var packageDependency = new TestDependency
+            {
+                Id = Dependency.GetID(targetFramework, PackageRuleHandler.ProviderTypeString, sdkName),
+                Resolved = false,
+                Flags = DependencyTreeFlags.PackageNodeFlags
+            };
+
+            var worldBuilder = new IDependency[] { sdkDependency, packageDependency }.ToImmutableDictionary(d => d.Id).ToBuilder();
+
+            var context = new AddDependencyContext(worldBuilder);
+
+            var filter = new SdkAndPackagesDependenciesSnapshotFilter();
+
+            filter.BeforeAddOrUpdate(
+                null,
+                targetFramework,
+                sdkDependency,
+                null,
+                null,
+                context);
+
+            // Accepts unchanged dependency
+            Assert.Same(sdkDependency, context.GetResult(filter));
+
+            // No other changes made
+            Assert.False(context.Changed);
+        }
+
+        [Fact]
+        public void BeforeAddOrUpdate_WhenPackage_ShouldFindMatchingSdkAndSetProperties()
+        {
+            var dependencyIDs = ImmutableList.Create("id1", "id2");
+
+            var targetFramework = new TargetFramework("tfm");
+
+            const string packageName = "packageName";
+
+            var sdkDependency = new TestDependency
+            {
+                Id = Dependency.GetID(targetFramework, SdkRuleHandler.ProviderTypeString, packageName),
+                TopLevel = false,
+                Resolved = true,
+                Flags = DependencyTreeFlags.PackageNodeFlags.Union(DependencyTreeFlags.UnresolvedFlags) // to see if unresolved is fixed
+            };
+
+            var packageDependency = new TestDependency
+            {
+                Id = "packageId",
+                Name = packageName,
+                Flags = DependencyTreeFlags.PackageNodeFlags,
+                TopLevel = true,
+                Resolved = true,
+                DependencyIDs = dependencyIDs
+            };
+
+            var worldBuilder = new IDependency[] { packageDependency, sdkDependency }.ToImmutableDictionary(d => d.Id).ToBuilder();
+
+            var context = new AddDependencyContext(worldBuilder);
+
+            var filter = new SdkAndPackagesDependenciesSnapshotFilter();
+
+            filter.BeforeAddOrUpdate(
+                null,
+                targetFramework,
+                packageDependency,
+                null,
+                null,
+                context);
+
+            // Accepts unchanged dependency
+            Assert.Same(packageDependency, context.GetResult(filter));
+
+            // Other changes made
+            Assert.True(context.Changed);
+
+            Assert.True(context.TryGetDependency(sdkDependency.Id, out IDependency sdkDependencyAfter));
+            sdkDependencyAfter.AssertEqualTo(
+                sdkDependency.ToResolved(
+                    schemaName: ResolvedSdkReference.SchemaName,
+                    dependencyIDs: dependencyIDs));
+        }
+
+        [Fact]
+        public void BeforeRemove_WhenPackageRemoving_ShouldCleanupSdk()
+        {
+            const string packageName = "packageName";
+
+            var targetFramework = new TargetFramework("tfm");
+
+            var sdkDependency = new TestDependency
+            {
+                Id = Dependency.GetID(targetFramework, SdkRuleHandler.ProviderTypeString, packageName),
+                TopLevel = false,
+                Resolved = true,
+                Flags = DependencyTreeFlags.SdkSubTreeNodeFlags.Union(DependencyTreeFlags.ResolvedFlags)
+            };
+
+            var packageDependency = new TestDependency
+            {
+                Id = "packageId",
+                Name = packageName,
+                Flags = DependencyTreeFlags.PackageNodeFlags,
+                TopLevel = true,
+                Resolved = true
+            };
+
+            var worldBuilder = new IDependency[] { packageDependency, sdkDependency }.ToImmutableDictionary(d => d.Id).ToBuilder();
+
+            var context = new RemoveDependencyContext(worldBuilder);
+
+            var filter = new SdkAndPackagesDependenciesSnapshotFilter();
+
+            filter.BeforeRemove(
+                projectPath: null,
+                targetFramework: targetFramework,
+                dependency: packageDependency,
+                context);
+
+            // Accepts removal
+            Assert.True(context.GetResult(filter));
+
+            // Makes other changes too
+            Assert.True(context.Changed);
+
+            Assert.True(worldBuilder.TryGetValue(packageDependency.Id, out var afterPackageDependency));
+            Assert.Same(packageDependency, afterPackageDependency);
+
+            Assert.True(worldBuilder.TryGetValue(sdkDependency.Id, out var afterSdkDependency));
+            afterSdkDependency.AssertEqualTo(
+                afterSdkDependency.ToUnresolved(
+                    SdkReference.SchemaName,
+                    dependencyIDs: ImmutableList<string>.Empty));
         }
     }
 }

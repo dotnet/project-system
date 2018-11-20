@@ -51,70 +51,29 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
             var worldBuilder = previousSnapshot.DependenciesWorld.ToBuilder();
 
-            foreach (IDependencyModel removedNode in changes.RemovedNodes)
+            IImmutableList<IDependencyModel> removedNodes = changes.RemovedNodes;
+
+            if (removedNodes.Count != 0)
             {
-                string targetedId = Dependency.GetID(targetFramework, removedNode.ProviderType, removedNode.Id);
+                var context = new RemoveDependencyContext(worldBuilder);
 
-                if (!worldBuilder.TryGetValue(targetedId, out IDependency dependency))
+                foreach (IDependencyModel removed in removedNodes)
                 {
-                    continue;
-                }
-
-                bool canRemove = true;
-
-                foreach (IDependenciesSnapshotFilter filter in snapshotFilters)
-                {
-                    canRemove = filter.BeforeRemove(
-                        projectPath, targetFramework, dependency, worldBuilder, out bool filterAnyChanges);
-
-                    anyChanges |= filterAnyChanges;
-
-                    if (!canRemove)
-                    {
-                        // TODO breaking here denies later filters the opportunity to modify builders
-                        break;
-                    }
-                }
-
-                if (canRemove)
-                {
-                    anyChanges = true;
-                    worldBuilder.Remove(targetedId);
+                    Remove(context, removed);
                 }
             }
 
-            foreach (IDependencyModel added in changes.AddedNodes)
+            // Call property once as implementation allocates
+            IImmutableList<IDependencyModel> addedNodes = changes.AddedNodes;
+
+            if (changes.AddedNodes.Count != 0)
             {
-                IDependency newDependency = new Dependency(added, targetFramework, projectPath);
+                var context = new AddDependencyContext(worldBuilder);
 
-                foreach (IDependenciesSnapshotFilter filter in snapshotFilters)
+                foreach (IDependencyModel added in addedNodes)
                 {
-                    newDependency = filter.BeforeAdd(
-                        projectPath,
-                        targetFramework,
-                        newDependency,
-                        worldBuilder,
-                        subTreeProviderByProviderType,
-                        projectItemSpecs,
-                        out bool filterAnyChanges);
-
-                    anyChanges |= filterAnyChanges;
-
-                    if (newDependency == null)
-                    {
-                        break;
-                    }
+                    Add(context, added);
                 }
-
-                if (newDependency == null)
-                {
-                    continue;
-                }
-
-                anyChanges = true;
-
-                worldBuilder.Remove(newDependency.Id);
-                worldBuilder.Add(newDependency.Id, newDependency);
             }
 
             // Also factor in any changes to path/framework/catalogs
@@ -134,6 +93,79 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             }
 
             return previousSnapshot;
+
+            void Remove(RemoveDependencyContext context, IDependencyModel dependencyModel)
+            {
+                string dependencyId = Dependency.GetID(
+                    targetFramework, dependencyModel.ProviderType, dependencyModel.Id);
+
+                if (!context.TryGetDependency(dependencyId, out IDependency dependency))
+                {
+                    return;
+                }
+
+                context.Initialize();
+
+                foreach (IDependenciesSnapshotFilter filter in snapshotFilters)
+                {
+                    filter.BeforeRemove(
+                        projectPath,
+                        targetFramework,
+                        dependency,
+                        context);
+
+                    anyChanges |= context.Changed;
+
+                    if (!context.GetResult(filter))
+                    {
+                        // TODO breaking here denies later filters the opportunity to modify builders
+                        return;
+                    }
+                }
+
+                worldBuilder.Remove(dependencyId);
+                anyChanges = true;
+            }
+
+            void Add(AddDependencyContext context, IDependencyModel dependencyModel)
+            {
+                // Create the unfiltered dependency
+                IDependency dependency = new Dependency(dependencyModel, targetFramework, projectPath);
+
+                context.Initialize();
+
+                foreach (IDependenciesSnapshotFilter filter in snapshotFilters)
+                {
+                    filter.BeforeAddOrUpdate(
+                        projectPath,
+                        targetFramework,
+                        dependency,
+                        subTreeProviderByProviderType,
+                        projectItemSpecs,
+                        context);
+
+                    dependency = context.GetResult(filter);
+
+                    if (dependency == null)
+                    {
+                        break;
+                    }
+                }
+
+                if (dependency != null)
+                {
+                    // A dependency was accepted
+                    worldBuilder.Remove(dependency.Id);
+                    worldBuilder.Add(dependency.Id, dependency);
+                    anyChanges = true;
+                }
+                else
+                {
+                    // Even though the dependency was rejected, it's possible that filters made
+                    // changes to other dependencies.
+                    anyChanges |= context.Changed;
+                }
+            }
         }
 
         // Internal, for test use -- normal code should use the factory methods

@@ -25,9 +25,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         }
 
         /// <summary>
-        /// Applies changes to <paramref name="previousSnapshot"/> and produces a new snapshot if required.
+        /// For each target framework in <paramref name="changes"/>, applies the corresponding
+        /// <see cref="IDependenciesChanges"/> to <paramref name="previousSnapshot"/> in order to produce
+        /// and return an updated <see cref="DependenciesSnapshot"/> object.
         /// If no changes are made, <paramref name="previousSnapshot"/> is returned unmodified.
         /// </summary>
+        /// <remarks>
+        /// As part of the update, each <see cref="IDependenciesSnapshotFilter"/> in <paramref name="snapshotFilters"/>
+        /// is given a chance to influence the addition and removal of dependency data in the returned snapshot.
+        /// </remarks>
         /// <returns>An updated snapshot, or <paramref name="previousSnapshot"/> if no changes occured.</returns>
         public static DependenciesSnapshot FromChanges(
             string projectPath,

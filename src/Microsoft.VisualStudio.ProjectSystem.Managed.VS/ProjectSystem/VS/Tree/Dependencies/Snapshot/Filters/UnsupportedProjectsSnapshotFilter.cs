@@ -32,17 +32,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
         private IAggregateDependenciesSnapshotProvider AggregateSnapshotProvider { get; }
         private ITargetFrameworkProvider TargetFrameworkProvider { get; }
 
-        public override IDependency BeforeAdd(
+        public override void BeforeAddOrUpdate(
             string projectPath,
             ITargetFramework targetFramework,
             IDependency dependency,
-            ImmutableDictionary<string, IDependency>.Builder worldBuilder,
             IReadOnlyDictionary<string, IProjectDependenciesSubTreeProvider> subTreeProviderByProviderType,
             IImmutableSet<string> projectItemSpecs,
-            out bool filterAnyChanges)
+            IAddDependencyContext context)
         {
-            filterAnyChanges = false;
-
             if (dependency.TopLevel
                 && dependency.Resolved
                 && dependency.Flags.Contains(DependencyTreeFlags.ProjectNodeFlags)
@@ -51,12 +48,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
                 ITargetedDependenciesSnapshot snapshot = GetSnapshot(dependency);
                 if (snapshot != null && snapshot.HasUnresolvedDependency)
                 {
-                    filterAnyChanges = true;
-                    return dependency.ToUnresolved(ProjectReference.SchemaName);
+                    context.Accept(dependency.ToUnresolved(ProjectReference.SchemaName));
+                    return;
                 }
             }
 
-            return dependency;
+            context.Accept(dependency);
         }
 
         private ITargetedDependenciesSnapshot GetSnapshot(IDependency dependency)

@@ -29,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         public void TConstructor()
         {
             const string projectPath = @"c:\somefolder\someproject\a.csproj";
-            var targetFramework = ITargetFrameworkFactory.Implement("tfm1");
+            var targetFramework = new TargetFramework("tfm1");
 
             var catalogs = IProjectCatalogSnapshotFactory.Create();
             var snapshot = new TargetedDependenciesSnapshot(
@@ -50,7 +50,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         public void TCreateEmpty()
         {
             const string projectPath = @"c:\somefolder\someproject\a.csproj";
-            var targetFramework = ITargetFrameworkFactory.Implement("tfm1");
+            var targetFramework = new TargetFramework("tfm1");
             var catalogs = IProjectCatalogSnapshotFactory.Create();
 
             var snapshot = TargetedDependenciesSnapshot.CreateEmpty(projectPath, targetFramework, catalogs);
@@ -69,7 +69,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         public void TFromChanges_Empty()
         {
             const string projectPath = @"c:\somefolder\someproject\a.csproj";
-            var targetFramework = ITargetFrameworkFactory.Implement("tfm1");
+            var targetFramework = new TargetFramework("tfm1");
             var catalogs = IProjectCatalogSnapshotFactory.Create();
             var previousSnapshot = TargetedDependenciesSnapshot.CreateEmpty(projectPath, targetFramework, catalogs);
 
@@ -91,40 +91,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         public void TFromChanges_NoChanges()
         {
             const string projectPath = @"c:\somefolder\someproject\a.csproj";
-            var targetFramework = ITargetFrameworkFactory.Implement("tfm1");
+            var targetFramework = new TargetFramework("tfm1");
 
-            var dependencyTop1 = IDependencyFactory.FromJson(@"
-                {
-                    ""ProviderType"": ""Xxx"",
-                    ""Id"": ""tfm1\\xxx\\topdependency1"",
-                    ""Name"":""TopDependency1"",
-                    ""Caption"":""TopDependency1"",
-                    ""SchemaItemType"":""Xxx"",
-                    ""Resolved"":""true"",
-                    ""TopLevel"":""true""
-                }",
-                icon: KnownMonikers.Uninstall,
-                expandedIcon: KnownMonikers.Uninstall);
-
-            var dependencyChild1 = IDependencyFactory.FromJson(@"
-                {
-                    ""ProviderType"": ""Xxx"",
-                    ""Id"": ""tfm1\\xxx\\childdependency1"",
-                    ""Name"":""ChildDependency1"",
-                    ""Caption"":""ChildDependency1"",
-                    ""SchemaItemType"":""Xxx"",
-                    ""Resolved"":""true"",
-                    ""TopLevel"":""false""
-                }",
-                icon: KnownMonikers.Uninstall,
-                expandedIcon: KnownMonikers.Uninstall);
+            var dependencyTop1 = new TestDependency
+            {
+                Id = @"tfm1\xxx\topdependency1",
+                ProviderType = "Xxx",
+                Resolved = true,
+                TopLevel = true
+            };
 
             var catalogs = IProjectCatalogSnapshotFactory.Create();
             var previousSnapshot = ITargetedDependenciesSnapshotFactory.Implement(
                 projectPath: projectPath,
                 targetFramework: targetFramework,
                 catalogs: catalogs,
-                dependenciesWorld: new [] { dependencyTop1, dependencyChild1 },
+                dependenciesWorld: new [] { dependencyTop1 },
                 topLevelDependencies: new [] { dependencyTop1 });
 
             var changes = new DependenciesChanges();
@@ -145,7 +127,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         public void TFromChanges_AddingToEmpty()
         {
             const string projectPath = @"c:\somefolder\someproject\a.csproj";
-            var targetFramework = ITargetFrameworkFactory.Implement("tfm1");
+            var targetFramework = new TargetFramework("tfm1");
 
             var catalogs = IProjectCatalogSnapshotFactory.Create();
             var previousSnapshot = TargetedDependenciesSnapshot.CreateEmpty(projectPath, targetFramework, catalogs);
@@ -204,7 +186,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         public void TFromChanges_NoChangesAfterBeforeRemoveFilterDeclinedChange()
         {
             const string projectPath = @"c:\somefolder\someproject\a.csproj";
-            var targetFramework = ITargetFrameworkFactory.Implement("tfm1");
+
+            var targetFramework = new TargetFramework("tfm1");
 
             var dependencyTop1 = IDependencyFactory.FromJson(@"
                 {
@@ -243,8 +226,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var changes = new DependenciesChanges();
             changes.IncludeRemovedChange(dependencyTop1.ProviderType, dependencyTop1.Id);
 
-            var snapshotFilter = new TestDependenciesSnapshotFilter()
-                    .ImplementBeforeRemoveResult(FilterAction.Cancel, @"tfm1\xxx\newdependency1", null);
+            var snapshotFilter = new TestDependenciesSnapshotFilter();
 
             var snapshot = TargetedDependenciesSnapshot.FromChanges(
                 projectPath,
@@ -262,7 +244,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         public void TFromChanges_ReportedChangesAfterBeforeRemoveFilterDeclinedChange()
         {
             const string projectPath = @"c:\somefolder\someproject\a.csproj";
-            var targetFramework = ITargetFrameworkFactory.Implement("tfm1");
+            var targetFramework = new TargetFramework("tfm1");
 
             var dependencyTop1 = IDependencyFactory.FromJson(@"
                 {
@@ -301,9 +283,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var changes = new DependenciesChanges();
             changes.IncludeRemovedChange("Xxx", "topdependency1");
 
+            var addedOnRemove = new TestDependency { Id = "SomethingElse", TopLevel = false };
+
             var snapshotFilter = new TestDependenciesSnapshotFilter()
-                    .ImplementBeforeRemoveResult(FilterAction.Cancel, @"tfm1\xxx\topdependency1", null)
-                    .ImplementFilterAnyChanges(true);
+                .BeforeRemoveReject(@"tfm1\xxx\topdependency1", addOrUpdate: addedOnRemove);
 
             var snapshot = TargetedDependenciesSnapshot.FromChanges(
                 projectPath,
@@ -320,14 +303,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Same(projectPath, snapshot.ProjectPath);
             Assert.Same(catalogs, snapshot.Catalogs);
             Assert.Single(snapshot.TopLevelDependencies);
-            AssertEx.CollectionLength(snapshot.DependenciesWorld, 2);
+            AssertEx.CollectionLength(snapshot.DependenciesWorld, 3);
+            Assert.Contains(addedOnRemove, snapshot.DependenciesWorld.Values);
         }
 
         [Fact]
         public void TFromChanges_NoChangesAfterBeforeAddFilterDeclinedChange()
         {
             const string projectPath = @"c:\somefolder\someproject\a.csproj";
-            var targetFramework = ITargetFrameworkFactory.Implement("tfm1");
+            var targetFramework = new TargetFramework("tfm1");
 
             var dependencyTop1 = IDependencyFactory.FromJson(@"
                 {
@@ -379,7 +363,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             changes.IncludeAddedChange(dependencyModelNew1);
 
             var snapshotFilter = new TestDependenciesSnapshotFilter()
-                    .ImplementBeforeAddResult(FilterAction.Cancel, @"tfm1\xxx\newdependency1", null);
+                .BeforeAddReject(@"tfm1\xxx\newdependency1");
 
             var snapshot = TargetedDependenciesSnapshot.FromChanges(
                 projectPath,
@@ -397,7 +381,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         public void TFromChanges_ReportedChangesAfterBeforeAddFilterDeclinedChange()
         {
             const string projectPath = @"c:\somefolder\someproject\a.csproj";
-            var targetFramework = ITargetFrameworkFactory.Implement("tfm1");
+            var targetFramework = new TargetFramework("tfm1");
 
             var dependencyTop1 = IDependencyFactory.FromJson(@"
                 {
@@ -448,9 +432,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var changes = new DependenciesChanges();
             changes.IncludeAddedChange(dependencyModelNew1);
 
+            var filterAddedDependency = new TestDependency { Id = "unexpected", TopLevel = true };
+
             var snapshotFilter = new TestDependenciesSnapshotFilter()
-                    .ImplementBeforeAddResult(FilterAction.Cancel, @"tfm1\xxx\newdependency1", null)
-                    .ImplementFilterAnyChanges(true);
+                .BeforeAddReject(@"tfm1\xxx\newdependency1", addOrUpdate: filterAddedDependency);
 
             var snapshot = TargetedDependenciesSnapshot.FromChanges(
                 projectPath,
@@ -464,17 +449,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.NotSame(previousSnapshot, snapshot);
 
             Assert.Same(previousSnapshot.TargetFramework, snapshot.TargetFramework);
-            Assert.Same(projectPath, snapshot.ProjectPath);
-            Assert.Same(catalogs, snapshot.Catalogs);
-            Assert.Single(snapshot.TopLevelDependencies);
-            AssertEx.CollectionLength(snapshot.DependenciesWorld, 2);
+            Assert.Same(previousSnapshot.ProjectPath, snapshot.ProjectPath);
+            Assert.Same(previousSnapshot.Catalogs, snapshot.Catalogs);
+
+            AssertEx.CollectionLength(snapshot.TopLevelDependencies, 2);
+            Assert.Contains(dependencyTop1, snapshot.TopLevelDependencies);
+            Assert.Contains(filterAddedDependency, snapshot.TopLevelDependencies);
+
+            AssertEx.CollectionLength(snapshot.DependenciesWorld, 3);
+            Assert.Contains(dependencyTop1, snapshot.DependenciesWorld.Values);
+            Assert.Contains(dependencyChild1, snapshot.DependenciesWorld.Values);
+            Assert.Contains(filterAddedDependency, snapshot.DependenciesWorld.Values);
         }
 
         [Fact]
         public void TFromChanges_RemovedAndAddedChanges()
         {
             const string projectPath = @"c:\somefolder\someproject\a.csproj";
-            var targetFramework = ITargetFrameworkFactory.Implement("tfm1");
+            var targetFramework = new TargetFramework("tfm1");
 
             var dependencyTop1 = IDependencyFactory.FromJson(@"
                 {
@@ -599,9 +591,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             changes.IncludeRemovedChange("Xxx", "Removeddependency1");
 
             var snapshotFilter = new TestDependenciesSnapshotFilter()
-                .ImplementBeforeAddResult(FilterAction.Cancel, @"tfm1\xxx\addeddependency1", null)
-                .ImplementBeforeAddResult(FilterAction.ShouldBeAdded, @"tfm1\xxx\addeddependency2", dependencyAdded2Changed)
-                .ImplementBeforeRemoveResult(FilterAction.ShouldBeAdded, @"tfm1\xxx\Removeddependency1", dependencyInsteadRemoved1);
+                .BeforeAddReject(@"tfm1\xxx\addeddependency1")
+                .BeforeAddAccept(@"tfm1\xxx\addeddependency2", dependencyAdded2Changed)
+                .BeforeAddAccept(@"tfm1\xxx\addeddependency3")
+                .BeforeRemoveAccept(@"tfm1\xxx\Removeddependency1", dependencyInsteadRemoved1);
 
             var snapshot = TargetedDependenciesSnapshot.FromChanges(
                 projectPath,
@@ -632,7 +625,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         public void TFromChanges_UpdatesTopLevelDependencies()
         {
             const string projectPath = @"c:\somefolder\someproject\a.csproj";
-            var targetFramework = ITargetFrameworkFactory.Implement("tfm1");
+            var targetFramework = new TargetFramework("tfm1");
 
             var dependencyTopPrevious = IDependencyFactory.FromJson(@"
                 {
@@ -682,7 +675,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             changes.IncludeAddedChange(dependencyModelTopAdded);
 
             var snapshotFilter = new TestDependenciesSnapshotFilter()
-                    .ImplementBeforeAddResult(FilterAction.ShouldBeAdded, @"tfm1\xxx\topdependency1", dependencyTopUpdated);
+                    .BeforeAddAccept(@"tfm1\xxx\topdependency1", dependencyTopUpdated);
 
             var snapshot = TargetedDependenciesSnapshot.FromChanges(
                 projectPath,
@@ -704,144 +697,136 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         [Fact]
         public void TCheckForUnresolvedDependencies_CircularDependency_DoesNotRecurseInfinitely()
         {
-            var dependencyTop1 = IDependencyFactory.FromJson(@"
-                {
-                    ""ProviderType"": ""Xxx"",
-                    ""Id"": ""tfm1\\xxx\\topdependency1"",
-                    ""Name"":""TopDependency1"",
-                    ""Caption"":""TopDependency1"",
-                    ""SchemaItemType"":""Xxx"",
-                    ""Resolved"":""true"",
-                    ""TopLevel"":""true"",
-                    ""DependencyIDs"": [ ""tfm1\\xxx\\topdependency2"" ]
-                }",
-                icon: KnownMonikers.Uninstall,
-                expandedIcon: KnownMonikers.Uninstall);
+            const string id1 = @"tfm1\xxx\dependency1";
+            const string id2 = @"tfm1\xxx\dependency2";
+            const string providerType = "Xxx";
 
-            var dependencyTop2 = IDependencyFactory.FromJson(@"
-                {
-                    ""ProviderType"": ""Xxx"",
-                    ""Id"": ""tfm1\\xxx\\topdependency2"",
-                    ""Name"":""TopDependency2"",
-                    ""Caption"":""TopDependency2"",
-                    ""SchemaItemType"":""Xxx"",
-                    ""Resolved"":""true"",
-                    ""TopLevel"":""false"",
-                    ""DependencyIDs"": [ ""tfm1\\xxx\\topdependency1"" ]
-                }",
-                icon: KnownMonikers.Uninstall,
-                expandedIcon: KnownMonikers.Uninstall);
+            var dependency1 = new TestDependency
+            {
+                Id = id1,
+                ProviderType = providerType,
+                TopLevel = true,
+                DependencyIDs = ImmutableList.Create(id2)
+            };
 
-            var previousSnapshot = new TargetedDependenciesSnapshot(
+            var dependency2 = new TestDependency
+            {
+                Id = id2,
+                ProviderType = providerType,
+                TopLevel = true,
+                DependencyIDs = ImmutableList.Create(id1)
+            };
+
+            var snapshot = new TargetedDependenciesSnapshot(
                 "ProjectPath",
                 TargetFramework.Any,
                 catalogs: null,
-                dependenciesWorld: new Dictionary<string, IDependency>()
-                {
-                    { dependencyTop1.Id, dependencyTop1 },
-                    { dependencyTop2.Id, dependencyTop2 },
-                }.ToImmutableDictionary());
+                dependenciesWorld: new IDependency[] { dependency1, dependency2 }.ToDictionary(d => d.Id).ToImmutableDictionary());
 
             // verify it doesn't stack overflow
-            previousSnapshot.CheckForUnresolvedDependencies(dependencyTop1);   
+            snapshot.CheckForUnresolvedDependencies(dependency1);   
         }
 
-        internal enum FilterAction
+        internal sealed class TestDependenciesSnapshotFilter : IDependenciesSnapshotFilter
         {
-            Cancel,
-            ShouldBeAdded
-        }
+            private enum FilterAction { Reject, Accept }
 
-        internal class TestDependenciesSnapshotFilter : IDependenciesSnapshotFilter
-        {
-            private bool _filterAnyChanges;
-            public TestDependenciesSnapshotFilter ImplementFilterAnyChanges(bool any)
+            private readonly Dictionary<string, (FilterAction, IDependency)> _beforeAdd    = new Dictionary<string, (FilterAction, IDependency)>(StringComparer.OrdinalIgnoreCase);
+            private readonly Dictionary<string, (FilterAction, IDependency)> _beforeRemove = new Dictionary<string, (FilterAction, IDependency)>(StringComparer.OrdinalIgnoreCase);
+
+            public TestDependenciesSnapshotFilter BeforeAddAccept(string id, IDependency dependency = null)
             {
-                _filterAnyChanges = any;
-
+                _beforeAdd.Add(id, (FilterAction.Accept, dependency));
                 return this;
             }
 
-            public TestDependenciesSnapshotFilter ImplementBeforeAddResult(FilterAction action, string id, IDependency dependency)
+            public TestDependenciesSnapshotFilter BeforeAddReject(string id, IDependency addOrUpdate = null)
             {
-                _beforeAdd.Add(id, Tuple.Create(dependency, action));
-
+                _beforeAdd.Add(id, (FilterAction.Reject, addOrUpdate));
                 return this;
             }
 
-            private readonly Dictionary<string, Tuple<IDependency, FilterAction>> _beforeAdd
-                = new Dictionary<string, Tuple<IDependency, FilterAction>>(StringComparer.OrdinalIgnoreCase);
-
-            public TestDependenciesSnapshotFilter ImplementBeforeRemoveResult(FilterAction action, string id, IDependency dependency)
+            public TestDependenciesSnapshotFilter BeforeRemoveAccept(string id, IDependency addOrUpdate = null)
             {
-                _beforeRemove.Add(id, Tuple.Create(dependency, action));
-
+                _beforeRemove.Add(id, (FilterAction.Accept, addOrUpdate));
                 return this;
             }
 
-            private readonly Dictionary<string, Tuple<IDependency, FilterAction>> _beforeRemove
-                = new Dictionary<string, Tuple<IDependency, FilterAction>>(StringComparer.OrdinalIgnoreCase);
+            public TestDependenciesSnapshotFilter BeforeRemoveReject(string id, IDependency addOrUpdate = null)
+            {
+                _beforeRemove.Add(id, (FilterAction.Reject, addOrUpdate));
+                return this;
+            }
 
-            public IDependency BeforeAdd(
+            public void BeforeAddOrUpdate(
                 string projectPath,
                 ITargetFramework targetFramework,
                 IDependency dependency,
-                ImmutableDictionary<string, IDependency>.Builder worldBuilder,
                 IReadOnlyDictionary<string, IProjectDependenciesSubTreeProvider> subTreeProviderByProviderType,
                 IImmutableSet<string> projectItemSpecs,
-                out bool filterAnyChanges)
+                IAddDependencyContext context)
             {
-                filterAnyChanges = _filterAnyChanges;
-
-                if (_beforeAdd.TryGetValue(dependency.Id, out Tuple<IDependency, FilterAction> info))
+                if (_beforeAdd.TryGetValue(dependency.Id, out (FilterAction, IDependency) info))
                 {
-                    if (info.Item2 == FilterAction.Cancel)
+                    if (info.Item1 == FilterAction.Reject)
                     {
-                        return null;
-                    }
-                    else if (info.Item2 == FilterAction.ShouldBeAdded)
-                    {
-                        worldBuilder.Remove(info.Item1.Id);
-                        worldBuilder.Add(info.Item1.Id, info.Item1);
+                        context.Reject();
 
-                        return info.Item1;
+                        if (info.Item2 != null)
+                        {
+                            context.AddOrUpdate(info.Item2);
+                        }
+                    }
+                    else if (info.Item1 == FilterAction.Accept)
+                    {
+                        context.Accept(info.Item2 ?? dependency);
                     }
                     else
                     {
                         throw new NotSupportedException();
                     }
                 }
-
-                return dependency;
+                else
+                {
+                    throw new ArgumentException("Unexpected dependency ID: " + dependency.Id);
+                }
             }
 
-            public bool BeforeRemove(
+            public void BeforeRemove(
                 string projectPath,
                 ITargetFramework targetFramework,
                 IDependency dependency,
-                ImmutableDictionary<string, IDependency>.Builder worldBuilder,
-                out bool filterAnyChanges)
+                IRemoveDependencyContext context)
             {
-                filterAnyChanges = _filterAnyChanges;
-
-                if (_beforeRemove.TryGetValue(dependency.Id, out Tuple<IDependency, FilterAction> info))
+                if (_beforeRemove.TryGetValue(dependency.Id, out (FilterAction, IDependency) info))
                 {
-                    if (info.Item2 == FilterAction.Cancel)
+                    if (info.Item1 == FilterAction.Reject)
                     {
-                        return false;
+                        context.Reject();
+
+                        if (info.Item2 != null)
+                        {
+                            context.AddOrUpdate(info.Item2);
+                        }
                     }
-                    else if (info.Item2 == FilterAction.ShouldBeAdded)
+                    else if (info.Item1 == FilterAction.Accept)
                     {
-                        worldBuilder.Remove(info.Item1.Id);
-                        worldBuilder.Add(info.Item1.Id, info.Item1);
+                        context.Accept();
+
+                        if (info.Item2 != null)
+                        {
+                            context.AddOrUpdate(info.Item2);
+                        }
                     }
                     else
                     {
                         throw new NotSupportedException();
                     }
                 }
-
-                return true;
+                else
+                {
+                    throw new ArgumentException("Unexpected dependency ID: " + dependency.Id);
+                }
             }
         }
     }

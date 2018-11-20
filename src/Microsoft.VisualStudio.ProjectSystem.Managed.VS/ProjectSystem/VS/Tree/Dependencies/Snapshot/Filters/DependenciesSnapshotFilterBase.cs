@@ -12,28 +12,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
     /// </summary>
     internal abstract class DependenciesSnapshotFilterBase : IDependenciesSnapshotFilter
     {
-        public virtual IDependency BeforeAdd(
+        public virtual void BeforeAddOrUpdate(
             string projectPath,
             ITargetFramework targetFramework,
             IDependency dependency,
-            ImmutableDictionary<string, IDependency>.Builder worldBuilder,
             IReadOnlyDictionary<string, IProjectDependenciesSubTreeProvider> subTreeProviderByProviderType,
             IImmutableSet<string> projectItemSpecs,
-            out bool filterAnyChanges)
+            IAddDependencyContext context)
         {
-            filterAnyChanges = false;
-            return dependency;
+            context.Accept(dependency);
         }
 
-        public virtual bool BeforeRemove(
+        public virtual void BeforeRemove(
             string projectPath,
             ITargetFramework targetFramework,
             IDependency dependency,
-            ImmutableDictionary<string, IDependency>.Builder worldBuilder,
-            out bool filterAnyChanges)
+            IRemoveDependencyContext context)
         {
-            filterAnyChanges = false;
-            return true;
+            context.Accept();
         }
     }
 }

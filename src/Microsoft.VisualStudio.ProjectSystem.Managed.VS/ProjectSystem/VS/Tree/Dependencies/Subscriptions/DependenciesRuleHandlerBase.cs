@@ -67,6 +67,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             ITargetFramework targetFramework,
             DependenciesRuleChangeContext ruleChangeContext)
         {
+            // We receive unresolved and resolved changes separately.
+
+            // Process all unresolved changes.
             if (changesByRuleName.TryGetValue(UnresolvedRuleName, out IProjectChangeDescription unresolvedChanges))
             {
                 HandleChangesForRule(
@@ -77,6 +80,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     shouldProcess: dependencyId => true);
             }
 
+            // Process only resolved changes that have a corresponding unresolved item.
             if (unresolvedChanges != null &&
                 changesByRuleName.TryGetValue(ResolvedRuleName, out IProjectChangeDescription resolvedChanges))
             {
