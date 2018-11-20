@@ -11,6 +11,7 @@ using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
+using Microsoft.VisualStudio.Text;
 
 using Task = System.Threading.Tasks.Task;
 
@@ -434,8 +435,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 return null;
             }
 
-            string[] paths = pathEnv.Split(Delimiter.Semicolon, StringSplitOptions.RemoveEmptyEntries);
-            foreach (string path in paths)
+            foreach (string path in new LazyStringSplit(pathEnv, ';'))
             {
                 // We don't want one bad path entry to derail the search
                 try

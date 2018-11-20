@@ -72,7 +72,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             }
             else
             {
-                return BuildUtilities.GetPropertyValues(propertyValue);
+                return BuildUtilities.GetPropertyValues(propertyValue).ToImmutableArray();
             }
         }
 

@@ -8,6 +8,7 @@ using System.Text;
 
 using Microsoft.Build.Construction;
 using Microsoft.Build.Execution;
+using Microsoft.VisualStudio.Text;
 
 namespace Microsoft.VisualStudio.Build
 {
@@ -65,21 +66,18 @@ namespace Microsoft.VisualStudio.Build
         /// <param name="propertyValue">Value of the property to evaluate.</param>
         /// <param name="delimiter">Character used to delimit the property values.</param>
         /// <returns>Collection of individual values in the property.</returns>
-        public static ImmutableArray<string> GetPropertyValues(string propertyValue, char delimiter = ';')
+        public static IEnumerable<string> GetPropertyValues(string propertyValue, char delimiter = ';')
         {
-            IEnumerable<string> values = propertyValue.Split(delimiter).Select(f => f.Trim());
-
             // We need to ensure that we return values in the specified order.
-            ImmutableArray<string>.Builder valuesBuilder = ImmutableArray.CreateBuilder<string>();
-            foreach (string value in values)
+            foreach (string value in new LazyStringSplit(propertyValue, delimiter))
             {
-                if (!string.IsNullOrEmpty(value))
+                string s = value.Trim();
+
+                if (!string.IsNullOrEmpty(s))
                 {
-                    valuesBuilder.Add(value);
+                    yield return s;
                 }
             }
-
-            return valuesBuilder.Distinct(StringComparer.OrdinalIgnoreCase).ToImmutableArray();
         }
 
         /// <summary>
