@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
     ///     based on the unique TargetFramework configurations of an <see cref="UnconfiguredProject"/>.
     /// </summary>
     [Export(typeof(IProjectContextProvider))]
-    internal partial class UnconfiguredProjectContextProvider : EnsureOnceInitializedOnceDisposedAsync, IProjectContextProvider
+    internal partial class UnconfiguredProjectContextProvider : OnceInitializedOnceDisposedAsync, IProjectContextProvider
     {
         private readonly SemaphoreSlim _gate = new SemaphoreSlim(initialCount: 1);
         private readonly IUnconfiguredProjectCommonServices _commonServices;

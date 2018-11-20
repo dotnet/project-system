@@ -13,7 +13,7 @@ using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 {
-    internal abstract class CrossTargetSubscriptionHostBase : EnsureOnceInitializedOnceDisposedAsync, ICrossTargetSubscriptionsHost
+    internal abstract class CrossTargetSubscriptionHostBase : OnceInitializedOnceDisposedAsync, ICrossTargetSubscriptionsHost
     {
 #pragma warning disable CA2213 // OnceInitializedOnceDisposedAsync are not tracked correctly by the IDisposeable analyzer
         private readonly SemaphoreSlim _gate = new SemaphoreSlim(initialCount: 1);

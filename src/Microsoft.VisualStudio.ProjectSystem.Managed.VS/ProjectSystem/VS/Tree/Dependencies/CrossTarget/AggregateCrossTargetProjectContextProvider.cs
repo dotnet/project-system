@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
     ///     configurations of an <see cref="UnconfiguredProject"/>.
     /// </summary>
     [Export(typeof(IAggregateCrossTargetProjectContextProvider))]
-    internal class AggregateCrossTargetProjectContextProvider : EnsureOnceInitializedOnceDisposedAsync, IAggregateCrossTargetProjectContextProvider
+    internal class AggregateCrossTargetProjectContextProvider : OnceInitializedOnceDisposedAsync, IAggregateCrossTargetProjectContextProvider
     {
         private readonly SemaphoreSlim _gate = new SemaphoreSlim(initialCount: 1);
         private readonly IUnconfiguredProjectCommonServices _commonServices;

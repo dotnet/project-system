@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
     [Export(typeof(DependenciesGraphProvider))]
     [Export(typeof(IDependenciesGraphBuilder))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
-    internal class DependenciesGraphProvider : EnsureOnceInitializedOnceDisposedAsync, IGraphProvider, IDependenciesGraphBuilder
+    internal class DependenciesGraphProvider : OnceInitializedOnceDisposedAsync, IGraphProvider, IDependenciesGraphBuilder
     {
         [ImportingConstructor]
         public DependenciesGraphProvider(
