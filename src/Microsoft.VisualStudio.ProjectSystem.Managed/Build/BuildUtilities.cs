@@ -219,7 +219,7 @@ namespace Microsoft.VisualStudio.Build
                 }
                 else
                 {
-                    propertyGroup = project.PropertyGroups.FirstOrDefault();
+                    propertyGroup = project.PropertyGroups.First();
                 }
 
                 return propertyGroup.AddProperty(propertyName, string.Empty);
