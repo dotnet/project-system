@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
     /// </summary>
     internal abstract class AbstractMultiLifetimeComponent : OnceInitializedOnceDisposedAsync
     {
-        private readonly object _lock = new object();
+        private readonly SemaphoreSlim _lock = new SemaphoreSlim(initialCount: 1);
         private TaskCompletionSource<object> _loadedSource = new TaskCompletionSource<object>();
         private IMultiLifetimeInstance _instance;
 
@@ -50,8 +50,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
         private async Task LoadCoreAsync()
         {
             TaskCompletionSource<object> loadedSource = null;
-            IMultiLifetimeInstance instance;
-            lock (_lock)
+            IMultiLifetimeInstance instance = null;
+            await _lock.ExecuteWithinLockAsync(JoinableCollection, JoinableFactory, () =>
             {
                 if (_instance == null)
                 {
@@ -60,7 +60,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 }
 
                 instance = _instance;
-            }
+            });
 
             // While all callers should wait on InitializeAsync, 
             // only one should complete the completion source
@@ -68,11 +68,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
             loadedSource?.SetResult(null);
         }
 
-        public Task UnloadAsync()
+        public async Task UnloadAsync()
         {
             IMultiLifetimeInstance instance = null;
 
-            lock (_lock)
+            await _lock.ExecuteWithinLockAsync(JoinableCollection, JoinableFactory, () =>
             {
                 if (_instance != null)
                 {
@@ -80,14 +80,12 @@ namespace Microsoft.VisualStudio.ProjectSystem
                     _instance = null;
                     _loadedSource = new TaskCompletionSource<object>();
                 }
-            }
+            });
 
             if (instance != null)
             {
-                return instance.DisposeAsync();
+                await instance.DisposeAsync();
             }
-
-            return Task.CompletedTask;
         }
 
         protected override async Task DisposeCoreAsync(bool initialized)
@@ -95,6 +93,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             await UnloadAsync();
 
             _loadedSource.TrySetCanceled();
+            _lock.Dispose();
         }
 
         protected override Task InitializeCoreAsync(CancellationToken cancellationToken)

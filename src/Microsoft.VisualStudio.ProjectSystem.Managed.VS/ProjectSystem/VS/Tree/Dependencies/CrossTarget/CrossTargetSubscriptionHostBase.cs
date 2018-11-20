@@ -17,6 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
     {
 #pragma warning disable CA2213 // OnceInitializedOnceDisposedAsync are not tracked correctly by the IDisposeable analyzer
         private readonly SemaphoreSlim _gate = new SemaphoreSlim(initialCount: 1);
+        private readonly SemaphoreSlim _linksLock = new SemaphoreSlim(initialCount: 1);
 #pragma warning restore CA2213
         private readonly IUnconfiguredProjectCommonServices _commonServices;
         private readonly Lazy<IAggregateCrossTargetProjectContextProvider> _contextProvider;
@@ -24,7 +25,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         private readonly IActiveConfiguredProjectSubscriptionService _activeConfiguredProjectSubscriptionService;
         private readonly IActiveProjectConfigurationRefreshService _activeProjectConfigurationRefreshService;
         private readonly ITargetFrameworkProvider _targetFrameworkProvider;
-        private readonly object _linksLock = new object();
         private readonly List<IDisposable> _evaluationSubscriptionLinks = new List<IDisposable>();
 
         private int _isInitialized;
@@ -227,9 +227,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
             await _commonServices.ThreadingService.SwitchToUIThread();
 
-            await _tasksService.LoadedProjectAsync(() =>
+            await _tasksService.LoadedProjectAsync(async () =>
             {
-                lock (_linksLock)
+                await _linksLock.ExecuteWithinLockAsync(JoinableCollection, JoinableFactory, () =>
                 {
                     foreach (ConfiguredProject configuredProject in newProjectContext.InnerConfiguredProjects)
                     {
@@ -242,9 +242,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                     {
                         subscriber.Value.AddSubscriptions(newProjectContext);
                     }
-                }
-
-                return Task.CompletedTask;
+                });
             });
         }
 
@@ -284,7 +282,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
         private void DisposeAndClearSubscriptions()
         {
-            lock (_linksLock)
+            using (_linksLock.DisposableWait())
             {
                 foreach (Lazy<ICrossTargetSubscriber> subscriber in Subscribers)
                 {
