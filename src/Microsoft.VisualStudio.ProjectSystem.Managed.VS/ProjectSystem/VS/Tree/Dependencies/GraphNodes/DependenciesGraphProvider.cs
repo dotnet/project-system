@@ -67,7 +67,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
 
         private readonly object _snapshotChangeHandlerLock = new object();
         private IVsImageService2 _imageService;
-        private readonly SemaphoreSlim _expandedGraphContextsLock = new SemaphoreSlim(1);
+        private readonly SemaphoreSlim _expandedGraphContextsLock = new SemaphoreSlim(initialCount: 1);
 
         /// <summary>
         /// Remembers expanded graph nodes to track changes in their children.
