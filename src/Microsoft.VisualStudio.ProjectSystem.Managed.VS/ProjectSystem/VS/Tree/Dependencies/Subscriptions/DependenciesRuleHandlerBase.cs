@@ -77,19 +77,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     shouldProcess: dependencyId => true);
             }
 
-            if (changesByRuleName.TryGetValue(ResolvedRuleName, out IProjectChangeDescription resolvedChanges))
+            if (unresolvedChanges != null &&
+                changesByRuleName.TryGetValue(ResolvedRuleName, out IProjectChangeDescription resolvedChanges))
             {
                 HandleChangesForRule(
                     resolved: true, 
                     projectChange: resolvedChanges, 
                     targetFramework, 
                     ruleChangeContext, 
-                    shouldProcess: dependencyId => DoesUnresolvedProjectItemExist(dependencyId));
-            }
-
-            bool DoesUnresolvedProjectItemExist(string dependencyId)
-            {
-                return unresolvedChanges != null && unresolvedChanges.After.Items.ContainsKey(dependencyId);
+                    shouldProcess: unresolvedChanges.After.Items.ContainsKey);
             }
         }
 
