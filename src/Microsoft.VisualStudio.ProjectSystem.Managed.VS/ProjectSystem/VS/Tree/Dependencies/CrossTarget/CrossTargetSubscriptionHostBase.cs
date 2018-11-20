@@ -13,7 +13,7 @@ using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 {
-    internal abstract class CrossTargetSubscriptionHostBase : OnceInitializedOnceDisposedAsync, ICrossTargetSubscriptionsHost
+    internal abstract class CrossTargetSubscriptionHostBase : EnsureOnceInitializedOnceDisposedAsync, ICrossTargetSubscriptionsHost
     {
 #pragma warning disable CA2213 // OnceInitializedOnceDisposedAsync are not tracked correctly by the IDisposeable analyzer
         private readonly SemaphoreSlim _gate = new SemaphoreSlim(initialCount: 1);
@@ -26,8 +26,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         private readonly IActiveProjectConfigurationRefreshService _activeProjectConfigurationRefreshService;
         private readonly ITargetFrameworkProvider _targetFrameworkProvider;
         private readonly List<IDisposable> _evaluationSubscriptionLinks = new List<IDisposable>();
-
-        private int _isInitialized;
 
         /// <summary>
         /// Current AggregateCrossTargetProjectContext - accesses to this field must be done with a lock.
@@ -67,7 +65,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                 return null;
             }
 
-            await EnsureInitialized();
+            await EnsureInitializedAsync();
 
             return await ExecuteWithinLockAsync(() => _currentAggregateProjectContext);
         }
@@ -101,19 +99,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             // by default do nothing
         }
 
-        /// <summary>
-        /// Workaround for CPS bug 375276 which causes double entry on InitializeAsync and exception
-        /// "InvalidOperationException: The value factory has called for the value on the same instance".
-        /// </summary>
-        /// <returns></returns>
-        private async Task EnsureInitialized()
-        {
-            if (Interlocked.CompareExchange(ref _isInitialized, 1, 0) == 0)
-            {
-                await InitializeAsync();
-            }
-        }
-
         protected override Task InitializeCoreAsync(CancellationToken cancellationToken)
         {
             // Update project context and subscriptions.
@@ -127,7 +112,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                 return;
             }
 
-            await EnsureInitialized();
+            await EnsureInitializedAsync();
 
             await OnProjectChangedCoreAsync(e);
         }

@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
     ///     An <see langword="abstract"/> base class that simplifies the lifetime of 
     ///     a component that is loaded and unloaded multiple times.
     /// </summary>
-    internal abstract class AbstractMultiLifetimeComponent : OnceInitializedOnceDisposedAsync
+    internal abstract class AbstractMultiLifetimeComponent : EnsureOnceInitializedOnceDisposedAsync
     {
         private readonly SemaphoreSlim _lock = new SemaphoreSlim(initialCount: 1);
         private TaskCompletionSource<object> _loadedSource = new TaskCompletionSource<object>();
@@ -42,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public async Task LoadAsync()
         {
-            await InitializeAsync();
+            await EnsureInitializedAsync();
 
             await LoadCoreAsync();
         }

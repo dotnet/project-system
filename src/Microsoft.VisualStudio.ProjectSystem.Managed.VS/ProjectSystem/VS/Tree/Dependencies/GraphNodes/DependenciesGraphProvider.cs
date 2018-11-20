@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Concurrent;
@@ -34,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
     [Export(typeof(DependenciesGraphProvider))]
     [Export(typeof(IDependenciesGraphBuilder))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
-    internal class DependenciesGraphProvider : OnceInitializedOnceDisposedAsync, IGraphProvider, IDependenciesGraphBuilder
+    internal class DependenciesGraphProvider : EnsureOnceInitializedOnceDisposedAsync, IGraphProvider, IDependenciesGraphBuilder
     {
         [ImportingConstructor]
         public DependenciesGraphProvider(
@@ -130,7 +130,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
         {
             try
             {
-                await InitializeAsync();
+                await EnsureInitializedAsync();
 
                 IEnumerable<Lazy<IDependenciesGraphActionHandler, IOrderPrecedenceMetadataView>> actionHandlers = GraphActionHandlers.Where(x => x.Value.CanHandleRequest(context));
                 bool shouldTrackChanges = actionHandlers.Aggregate(

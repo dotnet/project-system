@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
     ///     based on the unique TargetFramework configurations of an <see cref="UnconfiguredProject"/>.
     /// </summary>
     [Export(typeof(IProjectContextProvider))]
-    internal partial class UnconfiguredProjectContextProvider : OnceInitializedOnceDisposedAsync, IProjectContextProvider
+    internal partial class UnconfiguredProjectContextProvider : EnsureOnceInitializedOnceDisposedAsync, IProjectContextProvider
     {
         private readonly SemaphoreSlim _gate = new SemaphoreSlim(initialCount: 1);
         private readonly IUnconfiguredProjectCommonServices _commonServices;
@@ -50,7 +50,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 
         public async Task<AggregateWorkspaceProjectContext> CreateProjectContextAsync()
         {
-            await EnsureInitialized();
+            await EnsureInitializedAsync();
 
             AggregateWorkspaceProjectContext context = await CreateProjectContextAsyncCore();
             if (context == null)
@@ -298,16 +298,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         }
 
         private Task ExecuteWithinLockAsync(Action action) => _gate.ExecuteWithinLockAsync(JoinableCollection, JoinableFactory, action);
-
-        private int _isInitialized;
-
-        private async Task EnsureInitialized()
-        {
-            if (Interlocked.CompareExchange(ref _isInitialized, 1, 0) == 0)
-            {
-                await InitializeAsync();
-            }
-        }
 
         private struct ProjectData
         {

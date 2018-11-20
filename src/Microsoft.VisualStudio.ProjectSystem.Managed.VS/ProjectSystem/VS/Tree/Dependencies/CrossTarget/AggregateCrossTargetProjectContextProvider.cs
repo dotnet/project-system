@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
     ///     configurations of an <see cref="UnconfiguredProject"/>.
     /// </summary>
     [Export(typeof(IAggregateCrossTargetProjectContextProvider))]
-    internal class AggregateCrossTargetProjectContextProvider : OnceInitializedOnceDisposedAsync, IAggregateCrossTargetProjectContextProvider
+    internal class AggregateCrossTargetProjectContextProvider : EnsureOnceInitializedOnceDisposedAsync, IAggregateCrossTargetProjectContextProvider
     {
         private readonly SemaphoreSlim _gate = new SemaphoreSlim(initialCount: 1);
         private readonly IUnconfiguredProjectCommonServices _commonServices;
@@ -42,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
         public async Task<AggregateCrossTargetProjectContext> CreateProjectContextAsync()
         {
-            await EnsureInitialized();
+            await EnsureInitializedAsync();
 
             AggregateCrossTargetProjectContext context = await CreateProjectContextAsyncCore();
             if (context == null)
@@ -246,16 +246,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         }
 
         private Task ExecuteWithinLockAsync(Action action) => _gate.ExecuteWithinLockAsync(JoinableCollection, JoinableFactory, action);
-
-        private int _isInitialized;
-
-        private async Task EnsureInitialized()
-        {
-            if (Interlocked.CompareExchange(ref _isInitialized, 1, 0) == 0)
-            {
-                await InitializeAsync();
-            }
-        }
 
         private struct ProjectData
         {
