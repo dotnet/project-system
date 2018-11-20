@@ -71,11 +71,9 @@ namespace Microsoft.VisualStudio.Build
             // We need to ensure that we return values in the specified order.
             foreach (string value in new LazyStringSplit(propertyValue, delimiter))
             {
-                string s = value.Trim();
-
-                if (!string.IsNullOrEmpty(s))
+                if (!string.IsNullOrWhiteSpace(value))
                 {
-                    yield return s;
+                    yield return value.Trim();
                 }
             }
         }
@@ -131,8 +129,12 @@ namespace Microsoft.VisualStudio.Build
             {
                 if (string.Compare(value, valueToRemove, StringComparison.Ordinal) != 0)
                 {
+                    if (newValue.Length != 0)
+                    {
+                        newValue.Append(delimiter);
+                    }
+
                     newValue.Append(value);
-                    newValue.Append(delimiter);
                 }
                 else
                 {
@@ -140,7 +142,7 @@ namespace Microsoft.VisualStudio.Build
                 }
             }
 
-            property.Value = newValue.ToString().TrimEnd(delimiter);
+            property.Value = newValue.ToString();
 
             if (!valueFound)
             {
@@ -172,6 +174,11 @@ namespace Microsoft.VisualStudio.Build
             bool valueFound = false;
             foreach (string propertyValue in GetPropertyValues(evaluatedPropertyValue, delimiter))
             {
+                if (value.Length != 0)
+                {
+                    value.Append(delimiter);
+                }
+
                 if (string.Compare(propertyValue, oldValue, StringComparison.Ordinal) == 0)
                 {
                     value.Append(newValue);
@@ -181,11 +188,9 @@ namespace Microsoft.VisualStudio.Build
                 {
                     value.Append(propertyValue);
                 }
-
-                value.Append(delimiter);
             }
 
-            property.Value = value.ToString().TrimEnd(delimiter);
+            property.Value = value.ToString();
 
             if (!valueFound)
             {
