@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             if (Interlocked.Exchange(ref _isInitialized, 1) == 0)
             {
-                return base.InitializeAsync();
+                return base.InitializeAsync(cancellationToken);
             }
 
             return Task.CompletedTask;
