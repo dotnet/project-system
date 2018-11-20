@@ -37,6 +37,25 @@ namespace Microsoft.VisualStudio.Text
 
         IEnumerator<string> IEnumerable<string>.GetEnumerator() => GetEnumerator();
 
+        public IEnumerable<T> Select<T>(Func<string, T> func)
+        {
+            foreach (string value in this)
+            {
+                yield return func(value);
+            }
+        }
+
+        public string First()
+        {
+            return FirstOrDefault() ?? throw new InvalidOperationException("Sequence is empty.");
+        }
+
+        public string FirstOrDefault()
+        {
+            var enumerator = new Enumerator(this);
+            return enumerator.MoveNext() ? enumerator.Current : null;
+        }
+
         public struct Enumerator : IEnumerator<string>
         {
             private readonly string _input;
