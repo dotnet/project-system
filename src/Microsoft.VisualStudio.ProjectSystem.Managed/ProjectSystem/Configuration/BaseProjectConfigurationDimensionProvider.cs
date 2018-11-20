@@ -201,11 +201,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         {
             // NOTE: We try to somewhat mimic evaluation, but it doesn't have to be exact; its just a guess
             // at what "might" be the default configuration, not what it actually is.
-            return projectXml.PropertyGroups.SelectMany(group => group.Properties)
-                                            .Reverse()
-                                            .Where(p => StringComparers.PropertyNames.Equals(PropertyName, p.Name))
-                                            .Where(p => BuildUtilities.HasWellKnownConditionsThatAlwaysEvaluateToTrue(p))
-                                            .FirstOrDefault();
+            return projectXml.PropertyGroups
+                .SelectMany(group => group.Properties)
+                .Reverse()
+                .FirstOrDefault(
+                    p => StringComparers.PropertyNames.Equals(PropertyName, p.Name) &&
+                         BuildUtilities.HasWellKnownConditionsThatAlwaysEvaluateToTrue(p));
         }
     }
 }

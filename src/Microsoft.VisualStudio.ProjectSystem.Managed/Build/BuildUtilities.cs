@@ -56,8 +56,7 @@ namespace Microsoft.VisualStudio.Build
             Requires.NotNull(project, "project");
 
             return project.Properties
-                .Where(p => string.Equals(p.Name, propertyName, StringComparison.OrdinalIgnoreCase))
-                .FirstOrDefault();
+                .FirstOrDefault(p => string.Equals(p.Name, propertyName, StringComparison.OrdinalIgnoreCase));
         }
 
         /// <summary>
