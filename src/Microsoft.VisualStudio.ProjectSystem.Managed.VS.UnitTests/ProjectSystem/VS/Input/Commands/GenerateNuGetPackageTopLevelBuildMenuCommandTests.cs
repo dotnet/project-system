@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.Input;
 using Microsoft.VisualStudio.ProjectSystem.Build;
+using Microsoft.VisualStudio.Shell.Interop;
 
 using Xunit;
 
@@ -17,10 +18,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         internal override AbstractGenerateNuGetPackageCommand CreateInstanceCore(
             UnconfiguredProject project,
             IProjectThreadingService threadingService,
-            Shell.SVsServiceProvider serviceProvider,
+            VsService<SVsSolutionBuildManager, IVsSolutionBuildManager2> vsSolutionBuildManagerService,
             GeneratePackageOnBuildPropertyProvider generatePackageOnBuildPropertyProvider)
         {
-            return new GenerateNuGetPackageTopLevelBuildMenuCommand(project, threadingService, serviceProvider, generatePackageOnBuildPropertyProvider);
+            return new GenerateNuGetPackageTopLevelBuildMenuCommand(project, threadingService, vsSolutionBuildManagerService, generatePackageOnBuildPropertyProvider);
         }
 
 

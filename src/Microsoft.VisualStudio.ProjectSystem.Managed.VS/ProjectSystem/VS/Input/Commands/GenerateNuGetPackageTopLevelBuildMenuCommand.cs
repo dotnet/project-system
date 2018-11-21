@@ -6,7 +6,7 @@ using System.IO;
 using Microsoft.VisualStudio.Input;
 using Microsoft.VisualStudio.ProjectSystem.Build;
 using Microsoft.VisualStudio.ProjectSystem.Input;
-using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 {
@@ -18,13 +18,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         public GenerateNuGetPackageTopLevelBuildMenuCommand(
             UnconfiguredProject project,
             IProjectThreadingService threadingService,
-            SVsServiceProvider serviceProvider,
+            VsService<SVsSolutionBuildManager, IVsSolutionBuildManager2> vsSolutionBuildManagerService,
             GeneratePackageOnBuildPropertyProvider generatePackageOnBuildPropertyProvider)
-            : base(project, threadingService, serviceProvider, generatePackageOnBuildPropertyProvider)
+            : base(project, threadingService, vsSolutionBuildManagerService, generatePackageOnBuildPropertyProvider)
         {
         }
 
         protected override bool ShouldHandle(IProjectTree node) => true;
+
         protected override string GetCommandText() =>
             string.Format(VSResources.PackSelectedProjectCommand, Path.GetFileNameWithoutExtension(Project.FullPath));
     }

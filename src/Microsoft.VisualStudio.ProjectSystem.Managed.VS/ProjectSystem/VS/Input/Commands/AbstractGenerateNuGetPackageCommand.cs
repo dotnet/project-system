@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.ProjectSystem.Build;
 using Microsoft.VisualStudio.ProjectSystem.Input;
-using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
 using Task = System.Threading.Tasks.Task;
@@ -15,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
     internal abstract class AbstractGenerateNuGetPackageCommand : AbstractSingleNodeProjectCommand, IVsUpdateSolutionEvents, IDisposable
     {
         private readonly IProjectThreadingService _threadingService;
-        private readonly IServiceProvider _serviceProvider;
+        private readonly VsService<SVsSolutionBuildManager, IVsSolutionBuildManager2> _vsSolutionBuildManagerService;
         private readonly GeneratePackageOnBuildPropertyProvider _generatePackageOnBuildPropertyProvider;
         private IVsSolutionBuildManager2 _buildManager;
         private uint _solutionEventsCookie;
@@ -23,17 +22,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         protected AbstractGenerateNuGetPackageCommand(
             UnconfiguredProject project,
             IProjectThreadingService threadingService,
-            SVsServiceProvider serviceProvider,
+            VsService<SVsSolutionBuildManager, IVsSolutionBuildManager2> vsSolutionBuildManagerService,
             GeneratePackageOnBuildPropertyProvider generatePackageOnBuildPropertyProvider)
         {
             Requires.NotNull(project, nameof(project));
             Requires.NotNull(threadingService, nameof(threadingService));
-            Requires.NotNull(serviceProvider, nameof(serviceProvider));
+            Requires.NotNull(vsSolutionBuildManagerService, nameof(vsSolutionBuildManagerService));
             Requires.NotNull(generatePackageOnBuildPropertyProvider, nameof(generatePackageOnBuildPropertyProvider));
 
             Project = project;
             _threadingService = threadingService;
-            _serviceProvider = serviceProvider;
+            _vsSolutionBuildManagerService = vsSolutionBuildManagerService;
             _generatePackageOnBuildPropertyProvider = generatePackageOnBuildPropertyProvider;
         }
 
@@ -70,7 +69,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 
             if (_buildManager == null)
             {
-                _buildManager = _serviceProvider.GetService<IVsSolutionBuildManager2, SVsSolutionBuildManager>();
+                _buildManager = await _vsSolutionBuildManagerService.GetValueAsync();
 
                 // Register for solution build events.
                 _buildManager.AdviseUpdateSolutionEvents(this, out _solutionEventsCookie);

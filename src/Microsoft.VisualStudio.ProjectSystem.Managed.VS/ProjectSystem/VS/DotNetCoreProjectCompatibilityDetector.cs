@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.References;
+using Microsoft.VisualStudio.ProjectSystem.VS.Interop;
 using Microsoft.VisualStudio.ProjectSystem.VS.UI;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 using Microsoft.VisualStudio.Settings;
@@ -37,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         private const int CacheFileValidHours = 24;
 
         [Guid("9B164E40-C3A2-4363-9BC5-EB4039DEF653")]
-        private class SVsSettingsPersistenceManager { }
+        internal class SVsSettingsPersistenceManager { }
 
         private enum CompatibilityLevel
         {
@@ -45,27 +46,41 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             Supported = 1,
             NotSupported = 2
         }
+
         [ImportingConstructor]
-        public DotNetCoreProjectCompatibilityDetector([Import(typeof(SVsServiceProvider))] IServiceProvider serviceProvider, Lazy<IProjectServiceAccessor> projectAccessor,
+        public DotNetCoreProjectCompatibilityDetector(Lazy<IProjectServiceAccessor> projectAccessor,
                                                       Lazy<IDialogServices> dialogServices, Lazy<IProjectThreadingService> threadHandling, Lazy<IVsShellUtilitiesHelper> vsShellUtilitiesHelper,
-                                                      Lazy<IFileSystem> fileSystem, Lazy<IHttpClient> httpClient)
+                                                      Lazy<IFileSystem> fileSystem, Lazy<IHttpClient> httpClient,
+                                                      VsService<SVsUIShell, IVsUIShell> vsUIShellService,
+                                                      VsService<SVsSettingsPersistenceManager, ISettingsManager> settingsManagerService,
+                                                      VsService<SVsSolution, IVsSolution> vsSolutionService,
+                                                      VsService<SVsAppId, IVsAppId> vsAppIdService,
+                                                      VsService<SVsShell, IVsShell> vsShellService)
         {
-            _serviceProvider = serviceProvider;
             _projectServiceAccessor = projectAccessor;
             _dialogServices = dialogServices;
             _threadHandling = threadHandling;
             _shellUtilitiesHelper = vsShellUtilitiesHelper;
             _fileSystem = fileSystem;
             _httpClient = httpClient;
+            _vsUIShellService = vsUIShellService;
+            _settingsManagerService = settingsManagerService;
+            _vsSolutionService = vsSolutionService;
+            _vsAppIdService = vsAppIdService;
+            _vsShellService = vsShellService;
         }
 
-        private readonly IServiceProvider _serviceProvider;
         private readonly Lazy<IProjectServiceAccessor> _projectServiceAccessor;
         private readonly Lazy<IDialogServices> _dialogServices;
         private readonly Lazy<IProjectThreadingService> _threadHandling;
         private readonly Lazy<IVsShellUtilitiesHelper> _shellUtilitiesHelper;
         private readonly Lazy<IFileSystem> _fileSystem;
         private readonly Lazy<IHttpClient> _httpClient;
+        private readonly VsService<SVsSettingsPersistenceManager, ISettingsManager> _settingsManagerService;
+        private readonly VsService<SVsUIShell, IVsUIShell> _vsUIShellService;
+        private readonly VsService<SVsSolution, IVsSolution> _vsSolutionService;
+        private readonly VsService<SVsAppId, IVsAppId> _vsAppIdService;
+        private readonly VsService<SVsShell, IVsShell> _vsShellService;
 
         private RemoteCacheFile _versionDataCacheFile;
         private Version _ourVSVersion;
@@ -77,27 +92,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         // Tracks how often we meed to look for new data
         private DateTime _timeCurVersionDataLastUpdatedUtc = DateTime.MinValue;
         private VersionCompatibilityData _curVersionCompatibilityData;
+        private IVsSolution _vsSolution;
 
         public async Task InitializeAsync()
         {
             await _threadHandling.Value.SwitchToUIThread();
 
             // Initialize our cache file
-            string appDataFolder = await _shellUtilitiesHelper.Value.GetLocalAppDataFolderAsync(_serviceProvider);
+            string appDataFolder = await _shellUtilitiesHelper.Value.GetLocalAppDataFolderAsync(_vsShellService);
             if (appDataFolder != null)
             {
                 _versionDataCacheFile = new RemoteCacheFile(Path.Combine(appDataFolder, VersionDataFilename), VersionCompatibilityDownloadFwlink,
                                                             TimeSpan.FromHours(CacheFileValidHours), _fileSystem.Value, _httpClient);
             }
 
-            _ourVSVersion = await _shellUtilitiesHelper.Value.GetVSVersionAsync(_serviceProvider);
+            _ourVSVersion = await _shellUtilitiesHelper.Value.GetVSVersionAsync(_vsAppIdService);
 
-            IVsSolution solution = _serviceProvider.GetService<IVsSolution, SVsSolution>();
-            Verify.HResult(solution.AdviseSolutionEvents(this, out _solutionCookie));
+            _vsSolution = await _vsSolutionService.GetValueAsync();
+            Verify.HResult(_vsSolution.AdviseSolutionEvents(this, out _solutionCookie));
 
             // Check to see if a solution is already open. If so we set _solutionOpened to true so that subsequent projects added to 
             // this solution are processed.
-            if (ErrorHandler.Succeeded(solution.GetProperty((int)__VSPROPID4.VSPROPID_IsSolutionFullyLoaded, out object isFullyLoaded)) &&
+            if (ErrorHandler.Succeeded(_vsSolution.GetProperty((int)__VSPROPID4.VSPROPID_IsSolutionFullyLoaded, out object isFullyLoaded)) &&
                 isFullyLoaded is bool isFullyLoadedBool && 
                 isFullyLoadedBool)
             {
@@ -111,11 +127,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             if (_solutionCookie != VSConstants.VSCOOKIE_NIL)
             {
-                IVsSolution solution = _serviceProvider.GetService<IVsSolution, SVsSolution>();
-                if (solution != null)
+                if (_vsSolution != null)
                 {
-                    Verify.HResult(solution.UnadviseSolutionEvents(_solutionCookie));
+                    Verify.HResult(_vsSolution.UnadviseSolutionEvents(_solutionCookie));
                     _solutionCookie = VSConstants.VSCOOKIE_NIL;
+                    _vsSolution = null;
                 }
             }
         }
@@ -215,13 +231,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 // Only want to warn once per solution
                 _compatibilityLevelWarnedForThisSolution = compatLevel;
 
-                IVsUIShell uiShell = _serviceProvider.GetService<IVsUIShell, SVsUIShell>();
+                IVsUIShell uiShell = await _vsUIShellService.GetValueAsync();
                 uiShell.GetAppName(out string caption);
 
                 if (compatLevel == CompatibilityLevel.Supported)
                 {
                     // Get current dontShowAgain value
-                    var settingsManager = (ISettingsManager)_serviceProvider.GetService(typeof(SVsSettingsPersistenceManager));
+                    var settingsManager = await _settingsManagerService.GetValueAsync();
                     bool suppressPrompt = false;
                     if (settingsManager != null)
                     {
