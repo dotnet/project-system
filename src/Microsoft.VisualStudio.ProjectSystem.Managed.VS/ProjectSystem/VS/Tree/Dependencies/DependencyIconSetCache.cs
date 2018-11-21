@@ -52,6 +52,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 }
 
                 // Optimistic update failed, so loop around and try again.
+                prior = original;
             }
         }
     }
