@@ -18,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         internal override AbstractGenerateNuGetPackageCommand CreateInstanceCore(
             UnconfiguredProject project,
             IProjectThreadingService threadingService,
-            VsService<SVsSolutionBuildManager, IVsSolutionBuildManager2> vsSolutionBuildManagerService,
+            IVsService<SVsSolutionBuildManager, IVsSolutionBuildManager2> vsSolutionBuildManagerService,
             GeneratePackageOnBuildPropertyProvider generatePackageOnBuildPropertyProvider)
         {
             return new GenerateNuGetPackageProjectContextMenuCommand(project, threadingService, vsSolutionBuildManagerService, generatePackageOnBuildPropertyProvider);

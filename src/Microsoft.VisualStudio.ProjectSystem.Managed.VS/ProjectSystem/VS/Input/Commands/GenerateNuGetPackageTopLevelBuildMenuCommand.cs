@@ -18,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         public GenerateNuGetPackageTopLevelBuildMenuCommand(
             UnconfiguredProject project,
             IProjectThreadingService threadingService,
-            VsService<SVsSolutionBuildManager, IVsSolutionBuildManager2> vsSolutionBuildManagerService,
+            IVsService<IVsSolutionBuildManager2> vsSolutionBuildManagerService,
             GeneratePackageOnBuildPropertyProvider generatePackageOnBuildPropertyProvider)
             : base(project, threadingService, vsSolutionBuildManagerService, generatePackageOnBuildPropertyProvider)
         {

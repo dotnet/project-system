@@ -32,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             _threadingService = threadingService;
         }
 
-        public virtual Task<T> GetValueAsync()
+        public Task<T> GetValueAsync()
         {
             return _value.GetValueAsync();
         }

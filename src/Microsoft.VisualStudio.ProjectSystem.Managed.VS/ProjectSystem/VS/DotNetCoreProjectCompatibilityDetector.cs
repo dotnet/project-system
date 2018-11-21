@@ -16,7 +16,6 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Interop;
 using Microsoft.VisualStudio.ProjectSystem.VS.UI;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 using Microsoft.VisualStudio.Settings;
-using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Threading;
 
@@ -51,11 +50,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         public DotNetCoreProjectCompatibilityDetector(Lazy<IProjectServiceAccessor> projectAccessor,
                                                       Lazy<IDialogServices> dialogServices, Lazy<IProjectThreadingService> threadHandling, Lazy<IVsShellUtilitiesHelper> vsShellUtilitiesHelper,
                                                       Lazy<IFileSystem> fileSystem, Lazy<IHttpClient> httpClient,
-                                                      VsService<SVsUIShell, IVsUIShell> vsUIShellService,
-                                                      VsService<SVsSettingsPersistenceManager, ISettingsManager> settingsManagerService,
-                                                      VsService<SVsSolution, IVsSolution> vsSolutionService,
-                                                      VsService<SVsAppId, IVsAppId> vsAppIdService,
-                                                      VsService<SVsShell, IVsShell> vsShellService)
+                                                      IVsService<SVsUIShell, IVsUIShell> vsUIShellService,
+                                                      IVsService<SVsSettingsPersistenceManager, ISettingsManager> settingsManagerService,
+                                                      IVsService<SVsSolution, IVsSolution> vsSolutionService,
+                                                      IVsService<SVsAppId, IVsAppId> vsAppIdService,
+                                                      IVsService<SVsShell, IVsShell> vsShellService)
         {
             _projectServiceAccessor = projectAccessor;
             _dialogServices = dialogServices;
@@ -76,11 +75,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         private readonly Lazy<IVsShellUtilitiesHelper> _shellUtilitiesHelper;
         private readonly Lazy<IFileSystem> _fileSystem;
         private readonly Lazy<IHttpClient> _httpClient;
-        private readonly VsService<SVsSettingsPersistenceManager, ISettingsManager> _settingsManagerService;
-        private readonly VsService<SVsUIShell, IVsUIShell> _vsUIShellService;
-        private readonly VsService<SVsSolution, IVsSolution> _vsSolutionService;
-        private readonly VsService<SVsAppId, IVsAppId> _vsAppIdService;
-        private readonly VsService<SVsShell, IVsShell> _vsShellService;
+        private readonly IVsService<SVsSettingsPersistenceManager, ISettingsManager> _settingsManagerService;
+        private readonly IVsService<SVsUIShell, IVsUIShell> _vsUIShellService;
+        private readonly IVsService<SVsSolution, IVsSolution> _vsSolutionService;
+        private readonly IVsService<SVsAppId, IVsAppId> _vsAppIdService;
+        private readonly IVsService<SVsShell, IVsShell> _vsShellService;
 
         private RemoteCacheFile _versionDataCacheFile;
         private Version _ourVSVersion;
