@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         /// </returns>
         /// <remarks>
         ///     When finished with the return <see cref="AggregateCrossTargetProjectContext"/>, callers must call 
-        ///     <see cref="ReleaseProjectContext"/>.
+        ///     <see cref="ReleaseProjectContextAsync"/>.
         /// </remarks>
         Task<AggregateCrossTargetProjectContext> CreateProjectContextAsync();
 
@@ -37,6 +37,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         ///     <paramref name="context"/> was not created via <see cref="CreateProjectContextAsync"/> or 
         ///     has already been unregistered.
         /// </exception>
-        void ReleaseProjectContext(AggregateCrossTargetProjectContext context);
+        Task ReleaseProjectContextAsync(AggregateCrossTargetProjectContext context);
     }
 }

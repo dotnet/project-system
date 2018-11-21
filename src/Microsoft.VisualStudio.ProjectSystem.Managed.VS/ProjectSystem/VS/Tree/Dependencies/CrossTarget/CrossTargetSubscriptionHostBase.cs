@@ -134,7 +134,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             if (previousProjectContext != newProjectContext)
             {
                 // Dispose existing subscriptions.
-                DisposeAndClearSubscriptions();
+                await DisposeAndClearSubscriptionsAsync();
 
                 // Add subscriptions for the configured projects in the new project context.
                 await AddSubscriptionsAsync(newProjectContext);
@@ -189,7 +189,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                 // Dispose the old project context, if one exists.
                 if (previousContextToDispose != null)
                 {
-                    DisposeAggregateProjectContext(previousContextToDispose);
+                    await DisposeAggregateProjectContextAsync(previousContextToDispose);
                 }
 
                 // Create new project context.
@@ -201,9 +201,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             });
         }
 
-        private void DisposeAggregateProjectContext(AggregateCrossTargetProjectContext projectContext)
+        private async Task DisposeAggregateProjectContextAsync(AggregateCrossTargetProjectContext projectContext)
         {
-            _contextProvider.Value.ReleaseProjectContext(projectContext);
+            await _contextProvider.Value.ReleaseProjectContextAsync(projectContext);
         }
 
         private async Task AddSubscriptionsAsync(AggregateCrossTargetProjectContext newProjectContext)
@@ -253,21 +253,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         {
             if (initialized)
             {
-                DisposeAndClearSubscriptions();
+                await DisposeAndClearSubscriptionsAsync();
 
-                await ExecuteWithinLockAsync(() =>
+                await ExecuteWithinLockAsync(async () =>
                 {
                     if (_currentAggregateProjectContext != null)
                     {
-                        _contextProvider.Value.ReleaseProjectContext(_currentAggregateProjectContext);
+                        await _contextProvider.Value.ReleaseProjectContextAsync(_currentAggregateProjectContext);
                     }
                 });
             }
         }
 
-        private void DisposeAndClearSubscriptions()
+        private Task DisposeAndClearSubscriptionsAsync()
         {
-            using (_linksLock.DisposableWait())
+            return _linksLock.ExecuteWithinLockAsync(JoinableCollection, JoinableFactory, () =>
             {
                 foreach (Lazy<ICrossTargetSubscriber> subscriber in Subscribers)
                 {
@@ -280,7 +280,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                 }
 
                 _evaluationSubscriptionLinks.Clear();
-            }
+            });
         }
 
         private Task<T> ExecuteWithinLockAsync<T>(Func<Task<T>> task)

@@ -63,11 +63,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             return context;
         }
 
-        public void ReleaseProjectContext(AggregateCrossTargetProjectContext context)
+        public Task ReleaseProjectContextAsync(AggregateCrossTargetProjectContext context)
         {
             Requires.NotNull(context, nameof(context));
 
-            using (_gate.DisposableWait())
+            return ExecuteWithinLockAsync(() =>
             {
                 if (!_contexts.Remove(context))
                     throw new ArgumentException("Specified context was not created by this instance, or has already been unregistered.");
@@ -75,7 +75,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                 // Update the maps storing configured project host objects and project contexts which are shared across created contexts.
                 // We can remove the ones which are only used by the current context being released.
                 RemoveUnusedConfiguredProjectsState_NoLock();
-            }
+            });
         }
 
         // Clears saved host objects and project contexts for unused configured projects.
@@ -148,20 +148,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             };
         }
 
-        private bool TryGetConfiguredProjectState(ConfiguredProject configuredProject, out ITargetedProjectContext targetedProjectContext)
+        private Task<(bool success, ITargetedProjectContext targetedProjectContext)> TryGetConfiguredProjectStateAsync(ConfiguredProject configuredProject)
         {
-            using (_gate.DisposableWait())
+            return ExecuteWithinLockAsync(() =>
             {
-                return _configuredProjectContextsMap.TryGetValue(configuredProject, out targetedProjectContext);
-            }
+                bool success = _configuredProjectContextsMap.TryGetValue(configuredProject, out ITargetedProjectContext targetedProjectContext);
+                return (success, targetedProjectContext);
+            });
         }
 
-        private void AddConfiguredProjectState(ConfiguredProject configuredProject, ITargetedProjectContext projectContext)
+        private Task AddConfiguredProjectStateAsync(ConfiguredProject configuredProject, ITargetedProjectContext projectContext)
         {
-            using (_gate.DisposableWait())
-            {
-                _configuredProjectContextsMap.Add(configuredProject, projectContext);
-            }
+            return ExecuteWithinLockAsync(() => _configuredProjectContextsMap.Add(configuredProject, projectContext));
         }
 
         private async Task<AggregateCrossTargetProjectContext> CreateProjectContextAsyncCore()
@@ -182,7 +180,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                 ConfigurationGeneral configurationGeneralProperties = await projectProperties.GetConfigurationGeneralPropertiesAsync();
                 ITargetFramework targetFramework = await GetTargetFrameworkAsync(tfm, configurationGeneralProperties);
 
-                if (!TryGetConfiguredProjectState(configuredProject, out ITargetedProjectContext targetedProjectContext))
+                (bool success, ITargetedProjectContext targetedProjectContext) = await TryGetConfiguredProjectStateAsync(configuredProject);
+                if (!success)
                 {
                     // Get the target path for the configured project.
                     string targetPath = (string)await configurationGeneralProperties.TargetPath.GetValueAsync();
@@ -194,7 +193,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                         // build succeeds for this project.
                         LastDesignTimeBuildSucceeded = false
                     };
-                    AddConfiguredProjectState(configuredProject, targetedProjectContext);
+                    await AddConfiguredProjectStateAsync(configuredProject, targetedProjectContext);
                 }
 
                 innerProjectContextsBuilder.Add(targetFramework, targetedProjectContext);
@@ -246,6 +245,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         }
 
         private Task ExecuteWithinLockAsync(Action action) => _gate.ExecuteWithinLockAsync(JoinableCollection, JoinableFactory, action);
+        private Task<T> ExecuteWithinLockAsync<T>(Func<T> function) => _gate.ExecuteWithinLockAsync(JoinableCollection, JoinableFactory, function);
 
         private struct ProjectData
         {
