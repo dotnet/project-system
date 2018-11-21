@@ -11,8 +11,39 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
     [DebuggerDisplay("{" + nameof(Id) +",nq}")]
-    internal class TestDependency : IDependency
+    internal sealed class TestDependency : IDependency
     {
+        public IDependency ClonePropertiesFrom
+        {
+            set
+            {
+                ProviderType = value.ProviderType;
+                Name = value.Name;
+                Caption = value.Caption;
+                OriginalItemSpec = value.OriginalItemSpec;
+                Path = value.Path;
+                FullPath = value.FullPath;
+                SchemaName = value.SchemaName;
+                SchemaItemType = value.SchemaItemType;
+                Version = value.Version;
+                Resolved = value.Resolved;
+                TopLevel = value.TopLevel;
+                Implicit = value.Implicit;
+                Visible = value.Visible;
+                Priority = value.Priority;
+                Icon = value.Icon;
+                ExpandedIcon = value.ExpandedIcon;
+                UnresolvedIcon = value.UnresolvedIcon;
+                UnresolvedExpandedIcon = value.UnresolvedExpandedIcon;
+                Properties = value.Properties;
+                DependencyIDs = value.DependencyIDs;
+                Flags = value.Flags;
+                Id = value.Id;
+                Alias = value.Alias;
+                TargetFramework = value.TargetFramework;
+            }
+        }
+
         public string ProviderType { get; set; }
         public string Name { get; set; }
         public string Caption { get; set; }
@@ -37,7 +68,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         public string Id { get; set; }
         public string Alias { get; set; }
         public ITargetFramework TargetFramework { get; set; }
-        public DependencyIconSet IconSet { get; set; }
+
+        public DependencyIconSet IconSet
+        {
+            get => new DependencyIconSet(Icon, ExpandedIcon, UnresolvedIcon, UnresolvedExpandedIcon);
+            set
+            {
+                Icon = value.Icon;
+                ExpandedIcon = value.ExpandedIcon;
+                UnresolvedIcon = value.UnresolvedIcon;
+                UnresolvedExpandedIcon = value.UnresolvedExpandedIcon;
+            }
+        }
 
         public IDependency SetProperties(
             string caption = null,
@@ -50,29 +92,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             return new TestDependency
             {
-                ProviderType = ProviderType,
-                Name = Name,
+                // Copy all properties from this instance
+                ClonePropertiesFrom = this,
+
+                // Override specific properties as needed
                 Caption = caption ?? Caption,
-                OriginalItemSpec = OriginalItemSpec,
-                Path = Path,
-                FullPath = FullPath,
-                SchemaName = schemaName ?? SchemaName,
-                SchemaItemType = SchemaItemType,
-                Version = Version,
                 Resolved = resolved ?? Resolved,
-                TopLevel = TopLevel,
-                Implicit = isImplicit ?? Implicit,
-                Visible = Visible,
-                Priority = Priority,
+                Flags = flags ?? Flags,
+                SchemaName = schemaName ?? SchemaName,
+                DependencyIDs = dependencyIDs ?? DependencyIDs,
                 Icon = iconSet?.Icon ?? Icon,
                 ExpandedIcon = iconSet?.ExpandedIcon ?? ExpandedIcon,
                 UnresolvedIcon = iconSet?.UnresolvedIcon ?? UnresolvedIcon,
                 UnresolvedExpandedIcon = iconSet?.UnresolvedExpandedIcon ?? UnresolvedExpandedIcon,
-                Properties = Properties,
-                DependencyIDs = dependencyIDs ?? DependencyIDs,
-                Flags = flags ?? Flags,
-                Id = Id,
-                Alias = Alias
+                Implicit = isImplicit ?? Implicit
             };
         }
 

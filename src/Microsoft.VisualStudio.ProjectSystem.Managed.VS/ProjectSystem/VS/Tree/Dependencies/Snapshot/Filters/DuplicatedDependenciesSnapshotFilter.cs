@@ -17,23 +17,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
     [Export(typeof(IDependenciesSnapshotFilter))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
     [Order(Order)]
-    internal class DuplicatedDependenciesSnapshotFilter : DependenciesSnapshotFilterBase
+    internal sealed class DuplicatedDependenciesSnapshotFilter : DependenciesSnapshotFilterBase
     {
         public const int Order = 101;
 
-        public override IDependency BeforeAdd(
+        public override void BeforeAddOrUpdate(
             string projectPath,
             ITargetFramework targetFramework,
             IDependency dependency,
-            ImmutableDictionary<string, IDependency>.Builder worldBuilder,
             IReadOnlyDictionary<string, IProjectDependenciesSubTreeProvider> subTreeProviderByProviderType,
             IImmutableSet<string> projectItemSpecs,
-            out bool filterAnyChanges)
+            IAddDependencyContext context)
         {
-            filterAnyChanges = false;
-
             IDependency matchingDependency = null;
-            foreach ((string _, IDependency x) in worldBuilder)
+            foreach ((string _, IDependency x) in context)
             {
                 if (x.TopLevel 
                      && !x.Id.Equals(dependency.Id, StringComparison.OrdinalIgnoreCase)
@@ -51,7 +48,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
             if (!shouldApplyAlias)
             {
                 int adjustedLength = dependency.Caption.Length + " (".Length;
-                foreach ((string _, IDependency x) in worldBuilder)
+                foreach ((string _, IDependency x) in context)
                 {
                     if (x.TopLevel
                          && !x.Id.Equals(dependency.Id, StringComparison.OrdinalIgnoreCase)
@@ -68,16 +65,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
 
             if (shouldApplyAlias)
             {
-                filterAnyChanges = true;
                 if (matchingDependency != null)
                 {
-                    worldBuilder[matchingDependency.Id] = matchingDependency.SetProperties(caption: matchingDependency.Alias);
+                    context.AddOrUpdate(matchingDependency.SetProperties(caption: matchingDependency.Alias));
                 }
 
-                return dependency.SetProperties(caption: dependency.Alias);
+                context.Accept(dependency.SetProperties(caption: dependency.Alias));
+                return;
             }
 
-            return dependency;
+            // Accept without changes
+            context.Accept(dependency);
         }
     }
 }

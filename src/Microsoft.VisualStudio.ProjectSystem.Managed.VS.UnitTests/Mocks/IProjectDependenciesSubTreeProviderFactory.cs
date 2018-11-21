@@ -40,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         public static IProjectDependenciesSubTreeProviderInternal ImplementInternal(
             string providerType = null,
-            ImageMoniker icon = new ImageMoniker(),
+            ImageMoniker implicitIcon = default,
             MockBehavior? mockBehavior = null)
         {
             var behavior = mockBehavior ?? MockBehavior.Strict;
@@ -51,13 +51,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 mock.Setup(x => x.ProviderType).Returns(providerType);
             }
 
-            if (icon.Id != 0 || icon.Guid != Guid.Empty)
+            if (implicitIcon.Id != 0 || implicitIcon.Guid != Guid.Empty)
             {
-                mock.Setup(x => x.GetImplicitIcon()).Returns(icon);
+                mock.Setup(x => x.GetImplicitIcon()).Returns(implicitIcon);
             }
 
             return mock.Object;
         }
-
     }
 }

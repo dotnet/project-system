@@ -247,7 +247,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 return;
             }
 
-            UpdateDependenciesSnapshotAsync(e.Changes, e.Catalogs, e.ActiveTarget, CancellationToken.None);
+            UpdateDependenciesSnapshot(e.Changes, e.Catalogs, e.ActiveTarget, CancellationToken.None);
         }
 
         private void OnSubtreeProviderDependenciesChanged(object sender, DependenciesChangedEventArgs e)
@@ -264,10 +264,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
             ImmutableDictionary<ITargetFramework, IDependenciesChanges> changes = ImmutableDictionary<ITargetFramework, IDependenciesChanges>.Empty.Add(targetFramework, e.Changes);
 
-            UpdateDependenciesSnapshotAsync(changes, catalogs: null, activeTargetFramework: null, e.Token);
+            UpdateDependenciesSnapshot(changes, catalogs: null, activeTargetFramework: null, e.Token);
         }
 
-        private void UpdateDependenciesSnapshotAsync(
+        private void UpdateDependenciesSnapshot(
             ImmutableDictionary<ITargetFramework, IDependenciesChanges> changes,
             IProjectCatalogSnapshot catalogs,
             ITargetFramework activeTargetFramework,

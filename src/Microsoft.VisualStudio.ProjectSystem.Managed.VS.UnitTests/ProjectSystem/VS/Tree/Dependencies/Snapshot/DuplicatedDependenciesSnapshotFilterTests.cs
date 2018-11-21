@@ -2,197 +2,219 @@
 
 using System.Collections.Immutable;
 
+using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Filters;
 
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
-    public class DuplicatedDependenciesSnapshotFilterTests
+    public sealed class DuplicatedDependenciesSnapshotFilterTests
     {
         [Fact]
-        public void BeforeAdd_NoDuplicate_ShouldNotUpdateCaption()
+        public void BeforeAddOrUpdate_NoDuplicate_ShouldNotUpdateCaption()
         {
             // Both top level
             // Same provider type
             // Different captions
             //   -> No change
 
-            const string providerType = "myprovider";
+            const string providerType = "provider";
 
-            var dependency = IDependencyFactory.Implement(
-                providerType: providerType,
-                id: "mydependency1",
-                caption: "MyCaption",
-                topLevel: true);
+            var dependency = new TestDependency
+            {
+                Id = "dependency1",
+                Caption = "caption1",
+                ProviderType = providerType,
+                TopLevel = true
+            };
 
-            var otherDependency = IDependencyFactory.Implement(
-                    providerType: providerType,
-                    id: "mydependency2",
-                    caption: "otherCaption",
-                    topLevel: true);
+            var otherDependency = new TestDependency
+            {
+                Id = "dependency2",
+                Caption = "caption2",
+                ProviderType = providerType,
+                TopLevel = true
+            };
 
-            var worldBuilder = new[] { dependency.Object, otherDependency.Object }.ToImmutableDictionary(d => d.Id).ToBuilder();
+            var worldBuilder = new IDependency[] { dependency, otherDependency }.ToImmutableDictionary(d => d.Id).ToBuilder();
+
+            var context = new AddDependencyContext(worldBuilder);
 
             var filter = new DuplicatedDependenciesSnapshotFilter();
 
-            var resultDependency = filter.BeforeAdd(
+            filter.BeforeAddOrUpdate(
                 null,
                 null,
-                dependency.Object,
-                worldBuilder,
+                dependency,
                 null,
                 null,
-                out bool filterAnyChanges);
+                context);
 
-            dependency.VerifyAll();
-            otherDependency.VerifyAll();
+            // Accepts unchanged dependency
+            Assert.Same(dependency, context.GetResult(filter));
 
-            Assert.False(filterAnyChanges);
-            Assert.Same(dependency.Object, resultDependency);
-            Assert.Same(dependency.Object, worldBuilder[dependency.Object.Id]);
-            Assert.Same(otherDependency.Object, worldBuilder[otherDependency.Object.Id]);
+            // No other changes made
+            Assert.False(context.Changed);
         }
 
         [Fact]
-        public void BeforeAdd_WhenThereIsMatchingDependencies_ShouldUpdateCaptionForAll()
+        public void BeforeAddOrUpdate_WhenThereIsMatchingDependencies_ShouldUpdateCaptionForAll()
         {
             // Both top level
             // Same provider type
             // Same captions
             //   -> Changes caption for both to match alias
 
-            const string providerType = "myprovider";
-            const string caption = "MyCaption";
+            const string providerType = "provider";
+            const string caption = "caption1";
 
-            var dependency = IDependencyFactory.Implement(
-                providerType: providerType,
-                id: "mydependency1",
-                caption: caption,
-                alias: "mydependency1 (mydependency1ItemSpec)",
-                setPropertiesCaption: "mydependency1 (mydependency1ItemSpec)", // should set caption to its alias
-                topLevel: true);
+            var dependency = new TestDependency
+            {
+                Id = "dependency1",
+                Alias = "dependency1 (dependency1ItemSpec)",
+                ProviderType = providerType,
+                Caption = caption,
+                TopLevel = true
+            };
 
-            var otherDependency = IDependencyFactory.Implement(
-                    providerType: providerType,
-                    id: "mydependency2",
-                    caption: caption,
-                    alias: "mydependency2 (mydependency2ItemSpec)",
-                    setPropertiesCaption: "mydependency2 (mydependency2ItemSpec)", // should set caption to its alias
-                    equals: true,
-                    topLevel: true);
+            var otherDependency = new TestDependency
+            {
+                ClonePropertiesFrom = dependency, // clone, with changes
 
-            var worldBuilder = new[] { dependency.Object, otherDependency.Object }.ToImmutableDictionary(d => d.Id).ToBuilder();
+                Id = "dependency2",
+                Alias = "dependency2 (dependency2ItemSpec)"
+            };
+
+            var worldBuilder = new IDependency[] { dependency, otherDependency }.ToImmutableDictionary(d => d.Id).ToBuilder();
+
+            var context = new AddDependencyContext(worldBuilder);
 
             var filter = new DuplicatedDependenciesSnapshotFilter();
 
-            var resultDependency = filter.BeforeAdd(
+            filter.BeforeAddOrUpdate(
                 null,
                 null,
-                dependency.Object,
-                worldBuilder,
+                dependency,
                 null,
                 null,
-                out bool filterAnyChanges);
+                context);
 
-            Assert.True(worldBuilder.ContainsKey(otherDependency.Object.Id));
+            // The context changed, beyond just the filtered dependency
+            Assert.True(context.Changed);
 
-            dependency.VerifyAll();
-            otherDependency.VerifyAll();
+            // The filtered dependency had its caption changed to its alias
+            var dependencyAfter = context.GetResult(filter);
+            dependencyAfter.AssertEqualTo(
+                new TestDependency { ClonePropertiesFrom = dependency, Caption = dependency.Alias });
+
+            // The other dependency had its caption changed to its alias
+            Assert.True(context.TryGetDependency(otherDependency.Id, out IDependency otherDependencyAfter));
+            otherDependencyAfter.AssertEqualTo(
+                new TestDependency { ClonePropertiesFrom = otherDependency, Caption = otherDependency.Alias });
         }
 
         [Fact]
-        public void BeforeAdd_WhenThereIsMatchingDependencyWithAliasApplied_ShouldUpdateCaptionForCurrentDependency()
+        public void BeforeAddOrUpdate_WhenThereIsMatchingDependencyWithAliasApplied_ShouldUpdateCaptionForCurrentDependency()
         {
             // Both top level
             // Same provider type
             // Duplicate caption, though with parenthesized text after one instance
             //   -> Changes caption of non-parenthesized
 
-            const string providerType = "myprovider";
-            const string caption = "MyCaption";
+            const string providerType = "provider";
+            const string caption = "caption";
 
-            var dependencyReplacement = IDependencyFactory.Create();
+            var dependency = new TestDependency
+            {
+                Id = "dependency1",
+                Alias = "dependency1 (dependency1ItemSpec)",
+                ProviderType = providerType,
+                Caption = caption,
+                TopLevel = true
+            };
 
-            var dependency = IDependencyFactory.Implement(
-                providerType: providerType,
-                id: "mydependency1",
-                caption: caption,
-                alias: "mydependency1 (mydependency1ItemSpec)",
-                setPropertiesCaption: "mydependency1 (mydependency1ItemSpec)", // should set caption to its alias
-                setPropertiesReturn: dependencyReplacement,
-                topLevel: true);
+            var otherDependency = new TestDependency
+            {
+                ClonePropertiesFrom = dependency,
 
-            var otherDependency = IDependencyFactory.Implement(
-                   originalItemSpec: "mydependency2ItemSpec",
-                    providerType: providerType,
-                    id: "mydependency2",
-                    caption: $"{caption} (mydependency2ItemSpec)", // caption already includes alias
-                    topLevel: true);
+                Id = "dependency2",
+                OriginalItemSpec = "dependency2ItemSpec",
+                Caption = $"{caption} (dependency2ItemSpec)" // caption already includes alias
+            };
 
-            var worldBuilder = new[] { dependency.Object, otherDependency.Object }.ToImmutableDictionary(d => d.Id).ToBuilder();
+            var worldBuilder = new IDependency[] { dependency, otherDependency }.ToImmutableDictionary(d => d.Id).ToBuilder();
+
+            var context = new AddDependencyContext(worldBuilder);
 
             var filter = new DuplicatedDependenciesSnapshotFilter();
 
-            var resultDependency = filter.BeforeAdd(
+            filter.BeforeAddOrUpdate(
                 null,
                 null,
-                dependency.Object,
-                worldBuilder,
+                dependency,
                 null,
                 null,
-                out bool filterAnyChanges);
+                context);
 
-            dependency.VerifyAll();
-            otherDependency.VerifyAll();
+            // The context was unchanged, beyond the filtered dependency
+            Assert.False(context.Changed);
 
-            Assert.True(filterAnyChanges);
-            Assert.Same(dependencyReplacement, resultDependency);
-            Assert.Same(dependency.Object, worldBuilder[dependency.Object.Id]); // doesn't update worldBuilder
-            Assert.Same(otherDependency.Object, worldBuilder[otherDependency.Object.Id]);
+            // The filtered dependency had its caption changed to its alias
+            var dependencyAfter = context.GetResult(filter);
+            dependencyAfter.AssertEqualTo(
+                new TestDependency { ClonePropertiesFrom = dependency, Caption = dependency.Alias });
         }
 
         [Fact]
-        public void BeforeAdd_WhenThereIsMatchingDependency_WithSubstringCaption()
+        public void BeforeAddOrUpdate_WhenThereIsMatchingDependency_WithSubstringCaption()
         {
             // Both top level
             // Same provider type
-            // Duplicate caption, though with parenthesized text after one instance
-            //   -> Changes caption of non-parenthesized
+            // Duplicate caption prefix
+            //   -> No change
 
-            const string providerType = "myprovider";
-            const string caption = "MyCaption";
+            const string providerType = "provider";
+            const string caption = "caption";
 
-            var dependency = IDependencyFactory.Implement(
-                providerType: providerType,
-                id: "mydependency1",
-                caption: caption,
-                topLevel: true);
+            var dependency = new TestDependency
+            {
+                Id = "dependency1",
+                ProviderType = providerType,
+                Caption = caption,
+                TopLevel = true
+            };
 
-            var otherDependency = IDependencyFactory.Implement(
-                    providerType: providerType,
-                    id: "mydependency2",
-                    caption: caption + "X",
-                    topLevel: true);
+            var otherDependency = new TestDependency
+            {
+                ClonePropertiesFrom = dependency,
 
-            var worldBuilder = new[] { dependency.Object, otherDependency.Object }.ToImmutableDictionary(d => d.Id).ToBuilder();
+                Id = "dependency2",
+                OriginalItemSpec = "dependency2ItemSpec",
+                Caption = $"{caption}X" // identical caption prefix
+            };
+
+            // TODO test a longer suffix here -- looks like the implementation might not handle it correctly
+
+            var worldBuilder = new IDependency[] { dependency, otherDependency }.ToImmutableDictionary(d => d.Id).ToBuilder();
+
+            var context = new AddDependencyContext(worldBuilder);
 
             var filter = new DuplicatedDependenciesSnapshotFilter();
 
-            var resultDependency = filter.BeforeAdd(
+            filter.BeforeAddOrUpdate(
                 null,
                 null,
-                dependency.Object,
-                worldBuilder,
+                dependency,
                 null,
                 null,
-                out bool filterAnyChanges);
+                context);
 
-            dependency.VerifyAll();
-            otherDependency.VerifyAll();
+            // Accepts unchanged dependency
+            Assert.Same(dependency, context.GetResult(filter));
 
-            Assert.False(filterAnyChanges);
-            Assert.Same(dependency.Object, resultDependency);
+            // No other changes made
+            Assert.False(context.Changed);
         }
     }
 }
