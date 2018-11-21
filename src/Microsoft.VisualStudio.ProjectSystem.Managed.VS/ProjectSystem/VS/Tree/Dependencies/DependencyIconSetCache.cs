@@ -31,6 +31,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             ImmutableHashSet<T> prior = Volatile.Read(ref location);
 
+            Requires.NotNull(prior, nameof(location)); // intentionally mismatched names here
+
             while (true)
             {
                 if (prior.TryGetValue(value, out T existingValue))
