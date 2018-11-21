@@ -23,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
         void Accept(IDependency dependency);
 
         /// <summary>
-        /// Indicates the filter rejects the dependency to be added to the snapshot.
+        /// Indicates the filter rejects the addition or updating of the dependency in the snapshot.
         /// </summary>
         void Reject();
 

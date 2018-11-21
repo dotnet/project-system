@@ -1,5 +1,8 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System.Collections.Generic;
+
+using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
@@ -25,10 +28,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Xunit.Assert.Equal(actual.Implicit, expected.Implicit);
             Xunit.Assert.Equal(actual.Visible, expected.Visible);
             Xunit.Assert.Equal(actual.Priority, expected.Priority);
-            Xunit.Assert.Equal(actual.Icon, expected.Icon, ImageMonikerEqualityComparer.Instance);
-            Xunit.Assert.Equal(actual.ExpandedIcon, expected.ExpandedIcon, ImageMonikerEqualityComparer.Instance);
-            Xunit.Assert.Equal(actual.UnresolvedIcon, expected.UnresolvedIcon, ImageMonikerEqualityComparer.Instance);
-            Xunit.Assert.Equal(actual.UnresolvedExpandedIcon, expected.UnresolvedExpandedIcon, ImageMonikerEqualityComparer.Instance);
+            Xunit.Assert.Equal(actual.Icon, expected.Icon, EqualityComparer<ImageMoniker>.Default);
+            Xunit.Assert.Equal(actual.ExpandedIcon, expected.ExpandedIcon, EqualityComparer<ImageMoniker>.Default);
+            Xunit.Assert.Equal(actual.UnresolvedIcon, expected.UnresolvedIcon, EqualityComparer<ImageMoniker>.Default);
+            Xunit.Assert.Equal(actual.UnresolvedExpandedIcon, expected.UnresolvedExpandedIcon, EqualityComparer<ImageMoniker>.Default);
             Xunit.Assert.Equal(actual.Properties, expected.Properties);
             Xunit.Assert.Equal(actual.DependencyIDs, expected.DependencyIDs);
             Xunit.Assert.Equal(actual.Flags, expected.Flags);

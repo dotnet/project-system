@@ -104,7 +104,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                     return;
                 }
 
-                context.Initialize();
+                context.Reset();
 
                 foreach (IDependenciesSnapshotFilter filter in snapshotFilters)
                 {
@@ -132,7 +132,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 // Create the unfiltered dependency
                 IDependency dependency = new Dependency(dependencyModel, targetFramework, projectPath);
 
-                context.Initialize();
+                context.Reset();
 
                 foreach (IDependenciesSnapshotFilter filter in snapshotFilters)
                 {

@@ -11,8 +11,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
     /// </summary>
     internal interface IRemoveDependencyContext
     {
+        /// <summary>
+        /// Indicates the filter allows the removal of the dependency from the snapshot.
+        /// </summary>
         void Accept();
 
+        /// <summary>
+        /// Indicates the filter rejects the removal of the dependency from the snapshot.
+        /// </summary>
         void Reject();
 
         /// <summary>

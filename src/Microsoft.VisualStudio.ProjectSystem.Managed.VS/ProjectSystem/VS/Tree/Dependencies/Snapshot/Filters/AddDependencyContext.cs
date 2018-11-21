@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
             _worldBuilder = worldBuilder;
         }
 
-        public void Initialize()
+        public void Reset()
         {
             Changed = false;
             _acceptedOrRejected = false;
@@ -37,8 +37,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
             _acceptedOrRejected = false;
             return _acceptedDependency;
         }
-
-        #region IAddDependencyContext
 
         public bool TryGetDependency(string dependencyId, out IDependency dependency)
         {
@@ -87,7 +85,5 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
             _acceptedOrRejected = true;
             _acceptedDependency = null;
         }
-
-        #endregion
     }
 }
