@@ -203,7 +203,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                 // Dispose the old project context, if one exists.
                 if (previousContextToDispose != null)
                 {
-                    DisposeAggregateProjectContext(previousContextToDispose);
+                    _contextProvider.Value.ReleaseProjectContext(previousContextToDispose);
                 }
 
                 // Create new project context.
@@ -213,11 +213,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
                 return _currentAggregateProjectContext;
             });
-        }
-
-        private void DisposeAggregateProjectContext(AggregateCrossTargetProjectContext projectContext)
-        {
-            _contextProvider.Value.ReleaseProjectContext(projectContext);
         }
 
         private async Task AddSubscriptionsAsync(AggregateCrossTargetProjectContext newProjectContext)
