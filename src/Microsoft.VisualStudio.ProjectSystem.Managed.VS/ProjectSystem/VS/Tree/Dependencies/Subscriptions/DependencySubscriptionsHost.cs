@@ -47,7 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         [ImportMany] private readonly OrderPrecedenceImportCollection<IProjectDependenciesSubTreeProvider> _subTreeProviders;
         [ImportMany] private readonly OrderPrecedenceImportCollection<IDependenciesSnapshotFilter> _snapshotFilters;
 
-        private IEnumerable<Lazy<ICrossTargetSubscriber>> _subscribers;
+        private IEnumerable<Lazy<IDependencyCrossTargetSubscriber>> _subscribers;
         private DependenciesSnapshot _currentSnapshot;
         private int _isInitialized;
 
@@ -131,7 +131,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
         #endregion
 
-        private IEnumerable<Lazy<ICrossTargetSubscriber>> Subscribers
+        private IEnumerable<Lazy<IDependencyCrossTargetSubscriber>> Subscribers
         {
             get
             {
@@ -146,7 +146,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                                 subscriber.Value.DependenciesChanged += OnSubscriberDependenciesChanged;
                             }
 
-                            _subscribers = _dependencySubscribers.Select(x => new Lazy<ICrossTargetSubscriber>(() => x.Value)).ToList();
+                            _subscribers = _dependencySubscribers.Select(x => new Lazy<IDependencyCrossTargetSubscriber>(() => x.Value)).ToList();
                         }
                     }
                 }
@@ -419,7 +419,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     _activeConfiguredProjectSubscriptionService,
                     e => OnProjectChangedAsync(e)); // evaluation
 
-                foreach (Lazy<ICrossTargetSubscriber> subscriber in Subscribers)
+                foreach (Lazy<IDependencyCrossTargetSubscriber> subscriber in Subscribers)
                 {
                     subscriber.Value.InitializeSubscriber(this, _activeConfiguredProjectSubscriptionService);
                 }
@@ -537,7 +537,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                             e => OnProjectChangedCoreAsync(e)); // evaluation
                     }
 
-                    foreach (Lazy<ICrossTargetSubscriber> subscriber in Subscribers)
+                    foreach (Lazy<IDependencyCrossTargetSubscriber> subscriber in Subscribers)
                     {
                         subscriber.Value.AddSubscriptions(newProjectContext);
                     }
@@ -569,7 +569,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         {
             lock (_linksLock)
             {
-                foreach (Lazy<ICrossTargetSubscriber> subscriber in Subscribers)
+                foreach (Lazy<IDependencyCrossTargetSubscriber> subscriber in Subscribers)
                 {
                     subscriber.Value.ReleaseSubscriptions();
                 }
