@@ -201,12 +201,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                 await _commonServices.ThreadingService.SwitchToUIThread();
                 await _activeProjectConfigurationRefreshService.RefreshActiveProjectConfigurationAsync();
 
-                // Dispose the old project context, if one exists.
-                if (previousContextToDispose != null)
-                {
-                    _contextProvider.Value.ReleaseProjectContext(previousContextToDispose);
-                }
-
                 // Create new project context.
                 _currentAggregateProjectContext = await _contextProvider.Value.CreateProjectContextAsync();
 
@@ -261,22 +255,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                     projectChange.Difference.ChangedProperties.Contains(ConfigurationGeneral.TargetFrameworksProperty));
         }
 
-        protected override async Task DisposeCoreAsync(bool initialized)
+        protected override Task DisposeCoreAsync(bool initialized)
         {
             _gate.Dispose();
 
             if (initialized)
             {
                 DisposeAndClearSubscriptions();
-
-                await ExecuteWithinLockAsync(() =>
-                {
-                    if (_currentAggregateProjectContext != null)
-                    {
-                        _contextProvider.Value.ReleaseProjectContext(_currentAggregateProjectContext);
-                    }
-                });
             }
+
+            return Task.CompletedTask;
         }
 
         private void DisposeAndClearSubscriptions()
@@ -300,11 +288,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         private Task<T> ExecuteWithinLockAsync<T>(Func<Task<T>> task)
         {
             return _gate.ExecuteWithinLockAsync(JoinableCollection, JoinableFactory, task);
-        }
-
-        private Task ExecuteWithinLockAsync(Action action)
-        {
-            return _gate.ExecuteWithinLockAsync(JoinableCollection, JoinableFactory, action);
         }
 
         private Task<T> ExecuteWithinLockAsync<T>(Func<T> func)
