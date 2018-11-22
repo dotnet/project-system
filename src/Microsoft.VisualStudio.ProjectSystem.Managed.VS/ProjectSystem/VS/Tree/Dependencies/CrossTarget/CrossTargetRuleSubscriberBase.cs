@@ -159,9 +159,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         private IReadOnlyCollection<string> GetWatchedRules(RuleHandlerType handlerType)
         {
             return new HashSet<string>(
-                Handlers
-                    .Where(h => h.Value.SupportsHandlerType(handlerType))
-                    .SelectMany(h => h.Value.GetRuleNames(handlerType)),
+                Handlers.SelectMany(h => h.Value.GetRuleNames(handlerType)),
                 StringComparers.RuleNames);
         }
 
@@ -202,10 +200,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                 return;
             }
 
-            IEnumerable<ICrossTargetRuleHandler<T>> handlers 
-                = Handlers
-                    .Select(h => h.Value)
-                    .Where(h => h.SupportsHandlerType(handlerType));
+            IEnumerable<ICrossTargetRuleHandler<T>> handlers = Handlers.Select(h => h.Value);
 
             ITargetFramework targetFrameworkToUpdate;
 

@@ -55,11 +55,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         /// </summary>
         protected virtual string OriginalItemSpecPropertyName => ResolvedAssemblyReference.OriginalItemSpecProperty;
 
-        public virtual bool SupportsHandlerType(RuleHandlerType handlerType)
-        {
-            return true;
-        }
-
         public virtual bool ReceiveUpdatesWithEmptyProjectChange => false;
 
         public virtual void Handle(
