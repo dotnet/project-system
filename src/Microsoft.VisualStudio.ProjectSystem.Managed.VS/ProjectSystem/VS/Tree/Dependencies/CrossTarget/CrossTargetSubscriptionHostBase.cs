@@ -201,9 +201,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             });
         }
 
-        private async Task DisposeAggregateProjectContextAsync(AggregateCrossTargetProjectContext projectContext)
+        private Task DisposeAggregateProjectContextAsync(AggregateCrossTargetProjectContext projectContext)
         {
-            await _contextProvider.Value.ReleaseProjectContextAsync(projectContext);
+            return _contextProvider.Value.ReleaseProjectContextAsync(projectContext);
         }
 
         private async Task AddSubscriptionsAsync(AggregateCrossTargetProjectContext newProjectContext)
@@ -212,9 +212,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
             await _commonServices.ThreadingService.SwitchToUIThread();
 
-            await _tasksService.LoadedProjectAsync(async () =>
+            await _tasksService.LoadedProjectAsync(() =>
             {
-                await _linksLock.ExecuteWithinLockAsync(JoinableCollection, JoinableFactory, () =>
+                return _linksLock.ExecuteWithinLockAsync(JoinableCollection, JoinableFactory, () =>
                 {
                     foreach (ConfiguredProject configuredProject in newProjectContext.InnerConfiguredProjects)
                     {
