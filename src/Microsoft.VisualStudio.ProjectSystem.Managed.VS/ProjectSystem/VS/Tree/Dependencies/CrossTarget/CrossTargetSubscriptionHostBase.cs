@@ -15,9 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 {
     internal abstract class CrossTargetSubscriptionHostBase : OnceInitializedOnceDisposedAsync, ICrossTargetSubscriptionsHost
     {
-#pragma warning disable CA2213 // OnceInitializedOnceDisposedAsync are not tracked correctly by the IDisposeable analyzer
         private readonly SemaphoreSlim _gate = new SemaphoreSlim(initialCount: 1);
-#pragma warning restore CA2213
         private readonly IUnconfiguredProjectCommonServices _commonServices;
         private readonly Lazy<IAggregateCrossTargetProjectContextProvider> _contextProvider;
         private readonly IProjectAsynchronousTasksService _tasksService;
@@ -268,6 +266,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
         protected override async Task DisposeCoreAsync(bool initialized)
         {
+            _gate.Dispose();
+
             if (initialized)
             {
                 DisposeAndClearSubscriptions();
