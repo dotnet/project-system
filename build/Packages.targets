@@ -29,7 +29,7 @@
 
     <!-- VS SDK -->
     <PackageReference Update="Microsoft.VSSDK.BuildTools" Version="15.8.3252" />
-    <PackageReference Update="Microsoft.VisualStudio.ComponentModelHost" Version="15.0.26606"/>
+    <PackageReference Update="Microsoft.VisualStudio.ComponentModelHost" Version="16.0.198-g52de9c2988"/>
     <PackageReference Update="Microsoft.VisualStudio.Composition" Version="15.8.98"/>    
     <PackageReference Update="Microsoft.VisualStudio.Data.Core" Version="9.0.21022" />
     <PackageReference Update="Microsoft.VisualStudio.DataDesign.Common" Version="15.0.26606-alpha"/>
@@ -38,8 +38,8 @@
     <PackageReference Update="Microsoft.VisualStudio.Designer.Interfaces" Version="1.1.4322" />
     <PackageReference Update="Microsoft.VisualStudio.Diagnostics.PerformanceProvider" Version="16.0.28226-alpha" />
     <PackageReference Update="Microsoft.VisualStudio.GraphModel" Version="16.0.28226-alpha" />
-    <PackageReference Update="Microsoft.VisualStudio.ImageCatalog" Version="15.0.26606" />
-    <PackageReference Update="Microsoft.VisualStudio.Imaging.Interop.14.0.DesignTime" Version="14.3.25408"/>
+    <PackageReference Update="Microsoft.VisualStudio.ImageCatalog" Version="16.0.28226-pre" />
+    <PackageReference Update="Microsoft.VisualStudio.Imaging.Interop.14.0.DesignTime" Version="14.3.26930"/>
     <PackageReference Update="Microsoft.VisualStudio.ManagedInterfaces" Version="8.0.50727" />
     <PackageReference Update="Microsoft.VisualStudio.Telemetry" Version="15.3.799-masterDDDBA9E4" />
     <PackageReference Update="Microsoft.VisualStudio.TextManager.Interop.9.0" Version="9.0.30729" />
@@ -48,16 +48,16 @@
     <PackageReference Update="Microsoft.VisualStudio.TextManager.Interop.12.1.DesignTime" Version="12.1.30328" />
     <PackageReference Update="Microsoft.VisualStudio.Settings.15.0" Version="15.8.28010" />
     <PackageReference Update="Microsoft.VisualStudio.Setup.Configuration.Interop" Version="$(MicrosoftVisualStudioSetupConfigurationInteropVersion)" />
-    <PackageReference Update="Microsoft.VisualStudio.Shell.15.0" Version="15.0.26606" />
+    <PackageReference Update="Microsoft.VisualStudio.Shell.15.0" Version="16.0.28226-pre" />
     <PackageReference Update="Microsoft.VisualStudio.Shell.Design" Version="15.0.26606" />
     <PackageReference Update="Microsoft.VisualStudio.Shell.Framework" Version="16.0.28226-pre" />
-    <PackageReference Update="Microsoft.VisualStudio.Shell.Interop.9.0" Version="9.0.30729" />
+    <PackageReference Update="Microsoft.VisualStudio.Shell.Interop.9.0" Version="9.0.30730" />
     <PackageReference Update="Microsoft.VisualStudio.Shell.Interop.10.0" Version="10.0.30320" />
     <PackageReference Update="Microsoft.VisualStudio.Shell.Interop.11.0" Version="11.0.61031" />
     <PackageReference Update="Microsoft.VisualStudio.Shell.Interop.12.1.DesignTime" Version="12.1.30328" />
-    <PackageReference Update="Microsoft.VisualStudio.Shell.Interop.14.0.DesignTime" Version="14.3.25407" />
+    <PackageReference Update="Microsoft.VisualStudio.Shell.Interop.14.0.DesignTime" Version="14.3.26929" />
     <PackageReference Update="Microsoft.VisualStudio.Shell.Interop.15.0.DesignTime" Version="15.0.26932" />
-    <PackageReference Update="Microsoft.VisualStudio.Shell.Interop.15.3.DesignTime" Version="15.0.26606" />
+    <PackageReference Update="Microsoft.VisualStudio.Shell.Interop.15.3.DesignTime" Version="15.0.26929" />
     <PackageReference Update="Microsoft.VisualStudio.Shell.Interop.15.7.DesignTime" Version="15.7.1" />
     <PackageReference Update="Microsoft.VisualStudio.TemplateWizardInterface" Version="8.0.0-alpha" />
     <PackageReference Update="Microsoft.VisualStudio.Threading" Version="15.8.145" />
@@ -95,8 +95,8 @@
     <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.Analyzers" Version="16.0.201-pre-g7d366164d0" />
     
     <!-- Roslyn -->
-    <PackageReference Update="Microsoft.VisualStudio.LanguageServices" Version="2.11.0-beta1-63430-03" />
-    <PackageReference Update="Microsoft.CodeAnalysis" Version="2.11.0-beta1-63430-03" />
+    <PackageReference Update="Microsoft.VisualStudio.LanguageServices" Version="2.11.0-beta2-63522-01" />
+    <PackageReference Update="Microsoft.CodeAnalysis" Version="2.11.0-beta2-63522-01" />
     <PackageReference Update="Microsoft.VisualStudio.IntegrationTest.Utilities" Version="2.6.0-beta1-62113-02" />
     <PackageReference Update="Microsoft.Net.RoslynDiagnostics" Version="2.6.1-beta1-62702-01" />
     
