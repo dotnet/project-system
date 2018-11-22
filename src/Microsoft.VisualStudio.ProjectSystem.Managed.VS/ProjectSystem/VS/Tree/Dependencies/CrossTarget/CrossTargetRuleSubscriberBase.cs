@@ -240,8 +240,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                         .Where(x => handlerRules.Contains(x.Key))
                         .ToImmutableDictionary();
 
-                    if (handler.ReceiveUpdatesWithEmptyProjectChange
-                        || projectChanges.Any(x => x.Value.Difference.AnyChanges))
+                    if (projectChanges.Any(x => x.Value.Difference.AnyChanges))
                     {
                         // Handlers respond to rule changes in a way that's specific to the rule change context
                         // type (T). For example, DependencyRulesSubscriber uses DependenciesRuleChangeContext

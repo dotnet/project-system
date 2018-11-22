@@ -49,8 +49,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
         public abstract ImageMoniker GetImplicitIcon();
 
-        public virtual bool ReceiveUpdatesWithEmptyProjectChange => false;
-
         public virtual void Handle(
             IImmutableDictionary<string, IProjectChangeDescription> changesByRuleName,
             ITargetFramework targetFramework,

@@ -18,11 +18,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         ImmutableHashSet<string> GetRuleNames(RuleHandlerType handlerType);
 
         /// <summary>
-        ///     Gets a value indicating the handler should be invoked even for updates with no underlying project changes (e.g. broken design time builds).
-        /// </summary>
-        bool ReceiveUpdatesWithEmptyProjectChange { get; }
-
-        /// <summary>
         ///     Handles the specified set of changes to a rule, and applies them
         ///     to the given <see cref="ITargetedProjectContext"/>.
         /// </summary>
