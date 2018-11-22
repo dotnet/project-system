@@ -218,16 +218,14 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
             ' The designer nominally supports VSConstants.LOGVIEWID.Designer_guid however it is also called with other GUIDs
             ' that are for the various sub-tabs of the property pages
-            ' Rather than hard code those here, we simply allow through everything except Primary and TextView, as those are
-            ' used when opening files for text editing, and we want the project file to be editable as XML for those
+            ' Rather than hard code those here, we simply allow through everything TextView, as that is
+            ' used when opening files for text editing, and we want the project file to be editable as XML in that scenario
 
-            If rguidLogicalView = VSConstants.LOGVIEWID.TextView_guid OrElse rguidLogicalView = VSConstants.LOGVIEWID.Primary_guid Then
+            If rguidLogicalView = VSConstants.LOGVIEWID.TextView_guid Then
                 Return NativeMethods.E_NOTIMPL
             Else
-                pbstrPhysicalView = ""
                 Return NativeMethods.S_OK
             End If
-
         End Function
 
         ''' <summary>
