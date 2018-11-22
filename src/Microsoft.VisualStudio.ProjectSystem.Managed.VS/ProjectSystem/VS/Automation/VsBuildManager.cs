@@ -76,10 +76,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         {
             get
             {
-                return _unconfiguredProjectServices.ThreadingService.ExecuteSynchronously(async () =>
-                {
-                    return await _tempPEManager.GetDesignTimeOutputFilenamesAsync(false);
-                });
+                return _tempPEManager.GetDesignTimeOutputFilenames();
             }
         }
 

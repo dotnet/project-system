@@ -2,79 +2,59 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Threading;
-using System.Runtime.InteropServices;
 using System.Threading.Tasks;
-
-using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
-using Microsoft.VisualStudio.Shell.Design.Serialization;
-using Microsoft.VisualStudio.Shell.Interop;
-using Microsoft.VisualStudio.TextManager.Interop;
+using System.Threading.Tasks.Dataflow;
+using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
+using Microsoft.VisualStudio.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 {
     [Export(typeof(ITempPEBuildManager))]
-    internal class TempPEBuildManager : ITempPEBuildManager, IDisposable
+    internal class TempPEBuildManager : UnconfiguredProjectHostBridge<
+            /*  Input: */ IProjectVersionedValue<Tuple<IProjectSnapshot, IProjectSubscriptionUpdate>>,
+            /* Output: */ IProjectVersionedValue<DesignTimeInputs>,
+            /* Appled: */ IProjectVersionedValue<DesignTimeInputs>
+        >, ITempPEBuildManager, IDisposable
     {
         private readonly IUnconfiguredProjectCommonServices _unconfiguredProjectServices;
         private readonly ILanguageServiceHost _languageServiceHost;
-        private readonly ITempPECompiler _compiler;
+        //private readonly ITempPECompiler _compiler;
         private readonly CancellationSeries _cancellationSeries;
 
         [ImportingConstructor]
-        public TempPEBuildManager(
+        public TempPEBuildManager(IProjectThreadingService threadingService,
             IUnconfiguredProjectCommonServices unconfiguredProjectServices,
-            ILanguageServiceHost languageServiceHost,
-            ITempPECompiler compiler)
+            ILanguageServiceHost languageServiceHost
+            //,ITempPECompilerHost compilerHost
+            )
+             : base(threadingService.JoinableTaskContext)
         {
             _unconfiguredProjectServices = unconfiguredProjectServices;
             _languageServiceHost = languageServiceHost;
-            _compiler = compiler;
+            //_compiler = compiler;
 
             _cancellationSeries = new CancellationSeries();
         }
 
-        /// <summary>
-        /// Cancels any pending tasks and disposes this object.
-        /// </summary>
-        public void Dispose()
+        protected override Task DisposeCoreAsync(bool initialized)
         {
             _cancellationSeries.Dispose();
+
+            return base.DisposeCoreAsync(initialized);
         }
 
-        public async Task<string[]> GetDesignTimeOutputFilenamesAsync(bool shared)
+        /// <summary>
+        /// Use the project subscription service to read connected services data from the tree service.
+        /// </summary>
+        [Import]
+        private IActiveConfiguredProjectSubscriptionService ProjectSubscriptionService { get; set; }
+
+        public string[] GetDesignTimeOutputFilenames()
         {
-            var propertyToCheck = shared ? Compile.DesignTimeSharedInputProperty : Compile.DesignTimeProperty;
-
-            var project = _unconfiguredProjectServices.ActiveConfiguredProject;
-            var ruleSource = project.Services.ProjectSubscription.ProjectRuleSource;
-            var update = await ruleSource.GetLatestVersionAsync(project, new string[] { Compile.SchemaName });
-            var snapshot = update[Compile.SchemaName];
-
-            var fileNames = new List<string>();
-            foreach (var item in snapshot.Items.Values)
-            {
-                bool isLink = GetBooleanPropertyValue(item, Compile.LinkProperty);
-                bool designTime = GetBooleanPropertyValue(item, propertyToCheck);
-
-                if (!isLink && designTime)
-                {
-                    if (item.TryGetValue(Compile.FullPathProperty, out string path))
-                    {
-                        fileNames.Add(path);
-                    }
-                }
-            }
-
-            return fileNames.ToArray();
-
-            bool GetBooleanPropertyValue(IImmutableDictionary<string, string> item, string propName)
-            {
-                return item.TryGetValue(propName, out string value) && StringComparers.PropertyValues.Equals(value, "true");
-            }
+            return AppliedValue?.Value.Inputs;
         }
 
         public async Task<string> GetTempPEBlobAsync(string fileName)
@@ -85,7 +65,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
             token.ThrowIfCancellationRequested();
 
-            var files = new HashSet<string>(await GetDesignTimeOutputFilenamesAsync(true), StringComparers.Paths);
+            var files = new HashSet<string>(AppliedValue?.Value.SharedInputs, StringComparers.Paths);
             files.Add(fileName);
 
             var property = await _unconfiguredProjectServices.ActiveConfiguredProjectProperties.GetConfiguredBrowseObjectPropertiesAsync();
@@ -96,7 +76,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             var outputFileName = inputFileName + ".dll";
             var outputPath = Path.Combine(basePath, objPath, "TempPE");
 
-            var result = await _compiler.CompileAsync(_languageServiceHost.ActiveProjectContext, Path.Combine(outputPath, outputFileName), files, token);
+            // var result = await _compiler.CompileAsync(_languageServiceHost.ActiveProjectContext, Path.Combine(outputPath, outputFileName), files, token);
+            //
+            // if (!result)
+            // {
+            //     return null; // TODO: Is this right? Do we want an empty string? Or should it return the last good XML?
+            // }
 
             // VSTypeResolutionService is the only consumer, and it only uses the codebase element so just default most of them
             return $@"<root>  
@@ -110,5 +95,68 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
   />  
 </root>";
         }
+
+        protected override Task ApplyAsync(IProjectVersionedValue<DesignTimeInputs> value)
+        {
+            AppliedValue = value;
+
+            return Task.CompletedTask;
+        }
+
+        protected override Task InitializeInnerCoreAsync(CancellationToken cancellationToken)
+        {
+            AppliedValue = default;
+
+            return Task.CompletedTask;
+        }
+
+        protected override IDisposable LinkExternalInput(ITargetBlock<IProjectVersionedValue<Tuple<IProjectSnapshot, IProjectSubscriptionUpdate>>> targetBlock)
+        {
+            return ProjectDataSources.SyncLinkTo(
+                ProjectSubscriptionService.ProjectSource.SourceBlock.SyncLinkOptions(),
+                ProjectSubscriptionService.SourceItemsRuleSource.SourceBlock.SyncLinkOptions(),
+                targetBlock,
+                new DataflowLinkOptions { PropagateCompletion = true },
+                cancellationToken: ProjectAsynchronousTasksService.UnloadCancellationToken);
+        }
+
+        protected override Task<IProjectVersionedValue<DesignTimeInputs>> PreprocessAsync(IProjectVersionedValue<Tuple<IProjectSnapshot, IProjectSubscriptionUpdate>> input, IProjectVersionedValue<DesignTimeInputs> previousOutput)
+        {
+            var compileItems = input.Value.Item1.ProjectInstance.GetItems(Compile.SchemaName);
+
+            var designTimeInputs = new List<string>();
+            var sharedDesignTimeInputs = new List<string>();
+            foreach (var item in compileItems)
+            {
+                bool link = StringComparers.PropertyValues.Equals(item.GetMetadataValue(Compile.LinkProperty), bool.TrueString);
+                if (!link)
+                {
+                    bool designTime = StringComparers.PropertyValues.Equals(item.GetMetadataValue(Compile.DesignTimeProperty), bool.TrueString);
+                    bool designTimeShared = StringComparers.PropertyValues.Equals(item.GetMetadataValue(Compile.DesignTimeSharedInputProperty), bool.TrueString);
+                    if (designTime)
+                    {
+                        designTimeInputs.Add(item.GetMetadataValue(Compile.FullPathProperty));
+                    }
+                    else if (designTimeShared)
+                    {
+                        sharedDesignTimeInputs.Add(item.GetMetadataValue(Compile.FullPathProperty));
+                    }
+                }
+            }
+
+            var result = new ProjectVersionedValue<DesignTimeInputs>(new DesignTimeInputs
+            {
+                Inputs = designTimeInputs.ToArray(),
+                SharedInputs = sharedDesignTimeInputs.ToArray()
+            }, input.DataSourceVersions);
+
+            return Task.FromResult((IProjectVersionedValue<DesignTimeInputs>)result);
+        }
+    }
+
+    internal class DesignTimeInputs
+    {
+        public string[] Inputs { get; set; }
+        public string[] SharedInputs { get; set; }
     }
 }
