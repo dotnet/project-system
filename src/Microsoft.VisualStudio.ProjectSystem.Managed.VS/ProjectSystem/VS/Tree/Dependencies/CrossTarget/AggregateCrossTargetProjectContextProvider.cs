@@ -217,14 +217,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             if (string.IsNullOrEmpty(shortOrFullName))
             {
                 object targetObject = await configurationGeneralProperties.TargetFramework.GetValueAsync();
+
                 if (targetObject == null)
                 {
                     return TargetFramework.Empty;
                 }
-                else
-                {
-                    shortOrFullName = targetObject.ToString();
-                }
+
+                shortOrFullName = targetObject.ToString();
             }
 
             return _targetFrameworkProvider.GetTargetFramework(shortOrFullName) ?? TargetFramework.Empty;

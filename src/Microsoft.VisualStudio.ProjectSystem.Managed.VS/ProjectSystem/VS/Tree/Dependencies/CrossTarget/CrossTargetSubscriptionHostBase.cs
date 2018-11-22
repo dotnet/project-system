@@ -8,7 +8,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
@@ -102,8 +101,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         /// <summary>
         /// Workaround for CPS bug 375276 which causes double entry on InitializeAsync and exception
         /// "InvalidOperationException: The value factory has called for the value on the same instance".
+        /// https://dev.azure.com/devdiv/DevDiv/_workitems/edit/375276
         /// </summary>
-        /// <returns></returns>
         private async Task EnsureInitialized()
         {
             if (Interlocked.Exchange(ref _isInitialized, 1) == 0)
@@ -114,7 +113,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
         protected override Task InitializeCoreAsync(CancellationToken cancellationToken)
         {
-            // Update project context and subscriptions.
             return UpdateProjectContextAndSubscriptionsAsync();
         }
 
@@ -146,6 +144,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             AggregateCrossTargetProjectContext previousProjectContext = await ExecuteWithinLockAsync(() => _currentAggregateProjectContext);
 
             AggregateCrossTargetProjectContext newProjectContext = await UpdateProjectContextAsync();
+
             if (previousProjectContext != newProjectContext)
             {
                 // Dispose existing subscriptions.
