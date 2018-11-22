@@ -164,22 +164,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             // Ensure that only single thread is attempting to create a project context.
             return ExecuteWithinLockAsync(async () =>
             {
-                AggregateCrossTargetProjectContext previousContextToDispose = null;
+                AggregateCrossTargetProjectContext previousContext = _currentAggregateProjectContext;
 
                 // Check if we have already computed the project context.
-                if (_currentAggregateProjectContext != null)
+                if (previousContext != null)
                 {
                     // For non-cross targeting projects, we can use the current project context if the TargetFramework hasn't changed.
                     // For cross-targeting projects, we need to verify that the current project context matches latest frameworks targeted by the project.
                     // If not, we create a new one and dispose the current one.
                     ConfigurationGeneral projectProperties = await _commonServices.ActiveConfiguredProjectProperties.GetConfigurationGeneralPropertiesAsync();
 
-                    if (!_currentAggregateProjectContext.IsCrossTargeting)
+                    if (!previousContext.IsCrossTargeting)
                     {
                         ITargetFramework newTargetFramework = _targetFrameworkProvider.GetTargetFramework((string)await projectProperties.TargetFramework.GetValueAsync());
-                        if (_currentAggregateProjectContext.ActiveTargetFramework.Equals(newTargetFramework))
+                        if (previousContext.ActiveTargetFramework.Equals(newTargetFramework))
                         {
-                            return _currentAggregateProjectContext;
+                            return previousContext;
                         }
                     }
                     else
@@ -188,13 +188,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                         ProjectConfiguration activeProjectConfiguration = _commonServices.ActiveConfiguredProject.ProjectConfiguration;
                         IImmutableSet<ProjectConfiguration> knownProjectConfigurations = await _commonServices.Project.Services.ProjectConfigurationsService.GetKnownProjectConfigurationsAsync();
                         if (knownProjectConfigurations.All(c => c.IsCrossTargeting()) &&
-                            _currentAggregateProjectContext.HasMatchingTargetFrameworks(activeProjectConfiguration, knownProjectConfigurations))
+                            previousContext.HasMatchingTargetFrameworks(activeProjectConfiguration, knownProjectConfigurations))
                         {
-                            return _currentAggregateProjectContext;
+                            return previousContext;
                         }
                     }
-
-                    previousContextToDispose = _currentAggregateProjectContext;
                 }
 
                 // Force refresh the CPS active project configuration (needs UI thread).
@@ -204,7 +202,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                 // Create new project context.
                 _currentAggregateProjectContext = await _contextProvider.Value.CreateProjectContextAsync();
 
-                OnAggregateContextChanged(previousContextToDispose, _currentAggregateProjectContext);
+                OnAggregateContextChanged(previousContext, _currentAggregateProjectContext);
 
                 return _currentAggregateProjectContext;
             });
