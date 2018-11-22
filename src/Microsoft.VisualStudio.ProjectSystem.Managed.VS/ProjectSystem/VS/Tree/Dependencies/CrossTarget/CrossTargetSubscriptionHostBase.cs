@@ -106,7 +106,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         /// <returns></returns>
         private async Task EnsureInitialized()
         {
-            if (Interlocked.CompareExchange(ref _isInitialized, 1, 0) == 0)
+            if (Interlocked.Exchange(ref _isInitialized, 1) == 0)
             {
                 await InitializeAsync();
             }
