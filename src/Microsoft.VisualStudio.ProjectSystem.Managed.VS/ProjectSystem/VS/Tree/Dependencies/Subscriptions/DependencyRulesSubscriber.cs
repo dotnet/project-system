@@ -34,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         private AggregateCrossTargetProjectContext _currentProjectContext;
 
         [ImportMany(DependencyRulesSubscriberContract)]
-        private readonly OrderPrecedenceImportCollection<ICrossTargetRuleHandler<DependenciesRuleChangeContext>> _handlers;
+        private readonly OrderPrecedenceImportCollection<IDependenciesRuleHandler> _handlers;
 
         [ImportingConstructor]
         public DependencyRulesSubscriber(
@@ -43,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             IDependencyTreeTelemetryService treeTelemetryService)
             : base(synchronousDisposal: true)
         {
-            _handlers = new OrderPrecedenceImportCollection<ICrossTargetRuleHandler<DependenciesRuleChangeContext>>(
+            _handlers = new OrderPrecedenceImportCollection<IDependenciesRuleHandler>(
                 projectCapabilityCheckProvider: commonServices.Project);
 
             _commonServices = commonServices;
@@ -213,7 +213,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 return;
             }
 
-            IEnumerable<ICrossTargetRuleHandler<DependenciesRuleChangeContext>> handlers = _handlers.Select(h => h.Value);
+            IEnumerable<IDependenciesRuleHandler> handlers = _handlers.Select(h => h.Value);
 
             ITargetFramework targetFrameworkToUpdate;
 
@@ -242,7 +242,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 var ruleChangeContext = new DependenciesRuleChangeContext(currentAggregateContext.ActiveTargetFramework, catalogSnapshot);
 
                 // Give each handler a chance to modify the rule change context.
-                foreach (ICrossTargetRuleHandler<DependenciesRuleChangeContext> handler in handlers)
+                foreach (IDependenciesRuleHandler handler in handlers)
                 {
                     ImmutableHashSet<string> handlerRules = handler.GetRuleNames(handlerType);
 
@@ -255,8 +255,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     {
                         // Handlers respond to rule changes in a way that's specific to the rule change context
                         // type (T). For example, DependencyRulesSubscriber uses DependenciesRuleChangeContext
-                        // which holds IDependencyModel, so its ICrossTargetRuleHandler<DependenciesRuleChangeContext>
-                        // implementations will produce IDependencyModel objects in response to rule changes.
+                        // which holds IDependencyModel, so its IDependenciesRuleHandler implementations will
+                        // produce IDependencyModel objects in response to rule changes.
                         handler.Handle(projectChanges, targetFrameworkToUpdate, ruleChangeContext);
                     }
                 }

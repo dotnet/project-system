@@ -12,7 +12,7 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions
 {
     internal abstract class DependenciesRuleHandlerBase
-        : ICrossTargetRuleHandler<DependenciesRuleChangeContext>,
+        : IDependenciesRuleHandler,
           IProjectDependenciesSubTreeProviderInternal
     {
         private readonly ImmutableHashSet<string> _evaluationRuleNames;
@@ -32,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             _designTimeBuildRuleNames = _evaluationRuleNames.Add(resolvedRuleName);
         }
 
-        #region ICrossTargetRuleHandler
+        #region IDependenciesRuleHandler
 
         public ImmutableHashSet<string> GetRuleNames(RuleHandlerType handlerType)
         {
@@ -156,7 +156,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
         #endregion
 
-        #region  IProjectDependenciesSubTreeProvider
+        #region IProjectDependenciesSubTreeProvider
 
         public abstract string ProviderType { get; }
 

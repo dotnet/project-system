@@ -3,16 +3,17 @@
 using System.Collections.Immutable;
 
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
+using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 {
-    internal interface ICrossTargetRuleHandler<T> where T : IRuleChangeContext
+    internal interface IDependenciesRuleHandler
     {
         /// <summary>
         ///     Gets the rule this handler handles.
         /// </summary>
         /// <value>
-        ///     A <see cref="string"/> containing the rule that this <see cref="ICrossTargetRuleHandler{T}"/> 
+        ///     A <see cref="string"/> containing the rule that this <see cref="IDependenciesRuleHandler"/> 
         ///     handles.
         /// </value>
         ImmutableHashSet<string> GetRuleNames(RuleHandlerType handlerType);
@@ -24,6 +25,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         void Handle(
             IImmutableDictionary<string, IProjectChangeDescription> changesByRuleName,
             ITargetFramework targetFramework,
-            T ruleChangeContext);
+            DependenciesRuleChangeContext ruleChangeContext);
     }
 }
