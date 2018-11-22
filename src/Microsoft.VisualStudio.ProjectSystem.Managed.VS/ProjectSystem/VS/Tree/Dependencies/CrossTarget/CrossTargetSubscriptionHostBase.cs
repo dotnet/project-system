@@ -161,9 +161,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         private Task<AggregateCrossTargetProjectContext> UpdateProjectContextAsync()
         {
             // Ensure that only single thread is attempting to create a project context.
-            AggregateCrossTargetProjectContext previousContextToDispose = null;
             return ExecuteWithinLockAsync(async () =>
             {
+                AggregateCrossTargetProjectContext previousContextToDispose = null;
+
                 // Check if we have already computed the project context.
                 if (_currentAggregateProjectContext != null)
                 {
