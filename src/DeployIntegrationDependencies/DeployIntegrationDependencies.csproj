@@ -3,7 +3,7 @@
   <Import Project="..\VisualStudio.props"/>
   <PropertyGroup>
     <PlatformTarget>x86</PlatformTarget>
-    <TargetFramework>net461</TargetFramework>
+    <TargetFramework>net472</TargetFramework>
     <PublishOutputToSymStore>false</PublishOutputToSymStore>
   </PropertyGroup>
   <ItemGroup>

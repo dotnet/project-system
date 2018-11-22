@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <Import Project="..\Versions.props" />
   <PropertyGroup>
-    <TargetFramework>net46</TargetFramework>
+    <TargetFramework>net472</TargetFramework>
     <!-- Clear restore sources. The feeds are provided by MicroBuild. -->
     <RestoreSources/>
   </PropertyGroup>
