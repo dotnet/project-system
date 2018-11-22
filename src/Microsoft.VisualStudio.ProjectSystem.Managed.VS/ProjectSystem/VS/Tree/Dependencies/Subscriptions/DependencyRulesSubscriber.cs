@@ -275,6 +275,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
         protected override void Dispose(bool disposing)
         {
+            _gate.Dispose();
+
             if (disposing)
             {
                 ReleaseSubscriptions();
