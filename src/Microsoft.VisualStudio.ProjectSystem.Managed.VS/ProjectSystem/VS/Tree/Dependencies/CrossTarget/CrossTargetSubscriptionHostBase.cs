@@ -130,13 +130,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             await OnProjectChangedCoreAsync(e);
         }
 
-        private async Task OnProjectChangedCoreAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e)
+        private Task OnProjectChangedCoreAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e)
         {
             // If "TargetFrameworks" property has changed, we need to refresh the project context and subscriptions.
             if (HasTargetFrameworksChanged(e))
             {
-                await UpdateProjectContextAndSubscriptionsAsync();
+                return UpdateProjectContextAndSubscriptionsAsync();
             }
+
+            return Task.CompletedTask;
         }
 
         private async Task UpdateProjectContextAndSubscriptionsAsync()
