@@ -80,7 +80,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             {
                 SubscribeToConfiguredProject(
                     _activeConfiguredProjectSubscriptionService,
-                    e => OnProjectChangedAsync(e, RuleHandlerType.Evaluation));
+                    e => OnProjectChangedAsync(e)); // evaluation
 
                 foreach (Lazy<ICrossTargetSubscriber> subscriber in Subscribers)
                 {
@@ -116,7 +116,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             return UpdateProjectContextAndSubscriptionsAsync();
         }
 
-        private async Task OnProjectChangedAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e, RuleHandlerType handlerType)
+        private async Task OnProjectChangedAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e)
         {
             if (IsDisposing || IsDisposed)
             {
@@ -177,7 +177,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                     if (!_currentAggregateProjectContext.IsCrossTargeting)
                     {
                         ITargetFramework newTargetFramework = _targetFrameworkProvider.GetTargetFramework((string)await projectProperties.TargetFramework.GetValueAsync());
-                        if (_currentAggregateProjectContext.ActiveProjectContext.TargetFramework.Equals(newTargetFramework))
+                        if (_currentAggregateProjectContext.ActiveTargetFramework.Equals(newTargetFramework))
                         {
                             return _currentAggregateProjectContext;
                         }

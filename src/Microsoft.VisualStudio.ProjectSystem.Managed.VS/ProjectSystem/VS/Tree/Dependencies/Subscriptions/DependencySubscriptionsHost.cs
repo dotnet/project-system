@@ -205,9 +205,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
             var targetsToClean = new HashSet<ITargetFramework>();
 
-            IEnumerable<ITargetFramework> oldTargets = oldContext.InnerProjectContexts
-                .Select(x => x.TargetFramework)
-                .Where(x => x != null);
+            ImmutableArray<ITargetFramework> oldTargets = oldContext.TargetFrameworks;
 
             if (newContext == null)
             {
@@ -215,9 +213,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             }
             else
             {
-                IEnumerable<ITargetFramework> newTargets = newContext.InnerProjectContexts
-                    .Select(x => x.TargetFramework)
-                    .Where(x => x != null);
+                ImmutableArray<ITargetFramework> newTargets = newContext.TargetFrameworks;
 
                 targetsToClean.AddRange(oldTargets.Except(newTargets));
             }
