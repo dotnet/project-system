@@ -62,7 +62,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             if (snapshot.Targets.Count(x => !x.Key.Equals(TargetFramework.Any)) == 1)
             {
-                foreach (ITargetedDependenciesSnapshot targetedSnapshot in snapshot.Targets.Values)
+                foreach ((ITargetFramework _, ITargetedDependenciesSnapshot targetedSnapshot) in snapshot.Targets)
                 {
                     if (cancellationToken.IsCancellationRequested)
                     {
