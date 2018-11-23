@@ -124,7 +124,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
             List<IDependency> dependencyThatNeedChange = null;
 
-            foreach (ITargetedDependenciesSnapshot targetedDependencies in thisProjectSnapshot.Targets.Values)
+            foreach ((ITargetFramework _, ITargetedDependenciesSnapshot targetedDependencies) in thisProjectSnapshot.Targets)
             {
                 foreach (IDependency dependency in targetedDependencies.TopLevelDependencies)
                 {

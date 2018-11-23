@@ -78,7 +78,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                     return null;
                 }
 
-                return InnerProjectContexts.Single();
+                return _configuredProjectContextsByTargetFramework.Single().Value;
             }
         }
 

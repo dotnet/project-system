@@ -190,7 +190,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             {
                 // if top level first try to find by top level id with full path,
                 // if found - return, if not - try regular Id in the DependenciesWorld
-                foreach (ITargetedDependenciesSnapshot targetedDependencies in Targets.Values)
+                foreach ((ITargetFramework _, ITargetedDependenciesSnapshot targetedDependencies) in Targets)
                 {
                     IDependency dependency = targetedDependencies.TopLevelDependencies.FirstOrDefault(
                         x => x.TopLevelIdEquals(id));
@@ -202,7 +202,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 }
             }
 
-            foreach (ITargetedDependenciesSnapshot targetedDependencies in Targets.Values)
+            foreach ((ITargetFramework _, ITargetedDependenciesSnapshot targetedDependencies) in Targets)
             {
                 if (targetedDependencies.DependenciesWorld.TryGetValue(id, out IDependency dependency))
                 {

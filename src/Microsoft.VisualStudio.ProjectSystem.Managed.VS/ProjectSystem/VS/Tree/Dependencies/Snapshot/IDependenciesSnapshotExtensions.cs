@@ -2,13 +2,15 @@
 
 using System.Collections.Generic;
 
+using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
     internal static class IDependenciesSnapshotExtensions
     {
         public static IEnumerable<IDependency> GetFlatTopLevelDependencies(this IDependenciesSnapshot self)
         {
-            foreach (ITargetedDependenciesSnapshot targetedSnapshot in self.Targets.Values)
+            foreach ((ITargetFramework _, ITargetedDependenciesSnapshot targetedSnapshot) in self.Targets)
             {
                 foreach (IDependency dependency in targetedSnapshot.TopLevelDependencies)
                 {

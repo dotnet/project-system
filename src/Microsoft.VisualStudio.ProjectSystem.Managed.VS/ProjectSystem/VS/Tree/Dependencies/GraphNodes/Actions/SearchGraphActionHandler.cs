@@ -7,6 +7,7 @@ using System.Linq;
 
 using Microsoft.VisualStudio.GraphModel;
 using Microsoft.VisualStudio.GraphModel.Schemas;
+using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.ViewProviders;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 using Microsoft.VisualStudio.Shell;
@@ -167,9 +168,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
         private static HashSet<IDependency> SearchFlat(string searchTerm, IDependenciesSnapshot dependenciesSnapshot)
         {
             var matchedDependencies = new HashSet<IDependency>();
-            foreach (ITargetedDependenciesSnapshot targetedSnapshot in dependenciesSnapshot.Targets.Values)
+
+            foreach ((ITargetFramework _, ITargetedDependenciesSnapshot targetedSnapshot) in dependenciesSnapshot.Targets)
             {
-                foreach (IDependency dependency in targetedSnapshot.DependenciesWorld.Values)
+                foreach ((string _, IDependency dependency) in targetedSnapshot.DependenciesWorld)
                 {
                     if (dependency.Visible && dependency.Caption.ToLowerInvariant().Contains(searchTerm))
                     {
