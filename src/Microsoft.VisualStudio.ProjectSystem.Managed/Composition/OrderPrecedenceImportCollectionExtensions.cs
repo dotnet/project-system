@@ -87,5 +87,19 @@ namespace Microsoft.VisualStudio.Composition
 
             return default;
         }
+
+        public static ImmutableArray<T> ToImmutableValueArray<T>(this OrderPrecedenceImportCollection<T> imports)
+        {
+            Requires.NotNull(imports, nameof(imports));
+
+            ImmutableArray<T>.Builder builder = ImmutableArray.CreateBuilder<T>(imports.Count);
+
+            foreach (Lazy<T> import in imports)
+            {
+                builder.Add(import.Value);
+            }
+
+            return builder.MoveToImmutable();
+        }
     }
 }

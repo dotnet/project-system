@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             ITargetedDependenciesSnapshot previousSnapshot,
             IDependenciesChanges changes,
             IProjectCatalogSnapshot catalogs,
-            IReadOnlyList<IDependenciesSnapshotFilter> snapshotFilters,
+            ImmutableArray<IDependenciesSnapshotFilter> snapshotFilters,
             IReadOnlyDictionary<string, IProjectDependenciesSubTreeProvider> subTreeProviderByProviderType,
             IImmutableSet<string> projectItemSpecs)
         {
@@ -41,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Requires.NotNull(previousSnapshot, nameof(previousSnapshot));
             // catalogs can be null
             Requires.NotNull(changes, nameof(changes));
-            Requires.NotNull(snapshotFilters, nameof(snapshotFilters));
+            Requires.Argument(!snapshotFilters.IsDefault, nameof(snapshotFilters), "Cannot be default.");
             Requires.NotNull(subTreeProviderByProviderType, nameof(subTreeProviderByProviderType));
             // projectItemSpecs can be null
 

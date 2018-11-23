@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 using Microsoft.Build.Execution;
 using Microsoft.VisualStudio.Build;
+using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
@@ -288,7 +289,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     changes,
                     catalogs,
                     activeTargetFramework,
-                    _snapshotFilters.Select(x => x.Value).ToList(),
+                    _snapshotFilters.ToImmutableValueArray(),
                     _subTreeProviders.ToDictionary(p => p.Value.ProviderType, p => p.Value),
                     projectItemSpecs);
 
