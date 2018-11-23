@@ -75,17 +75,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                 return false;
             }
 
-            var targetFrameworks = knownProjectConfigurations
+            var targetFrameworkMonikers = knownProjectConfigurations
                 .Select(c => c.Dimensions[ConfigurationGeneral.TargetFrameworkProperty])
+                .Distinct()
                 .ToList();
 
-            if (targetFrameworks.Count != TargetFrameworks.Length)
+            if (targetFrameworkMonikers.Count != TargetFrameworks.Length)
             {
                 // Different number of target frameworks.
                 return false;
             }
 
-            foreach (string targetFrameworkMoniker in targetFrameworks)
+            foreach (string targetFrameworkMoniker in targetFrameworkMonikers)
             {
                 ITargetFramework targetFramework = _targetFrameworkProvider.GetTargetFramework(targetFrameworkMoniker);
 
