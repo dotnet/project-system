@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.Imaging;
+using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 
@@ -20,30 +21,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         private readonly ITargetFramework _tfm1 = new TargetFramework("tfm1");
         private readonly ITargetFramework _tfm2 = new TargetFramework("tfm2");
 
+        private static readonly ImageMoniker s_rootImage = KnownMonikers.AboutBox;
+
         [Fact]
-        public async Task WhenEmptySnapshot_ShouldJustUpdateDependencyRootNode()
+        public async Task BuildTreeAsync_EmptySnapshot_CreatesRootNode()
         {
             // Arrange
-            var treeServices = new MockIDependenciesTreeServices();
-            var treeViewModelFactory = IMockDependenciesViewModelFactory.Implement(getDependenciesRootIcon: KnownMonikers.AboutBox);
-            var project = UnconfiguredProjectFactory.Create();
-            var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(project: project);
+            var dependenciesRoot = new TestProjectTree { Caption = "MyDependencies" };
 
-            var dependenciesRoot = new TestProjectTree
-            {
-                Caption = "MyDependencies"
-            };
             var snapshot = DependenciesSnapshot.CreateEmpty(ProjectPath);
 
             // Act
-            var provider = new GroupedByTargetTreeViewProvider(treeServices, treeViewModelFactory, commonServices);
-            var resultTree = await provider.BuildTreeAsync(dependenciesRoot, snapshot);
+            var resultTree = await CreateProvider().BuildTreeAsync(dependenciesRoot, snapshot);
 
             // Assert
             var expectedFlatHierarchy = "Caption=MyDependencies, FilePath=, IconHash=325248080, ExpandedIconHash=325248080, Rule=, IsProjectItem=False, CustomTag=";
             Assert.Equal(expectedFlatHierarchy, ToTestDataString((TestProjectTree)resultTree));
-            Assert.Equal(KnownMonikers.AboutBox.ToProjectSystemType(), resultTree.Icon);
-            Assert.Equal(KnownMonikers.AboutBox.ToProjectSystemType(), resultTree.ExpandedIcon);
+            Assert.Equal(s_rootImage.ToProjectSystemType(), resultTree.Icon);
+            Assert.Equal(s_rootImage.ToProjectSystemType(), resultTree.ExpandedIcon);
         }
 
         [Fact]
@@ -133,17 +128,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 }
             };
 
-            var treeViewModelFactory = IMockDependenciesViewModelFactory.Implement(
-                getDependenciesRootIcon: KnownMonikers.AboutBox,
-                createRootViewModel: new[] { dependencyModelRootXxx, dependencyModelRootYyy });
-
-            var project = UnconfiguredProjectFactory.Create(filePath: @"c:\somefolder\someproject.csproj");
-            var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(project: project);
-
-            var provider = new GroupedByTargetTreeViewProvider(
-                new MockIDependenciesTreeServices(),
-                treeViewModelFactory,
-                commonServices);
+            var provider = CreateProvider(rootModels: new[] {dependencyModelRootXxx, dependencyModelRootYyy});
 
             var snapshot = GetSnapshot((_tfm1, new[] { dependencyXxx1, dependencyYyy1, dependencyYyyExisting }));
 
@@ -211,17 +196,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 }
             };
 
-            var treeViewModelFactory = IMockDependenciesViewModelFactory.Implement(
-                getDependenciesRootIcon: KnownMonikers.AboutBox,
-                createRootViewModel: new[] { dependencyRootYyy });
-
-            var project = UnconfiguredProjectFactory.Create(filePath: @"c:\somefolder\someproject.csproj");
-            var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(project: project);
-
-            var provider = new GroupedByTargetTreeViewProvider(
-                new MockIDependenciesTreeServices(),
-                treeViewModelFactory,
-                commonServices);
+            var provider = CreateProvider(rootModels: new[] { dependencyRootYyy });
 
             var snapshot = GetSnapshot((_tfm1, new[] { dependencyYyyExisting }));
 
@@ -286,17 +261,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 }
             };
 
-            var treeViewModelFactory = IMockDependenciesViewModelFactory.Implement(
-                getDependenciesRootIcon: KnownMonikers.AboutBox,
-                createRootViewModel: new[] { dependencyRootYyy });
-
-            var project = UnconfiguredProjectFactory.Create(filePath: @"c:\somefolder\someproject.csproj");
-            var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(project: project);
-
-            var provider = new GroupedByTargetTreeViewProvider(
-                new MockIDependenciesTreeServices(),
-                treeViewModelFactory,
-                commonServices);
+            var provider = CreateProvider(rootModels: new[] { dependencyRootYyy });
 
             var snapshot = GetSnapshot((_tfm1, new[] { dependencyYyyExisting }));
 
@@ -358,17 +323,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 }
             };
 
-            var treeViewModelFactory = IMockDependenciesViewModelFactory.Implement(
-                getDependenciesRootIcon: KnownMonikers.AboutBox,
-                createRootViewModel: new[] { dependencyRootYyy });
-
-            var project = UnconfiguredProjectFactory.Create(filePath: @"c:\somefolder\someproject.csproj");
-            var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(project: project);
-
-            var provider = new GroupedByTargetTreeViewProvider(
-                new MockIDependenciesTreeServices(),
-                treeViewModelFactory,
-                commonServices);
+            var provider = CreateProvider(rootModels: new[] { dependencyRootYyy });
 
             var snapshot = GetSnapshot((_tfm1, new[] { dependencyYyyExisting }));
 
@@ -419,17 +374,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 }
             };
 
-            var treeViewModelFactory = IMockDependenciesViewModelFactory.Implement(
-                getDependenciesRootIcon: KnownMonikers.AboutBox,
-                createRootViewModel: new[] { dependencyRootYyy });
-
-            var project = UnconfiguredProjectFactory.Create(filePath: @"c:\somefolder\someproject.csproj");
-            var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(project: project);
-
-            var provider = new GroupedByTargetTreeViewProvider(
-                new MockIDependenciesTreeServices(),
-                treeViewModelFactory,
-                commonServices);
+            var provider = CreateProvider(rootModels: new[] { dependencyRootYyy });
 
             var snapshot = GetSnapshot((_tfm1, new[] { dependencyVisibilityMarker }));
 
@@ -478,17 +423,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 }
             };
 
-            var treeViewModelFactory = IMockDependenciesViewModelFactory.Implement(
-                getDependenciesRootIcon: KnownMonikers.AboutBox,
-                createRootViewModel: new[] { dependencyModelRootYyy });
-
-            var project = UnconfiguredProjectFactory.Create(filePath: @"c:\somefolder\someproject.csproj");
-            var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(project: project);
-
-            var provider = new GroupedByTargetTreeViewProvider(
-                new MockIDependenciesTreeServices(),
-                treeViewModelFactory,
-                commonServices);
+            var provider = CreateProvider(rootModels: new[] { dependencyModelRootYyy });
 
             var snapshot = GetSnapshot((_tfm1, new[] { dependencyVisibilityMarker }));
 
@@ -622,18 +557,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 Caption = "tfm2"
             };
 
-            var treeViewModelFactory = IMockDependenciesViewModelFactory.Implement(
-                getDependenciesRootIcon: KnownMonikers.AboutBox,
-                createRootViewModel: new[] { dependencyModelRootXxx, dependencyModelRootYyy, dependencyModelRootZzz },
-                createTargetViewModel: new[] { targetModel1, targetModel2 });
-
-            var project = UnconfiguredProjectFactory.Create(filePath: @"c:\somefolder\someproject.csproj");
-            var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(project: project);
-
-            var provider = new GroupedByTargetTreeViewProvider(
-                new MockIDependenciesTreeServices(),
-                treeViewModelFactory,
-                commonServices);
+            var provider = CreateProvider(
+                rootModels: new[] { dependencyModelRootXxx, dependencyModelRootYyy, dependencyModelRootZzz },
+                targetModels: new[] { targetModel1, targetModel2 });
 
             var snapshot = GetSnapshot(
                 (_tfm1, new[] { dependencyXxx1, dependencyYyy1, dependencyYyyExisting }),
@@ -668,14 +594,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             // Arrange
             var projectFolder = Path.GetDirectoryName(ProjectPath);
-
-            var treeServices = new MockIDependenciesTreeServices();
-            var treeViewModelFactory = IMockDependenciesViewModelFactory.Implement();
-            var project = UnconfiguredProjectFactory.Create();
-            var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(project: project);
+            var provider = CreateProvider();
 
             // Act
-            var provider = new GroupedByTargetTreeViewProvider(treeServices, treeViewModelFactory, commonServices);
             var resultTree = provider.FindByPath(null, Path.Combine(projectFolder, @"somenode"));
 
             // Assert
@@ -687,19 +608,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             // Arrange
             var projectFolder = Path.GetDirectoryName(ProjectPath);
-
-            var treeServices = new MockIDependenciesTreeServices();
-            var treeViewModelFactory = IMockDependenciesViewModelFactory.Implement();
-            var project = UnconfiguredProjectFactory.Create();
-            var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(project: project);
-
-            var dependenciesRoot = new TestProjectTree
-            {
-                Caption = "MyDependencies"
-            };
+            var provider = CreateProvider();
+            var dependenciesRoot = new TestProjectTree { Caption = "MyDependencies" };
 
             // Act
-            var provider = new GroupedByTargetTreeViewProvider(treeServices, treeViewModelFactory, commonServices);
             var resultTree = provider.FindByPath(dependenciesRoot, Path.Combine(projectFolder, @"somenode"));
 
             // Assert
@@ -710,10 +622,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         public void WhenFindByPathAndAbsoluteNodePath_ShouldFind()
         {
             // Arrange
-            var treeServices = new MockIDependenciesTreeServices();
-            var treeViewModelFactory = IMockDependenciesViewModelFactory.Implement();
-            var project = UnconfiguredProjectFactory.Create();
-            var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(project: project);
+            var provider = CreateProvider();
 
             var dependenciesRoot = new TestProjectTree
             {
@@ -761,7 +670,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             };
 
             // Act
-            var provider = new GroupedByTargetTreeViewProvider(treeServices, treeViewModelFactory, commonServices);
             var resultTree = provider.FindByPath(dependenciesRoot, @"c:\folder\level3Child32");
 
             // Assert
@@ -775,10 +683,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             // Arrange
             var projectFolder = Path.GetDirectoryName(ProjectPath);
 
-            var treeServices = new MockIDependenciesTreeServices();
-            var treeViewModelFactory = IMockDependenciesViewModelFactory.Implement();
-            var project = UnconfiguredProjectFactory.Create(filePath: ProjectPath);
-            var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(project: project);
+            var provider = CreateProvider();
 
             var dependenciesRoot = new TestProjectTree
             {
@@ -826,7 +731,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             };
 
             // Act
-            var provider = new GroupedByTargetTreeViewProvider(treeServices, treeViewModelFactory, commonServices);
             var resultTree = provider.FindByPath(dependenciesRoot, Path.Combine(projectFolder, @"level3Child32"));
 
             // Assert
@@ -839,10 +743,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             // Arrange
             var projectFolder = Path.GetDirectoryName(ProjectPath);
 
-            var treeServices = new MockIDependenciesTreeServices();
-            var treeViewModelFactory = IMockDependenciesViewModelFactory.Implement();
-            var project = UnconfiguredProjectFactory.Create(filePath: ProjectPath);
-            var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(project: project);
+            var provider = CreateProvider();
 
             var projectRoot = new TestProjectTree
             {
@@ -897,12 +798,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             };
 
             // Act
-            var provider = new GroupedByTargetTreeViewProvider(treeServices, treeViewModelFactory, commonServices);
-
             var result = provider.FindByPath(projectRoot, Path.Combine(projectFolder, @"level3Child32"));
 
             // Assert
             Assert.Null(result);
+        }
+
+        private static GroupedByTargetTreeViewProvider CreateProvider(
+            IEnumerable<IDependencyModel> rootModels = null,
+            IEnumerable<IDependencyModel> targetModels = null)
+        {
+            var treeServices = new MockIDependenciesTreeServices();
+
+            var treeViewModelFactory = IMockDependenciesViewModelFactory.Implement(
+                getDependenciesRootIcon: s_rootImage,
+                createRootViewModel: rootModels,
+                createTargetViewModel: targetModels);
+
+            var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(
+                project: UnconfiguredProjectFactory.Create(filePath: ProjectPath));
+
+            return new GroupedByTargetTreeViewProvider(treeServices, treeViewModelFactory, commonServices);
         }
 
         private static IDependenciesSnapshot GetSnapshot(params (ITargetFramework tfm, IReadOnlyList<IDependency> dependencies)[] testData)
