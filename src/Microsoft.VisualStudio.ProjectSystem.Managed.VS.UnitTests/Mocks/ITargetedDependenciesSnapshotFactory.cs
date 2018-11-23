@@ -87,7 +87,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 Assert.True(topLevelDependencies.All(d => d.TopLevel));
 
                 mock.Setup(x => x.TopLevelDependencies)
-                    .Returns(ImmutableHashSet.CreateRange(topLevelDependencies));
+                    .Returns(ImmutableArray.CreateRange(topLevelDependencies));
             }
 
             if (checkForUnresolvedDependencies.HasValue)

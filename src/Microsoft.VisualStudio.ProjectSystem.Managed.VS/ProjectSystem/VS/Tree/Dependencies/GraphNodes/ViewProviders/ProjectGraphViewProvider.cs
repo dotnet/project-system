@@ -40,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
         {
             ITargetedDependenciesSnapshot targetedSnapshot = GetSnapshot(dependency);
 
-            return targetedSnapshot?.TopLevelDependencies.Count != 0;
+            return targetedSnapshot?.TopLevelDependencies.Length != 0;
         }
 
         public override void BuildGraph(

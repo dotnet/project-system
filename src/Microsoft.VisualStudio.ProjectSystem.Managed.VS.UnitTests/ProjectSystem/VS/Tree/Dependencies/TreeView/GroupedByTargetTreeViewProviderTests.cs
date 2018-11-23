@@ -575,17 +575,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     Caption=ZzzDependencyRoot, FilePath=ZzzDependencyRoot, IconHash=0, ExpandedIconHash=0, Rule=, IsProjectItem=False, CustomTag=
         Caption=ZzzDependencyAny1, FilePath=ZzzDependencyAny1, IconHash=0, ExpandedIconHash=0, Rule=, IsProjectItem=False, CustomTag=
     Caption=tfm2, FilePath=tfm2, IconHash=0, ExpandedIconHash=0, Rule=, IsProjectItem=False, CustomTag=, BubbleUpFlag=True
-        Caption=YyyDependencyRoot, FilePath=YyyDependencyRoot, IconHash=0, ExpandedIconHash=0, Rule=, IsProjectItem=False, CustomTag=
-            Caption=DependencyExisting, FilePath=tfm1\Yyy\dependencyyyyExistingpath, IconHash=325249260, ExpandedIconHash=325249260, Rule=, IsProjectItem=False, CustomTag=
-            Caption=Dependency1, FilePath=tfm1\Yyy\dependencyyyypath, IconHash=325249260, ExpandedIconHash=325249260, Rule=, IsProjectItem=False, CustomTag=
         Caption=XxxDependencyRoot, FilePath=XxxDependencyRoot, IconHash=0, ExpandedIconHash=0, Rule=, IsProjectItem=False, CustomTag=
             Caption=Dependency1, FilePath=tfm1\Xxx\dependencyxxxpath, IconHash=325249260, ExpandedIconHash=325249260, Rule=, IsProjectItem=False, CustomTag=
-    Caption=tfm1, FilePath=tfm1, IconHash=0, ExpandedIconHash=0, Rule=, IsProjectItem=False, CustomTag=, BubbleUpFlag=True
         Caption=YyyDependencyRoot, FilePath=YyyDependencyRoot, IconHash=0, ExpandedIconHash=0, Rule=, IsProjectItem=False, CustomTag=
-            Caption=DependencyExisting, FilePath=tfm1\Yyy\dependencyyyyExistingpath, IconHash=325249260, ExpandedIconHash=325249260, Rule=, IsProjectItem=True, CustomTag=
-            Caption=Dependency1, FilePath=tfm1\Yyy\dependencyyyypath, IconHash=325249260, ExpandedIconHash=325249260, Rule=, IsProjectItem=True, CustomTag=
+            Caption=Dependency1, FilePath=tfm1\Yyy\dependencyyyypath, IconHash=325249260, ExpandedIconHash=325249260, Rule=, IsProjectItem=False, CustomTag=
+            Caption=DependencyExisting, FilePath=tfm1\Yyy\dependencyyyyExistingpath, IconHash=325249260, ExpandedIconHash=325249260, Rule=, IsProjectItem=False, CustomTag=
+    Caption=tfm1, FilePath=tfm1, IconHash=0, ExpandedIconHash=0, Rule=, IsProjectItem=False, CustomTag=, BubbleUpFlag=True
         Caption=XxxDependencyRoot, FilePath=XxxDependencyRoot, IconHash=0, ExpandedIconHash=0, Rule=, IsProjectItem=False, CustomTag=
-            Caption=Dependency1, FilePath=tfm1\Xxx\dependencyxxxpath, IconHash=325249260, ExpandedIconHash=325249260, Rule=, IsProjectItem=True, CustomTag=";
+            Caption=Dependency1, FilePath=tfm1\Xxx\dependencyxxxpath, IconHash=325249260, ExpandedIconHash=325249260, Rule=, IsProjectItem=True, CustomTag=
+        Caption=YyyDependencyRoot, FilePath=YyyDependencyRoot, IconHash=0, ExpandedIconHash=0, Rule=, IsProjectItem=False, CustomTag=
+            Caption=Dependency1, FilePath=tfm1\Yyy\dependencyyyypath, IconHash=325249260, ExpandedIconHash=325249260, Rule=, IsProjectItem=True, CustomTag=
+            Caption=DependencyExisting, FilePath=tfm1\Yyy\dependencyyyyExistingpath, IconHash=325249260, ExpandedIconHash=325249260, Rule=, IsProjectItem=True, CustomTag=";
             Assert.Equal(expectedFlatHierarchy, ToTestDataString((TestProjectTree)resultTree));
         }
 
