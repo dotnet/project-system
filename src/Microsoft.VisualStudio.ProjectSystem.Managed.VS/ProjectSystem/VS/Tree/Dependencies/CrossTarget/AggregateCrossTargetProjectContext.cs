@@ -84,7 +84,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
         public ConfiguredProject GetInnerConfiguredProject(ITargetFramework target)
         {
-            return _configuredProjectsByTargetFramework.FirstOrDefault(x => target.Equals(x.Key)).Value;
+            return _configuredProjectsByTargetFramework.FirstOrDefault((x, t) => t.Equals(x.Key), target).Value;
         }
 
         /// <summary>

@@ -27,5 +27,16 @@ namespace Microsoft.VisualStudio
 
             return count;
         }
+
+        public static T FirstOrDefault<T, TArg>(this ImmutableArray<T> immutableArray, Func<T, TArg, bool> predicate, TArg arg)
+        {
+            foreach (T obj in immutableArray)
+            {
+                if (predicate(obj, arg))
+                    return obj;
+            }
+
+            return default;
+        }
     }
 }

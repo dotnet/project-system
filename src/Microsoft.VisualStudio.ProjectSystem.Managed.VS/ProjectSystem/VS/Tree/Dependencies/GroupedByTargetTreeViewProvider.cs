@@ -140,7 +140,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 : root.GetSubTreeNode(DependencyTreeFlags.DependenciesRootNodeFlags);
 
             return dependenciesNode?.GetSelfAndDescendentsBreadthFirst()
-                .FirstOrDefault(node => string.Equals(node.FilePath, path, StringComparison.OrdinalIgnoreCase));
+                .FirstOrDefault((node, p) => string.Equals(node.FilePath, p, StringComparison.OrdinalIgnoreCase), path);
         }
 
         /// <summary>

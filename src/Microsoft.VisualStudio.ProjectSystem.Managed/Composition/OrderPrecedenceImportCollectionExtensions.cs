@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 
 using Microsoft.VisualStudio.ProjectSystem;
@@ -53,6 +54,38 @@ namespace Microsoft.VisualStudio.Composition
 
                 yield return value;
             }
+        }
+
+        public static T FirstOrDefaultValue<T>(this OrderPrecedenceImportCollection<T> imports, Func<T, bool> predicate)
+        {
+            Requires.NotNull(imports, nameof(imports));
+
+            foreach (Lazy<T> import in imports)
+            {
+                T value = import.Value;
+                if (predicate(value))
+                {
+                    return value;
+                }
+            }
+
+            return default;
+        }
+
+        public static TImport FirstOrDefaultValue<TImport, TArg>(this OrderPrecedenceImportCollection<TImport> imports, Func<TImport, TArg, bool> predicate, TArg arg)
+        {
+            Requires.NotNull(imports, nameof(imports));
+
+            foreach (Lazy<TImport> import in imports)
+            {
+                TImport value = import.Value;
+                if (predicate(value, arg))
+                {
+                    return value;
+                }
+            }
+
+            return default;
         }
     }
 }

@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
-using System.Linq;
 
 using Microsoft.VisualStudio.Shell;
 
@@ -16,7 +15,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         public static IProjectTree FindChildWithCaption(this IProjectTree tree, string caption)
         {
             return tree.Children.FirstOrDefault(
-                child => string.Equals(caption, child.Caption, StringComparison.OrdinalIgnoreCase));
+                (child, cap) => string.Equals(cap, child.Caption, StringComparison.OrdinalIgnoreCase),
+                caption);
         }
 
         /// <summary>
