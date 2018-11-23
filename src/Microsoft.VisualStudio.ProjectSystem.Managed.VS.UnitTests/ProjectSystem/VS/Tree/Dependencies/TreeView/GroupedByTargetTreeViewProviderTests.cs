@@ -2,7 +2,6 @@
 
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -49,64 +48,64 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         [Fact]
         public async Task WhenOneTargetSnapshotWithExistingDependencies_ShouldApplyChanges()
         {
-            var dependencyModelRootXxx = IDependencyModelFactory.FromJson(@"
-                {
-                    ""ProviderType"": ""Xxx"",
-                    ""Id"": ""XxxDependencyRoot"",
-                    ""Name"":""XxxDependencyRoot"",
-                    ""Caption"":""XxxDependencyRoot"",
-                    ""Resolved"":""true""
-                }");
+            var dependencyModelRootXxx = new TestDependencyModel
+            {
+                ProviderType = "Xxx",
+                Id = "XxxDependencyRoot",
+                Name = "XxxDependencyRoot",
+                Caption = "XxxDependencyRoot",
+                Resolved = true
+            };
 
-            var dependencyModelRootYyy = IDependencyModelFactory.FromJson(@"
-                {
-                    ""ProviderType"": ""Yyy"",
-                    ""Id"": ""YyyDependencyRoot"",
-                    ""Name"":""YyyDependencyRoot"",
-                    ""Caption"":""YyyDependencyRoot""
-                }");
+            var dependencyModelRootYyy = new TestDependencyModel
+            {
+                ProviderType = "Yyy",
+                Id = "YyyDependencyRoot",
+                Name = "YyyDependencyRoot",
+                Caption = "YyyDependencyRoot"
+            };
 
-            var dependencyXxx1 = IDependencyFactory.FromJson(@"
-                {
-                    ""ProviderType"": ""Xxx"",
-                    ""Id"": ""tfm1\\xxx\\dependency1"",
-                    ""Name"":""dependency1"",
-                    ""Path"":""dependencyXxxpath"",
-                    ""Caption"":""Dependency1"",
-                    ""SchemaItemType"":""Xxx"",
-                    ""Resolved"":""true""
-                }", 
-                icon: KnownMonikers.Uninstall,
-                expandedIcon: KnownMonikers.Uninstall,
-                targetFramework: _tfm1);
+            var dependencyXxx1 = new TestDependency
+            {
+                ProviderType = "Xxx",
+                Id = "tfm1\\xxx\\dependency1",
+                Name = "dependency1",
+                Path = "dependencyXxxpath",
+                Caption = "Dependency1",
+                SchemaItemType = "Xxx",
+                Resolved = true,
+                Icon = KnownMonikers.Uninstall,
+                ExpandedIcon = KnownMonikers.Uninstall,
+                TargetFramework = _tfm1
+            };
 
-            var dependencyYyy1 = IDependencyFactory.FromJson(@"
-                {
-                    ""ProviderType"": ""Yyy"",
-                    ""Id"": ""tfm1\\yyy\\dependency1"",
-                    ""Name"":""dependency1"",
-                    ""Path"":""dependencyYyypath"",
-                    ""Caption"":""Dependency1"",
-                    ""SchemaItemType"":""Yyy"",
-                    ""Resolved"":""true""
-                }",
-                icon: KnownMonikers.Uninstall,
-                expandedIcon: KnownMonikers.Uninstall,
-                targetFramework: _tfm1);
+            var dependencyYyy1 = new TestDependency
+            {
+                ProviderType = "Yyy",
+                Id = "tfm1\\yyy\\dependency1",
+                Name = "dependency1",
+                Path = "dependencyYyypath",
+                Caption = "Dependency1",
+                SchemaItemType = "Yyy",
+                Resolved = true,
+                Icon = KnownMonikers.Uninstall,
+                ExpandedIcon = KnownMonikers.Uninstall,
+                TargetFramework = _tfm1
+            };
 
-            var dependencyYyyExisting = IDependencyFactory.FromJson(@"
-                {
-                    ""ProviderType"": ""Yyy"",
-                    ""Id"": ""tfm1\\yyy\\dependencyExisting"",
-                    ""Name"":""dependencyExisting"",
-                    ""Path"":""dependencyExistingPath"",
-                    ""Caption"":""DependencyExisting"",
-                    ""SchemaItemType"":""Yyy"",
-                    ""Resolved"":""true""
-                }",
-                icon: KnownMonikers.Uninstall,
-                expandedIcon: KnownMonikers.Uninstall,
-                targetFramework: _tfm1);
+            var dependencyYyyExisting = new TestDependency
+            {
+                ProviderType = "Yyy",
+                Id = "tfm1\\yyy\\dependencyExisting",
+                Name = "dependencyExisting",
+                Path = "dependencyExistingPath",
+                Caption = "DependencyExisting",
+                SchemaItemType = "Yyy",
+                Resolved = true,
+                Icon = KnownMonikers.Uninstall,
+                ExpandedIcon = KnownMonikers.Uninstall,
+                TargetFramework = _tfm1
+            };
 
             var dependenciesRoot = new TestProjectTree
             {
@@ -164,29 +163,29 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         [Fact]
         public async Task WhenOneTargetSnapshotAndDependencySupportsHierarchyAndIsResolved_ShouldRead()
         {
-            var dependencyRootYyy = IDependencyFactory.FromJson(@"
-                {
-                    ""ProviderType"": ""Yyy"",
-                    ""Id"": ""YyyDependencyRoot"",
-                    ""Name"":""YyyDependencyRoot"",
-                    ""Caption"":""YyyDependencyRoot"",
-                    ""Resolved"":""true""
-                }");
+            var dependencyRootYyy = new TestDependency
+            {
+                ProviderType = "Yyy",
+                Id = "YyyDependencyRoot",
+                Name = "YyyDependencyRoot",
+                Caption = "YyyDependencyRoot",
+                Resolved = true
+            };
 
-            var dependencyYyyExisting = IDependencyFactory.FromJson(@"
-                {
-                    ""ProviderType"": ""Yyy"",
-                    ""Id"": ""tfm1\\yyy\\dependencyExisting"",
-                    ""Name"":""dependencyExisting"",
-                    ""Path"":""dependencyExistingpath"",
-                    ""Caption"":""DependencyExisting"",
-                    ""SchemaItemType"":""Yyy"",
-                    ""Resolved"":""true""
-                }",
-                icon: KnownMonikers.Uninstall,
-                expandedIcon: KnownMonikers.Uninstall,
-                flags: DependencyTreeFlags.SupportsHierarchy,
-                targetFramework: _tfm1);
+            var dependencyYyyExisting = new TestDependency
+            {
+                ProviderType = "Yyy",
+                Id = "tfm1\\yyy\\dependencyExisting",
+                Name = "dependencyExisting",
+                Path = "dependencyExistingpath",
+                Caption = "DependencyExisting",
+                SchemaItemType = "Yyy",
+                Resolved = true,
+                Icon = KnownMonikers.Uninstall,
+                ExpandedIcon = KnownMonikers.Uninstall,
+                Flags = DependencyTreeFlags.SupportsHierarchy,
+                TargetFramework = _tfm1
+            };
 
             var dependenciesRoot = new TestProjectTree
             {
@@ -239,28 +238,29 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         [Fact]
         public async Task WhenOneTargetSnapshotAndDependencySupportsHierarchyAndIsUnresolved_ShouldRead()
         {
-            var dependencyRootYyy = IDependencyFactory.FromJson(@"
-                {
-                    ""ProviderType"": ""Yyy"",
-                    ""Id"": ""YyyDependencyRoot"",
-                    ""Name"":""YyyDependencyRoot"",
-                    ""Caption"":""YyyDependencyRoot"",
-                    ""Resolved"":""true""
-                }");
-            var dependencyYyyExisting = IDependencyFactory.FromJson(@"
-                {
-                    ""ProviderType"": ""Yyy"",
-                    ""Id"": ""tfm1\\yyy\\dependencyExisting"",
-                    ""Name"":""dependencyExisting"",
-                    ""Caption"":""DependencyExisting"",
-                    ""SchemaItemType"":""Yyy"",
-                    ""Resolved"":""false""
-                }",
-                icon: KnownMonikers.Uninstall,
-                expandedIcon: KnownMonikers.Uninstall,
-                unresolvedIcon: KnownMonikers.Uninstall,
-                unresolvedExpandedIcon: KnownMonikers.Uninstall,
-                flags: DependencyTreeFlags.SupportsHierarchy);
+            var dependencyRootYyy = new TestDependency
+            {
+                ProviderType = "Yyy",
+                Id = "YyyDependencyRoot",
+                Name = "YyyDependencyRoot",
+                Caption = "YyyDependencyRoot",
+                Resolved = true
+            };
+
+            var dependencyYyyExisting = new TestDependency
+            {
+                ProviderType = "Yyy",
+                Id = "tfm1\\yyy\\dependencyExisting",
+                Name = "dependencyExisting",
+                Caption = "DependencyExisting",
+                SchemaItemType = "Yyy",
+                Resolved = false,
+                Icon = KnownMonikers.Uninstall,
+                ExpandedIcon = KnownMonikers.Uninstall,
+                UnresolvedIcon = KnownMonikers.Uninstall,
+                UnresolvedExpandedIcon = KnownMonikers.Uninstall,
+                Flags = DependencyTreeFlags.SupportsHierarchy
+            };
 
             var dependenciesRoot = new TestProjectTree
             {
@@ -313,26 +313,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         [Fact]
         public async Task WhenOneTargetSnapshotAndDependencySupportsRule_ShouldCreateRule()
         {
-            var dependencyRootYyy = IDependencyFactory.FromJson(@"
-                {
-                    ""ProviderType"": ""Yyy"",
-                    ""Id"": ""YyyDependencyRoot"",
-                    ""Name"":""YyyDependencyRoot"",
-                    ""Caption"":""YyyDependencyRoot"",
-                    ""Resolved"":""true""
-                }");
-            var dependencyYyyExisting = IDependencyFactory.FromJson(@"
-                {
-                    ""ProviderType"": ""Yyy"",
-                    ""Id"": ""tfm1\\yyy\\dependencyExisting"",
-                    ""Name"":""dependencyExisting"",
-                    ""Caption"":""DependencyExisting"",
-                    ""SchemaItemType"":""Yyy"",
-                    ""Resolved"":""true""
-                }",
-                icon: KnownMonikers.Uninstall,
-                expandedIcon: KnownMonikers.Uninstall,
-                flags: DependencyTreeFlags.SupportsRuleProperties);
+            var dependencyRootYyy = new TestDependency
+            {
+                ProviderType = "Yyy",
+                Id = "YyyDependencyRoot",
+                Name = "YyyDependencyRoot",
+                Caption = "YyyDependencyRoot",
+                Resolved = true
+            };
+
+            var dependencyYyyExisting = new TestDependency
+            {
+                ProviderType = "Yyy",
+                Id = "tfm1\\yyy\\dependencyExisting",
+                Name = "dependencyExisting",
+                Caption = "DependencyExisting",
+                SchemaItemType = "Yyy",
+                Resolved = true,
+                Icon = KnownMonikers.Uninstall,
+                ExpandedIcon = KnownMonikers.Uninstall,
+                Flags = DependencyTreeFlags.SupportsRuleProperties
+            };
 
             var dependenciesRoot = new TestProjectTree
             {
@@ -384,24 +385,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         [Fact]
         public async Task WheEmptySnapshotAndVisibilityMarkerProvided_ShouldDisplaySubTreeRoot()
         {
-            var dependencyRootYyy = IDependencyFactory.FromJson(@"
-                {
-                    ""ProviderType"": ""Yyy"",
-                    ""Id"": ""YyyDependencyRoot"",
-                    ""Name"":""YyyDependencyRoot"",
-                    ""Caption"":""YyyDependencyRoot"",
-                    ""Resolved"":""true""
-                }");
-            var dependencyVisibilityMarker = IDependencyFactory.FromJson(@"
-                {
-                    ""ProviderType"": ""Yyy"",
-                    ""Id"": ""someid"",
-                    ""Name"":""someid"",
-                    ""Caption"":""someid"",
-                    ""Resolved"":""false"",
-                    ""Visible"":""false""
-                }",
-                flags: DependencyTreeFlags.ShowEmptyProviderRootNode);
+            var dependencyRootYyy = new TestDependency
+            {
+                ProviderType = "Yyy",
+                Id = "YyyDependencyRoot",
+                Name = "YyyDependencyRoot",
+                Caption = "YyyDependencyRoot",
+                Resolved = true
+            };
+
+            var dependencyVisibilityMarker = new TestDependency
+            {
+                ProviderType = "Yyy",
+                Id = "someid",
+                Name = "someid",
+                Caption = "someid",
+                Resolved = false,
+                Visible = false,
+                Flags = DependencyTreeFlags.ShowEmptyProviderRootNode
+            };
 
             var dependenciesRoot = new TestProjectTree
             {
@@ -443,23 +445,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         [Fact]
         public async Task WheEmptySnapshotAndVisibilityMarkerNotProvided_ShouldHideSubTreeRoot()
         {
-            var dependencyModelRootYyy = IDependencyModelFactory.FromJson(@"
-                {
-                    ""ProviderType"": ""Yyy"",
-                    ""Id"": ""YyyDependencyRoot"",
-                    ""Name"":""YyyDependencyRoot"",
-                    ""Caption"":""YyyDependencyRoot"",
-                    ""Resolved"":""true""
-                }");
-            var dependencyVisibilityMarker = IDependencyFactory.FromJson(@"
-                {
-                    ""ProviderType"": ""Yyy"",
-                    ""Id"": ""someid"",
-                    ""Name"":""someid"",
-                    ""Caption"":""someid"",
-                    ""Resolved"":""false"",
-                    ""Visible"":""false""
-                }");
+            var dependencyModelRootYyy = new TestDependencyModel
+            {
+                ProviderType = "Yyy",
+                Id = "YyyDependencyRoot",
+                Name = "YyyDependencyRoot",
+                Caption = "YyyDependencyRoot",
+                Resolved = true
+            };
+
+            var dependencyVisibilityMarker = new TestDependency
+            {
+                ProviderType = "Yyy",
+                Id = "someid",
+                Name = "someid",
+                Caption = "someid",
+                Resolved = false,
+                Visible = false
+            };
 
             var dependenciesRoot = new TestProjectTree
             {
@@ -500,83 +503,84 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         [Fact]
         public async Task WhenMultipleTargetSnapshotsWithExistingDependencies_ShouldApplyChanges()
         {
-            var dependencyModelRootXxx = IDependencyModelFactory.FromJson(@"
-                {
-                    ""ProviderType"": ""Xxx"",
-                    ""Id"": ""XxxDependencyRoot"",
-                    ""Name"":""XxxDependencyRoot"",
-                    ""Caption"":""XxxDependencyRoot"",
-                    ""Resolved"":""true""
-                }");
+            var dependencyModelRootXxx = new TestDependencyModel
+            {
+                ProviderType = "Xxx",
+                Id = "XxxDependencyRoot",
+                Name = "XxxDependencyRoot",
+                Caption = "XxxDependencyRoot",
+                Resolved = true
+            };
 
-            var dependencyXxx1 = IDependencyFactory.FromJson(@"
-                {
-                    ""ProviderType"": ""Xxx"",
-                    ""Id"": ""xxx\\dependency1"",
-                    ""Path"": ""dependencyxxxpath"",
-                    ""Name"":""dependency1"",
-                    ""Caption"":""Dependency1"",
-                    ""SchemaItemType"":""Xxx"",
-                    ""Resolved"":""true""
-                }",
-                icon: KnownMonikers.Uninstall,
-                expandedIcon: KnownMonikers.Uninstall,
-                targetFramework: _tfm1);
+            var dependencyXxx1 = new TestDependency
+            {
+                ProviderType = "Xxx",
+                Id = "xxx\\dependency1",
+                Path = "dependencyxxxpath",
+                Name = "dependency1",
+                Caption = "Dependency1",
+                SchemaItemType = "Xxx",
+                Resolved = true,
+                Icon = KnownMonikers.Uninstall,
+                ExpandedIcon = KnownMonikers.Uninstall,
+                TargetFramework = _tfm1
+            };
 
-            var dependencyModelRootYyy = IDependencyModelFactory.FromJson(@"
-                {
-                    ""ProviderType"": ""Yyy"",
-                    ""Id"": ""YyyDependencyRoot"",
-                    ""Name"":""YyyDependencyRoot"",
-                    ""Caption"":""YyyDependencyRoot""
-                }");
+            var dependencyModelRootYyy = new TestDependencyModel
+            {
+                ProviderType = "Yyy",
+                Id = "YyyDependencyRoot",
+                Name = "YyyDependencyRoot",
+                Caption = "YyyDependencyRoot"
+            };
 
-            var dependencyYyy1 = IDependencyFactory.FromJson(@"
-                {
-                    ""ProviderType"": ""Yyy"",
-                    ""Id"": ""yyy\\dependency1"",
-                    ""Path"": ""dependencyyyypath"",
-                    ""Name"":""dependency1"",
-                    ""Caption"":""Dependency1"",
-                    ""SchemaItemType"":""Yyy"",
-                    ""Resolved"":""true""
-                }",
-                icon: KnownMonikers.Uninstall,
-                expandedIcon: KnownMonikers.Uninstall,
-                targetFramework: _tfm1);
+            var dependencyYyy1 = new TestDependency
+            {
+                ProviderType = "Yyy",
+                Id = "yyy\\dependency1",
+                Path = "dependencyyyypath",
+                Name = "dependency1",
+                Caption = "Dependency1",
+                SchemaItemType = "Yyy",
+                Resolved = true,
+                Icon = KnownMonikers.Uninstall,
+                ExpandedIcon = KnownMonikers.Uninstall,
+                TargetFramework = _tfm1
+            };
 
-            var dependencyYyyExisting = IDependencyFactory.FromJson(@"
-                {
-                    ""ProviderType"": ""Yyy"",
-                    ""Id"": ""yyy\\dependencyExisting"",
-                    ""Path"": ""dependencyyyyExistingpath"",
-                    ""Name"":""dependencyExisting"",
-                    ""Caption"":""DependencyExisting"",
-                    ""SchemaItemType"":""Yyy"",
-                    ""Resolved"":""true""
-                }",
-                icon: KnownMonikers.Uninstall,
-                expandedIcon: KnownMonikers.Uninstall,
-                targetFramework: _tfm1);
+            var dependencyYyyExisting = new TestDependency
+            {
+                ProviderType = "Yyy",
+                Id = "yyy\\dependencyExisting",
+                Path = "dependencyyyyExistingpath",
+                Name = "dependencyExisting",
+                Caption = "DependencyExisting",
+                SchemaItemType = "Yyy",
+                Resolved = true,
+                Icon = KnownMonikers.Uninstall,
+                ExpandedIcon = KnownMonikers.Uninstall,
+                TargetFramework = _tfm1
+            };
 
-            var dependencyModelRootZzz = IDependencyModelFactory.FromJson(@"
-                {
-                    ""ProviderType"": ""Zzz"",
-                    ""Id"": ""ZzzDependencyRoot"",
-                    ""Name"":""ZzzDependencyRoot"",
-                    ""Caption"":""ZzzDependencyRoot"",
-                    ""Resolved"":""true""
-                }",
-                flags: ProjectTreeFlags.Create(ProjectTreeFlags.Common.BubbleUp));
-            var dependencyAny1 = IDependencyFactory.FromJson(@"
-                {
-                    ""ProviderType"": ""Zzz"",
-                    ""Id"": ""ZzzDependencyAny1"",
-                    ""Path"": ""ZzzDependencyAny1path"",
-                    ""Name"":""ZzzDependencyAny1"",
-                    ""Caption"":""ZzzDependencyAny1""
-                }",
-                targetFramework: TargetFramework.Any);
+            var dependencyModelRootZzz = new TestDependencyModel
+            {
+                ProviderType = "Zzz",
+                Id = "ZzzDependencyRoot",
+                Name = "ZzzDependencyRoot",
+                Caption = "ZzzDependencyRoot",
+                Resolved = true,
+                Flags = ProjectTreeFlags.Create(ProjectTreeFlags.Common.BubbleUp)
+            };
+
+            var dependencyAny1 = new TestDependency
+            {
+                ProviderType = "Zzz",
+                Id = "ZzzDependencyAny1",
+                Path = "ZzzDependencyAny1path",
+                Name = "ZzzDependencyAny1",
+                Caption = "ZzzDependencyAny1",
+                TargetFramework = TargetFramework.Any
+            };
 
             var dependenciesRoot = new TestProjectTree
             {
@@ -603,18 +607,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 }
             };
 
-            var targetModel1 = IDependencyModelFactory.FromJson(@"
-                {
-                    ""Id"": ""tfm1"",
-                    ""Name"":""tfm1"",
-                    ""Caption"":""tfm1""
-                }");
-            var targetModel2 = IDependencyModelFactory.FromJson(@"
-                {
-                    ""Id"": ""tfm2"",
-                    ""Name"":""tfm2"",
-                    ""Caption"":""tfm2""
-                }");
+            var targetModel1 = new TestDependencyModel
+            {
+                Id = "tfm1",
+                Name = "tfm1",
+                Caption = "tfm1"
+            };
+
+            var targetModel2 = new TestDependencyModel
+            {
+                Id = "tfm2",
+                Name = "tfm2",
+                Caption = "tfm2"
+            };
 
             var treeViewModelFactory = IMockDependenciesViewModelFactory.Implement(
                 getDependenciesRootIcon: KnownMonikers.AboutBox,
