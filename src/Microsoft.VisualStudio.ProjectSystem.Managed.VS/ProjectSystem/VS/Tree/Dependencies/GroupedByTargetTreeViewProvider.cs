@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     [Order(Order)]
     internal class GroupedByTargetTreeViewProvider : TreeViewProviderBase
     {
-        public const int Order = 1000;
+        private const int Order = 1000;
 
         [ImportingConstructor]
         public GroupedByTargetTreeViewProvider(
