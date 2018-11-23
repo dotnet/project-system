@@ -40,8 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var resultTree = await provider.BuildTreeAsync(dependenciesRoot, snapshot);
 
             // Assert
-            var expectedFlatHierarchy =
-@"Caption=MyDependencies, FilePath=, IconHash=325248080, ExpandedIconHash=325248080, Rule=, IsProjectItem=False, CustomTag=";
+            var expectedFlatHierarchy = "Caption=MyDependencies, FilePath=, IconHash=325248080, ExpandedIconHash=325248080, Rule=, IsProjectItem=False, CustomTag=";
             Assert.Equal(expectedFlatHierarchy, ToTestDataString((TestProjectTree)resultTree));
             Assert.Equal(KnownMonikers.AboutBox.ToProjectSystemType(), resultTree.Icon);
             Assert.Equal(KnownMonikers.AboutBox.ToProjectSystemType(), resultTree.ExpandedIcon);
@@ -138,11 +137,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 getDependenciesRootIcon: KnownMonikers.AboutBox,
                 createRootViewModel: new[] { dependencyModelRootXxx, dependencyModelRootYyy });
 
-            var testData = new Dictionary<ITargetFramework, IReadOnlyList<IDependency>>
-            {
-                { _tfm1, new[] { dependencyXxx1, dependencyYyy1, dependencyYyyExisting } }
-            };
-
             var project = UnconfiguredProjectFactory.Create(filePath: @"c:\somefolder\someproject.csproj");
             var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(project: project);
 
@@ -151,8 +145,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 treeViewModelFactory,
                 commonServices);
 
+            var snapshot = GetSnapshot((_tfm1, new[] { dependencyXxx1, dependencyYyy1, dependencyYyyExisting }));
+
             // Act
-            var resultTree = await provider.BuildTreeAsync(dependenciesRoot, GetSnapshot(testData));
+            var resultTree = await provider.BuildTreeAsync(dependenciesRoot, snapshot);
 
             // Assert            
             var expectedFlatHierarchy =
@@ -219,11 +215,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 getDependenciesRootIcon: KnownMonikers.AboutBox,
                 createRootViewModel: new[] { dependencyRootYyy });
 
-            var testData = new Dictionary<ITargetFramework, IReadOnlyList<IDependency>>
-            {
-                { _tfm1, new[] { dependencyYyyExisting } }
-            };
-
             var project = UnconfiguredProjectFactory.Create(filePath: @"c:\somefolder\someproject.csproj");
             var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(project: project);
 
@@ -232,8 +223,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 treeViewModelFactory,
                 commonServices);
 
+            var snapshot = GetSnapshot((_tfm1, new[] { dependencyYyyExisting }));
+
             // Act
-            var resultTree = await provider.BuildTreeAsync(dependenciesRoot, GetSnapshot(testData));
+            var resultTree = await provider.BuildTreeAsync(dependenciesRoot, snapshot);
 
             // Assert            
             var expectedFlatHierarchy =
@@ -296,11 +289,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 getDependenciesRootIcon: KnownMonikers.AboutBox,
                 createRootViewModel: new[] { dependencyRootYyy });
 
-            var testData = new Dictionary<ITargetFramework, IReadOnlyList<IDependency>>
-            {
-                { _tfm1, new[] { dependencyYyyExisting } }
-            };
-
             var project = UnconfiguredProjectFactory.Create(filePath: @"c:\somefolder\someproject.csproj");
             var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(project: project);
 
@@ -309,8 +297,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 treeViewModelFactory,
                 commonServices);
 
+            var snapshot = GetSnapshot((_tfm1, new[] { dependencyYyyExisting }));
+
             // Act
-            var resultTree = await provider.BuildTreeAsync(dependenciesRoot, GetSnapshot(testData));
+            var resultTree = await provider.BuildTreeAsync(dependenciesRoot, snapshot);
 
             // Assert            
             var expectedFlatHierarchy =
@@ -344,11 +334,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 expandedIcon: KnownMonikers.Uninstall,
                 flags: DependencyTreeFlags.SupportsRuleProperties);
 
-            var dependencies = new[]
-            {
-                dependencyYyyExisting
-            };
-
             var dependenciesRoot = new TestProjectTree
             {
                 Caption = "MyDependencies",
@@ -375,11 +360,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 getDependenciesRootIcon: KnownMonikers.AboutBox,
                 createRootViewModel: new[] { dependencyRootYyy });
 
-            var testData = new Dictionary<ITargetFramework, IReadOnlyList<IDependency>>
-            {
-                { _tfm1, dependencies }
-            };
-
             var project = UnconfiguredProjectFactory.Create(filePath: @"c:\somefolder\someproject.csproj");
             var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(project: project);
 
@@ -388,8 +368,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 treeViewModelFactory,
                 commonServices);
 
+            var snapshot = GetSnapshot((_tfm1, new[] { dependencyYyyExisting }));
+
             // Act
-            var resultTree = await provider.BuildTreeAsync(dependenciesRoot, GetSnapshot(testData));
+            var resultTree = await provider.BuildTreeAsync(dependenciesRoot, snapshot);
 
             // Assert            
             var expectedFlatHierarchy =
@@ -438,11 +420,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 getDependenciesRootIcon: KnownMonikers.AboutBox,
                 createRootViewModel: new[] { dependencyRootYyy });
 
-            var testData = new Dictionary<ITargetFramework, IReadOnlyList<IDependency>>
-            {
-                { _tfm1, new[] { dependencyVisibilityMarker } }
-            };
-
             var project = UnconfiguredProjectFactory.Create(filePath: @"c:\somefolder\someproject.csproj");
             var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(project: project);
 
@@ -451,8 +428,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 treeViewModelFactory,
                 commonServices);
 
+            var snapshot = GetSnapshot((_tfm1, new[] { dependencyVisibilityMarker }));
+
             // Act
-            var resultTree = await provider.BuildTreeAsync(dependenciesRoot, GetSnapshot(testData));
+            var resultTree = await provider.BuildTreeAsync(dependenciesRoot, snapshot);
 
             // Assert            
             var expectedFlatHierarchy =
@@ -499,11 +478,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 getDependenciesRootIcon: KnownMonikers.AboutBox,
                 createRootViewModel: new[] { dependencyModelRootYyy });
 
-            var testData = new Dictionary<ITargetFramework, IReadOnlyList<IDependency>>
-            {
-                { _tfm1, new[] { dependencyVisibilityMarker } }
-            };
-
             var project = UnconfiguredProjectFactory.Create(filePath: @"c:\somefolder\someproject.csproj");
             var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(project: project);
 
@@ -512,8 +486,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 treeViewModelFactory,
                 commonServices);
 
+            var snapshot = GetSnapshot((_tfm1, new[] { dependencyVisibilityMarker }));
+
             // Act
-            var resultTree = await provider.BuildTreeAsync(dependenciesRoot, GetSnapshot(testData));
+            var resultTree = await provider.BuildTreeAsync(dependenciesRoot, snapshot);
 
             // Assert            
             var expectedFlatHierarchy =
@@ -645,13 +621,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 createRootViewModel: new[] { dependencyModelRootXxx, dependencyModelRootYyy, dependencyModelRootZzz },
                 createTargetViewModel: new[] { targetModel1, targetModel2 });
 
-            var testData = new Dictionary<ITargetFramework, IReadOnlyList<IDependency>>
-            {
-                { _tfm1, new[] { dependencyXxx1, dependencyYyy1, dependencyYyyExisting } },
-                { _tfm2, new[] { dependencyXxx1, dependencyYyy1, dependencyYyyExisting } },
-                { TargetFramework.Any, new[] { dependencyAny1 } }
-            };
-
             var project = UnconfiguredProjectFactory.Create(filePath: @"c:\somefolder\someproject.csproj");
             var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(project: project);
 
@@ -660,8 +629,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 treeViewModelFactory,
                 commonServices);
 
+            var snapshot = GetSnapshot(
+                (_tfm1, new[] { dependencyXxx1, dependencyYyy1, dependencyYyyExisting }),
+                (_tfm2, new[] { dependencyXxx1, dependencyYyy1, dependencyYyyExisting }),
+                (TargetFramework.Any, new[] { dependencyAny1 }));
+
             // Act
-            var resultTree = await provider.BuildTreeAsync(dependenciesRoot, GetSnapshot(testData));
+            var resultTree = await provider.BuildTreeAsync(dependenciesRoot, snapshot);
 
             // Assert
             var expectedFlatHierarchy =
@@ -929,26 +903,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Null(result);
         }
 
-        private static IDependenciesSnapshot GetSnapshot(Dictionary<ITargetFramework, IReadOnlyList<IDependency>> testData)
+        private static IDependenciesSnapshot GetSnapshot(params (ITargetFramework tfm, IReadOnlyList<IDependency> dependencies)[] testData)
         {
             var catalogs = IProjectCatalogSnapshotFactory.Create();
             var targets = new Dictionary<ITargetFramework, ITargetedDependenciesSnapshot>();
 
-            foreach ((ITargetFramework targetFramework, IReadOnlyList<IDependency> dependencies) in testData)
+            foreach ((ITargetFramework tfm, IReadOnlyList<IDependency> dependencies) in testData)
             {
                 var targetedSnapshot = ITargetedDependenciesSnapshotFactory.Implement(
                     catalogs: catalogs,
                     topLevelDependencies: dependencies,
                     checkForUnresolvedDependencies: false,
-                    targetFramework: targetFramework);
+                    targetFramework: tfm);
 
-                targets.Add(targetFramework, targetedSnapshot);
+                targets.Add(tfm, targetedSnapshot);
             }
 
             return IDependenciesSnapshotFactory.Implement(
                 targets: targets,
                 hasUnresolvedDependency: false,
-                activeTarget: testData.First().Key);
+                activeTarget: testData[0].tfm);
         }
 
         private static string ToTestDataString(TestProjectTree root)
