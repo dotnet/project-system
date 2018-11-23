@@ -101,5 +101,18 @@ namespace Microsoft.VisualStudio.Composition
 
             return builder.MoveToImmutable();
         }
+
+        public static Dictionary<TKey, TImport> ToValueDictionary<TKey, TImport>(this OrderPrecedenceImportCollection<TImport> imports, Func<TImport, TKey> keySelector)
+        {
+            var dictionary = new Dictionary<TKey, TImport>();
+
+            foreach (Lazy<TImport> import in imports)
+            {
+                TImport value = import.Value;
+                dictionary.Add(keySelector(value), value);
+            }
+
+            return dictionary;
+        }
     }
 }
