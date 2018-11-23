@@ -179,9 +179,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         public bool HasUnresolvedDependency => Targets.Any(x => x.Value.HasUnresolvedDependency);
 
         /// <inheritdoc />
-        public IDependency FindDependency(string id, bool topLevel = false)
+        public IDependency FindDependency(string dependencyId, bool topLevel = false)
         {
-            if (string.IsNullOrEmpty(id))
+            if (string.IsNullOrEmpty(dependencyId))
             {
                 return null;
             }
@@ -193,7 +193,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 foreach ((ITargetFramework _, ITargetedDependenciesSnapshot targetedDependencies) in Targets)
                 {
                     IDependency dependency = targetedDependencies.TopLevelDependencies.FirstOrDefault(
-                        x => x.TopLevelIdEquals(id));
+                        x => x.TopLevelIdEquals(dependencyId));
 
                     if (dependency != null)
                     {
@@ -204,7 +204,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
             foreach ((ITargetFramework _, ITargetedDependenciesSnapshot targetedDependencies) in Targets)
             {
-                if (targetedDependencies.DependenciesWorld.TryGetValue(id, out IDependency dependency))
+                if (targetedDependencies.DependenciesWorld.TryGetValue(dependencyId, out IDependency dependency))
                 {
                     return dependency;
                 }

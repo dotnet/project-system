@@ -36,10 +36,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         /// <summary>
         /// Finds dependency for given id across all target frameworks.
         /// </summary>
-        /// <param name="id">Unique id for dependency to be found.</param>
+        /// <param name="dependencyId">Unique id for dependency to be found.</param>
         /// <param name="topLevel">If <see langword="true"/>, search is first performed on top level
         /// dependencies before searching all dependencies.</param>
         /// <returns>The <see cref="IDependency"/> if found, otherwise <see langword="null"/>.</returns>
-        IDependency FindDependency(string id, bool topLevel = false);
+        IDependency FindDependency(string dependencyId, bool topLevel = false);
     }
 }
