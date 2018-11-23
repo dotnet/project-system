@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 
@@ -68,12 +67,27 @@ namespace Microsoft.VisualStudio.Build
         /// <returns>Collection of individual values in the property.</returns>
         public static IEnumerable<string> GetPropertyValues(string propertyValue, char delimiter = ';')
         {
+            HashSet<string> seen = null;
+
             // We need to ensure that we return values in the specified order.
             foreach (string value in new LazyStringSplit(propertyValue, delimiter))
             {
-                if (!string.IsNullOrWhiteSpace(value))
+                string s = value.Trim();
+
+                if (!string.IsNullOrEmpty(s))
                 {
-                    yield return value.Trim();
+                    if (seen == null)
+                    {
+                        seen = new HashSet<string> { s };
+                        yield return s;
+                    }
+                    else
+                    {
+                        if (seen.Add(s))
+                        {
+                            yield return s;
+                        }
+                    }
                 }
             }
         }
