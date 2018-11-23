@@ -15,6 +15,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
     public sealed class GroupedByTargetTreeViewProviderTests
     {
+        private const string ProjectPath = @"c:\myfolder\mysubfolder\myproject.csproj";
+
         private readonly ITargetFramework _tfm1 = new TargetFramework("tfm1");
         private readonly ITargetFramework _tfm2 = new TargetFramework("tfm2");
 
@@ -666,8 +668,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         public void WhenFindByPathAndNullNode_ShouldDoNothing()
         {
             // Arrange
-            const string projectPath = @"c:\myfolder\mysubfolder\myproject.csproj";
-            var projectFolder = Path.GetDirectoryName(projectPath);
+            var projectFolder = Path.GetDirectoryName(ProjectPath);
 
             var treeServices = new MockIDependenciesTreeServices();
             var treeViewModelFactory = IMockDependenciesViewModelFactory.Implement();
@@ -686,8 +687,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         public void WhenFindByPathAndNotDependenciesRoot_ShouldDoNothing()
         {
             // Arrange
-            const string projectPath = @"c:\myfolder\mysubfolder\myproject.csproj";
-            var projectFolder = Path.GetDirectoryName(projectPath);
+            var projectFolder = Path.GetDirectoryName(ProjectPath);
 
             var treeServices = new MockIDependenciesTreeServices();
             var treeViewModelFactory = IMockDependenciesViewModelFactory.Implement();
@@ -774,12 +774,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         public void WhenFindByPathAndRelativeNodePath_ShouldNotFind()
         {
             // Arrange
-            const string projectPath = @"c:\myfolder\mysubfolder\myproject.csproj";
-            var projectFolder = Path.GetDirectoryName(projectPath);
+            var projectFolder = Path.GetDirectoryName(ProjectPath);
 
             var treeServices = new MockIDependenciesTreeServices();
             var treeViewModelFactory = IMockDependenciesViewModelFactory.Implement();
-            var project = UnconfiguredProjectFactory.Create(filePath: projectPath);
+            var project = UnconfiguredProjectFactory.Create(filePath: ProjectPath);
             var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(project: project);
 
             var dependenciesRoot = new TestProjectTree
@@ -839,12 +838,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         public void WhenFindByPathAndNeedToFindDependenciesRoot_ShouldNotFind()
         {
             // Arrange
-            const string projectPath = @"c:\myfolder\mysubfolder\myproject.csproj";
-            var projectFolder = Path.GetDirectoryName(projectPath);
+            var projectFolder = Path.GetDirectoryName(ProjectPath);
 
             var treeServices = new MockIDependenciesTreeServices();
             var treeViewModelFactory = IMockDependenciesViewModelFactory.Implement();
-            var project = UnconfiguredProjectFactory.Create(filePath: projectPath);
+            var project = UnconfiguredProjectFactory.Create(filePath: ProjectPath);
             var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(project: project);
 
             var projectRoot = new TestProjectTree
