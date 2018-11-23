@@ -56,12 +56,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             }
 
             AttributeData attribute = await GetAttributeAsync(_assemblyAttributeFullName, project);
-            if (attribute == null)
-            {
-                return null;
-            }
 
-            return attribute.ConstructorArguments.FirstOrDefault().Value?.ToString();
+            return attribute?.ConstructorArguments.FirstOrDefault().Value?.ToString();
         }
 
         /// <summary>

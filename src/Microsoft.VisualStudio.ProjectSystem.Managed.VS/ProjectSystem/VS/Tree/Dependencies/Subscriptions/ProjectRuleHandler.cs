@@ -147,7 +147,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
             if (dependencyThatNeedChange == null)
             {
-                // we don't have dependency on updated project
+                // we don't have a dependency on the project that changed
                 return;
             }
 
