@@ -33,8 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             {
                 Caption = "MyDependencies"
             };
-            var targets = new Dictionary<ITargetFramework, ITargetedDependenciesSnapshot>();
-            var snapshot = IDependenciesSnapshotFactory.Implement(targets: targets, hasUnresolvedDependency: false);
+            var snapshot = DependenciesSnapshot.CreateEmpty(ProjectPath);
 
             // Act
             var provider = new GroupedByTargetTreeViewProvider(treeServices, treeViewModelFactory, commonServices);
