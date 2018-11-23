@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             bool visible = true,
             ProjectTreeFlags? flags = default)
         {
-            return new TestProjectTree()
+            return new TestProjectTree
             {
                 Caption = caption,
                 FilePath = itemContext.File ?? caption,
@@ -30,7 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 Icon = icon,
                 ExpandedIcon = expandedIcon,
                 Visible = visible,
-                Flags = flags.Value,
+                Flags = flags ?? ProjectTreeFlags.Empty,
                 IsProjectItem = true
             };
         }
@@ -44,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             bool visible = true,
             ProjectTreeFlags? flags = default)
         {
-            return new TestProjectTree()
+            return new TestProjectTree
             {
                 Caption = caption,
                 FilePath = filePath,
@@ -52,7 +52,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 Icon = icon,
                 ExpandedIcon = expandedIcon,
                 Visible = visible,
-                Flags = flags.Value,
+                Flags = flags ?? ProjectTreeFlags.Empty,
                 IsProjectItem = false
             };
         }
