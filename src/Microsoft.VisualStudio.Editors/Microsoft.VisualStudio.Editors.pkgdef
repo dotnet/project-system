@@ -130,6 +130,9 @@
 "Package"="{67909B06-91E9-4F3E-AB50-495046BE9A9A}"
 @="Project Designer"
 
+[$RootKey$\Editors\{04b8ab82-a572-4fef-95ce-5222444b6b64}\LogicalViews]
+"{7651a702-06e5-11d1-8ebd-00a0c90f26ea}"="Design"
+
 [$RootKey$\Editors\{6D2695F9-5365-4A78-89ED-F205C045BFE6}]
 "CommonPhysicalViewAttributes"=dword:00000003
 "DisplayName"="#1200"
