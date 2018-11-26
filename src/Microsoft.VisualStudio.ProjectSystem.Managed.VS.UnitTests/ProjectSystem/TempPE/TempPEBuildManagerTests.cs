@@ -1,12 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 using Microsoft.VisualStudio.ProjectSystem.VS.TempPE;
-using Microsoft.VisualStudio.Threading.Tasks;
 
 using Xunit;
 
@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.TempPE
     public class TempPEBuildManagerTests
     {
         [Fact]
-        public void Preprocess_NoDesignTimeInput_ReturnsEmptyCollections()
+        public async Task Preprocess_NoDesignTimeInput_ReturnsEmptyCollections()
         {
             // Initial state is an empty object
             var mgr = new TestTempPEBuildManager();
@@ -36,7 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.TempPE
         <Compile Include=""Form1.cs"" />
     </ItemGroup>
 </Project>");
-            var result = mgr.TestPreprocess(IProjectVersionedValueFactory.Create(Tuple.Create(snapshot, update)));
+            var result = await mgr.TestProcessAsync(IProjectVersionedValueFactory.Create(Tuple.Create(snapshot, update)));
 
             // Should have empty collections
             Assert.Empty(result.Inputs);
@@ -44,7 +44,39 @@ namespace Microsoft.VisualStudio.ProjectSystem.TempPE
         }
 
         [Fact]
-        public void Preprocess_OneDesignTimeInput_ReturnsOneInput()
+        public async Task Preprocess_SharedDesignTimeInput_ReturnsOneSharedInput()
+        {
+            // Initial state is an empty object
+            var mgr = new TestTempPEBuildManager();
+
+            // Apply our update
+            var update = IProjectSubscriptionUpdateFactory.FromJson(@"{
+   ""ProjectChanges"": {
+        ""Compile"": {
+            ""Difference"": { 
+                ""AnyChanges"": true,
+                ""AddedItems"" : [ ""Settings.Designer.cs"" ]
+            }
+        }
+    }
+}");
+            var snapshot = IProjectSnapshotFactory.FromProjectXml(@"<Project>
+    <ItemGroup>
+        <Compile Include=""Settings.Designer.cs"">
+            <DesignTimeSharedInput>true</DesignTimeSharedInput>
+        </Compile>
+    </ItemGroup>
+</Project>");
+            var result = await mgr.TestProcessAsync(IProjectVersionedValueFactory.Create(Tuple.Create(snapshot, update)));
+
+            // Should have empty collections
+            Assert.Empty(result.Inputs);
+            Assert.Single(result.SharedInputs);
+            Assert.Equal("Settings.Designer.cs", result.SharedInputs.First());
+        }
+
+        [Fact]
+        public async Task Preprocess_OneDesignTimeInput_ReturnsOneInput()
         {
             // Initial state is an empty object
             var mgr = new TestTempPEBuildManager();
@@ -71,7 +103,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.TempPE
         </Compile>
     </ItemGroup>
 </Project>");
-            var result = mgr.TestPreprocess(IProjectVersionedValueFactory.Create(Tuple.Create(snapshot, update)));
+            var result = await mgr.TestProcessAsync(IProjectVersionedValueFactory.Create(Tuple.Create(snapshot, update)));
 
             // One file should have been added
             Assert.Single(result.Inputs);
@@ -79,13 +111,55 @@ namespace Microsoft.VisualStudio.ProjectSystem.TempPE
             Assert.Equal("Resources1.Designer.cs", result.Inputs.First().Key);
         }
 
+
         [Fact]
-        public void Preprocess_AddDesignTimeInput_ReturnsCorrectInputs()
+        public async Task Preprocess_OneDesignTimeInputAndOneShared_ReturnsOneInputEach()
+        {
+            // Initial state is an empty object
+            var mgr = new TestTempPEBuildManager();
+
+            // Apply our update
+            var update = IProjectSubscriptionUpdateFactory.FromJson(@"{
+   ""ProjectChanges"": {
+        ""Compile"": {
+            ""Difference"": { 
+                ""AnyChanges"": true,
+                ""AddedItems"" : [
+                                    ""Form1.cs"",
+                                    ""Resources1.Designer.cs"",
+                                    ""Settings.Designer.cs""
+                                 ]
+            }
+        }
+    }
+}");
+            var snapshot = IProjectSnapshotFactory.FromProjectXml(@"<Project>
+    <ItemGroup>
+        <Compile Include=""Form1.cs"" />
+        <Compile Include=""Resources1.Designer.cs"">
+            <DesignTime>true</DesignTime>
+        </Compile>
+        <Compile Include=""Settings.Designer.cs"">
+            <DesignTimeSharedInput>true</DesignTimeSharedInput>
+        </Compile>
+    </ItemGroup>
+</Project>");
+            var result = await mgr.TestProcessAsync(IProjectVersionedValueFactory.Create(Tuple.Create(snapshot, update)));
+
+            // One file should have been added
+            Assert.Single(result.Inputs);
+            Assert.Single(result.SharedInputs);
+            Assert.Equal("Resources1.Designer.cs", result.Inputs.First().Key);
+            Assert.Equal("Settings.Designer.cs", result.SharedInputs.First());
+        }
+
+        [Fact]
+        public async Task Preprocess_AddDesignTimeInput_ReturnsCorrectInputs()
         {
             // Initial state is a single design time input called Resources1.Designer.cs
             var baseDirectory = Directory.GetCurrentDirectory();
             var mgr = new TestTempPEBuildManager();
-            mgr.SetInputs(baseDirectory, new[] { "Resources1.Designer.cs" }, null);
+            await mgr.SetInputs(baseDirectory, new[] { "Resources1.Designer.cs" }, null);
 
             // Apply our update
             var update = IProjectSubscriptionUpdateFactory.FromJson(@"{
@@ -109,7 +183,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.TempPE
         </Compile>
     </ItemGroup>
 </Project>");
-            var result = mgr.TestPreprocess(IProjectVersionedValueFactory.Create(Tuple.Create(projectState, update)));
+            var result = await mgr.TestProcessAsync(IProjectVersionedValueFactory.Create(Tuple.Create(projectState, update)));
 
             // Should be two design time files now
             Assert.Equal(2, result.Inputs.Count);
@@ -119,12 +193,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.TempPE
         }
 
         [Fact]
-        public void Preprocess_RemoveDesignTimeInput_ReturnsCorrectInput()
+        public async Task Preprocess_RemoveDesignTimeInput_ReturnsCorrectInput()
         {
             // Initial state is two design time inputs
             var baseDirectory = Directory.GetCurrentDirectory();
             var mgr = new TestTempPEBuildManager();
-            mgr.SetInputs(baseDirectory,
+            await mgr.SetInputs(baseDirectory,
                           new[] {
                                     "Resources1.Designer.cs",
                                     "Resources2.Designer.cs"
@@ -150,7 +224,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.TempPE
         </Compile>
     </ItemGroup>
 </Project>");
-            var result = mgr.TestPreprocess(IProjectVersionedValueFactory.Create(Tuple.Create(projectState, update)));
+            var result = await mgr.TestProcessAsync(IProjectVersionedValueFactory.Create(Tuple.Create(projectState, update)));
 
             // One file should have been removed
             Assert.Single(result.Inputs);
@@ -160,28 +234,42 @@ namespace Microsoft.VisualStudio.ProjectSystem.TempPE
 
         internal class TestTempPEBuildManager : TempPEBuildManager
         {
+            private bool _initialized;
+
             public TestTempPEBuildManager()
                 : base(IProjectThreadingServiceFactory.Create(), IUnconfiguredProjectCommonServicesFactory.Create(), ILanguageServiceHostFactory.Create())
             {
             }
-
-            public DesignTimeInputs TestPreprocess(IProjectVersionedValue<Tuple<IProjectSnapshot, IProjectSubscriptionUpdate>> input)
+            private async Task InitializeAsync()
             {
-                var result = base.PreprocessAsync(input, null).Result;
-                // apply the result in case the test does chained calls to simulate real updates
-                base.ApplyAsync(result);
-                return result;
+                if (!_initialized)
+                {
+                    // Set up the default applied value
+                    await InitializeInnerCoreAsync(CancellationToken.None);
+                    _initialized = true;
+                }
             }
 
-            public void SetInputs(string baseDirectory, string[] designTimeInputs, string[] sharedDesignTimeInputs)
+            public async Task<DesignTimeInputsItem> TestProcessAsync(IProjectVersionedValue<Tuple<IProjectSnapshot, IProjectSubscriptionUpdate>> input)
             {
+                await InitializeAsync();
+
+                var result = await base.PreprocessAsync(input, null);
+                await base.ApplyAsync(result);
+                return AppliedValue.Value;
+            }
+
+
+            public async Task SetInputs(string baseDirectory, string[] designTimeInputs, string[] sharedDesignTimeInputs)
+            {
+                await InitializeAsync();
+
                 designTimeInputs = designTimeInputs ?? Array.Empty<string>();
                 sharedDesignTimeInputs = sharedDesignTimeInputs ?? Array.Empty<string>();
-                ApplyAsync(new DesignTimeInputs
+                await base.ApplyAsync(new DesignTimeInputsDelta
                 {
-                    Inputs = ImmutableDictionary.CreateRange<string, (string, CancellationSeries)>(StringComparers.Paths, designTimeInputs.Select(i => new KeyValuePair<string, (string, CancellationSeries)>(i, (Path.Combine(baseDirectory, i), new CancellationSeries())))),
-                    SharedInputs = ImmutableDictionary.CreateRange<string, (string, CancellationSeries)>(StringComparers.Paths, sharedDesignTimeInputs.Select(i => new KeyValuePair<string, (string, CancellationSeries)>(i, (Path.Combine(baseDirectory, i), new CancellationSeries())))),
-                    DataSourceVersions = ImmutableDictionary<NamedIdentity, IComparable>.Empty
+                    AddedItems = ImmutableList.CreateRange<string>(designTimeInputs),
+                    AddedSharedItems = ImmutableHashSet.CreateRange<string>(StringComparers.Paths, sharedDesignTimeInputs)
                 });
             }
         }

@@ -76,7 +76,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         {
             get
             {
-                return _tempPEManager.GetDesignTimeOutputFilenames();
+                return _unconfiguredProjectServices.ThreadingService.ExecuteSynchronously(_tempPEManager.GetDesignTimeOutputFilenamesAsync);
             }
         }
 
@@ -89,9 +89,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         {
             if (bstrOutputMoniker == null) return null;
 
-            return _unconfiguredProjectServices.ThreadingService.ExecuteSynchronously(async () =>
+            return _unconfiguredProjectServices.ThreadingService.ExecuteSynchronously(() =>
             {
-                return await _tempPEManager.GetTempPEBlobAsync(bstrOutputMoniker);
+                return _tempPEManager.GetTempPEBlobAsync(bstrOutputMoniker);
             });
         }
 

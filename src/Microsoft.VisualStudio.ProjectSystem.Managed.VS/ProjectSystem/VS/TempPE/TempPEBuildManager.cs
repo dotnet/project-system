@@ -12,19 +12,16 @@ using System.Threading.Tasks.Dataflow;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 using Microsoft.VisualStudio.Threading.Tasks;
 
+using InputTuple = System.Tuple<Microsoft.VisualStudio.ProjectSystem.IProjectSnapshot, Microsoft.VisualStudio.ProjectSystem.IProjectSubscriptionUpdate>;
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 {
     [Export(typeof(ITempPEBuildManager))]
-    internal class TempPEBuildManager : UnconfiguredProjectHostBridge<
-            /*  Input: */ IProjectVersionedValue<Tuple<IProjectSnapshot, IProjectSubscriptionUpdate>>,  //The snapshot that gets processed for later publishing to the UI thread
-                                                                                                        /* Output: */ DesignTimeInputs,                                                             //The data that is used to apply changes to the UI thread
-                                                                                                                                                                                                    /* Appled: */ IProjectVersionedValue<DesignTimeInputs>                                      //The snapshot that gets published to the UI thread.  This type should be immutable
-        >, ITempPEBuildManager, IDisposable
+    internal class TempPEBuildManager : UnconfiguredProjectHostBridge<IProjectVersionedValue<InputTuple>, DesignTimeInputsDelta, IProjectVersionedValue<DesignTimeInputsItem>>, ITempPEBuildManager, IDisposable
     {
         private readonly IUnconfiguredProjectCommonServices _unconfiguredProjectServices;
         private readonly ILanguageServiceHost _languageServiceHost;
         //private readonly ITempPECompiler _compiler;
-        private readonly CancellationSeries _cancellationSeries;
 
         [ImportingConstructor]
         public TempPEBuildManager(IProjectThreadingService threadingService,
@@ -37,13 +34,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             _unconfiguredProjectServices = unconfiguredProjectServices;
             _languageServiceHost = languageServiceHost;
             //_compiler = compiler;
-
-            _cancellationSeries = new CancellationSeries();
         }
 
         protected override Task DisposeCoreAsync(bool initialized)
         {
-            _cancellationSeries.Dispose();
+            if (AppliedValue != null)
+            {
+                // dispose any of our cancellation series we still have
+                foreach (var item in AppliedValue.Value.Inputs.Values)
+                {
+                    item?.Dispose();
+                }
+            }
 
             return base.DisposeCoreAsync(initialized);
         }
@@ -61,39 +63,44 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             return InitializeAsync();
         }
 
-        public string[] GetDesignTimeOutputFilenames()
+        public async Task<string[]> GetDesignTimeOutputFilenamesAsync()
         {
-            return AppliedValue?.Value.Inputs.Keys.ToArray();
+            var property = await _unconfiguredProjectServices.ActiveConfiguredProjectProperties.GetConfiguredBrowseObjectPropertiesAsync();
+            var basePath = await property.FullPath.GetValueAsPathAsync(false, false);
+            return AppliedValue.Value.Inputs.Keys.Select(i => Path.Combine(basePath, i)).ToArray();
         }
 
         public async Task<string> GetTempPEBlobAsync(string fileName)
         {
-            if (AppliedValue == null || !AppliedValue.Value.SharedInputs.TryGetValue(fileName, out var series))
+            var inputs = AppliedValue.Value;
+            if (fileName == null || inputs.Inputs.TryGetValue(fileName, out var cancellation))
             {
-                return null; // TODO: Is this right? Do we want an empty string? Or should it return the last good XML?
+                return null;
             }
 
-            var token = series.Item2.CreateNext();
+            // getting the next token will automatically cancel any current compilation that is already happening for this file
+            var token = cancellation.CreateNext();
 
             await _unconfiguredProjectServices.ThreadingService.SwitchToUIThread(token);
 
             token.ThrowIfCancellationRequested();
 
-            var files = new HashSet<string>(AppliedValue?.Value.SharedInputs.Keys, StringComparers.Paths);
-            files.Add(series.Item1);
-
             var property = await _unconfiguredProjectServices.ActiveConfiguredProjectProperties.GetConfiguredBrowseObjectPropertiesAsync();
-
-            var objPath = await property.IntermediatePath.GetValueAsPathAsync(false, false);
             var basePath = await property.FullPath.GetValueAsPathAsync(false, false);
-            var outputFileName = fileName + ".dll";
+            var objPath = await property.IntermediatePath.GetValueAsPathAsync(false, false);
             var outputPath = Path.Combine(basePath, objPath, "TempPE");
+
+            var files = new HashSet<string>(inputs.SharedInputs.Count + 1, StringComparers.Paths);
+            files.AddRange(inputs.SharedInputs.Select(i => Path.Combine(basePath, i)));
+            files.Add(Path.Combine(basePath, fileName));
+
+            var outputFileName = fileName + ".dll";
 
             // var result = await _compiler.CompileAsync(_languageServiceHost.ActiveProjectContext, Path.Combine(outputPath, outputFileName), files, token);
             //
             // if (!result)
             // {
-            //     return null; // TODO: Is this right? Do we want an empty string? Or should it return the last good XML?
+            //     return null;
             // }
 
             // VSTypeResolutionService is the only consumer, and it only uses the codebase element so just default most of them
@@ -109,21 +116,55 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 </root>";
         }
 
-        protected override Task ApplyAsync(DesignTimeInputs value)
+        protected override Task ApplyAsync(DesignTimeInputsDelta value)
         {
-            AppliedValue = new ProjectVersionedValue<DesignTimeInputs>(value, value.DataSourceVersions);
+            var applied = AppliedValue.Value;
+            var designTimeInputs = applied.Inputs.ToBuilder();
+            var designTimeSharedInputs = applied.SharedInputs.ToBuilder();
+
+            foreach (var item in value.AddedItems)
+            {
+                // TODO: Raise events
+
+                designTimeInputs.Add(item, new CancellationSeries());
+            }
+
+            foreach (var item in value.AddedSharedItems)
+            {
+                // TODO: Raise events (all TempPE are now dirty)
+
+                designTimeSharedInputs.Add(item);
+            }
+
+            foreach (var item in value.RemovedItems)
+            {
+                // TODO: Raise events
+
+                if (designTimeInputs.TryGetValue(item, out var series))
+                {
+                    series?.Dispose();
+                    designTimeInputs.Remove(item);
+                }
+                designTimeSharedInputs.Remove(item);
+            }
+
+            AppliedValue = new ProjectVersionedValue<DesignTimeInputsItem>(new DesignTimeInputsItem
+            {
+                Inputs = designTimeInputs.ToImmutable(),
+                SharedInputs = designTimeSharedInputs.ToImmutable(),
+            }, value.DataSourceVersions);
 
             return Task.CompletedTask;
         }
 
         protected override Task InitializeInnerCoreAsync(CancellationToken cancellationToken)
         {
-            AppliedValue = default;
+            AppliedValue = new ProjectVersionedValue<DesignTimeInputsItem>(new DesignTimeInputsItem(), ImmutableDictionary.Create<NamedIdentity, IComparable>());
 
             return Task.CompletedTask;
         }
 
-        protected override IDisposable LinkExternalInput(ITargetBlock<IProjectVersionedValue<Tuple<IProjectSnapshot, IProjectSubscriptionUpdate>>> targetBlock)
+        protected override IDisposable LinkExternalInput(ITargetBlock<IProjectVersionedValue<InputTuple>> targetBlock)
         {
             return ProjectDataSources.SyncLinkTo(
                 ProjectSubscriptionService.ProjectSource.SourceBlock.SyncLinkOptions(),
@@ -133,17 +174,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                 cancellationToken: ProjectAsynchronousTasksService.UnloadCancellationToken);
         }
 
-        protected override Task<DesignTimeInputs> PreprocessAsync(IProjectVersionedValue<Tuple<IProjectSnapshot, IProjectSubscriptionUpdate>> input, DesignTimeInputs previousOutput)
+        protected override Task<DesignTimeInputsDelta> PreprocessAsync(IProjectVersionedValue<InputTuple> input, DesignTimeInputsDelta previousOutput)
         {
             var project = input.Value.Item1.ProjectInstance;
             var changes = input.Value.Item2.ProjectChanges[Compile.SchemaName];
 
-            var designTimeInputs = AppliedValue?.Value.Inputs.ToBuilder() ?? ImmutableDictionary.CreateBuilder<string, (string, CancellationSeries)>(StringComparers.Paths);
-            var designTimeSharedInputs = AppliedValue?.Value.SharedInputs.ToBuilder() ?? ImmutableDictionary.CreateBuilder<string, (string, CancellationSeries)>(StringComparers.Paths);
+            var addedDesignTimeInputs = ImmutableList.CreateBuilder<string>();
+            var removedDesignTimeInputs = ImmutableList.CreateBuilder<string>();
+            var addedDesignTimeSharedInputs = AppliedValue.Value.SharedInputs.ToBuilder();
 
             foreach (var item in changes.Difference.AddedItems)
             {
-                var projItem = project.GetItemsByItemTypeAndEvaluatedInclude(Compile.SchemaName, item).First();
+                var projItem = project.GetItemsByItemTypeAndEvaluatedInclude(Compile.SchemaName, item).FirstOrDefault();
+                System.Diagnostics.Debug.Assert(projItem != null, "Couldn't find the project item for Compile with an evaluated include of " + item);
+
                 bool link = StringComparers.PropertyValues.Equals(projItem.GetMetadataValue(Compile.LinkProperty), bool.TrueString);
                 if (!link)
                 {
@@ -152,33 +196,29 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
                     if (designTime)
                     {
-                        designTimeInputs.Add(item, (projItem.GetMetadataValue(Compile.FullPathProperty), new CancellationSeries()));
+                        addedDesignTimeInputs.Add(item);
                     }
                     else if (designTimeShared)
                     {
-                        designTimeSharedInputs.Add(item, (projItem.GetMetadataValue(Compile.FullPathProperty), new CancellationSeries()));
+                        addedDesignTimeSharedInputs.Add(item);
                     }
                 }
             }
 
             foreach (var item in changes.Difference.RemovedItems)
             {
-                if (designTimeInputs.TryGetValue(item, out var series))
-                {
-                    series.Item2?.Dispose();
-                    designTimeInputs.Remove(item);
-                }
-                if (designTimeSharedInputs.TryGetValue(item, out var series2))
-                {
-                    series2.Item2?.Dispose();
-                    designTimeSharedInputs.Remove(item);
-                }
+                // the RemovedItems doesn't give us any project info so we can't tell if an item was a design time input or not
+                // and we can't check in AppliedValue because there could be an unapplied value that adds an item
+                // so we have to just process the removed items in ApplyAsync and take advantage of the fact that its
+                // quick to remove from dictionaries if the item doesn't exist
+                removedDesignTimeInputs.Add(item);
             }
 
-            var result = new DesignTimeInputs
+            var result = new DesignTimeInputsDelta
             {
-                Inputs = designTimeInputs.ToImmutable(),
-                SharedInputs = designTimeSharedInputs.ToImmutable(),
+                AddedItems = addedDesignTimeInputs.ToImmutable(),
+                RemovedItems = removedDesignTimeInputs.ToImmutable(),
+                AddedSharedItems = addedDesignTimeSharedInputs.ToImmutable(),
                 DataSourceVersions = input.DataSourceVersions
             };
 
@@ -186,12 +226,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         }
     }
 
-    internal class DesignTimeInputs
+    internal class DesignTimeInputsItem
     {
-        public ImmutableDictionary<string, (string, CancellationSeries)> Inputs { get; set; }
+        public ImmutableDictionary<string, CancellationSeries> Inputs { get; set; } = ImmutableDictionary.Create<string, CancellationSeries>(StringComparers.Paths);
+        public ImmutableHashSet<string> SharedInputs { get; set; } = ImmutableHashSet.Create(StringComparers.Paths);
+    }
 
-        public ImmutableDictionary<string, (string, CancellationSeries)> SharedInputs { get; set; }
-
-        public IImmutableDictionary<NamedIdentity, IComparable> DataSourceVersions { get; set; }
+    internal class DesignTimeInputsDelta
+    {
+        public ImmutableHashSet<string> AddedSharedItems { get; set; } = ImmutableHashSet.Create(StringComparers.Paths);
+        public ImmutableList<string> AddedItems { get; set; } = ImmutableList.Create<string>();
+        public ImmutableList<string> RemovedItems { get; set; } = ImmutableList.Create<string>();
+        public IImmutableDictionary<NamedIdentity, IComparable> DataSourceVersions { get; set; } = ImmutableSortedDictionary.Create<NamedIdentity, IComparable>();
     }
 }

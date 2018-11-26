@@ -6,7 +6,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 {
     internal interface ITempPEBuildManager
     {
-        string[] GetDesignTimeOutputFilenames();
+        Task<string[]> GetDesignTimeOutputFilenamesAsync();
         Task<string> GetTempPEBlobAsync(string bstrOutputMoniker);
     }
 }
