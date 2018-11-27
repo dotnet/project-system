@@ -411,9 +411,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             return ExecuteWithinLockAsync(() => _currentAggregateProjectContext.GetInnerConfiguredProject(target));
         }
 
-        private async Task AddInitialSubscriptionsAsync()
+        private Task AddInitialSubscriptionsAsync()
         {
-            await _tasksService.LoadedProjectAsync(() =>
+            JoinableTask joinableTask = _tasksService.LoadedProjectAsync(() =>
             {
                 SubscribeToConfiguredProject(
                     _activeConfiguredProjectSubscriptionService,
@@ -426,6 +426,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
                 return Task.CompletedTask;
             });
+
+            return joinableTask.Task;
         }
 
         private async Task OnProjectChangedAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e)
