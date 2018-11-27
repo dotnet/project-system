@@ -82,7 +82,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.TempPE
         [Fact]
         public async Task Preprocess_AddSharedDesignTimeInput_DirtiesAllPEs()
         {
-            // Initial state is an empty object
+            // Initial state is two design time inputs
             var mgr = new TestTempPEBuildManager();
 
             await mgr.SetInputs(new[] {
@@ -153,8 +153,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.TempPE
 
             // One file should have been added
             Assert.Single(result.Inputs);
-            Assert.Empty(result.SharedInputs);
             Assert.Equal("Resources1.Designer.cs", result.Inputs.First().Key);
+            Assert.Empty(result.SharedInputs);
             Assert.Single(mgr.DirtyItems);
             Assert.Equal("Resources1.Designer.cs", mgr.DirtyItems.First());
             Assert.Empty(mgr.DeletedItems);
@@ -164,7 +164,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.TempPE
         [Fact]
         public async Task Preprocess_RenamedDesignTimeInput_ReturnsOneInput()
         {
-            // Initial state is an empty object
+            // Initial state is a single design time input
             var mgr = new TestTempPEBuildManager();
 
             await mgr.SetInputs(new[] { "Resources1.Designer.cs" }, null);
@@ -193,8 +193,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.TempPE
 
             // One file should have been added
             Assert.Single(result.Inputs);
-            Assert.Empty(result.SharedInputs);
             Assert.Equal("Resources3.Designer.cs", result.Inputs.First().Key);
+            Assert.Empty(result.SharedInputs);
             Assert.Single(mgr.DirtyItems);
             Assert.Equal("Resources3.Designer.cs", mgr.DirtyItems.First());
             Assert.Single(mgr.DeletedItems);
@@ -231,8 +231,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.TempPE
 
             // One file should have been added
             Assert.Single(result.Inputs);
-            Assert.Empty(result.SharedInputs);
             Assert.Equal("Resources1.Designer.cs", result.Inputs.First().Key);
+            Assert.Empty(result.SharedInputs);
             Assert.Single(mgr.DirtyItems);
             Assert.Equal("Resources1.Designer.cs", mgr.DirtyItems.First());
             Assert.Empty(mgr.DeletedItems);
@@ -241,7 +241,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.TempPE
         [Fact]
         public async Task Preprocess_DesignInputChangedToFalse_ReturnsOneInput()
         {
-            // Initial state is an empty object
+            // Initial state is a single design time input
             var mgr = new TestTempPEBuildManager();
 
             await mgr.SetInputs(new[] { "Resources1.Designer.cs" }, null);
@@ -277,7 +277,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.TempPE
         [Fact]
         public async Task Preprocess_InputPropertyChanged_ReturnsOneInput()
         {
-            // Initial state is an empty object
+            // Initial state is a single design time input
             var mgr = new TestTempPEBuildManager();
 
             await mgr.SetInputs(new[] { "Resources1.Designer.cs" }, null);
@@ -307,8 +307,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.TempPE
 
             // One file should have been added
             Assert.Single(result.Inputs);
-            Assert.Empty(result.SharedInputs);
             Assert.Equal("Resources1.Designer.cs", result.Inputs.First().Key);
+            Assert.Empty(result.SharedInputs);
             Assert.Empty(mgr.DirtyItems);
             Assert.Empty(mgr.DeletedItems);
         }
@@ -384,8 +384,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.TempPE
 
             // One file should have been added
             Assert.Single(result.Inputs);
-            Assert.Single(result.SharedInputs);
             Assert.Equal("Resources1.Designer.cs", result.Inputs.First().Key);
+            Assert.Single(result.SharedInputs);
             Assert.Equal("Settings.Designer.cs", result.SharedInputs.First());
             Assert.Single(mgr.DirtyItems);
             Assert.Equal("Resources1.Designer.cs", mgr.DirtyItems.First());
@@ -395,8 +395,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.TempPE
         [Fact]
         public async Task Preprocess_AddDesignTimeInput_ReturnsCorrectInputs()
         {
-            // Initial state is a single design time input called Resources1.Designer.cs
+            // Initial state is a single design time input
             var mgr = new TestTempPEBuildManager();
+
             await mgr.SetInputs(new[] { "Resources1.Designer.cs" }, null);
 
             // Apply our update
@@ -425,9 +426,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.TempPE
 
             // Should be two design time files now
             Assert.Equal(2, result.Inputs.Count);
-            Assert.Empty(result.SharedInputs);
             Assert.Contains("Resources1.Designer.cs", result.Inputs.Keys);
             Assert.Contains("Resources2.Designer.cs", result.Inputs.Keys);
+            Assert.Empty(result.SharedInputs);
             Assert.Single(mgr.DirtyItems);
             Assert.Equal("Resources2.Designer.cs", mgr.DirtyItems.First());
             Assert.Empty(mgr.DeletedItems);
@@ -466,8 +467,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.TempPE
 
             // One file should have been removed
             Assert.Single(result.Inputs);
-            Assert.Empty(result.SharedInputs);
             Assert.Equal("Resources1.Designer.cs", result.Inputs.First().Key);
+            Assert.Empty(result.SharedInputs);
             Assert.Empty(mgr.DirtyItems);
             Assert.Single(mgr.DeletedItems);
             Assert.Equal("Resources2.Designer.cs", mgr.DeletedItems.First());
