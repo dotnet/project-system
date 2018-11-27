@@ -56,7 +56,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
         /// <returns>The string value if found and non-empty, otherwise <see langword="null"/>.</returns>
         public static string GetStringProperty(this IImmutableDictionary<string, string> properties, string key)
         {
-            return properties.TryGetStringProperty(key, out string value) ? value : null;
+            return properties.TryGetStringProperty(key, out string value) && !string.IsNullOrEmpty(value) ? value : null;
         }
 
         /// <summary>
@@ -86,7 +86,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
         /// <returns>The boolean value if found and successfully parsed as a boolean, otherwise <see langword="null"/>.</returns>
         public static bool? GetBoolProperty(this IImmutableDictionary<string, string> properties, string key)
         {
-            return properties.TryGetBoolProperty(key, out bool value) ? value : default;
+            return properties.TryGetBoolProperty(key, out bool value) ? value : default(bool?);
         }
 
         /// <summary>
@@ -118,7 +118,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
         /// <typeparam name="T">The enum type.</typeparam>
         public static T? GetEnumProperty<T>(this IImmutableDictionary<string, string> properties, string key) where T : struct, Enum
         {
-            return properties.TryGetEnumProperty(key, out T value) ? value : default;
+            return properties.TryGetEnumProperty(key, out T value) ? value : default(T?);
         }
     }
 }
