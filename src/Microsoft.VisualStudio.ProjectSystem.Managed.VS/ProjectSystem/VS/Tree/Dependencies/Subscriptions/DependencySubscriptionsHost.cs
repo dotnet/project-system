@@ -167,7 +167,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         /// "InvalidOperationException: The value factory has called for the value on the same instance".
         /// https://dev.azure.com/devdiv/DevDiv/_workitems/edit/375276
         /// </summary>
-        private async Task EnsureInitialized()
+        private async Task EnsureInitializedAsync()
         {
             if (Interlocked.Exchange(ref _isInitialized, 1) == 0)
             {
@@ -401,7 +401,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 return null;
             }
 
-            await EnsureInitialized();
+            await EnsureInitializedAsync();
 
             return await ExecuteWithinLockAsync(() => _currentAggregateProjectContext);
         }
@@ -435,7 +435,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 return;
             }
 
-            await EnsureInitialized();
+            await EnsureInitializedAsync();
 
             await OnProjectChangedCoreAsync(e);
         }
