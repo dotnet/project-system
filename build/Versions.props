@@ -5,6 +5,7 @@
     <VersionBase Condition="'$(UseVisualStudioVersion)' == 'true'">$(VisualStudioVersion)</VersionBase>
     <VersionBase Condition="'$(UseVisualStudioVersion)' != 'true'">$(ProjectSystemVersion)</VersionBase>
     <PreReleaseVersionLabel>beta1</PreReleaseVersionLabel>
+    <SuppressNETCoreSdkPreviewMessage>true</SuppressNETCoreSdkPreviewMessage>
 
     <!-- Opt-in repo features -->
     <UsingToolVSSDK>true</UsingToolVSSDK>
