@@ -162,6 +162,193 @@ namespace Microsoft.VisualStudio.ProjectSystem.TempPE
 
 
         [Fact]
+        public async Task Preprocess_RenamedDesignTimeInput_ReturnsOneInput()
+        {
+            // Initial state is an empty object
+            var mgr = new TestTempPEBuildManager();
+
+            await mgr.SetInputs(new[] { "Resources1.Designer.cs" }, null);
+
+            // Apply our update
+            var update = IProjectSubscriptionUpdateFactory.FromJson(@"{
+   ""ProjectChanges"": {
+        ""Compile"": {
+            ""Difference"": { 
+                ""AnyChanges"": true,
+                ""RenamedItems"" : {
+                    ""Resources1.Designer.cs"": ""Resources3.Designer.cs"" 
+                }
+            }
+        }
+    }
+}");
+            var snapshot = IProjectSnapshotFactory.FromProjectXml(@"<Project>
+    <ItemGroup>
+        <Compile Include=""Resources3.Designer.cs"">
+            <DesignTime>true</DesignTime>
+        </Compile>
+    </ItemGroup>
+</Project>");
+            var result = await mgr.TestProcessAsync(snapshot, update);
+
+            // One file should have been added
+            Assert.Single(result.Inputs);
+            Assert.Empty(result.SharedInputs);
+            Assert.Equal("Resources3.Designer.cs", result.Inputs.First().Key);
+            Assert.Single(mgr.DirtyItems);
+            Assert.Equal("Resources3.Designer.cs", mgr.DirtyItems.First());
+            Assert.Single(mgr.DeletedItems);
+            Assert.Equal("Resources1.Designer.cs", mgr.DeletedItems.First());
+        }
+
+        [Fact]
+        public async Task Preprocess_DesignInputChangedToTrue_ReturnsOneInput()
+        {
+            // Initial state is an empty object
+            var mgr = new TestTempPEBuildManager();
+
+            // Apply our update
+            var update = IProjectSubscriptionUpdateFactory.FromJson(@"{
+   ""ProjectChanges"": {
+        ""Compile"": {
+            ""Difference"": { 
+                ""AnyChanges"": true,
+                ""ChangedItems"" : [
+                                    ""Resources1.Designer.cs""
+                                   ]
+            }
+        }
+    }
+}");
+            var snapshot = IProjectSnapshotFactory.FromProjectXml(@"<Project>
+    <ItemGroup>
+        <Compile Include=""Resources1.Designer.cs"">
+            <DesignTime>true</DesignTime>
+        </Compile>
+    </ItemGroup>
+</Project>");
+            var result = await mgr.TestProcessAsync(snapshot, update);
+
+            // One file should have been added
+            Assert.Single(result.Inputs);
+            Assert.Empty(result.SharedInputs);
+            Assert.Equal("Resources1.Designer.cs", result.Inputs.First().Key);
+            Assert.Single(mgr.DirtyItems);
+            Assert.Equal("Resources1.Designer.cs", mgr.DirtyItems.First());
+            Assert.Empty(mgr.DeletedItems);
+        }
+
+        [Fact]
+        public async Task Preprocess_DesignInputChangedToFalse_ReturnsOneInput()
+        {
+            // Initial state is an empty object
+            var mgr = new TestTempPEBuildManager();
+
+            await mgr.SetInputs(new[] { "Resources1.Designer.cs" }, null);
+
+            // Apply our update
+            var update = IProjectSubscriptionUpdateFactory.FromJson(@"{
+   ""ProjectChanges"": {
+        ""Compile"": {
+            ""Difference"": { 
+                ""AnyChanges"": true,
+                ""ChangedItems"" : [
+                                    ""Resources1.Designer.cs""
+                                   ]
+            }
+        }
+    }
+}");
+            var snapshot = IProjectSnapshotFactory.FromProjectXml(@"<Project>
+    <ItemGroup>
+        <Compile Include=""Resources1.Designer.cs"" />
+    </ItemGroup>
+</Project>");
+            var result = await mgr.TestProcessAsync(snapshot, update);
+
+            // One file should have been added
+            Assert.Empty(result.Inputs);
+            Assert.Empty(result.SharedInputs);
+            Assert.Empty(mgr.DirtyItems);
+            Assert.Single(mgr.DeletedItems);
+            Assert.Equal("Resources1.Designer.cs", mgr.DeletedItems.First());
+        }
+
+        [Fact]
+        public async Task Preprocess_InputPropertyChanged_ReturnsOneInput()
+        {
+            // Initial state is an empty object
+            var mgr = new TestTempPEBuildManager();
+
+            await mgr.SetInputs(new[] { "Resources1.Designer.cs" }, null);
+
+            // Apply our update
+            var update = IProjectSubscriptionUpdateFactory.FromJson(@"{
+   ""ProjectChanges"": {
+        ""Compile"": {
+            ""Difference"": { 
+                ""AnyChanges"": true,
+                ""ChangedItems"" : [
+                                    ""Resources1.Designer.cs""
+                                   ]
+            }
+        }
+    }
+}");
+            // the TempPEManager doesn't actually know about what property changed, so we don't even need to include it the snapshot
+            var snapshot = IProjectSnapshotFactory.FromProjectXml(@"<Project>
+    <ItemGroup>
+        <Compile Include=""Resources1.Designer.cs"">
+            <DesignTime>true</DesignTime>
+        </Compile>
+    </ItemGroup>
+</Project>");
+            var result = await mgr.TestProcessAsync(snapshot, update);
+
+            // One file should have been added
+            Assert.Single(result.Inputs);
+            Assert.Empty(result.SharedInputs);
+            Assert.Equal("Resources1.Designer.cs", result.Inputs.First().Key);
+            Assert.Empty(mgr.DirtyItems);
+            Assert.Empty(mgr.DeletedItems);
+        }
+
+
+        [Fact]
+        public async Task Preprocess_NonInputPropertyChanged_ReturnsEmptyCollections()
+        {
+            // Initial state is an empty object
+            var mgr = new TestTempPEBuildManager();
+
+            // Apply our update
+            var update = IProjectSubscriptionUpdateFactory.FromJson(@"{
+   ""ProjectChanges"": {
+        ""Compile"": {
+            ""Difference"": { 
+                ""AnyChanges"": true,
+                ""ChangedItems"" : [
+                                    ""Form1.cs""
+                                   ]
+            }
+        }
+    }
+}");
+            // the TempPEManager doesn't actually know about what property changed, so we don't even need to include it the snapshot
+            var snapshot = IProjectSnapshotFactory.FromProjectXml(@"<Project>
+    <ItemGroup>
+        <Compile Include=""Form1.cs"" />
+    </ItemGroup>
+</Project>");
+            var result = await mgr.TestProcessAsync(snapshot, update);
+
+            // One file should have been added
+            Assert.Empty(result.Inputs);
+            Assert.Empty(result.SharedInputs);
+            Assert.Empty(mgr.DirtyItems);
+            Assert.Empty(mgr.DeletedItems);
+        }
+
+        [Fact]
         public async Task Preprocess_OneDesignTimeInputAndOneShared_ReturnsOneInputEach()
         {
             // Initial state is an empty object
