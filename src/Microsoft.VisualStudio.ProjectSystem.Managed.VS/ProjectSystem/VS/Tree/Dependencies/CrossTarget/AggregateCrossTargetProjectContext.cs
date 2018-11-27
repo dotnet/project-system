@@ -6,9 +6,6 @@ using System.Linq;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 {
-    /// <summary>
-    ///     Creates and handles releasing data for a given cross targeting project.
-    /// </summary>
     internal sealed class AggregateCrossTargetProjectContext
     {
         private readonly ImmutableDictionary<string, ConfiguredProject> _configuredProjectsByTargetFramework;
