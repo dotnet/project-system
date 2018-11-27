@@ -192,6 +192,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     {
                         dependenciesItemSpecs.Add($"{Target}/{dependencyId}");
                     }
+
+                    return dependenciesItemSpecs;
                 }
 
                 return Array.Empty<string>();
