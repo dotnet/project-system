@@ -28,12 +28,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         /// </summary>
         [ImportingConstructor]
         internal VSBuildManager(IUnconfiguredProjectCommonServices unconfiguredProjectServices,
-            ITempPEBuildManager tempPEManager
-            )
+            ITempPEBuildManager tempPEManager)
         {
             AddEventSource(this as IEventSource<_dispBuildManagerEvents>);
             _unconfiguredProjectServices = unconfiguredProjectServices;
             _tempPEManager = tempPEManager;
+
             Project = new OrderPrecedenceImportCollection<VSLangProj.VSProject>(projectCapabilityCheckProvider: _unconfiguredProjectServices.Project);
         }
 
@@ -116,7 +116,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         /// <summary>
         /// Occurs when a design time output moniker is deleted.
         /// </summary>
-        protected void OnDesignTimeOutputDeleted(string outputMoniker)
+        internal virtual void OnDesignTimeOutputDeleted(string outputMoniker)
         {
             DesignTimeOutputDeleted?.Invoke(outputMoniker);
         }
@@ -124,7 +124,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         /// <summary>
         /// Occurs when a design time output moniker is dirty.
         /// </summary>
-        protected void OnDesignTimeOutputDirty(string outputMoniker)
+        internal virtual void OnDesignTimeOutputDirty(string outputMoniker)
         {
             DesignTimeOutputDirty?.Invoke(outputMoniker);
         }

@@ -10,8 +10,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
+using Microsoft.VisualStudio.ProjectSystem.VS.Automation;
 using Microsoft.VisualStudio.Threading.Tasks;
-
+using VSLangProj;
 using InputTuple = System.Tuple<Microsoft.VisualStudio.ProjectSystem.IProjectSnapshot, Microsoft.VisualStudio.ProjectSystem.IProjectSubscriptionUpdate>;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
@@ -34,7 +35,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             _unconfiguredProjectServices = unconfiguredProjectServices;
             _languageServiceHost = languageServiceHost;
             //_compiler = compiler;
+            BuildManager = new OrderPrecedenceImportCollection<BuildManager>(projectCapabilityCheckProvider: _unconfiguredProjectServices.Project);
         }
+
+        [ImportMany(typeof(BuildManager))]
+        internal OrderPrecedenceImportCollection<BuildManager> BuildManager { get; set; }
 
         protected override Task DisposeCoreAsync(bool initialized)
         {
@@ -124,26 +129,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
             foreach (var item in value.AddedItems)
             {
-                // TODO: Raise events
-
                 designTimeInputs.Add(item, new CancellationSeries());
             }
 
             foreach (var item in value.AddedSharedItems)
             {
-                // TODO: Raise events (all TempPE are now dirty)
-
                 designTimeSharedInputs.Add(item);
             }
 
+            var removedDesignTimeInputs = new List<string>();
             foreach (var item in value.RemovedItems)
             {
-                // TODO: Raise events
-
                 if (designTimeInputs.TryGetValue(item, out var series))
                 {
                     series?.Dispose();
                     designTimeInputs.Remove(item);
+                    removedDesignTimeInputs.Add(item);
                 }
                 designTimeSharedInputs.Remove(item);
             }
@@ -153,6 +154,29 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                 Inputs = designTimeInputs.ToImmutable(),
                 SharedInputs = designTimeSharedInputs.ToImmutable(),
             }, value.DataSourceVersions);
+
+            // Fire off the events
+            var buildManager = BuildManager.First().Value as VSBuildManager;
+            if (value.AddedSharedItems.Count > 0)
+            {
+                // if the shared items changed then all TempPEs are dirty, because shared items are included in all TempPEs
+                foreach (var item in designTimeInputs.Keys)
+                {
+                    buildManager.OnDesignTimeOutputDirty(item);
+                }
+            }
+            else
+            {
+                // otherwise just the ones that we've added are dirty
+                foreach (var item in value.AddedItems)
+                {
+                    buildManager.OnDesignTimeOutputDirty(item);
+                }
+            }
+            foreach (var item in removedDesignTimeInputs)
+            {
+                buildManager.OnDesignTimeOutputDeleted(item);
+            }
 
             return Task.CompletedTask;
         }
@@ -178,7 +202,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         {
             var project = input.Value.Item1.ProjectInstance;
             var changes = input.Value.Item2.ProjectChanges[Compile.SchemaName];
-
+            
             var addedDesignTimeInputs = ImmutableList.CreateBuilder<string>();
             var removedDesignTimeInputs = ImmutableList.CreateBuilder<string>();
             var addedDesignTimeSharedInputs = AppliedValue.Value.SharedInputs.ToBuilder();
