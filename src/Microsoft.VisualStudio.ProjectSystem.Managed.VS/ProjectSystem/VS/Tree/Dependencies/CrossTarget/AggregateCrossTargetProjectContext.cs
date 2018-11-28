@@ -6,79 +6,47 @@ using System.Linq;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 {
-    /// <summary>
-    ///     Creates and handles releasing a collection of <see cref="ITargetedProjectContext"/> instances for a given cross targeting project.
-    /// </summary>
     internal sealed class AggregateCrossTargetProjectContext
     {
-        private readonly ImmutableDictionary<ITargetFramework, ITargetedProjectContext> _configuredProjectContextsByTargetFramework;
         private readonly ImmutableDictionary<string, ConfiguredProject> _configuredProjectsByTargetFramework;
-        private readonly ITargetFramework _activeTargetFramework;
+        private readonly ITargetFrameworkProvider _targetFrameworkProvider;
+
+        public bool IsCrossTargeting { get; }
+        public ImmutableArray<ITargetFramework> TargetFrameworks { get; }
+        public ITargetFramework ActiveTargetFramework { get; }
 
         public AggregateCrossTargetProjectContext(
             bool isCrossTargeting,
-            ImmutableDictionary<ITargetFramework, ITargetedProjectContext> configuredProjectContextsByTargetFramework,
+            ImmutableArray<ITargetFramework> targetFrameworks,
             ImmutableDictionary<string, ConfiguredProject> configuredProjectsByTargetFramework,
             ITargetFramework activeTargetFramework,
             ITargetFrameworkProvider targetFrameworkProvider)
         {
-            Requires.NotNullOrEmpty(configuredProjectContextsByTargetFramework, nameof(configuredProjectContextsByTargetFramework));
+            Requires.Argument(!targetFrameworks.IsDefaultOrEmpty, nameof(targetFrameworks), "Must contain at least one item.");
             Requires.NotNullOrEmpty(configuredProjectsByTargetFramework, nameof(configuredProjectsByTargetFramework));
             Requires.NotNull(activeTargetFramework, nameof(activeTargetFramework));
-            Requires.Argument(configuredProjectContextsByTargetFramework.ContainsKey(activeTargetFramework),
-                              nameof(configuredProjectContextsByTargetFramework), "Missing ICrossTargetProjectContext for activeTargetFramework");
+            Requires.Argument(targetFrameworks.Contains(activeTargetFramework), nameof(targetFrameworks), "Must contain 'activeTargetFramework'.");
 
             IsCrossTargeting = isCrossTargeting;
-            _configuredProjectContextsByTargetFramework = configuredProjectContextsByTargetFramework;
+            TargetFrameworks = targetFrameworks;
             _configuredProjectsByTargetFramework = configuredProjectsByTargetFramework;
-            _activeTargetFramework = activeTargetFramework;
-            TargetFrameworkProvider = targetFrameworkProvider;
+            ActiveTargetFramework = activeTargetFramework;
+            _targetFrameworkProvider = targetFrameworkProvider;
         }
-
-        private ITargetFrameworkProvider TargetFrameworkProvider { get; }
-
-        public IEnumerable<ITargetedProjectContext> InnerProjectContexts => _configuredProjectContextsByTargetFramework.Values;
 
         public IEnumerable<ConfiguredProject> InnerConfiguredProjects => _configuredProjectsByTargetFramework.Values;
 
-        public ITargetedProjectContext ActiveProjectContext => _configuredProjectContextsByTargetFramework[_activeTargetFramework];
-
-        public bool IsCrossTargeting { get; }
-
-        public void SetProjectFilePathAndDisplayName(string projectFilePath, string displayName)
-        {
-            // Update the project file path and display name for all the inner project contexts.
-            foreach ((ITargetFramework targetFramework, ITargetedProjectContext innerProjectContext) in _configuredProjectContextsByTargetFramework)
-            {
-                // For cross targeting projects, we ensure that the display name is unique per every target framework.
-                innerProjectContext.DisplayName = IsCrossTargeting ? $"{displayName}({targetFramework})" : displayName;
-                innerProjectContext.ProjectFilePath = projectFilePath;
-            }
-        }
-
-        public ITargetedProjectContext GetInnerProjectContext(ProjectConfiguration projectConfiguration, out bool isActiveConfiguration)
+        public ITargetFramework GetProjectFramework(ProjectConfiguration projectConfiguration)
         {
             if (projectConfiguration.IsCrossTargeting())
             {
-                string targetFrameworkMoniker =
-                    projectConfiguration.Dimensions[ConfigurationGeneral.TargetFrameworkProperty];
-                ITargetFramework targetFramework = TargetFrameworkProvider.GetTargetFramework(targetFrameworkMoniker);
+                string targetFrameworkMoniker = projectConfiguration.Dimensions[ConfigurationGeneral.TargetFrameworkProperty];
 
-                isActiveConfiguration = _activeTargetFramework.Equals(targetFramework);
-
-                return _configuredProjectContextsByTargetFramework.TryGetValue(targetFramework, out ITargetedProjectContext projectContext)
-                    ? projectContext
-                    : null;
+                return _targetFrameworkProvider.GetTargetFramework(targetFrameworkMoniker);
             }
             else
             {
-                isActiveConfiguration = true;
-                if (_configuredProjectContextsByTargetFramework.Count > 1)
-                {
-                    return null;
-                }
-
-                return InnerProjectContexts.Single();
+                return TargetFrameworks.Length > 1 ? null : TargetFrameworks[0];
             }
         }
 
@@ -97,25 +65,29 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             Assumes.True(activeProjectConfiguration.IsCrossTargeting());
             Assumes.True(knownProjectConfigurations.All(c => c.IsCrossTargeting()));
 
-            ITargetFramework activeTargetFramework = TargetFrameworkProvider.GetTargetFramework(activeProjectConfiguration.Dimensions[ConfigurationGeneral.TargetFrameworkProperty]);
-            if (!_activeTargetFramework.Equals(activeTargetFramework))
+            ITargetFramework activeTargetFramework = _targetFrameworkProvider.GetTargetFramework(activeProjectConfiguration.Dimensions[ConfigurationGeneral.TargetFrameworkProperty]);
+            if (!ActiveTargetFramework.Equals(activeTargetFramework))
             {
                 // Active target framework is different.
                 return false;
             }
 
-            var targetFrameworks = knownProjectConfigurations.Select(
-                c => c.Dimensions[ConfigurationGeneral.TargetFrameworkProperty]).ToImmutableHashSet();
-            if (targetFrameworks.Count != _configuredProjectContextsByTargetFramework.Count)
+            var targetFrameworkMonikers = knownProjectConfigurations
+                .Select(c => c.Dimensions[ConfigurationGeneral.TargetFrameworkProperty])
+                .Distinct()
+                .ToList();
+
+            if (targetFrameworkMonikers.Count != TargetFrameworks.Length)
             {
                 // Different number of target frameworks.
                 return false;
             }
 
-            foreach (string targetFrameworkMoniker in targetFrameworks)
+            foreach (string targetFrameworkMoniker in targetFrameworkMonikers)
             {
-                ITargetFramework targetFramework = TargetFrameworkProvider.GetTargetFramework(targetFrameworkMoniker);
-                if (!_configuredProjectContextsByTargetFramework.ContainsKey(targetFramework))
+                ITargetFramework targetFramework = _targetFrameworkProvider.GetTargetFramework(targetFrameworkMoniker);
+
+                if (!TargetFrameworks.Contains(targetFramework))
                 {
                     // Differing TargetFramework
                     return false;

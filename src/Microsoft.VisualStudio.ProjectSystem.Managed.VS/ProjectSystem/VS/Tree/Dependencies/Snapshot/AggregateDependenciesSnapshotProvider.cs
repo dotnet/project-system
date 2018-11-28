@@ -1,9 +1,9 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using System.Linq;
 
 using Microsoft.VisualStudio.ProjectSystem.VS.Extensibility;
 
@@ -17,18 +17,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
     [AppliesTo(ProjectCapability.DependenciesTree)]
     internal class AggregateDependenciesSnapshotProvider : IAggregateDependenciesSnapshotProvider
     {
-        private readonly object _snapshotProvidersLock = new object();
+        private readonly Dictionary<string, IDependenciesSnapshotProvider> _snapshotProviders = new Dictionary<string, IDependenciesSnapshotProvider>(StringComparer.OrdinalIgnoreCase);
+        private readonly IProjectExportProvider _projectExportProvider;
 
         [ImportingConstructor]
         public AggregateDependenciesSnapshotProvider(IProjectExportProvider projectExportProvider)
         {
-            ProjectExportProvider = projectExportProvider;
+            _projectExportProvider = projectExportProvider;
         }
-
-        private IProjectExportProvider ProjectExportProvider { get; }
-
-        private ConcurrentDictionary<string, IDependenciesSnapshotProvider> SnapshotProviders { get; }
-            = new ConcurrentDictionary<string, IDependenciesSnapshotProvider>(StringComparer.OrdinalIgnoreCase);
 
         public event EventHandler<SnapshotChangedEventArgs> SnapshotChanged;
 
@@ -41,9 +37,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 return;
             }
 
-            lock (_snapshotProvidersLock)
+            lock (_snapshotProviders)
             {
-                SnapshotProviders[snapshotProvider.ProjectFilePath] = snapshotProvider;
+                _snapshotProviders[snapshotProvider.ProjectFilePath] = snapshotProvider;
                 snapshotProvider.SnapshotRenamed += OnSnapshotRenamed;
                 snapshotProvider.SnapshotChanged += OnSnapshotChanged;
                 snapshotProvider.SnapshotProviderUnloading += OnSnapshotProviderUnloading;
@@ -52,15 +48,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
         private void OnSnapshotRenamed(object sender, ProjectRenamedEventArgs e)
         {
-            lock (_snapshotProvidersLock)
+            lock (_snapshotProviders)
             {
                 // remove and re-add provider with new project path
                 if (!string.IsNullOrEmpty(e.OldFullPath)
-                    && SnapshotProviders.TryRemove(e.OldFullPath, out IDependenciesSnapshotProvider provider)
+                    && _snapshotProviders.TryGetValue(e.OldFullPath, out IDependenciesSnapshotProvider provider)
+                    && _snapshotProviders.Remove(e.OldFullPath)
                     && provider != null
                     && !string.IsNullOrEmpty(e.NewFullPath))
                 {
-                    SnapshotProviders[e.NewFullPath] = provider;
+                    _snapshotProviders[e.NewFullPath] = provider;
                 }
             }
         }
@@ -83,9 +80,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
             SnapshotProviderUnloading?.Invoke(this, e);
 
-            lock (_snapshotProvidersLock)
+            lock (_snapshotProviders)
             {
-                SnapshotProviders.TryRemove(snapshotProvider.ProjectFilePath, out IDependenciesSnapshotProvider provider);
+                _snapshotProviders.Remove(snapshotProvider.ProjectFilePath);
                 snapshotProvider.SnapshotRenamed -= OnSnapshotRenamed;
                 snapshotProvider.SnapshotChanged -= OnSnapshotChanged;
                 snapshotProvider.SnapshotProviderUnloading -= OnSnapshotProviderUnloading;
@@ -99,14 +96,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 throw new ArgumentException(nameof(projectFilePath));
             }
 
-            lock (_snapshotProvidersLock)
+            lock (_snapshotProviders)
             {
-                if (SnapshotProviders.TryGetValue(projectFilePath, out IDependenciesSnapshotProvider snapshotProvider))
+                if (_snapshotProviders.TryGetValue(projectFilePath, out IDependenciesSnapshotProvider snapshotProvider))
                 {
                     return snapshotProvider;
                 }
 
-                snapshotProvider = ProjectExportProvider.GetExport<IDependenciesSnapshotProvider>(projectFilePath);
+                snapshotProvider = _projectExportProvider.GetExport<IDependenciesSnapshotProvider>(projectFilePath);
                 if (snapshotProvider != null)
                 {
                     RegisterSnapshotProvider(snapshotProvider);
@@ -118,9 +115,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
         public IReadOnlyCollection<IDependenciesSnapshotProvider> GetSnapshotProviders()
         {
-            lock (_snapshotProvidersLock)
+            lock (_snapshotProviders)
             {
-                return (IReadOnlyCollection<IDependenciesSnapshotProvider>)SnapshotProviders.Values;
+                return _snapshotProviders.Values.ToList();
             }
         }
     }

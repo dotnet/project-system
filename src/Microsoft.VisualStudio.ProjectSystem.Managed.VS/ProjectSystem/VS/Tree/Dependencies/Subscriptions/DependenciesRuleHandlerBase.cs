@@ -12,7 +12,7 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions
 {
     internal abstract class DependenciesRuleHandlerBase
-        : ICrossTargetRuleHandler<DependenciesRuleChangeContext>,
+        : IDependenciesRuleHandler,
           IProjectDependenciesSubTreeProviderInternal
     {
         private readonly ImmutableHashSet<string> _evaluationRuleNames;
@@ -32,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             _designTimeBuildRuleNames = _evaluationRuleNames.Add(resolvedRuleName);
         }
 
-        #region ICrossTargetRuleHandler
+        #region IDependenciesRuleHandler
 
         public ImmutableHashSet<string> GetRuleNames(RuleHandlerType handlerType)
         {
@@ -48,19 +48,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         }
 
         public abstract ImageMoniker GetImplicitIcon();
-
-        /// <summary>
-        /// If any standard provider has different OriginalItemSpec property name, 
-        /// it could override this property, however currently all of them are the same.
-        /// </summary>
-        protected virtual string OriginalItemSpecPropertyName => ResolvedAssemblyReference.OriginalItemSpecProperty;
-
-        public virtual bool SupportsHandlerType(RuleHandlerType handlerType)
-        {
-            return true;
-        }
-
-        public virtual bool ReceiveUpdatesWithEmptyProjectChange => false;
 
         public virtual void Handle(
             IImmutableDictionary<string, IProjectChangeDescription> changesByRuleName,
@@ -103,7 +90,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             foreach (string removedItem in projectChange.Difference.RemovedItems)
             {
                 string dependencyId = resolved
-                    ? projectChange.Before.GetProjectItemProperties(removedItem).GetStringProperty(OriginalItemSpecPropertyName)
+                    ? projectChange.Before.GetProjectItemProperties(removedItem).GetStringProperty(ResolvedAssemblyReference.OriginalItemSpecProperty)
                     : removedItem;
 
                 if (shouldProcess(dependencyId))
@@ -142,7 +129,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             IImmutableDictionary<string, string> properties = projectRuleSnapshot.GetProjectItemProperties(itemSpec);
 
             string originalItemSpec = resolved
-                ? properties.GetStringProperty(OriginalItemSpecPropertyName)
+                ? properties.GetStringProperty(ResolvedAssemblyReference.OriginalItemSpecProperty)
                 : itemSpec;
 
             bool isImplicit = properties.GetBoolProperty(ProjectItemMetadata.IsImplicitlyDefined) ?? false;
@@ -169,7 +156,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
         #endregion
 
-        #region  IProjectDependenciesSubTreeProvider
+        #region IProjectDependenciesSubTreeProvider
 
         public abstract string ProviderType { get; }
 
