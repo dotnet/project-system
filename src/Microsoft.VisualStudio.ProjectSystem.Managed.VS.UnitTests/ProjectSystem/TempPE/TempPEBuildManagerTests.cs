@@ -520,7 +520,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.TempPE
                 sharedDesignTimeInputs = sharedDesignTimeInputs ?? Array.Empty<string>();
                 await base.ApplyAsync(new DesignTimeInputsDelta
                 {
-                    AddedItems = ImmutableList.CreateRange<string>(designTimeInputs),
+                    AddedItems = ImmutableArray.CreateRange<string>(designTimeInputs),
                     AddedSharedItems = ImmutableHashSet.CreateRange<string>(StringComparers.Paths, sharedDesignTimeInputs)
                 });
 

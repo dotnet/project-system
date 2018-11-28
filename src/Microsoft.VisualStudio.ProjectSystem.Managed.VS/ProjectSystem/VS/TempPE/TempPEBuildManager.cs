@@ -209,8 +209,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             ProjectInstance project = input.Value.Item1.ProjectInstance;
             IProjectChangeDescription changes = input.Value.Item2.ProjectChanges[Compile.SchemaName];
 
-            ImmutableList<string>.Builder addedDesignTimeInputs = ImmutableList.CreateBuilder<string>();
-            ImmutableList<string>.Builder removedDesignTimeInputs = ImmutableList.CreateBuilder<string>();
+            ImmutableArray<string>.Builder addedDesignTimeInputs = ImmutableArray.CreateBuilder<string>();
+            ImmutableArray<string>.Builder removedDesignTimeInputs = ImmutableArray.CreateBuilder<string>();
             var addedDesignTimeSharedInputs = AppliedValue.Value.SharedInputs.ToBuilder();
 
             foreach (string item in changes.Difference.AddedItems)
@@ -291,9 +291,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
         protected override bool ShouldValueBeApplied(DesignTimeInputsDelta previouslyAppliedOutput, DesignTimeInputsDelta newOutput)
         {
-            return newOutput.AddedItems.Count > 0 ||
+            return newOutput.AddedItems.Length > 0 ||
                    newOutput.AddedSharedItems.Count > 0 ||
-                   newOutput.RemovedItems.Count > 0;
+                   newOutput.RemovedItems.Length > 0;
         }
     }
 
@@ -306,8 +306,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
     internal class DesignTimeInputsDelta
     {
         public ImmutableHashSet<string> AddedSharedItems { get; set; } = ImmutableHashSet.Create(StringComparers.Paths);
-        public ImmutableList<string> AddedItems { get; set; } = ImmutableList.Create<string>();
-        public ImmutableList<string> RemovedItems { get; set; } = ImmutableList.Create<string>();
+        public ImmutableArray<string> AddedItems { get; set; } = ImmutableArray.Create<string>();
+        public ImmutableArray<string> RemovedItems { get; set; } = ImmutableArray.Create<string>();
         public IImmutableDictionary<NamedIdentity, IComparable> DataSourceVersions { get; set; } = ImmutableSortedDictionary.Create<NamedIdentity, IComparable>();
     }
 }
