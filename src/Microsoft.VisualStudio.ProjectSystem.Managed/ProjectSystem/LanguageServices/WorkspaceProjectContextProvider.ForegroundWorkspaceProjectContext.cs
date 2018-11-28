@@ -147,6 +147,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 UnderlyingContext.SetOptions(commandLineForOptions);
             }
 
+            public void SetProperty(string name, string value)
+            {
+                UnderlyingContext.SetProperty(name, value);
+            }
+
             public void SetRuleSetFile(string filePath)
             {
                 UnderlyingContext.SetRuleSetFile(filePath);
