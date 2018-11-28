@@ -1,5 +1,6 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System;
 using System.ComponentModel.Composition;
 
 using Microsoft.VisualStudio.ProjectSystem.VS.ConnectionPoint;
@@ -30,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         internal VSBuildManager(IUnconfiguredProjectCommonServices unconfiguredProjectServices,
             ITempPEBuildManager tempPEManager)
         {
-            AddEventSource(this as IEventSource<_dispBuildManagerEvents>);
+            AddEventSource(this);
             _unconfiguredProjectServices = unconfiguredProjectServices;
             _tempPEManager = tempPEManager;
 
@@ -81,7 +82,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         /// </summary>
         public string BuildDesignTimeOutput(string bstrOutputMoniker)
         {
-            if (bstrOutputMoniker == null) return null;
+            if (bstrOutputMoniker == null)
+                throw new ArgumentException("Must supply a moniker to build", nameof(bstrOutputMoniker));
 
             return _unconfiguredProjectServices.ThreadingService.ExecuteSynchronously(() =>
             {

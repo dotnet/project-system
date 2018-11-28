@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -74,10 +74,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         public async Task<string> GetTempPEDescriptionXmlAsync(string fileName)
         {
             DesignTimeInputsItem inputs = AppliedValue.Value;
-            if (fileName == null || inputs.Inputs.TryGetValue(fileName, out CancellationSeries cancellation))
-            {
-                return null;
-            }
+            if (fileName == null)
+                throw new ArgumentException("Must supply a file to build", nameof(fileName));
+
+            if (!inputs.Inputs.TryGetValue(fileName, out CancellationSeries cancellation))
+                throw new ArgumentException("FileName supplied must be one of the DesignTime source files", nameof(fileName));
 
             // getting the next token will automatically cancel any current compilation that is already happening for this file
             CancellationToken token = cancellation.CreateNext();
