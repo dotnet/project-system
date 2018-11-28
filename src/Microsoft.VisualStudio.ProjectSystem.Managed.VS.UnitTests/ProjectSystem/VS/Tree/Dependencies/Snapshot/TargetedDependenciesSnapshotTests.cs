@@ -80,7 +80,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 previousSnapshot,
                 changes,
                 catalogs,
-                Array.Empty<IDependenciesSnapshotFilter>(),
+                ImmutableArray<IDependenciesSnapshotFilter>.Empty,
                 new Dictionary<string, IProjectDependenciesSubTreeProvider>(),
                 null);
 
@@ -116,7 +116,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 previousSnapshot,
                 changes,
                 catalogs,
-                Array.Empty<IDependenciesSnapshotFilter>(),
+                ImmutableArray<IDependenciesSnapshotFilter>.Empty,
                 new Dictionary<string, IProjectDependenciesSubTreeProvider>(),
                 null);
 
@@ -167,7 +167,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 previousSnapshot,
                 changes,
                 catalogs,
-                Array.Empty<IDependenciesSnapshotFilter>(),
+                ImmutableArray<IDependenciesSnapshotFilter>.Empty,
                 new Dictionary<string, IProjectDependenciesSubTreeProvider>(),
                 null);
 
@@ -233,7 +233,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 previousSnapshot,
                 changes,
                 catalogs,
-                new[] { snapshotFilter },
+                ImmutableArray.Create<IDependenciesSnapshotFilter>(snapshotFilter),
                 new Dictionary<string, IProjectDependenciesSubTreeProvider>(),
                 null);
 
@@ -293,7 +293,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 previousSnapshot,
                 changes,
                 catalogs,
-                new[] { snapshotFilter },
+                ImmutableArray.Create<IDependenciesSnapshotFilter>(snapshotFilter),
                 new Dictionary<string, IProjectDependenciesSubTreeProvider>(),
                 null);
 
@@ -370,7 +370,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 previousSnapshot,
                 changes,
                 catalogs,
-                new[] { snapshotFilter },
+                ImmutableArray.Create<IDependenciesSnapshotFilter>(snapshotFilter),
                 new Dictionary<string, IProjectDependenciesSubTreeProvider>(),
                 null);
 
@@ -442,7 +442,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 previousSnapshot,
                 changes,
                 catalogs,
-                new[] { snapshotFilter },
+                ImmutableArray.Create<IDependenciesSnapshotFilter>(snapshotFilter),
                 new Dictionary<string, IProjectDependenciesSubTreeProvider>(),
                 null);
 
@@ -601,7 +601,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 previousSnapshot,
                 changes,
                 catalogs,
-                new[] { snapshotFilter },
+                ImmutableArray.Create<IDependenciesSnapshotFilter>(snapshotFilter),
                 new Dictionary<string, IProjectDependenciesSubTreeProvider>(),
                 null);
 
@@ -682,7 +682,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 previousSnapshot,
                 changes,
                 catalogs,
-                new[] { snapshotFilter },
+                ImmutableArray.Create<IDependenciesSnapshotFilter>(snapshotFilter),
                 new Dictionary<string, IProjectDependenciesSubTreeProvider>(),
                 null);
 

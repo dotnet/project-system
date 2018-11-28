@@ -4,7 +4,6 @@ using System.ComponentModel.Composition;
 using System.Threading.Tasks;
 
 using Microsoft.CodeAnalysis;
-using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 
 using RoslynRenamer = Microsoft.CodeAnalysis.Rename;

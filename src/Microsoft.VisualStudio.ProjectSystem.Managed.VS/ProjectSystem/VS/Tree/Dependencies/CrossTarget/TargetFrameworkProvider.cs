@@ -64,7 +64,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         private bool TryGetCachedTargetFramework(string shortOrFullName, out ITargetFramework targetFramework)
         {
             // use linear search here, since there not many target frameworks and it would most efficient.
-            targetFramework = _cachedTargetFrameworks.FirstOrDefault(x => x.Equals(shortOrFullName));
+            targetFramework = _cachedTargetFrameworks.FirstOrDefault((x, name) => x.Equals(name), shortOrFullName);
             return targetFramework != null;
         }
 
@@ -91,7 +91,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                 return null;
             }
 
-            return others.FirstOrDefault(x => nearestFrameworkName.Equals(x.FrameworkName));
+            return others.FirstOrDefault((x, nearest) => nearest.Equals(x.FrameworkName), nearestFrameworkName);
         }
     }
 }

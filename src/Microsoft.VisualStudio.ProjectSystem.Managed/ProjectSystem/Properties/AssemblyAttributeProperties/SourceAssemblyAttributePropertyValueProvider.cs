@@ -41,11 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 return null;
             }
 
-            return _workspace
-                .CurrentSolution
-                .Projects
-                .Where(p => p.Id == activeProjectId)
-                .SingleOrDefault();
+            return _workspace.CurrentSolution.Projects.SingleOrDefault((p, id) => p.Id == id, activeProjectId);
         }
 
         /// <summary>
@@ -60,12 +56,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             }
 
             AttributeData attribute = await GetAttributeAsync(_assemblyAttributeFullName, project);
-            if (attribute == null)
-            {
-                return null;
-            }
 
-            return attribute.ConstructorArguments.FirstOrDefault().Value?.ToString();
+            return attribute?.ConstructorArguments.FirstOrDefault().Value?.ToString();
         }
 
         /// <summary>
@@ -129,7 +121,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 return null;
             }
 
-            return assemblyAttributes.FirstOrDefault(attrib => attrib.AttributeClass.Equals(attributeTypeSymbol));
+            return assemblyAttributes.FirstOrDefault((data, symbol) => data.AttributeClass.Equals(symbol), attributeTypeSymbol);
         }
     }
 }

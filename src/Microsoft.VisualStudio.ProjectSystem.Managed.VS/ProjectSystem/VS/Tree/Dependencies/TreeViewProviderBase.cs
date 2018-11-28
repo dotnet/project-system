@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     {
         protected TreeViewProviderBase(UnconfiguredProject project)
         {
-            ProjectTreePropertiesProviders = new OrderPrecedenceImportCollection<IProjectTreePropertiesProvider>(
+            _projectTreePropertiesProviders = new OrderPrecedenceImportCollection<IProjectTreePropertiesProvider>(
                 ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesLast,
                 projectCapabilityCheckProvider: project);
         }
@@ -25,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// that apply to the references tree.
         /// </summary>
         [ImportMany(ReferencesProjectTreeCustomizablePropertyValues.ContractName)]
-        private OrderPrecedenceImportCollection<IProjectTreePropertiesProvider> ProjectTreePropertiesProviders { get; }
+        private readonly OrderPrecedenceImportCollection<IProjectTreePropertiesProvider> _projectTreePropertiesProviders;
 
         public abstract Task<IProjectTree> BuildTreeAsync(
             IProjectTree dependenciesTree,
@@ -47,7 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             IProjectTreeCustomizablePropertyContext context,
             ReferencesProjectTreeCustomizablePropertyValues values)
         {
-            foreach (IProjectTreePropertiesProvider provider in ProjectTreePropertiesProviders.ExtensionValues())
+            foreach (IProjectTreePropertiesProvider provider in _projectTreePropertiesProviders.ExtensionValues())
             {
                 provider.CalculatePropertyValues(context, values);
             }

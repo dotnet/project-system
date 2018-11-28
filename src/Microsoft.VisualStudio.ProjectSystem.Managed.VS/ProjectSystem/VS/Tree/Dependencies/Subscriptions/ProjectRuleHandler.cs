@@ -124,7 +124,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
             List<IDependency> dependencyThatNeedChange = null;
 
-            foreach (ITargetedDependenciesSnapshot targetedDependencies in thisProjectSnapshot.Targets.Values)
+            foreach ((ITargetFramework _, ITargetedDependenciesSnapshot targetedDependencies) in thisProjectSnapshot.Targets)
             {
                 foreach (IDependency dependency in targetedDependencies.TopLevelDependencies)
                 {
@@ -147,7 +147,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
             if (dependencyThatNeedChange == null)
             {
-                // we don't have dependency on updated project
+                // we don't have a dependency on the project that changed
                 return;
             }
 

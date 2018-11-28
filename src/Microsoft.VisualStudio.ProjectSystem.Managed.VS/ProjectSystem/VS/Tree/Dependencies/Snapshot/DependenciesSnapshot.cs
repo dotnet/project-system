@@ -41,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             ImmutableDictionary<ITargetFramework, IDependenciesChanges> changes,
             IProjectCatalogSnapshot catalogs,
             ITargetFramework activeTargetFramework,
-            IReadOnlyList<IDependenciesSnapshotFilter> snapshotFilters,
+            ImmutableArray<IDependenciesSnapshotFilter> snapshotFilters,
             IReadOnlyDictionary<string, IProjectDependenciesSubTreeProvider> subTreeProviderByProviderType,
             IImmutableSet<string> projectItemSpecs)
         {
@@ -49,7 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Requires.NotNull(previousSnapshot, nameof(previousSnapshot));
             Requires.NotNull(changes, nameof(changes));
             // catalogs can be null
-            Requires.NotNull(snapshotFilters, nameof(snapshotFilters));
+            Requires.Argument(!snapshotFilters.IsDefault, nameof(snapshotFilters), "Cannot be default.");
             Requires.NotNull(subTreeProviderByProviderType, nameof(subTreeProviderByProviderType));
             // projectItemSpecs can be null
 
@@ -179,9 +179,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         public bool HasUnresolvedDependency => Targets.Any(x => x.Value.HasUnresolvedDependency);
 
         /// <inheritdoc />
-        public IDependency FindDependency(string id, bool topLevel = false)
+        public IDependency FindDependency(string dependencyId, bool topLevel = false)
         {
-            if (string.IsNullOrEmpty(id))
+            if (string.IsNullOrEmpty(dependencyId))
             {
                 return null;
             }
@@ -190,10 +190,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             {
                 // if top level first try to find by top level id with full path,
                 // if found - return, if not - try regular Id in the DependenciesWorld
-                foreach (ITargetedDependenciesSnapshot targetedDependencies in Targets.Values)
+                foreach ((ITargetFramework _, ITargetedDependenciesSnapshot targetedDependencies) in Targets)
                 {
-                    IDependency dependency = targetedDependencies.TopLevelDependencies.FirstOrDefault(
-                        x => x.TopLevelIdEquals(id));
+                    IDependency dependency = targetedDependencies.TopLevelDependencies
+                        .FirstOrDefault((x, id) => x.TopLevelIdEquals(id), dependencyId);
 
                     if (dependency != null)
                     {
@@ -202,9 +202,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 }
             }
 
-            foreach (ITargetedDependenciesSnapshot targetedDependencies in Targets.Values)
+            foreach ((ITargetFramework _, ITargetedDependenciesSnapshot targetedDependencies) in Targets)
             {
-                if (targetedDependencies.DependenciesWorld.TryGetValue(id, out IDependency dependency))
+                if (targetedDependencies.DependenciesWorld.TryGetValue(dependencyId, out IDependency dependency))
                 {
                     return dependency;
                 }
