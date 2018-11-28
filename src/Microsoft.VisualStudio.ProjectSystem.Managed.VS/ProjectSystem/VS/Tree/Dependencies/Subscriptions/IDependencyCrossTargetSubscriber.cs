@@ -8,9 +8,12 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions
 {
-    internal interface IDependencyCrossTargetSubscriber : ICrossTargetSubscriber
+    internal interface IDependencyCrossTargetSubscriber
     {
         event EventHandler<DependencySubscriptionChangedEventArgs> DependenciesChanged;
+        void InitializeSubscriber(ICrossTargetSubscriptionsHost host, IProjectSubscriptionService subscriptionService);
+        void AddSubscriptions(AggregateCrossTargetProjectContext newProjectContext);
+        void ReleaseSubscriptions();
     }
 
     internal sealed class DependencySubscriptionChangedEventArgs

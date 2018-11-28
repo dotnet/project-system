@@ -7,7 +7,7 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions
 {
-    internal sealed class DependenciesRuleChangeContext : IRuleChangeContext
+    internal sealed class DependenciesRuleChangeContext
     {
         private ImmutableDictionary<ITargetFramework, IDependenciesChanges> _changes = ImmutableDictionary.Create<ITargetFramework, IDependenciesChanges>();
 
