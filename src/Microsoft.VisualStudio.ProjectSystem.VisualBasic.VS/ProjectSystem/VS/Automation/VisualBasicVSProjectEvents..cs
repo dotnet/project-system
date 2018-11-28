@@ -6,23 +6,20 @@ using VSLangProj;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
 {
-    [Export(typeof(VSLangProj.VSProjectEvents))]
-    [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
+    [Export(typeof(VSProjectEvents))]
+    [AppliesTo(ProjectCapability.VisualBasic)]
     [Order(Order.Default)]
-    internal class VSProjectEvents : VSLangProj.VSProjectEvents
+    internal class VisualBasicVSProjectEvents : VSProjectEvents
     {
         private readonly VSLangProj.VSProject _vsProject;
-        private readonly BuildManager _buildManager;
 
         [ImportingConstructor]
-        public VSProjectEvents(
+        public VisualBasicVSProjectEvents(
             [Import(ExportContractNames.VsTypes.CpsVSProject)] VSLangProj.VSProject vsProject,
-            UnconfiguredProject project,
-            BuildManager buildManager)
+            UnconfiguredProject project)
         {
             _vsProject = vsProject;
             ImportsEventsImpl = new OrderPrecedenceImportCollection<ImportsEvents>(projectCapabilityCheckProvider: project);
-            _buildManager = buildManager;
         }
 
         [ImportMany]
@@ -30,8 +27,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
 
         public ReferencesEvents ReferencesEvents => _vsProject.Events.ReferencesEvents;
 
-        public BuildManagerEvents BuildManagerEvents => _buildManager as BuildManagerEvents ?? _vsProject.Events.BuildManagerEvents;
+        public BuildManagerEvents BuildManagerEvents => _vsProject.Events.BuildManagerEvents;
 
-        public ImportsEvents ImportsEvents => ImportsEventsImpl.FirstOrDefault()?.Value ?? _vsProject.Events.ImportsEvents;
+        public ImportsEvents ImportsEvents => ImportsEventsImpl.First().Value;
     }
 }

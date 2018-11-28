@@ -16,10 +16,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         public void VSProjectEvents_Properties()
         {
             var referenceEvents = Mock.Of<ReferencesEvents>();
+            var buildManagerEvents = Mock.Of<BuildManagerEvents>();
 
-            var projectEventsMock = new Mock<VSLangProj.VSProjectEvents>();
+            var projectEventsMock = new Mock<VSProjectEvents>();
             projectEventsMock.Setup(e => e.ReferencesEvents)
                              .Returns(referenceEvents);
+            projectEventsMock.Setup(e => e.BuildManagerEvents)
+                             .Returns(buildManagerEvents);
 
             var innerVSProjectMock = new Mock<VSLangProj.VSProject>();
             innerVSProjectMock.Setup(p => p.Events)
@@ -29,35 +32,32 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             unconfiguredProjectMock.Setup(p => p.Capabilities)
                                    .Returns((IProjectCapabilitiesScope)null);
 
-            var buildManagerMock = new Mock<BuildManagerEvents>().As<BuildManager>();
-
             var importEvents = Mock.Of<ImportsEvents>();
             var importsEventsImpl = new OrderPrecedenceImportCollection<ImportsEvents>(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst, (UnconfiguredProject)null)
             {
                 new Lazy<ImportsEvents, IOrderPrecedenceMetadataView>(() => importEvents, IOrderPrecedenceMetadataViewFactory.Create("VisualBasic"))
             };
-            var vsProjectEvents = GetVSProjectEvents(innerVSProjectMock.Object, unconfiguredProjectMock.Object, buildManagerMock.Object);
+            var vsProjectEvents = GetVSProjectEvents(innerVSProjectMock.Object, unconfiguredProjectMock.Object);
 
             vsProjectEvents.SetImportsEventsImpl(importsEventsImpl);
 
             Assert.NotNull(vsProjectEvents);
             Assert.Equal(referenceEvents, vsProjectEvents.ReferencesEvents);
-            Assert.Equal((BuildManagerEvents)buildManagerMock.Object, vsProjectEvents.BuildManagerEvents);
+            Assert.Equal(buildManagerEvents, vsProjectEvents.BuildManagerEvents);
             Assert.Equal(importEvents, vsProjectEvents.ImportsEvents);
         }
 
         private VSProjectEventsTestImpl GetVSProjectEvents(
             VSLangProj.VSProject vsproject = null,
-            UnconfiguredProject project = null,
-            BuildManager buildManager = null)
+            UnconfiguredProject project = null)
         {
-            return new VSProjectEventsTestImpl(vsproject, project, buildManager);
+            return new VSProjectEventsTestImpl(vsproject, project);
         }
 
-        internal class VSProjectEventsTestImpl : VSProjectEvents
+        internal class VSProjectEventsTestImpl : VisualBasicVSProjectEvents
         {
-            public VSProjectEventsTestImpl(VSLangProj.VSProject vsProject, UnconfiguredProject project, BuildManager buildManager)
-                : base(vsProject, project, buildManager)
+            public VSProjectEventsTestImpl(VSLangProj.VSProject vsProject, UnconfiguredProject project)
+                : base(vsProject, project)
             {
             }
 
