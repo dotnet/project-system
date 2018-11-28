@@ -12,5 +12,6 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Configuration" />
+    <PackageReference Include="Microsoft.VisualStudio.Composition" />
   </ItemGroup>
 </Project>
