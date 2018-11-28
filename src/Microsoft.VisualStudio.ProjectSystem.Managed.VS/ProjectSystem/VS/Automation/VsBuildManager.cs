@@ -4,7 +4,7 @@ using System.ComponentModel.Composition;
 
 using Microsoft.VisualStudio.ProjectSystem.VS.ConnectionPoint;
 using Microsoft.VisualStudio.ProjectSystem.VS.TempPE;
-
+using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 using VSLangProj;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
@@ -38,9 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         }
 
         [ImportMany(ExportContractNames.VsTypes.VSProject)]
-        internal OrderPrecedenceImportCollection<VSLangProj.VSProject> Project { get; set; }
-
-        #region _dispBuildManagerEvents_Event Members
+        internal OrderPrecedenceImportCollection<VSLangProj.VSProject> Project { get; }
 
         /// <summary>
         /// Occurs when a design time output moniker is deleted.
@@ -51,8 +49,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         /// Occurs when a design time output moniker is dirty
         /// </summary>
         public event _dispBuildManagerEvents_DesignTimeOutputDirtyEventHandler DesignTimeOutputDirty;
-
-        #endregion
 
         /// <summary>
         /// Gets the project of which the selected item is a part.
@@ -76,11 +72,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         {
             get
             {
-                return _unconfiguredProjectServices.ThreadingService.ExecuteSynchronously(_tempPEManager.GetDesignTimeOutputFilenamesAsync);
+                return _tempPEManager.GetTempPESourceFileNames();
             }
         }
-
-        #region BuildManager Members
 
         /// <summary>
         /// Builds a temporary portable executable (PE) and returns its description in an XML string.
@@ -91,13 +85,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
 
             return _unconfiguredProjectServices.ThreadingService.ExecuteSynchronously(() =>
             {
-                return _tempPEManager.GetTempPEBlobAsync(bstrOutputMoniker);
+                return _tempPEManager.GetTempPEDescriptionXmlAsync(bstrOutputMoniker);
             });
         }
-
-        #endregion
-
-        #region IEventSource<_dispBuildManagerEvents> Members
 
         void IEventSource<_dispBuildManagerEvents>.OnSinkAdded(_dispBuildManagerEvents sink)
         {
@@ -111,13 +101,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             DesignTimeOutputDirty -= new _dispBuildManagerEvents_DesignTimeOutputDirtyEventHandler(sink.DesignTimeOutputDirty);
         }
 
-        #endregion
-
         /// <summary>
         /// Occurs when a design time output moniker is deleted.
         /// </summary>
         internal virtual void OnDesignTimeOutputDeleted(string outputMoniker)
         {
+            UIThreadHelper.VerifyOnUIThread();
+
             DesignTimeOutputDeleted?.Invoke(outputMoniker);
         }
 
@@ -126,6 +116,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         /// </summary>
         internal virtual void OnDesignTimeOutputDirty(string outputMoniker)
         {
+            UIThreadHelper.VerifyOnUIThread();
+
             DesignTimeOutputDirty?.Invoke(outputMoniker);
         }
     }

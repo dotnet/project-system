@@ -9,10 +9,10 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
+using Microsoft.Build.Execution;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 using Microsoft.VisualStudio.ProjectSystem.VS.Automation;
 using Microsoft.VisualStudio.Threading.Tasks;
-using VSLangProj;
 using InputTuple = System.Tuple<Microsoft.VisualStudio.ProjectSystem.IProjectSnapshot, Microsoft.VisualStudio.ProjectSystem.IProjectSubscriptionUpdate>;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
@@ -22,31 +22,35 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
     {
         private readonly IUnconfiguredProjectCommonServices _unconfiguredProjectServices;
         private readonly ILanguageServiceHost _languageServiceHost;
+        private readonly IActiveConfiguredProjectSubscriptionService _projectSubscriptionService;
+
         //private readonly ITempPECompiler _compiler;
 
         [ImportingConstructor]
         public TempPEBuildManager(IProjectThreadingService threadingService,
             IUnconfiguredProjectCommonServices unconfiguredProjectServices,
-            ILanguageServiceHost languageServiceHost
+            ILanguageServiceHost languageServiceHost,
+            IActiveConfiguredProjectSubscriptionService projectSubscriptionService
             //,ITempPECompilerHost compilerHost
             )
              : base(threadingService.JoinableTaskContext)
         {
             _unconfiguredProjectServices = unconfiguredProjectServices;
             _languageServiceHost = languageServiceHost;
+            _projectSubscriptionService = projectSubscriptionService;
             //_compiler = compiler;
-            BuildManager = new OrderPrecedenceImportCollection<BuildManager>(projectCapabilityCheckProvider: _unconfiguredProjectServices.Project);
+            BuildManager = new OrderPrecedenceImportCollection<VSLangProj.BuildManager>(projectCapabilityCheckProvider: _unconfiguredProjectServices.Project);
         }
 
-        [ImportMany(typeof(BuildManager))]
-        internal OrderPrecedenceImportCollection<BuildManager> BuildManager { get; set; }
+        [ImportMany(typeof(VSLangProj.BuildManager))]
+        internal OrderPrecedenceImportCollection<VSLangProj.BuildManager> BuildManager { get; set; } // set is needed for unit tests
 
         protected override Task DisposeCoreAsync(bool initialized)
         {
             if (AppliedValue != null)
             {
                 // dispose any of our cancellation series we still have
-                foreach (var item in AppliedValue.Value.Inputs.Values)
+                foreach (CancellationSeries item in AppliedValue.Value.Inputs.Values)
                 {
                     item?.Dispose();
                 }
@@ -55,12 +59,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             return base.DisposeCoreAsync(initialized);
         }
 
-        /// <summary>
-        /// Use the project subscription service to read connected services data from the tree service.
-        /// </summary>
-        [Import]
-        private IActiveConfiguredProjectSubscriptionService ProjectSubscriptionService { get; set; }
-
         [ProjectAutoLoad]
         [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
         public Task OnProjectLoaded()
@@ -68,38 +66,36 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             return InitializeAsync();
         }
 
-        public async Task<string[]> GetDesignTimeOutputFilenamesAsync()
+        public string[] GetTempPESourceFileNames()
         {
-            var property = await _unconfiguredProjectServices.ActiveConfiguredProjectProperties.GetConfiguredBrowseObjectPropertiesAsync();
-            var basePath = await property.FullPath.GetValueAsPathAsync(false, false);
-            return AppliedValue.Value.Inputs.Keys.Select(i => Path.Combine(basePath, i)).ToArray();
+            return AppliedValue.Value.Inputs.Keys.Select(_unconfiguredProjectServices.Project.MakeRooted).ToArray();
         }
 
-        public async Task<string> GetTempPEBlobAsync(string fileName)
+        public async Task<string> GetTempPEDescriptionXmlAsync(string fileName)
         {
-            var inputs = AppliedValue.Value;
-            if (fileName == null || inputs.Inputs.TryGetValue(fileName, out var cancellation))
+            DesignTimeInputsItem inputs = AppliedValue.Value;
+            if (fileName == null || inputs.Inputs.TryGetValue(fileName, out CancellationSeries cancellation))
             {
                 return null;
             }
 
             // getting the next token will automatically cancel any current compilation that is already happening for this file
-            var token = cancellation.CreateNext();
+            CancellationToken token = cancellation.CreateNext();
 
             await _unconfiguredProjectServices.ThreadingService.SwitchToUIThread(token);
 
             token.ThrowIfCancellationRequested();
 
-            var property = await _unconfiguredProjectServices.ActiveConfiguredProjectProperties.GetConfiguredBrowseObjectPropertiesAsync();
-            var basePath = await property.FullPath.GetValueAsPathAsync(false, false);
-            var objPath = await property.IntermediatePath.GetValueAsPathAsync(false, false);
-            var outputPath = Path.Combine(basePath, objPath, "TempPE");
+            ConfiguredBrowseObject browseObject = await _unconfiguredProjectServices.ActiveConfiguredProjectProperties.GetConfiguredBrowseObjectPropertiesAsync();
+            string basePath = await browseObject.FullPath.GetValueAsPathAsync(false, false);
+            string objPath = await browseObject.IntermediatePath.GetValueAsPathAsync(false, false);
+            string outputPath = Path.Combine(basePath, objPath, "TempPE");
 
             var files = new HashSet<string>(inputs.SharedInputs.Count + 1, StringComparers.Paths);
             files.AddRange(inputs.SharedInputs.Select(i => Path.Combine(basePath, i)));
             files.Add(Path.Combine(basePath, fileName));
 
-            var outputFileName = fileName + ".dll";
+            string outputFileName = fileName + ".dll";
 
             // var result = await _compiler.CompileAsync(_languageServiceHost.ActiveProjectContext, Path.Combine(outputPath, outputFileName), files, token);
             //
@@ -123,14 +119,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
         protected override Task ApplyAsync(DesignTimeInputsDelta value)
         {
-            var applied = AppliedValue.Value;
+            // Not using use the ThreadingService property because unit tests
+            _unconfiguredProjectServices.ThreadingService.VerifyOnUIThread();
+
+            DesignTimeInputsItem applied = AppliedValue.Value;
             var designTimeInputs = applied.Inputs.ToBuilder();
             var designTimeSharedInputs = applied.SharedInputs.ToBuilder();
 
             var addedDesignTimeInputs = new List<string>();
             var removedDesignTimeInputs = new List<string>();
 
-            foreach (var item in value.AddedItems)
+            foreach (string item in value.AddedItems)
             {
                 // If a property changes we might be asked to add items that already exist, so we just ignore them as we're happy using our existing CancellationSeries
                 if (!designTimeInputs.ContainsKey(item))
@@ -140,14 +139,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                 }
             }
 
-            foreach (var item in value.AddedSharedItems)
+            foreach (string item in value.AddedSharedItems)
             {
                 designTimeSharedInputs.Add(item);
             }
 
-            foreach (var item in value.RemovedItems)
+            foreach (string item in value.RemovedItems)
             {
-                if (designTimeInputs.TryGetValue(item, out var series))
+                if (designTimeInputs.TryGetValue(item, out CancellationSeries series))
                 {
                     series?.Dispose();
                     designTimeInputs.Remove(item);
@@ -167,7 +166,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             if (value.AddedSharedItems.Count > 0)
             {
                 // if the shared items changed then all TempPEs are dirty, because shared items are included in all TempPEs
-                foreach (var item in designTimeInputs.Keys)
+                foreach (string item in designTimeInputs.Keys)
                 {
                     buildManager.OnDesignTimeOutputDirty(item);
                 }
@@ -175,12 +174,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             else
             {
                 // otherwise just the ones that we've added are dirty
-                foreach (var item in addedDesignTimeInputs)
+                foreach (string item in addedDesignTimeInputs)
                 {
                     buildManager.OnDesignTimeOutputDirty(item);
                 }
             }
-            foreach (var item in removedDesignTimeInputs)
+            foreach (string item in removedDesignTimeInputs)
             {
                 buildManager.OnDesignTimeOutputDeleted(item);
             }
@@ -198,8 +197,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         protected override IDisposable LinkExternalInput(ITargetBlock<IProjectVersionedValue<InputTuple>> targetBlock)
         {
             return ProjectDataSources.SyncLinkTo(
-                ProjectSubscriptionService.ProjectSource.SourceBlock.SyncLinkOptions(),
-                ProjectSubscriptionService.SourceItemsRuleSource.SourceBlock.SyncLinkOptions(),
+                _projectSubscriptionService.ProjectSource.SourceBlock.SyncLinkOptions(),
+                _projectSubscriptionService.SourceItemsRuleSource.SourceBlock.SyncLinkOptions(),
                 targetBlock,
                 new DataflowLinkOptions { PropagateCompletion = true },
                 cancellationToken: ProjectAsynchronousTasksService.UnloadCancellationToken);
@@ -207,39 +206,43 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
         protected override Task<DesignTimeInputsDelta> PreprocessAsync(IProjectVersionedValue<InputTuple> input, DesignTimeInputsDelta previousOutput)
         {
-            var project = input.Value.Item1.ProjectInstance;
-            var changes = input.Value.Item2.ProjectChanges[Compile.SchemaName];
-            
-            var addedDesignTimeInputs = ImmutableList.CreateBuilder<string>();
-            var removedDesignTimeInputs = ImmutableList.CreateBuilder<string>();
+            ProjectInstance project = input.Value.Item1.ProjectInstance;
+            IProjectChangeDescription changes = input.Value.Item2.ProjectChanges[Compile.SchemaName];
+
+            ImmutableList<string>.Builder addedDesignTimeInputs = ImmutableList.CreateBuilder<string>();
+            ImmutableList<string>.Builder removedDesignTimeInputs = ImmutableList.CreateBuilder<string>();
             var addedDesignTimeSharedInputs = AppliedValue.Value.SharedInputs.ToBuilder();
 
-            foreach (var item in changes.Difference.AddedItems)
+            foreach (string item in changes.Difference.AddedItems)
             {
                 PreprocessAddItem(item);
             }
 
-            foreach (var item in changes.Difference.RemovedItems)
+            foreach (string item in changes.Difference.RemovedItems)
             {
                 // the RemovedItems doesn't have any project info any more so we can't tell if an item was a design time input or not
-                // and we can't check in AppliedValue because there could be an unapplied value that adds an item
+                // and we can't check in AppliedValue because there could be an unapplied value that adds the item that is still in the queue
                 // so we have to just process the removed items in ApplyAsync and take advantage of the fact that its
                 // quick to remove from immutable collections, even if the item doesn't exist, because they're implemented as trees
                 removedDesignTimeInputs.Add(item);
             }
 
-            foreach (var item in changes.Difference.RenamedItems)
+            foreach ((string oldName, string newName) in changes.Difference.RenamedItems)
             {
-                // a rename is just an add and a remove. Key is the old name, Value is the new name
-                PreprocessAddItem(item.Value);
-                removedDesignTimeInputs.Add(item.Key);
+                // A rename is just an add and a remove
+                PreprocessAddItem(newName);
+                removedDesignTimeInputs.Add(oldName);
             }
 
-            foreach (var item in changes.Difference.ChangedItems)
+            foreach (string item in changes.Difference.ChangedItems)
             {
-                // Items appear in this set if, for example, DesignTime goes from false to true, but we don't know which property changed, or what the old value was
-                // So the logic is this:
+                // Items appear in this set if an items metadata changes. 
+                // For example that could be when DesignTime goes from false to true, so we care about it, but we don't know which metadata changed or what the old value was
+                // so there is a high chance this is an irrelevant change to us.
+
+                // The actual logic here is deceptively simple, so what is actually happening is this:
                 // Previous Design Time   | New Design Time   | Action
+                // ----------------------------------------------------------------
                 // False                  | False             | PreprocessAddItem will return false, ApplyAsync will process remove, which is fast enough to not worry about
                 // False                  | True              | PreprocessAddItem will return true, ApplyAsync will process as an add, so all good
                 // True                   | False             | PreprocessAddItem will return false, ApplyAsync will process remove, so all good
@@ -248,11 +251,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                 {
                     removedDesignTimeInputs.Add(item);
                 }
-            }
-
-            foreach (var item in changes.Difference.ChangedProperties)
-            {
-                // TODO: Why do items appear here?
             }
 
             var result = new DesignTimeInputsDelta
@@ -267,7 +265,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
             bool PreprocessAddItem(string item)
             {
-                var projItem = project.GetItemsByItemTypeAndEvaluatedInclude(Compile.SchemaName, item).FirstOrDefault();
+                ProjectItemInstance projItem = project.GetItemsByItemTypeAndEvaluatedInclude(Compile.SchemaName, item).FirstOrDefault();
                 System.Diagnostics.Debug.Assert(projItem != null, "Couldn't find the project item for Compile with an evaluated include of " + item);
 
                 bool link = StringComparers.PropertyValues.Equals(projItem.GetMetadataValue(Compile.LinkProperty), bool.TrueString);

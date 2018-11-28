@@ -482,7 +482,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.TempPE
             public List<string> DirtyItems { get; } = new List<string>();
 
             public TestTempPEBuildManager()
-                : base(IProjectThreadingServiceFactory.Create(), IUnconfiguredProjectCommonServicesFactory.Create(), ILanguageServiceHostFactory.Create())
+                : base(IProjectThreadingServiceFactory.Create(),
+                      IUnconfiguredProjectCommonServicesFactory.Create(threadingService: IProjectThreadingServiceFactory.Create()),
+                      ILanguageServiceHostFactory.Create(),
+                      IActiveConfiguredProjectSubscriptionServiceFactory.Create())
             {
                 BuildManager = new OrderPrecedenceImportCollection<VSLangProj.BuildManager>(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst);
                 BuildManager.Add(new TestBuildManager(this));
@@ -529,7 +532,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.TempPE
             {
                 private readonly TestTempPEBuildManager _mgr;
 
-                internal TestBuildManager(TestTempPEBuildManager mgr) 
+                internal TestBuildManager(TestTempPEBuildManager mgr)
                     : base(IUnconfiguredProjectCommonServicesFactory.Create(UnconfiguredProjectFactory.Create()), null)
                 {
                     _mgr = mgr;
