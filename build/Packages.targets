@@ -13,6 +13,7 @@
       https://dotnet.myget.org/F/project-system-interop/api/v3/index.json;
       https://vside.myget.org/F/vs-impl/api/v3/index.json;
       https://vside.myget.org/F/vssdk/api/v3/index.json;
+      D:\Code\roslyn\Binaries\Debug\NuGet\Shipping;
     </RestoreSources>
   </PropertyGroup>
 
@@ -95,8 +96,8 @@
     <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.Analyzers" Version="16.0.429-pre-gf4f06355f6" />
     
     <!-- Roslyn -->
-    <PackageReference Update="Microsoft.VisualStudio.LanguageServices" Version="2.11.0-beta1-63430-03" />
-    <PackageReference Update="Microsoft.CodeAnalysis" Version="2.11.0-beta1-63430-03" />
+    <PackageReference Update="Microsoft.VisualStudio.LanguageServices" Version="2.11.0-dev" />
+    <PackageReference Update="Microsoft.CodeAnalysis" Version="2.11.0-dev" />
     <PackageReference Update="Microsoft.VisualStudio.IntegrationTest.Utilities" Version="2.6.0-beta1-62113-02" />
     <PackageReference Update="Microsoft.Net.RoslynDiagnostics" Version="2.6.1-beta1-62702-01" />
     

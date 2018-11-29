@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -9,10 +9,13 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
+
 using Microsoft.Build.Execution;
+using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 using Microsoft.VisualStudio.ProjectSystem.VS.Automation;
 using Microsoft.VisualStudio.Threading.Tasks;
+
 using InputTuple = System.Tuple<Microsoft.VisualStudio.ProjectSystem.IProjectSnapshot, Microsoft.VisualStudio.ProjectSystem.IProjectSubscriptionUpdate>;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
@@ -23,27 +26,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         private readonly IUnconfiguredProjectCommonServices _unconfiguredProjectServices;
         private readonly ILanguageServiceHost _languageServiceHost;
         private readonly IActiveConfiguredProjectSubscriptionService _projectSubscriptionService;
+        private readonly ITempPECompiler _compiler;
 
-        //private readonly ITempPECompiler _compiler;
+        // for testing
+        protected VSBuildManager _buildManager;
 
         [ImportingConstructor]
         public TempPEBuildManager(IProjectThreadingService threadingService,
             IUnconfiguredProjectCommonServices unconfiguredProjectServices,
             ILanguageServiceHost languageServiceHost,
-            IActiveConfiguredProjectSubscriptionService projectSubscriptionService
-            //,ITempPECompilerHost compilerHost
+            IActiveConfiguredProjectSubscriptionService projectSubscriptionService,
+            VSLangProj.VSProjectEvents projectEvents,
+            ITempPECompiler compiler
             )
              : base(threadingService.JoinableTaskContext)
         {
             _unconfiguredProjectServices = unconfiguredProjectServices;
             _languageServiceHost = languageServiceHost;
             _projectSubscriptionService = projectSubscriptionService;
-            //_compiler = compiler;
-            BuildManager = new OrderPrecedenceImportCollection<VSLangProj.BuildManager>(projectCapabilityCheckProvider: _unconfiguredProjectServices.Project);
+            _compiler = compiler;
+            _buildManager = (VSBuildManager)projectEvents?.BuildManagerEvents;
         }
-
-        [ImportMany(typeof(VSLangProj.BuildManager))]
-        internal OrderPrecedenceImportCollection<VSLangProj.BuildManager> BuildManager { get; set; } // set is needed for unit tests
 
         protected override Task DisposeCoreAsync(bool initialized)
         {
@@ -68,7 +71,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
         public string[] GetTempPESourceFileNames()
         {
-            return AppliedValue.Value.Inputs.Keys.Select(_unconfiguredProjectServices.Project.MakeRooted).ToArray();
+            return AppliedValue.Value.Inputs.Keys.ToArray();
+        }
+
+        public void TryFireTempPEDirty(string fileName)
+        {
+            _unconfiguredProjectServices.ThreadingService.VerifyOnUIThread();
+
+            DesignTimeInputsItem inputs = AppliedValue.Value;
+            if (inputs.SharedInputs.Contains(fileName))
+            {
+                foreach (string item in inputs.Inputs.Keys)
+                {
+                    _buildManager.OnDesignTimeOutputDirty(item);
+                }
+            }
+            else if (inputs.Inputs.ContainsKey(fileName))
+            {
+                _buildManager.OnDesignTimeOutputDirty(fileName);
+            }
         }
 
         public async Task<string> GetTempPEDescriptionXmlAsync(string fileName)
@@ -93,17 +114,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             string outputPath = Path.Combine(basePath, objPath, "TempPE");
 
             var files = new HashSet<string>(inputs.SharedInputs.Count + 1, StringComparers.Paths);
-            files.AddRange(inputs.SharedInputs.Select(i => Path.Combine(basePath, i)));
-            files.Add(Path.Combine(basePath, fileName));
+            files.AddRange(inputs.SharedInputs.Select(UnconfiguredProject.MakeRooted));
+            files.Add(UnconfiguredProject.MakeRooted(fileName));
 
-            string outputFileName = fileName + ".dll";
+            string outputFileName = fileName.Replace('\\', '.') + ".dll";
 
-            // var result = await _compiler.CompileAsync(_languageServiceHost.ActiveProjectContext, Path.Combine(outputPath, outputFileName), files, token);
-            //
-            // if (!result)
-            // {
-            //     return null;
-            // }
+            var result = await _compiler.CompileAsync(_languageServiceHost.ActiveProjectContext, Path.Combine(outputPath, outputFileName), files, token);
+            if (!result)
+            {
+                // if the compilation failed we should clean up any old TempPE outputs lest a designer gets the wrong types
+                try
+                {
+                    if (File.Exists(outputFileName))
+                    {
+                        File.Delete(outputFileName);
+                    }
+                }
+                catch (IOException)
+                { }
+                return null;
+            }
 
             // VSTypeResolutionService is the only consumer, and it only uses the codebase element so just default most of them
             return $@"<root>
@@ -163,13 +193,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             }, value.DataSourceVersions);
 
             // Fire off the events
-            var buildManager = BuildManager.First().Value as VSBuildManager;
             if (value.AddedSharedItems.Count > 0)
             {
                 // if the shared items changed then all TempPEs are dirty, because shared items are included in all TempPEs
                 foreach (string item in designTimeInputs.Keys)
                 {
-                    buildManager.OnDesignTimeOutputDirty(item);
+                    _buildManager.OnDesignTimeOutputDirty(item);
                 }
             }
             else
@@ -177,12 +206,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                 // otherwise just the ones that we've added are dirty
                 foreach (string item in addedDesignTimeInputs)
                 {
-                    buildManager.OnDesignTimeOutputDirty(item);
+                    _buildManager.OnDesignTimeOutputDirty(item);
                 }
             }
             foreach (string item in removedDesignTimeInputs)
             {
-                buildManager.OnDesignTimeOutputDeleted(item);
+                _buildManager.OnDesignTimeOutputDeleted(item);
             }
 
             return Task.CompletedTask;

@@ -22,5 +22,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         /// <returns>An XML string formatted the same as the return from <see cref="VSLangProj.BuildManager.BuildDesignTimeOutput(string)"/></returns>
         /// <remarks>The XML format is documented at https://docs.microsoft.com/en-us/dotnet/api/vslangproj.buildmanager.builddesigntimeoutput </remarks>
         Task<string> GetTempPEDescriptionXmlAsync(string sourceFile);
+        
+        /// <summary>
+        /// Fires the TempPEDirty event if the source file is a file that the ITempPEBuildManager cares about
+        /// </summary>
+        /// <param name="sourceFile">The evaluated include of any source file</param>
+        void TryFireTempPEDirty(string sourceFile);
     }
 }

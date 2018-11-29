@@ -485,10 +485,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.TempPE
                 : base(IProjectThreadingServiceFactory.Create(),
                       IUnconfiguredProjectCommonServicesFactory.Create(threadingService: IProjectThreadingServiceFactory.Create()),
                       ILanguageServiceHostFactory.Create(),
-                      IActiveConfiguredProjectSubscriptionServiceFactory.Create())
+                      IActiveConfiguredProjectSubscriptionServiceFactory.Create(), 
+                      null,
+                      null)
             {
-                BuildManager = new OrderPrecedenceImportCollection<VSLangProj.BuildManager>(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst);
-                BuildManager.Add(new TestBuildManager(this));
+                _buildManager = new TestBuildManager(this);
             }
             private async Task InitializeAsync()
             {
