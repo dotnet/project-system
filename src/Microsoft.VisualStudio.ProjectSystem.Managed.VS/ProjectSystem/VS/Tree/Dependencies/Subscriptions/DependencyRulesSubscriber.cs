@@ -263,19 +263,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
                 ImmutableDictionary<ITargetFramework, IDependenciesChanges> changes = changesBuilder.TryBuildChanges();
 
-                if (changes == null)
+                if (changes != null)
                 {
-                    // TODO should we prevent the event from being raised when there are no changes?
-                    changes = ImmutableDictionary<ITargetFramework, IDependenciesChanges>.Empty;
+                    // Notify subscribers of a change in dependency data
+                    DependenciesChanged?.Invoke(
+                        this,
+                        new DependencySubscriptionChangedEventArgs(
+                            currentAggregateContext.ActiveTargetFramework,
+                            catalogSnapshot,
+                            changes));
                 }
-
-                // Notify subscribers of a change in dependency data
-                DependenciesChanged?.Invoke(
-                    this,
-                    new DependencySubscriptionChangedEventArgs(
-                        currentAggregateContext.ActiveTargetFramework,
-                        catalogSnapshot,
-                        changes));
             }
 
             // record all the rules that have occurred
