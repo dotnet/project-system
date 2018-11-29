@@ -111,8 +111,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.TempPE
             var result = await mgr.TestProcessAsync(snapshot, update);
 
             Assert.Equal(2, result.Inputs.Count);
-            Assert.Contains("Resources1.Designer.cs", result.Inputs.Keys);
-            Assert.Contains("Resources2.Designer.cs", result.Inputs.Keys);
+            Assert.Contains("Resources1.Designer.cs", result.Inputs);
+            Assert.Contains("Resources2.Designer.cs", result.Inputs);
             Assert.Single(result.SharedInputs);
             Assert.Equal("Settings.Designer.cs", result.SharedInputs.First());
             Assert.Equal(2, mgr.DirtyItems.Count);
@@ -153,7 +153,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.TempPE
 
             // One file should have been added
             Assert.Single(result.Inputs);
-            Assert.Equal("Resources1.Designer.cs", result.Inputs.First().Key);
+            Assert.Equal("Resources1.Designer.cs", result.Inputs.First());
             Assert.Empty(result.SharedInputs);
             Assert.Single(mgr.DirtyItems);
             Assert.Equal("Resources1.Designer.cs", mgr.DirtyItems.First());
@@ -193,7 +193,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.TempPE
 
             // One file should have been added
             Assert.Single(result.Inputs);
-            Assert.Equal("Resources3.Designer.cs", result.Inputs.First().Key);
+            Assert.Equal("Resources3.Designer.cs", result.Inputs.First());
             Assert.Empty(result.SharedInputs);
             Assert.Single(mgr.DirtyItems);
             Assert.Equal("Resources3.Designer.cs", mgr.DirtyItems.First());
@@ -231,7 +231,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.TempPE
 
             // One file should have been added
             Assert.Single(result.Inputs);
-            Assert.Equal("Resources1.Designer.cs", result.Inputs.First().Key);
+            Assert.Equal("Resources1.Designer.cs", result.Inputs.First());
             Assert.Empty(result.SharedInputs);
             Assert.Single(mgr.DirtyItems);
             Assert.Equal("Resources1.Designer.cs", mgr.DirtyItems.First());
@@ -307,7 +307,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.TempPE
 
             // One file should have been added
             Assert.Single(result.Inputs);
-            Assert.Equal("Resources1.Designer.cs", result.Inputs.First().Key);
+            Assert.Equal("Resources1.Designer.cs", result.Inputs.First());
             Assert.Empty(result.SharedInputs);
             Assert.Empty(mgr.DirtyItems);
             Assert.Empty(mgr.DeletedItems);
@@ -384,7 +384,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.TempPE
 
             // One file should have been added
             Assert.Single(result.Inputs);
-            Assert.Equal("Resources1.Designer.cs", result.Inputs.First().Key);
+            Assert.Equal("Resources1.Designer.cs", result.Inputs.First());
             Assert.Single(result.SharedInputs);
             Assert.Equal("Settings.Designer.cs", result.SharedInputs.First());
             Assert.Single(mgr.DirtyItems);
@@ -426,8 +426,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.TempPE
 
             // Should be two design time files now
             Assert.Equal(2, result.Inputs.Count);
-            Assert.Contains("Resources1.Designer.cs", result.Inputs.Keys);
-            Assert.Contains("Resources2.Designer.cs", result.Inputs.Keys);
+            Assert.Contains("Resources1.Designer.cs", result.Inputs);
+            Assert.Contains("Resources2.Designer.cs", result.Inputs);
             Assert.Empty(result.SharedInputs);
             Assert.Single(mgr.DirtyItems);
             Assert.Equal("Resources2.Designer.cs", mgr.DirtyItems.First());
@@ -467,7 +467,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.TempPE
 
             // One file should have been removed
             Assert.Single(result.Inputs);
-            Assert.Equal("Resources1.Designer.cs", result.Inputs.First().Key);
+            Assert.Equal("Resources1.Designer.cs", result.Inputs.First());
             Assert.Empty(result.SharedInputs);
             Assert.Empty(mgr.DirtyItems);
             Assert.Single(mgr.DeletedItems);

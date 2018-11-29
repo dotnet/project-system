@@ -14,14 +14,13 @@ using Microsoft.Build.Execution;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 using Microsoft.VisualStudio.ProjectSystem.VS.Automation;
-using Microsoft.VisualStudio.Threading.Tasks;
 
 using InputTuple = System.Tuple<Microsoft.VisualStudio.ProjectSystem.IProjectSnapshot, Microsoft.VisualStudio.ProjectSystem.IProjectSubscriptionUpdate>;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 {
     [Export(typeof(ITempPEBuildManager))]
-    internal class TempPEBuildManager : UnconfiguredProjectHostBridge<IProjectVersionedValue<InputTuple>, DesignTimeInputsDelta, IProjectVersionedValue<DesignTimeInputsItem>>, ITempPEBuildManager, IDisposable
+    internal class TempPEBuildManager : UnconfiguredProjectHostBridge<IProjectVersionedValue<InputTuple>, DesignTimeInputsDelta, IProjectVersionedValue<DesignTimeInputsItem>>, ITempPEBuildManager
     {
         private readonly IUnconfiguredProjectCommonServices _unconfiguredProjectServices;
         private readonly ILanguageServiceHost _languageServiceHost;
@@ -48,20 +47,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             _buildManager = (VSBuildManager)projectEvents?.BuildManagerEvents;
         }
 
-        protected override Task DisposeCoreAsync(bool initialized)
-        {
-            if (AppliedValue != null)
-            {
-                // dispose any of our cancellation series we still have
-                foreach (CancellationSeries item in AppliedValue.Value.Inputs.Values)
-                {
-                    item?.Dispose();
-                }
-            }
-
-            return base.DisposeCoreAsync(initialized);
-        }
-
         [ProjectAutoLoad]
         [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
         public Task OnProjectLoaded()
@@ -71,7 +56,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
         public string[] GetTempPESourceFileNames()
         {
-            return AppliedValue.Value.Inputs.Keys.ToArray();
+            return AppliedValue.Value.Inputs.ToArray();
         }
 
         public void TryFireTempPEDirty(string fileName)
@@ -81,12 +66,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             DesignTimeInputsItem inputs = AppliedValue.Value;
             if (inputs.SharedInputs.Contains(fileName))
             {
-                foreach (string item in inputs.Inputs.Keys)
+                foreach (string item in inputs.Inputs)
                 {
                     _buildManager.OnDesignTimeOutputDirty(item);
                 }
             }
-            else if (inputs.Inputs.ContainsKey(fileName))
+            else if (inputs.Inputs.Contains(fileName))
             {
                 _buildManager.OnDesignTimeOutputDirty(fileName);
             }
@@ -94,19 +79,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
         public async Task<string> GetTempPEDescriptionXmlAsync(string fileName)
         {
+            await _unconfiguredProjectServices.ThreadingService.SwitchToUIThread();
+
             DesignTimeInputsItem inputs = AppliedValue.Value;
             if (fileName == null)
                 throw new ArgumentException("Must supply a file to build", nameof(fileName));
 
-            if (!inputs.Inputs.TryGetValue(fileName, out CancellationSeries cancellation))
+            if (!inputs.Inputs.Contains(fileName))
                 throw new ArgumentException("FileName supplied must be one of the DesignTime source files", nameof(fileName));
-
-            // getting the next token will automatically cancel any current compilation that is already happening for this file
-            CancellationToken token = cancellation.CreateNext();
-
-            await _unconfiguredProjectServices.ThreadingService.SwitchToUIThread(token);
-
-            token.ThrowIfCancellationRequested();
 
             ConfiguredBrowseObject browseObject = await _unconfiguredProjectServices.ActiveConfiguredProjectProperties.GetConfiguredBrowseObjectPropertiesAsync();
             string basePath = await browseObject.FullPath.GetValueAsPathAsync(false, false);
@@ -119,10 +99,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
             string outputFileName = fileName.Replace('\\', '.') + ".dll";
 
-            var result = await _compiler.CompileAsync(_languageServiceHost.ActiveProjectContext, Path.Combine(outputPath, outputFileName), files, token);
+            bool result = await _compiler.CompileAsync(_languageServiceHost.ActiveProjectContext, Path.Combine(outputPath, outputFileName), files, default);
+            // if the compilation failed or was cancelled we should clean up any old TempPE outputs lest a designer gets the wrong types
             if (!result)
             {
-                // if the compilation failed we should clean up any old TempPE outputs lest a designer gets the wrong types
                 try
                 {
                     if (File.Exists(outputFileName))
@@ -135,7 +115,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                 return null;
             }
 
-            // VSTypeResolutionService is the only consumer, and it only uses the codebase element so just default most of them
+            // VSTypeResolutionService is the only consumer, and it only uses the codebase element so it's fine to default most of these (VC++ does the same)
             return $@"<root>
   <Application private_binpath = ""{outputPath}""/>
   <Assembly
@@ -163,9 +143,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             foreach (string item in value.AddedItems)
             {
                 // If a property changes we might be asked to add items that already exist, so we just ignore them as we're happy using our existing CancellationSeries
-                if (!designTimeInputs.ContainsKey(item))
+                if (designTimeInputs.Add(item))
                 {
-                    designTimeInputs.Add(item, new CancellationSeries());
                     addedDesignTimeInputs.Add(item);
                 }
             }
@@ -177,10 +156,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
             foreach (string item in value.RemovedItems)
             {
-                if (designTimeInputs.TryGetValue(item, out CancellationSeries series))
+                if (designTimeInputs.Remove(item))
                 {
-                    series?.Dispose();
-                    designTimeInputs.Remove(item);
                     removedDesignTimeInputs.Add(item);
                 }
                 designTimeSharedInputs.Remove(item);
@@ -196,7 +173,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             if (value.AddedSharedItems.Count > 0)
             {
                 // if the shared items changed then all TempPEs are dirty, because shared items are included in all TempPEs
-                foreach (string item in designTimeInputs.Keys)
+                foreach (string item in designTimeInputs)
                 {
                     _buildManager.OnDesignTimeOutputDirty(item);
                 }
@@ -329,7 +306,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
     internal class DesignTimeInputsItem
     {
-        public ImmutableDictionary<string, CancellationSeries> Inputs { get; set; } = ImmutableDictionary.Create<string, CancellationSeries>(StringComparers.Paths);
+        public ImmutableHashSet<string> Inputs { get; set; } = ImmutableHashSet.Create(StringComparers.Paths);
         public ImmutableHashSet<string> SharedInputs { get; set; } = ImmutableHashSet.Create(StringComparers.Paths);
     }
 
