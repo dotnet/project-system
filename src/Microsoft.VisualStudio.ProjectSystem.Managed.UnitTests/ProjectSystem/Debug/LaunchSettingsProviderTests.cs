@@ -540,6 +540,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                     return ImmutableStringDictionary<object>.EmptyOrdinal.Add("iisSettings", iisSettings);
                 });
 
+                // Setup SCC to verify it is called before modifying the file
+                var mockScc = new Mock<ISourceCodeControlIntegration>(MockBehavior.Strict);
+                mockScc.Setup(m => m.CanChangeProjectFilesAsync(It.IsAny<IReadOnlyCollection<string>>())).Returns(Task.FromResult(true));
+                var sccProviders = new OrderPrecedenceImportCollection<ISourceCodeControlIntegration>(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst, (UnconfiguredProject)null);
+                sccProviders.Add(mockScc.Object);
+                provider.SetSourceControlProviderCollection(sccProviders);
+
                 await provider.UpdateAndSaveSettingsAsync(testSettings.Object);
 
                 // Check disk contents
@@ -551,6 +558,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
                 // Verify the activeProfile is set to the first one since no existing snapshot
                 Assert.Equal("IIS Express", provider.CurrentSnapshot.ActiveProfile.Name);
+
+                mockScc.Verify();
             }
         }
 
@@ -582,6 +591,43 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
                 // Verify the activeProfile hasn't changed
                 Assert.Equal("bar", provider.CurrentSnapshot.ActiveProfile.Name);
+            }
+        }
+
+        [Fact]
+        public async Task UpdateAndSaveProfilesAsync_NoPersist()
+        {
+            var moqFS = new IFileSystemMock();
+            using (var provider = GetLaunchSettingsProvider(moqFS, "Properties", "bar"))
+            {
+                var existingSettings = new Mock<ILaunchSettings>();
+                existingSettings.Setup(m => m.ActiveProfile).Returns(new LaunchProfile() { Name = "bar" });
+                provider.SetCurrentSnapshot(existingSettings.Object);
+                var profiles = new List<ILaunchProfile>()
+                {
+                    {new LaunchProfile() { Name = "IIS Express", CommandName="IISExpress", LaunchBrowser=true } },
+                    {new LaunchProfile() { Name = "bar", ExecutablePath ="c:\\test\\project\\bin\\test.exe", CommandLineArgs=@"-someArg"} }
+                };
+
+                var testSettings = new Mock<ILaunchSettings>();
+                testSettings.Setup(m => m.ActiveProfile).Returns(() => { return profiles[0]; });
+                testSettings.Setup(m => m.Profiles).Returns(() =>
+                {
+                    return profiles.ToImmutableList();
+                });
+
+                testSettings.Setup(m => m.GlobalSettings).Returns(() => ImmutableStringDictionary<object>.EmptyOrdinal);
+
+                var mockScc = new Mock<ISourceCodeControlIntegration>(MockBehavior.Strict);
+                var sccProviders = new OrderPrecedenceImportCollection<ISourceCodeControlIntegration>(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst, (UnconfiguredProject)null);
+                sccProviders.Add(mockScc.Object);
+                provider.SetSourceControlProviderCollection(sccProviders);
+
+                await provider.UpdateAndSaveSettingsInternalAsyncTest(testSettings.Object, persistToDisk: false);
+
+                // Verifify the settings haven't been persisted and the sccProvider wasn't called to checkout the file
+                Assert.False(moqFS.FileExists(provider.LaunchSettingsFile));
+                mockScc.Verify();
             }
         }
 
@@ -928,6 +974,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         public void SetCurrentSnapshot(ILaunchSettings profiles) { CurrentSnapshot = profiles; }
         public Task<LaunchSettingsData> ReadSettingsFileFromDiskTestAsync() { return ReadSettingsFileFromDiskAsync(); }
         public Task SaveSettingsToDiskAsyncTest(ILaunchSettings curSettings) { return SaveSettingsToDiskAsync(curSettings); }
+        public Task UpdateAndSaveSettingsInternalAsyncTest(ILaunchSettings curSettings, bool persistToDisk) { return UpdateAndSaveSettingsInternalAsync(curSettings, persistToDisk); }
+
         public DateTime LastSettingsFileSyncTimeTest { get { return LastSettingsFileSyncTime; } set { LastSettingsFileSyncTime = value; } }
         public Task UpdateProfilesAsyncTest(string activeProfile) { return UpdateProfilesAsync(activeProfile); }
         public void SetIgnoreFileChanges(bool value) { IgnoreFileChanges = value; }
@@ -945,6 +993,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         internal void SetSettingsProviderCollection(OrderPrecedenceImportCollection<ILaunchSettingsSerializationProvider, IJsonSection> settingsProviders)
         {
             JsonSerializationProviders = settingsProviders;
+        }
+
+        internal void SetSourceControlProviderCollection(OrderPrecedenceImportCollection<ISourceCodeControlIntegration> sccProviders)
+        {
+            SourceControlIntegrations = sccProviders;
         }
     }
 
