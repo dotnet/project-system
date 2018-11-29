@@ -182,10 +182,12 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                     ' Don't process if Ctrl+Tab, it is reserved for navigation between editor pages
                     If (keyData And Keys.Control) <> Keys.Control Then
                         Dim parent As ProjectDesignerTabControl = ParentTabControl
+                        Dim regularTab As Boolean = (keyData And Keys.Shift) <> Keys.Shift
+
                         If parent IsNot Nothing Then
                             ' Return focus back to the active property page
                             parent.OnItemClick(parent.SelectedItem, reactivatePage:=True)
-
+                            parent.SetControl(regularTab)
                         End If
                         Return True
                     End If

@@ -470,6 +470,9 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             SelectedItem = item
         End Sub
 
+        Friend Overridable Sub SetControl(firstControl As Boolean)
+
+        End Sub
 
         ''' <summary>
         ''' Occurs when the mouse enters a button's area
