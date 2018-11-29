@@ -38,8 +38,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         public IDependenciesChanges Build()
         {
             return new DependenciesChanges(
-                ImmutableArray.CreateRange(_added),
-                ImmutableArray.CreateRange(_removed));
+                _added   == null ? (IImmutableList<IDependencyModel>)ImmutableList<IDependencyModel>.Empty : ImmutableArray.CreateRange(_added),
+                _removed == null ? (IImmutableList<IDependencyModel>)ImmutableList<IDependencyModel>.Empty : ImmutableArray.CreateRange(_removed));
         }
 
         private sealed class DependenciesChanges : IDependenciesChanges
