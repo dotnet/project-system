@@ -18,11 +18,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
     internal sealed class DependencySubscriptionChangedEventArgs
     {
-        public DependencySubscriptionChangedEventArgs(DependenciesRuleChangeContext context)
+        public DependencySubscriptionChangedEventArgs(
+            ITargetFramework activeTarget,
+            IProjectCatalogSnapshot catalogs,
+            ImmutableDictionary<ITargetFramework, IDependenciesChanges> changes)
         {
-            ActiveTarget = context.ActiveTarget;
-            Catalogs = context.Catalogs;
-            Changes = context.Changes;
+            ActiveTarget = activeTarget;
+            Catalogs = catalogs;
+            Changes = changes;
         }
 
         public ITargetFramework ActiveTarget { get; }

@@ -73,12 +73,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var catalogs = IProjectCatalogSnapshotFactory.Create();
             var previousSnapshot = TargetedDependenciesSnapshot.CreateEmpty(projectPath, targetFramework, catalogs);
 
-            var changes = new DependenciesChanges();
+            var changes = new DependenciesChangesBuilder();
 
             var snapshot = TargetedDependenciesSnapshot.FromChanges(
                 projectPath,
                 previousSnapshot,
-                changes,
+                changes.Build(),
                 catalogs,
                 ImmutableArray<IDependenciesSnapshotFilter>.Empty,
                 new Dictionary<string, IProjectDependenciesSubTreeProvider>(),
@@ -109,12 +109,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 dependenciesWorld: new [] { dependencyTop1 },
                 topLevelDependencies: new [] { dependencyTop1 });
 
-            var changes = new DependenciesChanges();
+            var changes = new DependenciesChangesBuilder();
 
             var snapshot = TargetedDependenciesSnapshot.FromChanges(
                 projectPath,
                 previousSnapshot,
-                changes,
+                changes.Build(),
                 catalogs,
                 ImmutableArray<IDependenciesSnapshotFilter>.Empty,
                 new Dictionary<string, IProjectDependenciesSubTreeProvider>(),
@@ -156,16 +156,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 icon: KnownMonikers.Uninstall,
                 expandedIcon: KnownMonikers.Uninstall);
 
-            var changes = new DependenciesChanges();
-            changes.IncludeAddedChange(resolvedTop);
-            changes.IncludeAddedChange(unresolved);
+            var changes = new DependenciesChangesBuilder();
+            changes.Added(resolvedTop);
+            changes.Added(unresolved);
 
             const string updatedProjectPath = "updatedProjectPath";
 
             var snapshot = TargetedDependenciesSnapshot.FromChanges(
                 updatedProjectPath,
                 previousSnapshot,
-                changes,
+                changes.Build(),
                 catalogs,
                 ImmutableArray<IDependenciesSnapshotFilter>.Empty,
                 new Dictionary<string, IProjectDependenciesSubTreeProvider>(),
@@ -223,15 +223,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 dependenciesWorld: new [] { dependencyTop1, dependencyChild1 },
                 topLevelDependencies: new [] { dependencyTop1 });
 
-            var changes = new DependenciesChanges();
-            changes.IncludeRemovedChange(dependencyTop1.ProviderType, dependencyTop1.Id);
+            var changes = new DependenciesChangesBuilder();
+            changes.Removed(dependencyTop1.ProviderType, dependencyTop1.Id);
 
             var snapshotFilter = new TestDependenciesSnapshotFilter();
 
             var snapshot = TargetedDependenciesSnapshot.FromChanges(
                 projectPath,
                 previousSnapshot,
-                changes,
+                changes.Build(),
                 catalogs,
                 ImmutableArray.Create<IDependenciesSnapshotFilter>(snapshotFilter),
                 new Dictionary<string, IProjectDependenciesSubTreeProvider>(),
@@ -280,8 +280,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 dependenciesWorld: new [] { dependencyTop1, dependencyChild1 },
                 topLevelDependencies: new [] { dependencyTop1 });
 
-            var changes = new DependenciesChanges();
-            changes.IncludeRemovedChange("Xxx", "topdependency1");
+            var changes = new DependenciesChangesBuilder();
+            changes.Removed("Xxx", "topdependency1");
 
             var addedOnRemove = new TestDependency { Id = "SomethingElse", TopLevel = false };
 
@@ -291,7 +291,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var snapshot = TargetedDependenciesSnapshot.FromChanges(
                 projectPath,
                 previousSnapshot,
-                changes,
+                changes.Build(),
                 catalogs,
                 ImmutableArray.Create<IDependenciesSnapshotFilter>(snapshotFilter),
                 new Dictionary<string, IProjectDependenciesSubTreeProvider>(),
@@ -359,8 +359,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 dependenciesWorld: new [] { dependencyTop1, dependencyChild1 },
                 topLevelDependencies: new [] { dependencyTop1 });
 
-            var changes = new DependenciesChanges();
-            changes.IncludeAddedChange(dependencyModelNew1);
+            var changes = new DependenciesChangesBuilder();
+            changes.Added(dependencyModelNew1);
 
             var snapshotFilter = new TestDependenciesSnapshotFilter()
                 .BeforeAddReject(@"tfm1\xxx\newdependency1");
@@ -368,7 +368,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var snapshot = TargetedDependenciesSnapshot.FromChanges(
                 projectPath,
                 previousSnapshot,
-                changes,
+                changes.Build(),
                 catalogs,
                 ImmutableArray.Create<IDependenciesSnapshotFilter>(snapshotFilter),
                 new Dictionary<string, IProjectDependenciesSubTreeProvider>(),
@@ -429,8 +429,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 dependenciesWorld: new [] { dependencyTop1, dependencyChild1 },
                 topLevelDependencies: new [] { dependencyTop1 });
 
-            var changes = new DependenciesChanges();
-            changes.IncludeAddedChange(dependencyModelNew1);
+            var changes = new DependenciesChangesBuilder();
+            changes.Added(dependencyModelNew1);
 
             var filterAddedDependency = new TestDependency { Id = "unexpected", TopLevel = true };
 
@@ -440,7 +440,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var snapshot = TargetedDependenciesSnapshot.FromChanges(
                 projectPath,
                 previousSnapshot,
-                changes,
+                changes.Build(),
                 catalogs,
                 ImmutableArray.Create<IDependenciesSnapshotFilter>(snapshotFilter),
                 new Dictionary<string, IProjectDependenciesSubTreeProvider>(),
@@ -584,11 +584,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 dependenciesWorld: new [] { dependencyTop1, dependencyChild1, dependencyRemoved1 },
                 topLevelDependencies: new [] { dependencyTop1 });
 
-            var changes = new DependenciesChanges();
-            changes.IncludeAddedChange(dependencyModelAdded1);
-            changes.IncludeAddedChange(dependencyModelAdded2);
-            changes.IncludeAddedChange(dependencyModelAdded3);
-            changes.IncludeRemovedChange("Xxx", "Removeddependency1");
+            var changes = new DependenciesChangesBuilder();
+            changes.Added(dependencyModelAdded1);
+            changes.Added(dependencyModelAdded2);
+            changes.Added(dependencyModelAdded3);
+            changes.Removed("Xxx", "Removeddependency1");
 
             var snapshotFilter = new TestDependenciesSnapshotFilter()
                 .BeforeAddReject(@"tfm1\xxx\addeddependency1")
@@ -599,7 +599,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var snapshot = TargetedDependenciesSnapshot.FromChanges(
                 projectPath,
                 previousSnapshot,
-                changes,
+                changes.Build(),
                 catalogs,
                 ImmutableArray.Create<IDependenciesSnapshotFilter>(snapshotFilter),
                 new Dictionary<string, IProjectDependenciesSubTreeProvider>(),
@@ -671,8 +671,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 dependenciesWorld: new[] { dependencyTopPrevious },
                 topLevelDependencies: new[] { dependencyTopPrevious });
 
-            var changes = new DependenciesChanges();
-            changes.IncludeAddedChange(dependencyModelTopAdded);
+            var changes = new DependenciesChangesBuilder();
+            changes.Added(dependencyModelTopAdded);
 
             var snapshotFilter = new TestDependenciesSnapshotFilter()
                     .BeforeAddAccept(@"tfm1\xxx\topdependency1", dependencyTopUpdated);
@@ -680,7 +680,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var snapshot = TargetedDependenciesSnapshot.FromChanges(
                 projectPath,
                 previousSnapshot,
-                changes,
+                changes.Build(),
                 catalogs,
                 ImmutableArray.Create<IDependenciesSnapshotFilter>(snapshotFilter),
                 new Dictionary<string, IProjectDependenciesSubTreeProvider>(),

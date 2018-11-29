@@ -238,10 +238,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     return;
                 }
 
-                // Get the subclass-specific context that will aggregate data during the processing of rule data by handlers.
-                var ruleChangeContext = new DependenciesRuleChangeContext(currentAggregateContext.ActiveTargetFramework, catalogSnapshot);
+                // Create an object to track dependency changes.
+                var changesBuilder = new CrossTargetDependenciesChangesBuilder();
 
-                // Give each handler a chance to modify the rule change context.
+                // Give each handler a chance to register dependency changes.
                 foreach (IDependenciesRuleHandler handler in handlers)
                 {
                     ImmutableHashSet<string> handlerRules = handler.GetRuleNames(handlerType);
@@ -257,12 +257,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                         // type (T). For example, DependencyRulesSubscriber uses DependenciesRuleChangeContext
                         // which holds IDependencyModel, so its IDependenciesRuleHandler implementations will
                         // produce IDependencyModel objects in response to rule changes.
-                        handler.Handle(projectChanges, targetFrameworkToUpdate, ruleChangeContext);
+                        handler.Handle(projectChanges, targetFrameworkToUpdate, changesBuilder);
                     }
                 }
 
-                // Notify the subclass that their rule change context object is ready for finalization.
-                DependenciesChanged?.Invoke(this, new DependencySubscriptionChangedEventArgs(ruleChangeContext));
+                ImmutableDictionary<ITargetFramework, IDependenciesChanges> changes = changesBuilder.TryBuildChanges();
+
+                if (changes == null)
+                {
+                    // TODO should we prevent the event from being raised when there are no changes?
+                    changes = ImmutableDictionary<ITargetFramework, IDependenciesChanges>.Empty;
+                }
+
+                // Notify subscribers of a change in dependency data
+                DependenciesChanged?.Invoke(
+                    this,
+                    new DependencySubscriptionChangedEventArgs(
+                        currentAggregateContext.ActiveTargetFramework,
+                        catalogSnapshot,
+                        changes));
             }
 
             // record all the rules that have occurred

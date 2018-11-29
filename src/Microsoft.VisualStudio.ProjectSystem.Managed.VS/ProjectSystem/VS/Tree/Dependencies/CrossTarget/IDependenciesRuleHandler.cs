@@ -20,11 +20,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
         /// <summary>
         ///     Handles the specified set of changes to a rule, and applies them
-        ///     to the given <see cref="DependenciesRuleChangeContext"/>.
+        ///     to the given <see cref="CrossTargetDependenciesChangesBuilder"/>.
         /// </summary>
         void Handle(
             IImmutableDictionary<string, IProjectChangeDescription> changesByRuleName,
             ITargetFramework targetFramework,
-            DependenciesRuleChangeContext ruleChangeContext);
+            CrossTargetDependenciesChangesBuilder changesBuilder);
     }
 }
