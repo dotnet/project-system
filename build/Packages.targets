@@ -87,7 +87,7 @@
     <PackageReference Update="Microsoft.VisualStudio.Text.UI" Version="16.0.177-g0ae5fa46a1" />
     <PackageReference Update="Microsoft.VisualStudio.Text.UI.Wpf" Version="16.0.177-g0ae5fa46a1" />
     <PackageReference Update="Microsoft.VisualStudio.Text.Logic" Version="16.0.177-g0ae5fa46a1" />
-    
+
     <PackageReference Update="Microsoft.Test.Apex.VisualStudio" Version="16.0.28117-pre" />
     
     <!-- CPS -->

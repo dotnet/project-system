@@ -6,12 +6,10 @@
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="System.Configuration" />
     <ProjectReference Include="..\DeployIntegrationDependencies\DeployIntegrationDependencies.csproj" ReferenceOutputAssembly="false" />
     <PackageReference Include="Microsoft.Test.Apex.VisualStudio" />
     <PackageReference Include="Microsoft.VisualStudio.Composition" />
-  </ItemGroup>
-  <ItemGroup>
     <Reference Include="System.Configuration" />
-    <PackageReference Include="Microsoft.VisualStudio.Composition" />
   </ItemGroup>
 </Project>
