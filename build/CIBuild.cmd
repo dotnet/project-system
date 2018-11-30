@@ -8,6 +8,12 @@ if "%1" == "-configuration" if "%3" == "-prepareMachine" (
   
   echo Installing dotnet ...
   "%~dp0..\artifacts\%2\tmp\dotnet-sdk-2.1.403-win-x64.exe" /install /quiet /norestart /log "%~dp0..\artifacts\%2\log\cli_install.log"
+  
+  echo Downloading .NET Framework 4.7.2 Targeting Pack ...
+  powershell -NoProfile -ExecutionPolicy Bypass -Command "((New-Object System.Net.WebClient).DownloadFile('https://download.microsoft.com/download/3/B/F/3BFB9C35-405D-45DF-BDAF-0EB57D047888/NDP472-DevPack-ENU.exe', '%~dp0..\artifacts\%2\tmp\NDP472-DevPack-ENU.exe'))"
+  
+  echo Installing .NET Framework 4.7.2 Targeting Pack ...
+  "%~dp0..\artifacts\%2\tmp\NDP472-DevPack-ENU.exe" /install /quiet /norestart /log "%~dp0..\artifacts\%2\log\net472sdk_install.log"
 )
 
 powershell -ExecutionPolicy ByPass %~dp0Build.ps1 -restore -build -test -pack -ci %*
