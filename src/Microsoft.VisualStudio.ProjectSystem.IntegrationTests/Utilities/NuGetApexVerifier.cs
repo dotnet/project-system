@@ -14,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// <summary>
         /// Validate whether a NuGet package is installed
         /// </summary>
-        /// <param name="project">project name</param>
+        /// <param name="projectName">project name</param>
         /// <param name="packageName">NuGet package name</param>
         /// <returns>True if the package is installed; otherwise false</returns>
         public bool PackageIsInstalled(string projectName, string packageName)
@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// <summary>
         /// Validate whether a NuGet package is installed
         /// </summary>
-        /// <param name="project">project name</param>
+        /// <param name="projectName">project name</param>
         /// <param name="packageName">NuGet package name</param>
         /// <param name="packageVersion">NuGet package version</param>
         /// <returns>True if the package is installed; otherwise false</returns>
@@ -39,7 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// <summary>
         /// Validate whether a NuGet package is not installed
         /// </summary>
-        /// <param name="project">Project name</param>
+        /// <param name="projectName">Project name</param>
         /// <param name="packageName">NuGet package name</param>
         /// <returns>True if the package is not installed; otherwise false</returns>
         public bool PackageIsNotInstalled(string projectName, string packageName)
@@ -51,8 +51,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// <summary>
         /// Validate whether specific version of a NuGet package is not installed
         /// </summary>
-        /// <param name="project">Project name</param>
+        /// <param name="projectName">Project name</param>
         /// <param name="packageName">NuGet package name</param>
+        /// <param name="packageVersion">NuGet package version</param>
         /// <returns>True if the package is not installed; otherwise false</returns>
         public bool PackageIsNotInstalled(string projectName, string packageName, string packageVersion)
         {
