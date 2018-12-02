@@ -37,6 +37,7 @@
       <DataSource Persistence="ProjectFile" SourceOfDefaultValue="AfterContext" HasConfigurationCondition="False" />
     </BoolProperty.DataSource>
   </BoolProperty>
+  <BoolProperty Name="RunCodeAnalysis" Visible="False" />
   <BoolProperty Name="Prefer32Bit" Visible="False"/>
   <BoolProperty Name="AllowUnsafeBlocks"  Default="False"  Visible="False"/>
   <BoolProperty Name="Optimize" Visible="False"/>

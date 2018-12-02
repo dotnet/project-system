@@ -17,34 +17,32 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
     [Export(typeof(IDependenciesSnapshotFilter))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
     [Order(Order)]
-    internal class ImplicitTopLevelDependenciesSnapshotFilter : DependenciesSnapshotFilterBase
+    internal sealed class ImplicitTopLevelDependenciesSnapshotFilter : DependenciesSnapshotFilterBase
     {
         public const int Order = 130;
 
-        public override IDependency BeforeAdd(
+        public override void BeforeAddOrUpdate(
             string projectPath,
             ITargetFramework targetFramework,
             IDependency dependency,
-            ImmutableDictionary<string, IDependency>.Builder worldBuilder,
-            ImmutableHashSet<IDependency>.Builder topLevelBuilder,
             IReadOnlyDictionary<string, IProjectDependenciesSubTreeProvider> subTreeProviderByProviderType,
             IImmutableSet<string> projectItemSpecs,
-            out bool filterAnyChanges)
+            IAddDependencyContext context)
         {
-            filterAnyChanges = false;
-
             if (!dependency.TopLevel
                 || dependency.Implicit
                 || !dependency.Resolved
                 || !dependency.Flags.Contains(DependencyTreeFlags.GenericDependencyFlags))
             {
-                return dependency;
+                context.Accept(dependency);
+                return;
             }
 
             if (projectItemSpecs == null)
             {
                 // No data, so don't update
-                return dependency;
+                context.Accept(dependency);
+                return;
             }
 
             if (!projectItemSpecs.Contains(dependency.OriginalItemSpec))
@@ -57,14 +55,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
                         .WithIcon(internalProvider.GetImplicitIcon())
                         .WithExpandedIcon(internalProvider.GetImplicitIcon());
 
-                    filterAnyChanges = true;
-                    return dependency.SetProperties(
+                    context.Accept(dependency.SetProperties(
                         iconSet: implicitIconSet,
-                        isImplicit: true);
+                        isImplicit: true));
+                    return;
                 }
             }
 
-            return dependency;
+            context.Accept(dependency);
         }
     }
 }

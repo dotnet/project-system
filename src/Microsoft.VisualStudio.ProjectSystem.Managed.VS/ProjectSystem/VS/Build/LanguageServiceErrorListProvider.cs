@@ -24,6 +24,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         private readonly ILanguageServiceHost _host;
         private IVsLanguageServiceBuildErrorReporter2 _languageServiceBuildErrorReporter;
 
+        /// <remarks>
+        /// <see cref="UnconfiguredProject"/> must be imported in the contructor in order for scope of this class' export to be correct.
+        /// </remarks>
         [ImportingConstructor]
         public LanguageServiceErrorListProvider(UnconfiguredProject project, ILanguageServiceHost host)
         {

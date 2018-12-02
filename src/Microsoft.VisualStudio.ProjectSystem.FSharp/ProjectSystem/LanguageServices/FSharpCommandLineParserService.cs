@@ -7,6 +7,7 @@ using System.ComponentModel.Composition;
 using System.IO;
 
 using Microsoft.CodeAnalysis;
+using Microsoft.VisualStudio.Text;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
@@ -37,8 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             foreach (string commandLineArgument in arguments)
             {
-                string[] args = commandLineArgument.Split(';');
-                foreach (string arg in args)
+                foreach (string arg in new LazyStringSplit(commandLineArgument, ';'))
                 {
                     if (arg.StartsWith(HyphenReferencePrefix))
                     {

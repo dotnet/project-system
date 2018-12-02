@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+using Microsoft.VisualStudio.Text;
+
 namespace Microsoft.VisualStudio.ProjectSystem.Properties.Package
 {
     internal abstract class BaseVersionValueProvider : InterceptingPropertyValueProviderBase
@@ -23,7 +25,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Package
             }
 
             // Ignore the semantic version suffix (e.g. "1.0.0-beta1" => "1.0.0")
-            versionStr = versionStr.Split('-')[0];
+            versionStr = new LazyStringSplit(versionStr, '-').First();
+
             return Version.TryParse(versionStr, out Version version) ? version : DefaultVersion;
         }
 

@@ -31,7 +31,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
         [ImportingConstructor]
         public DependencySharedProjectsSubscriber(
-            IUnconfiguredProjectCommonServices commonServices,
             [Import(ExportContractNames.Scopes.UnconfiguredProject)] IProjectAsynchronousTasksService tasksService,
             IDependenciesSnapshotProvider dependenciesSnapshotProvider)
             : base(synchronousDisposal: true)
@@ -136,20 +135,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             //       should be able to run concurrently.
             using (await _gate.DisposableWaitAsync())
             {
-                // Get the inner workspace project context to update for this change.
-                ITargetedProjectContext projectContextToUpdate = currentAggregateContext
-                    .GetInnerProjectContext(projectUpdate.ProjectConfiguration, out bool isActiveContext);
+                // Get the target framework to update for this change.
+                ITargetFramework targetFrameworkToUpdate = currentAggregateContext.GetProjectFramework(projectUpdate.ProjectConfiguration);
 
-                if (projectContextToUpdate == null)
+                if (targetFrameworkToUpdate == null)
                 {
                     return;
                 }
 
                 var dependencyChangeContext = new DependenciesRuleChangeContext(
-                    currentAggregateContext.ActiveProjectContext.TargetFramework, 
+                    currentAggregateContext.ActiveTargetFramework, 
                     catalogs);
 
-                ProcessSharedProjectsUpdates(sharedProjectsUpdate, projectContextToUpdate, dependencyChangeContext);
+                ProcessSharedProjectsUpdates(sharedProjectsUpdate, targetFrameworkToUpdate, dependencyChangeContext);
 
                 if (dependencyChangeContext.AnyChanges)
                 {
@@ -160,15 +158,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
         private void ProcessSharedProjectsUpdates(
             IProjectSharedFoldersSnapshot sharedFolders,
-            ITargetedProjectContext targetContext,
+            ITargetFramework targetFramework,
             DependenciesRuleChangeContext dependencyChangeContext)
         {
             Requires.NotNull(sharedFolders, nameof(sharedFolders));
-            Requires.NotNull(targetContext, nameof(targetContext));
+            Requires.NotNull(targetFramework, nameof(targetFramework));
             Requires.NotNull(dependencyChangeContext, nameof(dependencyChangeContext));
 
             IDependenciesSnapshot snapshot = _dependenciesSnapshotProvider.CurrentSnapshot;
-            if (!snapshot.Targets.TryGetValue(targetContext.TargetFramework, out ITargetedDependenciesSnapshot targetedSnapshot))
+            if (!snapshot.Targets.TryGetValue(targetFramework, out ITargetedDependenciesSnapshot targetedSnapshot))
             {
                 return;
             }
@@ -189,7 +187,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                     isResolved: true,
                     isImplicit: false,
                     properties: ImmutableStringDictionary<string>.EmptyOrdinal);
-                dependencyChangeContext.IncludeAddedChange(targetContext.TargetFramework, added);
+                dependencyChangeContext.IncludeAddedChange(targetFramework, added);
             }
 
             // process removed nodes
@@ -201,7 +199,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                 if (exists)
                 {
                     dependencyChangeContext.IncludeRemovedChange(
-                        targetContext.TargetFramework, 
+                        targetFramework, 
                         ProjectRuleHandler.ProviderTypeString, 
                         dependencyId: removedSharedImportPath);
                 }

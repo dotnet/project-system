@@ -76,6 +76,24 @@ namespace Microsoft.VisualStudio.Build
         }
 
         [Fact]
+        public void GetPropertyValues_WhiteSpace()
+        {
+            var values = BuildUtilities.GetPropertyValues("   1;   ; ; ; 2 ");
+            Assert.Collection(values,
+                firstValue => Assert.Equal("1", firstValue),
+                secondValue => Assert.Equal("2", secondValue));
+        }
+
+        [Fact]
+        public void GetPropertyValues_Duplicates()
+        {
+            var values = BuildUtilities.GetPropertyValues("1;2;1;1;2;2;2;1");
+            Assert.Collection(values,
+                firstValue => Assert.Equal("1", firstValue),
+                secondValue => Assert.Equal("2", secondValue));
+        }
+
+        [Fact]
         public void GetOrAddProperty_NoGroups()
         {
             var project = ProjectRootElementFactory.Create();

@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     [Order(Order)]
     internal class GroupedByTargetTreeViewProvider : TreeViewProviderBase
     {
-        public const int Order = 1000;
+        private const int Order = 1000;
 
         [ImportingConstructor]
         public GroupedByTargetTreeViewProvider(
@@ -62,7 +62,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             if (snapshot.Targets.Count(x => !x.Key.Equals(TargetFramework.Any)) == 1)
             {
-                foreach (ITargetedDependenciesSnapshot targetedSnapshot in snapshot.Targets.Values)
+                foreach ((ITargetFramework _, ITargetedDependenciesSnapshot targetedSnapshot) in snapshot.Targets)
                 {
                     if (cancellationToken.IsCancellationRequested)
                     {
@@ -140,7 +140,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 : root.GetSubTreeNode(DependencyTreeFlags.DependenciesRootNodeFlags);
 
             return dependenciesNode?.GetSelfAndDescendentsBreadthFirst()
-                .FirstOrDefault(node => string.Equals(node.FilePath, path, StringComparison.OrdinalIgnoreCase));
+                .FirstOrDefault((node, p) => string.Equals(node.FilePath, p, StringComparison.OrdinalIgnoreCase), path);
         }
 
         /// <summary>

@@ -14,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
     {
         public static IProjectVersionedValue<IProjectSubscriptionUpdate> CreateEmptyVersionedValue()
         {
-            return IProjectVersionedValueFactory<IProjectSubscriptionUpdate>.Create(Mock.Of<IProjectSubscriptionUpdate>());
+            return IProjectVersionedValueFactory.Create(Mock.Of<IProjectSubscriptionUpdate>());
         }
 
         public static IProjectSubscriptionUpdate Create()

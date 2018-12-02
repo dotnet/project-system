@@ -11,210 +11,147 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
-    public class ImplicitTopLevelDependenciesSnapshotFilterTests
+    public sealed class ImplicitTopLevelDependenciesSnapshotFilterTests : DependenciesSnapshotFilterTestsBase
     {
-        [Fact]
-        public void WhenNotTopLevel_ShouldDoNothing()
+        private const string ProjectItemSpec = "projectItemSpec";
+
+        private readonly IDependency _acceptable = new TestDependency
         {
-            var dependency = IDependencyFactory.Implement(
-                id: "mydependency2",
-                topLevel: false);
+            Id = "dependency1",
+            TopLevel = true,
+            Implicit = false,
+            Resolved = true,
+            Flags = DependencyTreeFlags.GenericDependencyFlags,
+            OriginalItemSpec = ProjectItemSpec
+        };
 
-            var worldBuilder = new Dictionary<string, IDependency>()
-            {
-                { dependency.Object.Id, dependency.Object }
-            }.ToImmutableDictionary().ToBuilder();
+        private protected override IDependenciesSnapshotFilter CreateFilter() => new ImplicitTopLevelDependenciesSnapshotFilter();
 
-            var filter = new ImplicitTopLevelDependenciesSnapshotFilter();
-
-            var resultDependency = filter.BeforeAdd(
-                null,
-                null,
-                dependency.Object,
-                worldBuilder,
-                null,
-                null,
-                null,
-                out bool filterAnyChanges);
-
-            Assert.Equal(dependency.Object.Id, resultDependency.Id);
-            Assert.False(filterAnyChanges);
-
-            dependency.VerifyAll();
+        [Fact]
+        public void BeforeAddOrUpdate_WhenNotTopLevel_ShouldDoNothing()
+        {
+            VerifyUnchangedOnAdd(
+                new TestDependency
+                {
+                    ClonePropertiesFrom = _acceptable,
+                    TopLevel = false
+                },
+                projectItemSpecs: ImmutableHashSet<string>.Empty);
         }
 
         [Fact]
-        public void WhenImplicitAlready_ShouldDoNothing()
+        public void BeforeAddOrUpdate_WhenImplicitAlready_ShouldDoNothing()
         {
-            var dependency = IDependencyFactory.Implement(
-                id: "mydependency2",
-                topLevel: true,
-                isImplicit: true);
-
-            var worldBuilder = new Dictionary<string, IDependency>()
-            {
-                { dependency.Object.Id, dependency.Object }
-            }.ToImmutableDictionary().ToBuilder();
-
-            var filter = new ImplicitTopLevelDependenciesSnapshotFilter();
-
-            var resultDependency = filter.BeforeAdd(
-                null,
-                null,
-                dependency.Object,
-                worldBuilder,
-                null,
-                null,
-                null,
-                out bool filterAnyChanges);
-
-            Assert.Equal(dependency.Object.Id, resultDependency.Id);
-            Assert.False(filterAnyChanges);
-
-            dependency.VerifyAll();
+            VerifyUnchangedOnAdd(
+                new TestDependency
+                {
+                    ClonePropertiesFrom = _acceptable,
+                    Implicit = true
+                },
+                projectItemSpecs: ImmutableHashSet<string>.Empty);
         }
 
         [Fact]
-        public void WhenUnresolved_ShouldDoNothing()
+        public void BeforeAddOrUpdate_WhenUnresolved_ShouldDoNothing()
         {
-            var dependency = IDependencyFactory.Implement(
-                id: "mydependency2",
-                topLevel: true,
-                isImplicit: false,
-                resolved: false);
-
-            var worldBuilder = new Dictionary<string, IDependency>()
-            {
-                { dependency.Object.Id, dependency.Object }
-            }.ToImmutableDictionary().ToBuilder();
-
-            var filter = new ImplicitTopLevelDependenciesSnapshotFilter();
-
-            var resultDependency = filter.BeforeAdd(
-                null,
-                null,
-                dependency.Object,
-                worldBuilder,
-                null,
-                null,
-                null,
-                out bool filterAnyChanges);
-
-            Assert.Equal(dependency.Object.Id, resultDependency.Id);
-            Assert.False(filterAnyChanges);
-
-            dependency.VerifyAll();
+            VerifyUnchangedOnAdd(
+                new TestDependency
+                {
+                    ClonePropertiesFrom = _acceptable,
+                    Resolved = false
+                },
+                projectItemSpecs: ImmutableHashSet<string>.Empty);
         }
 
         [Fact]
-        public void WhenNotGenericDependency_ShouldDoNothing()
+        public void BeforeAddOrUpdate_WhenNotGenericDependency_ShouldDoNothing()
         {
-            var dependency = IDependencyFactory.Implement(
-                id: "mydependency2",
-                topLevel: true,
-                isImplicit: false,
-                resolved: true,
-                flags: DependencyTreeFlags.SubTreeRootNodeFlags);
-
-            var worldBuilder = new Dictionary<string, IDependency>()
-            {
-                { dependency.Object.Id, dependency.Object }
-            }.ToImmutableDictionary().ToBuilder();
-
-            var filter = new ImplicitTopLevelDependenciesSnapshotFilter();
-
-            var resultDependency = filter.BeforeAdd(
-                null,
-                null,
-                dependency.Object,
-                worldBuilder,
-                null,
-                null,
-                null,
-                out bool filterAnyChanges);
-
-            Assert.Equal(dependency.Object.Id, resultDependency.Id);
-            Assert.False(filterAnyChanges);
-
-            dependency.VerifyAll();
+            VerifyUnchangedOnAdd(
+                new TestDependency
+                {
+                    ClonePropertiesFrom = _acceptable,
+                    Flags = ProjectTreeFlags.Empty
+                },
+                projectItemSpecs: ImmutableHashSet<string>.Empty);
         }
 
         [Fact]
-        public void WhenCanApplyImplicitProjectContainsItem_ShouldDoNothing()
+        public void BeforeAddOrUpdate_WhenProjectItemSpecsNull_ShouldDoNothing()
         {
-            var dependency = IDependencyFactory.Implement(
-                id: "mydependency2",
-                topLevel: true,
-                isImplicit: false,
-                resolved: true,
-                flags: DependencyTreeFlags.GenericDependencyFlags,
-                originalItemSpec: "myprojectitem");
-
-            var worldBuilder = new Dictionary<string, IDependency>()
-            {
-                { dependency.Object.Id, dependency.Object }
-            }.ToImmutableDictionary().ToBuilder();
-
-            var filter = new ImplicitTopLevelDependenciesSnapshotFilter();
-
-            var resultDependency = filter.BeforeAdd(
-                null,
-                null,
-                dependency.Object,
-                worldBuilder,
-                null,
-                null,
-                ImmutableHashSet.Create("myprojectitem"),
-                out bool filterAnyChanges);
-
-            Assert.Equal(dependency.Object.Id, resultDependency.Id);
-            Assert.False(filterAnyChanges);
-
-            dependency.VerifyAll();
+            VerifyUnchangedOnAdd(
+                new TestDependency
+                {
+                    ClonePropertiesFrom = _acceptable,
+                    Flags = ProjectTreeFlags.Empty
+                },
+                projectItemSpecs: null);
         }
 
         [Fact]
-        public void WhenNeedToApplyImplicit_ShouldSetProperties()
+        public void BeforeAddOrUpdate_WhenCanApplyImplicitProjectContainsItem_ShouldDoNothing()
         {
-            var dependency = IDependencyFactory.Implement(
-                id: "mydependency2",
-                providerType: "myProvider",
-                topLevel: true,
-                isImplicit: false,
-                resolved: true,
-                flags: DependencyTreeFlags.GenericDependencyFlags,
-                originalItemSpec: "myprojectitem",
-                setPropertiesImplicit: true,
-                iconSet: new DependencyIconSet(KnownMonikers.Reference, KnownMonikers.Reference, KnownMonikers.Reference, KnownMonikers.Reference),
-                setPropertiesIconSet: new DependencyIconSet(KnownMonikers.Abbreviation, KnownMonikers.Abbreviation, KnownMonikers.Reference, KnownMonikers.Reference));
+            VerifyUnchangedOnAdd(
+                _acceptable,
+                ImmutableHashSet.Create(ProjectItemSpec));
+        }
 
-            var worldBuilder = new Dictionary<string, IDependency>()
+        [Fact]
+        public void BeforeAddOrUpdate_WhenNeedToApplyImplicit_ShouldSetProperties()
+        {
+            const string providerType = "providerType";
+            const string projectItemSpec = "projectItemSpec";
+            var implicitIcon = KnownMonikers.Abbreviation;
+
+            var dependency = new TestDependency
             {
-                { dependency.Object.Id, dependency.Object }
-            }.ToImmutableDictionary().ToBuilder();
+                Id = "dependency1",
+                ProviderType = providerType,
+                TopLevel = true,
+                Implicit = false,
+                Resolved = true,
+                Flags = DependencyTreeFlags.GenericDependencyFlags,
+                OriginalItemSpec = projectItemSpec,
+                IconSet = new DependencyIconSet(KnownMonikers.Reference, KnownMonikers.Reference, KnownMonikers.Reference, KnownMonikers.Reference)
+            };
+
+            var worldBuilder = new IDependency[] { dependency }.ToImmutableDictionary(d => d.Id).ToBuilder();
+
+            var context = new AddDependencyContext(worldBuilder);
+
+            var filter = new ImplicitTopLevelDependenciesSnapshotFilter();
 
             var subTreeProvider = IProjectDependenciesSubTreeProviderFactory.ImplementInternal(
-                providerType: "myProvider",
-                icon: KnownMonikers.Abbreviation);
+                providerType: providerType,
+                implicitIcon: implicitIcon);
 
-            var filter = new ImplicitTopLevelDependenciesSnapshotFilter();
-            var resultDependency = filter.BeforeAdd(
+            filter.BeforeAddOrUpdate(
                 null,
                 null,
-                dependency.Object,
-                worldBuilder,
-                null,
-                new Dictionary<string, IProjectDependenciesSubTreeProvider>
-                {
-                    { subTreeProvider.ProviderType, subTreeProvider }
-                },
+                dependency,
+                new Dictionary<string, IProjectDependenciesSubTreeProvider> { { providerType, subTreeProvider } },
                 ImmutableHashSet<string>.Empty,
-                out bool filterAnyChanges);
+                context);
+            
+            var acceptedDependency = context.GetResult(filter);
 
-            Assert.Equal(dependency.Object.Id, resultDependency.Id);
-            Assert.True(filterAnyChanges);
+            // Returns changed dependency
+            Assert.NotNull(acceptedDependency);
+            Assert.NotSame(dependency, acceptedDependency);
 
-            dependency.VerifyAll();
+            acceptedDependency.AssertEqualTo(
+                new TestDependency
+                {
+                    ClonePropertiesFrom = dependency,
+                    Implicit = true,
+                    IconSet = new DependencyIconSet(
+                        implicitIcon,
+                        implicitIcon,
+                        KnownMonikers.Reference,
+                        KnownMonikers.Reference)
+                });
+
+            // No other changes made
+            Assert.False(context.Changed);
         }
     }
 }

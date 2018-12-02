@@ -208,7 +208,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             // Validate that when the DLO_Profiling is set we don't run the cmd.exe
             var targets = await debugger.QueryDebugTargetsAsync(DebugLaunchOptions.NoDebug | DebugLaunchOptions.Profiling, activeProfile);
-            Assert.True(targets.Count == 1);
+            Assert.Single(targets);
             Assert.Equal("c:\\program files\\dotnet\\dotnet.exe", targets[0].Executable);
             Assert.Equal((DebugLaunchOptions.NoDebug | DebugLaunchOptions.Profiling), targets[0].LaunchOptions);
         }

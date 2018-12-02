@@ -40,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
         {
             ITargetedDependenciesSnapshot targetedSnapshot = GetSnapshot(dependency);
 
-            return targetedSnapshot?.TopLevelDependencies.Count != 0;
+            return targetedSnapshot?.TopLevelDependencies.Length != 0;
         }
 
         public override void BuildGraph(
@@ -127,7 +127,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
 
             foreach (DependencyNodeInfo nodeToAdd in nodesToAdd)
             {
-                IDependency dependency = updatedChildren.FirstOrDefault(x => x.Id.Equals(nodeToAdd.Id));
+                IDependency dependency = updatedChildren.FirstOrDefault((x, id) => x.Id.Equals(id), nodeToAdd.Id);
                 if (dependency == null || !dependency.Visible)
                 {
                     continue;

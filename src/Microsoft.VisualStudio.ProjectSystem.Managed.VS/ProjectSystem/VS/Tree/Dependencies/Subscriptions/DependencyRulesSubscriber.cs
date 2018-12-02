@@ -1,45 +1,286 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.ComponentModel.Composition;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Threading.Tasks.Dataflow;
 
+using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
+using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
+using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions
 {
     [Export(typeof(IDependencyCrossTargetSubscriber))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
-    internal class DependencyRulesSubscriber : CrossTargetRuleSubscriberBase<DependenciesRuleChangeContext>, IDependencyCrossTargetSubscriber
+    internal sealed class DependencyRulesSubscriber : OnceInitializedOnceDisposed, IDependencyCrossTargetSubscriber
     {
         public const string DependencyRulesSubscriberContract = "DependencyRulesSubscriberContract";
+
+#pragma warning disable CA2213 // OnceInitializedOnceDisposedAsync are not tracked correctly by the IDisposeable analyzer
+        private readonly SemaphoreSlim _gate = new SemaphoreSlim(initialCount: 1);
+        private DisposableBag _subscriptions;
+#pragma warning restore CA2213
+        private readonly IUnconfiguredProjectCommonServices _commonServices;
+        private readonly IProjectAsynchronousTasksService _tasksService;
+        private readonly IDependencyTreeTelemetryService _treeTelemetryService;
+        private ICrossTargetSubscriptionsHost _host;
+        private AggregateCrossTargetProjectContext _currentProjectContext;
+
+        [ImportMany(DependencyRulesSubscriberContract)]
+        private readonly OrderPrecedenceImportCollection<IDependenciesRuleHandler> _handlers;
 
         [ImportingConstructor]
         public DependencyRulesSubscriber(
             IUnconfiguredProjectCommonServices commonServices,
             [Import(ExportContractNames.Scopes.UnconfiguredProject)] IProjectAsynchronousTasksService tasksService,
             IDependencyTreeTelemetryService treeTelemetryService)
-            : base(commonServices, tasksService, treeTelemetryService)
+            : base(synchronousDisposal: true)
         {
-            Handlers = new OrderPrecedenceImportCollection<ICrossTargetRuleHandler<DependenciesRuleChangeContext>>(
+            _handlers = new OrderPrecedenceImportCollection<IDependenciesRuleHandler>(
                 projectCapabilityCheckProvider: commonServices.Project);
-        }
 
-        [ImportMany(DependencyRulesSubscriberContract)]
-        protected override OrderPrecedenceImportCollection<ICrossTargetRuleHandler<DependenciesRuleChangeContext>> Handlers { get; }
-
-        protected override DependenciesRuleChangeContext CreateRuleChangeContext(
-            ITargetFramework activeTarget,
-            IProjectCatalogSnapshot catalogs)
-        {
-            return new DependenciesRuleChangeContext(activeTarget, catalogs);
+            _commonServices = commonServices;
+            _tasksService = tasksService;
+            _treeTelemetryService = treeTelemetryService;
         }
 
         public event EventHandler<DependencySubscriptionChangedEventArgs> DependenciesChanged;
 
-        protected override void CompleteHandle(DependenciesRuleChangeContext ruleChangeContext)
+        public void InitializeSubscriber(ICrossTargetSubscriptionsHost host, IProjectSubscriptionService subscriptionService)
         {
-            DependenciesChanged?.Invoke(this, new DependencySubscriptionChangedEventArgs(ruleChangeContext));
+            _host = host;
+
+            EnsureInitialized();
+
+            IReadOnlyCollection<string> watchedEvaluationRules = GetWatchedRules(RuleHandlerType.Evaluation);
+            IReadOnlyCollection<string> watchedDesignTimeBuildRules = GetWatchedRules(RuleHandlerType.DesignTimeBuild);
+
+            SubscribeToConfiguredProject(
+                _commonServices.ActiveConfiguredProject, subscriptionService, watchedEvaluationRules, watchedDesignTimeBuildRules);
+        }
+
+        public void AddSubscriptions(AggregateCrossTargetProjectContext newProjectContext)
+        {
+            Requires.NotNull(newProjectContext, nameof(newProjectContext));
+
+            _currentProjectContext = newProjectContext;
+
+            IReadOnlyCollection<string> watchedEvaluationRules = GetWatchedRules(RuleHandlerType.Evaluation);
+            IReadOnlyCollection<string> watchedDesignTimeBuildRules = GetWatchedRules(RuleHandlerType.DesignTimeBuild);
+
+            // initialize telemetry with all rules for each target framework
+            foreach (ITargetFramework targetFramework in newProjectContext.TargetFrameworks)
+            {
+                _treeTelemetryService.InitializeTargetFrameworkRules(targetFramework, watchedEvaluationRules);
+                _treeTelemetryService.InitializeTargetFrameworkRules(targetFramework, watchedDesignTimeBuildRules);
+            }
+
+            foreach (ConfiguredProject configuredProject in newProjectContext.InnerConfiguredProjects)
+            {
+                SubscribeToConfiguredProject(
+                    configuredProject, configuredProject.Services.ProjectSubscription, watchedEvaluationRules, watchedDesignTimeBuildRules);
+            }
+        }
+
+        public void ReleaseSubscriptions()
+        {
+            _currentProjectContext = null;
+
+            // We can't re-use the DisposableBag after disposing it, so null it out
+            // to ensure we create a new one the next time we go to add subscriptions.
+            _subscriptions?.Dispose();
+            _subscriptions = null;
+        }
+
+        private void SubscribeToConfiguredProject(
+            ConfiguredProject configuredProject,
+            IProjectSubscriptionService subscriptionService,
+            IReadOnlyCollection<string> watchedEvaluationRules,
+            IReadOnlyCollection<string> watchedDesignTimeBuildRules)
+        {
+            // Use intermediate buffer blocks for project rule data to allow subsequent blocks
+            // to only observe specific rule name(s).
+
+            var intermediateBlockDesignTime =
+                new BufferBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(
+                    new ExecutionDataflowBlockOptions()
+                    {
+                        NameFormat = "CrossTarget Intermediate DesignTime Input: {1}"
+                    });
+
+            var intermediateBlockEvaluation =
+                new BufferBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(
+                    new ExecutionDataflowBlockOptions()
+                    {
+                        NameFormat = "CrossTarget Intermediate Evaluation Input: {1}"
+                    });
+
+            _subscriptions = _subscriptions ?? new DisposableBag();
+
+            _subscriptions.AddDisposable(
+                subscriptionService.JointRuleSource.SourceBlock.LinkTo(
+                    intermediateBlockDesignTime,
+                    ruleNames: watchedDesignTimeBuildRules.Union(watchedEvaluationRules),
+                    suppressVersionOnlyUpdates: true,
+                    linkOptions: DataflowOption.PropagateCompletion));
+
+            _subscriptions.AddDisposable(
+                subscriptionService.ProjectRuleSource.SourceBlock.LinkTo(
+                    intermediateBlockEvaluation,
+                    ruleNames: watchedEvaluationRules,
+                    suppressVersionOnlyUpdates: true,
+                    linkOptions: DataflowOption.PropagateCompletion));
+
+            var actionBlockDesignTimeBuild =
+                DataflowBlockSlim.CreateActionBlock<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectCatalogSnapshot, IProjectCapabilitiesSnapshot>>>(
+                    e => OnProjectChangedAsync(e.Value.Item1, e.Value.Item2, e.Value.Item3, configuredProject, RuleHandlerType.DesignTimeBuild),
+                    new ExecutionDataflowBlockOptions()
+                    {
+                        NameFormat = "CrossTarget DesignTime Input: {1}"
+                    });
+
+            var actionBlockEvaluation =
+                DataflowBlockSlim.CreateActionBlock<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectCatalogSnapshot, IProjectCapabilitiesSnapshot>>>(
+                     e => OnProjectChangedAsync(e.Value.Item1, e.Value.Item2, e.Value.Item3, configuredProject, RuleHandlerType.Evaluation),
+                     new ExecutionDataflowBlockOptions()
+                     {
+                         NameFormat = "CrossTarget Evaluation Input: {1}"
+                     });
+
+            _subscriptions.AddDisposable(ProjectDataSources.SyncLinkTo(
+                intermediateBlockDesignTime.SyncLinkOptions(),
+                subscriptionService.ProjectCatalogSource.SourceBlock.SyncLinkOptions(),
+                configuredProject.Capabilities.SourceBlock.SyncLinkOptions(),
+                actionBlockDesignTimeBuild,
+                linkOptions: DataflowOption.PropagateCompletion));
+
+            _subscriptions.AddDisposable(ProjectDataSources.SyncLinkTo(
+                intermediateBlockEvaluation.SyncLinkOptions(),
+                subscriptionService.ProjectCatalogSource.SourceBlock.SyncLinkOptions(),
+                configuredProject.Capabilities.SourceBlock.SyncLinkOptions(),
+                actionBlockEvaluation,
+                linkOptions: DataflowOption.PropagateCompletion));
+        }
+
+        private IReadOnlyCollection<string> GetWatchedRules(RuleHandlerType handlerType)
+        {
+            return new HashSet<string>(
+                _handlers.SelectMany(h => h.Value.GetRuleNames(handlerType)),
+                StringComparers.RuleNames);
+        }
+
+        private async Task OnProjectChangedAsync(
+            IProjectSubscriptionUpdate projectUpdate,
+            IProjectCatalogSnapshot catalogSnapshot,
+            IProjectCapabilitiesSnapshot capabilities,
+            ConfiguredProject configuredProject,
+            RuleHandlerType handlerType)
+        {
+            if (IsDisposing || IsDisposed)
+            {
+                return;
+            }
+
+            await _tasksService.LoadedProjectAsync(async () =>
+            {
+                if (_tasksService.UnloadCancellationToken.IsCancellationRequested)
+                {
+                    return;
+                }
+
+                using (ProjectCapabilitiesContext.CreateIsolatedContext(configuredProject, capabilities))
+                {
+                    await HandleAsync(projectUpdate, catalogSnapshot, handlerType);
+                }
+            });
+        }
+
+        private async Task HandleAsync(
+            IProjectSubscriptionUpdate projectUpdate,
+            IProjectCatalogSnapshot catalogSnapshot,
+            RuleHandlerType handlerType)
+        {
+            AggregateCrossTargetProjectContext currentAggregateContext = await _host.GetCurrentAggregateProjectContext();
+            if (currentAggregateContext == null || _currentProjectContext != currentAggregateContext)
+            {
+                return;
+            }
+
+            IEnumerable<IDependenciesRuleHandler> handlers = _handlers.Select(h => h.Value);
+
+            ITargetFramework targetFrameworkToUpdate;
+
+            // We need to process the update within a lock to ensure that we do not release this context during processing.
+            // TODO: Enable concurrent execution of updates themselves, i.e. two separate invocations of HandleAsync
+            //       should be able to run concurrently.
+            using (await _gate.DisposableWaitAsync())
+            {
+                // Get the inner workspace project context to update for this change.
+                targetFrameworkToUpdate = currentAggregateContext.GetProjectFramework(projectUpdate.ProjectConfiguration);
+
+                if (targetFrameworkToUpdate == null)
+                {
+                    return;
+                }
+
+                // Broken design time builds sometimes cause updates with no project changes and sometimes
+                // cause updates with a project change that has no difference.
+                // We handle the former case here, and the latter case is handled in the CommandLineItemHandler.
+                if (projectUpdate.ProjectChanges.Count == 0)
+                {
+                    return;
+                }
+
+                // Get the subclass-specific context that will aggregate data during the processing of rule data by handlers.
+                var ruleChangeContext = new DependenciesRuleChangeContext(currentAggregateContext.ActiveTargetFramework, catalogSnapshot);
+
+                // Give each handler a chance to modify the rule change context.
+                foreach (IDependenciesRuleHandler handler in handlers)
+                {
+                    ImmutableHashSet<string> handlerRules = handler.GetRuleNames(handlerType);
+
+                    // Slice project changes to include only rules the handler claims an interest in.
+                    var projectChanges = projectUpdate.ProjectChanges
+                        .Where(x => handlerRules.Contains(x.Key))
+                        .ToImmutableDictionary();
+
+                    if (projectChanges.Any(x => x.Value.Difference.AnyChanges))
+                    {
+                        // Handlers respond to rule changes in a way that's specific to the rule change context
+                        // type (T). For example, DependencyRulesSubscriber uses DependenciesRuleChangeContext
+                        // which holds IDependencyModel, so its IDependenciesRuleHandler implementations will
+                        // produce IDependencyModel objects in response to rule changes.
+                        handler.Handle(projectChanges, targetFrameworkToUpdate, ruleChangeContext);
+                    }
+                }
+
+                // Notify the subclass that their rule change context object is ready for finalization.
+                DependenciesChanged?.Invoke(this, new DependencySubscriptionChangedEventArgs(ruleChangeContext));
+            }
+
+            // record all the rules that have occurred
+            _treeTelemetryService.ObserveTargetFrameworkRules(targetFrameworkToUpdate, projectUpdate.ProjectChanges.Keys);
+        }
+
+        protected override void Initialize()
+        {
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            _gate.Dispose();
+
+            if (disposing)
+            {
+                ReleaseSubscriptions();
+            }
         }
     }
 }

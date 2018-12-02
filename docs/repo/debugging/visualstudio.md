@@ -1,7 +1,9 @@
 # Visual Studio
 
-## Figuring out Git SHA for a given VS build
+## Figuring out the Git SHA for your current build
 
-1. Visit: http://vsbuildtoroslynsha.azurewebsites.net/, choose Project System from the down down, and enter the branch and build number from Help -> About:
+1. In Explorer, look at the properties of %VSINSTALLDIR%\Common7\IDE\Extensions\Microsoft\ManagedProjectSystem\Microsoft\Microsoft.VisualStudio.ProjectSystem.Managed.dll
 
-![image](https://user-images.githubusercontent.com/1103906/28194295-a2ad6f36-6886-11e7-95d4-78b7dd191744.png)
+![image](https://user-images.githubusercontent.com/1103906/48829215-dbfe0c80-edc5-11e8-8618-b4c9844359c7.png)
+
+The Product Version field contains the Git SHA from which that branch was built.

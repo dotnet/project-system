@@ -626,14 +626,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
     }
 }";
 
-        private UnconfiguredProject GetMockProject(string projectFullPath = "D:\\Test\\Projects\\UCProject\\UCProject.csproj") =>
+        private static UnconfiguredProject GetMockProject(string projectFullPath = "D:\\Test\\Projects\\UCProject\\UCProject.csproj") =>
             UnconfiguredProjectFactory.Create(filePath: projectFullPath);
 
-        private ImmutableList<IProjectVersionedValue<IProjectSubscriptionUpdate>> GetVersionedUpdatesFromJson(
+        private static ImmutableList<IProjectVersionedValue<IProjectSubscriptionUpdate>> GetVersionedUpdatesFromJson(
             params string[] jsonStrings) =>
                 jsonStrings
                     .Select(s => IProjectSubscriptionUpdateFactory.FromJson(s))
-                    .Select(u => IProjectVersionedValueFactory<IProjectSubscriptionUpdate>.Create(u))
+                    .Select(u => IProjectVersionedValueFactory.Create(u))
                     .ToImmutableList();
     }
 }

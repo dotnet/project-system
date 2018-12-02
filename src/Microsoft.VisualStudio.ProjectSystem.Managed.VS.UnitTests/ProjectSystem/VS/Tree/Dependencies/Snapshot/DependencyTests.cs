@@ -39,17 +39,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 var mockModel = IDependencyModelFactory.Implement(providerType: "someprovider", id: "id");
                 new Dependency(mockModel, null, null);
             });
+
+            Assert.Throws<ArgumentNullException>("containingProjectPath", () =>
+            {
+                var mockModel = IDependencyModelFactory.Implement(providerType: "someprovider", id: "id", originalItemSpec: "originalItemSpec");
+                new Dependency(mockModel, targetFramework: new TargetFramework("tfm"), containingProjectPath: null);
+            });
         }
 
         [Fact]
         public void Dependency_Constructor_WhenOptionalValuesNotProvided_ShouldSetDefaults()
         {
-            const string jsonModel = @"
-{
-    ""ProviderType"": ""xxx"",
-    ""Id"": ""mymodel""
-}";
-            var mockModel = IDependencyModelFactory.FromJson(jsonModel);
+            var mockModel = IDependencyModelFactory.FromJson(@"
+            {
+                ""ProviderType"": ""xxx"",
+                ""Id"": ""mymodel""
+            }");
 
             var dependency = new Dependency(mockModel, ITargetFrameworkFactory.Implement("tfm1"), @"C:\Foo\Project.csproj");
 
@@ -61,35 +66,32 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(string.Empty, dependency.Path);
             Assert.Equal("Folder", dependency.SchemaName);
             Assert.Equal("Folder", dependency.SchemaItemType);
-            Assert.True(dependency.Properties.Count == 2);
+            AssertEx.CollectionLength(dependency.Properties, 2);
             Assert.True(dependency.Properties.ContainsKey("Identity"));
             Assert.True(dependency.Properties.ContainsKey("FullPath"));
-            Assert.True(dependency.DependencyIDs.Count == 0);
+            Assert.Empty(dependency.DependencyIDs);
         }
 
         [Fact]
         public void Dependency_Constructor_WhenValidModelProvided_ShouldSetAllProperties()
         {
-            const string jsonModel = @"
-{
-    ""ProviderType"": ""xxx"",
-    ""Id"": ""mymodelid"",
-    ""Name"": ""mymodelname"",
-    ""Version"": ""2.0.0-1"",
-    ""Caption"": ""mymodel"",
-    ""OriginalItemSpec"": ""mymodeloriginal"",
-    ""Path"": ""mymodelpath"",
-    ""SchemaName"": ""MySchema"",
-    ""SchemaItemType"": ""MySchemaItemType"",
-    ""Resolved"": ""true"",
-    ""TopLevel"": ""true"",
-    ""Implicit"": ""true"",
-    ""Visible"": ""true"",
-    ""Priority"": ""3""
-}";
-
-            var mockModel = IDependencyModelFactory.FromJson(
-                jsonModel,
+            var mockModel = IDependencyModelFactory.FromJson(@"
+                {
+                    ""ProviderType"": ""xxx"",
+                    ""Id"": ""mymodelid"",
+                    ""Name"": ""mymodelname"",
+                    ""Version"": ""2.0.0-1"",
+                    ""Caption"": ""mymodel"",
+                    ""OriginalItemSpec"": ""mymodeloriginal"",
+                    ""Path"": ""mymodelpath"",
+                    ""SchemaName"": ""MySchema"",
+                    ""SchemaItemType"": ""MySchemaItemType"",
+                    ""Resolved"": ""true"",
+                    ""TopLevel"": ""true"",
+                    ""Implicit"": ""true"",
+                    ""Visible"": ""true"",
+                    ""Priority"": ""3""
+                }",
                 flags: DependencyTreeFlags.DependencyFlags.Union(DependencyTreeFlags.GenericDependencyFlags),
                 icon: KnownMonikers.Path,
                 expandedIcon: KnownMonikers.PathIcon,
@@ -115,9 +117,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(mockModel.Implicit, dependency.Implicit);
             Assert.Equal(mockModel.Visible, dependency.Visible);
             Assert.Equal(mockModel.Priority, dependency.Priority);
-            Assert.True(dependency.Properties.Count == 1);
+            Assert.Single(dependency.Properties);
             Assert.True(dependency.Properties.ContainsKey("prop1"));
-            Assert.True(dependency.DependencyIDs.Count == 1);
+            Assert.Single(dependency.DependencyIDs);
             Assert.Equal("Tfm1\\xxx\\otherid", dependency.DependencyIDs[0]);
             Assert.True(dependency.Flags.Contains(DependencyTreeFlags.ResolvedFlags));
             Assert.True(dependency.Flags.Contains(DependencyTreeFlags.DependencyFlags));
@@ -192,6 +194,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             Assert.Equal(dependency1, dependency2);
             Assert.NotEqual(dependency1, dependency3);
+            Assert.False(dependency1.Equals(other: null));
             Assert.Equal(dependency1.GetHashCode(), dependency2.GetHashCode());
             Assert.NotEqual(dependency1.GetHashCode(), dependency3.GetHashCode());
         }
@@ -214,7 +217,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal("newcaption", newDependency.Caption);
             Assert.True(newDependency.Resolved);
             Assert.True(newDependency.Flags.Equals(DependencyTreeFlags.BaseReferenceFlags));
-            Assert.True(newDependency.DependencyIDs.Count == 1);
+            Assert.Single(newDependency.DependencyIDs);
             Assert.Equal("aaa", newDependency.DependencyIDs[0]);
         }
 
@@ -231,7 +234,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var expectedDependencyId = "tfm1\\providerType\\glass";
 
             Assert.Equal(expectedId, dependency.Id);
-            Assert.True(dependency.DependencyIDs.Count == 1);
+            Assert.Single(dependency.DependencyIDs);
             Assert.Equal(expectedDependencyId, dependency.DependencyIDs[0]);
 
             var newDependency = dependency.SetProperties(
@@ -244,41 +247,38 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(expectedDependencyId, newDependency.DependencyIDs[0]);
         }
 
-        //[Fact]
-        //public void Dependency_DependenciesProperty()
-        //{
-        //    var mockModel1 = IDependencyModelFactory.Implement(
-        //        providerType: "providerType",
-        //        id: "someId1",
-        //        dependencyIDs: new[] { "someId2", "someId_other" });
+        [Fact]
+        public void Dependency_DependencyIDsProperty()
+        {
+            var mockModel1 = IDependencyModelFactory.Implement(
+                providerType: "providerType",
+                id: "someId1",
+                dependencyIDs: new[] { "someId2", "someId_other" });
 
-        //    var mockModel2 = IDependencyModelFactory.Implement(
-        //        providerType: "providerType",
-        //        id: "someId2");
-        //    var mockModel3 = IDependencyModelFactory.Implement(
-        //        providerType: "providerType",
-        //        id: "someId_other");
+            var mockModel2 = IDependencyModelFactory.Implement(
+                providerType: "providerType",
+                id: "someId2");
+            var mockModel3 = IDependencyModelFactory.Implement(
+                providerType: "providerType",
+                id: "someId_other");
 
-        //    var targetFramework = ITargetFrameworkFactory.Implement("Tfm1");
-        //    var mockSnapshot = ITargetedDependenciesSnapshotFactory.ImplementMock(targetFramework: targetFramework);
+            var targetFramework = ITargetFrameworkFactory.Implement("Tfm1");
+            var mockSnapshot = ITargetedDependenciesSnapshotFactory.ImplementMock(targetFramework: targetFramework);
 
-        //    var dependency1 = new Dependency(mockModel1, targetFramework);
-        //    var dependency2 = new Dependency(mockModel2, targetFramework);
-        //    var dependency3 = new Dependency(mockModel3, targetFramework);
+            var projectPath = "projectPath";
 
-        //    var children = new Dictionary<string, IDependency>()
-        //    {
-        //        { dependency2.Id, dependency2 },
-        //        { dependency3.Id, dependency3 },
-        //    };
+            var dependency1 = new Dependency(mockModel1, targetFramework, projectPath);
+            var dependency2 = new Dependency(mockModel2, targetFramework, projectPath);
+            var dependency3 = new Dependency(mockModel3, targetFramework, projectPath);
 
-        //    mockSnapshot.Setup(x => x.DependenciesWorld).Returns(
-        //        ImmutableDictionary<string, IDependency>.Empty.AddRange(children));
+            var children = new IDependency[] { dependency1, dependency2, dependency3 }.ToImmutableDictionary(d => d.Id);
 
-        //    Assert.True(dependency1.Dependencies.Count() == 2);
-        //    Assert.True(dependency1.Dependencies.Any(x => x.Equals(dependency2)));
-        //    Assert.True(dependency1.Dependencies.Any(x => x.Equals(dependency3)));
-        //}
+            mockSnapshot.Setup(x => x.DependenciesWorld).Returns(children);
+
+            AssertEx.CollectionLength(dependency1.DependencyIDs, 2);
+            Assert.Contains(dependency1.DependencyIDs, x => x.Equals(dependency2.Id));
+            Assert.Contains(dependency1.DependencyIDs, x => x.Equals(dependency3.Id));
+        }
 
         [Fact]
         public void Dependency_HasUnresolvedDependency()
@@ -308,7 +308,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             var dependencyWithUpdatedIconSet = dependency.SetProperties(iconSet: new DependencyIconSet(KnownMonikers.Reference, KnownMonikers.Reference, KnownMonikers.Reference, KnownMonikers.Reference));
 
-            Assert.True(ReferenceEquals(dependency.IconSet, dependencyWithUpdatedIconSet.IconSet));
+            Assert.Same(dependency.IconSet, dependencyWithUpdatedIconSet.IconSet);
         }
 
         [Fact]
@@ -323,33 +323,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             var newDependency = new Dependency(dependency, ITargetFrameworkFactory.Implement("tfm2"), @"C:\Foo\Project.csproj");
 
-            Assert.True(ReferenceEquals(dependency.IconSet, newDependency.IconSet));
+            Assert.Same(dependency.IconSet, newDependency.IconSet);
         }
 
         [Fact]
         public void WhenCreatingUnrelatedDependenciesWithSameIcons_BothUseSameIconSet()
         {
-            const string jsonModel1 = @"
-{
-    ""ProviderType"": ""alpha"",
-    ""Id"": ""modelOne"",
-}";
-
-            const string jsonModel2 = @"
-{
-    ""ProviderType"": ""beta"",
-    ""Id"": ""modelTwo"",
-}";
-
-            var model1 = IDependencyModelFactory.FromJson(
-                jsonModel1,
+            var model1 = IDependencyModelFactory.FromJson(@"
+                {
+                    ""ProviderType"": ""alpha"",
+                    ""Id"": ""modelOne"",
+                }",
                 icon: KnownMonikers.Path,
                 expandedIcon: KnownMonikers.PathIcon,
                 unresolvedIcon: KnownMonikers.PathListBox,
                 unresolvedExpandedIcon: KnownMonikers.PathListBoxItem);
 
-            var model2 = IDependencyModelFactory.FromJson(
-                jsonModel2,
+            var model2 = IDependencyModelFactory.FromJson(@"
+                {
+                    ""ProviderType"": ""beta"",
+                    ""Id"": ""modelTwo"",
+                }",
                 icon: KnownMonikers.Path,
                 expandedIcon: KnownMonikers.PathIcon,
                 unresolvedIcon: KnownMonikers.PathListBox,
@@ -360,7 +354,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var dependency1 = new Dependency(model1, targetFramework, @"C:\Foo\Project.csproj");
             var dependency2 = new Dependency(model2, targetFramework, @"C:\Foo\Project.csproj");
 
-            Assert.True(ReferenceEquals(dependency1.IconSet, dependency2.IconSet));
+            Assert.Same(dependency1.IconSet, dependency2.IconSet);
         }
 
         [Fact]

@@ -2,12 +2,12 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 
 using Microsoft.Build.Construction;
 using Microsoft.Build.Execution;
+using Microsoft.VisualStudio.Text;
 
 namespace Microsoft.VisualStudio.Build
 {
@@ -56,8 +56,7 @@ namespace Microsoft.VisualStudio.Build
             Requires.NotNull(project, "project");
 
             return project.Properties
-                .Where(p => string.Equals(p.Name, propertyName, StringComparison.OrdinalIgnoreCase))
-                .FirstOrDefault();
+                .FirstOrDefault(p => string.Equals(p.Name, propertyName, StringComparison.OrdinalIgnoreCase));
         }
 
         /// <summary>
@@ -66,21 +65,31 @@ namespace Microsoft.VisualStudio.Build
         /// <param name="propertyValue">Value of the property to evaluate.</param>
         /// <param name="delimiter">Character used to delimit the property values.</param>
         /// <returns>Collection of individual values in the property.</returns>
-        public static ImmutableArray<string> GetPropertyValues(string propertyValue, char delimiter = ';')
+        public static IEnumerable<string> GetPropertyValues(string propertyValue, char delimiter = ';')
         {
-            IEnumerable<string> values = propertyValue.Split(delimiter).Select(f => f.Trim());
+            HashSet<string> seen = null;
 
             // We need to ensure that we return values in the specified order.
-            ImmutableArray<string>.Builder valuesBuilder = ImmutableArray.CreateBuilder<string>();
-            foreach (string value in values)
+            foreach (string value in new LazyStringSplit(propertyValue, delimiter))
             {
-                if (!string.IsNullOrEmpty(value))
+                string s = value.Trim();
+
+                if (!string.IsNullOrEmpty(s))
                 {
-                    valuesBuilder.Add(value);
+                    if (seen == null)
+                    {
+                        seen = new HashSet<string> { s };
+                        yield return s;
+                    }
+                    else
+                    {
+                        if (seen.Add(s))
+                        {
+                            yield return s;
+                        }
+                    }
                 }
             }
-
-            return valuesBuilder.Distinct(StringComparer.OrdinalIgnoreCase).ToImmutableArray();
         }
 
         /// <summary>
@@ -134,8 +143,12 @@ namespace Microsoft.VisualStudio.Build
             {
                 if (string.Compare(value, valueToRemove, StringComparison.Ordinal) != 0)
                 {
+                    if (newValue.Length != 0)
+                    {
+                        newValue.Append(delimiter);
+                    }
+
                     newValue.Append(value);
-                    newValue.Append(delimiter);
                 }
                 else
                 {
@@ -143,7 +156,7 @@ namespace Microsoft.VisualStudio.Build
                 }
             }
 
-            property.Value = newValue.ToString().TrimEnd(delimiter);
+            property.Value = newValue.ToString();
 
             if (!valueFound)
             {
@@ -175,6 +188,11 @@ namespace Microsoft.VisualStudio.Build
             bool valueFound = false;
             foreach (string propertyValue in GetPropertyValues(evaluatedPropertyValue, delimiter))
             {
+                if (value.Length != 0)
+                {
+                    value.Append(delimiter);
+                }
+
                 if (string.Compare(propertyValue, oldValue, StringComparison.Ordinal) == 0)
                 {
                     value.Append(newValue);
@@ -184,11 +202,9 @@ namespace Microsoft.VisualStudio.Build
                 {
                     value.Append(propertyValue);
                 }
-
-                value.Append(delimiter);
             }
 
-            property.Value = value.ToString().TrimEnd(delimiter);
+            property.Value = value.ToString();
 
             if (!valueFound)
             {
@@ -219,7 +235,7 @@ namespace Microsoft.VisualStudio.Build
                 }
                 else
                 {
-                    propertyGroup = project.PropertyGroups.FirstOrDefault();
+                    propertyGroup = project.PropertyGroups.First();
                 }
 
                 return propertyGroup.AddProperty(propertyName, string.Empty);

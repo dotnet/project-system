@@ -11,8 +11,39 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
     [DebuggerDisplay("{" + nameof(Id) +",nq}")]
-    internal class TestDependency : IDependency
+    internal sealed class TestDependency : IDependency
     {
+        public IDependency ClonePropertiesFrom
+        {
+            set
+            {
+                ProviderType = value.ProviderType;
+                Name = value.Name;
+                Caption = value.Caption;
+                OriginalItemSpec = value.OriginalItemSpec;
+                Path = value.Path;
+                FullPath = value.FullPath;
+                SchemaName = value.SchemaName;
+                SchemaItemType = value.SchemaItemType;
+                Version = value.Version;
+                Resolved = value.Resolved;
+                TopLevel = value.TopLevel;
+                Implicit = value.Implicit;
+                Visible = value.Visible;
+                Priority = value.Priority;
+                Icon = value.Icon;
+                ExpandedIcon = value.ExpandedIcon;
+                UnresolvedIcon = value.UnresolvedIcon;
+                UnresolvedExpandedIcon = value.UnresolvedExpandedIcon;
+                Properties = value.Properties;
+                DependencyIDs = value.DependencyIDs;
+                Flags = value.Flags;
+                Id = value.Id;
+                Alias = value.Alias;
+                TargetFramework = value.TargetFramework;
+            }
+        }
+
         public string ProviderType { get; set; }
         public string Name { get; set; }
         public string Caption { get; set; }
@@ -37,7 +68,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         public string Id { get; set; }
         public string Alias { get; set; }
         public ITargetFramework TargetFramework { get; set; }
-        public DependencyIconSet IconSet { get; set; }
+
+        public DependencyIconSet IconSet
+        {
+            get => new DependencyIconSet(Icon, ExpandedIcon, UnresolvedIcon, UnresolvedExpandedIcon);
+            set
+            {
+                Icon = value.Icon;
+                ExpandedIcon = value.ExpandedIcon;
+                UnresolvedIcon = value.UnresolvedIcon;
+                UnresolvedExpandedIcon = value.UnresolvedExpandedIcon;
+            }
+        }
 
         public IDependency SetProperties(
             string caption = null,
@@ -48,7 +90,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             DependencyIconSet iconSet = null,
             bool? isImplicit = null)
         {
-            return this;
+            return new TestDependency
+            {
+                // Copy all properties from this instance
+                ClonePropertiesFrom = this,
+
+                // Override specific properties as needed
+                Caption = caption ?? Caption,
+                Resolved = resolved ?? Resolved,
+                Flags = flags ?? Flags,
+                SchemaName = schemaName ?? SchemaName,
+                DependencyIDs = dependencyIDs ?? DependencyIDs,
+                Icon = iconSet?.Icon ?? Icon,
+                ExpandedIcon = iconSet?.ExpandedIcon ?? ExpandedIcon,
+                UnresolvedIcon = iconSet?.UnresolvedIcon ?? UnresolvedIcon,
+                UnresolvedExpandedIcon = iconSet?.UnresolvedExpandedIcon ?? UnresolvedExpandedIcon,
+                Implicit = isImplicit ?? Implicit
+            };
         }
 
         public override int GetHashCode() 
@@ -59,26 +117,5 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
         public bool Equals(IDependency other) 
             => other != null && other.Id.Equals(Id, StringComparison.OrdinalIgnoreCase);
-
-        public static bool operator ==(TestDependency left, TestDependency right)
-            => left is null ? right is null : left.Equals(right);
-
-        public static bool operator !=(TestDependency left, TestDependency right)
-            => !(left == right);
-
-        public static bool operator <(TestDependency left, TestDependency right)
-            => left is null ? !(right is null) : left.CompareTo(right) < 0;
-
-        public static bool operator <=(TestDependency left, TestDependency right)
-            => left is null || left.CompareTo(right) <= 0;
-
-        public static bool operator >(TestDependency left, TestDependency right)
-            => !(left is null) && left.CompareTo(right) > 0;
-
-        public static bool operator >=(TestDependency left, TestDependency right)
-            => left is null ? right is null : left.CompareTo(right) >= 0;
-
-        public int CompareTo(IDependency other) 
-            => other == null ? 1 : StringComparer.OrdinalIgnoreCase.Compare(Id, other.Id);
     }
 }

@@ -17,27 +17,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
     [Export(typeof(IDependenciesSnapshotFilter))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
     [Order(Order)]
-    internal class DuplicatedDependenciesSnapshotFilter : DependenciesSnapshotFilterBase
+    internal sealed class DuplicatedDependenciesSnapshotFilter : DependenciesSnapshotFilterBase
     {
         public const int Order = 101;
 
-        public override IDependency BeforeAdd(
+        public override void BeforeAddOrUpdate(
             string projectPath,
             ITargetFramework targetFramework,
             IDependency dependency,
-            ImmutableDictionary<string, IDependency>.Builder worldBuilder,
-            ImmutableHashSet<IDependency>.Builder topLevelBuilder,
             IReadOnlyDictionary<string, IProjectDependenciesSubTreeProvider> subTreeProviderByProviderType,
             IImmutableSet<string> projectItemSpecs,
-            out bool filterAnyChanges)
+            IAddDependencyContext context)
         {
-            filterAnyChanges = false;
-            IDependency resultDependency = dependency;
-
             IDependency matchingDependency = null;
-            foreach (IDependency x in topLevelBuilder)
+            foreach ((string _, IDependency x) in context)
             {
-                if (!x.Id.Equals(dependency.Id, StringComparison.OrdinalIgnoreCase)
+                if (x.TopLevel 
+                     && !x.Id.Equals(dependency.Id, StringComparison.OrdinalIgnoreCase)
                      && StringComparers.DependencyProviderTypes.Equals(x.ProviderType, dependency.ProviderType)
                      && x.Caption.Equals(dependency.Caption, StringComparison.OrdinalIgnoreCase))
                 {
@@ -52,9 +48,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
             if (!shouldApplyAlias)
             {
                 int adjustedLength = dependency.Caption.Length + " (".Length;
-                foreach (IDependency x in topLevelBuilder)
+                foreach ((string _, IDependency x) in context)
                 {
-                    if (!x.Id.Equals(dependency.Id, StringComparison.OrdinalIgnoreCase)
+                    if (x.TopLevel
+                         && !x.Id.Equals(dependency.Id, StringComparison.OrdinalIgnoreCase)
                          && StringComparers.DependencyProviderTypes.Equals(x.ProviderType, dependency.ProviderType)
                          && x.Caption.StartsWith(dependency.Caption, StringComparison.OrdinalIgnoreCase)
                          && x.Caption.Length >= adjustedLength
@@ -68,18 +65,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
 
             if (shouldApplyAlias)
             {
-                filterAnyChanges = true;
                 if (matchingDependency != null)
                 {
-                    matchingDependency = matchingDependency.SetProperties(caption: matchingDependency.Alias);
-                    worldBuilder[matchingDependency.Id] = matchingDependency;
-                    topLevelBuilder.Add(matchingDependency);
+                    context.AddOrUpdate(matchingDependency.SetProperties(caption: matchingDependency.Alias));
                 }
 
-                resultDependency = resultDependency.SetProperties(caption: dependency.Alias);
+                context.Accept(dependency.SetProperties(caption: dependency.Alias));
+                return;
             }
 
-            return resultDependency;
+            // Accept without changes
+            context.Accept(dependency);
         }
     }
 }

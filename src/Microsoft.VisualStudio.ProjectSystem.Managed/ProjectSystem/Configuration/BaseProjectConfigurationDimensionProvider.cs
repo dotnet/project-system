@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -71,7 +72,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             }
             else
             {
-                return BuildUtilities.GetPropertyValues(propertyValue);
+                return BuildUtilities.GetPropertyValues(propertyValue).ToImmutableArray();
             }
         }
 
@@ -82,7 +83,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         /// <returns>Collection of key/value pairs for the defaults values for the configuration dimensions of this provider for given project.</returns>
         /// <remarks>
         /// From <see cref="IProjectConfigurationDimensionsProvider"/>.
-        /// The interface expectes a collection of key/value pairs containing one or more dimensions along with a single values for each
+        /// The interface expects a collection of key/value pairs containing one or more dimensions along with a single values for each
         /// dimension. In this implementation each provider is representing a single dimension.
         /// </remarks>
         public virtual async Task<IEnumerable<KeyValuePair<string, string>>> GetDefaultValuesForDimensionsAsync(UnconfiguredProject project)
@@ -110,7 +111,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         /// <returns>Collection of key/value pairs for the current values for the configuration dimensions of this provider for given project.</returns>
         /// <remarks>
         /// From <see cref="IProjectConfigurationDimensionsProvider"/>.
-        /// The interface expectes a collection of key/value pairs containing one or more dimensions along with the values for each
+        /// The interface expects a collection of key/value pairs containing one or more dimensions along with the values for each
         /// dimension. In this implementation each provider is representing a single dimension with one or more values.
         /// </remarks>
         public virtual async Task<IEnumerable<KeyValuePair<string, IEnumerable<string>>>> GetProjectConfigurationDimensionsAsync(UnconfiguredProject project)
@@ -177,7 +178,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
                 // If this property is derived from another property, skip it and just
                 // pull default from next known values. This is better than picking a 
                 // default that is not actually one of the known configs.
-                if (defaultValue.IndexOf("$(") == -1)
+                if (defaultValue.IndexOf("$(", StringComparison.Ordinal) == -1)
                     return defaultValue;
             }
 
@@ -186,25 +187,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
 
         private Task<string> FindDimensionPropertyAsync(UnconfiguredProject project)
         {
-            return ProjectAccessor.OpenProjectXmlForReadAsync(project, projectXml =>
-            {
-                ProjectPropertyElement property = FindDimensionProperty(projectXml);
-                if (property != null)
-                    return property.GetUnescapedValue();
-
-                return null;
-            });
+            return ProjectAccessor.OpenProjectXmlForReadAsync(
+                project, 
+                projectXml => FindDimensionProperty(projectXml)?.GetUnescapedValue());
         }
 
         private ProjectPropertyElement FindDimensionProperty(ProjectRootElement projectXml)
         {
             // NOTE: We try to somewhat mimic evaluation, but it doesn't have to be exact; its just a guess
             // at what "might" be the default configuration, not what it actually is.
-            return projectXml.PropertyGroups.SelectMany(group => group.Properties)
-                                            .Reverse()
-                                            .Where(p => StringComparers.PropertyNames.Equals(PropertyName, p.Name))
-                                            .Where(p => BuildUtilities.HasWellKnownConditionsThatAlwaysEvaluateToTrue(p))
-                                            .FirstOrDefault();
+            return projectXml.PropertyGroups
+                .SelectMany(group => group.Properties)
+                .Reverse()
+                .FirstOrDefault(
+                    p => StringComparers.PropertyNames.Equals(PropertyName, p.Name) &&
+                         BuildUtilities.HasWellKnownConditionsThatAlwaysEvaluateToTrue(p));
         }
     }
 }

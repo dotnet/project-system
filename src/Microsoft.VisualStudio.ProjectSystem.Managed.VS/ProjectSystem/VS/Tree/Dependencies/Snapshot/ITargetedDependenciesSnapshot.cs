@@ -30,7 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         /// <summary>
         /// Top level project dependencies.
         /// </summary>
-        ImmutableHashSet<IDependency> TopLevelDependencies { get; }
+        ImmutableArray<IDependency> TopLevelDependencies { get; }
 
         /// <summary>
         /// Flat hash table of all unique dependencies in the project (from all levels). Having this table,

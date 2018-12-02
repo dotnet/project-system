@@ -38,6 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                                             bool? setPropertiesResolved = null,
                                             ProjectTreeFlags? setPropertiesFlags = null,
                                             bool? setPropertiesImplicit = null,
+                                            IDependency setPropertiesReturn = null,
                                             bool? equals = null,
                                             IImmutableList<string> setPropertiesDependencyIDs = null,
                                             string setPropertiesSchemaName = null,
@@ -139,10 +140,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                             setPropertiesDependencyIDs,
                             setPropertiesIconSet,
                             setPropertiesImplicit))
-                    .Returns(mock.Object);
+                    .Returns(setPropertiesReturn ?? mock.Object);
             }
 
-            if (equals.HasValue && equals.Value)
+            if (equals == true)
             {
                 mock.Setup(x => x.Equals(It.IsAny<IDependency>())).Returns(true);
             }

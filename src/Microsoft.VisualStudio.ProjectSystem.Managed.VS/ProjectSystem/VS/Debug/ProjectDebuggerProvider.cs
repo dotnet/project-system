@@ -89,14 +89,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// </summary>
         public static bool IsDotNetCoreFramework(string targetFramework)
         {
-            const string NetStandardAppPrefix = ".NetStandardApp";
             const string NetStandardPrefix = ".NetStandard";
             const string NetCorePrefix = ".NetCore";
-            const string NetCoreAppPrefix = ".NetCoreApp";
-            return targetFramework.StartsWith(NetCoreAppPrefix, StringComparison.OrdinalIgnoreCase) ||
-                   targetFramework.StartsWith(NetCorePrefix, StringComparison.OrdinalIgnoreCase) ||
-                   targetFramework.StartsWith(NetStandardPrefix, StringComparison.OrdinalIgnoreCase) ||
-                   targetFramework.StartsWith(NetStandardAppPrefix, StringComparison.OrdinalIgnoreCase);
+            return targetFramework.StartsWith(NetCorePrefix, StringComparison.OrdinalIgnoreCase) ||
+                   targetFramework.StartsWith(NetStandardPrefix, StringComparison.OrdinalIgnoreCase);
         }
 
         /// <summary>

@@ -16,7 +16,7 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions
 {
     [Export(DependencyRulesSubscriber.DependencyRulesSubscriberContract,
-            typeof(ICrossTargetRuleHandler<DependenciesRuleChangeContext>))]
+            typeof(IDependenciesRuleHandler))]
     [Export(typeof(IProjectDependenciesSubTreeProvider))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
     internal class ProjectRuleHandler : DependenciesRuleHandlerBase
@@ -122,12 +122,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
             string otherProjectPath = otherProjectSnapshot.ProjectPath;
 
-            List<IDependency> dependencyThatNeedChange = null;
-
-            foreach (ITargetedDependenciesSnapshot targetedDependencies in thisProjectSnapshot.Targets.Values)
+            foreach ((ITargetFramework _, ITargetedDependenciesSnapshot targetedDependencies) in thisProjectSnapshot.Targets)
             {
                 foreach (IDependency dependency in targetedDependencies.TopLevelDependencies)
                 {
+                    if (token.IsCancellationRequested)
+                        return;
+
                     // We're only interested in project dependencies
                     if (!StringComparers.DependencyProviderTypes.Equals(dependency.ProviderType, ProviderTypeString))
                         continue;
@@ -135,29 +136,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     if (!StringComparers.Paths.Equals(otherProjectPath, dependency.FullPath))
                         continue;
 
-                    if (dependencyThatNeedChange == null)
-                    {
-                        dependencyThatNeedChange = new List<IDependency>(capacity: thisProjectSnapshot.Targets.Count);
-                    }
-
-                    dependencyThatNeedChange.Add(dependency);
+                    RaiseChangeEvent(dependency);
                     break;
                 }
             }
 
-            if (dependencyThatNeedChange == null)
-            {
-                // we don't have dependency on updated project
-                return;
-            }
+            return;
 
-            foreach (IDependency dependency in dependencyThatNeedChange)
+            void RaiseChangeEvent(IDependency dependency)
             {
-                if (token.IsCancellationRequested)
-                {
-                    return;
-                }
-
                 IDependencyModel model = CreateDependencyModel(
                     dependency.Path,
                     dependency.OriginalItemSpec,

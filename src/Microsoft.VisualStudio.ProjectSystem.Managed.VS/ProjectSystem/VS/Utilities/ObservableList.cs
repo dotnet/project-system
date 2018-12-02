@@ -34,9 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
 
         public void RaiseValidationStatus(bool validationSuccessful)
         {
-            if (ValidationStatusChanged == null)
-                return;
-            ValidationStatusChanged(this, new ValidationStatusChangedEventArgs(validationSuccessful));
+            ValidationStatusChanged?.Invoke(this, new ValidationStatusChangedEventArgs(validationSuccessful));
         }
 
         protected override void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
