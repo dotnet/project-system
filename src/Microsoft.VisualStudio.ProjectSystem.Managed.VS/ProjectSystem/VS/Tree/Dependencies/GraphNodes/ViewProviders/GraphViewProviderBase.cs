@@ -30,37 +30,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
             return dependency.DependencyIDs.Count != 0;
         }
 
-        public virtual void BuildGraph(
+        public abstract void BuildGraph(
             IGraphContext graphContext,
             string projectPath,
             IDependency dependency,
             GraphNode dependencyGraphNode,
-            ITargetedDependenciesSnapshot targetedSnapshot)
-        {
-            // store refreshed dependency info
-            dependencyGraphNode.SetValue(DependenciesGraphSchema.DependencyIdProperty, dependency.Id);
-            dependencyGraphNode.SetValue(DependenciesGraphSchema.ResolvedProperty, dependency.Resolved);
-
-            ImmutableArray<IDependency> children = targetedSnapshot.GetDependencyChildren(dependency);
-            if (children.IsEmpty)
-            {
-                return;
-            }
-
-            foreach (IDependency childDependency in children)
-            {
-                if (!childDependency.Visible)
-                {
-                    continue;
-                }
-
-                Builder.AddGraphNode(
-                    graphContext,
-                    projectPath,
-                    dependencyGraphNode,
-                    childDependency.ToViewModel(targetedSnapshot));
-            }
-        }
+            ITargetedDependenciesSnapshot targetedSnapshot);
 
         public virtual bool ShouldTrackChanges(string projectPath, string updatedProjectPath, IDependency dependency)
         {
