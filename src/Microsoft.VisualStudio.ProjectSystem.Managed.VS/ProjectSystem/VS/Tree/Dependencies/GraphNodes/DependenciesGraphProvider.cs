@@ -36,6 +36,35 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
     [AppliesTo(ProjectCapability.DependenciesTree)]
     internal sealed class DependenciesGraphProvider : OnceInitializedOnceDisposedAsync, IGraphProvider, IDependenciesGraphBuilder
     {
+        private static readonly GraphCommand[] s_containsGraphCommand =
+        {
+            new GraphCommand(
+                GraphCommandDefinition.Contains,
+                targetCategories: null,
+                linkCategories: new[] {GraphCommonSchema.Contains},
+                trackChanges: true)
+        };
+
+        private readonly object _snapshotChangeHandlerLock = new object();
+
+        /// <summary>
+        /// Remembers expanded graph nodes to track changes in their children.
+        /// </summary>
+        private readonly WeakCollection<IGraphContext> _expandedGraphContexts = new WeakCollection<IGraphContext>();
+
+        [ImportMany] private readonly OrderPrecedenceImportCollection<IDependenciesGraphActionHandler> _graphActionHandlers;
+
+        private readonly IAggregateDependenciesSnapshotProvider _aggregateSnapshotProvider;
+
+        private readonly IAsyncServiceProvider _serviceProvider;
+
+        /// <summary>
+        /// All icons that are used tree graph, register their monikers once to avoid extra UI thread switches.
+        /// </summary>
+        private ImmutableHashSet<ImageMoniker> _knownIcons = ImmutableHashSet<ImageMoniker>.Empty;
+
+        private IVsImageService2 _imageService;
+
         [ImportingConstructor]
         public DependenciesGraphProvider(
             IAggregateDependenciesSnapshotProvider aggregateSnapshotProvider,
@@ -48,34 +77,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
             _graphActionHandlers = new OrderPrecedenceImportCollection<IDependenciesGraphActionHandler>(
                 ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesLast);
         }
-
-        private static readonly GraphCommand[] s_containsGraphCommand =
-        {
-            new GraphCommand(
-                GraphCommandDefinition.Contains,
-                targetCategories: null,
-                linkCategories: new[] {GraphCommonSchema.Contains},
-                trackChanges: true)
-        };
-
-        /// <summary>
-        /// All icons that are used tree graph, register their monikers once to avoid extra UI thread switches.
-        /// </summary>
-        private ImmutableHashSet<ImageMoniker> _knownIcons = ImmutableHashSet<ImageMoniker>.Empty;
-
-        [ImportMany] private readonly OrderPrecedenceImportCollection<IDependenciesGraphActionHandler> _graphActionHandlers;
-
-        private readonly object _snapshotChangeHandlerLock = new object();
-        private IVsImageService2 _imageService;
-
-        /// <summary>
-        /// Remembers expanded graph nodes to track changes in their children.
-        /// </summary>
-        private readonly WeakCollection<IGraphContext> _expandedGraphContexts = new WeakCollection<IGraphContext>();
-
-        private readonly IAggregateDependenciesSnapshotProvider _aggregateSnapshotProvider;
-
-        private readonly IAsyncServiceProvider _serviceProvider;
 
         protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
         {
