@@ -264,7 +264,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Managed.PooledObjects
 
         public static ObjectPool<PooledArray<T>> CreatePool()
         {
-            return CreatePool(128); // we rarely need more than 10
+            // We use a default size of 128 objects in the pool
+            // This makes it likely that we can handle all use cases
+            // even if many consumers require objects from the pool
+            // in practice we expect 128 allocated objects in the pool
+            // to be rare.  A normal operating set should be around 10.
+            return CreatePool(128);
         }
 
         public static ObjectPool<PooledArray<T>> CreatePool(int size)
