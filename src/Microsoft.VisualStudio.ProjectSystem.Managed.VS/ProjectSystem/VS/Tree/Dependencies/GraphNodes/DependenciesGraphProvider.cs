@@ -8,6 +8,7 @@ using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.GraphModel;
 using Microsoft.VisualStudio.GraphModel.CodeSchema;
@@ -58,12 +59,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
 
         private readonly IAsyncServiceProvider _serviceProvider;
 
-        /// <summary>
-        /// All icons that are used tree graph, register their monikers once to avoid extra UI thread switches.
-        /// </summary>
-        private ImmutableHashSet<ImageMoniker> _knownIcons = ImmutableHashSet<ImageMoniker>.Empty;
-
-        private IVsImageService2 _imageService;
+        private GraphIconCache _iconCache;
 
         [ImportingConstructor]
         public DependenciesGraphProvider(
@@ -82,7 +78,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
         {
             _aggregateSnapshotProvider.SnapshotChanged += OnSnapshotChanged;
 
-            _imageService = (IVsImageService2)await _serviceProvider.GetServiceAsync(typeof(SVsImageService));
+            _iconCache = await GraphIconCache.CreateAsync(_serviceProvider);
         }
 
         protected override Task DisposeCoreAsync(bool initialized)
@@ -223,19 +219,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
             }
         }
 
-        private void RegisterIcons(IEnumerable<ImageMoniker> icons)
-        {
-            Assumes.NotNull(icons);
-
-            foreach (ImageMoniker icon in icons)
-            {
-                if (ImmutableInterlocked.Update(ref _knownIcons, (knownIcons, arg) => knownIcons.Add(arg), icon))
-                {
-                    _imageService.TryAssociateNameWithMoniker(GetIconStringName(icon), icon);
-                }
-            }
-        }
-
         public GraphNode AddGraphNode(
             IGraphContext graphContext,
             string projectPath,
@@ -269,11 +252,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
             GraphNode parentNode,
             IDependencyViewModel viewModel)
         {
-            RegisterIcons(viewModel.GetIcons());
+            _iconCache.Register(viewModel.Icon);
+            _iconCache.Register(viewModel.ExpandedIcon);
 
             GraphNode newNode = graphContext.Graph.Nodes.GetOrCreate(graphNodeId, label: viewModel.Caption, category: DependenciesGraphSchema.CategoryDependency);
             
-            newNode.SetValue(DgmlNodeProperties.Icon, GetIconStringName(viewModel.Icon));
+            newNode.SetValue(DgmlNodeProperties.Icon, _iconCache.GetName(viewModel.Icon));
             
             // priority sets correct order among peers
             newNode.SetValue(CodeNodeProperties.SourceLocation, new SourceLocation(projectPath, new Position(viewModel.Priority, 0)));
@@ -348,11 +332,39 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
                 GraphNodeId.GetPartial(CodeGraphNodeIdName.File, filePath));
         }
 
-        private static readonly ConcurrentDictionary<(int id, Guid guid), string> s_iconNameCache = new ConcurrentDictionary<(int id, Guid guid), string>();
-
-        private static string GetIconStringName(ImageMoniker icon)
+        private sealed class GraphIconCache
         {
-            return s_iconNameCache.GetOrAdd((icon.Id, icon.Guid), i => $"{i.guid:D};{i.id}");
+            /// <summary>The set of icons that have already been registered.</summary>
+            private ImmutableHashSet<ImageMoniker> _registeredIcons = ImmutableHashSet<ImageMoniker>.Empty;
+
+            /// <summary>A cache of icon names, the reuse of which helps reduce allocations.</summary>
+            private readonly ConcurrentDictionary<(int id, Guid guid), string> _iconNameCache = new ConcurrentDictionary<(int id, Guid guid), string>();
+
+            private readonly IVsImageService2 _imageService;
+
+            public static async Task<GraphIconCache> CreateAsync(IAsyncServiceProvider serviceProvider)
+            {
+                var imageService = (IVsImageService2)await serviceProvider.GetServiceAsync(typeof(SVsImageService));
+                
+                return new GraphIconCache(imageService);
+            }
+
+            private GraphIconCache(IVsImageService2 imageService) => _imageService = imageService;
+
+            /// <summary>Gets the unique name of <paramref name="icon"/>.</summary>
+            public string GetName(ImageMoniker icon)
+            {
+                return _iconNameCache.GetOrAdd((icon.Id, icon.Guid), i => $"{i.guid:D};{i.id}");
+            }
+
+            /// <summary>Ensures <paramref name="icon"/> is registered by name with <see cref="IVsImageService2"/>.</summary>
+            public void Register(ImageMoniker icon)
+            {
+                if (ImmutableInterlocked.Update(ref _registeredIcons, (knownIcons, arg) => knownIcons.Add(arg), icon))
+                {
+                    _imageService.TryAssociateNameWithMoniker(GetName(icon), icon);
+                }
+            }
         }
     }
 }
