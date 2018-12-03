@@ -2,6 +2,7 @@
 
 using System;
 using System.Text;
+using Microsoft.VisualStudio.ProjectSystem.Managed.PooledObjects;
 
 namespace Microsoft.VisualStudio.Text
 {
@@ -48,7 +49,7 @@ namespace Microsoft.VisualStudio.Text
             }
         }
 
-        public static StringBuilder TrimEnd(this StringBuilder builder, params char[] trimChars)
+        public static StringBuilder TrimEnd(this PooledStringBuilder builder, params char[] trimChars)
         {
             while (builder.Length > 0)
             {

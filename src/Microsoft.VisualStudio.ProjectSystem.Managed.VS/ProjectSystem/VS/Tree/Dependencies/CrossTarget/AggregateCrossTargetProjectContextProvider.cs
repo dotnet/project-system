@@ -6,6 +6,7 @@ using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.VisualStudio.ProjectSystem.Managed.PooledObjects;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 {
@@ -39,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             ImmutableDictionary<string, ConfiguredProject> configuredProjectsMap = await _activeConfiguredProjectsProvider.GetActiveConfiguredProjectsMapAsync();
 #pragma warning restore CS0618 // Type or member is obsolete
             ProjectConfiguration activeProjectConfiguration = _commonServices.ActiveConfiguredProject.ProjectConfiguration;
-            ImmutableArray<ITargetFramework>.Builder targetFrameworks = ImmutableArray.CreateBuilder<ITargetFramework>(initialCapacity: configuredProjectsMap.Count);
+            var targetFrameworks = PooledArray<ITargetFramework>.GetInstance();
             ITargetFramework activeTargetFramework = TargetFramework.Empty;
 
             foreach ((string tfm, ConfiguredProject configuredProject) in configuredProjectsMap)
@@ -61,7 +62,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
             return new AggregateCrossTargetProjectContext(
                 isCrossTargeting,
-                targetFrameworks.MoveToImmutable(),
+                targetFrameworks.ToImmutableAndFree(),
                 configuredProjectsMap,
                 activeTargetFramework,
                 _targetFrameworkProvider);

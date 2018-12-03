@@ -3,9 +3,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 using Microsoft.Build.Framework;
+using Microsoft.VisualStudio.ProjectSystem.Managed.PooledObjects;
 
 namespace Microsoft.VisualStudio.Telemetry
 {
@@ -52,7 +52,7 @@ namespace Microsoft.VisualStudio.Telemetry
 
         public void Shutdown()
         {
-            var builder = new StringBuilder();
+            var builder = PooledStringBuilder.GetInstance();
 
             foreach (TargetRecord target in _targets.Values
                 .Where(v => v.Elapsed != TimeSpan.Zero)
@@ -65,7 +65,7 @@ namespace Microsoft.VisualStudio.Telemetry
                 builder.Append(';');
             }
 
-            string targetResults = builder.ToString();
+            string targetResults = builder.ToStringAndFree();
 
             _telemetryService.PostProperties(TelemetryEventName.DesignTimeBuildComplete, new[]
             {

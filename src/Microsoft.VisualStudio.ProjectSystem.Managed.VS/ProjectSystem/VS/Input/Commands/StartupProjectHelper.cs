@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
+using Microsoft.VisualStudio.ProjectSystem.Managed.PooledObjects;
 using Microsoft.VisualStudio.ProjectSystem.VS.Extensibility;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
@@ -37,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
                 if (dte.Solution.SolutionBuild.StartupProjects is Array startupProjects && startupProjects.Length > 0)
                 {
                     IVsSolution sln = ServiceProvider.GetService<IVsSolution, SVsSolution>();
-                    ImmutableArray<T>.Builder results = ImmutableArray.CreateBuilder<T>();
+                    var results = PooledArray<T>.GetInstance();
                     foreach (string projectName in startupProjects)
                     {
                         sln.GetProjectOfUniqueName(projectName, out IVsHierarchy hier);
@@ -47,7 +48,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
                             results.Add(ProjectExportProvider.GetExport<T>(projectPath));
                         }
                     }
-                    return results.ToImmutable();
+                    return results.ToImmutableAndFree();
                 }
             }
             return ImmutableArray<T>.Empty;

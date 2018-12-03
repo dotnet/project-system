@@ -6,7 +6,7 @@ using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading.Tasks;
-
+using Microsoft.VisualStudio.ProjectSystem.Managed.PooledObjects;
 using Microsoft.VisualStudio.ProjectSystem.Configuration;
 
 namespace Microsoft.VisualStudio.ProjectSystem
@@ -74,7 +74,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public async Task<ImmutableDictionary<string, ConfiguredProject>> GetActiveConfiguredProjectsMapAsync()
         {
-            ImmutableDictionary<string, ConfiguredProject>.Builder builder = ImmutableDictionary.CreateBuilder<string, ConfiguredProject>();
+            var builder = PooledDictionary<string, ConfiguredProject>.GetInstance();
 
             ActiveConfiguredObjects<ConfiguredProject> projects = await GetActiveConfiguredProjectsAsync();
 
@@ -92,7 +92,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 builder.Add(string.Empty, projects.Objects[0]);
             }
 
-            return builder.ToImmutable();
+            return builder.ToImmutableDictionaryAndFree();
         }
 
         public async Task<ActiveConfiguredObjects<ConfiguredProject>> GetActiveConfiguredProjectsAsync()
@@ -101,7 +101,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             if (configurations == null)
                 return null;
 
-            ImmutableArray<ConfiguredProject>.Builder builder = ImmutableArray.CreateBuilder<ConfiguredProject>(configurations.Objects.Count);
+            var builder = PooledArray<ConfiguredProject>.GetInstance();
 
             foreach (ProjectConfiguration configuration in configurations.Objects)
             {
@@ -110,7 +110,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 builder.Add(project);
             }
 
-            return new ActiveConfiguredObjects<ConfiguredProject>(builder.MoveToImmutable(), configurations.DimensionNames);
+            return new ActiveConfiguredObjects<ConfiguredProject>(builder.ToImmutableAndFree(), configurations.DimensionNames);
         }
 
         public async Task<ActiveConfiguredObjects<ProjectConfiguration>> GetActiveProjectConfigurationsAsync()
@@ -121,7 +121,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             IImmutableSet<ProjectConfiguration> configurations = await _services.ProjectConfigurationsService.GetKnownProjectConfigurationsAsync();
 
-            ImmutableArray<ProjectConfiguration>.Builder builder = ImmutableArray.CreateBuilder<ProjectConfiguration>(configurations.Count);
+            var builder = PooledArray<ProjectConfiguration>.GetInstance();
             IImmutableSet<string> dimensionNames = GetDimensionNames();
 
             foreach (ProjectConfiguration configuration in configurations)
@@ -133,7 +133,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             }
 
             Assumes.True(builder.Count > 0, "We have an active configuration that isn't one of the known configurations");
-            return new ActiveConfiguredObjects<ProjectConfiguration>(builder.ToImmutable(), dimensionNames);
+            return new ActiveConfiguredObjects<ProjectConfiguration>(builder.ToImmutableAndFree(), dimensionNames);
         }
 
         private IImmutableSet<string> GetDimensionNames()

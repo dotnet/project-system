@@ -1,9 +1,8 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
-
+using Microsoft.VisualStudio.ProjectSystem.Managed.PooledObjects;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectProperties
@@ -22,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
         public override async Task<string> OnGetEvaluatedPropertyValueAsync(string evaluatedPropertyValue, IProjectProperties defaultProperties)
         {
             ActiveConfiguredObjects<ConfiguredProject> configuredProjects = await _projectProvider.GetActiveConfiguredProjectsAsync();
-            ImmutableArray<string>.Builder builder = ImmutableArray.CreateBuilder<string>();
+            var builder = PooledArray<string>.GetInstance();
             foreach (ConfiguredProject configuredProject in configuredProjects.Objects)
             {
                 ProjectProperties projectProperties = configuredProject.Services.ExportProvider.GetExportedValue<ProjectProperties>();
@@ -31,7 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
                 builder.Add(currentTargetFrameworkMoniker);
             }
 
-            return string.Join(";", builder.ToArray());
+            return string.Join(";", builder.ToArrayAndFree());
         }
     }
 }

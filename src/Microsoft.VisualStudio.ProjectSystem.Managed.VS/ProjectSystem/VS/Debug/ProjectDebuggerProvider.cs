@@ -5,9 +5,8 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading.Tasks;
-
+using Microsoft.VisualStudio.ProjectSystem.Managed.PooledObjects;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Threading;
@@ -307,7 +306,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             }
 
             // Collect all the variables as a null delimited list of key=value pairs.
-            var result = new StringBuilder();
+            var result = PooledStringBuilder.GetInstance();
             foreach ((string key, string value) in environment)
             {
                 result.Append(key);
@@ -321,7 +320,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             // But the contract of the format of the data requires that this be a null-delimited,
             // null-terminated list.
             result.Append('\0');
-            return result.ToString();
+            return result.ToStringAndFree();
         }
 
         /// <summary>

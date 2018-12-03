@@ -1,9 +1,9 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
+using Microsoft.VisualStudio.ProjectSystem.Managed.PooledObjects;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 {
@@ -24,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 
         public Task<IReadOnlyCollection<IPageMetadata>> GetPagesAsync()
         {
-            ImmutableArray<IPageMetadata>.Builder builder = ImmutableArray.CreateBuilder<IPageMetadata>();
+            var builder = PooledArray<IPageMetadata>.GetInstance();
             builder.Add(FSharpProjectDesignerPage.Application);
             builder.Add(FSharpProjectDesignerPage.Build);
             builder.Add(FSharpProjectDesignerPage.BuildEvents);
@@ -41,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 
             builder.Add(FSharpProjectDesignerPage.ReferencePaths);
 
-            return Task.FromResult<IReadOnlyCollection<IPageMetadata>>(builder.ToImmutable());
+            return Task.FromResult<IReadOnlyCollection<IPageMetadata>>(builder.ToImmutableAndFree());
         }
     }
 }

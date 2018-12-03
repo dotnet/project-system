@@ -6,6 +6,7 @@ using System.Collections.Immutable;
 using System.Threading.Tasks;
 
 using Microsoft.CodeAnalysis;
+using Microsoft.VisualStudio.ProjectSystem.Managed.PooledObjects;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
@@ -44,14 +45,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             Workspace workspace,
             IProjectThreadingService threadingService)
         {
-            ImmutableDictionary<string, SourceAssemblyAttributePropertyValueProvider>.Builder builder = ImmutableDictionary.CreateBuilder<string, SourceAssemblyAttributePropertyValueProvider>();
+            var builder = PooledDictionary<string, SourceAssemblyAttributePropertyValueProvider>.GetInstance();
             foreach ((string key, (string attributeName, _)) in AssemblyPropertyInfoMap)
             {
                 var provider = new SourceAssemblyAttributePropertyValueProvider(attributeName, getActiveProjectId, workspace, threadingService);
                 builder.Add(key, provider);
             }
 
-            return builder.ToImmutable();
+            return builder.ToImmutableDictionaryAndFree();
         }
 
         /// <summary>

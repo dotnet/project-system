@@ -7,6 +7,7 @@ using System.Text;
 
 using Microsoft.Build.Construction;
 using Microsoft.Build.Execution;
+using Microsoft.VisualStudio.ProjectSystem.Managed.PooledObjects;
 using Microsoft.VisualStudio.Text;
 
 namespace Microsoft.VisualStudio.Build
@@ -107,7 +108,7 @@ namespace Microsoft.VisualStudio.Build
             Requires.NotNullOrEmpty(propertyName, nameof(propertyName));
 
             ProjectPropertyElement property = GetOrAddProperty(project, propertyName);
-            var newValue = new StringBuilder();
+            var newValue = PooledStringBuilder.GetInstance();
             foreach (string value in GetPropertyValues(evaluatedPropertyValue, delimiter))
             {
                 newValue.Append(value);
@@ -115,7 +116,7 @@ namespace Microsoft.VisualStudio.Build
             }
 
             newValue.Append(valueToAppend);
-            property.Value = newValue.ToString();
+            property.Value = newValue.ToStringAndFree();
         }
 
         /// <summary>

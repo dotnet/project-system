@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using Microsoft.Build.Construction;
+using Microsoft.VisualStudio.ProjectSystem.Managed.PooledObjects;
 using Microsoft.VisualStudio.Build;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Configuration
@@ -98,9 +99,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             else
             {
                 // First value is the default one.
-                ImmutableArray<KeyValuePair<string, string>>.Builder defaultValues = ImmutableArray.CreateBuilder<KeyValuePair<string, string>>();
+                var defaultValues = PooledArray<KeyValuePair<string, string>>.GetInstance();
                 defaultValues.Add(new KeyValuePair<string, string>(DimensionName, values.First()));
-                return defaultValues.ToImmutable();
+                return defaultValues.ToImmutableAndFree();
             }
         }
 
@@ -125,9 +126,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             }
             else
             {
-                ImmutableArray<KeyValuePair<string, IEnumerable<string>>>.Builder dimensionValues = ImmutableArray.CreateBuilder<KeyValuePair<string, IEnumerable<string>>>();
+                var dimensionValues = PooledArray<KeyValuePair<string, IEnumerable<string>>>.GetInstance();
                 dimensionValues.Add(new KeyValuePair<string, IEnumerable<string>>(DimensionName, values));
-                return dimensionValues.ToImmutable();
+                return dimensionValues.ToImmutableAndFree();
             }
         }
 
