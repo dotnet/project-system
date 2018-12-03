@@ -32,9 +32,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 get { return base.IsInitialized; }
             }
 
-            public new Task<MultiLifetimeInstance> PublishInstanceAsync(CancellationToken cancellationToken = default)
+            public new Task<MultiLifetimeInstance> WaitForLoadedAsync(CancellationToken cancellationToken = default)
             {
-                return base.PublishInstanceAsync(cancellationToken);
+                return base.WaitForLoadedAsync(cancellationToken);
             }
 
             public class MultiLifetimeInstance : IMultiLifetimeInstance

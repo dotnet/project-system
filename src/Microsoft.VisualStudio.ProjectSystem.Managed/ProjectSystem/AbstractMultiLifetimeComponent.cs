@@ -38,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         ///     This method does not initiate loading of the <see cref="AbstractMultiLifetimeComponent{T}"/>, however,
         ///     it will join the load when it starts.
         /// </remarks>
-        protected async Task<T> PublishInstanceAsync(CancellationToken cancellationToken = default)
+        protected async Task<T> WaitForLoadedAsync(CancellationToken cancellationToken = default)
         {
             // Wait until LoadAsync has been called, force switching to thread-pool in case
             // there's already someone waiting for us on the UI thread.

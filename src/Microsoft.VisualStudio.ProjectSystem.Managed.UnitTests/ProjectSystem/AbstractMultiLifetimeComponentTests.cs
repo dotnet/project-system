@@ -9,11 +9,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
     public class AbstractMultiLifetimeComponentTests
     {
         [Fact]
-        public void PublishInstanceAsync_WhenNotUnPublishInstanceAsync_ReturnsNonCompletedTask()
+        public void WaitForLoadedAsync_WhenNotLoadedAsync_ReturnsNonCompletedTask()
         {
             var component = CreateInstance();
 
-            var result = component.PublishInstanceAsync();
+            var result = component.WaitForLoadedAsync();
 
             Assert.False(result.IsCanceled);
             Assert.False(result.IsCompleted);
@@ -21,26 +21,26 @@ namespace Microsoft.VisualStudio.ProjectSystem
         }
 
         [Fact]
-        public async Task PublishInstanceAsync_WhenLoaded_ReturnsCompletedTask()
+        public async Task WaitForLoadedAsync_WhenLoaded_ReturnsCompletedTask()
         {
             var component = CreateInstance();
 
             await component.LoadAsync();
 
-            var result = component.PublishInstanceAsync();
+            var result = component.WaitForLoadedAsync();
 
             Assert.True(result.IsCompleted);
         }
 
         [Fact]
-        public async Task PublishInstanceAsync_WhenUnloaded_ReturnsNonCompletedTask()
+        public async Task WaitForLoadedAsync_WhenUnloaded_ReturnsNonCompletedTask()
         {
             var component = CreateInstance();
 
             await component.LoadAsync();
             await component.UnloadAsync();
 
-            var result = component.PublishInstanceAsync();
+            var result = component.WaitForLoadedAsync();
 
             Assert.False(result.IsCanceled);
             Assert.False(result.IsCompleted);
@@ -48,26 +48,26 @@ namespace Microsoft.VisualStudio.ProjectSystem
         }
 
         [Fact]
-        public async Task PublishInstanceAsync_DisposedWhenUnloaded_ReturnsCancelledTask()
+        public async Task WaitForLoadedAsync_DisposedWhenUnloaded_ReturnsCancelledTask()
         {
             var component = CreateInstance();
 
             await component.DisposeAsync();
 
-            var result = component.PublishInstanceAsync();
+            var result = component.WaitForLoadedAsync();
 
             Assert.True(result.IsCanceled);
         }
 
         [Fact]
-        public async Task PublishInstanceAsync_DisposedWhenLoaded_ReturnsCancelledTask()
+        public async Task WaitForLoadedAsync_DisposedWhenLoaded_ReturnsCancelledTask()
         {
             var component = CreateInstance();
 
             await component.LoadAsync();
             await component.DisposeAsync();
 
-            var result = component.PublishInstanceAsync();
+            var result = component.WaitForLoadedAsync();
 
             Assert.True(result.IsCanceled);
         }
@@ -89,7 +89,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             await component.LoadAsync();
 
-            var result = await component.PublishInstanceAsync();
+            var result = await component.WaitForLoadedAsync();
 
             Assert.True(result.IsInitialized);
         }
@@ -101,11 +101,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             await component.LoadAsync();
 
-            var instance = await component.PublishInstanceAsync();
+            var instance = await component.WaitForLoadedAsync();
 
             await component.LoadAsync();
 
-            var result = await component.PublishInstanceAsync();
+            var result = await component.WaitForLoadedAsync();
 
             Assert.Same(instance, result);
         }
@@ -117,14 +117,14 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             await component.LoadAsync();
 
-            var instance = await component.PublishInstanceAsync();
+            var instance = await component.WaitForLoadedAsync();
 
             await component.UnloadAsync();
 
             // We should create a new instance here
             await component.LoadAsync();
 
-            var result = await component.PublishInstanceAsync();
+            var result = await component.WaitForLoadedAsync();
 
             Assert.NotSame(instance, result);
         }
@@ -135,7 +135,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var component = CreateInstance();
 
             await component.LoadAsync();
-            var result = await component.PublishInstanceAsync();
+            var result = await component.WaitForLoadedAsync();
 
             await component.UnloadAsync();
 
@@ -175,7 +175,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var component = CreateInstance();
 
             await component.LoadAsync();
-            var instance = await component.PublishInstanceAsync();
+            var instance = await component.WaitForLoadedAsync();
 
             component.Dispose();
 

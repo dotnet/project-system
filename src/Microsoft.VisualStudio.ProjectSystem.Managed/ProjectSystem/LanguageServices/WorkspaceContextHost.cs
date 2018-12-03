@@ -56,14 +56,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
         public Task PublishAsync(CancellationToken cancellationToken = default)
         {
-            return PublishInstanceAsync(cancellationToken);
+            return WaitForLoadedAsync(cancellationToken);
         }
 
         public async Task OpenContextForWriteAsync(Func<IWorkspaceProjectContextAccessor, Task> action)
         {
             Requires.NotNull(action, nameof(action));
 
-            WorkspaceContextHostInstance instance = await PublishInstanceAsync();
+            WorkspaceContextHostInstance instance = await WaitForLoadedAsync();
 
             // Throws OperationCanceledException if 'instance' is Disposed
             await instance.OpenContextForWriteAsync(action);
@@ -73,7 +73,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         {
             Requires.NotNull(action, nameof(action));
 
-            WorkspaceContextHostInstance instance = await PublishInstanceAsync();
+            WorkspaceContextHostInstance instance = await WaitForLoadedAsync();
 
             // Throws OperationCanceledException if 'instance' is Disposed
             return await instance.OpenContextForWriteAsync(action);
