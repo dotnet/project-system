@@ -34,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
     [Export(typeof(DependenciesGraphProvider))]
     [Export(typeof(IDependenciesGraphBuilder))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
-    internal class DependenciesGraphProvider : OnceInitializedOnceDisposedAsync, IGraphProvider, IDependenciesGraphBuilder
+    internal sealed class DependenciesGraphProvider : OnceInitializedOnceDisposedAsync, IGraphProvider, IDependenciesGraphBuilder
     {
         [ImportingConstructor]
         public DependenciesGraphProvider(
@@ -43,9 +43,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
             JoinableTaskContext joinableTaskContext)
             : base(new JoinableTaskContextNode(joinableTaskContext))
         {
-            AggregateSnapshotProvider = aggregateSnapshotProvider;
-            ServiceProvider = serviceProvider;
-            GraphActionHandlers = new OrderPrecedenceImportCollection<IDependenciesGraphActionHandler>(
+            _aggregateSnapshotProvider = aggregateSnapshotProvider;
+            _serviceProvider = serviceProvider;
+            _graphActionHandlers = new OrderPrecedenceImportCollection<IDependenciesGraphActionHandler>(
                 ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesLast);
         }
 
@@ -63,8 +63,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
         /// </summary>
         private ImmutableHashSet<ImageMoniker> _knownIcons = ImmutableHashSet<ImageMoniker>.Empty;
 
-        [ImportMany]
-        private OrderPrecedenceImportCollection<IDependenciesGraphActionHandler> GraphActionHandlers { get; }
+        [ImportMany] private readonly OrderPrecedenceImportCollection<IDependenciesGraphActionHandler> _graphActionHandlers;
 
         private readonly object _snapshotChangeHandlerLock = new object();
         private IVsImageService2 _imageService;
@@ -73,22 +72,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
         /// <summary>
         /// Remembers expanded graph nodes to track changes in their children.
         /// </summary>
-        protected WeakCollection<IGraphContext> ExpandedGraphContexts { get; } = new WeakCollection<IGraphContext>();
+        private readonly WeakCollection<IGraphContext> _expandedGraphContexts = new WeakCollection<IGraphContext>();
 
-        private IAggregateDependenciesSnapshotProvider AggregateSnapshotProvider { get; }
+        private readonly IAggregateDependenciesSnapshotProvider _aggregateSnapshotProvider;
 
-        private IAsyncServiceProvider ServiceProvider { get; }
+        private readonly IAsyncServiceProvider _serviceProvider;
 
         protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
         {
-            AggregateSnapshotProvider.SnapshotChanged += OnSnapshotChanged;
+            _aggregateSnapshotProvider.SnapshotChanged += OnSnapshotChanged;
 
-            _imageService = (IVsImageService2)await ServiceProvider.GetServiceAsync(typeof(SVsImageService));
+            _imageService = (IVsImageService2)await _serviceProvider.GetServiceAsync(typeof(SVsImageService));
         }
 
         protected override Task DisposeCoreAsync(bool initialized)
         {
-            AggregateSnapshotProvider.SnapshotChanged -= OnSnapshotChanged;
+            _aggregateSnapshotProvider.SnapshotChanged -= OnSnapshotChanged;
 
             return Task.CompletedTask;
         }
@@ -133,7 +132,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
                 await InitializeAsync();
 
                 bool shouldTrackChanges = false;
-                foreach (Lazy<IDependenciesGraphActionHandler, IOrderPrecedenceMetadataView> handler in GraphActionHandlers)
+                foreach (Lazy<IDependenciesGraphActionHandler, IOrderPrecedenceMetadataView> handler in _graphActionHandlers)
                 {
                     if (handler.Value.CanHandleRequest(context))
                     {
@@ -148,11 +147,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
 
                 lock (_expandedGraphContextsLock)
                 {
-                    if (!ExpandedGraphContexts.Contains(context))
+                    if (!_expandedGraphContexts.Contains(context))
                     {
                         // Remember this graph context in order to track changes.
                         // When references change, we will adjust children of this graph as necessary
-                        ExpandedGraphContexts.Add(context);
+                        _expandedGraphContexts.Add(context);
                     }
                 }
             }
@@ -165,8 +164,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
 
         /// <summary>
         /// ProjectContextChanged gets fired every time dependencies change for projects across solution.
-        /// ExpandedGraphContexts contain all nodes that we need to check for potential updates in their 
-        /// children dependencies.
+        /// <see cref="_expandedGraphContexts"/> contains all nodes that we need to check for potential updates
+        /// in their children dependencies.
         /// </summary>
         private void OnSnapshotChanged(object sender, SnapshotChangedEventArgs e)
         {
@@ -182,7 +181,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
         }
 
         /// <summary>
-        /// Property ExpandedGraphContexts remembers graph expanded or checked so far.
+        /// <see cref="_expandedGraphContexts"/> remembers graph expanded or checked so far.
         /// Each context represents one level in the graph, i.e. a node and its first level dependencies
         /// Tracking changes over all expanded contexts ensures that all levels are processed
         /// and updated when there are any changes in nodes data.
@@ -192,7 +191,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
             IList<IGraphContext> expandedContexts;
             lock (_expandedGraphContextsLock)
             {
-                expandedContexts = ExpandedGraphContexts.ToList();
+                expandedContexts = _expandedGraphContexts.ToList();
             }
 
             if (expandedContexts.Count == 0)
@@ -200,7 +199,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
                 return;
             }
 
-            var actionHandlers = GraphActionHandlers.Select(x => x.Value).Where(x => x.CanHandleChanges()).ToList();
+            var actionHandlers = _graphActionHandlers.Select(x => x.Value).Where(x => x.CanHandleChanges()).ToList();
 
             if (actionHandlers.Count == 0)
             {
