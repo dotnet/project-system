@@ -132,9 +132,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
             {
                 await InitializeAsync();
 
-                IEnumerable<Lazy<IDependenciesGraphActionHandler, IOrderPrecedenceMetadataView>> actionHandlers = GraphActionHandlers.Where(x => x.Value.CanHandleRequest(context));
-                bool shouldTrackChanges = actionHandlers.Aggregate(
-                    false, (previousTrackFlag, handler) => previousTrackFlag || handler.Value.HandleRequest(context));
+                bool shouldTrackChanges = false;
+                foreach (Lazy<IDependenciesGraphActionHandler, IOrderPrecedenceMetadataView> handler in GraphActionHandlers)
+                {
+                    if (handler.Value.CanHandleRequest(context))
+                    {
+                        shouldTrackChanges = shouldTrackChanges || handler.Value.HandleRequest(context);
+                    }
+                }
 
                 if (!shouldTrackChanges)
                 {
