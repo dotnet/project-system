@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         where T : class, IMultiLifetimeInstance
     {
         private readonly object _lock = new object();
-        private TaskCompletionSource<(T instance, JoinableTask initializeAsyncTask)> _instanceTaskSource = new TaskCompletionSource<(T instance, JoinableTask initializeAsyncTask)>();
+        private TaskCompletionSource<(T instance, JoinableTask initializeAsyncTask)> _instanceTaskSource = new TaskCompletionSource<(T instance, JoinableTask initializeAsyncTask)>(TaskCreationOptions.RunContinuationsAsynchronously);
 
         protected AbstractMultiLifetimeComponent(JoinableTaskContextNode joinableTaskContextNode)
              : base(joinableTaskContextNode)
@@ -89,7 +89,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 {
                     // Should throw TaskCancellatedException if already cancelled in Dispose
                     (instance, _) = _instanceTaskSource.Task.GetAwaiter().GetResult();
-                    _instanceTaskSource = new TaskCompletionSource<(T instance, JoinableTask initializeAsyncTask)>();
+                    _instanceTaskSource = new TaskCompletionSource<(T instance, JoinableTask initializeAsyncTask)>(TaskCreationOptions.RunContinuationsAsynchronously);
                 }
             }
 
