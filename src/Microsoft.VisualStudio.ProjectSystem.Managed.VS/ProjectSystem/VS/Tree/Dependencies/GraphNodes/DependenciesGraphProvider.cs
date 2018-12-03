@@ -255,6 +255,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
             string projectPath,
             IDependencyViewModel viewModel)
         {
+            Requires.NotNull(viewModel.OriginalModel, nameof(viewModel.OriginalModel));
+            
             Assumes.True(IsInitialized);
 
             GraphNodeId newNodeId = GetTopLevelGraphNodeId(projectPath, viewModel.OriginalModel.GetTopLevelId());

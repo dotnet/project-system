@@ -14,6 +14,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
     {
         protected GraphViewProviderBase(IDependenciesGraphBuilder builder)
         {
+            Requires.NotNull(builder, nameof(builder));
+
             Builder = builder;
         }
 
