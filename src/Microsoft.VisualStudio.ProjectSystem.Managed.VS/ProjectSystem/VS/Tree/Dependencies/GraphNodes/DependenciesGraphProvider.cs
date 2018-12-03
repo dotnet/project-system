@@ -272,12 +272,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
         {
             RegisterIcons(viewModel.GetIcons());
 
-            GraphNode newNode = graphContext.Graph.Nodes.GetOrCreate(graphNodeId, viewModel.Caption, null);
+            GraphNode newNode = graphContext.Graph.Nodes.GetOrCreate(graphNodeId, label: viewModel.Caption, category: DependenciesGraphSchema.CategoryDependency);
+            
             newNode.SetValue(DgmlNodeProperties.Icon, GetIconStringName(viewModel.Icon));
+            
             // priority sets correct order among peers
-            newNode.SetValue(CodeNodeProperties.SourceLocation,
-                             new SourceLocation(projectPath, new Position(viewModel.Priority, 0)));
-            newNode.AddCategory(DependenciesGraphSchema.CategoryDependency);
+            newNode.SetValue(CodeNodeProperties.SourceLocation, new SourceLocation(projectPath, new Position(viewModel.Priority, 0)));
 
             if (viewModel.OriginalModel != null)
             {
