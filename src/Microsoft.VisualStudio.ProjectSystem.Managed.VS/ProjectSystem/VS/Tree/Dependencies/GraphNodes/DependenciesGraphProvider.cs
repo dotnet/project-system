@@ -67,7 +67,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
 
         private readonly object _snapshotChangeHandlerLock = new object();
         private IVsImageService2 _imageService;
-        private readonly object _expandedGraphContextsLock = new object();
 
         /// <summary>
         /// Remembers expanded graph nodes to track changes in their children.
@@ -145,7 +144,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
                     return;
                 }
 
-                lock (_expandedGraphContextsLock)
+                lock (_expandedGraphContexts)
                 {
                     if (!_expandedGraphContexts.Contains(context))
                     {
@@ -189,7 +188,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
         private void TrackChanges(SnapshotChangedEventArgs updatedProjectContext)
         {
             IList<IGraphContext> expandedContexts;
-            lock (_expandedGraphContextsLock)
+            lock (_expandedGraphContexts)
             {
                 expandedContexts = _expandedGraphContexts.ToList();
             }
