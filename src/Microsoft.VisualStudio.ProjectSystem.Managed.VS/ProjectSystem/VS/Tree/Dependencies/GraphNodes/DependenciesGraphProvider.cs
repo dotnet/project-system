@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
@@ -338,7 +337,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
             private ImmutableHashSet<ImageMoniker> _registeredIcons = ImmutableHashSet<ImageMoniker>.Empty;
 
             /// <summary>A cache of icon names, the reuse of which helps reduce allocations.</summary>
-            private readonly ConcurrentDictionary<(int id, Guid guid), string> _iconNameCache = new ConcurrentDictionary<(int id, Guid guid), string>();
+            private ImmutableDictionary<(int id, Guid guid), string> _iconNameCache = ImmutableDictionary<(int id, Guid guid), string>.Empty;
 
             private readonly IVsImageService2 _imageService;
 
@@ -354,7 +353,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
             /// <summary>Gets the unique name of <paramref name="icon"/>.</summary>
             public string GetName(ImageMoniker icon)
             {
-                return _iconNameCache.GetOrAdd((icon.Id, icon.Guid), i => $"{i.guid:D};{i.id}");
+                return ImmutableInterlocked.GetOrAdd(ref _iconNameCache, (id: icon.Id, guid: icon.Guid), i => $"{i.guid:D};{i.id}");
             }
 
             /// <summary>Ensures <paramref name="icon"/> is registered by name with <see cref="IVsImageService2"/>.</summary>
