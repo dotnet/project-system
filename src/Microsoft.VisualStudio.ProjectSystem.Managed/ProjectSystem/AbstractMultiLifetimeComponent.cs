@@ -73,7 +73,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
                 Assumes.True(_instanceTaskSource.Task.IsCompleted);
 
-                // Should throw TaskCancellatedException if already cancelled in Dispose
+                // Should throw TaskCanceledException if already cancelled in Dispose
                 (_, initializeAsyncTask) = _instanceTaskSource.Task.GetAwaiter().GetResult();
             }
 
@@ -87,7 +87,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             {
                 if (_instanceTaskSource.Task.IsCompleted)
                 {
-                    // Should throw TaskCancellatedException if already cancelled in Dispose
+                    // Should throw TaskCanceledException if already cancelled in Dispose
                     (instance, _) = _instanceTaskSource.Task.GetAwaiter().GetResult();
                     _instanceTaskSource = new TaskCompletionSource<(T instance, JoinableTask initializeAsyncTask)>(TaskCreationOptions.RunContinuationsAsynchronously);
                 }
