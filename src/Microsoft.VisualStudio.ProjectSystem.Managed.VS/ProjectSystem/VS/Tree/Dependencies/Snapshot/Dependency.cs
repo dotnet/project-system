@@ -92,10 +92,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             else
             {
                 int count = dependencyModel.DependencyIDs.Count;
-                var ids = PooledArray<string>.GetInstance();
+                ImmutableArray<string>.Builder ids = ImmutableArray.CreateBuilder<string>(count);
                 for (int i = 0; i < count; i++)
                     ids.Add(GetID(TargetFramework, ProviderType, dependencyModel.DependencyIDs[i]));
-                DependencyIDs = ids.ToImmutableAndFree();
+                DependencyIDs = ids.MoveToImmutable();
             }
         }
 

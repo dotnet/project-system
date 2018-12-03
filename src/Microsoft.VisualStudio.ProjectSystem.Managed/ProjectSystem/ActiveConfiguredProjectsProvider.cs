@@ -101,7 +101,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             if (configurations == null)
                 return null;
 
-            var builder = PooledArray<ConfiguredProject>.GetInstance();
+            ImmutableArray<ConfiguredProject>.Builder builder = ImmutableArray.CreateBuilder<ConfiguredProject>(configurations.Objects.Count);
 
             foreach (ProjectConfiguration configuration in configurations.Objects)
             {
@@ -110,7 +110,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 builder.Add(project);
             }
 
-            return new ActiveConfiguredObjects<ConfiguredProject>(builder.ToImmutableAndFree(), configurations.DimensionNames);
+            return new ActiveConfiguredObjects<ConfiguredProject>(builder.MoveToImmutable(), configurations.DimensionNames);
         }
 
         public async Task<ActiveConfiguredObjects<ProjectConfiguration>> GetActiveProjectConfigurationsAsync()
@@ -121,7 +121,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             IImmutableSet<ProjectConfiguration> configurations = await _services.ProjectConfigurationsService.GetKnownProjectConfigurationsAsync();
 
-            var builder = PooledArray<ProjectConfiguration>.GetInstance();
+            ImmutableArray<ProjectConfiguration>.Builder builder = ImmutableArray.CreateBuilder<ProjectConfiguration>(configurations.Count);
             IImmutableSet<string> dimensionNames = GetDimensionNames();
 
             foreach (ProjectConfiguration configuration in configurations)
@@ -133,7 +133,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             }
 
             Assumes.True(builder.Count > 0, "We have an active configuration that isn't one of the known configurations");
-            return new ActiveConfiguredObjects<ProjectConfiguration>(builder.ToImmutableAndFree(), dimensionNames);
+            return new ActiveConfiguredObjects<ProjectConfiguration>(builder.MoveToImmutable(), dimensionNames);
         }
 
         private IImmutableSet<string> GetDimensionNames()
