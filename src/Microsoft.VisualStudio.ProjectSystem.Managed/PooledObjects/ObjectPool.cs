@@ -31,12 +31,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Managed.PooledObjects
             internal T Value;
         }
 
-        /// <remarks>
-        /// Not using System.Func{T} because this file is linked into the (debugger) Formatter,
-        /// which does not have that type (since it compiles against .NET 2.0).
-        /// </remarks>
-        internal delegate T Factory();
-
         // Storage for the pool objects. The first item is stored in a dedicated field because we
         // expect to be able to satisfy most requests from it.
         private T _firstItem;
@@ -45,13 +39,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Managed.PooledObjects
         // factory is stored for the lifetime of the pool. We will call this only when pool needs to
         // expand. compared to "new T()", Func gives more flexibility to implementers and faster
         // than "new T()".
-        private readonly Factory _factory;  
+        private readonly Func<T> _factory;  
 
-        internal ObjectPool(Factory factory)
+        internal ObjectPool(Func<T> factory)
             : this(factory, Environment.ProcessorCount * 2)
         { }
 
-        internal ObjectPool(Factory factory, int size)
+        internal ObjectPool(Func<T> factory, int size)
         {
             Requires.Argument(size >= 1, nameof(size), "must be greater than or equal to one");
             _factory = factory;
