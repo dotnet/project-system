@@ -129,9 +129,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
                 bool shouldTrackChanges = false;
                 foreach (Lazy<IDependenciesGraphActionHandler, IOrderPrecedenceMetadataView> handler in _graphActionHandlers)
                 {
-                    if (handler.Value.CanHandleRequest(context))
+                    if (handler.Value.CanHandleRequest(context) &&
+                        handler.Value.HandleRequest(context))
                     {
-                        shouldTrackChanges = shouldTrackChanges || handler.Value.HandleRequest(context);
+                        shouldTrackChanges = true;
+                        break;
                     }
                 }
 
@@ -333,10 +335,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
 
         private sealed class GraphIconCache
         {
-            /// <summary>The set of icons that have already been registered.</summary>
             private ImmutableHashSet<ImageMoniker> _registeredIcons = ImmutableHashSet<ImageMoniker>.Empty;
 
-            /// <summary>A cache of icon names, the reuse of which helps reduce allocations.</summary>
             private ImmutableDictionary<(int id, Guid guid), string> _iconNameCache = ImmutableDictionary<(int id, Guid guid), string>.Empty;
 
             private readonly IVsImageService2 _imageService;
@@ -350,13 +350,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
 
             private GraphIconCache(IVsImageService2 imageService) => _imageService = imageService;
 
-            /// <summary>Gets the unique name of <paramref name="icon"/>.</summary>
             public string GetName(ImageMoniker icon)
             {
                 return ImmutableInterlocked.GetOrAdd(ref _iconNameCache, (id: icon.Id, guid: icon.Guid), i => $"{i.guid:D};{i.id}");
             }
 
-            /// <summary>Ensures <paramref name="icon"/> is registered by name with <see cref="IVsImageService2"/>.</summary>
             public void Register(ImageMoniker icon)
             {
                 if (ImmutableInterlocked.Update(ref _registeredIcons, (knownIcons, arg) => knownIcons.Add(arg), icon))
