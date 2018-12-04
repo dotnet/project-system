@@ -25,15 +25,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
     [AppliesTo(ProjectCapability.LaunchProfiles)]
     internal class ProjectDebuggerProvider : DebugLaunchProviderBase, IDeployedProjectItemMappingProvider
     {
-
         /// <summary>
         /// Constructors. Unit test one is 2nd
         /// </summary>
         [ImportingConstructor]
-        public ProjectDebuggerProvider(ConfiguredProject configuredProject, ILaunchSettingsProvider launchSettingsProvider)
+        public ProjectDebuggerProvider(ConfiguredProject configuredProject, ILaunchSettingsProvider launchSettingsProvider, IVsService<SVsShellDebugger, IVsDebugger4> vsDebuggerService)
             : base(configuredProject)
         {
             LaunchSettingsProvider = launchSettingsProvider;
+            _vsDebuggerService = vsDebuggerService;
 
             // We want it sorted so that higher numbers come first (is the default for these collections but explicitly expressed here)
             ProfileLaunchTargetsProviders = new OrderPrecedenceImportCollection<IDebugProfileLaunchTargetsProvider>(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst,
@@ -41,12 +41,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         }
 
         public ProjectDebuggerProvider(ConfiguredProject configuredProject, ILaunchSettingsProvider launchSettingsProvider,
-                                       OrderPrecedenceImportCollection<IDebugProfileLaunchTargetsProvider> providers)
+                                       OrderPrecedenceImportCollection<IDebugProfileLaunchTargetsProvider> providers,
+                                       IVsService<SVsShellDebugger, IVsDebugger4> vsDebuggerService)
             : base(configuredProject)
         {
             ProfileLaunchTargetsProviders = providers;
+            _vsDebuggerService = vsDebuggerService;
             LaunchSettingsProvider = launchSettingsProvider;
         }
+
+        private readonly IVsService<SVsShellDebugger, IVsDebugger4> _vsDebuggerService;
 
         /// <summary>
         /// Import the LaunchTargetProviders which know how to run profiles
@@ -194,7 +198,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 // The debugger needs to be called on the UI thread
                 await ThreadingService.SwitchToUIThread();
 
-                var shellDebugger = ServiceProvider.GetService(typeof(SVsShellDebugger)) as IVsDebugger4;
+                IVsDebugger4 shellDebugger = await _vsDebuggerService.GetValueAsync();
                 var launchResults = new VsDebugTargetProcessInfo[launchSettingsNative.Length];
                 shellDebugger.LaunchDebugTargets4((uint)launchSettingsNative.Length, launchSettingsNative, launchResults);
                 return launchResults;

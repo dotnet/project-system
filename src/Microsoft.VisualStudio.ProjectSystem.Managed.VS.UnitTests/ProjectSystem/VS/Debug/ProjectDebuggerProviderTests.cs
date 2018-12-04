@@ -70,7 +70,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         public async Task CanLaunchAsyncTests()
         {
             var configuredProjectMoq = new Mock<ConfiguredProject>();
-            var debugger = new ProjectDebuggerProvider(configuredProjectMoq.Object, new Mock<ILaunchSettingsProvider>().Object);
+            var debugger = new ProjectDebuggerProvider(configuredProjectMoq.Object, new Mock<ILaunchSettingsProvider>().Object, vsDebuggerService: null);
 
             bool result = await debugger.CanLaunchAsync(DebugLaunchOptions.NoDebug);
             Assert.True(result);
@@ -81,7 +81,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         [Fact]
         public void GetLaunchTargetsProviderForProfileTests()
         {
-            var debugger = new ProjectDebuggerProvider(_configuredProjectMoq.Object, _LaunchSettingsProviderMoq.Object, _launchProviders);
+            var debugger = new ProjectDebuggerProvider(_configuredProjectMoq.Object, _LaunchSettingsProviderMoq.Object, _launchProviders, vsDebuggerService: null);
             Assert.Equal(_mockWebProvider.Object, debugger.GetLaunchTargetsProvider(new LaunchProfile() { Name = "test", CommandName = "IISExpress" }));
             Assert.Equal(_mockDockerProvider.Object, debugger.GetLaunchTargetsProvider(new LaunchProfile() { Name = "test", CommandName = "Docker" }));
             Assert.Equal(_mockExeProvider.Object, debugger.GetLaunchTargetsProvider(new LaunchProfile() { Name = "test", CommandName = "Project" }));
@@ -91,7 +91,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         [Fact]
         public async Task QueryDebugTargetsAsyncCorrectProvider()
         {
-            var debugger = new ProjectDebuggerProvider(_configuredProjectMoq.Object, _LaunchSettingsProviderMoq.Object, _launchProviders);
+            var debugger = new ProjectDebuggerProvider(_configuredProjectMoq.Object, _LaunchSettingsProviderMoq.Object, _launchProviders, vsDebuggerService: null);
 
             _activeProfile = new LaunchProfile() { Name = "test", CommandName = "IISExpress" };
             var result = await debugger.QueryDebugTargetsAsync(0);
@@ -109,7 +109,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         [Fact]
         public async Task QueryDebugTargetsAsync_WhenNoLaunchProfile_Throws()
         {
-            var debugger = new ProjectDebuggerProvider(_configuredProjectMoq.Object, _LaunchSettingsProviderMoq.Object, _launchProviders);
+            var debugger = new ProjectDebuggerProvider(_configuredProjectMoq.Object, _LaunchSettingsProviderMoq.Object, _launchProviders, vsDebuggerService: null);
             _activeProfile = null;
 
             var exception = await Assert.ThrowsAsync<Exception>(() =>
@@ -121,7 +121,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         [Fact]
         public async Task QueryDebugTargetsAsync_WhenNoInstalledProvider_Throws()
         {
-            var debugger = new ProjectDebuggerProvider(_configuredProjectMoq.Object, _LaunchSettingsProviderMoq.Object, _launchProviders);
+            var debugger = new ProjectDebuggerProvider(_configuredProjectMoq.Object, _LaunchSettingsProviderMoq.Object, _launchProviders, vsDebuggerService: null);
             _activeProfile = new LaunchProfile() { Name = "NoActionProfile", CommandName = "SomeOtherExtension" };
 
             var exception = await Assert.ThrowsAsync<Exception>(() =>

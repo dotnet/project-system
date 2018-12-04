@@ -3,6 +3,9 @@
 using System;
 using System.Threading.Tasks;
 
+using Microsoft.VisualStudio.ProjectSystem.VS.Interop;
+using Microsoft.VisualStudio.Shell.Interop;
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
 {
     internal interface IVsShellUtilitiesHelper
@@ -10,9 +13,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
         /// <summary>
         /// Returns the version of VS as defined by VSVSAPROPID_ProductSemanticVersion with the trailing sem version stripped, or null on failure. 
         /// </summary>
-        Task<Version> GetVSVersionAsync(IServiceProvider serviceProvider);
+        Task<Version> GetVSVersionAsync(IVsService<IVsAppId> vsAppIdService);
 
-        Task<string> GetLocalAppDataFolderAsync(IServiceProvider serviceProvider);
-
+        Task<string> GetLocalAppDataFolderAsync(IVsService<IVsShell> vsShellService);
     }
 }

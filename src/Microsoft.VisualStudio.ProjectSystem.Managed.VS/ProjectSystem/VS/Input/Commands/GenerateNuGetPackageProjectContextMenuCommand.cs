@@ -5,7 +5,7 @@ using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.Input;
 using Microsoft.VisualStudio.ProjectSystem.Build;
 using Microsoft.VisualStudio.ProjectSystem.Input;
-using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 {
@@ -17,13 +17,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         public GenerateNuGetPackageProjectContextMenuCommand(
             UnconfiguredProject project,
             IProjectThreadingService threadingService,
-            SVsServiceProvider serviceProvider,
+            IVsService<SVsSolutionBuildManager, IVsSolutionBuildManager2> vsSolutionBuildManagerService,
             GeneratePackageOnBuildPropertyProvider generatePackageOnBuildPropertyProvider)
-            : base(project, threadingService, serviceProvider, generatePackageOnBuildPropertyProvider)
+            : base(project, threadingService, vsSolutionBuildManagerService, generatePackageOnBuildPropertyProvider)
         {
         }
 
         protected override bool ShouldHandle(IProjectTree node) => node.IsRoot();
+
         protected override string GetCommandText() => VSResources.PackCommand;
     }
 }
