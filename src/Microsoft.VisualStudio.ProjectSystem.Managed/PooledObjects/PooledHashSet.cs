@@ -2,7 +2,7 @@
 
 using System.Collections.Generic;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Managed.PooledObjects
+namespace Microsoft.VisualStudio.Buffers.PooledObjects
 {
     // HashSet that can be recycled via an object pool
     // NOTE: these HashSets always have the default comparer.

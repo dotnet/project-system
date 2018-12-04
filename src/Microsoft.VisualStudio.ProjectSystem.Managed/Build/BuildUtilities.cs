@@ -7,7 +7,7 @@ using System.Text;
 
 using Microsoft.Build.Construction;
 using Microsoft.Build.Execution;
-using Microsoft.VisualStudio.ProjectSystem.Managed.PooledObjects;
+using Microsoft.VisualStudio.Buffers.PooledObjects;
 using Microsoft.VisualStudio.Text;
 
 namespace Microsoft.VisualStudio.Build

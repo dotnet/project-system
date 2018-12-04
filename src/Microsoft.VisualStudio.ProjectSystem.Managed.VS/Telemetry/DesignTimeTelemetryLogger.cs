@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Microsoft.Build.Framework;
-using Microsoft.VisualStudio.ProjectSystem.Managed.PooledObjects;
+using Microsoft.VisualStudio.Buffers.PooledObjects;
 
 namespace Microsoft.VisualStudio.Telemetry
 {

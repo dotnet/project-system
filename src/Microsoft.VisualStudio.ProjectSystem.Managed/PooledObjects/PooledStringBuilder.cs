@@ -3,7 +3,7 @@
 using System;
 using System.Text;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Managed.PooledObjects
+namespace Microsoft.VisualStudio.Buffers.PooledObjects
 {
     /// <summary>
     /// The usage is:

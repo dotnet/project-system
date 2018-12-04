@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 using Microsoft.Build.Construction;
 using Microsoft.Build.Evaluation;
-using Microsoft.VisualStudio.ProjectSystem.Managed.PooledObjects;
+using Microsoft.VisualStudio.Buffers.PooledObjects;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
 {

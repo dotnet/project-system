@@ -4,7 +4,7 @@ using System;
 using System.Diagnostics;
 using System.Threading;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Managed.PooledObjects
+namespace Microsoft.VisualStudio.Buffers.PooledObjects
 {
     /// <summary>
     /// Generic implementation of object pooling pattern with predefined pool size limit. The main

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Managed.PooledObjects
+namespace Microsoft.VisualStudio.Buffers.PooledObjects
 {
     [DebuggerDisplay("Count = {Count,nq}")]
     [DebuggerTypeProxy(typeof(PooledArray<>.DebuggerProxy))]

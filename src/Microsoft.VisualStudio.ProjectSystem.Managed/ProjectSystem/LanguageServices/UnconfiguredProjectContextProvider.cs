@@ -6,7 +6,7 @@ using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.ProjectSystem.Managed.PooledObjects;
+using Microsoft.VisualStudio.Buffers.PooledObjects;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 

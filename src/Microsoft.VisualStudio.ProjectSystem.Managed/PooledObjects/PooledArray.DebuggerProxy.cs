@@ -2,7 +2,7 @@
 
 using System.Diagnostics;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Managed.PooledObjects
+namespace Microsoft.VisualStudio.Buffers.PooledObjects
 {
     internal sealed partial class PooledArray<T>
     {

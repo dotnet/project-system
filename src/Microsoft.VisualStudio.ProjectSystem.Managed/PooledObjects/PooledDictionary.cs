@@ -3,7 +3,7 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Managed.PooledObjects
+namespace Microsoft.VisualStudio.Buffers.PooledObjects
 {
     // Dictionary that can be recycled via an object pool
     // NOTE: these dictionaries always have the default comparer.
