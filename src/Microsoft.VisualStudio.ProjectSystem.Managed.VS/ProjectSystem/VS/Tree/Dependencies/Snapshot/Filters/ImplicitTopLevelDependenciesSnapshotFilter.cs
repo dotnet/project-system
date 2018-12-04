@@ -3,7 +3,7 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
-
+using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Filters
@@ -51,9 +51,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
                 if (subTreeProviderByProviderType.TryGetValue(dependency.ProviderType, out IProjectDependenciesSubTreeProvider provider) && 
                     provider is IProjectDependenciesSubTreeProviderInternal internalProvider)
                 {
-                    DependencyIconSet implicitIconSet = dependency.IconSet
-                        .WithIcon(internalProvider.GetImplicitIcon())
-                        .WithExpandedIcon(internalProvider.GetImplicitIcon());
+                    ImageMoniker implicitIcon = internalProvider.GetImplicitIcon();
+
+                    DependencyIconSet implicitIconSet = DependencyIconSetCache.Instance.GetOrAddIconSet(
+                        implicitIcon,
+                        implicitIcon,
+                        dependency.IconSet.UnresolvedIcon,
+                        dependency.IconSet.UnresolvedExpandedIcon);
 
                     context.Accept(dependency.SetProperties(
                         iconSet: implicitIconSet,

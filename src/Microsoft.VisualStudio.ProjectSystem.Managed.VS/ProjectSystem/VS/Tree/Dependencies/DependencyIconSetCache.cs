@@ -15,6 +15,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     /// </summary>
     internal sealed class DependencyIconSetCache
     {
+        public static DependencyIconSetCache Instance { get; } = new DependencyIconSetCache();
+
         private ImmutableHashSet<DependencyIconSet> _iconSets = ImmutableHashSet<DependencyIconSet>.Empty;
 
         public DependencyIconSet GetOrAddIconSet(DependencyIconSet iconSet)
