@@ -52,7 +52,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         public virtual void Handle(
             IImmutableDictionary<string, IProjectChangeDescription> changesByRuleName,
             ITargetFramework targetFramework,
-            DependenciesRuleChangeContext ruleChangeContext)
+            CrossTargetDependenciesChangesBuilder changesBuilder)
         {
             // We receive unresolved and resolved changes separately.
 
@@ -63,7 +63,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     resolved: false, 
                     projectChange: unresolvedChanges, 
                     targetFramework, 
-                    ruleChangeContext, 
+                    changesBuilder, 
                     shouldProcess: dependencyId => true);
             }
 
@@ -75,7 +75,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     resolved: true, 
                     projectChange: resolvedChanges, 
                     targetFramework, 
-                    ruleChangeContext, 
+                    changesBuilder, 
                     shouldProcess: unresolvedChanges.After.Items.ContainsKey);
             }
         }
@@ -84,7 +84,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             bool resolved,
             IProjectChangeDescription projectChange,
             ITargetFramework targetFramework,
-            DependenciesRuleChangeContext ruleChangeContext,
+            CrossTargetDependenciesChangesBuilder changesBuilder,
             Func<string, bool> shouldProcess)
         {
             foreach (string removedItem in projectChange.Difference.RemovedItems)
@@ -95,7 +95,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
                 if (shouldProcess(dependencyId))
                 {
-                    ruleChangeContext.IncludeRemovedChange(targetFramework, ProviderType, removedItem);
+                    changesBuilder.Removed(targetFramework, ProviderType, removedItem);
                 }
             }
 
@@ -107,7 +107,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     // For changes we try to add new dependency. If it is a resolved dependency, it would just override
                     // old one with new properties. If it is unresolved dependency, it would be added only when there no
                     // resolved version in the snapshot.
-                    ruleChangeContext.IncludeAddedChange(targetFramework, model);
+                    changesBuilder.Added(targetFramework, model);
                 }
             }
 
@@ -116,7 +116,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 IDependencyModel model = CreateDependencyModelForRule(addedItem, resolved, projectChange.After);
                 if (shouldProcess(model.Id))
                 {
-                    ruleChangeContext.IncludeAddedChange(targetFramework, model);
+                    changesBuilder.Added(targetFramework, model);
                 }
             }
         }

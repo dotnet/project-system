@@ -18,11 +18,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
     internal sealed class DependencySubscriptionChangedEventArgs
     {
-        public DependencySubscriptionChangedEventArgs(DependenciesRuleChangeContext context)
+        public DependencySubscriptionChangedEventArgs(
+            ITargetFramework activeTarget,
+            IProjectCatalogSnapshot catalogs,
+            ImmutableDictionary<ITargetFramework, IDependenciesChanges> changes)
         {
-            ActiveTarget = context.ActiveTarget;
-            Catalogs = context.Catalogs;
-            Changes = context.Changes;
+            Requires.Argument(changes.Count != 0, nameof(changes), "Must not be zero.");
+
+            ActiveTarget = activeTarget;
+            Catalogs = catalogs;
+            Changes = changes;
         }
 
         public ITargetFramework ActiveTarget { get; }
@@ -30,7 +35,5 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         public IProjectCatalogSnapshot Catalogs { get; }
 
         public ImmutableDictionary<ITargetFramework, IDependenciesChanges> Changes { get; }
-
-        public bool AnyChanges => Changes.Count != 0;
     }
 }

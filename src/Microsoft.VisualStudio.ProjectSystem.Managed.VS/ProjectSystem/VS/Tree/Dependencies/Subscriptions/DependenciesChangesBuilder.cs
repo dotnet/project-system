@@ -3,58 +3,56 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Linq;
-
 using Microsoft.VisualStudio.Imaging.Interop;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions
 {
-    internal sealed class DependenciesChanges : IDependenciesChanges
+    internal sealed class DependenciesChangesBuilder
     {
-        private readonly HashSet<IDependencyModel> _added = new HashSet<IDependencyModel>();
-        private readonly HashSet<IDependencyModel> _removed = new HashSet<IDependencyModel>();
+        private HashSet<IDependencyModel> _added;
+        private HashSet<IDependencyModel> _removed;
 
-        public bool AnyChanges => _added.Count != 0 || _removed.Count != 0;
-
-        public IImmutableList<IDependencyModel> AddedNodes
+        public void Added(IDependencyModel model)
         {
-            get
+            if (_added == null)
             {
-                lock (_added)
-                {
-                    return ImmutableArray.CreateRange(_added);
-                }
+                _added = new HashSet<IDependencyModel>();
             }
+
+            _added.Remove(model);
+            _added.Add(model);
         }
 
-        public IImmutableList<IDependencyModel> RemovedNodes
+        public void Removed(string providerType, string dependencyId)
         {
-            get
+            if (_removed == null)
             {
-                lock (_removed)
-                {
-                    return ImmutableArray.CreateRange(_removed);
-                }
+                _removed = new HashSet<IDependencyModel>();
             }
-        }
 
-        public void IncludeAddedChange(IDependencyModel model)
-        {
-            lock (_added)
-            {
-                _added.Remove(model);
-                _added.Add(model);
-            }
-        }
-
-        public void IncludeRemovedChange(string providerType, string dependencyId)
-        {
             var identity = new RemovedDependencyModel(providerType, dependencyId);
+            _removed.Remove(identity);
+            _removed.Add(identity);
+        }
 
-            lock (_removed)
+        public IDependenciesChanges Build()
+        {
+            return new DependenciesChanges(
+                _added   == null ? (IImmutableList<IDependencyModel>)ImmutableList<IDependencyModel>.Empty : ImmutableArray.CreateRange(_added),
+                _removed == null ? (IImmutableList<IDependencyModel>)ImmutableList<IDependencyModel>.Empty : ImmutableArray.CreateRange(_removed));
+        }
+
+        private sealed class DependenciesChanges : IDependenciesChanges
+        {
+            public IImmutableList<IDependencyModel> AddedNodes { get; }
+            public IImmutableList<IDependencyModel> RemovedNodes { get; }
+
+            public DependenciesChanges(
+                IImmutableList<IDependencyModel> addedNodes,
+                IImmutableList<IDependencyModel> removedNodes)
             {
-                _removed.Remove(identity);
-                _removed.Add(identity);
+                AddedNodes = addedNodes;
+                RemovedNodes = removedNodes;
             }
         }
 
@@ -104,21 +102,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             public override int GetHashCode()
                 => unchecked(StringComparer.OrdinalIgnoreCase.GetHashCode(Id) * 397 ^
                              StringComparer.OrdinalIgnoreCase.GetHashCode(ProviderType));
-        }
-    }
-
-    internal static class IDependenciesChangesExtensions
-    {
-        public static bool AnyChanges(this IDependenciesChanges changes)
-        {
-            if (changes is DependenciesChanges c)
-            {
-                // Non-allocating path when using our own type.
-                // Ideally this property would be on the IDependenciesChanges interface directly.
-                return c.AnyChanges;
-            }
-
-            return changes.AddedNodes.Any() || changes.RemovedNodes.Any();
         }
     }
 }

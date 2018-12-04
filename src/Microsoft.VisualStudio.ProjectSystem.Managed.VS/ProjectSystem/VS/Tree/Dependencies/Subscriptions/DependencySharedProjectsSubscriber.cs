@@ -143,15 +143,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                     return;
                 }
 
-                var dependencyChangeContext = new DependenciesRuleChangeContext(
-                    currentAggregateContext.ActiveTargetFramework, 
-                    catalogs);
+                var changesBuilder = new CrossTargetDependenciesChangesBuilder();
 
-                ProcessSharedProjectsUpdates(sharedProjectsUpdate, targetFrameworkToUpdate, dependencyChangeContext);
+                ProcessSharedProjectsUpdates(sharedProjectsUpdate, targetFrameworkToUpdate, changesBuilder);
 
-                if (dependencyChangeContext.AnyChanges)
+                ImmutableDictionary<ITargetFramework, IDependenciesChanges> changes = changesBuilder.TryBuildChanges();
+
+                if (changes != null)
                 {
-                    DependenciesChanged?.Invoke(this, new DependencySubscriptionChangedEventArgs(dependencyChangeContext));
+                    DependenciesChanged?.Invoke(
+                        this,
+                        new DependencySubscriptionChangedEventArgs(
+                            currentAggregateContext.ActiveTargetFramework,
+                            catalogs,
+                            changes));
                 }
             }
         }
@@ -159,11 +164,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         private void ProcessSharedProjectsUpdates(
             IProjectSharedFoldersSnapshot sharedFolders,
             ITargetFramework targetFramework,
-            DependenciesRuleChangeContext dependencyChangeContext)
+            CrossTargetDependenciesChangesBuilder changesBuilder)
         {
             Requires.NotNull(sharedFolders, nameof(sharedFolders));
             Requires.NotNull(targetFramework, nameof(targetFramework));
-            Requires.NotNull(dependencyChangeContext, nameof(dependencyChangeContext));
+            Requires.NotNull(changesBuilder, nameof(changesBuilder));
 
             IDependenciesSnapshot snapshot = _dependenciesSnapshotProvider.CurrentSnapshot;
             if (!snapshot.Targets.TryGetValue(targetFramework, out ITargetedDependenciesSnapshot targetedSnapshot))
@@ -187,7 +192,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                     isResolved: true,
                     isImplicit: false,
                     properties: ImmutableStringDictionary<string>.EmptyOrdinal);
-                dependencyChangeContext.IncludeAddedChange(targetFramework, added);
+                changesBuilder.Added(targetFramework, added);
             }
 
             // process removed nodes
@@ -198,7 +203,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
                 if (exists)
                 {
-                    dependencyChangeContext.IncludeRemovedChange(
+                    changesBuilder.Removed(
                         targetFramework, 
                         ProjectRuleHandler.ProviderTypeString, 
                         dependencyId: removedSharedImportPath);
