@@ -8,18 +8,26 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions
 {
-    internal interface IDependencyCrossTargetSubscriber : ICrossTargetSubscriber
+    internal interface IDependencyCrossTargetSubscriber
     {
         event EventHandler<DependencySubscriptionChangedEventArgs> DependenciesChanged;
+        void InitializeSubscriber(ICrossTargetSubscriptionsHost host, IProjectSubscriptionService subscriptionService);
+        void AddSubscriptions(AggregateCrossTargetProjectContext newProjectContext);
+        void ReleaseSubscriptions();
     }
 
     internal sealed class DependencySubscriptionChangedEventArgs
     {
-        public DependencySubscriptionChangedEventArgs(DependenciesRuleChangeContext context)
+        public DependencySubscriptionChangedEventArgs(
+            ITargetFramework activeTarget,
+            IProjectCatalogSnapshot catalogs,
+            ImmutableDictionary<ITargetFramework, IDependenciesChanges> changes)
         {
-            ActiveTarget = context.ActiveTarget;
-            Catalogs = context.Catalogs;
-            Changes = context.Changes;
+            Requires.Argument(changes.Count != 0, nameof(changes), "Must not be zero.");
+
+            ActiveTarget = activeTarget;
+            Catalogs = catalogs;
+            Changes = changes;
         }
 
         public ITargetFramework ActiveTarget { get; }
@@ -27,7 +35,5 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         public IProjectCatalogSnapshot Catalogs { get; }
 
         public ImmutableDictionary<ITargetFramework, IDependenciesChanges> Changes { get; }
-
-        public bool AnyChanges => Changes.Count != 0;
     }
 }

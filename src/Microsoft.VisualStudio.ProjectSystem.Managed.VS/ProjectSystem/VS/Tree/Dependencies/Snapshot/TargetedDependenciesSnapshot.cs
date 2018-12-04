@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             ITargetedDependenciesSnapshot previousSnapshot,
             IDependenciesChanges changes,
             IProjectCatalogSnapshot catalogs,
-            IReadOnlyList<IDependenciesSnapshotFilter> snapshotFilters,
+            ImmutableArray<IDependenciesSnapshotFilter> snapshotFilters,
             IReadOnlyDictionary<string, IProjectDependenciesSubTreeProvider> subTreeProviderByProviderType,
             IImmutableSet<string> projectItemSpecs)
         {
@@ -41,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Requires.NotNull(previousSnapshot, nameof(previousSnapshot));
             // catalogs can be null
             Requires.NotNull(changes, nameof(changes));
-            Requires.NotNull(snapshotFilters, nameof(snapshotFilters));
+            Requires.Argument(!snapshotFilters.IsDefault, nameof(snapshotFilters), "Cannot be default.");
             Requires.NotNull(subTreeProviderByProviderType, nameof(subTreeProviderByProviderType));
             // projectItemSpecs can be null
 
@@ -186,7 +186,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             DependenciesWorld = dependenciesWorld;
 
             bool hasUnresolvedDependency = false;
-            ImmutableHashSet<IDependency>.Builder topLevelDependencies = ImmutableHashSet.CreateBuilder<IDependency>();
+            ImmutableArray<IDependency>.Builder topLevelDependencies = ImmutableArray.CreateBuilder<IDependency>();
 
             foreach ((string id, IDependency dependency) in dependenciesWorld)
             {
@@ -201,8 +201,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
                 if (dependency.TopLevel)
                 {
-                    bool added = topLevelDependencies.Add(dependency);
-                    System.Diagnostics.Debug.Assert(added, "Duplicate top level dependency found.");
+                    topLevelDependencies.Add(dependency);
 
                     if (!string.IsNullOrEmpty(dependency.Path))
                     {
@@ -229,7 +228,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         public IProjectCatalogSnapshot Catalogs { get; }
 
         /// <inheritdoc />
-        public ImmutableHashSet<IDependency> TopLevelDependencies { get; }
+        public ImmutableArray<IDependency> TopLevelDependencies { get; }
 
         /// <inheritdoc />
         public ImmutableDictionary<string, IDependency> DependenciesWorld { get; }

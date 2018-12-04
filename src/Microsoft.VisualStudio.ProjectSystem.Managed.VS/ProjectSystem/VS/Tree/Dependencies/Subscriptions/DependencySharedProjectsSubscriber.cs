@@ -135,39 +135,43 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             //       should be able to run concurrently.
             using (await _gate.DisposableWaitAsync())
             {
-                // Get the inner workspace project context to update for this change.
-                ITargetedProjectContext projectContextToUpdate = currentAggregateContext
-                    .GetInnerProjectContext(projectUpdate.ProjectConfiguration, out bool isActiveContext);
+                // Get the target framework to update for this change.
+                ITargetFramework targetFrameworkToUpdate = currentAggregateContext.GetProjectFramework(projectUpdate.ProjectConfiguration);
 
-                if (projectContextToUpdate == null)
+                if (targetFrameworkToUpdate == null)
                 {
                     return;
                 }
 
-                var dependencyChangeContext = new DependenciesRuleChangeContext(
-                    currentAggregateContext.ActiveProjectContext.TargetFramework, 
-                    catalogs);
+                var changesBuilder = new CrossTargetDependenciesChangesBuilder();
 
-                ProcessSharedProjectsUpdates(sharedProjectsUpdate, projectContextToUpdate, dependencyChangeContext);
+                ProcessSharedProjectsUpdates(sharedProjectsUpdate, targetFrameworkToUpdate, changesBuilder);
 
-                if (dependencyChangeContext.AnyChanges)
+                ImmutableDictionary<ITargetFramework, IDependenciesChanges> changes = changesBuilder.TryBuildChanges();
+
+                if (changes != null)
                 {
-                    DependenciesChanged?.Invoke(this, new DependencySubscriptionChangedEventArgs(dependencyChangeContext));
+                    DependenciesChanged?.Invoke(
+                        this,
+                        new DependencySubscriptionChangedEventArgs(
+                            currentAggregateContext.ActiveTargetFramework,
+                            catalogs,
+                            changes));
                 }
             }
         }
 
         private void ProcessSharedProjectsUpdates(
             IProjectSharedFoldersSnapshot sharedFolders,
-            ITargetedProjectContext targetContext,
-            DependenciesRuleChangeContext dependencyChangeContext)
+            ITargetFramework targetFramework,
+            CrossTargetDependenciesChangesBuilder changesBuilder)
         {
             Requires.NotNull(sharedFolders, nameof(sharedFolders));
-            Requires.NotNull(targetContext, nameof(targetContext));
-            Requires.NotNull(dependencyChangeContext, nameof(dependencyChangeContext));
+            Requires.NotNull(targetFramework, nameof(targetFramework));
+            Requires.NotNull(changesBuilder, nameof(changesBuilder));
 
             IDependenciesSnapshot snapshot = _dependenciesSnapshotProvider.CurrentSnapshot;
-            if (!snapshot.Targets.TryGetValue(targetContext.TargetFramework, out ITargetedDependenciesSnapshot targetedSnapshot))
+            if (!snapshot.Targets.TryGetValue(targetFramework, out ITargetedDependenciesSnapshot targetedSnapshot))
             {
                 return;
             }
@@ -188,7 +192,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                     isResolved: true,
                     isImplicit: false,
                     properties: ImmutableStringDictionary<string>.EmptyOrdinal);
-                dependencyChangeContext.IncludeAddedChange(targetContext.TargetFramework, added);
+                changesBuilder.Added(targetFramework, added);
             }
 
             // process removed nodes
@@ -199,8 +203,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
                 if (exists)
                 {
-                    dependencyChangeContext.IncludeRemovedChange(
-                        targetContext.TargetFramework, 
+                    changesBuilder.Removed(
+                        targetFramework, 
                         ProjectRuleHandler.ProviderTypeString, 
                         dependencyId: removedSharedImportPath);
                 }

@@ -2,8 +2,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
@@ -11,35 +11,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
     internal class TestProjectTree : IProjectTree
     {
-        public string FlatHierarchy
+        public TestProjectTree()
         {
-            get
-            {
-                var builder = new StringBuilder();
-                GetChildrenTestStats(builder);
-                return builder.ToString();
-            }
+            Children = new ChildCollection(this);
         }
 
-        private void GetChildrenTestStats(StringBuilder builder)
-        {
-            builder.AppendLine(GetStats());
-            foreach (var child in _children)
-            {
-                child.GetChildrenTestStats(builder);
-            }
-        }
-
-        private string GetStats()
-        {
-            var stats = $"Caption={Caption}, FilePath={FilePath}, IconHash={Icon.GetHashCode()}, ExpandedIconHash={ExpandedIcon.GetHashCode()}, Rule={BrowseObjectProperties?.Name ?? ""}, IsProjectItem={IsProjectItem}, CustomTag={CustomTag}";
-            if (Flags.Contains(ProjectTreeFlags.Common.BubbleUp))
-            {
-                stats += ", BubbleUpFlag=True";
-            }
-
-            return stats;
-        }
+        public ICollection<TestProjectTree> Children { get; }
 
         public bool IsProjectItem { get; set; }
 
@@ -48,15 +25,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
         public int Size { get; }
         public IRule BrowseObjectProperties { get; set; }
-        public ProjectTreeFlags Flags { get; set; }
+        public ProjectTreeFlags Flags { get; set; } = ProjectTreeFlags.Empty;
         public bool IsFolder { get; }
         public bool Visible { get; set; }
         public ProjectImageMoniker ExpandedIcon { get; set; }
         public ProjectImageMoniker Icon { get; set; }
-        public string FilePath { get; set; }
+        public string FilePath { get; set; } = "";
         public string Caption { get; set; }
-        private readonly List<TestProjectTree> _children = new List<TestProjectTree>();
-        public IReadOnlyList<IProjectTree> Children { get { return _children.ToList(); } }
+        IReadOnlyList<IProjectTree> IProjectTree.Children => Children.ToList();
         public IProjectTree Root { get; }
         public IProjectTree Parent { get; set; }
         public IntPtr Identity { get; }
@@ -64,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         public IProjectTree Add(IProjectTree subtree)
         {
             ((TestProjectTree)subtree).Parent = this;
-            _children.Add((TestProjectTree)subtree);
+            Children.Add((TestProjectTree)subtree);
             return subtree;
         }
 
@@ -95,10 +71,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
         public IProjectTree Remove(IProjectTree subtree)
         {
-            var nodeToRemove = _children.FirstOrDefault(x => x.FilePath.Equals(subtree.FilePath));
+            var nodeToRemove = Children.FirstOrDefault(x => x.FilePath.Equals(subtree.FilePath));
             if (nodeToRemove != null)
             {
-                _children.Remove(nodeToRemove);
+                Children.Remove(nodeToRemove);
             }
 
             return this;
@@ -173,6 +149,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             subtree = null;
             return false;
+        }
+
+        private sealed class ChildCollection : Collection<TestProjectTree>
+        {
+            private readonly TestProjectTree _parent;
+
+            public ChildCollection(TestProjectTree parent)
+            {
+                _parent = parent;
+            }
+
+            protected override void InsertItem(int index, TestProjectTree item)
+            {
+                item.Parent = _parent;
+                base.InsertItem(index, item);
+            }
+
+            protected override void SetItem(int index, TestProjectTree item)
+            {
+                item.Parent = _parent;
+                base.SetItem(index, item);
+            }
         }
     }
 }

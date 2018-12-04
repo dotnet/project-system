@@ -12,7 +12,7 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions
 {
     internal abstract class DependenciesRuleHandlerBase
-        : ICrossTargetRuleHandler<DependenciesRuleChangeContext>,
+        : IDependenciesRuleHandler,
           IProjectDependenciesSubTreeProviderInternal
     {
         private readonly ImmutableHashSet<string> _evaluationRuleNames;
@@ -32,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             _designTimeBuildRuleNames = _evaluationRuleNames.Add(resolvedRuleName);
         }
 
-        #region ICrossTargetRuleHandler
+        #region IDependenciesRuleHandler
 
         public ImmutableHashSet<string> GetRuleNames(RuleHandlerType handlerType)
         {
@@ -49,23 +49,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
         public abstract ImageMoniker GetImplicitIcon();
 
-        /// <summary>
-        /// If any standard provider has different OriginalItemSpec property name, 
-        /// it could override this property, however currently all of them are the same.
-        /// </summary>
-        protected virtual string OriginalItemSpecPropertyName => ResolvedAssemblyReference.OriginalItemSpecProperty;
-
-        public virtual bool SupportsHandlerType(RuleHandlerType handlerType)
-        {
-            return true;
-        }
-
-        public virtual bool ReceiveUpdatesWithEmptyProjectChange => false;
-
         public virtual void Handle(
             IImmutableDictionary<string, IProjectChangeDescription> changesByRuleName,
             ITargetFramework targetFramework,
-            DependenciesRuleChangeContext ruleChangeContext)
+            CrossTargetDependenciesChangesBuilder changesBuilder)
         {
             // We receive unresolved and resolved changes separately.
 
@@ -76,7 +63,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     resolved: false, 
                     projectChange: unresolvedChanges, 
                     targetFramework, 
-                    ruleChangeContext, 
+                    changesBuilder, 
                     shouldProcess: dependencyId => true);
             }
 
@@ -88,7 +75,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     resolved: true, 
                     projectChange: resolvedChanges, 
                     targetFramework, 
-                    ruleChangeContext, 
+                    changesBuilder, 
                     shouldProcess: unresolvedChanges.After.Items.ContainsKey);
             }
         }
@@ -97,18 +84,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             bool resolved,
             IProjectChangeDescription projectChange,
             ITargetFramework targetFramework,
-            DependenciesRuleChangeContext ruleChangeContext,
+            CrossTargetDependenciesChangesBuilder changesBuilder,
             Func<string, bool> shouldProcess)
         {
             foreach (string removedItem in projectChange.Difference.RemovedItems)
             {
                 string dependencyId = resolved
-                    ? projectChange.Before.GetProjectItemProperties(removedItem).GetStringProperty(OriginalItemSpecPropertyName)
+                    ? projectChange.Before.GetProjectItemProperties(removedItem).GetStringProperty(ResolvedAssemblyReference.OriginalItemSpecProperty)
                     : removedItem;
 
                 if (shouldProcess(dependencyId))
                 {
-                    ruleChangeContext.IncludeRemovedChange(targetFramework, ProviderType, removedItem);
+                    changesBuilder.Removed(targetFramework, ProviderType, removedItem);
                 }
             }
 
@@ -120,7 +107,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     // For changes we try to add new dependency. If it is a resolved dependency, it would just override
                     // old one with new properties. If it is unresolved dependency, it would be added only when there no
                     // resolved version in the snapshot.
-                    ruleChangeContext.IncludeAddedChange(targetFramework, model);
+                    changesBuilder.Added(targetFramework, model);
                 }
             }
 
@@ -129,7 +116,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 IDependencyModel model = CreateDependencyModelForRule(addedItem, resolved, projectChange.After);
                 if (shouldProcess(model.Id))
                 {
-                    ruleChangeContext.IncludeAddedChange(targetFramework, model);
+                    changesBuilder.Added(targetFramework, model);
                 }
             }
         }
@@ -142,7 +129,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             IImmutableDictionary<string, string> properties = projectRuleSnapshot.GetProjectItemProperties(itemSpec);
 
             string originalItemSpec = resolved
-                ? properties.GetStringProperty(OriginalItemSpecPropertyName)
+                ? properties.GetStringProperty(ResolvedAssemblyReference.OriginalItemSpecProperty)
                 : itemSpec;
 
             bool isImplicit = properties.GetBoolProperty(ProjectItemMetadata.IsImplicitlyDefined) ?? false;
@@ -169,7 +156,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
         #endregion
 
-        #region  IProjectDependenciesSubTreeProvider
+        #region IProjectDependenciesSubTreeProvider
 
         public abstract string ProviderType { get; }
 

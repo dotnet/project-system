@@ -10,7 +10,7 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions
 {
     [Export(DependencyRulesSubscriber.DependencyRulesSubscriberContract,
-            typeof(ICrossTargetRuleHandler<DependenciesRuleChangeContext>))]
+            typeof(IDependenciesRuleHandler))]
     [Export(typeof(IProjectDependenciesSubTreeProvider))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
     internal class SdkRuleHandler : DependenciesRuleHandlerBase

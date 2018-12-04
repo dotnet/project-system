@@ -1,7 +1,7 @@
 ﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports Common = Microsoft.VisualStudio.Editors.AppDesCommon
-Imports Interop = Microsoft.VisualStudio.Editors.AppDesInterop
+Imports Microsoft.VisualStudio.Editors.AppDesInterop
 
 'NOTE: To test property pages under different SKUs, use the PDSku and PDSubSku
 '  switches (see common\switches.vb).
@@ -199,7 +199,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="ServiceProvider"></param>
         ''' <remarks></remarks>
         Private Shared Sub Init(ServiceProvider As IServiceProvider)
-            Dim VsAppIdService As Interop.IVsAppId
+            Dim VsAppIdService As IVsAppId
             Dim objSKU As Object = Nothing
             Dim objSubSKU As Object = Nothing
             Dim hr As Integer
@@ -208,7 +208,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Return
             End If
 
-            VsAppIdService = TryCast(ServiceProvider.GetService(GetType(Interop.IVsAppId)), Interop.IVsAppId)
+            VsAppIdService = TryCast(ServiceProvider.GetService(GetType(IVsAppId)), IVsAppId)
             If VsAppIdService IsNot Nothing Then
                 Try
                     hr = VsAppIdService.GetProperty(VSAPROPID_SKUEdition, objSKU)

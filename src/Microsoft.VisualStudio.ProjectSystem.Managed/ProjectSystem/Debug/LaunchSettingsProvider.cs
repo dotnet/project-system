@@ -62,7 +62,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         protected OrderPrecedenceImportCollection<ILaunchSettingsSerializationProvider, IJsonSection> JsonSerializationProviders { get; set; }
 
         [ImportMany]
-        private OrderPrecedenceImportCollection<ISourceCodeControlIntegration> SourceControlIntegrations { get; set; }
+        protected OrderPrecedenceImportCollection<ISourceCodeControlIntegration> SourceControlIntegrations { get; set; }
 
         // The source for our dataflow
         private IReceivableSourceBlock<ILaunchSettings> _changedSourceBlock;
@@ -786,9 +786,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// made, the file will be checked out and saved. Note it ignores the value of the active profile
         /// as this setting is controlled by a user property.
         /// </summary>
-        private async Task UpdateAndSaveSettingsInternalAsync(ILaunchSettings newSettings, bool persistToDisk = true)
+        protected async Task UpdateAndSaveSettingsInternalAsync(ILaunchSettings newSettings, bool persistToDisk = true)
         {
-            await CheckoutSettingsFileAsync();
+            if (persistToDisk)
+            {
+                await CheckoutSettingsFileAsync();
+            }
 
             // Make sure the profiles are copied. We don't want them to mutate.
             string activeProfileName = ActiveProfile?.Name;

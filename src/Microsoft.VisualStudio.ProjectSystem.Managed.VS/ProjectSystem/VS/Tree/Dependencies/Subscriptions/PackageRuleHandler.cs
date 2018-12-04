@@ -13,7 +13,7 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions
 {
     [Export(DependencyRulesSubscriber.DependencyRulesSubscriberContract,
-            typeof(ICrossTargetRuleHandler<DependenciesRuleChangeContext>))]
+            typeof(IDependenciesRuleHandler))]
     [Export(typeof(IProjectDependenciesSubTreeProvider))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
     internal sealed partial class PackageRuleHandler : DependenciesRuleHandlerBase
@@ -51,7 +51,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         public override void Handle(
             IImmutableDictionary<string, IProjectChangeDescription> changesByRuleName,
             ITargetFramework targetFramework,
-            DependenciesRuleChangeContext ruleChangeContext)
+            CrossTargetDependenciesChangesBuilder changesBuilder)
         {
             var caseInsensitiveUnresolvedChanges = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
@@ -63,7 +63,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 {
                     HandleChangesForRule(
                         unresolvedChanges,
-                        ruleChangeContext,
+                        changesBuilder,
                         targetFramework,
                         resolved: false);
                 }
@@ -74,7 +74,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             {
                 HandleChangesForRule(
                     resolvedChanges,
-                    ruleChangeContext,
+                    changesBuilder,
                     targetFramework,
                     resolved: true,
                     unresolvedChanges: caseInsensitiveUnresolvedChanges);
@@ -83,7 +83,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
         private void HandleChangesForRule(
             IProjectChangeDescription projectChange,
-            DependenciesRuleChangeContext ruleChangeContext,
+            CrossTargetDependenciesChangesBuilder changesBuilder,
             ITargetFramework targetFramework,
             bool resolved,
             HashSet<string> unresolvedChanges = null)
@@ -101,7 +101,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     TargetFrameworkProvider,
                     out PackageDependencyMetadata metadata))
                 {
-                    ruleChangeContext.IncludeRemovedChange(targetFramework, ProviderTypeString, metadata.OriginalItemSpec);
+                    changesBuilder.Removed(targetFramework, ProviderTypeString, metadata.OriginalItemSpec);
                 }
             }
 
@@ -116,8 +116,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     TargetFrameworkProvider,
                     out PackageDependencyMetadata metadata))
                 {
-                    ruleChangeContext.IncludeRemovedChange(targetFramework, ProviderTypeString, metadata.OriginalItemSpec);
-                    ruleChangeContext.IncludeAddedChange(targetFramework, metadata.CreateDependencyModel());
+                    changesBuilder.Removed(targetFramework, ProviderTypeString, metadata.OriginalItemSpec);
+                    changesBuilder.Added(targetFramework, metadata.CreateDependencyModel());
                 }
             }
 
@@ -132,7 +132,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     TargetFrameworkProvider,
                     out PackageDependencyMetadata metadata))
                 {
-                    ruleChangeContext.IncludeAddedChange(targetFramework, metadata.CreateDependencyModel());
+                    changesBuilder.Added(targetFramework, metadata.CreateDependencyModel());
                 }
             }
         }
