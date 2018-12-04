@@ -18,13 +18,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         internal override AbstractGenerateNuGetPackageCommand CreateInstanceCore(
             UnconfiguredProject project,
             IProjectThreadingService threadingService,
-            IVsService<IVsSolutionBuildManager2> vsSolutionBuildManagerService,
+            IVsService<SVsSolutionBuildManager, IVsSolutionBuildManager2> vsSolutionBuildManagerService,
             GeneratePackageOnBuildPropertyProvider generatePackageOnBuildPropertyProvider)
         {
             return new GenerateNuGetPackageTopLevelBuildMenuCommand(project, threadingService, vsSolutionBuildManagerService, generatePackageOnBuildPropertyProvider);
         }
-
-
 
         [Fact]
         public async Task GetCommandStatusAsync_RootFolderAsNodes_ReturnsHandled()

@@ -29,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// Constructors. Unit test one is 2nd
         /// </summary>
         [ImportingConstructor]
-        public ProjectDebuggerProvider(ConfiguredProject configuredProject, ILaunchSettingsProvider launchSettingsProvider, IVsService<IVsDebugger4> vsDebuggerService)
+        public ProjectDebuggerProvider(ConfiguredProject configuredProject, ILaunchSettingsProvider launchSettingsProvider, IVsService<SVsShellDebugger, IVsDebugger4> vsDebuggerService)
             : base(configuredProject)
         {
             LaunchSettingsProvider = launchSettingsProvider;
@@ -42,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
         public ProjectDebuggerProvider(ConfiguredProject configuredProject, ILaunchSettingsProvider launchSettingsProvider,
                                        OrderPrecedenceImportCollection<IDebugProfileLaunchTargetsProvider> providers,
-                                       IVsService<IVsDebugger4> vsDebuggerService)
+                                       IVsService<SVsShellDebugger, IVsDebugger4> vsDebuggerService)
             : base(configuredProject)
         {
             ProfileLaunchTargetsProviders = providers;
@@ -50,7 +50,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             LaunchSettingsProvider = launchSettingsProvider;
         }
 
-        private readonly IVsService<IVsDebugger4> _vsDebuggerService;
+        private readonly IVsService<SVsShellDebugger, IVsDebugger4> _vsDebuggerService;
 
         /// <summary>
         /// Import the LaunchTargetProviders which know how to run profiles

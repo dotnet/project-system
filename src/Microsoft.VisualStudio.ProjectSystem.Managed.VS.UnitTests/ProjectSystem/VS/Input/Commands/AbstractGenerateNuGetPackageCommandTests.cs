@@ -171,7 +171,7 @@ Root (flags: {ProjectRoot})
         internal abstract AbstractGenerateNuGetPackageCommand CreateInstanceCore(
             UnconfiguredProject project,
             IProjectThreadingService threadingService,
-            IVsService<IVsSolutionBuildManager2> vsSolutionBuildManagerService,
+            IVsService<SVsSolutionBuildManager, IVsSolutionBuildManager2> vsSolutionBuildManagerService,
             GeneratePackageOnBuildPropertyProvider generatePackageOnBuildPropertyProvider);
     }
 }
