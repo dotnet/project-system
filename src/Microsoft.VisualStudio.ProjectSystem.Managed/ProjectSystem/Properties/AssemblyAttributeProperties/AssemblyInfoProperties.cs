@@ -100,10 +100,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// </summary>
         public override async Task SetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IReadOnlyDictionary<string, string> dimensionalConditions = null)
         {
-            if (_attributeValueProviderMap.ContainsKey(propertyName) &&
+            if (_attributeValueProviderMap.TryGetValue(propertyName, out SourceAssemblyAttributePropertyValueProvider provider) &&
                 !await IsAssemblyInfoPropertyGeneratedByBuild(propertyName))
             {
-                SourceAssemblyAttributePropertyValueProvider provider = _attributeValueProviderMap[propertyName];
                 await provider.SetPropertyValueAsync(unevaluatedPropertyValue);
             }
             else

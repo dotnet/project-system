@@ -31,9 +31,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
 
         public async Task HintedAsync(IImmutableDictionary<Guid, IImmutableSet<IProjectChangeHint>> hints)
         {
-            if (CanMove() && !_previousIncludes.IsEmpty && hints.ContainsKey(ProjectChangeFileSystemEntityHint.AddedFile))
+            if (CanMove() && !_previousIncludes.IsEmpty && hints.TryGetValue(ProjectChangeFileSystemEntityHint.AddedFile, out IImmutableSet<IProjectChangeHint> addedFileHints))
             {
-                IProjectChangeHint hint = hints[ProjectChangeFileSystemEntityHint.AddedFile].First();
+                IProjectChangeHint hint = addedFileHints.First();
                 ConfiguredProject configuredProject = hint.UnconfiguredProject.Services.ActiveConfiguredProjectProvider.ActiveConfiguredProject;
                 await OrderingHelper.Move(configuredProject, _accessor, _previousIncludes, _target, _action);
             }
