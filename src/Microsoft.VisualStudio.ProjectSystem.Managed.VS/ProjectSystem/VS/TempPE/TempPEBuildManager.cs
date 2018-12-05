@@ -59,6 +59,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             return AppliedValue.Value.Inputs.ToArray();
         }
 
+        /// <summary>
+        /// Called externally to fire the TempPEDirty events if the provided fileName is one of the known TempPE inputs or shared inputs
+        /// </summary>
         public async Task TryFireTempPEDirtyAsync(string fileName)
         {
             // This method gets called for any file change but unless someone has asked for TempPE information this
@@ -83,6 +86,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             }
         }
 
+        /// <summary>
+        /// Called privately to actually fire the TempPE events and optionally recompile the TempPE library for the specified inpu
+        /// </summary>
         private async Task FireTempPEDirtyAsync(string fileName, bool shouldCompile)
         {
             // Not using use the ThreadingService property because unit tests
@@ -118,6 +124,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             string outputFileName = GetOutputFileName(outputPath, fileName);
             if (CompilationNeeded(files, outputFileName))
             {
+                // For parity with legacy we don't care about the compilation result: Legacy only errors here if it runs out of memory queuing the compilation
                 await CompileTempPEAsync(files, outputFileName);
             }
 
@@ -186,6 +193,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             return files;
         }
 
+        /// <summary>
+        /// ApplyAsync is called on the UI thread and its job is to update AppliedValue to be correct based on the changes that have come through data flow after being processed
+        /// </summary>
         protected override async Task ApplyAsync(DesignTimeInputsDelta value)
         {
             // Not using use the ThreadingService property because unit tests
@@ -297,6 +307,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             }
         }
 
+        /// <summary>
+        /// InitializeInnerCoreAsync is responsible for setting an initial AppliedValue. This value will be used by any UI thread calls that may happen
+        /// before the first data flow blocks have been processed. If this method doesn't return a value then the system will block until the first blocks
+        /// have been applied but since we are initialized on the UI thread, that blocks for us, so we must return an initial state.
+        /// </summary>
         protected override Task InitializeInnerCoreAsync(CancellationToken cancellationToken)
         {
             AppliedValue = new ProjectVersionedValue<DesignTimeInputsItem>(new DesignTimeInputsItem(), ImmutableDictionary.Create<NamedIdentity, IComparable>());
@@ -304,6 +319,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             return Task.CompletedTask;
         }
 
+        /// <summary>
+        /// This method is where we tell data flow which blocks we're interested in receiving updates for
+        /// </summary>
         protected override IDisposable LinkExternalInput(ITargetBlock<IProjectVersionedValue<InputTuple>> targetBlock)
         {
             return ProjectDataSources.SyncLinkTo(
@@ -314,6 +332,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                 cancellationToken: ProjectAsynchronousTasksService.UnloadCancellationToken);
         }
 
+        /// <summary>
+        /// Preprocess gets called as each data flow block updates and its job is to take the input from those blocks and do whatever work needed
+        /// so that ApplyAsync has all of the info it needs to do its job.
+        /// </summary>
         protected override Task<DesignTimeInputsDelta> PreprocessAsync(IProjectVersionedValue<InputTuple> input, DesignTimeInputsDelta previousOutput)
         {
             ProjectInstance project = input.Value.Item1.ProjectInstance;
