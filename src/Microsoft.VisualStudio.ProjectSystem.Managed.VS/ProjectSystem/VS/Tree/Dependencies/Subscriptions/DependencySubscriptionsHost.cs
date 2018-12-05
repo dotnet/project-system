@@ -589,7 +589,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
         private Task<T> ExecuteWithinLockAsync<T>(Func<T> func)
         {
-            return _gate.ExecuteWithinLockAsync(JoinableCollection, JoinableFactory, func);
+            return _gate.ExecuteWithinLockAsync(JoinableCollection, func);
         }
     }
 }

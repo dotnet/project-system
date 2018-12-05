@@ -56,7 +56,7 @@ namespace Microsoft.VisualStudio.Threading
             }
         }
 
-        public static async Task ExecuteWithinLockAsync(this SemaphoreSlim semaphore, JoinableTaskCollection collection, JoinableTaskFactory factory, Action action)
+        public static async Task ExecuteWithinLockAsync(this SemaphoreSlim semaphore, JoinableTaskCollection collection, Action action)
         {
             // Join the caller to our collection, so that if the lock is already held by another task that needs UI 
             // thread access we don't deadlock if we're also being waited on by the UI thread. For example, when CPS
@@ -70,7 +70,7 @@ namespace Microsoft.VisualStudio.Threading
             }
         }
 
-        public static async Task<T> ExecuteWithinLockAsync<T>(this SemaphoreSlim semaphore, JoinableTaskCollection collection, JoinableTaskFactory factory, Func<T> func)
+        public static async Task<T> ExecuteWithinLockAsync<T>(this SemaphoreSlim semaphore, JoinableTaskCollection collection, Func<T> func)
         {
             // Join the caller to our collection, so that if the lock is already held by another task that needs UI 
             // thread access we don't deadlock if we're also being waited on by the UI thread. For example, when CPS
