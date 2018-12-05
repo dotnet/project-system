@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -146,14 +146,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             if (!_fileSystem.FileExists(outputFileName))
                 return true;
 
-            DateTime outputDateTime = _fileSystem.LastFileWriteTime(outputFileName);
-
-            foreach (string file in files)
+            try
             {
-                DateTime fileDateTime = _fileSystem.LastFileWriteTime(file);
-                if (fileDateTime > outputDateTime)
-                    return true;
+                DateTime outputDateTime = _fileSystem.LastFileWriteTimeUtc(outputFileName);
+
+                foreach (string file in files)
+                {
+                    DateTime fileDateTime = _fileSystem.LastFileWriteTimeUtc(file);
+                    if (fileDateTime > outputDateTime)
+                        return true;
+                }
             }
+            // if we can't read the file time of the output file, then we presumably can't compile to it either, so returning false is appropriate.
+            // if we can't read the file time of an input file, then we presumably can't read from it to compile either, so returning false is appropriate
+            catch (IOException)
+            { }
+            catch (UnauthorizedAccessException)
+            { }
 
             return false;
         }
@@ -174,12 +183,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                 {
                     try
                     {
-                        if (_fileSystem.FileExists(outputFileName))
-                        {
-                            _fileSystem.RemoveFile(outputFileName);
-                        }
+                        _fileSystem.RemoveFile(outputFileName);
                     }
                     catch (IOException)
+                    { }
+                    catch (UnauthorizedAccessException)
                     { }
                 }
             });
