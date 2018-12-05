@@ -187,6 +187,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
         protected virtual HashSet<string> GetFilesToCompile(string fileName, ImmutableHashSet<string> sharedInputs)
         {
+            // This is a HashSet because we allow files to be both inputs and shared inputs, and we don't want to compile the same file twice
+            // plus Roslyn needs to call Contains on this quite a lot in order to ensure its only compiling the right files so we want that to be fast.
             var files = new HashSet<string>(sharedInputs.Count + 1, StringComparers.Paths);
             files.AddRange(sharedInputs.Select(UnconfiguredProject.MakeRooted));
             files.Add(UnconfiguredProject.MakeRooted(fileName));
@@ -413,6 +415,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                 ProjectItemInstance projItem = project.GetItemsByItemTypeAndEvaluatedInclude(Compile.SchemaName, item).FirstOrDefault();
                 System.Diagnostics.Debug.Assert(projItem != null, "Couldn't find the project item for Compile with an evaluated include of " + item);
 
+                bool added = false;
                 bool link = StringComparers.PropertyValues.Equals(projItem.GetMetadataValue(Compile.LinkProperty), bool.TrueString);
                 if (!link)
                 {
@@ -422,15 +425,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                     if (designTime)
                     {
                         addedDesignTimeInputs.Add(item);
-                        return true;
+                        added = true;
                     }
-                    else if (designTimeShared)
+
+                    // Legacy allows files to be DesignTime and DesignTimeShared
+                    if (designTimeShared)
                     {
                         addedDesignTimeSharedInputs.Add(item);
-                        return true;
+                        added = true;
                     }
                 }
-                return false;
+                return added;
             }
         }
     }
