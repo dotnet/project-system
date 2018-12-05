@@ -518,13 +518,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             });
         }
 
-        private async Task AddSubscriptionsAsync(AggregateCrossTargetProjectContext newProjectContext)
+        private Task AddSubscriptionsAsync(AggregateCrossTargetProjectContext newProjectContext)
         {
             Requires.NotNull(newProjectContext, nameof(newProjectContext));
 
-            await _commonServices.ThreadingService.SwitchToUIThread();
-
-            await _tasksService.LoadedProjectAsync(() =>
+            JoinableTask joinableTask = _tasksService.LoadedProjectAsync(() =>
             {
                 lock (_linksLock)
                 {
@@ -543,6 +541,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
                 return Task.CompletedTask;
             });
+
+            return joinableTask.Task;
         }
 
         private void SubscribeToConfiguredProject(
