@@ -902,7 +902,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.TempPE
                       null,
                       fileSystem)
             {
-                _buildManager = new TestBuildManager(this);
+                _buildManager = new Lazy<VSBuildManager>(() => new TestBuildManager(this));
             }
             private async Task InitializeAsync()
             {

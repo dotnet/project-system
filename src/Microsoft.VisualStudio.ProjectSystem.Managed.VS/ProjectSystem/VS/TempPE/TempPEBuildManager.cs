@@ -32,14 +32,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
         // protected for unit test purposes
         protected ITempPECompiler _compiler;
-        protected VSBuildManager _buildManager;
+        protected Lazy<VSBuildManager> _buildManager;
 
         [ImportingConstructor]
         public TempPEBuildManager(IProjectThreadingService threadingService,
             IUnconfiguredProjectCommonServices unconfiguredProjectServices,
             ILanguageServiceHost languageServiceHost,
             IActiveConfiguredProjectSubscriptionService projectSubscriptionService,
-            [Import(typeof(VSLangProj.BuildManager))]VSBuildManager buildManager,
+            VSLangProj.VSProjectEvents projectEvents,
             ITempPECompiler compiler,
             IFileSystem fileSystem)
              : base(threadingService.JoinableTaskContext)
@@ -47,7 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             _unconfiguredProjectServices = unconfiguredProjectServices;
             _languageServiceHost = languageServiceHost;
             _projectSubscriptionService = projectSubscriptionService;
-            _buildManager = buildManager;
+            _buildManager = new Lazy<VSBuildManager>(() => (VSBuildManager)projectEvents.BuildManagerEvents);
             _compiler = compiler;
             _fileSystem = fileSystem;
         }
@@ -102,7 +102,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                 await CompileTempPEAsync(files, outputFileName);
             }
 
-            _buildManager.OnDesignTimeOutputDirty(fileName);
+            _buildManager.Value.OnDesignTimeOutputDirty(fileName);
         }
 
         public async Task<string> GetTempPEDescriptionXmlAsync(string fileName)
@@ -313,7 +313,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             }
             foreach (string item in removedDesignTimeInputs)
             {
-                _buildManager.OnDesignTimeOutputDeleted(item);
+                _buildManager.Value.OnDesignTimeOutputDeleted(item);
             }
         }
 

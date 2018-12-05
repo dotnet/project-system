@@ -1,11 +1,9 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System;
 using System.ComponentModel.Composition;
 
 using Microsoft.VisualStudio.ProjectSystem.VS.ConnectionPoint;
 using Microsoft.VisualStudio.ProjectSystem.VS.TempPE;
-using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 
 using VSLangProj;
 
@@ -24,14 +22,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
     {
         private readonly IProjectThreadingService _threadingService;
         private readonly IUnconfiguredProjectCommonServices _unconfiguredProjectServices;
-        private readonly Lazy<ITempPEBuildManager> _tempPEManager;
+        private readonly ITempPEBuildManager _tempPEManager;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="VSBuildManager"/> class.
         /// </summary>
         [ImportingConstructor]
-        internal VSBuildManager(IProjectThreadingService threadingService, IUnconfiguredProjectCommonServices unconfiguredProjectServices,
-            Lazy<ITempPEBuildManager> tempPEManager)
+        internal VSBuildManager(IProjectThreadingService threadingService, IUnconfiguredProjectCommonServices unconfiguredProjectServices, ITempPEBuildManager tempPEManager)
         {
             AddEventSource(this);
             _threadingService = threadingService;
@@ -70,19 +67,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         public object Parent => Project.FirstOrDefault()?.Value;
 
         /// <summary>
-        /// We don't do anything with TempPE until someone asks us for a list of inputs, or a TempPE library. This property lets other
-        /// classes that need to interact with TempPE know whether they should do any work without kicking of initialization
-        /// </summary>
-        internal bool ProjectNeedsTempPE => _tempPEManager.IsValueCreated;
-
-        /// <summary>
         /// Gets the temporary portable executable (PE) monikers for a project.
         /// </summary>
         public object DesignTimeOutputMonikers
         {
             get
             {
-                return _tempPEManager.Value.GetTempPESourceFileNames();
+                return _tempPEManager.GetTempPESourceFileNames();
             }
         }
 
@@ -95,7 +86,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
 
             return _threadingService.ExecuteSynchronously(() =>
             {
-                return _tempPEManager.Value.GetTempPEDescriptionXmlAsync(bstrOutputMoniker);
+                return _tempPEManager.GetTempPEDescriptionXmlAsync(bstrOutputMoniker);
             });
         }
 
