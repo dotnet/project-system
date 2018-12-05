@@ -213,8 +213,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 return;
             }
 
-            IEnumerable<IDependenciesRuleHandler> handlers = _handlers.Select(h => h.Value);
-
             ITargetFramework targetFrameworkToUpdate;
 
             // We need to process the update within a lock to ensure that we do not release this context during processing.
@@ -242,9 +240,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 var changesBuilder = new CrossTargetDependenciesChangesBuilder();
 
                 // Give each handler a chance to register dependency changes.
-                foreach (IDependenciesRuleHandler handler in handlers)
+                foreach (Lazy<IDependenciesRuleHandler, IOrderPrecedenceMetadataView> handler in _handlers)
                 {
-                    ImmutableHashSet<string> handlerRules = handler.GetRuleNames(handlerType);
+                    ImmutableHashSet<string> handlerRules = handler.Value.GetRuleNames(handlerType);
 
                     // Slice project changes to include only rules the handler claims an interest in.
                     var projectChanges = projectUpdate.ProjectChanges
@@ -257,7 +255,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                         // type (T). For example, DependencyRulesSubscriber uses DependenciesRuleChangeContext
                         // which holds IDependencyModel, so its IDependenciesRuleHandler implementations will
                         // produce IDependencyModel objects in response to rule changes.
-                        handler.Handle(projectChanges, targetFrameworkToUpdate, changesBuilder);
+                        handler.Value.Handle(projectChanges, targetFrameworkToUpdate, changesBuilder);
                     }
                 }
 
