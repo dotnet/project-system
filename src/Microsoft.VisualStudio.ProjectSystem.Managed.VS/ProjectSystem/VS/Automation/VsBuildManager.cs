@@ -116,7 +116,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         /// </summary>
         internal virtual void OnDesignTimeOutputDeleted(string outputMoniker)
         {
-            UIThreadHelper.VerifyOnUIThread();
+            _threadingService.VerifyOnUIThread();
 
             DesignTimeOutputDeleted?.Invoke(outputMoniker);
         }
@@ -126,7 +126,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         /// </summary>
         internal virtual void OnDesignTimeOutputDirty(string outputMoniker)
         {
-            UIThreadHelper.VerifyOnUIThread();
+            _threadingService.VerifyOnUIThread();
 
             DesignTimeOutputDirty?.Invoke(outputMoniker);
         }
