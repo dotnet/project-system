@@ -215,8 +215,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
             if (value.HasFileChanges)
             {
-                var designTimeInputs = previousValue.Inputs.ToBuilder();
-                var designTimeSharedInputs = previousValue.SharedInputs.ToBuilder();
+                ImmutableHashSet<string>.Builder designTimeInputs = previousValue.Inputs.ToBuilder();
+                ImmutableHashSet<string>.Builder designTimeSharedInputs = previousValue.SharedInputs.ToBuilder();
 
                 foreach (string item in value.AddedItems)
                 {
