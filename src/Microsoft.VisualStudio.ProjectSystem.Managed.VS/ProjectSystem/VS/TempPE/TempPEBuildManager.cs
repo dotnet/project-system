@@ -22,7 +22,7 @@ using InputTuple = System.Tuple<Microsoft.VisualStudio.ProjectSystem.IProjectSna
 namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 {
     [Export(typeof(ITempPEBuildManager))]
-    internal class TempPEBuildManager : UnconfiguredProjectHostBridge<IProjectVersionedValue<InputTuple>, DesignTimeInputsDelta, IProjectVersionedValue<DesignTimeInputsItem>>, ITempPEBuildManager
+    internal partial class TempPEBuildManager : UnconfiguredProjectHostBridge<IProjectVersionedValue<InputTuple>, TempPEBuildManager.DesignTimeInputsDelta, IProjectVersionedValue<TempPEBuildManager.DesignTimeInputsItem>>, ITempPEBuildManager
     {
         protected readonly IUnconfiguredProjectCommonServices _unconfiguredProjectServices;
         private readonly ILanguageServiceHost _languageServiceHost;
@@ -446,25 +446,5 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                 return added;
             }
         }
-    }
-
-    internal class DesignTimeInputsItem
-    {
-        public ImmutableHashSet<string> Inputs { get; set; } = ImmutableHashSet.Create(StringComparers.Paths);
-        public ImmutableHashSet<string> SharedInputs { get; set; } = ImmutableHashSet.Create(StringComparers.Paths);
-        public string OutputPath { get; internal set; }
-        public string RootNamespace { get; internal set; }
-    }
-
-    internal class DesignTimeInputsDelta
-    {
-        public bool ShouldCompile { get; set; } = true;
-        public ImmutableArray<string> AddedSharedItems { get; set; } = ImmutableArray.Create<string>();
-        public ImmutableArray<string> AddedItems { get; set; } = ImmutableArray.Create<string>();
-        public ImmutableArray<string> RemovedItems { get; set; } = ImmutableArray.Create<string>();
-        public IImmutableDictionary<NamedIdentity, IComparable> DataSourceVersions { get; set; } = ImmutableSortedDictionary.Create<NamedIdentity, IComparable>();
-        public string RootNamespace { get; internal set; }
-        public string OutputPath { get; internal set; }
-        public bool HasFileChanges => AddedSharedItems.Length > 0 || AddedItems.Length > 0 || RemovedItems.Length > 0;
     }
 }
