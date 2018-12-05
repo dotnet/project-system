@@ -16,7 +16,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
     internal sealed class Dependency : IDependency
     {
         private static readonly ConcurrentBag<StringBuilder> s_builderPool = new ConcurrentBag<StringBuilder>();
-        private static readonly DependencyIconSetCache s_iconSetCache = new DependencyIconSetCache();
 
         // These priorities are for graph nodes only and are used to group graph nodes 
         // appropriately in order groups predefined order instead of alphabetically.
@@ -80,7 +79,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             }
             else
             {
-                IconSet = s_iconSetCache.GetOrAddIconSet(dependencyModel.Icon, dependencyModel.ExpandedIcon, dependencyModel.UnresolvedIcon, dependencyModel.UnresolvedExpandedIcon);
+                IconSet = DependencyIconSetCache.Instance.GetOrAddIconSet(dependencyModel.Icon, dependencyModel.ExpandedIcon, dependencyModel.UnresolvedIcon, dependencyModel.UnresolvedExpandedIcon);
             }
 
             Properties = dependencyModel.Properties
@@ -136,7 +135,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Flags = flags ?? dependency.Flags;
             SchemaName = schemaName ?? dependency.SchemaName;
             DependencyIDs = dependencyIDs ?? dependency.DependencyIDs;
-            IconSet = iconSet != null ? s_iconSetCache.GetOrAddIconSet(iconSet) : dependency.IconSet;
+            IconSet = iconSet != null ? DependencyIconSetCache.Instance.GetOrAddIconSet(iconSet) : dependency.IconSet;
             Implicit = isImplicit ?? dependency.Implicit;
         }
 
