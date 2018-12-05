@@ -91,8 +91,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         /// </summary>
         public string BuildDesignTimeOutput(string bstrOutputMoniker)
         {
-            if (bstrOutputMoniker == null)
-                throw new ArgumentException("Must supply a moniker to build", nameof(bstrOutputMoniker));
+            Requires.NotNull(bstrOutputMoniker, nameof(bstrOutputMoniker));
 
             return _threadingService.ExecuteSynchronously(() =>
             {
