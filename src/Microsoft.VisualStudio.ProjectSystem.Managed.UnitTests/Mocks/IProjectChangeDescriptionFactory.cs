@@ -15,10 +15,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public static IProjectChangeDescription Implement(IProjectRuleSnapshot after = null,
                                                   IProjectRuleSnapshot before = null,
                                                   IProjectChangeDiff difference = null,
-                                                  MockBehavior? mockBehavior = null)
+                                                  MockBehavior mockBehavior = MockBehavior.Default)
         {
-            var behavior = mockBehavior ?? MockBehavior.Default;
-            var mock = new Mock<IProjectChangeDescription>(behavior);
+            var mock = new Mock<IProjectChangeDescription>(mockBehavior);
 
             if (after != null)
             {

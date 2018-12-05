@@ -15,10 +15,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         public static IAggregateDependenciesSnapshotProvider Implement(
             IDependenciesSnapshotProvider getSnapshotProvider = null,
-            MockBehavior? mockBehavior = null)
+            MockBehavior mockBehavior = MockBehavior.Default)
         {
-            var behavior = mockBehavior ?? MockBehavior.Default;
-            var mock = new Mock<IAggregateDependenciesSnapshotProvider>(behavior);
+            var mock = new Mock<IAggregateDependenciesSnapshotProvider>(mockBehavior);
 
             if (getSnapshotProvider != null)
             {

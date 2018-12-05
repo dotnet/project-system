@@ -20,10 +20,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         public static IProjectDependenciesSubTreeProvider Implement(
             string providerType = null,
             IDependency createRootDependencyNode = null,
-            MockBehavior? mockBehavior = null)
+            MockBehavior mockBehavior = MockBehavior.Strict)
         {
-            var behavior = mockBehavior ?? MockBehavior.Strict;
-            var mock = new Mock<IProjectDependenciesSubTreeProvider>(behavior);
+            var mock = new Mock<IProjectDependenciesSubTreeProvider>(mockBehavior);
 
             if (providerType != null)
             {
@@ -41,10 +40,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         public static IProjectDependenciesSubTreeProviderInternal ImplementInternal(
             string providerType = null,
             ImageMoniker implicitIcon = default,
-            MockBehavior? mockBehavior = null)
+            MockBehavior mockBehavior = MockBehavior.Strict)
         {
-            var behavior = mockBehavior ?? MockBehavior.Strict;
-            var mock = new Mock<IProjectDependenciesSubTreeProviderInternal>(behavior);
+            var mock = new Mock<IProjectDependenciesSubTreeProviderInternal>(mockBehavior);
 
             if (providerType != null)
             {
