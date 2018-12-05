@@ -15,18 +15,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     public interface IProjectDependenciesSubTreeProvider
     {
         /// <summary>
-        /// Must be unique, represents a type of the provider that will be associated
-        /// with provider's nodes (via project tree flags)
+        /// Gets a string that uniquely identifies the type of dependency nodes emitted by this provider.
         /// </summary>
+        /// <remarks>
+        /// This string will be associated with provider's nodes (via project tree flags).
+        /// </remarks>
         string ProviderType { get; }
 
         /// <summary>
-        /// Returns a node metadata for given nodeId.
+        /// Returns the root node for this provider's dependency nodes.
         /// </summary>
+        /// <remarks>
+        /// Despite the method's name, implementations may return the same instance for repeated
+        /// calls, so long as the returned value is immutable.
+        /// </remarks>
         IDependencyModel CreateRootDependencyNode();
 
         /// <summary>
-        /// Raised when provider's dependencies changed 
+        /// Raised when this provider's dependencies changed.
         /// </summary>
         event EventHandler<DependenciesChangedEventArgs> DependenciesChanged;
     }

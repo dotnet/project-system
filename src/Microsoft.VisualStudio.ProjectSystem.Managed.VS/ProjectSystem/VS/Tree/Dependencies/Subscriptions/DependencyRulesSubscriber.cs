@@ -251,10 +251,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
                     if (projectChanges.Any(x => x.Value.Difference.AnyChanges))
                     {
-                        // Handlers respond to rule changes in a way that's specific to the rule change context
-                        // type (T). For example, DependencyRulesSubscriber uses DependenciesRuleChangeContext
-                        // which holds IDependencyModel, so its IDependenciesRuleHandler implementations will
-                        // produce IDependencyModel objects in response to rule changes.
                         handler.Value.Handle(projectChanges, targetFrameworkToUpdate, changesBuilder);
                     }
                 }

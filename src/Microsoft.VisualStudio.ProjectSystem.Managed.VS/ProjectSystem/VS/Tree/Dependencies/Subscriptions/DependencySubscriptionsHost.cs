@@ -340,6 +340,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
             return;
 
+            // Gets the set of items defined directly the project, and not included by imports.
             IImmutableSet<string> GetProjectItemSpecsFromSnapshot()
             {
                 // We don't have catalog snapshot, we're likely updating because one of our project 
