@@ -39,6 +39,14 @@ namespace Microsoft.VisualStudio
             return false;
         }
 
+        public static IEnumerable<TResult> Select<TSource, TResult>(this ImmutableArray<TSource> immutableArray, Func<TSource, TResult> selector)
+        {
+            foreach (TSource obj in immutableArray)
+            {
+                yield return selector(obj);
+            }
+        }
+
         public static T FirstOrDefault<T, TArg>(this ImmutableArray<T> immutableArray, Func<T, TArg, bool> predicate, TArg arg)
         {
             foreach (T obj in immutableArray)
