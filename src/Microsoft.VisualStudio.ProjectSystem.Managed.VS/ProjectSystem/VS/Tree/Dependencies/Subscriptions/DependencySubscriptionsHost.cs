@@ -141,14 +141,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         [AppliesTo(ProjectCapability.DependenciesTree)]
         public Task OnProjectFactoryCompletedAsync()
         {
+            // The project factory is completing.
+            
+            // Subscribe to project data. Ensure the project doesn't unload during subscription.
             return _tasksService.LoadedProjectAsync(AddInitialSubscriptionsAsync).Task;
 
             Task AddInitialSubscriptionsAsync()
             {
+                // This host object subscribes to configured project evaluation data for its own purposes.
                 SubscribeToConfiguredProjectEvaluation(
                     _activeConfiguredProjectSubscriptionService, 
                     OnActiveConfiguredProjectEvaluatedAsync);
 
+                // Each of the host's subscribers are initialized.
                 foreach (IDependencyCrossTargetSubscriber subscriber in Subscribers)
                 {
                     subscriber.InitializeSubscriber(this, _activeConfiguredProjectSubscriptionService);
@@ -358,6 +363,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             }
         }
 
+        /// <summary>
+        /// Determines whether the current project context object is out of date based on the project's target frameworks.
+        /// If so, a new one is created and subscriptions are updated accordingly.
+        /// </summary>
         private async Task UpdateProjectContextAndSubscriptionsAsync()
         {
             // Ensure that only single thread is attempting to create a project context.
