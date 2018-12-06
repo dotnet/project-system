@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading;
@@ -18,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     [Export(typeof(IDependenciesTreeViewProvider))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
     [Order(Order)]
-    internal class GroupedByTargetTreeViewProvider : TreeViewProviderBase
+    internal class GroupedByTargetTreeViewProvider : IDependenciesTreeViewProvider
     {
         private const int Order = 1000;
 
@@ -26,22 +27,29 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         private readonly IDependenciesViewModelFactory _viewModelFactory;
         private readonly IUnconfiguredProjectCommonServices _commonServices;
 
+        /// <summary><see cref="IProjectTreePropertiesProvider"/> imports that apply to the references tree.</summary>
+        [ImportMany(ReferencesProjectTreeCustomizablePropertyValues.ContractName)]
+        private readonly OrderPrecedenceImportCollection<IProjectTreePropertiesProvider> _projectTreePropertiesProviders;
+
         [ImportingConstructor]
         public GroupedByTargetTreeViewProvider(
             IDependenciesTreeServices treeServices,
             IDependenciesViewModelFactory viewModelFactory,
             IUnconfiguredProjectCommonServices commonServices)
-            : base(commonServices.Project)
         {
             _treeServices = treeServices;
             _viewModelFactory = viewModelFactory;
             _commonServices = commonServices;
+
+            _projectTreePropertiesProviders = new OrderPrecedenceImportCollection<IProjectTreePropertiesProvider>(
+                ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesLast,
+                projectCapabilityCheckProvider: commonServices.Project);
         }
 
         /// <summary>
         /// Builds Dependencies tree for given dependencies snapshot
         /// </summary>
-        public override async Task<IProjectTree> BuildTreeAsync(
+        public async Task<IProjectTree> BuildTreeAsync(
             IProjectTree dependenciesTree,
             IDependenciesSnapshot snapshot,
             CancellationToken cancellationToken = default)
@@ -128,7 +136,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             }
         }
 
-        public override IProjectTree FindByPath(IProjectTree root, string path)
+        public IProjectTree FindByPath(IProjectTree root, string path)
         {
             if (root == null)
             {
@@ -361,7 +369,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             IProjectTree UpdateTreeNode()
             {
-                ProjectTreeCustomizablePropertyContext updatedNodeParentContext = GetCustomPropertyContext(node.Parent);
+                var updatedNodeParentContext = new ProjectTreeCustomizablePropertyContext
+                {
+                    ExistsOnDisk = false,
+                    ParentNodeFlags = node.Parent?.Flags ?? default
+                };
 
                 var updatedValues = new ReferencesProjectTreeCustomizablePropertyValues
                 {
@@ -371,7 +383,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     ExpandedIcon = viewModel.ExpandedIcon.ToProjectSystemType()
                 };
 
-                ApplyProjectTreePropertiesCustomization(updatedNodeParentContext, updatedValues);
+                foreach (Lazy<IProjectTreePropertiesProvider, IOrderPrecedenceMetadataView> provider in _projectTreePropertiesProviders)
+                {
+                    provider.Value.CalculatePropertyValues(updatedNodeParentContext, updatedValues);
+                }
 
                 return node.SetProperties(
                     caption: updatedValues.Caption,
@@ -395,6 +410,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
                 return flags;
             }
+        }
+
+        /// <summary>
+        /// A private implementation of <see cref="IProjectTreeCustomizablePropertyContext"/>.
+        /// </summary>
+        private sealed class ProjectTreeCustomizablePropertyContext : IProjectTreeCustomizablePropertyContext
+        {
+            public string ItemName { get; set; }
+
+            public string ItemType { get; set; }
+
+            public IImmutableDictionary<string, string> Metadata { get; set; }
+
+            public ProjectTreeFlags ParentNodeFlags { get; set; }
+
+            public bool ExistsOnDisk { get; set; }
+
+            public bool IsFolder => false;
+
+            public bool IsNonFileSystemProjectItem => true;
+
+            public IImmutableDictionary<string, string> ProjectTreeSettings { get; set; }
         }
     }
 }
