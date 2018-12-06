@@ -398,12 +398,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
         private async Task UpdateProjectContextAndSubscriptionsAsync()
         {
-            AggregateCrossTargetProjectContext previousProjectContext = await ExecuteWithinLockAsync(() => _currentAggregateProjectContext);
-
             // Ensure that only single thread is attempting to create a project context.
-            AggregateCrossTargetProjectContext newProjectContext = await ExecuteWithinLockAsync(UpdateCurrentAggregateProjectContextUnsafeAsync);
+            AggregateCrossTargetProjectContext newProjectContext = await ExecuteWithinLockAsync(TryUpdateCurrentAggregateProjectContextAsync);
 
-            if (previousProjectContext != newProjectContext)
+            if (newProjectContext != null)
             {
                 // Dispose existing subscriptions.
                 DisposeAndClearSubscriptions();
@@ -414,7 +412,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
             return;
 
-            async Task<AggregateCrossTargetProjectContext> UpdateCurrentAggregateProjectContextUnsafeAsync()
+            async Task<AggregateCrossTargetProjectContext> TryUpdateCurrentAggregateProjectContextAsync()
             {
                 AggregateCrossTargetProjectContext previousContext = _currentAggregateProjectContext;
 
@@ -432,7 +430,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                         ITargetFramework newTargetFramework = _targetFrameworkProvider.GetTargetFramework(newTargetFrameworkName);
                         if (previousContext.ActiveTargetFramework.Equals(newTargetFramework))
                         {
-                            return previousContext;
+                            // No change
+                            return null;
                         }
                     }
                     else
@@ -443,7 +442,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                         if (knownProjectConfigurations.All(c => c.IsCrossTargeting()) &&
                             HasMatchingTargetFrameworks(previousContext, activeProjectConfiguration, knownProjectConfigurations))
                         {
-                            return previousContext;
+                            // No change
+                            return null;
                         }
                     }
                 }
