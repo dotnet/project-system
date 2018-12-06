@@ -228,7 +228,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
                 foreach (string item in value.AddedItems)
                 {
-                    // If a property changes we might be asked to add items that already exist, so we just ignore them as we're happy using our existing CancellationSeries
+                    // If a property changes we might be asked to add items that already exist, in which case we can safely ignore that anything happened
                     if (designTimeInputs.Add(item))
                     {
                         addedDesignTimeInputs.Add(item);
@@ -261,7 +261,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             else
             {
                 // If there haven't been file changes we can just flow our previous collections to the new version to avoid roundtriping our collections to builders and back
-                // Normally ShouldValueBeApplied can be used for this but our project properties require comparison to previous values so we have to apply every update
+                // Normally ShouldValueBeApplied can be used to skip applying values that have no changes, but because the current implementation handles the 
+                // RootNamespace and OutputPath by comparing potential new values to previous applied values we have to apply every update.
                 newDesignTimeInputs = previousValue.Inputs;
                 newSharedDesignTimeInputs = previousValue.SharedInputs;
             }

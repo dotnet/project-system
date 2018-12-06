@@ -12,7 +12,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         /// <summary>
         /// Get the list of filenames that need to have TempPE libraries created
         /// </summary>
-        /// <returns></returns>
         string[] GetTempPESourceFileNames();
 
         /// <summary>
