@@ -38,10 +38,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
         public ITargetFramework GetProjectFramework(ProjectConfiguration projectConfiguration)
         {
-            if (projectConfiguration.IsCrossTargeting())
+            if (projectConfiguration.Dimensions.TryGetValue(ConfigurationGeneral.TargetFrameworkProperty, out string targetFrameworkMoniker))
             {
-                string targetFrameworkMoniker = projectConfiguration.Dimensions[ConfigurationGeneral.TargetFrameworkProperty];
-
                 return _targetFrameworkProvider.GetTargetFramework(targetFrameworkMoniker);
             }
             else
