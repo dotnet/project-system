@@ -1,10 +1,8 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Immutable;
-using System.Text;
-
+using Microsoft.VisualStudio.Buffers.PooledObjects;
 using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models;
@@ -15,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
     internal sealed class Dependency : IDependency
     {
-        private static readonly ConcurrentBag<StringBuilder> s_builderPool = new ConcurrentBag<StringBuilder>();
+        private static readonly DependencyIconSetCache s_iconSetCache = new DependencyIconSetCache();
 
         // These priorities are for graph nodes only and are used to group graph nodes 
         // appropriately in order groups predefined order instead of alphabetically.
@@ -269,17 +267,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         public override string ToString()
         {
             // Used for debugging only
-
-            var sb = new StringBuilder();
-
-            sb.Append("Id=\"").Append(Id).Append('"');
+            var sb = PooledStringBuilder.GetInstance();
+            sb.Append("Id=\"");
+            sb.Append(Id);
+            sb.Append('"');
 
             if (Resolved) sb.Append(" Resolved");
             if (TopLevel) sb.Append(" TopLevel");
             if (Implicit) sb.Append(" Implicit");
             if (Visible)  sb.Append(" Visible");
 
-            return sb.ToString();
+            return sb.ToStringAndFree();
         }
 
         /// <summary>
@@ -323,7 +321,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
             if (string.Compare(id, index, modelId, 0, modelId.Length - modelSlashCount, StringComparison.OrdinalIgnoreCase) != 0)
                 return false;
-            
+
             return true;
         }
 
@@ -333,39 +331,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Requires.NotNullOrEmpty(providerType, nameof(providerType));
             Requires.NotNullOrEmpty(modelId, nameof(modelId));
 
-            StringBuilder sb = null;
-            try
-            {
-                int length = targetFramework.ShortName.Length + providerType.Length + modelId.Length + 2;
-
-                if (!s_builderPool.TryTake(out sb))
-                {
-                    sb = new StringBuilder(length);
-                }
-                else
-                {
-                    sb.EnsureCapacity(length);
-                }
-
-                sb.Append(targetFramework.ShortName).Append('\\');
-                sb.Append(providerType).Append('\\');
-                int offset = sb.Length;
-                sb.Append(modelId);
-                // normalize modelId (without allocating)
-                sb.Replace('/', '\\', offset, modelId.Length)
-                  .Replace("..", "__", offset, modelId.Length);
-                sb.TrimEnd(Delimiter.BackSlash);
-                return sb.ToString();
-            }
-            finally
-            {
-                // Prevent holding on to large builders
-                if (sb?.Capacity < 1000)
-                {
-                    sb.Clear();
-                    s_builderPool.Add(sb);
-                }
-            }
+            var sb = PooledStringBuilder.GetInstance();
+            sb.Append(targetFramework.ShortName);
+            sb.Append('\\');
+            sb.Append(providerType);
+            sb.Append('\\');
+            int offset = sb.Length;
+            sb.Append(modelId);
+            // normalize modelId (without allocating)
+            sb.Replace('/', '\\', offset, modelId.Length);
+            sb.Replace("..", "__", offset, modelId.Length);
+            sb.TrimEnd(Delimiter.BackSlash);
+            return sb.ToStringAndFree();
         }
     }
 }

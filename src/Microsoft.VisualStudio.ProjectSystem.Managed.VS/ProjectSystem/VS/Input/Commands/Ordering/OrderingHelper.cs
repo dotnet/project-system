@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 using Microsoft.Build.Construction;
 using Microsoft.Build.Evaluation;
+using Microsoft.VisualStudio.Buffers.PooledObjects;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
 {
@@ -205,7 +206,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
 
         private static ImmutableArray<ProjectItemElement> GetItemElements(Project project, ImmutableArray<string> includes)
         {
-            ImmutableArray<ProjectItemElement>.Builder elements = ImmutableArray.CreateBuilder<ProjectItemElement>();
+            var elements = PooledArray<ProjectItemElement>.GetInstance();
 
             foreach (string include in includes)
             {
@@ -220,7 +221,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
                 }
             }
 
-            return elements.ToImmutable();
+            return elements.ToImmutableAndFree();
         }
 
         /// <summary>

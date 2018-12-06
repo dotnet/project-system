@@ -4,9 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.IO;
-using System.Text;
 using System.Threading.Tasks;
-
+using Microsoft.VisualStudio.Buffers.PooledObjects;
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
@@ -476,7 +475,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             }
 
             StringState currentState = StringState.NormalCharacter;
-            var finalBuilder = new StringBuilder();
+            var finalBuilder = PooledStringBuilder.GetInstance();
             foreach (char currentChar in unescaped)
             {
                 switch (currentState)
@@ -537,7 +536,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 }
             }
 
-            return finalBuilder.ToString();
+            return finalBuilder.ToStringAndFree();
         }
 
         private enum StringState

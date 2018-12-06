@@ -4,9 +4,9 @@ using System.Collections.Concurrent;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Linq;
-
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers;
+using Microsoft.VisualStudio.Buffers.PooledObjects;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
@@ -56,8 +56,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
         private Handlers CreateHandlers(IWorkspaceProjectContext context)
         {
-            ImmutableArray<(IProjectEvaluationHandler handler, string evaluationRuleName)>.Builder evaluationHandlers = ImmutableArray.CreateBuilder<(IProjectEvaluationHandler handler, string evaluationRuleName)>(s_handlerFactories.Length);
-            ImmutableArray<ICommandLineHandler>.Builder commandLineHandlers = ImmutableArray.CreateBuilder<ICommandLineHandler>(s_handlerFactories.Length);
+            var evaluationHandlers = PooledArray<(IProjectEvaluationHandler handler, string evaluationRuleName)>.GetInstance();
+            var commandLineHandlers = PooledArray<ICommandLineHandler>.GetInstance();
 
             foreach ((HandlerFactory factory, string evaluationRuleName) factory in s_handlerFactories)
             {
@@ -76,7 +76,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 }
             }
 
-            return new Handlers(evaluationHandlers.ToImmutable(), commandLineHandlers.ToImmutable());
+            return new Handlers(evaluationHandlers.ToImmutableAndFree(), commandLineHandlers.ToImmutableAndFree());
         }
 
         private static ImmutableArray<(HandlerFactory factory, string evaluationRuleName)> CreateHandlerFactories()
