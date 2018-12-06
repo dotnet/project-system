@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 
@@ -13,7 +12,6 @@ using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
-using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions
 {
@@ -24,7 +22,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         public const string DependencyRulesSubscriberContract = "DependencyRulesSubscriberContract";
 
 #pragma warning disable CA2213 // OnceInitializedOnceDisposedAsync are not tracked correctly by the IDisposeable analyzer
-        private readonly SemaphoreSlim _gate = new SemaphoreSlim(initialCount: 1);
         private DisposableBag _subscriptions;
 #pragma warning restore CA2213
         private readonly IUnconfiguredProjectCommonServices _commonServices;
@@ -213,66 +210,52 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 return;
             }
 
-            IEnumerable<IDependenciesRuleHandler> handlers = _handlers.Select(h => h.Value);
+            // Get the inner workspace project context to update for this change.
+            ITargetFramework targetFrameworkToUpdate = currentAggregateContext.GetProjectFramework(projectUpdate.ProjectConfiguration);
 
-            ITargetFramework targetFrameworkToUpdate;
-
-            // We need to process the update within a lock to ensure that we do not release this context during processing.
-            // TODO: Enable concurrent execution of updates themselves, i.e. two separate invocations of HandleAsync
-            //       should be able to run concurrently.
-            using (await _gate.DisposableWaitAsync())
+            if (targetFrameworkToUpdate == null)
             {
-                // Get the inner workspace project context to update for this change.
-                targetFrameworkToUpdate = currentAggregateContext.GetProjectFramework(projectUpdate.ProjectConfiguration);
+                return;
+            }
 
-                if (targetFrameworkToUpdate == null)
+            // Broken design time builds sometimes cause updates with no project changes and sometimes
+            // cause updates with a project change that has no difference.
+            // We handle the former case here, and the latter case is handled in the CommandLineItemHandler.
+            if (projectUpdate.ProjectChanges.Count == 0)
+            {
+                return;
+            }
+
+            // Create an object to track dependency changes.
+            var changesBuilder = new CrossTargetDependenciesChangesBuilder();
+
+            // Give each handler a chance to register dependency changes.
+            foreach (Lazy<IDependenciesRuleHandler, IOrderPrecedenceMetadataView> handler in _handlers)
+            {
+                ImmutableHashSet<string> handlerRules = handler.Value.GetRuleNames(handlerType);
+
+                // Slice project changes to include only rules the handler claims an interest in.
+                var projectChanges = projectUpdate.ProjectChanges
+                    .Where(x => handlerRules.Contains(x.Key))
+                    .ToImmutableDictionary();
+
+                if (projectChanges.Any(x => x.Value.Difference.AnyChanges))
                 {
-                    return;
+                    handler.Value.Handle(projectChanges, targetFrameworkToUpdate, changesBuilder);
                 }
+            }
 
-                // Broken design time builds sometimes cause updates with no project changes and sometimes
-                // cause updates with a project change that has no difference.
-                // We handle the former case here, and the latter case is handled in the CommandLineItemHandler.
-                if (projectUpdate.ProjectChanges.Count == 0)
-                {
-                    return;
-                }
+            ImmutableDictionary<ITargetFramework, IDependenciesChanges> changes = changesBuilder.TryBuildChanges();
 
-                // Create an object to track dependency changes.
-                var changesBuilder = new CrossTargetDependenciesChangesBuilder();
-
-                // Give each handler a chance to register dependency changes.
-                foreach (IDependenciesRuleHandler handler in handlers)
-                {
-                    ImmutableHashSet<string> handlerRules = handler.GetRuleNames(handlerType);
-
-                    // Slice project changes to include only rules the handler claims an interest in.
-                    var projectChanges = projectUpdate.ProjectChanges
-                        .Where(x => handlerRules.Contains(x.Key))
-                        .ToImmutableDictionary();
-
-                    if (projectChanges.Any(x => x.Value.Difference.AnyChanges))
-                    {
-                        // Handlers respond to rule changes in a way that's specific to the rule change context
-                        // type (T). For example, DependencyRulesSubscriber uses DependenciesRuleChangeContext
-                        // which holds IDependencyModel, so its IDependenciesRuleHandler implementations will
-                        // produce IDependencyModel objects in response to rule changes.
-                        handler.Handle(projectChanges, targetFrameworkToUpdate, changesBuilder);
-                    }
-                }
-
-                ImmutableDictionary<ITargetFramework, IDependenciesChanges> changes = changesBuilder.TryBuildChanges();
-
-                if (changes != null)
-                {
-                    // Notify subscribers of a change in dependency data
-                    DependenciesChanged?.Invoke(
-                        this,
-                        new DependencySubscriptionChangedEventArgs(
-                            currentAggregateContext.ActiveTargetFramework,
-                            catalogSnapshot,
-                            changes));
-                }
+            if (changes != null)
+            {
+                // Notify subscribers of a change in dependency data
+                DependenciesChanged?.Invoke(
+                    this,
+                    new DependencySubscriptionChangedEventArgs(
+                        currentAggregateContext.ActiveTargetFramework,
+                        catalogSnapshot,
+                        changes));
             }
 
             // record all the rules that have occurred
@@ -285,8 +268,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
         protected override void Dispose(bool disposing)
         {
-            _gate.Dispose();
-
             if (disposing)
             {
                 ReleaseSubscriptions();

@@ -51,26 +51,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
             var worldBuilder = previousSnapshot.DependenciesWorld.ToBuilder();
 
-            IImmutableList<IDependencyModel> removedNodes = changes.RemovedNodes;
-
-            if (removedNodes.Count != 0)
+            if (changes.RemovedNodes.Count != 0)
             {
                 var context = new RemoveDependencyContext(worldBuilder);
 
-                foreach (IDependencyModel removed in removedNodes)
+                foreach (IDependencyModel removed in changes.RemovedNodes)
                 {
                     Remove(context, removed);
                 }
             }
 
-            // Call property once as implementation allocates
-            IImmutableList<IDependencyModel> addedNodes = changes.AddedNodes;
-
             if (changes.AddedNodes.Count != 0)
             {
                 var context = new AddDependencyContext(worldBuilder);
 
-                foreach (IDependencyModel added in addedNodes)
+                foreach (IDependencyModel added in changes.AddedNodes)
                 {
                     Add(context, added);
                 }
