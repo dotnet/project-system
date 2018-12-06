@@ -400,7 +400,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         {
             AggregateCrossTargetProjectContext previousProjectContext = await ExecuteWithinLockAsync(() => _currentAggregateProjectContext);
 
-            AggregateCrossTargetProjectContext newProjectContext = await UpdateProjectContextAsync();
+            // Ensure that only single thread is attempting to create a project context.
+            AggregateCrossTargetProjectContext newProjectContext = await ExecuteWithinLockAsync(UpdateCurrentAggregateProjectContextUnsafeAsync);
 
             if (previousProjectContext != newProjectContext)
             {
@@ -410,18 +411,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 // Add subscriptions for the configured projects in the new project context.
                 await AddSubscriptionsAsync(newProjectContext);
             }
-        }
 
-        /// <summary>
-        /// Ensures that <see cref="_currentAggregateProjectContext"/> is updated for the latest TargetFrameworks from the project properties
-        /// and returns this value.
-        /// </summary>
-        private Task<AggregateCrossTargetProjectContext> UpdateProjectContextAsync()
-        {
-            // Ensure that only single thread is attempting to create a project context.
-            return ExecuteWithinLockAsync(UpdateProjectContextUnsafeAsync);
+            return;
 
-            async Task<AggregateCrossTargetProjectContext> UpdateProjectContextUnsafeAsync()
+            async Task<AggregateCrossTargetProjectContext> UpdateCurrentAggregateProjectContextUnsafeAsync()
             {
                 AggregateCrossTargetProjectContext previousContext = _currentAggregateProjectContext;
 
