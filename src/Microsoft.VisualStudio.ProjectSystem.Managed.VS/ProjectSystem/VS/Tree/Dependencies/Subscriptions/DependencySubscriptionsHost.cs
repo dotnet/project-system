@@ -435,7 +435,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
                     if (!previousContext.IsCrossTargeting)
                     {
-                        ITargetFramework newTargetFramework = _targetFrameworkProvider.GetTargetFramework((string)await projectProperties.TargetFramework.GetValueAsync());
+                        string newTargetFrameworkName = (string)await projectProperties.TargetFramework.GetValueAsync();
+                        ITargetFramework newTargetFramework = _targetFrameworkProvider.GetTargetFramework(newTargetFrameworkName);
                         if (previousContext.ActiveTargetFramework.Equals(newTargetFramework))
                         {
                             return previousContext;
@@ -447,7 +448,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                         ProjectConfiguration activeProjectConfiguration = _commonServices.ActiveConfiguredProject.ProjectConfiguration;
                         IImmutableSet<ProjectConfiguration> knownProjectConfigurations = await _commonServices.Project.Services.ProjectConfigurationsService.GetKnownProjectConfigurationsAsync();
                         if (knownProjectConfigurations.All(c => c.IsCrossTargeting()) &&
-                            previousContext.HasMatchingTargetFrameworks(activeProjectConfiguration, knownProjectConfigurations))
+                            HasMatchingTargetFrameworks(previousContext, activeProjectConfiguration, knownProjectConfigurations))
                         {
                             return previousContext;
                         }
@@ -464,6 +465,45 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 OnAggregateContextChanged(previousContext, _currentAggregateProjectContext);
 
                 return _currentAggregateProjectContext;
+            }
+
+            bool HasMatchingTargetFrameworks(
+                AggregateCrossTargetProjectContext previousContext,
+                ProjectConfiguration activeProjectConfiguration,
+                IReadOnlyCollection<ProjectConfiguration> knownProjectConfigurations)
+            {
+                Assumes.True(activeProjectConfiguration.IsCrossTargeting());
+
+                ITargetFramework activeTargetFramework = _targetFrameworkProvider.GetTargetFramework(activeProjectConfiguration.Dimensions[ConfigurationGeneral.TargetFrameworkProperty]);
+                if (!previousContext.ActiveTargetFramework.Equals(activeTargetFramework))
+                {
+                    // Active target framework is different.
+                    return false;
+                }
+
+                var targetFrameworkMonikers = knownProjectConfigurations
+                    .Select(c => c.Dimensions[ConfigurationGeneral.TargetFrameworkProperty])
+                    .Distinct()
+                    .ToList();
+
+                if (targetFrameworkMonikers.Count != previousContext.TargetFrameworks.Length)
+                {
+                    // Different number of target frameworks.
+                    return false;
+                }
+
+                foreach (string targetFrameworkMoniker in targetFrameworkMonikers)
+                {
+                    ITargetFramework targetFramework = _targetFrameworkProvider.GetTargetFramework(targetFrameworkMoniker);
+
+                    if (!previousContext.TargetFrameworks.Contains(targetFramework))
+                    {
+                        // Differing TargetFramework
+                        return false;
+                    }
+                }
+
+                return true;
             }
 
             void OnAggregateContextChanged(
