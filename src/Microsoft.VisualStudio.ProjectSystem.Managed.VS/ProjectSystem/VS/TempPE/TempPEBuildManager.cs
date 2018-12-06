@@ -10,14 +10,14 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 
-using Microsoft.Build.Execution;
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
+using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.VS.Automation;
 using Microsoft.VisualStudio.Threading.Tasks;
 
-using InputTuple = System.Tuple<Microsoft.VisualStudio.ProjectSystem.IProjectSnapshot, Microsoft.VisualStudio.ProjectSystem.IProjectSubscriptionUpdate>;
+using InputTuple = System.Tuple<Microsoft.VisualStudio.ProjectSystem.IProjectSubscriptionUpdate, Microsoft.VisualStudio.ProjectSystem.IProjectSubscriptionUpdate>;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 {
@@ -228,10 +228,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
                 foreach (string item in value.AddedItems)
                 {
-                    // If a property changes we might be asked to add items that already exist, in which case we can safely ignore that anything happened
                     if (designTimeInputs.Add(item))
                     {
                         addedDesignTimeInputs.Add(item);
+                    }
+                }
+
+                foreach (string item in value.RemovedItems)
+                {
+                    if (designTimeInputs.Remove(item))
+                    {
+                        removedDesignTimeInputs.Add(item);
                     }
                 }
 
@@ -243,12 +250,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                     }
                 }
 
-                foreach (string item in value.RemovedItems)
+                foreach (string item in value.RemovedSharedItems)
                 {
-                    if (designTimeInputs.Remove(item))
-                    {
-                        removedDesignTimeInputs.Add(item);
-                    }
                     if (designTimeSharedInputs.Remove(item))
                     {
                         hasRemovedDesignTimeSharedInputs = true;
@@ -261,8 +264,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             else
             {
                 // If there haven't been file changes we can just flow our previous collections to the new version to avoid roundtriping our collections to builders and back
-                // Normally ShouldValueBeApplied can be used to skip applying values that have no changes, but because the current implementation handles the 
-                // RootNamespace and OutputPath by comparing potential new values to previous applied values we have to apply every update.
                 newDesignTimeInputs = previousValue.Inputs;
                 newSharedDesignTimeInputs = previousValue.SharedInputs;
             }
@@ -272,19 +273,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             {
                 Inputs = newDesignTimeInputs,
                 SharedInputs = newSharedDesignTimeInputs,
-                RootNamespace = value.RootNamespace,
-                OutputPath = value.OutputPath
+                // We always need an output path, so if it hasn't changed we just reuse the previous value
+                OutputPath = value.OutputPath ?? previousValue.OutputPath
             }, value.DataSourceVersions);
-
 
             // Fire off any events necessary
 
-            // We ignore blank values for previous value so that the initial load of the project doesn't trigger a compile of all PEs. It also makes testing easier.
-            bool hasHadProjectChange = (!string.IsNullOrEmpty(previousValue.RootNamespace) && !string.Equals(previousValue.RootNamespace, value.RootNamespace, StringComparison.Ordinal)) ||
-                                       (!string.IsNullOrEmpty(previousValue.OutputPath) && !string.Equals(previousValue.OutputPath, value.OutputPath, StringComparisons.Paths));
-
-            // Project properties and shared items cause all TempPEs to be dirty, because shared items are included in all TempPEs
-            if (hasHadProjectChange)
+            // Project properties changes cause all PEs to be dirty and possibly recompile
+            if (value.HasProjectPropertyChanges)
             {
                 foreach (string item in newDesignTimeInputs)
                 {
@@ -293,13 +289,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             }
             else
             {
-                // otherwise just the ones that we've added are dirty
+                // Individual inputs dirty their PEs and possibly recompile
                 foreach (string item in addedDesignTimeInputs)
                 {
                     await FireTempPEDirtyAsync(item, value.ShouldCompile);
                 }
             }
-            // We don't recompile for shared design time inputs
+            // Shared items cause all TempPEs to be dirty, but don't recompile, to match legacy behaviour
             if (hasRemovedDesignTimeSharedInputs || hasAddedDesignTimeSharedInputs)
             {
                 // adding or removing shared design time inputs dirties things but doesn't recompile
@@ -336,8 +332,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         protected override IDisposable LinkExternalInput(ITargetBlock<IProjectVersionedValue<InputTuple>> targetBlock)
         {
             return ProjectDataSources.SyncLinkTo(
-                _projectSubscriptionService.ProjectSource.SourceBlock.SyncLinkOptions(),
-                _projectSubscriptionService.SourceItemsRuleSource.SourceBlock.SyncLinkOptions(),
+                _projectSubscriptionService.SourceItemsRuleSource.SourceBlock.SyncLinkOptions(
+                    linkOptions: new StandardRuleDataflowLinkOptions
+                    {
+                        RuleNames = Empty.OrdinalIgnoreCaseStringSet.Add(Compile.SchemaName),
+                        PropagateCompletion = true,
+                    }),
+                _projectSubscriptionService.ProjectRuleSource.SourceBlock.SyncLinkOptions(
+                   linkOptions: new StandardRuleDataflowLinkOptions
+                   {
+                       RuleNames = Empty.OrdinalIgnoreCaseStringSet.Add(ConfigurationGeneral.SchemaName),
+                       PropagateCompletion = true,
+                   }),
                 targetBlock,
                 new DataflowLinkOptions { PropagateCompletion = true },
                 cancellationToken: ProjectAsynchronousTasksService.UnloadCancellationToken);
@@ -349,65 +355,71 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         /// </summary>
         protected override Task<DesignTimeInputsDelta> PreprocessAsync(IProjectVersionedValue<InputTuple> input, DesignTimeInputsDelta previousOutput)
         {
-            ProjectInstance project = input.Value.Item1.ProjectInstance;
-            IProjectChangeDescription changes = input.Value.Item2.ProjectChanges[Compile.SchemaName];
+            IProjectChangeDescription compileChanges = input.Value.Item1.ProjectChanges[Compile.SchemaName];
+            IProjectChangeDescription configChanges = input.Value.Item2.ProjectChanges[ConfigurationGeneral.SchemaName];
 
             ImmutableArray<string>.Builder addedDesignTimeInputs = ImmutableArray.CreateBuilder<string>();
             ImmutableArray<string>.Builder removedDesignTimeInputs = ImmutableArray.CreateBuilder<string>();
             ImmutableArray<string>.Builder addedDesignTimeSharedInputs = ImmutableArray.CreateBuilder<string>();
+            ImmutableArray<string>.Builder removedDesignTimeSharedInputs = ImmutableArray.CreateBuilder<string>();
 
-            foreach (string item in changes.Difference.AddedItems)
+            foreach (string item in compileChanges.Difference.AddedItems)
             {
                 PreprocessAddItem(item);
             }
 
-            foreach (string item in changes.Difference.RemovedItems)
+            foreach (string item in compileChanges.Difference.RemovedItems)
             {
-                // the RemovedItems doesn't have any project info any more so we can't tell if an item was a design time input or not
-                // and we can't check in AppliedValue because there could be an unapplied value that adds the item that is still in the queue
-                // so we have to just process the removed items in ApplyAsync and take advantage of the fact that its
-                // quick to remove from immutable collections, even if the item doesn't exist, because they're implemented as trees
-                removedDesignTimeInputs.Add(item);
+                PreprocessRemoveItem(item);
             }
 
-            foreach ((string oldName, string newName) in changes.Difference.RenamedItems)
+            foreach ((string oldName, string newName) in compileChanges.Difference.RenamedItems)
             {
                 // A rename is just an add and a remove
                 PreprocessAddItem(newName);
-                removedDesignTimeInputs.Add(oldName);
+                PreprocessRemoveItem(oldName);
             }
 
-            foreach (string item in changes.Difference.ChangedItems)
+            foreach (string item in compileChanges.Difference.ChangedItems)
             {
-                // Items appear in this set if an items metadata changes. 
-                // For example that could be when DesignTime goes from false to true, so we care about it, but we don't know which metadata changed or what the old value was
-                // so there is a high chance this is an irrelevant change to us.
+                (bool wasDesignTime, bool wasDesignTimeShared) = GetDesignTimePropsForItem(compileChanges.Before.Items[item]);
+                (bool designTime, bool designTimeShared) = GetDesignTimePropsForItem(compileChanges.After.Items[item]);
 
-                // The actual logic here is deceptively simple, so what is actually happening is this:
-                // Previous Design Time   | New Design Time   | Action
-                // ----------------------------------------------------------------
-                // False                  | False             | PreprocessAddItem will return false, ApplyAsync will process remove, which is fast enough to not worry about
-                // False                  | True              | PreprocessAddItem will return true, ApplyAsync will process as an add, so all good
-                // True                   | False             | PreprocessAddItem will return false, ApplyAsync will process remove, so all good
-                // True                   | True              | PreprocessAddItem will return true, ApplyAsync will not process add because key already exists
-                if (!PreprocessAddItem(item))
+                if (!wasDesignTime && designTime)
+                {
+                    addedDesignTimeInputs.Add(item);
+                }
+                else if (wasDesignTime && !designTime)
                 {
                     removedDesignTimeInputs.Add(item);
                 }
+                if (!wasDesignTimeShared && designTimeShared)
+                {
+                    addedDesignTimeSharedInputs.Add(item);
+                }
+                else if (wasDesignTimeShared && !designTimeShared)
+                {
+                    removedDesignTimeSharedInputs.Add(item);
+                }
             }
 
-            string rootNamespace = project.GetPropertyValue(ConfigurationGeneral.RootNamespaceProperty);
+            bool namespaceChanged = configChanges.Difference.ChangedProperties.Contains(ConfigurationGeneral.RootNamespaceProperty);
 
-            string basePath = project.GetPropertyValue(ConfigurationGeneral.ProjectDirProperty);
-            string objPath = project.GetPropertyValue(ConfigurationGeneral.IntermediateOutputPathProperty);
-            string outputPath = Path.Combine(basePath, objPath, "TempPE");
+            string outputPath = null;
+            if (configChanges.Difference.ChangedProperties.Contains(ConfigurationGeneral.ProjectDirProperty) || configChanges.Difference.ChangedProperties.Contains(ConfigurationGeneral.IntermediateOutputPathProperty))
+            {
+                string basePath = configChanges.After.Properties[ConfigurationGeneral.ProjectDirProperty];
+                string objPath = configChanges.After.Properties[ConfigurationGeneral.IntermediateOutputPathProperty];
+                outputPath = Path.Combine(basePath, objPath, "TempPE");
+            }
 
             var result = new DesignTimeInputsDelta
             {
                 AddedItems = addedDesignTimeInputs.ToImmutable(),
                 RemovedItems = removedDesignTimeInputs.ToImmutable(),
                 AddedSharedItems = addedDesignTimeSharedInputs.ToImmutable(),
-                RootNamespace = rootNamespace,
+                RemovedSharedItems = removedDesignTimeSharedInputs.ToImmutable(),
+                NamespaceChanged = namespaceChanged,
                 OutputPath = outputPath,
                 // if this is the first time processing (previousOutput = null) then we will be "adding" all inputs
                 // but we don't want to immediately kick off a compile of all files. We'll let the events fire and
@@ -419,33 +431,58 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
             return Task.FromResult(result);
 
-            bool PreprocessAddItem(string item)
+            (bool designTime, bool designTimeShared) GetDesignTimePropsForItem(IImmutableDictionary<string, string> item)
             {
-                ProjectItemInstance projItem = project.GetItemsByItemTypeAndEvaluatedInclude(Compile.SchemaName, item).FirstOrDefault();
-                System.Diagnostics.Debug.Assert(projItem != null, "Couldn't find the project item for Compile with an evaluated include of " + item);
+                item.TryGetValue(Compile.LinkProperty, out string linkString);
+                item.TryGetValue(Compile.DesignTimeProperty, out string designTimeString);
+                item.TryGetValue(Compile.DesignTimeSharedInputProperty, out string designTimeSharedString);
 
-                bool added = false;
-                bool link = StringComparers.PropertyValues.Equals(projItem.GetMetadataValue(Compile.LinkProperty), bool.TrueString);
-                if (!link)
+                if (linkString != null && linkString.Length > 0)
                 {
-                    bool designTime = StringComparers.PropertyValues.Equals(projItem.GetMetadataValue(Compile.DesignTimeProperty), bool.TrueString);
-                    bool designTimeShared = StringComparers.PropertyValues.Equals(projItem.GetMetadataValue(Compile.DesignTimeSharedInputProperty), bool.TrueString);
-
-                    if (designTime)
-                    {
-                        addedDesignTimeInputs.Add(item);
-                        added = true;
-                    }
-
-                    // Legacy allows files to be DesignTime and DesignTimeShared
-                    if (designTimeShared)
-                    {
-                        addedDesignTimeSharedInputs.Add(item);
-                        added = true;
-                    }
+                    // Linked files are never used as TempPE inputs
+                    return (false, false);
                 }
-                return added;
+
+                return (StringComparers.PropertyValues.Equals(designTimeString, bool.TrueString), StringComparers.PropertyValues.Equals(designTimeSharedString, bool.TrueString));
             }
+
+            void PreprocessAddItem(string item)
+            {
+                (bool designTime, bool designTimeShared) = GetDesignTimePropsForItem(compileChanges.After.Items[item]);
+
+                if (designTime)
+                {
+                    addedDesignTimeInputs.Add(item);
+                }
+
+                // Legacy allows files to be DesignTime and DesignTimeShared
+                if (designTimeShared)
+                {
+                    addedDesignTimeSharedInputs.Add(item);
+                }
+            }
+
+            void PreprocessRemoveItem(string item)
+            {
+                // Because the item has been removed we retreive its properties from the Before state
+                (bool designTime, bool designTimeShared) = GetDesignTimePropsForItem(compileChanges.Before.Items[item]);
+
+                if (designTime)
+                {
+                    removedDesignTimeInputs.Add(item);
+                }
+
+                // Legacy allows files to be DesignTime and DesignTimeShared
+                if (designTimeShared)
+                {
+                    removedDesignTimeSharedInputs.Add(item);
+                }
+            }
+        }
+
+        protected override bool ShouldValueBeApplied(DesignTimeInputsDelta previouslyAppliedOutput, DesignTimeInputsDelta newOutput)
+        {
+            return newOutput.HasFileChanges || newOutput.HasProjectPropertyChanges;
         }
     }
 }

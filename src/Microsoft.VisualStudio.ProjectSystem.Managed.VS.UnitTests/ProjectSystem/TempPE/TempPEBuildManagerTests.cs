@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.IO;
@@ -75,29 +74,32 @@ namespace Microsoft.VisualStudio.ProjectSystem.TempPE
         [Fact]
         public async Task Process_OutputPath_ComputedCorrectly()
         {
-            // Initial state is an empty object
             var mgr = new TestTempPEBuildManager();
 
-            // Apply our update
-            var update = IProjectSubscriptionUpdateFactory.FromJson(@"{
+            var compileUpdate = IProjectSubscriptionUpdateFactory.FromJson(@"{
    ""ProjectChanges"": {
         ""Compile"": { }
     }
 }");
-            var snapshot = IProjectSnapshotFactory.FromProjectXml(@"<Project>
-    <PropertyGroup>
-        <ProjectDir>C:\Code\MyProject</ProjectDir>
-        <Configuration>MyConfig</Configuration>
-        <TargetFramework>MyFramework</TargetFramework>
-        
-        <!-- this is just a fake project, but this is what the SDK has in it :) -->
-        <IntermediateOutputPath>obj\$(Configuration)\$(TargetFramework)</IntermediateOutputPath>
-    </PropertyGroup>
-</Project>");
-            var result = await mgr.TestProcessAsync(snapshot, update);
 
-            // Should have empty collections
-            Assert.Equal(@"C:\Code\MyProject\obj\MyConfig\MyFramework\TempPE", result.OutputPath);
+            var configUpdate = IProjectSubscriptionUpdateFactory.FromJson(@"{
+   ""ProjectChanges"": {
+        ""ConfigurationGeneral"": {
+            ""Difference"": {
+                ""ChangedProperties"": [ ""ProjectDir"", ""IntermediateOutputPath"" ]
+            },
+            ""After"": {
+                ""Properties"": {
+                    ""ProjectDir"": ""C:\\Code\\MyProject"",
+                    ""IntermediateOutputPath"": ""MyOutput""
+                }
+            }
+        }
+    }
+}");
+            var result = await mgr.TestProcessAsync(compileUpdate, configUpdate);
+
+            Assert.Equal(@"C:\Code\MyProject\MyOutput\TempPE", result.OutputPath);
         }
 
         [Fact]
@@ -111,18 +113,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.TempPE
    ""ProjectChanges"": {
         ""Compile"": {
             ""Difference"": { 
-                ""AnyChanges"": true,
-                ""AddedItems"" : [ ""Form1.cs"" ]
+                ""AddedItems"": [ ""Form1.cs"" ]
+            },
+            ""After"": {
+                ""Items"": {
+                    ""Form1.cs"": {
+                    }
+                }
             }
         }
     }
 }");
-            var snapshot = IProjectSnapshotFactory.FromProjectXml(@"<Project>
-    <ItemGroup>
-        <Compile Include=""Form1.cs"" />
-    </ItemGroup>
-</Project>");
-            var result = await mgr.TestProcessAsync(snapshot, update);
+
+            var result = await mgr.TestProcessAsync(update);
 
             // Should have empty collections
             Assert.Empty(result.Inputs);
@@ -140,23 +143,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.TempPE
 
             // Apply our update
             var update = IProjectSubscriptionUpdateFactory.FromJson(@"{
-   ""ProjectChanges"": {
+    ""ProjectChanges"": {
         ""Compile"": {
             ""Difference"": { 
-                ""AnyChanges"": true,
-                ""AddedItems"" : [ ""Settings.Designer.cs"" ]
+                ""AddedItems"": [ ""Settings.Designer.cs"" ]
+            },
+            ""After"": {
+                ""Items"": {
+                    ""Settings.Designer.cs"": {
+                        ""DesignTimeSharedInput"": true
+                    }
+                }
             }
         }
     }
 }");
-            var snapshot = IProjectSnapshotFactory.FromProjectXml(@"<Project>
-    <ItemGroup>
-        <Compile Include=""Settings.Designer.cs"">
-            <DesignTimeSharedInput>true</DesignTimeSharedInput>
-        </Compile>
-    </ItemGroup>
-</Project>");
-            var result = await mgr.TestProcessAsync(snapshot, update);
+            var result = await mgr.TestProcessAsync(update);
 
             Assert.Empty(result.Inputs);
             Assert.Single(result.SharedInputs);
@@ -174,27 +176,34 @@ namespace Microsoft.VisualStudio.ProjectSystem.TempPE
 
             // Apply our update
             var update = IProjectSubscriptionUpdateFactory.FromJson(@"{
-   ""ProjectChanges"": {
+    ""ProjectChanges"": {
         ""Compile"": {
             ""Difference"": { 
-                ""AnyChanges"": true,
-                ""AddedItems"" : [
+                ""AddedItems"": [
                                     ""Form1.cs"",
                                     ""Resources1.Designer.cs""
                                  ]
+            },
+            ""After"": {
+                ""Items"": {
+                    ""Form1.cs"": { },
+                    ""Resources1.Designer.cs"": {
+                        ""DesignTime"": true
+                    }
+                }
             }
         }
     }
 }");
-            var snapshot = IProjectSnapshotFactory.FromProjectXml(@"<Project>
-    <ItemGroup>
-        <Compile Include=""Form1.cs"" />
-        <Compile Include=""Resources1.Designer.cs"">
-            <DesignTime>true</DesignTime>
-        </Compile>
-    </ItemGroup>
-</Project>");
-            var result = await mgr.TestProcessAsync(snapshot, update, null);
+
+            var configUpdate = IProjectSubscriptionUpdateFactory.FromJson(@"{
+   ""ProjectChanges"": {
+        ""ConfigurationGeneral"": {
+        }
+    }
+}");
+
+            var result = await mgr.TestProcessAsync(update, configUpdate, null);
 
             // One file should have been added
             Assert.Single(result.Inputs);
@@ -214,29 +223,30 @@ namespace Microsoft.VisualStudio.ProjectSystem.TempPE
             var mgr = new TestTempPEBuildManager();
 
             await mgr.SetInputs(new[] {
-                                        "Resources1.Designer.cs",
-                                        "Resources2.Designer.cs"
-                                      }, null);
+                                                "Resources1.Designer.cs",
+                                                "Resources2.Designer.cs"
+                                                }, null);
 
             // Apply our update
             var update = IProjectSubscriptionUpdateFactory.FromJson(@"{
-   ""ProjectChanges"": {
+    ""ProjectChanges"": {
         ""Compile"": {
             ""Difference"": { 
-                ""AnyChanges"": true,
-                ""AddedItems"" : [ ""Settings.Designer.cs"" ]
+                ""AddedItems"": [
+                                    ""Settings.Designer.cs""
+                                 ]
+            },
+            ""After"": {
+                ""Items"": {
+                    ""Settings.Designer.cs"": {
+                        ""DesignTimeSharedInput"": true
+                    }
+                }
             }
         }
     }
 }");
-            var snapshot = IProjectSnapshotFactory.FromProjectXml(@"<Project>
-    <ItemGroup>
-        <Compile Include=""Settings.Designer.cs"">
-            <DesignTimeSharedInput>true</DesignTimeSharedInput>
-        </Compile>
-    </ItemGroup>
-</Project>");
-            var result = await mgr.TestProcessAsync(snapshot, update);
+            var result = await mgr.TestProcessAsync(update);
 
             Assert.Equal(2, result.Inputs.Count);
             Assert.Contains("Resources1.Designer.cs", result.Inputs);
@@ -248,7 +258,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.TempPE
             Assert.Contains("Resources2.Designer.cs", mgr.DirtyItems);
             Assert.Empty(mgr.DeletedItems);
             Assert.Empty(mgr.CompiledItems);
-            Assert.Empty(mgr.CompiledItems);
         }
 
         [Fact]
@@ -259,27 +268,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.TempPE
 
             // Apply our update
             var update = IProjectSubscriptionUpdateFactory.FromJson(@"{
-   ""ProjectChanges"": {
+    ""ProjectChanges"": {
         ""Compile"": {
             ""Difference"": { 
-                ""AnyChanges"": true,
-                ""AddedItems"" : [
+                ""AddedItems"": [
                                     ""Form1.cs"",
                                     ""Resources1.Designer.cs""
                                  ]
+            },
+            ""After"": {
+                ""Items"": {
+                    ""Form1.cs"": { },
+                    ""Resources1.Designer.cs"": {
+                        ""DesignTime"": true
+                    }
+                }
             }
         }
     }
 }");
-            var snapshot = IProjectSnapshotFactory.FromProjectXml(@"<Project>
-    <ItemGroup>
-        <Compile Include=""Form1.cs"" />
-        <Compile Include=""Resources1.Designer.cs"">
-            <DesignTime>true</DesignTime>
-        </Compile>
-    </ItemGroup>
-</Project>");
-            var result = await mgr.TestProcessAsync(snapshot, update);
+
+            var result = await mgr.TestProcessAsync(update);
 
             // One file should have been added
             Assert.Single(result.Inputs);
@@ -301,27 +310,33 @@ namespace Microsoft.VisualStudio.ProjectSystem.TempPE
 
             await mgr.SetInputs(new[] { "Resources1.Designer.cs" }, null);
 
-            // Apply our update
             var update = IProjectSubscriptionUpdateFactory.FromJson(@"{
-   ""ProjectChanges"": {
+    ""ProjectChanges"": {
         ""Compile"": {
             ""Difference"": { 
-                ""AnyChanges"": true,
-                ""RenamedItems"" : {
+                ""RenamedItems"": {
                     ""Resources1.Designer.cs"": ""Resources3.Designer.cs"" 
+                }
+            },
+            ""Before"": {
+                ""Items"": {
+                    ""Resources1.Designer.cs"": {
+                        ""DesignTime"": true
+                    }
+                }
+            },
+            ""After"": {
+                ""Items"": {
+                    ""Resources3.Designer.cs"": {
+                        ""DesignTime"": true
+                    }
                 }
             }
         }
     }
 }");
-            var snapshot = IProjectSnapshotFactory.FromProjectXml(@"<Project>
-    <ItemGroup>
-        <Compile Include=""Resources3.Designer.cs"">
-            <DesignTime>true</DesignTime>
-        </Compile>
-    </ItemGroup>
-</Project>");
-            var result = await mgr.TestProcessAsync(snapshot, update);
+
+            var result = await mgr.TestProcessAsync(update);
 
             // One file should have been added
             Assert.Single(result.Inputs);
@@ -345,25 +360,32 @@ namespace Microsoft.VisualStudio.ProjectSystem.TempPE
 
             // Apply our update
             var update = IProjectSubscriptionUpdateFactory.FromJson(@"{
-   ""ProjectChanges"": {
+    ""ProjectChanges"": {
         ""Compile"": {
             ""Difference"": { 
-                ""AnyChanges"": true,
-                ""RenamedItems"" : {
+                ""RenamedItems"": {
                     ""Settings.Designer.cs"": ""Settings_New.Designer.cs"" 
+                }
+            },
+            ""Before"": {
+                ""Items"": {
+                    ""Settings.Designer.cs"": {
+                        ""DesignTimeSharedInput"": true
+                    }
+                }
+            },
+            ""After"": {
+                ""Items"": {
+                    ""Settings_New.Designer.cs"": {
+                        ""DesignTimeSharedInput"": true
+                    }
                 }
             }
         }
     }
 }");
-            var snapshot = IProjectSnapshotFactory.FromProjectXml(@"<Project>
-    <ItemGroup>
-        <Compile Include=""Settings_New.Designer.cs"">
-            <DesignTimeSharedInput>true</DesignTimeSharedInput>
-        </Compile>
-    </ItemGroup>
-</Project>");
-            var result = await mgr.TestProcessAsync(snapshot, update);
+
+            var result = await mgr.TestProcessAsync(update);
 
             // One file should have been added
             Assert.Single(result.Inputs);
@@ -385,25 +407,30 @@ namespace Microsoft.VisualStudio.ProjectSystem.TempPE
 
             // Apply our update
             var update = IProjectSubscriptionUpdateFactory.FromJson(@"{
-   ""ProjectChanges"": {
+    ""ProjectChanges"": {
         ""Compile"": {
             ""Difference"": { 
-                ""AnyChanges"": true,
-                ""ChangedItems"" : [
-                                    ""Resources1.Designer.cs""
-                                   ]
+                ""ChangedItems"": [
+                    ""Resources1.Designer.cs""
+                ]
+            },
+            ""Before"": {
+                ""Items"": {
+                    ""Resources1.Designer.cs"": {
+                    }
+                }
+            },
+            ""After"": {
+                ""Items"": {
+                    ""Resources1.Designer.cs"": {
+                        ""DesignTime"": true
+                    }
+                }
             }
         }
     }
 }");
-            var snapshot = IProjectSnapshotFactory.FromProjectXml(@"<Project>
-    <ItemGroup>
-        <Compile Include=""Resources1.Designer.cs"">
-            <DesignTime>true</DesignTime>
-        </Compile>
-    </ItemGroup>
-</Project>");
-            var result = await mgr.TestProcessAsync(snapshot, update);
+            var result = await mgr.TestProcessAsync(update);
 
             // One file should have been added
             Assert.Single(result.Inputs);
@@ -426,23 +453,31 @@ namespace Microsoft.VisualStudio.ProjectSystem.TempPE
 
             // Apply our update
             var update = IProjectSubscriptionUpdateFactory.FromJson(@"{
-   ""ProjectChanges"": {
+    ""ProjectChanges"": {
         ""Compile"": {
             ""Difference"": { 
-                ""AnyChanges"": true,
-                ""ChangedItems"" : [
-                                    ""Resources1.Designer.cs""
-                                   ]
+                ""ChangedItems"": [
+                    ""Resources1.Designer.cs""
+                ]
+            },
+            ""Before"": {
+                ""Items"": {
+                    ""Resources1.Designer.cs"": {
+                        ""DesignTime"": true
+                    }
+                }
+            },
+            ""After"": {
+                ""Items"": {
+                    ""Resources1.Designer.cs"": {
+                    }
+                }
             }
         }
     }
 }");
-            var snapshot = IProjectSnapshotFactory.FromProjectXml(@"<Project>
-    <ItemGroup>
-        <Compile Include=""Resources1.Designer.cs"" />
-    </ItemGroup>
-</Project>");
-            var result = await mgr.TestProcessAsync(snapshot, update);
+
+            var result = await mgr.TestProcessAsync(update);
 
             // One file should have been added
             Assert.Empty(result.Inputs);
@@ -463,25 +498,30 @@ namespace Microsoft.VisualStudio.ProjectSystem.TempPE
 
             // Apply our update
             var update = IProjectSubscriptionUpdateFactory.FromJson(@"{
-   ""ProjectChanges"": {
+    ""ProjectChanges"": {
         ""Compile"": {
             ""Difference"": { 
-                ""AnyChanges"": true,
-                ""ChangedItems"" : [
-                                    ""Settings.Designer.cs""
-                                   ]
+                ""ChangedItems"": [
+                    ""Settings.Designer.cs""
+                ]
+            },
+            ""Before"": {
+                ""Items"": {
+                    ""Settings.Designer.cs"": {
+                    }
+                }
+            },
+            ""After"": {
+                ""Items"": {
+                    ""Settings.Designer.cs"": {
+                        ""DesignTimeSharedInput"": true
+                    }
+                }
             }
         }
     }
 }");
-            var snapshot = IProjectSnapshotFactory.FromProjectXml(@"<Project>
-    <ItemGroup>
-        <Compile Include=""Settings.Designer.cs"">
-            <DesignTimeSharedInput>true</DesignTimeSharedInput>
-        </Compile>
-    </ItemGroup>
-</Project>");
-            var result = await mgr.TestProcessAsync(snapshot, update);
+            var result = await mgr.TestProcessAsync(update);
 
             // One file should have been added
             Assert.Single(result.Inputs);
@@ -504,23 +544,30 @@ namespace Microsoft.VisualStudio.ProjectSystem.TempPE
 
             // Apply our update
             var update = IProjectSubscriptionUpdateFactory.FromJson(@"{
-   ""ProjectChanges"": {
+    ""ProjectChanges"": {
         ""Compile"": {
             ""Difference"": { 
-                ""AnyChanges"": true,
-                ""ChangedItems"" : [
-                                    ""Settings.Designer.cs""
-                                   ]
+                ""ChangedItems"": [
+                    ""Settings.Designer.cs""
+                ]
+            },
+            ""Before"": {
+                ""Items"": {
+                    ""Settings.Designer.cs"": {
+                        ""DesignTimeSharedInput"": true
+                    }
+                }
+            },
+            ""After"": {
+                ""Items"": {
+                    ""Settings.Designer.cs"": {
+                    }
+                }
             }
         }
     }
 }");
-            var snapshot = IProjectSnapshotFactory.FromProjectXml(@"<Project>
-    <ItemGroup>
-        <Compile Include=""Settings.Designer.cs"" />
-    </ItemGroup>
-</Project>");
-            var result = await mgr.TestProcessAsync(snapshot, update);
+            var result = await mgr.TestProcessAsync(update);
 
             // One file should have been added
             Assert.Single(result.Inputs);
@@ -543,26 +590,31 @@ namespace Microsoft.VisualStudio.ProjectSystem.TempPE
 
             // Apply our update
             var update = IProjectSubscriptionUpdateFactory.FromJson(@"{
-   ""ProjectChanges"": {
+    ""ProjectChanges"": {
         ""Compile"": {
             ""Difference"": { 
-                ""AnyChanges"": true,
-                ""ChangedItems"" : [
-                                    ""Resources1.Designer.cs""
-                                   ]
+                ""ChangedItems"": [
+                    ""Resources1.Designer.cs""
+                ]
+            },
+            ""Before"": {
+                ""Items"": {
+                    ""Resources1.Designer.cs"": {
+                        ""DesignTime"": true
+                    }
+                }
+            },
+            ""After"": {
+                ""Items"": {
+                    ""Resources1.Designer.cs"": {
+                        ""DesignTime"": true
+                    }
+                }
             }
         }
     }
 }");
-            // the TempPEManager doesn't actually know about what property changed, so we don't even need to include it the snapshot
-            var snapshot = IProjectSnapshotFactory.FromProjectXml(@"<Project>
-    <ItemGroup>
-        <Compile Include=""Resources1.Designer.cs"">
-            <DesignTime>true</DesignTime>
-        </Compile>
-    </ItemGroup>
-</Project>");
-            var result = await mgr.TestProcessAsync(snapshot, update);
+            var result = await mgr.TestProcessAsync(update);
 
             // One file should have been added
             Assert.Single(result.Inputs);
@@ -583,29 +635,31 @@ namespace Microsoft.VisualStudio.ProjectSystem.TempPE
 
             // Apply our update
             var update = IProjectSubscriptionUpdateFactory.FromJson(@"{
-   ""ProjectChanges"": {
+    ""ProjectChanges"": {
         ""Compile"": {
             ""Difference"": { 
-                ""AnyChanges"": true,
-                ""ChangedItems"" : [
-                                    ""Settings.Designer.cs""
-                                   ]
+                ""ChangedItems"": [
+                    ""Settings.Designer.cs""
+                ]
+            },
+            ""Before"": {
+                ""Items"": {
+                    ""Settings.Designer.cs"": {
+                        ""DesignTimeSharedInput"": true
+                    }
+                }
+            },
+            ""After"": {
+                ""Items"": {
+                    ""Settings.Designer.cs"": {
+                        ""DesignTimeSharedInput"": true
+                    }
+                }
             }
         }
     }
 }");
-            // the TempPEManager doesn't actually know about what property changed, so we don't even need to include it the snapshot
-            var snapshot = IProjectSnapshotFactory.FromProjectXml(@"<Project>
-    <ItemGroup>
-        <Compile Include=""Resources1.Designer.cs"">
-            <DesignTime>true</DesignTime>
-        </Compile>
-        <Compile Include=""Settings.Designer.cs"">
-            <DesignTimeSharedInput>true</DesignTimeSharedInput>
-        </Compile>
-    </ItemGroup>
-</Project>");
-            var result = await mgr.TestProcessAsync(snapshot, update);
+            var result = await mgr.TestProcessAsync(update);
 
             // One file should have been added
             Assert.Single(result.Inputs);
@@ -623,32 +677,30 @@ namespace Microsoft.VisualStudio.ProjectSystem.TempPE
             // Initial state is a single design time input
             var mgr = new TestTempPEBuildManager();
 
-            await mgr.SetInputs(new[] { "Resources1.Designer.cs", "Resources2.Designer.cs" }, null, "Before_Namespace");
+            await mgr.SetInputs(new[] { "Resources1.Designer.cs", "Resources2.Designer.cs" }, null);
 
-            // Apply our update
-            var update = IProjectSubscriptionUpdateFactory.FromJson(@"{
+            var compileUpdate = IProjectSubscriptionUpdateFactory.FromJson(@"{
    ""ProjectChanges"": {
-        ""Compile"": {
-            ""Difference"": { 
+        ""Compile"": { }
+    }
+}");
+
+            var configUpdate = IProjectSubscriptionUpdateFactory.FromJson(@"{
+   ""ProjectChanges"": {
+        ""ConfigurationGeneral"": {
+            ""Difference"": {
+                ""ChangedProperties"": [ ""RootNamespace"" ]
+            },
+            ""After"": {
+                ""Properties"": {
+                    ""RootNamespace"": ""After_Namespace""
+                }
             }
         }
     }
 }");
-            // the TempPEManager doesn't actually know about what property changed, so we don't even need to include it the snapshot
-            var snapshot = IProjectSnapshotFactory.FromProjectXml(@"<Project>
-    <PropertyGroup>
-        <RootNamespace>After_Namespace</RootNamespace>
-    </PropertyGroup>
-    <ItemGroup>
-        <Compile Include=""Resources1.Designer.cs"">
-            <DesignTime>true</DesignTime>
-        </Compile>
-        <Compile Include=""Resources2.Designer.cs"">
-            <DesignTime>true</DesignTime>
-        </Compile>
-    </ItemGroup>
-</Project>");
-            var result = await mgr.TestProcessAsync(snapshot, update);
+
+            var result = await mgr.TestProcessAsync(compileUpdate, configUpdate);
 
             // One file should have been added
             Assert.Equal(2, result.Inputs.Count);
@@ -666,31 +718,36 @@ namespace Microsoft.VisualStudio.ProjectSystem.TempPE
 
 
         [Fact]
-        public async Task Process_NonInputPropertyChanged_ReturnsEmptyCollections()
+        public async Task Process_NonInputPropertyChangedOnNonItem_ReturnsEmptyCollections()
         {
             // Initial state is an empty object
             var mgr = new TestTempPEBuildManager();
 
             // Apply our update
             var update = IProjectSubscriptionUpdateFactory.FromJson(@"{
-   ""ProjectChanges"": {
+    ""ProjectChanges"": {
         ""Compile"": {
             ""Difference"": { 
-                ""AnyChanges"": true,
-                ""ChangedItems"" : [
-                                    ""Form1.cs""
-                                   ]
+                ""ChangedItems"": [
+                    ""Form1.Designer.cs""
+                ]
+            },
+            ""Before"": {
+                ""Items"": {
+                    ""Form1.Designer.cs"": {
+                    }
+                }
+            },
+            ""After"": {
+                ""Items"": {
+                    ""Form1.Designer.cs"": {
+                    }
+                }
             }
         }
     }
 }");
-            // the TempPEManager doesn't actually know about what property changed, so we don't even need to include it the snapshot
-            var snapshot = IProjectSnapshotFactory.FromProjectXml(@"<Project>
-    <ItemGroup>
-        <Compile Include=""Form1.cs"" />
-    </ItemGroup>
-</Project>");
-            var result = await mgr.TestProcessAsync(snapshot, update);
+            var result = await mgr.TestProcessAsync(update);
 
             // Nothing should have been added
             Assert.Empty(result.Inputs);
@@ -708,31 +765,31 @@ namespace Microsoft.VisualStudio.ProjectSystem.TempPE
 
             // Apply our update
             var update = IProjectSubscriptionUpdateFactory.FromJson(@"{
-   ""ProjectChanges"": {
+    ""ProjectChanges"": {
         ""Compile"": {
             ""Difference"": { 
-                ""AnyChanges"": true,
-                ""AddedItems"" : [
-                                    ""Form1.cs"",
-                                    ""Resources1.Designer.cs"",
-                                    ""Settings.Designer.cs""
-                                 ]
+                ""AddedItems"": [
+                    ""Form1.cs"",
+                    ""Resources1.Designer.cs"",
+                    ""Settings.Designer.cs""
+                ]
+            },
+            ""After"": {
+                ""Items"": {
+                    ""Form1.cs"": {
+                    },
+                    ""Resources1.Designer.cs"": {
+                        ""DesignTime"": true
+                    },
+                    ""Settings.Designer.cs"": {
+                        ""DesignTimeSharedInput"": true
+                    }
+                }
             }
         }
     }
 }");
-            var snapshot = IProjectSnapshotFactory.FromProjectXml(@"<Project>
-    <ItemGroup>
-        <Compile Include=""Form1.cs"" />
-        <Compile Include=""Resources1.Designer.cs"">
-            <DesignTime>true</DesignTime>
-        </Compile>
-        <Compile Include=""Settings.Designer.cs"">
-            <DesignTimeSharedInput>true</DesignTimeSharedInput>
-        </Compile>
-    </ItemGroup>
-</Project>");
-            var result = await mgr.TestProcessAsync(snapshot, update);
+            var result = await mgr.TestProcessAsync(update);
 
             // One file should have been added
             Assert.Single(result.Inputs);
@@ -756,27 +813,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.TempPE
 
             // Apply our update
             var update = IProjectSubscriptionUpdateFactory.FromJson(@"{
-   ""ProjectChanges"": {
+    ""ProjectChanges"": {
         ""Compile"": {
             ""Difference"": { 
-                ""AnyChanges"": true,
-                ""AddedItems"" : [ ""Resources2.Designer.cs"" ]
+                ""AddedItems"": [
+                    ""Resources2.Designer.cs""
+                ]
+            },
+            ""After"": {
+                ""Items"": {
+                    ""Resources2.Designer.cs"": {
+                        ""DesignTime"": true
+                    }
+                }
             }
         }
     }
 }");
-            var projectState = IProjectSnapshotFactory.FromProjectXml(@"<Project>
-    <ItemGroup>
-        <Compile Include=""Form1.cs"" />
-        <Compile Include=""Resources1.Designer.cs"">
-            <DesignTime>true</DesignTime>
-        </Compile>
-        <Compile Include=""Resources2.Designer.cs"">
-            <DesignTime>true</DesignTime>
-        </Compile>
-    </ItemGroup>
-</Project>");
-            var result = await mgr.TestProcessAsync(projectState, update);
+            var result = await mgr.TestProcessAsync(update);
 
             // Should be two design time files now
             Assert.Equal(2, result.Inputs.Count);
@@ -796,30 +850,30 @@ namespace Microsoft.VisualStudio.ProjectSystem.TempPE
             // Initial state is two design time inputs
             var mgr = new TestTempPEBuildManager();
             await mgr.SetInputs(new[] {
-                                        "Resources1.Designer.cs",
-                                        "Resources2.Designer.cs"
-                                      }, null);
+                                                "Resources1.Designer.cs",
+                                                "Resources2.Designer.cs"
+                                              }, null);
 
             // Apply our update
             var update = IProjectSubscriptionUpdateFactory.FromJson(@"{
-   ""ProjectChanges"": {
+    ""ProjectChanges"": {
         ""Compile"": {
             ""Difference"": { 
-                ""AnyChanges"": true,
-                ""RemovedItems"" : [ ""Resources2.Designer.cs"" ]
+                ""RemovedItems"": [
+                    ""Resources2.Designer.cs""
+                ]
+            },
+            ""Before"": {
+                ""Items"": {
+                    ""Resources2.Designer.cs"": {
+                        ""DesignTime"": true
+                    }
+                }
             }
         }
     }
 }");
-            var projectState = IProjectSnapshotFactory.FromProjectXml(@"<Project>
-    <ItemGroup>
-        <Compile Include=""Form1.cs"" />
-        <Compile Include=""Resources1.Designer.cs"">
-            <DesignTime>true</DesignTime>
-        </Compile>
-    </ItemGroup>
-</Project>");
-            var result = await mgr.TestProcessAsync(projectState, update);
+            var result = await mgr.TestProcessAsync(update);
 
             // One file should have been removed
             Assert.Single(result.Inputs);
@@ -837,36 +891,33 @@ namespace Microsoft.VisualStudio.ProjectSystem.TempPE
             // Initial state is two design time inputs
             var mgr = new TestTempPEBuildManager();
             await mgr.SetInputs(new[] {
-                                        "Resources1.Designer.cs",
-                                        "Resources2.Designer.cs"
-                                      },
+                                                "Resources1.Designer.cs",
+                                                "Resources2.Designer.cs"
+                                              },
                                 new[] {
-                                        "Settings.Designer.cs"
+                                                "Settings.Designer.cs"
                                       });
 
             // Apply our update
             var update = IProjectSubscriptionUpdateFactory.FromJson(@"{
-   ""ProjectChanges"": {
+    ""ProjectChanges"": {
         ""Compile"": {
             ""Difference"": { 
-                ""AnyChanges"": true,
-                ""RemovedItems"" : [ ""Settings.Designer.cs"" ]
+                ""RemovedItems"": [
+                    ""Settings.Designer.cs""
+                ]
+            },
+            ""Before"": {
+                ""Items"": {
+                    ""Settings.Designer.cs"": {
+                        ""DesignTimeSharedInput"": true
+                    }
+                }
             }
         }
     }
 }");
-            var projectState = IProjectSnapshotFactory.FromProjectXml(@"<Project>
-    <ItemGroup>
-        <Compile Include=""Form1.cs"" />
-        <Compile Include=""Resources1.Designer.cs"">
-            <DesignTime>true</DesignTime>
-        </Compile>
-        <Compile Include=""Resources2.Designer.cs"">
-            <DesignTime>true</DesignTime>
-        </Compile>
-    </ItemGroup>
-</Project>");
-            var result = await mgr.TestProcessAsync(projectState, update);
+            var result = await mgr.TestProcessAsync(update);
 
             // One file should have been removed
             Assert.Equal(2, result.Inputs.Count);
@@ -882,8 +933,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.TempPE
 
         internal class TestTempPEBuildManager : TempPEBuildManager
         {
-            private bool _initialized;
-
             public List<string> DeletedItems { get; } = new List<string>();
             public List<string> DirtyItems { get; } = new List<string>();
             public List<string> CompiledItems { get; } = new List<string>();
@@ -903,15 +952,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.TempPE
                       fileSystem)
             {
                 _buildManager = new Lazy<VSBuildManager>(() => new TestBuildManager(this));
-            }
-            private async Task InitializeAsync()
-            {
-                if (!_initialized)
-                {
-                    // Set up the default applied value
-                    await InitializeInnerCoreAsync(CancellationToken.None);
-                    _initialized = true;
-                }
+
+                AppliedValue = new ProjectVersionedValue<DesignTimeInputsItem>(new DesignTimeInputsItem() { OutputPath = "TempPE" }, ImmutableDictionary<NamedIdentity, IComparable>.Empty);
             }
 
             protected override Task CompileTempPEAsync(HashSet<string> filesToCompile, string outputFileName)
@@ -920,16 +962,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.TempPE
                 return Task.CompletedTask;
             }
 
-            public Task<DesignTimeInputsItem> TestProcessAsync(IProjectSnapshot snapshot, IProjectSubscriptionUpdate update)
+            public Task<DesignTimeInputsItem> TestProcessAsync(IProjectSubscriptionUpdate compileUpdate)
             {
-                return TestProcessAsync(snapshot, update, new DesignTimeInputsDelta());
+                var configUpdate = IProjectSubscriptionUpdateFactory.FromJson(@"{
+   ""ProjectChanges"": {
+        ""ConfigurationGeneral"": {
+        }
+    }
+}");
+
+                return TestProcessAsync(compileUpdate, configUpdate);
             }
 
-            public async Task<DesignTimeInputsItem> TestProcessAsync(IProjectSnapshot snapshot, IProjectSubscriptionUpdate update, DesignTimeInputsDelta previousOutput)
+            public Task<DesignTimeInputsItem> TestProcessAsync(IProjectSubscriptionUpdate compileUpdate, IProjectSubscriptionUpdate configurationGeneralUpdate)
             {
-                await InitializeAsync();
+                return TestProcessAsync(compileUpdate, configurationGeneralUpdate, new DesignTimeInputsDelta());
+            }
 
-                var input = IProjectVersionedValueFactory.Create(Tuple.Create(snapshot, update));
+            public async Task<DesignTimeInputsItem> TestProcessAsync(IProjectSubscriptionUpdate compileUpdate, IProjectSubscriptionUpdate configurationGeneralUpdate, DesignTimeInputsDelta previousOutput)
+            {
+                var input = IProjectVersionedValueFactory.Create(Tuple.Create(compileUpdate, configurationGeneralUpdate));
 
                 // We always pretend this isn't the first process, which occurs on project load, because we have SetInputs for that
                 var result = await base.PreprocessAsync(input, previousOutput);
@@ -943,18 +995,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.TempPE
                 return new HashSet<string>(sharedInputs.Concat(new[] { fileName }));
             }
 
-            public async Task SetInputs(string[] designTimeInputs, string[] sharedDesignTimeInputs, string rootNamespace = "")
+            public async Task SetInputs(string[] designTimeInputs, string[] sharedDesignTimeInputs)
             {
-                await InitializeAsync();
-
                 designTimeInputs = designTimeInputs ?? Array.Empty<string>();
                 sharedDesignTimeInputs = sharedDesignTimeInputs ?? Array.Empty<string>();
                 await base.ApplyAsync(new DesignTimeInputsDelta
                 {
                     AddedItems = ImmutableArray.CreateRange<string>(designTimeInputs),
-                    AddedSharedItems = ImmutableArray.CreateRange<string>(sharedDesignTimeInputs),
-                    RootNamespace = rootNamespace,
-                    OutputPath = "" // this doesn't matter for most tests, but needs to be non-null for Path.Combine
+                    AddedSharedItems = ImmutableArray.CreateRange<string>(sharedDesignTimeInputs)
                 });
 
                 DeletedItems.Clear();
