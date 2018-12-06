@@ -28,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             {
                 foreach (string fileName in hint.Files)
                 {
-                    await _tempPEBuildManager.TryFireTempPEDirtyAsync(hint.UnconfiguredProject.MakeRelative(fileName));
+                    await _tempPEBuildManager.NotifySourceFileDirtyAsync(hint.UnconfiguredProject.MakeRelative(fileName));
                 }
             }
         }

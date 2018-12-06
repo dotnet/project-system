@@ -62,7 +62,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         /// <summary>
         /// Called externally to fire the TempPEDirty events if the provided fileName is one of the known TempPE inputs or shared inputs
         /// </summary>
-        public async Task TryFireTempPEDirtyAsync(string fileName)
+        public async Task NotifySourceFileDirtyAsync(string fileName)
         {
             // This method gets called for any file change but unless someone has asked for TempPE information this
             // class will be uninitialized, so just exit early

@@ -23,9 +23,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         Task<string> GetTempPEDescriptionXmlAsync(string sourceFile);
         
         /// <summary>
-        /// Fires the TempPEDirty event if the source file is a file that the ITempPEBuildManager cares about
+        /// Notifies the TempPEBuildManager that a source file has changed so that it can take any action necessary
         /// </summary>
         /// <param name="sourceFile">The evaluated include of any source file</param>
-        Task TryFireTempPEDirtyAsync(string sourceFile);
+        Task NotifySourceFileDirtyAsync(string sourceFile);
     }
 }

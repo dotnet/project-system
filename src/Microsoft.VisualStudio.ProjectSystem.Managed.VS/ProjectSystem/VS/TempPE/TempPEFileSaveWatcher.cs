@@ -24,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             // Save As will come through as a file rename so we don't need to double handle
             if (!saveAs && path != null)
             {
-                await _tempPEBuildManager.TryFireTempPEDirtyAsync(path);
+                await _tempPEBuildManager.NotifySourceFileDirtyAsync(path);
             }
 
             // we're just listening in here, not taking action, so return false always
