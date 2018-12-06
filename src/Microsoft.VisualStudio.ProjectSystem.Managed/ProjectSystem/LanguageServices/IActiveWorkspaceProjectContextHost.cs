@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     ///         The "active" <see cref="IWorkspaceProjectContext"/> for an <see cref="UnconfiguredProject"/> is the one associated 
     ///         with the solution's active configuration and represents the context that is used for features that are not yet aware 
     ///         of multi-targeting projects, including Razor, compiler errors/warnings that come from build (#4034) and Edit-and-Continue. 
-    ///         All other features should be live in the <see cref="ConfiguredProject"/> scope and import the current 
+    ///         All other features should live in the <see cref="ConfiguredProject"/> scope and import the current 
     ///         <see cref="IWorkspaceProjectContextHost"/> .
     ///     </para>
     ///     <para>
