@@ -34,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
         public abstract IProjectTree FindByPath(IProjectTree root, string path);
 
-        protected ProjectTreeCustomizablePropertyContext GetCustomPropertyContext(IProjectTree parent)
+        protected static ProjectTreeCustomizablePropertyContext GetCustomPropertyContext(IProjectTree parent)
         {
             return new ProjectTreeCustomizablePropertyContext
             {
