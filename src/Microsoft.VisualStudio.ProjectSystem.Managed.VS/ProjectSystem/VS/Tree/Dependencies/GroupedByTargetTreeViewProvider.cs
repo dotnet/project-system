@@ -22,6 +22,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     {
         private const int Order = 1000;
 
+        private readonly IDependenciesTreeServices _treeServices;
+        private readonly IDependenciesViewModelFactory _viewModelFactory;
+        private readonly IUnconfiguredProjectCommonServices _commonServices;
+
         [ImportingConstructor]
         public GroupedByTargetTreeViewProvider(
             IDependenciesTreeServices treeServices,
@@ -29,14 +33,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             IUnconfiguredProjectCommonServices commonServices)
             : base(commonServices.Project)
         {
-            TreeServices = treeServices;
-            ViewModelFactory = viewModelFactory;
-            CommonServices = commonServices;
+            _treeServices = treeServices;
+            _viewModelFactory = viewModelFactory;
+            _commonServices = commonServices;
         }
-
-        private IDependenciesTreeServices TreeServices { get; }
-        private IDependenciesViewModelFactory ViewModelFactory { get; }
-        private IUnconfiguredProjectCommonServices CommonServices { get; }
 
         /// <summary>
         /// Builds Dependencies tree for given dependencies snapshot
@@ -87,7 +87,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     {
                         IProjectTree node = dependenciesTree.FindChildWithCaption(targetFramework.FriendlyName);
                         bool shouldAddTargetNode = node == null;
-                        IDependencyViewModel targetViewModel = ViewModelFactory.CreateTargetViewModel(targetedSnapshot);
+                        IDependencyViewModel targetViewModel = _viewModelFactory.CreateTargetViewModel(targetedSnapshot);
 
                         node = CreateOrUpdateNode(
                             node,
@@ -114,7 +114,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             dependenciesTree = CleanupOldNodes(dependenciesTree, currentTopLevelNodes);
 
             // now update root Dependencies node status
-            ProjectImageMoniker rootIcon = ViewModelFactory.GetDependenciesRootIcon(snapshot.HasUnresolvedDependency).ToProjectSystemType();
+            ProjectImageMoniker rootIcon = _viewModelFactory.GetDependenciesRootIcon(snapshot.HasUnresolvedDependency).ToProjectSystemType();
             return dependenciesTree.SetProperties(icon: rootIcon, expandedIcon: rootIcon);
 
             IProjectTree RememberNewNodes(IProjectTree rootNode, IEnumerable<IProjectTree> currentNodes)
@@ -183,7 +183,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             bool isActiveTarget = targetedSnapshot.TargetFramework.Equals(activeTarget);
             foreach ((string providerType, List<IDependency> dependencies) in groupedByProviderType)
             {
-                IDependencyViewModel subTreeViewModel = ViewModelFactory.CreateRootViewModel(
+                IDependencyViewModel subTreeViewModel = _viewModelFactory.CreateRootViewModel(
                     providerType, targetedSnapshot.CheckForUnresolvedDependencies(providerType));
                 IProjectTree subTreeNode = rootNode.FindChildWithCaption(subTreeViewModel.Caption);
                 bool isNewSubTreeNode = subTreeNode == null;
@@ -287,7 +287,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             IRule rule = null;
             if (dependency.Flags.Contains(DependencyTreeFlags.SupportsRuleProperties))
             {
-                rule = await TreeServices.GetRuleAsync(dependency, targetedSnapshot.Catalogs);
+                rule = await _treeServices.GetRuleAsync(dependency, targetedSnapshot.Catalogs);
             }
 
             return CreateOrUpdateNode(
@@ -331,7 +331,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 // Only IProjectItemTree can have this flag
                 filteredFlags = filteredFlags.Except(DependencyTreeFlags.BaseReferenceFlags);
 
-                return TreeServices.CreateTree(
+                return _treeServices.CreateTree(
                     caption: viewModel.Caption,
                     filePath,
                     browseObjectProperties: rule,
@@ -344,12 +344,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             IProjectTree CreateProjectItemTreeNode()
             {
                 var itemContext = ProjectPropertiesContext.GetContext(
-                    CommonServices.Project,
+                    _commonServices.Project,
                     file: filePath,
                     itemType: viewModel.SchemaItemType,
                     itemName: filePath);
 
-                return TreeServices.CreateTree(
+                return _treeServices.CreateTree(
                     caption: viewModel.Caption,
                     itemContext: itemContext,
                     browseObjectProperties: rule,
