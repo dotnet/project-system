@@ -413,15 +413,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         /// <summary>
-        /// A private implementation of <see cref="IProjectTreeCustomizablePropertyContext"/>.
+        /// A private implementation of <see cref="IProjectTreeCustomizablePropertyContext"/> used when updating
+        /// dependencies nodes.
         /// </summary>
         private sealed class ProjectTreeCustomizablePropertyContext : IProjectTreeCustomizablePropertyContext
         {
-            public string ItemName { get; set; }
+            // NOTE properties with hard-coded results are currently not set, and
+            //      we avoid creating backing fields for them to keep the size of
+            //      this class down. They can be changed as needed in future.
 
-            public string ItemType { get; set; }
+            public string ItemName => null;
 
-            public IImmutableDictionary<string, string> Metadata { get; set; }
+            public string ItemType => null;
+
+            public IImmutableDictionary<string, string> Metadata => null;
 
             public ProjectTreeFlags ParentNodeFlags { get; set; }
 
@@ -431,7 +436,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             public bool IsNonFileSystemProjectItem => true;
 
-            public IImmutableDictionary<string, string> ProjectTreeSettings { get; set; }
+            public IImmutableDictionary<string, string> ProjectTreeSettings => null;
         }
     }
 }
