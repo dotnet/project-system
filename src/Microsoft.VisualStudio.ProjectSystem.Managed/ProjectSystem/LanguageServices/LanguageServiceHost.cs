@@ -80,7 +80,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         [AppliesTo(ProjectCapability.DotNetLanguageService)]
         public Task OnProjectFactoryCompletedAsync()
         {
-            return Loaded;
+            return PublishAsync();
         }
 
         protected override Task InitializeCoreAsync(CancellationToken cancellationToken)
@@ -96,21 +96,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             return Task.CompletedTask;
         }
 
-        public Task Loaded
+        public Task PublishAsync(CancellationToken cancellationToken = default)
         {
-            get { return InitializeAsync(CancellationToken.None); }
+            return InitializeAsync(cancellationToken);
         }
 
         public async Task OpenContextForWriteAsync(Func<IWorkspaceProjectContextAccessor, Task> action)
         {
-            await Loaded;
+            await PublishAsync();
 
             await action(new WorkspaceProjectContextAccessor(ActiveProjectContext));
         }
 
         public async Task<T> OpenContextForWriteAsync<T>(Func<IWorkspaceProjectContextAccessor, Task<T>> action)
         {
-            await Loaded;
+            await PublishAsync();
 
             return await action(new WorkspaceProjectContextAccessor(ActiveProjectContext));
         }

@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Moq;
 
@@ -29,9 +30,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 _accessor = accessor;
             }
 
-            public Task Loaded
+            public Task PublishAsync(CancellationToken cancellationToken = default)
             {
-                get { return Task.CompletedTask; }
+                return Task.CompletedTask;
             }
 
             public Task OpenContextForWriteAsync(Func<IWorkspaceProjectContextAccessor, Task> action)
@@ -43,6 +44,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             {
                 return action(_accessor);
             }
+
+
         }
     }
 }

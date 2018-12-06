@@ -54,7 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 
         private async Task<(HierarchyId itemid, IVsHierarchy hierarchy, IVsContainedLanguageFactory containedLanguageFactory)> GetContainedLanguageFactoryForFileAsync(string filePath)
         {
-            await _projectContextHost.Loaded;
+            await _projectContextHost.PublishAsync();
 
             await _projectVsServices.ThreadingService.SwitchToUIThread();
 
