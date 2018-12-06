@@ -16,6 +16,10 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
+    /// <summary>
+    /// An implementation of <see cref="IDependenciesTreeViewProvider"/> that groups dependencies
+    /// by target framework for cross-targeting projects, or without grouping when not cross-targeting.
+    /// </summary>
     [Export(typeof(IDependenciesTreeViewProvider))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
     [Order(Order)]
@@ -46,9 +50,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 projectCapabilityCheckProvider: commonServices.Project);
         }
 
-        /// <summary>
-        /// Builds Dependencies tree for given dependencies snapshot
-        /// </summary>
+        /// <inheritdoc />
         public async Task<IProjectTree> BuildTreeAsync(
             IProjectTree dependenciesTree,
             IDependenciesSnapshot snapshot,
@@ -136,6 +138,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             }
         }
 
+        /// <inheritdoc />
         public IProjectTree FindByPath(IProjectTree root, string path)
         {
             if (root == null)
