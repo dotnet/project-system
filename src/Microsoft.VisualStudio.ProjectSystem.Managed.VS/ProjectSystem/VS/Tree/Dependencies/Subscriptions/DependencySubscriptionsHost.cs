@@ -277,35 +277,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         {
             IImmutableSet<string> projectItemSpecs = GetProjectItemSpecsFromSnapshot();
 
-            bool anyChanges = false;
-            
-            // Note: we are updating existing snapshot, not receiving a complete new one. Thus we must
-            // ensure incremental updates are done in the correct order. This lock ensures that here.
-
-            lock (_snapshotLock)
-            {
-                var updatedSnapshot = DependenciesSnapshot.FromChanges(
+            TryUpdateSnapshot(
+                snapshot => DependenciesSnapshot.FromChanges(
                     _commonServices.Project.FullPath,
-                    _currentSnapshot,
+                    snapshot,
                     changes,
                     catalogs,
                     activeTargetFramework,
                     _snapshotFilters.ToImmutableValueArray(),
                     _subTreeProviders.ToValueDictionary(p => p.ProviderType),
-                    projectItemSpecs);
-
-                if (!ReferenceEquals(_currentSnapshot, updatedSnapshot))
-                {
-                    _currentSnapshot = updatedSnapshot;
-                    anyChanges = true;
-                }
-            }
-
-            if (anyChanges)
-            {
-                // avoid unnecessary tree updates
-                ScheduleDependenciesUpdate(token);
-            }
+                    projectItemSpecs),
+                token);
 
             return;
 
@@ -338,26 +320,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
                 return itemSpecs.ToImmutable();
             }
-        }
-
-        private void ScheduleDependenciesUpdate(CancellationToken token = default)
-        {
-            _dependenciesUpdateScheduler.ScheduleAsyncTask(ct =>
-            {
-                if (ct.IsCancellationRequested || IsDisposing || IsDisposed)
-                {
-                    return Task.FromCanceled(ct);
-                }
-
-                IDependenciesSnapshot snapshot = _currentSnapshot;
-
-                if (snapshot != null)
-                {
-                    SnapshotChanged?.Invoke(this, new SnapshotChangedEventArgs(snapshot, ct));
-                }
-
-                return Task.CompletedTask;
-            }, token);
         }
 
         public async Task<AggregateCrossTargetProjectContext> GetCurrentAggregateProjectContext()
@@ -526,14 +488,48 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
                 if (targetsToClean.Count != 0)
                 {
-                    lock (_snapshotLock)
-                    {
-                        _currentSnapshot = _currentSnapshot.RemoveTargets(targetsToClean);
-                    }
-
-                    ScheduleDependenciesUpdate();
+                    TryUpdateSnapshot(snapshot => snapshot.RemoveTargets(targetsToClean));
                 }
             }
+        }
+
+        /// <summary>
+        /// Executes <paramref name="updateFunc"/> on the current snapshot within a lock.
+        /// If a different snapshot object is returned, <see cref="CurrentSnapshot"/> is updated
+        /// and an invocation of <see cref="SnapshotChanged"/> is scheduled.
+        /// </summary>
+        private void TryUpdateSnapshot(Func<DependenciesSnapshot, DependenciesSnapshot> updateFunc, CancellationToken token = default)
+        {
+            lock (_snapshotLock)
+            {
+                DependenciesSnapshot updatedSnapshot = updateFunc(_currentSnapshot);
+
+                if (ReferenceEquals(_currentSnapshot, updatedSnapshot))
+                {
+                    return;
+                }
+
+                _currentSnapshot = updatedSnapshot;
+            }
+
+            // avoid unnecessary tree updates
+            _dependenciesUpdateScheduler.ScheduleAsyncTask(
+                ct =>
+                {
+                    if (ct.IsCancellationRequested || IsDisposing || IsDisposed)
+                    {
+                        return Task.FromCanceled(ct);
+                    }
+
+                    IDependenciesSnapshot snapshot = _currentSnapshot;
+
+                    if (snapshot != null)
+                    {
+                        SnapshotChanged?.Invoke(this, new SnapshotChangedEventArgs(snapshot, ct));
+                    }
+
+                    return Task.CompletedTask;
+                }, token);
         }
 
         private Task AddSubscriptionsAsync(AggregateCrossTargetProjectContext newProjectContext)
