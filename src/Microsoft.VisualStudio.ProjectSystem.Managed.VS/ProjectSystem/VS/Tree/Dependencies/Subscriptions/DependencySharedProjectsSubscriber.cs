@@ -42,11 +42,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             SubscribeToConfiguredProject(subscriptionService);
         }
 
-        public void AddSubscriptions(AggregateCrossTargetProjectContext newProjectContext)
+        public void AddSubscriptions(AggregateCrossTargetProjectContext projectContext)
         {
-            Requires.NotNull(newProjectContext, nameof(newProjectContext));
+            Requires.NotNull(projectContext, nameof(projectContext));
 
-            foreach (ConfiguredProject configuredProject in newProjectContext.InnerConfiguredProjects)
+            foreach (ConfiguredProject configuredProject in projectContext.InnerConfiguredProjects)
             {
                 SubscribeToConfiguredProject(configuredProject.Services.ProjectSubscription);
             }

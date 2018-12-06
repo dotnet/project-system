@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
     {
         event EventHandler<DependencySubscriptionChangedEventArgs> DependenciesChanged;
         void InitializeSubscriber(ICrossTargetSubscriptionsHost host, IProjectSubscriptionService subscriptionService);
-        void AddSubscriptions(AggregateCrossTargetProjectContext newProjectContext);
+        void AddSubscriptions(AggregateCrossTargetProjectContext projectContext);
         void ReleaseSubscriptions();
     }
 
