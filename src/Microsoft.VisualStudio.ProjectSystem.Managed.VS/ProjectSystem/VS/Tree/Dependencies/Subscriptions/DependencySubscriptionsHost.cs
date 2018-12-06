@@ -84,6 +84,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             _targetFrameworkProvider = targetFrameworkProvider;
             _aggregateSnapshotProvider = aggregateSnapshotProvider;
 
+            _currentSnapshot = DependenciesSnapshot.CreateEmpty(_commonServices.Project.FullPath);
+
             _dependencySubscribers = new OrderPrecedenceImportCollection<IDependencyCrossTargetSubscriber>(
                 projectCapabilityCheckProvider: commonServices.Project);
 
@@ -105,24 +107,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
         #region IDependenciesSnapshotProvider
 
-        public IDependenciesSnapshot CurrentSnapshot
-        {
-            get
-            {
-                if (_currentSnapshot == null)
-                {
-                    lock (_snapshotLock)
-                    {
-                        if (_currentSnapshot == null)
-                        {
-                            _currentSnapshot = DependenciesSnapshot.CreateEmpty(_commonServices.Project.FullPath);
-                        }
-                    }
-                }
-
-                return _currentSnapshot;
-            }
-        }
+        public IDependenciesSnapshot CurrentSnapshot => _currentSnapshot;
 
         public string ProjectFilePath { get; }
 
