@@ -5,11 +5,20 @@ using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
     /// <summary>
-    ///     Hosts the "active" <see cref="IWorkspaceProjectContext"/> for a <see cref="UnconfiguredProject"/> 
+    ///     Hosts the "active" <see cref="IWorkspaceProjectContext"/> for an <see cref="UnconfiguredProject"/> 
     ///     and provides consumers access to it.
     /// </summary>
     /// <remarks>
-    ///     NOTE: This is distinct from the "active" editor context tracked via <see cref="IActiveEditorContextTracker"/>.
+    ///     <para>
+    ///         The "active" <see cref="IWorkspaceProjectContext"/> for an <see cref="UnconfiguredProject"/> is the one associated 
+    ///         with the solution's active configuration and represents the context that is used for features that are not yet aware 
+    ///         of multi-targeting projects, including Razor, compiler errors/warnings that come from build (#4034) and Edit-and-Continue. 
+    ///         All other features should be live in the <see cref="ConfiguredProject"/> scope and import the current 
+    ///         <see cref="IWorkspaceProjectContextHost"/> .
+    ///     </para>
+    ///     <para>
+    ///         NOTE: This is distinct from the "active" context for the editor which is tracked via <see cref="IActiveEditorContextTracker"/>.
+    ///     </para>
     /// </remarks>
     internal interface IActiveWorkspaceProjectContextHost : IWorkspaceProjectContextHost
     {
