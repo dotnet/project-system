@@ -22,6 +22,7 @@ using InputTuple = System.Tuple<Microsoft.VisualStudio.ProjectSystem.IProjectSub
 namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 {
     [Export(typeof(ITempPEBuildManager))]
+    [AppliesTo(ProjectCapability.CSharpOrVisualBasicLanguageService)]
     internal partial class TempPEBuildManager : UnconfiguredProjectHostBridge<IProjectVersionedValue<InputTuple>, TempPEBuildManager.DesignTimeInputsDelta, IProjectVersionedValue<TempPEBuildManager.DesignTimeInputsItem>>, ITempPEBuildManager
     {
         protected readonly IUnconfiguredProjectCommonServices _unconfiguredProjectServices;

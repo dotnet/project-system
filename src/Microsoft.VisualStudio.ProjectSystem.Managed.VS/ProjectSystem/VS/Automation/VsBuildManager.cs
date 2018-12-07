@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
     /// Manages the portable executable (PE) files produced by running custom tools.
     /// </summary>
     [Export(typeof(BuildManager))]
-    [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
+    [AppliesTo(ProjectCapability.CSharpOrVisualBasicLanguageService)]
     [Order(Order.Default)]
     internal class VSBuildManager : ConnectionPointContainer,
                                     IEventSource<_dispBuildManagerEvents>,

@@ -7,7 +7,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
     /// This class handles being notified whenever a source file is saved by the hierarchy
     /// </summary>
     [Export(typeof(IFileActionHandler))]
-    [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
+    [AppliesTo(ProjectCapability.CSharpOrVisualBasicLanguageService)]
     internal class TempPEFileSaveWatcher : IFileActionHandler
     {
         private readonly ITempPEBuildManager _tempPEBuildManager;

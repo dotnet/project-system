@@ -10,7 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
     /// </summary>
     [Export(typeof(IProjectChangeHintReceiver))]
     [ProjectChangeHintKind(ProjectChangeFileSystemEntityHint.EditedFileAsString)]
-    [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
+    [AppliesTo(ProjectCapability.CSharpOrVisualBasicLanguageService)]
     internal class TempPEFileEditHintReceiver : IProjectChangeHintReceiver
     {
         private readonly ITempPEBuildManager _tempPEBuildManager;
