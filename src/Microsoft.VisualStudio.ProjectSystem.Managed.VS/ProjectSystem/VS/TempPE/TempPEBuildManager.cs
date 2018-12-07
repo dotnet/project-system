@@ -53,7 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             _fileSystem = fileSystem;
         }
 
-        public string[] GetTempPESourceFileNames()
+        public string[] GetTempPEMonikers()
         {
             Initialize();
 
@@ -61,9 +61,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         }
 
         /// <summary>
-        /// Called externally to fire the TempPEDirty events if the provided fileName is one of the known TempPE inputs or shared inputs
+        /// Called externally to fire the TempPEDirty events if the provided fileName is one of the known TempPE input or shared input monikers
         /// </summary>
-        public async Task NotifySourceFileDirtyAsync(string fileName)
+        public async Task NotifySourceFileDirtyAsync(string projectRelativeSourceFileName)
         {
             // This method gets called for any file change but unless someone has asked for TempPE information this
             // class will be uninitialized, so just exit early
@@ -74,23 +74,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             // This might be overkill, but none of the default .NET Core templates have any shared design time files
             // Non shared design time files will be more common (just needs one .resx files), but its still reasonable to assume these collections will be empty a lot of the time
             // Since this method is called every time a file is saved checking Count saves us 54ns for the fast path, and only costs 1ns the rest of the time
-            if (inputs.SharedInputs.Count > 0 && inputs.SharedInputs.Contains(fileName))
+            if (inputs.SharedInputs.Count > 0 && inputs.SharedInputs.Contains(projectRelativeSourceFileName))
             {
                 foreach (string item in inputs.Inputs)
                 {
                     await FireTempPEDirtyAsync(item, false);
                 }
             }
-            else if (inputs.Inputs.Count > 0 && inputs.Inputs.Contains(fileName))
+            else if (inputs.Inputs.Count > 0 && inputs.Inputs.Contains(projectRelativeSourceFileName))
             {
-                await FireTempPEDirtyAsync(fileName, true);
+                await FireTempPEDirtyAsync(projectRelativeSourceFileName, true);
             }
         }
 
         /// <summary>
-        /// Called privately to actually fire the TempPE events and optionally recompile the TempPE library for the specified inpu
+        /// Called privately to actually fire the TempPE events and optionally recompile the TempPE library for the specified input
         /// </summary>
-        private async Task FireTempPEDirtyAsync(string fileName, bool shouldCompile)
+        private async Task FireTempPEDirtyAsync(string moniker, bool shouldCompile)
         {
             // Not using use the ThreadingService property because unit tests
             await _unconfiguredProjectServices.ThreadingService.SwitchToUIThread();
@@ -98,17 +98,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             if (shouldCompile)
             {
                 DesignTimeInputsItem inputs = AppliedValue.Value;
-                HashSet<string> files = GetFilesToCompile(fileName, inputs.SharedInputs);
-                string outputFileName = GetOutputFileName(inputs.OutputPath, fileName);
+                HashSet<string> files = GetFilesToCompile(moniker, inputs.SharedInputs);
+                string outputFileName = GetOutputFileName(inputs.OutputPath, moniker);
                 await CompileTempPEAsync(files, outputFileName);
             }
 
-            _buildManager.Value.OnDesignTimeOutputDirty(fileName);
+            _buildManager.Value.OnDesignTimeOutputDirty(moniker);
         }
 
-        public async Task<string> GetTempPEDescriptionXmlAsync(string fileName)
+        public async Task<string> GetTempPEDescriptionXmlAsync(string moniker)
         {
-            Requires.NotNull(fileName, nameof(fileName));
+            Requires.NotNull(moniker, nameof(moniker));
 
             await InitializeAsync();
 
@@ -116,13 +116,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
             DesignTimeInputsItem inputs = AppliedValue.Value;
 
-            if (!inputs.Inputs.Contains(fileName))
-                throw new ArgumentException("FileName supplied must be one of the DesignTime source files", nameof(fileName));
+            if (!inputs.Inputs.Contains(moniker))
+                throw new ArgumentException("Moniker supplied must be one of the DesignTime source files", nameof(moniker));
 
             string outputPath = inputs.OutputPath;
 
-            HashSet<string> files = GetFilesToCompile(fileName, inputs.SharedInputs);
-            string outputFileName = GetOutputFileName(outputPath, fileName);
+            HashSet<string> files = GetFilesToCompile(moniker, inputs.SharedInputs);
+            string outputFileName = GetOutputFileName(outputPath, moniker);
             if (CompilationNeeded(files, outputFileName))
             {
                 // For parity with legacy we don't care about the compilation result: Legacy only errors here if it runs out of memory queuing the compilation
@@ -134,7 +134,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
   <Application private_binpath = ""{outputPath}""/>
   <Assembly
     codebase = ""{outputFileName}""
-    name = ""{fileName}""
+    name = ""{moniker}""
     version = ""0.0.0.0""
     snapshot_id = ""1""
     replaceable = ""True""
@@ -168,9 +168,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             return false;
         }
 
-        private static string GetOutputFileName(string outputPath, string fileName)
+        private static string GetOutputFileName(string outputPath, string moniker)
         {
-            return Path.Combine(outputPath, fileName.Replace('\\', '.') + ".dll");
+            // All monikers are project relative paths by defintion (anything else is a link) so we just replace path separators as they are invalid filename characters
+            return Path.Combine(outputPath, moniker.Replace('\\', '.') + ".dll");
         }
 
         protected virtual Task CompileTempPEAsync(HashSet<string> filesToCompile, string outputFileName)
@@ -194,13 +195,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             });
         }
 
-        protected virtual HashSet<string> GetFilesToCompile(string fileName, ImmutableHashSet<string> sharedInputs)
+        protected virtual HashSet<string> GetFilesToCompile(string moniker, ImmutableHashSet<string> sharedInputs)
         {
             // This is a HashSet because we allow files to be both inputs and shared inputs, and we don't want to compile the same file twice
             // plus Roslyn needs to call Contains on this quite a lot in order to ensure its only compiling the right files so we want that to be fast.
             var files = new HashSet<string>(sharedInputs.Count + 1, StringComparers.Paths);
+            // All monikers are project relative paths by defintion (anything else is a link) so we can convert them to full paths using MakeRooted
             files.AddRange(sharedInputs.Select(UnconfiguredProject.MakeRooted));
-            files.Add(UnconfiguredProject.MakeRooted(fileName));
+            files.Add(UnconfiguredProject.MakeRooted(moniker));
             return files;
         }
 

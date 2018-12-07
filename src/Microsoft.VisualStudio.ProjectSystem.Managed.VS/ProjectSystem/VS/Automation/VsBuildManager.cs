@@ -73,7 +73,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         {
             get
             {
-                return _tempPEManager.GetTempPESourceFileNames();
+                return _tempPEManager.GetTempPEMonikers();
             }
         }
 

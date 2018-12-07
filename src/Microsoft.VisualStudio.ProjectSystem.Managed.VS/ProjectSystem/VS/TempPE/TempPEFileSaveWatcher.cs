@@ -20,11 +20,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
         public async Task<bool> TryHandleFileSavedAsync(IProjectTree tree, string newFilePath, bool saveAs)
         {
-            string path = tree.BrowseObjectProperties.ItemName;
+            string itemName = tree.BrowseObjectProperties.ItemName;
             // Save As will come through as a file rename so we don't need to double handle
-            if (!saveAs && path != null)
+            if (!saveAs && itemName != null)
             {
-                await _tempPEBuildManager.NotifySourceFileDirtyAsync(path);
+                await _tempPEBuildManager.NotifySourceFileDirtyAsync(itemName);
             }
 
             // we're just listening in here, not taking action, so return false always
