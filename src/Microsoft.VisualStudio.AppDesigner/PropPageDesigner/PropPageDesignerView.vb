@@ -561,6 +561,24 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             End Select
         End Sub
 
+        Friend Sub SetControls(propPage As OleInterop.IPropertyPage, firstControl As Boolean)
+            If firstControl Then
+                If _isNativeHostedPropertyPage Then
+                    'Try to set initial focus to the property page, not the configuration panel
+                    FocusFirstOrLastPropertyPageControl(True)
+                Else
+                    ' Select the configuration panel to ensure it gains focus. For configuration pages, this
+                    ' ensures that the configuration panel receives focus and allows a screen reader to give
+                    ' the page context before reading the values of any properties themselves. For other pages
+                    ' this ensures that the first control of the page receives focus, which allows tab navigation
+                    ' to work in a reliable and predicable manner for users who can only use the keyboard.
+                    SelectNextControl(ConfigurationPanel, forward:=True, tabStopOnly:=True, nested:=True, wrap:=True)
+                End If
+            Else
+                FocusFirstOrLastPropertyPageControl(False)
+            End If
+        End Sub
+
         ''' <summary>
         ''' Show the property page 
         ''' </summary>
@@ -584,7 +602,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 End If
 
                 Try
-
                     ' Check the minimum size for the control and make sure that we show scrollbars
                     ' if the PropertyPagePanel becomes smaller...
                     Dim Info As OleInterop.PROPPAGEINFO() = New OleInterop.PROPPAGEINFO(0) {}
@@ -609,8 +626,8 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                     If PropertyPagePanel.Controls.Count > 0 Then
                         Dim controlSize As Size = PropertyPagePanel.Controls(0).Size
                         PropertyPagePanel.AutoScrollMinSize = New Size(
-                                Math.Min(controlSize.Width + Padding.Right + Padding.Left, PropertyPagePanel.AutoScrollMinSize.Width),
-                                Math.Min(controlSize.Height + Padding.Top + Padding.Bottom, PropertyPagePanel.AutoScrollMinSize.Height))
+                            Math.Min(controlSize.Width + Padding.Right + Padding.Left, PropertyPagePanel.AutoScrollMinSize.Width),
+                            Math.Min(controlSize.Height + Padding.Top + Padding.Bottom, PropertyPagePanel.AutoScrollMinSize.Height))
                     End If
 
                     _isPageActivated = True
@@ -635,8 +652,8 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                         SelectNextControl(ConfigurationPanel, forward:=True, tabStopOnly:=True, nested:=True, wrap:=True)
                     End If
 
+                    ''Only set the undo redo state if we are loading a new page
                     SetUndoRedoCleanState()
-
                 Catch ex As Exception When ReportWithoutCrash(ex, NameOf(ActivatePage), NameOf(PropPageDesignerView))
                     'There was a problem displaying the property page.  Show the error control.
                     DisplayErrorControl(ex)

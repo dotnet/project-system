@@ -1090,7 +1090,8 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                         Dim PropPageView As PropPageDesigner.PropPageDesignerView
                         PropPageView = TryCast(NewCurrentPanel.DocView, PropPageDesigner.PropPageDesignerView)
                         If PropPageView IsNot Nothing Then
-                            PropPageView.ActivatePage(PropPageView.PropPage)
+                            'We are looping in the same page, do not set the undo status to clean
+                            PropPageView.SetControls(PropPageView.PropPage, True)
                         Else
                             'Must have had error loading
                         End If
@@ -1232,11 +1233,21 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         Public Overrides Sub OnItemClick(item As ProjectDesignerTabButton, reactivatePage As Boolean)
             Common.Switches.TracePDFocus(TraceLevel.Warning, "ApplicationDesignerView.OnItemClick")
             MyBase.OnItemClick(item, reactivatePage)
-            ShowTab(SelectedIndex, ForceShow:=True, ForceActivate:=reactivatePage)
+            ShowTab(SelectedIndex, ForceShow:=True)
 
             ' we need set back the tab, if we failed to switch...
             If SelectedIndex <> _activePanelIndex Then
                 SelectedIndex = _activePanelIndex
+            End If
+        End Sub
+
+        Friend Overrides Sub SetControl(firstControl As Boolean)
+            Dim NewCurrentPanel As ApplicationDesignerPanel = _designerPanels(SelectedIndex)
+            Dim PropPageView As PropPageDesigner.PropPageDesignerView
+            PropPageView = TryCast(NewCurrentPanel.DocView, PropPageDesigner.PropPageDesignerView)
+            If PropPageView IsNot Nothing Then
+                'We are looping in the same page, do not set the undo status to clean
+                PropPageView.SetControls(PropPageView.PropPage, firstControl)
             End If
         End Sub
 
