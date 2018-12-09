@@ -14,7 +14,7 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
-    public sealed class GroupedByTargetTreeViewProviderTests
+    public sealed class DependenciesTreeViewProviderTests
     {
         private const string ProjectPath = @"c:\myfolder\mysubfolder\myproject.csproj";
 
@@ -804,7 +804,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Null(result);
         }
 
-        private static GroupedByTargetTreeViewProvider CreateProvider(
+        private static DependenciesTreeViewProvider CreateProvider(
             IEnumerable<IDependencyModel> rootModels = null,
             IEnumerable<IDependencyModel> targetModels = null)
         {
@@ -818,7 +818,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(
                 project: UnconfiguredProjectFactory.Create(filePath: ProjectPath));
 
-            return new GroupedByTargetTreeViewProvider(treeServices, treeViewModelFactory, commonServices);
+            return new DependenciesTreeViewProvider(treeServices, treeViewModelFactory, commonServices);
         }
 
         private static IDependenciesSnapshot GetSnapshot(params (ITargetFramework tfm, IReadOnlyList<IDependency> dependencies)[] testData)
