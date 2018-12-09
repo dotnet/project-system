@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.IO;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -13,8 +12,6 @@ using Microsoft.VisualStudio.GraphModel;
 using Microsoft.VisualStudio.GraphModel.CodeSchema;
 using Microsoft.VisualStudio.GraphModel.Schemas;
 using Microsoft.VisualStudio.Imaging.Interop;
-using Microsoft.VisualStudio.PlatformUI;
-using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.Actions;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 using Microsoft.VisualStudio.Shell;
@@ -45,45 +42,30 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
                 trackChanges: true)
         };
 
-        private readonly object _snapshotChangeHandlerLock = new object();
-
-        /// <summary>
-        /// Remembers expanded graph nodes to track changes in their children.
-        /// </summary>
-        private readonly WeakCollection<IGraphContext> _expandedGraphContexts = new WeakCollection<IGraphContext>();
-
-        [ImportMany] private readonly OrderPrecedenceImportCollection<IDependenciesGraphActionHandler> _graphActionHandlers;
-
-        private readonly IAggregateDependenciesSnapshotProvider _aggregateSnapshotProvider;
-
         private readonly IAsyncServiceProvider _serviceProvider;
+
+        private readonly IDependenciesGraphChangeTracker _changeTracker;
 
         private GraphIconCache _iconCache;
 
         [ImportingConstructor]
         public DependenciesGraphProvider(
-            IAggregateDependenciesSnapshotProvider aggregateSnapshotProvider,
+            IDependenciesGraphChangeTracker changeTracker,
             [Import(typeof(SAsyncServiceProvider))] IAsyncServiceProvider serviceProvider,
             JoinableTaskContext joinableTaskContext)
             : base(new JoinableTaskContextNode(joinableTaskContext))
         {
-            _aggregateSnapshotProvider = aggregateSnapshotProvider;
             _serviceProvider = serviceProvider;
-            _graphActionHandlers = new OrderPrecedenceImportCollection<IDependenciesGraphActionHandler>(
-                ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesLast);
+            _changeTracker = changeTracker;
         }
 
         protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
         {
-            _aggregateSnapshotProvider.SnapshotChanged += OnSnapshotChanged;
-
             _iconCache = await GraphIconCache.CreateAsync(_serviceProvider);
         }
 
         protected override Task DisposeCoreAsync(bool initialized)
         {
-            _aggregateSnapshotProvider.SnapshotChanged -= OnSnapshotChanged;
-
             return Task.CompletedTask;
         }
 
@@ -96,7 +78,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
         /// </summary>
         public void BeginGetGraphData(IGraphContext context)
         {
-            ThreadHelper.JoinableTaskFactory.RunAsync(() => BeginGetGraphDataAsync(context));
+            ThreadHelper.JoinableTaskFactory.RunAsync(async () =>
+            {
+                try
+                {
+                    await InitializeAsync();
+
+                    _changeTracker.RegisterGraphContext(context);
+                }
+                finally
+                {
+                    // OnCompleted must be called to display changes 
+                    context.OnCompleted();
+                }
+            });
         }
 
         /// <summary>
@@ -119,106 +114,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
         /// IGraphProvider.Schema
         /// </summary>
         public Graph Schema => null;
-
-        internal async Task BeginGetGraphDataAsync(IGraphContext context)
-        {
-            try
-            {
-                await InitializeAsync();
-
-                bool shouldTrackChanges = false;
-                foreach (Lazy<IDependenciesGraphActionHandler, IOrderPrecedenceMetadataView> handler in _graphActionHandlers)
-                {
-                    if (handler.Value.CanHandleRequest(context) &&
-                        handler.Value.HandleRequest(context))
-                    {
-                        shouldTrackChanges = true;
-                        break;
-                    }
-                }
-
-                if (!shouldTrackChanges)
-                {
-                    return;
-                }
-
-                lock (_expandedGraphContexts)
-                {
-                    if (!_expandedGraphContexts.Contains(context))
-                    {
-                        // Remember this graph context in order to track changes.
-                        // When references change, we will adjust children of this graph as necessary
-                        _expandedGraphContexts.Add(context);
-                    }
-                }
-            }
-            finally
-            {
-                // OnCompleted must be called to display changes 
-                context.OnCompleted();
-            }
-        }
-
-        /// <summary>
-        /// ProjectContextChanged gets fired every time dependencies change for projects across solution.
-        /// <see cref="_expandedGraphContexts"/> contains all nodes that we need to check for potential updates
-        /// in their children dependencies.
-        /// </summary>
-        private void OnSnapshotChanged(object sender, SnapshotChangedEventArgs e)
-        {
-            if (e.Snapshot == null || e.Token.IsCancellationRequested)
-            {
-                return;
-            }
-
-            lock (_snapshotChangeHandlerLock)
-            {
-                TrackChanges(e);
-            }
-        }
-
-        /// <summary>
-        /// <see cref="_expandedGraphContexts"/> remembers graph expanded or checked so far.
-        /// Each context represents one level in the graph, i.e. a node and its first level dependencies
-        /// Tracking changes over all expanded contexts ensures that all levels are processed
-        /// and updated when there are any changes in nodes data.
-        /// </summary>
-        private void TrackChanges(SnapshotChangedEventArgs updatedProjectContext)
-        {
-            IList<IGraphContext> expandedContexts;
-            lock (_expandedGraphContexts)
-            {
-                expandedContexts = _expandedGraphContexts.ToList();
-            }
-
-            if (expandedContexts.Count == 0)
-            {
-                return;
-            }
-
-            var actionHandlers = _graphActionHandlers.Select(x => x.Value).Where(x => x.CanHandleChanges()).ToList();
-
-            if (actionHandlers.Count == 0)
-            {
-                return;
-            }
-
-            foreach (IGraphContext graphContext in expandedContexts)
-            {
-                try
-                {
-                    foreach (IDependenciesGraphActionHandler actionHandler in actionHandlers)
-                    {
-                        actionHandler.HandleChanges(graphContext, updatedProjectContext);
-                    }
-                }
-                finally
-                {
-                    // Calling OnCompleted ensures that the changes are reflected in UI
-                    graphContext.OnCompleted();
-                }
-            }
-        }
 
         public GraphNode AddGraphNode(
             IGraphContext graphContext,
