@@ -8,18 +8,6 @@ namespace Microsoft.VisualStudio.Threading
 {
     internal static partial class SemaphoreSlimExtensions
     {
-        public static SemaphoreDisposer DisposableWait(this SemaphoreSlim semaphore, CancellationToken cancellationToken = default)
-        {
-            semaphore.Wait(cancellationToken);
-            return new SemaphoreDisposer(semaphore);
-        }
-
-        public static async Task<SemaphoreDisposer> DisposableWaitAsync(this SemaphoreSlim semaphore, CancellationToken cancellationToken = default)
-        {
-            await semaphore.WaitAsync(cancellationToken);
-            return new SemaphoreDisposer(semaphore);
-        }
-
         public static async Task<T> ExecuteWithinLockAsync<T>(this SemaphoreSlim semaphore, JoinableTaskCollection collection, JoinableTaskFactory factory, Func<Task<T>> task, CancellationToken cancellationToken = default)
         {
             // Join the caller to our collection, so that if the lock is already held by another task that needs UI 
