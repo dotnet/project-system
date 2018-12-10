@@ -495,7 +495,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 ? ActiveConfiguredProject
                 : await _dependenciesHost.GetConfiguredProject(dependency.TargetFramework) ?? ActiveConfiguredProject;
 
-            ConfiguredProjectExports configuredProjectExports = GetActiveConfiguredProjectExports(project);
             IImmutableDictionary<string, IPropertyPagesCatalog> namedCatalogs = await GetNamedCatalogsAsync();
             Requires.NotNull(namedCatalogs, nameof(namedCatalogs));
 
@@ -511,7 +510,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 // Since we have no browse object, we still need to create *something* so
                 // that standard property pages can pop up.
                 Rule emptyRule = RuleExtensions.SynthesizeEmptyRule(context.ItemType);
-                return configuredProjectExports.PropertyPagesDataModelProvider.GetRule(
+                return GetActiveConfiguredProjectExports(project).PropertyPagesDataModelProvider.GetRule(
                     emptyRule,
                     context.File,
                     context.ItemType,
@@ -520,7 +519,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             if (dependency.Resolved)
             {
-                return configuredProjectExports.RuleFactory.CreateResolvedReferencePageRule(
+                return GetActiveConfiguredProjectExports(project).RuleFactory.CreateResolvedReferencePageRule(
                     schema,
                     context,
                     dependency.Name,
