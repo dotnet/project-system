@@ -10,6 +10,5 @@
     <ProjectReference Include="..\DeployIntegrationDependencies\DeployIntegrationDependencies.csproj" ReferenceOutputAssembly="false" />
     <PackageReference Include="Microsoft.Test.Apex.VisualStudio" />
     <PackageReference Include="Microsoft.VisualStudio.Composition" />
-    <Reference Include="System.Configuration" />
   </ItemGroup>
 </Project>
