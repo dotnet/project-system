@@ -10,7 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     internal interface IWorkspaceProjectContextAccessor
     {
         /// <summary>
-        ///     Gets an identifier that uniquely identifiers the <see cref="IWorkspaceProjectContext"/> across a solution.
+        ///     Gets an identifier that uniquely identifies the <see cref="IWorkspaceProjectContext"/> across a solution.
         /// </summary>
         string ContextId
         {
