@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
+using Microsoft.VisualStudio.Buffers.PooledObjects;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 {
@@ -24,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 
         public Task<IReadOnlyCollection<IPageMetadata>> GetPagesAsync()
         {
-            ImmutableArray<IPageMetadata>.Builder builder = ImmutableArray.CreateBuilder<IPageMetadata>();
+            var builder = PooledArray<IPageMetadata>.GetInstance();
             builder.Add(VisualBasicProjectDesignerPage.Application);
             builder.Add(VisualBasicProjectDesignerPage.Compile);
 
@@ -40,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
                 builder.Add(VisualBasicProjectDesignerPage.Debug);
             }
 
-            return Task.FromResult<IReadOnlyCollection<IPageMetadata>>(builder.ToImmutable());
+            return Task.FromResult<IReadOnlyCollection<IPageMetadata>>(builder.ToImmutableAndFree());
         }
     }
 }

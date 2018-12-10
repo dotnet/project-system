@@ -6,7 +6,7 @@ using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Threading.Tasks;
-
+using Microsoft.VisualStudio.Buffers.PooledObjects;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 
@@ -224,7 +224,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             var configuredProjectsToRemove = new HashSet<ConfiguredProject>(_configuredProjectHostObjectsMap.Keys);
             ProjectConfiguration activeProjectConfiguration = _commonServices.ActiveConfiguredProject.ProjectConfiguration;
 
-            ImmutableDictionary<string, IWorkspaceProjectContext>.Builder innerProjectContextsBuilder = ImmutableDictionary.CreateBuilder<string, IWorkspaceProjectContext>();
+            var innerProjectContextsBuilder = PooledDictionary<string, IWorkspaceProjectContext>.GetInstance();
             string activeTargetFramework = string.Empty;
             IConfiguredProjectHostObject activeIntellisenseProjectHostObject = null;
 
@@ -265,7 +265,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 
             _unconfiguredProjectHostObject.ActiveIntellisenseProjectHostObject = activeIntellisenseProjectHostObject;
 
-            return new AggregateWorkspaceProjectContext(innerProjectContextsBuilder.ToImmutable(), configuredProjectsMap, activeTargetFramework, _unconfiguredProjectHostObject);
+            return new AggregateWorkspaceProjectContext(innerProjectContextsBuilder.ToImmutableDictionaryAndFree(), configuredProjectsMap, activeTargetFramework, _unconfiguredProjectHostObject);
         }
 
         private static string GetWorkspaceContextId(ConfiguredProject configuredProject)

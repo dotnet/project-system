@@ -35,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
         /// <param name="targetFramework">Target framework for which dependency was resolved.</param>
         /// <param name="dependency">The dependency to which filter should be applied.</param>
         /// <param name="subTreeProviderByProviderType">All dictionary of subtree providers keyed by <see cref="IProjectDependenciesSubTreeProvider.ProviderType"/>.</param>
-        /// <param name="projectItemSpecs">List of all items contained in project's xml at given moment, otherwise, <see langword="null"/> if we do not have any data.</param>
+        /// <param name="projectItemSpecs">List of all items contained in project's xml at given moment (non-imported items), otherwise, <see langword="null"/> if we do not have any data.</param>
         /// <param name="context">An object via which the filter must signal acceptance or rejection, in addition to making further changes to other dependencies.</param>
         void BeforeAddOrUpdate(
             string projectPath,

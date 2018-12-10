@@ -19,11 +19,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         public static IProjectCatalogSnapshot ImplementRulesWithItemTypes(
                                                     IDictionary<string, string> rulesAndItemTypes,
-                                                    MockBehavior? mockBehavior = null)
+                                                    MockBehavior mockBehavior = MockBehavior.Default)
         {
-            var behavior = mockBehavior ?? MockBehavior.Default;
-            var mockSnapshot = new Mock<IProjectCatalogSnapshot>(behavior);
-            var mockPropertyPageCatalog = new Mock<IPropertyPagesCatalog>(behavior);
+            var mockSnapshot = new Mock<IProjectCatalogSnapshot>(mockBehavior);
+            var mockPropertyPageCatalog = new Mock<IPropertyPagesCatalog>(mockBehavior);
 
             foreach (var kvp in rulesAndItemTypes)
             {

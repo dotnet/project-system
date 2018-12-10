@@ -15,10 +15,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         public static IVsHierarchyItem ImplementProperties(string text = null,
                                                            string parentCanonicalName = null,
-                                                           MockBehavior? mockBehavior = null)
+                                                           MockBehavior mockBehavior = MockBehavior.Default)
         {
-            var behavior = mockBehavior ?? MockBehavior.Default;
-            var mock = new Mock<IVsHierarchyItem>(behavior);
+            var mock = new Mock<IVsHierarchyItem>(mockBehavior);
 
             if (text != null)
             {
@@ -27,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             if (parentCanonicalName != null)
             {
-                var parentMock = new Mock<IVsHierarchyItem>(behavior);
+                var parentMock = new Mock<IVsHierarchyItem>(mockBehavior);
                 parentMock.Setup(x => x.CanonicalName).Returns(parentCanonicalName);
                 mock.Setup(x => x.Parent).Returns(parentMock.Object);
             }

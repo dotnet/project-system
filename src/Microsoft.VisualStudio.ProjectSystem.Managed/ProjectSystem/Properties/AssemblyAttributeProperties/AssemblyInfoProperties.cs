@@ -6,6 +6,7 @@ using System.Collections.Immutable;
 using System.Threading.Tasks;
 
 using Microsoft.CodeAnalysis;
+using Microsoft.VisualStudio.Buffers.PooledObjects;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
@@ -44,14 +45,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             Workspace workspace,
             IProjectThreadingService threadingService)
         {
-            ImmutableDictionary<string, SourceAssemblyAttributePropertyValueProvider>.Builder builder = ImmutableDictionary.CreateBuilder<string, SourceAssemblyAttributePropertyValueProvider>();
+            var builder = PooledDictionary<string, SourceAssemblyAttributePropertyValueProvider>.GetInstance();
             foreach ((string key, (string attributeName, _)) in AssemblyPropertyInfoMap)
             {
                 var provider = new SourceAssemblyAttributePropertyValueProvider(attributeName, getActiveProjectId, workspace, threadingService);
                 builder.Add(key, provider);
             }
 
-            return builder.ToImmutable();
+            return builder.ToImmutableDictionaryAndFree();
         }
 
         /// <summary>
@@ -100,10 +101,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// </summary>
         public override async Task SetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IReadOnlyDictionary<string, string> dimensionalConditions = null)
         {
-            if (_attributeValueProviderMap.ContainsKey(propertyName) &&
+            if (_attributeValueProviderMap.TryGetValue(propertyName, out SourceAssemblyAttributePropertyValueProvider provider) &&
                 !await IsAssemblyInfoPropertyGeneratedByBuild(propertyName))
             {
-                SourceAssemblyAttributePropertyValueProvider provider = _attributeValueProviderMap[propertyName];
                 await provider.SetPropertyValueAsync(unevaluatedPropertyValue);
             }
             else

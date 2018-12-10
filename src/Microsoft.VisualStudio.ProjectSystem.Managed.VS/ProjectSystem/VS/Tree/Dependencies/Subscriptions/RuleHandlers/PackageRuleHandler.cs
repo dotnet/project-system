@@ -10,7 +10,7 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions.RuleHandlers
 {
     [Export(DependencyRulesSubscriber.DependencyRulesSubscriberContract,
             typeof(IDependenciesRuleHandler))]

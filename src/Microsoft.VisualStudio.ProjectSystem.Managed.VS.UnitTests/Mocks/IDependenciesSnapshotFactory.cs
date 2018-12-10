@@ -21,10 +21,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             Dictionary<ITargetFramework, ITargetedDependenciesSnapshot> targets = null,
             bool? hasUnresolvedDependency = null,
             ITargetFramework activeTarget = null,
-            MockBehavior? mockBehavior = null)
+            MockBehavior mockBehavior = MockBehavior.Default)
         {
-            var behavior = mockBehavior ?? MockBehavior.Default;
-            var mock = new Mock<IDependenciesSnapshot>(behavior);
+            var mock = new Mock<IDependenciesSnapshot>(mockBehavior);
 
             if (targets != null)
             {

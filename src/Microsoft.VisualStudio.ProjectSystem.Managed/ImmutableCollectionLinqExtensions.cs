@@ -28,6 +28,17 @@ namespace Microsoft.VisualStudio
             return count;
         }
 
+        public static bool Any<TKey, TValue>(this ImmutableDictionary<TKey, TValue> immutableDictionary, Func<KeyValuePair<TKey, TValue>, bool> predicate)
+        {
+            foreach (KeyValuePair<TKey, TValue> pair in immutableDictionary)
+            {
+                if (predicate(pair))
+                    return true;
+            }
+
+            return false;
+        }
+
         public static T FirstOrDefault<T, TArg>(this ImmutableArray<T> immutableArray, Func<T, TArg, bool> predicate, TArg arg)
         {
             foreach (T obj in immutableArray)

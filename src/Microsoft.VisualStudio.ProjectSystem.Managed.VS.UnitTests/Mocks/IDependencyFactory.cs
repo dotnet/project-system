@@ -45,10 +45,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                                             ITargetFramework targetFramework = null,
                                             DependencyIconSet iconSet = null,
                                             DependencyIconSet setPropertiesIconSet = null,
-                                            MockBehavior? mockBehavior = null)
+                                            MockBehavior mockBehavior = MockBehavior.Strict)
         {
-            var behavior = mockBehavior ?? MockBehavior.Strict;
-            var mock = new Mock<IDependency>(behavior);
+            var mock = new Mock<IDependency>(mockBehavior);
 
             if (providerType != null)
             {

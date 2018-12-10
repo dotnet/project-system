@@ -14,8 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         }
 
         public static ITargetFramework Implement(
-            string moniker = null,
-            MockBehavior? mockBehavior = null)
+            string moniker = null)
         {
             return new TargetFramework(moniker);
         }

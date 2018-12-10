@@ -4,8 +4,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
-using System.Text;
-
+using Microsoft.VisualStudio.Buffers.PooledObjects;
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.Packaging;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
@@ -203,8 +202,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
             ProcessWrapper process = _runner.Start(pInfo);
 
             // Create strings to hold the output and error text
-            var outputBuilder = new StringBuilder();
-            var errBuilder = new StringBuilder();
+            var outputBuilder = PooledStringBuilder.GetInstance();
+            var errBuilder = PooledStringBuilder.GetInstance();
 
             process.AddOutputDataReceivedHandler(o =>
             {
@@ -221,8 +220,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
 
             process.WaitForExit();
 
-            string output = outputBuilder.ToString().Trim();
-            string err = errBuilder.ToString().Trim();
+            string output = outputBuilder.ToStringAndFree().Trim();
+            string err = errBuilder.ToStringAndFree().Trim();
 
             if (!string.IsNullOrEmpty(output))
             {

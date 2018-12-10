@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 
@@ -13,7 +12,7 @@ using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions;
-using Microsoft.VisualStudio.Threading;
+using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions.RuleHandlers;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 {
@@ -21,9 +20,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
     [AppliesTo(ProjectCapability.DependenciesTree)]
     internal class DependencySharedProjectsSubscriber : OnceInitializedOnceDisposed, IDependencyCrossTargetSubscriber
     {
-#pragma warning disable CA2213 // OnceInitializedOnceDisposedAsync are not tracked correctly by the IDisposeable analyzer
-        private readonly SemaphoreSlim _gate = new SemaphoreSlim(initialCount: 1);
-#pragma warning restore CA2213
         private readonly List<IDisposable> _subscriptionLinks = new List<IDisposable>();
         private readonly IProjectAsynchronousTasksService _tasksService;
         private readonly IDependenciesSnapshotProvider _dependenciesSnapshotProvider;
@@ -130,34 +126,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             IProjectSharedFoldersSnapshot sharedProjectsUpdate = e.Item2;
             IProjectCatalogSnapshot catalogs = e.Item3;
 
-            // We need to process the update within a lock to ensure that we do not release this context during processing.
-            // TODO: Enable concurrent execution of updates themselves, i.e. two separate invocations of HandleAsync
-            //       should be able to run concurrently.
-            using (await _gate.DisposableWaitAsync())
+            // Get the target framework to update for this change.
+            ITargetFramework targetFrameworkToUpdate = currentAggregateContext.GetProjectFramework(projectUpdate.ProjectConfiguration);
+
+            if (targetFrameworkToUpdate == null)
             {
-                // Get the target framework to update for this change.
-                ITargetFramework targetFrameworkToUpdate = currentAggregateContext.GetProjectFramework(projectUpdate.ProjectConfiguration);
+                return;
+            }
 
-                if (targetFrameworkToUpdate == null)
-                {
-                    return;
-                }
+            var changesBuilder = new CrossTargetDependenciesChangesBuilder();
 
-                var changesBuilder = new CrossTargetDependenciesChangesBuilder();
+            ProcessSharedProjectsUpdates(sharedProjectsUpdate, targetFrameworkToUpdate, changesBuilder);
 
-                ProcessSharedProjectsUpdates(sharedProjectsUpdate, targetFrameworkToUpdate, changesBuilder);
+            ImmutableDictionary<ITargetFramework, IDependenciesChanges> changes = changesBuilder.TryBuildChanges();
 
-                ImmutableDictionary<ITargetFramework, IDependenciesChanges> changes = changesBuilder.TryBuildChanges();
-
-                if (changes != null)
-                {
-                    DependenciesChanged?.Invoke(
-                        this,
-                        new DependencySubscriptionChangedEventArgs(
-                            currentAggregateContext.ActiveTargetFramework,
-                            catalogs,
-                            changes));
-                }
+            if (changes != null)
+            {
+                DependenciesChanged?.Invoke(
+                    this,
+                    new DependencySubscriptionChangedEventArgs(
+                        currentAggregateContext.ActiveTargetFramework,
+                        catalogs,
+                        changes));
             }
         }
 
