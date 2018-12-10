@@ -122,13 +122,14 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
                     return result;
                 }
-                catch (ObjectDisposedException)
-                {   // There's a tiny chance that between checking the cancellation token (wrapping DisposalToken) 
-                    // and checking if the underlying SemaphoreSlim has been disposed, that dispose for this instance 
-                    // (and hence _semaphore) has been run. Handle that and just treat it as a cancellation.
-                    throw new OperationCanceledException();
+                catch (Exception ex)
+                {
+                    if (!TryTranslateException(ex, cancellationToken, DisposalToken))
+                        throw;
                 }
             }
+
+            throw Assumes.NotReachable();
         }
 
         private async Task ExecuteUnderLockCoreAsync(Func<CancellationToken, Task> action, CancellationToken cancellationToken = default)
@@ -141,13 +142,34 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 {
                     await _semaphore.ExecuteAsync(() => action(jointCancellationToken), jointCancellationToken);
                 }
-                catch (ObjectDisposedException)
-                {   // There's a tiny chance that between checking the cancellation token (wrapping DisposalToken) 
-                    // and checking if the underlying SemaphoreSlim has been disposed, that dispose for this instance 
-                    // (and hence _semaphore) has been run. Handle that and just treat it as a cancellation.
-                    throw new OperationCanceledException();
+                catch (Exception ex)
+                {
+                    if (!TryTranslateException(ex, cancellationToken, DisposalToken))
+                        throw;
                 }
             }
+        }
+
+        private bool TryTranslateException(Exception exception, CancellationToken cancellationToken1, CancellationToken cancellationToken2)
+        {
+            // Consumers treat cancellation due their specified token being cancelled differently from cancellation 
+            // due our instance being disposed. Because we wrap the two in a source, the resulting exception
+            // contains it instead of the one that was actually cancelled.
+            if (exception is OperationCanceledException)
+            {
+                cancellationToken1.ThrowIfCancellationRequested();
+                cancellationToken2.ThrowIfCancellationRequested();
+            }
+
+            if (exception is ObjectDisposedException && DisposalToken.IsCancellationRequested)
+            {
+                // There's a tiny chance that between checking the cancellation token (wrapping DisposalToken) 
+                // and checking if the underlying SemaphoreSlim has been disposed, that dispose for this instance 
+                // (and hence _semaphore) has been run. Handle that and just treat it as a cancellation.
+                DisposalToken.ThrowIfCancellationRequested();
+            }
+
+            return false;
         }
     }
 }
