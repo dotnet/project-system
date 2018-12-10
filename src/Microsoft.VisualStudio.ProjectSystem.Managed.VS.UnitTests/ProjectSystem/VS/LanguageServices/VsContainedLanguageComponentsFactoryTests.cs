@@ -74,7 +74,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             var hierarchy = IVsHierarchyFactory.Create();
             var project = IVsProject_Factory.ImplementIsDocumentInProject(found: true, itemid: 1);
             var properties = ProjectPropertiesFactory.Create(ConfigurationGeneral.SchemaName, ConfigurationGeneral.LanguageServiceIdProperty, LanguageServiceId);
-            var hostObject = IConfiguredProjectHostObjectFactory.Create();
             var containedLanguageFactory = IVsContainedLanguageFactoryFactory.Create();
             
             var factory = CreateInstance(containedLanguageFactory, hierarchy: hierarchy, project: project, properties: properties);
