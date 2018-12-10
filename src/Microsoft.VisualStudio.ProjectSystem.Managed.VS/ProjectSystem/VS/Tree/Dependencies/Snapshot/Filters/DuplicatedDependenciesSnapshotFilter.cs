@@ -30,35 +30,39 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
             IAddDependencyContext context)
         {
             IDependency matchingDependency = null;
-            foreach ((string _, IDependency x) in context)
-            {
-                if (x.TopLevel 
-                     && !x.Id.Equals(dependency.Id, StringComparison.OrdinalIgnoreCase)
-                     && StringComparers.DependencyProviderTypes.Equals(x.ProviderType, dependency.ProviderType)
-                     && x.Caption.Equals(dependency.Caption, StringComparison.OrdinalIgnoreCase))
-                {
-                    matchingDependency = x;
-                    break;
-                }
-            }
+            bool shouldApplyAlias = false;
 
-            // If found node with same caption, or if there were nodes with same caption but with Alias already applied
-            // NOTE: Performance sensitive, so avoid formatting the Caption with parenthesis if it's possible to avoid it.
-            bool shouldApplyAlias = matchingDependency != null;
-            if (!shouldApplyAlias)
+            foreach ((string _, IDependency other) in context)
             {
-                int adjustedLength = dependency.Caption.Length + " (".Length;
-                foreach ((string _, IDependency x) in context)
+                if (!other.TopLevel ||
+                    other.Id.Equals(dependency.Id, StringComparison.OrdinalIgnoreCase) ||
+                    !StringComparers.DependencyProviderTypes.Equals(other.ProviderType, dependency.ProviderType))
                 {
-                    if (x.TopLevel
-                         && !x.Id.Equals(dependency.Id, StringComparison.OrdinalIgnoreCase)
-                         && StringComparers.DependencyProviderTypes.Equals(x.ProviderType, dependency.ProviderType)
-                         && x.Caption.StartsWith(dependency.Caption, StringComparison.OrdinalIgnoreCase)
-                         && x.Caption.Length >= adjustedLength
-                         && string.Compare(x.Caption, adjustedLength, x.OriginalItemSpec, 0, x.OriginalItemSpec.Length, StringComparison.OrdinalIgnoreCase) == 0)
+                    continue;
+                }
+
+                if (other.Caption.StartsWith(dependency.Caption, StringComparison.OrdinalIgnoreCase))
+                {
+                    if (other.Caption.Length == dependency.Caption.Length)
                     {
+                        // Exact match.
+                        System.Diagnostics.Debug.Assert(matchingDependency == null, "matchingDependency should be null");
+                        matchingDependency = other;
                         shouldApplyAlias = true;
                         break;
+                    }
+
+                    // Prefix matches.
+                    // Check whether we have a match of form "Caption (ItemSpec)".
+
+                    string itemSpec = other.OriginalItemSpec;
+                    int expectedItemSpecIndex = dependency.Caption.Length + 2;
+                    int expectedLength = expectedItemSpecIndex + itemSpec.Length + 1;
+
+                    if (other.Caption.Length == expectedLength && 
+                        string.Compare(other.Caption, expectedItemSpecIndex, itemSpec, 0, itemSpec.Length, StringComparison.OrdinalIgnoreCase) == 0)
+                    {
+                        shouldApplyAlias = true;
                     }
                 }
             }
@@ -67,15 +71,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
             {
                 if (matchingDependency != null)
                 {
+                    // Change the matching dependency's alias too
                     context.AddOrUpdate(matchingDependency.SetProperties(caption: matchingDependency.Alias));
                 }
 
+                // Use the alias for the caption
                 context.Accept(dependency.SetProperties(caption: dependency.Alias));
-                return;
             }
-
-            // Accept without changes
-            context.Accept(dependency);
+            else
+            {
+                // Accept without changes
+                context.Accept(dependency);
+            }
         }
     }
 }
