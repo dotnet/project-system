@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
     [Export(typeof(IActiveIntellisenseProjectProvider))]
     [Export(typeof(IActiveEditorContextTracker))]
     [ExportProjectNodeComService(typeof(IVsContainedLanguageProjectNameProvider))]
-    [AppliesTo(ProjectCapability.DotNetLanguageService2)]
+    [AppliesTo(ProjectCapability.DotNetLanguageService)]
     internal class ActiveEditorContextTracker : IActiveIntellisenseProjectProvider, IVsContainedLanguageProjectNameProvider, IActiveEditorContextTracker
     {
         private ImmutableDictionary<IWorkspaceProjectContext, string> _contexts = ImmutableDictionary<IWorkspaceProjectContext, string>.Empty;
