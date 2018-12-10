@@ -77,7 +77,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         }
 
         [Fact]
-        public void ExecuteUnderLockAsync_WhenPassedCancelledToken_DoesNotExecuteAction()
+        public async Task ExecuteUnderLockAsync_WhenPassedCancelledToken_DoesNotExecuteAction()
         {
             var cancellationToken = new CancellationToken(canceled: true);
 
@@ -86,12 +86,13 @@ namespace Microsoft.VisualStudio.ProjectSystem
             bool called = false;
             var result = instance.ExecuteUnderLockAsync(ct => { called = true; return Task.CompletedTask; }, cancellationToken);
 
-            Assert.ThrowsAsync<TaskCanceledException>(() => result);
+            var exception = await Assert.ThrowsAnyAsync<OperationCanceledException>(() => result);
             Assert.False(called);
+            Assert.Equal(cancellationToken, exception.CancellationToken);
         }
 
         [Fact]
-        public void ExecuteUnderLockAsyncOfT_WhenPassedCancelledToken_DoesNotExecuteAction()
+        public async Task ExecuteUnderLockAsyncOfT_WhenPassedCancelledToken_DoesNotExecuteAction()
         {
             var cancellationToken = new CancellationToken(canceled: true);
 
@@ -100,8 +101,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
             bool called = false;
             var result = instance.ExecuteUnderLockAsync(ct => { called = true; return Task.FromResult<string>(null); }, cancellationToken);
 
-            Assert.ThrowsAsync<TaskCanceledException>(() => result);
+            var exception = await Assert.ThrowsAnyAsync<OperationCanceledException>(() => result);
             Assert.False(called);
+            Assert.Equal(cancellationToken, exception.CancellationToken);
         }
 
         [Fact]
@@ -353,10 +355,12 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             await instance.DisposeAsync();
 
-            await Assert.ThrowsAnyAsync<OperationCanceledException>(() =>
+            var result = await Assert.ThrowsAnyAsync<OperationCanceledException>(() =>
             {
                 return instance.ExecuteUnderLockAsync((ct) => { return Task.CompletedTask; }, CancellationToken.None);
             });
+
+            Assert.Equal(instance.DisposalToken, result.CancellationToken);
         }
 
         [Fact]
@@ -366,10 +370,12 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             await instance.DisposeAsync();
 
-            await Assert.ThrowsAnyAsync<OperationCanceledException>(() =>
+            var result = await Assert.ThrowsAnyAsync<OperationCanceledException>(() =>
             {
                 return instance.ExecuteUnderLockAsync((ct) => { return Task.FromResult<string>(null); }, CancellationToken.None);
             });
+
+            Assert.Equal(instance.DisposalToken, result.CancellationToken);
         }
 
         private async Task AssertNoOverlap(Func<Task> firstAction, Func<Task> secondAction, AsyncManualResetEvent firstEntered, AsyncManualResetEvent firstRelease, AsyncManualResetEvent secondEntered)
@@ -408,6 +414,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
                     disposed = () => Task.CompletedTask;
 
                 _disposed = disposed;
+            }
+
+            public new CancellationToken DisposalToken
+            {
+                get { return base.DisposalToken; }
             }
 
             public new Task ExecuteUnderLockAsync(Func<CancellationToken, Task> action, CancellationToken cancellationToken = default)
