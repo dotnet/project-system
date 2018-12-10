@@ -7,6 +7,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     internal class IUnconfiguredProjectVsServicesMock : AbstractMock<IUnconfiguredProjectVsServices>
     {
+        public IUnconfiguredProjectVsServicesMock ImplementVsHierarchy(IVsHierarchy hierarchy)
+        {
+            SetupGet(m => m.VsHierarchy)
+                .Returns(hierarchy);
+
+            return this;
+        }
+
         public IUnconfiguredProjectVsServicesMock ImplementVsProject(IVsProject4 project)
         {
             SetupGet(m => m.VsProject)
