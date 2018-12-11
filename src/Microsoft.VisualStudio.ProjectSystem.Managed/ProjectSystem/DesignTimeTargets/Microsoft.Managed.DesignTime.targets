@@ -23,6 +23,14 @@
     <SuppressOutOfDateMessageOnBuild Condition="'$(SuppressOutOfDateMessageOnBuild)' == ''">true</SuppressOutOfDateMessageOnBuild>
   </PropertyGroup>
 
+  
+  <!--
+    Rule files that don't need localization go in the neutral directory to save duplicating files into each language
+  -->
+  <PropertyGroup Condition="'$(ManagedXamlNeutralResourcesDirectory)' == ''">
+    <ManagedXamlNeutralResourcesDirectory>$(MSBuildThisFileDirectory)</ManagedXamlNeutralResourcesDirectory>
+  </PropertyGroup>
+  
   <!--
     Locate the approriate localized xaml resources based on the language ID or name.
 
@@ -43,18 +51,13 @@
     <!-- 3. Probe for parent by taking portion the portion before the hyphen (e.g. fr-FR -> fr) -->
     <ManagedXamlResourcesDirectory Condition="!Exists('$(ManagedXamlResourcesDirectory)')">$(MSBuildThisFileDirectory)$(LangName.Split('-')[0])</ManagedXamlResourcesDirectory>
 
-    <!-- 4. Fall back to neutral English resources if all of the above fail -->
-    <ManagedXamlResourcesDirectory Condition="!Exists('$(ManagedXamlResourcesDirectory)')">$(MSBuildThisFileDirectory)</ManagedXamlResourcesDirectory>
+    <!-- 4. Fall back to neutral resources if all of the above fail -->
+    <ManagedXamlResourcesDirectory Condition="!Exists('$(ManagedXamlResourcesDirectory)')">$(ManagedXamlNeutralResourcesDirectory)</ManagedXamlResourcesDirectory>
   </PropertyGroup>
 
   <PropertyGroup>
     <ManagedXamlResourcesDirectory Condition="!HasTrailingSlash('$(ManagedXamlResourcesDirectory)')">$(ManagedXamlResourcesDirectory)\</ManagedXamlResourcesDirectory>
     <DebuggerFlavor Condition = "'$(DebuggerFlavor)' == ''">ProjectDebugger</DebuggerFlavor>
-  </PropertyGroup>
-
-  <!-- For rule files that don't need localization we use the neutral directory to save duplicating files into each language -->
-  <PropertyGroup Condition="'$(ManagedXamlNeutralResourcesDirectory)' == ''">
-    <ManagedXamlNeutralResourcesDirectory>$(MSBuildThisFileDirectory)</ManagedXamlNeutralResourcesDirectory>
   </PropertyGroup>
   
   <!-- Project Capabilities -->
