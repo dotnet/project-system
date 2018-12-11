@@ -46,7 +46,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
                     if (other.Caption.Length == dependency.Caption.Length)
                     {
                         // Exact match.
-                        System.Diagnostics.Debug.Assert(matchingDependency == null, "matchingDependency should be null");
                         matchingDependency = other;
                         shouldApplyAlias = true;
                         break;
@@ -56,8 +55,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
                     // Check whether we have a match of form "Caption (ItemSpec)".
 
                     string itemSpec = other.OriginalItemSpec;
-                    int expectedItemSpecIndex = dependency.Caption.Length + 2;
-                    int expectedLength = expectedItemSpecIndex + itemSpec.Length + 1;
+                    int expectedItemSpecIndex = dependency.Caption.Length + 2;        // " (".Length
+                    int expectedLength = expectedItemSpecIndex + itemSpec.Length + 1; // ")".Length
 
                     if (other.Caption.Length == expectedLength && 
                         string.Compare(other.Caption, expectedItemSpecIndex, itemSpec, 0, itemSpec.Length, StringComparison.OrdinalIgnoreCase) == 0)
