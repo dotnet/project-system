@@ -44,48 +44,40 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 snapshotProvider.SnapshotChanged += OnSnapshotChanged;
                 snapshotProvider.SnapshotProviderUnloading += OnSnapshotProviderUnloading;
             }
-        }
 
-        private void OnSnapshotRenamed(object sender, ProjectRenamedEventArgs e)
-        {
-            lock (_snapshotProviders)
+            // When a given project context is unloaded, remove it form the cache and unregister event handlers
+            void OnSnapshotProviderUnloading(object sender, SnapshotProviderUnloadingEventArgs e)
             {
-                // remove and re-add provider with new project path
-                if (!string.IsNullOrEmpty(e.OldFullPath)
-                    && _snapshotProviders.TryGetValue(e.OldFullPath, out IDependenciesSnapshotProvider provider)
-                    && _snapshotProviders.Remove(e.OldFullPath)
-                    && provider != null
-                    && !string.IsNullOrEmpty(e.NewFullPath))
+                SnapshotProviderUnloading?.Invoke(this, e);
+
+                lock (_snapshotProviders)
                 {
-                    _snapshotProviders[e.NewFullPath] = provider;
+                    _snapshotProviders.Remove(snapshotProvider.ProjectFilePath);
+                    snapshotProvider.SnapshotRenamed -= OnSnapshotRenamed;
+                    snapshotProvider.SnapshotChanged -= OnSnapshotChanged;
+                    snapshotProvider.SnapshotProviderUnloading -= OnSnapshotProviderUnloading;
                 }
             }
-        }
 
-        private void OnSnapshotChanged(object sender, SnapshotChangedEventArgs e)
-        {
-            SnapshotChanged?.Invoke(this, e);
-        }
-
-        /// <summary>
-        /// When a given project context is unloaded, remove it form the cache and unregister event handlers
-        /// </summary>
-        internal void OnSnapshotProviderUnloading(object sender, SnapshotProviderUnloadingEventArgs e)
-        {
-            IDependenciesSnapshotProvider snapshotProvider = e.SnapshotProvider;
-            if (snapshotProvider == null)
+            void OnSnapshotRenamed(object sender, ProjectRenamedEventArgs e)
             {
-                return;
+                lock (_snapshotProviders)
+                {
+                    // remove and re-add provider with new project path
+                    if (!string.IsNullOrEmpty(e.OldFullPath)
+                        && _snapshotProviders.TryGetValue(e.OldFullPath, out IDependenciesSnapshotProvider provider)
+                        && _snapshotProviders.Remove(e.OldFullPath)
+                        && provider != null
+                        && !string.IsNullOrEmpty(e.NewFullPath))
+                    {
+                        _snapshotProviders[e.NewFullPath] = provider;
+                    }
+                }
             }
 
-            SnapshotProviderUnloading?.Invoke(this, e);
-
-            lock (_snapshotProviders)
+            void OnSnapshotChanged(object sender, SnapshotChangedEventArgs e)
             {
-                _snapshotProviders.Remove(snapshotProvider.ProjectFilePath);
-                snapshotProvider.SnapshotRenamed -= OnSnapshotRenamed;
-                snapshotProvider.SnapshotChanged -= OnSnapshotChanged;
-                snapshotProvider.SnapshotProviderUnloading -= OnSnapshotProviderUnloading;
+                SnapshotChanged?.Invoke(this, e);
             }
         }
 
