@@ -90,8 +90,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 projectCapabilityCheckProvider: commonServices.Project);
 
             _snapshotFilters = new OrderPrecedenceImportCollection<IDependenciesSnapshotFilter>(
-                projectCapabilityCheckProvider: commonServices.Project,
-                orderingStyle: ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesLast);
+                ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesLast,
+                projectCapabilityCheckProvider: commonServices.Project);
 
             _subTreeProviders = new OrderPrecedenceImportCollection<IProjectDependenciesSubTreeProvider>(
                 ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesLast,
