@@ -71,6 +71,9 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 'Must marshal ourselves as IUnknown wrapper
                 VSErrorHandler.ThrowOnFailure(WindowFrame.SetProperty(__VSFPROPID.VSFPROPID_ViewHelper, New UnknownWrapper(_viewHelper)))
 
+                'Don't reopen the designer during solution restore
+                VSErrorHandler.ThrowOnFailure(WindowFrame.SetProperty(__VSFPROPID5.VSFPROPID_DontAutoOpen, True))
+
                 ' make sure scrollbars in the view are not themed
                 VSErrorHandler.ThrowOnFailure(WindowFrame.SetProperty(__VSFPROPID5.VSFPROPID_NativeScrollbarThemeMode, __VSNativeScrollbarThemeMode.NSTM_None))
             End If
