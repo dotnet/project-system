@@ -14,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     ///     on changes to the project to the <see cref="IApplyChangesToWorkspaceContext"/> service.
     /// </summary>
     [Export(typeof(IImplicitlyActiveService))]
-    [AppliesTo(ProjectCapability.DotNetLanguageService2)]
+    [AppliesTo(ProjectCapability.DotNetLanguageService)]
     internal partial class WorkspaceContextHost : AbstractMultiLifetimeComponent<WorkspaceContextHost.WorkspaceContextHostInstance>, IImplicitlyActiveService, IWorkspaceProjectContextHost
     {
         private readonly ConfiguredProject _project;
