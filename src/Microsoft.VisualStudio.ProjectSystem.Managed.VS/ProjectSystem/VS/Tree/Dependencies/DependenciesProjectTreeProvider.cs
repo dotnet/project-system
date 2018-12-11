@@ -94,13 +94,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         /// <summary>
-        /// See <see cref="IProjectTreeProvider"/>
+        /// Gets the source block for the <see cref="IProjectTreeSnapshot" />.
         /// </summary>
         /// <remarks>
         /// This stub defined for code contracts.
         /// </remarks>
-        IReceivableSourceBlock<IProjectVersionedValue<IProjectTreeSnapshot>> IProjectTreeProvider.Tree 
-            => Tree;
+        IReceivableSourceBlock<IProjectVersionedValue<IProjectTreeSnapshot>> IProjectTreeProvider.Tree => Tree;
 
         /// <summary>
         /// Gets a value indicating whether a given set of nodes can be copied or moved underneath some given node.
@@ -275,26 +274,37 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         /// <summary>
-        /// Finds dependencies child nodes by their path. We need to override it since
-        /// we need to find children under either:
-        ///     - our dependencies root node.
-        ///     - dependency sub tree nodes
-        ///     - dependency sub tree top level nodes
-        /// (deeper levels will be graph nodes with additional info, not direct dependencies
-        /// specified in the project file)
+        /// Efficiently finds a descendent with the given path in the given tree.
         /// </summary>
+        /// <param name="root">The root of the tree.</param>
+        /// <param name="path">The absolute or project-relative path to the item sought.</param>
+        /// <returns>The item in the tree if found; otherwise <c>null</c>.</returns>
         public override IProjectTree FindByPath(IProjectTree root, string path)
         {
+            // We override this since we need to find children under either:
+            //
+            // - our dependencies root node
+            // - dependency sub tree nodes
+            // - dependency sub tree top level nodes
+            //
+            // Deeper levels will be graph nodes with additional info, not direct dependencies
+            // specified in the project file.
+
             return _viewProviders.FirstOrDefault()?.Value.FindByPath(root, path);
         }
 
         /// <summary>
-        /// This is still needed for graph nodes search
+        /// Gets the path to a given node that can later be provided to <see cref="IProjectTreeProvider.FindByPath" /> to locate the node again.
         /// </summary>
-        /// <param name="node"></param>
-        /// <returns></returns>
+        /// <param name="node">The node whose path is sought.</param>
+        /// <returns>
+        /// A non-empty string, or <c>null</c> if searching is not supported.
+        /// For nodes that represent files on disk, this is the project-relative path to that file.
+        /// The root node of a project is the absolute path to the project file.
+        /// </returns>
         public override string GetPath(IProjectTree node)
         {
+            // Needed for graph nodes search
             return node.FilePath;
         }
 

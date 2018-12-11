@@ -9,10 +9,7 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Extensibility;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
-    /// <summary>
-    /// Global scope contract that provides information about project level 
-    /// dependencies graph contexts.
-    /// </summary>
+    /// <inheritdoc />
     [Export(typeof(IAggregateDependenciesSnapshotProvider))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
     internal class AggregateDependenciesSnapshotProvider : IAggregateDependenciesSnapshotProvider
@@ -26,10 +23,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             _projectExportProvider = projectExportProvider;
         }
 
+        /// <inheritdoc />
         public event EventHandler<SnapshotChangedEventArgs> SnapshotChanged;
 
+        /// <inheritdoc />
         public event EventHandler<SnapshotProviderUnloadingEventArgs> SnapshotProviderUnloading;
 
+        /// <inheritdoc />
         public void RegisterSnapshotProvider(IDependenciesSnapshotProvider snapshotProvider)
         {
             if (snapshotProvider == null)
@@ -45,7 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 snapshotProvider.SnapshotProviderUnloading += OnSnapshotProviderUnloading;
             }
 
-            // When a given project context is unloaded, remove it form the cache and unregister event handlers
+            // When a given project context is unloaded, remove it from the cache and unregister event handlers
             void OnSnapshotProviderUnloading(object sender, SnapshotProviderUnloadingEventArgs e)
             {
                 SnapshotProviderUnloading?.Invoke(this, e);
@@ -63,7 +63,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             {
                 lock (_snapshotProviders)
                 {
-                    // remove and re-add provider with new project path
+                    // Remove and re-add provider with new project path
                     if (!string.IsNullOrEmpty(e.OldFullPath)
                         && _snapshotProviders.TryGetValue(e.OldFullPath, out IDependenciesSnapshotProvider provider)
                         && _snapshotProviders.Remove(e.OldFullPath)
@@ -81,6 +81,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             }
         }
 
+        /// <inheritdoc />
         public IDependenciesSnapshotProvider GetSnapshotProvider(string projectFilePath)
         {
             Requires.NotNullOrEmpty(projectFilePath, nameof(projectFilePath));
@@ -102,6 +103,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             }
         }
 
+        /// <inheritdoc />
         public IReadOnlyCollection<IDependenciesSnapshotProvider> GetSnapshotProviders()
         {
             lock (_snapshotProviders)

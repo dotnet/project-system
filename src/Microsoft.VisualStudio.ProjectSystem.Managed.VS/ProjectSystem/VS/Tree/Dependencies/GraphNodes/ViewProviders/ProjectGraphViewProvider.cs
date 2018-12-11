@@ -11,6 +11,10 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.ViewProviders
 {
+    /// <summary>
+    /// Provides the graph of project reference dependencies.
+    /// Allows drilling into the transitive dependencies of a given <c>&lt;ProjectReference&gt;</c>.
+    /// </summary>
     [Export(typeof(IDependenciesGraphViewProvider))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
     [Order(Order)]
@@ -96,6 +100,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
             return snapshot.Targets[targetFramework];
         }
 
+        /// <summary>
+        /// Returns true if the updated dependency's path matches the updated snapshot's project path,
+        /// meaning the project dependency has changed and we want to try and update.
+        /// </summary>
+        /// <inheritdoc />
         public override bool ShouldTrackChanges(string projectPath, string updatedProjectPath, IDependency dependency)
         {
             string dependencyProjectPath = dependency.FullPath;
