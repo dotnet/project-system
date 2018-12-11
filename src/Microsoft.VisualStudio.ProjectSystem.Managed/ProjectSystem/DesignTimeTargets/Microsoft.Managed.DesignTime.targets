@@ -54,7 +54,6 @@
 
   <!-- For rule files that don't need localization we use the neutral directory to save duplicating files into each language -->
   <PropertyGroup Condition="'$(ManagedXamlNeutralResourcesDirectory)' == ''">
-    <!-- 1. Probe for exact match against LangName. (e.g. pt-BR) -->
     <ManagedXamlNeutralResourcesDirectory>$(MSBuildThisFileDirectory)</ManagedXamlNeutralResourcesDirectory>
   </PropertyGroup>
   
