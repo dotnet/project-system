@@ -402,6 +402,7 @@ Microsoft.VisualStudio.Editors.PropertyPages.IPropertyPageSiteInternal.OnStatusC
 Microsoft.VisualStudio.Editors.PropertyPages.IPropertyPageSiteInternal.TranslateAccelerator(msg As System.Windows.Forms.Message) -> Integer
 Microsoft.VisualStudio.Editors.PropertyPages.ProjectReloadedException
 Microsoft.VisualStudio.Editors.PropertyPages.ProjectReloadedException.New() -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.ProjectReloadedException.New(Info As System.Runtime.Serialization.SerializationInfo, Context As System.Runtime.Serialization.StreamingContext) -> Void
 Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData
 Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.AllInitialValues() -> Object()
 Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.AllInitialValuesExpanded() -> Object()
