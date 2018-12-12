@@ -102,6 +102,8 @@
     <Rule Id="RS0025" Action="Error" />
     <Rule Id="RS0026" Action="Error" />
     <Rule Id="RS0027" Action="Error" />
+    <Rule Id="RS0030" Action="Error" />
+    <Rule Id="RS0031" Action="Error" />
   </Rules>
   <Rules AnalyzerId="System.Collections.Immutable.Analyzers" RuleNamespace="System.Collections.Immutable.Analyzers">
     <Rule Id="RS0012" Action="Warning" />

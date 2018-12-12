@@ -1,0 +1,11 @@
+T:Microsoft.VisualStudio.ProjectSystem.IProjectLockService; Using IProjectAccessor enables checkout from source control on write, and allows async release
+
+T:Microsoft.VisualStudio.ProjectSystem.VS.IProjectGuidService; Using ISafeProjectGuidService avoids reading the GUID before it is safe to do so during initialisation
+T:Microsoft.VisualStudio.ProjectSystem.VS.IProjectGuidService2; Using ISafeProjectGuidService avoids reading the GUID before it is safe to do so during initialisation
+
+P:Microsoft.VisualStudio.ProjectSystem.VS.IProjectAsyncLoadDashboard.ProjectLoadedInHost; Using IUnconfiguredProjectTasksService.ProjectLoadedInHost prevents waiting indefinitely when the project is closed before it has finished loading
+
+M:Microsoft.VisualStudio.ProjectSystem.CommonProjectSystemTools.LoadedProject(Microsoft.VisualStudio.ProjectSystem.IProjectAsynchronousTasksService); Using IUnconfiguredProjectTasksService.LoadedProjectAsync is unit testable
+
+T:Microsoft.VisualStudio.ProjectSystem.ProjectAutoLoadAttribute; Using IProjectDynamicLoadComponent avoids accidently reloading the project while loading, switching branches, installing NuGet package, etc.
+T:Microsoft.VisualStudio.ProjectSystem.ConfiguredProjectAutoLoadAttribute; Using IProjectDynamicLoadComponent avoids accidently reloading the project while loading, switching branches, installing NuGet package, etc.
