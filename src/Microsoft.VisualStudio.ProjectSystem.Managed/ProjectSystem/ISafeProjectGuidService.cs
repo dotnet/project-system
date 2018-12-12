@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.ProjectSystem.VS;
 
+#pragma warning disable RS0030 // symbol IProjectGuidService is banned
+
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     /// <summary>

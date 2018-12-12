@@ -3,6 +3,8 @@
 using System;
 using Moq;
 
+#pragma warning disable RS0030 // Symbol IProjectGuidService is banned
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     internal static class IProjectGuidServiceFactory

@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using Microsoft.Build.Construction;
 using Microsoft.Build.Evaluation;
 
+#pragma warning disable RS0030 // symbol IProjectLockService is banned
+
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     /// <summary>
