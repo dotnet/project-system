@@ -199,6 +199,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             // Get the list of normal reference Item Nodes (this excludes any shared import nodes).
             IEnumerable<IProjectTree> referenceItemNodes = nodes.Except(sharedImportNodes);
 
+#pragma warning disable RS0030 // symbol IProjectLockService is banned
             await ProjectLockService.WriteLockAsync(async access =>
             {
                 Project project = await access.GetProjectAsync(ActiveConfiguredProject);
@@ -273,6 +274,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     }
                 }
             });
+#pragma warning restore RS0030 // symbol IProjectLockService is banned
         }
 
         /// <summary>
@@ -304,7 +306,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// </summary>
         protected override void Initialize()
         {
+#pragma warning disable RS0030 // symbol LoadedProject is banned
             using (UnconfiguredProjectAsynchronousTasksService.LoadedProject())
+#pragma warning restore RS0030 // symbol LoadedProject is banned
             {
                 base.Initialize();
 

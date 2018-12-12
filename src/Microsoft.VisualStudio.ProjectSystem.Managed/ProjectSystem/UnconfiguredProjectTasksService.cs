@@ -31,7 +31,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
             _loadedInHostListener = loadedInHostListener;
         }
 
+#pragma warning disable RS0030 // symbol ProjectAutoLoad is banned
         [ProjectAutoLoad(completeBy: ProjectLoadCheckpoint.ProjectFactoryCompleted)]
+#pragma warning restore RS0030 // symbol ProjectAutoLoad is banned
         [AppliesTo(ProjectCapability.DotNet)]
         public Task OnProjectFactoryCompleted()
         {

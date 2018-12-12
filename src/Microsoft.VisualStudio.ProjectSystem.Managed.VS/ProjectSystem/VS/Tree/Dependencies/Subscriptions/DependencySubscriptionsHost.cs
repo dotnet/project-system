@@ -141,7 +141,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             }
         }
 
+#pragma warning disable RS0030 // symbol ProjectAutoLoad is banned
         [ProjectAutoLoad(ProjectLoadCheckpoint.ProjectFactoryCompleted)]
+#pragma warning restore RS0030 // symbol ProjectAutoLoad is banned
         [AppliesTo(ProjectCapability.DependenciesTree)]
         public Task OnProjectFactoryCompletedAsync()
         {
