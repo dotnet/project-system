@@ -37,5 +37,10 @@
   <Rules AnalyzerId="xunit.analyzers" RuleNamespace="xunit.analyzers">
     <Rule Id="xUnit1026" Action="None" /> <!-- Theory methods must use all parameters -->
     <Rule Id="xUnit1004" Action="None" /> <!-- Test methods should not be skipped -->
+
+    <!-- Disabled these two rules until we pick up a compiler with the fix for workaround https://github.com/dotnet/roslyn/issues/31740. -->
+    <Rule Id="xUnit1009" Action="None" /> <!-- InlineData values must match the number of method parameters -->
+    <Rule Id="xUnit1010" Action="None" /> <!-- The value is not convertible to the method parameter '{0}' of type '{1}'. -->
+    <Rule Id="xUnit1019" Action="None" /> <!-- MemberData must reference a data type assignable to '{0}'. The reference type '{1}' is not valid. -->
   </Rules>
 </RuleSet>
