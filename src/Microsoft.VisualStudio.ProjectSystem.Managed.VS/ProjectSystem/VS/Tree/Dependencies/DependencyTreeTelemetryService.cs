@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
@@ -26,6 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
         private readonly UnconfiguredProject _project;
         private readonly ITelemetryService _telemetryService;
+        private readonly ISafeProjectGuidService _safeProjectGuidService;
         private readonly ConcurrentDictionary<ITargetFramework, TelemetryState> _telemetryStates =
             new ConcurrentDictionary<ITargetFramework, TelemetryState>();
         private readonly object _stateUpdateLock = new object();
@@ -36,10 +38,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         [ImportingConstructor]
         public DependencyTreeTelemetryService(
             UnconfiguredProject project,
-            ITelemetryService telemetryService)
+            ITelemetryService telemetryService,
+            ISafeProjectGuidService safeProjectGuidService)
         {
             _project = project;
             _telemetryService = telemetryService;
+            _safeProjectGuidService = safeProjectGuidService;
         }
 
         /// <summary>
@@ -135,11 +139,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             async Task InitializeProjectIdAsync()
             {
-                ISafeProjectGuidService projectGuidService =
-                    _project.Services.ExportProvider.GetExportedValueOrDefault<ISafeProjectGuidService>();
-                if (projectGuidService != null)
+                Guid projectGuild = await _safeProjectGuidService.GetProjectGuidAsync();
+                if (projectGuild != default)
                 {
-                    SetProjectId((await projectGuidService.GetProjectGuidAsync()).ToString());
+                    SetProjectId(projectGuild.ToString());
                 }
                 else
                 {
