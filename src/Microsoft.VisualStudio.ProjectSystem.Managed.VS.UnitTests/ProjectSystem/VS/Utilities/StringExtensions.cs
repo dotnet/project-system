@@ -12,7 +12,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
         public static ProjectRootElement AsProjectRootElement(this string @string)
         {
             var stringReader = new System.IO.StringReader(@string);
-            var xmlReader = new XmlTextReader(stringReader);
+            var xmlReader = new XmlTextReader(stringReader)
+            {
+                DtdProcessing = DtdProcessing.Prohibit
+            };
             var root = ProjectRootElement.Create(xmlReader);
             return root;
         }
