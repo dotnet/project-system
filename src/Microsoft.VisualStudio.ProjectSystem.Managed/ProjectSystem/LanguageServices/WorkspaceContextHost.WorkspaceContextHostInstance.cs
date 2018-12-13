@@ -53,7 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
             {
-                _contextAccessor = await _workspaceProjectContextProvider.CreateProjectContextAsync(_project);                                                                         
+                _contextAccessor = await _workspaceProjectContextProvider.CreateProjectContextAsync(_project);
 
                 if (_contextAccessor == null)
                     return;
@@ -91,27 +91,38 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             public async Task OpenContextForWriteAsync(Func<IWorkspaceProjectContextAccessor, Task> action)
             {
-                await WaitUntilInitializedCompletedAsync();
+                CheckForInitialized();
 
-                await ExecuteUnderLockAsync(_ => action(_contextAccessor), _tasksService.UnloadCancellationToken);
+                try
+                {
+                    await ExecuteUnderLockAsync(_ => action(_contextAccessor), _tasksService.UnloadCancellationToken);
+                }
+                catch (OperationCanceledException ex) when (ex.CancellationToken == DisposalToken)
+                {   // We treat cancellation because our instance was disposed differently from when the project is unloading.
+                    // 
+                    // The former indicates that the active configuration changed, and our ConfiguredProject is no longer 
+                    // considered implicitly "active", we throw a different exceptions to let callers handle that.
+                    throw new ActiveProjectConfigurationChangedException();
+                }
             }
 
             public async Task<T> OpenContextForWriteAsync<T>(Func<IWorkspaceProjectContextAccessor, Task<T>> action)
             {
-                await WaitUntilInitializedCompletedAsync();
+                CheckForInitialized();
 
-                return await ExecuteUnderLockAsync(_ => action(_contextAccessor), _tasksService.UnloadCancellationToken);
+                try
+                {
+                    return await ExecuteUnderLockAsync(_ => action(_contextAccessor), _tasksService.UnloadCancellationToken);
+                }
+                catch (OperationCanceledException ex) when (ex.CancellationToken == DisposalToken)
+                {
+                    throw new ActiveProjectConfigurationChangedException();
+                }
             }
 
             internal async Task OnProjectChangedAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> update, bool evaluation)
             {
-                CancellationToken cancellationToken = _tasksService.UnloadCancellationToken;
-
-                await ExecuteUnderLockAsync(ct =>
-                {
-                    return ApplyProjectChangesUnderLockAsync(update, evaluation, ct);
-
-                }, cancellationToken);
+                await ExecuteUnderLockAsync(ct => ApplyProjectChangesUnderLockAsync(update, evaluation, ct), _tasksService.UnloadCancellationToken);
             }
 
             private Task ApplyProjectChangesUnderLockAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> update, bool evaluation, CancellationToken cancellationToken)
@@ -139,9 +150,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 }
             }
 
-            private async Task WaitUntilInitializedCompletedAsync()
+            private void CheckForInitialized()
             {
-                await InitializationCompletion;
+                // We should have been initialized by our 
+                // owner before they called into us
+                Assumes.True(IsInitialized);
 
                 // If we failed to create a context, we treat it as a cancellation
                 if (_contextAccessor == null)

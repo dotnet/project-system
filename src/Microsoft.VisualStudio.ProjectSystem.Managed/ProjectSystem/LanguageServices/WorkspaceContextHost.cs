@@ -14,6 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     ///     on changes to the project to the <see cref="IApplyChangesToWorkspaceContext"/> service.
     /// </summary>
     [Export(typeof(IImplicitlyActiveService))]
+    [Export(typeof(IWorkspaceProjectContextHost))]
     [AppliesTo(ProjectCapability.DotNetLanguageService)]
     internal partial class WorkspaceContextHost : AbstractMultiLifetimeComponent<WorkspaceContextHost.WorkspaceContextHostInstance>, IImplicitlyActiveService, IWorkspaceProjectContextHost
     {
@@ -65,7 +66,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             WorkspaceContextHostInstance instance = await WaitForLoadedAsync();
 
-            // Throws OperationCanceledException if 'instance' is Disposed
+            // Throws ActiveProjectConfigurationChangedException if 'instance' is Disposed
             await instance.OpenContextForWriteAsync(action);
         }
 
@@ -75,7 +76,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             WorkspaceContextHostInstance instance = await WaitForLoadedAsync();
 
-            // Throws OperationCanceledException if 'instance' is Disposed
+            // Throws ActiveProjectConfigurationChangedException if 'instance' is Disposed
             return await instance.OpenContextForWriteAsync(action);
         }
 
