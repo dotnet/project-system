@@ -2,24 +2,26 @@
 
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.Build.Construction;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectProperties
 {
     internal abstract partial class AbstractBuildEventValueProvider : InterceptingPropertyValueProviderBase
     {
-        private readonly IProjectLockService _projectLockService;
+        private readonly IProjectAccessor _projectAccessor;
         private readonly UnconfiguredProject _unconfiguredProject;
+        private readonly IProjectThreadingService _threadingService;
         private readonly AbstractBuildEventHelper _helper;
 
         protected AbstractBuildEventValueProvider(
-            IProjectLockService projectLockService,
+            IProjectAccessor projectAccessor,
             UnconfiguredProject project,
+            IProjectThreadingService threadingService,
             AbstractBuildEventHelper helper)
         {
-            _projectLockService = projectLockService;
+            _projectAccessor = projectAccessor;
             _unconfiguredProject = project;
+            _threadingService = threadingService;
             _helper = helper;
         }
 
@@ -27,13 +29,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
             string evaluatedPropertyValue,
             IProjectProperties defaultProperties)
         {
-#pragma warning disable RS0030 // symbol IProjectLockService is banned
-            return _projectLockService.ReadLockAsync(async access =>
+            return _projectAccessor.OpenProjectXmlForReadAsync(_unconfiguredProject, projectXml =>
             {
-                ProjectRootElement projectXml = await access.GetProjectXmlAsync(_unconfiguredProject.FullPath);
-                return await _helper.GetPropertyAsync(projectXml, defaultProperties);
+                return _threadingService.ExecuteSynchronously(() => _helper.GetPropertyAsync(projectXml, defaultProperties));
             });
-#pragma warning restore RS0030 // symbol IProjectLockService is banned
         }
 
         public override async Task<string> OnSetPropertyValueAsync(
@@ -41,13 +40,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
             IProjectProperties defaultProperties,
             IReadOnlyDictionary<string, string> dimensionalConditions = null)
         {
-#pragma warning disable RS0030 // symbol IProjectLockService is banned
-            await _projectLockService.WriteLockAsync(async access =>
+            await _projectAccessor.OpenProjectXmlForWriteAsync(_unconfiguredProject, projectXml =>
             {
-                ProjectRootElement projectXml = await access.GetProjectXmlAsync(_unconfiguredProject.FullPath);
-                await _helper.SetPropertyAsync(unevaluatedPropertyValue, defaultProperties, projectXml);
+                _threadingService.ExecuteSynchronously(() => _helper.SetPropertyAsync(unevaluatedPropertyValue, defaultProperties, projectXml));
             });
-#pragma warning restore RS0030 // symbol IProjectLockService is banned
 
             return null;
         }
