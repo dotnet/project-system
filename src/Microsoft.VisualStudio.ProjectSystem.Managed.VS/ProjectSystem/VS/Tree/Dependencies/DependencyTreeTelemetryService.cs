@@ -140,7 +140,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             async Task InitializeProjectIdAsync()
             {
                 Guid projectGuild = await _safeProjectGuidService.GetProjectGuidAsync();
-                if (projectGuild != default)
+                if (!projectGuild.Equals(Guid.Empty))
                 {
                     SetProjectId(projectGuild.ToString());
                 }
