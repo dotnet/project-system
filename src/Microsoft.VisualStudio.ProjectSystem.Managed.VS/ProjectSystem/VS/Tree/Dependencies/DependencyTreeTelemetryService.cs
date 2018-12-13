@@ -4,6 +4,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
+using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.Telemetry;
@@ -92,7 +93,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// Fire telemetry when dependency tree completes an update
         /// </summary>
         /// <param name="hasUnresolvedDependency">indicates if the snapshot used for the update had any unresolved dependencies</param>
-        public void ObserveTreeUpdateCompleted(bool hasUnresolvedDependency)
+        public async Task ObserveTreeUpdateCompletedAsync(bool hasUnresolvedDependency)
         {
             if (_stopTelemetry)
                 return;
@@ -108,7 +109,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             if (_projectId == null)
             {
-                InitializeProjectId();
+                await InitializeProjectIdAsync();
             }
 
             if (hasUnresolvedDependency)
@@ -132,20 +133,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             bool ObservedAllRules() => _telemetryStates.All(state => state.Value.ObservedAllRules());
 
-            void InitializeProjectId()
+            async Task InitializeProjectIdAsync()
             {
-#pragma warning disable RS0030 // symbol IProjectGuidService is banned
-                IProjectGuidService projectGuidService =
-                    _project.Services.ExportProvider.GetExportedValueOrDefault<IProjectGuidService>();
+                ISafeProjectGuidService projectGuidService =
+                    _project.Services.ExportProvider.GetExportedValueOrDefault<ISafeProjectGuidService>();
                 if (projectGuidService != null)
                 {
-                    SetProjectId(projectGuidService.ProjectGuid.ToString());
+                    SetProjectId((await projectGuidService.GetProjectGuidAsync()).ToString());
                 }
                 else
                 {
                     SetProjectId(_telemetryService.HashValue(_project.FullPath));
                 }
-#pragma warning restore RS0030 // symbol IProjectGuidService is banned
             }
         }
 
