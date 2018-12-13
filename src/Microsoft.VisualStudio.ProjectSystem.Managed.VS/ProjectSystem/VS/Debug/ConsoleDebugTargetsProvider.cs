@@ -35,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         private readonly UnconfiguredProject _project;
 
         [ImportingConstructor]
-        public ConsoleDebugTargetsProvider(ConfiguredProject configuredProject,
+        public ConsoleDebugTargetsProvider(UnconfiguredProject project,
                                            IDebugTokenReplacer tokenReplacer,
                                            IFileSystem fileSystem,
                                            IEnvironmentHelper environment,
@@ -47,7 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             _environment = environment;
             _activeDebugFramework = activeDebugFramework;
             _properties = properties;
-            _project = configuredProject.UnconfiguredProject;
+            _project = project;
         }
 
         private Task<ConfiguredProject> GetConfiguredProjectForDebugAsync()
