@@ -2,7 +2,6 @@
 
 Imports System.IO
 Imports System.Windows.Forms.Design
-Imports System.Xml
 Imports System.Configuration
 
 Imports Microsoft.VisualStudio.Shell.Design.Serialization

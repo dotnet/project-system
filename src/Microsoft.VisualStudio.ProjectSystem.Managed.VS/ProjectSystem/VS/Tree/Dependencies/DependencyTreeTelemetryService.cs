@@ -134,6 +134,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             void InitializeProjectId()
             {
+#pragma warning disable RS0030 // symbol IProjectGuidService is banned
                 IProjectGuidService projectGuidService =
                     _project.Services.ExportProvider.GetExportedValueOrDefault<IProjectGuidService>();
                 if (projectGuidService != null)
@@ -144,6 +145,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 {
                     SetProjectId(_telemetryService.HashValue(_project.FullPath));
                 }
+#pragma warning restore RS0030 // symbol IProjectGuidService is banned
             }
         }
 

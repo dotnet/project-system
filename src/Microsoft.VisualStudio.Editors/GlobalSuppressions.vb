@@ -26,6 +26,8 @@
 <Assembly: CodeAnalysis.SuppressMessage("Reliability", "RS0015:Always consume the value returned by methods marked with PreserveSigAttribute", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.SettingsDesigner.TypeEditorHostControl.DropDownControl(System.Windows.Forms.Control)")>
 <Assembly: CodeAnalysis.SuppressMessage("Reliability", "RS0009:Override Object.Equals(object) when implementing IEquatable<T> ", Scope:="type", Target:="~T:Microsoft.VisualStudio.Editors.PropertyPages.ImportIdentity")>
 <Assembly: CodeAnalysis.SuppressMessage("Reliability", "RS0015:Always consume the value returned by methods marked with PreserveSigAttribute", Scope:="member", Target:="~M:Microsoft.Runtime.Hosting.StrongNameHelpers.StrongNameFreeBuffer(System.IntPtr)")>
+
+' https://github.com/dotnet/roslyn-analyzers/issues/1404
 <Assembly: CodeAnalysis.SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.Common.Utils.IsClientFrameworkSubset(Microsoft.VisualStudio.Shell.Interop.IVsHierarchy)~System.Boolean")>
 <Assembly: CodeAnalysis.SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.Common.Utils.MapBitmapColor(System.Drawing.Image,System.Drawing.Color,System.Drawing.Color)~System.Drawing.Image")>
 <Assembly: CodeAnalysis.SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.MyApplication.MyApplicationCodeGenerator.DeserializeMyApplicationData(System.String,Microsoft.VisualStudio.Shell.Interop.IVsGeneratorProgress)~Microsoft.VisualStudio.Editors.MyApplication.MyApplicationData")>
@@ -84,6 +86,7 @@
 <Assembly: CodeAnalysis.SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsDesigner.GeneratedClassName(Microsoft.VisualStudio.Shell.Interop.IVsHierarchy,System.UInt32,Microsoft.VisualStudio.Editors.SettingsDesigner.DesignTimeSettings,System.String)~System.String")>
 <Assembly: CodeAnalysis.SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsDesignerLoader.Initialize")>
 <Assembly: CodeAnalysis.SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.XmlToSchema.Wizard.RunStarted(System.Object,System.Collections.Generic.Dictionary{System.String,System.String},Microsoft.VisualStudio.TemplateWizard.WizardRunKind,System.Object[])")>
+<Assembly: CodeAnalysis.SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.ResourceEditor.ResourceEditorView.AddResources(System.Collections.ICollection,System.Boolean,System.Boolean)")>
 
 ' BUG: https://github.com/dotnet/roslyn/issues/15343
 <Assembly: CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.XmlToSchema.InputXmlForm._addAsTextButton_Click(System.Object,System.EventArgs)")>

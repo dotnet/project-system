@@ -46,6 +46,7 @@
     <Rule Id="CA1721" Action="None" />
     <Rule Id="CA1724" Action="None" />
     <Rule Id="CA1815" Action="None" />
+    <Rule Id="CA1820" Action="None" />
     <Rule Id="CA2007" Action="None" />
     <Rule Id="CA2211" Action="None" />
     <Rule Id="CA2213" Action="None" /> <!-- https://github.com/dotnet/roslyn-analyzers/issues/1796 -->
@@ -56,6 +57,16 @@
     <Rule Id="CA2227" Action="None" />
     <Rule Id="CA2231" Action="None" />
     <Rule Id="CA2234" Action="None" />
+  </Rules>
+  <Rules AnalyzerId="Microsoft.CodeQuality.Analyzers.Exp" RuleNamespace="Microsoft.CodeQuality.Analyzers.Exp">
+    <Rule Id="CA1062" Action="None" />
+    <Rule Id="CA1303" Action="None" />
+    <Rule Id="CA1508" Action="None" /> <!-- disable until 2.9.x per https://github.com/dotnet/roslyn-analyzers/issues/1921#issuecomment-446702992 -->
+  </Rules>
+  <Rules AnalyzerId="Microsoft.NetFramework.Analyzers" RuleNamespace="Microsoft.NetFramework.Analyzers">
+    <Rule Id="CA2153" Action="None" /> <!-- TODO do not catch CorruptedStateExceptions -->
+    <Rule Id="CA2235" Action="None" /> <!-- TODO mark all non-serializable fields -->
+    <Rule Id="CA3075" Action="None" /> <!-- TODO insecure DTD processing in XML -->
   </Rules>
   <Rules AnalyzerId="Microsoft.CodeAnalysis.Analyzers" RuleNamespace="Microsoft.CodeAnalysis.Analyzers">
     <Rule Id="RS1001" Action="None" />
@@ -91,6 +102,8 @@
     <Rule Id="RS0025" Action="Error" />
     <Rule Id="RS0026" Action="Error" />
     <Rule Id="RS0027" Action="Error" />
+    <Rule Id="RS0030" Action="Error" />
+    <Rule Id="RS0031" Action="Error" />
   </Rules>
   <Rules AnalyzerId="System.Collections.Immutable.Analyzers" RuleNamespace="System.Collections.Immutable.Analyzers">
     <Rule Id="RS0012" Action="Warning" />

@@ -27,11 +27,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
             string evaluatedPropertyValue,
             IProjectProperties defaultProperties)
         {
+#pragma warning disable RS0030 // symbol IProjectLockService is banned
             return _projectLockService.ReadLockAsync(async access =>
             {
                 ProjectRootElement projectXml = await access.GetProjectXmlAsync(_unconfiguredProject.FullPath);
                 return await _helper.GetPropertyAsync(projectXml, defaultProperties);
             });
+#pragma warning restore RS0030 // symbol IProjectLockService is banned
         }
 
         public override async Task<string> OnSetPropertyValueAsync(
@@ -39,11 +41,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
             IProjectProperties defaultProperties,
             IReadOnlyDictionary<string, string> dimensionalConditions = null)
         {
+#pragma warning disable RS0030 // symbol IProjectLockService is banned
             await _projectLockService.WriteLockAsync(async access =>
             {
                 ProjectRootElement projectXml = await access.GetProjectXmlAsync(_unconfiguredProject.FullPath);
                 await _helper.SetPropertyAsync(unevaluatedPropertyValue, defaultProperties, projectXml);
             });
+#pragma warning restore RS0030 // symbol IProjectLockService is banned
 
             return null;
         }

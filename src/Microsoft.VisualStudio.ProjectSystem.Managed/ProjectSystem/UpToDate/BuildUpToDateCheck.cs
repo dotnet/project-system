@@ -102,7 +102,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         /// <summary>
         /// Called on project load.
         /// </summary>
+#pragma warning disable RS0030 // symbol ConfiguredProjectAutoLoad is banned
         [ConfiguredProjectAutoLoad]
+#pragma warning restore RS0030 // symbol ConfiguredProjectAutoLoad is banned
         [AppliesTo(ProjectCapability.DotNet + "+ !" + ProjectCapabilities.SharedAssetsProject)]
         internal void Load()
         {

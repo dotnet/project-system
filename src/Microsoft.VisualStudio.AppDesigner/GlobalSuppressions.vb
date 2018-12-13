@@ -457,3 +457,6 @@
 ' https://github.com/dotnet/roslyn/issues/30895
 <Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0052:Remove unread private members", Scope:="member", Target:="~P:Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerView._broadcastMessageEventsHelper")>
 <Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0052:Remove unread private members", Scope:="member", Target:="~P:Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase._buildEvents")>
+
+<Assembly: CodeAnalysis.SuppressMessage("Design", "CA1058:Types should not extend certain base types", Justification:="Public API and cannot be changed.", Scope:="type", Target:="~T:Microsoft.VisualStudio.Editors.Package.InternalException")>
+<Assembly: CodeAnalysis.SuppressMessage("Design", "CA1058:Types should not extend certain base types", Justification:="Public API and cannot be changed.", Scope:="type", Target:="~T:Microsoft.VisualStudio.Editors.PropertyPages.PropertyPageException")>
