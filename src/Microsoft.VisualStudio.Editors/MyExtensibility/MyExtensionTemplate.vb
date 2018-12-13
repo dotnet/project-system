@@ -37,7 +37,9 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             Dim assemblyFullName As String = Nothing
 
             Try
-                Dim xmlDocument As New XmlDocument()
+                Dim xmlDocument As New XmlDocument With {
+                    .XmlResolver = Nothing
+                }
                 Using reader As XmlReader = XmlReader.Create(New IO.StringReader(template.CustomData))
                     xmlDocument.Load(reader)
                 End Using

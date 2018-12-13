@@ -51,7 +51,9 @@ Namespace Microsoft.VisualStudio.Editors.VBAttributeEditor
         Public Function LoadPermissionSet(strPermissionSet As String) As PermissionSet
 
             ' Load the XML
-            Dim document As New XmlDocument
+            Dim document As New XmlDocument With {
+                .XmlResolver = Nothing
+            }
             Using xmlReader As XmlReader = XmlReader.Create(New StringReader(strPermissionSet))
                 document.Load(xmlReader)
             End Using
