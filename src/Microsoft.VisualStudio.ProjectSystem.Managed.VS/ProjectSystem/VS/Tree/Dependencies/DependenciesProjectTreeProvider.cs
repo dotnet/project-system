@@ -416,7 +416,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 return;
             }
 
-            Task<IProjectVersionedValue<IProjectTreeSnapshot>> nowait = SubmitTreeUpdateAsync(
+            _ = SubmitTreeUpdateAsync(
                 async (treeSnapshot, configuredProjectExports, cancellationToken) =>
                 {
                     IProjectTree dependenciesNode = treeSnapshot.Value.Tree;
@@ -424,7 +424,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     {
                         dependenciesNode = await viewProvider.BuildTreeAsync(dependenciesNode, snapshot, cancellationToken);
 
-                        _treeTelemetryService.ObserveTreeUpdateCompleted(snapshot.HasUnresolvedDependency);
+                        await _treeTelemetryService.ObserveTreeUpdateCompletedAsync(snapshot.HasUnresolvedDependency);
                     }
 
                     // TODO We still are getting mismatched data sources and need to figure out better 
