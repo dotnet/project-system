@@ -72,7 +72,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             var activeDebugFramework = Mock.Of<IActiveDebugFrameworkServices>(o =>
                o.GetConfiguredProjectForActiveFrameworkAsync() == Task.FromResult(configuredProject));
             var debugProvider = new ConsoleDebugTargetsProvider(
-                                            configuredProject,
+                                            project,
                                            _mockTokenReplace.Object,
                                            _mockFS,
                                            _mockEnvironment.Object,
