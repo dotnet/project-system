@@ -11,7 +11,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
     ///     Force loads the active <see cref="ConfiguredProject"/> objects so that any configured project-level 
     ///     services, such as evaluation and build services, are started.
     /// </summary>
-    internal class ActiveConfiguredProjectsLoader : OnceInitializedOnceDisposed
+    [AppliesTo(ProjectCapability.DotNetLanguageServiceOrLanguageService2)]
+    internal class ActiveConfiguredProjectsLoader : OnceInitializedOnceDisposed, IProjectDynamicLoadComponent
     {
         private readonly UnconfiguredProject _project;
         private readonly IActiveConfigurationGroupService _activeConfigurationGroupService;
@@ -29,15 +30,13 @@ namespace Microsoft.VisualStudio.ProjectSystem
             _targetBlock = DataflowBlockSlim.CreateActionBlock<IProjectVersionedValue<IConfigurationGroup<ProjectConfiguration>>>(OnActiveConfigurationsChanged);
         }
 
-#pragma warning disable RS0030 // symbol ProjectAutoLoad is banned
-        [ProjectAutoLoad(ProjectLoadCheckpoint.ProjectInitialCapabilitiesEstablished)]
-#pragma warning restore RS0030 // symbol ProjectAutoLoad is banned
-        [AppliesTo(ProjectCapability.DotNetLanguageServiceOrLanguageService2)]
-        public Task InitializeAsync()
+        public Task LoadAsync()
         {
             EnsureInitialized();
             return Task.CompletedTask;
         }
+
+        public Task UnloadAsync() => Task.CompletedTask;
 
         public ITargetBlock<IProjectVersionedValue<IConfigurationGroup<ProjectConfiguration>>> TargetBlock => _targetBlock;
 
@@ -65,7 +64,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 await _tasksService.LoadedProjectAsync(() =>
                 {
                     return _project.LoadConfiguredProjectAsync(configuration);
-
                 });
             }
         }

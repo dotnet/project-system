@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             Assert.Throws<ObjectDisposedException>(() =>
             {
-                var ignored = service.IsImplicitlyActive;
+                _ = service.IsImplicitlyActive;
             });
         }
 
@@ -32,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             Assert.Throws<ObjectDisposedException>(() =>
             {
-                var ignored = service.ImplicitlyActive;
+                _ = service.ImplicitlyActive;
             });
         }
 
@@ -206,7 +206,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             var project = ConfiguredProjectFactory.ImplementProjectConfiguration(currentConfiguration);
             var service = CreateInstance(project, out ProjectValueDataSource<IConfigurationGroup<ProjectConfiguration>> source);
-            service.Load();
+            service.LoadAsync().Forget();
 
             int callCount = 0;
             var implicitActiveService = IImplicitlyActiveServiceFactory.ImplementActivateAsync(() =>
@@ -227,7 +227,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             var project = ConfiguredProjectFactory.ImplementProjectConfiguration("Debug|AnyCPU");
             var service = CreateInstance(project, out ProjectValueDataSource<IConfigurationGroup<ProjectConfiguration>> source);
-            service.Load();
+            service.LoadAsync().Forget();
 
             bool? result = null;
             var implicitActiveService = IImplicitlyActiveServiceFactory.ImplementActivateAsync(() =>
@@ -248,7 +248,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             var project = ConfiguredProjectFactory.ImplementProjectConfiguration("Debug|AnyCPU");
             var service = CreateInstance(project, out ProjectValueDataSource<IConfigurationGroup<ProjectConfiguration>> source);
-            service.Load();
+            service.LoadAsync().Forget();
 
             Assert.False(service.IsImplicitlyActive);
 
@@ -277,7 +277,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             var project = ConfiguredProjectFactory.ImplementProjectConfiguration("Debug|AnyCPU");
             var service = CreateInstance(project, out ProjectValueDataSource<IConfigurationGroup<ProjectConfiguration>> source);
-            service.Load();
+            service.LoadAsync().Forget();
 
             Assert.False(service.IsImplicitlyActive);
 

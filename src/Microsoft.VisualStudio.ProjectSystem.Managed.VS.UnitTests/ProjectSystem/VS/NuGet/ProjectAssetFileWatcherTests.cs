@@ -5,6 +5,7 @@ using System.Threading;
 
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
+using Microsoft.VisualStudio.Threading;
 
 using Moq;
 
@@ -47,7 +48,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""
             {
                 var tree = ProjectTreeParser.Parse(inputTree);
                 var projectUpdate = IProjectSubscriptionUpdateFactory.FromJson(ProjectCurrentStateJson);
-                watcher.Load();
+                watcher.LoadAsync().Forget();
                 await watcher.DataFlow_ChangedAsync(IProjectVersionedValueFactory.Create(Tuple.Create(IProjectTreeSnapshotFactory.Create(tree), projectUpdate)));
 
                 // If fileToWatch is null then we expect to not register any filewatcher.
@@ -101,7 +102,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""
                 tasksService,
                 IActiveConfiguredProjectSubscriptionServiceFactory.Create()))
             {
-                watcher.Load();
+                watcher.LoadAsync().Forget();
                 var projectUpdate = IProjectSubscriptionUpdateFactory.FromJson(ProjectCurrentStateJson);
 
                 var firstTree = ProjectTreeParser.Parse(inputTree);
@@ -144,7 +145,8 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""
     }
 }");
 
-                watcher.Load();
+                watcher.LoadAsync().Forget();
+
                 await watcher.DataFlow_ChangedAsync(IProjectVersionedValueFactory.Create(Tuple.Create(IProjectTreeSnapshotFactory.Create(tree), projectUpdate)));
 
                 var fileChangeServiceMock = Mock.Get(fileChangeService);

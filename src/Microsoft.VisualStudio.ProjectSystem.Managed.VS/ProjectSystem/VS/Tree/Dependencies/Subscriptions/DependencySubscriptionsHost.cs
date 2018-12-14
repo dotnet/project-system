@@ -23,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
     [Export(DependencySubscriptionsHostContract, typeof(ICrossTargetSubscriptionsHost))]
     [Export(typeof(IDependenciesSnapshotProvider))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
-    internal sealed class DependencySubscriptionsHost : OnceInitializedOnceDisposedAsync, ICrossTargetSubscriptionsHost, IDependenciesSnapshotProvider
+    internal sealed class DependencySubscriptionsHost : OnceInitializedOnceDisposedAsync, ICrossTargetSubscriptionsHost, IDependenciesSnapshotProvider, IProjectDynamicLoadComponent
     {
         public const string DependencySubscriptionsHostContract = "DependencySubscriptionsHostContract";
 
@@ -135,14 +135,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             }
         }
 
-#pragma warning disable RS0030 // symbol ProjectAutoLoad is banned
-        [ProjectAutoLoad(ProjectLoadCheckpoint.ProjectFactoryCompleted)]
-#pragma warning restore RS0030 // symbol ProjectAutoLoad is banned
-        [AppliesTo(ProjectCapability.DependenciesTree)]
-        public Task OnProjectFactoryCompletedAsync()
-        {
-            return AddInitialSubscriptionsAsync();
-        }
+        public Task LoadAsync() => AddInitialSubscriptionsAsync();
+
+        public Task UnloadAsync() => Task.CompletedTask;
 
         /// <summary>
         /// Workaround for CPS bug 375276 which causes double entry on InitializeAsync and exception

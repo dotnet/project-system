@@ -118,7 +118,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             var service = CreateInstance(loadedInHostListener: loadedInHostListener);
 
-            service.OnProjectFactoryCompleted();
+            service.LoadAsync();
 
             Assert.Equal(1, callCount);
         }

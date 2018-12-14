@@ -16,7 +16,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
     ///     Provides an implementation of <see cref="IConfiguredProjectActivationTracking"/> that is based on the results of <see cref="IActiveConfigurationGroupService"/>.
     /// </summary>
     [Export(typeof(IConfiguredProjectImplicitActivationTracking))]
-    internal class ConfiguredProjectImplicitActivationTracking : OnceInitializedOnceDisposed, IConfiguredProjectImplicitActivationTracking
+    [AppliesTo(ProjectCapability.DotNet)]
+    internal class ConfiguredProjectImplicitActivationTracking : OnceInitializedOnceDisposed, IConfiguredProjectImplicitActivationTracking, IProjectDynamicLoadComponent
     {
         private readonly ConfiguredProject _project;
         private readonly IProjectAsynchronousTasksService _tasksService;
@@ -42,14 +43,13 @@ namespace Microsoft.VisualStudio.ProjectSystem
             get;
         }
 
-#pragma warning disable RS0030 // symbol ConfiguredProjectAutoLoad is banned
-        [ConfiguredProjectAutoLoad]
-#pragma warning restore RS0030 // symbol ConfiguredProjectAutoLoad is banned
-        [AppliesTo(ProjectCapability.DotNet)]
-        public void Load()
+        public Task LoadAsync()
         {
             EnsureInitialized();
+            return Task.CompletedTask;
         }
+
+        public Task UnloadAsync() => Task.CompletedTask;
 
         public ITargetBlock<IProjectVersionedValue<IConfigurationGroup<ProjectConfiguration>>> TargetBlock => _targetBlock;
 

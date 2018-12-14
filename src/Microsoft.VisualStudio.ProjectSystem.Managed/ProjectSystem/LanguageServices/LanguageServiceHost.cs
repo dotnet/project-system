@@ -18,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     /// </summary>
     [Export(typeof(ILanguageServiceHost))]
     [AppliesTo(ProjectCapability.DotNetLanguageService)]
-    internal partial class LanguageServiceHost : OnceInitializedOnceDisposedAsync, ILanguageServiceHost
+    internal partial class LanguageServiceHost : OnceInitializedOnceDisposedAsync, ILanguageServiceHost, IProjectDynamicLoadComponent
     {
 #pragma warning disable CA2213 // OnceInitializedOnceDisposedAsync are not tracked correctly by the IDisposeable analyzer
         private readonly SemaphoreSlim _gate = new SemaphoreSlim(initialCount: 1);
@@ -76,14 +76,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
         public object HostSpecificEditAndContinueService => _currentAggregateProjectContext?.ENCProjectConfig;
 
-#pragma warning disable RS0030 // symbol ProjectAutoLoad is banned
-        [ProjectAutoLoad(completeBy: ProjectLoadCheckpoint.ProjectFactoryCompleted)]
-#pragma warning restore RS0030 // symbol ProjectAutoLoad is banned
-        [AppliesTo(ProjectCapability.DotNetLanguageService)]
-        public Task OnProjectFactoryCompletedAsync()
-        {
-            return InitializeAsync();
-        }
+        public Task LoadAsync() => InitializeAsync();
+
+        public Task UnloadAsync() => Task.CompletedTask;
 
         protected override Task InitializeCoreAsync(CancellationToken cancellationToken)
         {

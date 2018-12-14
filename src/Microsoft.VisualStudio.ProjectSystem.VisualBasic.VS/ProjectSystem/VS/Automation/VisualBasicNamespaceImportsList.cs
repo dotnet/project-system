@@ -9,7 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
 {
     [Export(typeof(VisualBasicNamespaceImportsList))]
     [AppliesTo(ProjectCapability.VisualBasic)]
-    internal class VisualBasicNamespaceImportsList : OnceInitializedOnceDisposed
+    internal class VisualBasicNamespaceImportsList : OnceInitializedOnceDisposed, IProjectDynamicLoadComponent
     {
         private readonly IActiveConfiguredProjectSubscriptionService _activeConfiguredProjectSubscriptionService;
 
@@ -54,15 +54,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             return _list.GetEnumerator();
         }
 
-#pragma warning disable RS0030 // symbol ProjectAutoLoad is banned
-        [ProjectAutoLoad(startAfter: ProjectLoadCheckpoint.ProjectFactoryCompleted)]
-#pragma warning restore RS0030 // symbol ProjectAutoLoad is banned
-        [AppliesTo(ProjectCapability.VisualBasic)]
-        internal Task OnProjectFactoryCompletedAsync()
+        public Task LoadAsync()
         {
             EnsureInitialized();
             return Task.CompletedTask;
         }
+
+        public Task UnloadAsync() => Task.CompletedTask;
 
         internal void OnNamespaceImportChanged(IProjectVersionedValue<IProjectSubscriptionUpdate> e)
         {

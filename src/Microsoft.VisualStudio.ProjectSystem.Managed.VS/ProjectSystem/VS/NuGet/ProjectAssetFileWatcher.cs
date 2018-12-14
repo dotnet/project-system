@@ -8,6 +8,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
+
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.Shell;
@@ -20,9 +21,10 @@ using Task = System.Threading.Tasks.Task;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 {
     /// <summary>
-    ///     Watches for writes to the project.assets.json, triggering a evaluation if it changes.
+    ///     Watches for writes to the project.assets.json, triggering an evaluation if it changes.
     /// </summary>
-    internal class ProjectAssetFileWatcher : OnceInitializedOnceDisposedAsync, IVsFreeThreadedFileChangeEvents2
+    [AppliesTo(ProjectCapability.DotNet)]
+    internal class ProjectAssetFileWatcher : OnceInitializedOnceDisposedAsync, IVsFreeThreadedFileChangeEvents2, IProjectDynamicLoadComponent
     {
         private static readonly TimeSpan s_notifyDelay = TimeSpan.FromMilliseconds(100);
 
@@ -61,17 +63,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             _activeConfiguredProjectSubscriptionService = activeConfiguredProjectSubscriptionService;
         }
 
-        /// <summary>
-        /// Called on project load.
-        /// </summary>
-#pragma warning disable RS0030 // symbol ConfiguredProjectAutoLoad is banned
-        [ConfiguredProjectAutoLoad(RequiresUIThread = false)]
-#pragma warning restore RS0030 // symbol ConfiguredProjectAutoLoad is banned
-        [AppliesTo(ProjectCapability.DotNet)]
-        internal void Load()
-        {
-            InitializeAsync();
-        }
+        public Task LoadAsync() => InitializeAsync();
+
+        public Task UnloadAsync() => Task.CompletedTask;
 
         /// <summary>
         /// Called on changes to the project tree.

@@ -170,7 +170,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
            ActiveConfiguredProject<DebuggerLaunchProviders> launchProviders = null)
         {
             var instance = CreateInstance(vsStartupProjectsListService, threadingService, projectGuidService, projectSubscriptionService, launchProviders);
-            await instance.InitializeAsync();
+            await instance.LoadAsync();
 
             return instance;
         }

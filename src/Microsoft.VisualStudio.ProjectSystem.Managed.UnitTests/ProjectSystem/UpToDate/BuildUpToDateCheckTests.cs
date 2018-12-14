@@ -14,6 +14,7 @@ using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.Build;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.Telemetry;
+using Microsoft.VisualStudio.Threading;
 
 using Moq;
 
@@ -90,7 +91,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 ITelemetryServiceFactory.Create(telemetryParameters => _telemetryEvents.Add(telemetryParameters)),
                 _fileSystem);
 
-            _buildUpToDateCheck.Load();
+            _buildUpToDateCheck.LoadAsync().Forget();
         }
 
         public void Dispose() => _buildUpToDateCheck.Dispose();

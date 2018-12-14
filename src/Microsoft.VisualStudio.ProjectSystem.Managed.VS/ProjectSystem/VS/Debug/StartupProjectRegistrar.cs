@@ -14,7 +14,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
     ///     Responsible for adding or removing the project from the startup list based on whether the project
     ///     is debuggable or not.
     /// </summary>
-    internal class StartupProjectRegistrar : OnceInitializedOnceDisposedAsync
+    [AppliesTo(ProjectCapability.DotNet)]
+    internal class StartupProjectRegistrar : OnceInitializedOnceDisposedAsync, IProjectDynamicLoadComponent
     {
         private readonly IVsService<IVsStartupProjectsListService> _startupProjectsListService;
         private readonly ISafeProjectGuidService _projectGuidService;
@@ -29,7 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// </remarks>
         [ImportingConstructor]
         public StartupProjectRegistrar(
-            UnconfiguredProject project,
+            UnconfiguredProject project, // needed to set component scope
             IVsService<SVsStartupProjectsListService, IVsStartupProjectsListService> startupProjectsListService,
             IProjectThreadingService threadingService,
             ISafeProjectGuidService projectGuidService,
@@ -43,14 +44,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             _launchProviders = launchProviders;
         }
 
-#pragma warning disable RS0030 // symbol ProjectAutoLoad is banned
-        [ProjectAutoLoad(startAfter: ProjectLoadCheckpoint.ProjectFactoryCompleted)]
-#pragma warning restore RS0030 // symbol ProjectAutoLoad is banned
-        [AppliesTo(ProjectCapability.DotNet)]
-        public Task InitializeAsync()
-        {
-            return InitializeAsync(CancellationToken.None);
-        }
+        public Task LoadAsync() => InitializeAsync(CancellationToken.None);
+
+        public Task UnloadAsync() => Task.CompletedTask;
 
         protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
         {

@@ -25,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             });
 
             var loader = CreateInstance(project, out ProjectValueDataSource<IConfigurationGroup<ProjectConfiguration>> source);
-            await loader.InitializeAsync();
+            await loader.LoadAsync();
 
             // Change the active configurations
             await source.SendAndCompleteAsync(configurationGroups, loader.TargetBlock);
@@ -47,7 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             });
 
             var loader = CreateInstance(project, tasksService, out ProjectValueDataSource<IConfigurationGroup<ProjectConfiguration>> source);
-            await loader.InitializeAsync();
+            await loader.LoadAsync();
 
             var configurationGroups = IConfigurationGroupFactory.CreateFromConfigurationNames("Debug|AnyCPU");
 
@@ -71,8 +71,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             var loader = CreateInstance(project, out var source);
 
-            await loader.InitializeAsync();
-            await loader.InitializeAsync();
+            await loader.LoadAsync();
+            await loader.LoadAsync();
 
             var configurationGroups = IConfigurationGroupFactory.CreateFromConfigurationNames("Debug|AnyCPU");
 
@@ -106,7 +106,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             });
 
             var loader = CreateInstance(project, out ProjectValueDataSource<IConfigurationGroup<ProjectConfiguration>> source);
-            await loader.InitializeAsync();
+            await loader.LoadAsync();
             loader.Dispose();
 
             var configurationGroups = IConfigurationGroupFactory.CreateFromConfigurationNames("Debug|AnyCPU");

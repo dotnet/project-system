@@ -2,7 +2,6 @@
 
 using System;
 using System.ComponentModel.Composition;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -13,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
     [Export]
     [Export(typeof(IUnconfiguredProjectTasksService))]
     [AppliesTo(ProjectCapability.DotNet)]
-    internal class UnconfiguredProjectTasksService : IUnconfiguredProjectTasksService
+    internal class UnconfiguredProjectTasksService : IUnconfiguredProjectTasksService, IProjectDynamicLoadComponent
     {
         private readonly IProjectAsynchronousTasksService _tasksService;
         private readonly IProjectThreadingService _threadingService;
@@ -31,14 +30,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
             _loadedInHostListener = loadedInHostListener;
         }
 
-#pragma warning disable RS0030 // symbol ProjectAutoLoad is banned
-        [ProjectAutoLoad(completeBy: ProjectLoadCheckpoint.ProjectFactoryCompleted)]
-#pragma warning restore RS0030 // symbol ProjectAutoLoad is banned
-        [AppliesTo(ProjectCapability.DotNet)]
-        public Task OnProjectFactoryCompleted()
-        {
-            return _loadedInHostListener.StartListeningAsync();
-        }
+        public Task LoadAsync() => _loadedInHostListener.StartListeningAsync();
+
+        public Task UnloadAsync() => Task.CompletedTask;
 
         public Task ProjectLoadedInHost
         {
