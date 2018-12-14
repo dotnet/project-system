@@ -2,7 +2,6 @@
 
 using System.Threading.Tasks;
 
-using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectProperties;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 
@@ -15,12 +14,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         private static readonly PreBuildEventValueProvider.PreBuildEventHelper systemUnderTest =
             new PreBuildEventValueProvider.PreBuildEventHelper();
 
-        private static readonly IProjectProperties emptyProjectProperties =
-            IProjectPropertiesFactory.MockWithProperty(string.Empty).Object;
-
-
         [Fact]
-        public static async Task GetPropertyAsync_AllTargetsPresent()
+        public static void GetPropertyAsync_AllTargetsPresent()
         {
             var root = @"
 <Project Sdk=""Microsoft.NET.Sdk"">
@@ -40,12 +35,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 
 </Project>
 ".AsProjectRootElement();
-            var actual = await systemUnderTest.GetPropertyAsync(root, emptyProjectProperties);
+            var actual = systemUnderTest.GetProperty(root);
             Assert.Equal(@"echo ""prebuild output""", actual);
         }
 
         [Fact]
-        public static async Task GetPropertyAsync_PreBuildTargetPresent()
+        public static void GetPropertyAsync_PreBuildTargetPresent()
         {
             var root = @"
 <Project Sdk=""Microsoft.NET.Sdk"">
@@ -61,12 +56,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 
 </Project>
 ".AsProjectRootElement();
-            var actual = await systemUnderTest.GetPropertyAsync(root, emptyProjectProperties);
+            var actual = systemUnderTest.GetProperty(root);
             Assert.Equal(@"echo ""prebuild output""", actual);
         }
 
         [Fact]
-        public static async Task GetPropertyAsync_PreBuildTargetPresent_LowerCase()
+        public static void GetPropertyAsync_PreBuildTargetPresent_LowerCase()
         {
             var root = @"
 <Project Sdk=""Microsoft.NET.Sdk"">
@@ -82,12 +77,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 
 </Project>
 ".AsProjectRootElement();
-            var actual = await systemUnderTest.GetPropertyAsync(root, emptyProjectProperties);
+            var actual = systemUnderTest.GetProperty(root);
             Assert.Equal(@"echo ""prebuild output""", actual);
         }
 
         [Fact]
-        public static async Task GetPropertyAsync_NoTargetsPresent()
+        public static void GetPropertyAsync_NoTargetsPresent()
         {
             var root = @"
 <Project Sdk=""Microsoft.NET.Sdk"">
@@ -99,31 +94,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 
 </Project>
 ".AsProjectRootElement();
-            var actual = await systemUnderTest.GetPropertyAsync(root, emptyProjectProperties);
+            var actual = systemUnderTest.GetProperty(root);
             Assert.Null(actual);
         }
 
         [Fact]
-        public static async Task GetPropertyAsync_ExistingProperties()
+        public static async Task GetPropertyAsync_ExistingPropertiesAsync()
         {
-            var root = @"
-<Project Sdk=""Microsoft.NET.Sdk"">
-
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp1.1</TargetFramework>
-    <PreBuildEvent>echo $(ProjectDir)</PreBuildEvent>
-  </PropertyGroup>
-
-</Project>".AsProjectRootElement();
             var expected = "echo $(ProjectDir)";
             var projectProperties = IProjectPropertiesFactory.CreateWithPropertyAndValue("PreBuildEvent", expected);
-            var actual = await systemUnderTest.GetPropertyAsync(root, projectProperties);
+            var (success, actual) = await systemUnderTest.TryGetPropertyAsync(projectProperties);
+            Assert.True(success);
             Assert.Equal(expected, actual);
         }
 
         [Fact]
-        public static async Task GetPropertyAsync_WrongTargetName()
+        public static void GetPropertyAsync_WrongTargetName()
         {
             var root = @"
 <Project Sdk=""Microsoft.NET.Sdk"">
@@ -139,12 +125,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 
 </Project>
 ".AsProjectRootElement();
-            var result = await systemUnderTest.GetPropertyAsync(root, emptyProjectProperties);
+            var result = systemUnderTest.GetProperty(root);
             Assert.Null(result);
         }
 
         [Fact]
-        public static async Task GetPropertyAsync_WrongExec()
+        public static void GetPropertyAsync_WrongExec()
         {
             var root = @"
 <Project Sdk=""Microsoft.NET.Sdk"">
@@ -159,12 +145,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
   </Target>
 </Project>
 ".AsProjectRootElement();
-            var result = await systemUnderTest.GetPropertyAsync(root, emptyProjectProperties);
+            var result = systemUnderTest.GetProperty(root);
             Assert.Null(result);
         }
 
         [Fact]
-        public static async Task SetPropertyAsync_NoTargetsPresent()
+        public static void SetPropertyAsync_NoTargetsPresent()
         {
             var root = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
@@ -172,7 +158,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
     <TargetFramework>netcoreapp1.1</TargetFramework>
   </PropertyGroup>
 </Project>".AsProjectRootElement();
-            await systemUnderTest.SetPropertyAsync(@"echo ""pre build output""", emptyProjectProperties, root);
+            systemUnderTest.SetProperty(@"echo ""pre build output""", root);
 
             var expected = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
@@ -189,7 +175,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         }
 
         [Fact]
-        public static async Task SetPropertyAsync_TargetPresent()
+        public static void SetPropertyAsync_TargetPresent()
         {
             var root = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
@@ -200,7 +186,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
     <Exec Command=""echo &quot;pre build output&quot;"" />
   </Target>
 </Project>".AsProjectRootElement();
-            await systemUnderTest.SetPropertyAsync(@"echo ""pre build $(OutDir)""", emptyProjectProperties, root);
+            systemUnderTest.SetProperty(@"echo ""pre build $(OutDir)""", root);
 
             var expected = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
@@ -217,7 +203,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         }
 
         [Fact]
-        public static async Task SetPropertyAsync_TargetPresent_LowerCase()
+        public static void SetPropertyAsync_TargetPresent_LowerCase()
         {
             var root = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
@@ -228,7 +214,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
     <Exec Command=""echo &quot;pre build output&quot;"" />
   </Target>
 </Project>".AsProjectRootElement();
-            await systemUnderTest.SetPropertyAsync(@"echo ""pre build $(OutDir)""", emptyProjectProperties, root);
+            systemUnderTest.SetProperty(@"echo ""pre build $(OutDir)""", root);
 
             var expected = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
@@ -245,7 +231,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         }
 
         [Fact]
-        public static async Task SetPropertyAsync_TargetPresent_NoTasks()
+        public static void SetPropertyAsync_TargetPresent_NoTasks()
         {
             var root = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
@@ -255,7 +241,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
   <Target Name=""PreBuild"" BeforeTargets=""PreBuildEvent"">
   </Target>
 </Project>".AsProjectRootElement();
-            await systemUnderTest.SetPropertyAsync(@"echo ""pre build $(OutDir)""", emptyProjectProperties, root);
+            systemUnderTest.SetProperty(@"echo ""pre build $(OutDir)""", root);
 
             var expected = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
@@ -274,7 +260,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         }
 
         [Fact]
-        public static async Task SetPropertyAsync_TargetPresent_NoTasks_Removal()
+        public static void SetPropertyAsync_TargetPresent_NoTasks_Removal()
         {
             var root = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
@@ -287,7 +273,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
     <Exec Command=""echo &quot;pre build $(OutDir)&quot;"" />
   </Target>
 </Project>".AsProjectRootElement();
-            await systemUnderTest.SetPropertyAsync(@"", emptyProjectProperties, root);
+            systemUnderTest.SetProperty(@"", root);
 
             var expected = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
@@ -309,7 +295,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         }
 
         [Fact]
-        public static async Task SetPropertyAsync_TargetPresent_MultipleTasks()
+        public static void SetPropertyAsync_TargetPresent_MultipleTasks()
         {
             var root = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
@@ -321,7 +307,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
     <Exec Command=""echo &quot;pre build output&quot;"" />
   </Target>
 </Project>".AsProjectRootElement();
-            await systemUnderTest.SetPropertyAsync(@"echo ""pre build $(OutDir)""", emptyProjectProperties, root);
+            systemUnderTest.SetProperty(@"echo ""pre build $(OutDir)""", root);
 
             var expected = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
@@ -339,7 +325,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         }
 
         [Fact]
-        public static async Task SetPropertyAsync_DoNotRemoveTarget_EmptyString()
+        public static void SetPropertyAsync_DoNotRemoveTarget_EmptyString()
         {
             var root = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
@@ -352,7 +338,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
   </Target>
 </Project>
 ".AsProjectRootElement();
-            await systemUnderTest.SetPropertyAsync(string.Empty, emptyProjectProperties, root);
+            systemUnderTest.SetProperty(string.Empty, root);
 
             var expected = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
@@ -370,7 +356,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         }
 
         [Fact]
-        public static async Task SetPropertyAsync_RemoveTarget_EmptyString()
+        public static void SetPropertyAsync_RemoveTarget_EmptyString()
         {
             var root = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
@@ -381,7 +367,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
     <Exec Command=""echo &quot;pre build output&quot;"" />
   </Target>
 </Project>".AsProjectRootElement();
-            await systemUnderTest.SetPropertyAsync(string.Empty, emptyProjectProperties, root);
+            systemUnderTest.SetProperty(string.Empty, root);
 
             var expected = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
@@ -395,7 +381,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         }
 
         [Fact]
-        public static async Task SetPropertyAsync_RemoveTarget_WhitespaceCharacter()
+        public static void SetPropertyAsync_RemoveTarget_WhitespaceCharacter()
         {
             var root = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
@@ -406,7 +392,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
     <Exec Command=""echo &quot;pre build output&quot;"" />
   </Target>
 </Project>".AsProjectRootElement();
-            await systemUnderTest.SetPropertyAsync("       ", emptyProjectProperties, root);
+            systemUnderTest.SetProperty("       ", root);
             var stringWriter = new System.IO.StringWriter();
             root.Save(stringWriter);
 
@@ -422,7 +408,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         }
 
         [Fact]
-        public static async Task SetPropertyAsync_RemoveTarget_TabCharacter()
+        public static void SetPropertyAsync_RemoveTarget_TabCharacter()
         {
             var root = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
@@ -433,7 +419,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
     <Exec Command=""echo &quot;pre build output&quot;"" />
   </Target>
 </Project>".AsProjectRootElement();
-            await systemUnderTest.SetPropertyAsync("\t\t\t", emptyProjectProperties, root);
+            systemUnderTest.SetProperty("\t\t\t", root);
 
             var expected = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
@@ -447,7 +433,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         }
 
         [Fact]
-        public static async Task SetPropertyAsync_DoNotRemoveTarget_NewlineCharacter()
+        public static void SetPropertyAsync_DoNotRemoveTarget_NewlineCharacter()
         {
             var root = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
@@ -459,7 +445,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
   </Target>
 </Project>
 ".AsProjectRootElement();
-            await systemUnderTest.SetPropertyAsync("\r\n", emptyProjectProperties, root);
+            systemUnderTest.SetProperty("\r\n", root);
 
             var expected = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
@@ -476,7 +462,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         }
 
         [Fact]
-        public static async Task SetPropertyAsync_TargetNameCollision()
+        public static void SetPropertyAsync_TargetNameCollision()
         {
             var root = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
@@ -487,7 +473,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
   </Target>
 </Project>
 ".AsProjectRootElement();
-            await systemUnderTest.SetPropertyAsync(@"echo ""pre build $(OutDir)""", emptyProjectProperties, root);
+            systemUnderTest.SetProperty(@"echo ""pre build $(OutDir)""", root);
 
             var expected = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
@@ -506,7 +492,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         }
 
         [Fact]
-        public static async Task SetPropertyAsync_TargetNameCollision02()
+        public static void SetPropertyAsync_TargetNameCollision02()
         {
             var root = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
@@ -518,7 +504,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
   <Target Name=""PreBuild1"">
   </Target>
 </Project>".AsProjectRootElement();
-            await systemUnderTest.SetPropertyAsync(@"echo ""pre build $(OutDir)""", emptyProjectProperties, root);
+            systemUnderTest.SetProperty(@"echo ""pre build $(OutDir)""", root);
 
             var expected = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
@@ -539,7 +525,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         }
 
         [Fact]
-        public static async Task SetPropertyAsync_TargetNameCollision_LowerCase()
+        public static void SetPropertyAsync_TargetNameCollision_LowerCase()
         {
             var root = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
@@ -551,7 +537,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
   <Target Name=""prebuild1"">
   </Target>
 </Project>".AsProjectRootElement();
-            await systemUnderTest.SetPropertyAsync(@"echo ""pre build $(OutDir)""", emptyProjectProperties, root);
+            systemUnderTest.SetProperty(@"echo ""pre build $(OutDir)""", root);
 
             var expected = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
@@ -574,18 +560,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         [Fact]
         public static async Task SetPropertyAsync_ExistingProperties()
         {
-            var root = @"<Project Sdk=""Microsoft.NET.Sdk"">
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp1.1</TargetFramework>
-    <PreBuildEvent>echo $(ProjectDir)</PreBuildEvent>
-    <PostBuildEvent>echo $(ProjectDir)</PostBuildEvent>
-  </PropertyGroup>
-</Project>".AsProjectRootElement();
-
             var prebuildEventProjectProperties =
                 IProjectPropertiesFactory.MockWithPropertyAndValue("PreBuildEvent", "echo $(ProjectDir)").Object;
-            await systemUnderTest.SetPropertyAsync(@"echo ""post build $(OutDir)""", prebuildEventProjectProperties, root);
+            var success = await systemUnderTest.TrySetPropertyAsync(@"echo ""post build $(OutDir)""", prebuildEventProjectProperties);
+            Assert.True(success);
 
             var expected = @"echo ""post build $(OutDir)""";
             var actual = await prebuildEventProjectProperties.GetUnevaluatedPropertyValueAsync("PreBuildEvent");
@@ -595,24 +573,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         [Fact]
         public static async Task SetPropertyAsync_RemoveExistingProperties()
         {
-            var root = @"<Project Sdk=""Microsoft.NET.Sdk"">
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp1.1</TargetFramework>
-    <PreBuildEvent>echo $(ProjectDir)</PreBuildEvent>
-  </PropertyGroup>
-</Project>".AsProjectRootElement();
-
             var prebuildEventProjectProperties =
                 IProjectPropertiesFactory.CreateWithPropertyAndValue("PreBuildEvent", "echo $(ProjectDir)");
-            await systemUnderTest.SetPropertyAsync(" ", prebuildEventProjectProperties, root);
+            var success = await systemUnderTest.TrySetPropertyAsync(" ", prebuildEventProjectProperties);
+            Assert.True(success);
 
             var result = await prebuildEventProjectProperties.GetUnevaluatedPropertyValueAsync("PreBuildEvent");
             Assert.Null(result);
         }
 
         [Fact]
-        public static async Task SetPropertyAsync_WrongTargetName()
+        public static void SetPropertyAsync_WrongTargetName()
         {
             var root = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
@@ -624,7 +595,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
   </Target>
 </Project>
 ".AsProjectRootElement();
-            await systemUnderTest.SetPropertyAsync(@"echo ""post build $(OutDir)""", emptyProjectProperties, root);
+            systemUnderTest.SetProperty(@"echo ""post build $(OutDir)""", root);
 
             var expected = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
@@ -644,7 +615,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         }
 
         [Fact]
-        public static async Task EscapeValue_Read_CheckEscaped()
+        public static void EscapeValue_Read_CheckEscaped()
         {
             var root = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
@@ -658,12 +629,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 ".AsProjectRootElement();
 
             const string expected = "echo %DATE%";
-            string actual = await systemUnderTest.GetPropertyAsync(root, emptyProjectProperties);
+            string actual = systemUnderTest.GetProperty(root);
             Assert.Equal(expected, actual);
         }
 
         [Fact]
-        public static async Task EscapeValue_Read_CheckNotDoubleEscaped()
+        public static void EscapeValue_Read_CheckNotDoubleEscaped()
         {
             var root = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
@@ -677,13 +648,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 ".AsProjectRootElement();
 
             const string expected = "echo %25DATE%";
-            string actual = await systemUnderTest.GetPropertyAsync(root, emptyProjectProperties);
+            string actual = systemUnderTest.GetProperty(root);
             Assert.Equal(expected, actual);
         }
 
 
         [Fact]
-        public static async Task EscapeValue_Write_CheckEscaped()
+        public static void EscapeValue_Write_CheckEscaped()
         {
             var root = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
@@ -703,13 +674,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
   </Target>
 </Project>";
 
-            await systemUnderTest.SetPropertyAsync("echo %DATE%", emptyProjectProperties, root);
+            systemUnderTest.SetProperty("echo %DATE%", root);
             var actual = root.SaveAndGetChanges();
             Assert.Equal(expected, actual);
         }
 
         [Fact]
-        public static async Task EscapeValue_Write_CheckNotDoubleEscaped()
+        public static void EscapeValue_Write_CheckNotDoubleEscaped()
         {
             var root = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
@@ -729,7 +700,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
   </Target>
 </Project>";
 
-            await systemUnderTest.SetPropertyAsync("echo %25DATE%", emptyProjectProperties, root);
+            systemUnderTest.SetProperty("echo %25DATE%", root);
             var actual = root.SaveAndGetChanges();
             Assert.Equal(expected, actual);
         }
