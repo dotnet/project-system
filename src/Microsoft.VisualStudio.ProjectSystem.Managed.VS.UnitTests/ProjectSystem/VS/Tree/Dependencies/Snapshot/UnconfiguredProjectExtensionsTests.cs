@@ -17,6 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var project = UnconfiguredProjectFactory.ImplementFullPath(projectPath);
 
             Assert.Equal(expectedRelative, project.GetRelativePath(path));
+            Assert.Equal(expectedRelative, project.MakeRelative(path));
         }
     }
 }
