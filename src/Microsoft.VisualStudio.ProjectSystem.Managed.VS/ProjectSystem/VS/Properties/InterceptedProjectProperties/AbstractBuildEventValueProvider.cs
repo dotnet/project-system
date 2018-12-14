@@ -10,29 +10,29 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
     {
         private readonly IProjectAccessor _projectAccessor;
         private readonly UnconfiguredProject _unconfiguredProject;
-        private readonly IProjectThreadingService _threadingService;
         private readonly AbstractBuildEventHelper _helper;
 
         protected AbstractBuildEventValueProvider(
             IProjectAccessor projectAccessor,
             UnconfiguredProject project,
-            IProjectThreadingService threadingService,
             AbstractBuildEventHelper helper)
         {
             _projectAccessor = projectAccessor;
             _unconfiguredProject = project;
-            _threadingService = threadingService;
             _helper = helper;
         }
 
-        public override Task<string> OnGetEvaluatedPropertyValueAsync(
+        public override async Task<string> OnGetEvaluatedPropertyValueAsync(
             string evaluatedPropertyValue,
             IProjectProperties defaultProperties)
         {
-            return _projectAccessor.OpenProjectXmlForReadAsync(_unconfiguredProject, projectXml =>
+            (bool success, string property) = await _helper.TryGetPropertyAsync(defaultProperties);
+            if (success)
             {
-                return _threadingService.ExecuteSynchronously(() => _helper.GetPropertyAsync(projectXml, defaultProperties));
-            });
+                return property;
+            }
+
+            return await _projectAccessor.OpenProjectXmlForReadAsync(_unconfiguredProject, projectXml => _helper.GetProperty(projectXml));
         }
 
         public override async Task<string> OnSetPropertyValueAsync(
@@ -40,11 +40,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
             IProjectProperties defaultProperties,
             IReadOnlyDictionary<string, string> dimensionalConditions = null)
         {
-            await _projectAccessor.OpenProjectXmlForWriteAsync(_unconfiguredProject, projectXml =>
+            if(await _helper.TrySetPropertyAsync(unevaluatedPropertyValue, defaultProperties))
             {
-                _threadingService.ExecuteSynchronously(() => _helper.SetPropertyAsync(unevaluatedPropertyValue, defaultProperties, projectXml));
-            });
+                return null;
+            }
 
+            await _projectAccessor.OpenProjectXmlForWriteAsync(_unconfiguredProject, projectXml => _helper.SetProperty(unevaluatedPropertyValue, projectXml));
             return null;
         }
     }

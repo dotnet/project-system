@@ -15,11 +15,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
         [ImportingConstructor]
         public PreBuildEventValueProvider(
             IProjectAccessor projectAccessor,
-            UnconfiguredProject project,
-            IProjectThreadingService threadingService)
+            UnconfiguredProject project)
             : base(projectAccessor,
                    project,
-                   threadingService,
                    new PreBuildEventHelper())
         { }
 
