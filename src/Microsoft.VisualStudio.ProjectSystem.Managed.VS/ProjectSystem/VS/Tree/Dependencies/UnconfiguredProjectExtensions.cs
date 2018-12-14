@@ -14,13 +14,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             if (path.StartsWith(projectFolder, StringComparison.OrdinalIgnoreCase))
             {
                 // Remove starting slashes
-                int startingSlashCount = 0;
-                while (path.Length > startingSlashCount && path[startingSlashCount] == '\\')
+                int startIndex = projectFolder.Length;
+                while (path.Length > startIndex && path[startIndex] == '\\')
                 {
-                    startingSlashCount++;
+                    startIndex++;
                 }
 
-                path = path.Substring(startingSlashCount, projectFolder.Length - startingSlashCount);
+                path = path.Substring(startIndex, path.Length - startIndex);
             }
 
             return path;
