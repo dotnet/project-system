@@ -153,7 +153,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     return false;
                 }
 
-                string filePath = UnconfiguredProject.GetRelativePath(node.FilePath);
+                string filePath = UnconfiguredProject.MakeRelative(node.FilePath);
                 if (string.IsNullOrEmpty(filePath))
                 {
                     continue;
@@ -243,7 +243,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 ProjectRootElement projectXml = await access.GetProjectXmlAsync(UnconfiguredProject.FullPath);
                 foreach (IProjectTree sharedImportNode in sharedImportNodes)
                 {
-                    string sharedFilePath = UnconfiguredProject.GetRelativePath(sharedImportNode.FilePath);
+                    string sharedFilePath = UnconfiguredProject.MakeRelative(sharedImportNode.FilePath);
                     if (string.IsNullOrEmpty(sharedFilePath))
                     {
                         continue;
