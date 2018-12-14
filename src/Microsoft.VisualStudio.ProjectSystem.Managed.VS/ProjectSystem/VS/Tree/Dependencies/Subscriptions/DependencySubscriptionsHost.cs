@@ -109,8 +109,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
         public IDependenciesSnapshot CurrentSnapshot => _currentSnapshot;
 
-        public string ProjectFilePath => _commonServices.Project.FullPath;
-
         private ImmutableArray<IDependencyCrossTargetSubscriber> Subscribers
         {
             get

@@ -71,7 +71,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
                     continue;
                 }
 
-                searchResultsPerContext[snapshotProvider.ProjectFilePath] = SearchFlat(
+                searchResultsPerContext[snapshot.ProjectPath] = SearchFlat(
                     searchTerm.ToLowerInvariant(),
                     snapshot);
             }
@@ -85,7 +85,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
                 }
 
                 IEnumerable<IDependency> allTopLevelDependencies = snapshot.GetFlatTopLevelDependencies();
-                HashSet<IDependency> matchedDependencies = searchResultsPerContext[snapshotProvider.ProjectFilePath];
+                HashSet<IDependency> matchedDependencies = searchResultsPerContext[snapshot.ProjectPath];
 
                 using (var scope = new GraphTransactionScope())
                 {
@@ -105,7 +105,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
                             }
 
                             bool processed = viewProvider.MatchSearchResults(
-                                snapshotProvider.ProjectFilePath,
+                                snapshot.ProjectPath,
                                 topLevelDependency,
                                 searchResultsPerContext,
                                 out topLevelDependencyMatches);
@@ -133,12 +133,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
                         }
 
                         GraphNode topLevelNode = Builder.AddTopLevelGraphNode(graphContext,
-                                                                snapshotProvider.ProjectFilePath,
+                                                                snapshot.ProjectPath,
                                                                 topLevelDependency.ToViewModel(targetedSnapshot));
                         foreach (IDependency matchedDependency in topLevelDependencyMatches)
                         {
                             GraphNode matchedDependencyNode = Builder.AddGraphNode(graphContext,
-                                                                    snapshotProvider.ProjectFilePath,
+                                                                    snapshot.ProjectPath,
                                                                     topLevelNode,
                                                                     matchedDependency.ToViewModel(targetedSnapshot));
 

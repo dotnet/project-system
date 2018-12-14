@@ -39,7 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
             lock (_snapshotProviders)
             {
-                _snapshotProviders[snapshotProvider.ProjectFilePath] = snapshotProvider;
+                _snapshotProviders[snapshotProvider.CurrentSnapshot.ProjectPath] = snapshotProvider;
                 snapshotProvider.SnapshotRenamed += OnSnapshotRenamed;
                 snapshotProvider.SnapshotChanged += OnSnapshotChanged;
                 snapshotProvider.SnapshotProviderUnloading += OnSnapshotProviderUnloading;
@@ -52,7 +52,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
                 lock (_snapshotProviders)
                 {
-                    _snapshotProviders.Remove(snapshotProvider.ProjectFilePath);
+                    _snapshotProviders.Remove(snapshotProvider.CurrentSnapshot.ProjectPath);
                     snapshotProvider.SnapshotRenamed -= OnSnapshotRenamed;
                     snapshotProvider.SnapshotChanged -= OnSnapshotChanged;
                     snapshotProvider.SnapshotProviderUnloading -= OnSnapshotProviderUnloading;

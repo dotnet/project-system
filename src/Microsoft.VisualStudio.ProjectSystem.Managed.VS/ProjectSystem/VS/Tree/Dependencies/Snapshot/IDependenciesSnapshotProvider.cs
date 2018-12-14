@@ -16,11 +16,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         IDependenciesSnapshot CurrentSnapshot { get; }
 
         /// <summary>
-        /// Provider's project path.
-        /// </summary>
-        string ProjectFilePath { get; }
-
-        /// <summary>
         /// Triggered when snapshot's project was renamed.
         /// </summary>
         event EventHandler<ProjectRenamedEventArgs> SnapshotRenamed;
