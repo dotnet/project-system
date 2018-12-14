@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
             private string BuildEvent { get; }
             private string TargetName { get; }
 
-            public async Task<(bool succes, string property)> TryGetPropertyAsync(IProjectProperties defaultProperties)
+            public async Task<(bool success, string property)> TryGetPropertyAsync(IProjectProperties defaultProperties)
             {
                 // check if value already exists
                 string unevaluatedPropertyValue = await defaultProperties.GetUnevaluatedPropertyValueAsync(BuildEvent);
