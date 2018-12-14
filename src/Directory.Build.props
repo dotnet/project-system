@@ -1,5 +1,29 @@
 <!-- Copyright (c)  Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
 <Project>
+  <!--
+    Determine whether the project is WPF temp project.
+    Since .NET Framework 4.7.2 WPF temp project name ends with _wpftmp suffix and keeps the language specific extension (e.g. csproj). 
+  -->
+  <PropertyGroup>
+    <IsWpfTempProject>false</IsWpfTempProject>
+    <IsWpfTempProject Condition="$(MSBuildProjectName.EndsWith('_wpftmp'))">true</IsWpfTempProject>
+  </PropertyGroup>
+  
+  <!--
+    WPF temp-projects do not import .props and .targets files from NuGet packages.
+    (see https://github.com/dotnet/sourcelink/issues/91).
+    
+    Property _TargetAssemblyProjectName is set by GenerateTemporaryTargetAssembly task.
+  -->
+  <PropertyGroup Condition="'$(IsWpfTempProject)' == 'true'">
+    <_WpfTempProjectNuGetFileNameNoExt>$(ArtifactsObjDir)$(_TargetAssemblyProjectName)\$(_TargetAssemblyProjectName)$(MSBuildProjectExtension).nuget.g</_WpfTempProjectNuGetFileNameNoExt>
+  </PropertyGroup>
+
+  <!--
+    Import NuGet props to WPF temp projects (workaround for https://github.com/dotnet/sourcelink/issues/91) 
+  -->
+  <Import Project="$(_WpfTempProjectNuGetFileNameNoExt).props" Condition="'$(_WpfTempProjectNuGetFileNameNoExt)' != '' and Exists('$(_WpfTempProjectNuGetFileNameNoExt).props')"/>
+
   <PropertyGroup Condition="'$(OutDirName)' == ''">
     <OutDirName Condition="$(MSBuildProjectName.EndsWith('.UnitTests'))">UnitTests</OutDirName>
     <OutDirName Condition="$(MSBuildProjectName.EndsWith('.IntegrationTests'))">IntegrationTests</OutDirName>
