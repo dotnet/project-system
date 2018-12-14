@@ -11,75 +11,18 @@ using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
-
+using Microsoft.VisualStudio.Shell.Interop;
 using Moq;
 
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 {
-    public class ConsoleDebugLaunchProviderTest
+    public class ConsoleDebugLaunchProviderTests
     {
         private readonly string _ProjectFile = @"c:\test\project\project.csproj";
         private readonly string _Path = @"c:\program files\dotnet;c:\program files\SomeDirectory";
-        private readonly Mock<IEnvironmentHelper> _mockEnvironment = new Mock<IEnvironmentHelper>();
         private readonly IFileSystemMock _mockFS = new IFileSystemMock();
-        private readonly Mock<IDebugTokenReplacer> _mockTokenReplace = new Mock<IDebugTokenReplacer>();
-
-        private ConsoleDebugTargetsProvider GetDebugTargetsProvider(string outputType = "exe", Dictionary<string, string> properties = null)
-        {
-            _mockFS.WriteAllText(@"c:\test\Project\someapp.exe", "");
-            _mockFS.CreateDirectory(@"c:\test\Project");
-            _mockFS.CreateDirectory(@"c:\test\Project\bin\");
-            _mockFS.WriteAllText(@"c:\program files\dotnet\dotnet.exe", "");
-
-            _mockEnvironment.Setup(s => s.GetEnvironmentVariable("Path")).Returns(() => _Path);
-
-            var project = UnconfiguredProjectFactory.Create(filePath: _ProjectFile);
-
-            var outputTypeEnum = new PageEnumValue(new EnumValue() { Name = outputType });
-            var data = new PropertyPageData()
-            {
-                Category = ConfigurationGeneral.SchemaName,
-                PropertyName = ConfigurationGeneral.OutputTypeProperty,
-                Value = outputTypeEnum
-            };
-            var projectProperties = ProjectPropertiesFactory.Create(project, data);
-
-            if (properties == null)
-            {
-                properties = new Dictionary<string, string>() {
-                    {"RunCommand", @"dotnet"},
-                    {"RunArguments", "exec " + "\"" + @"c:\test\project\bin\project.dll"+ "\""},
-                    {"RunWorkingDirectory",  @"bin\"},
-                    { "TargetFrameworkIdentifier", @".NetCoreApp" },
-                    { "OutDir", @"c:\test\project\bin\" }
-                };
-            }
-            var delegatePropertiesMock = IProjectPropertiesFactory
-                .MockWithPropertiesAndValues(properties);
-
-            var delegateProvider = IProjectPropertiesProviderFactory.Create(null, delegatePropertiesMock.Object);
-
-            var configuredProjectServices = Mock.Of<ConfiguredProjectServices>(o =>
-                o.ProjectPropertiesProvider == delegateProvider);
-
-            var configuredProject = Mock.Of<ConfiguredProject>(o =>
-                o.UnconfiguredProject == project &&
-                o.Services == configuredProjectServices);
-            _mockTokenReplace.Setup(s => s.ReplaceTokensInProfileAsync(It.IsAny<ILaunchProfile>())).Returns<ILaunchProfile>(p => Task.FromResult(p));
-
-            var activeDebugFramework = Mock.Of<IActiveDebugFrameworkServices>(o =>
-               o.GetConfiguredProjectForActiveFrameworkAsync() == Task.FromResult(configuredProject));
-            var debugProvider = new ConsoleDebugTargetsProvider(
-                                            project,
-                                           _mockTokenReplace.Object,
-                                           _mockFS,
-                                           _mockEnvironment.Object,
-                                           activeDebugFramework,
-                                           projectProperties);
-            return debugProvider;
-        }
 
         [Fact]
         public void GetExeAndArguments()
@@ -469,6 +412,69 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             Assert.Contains("cmd.exe", result[0].Executable);
         }
 
+        [Fact]
+        public async Task QueryDebugTargetsAsync_ConsoleAppLaunchWithNoDebuggerWithIntegratedConsoleEnabled_DoesNotWrapInCmd()
+        {
+            var debugger = IVsDebugger10Factory.ImplementIsIntegratedConsoleEnabled(enabled: true);
+            var properties = new Dictionary<string, string>() {
+                {"TargetPath", @"C:\ConsoleApp.exe"},
+                {"TargetFrameworkIdentifier", @".NETFramework" }
+                };
+
+            var provider = GetDebugTargetsProvider("exe", properties, debugger);
+
+            var activeProfile = new LaunchProfile() { Name = "Name", CommandName = "Project" };
+
+            var result = await provider.QueryDebugTargetsAsync(DebugLaunchOptions.NoDebug, activeProfile);
+
+            Assert.Single(result);
+            Assert.DoesNotContain("cmd.exe", result[0].Executable);
+        }
+
+        [Theory]
+        [InlineData((DebugLaunchOptions)0)]
+        [InlineData(DebugLaunchOptions.NoDebug)]
+        public async Task QueryDebugTargetsAsync_ConsoleAppLaunch_IncludesIntegratedConsoleInLaunchOptions(DebugLaunchOptions launchOptions)
+        {
+            var debugger = IVsDebugger10Factory.ImplementIsIntegratedConsoleEnabled(enabled: true);
+            var properties = new Dictionary<string, string>() {
+                {"TargetPath", @"C:\ConsoleApp.exe"},
+                {"TargetFrameworkIdentifier", @".NETFramework" }
+                };
+
+            var provider = GetDebugTargetsProvider("exe", properties, debugger);
+
+            var activeProfile = new LaunchProfile() { Name = "Name", CommandName = "Project" };
+
+            var result = await provider.QueryDebugTargetsAsync(launchOptions, activeProfile);
+
+            Assert.Single(result);
+            Assert.True((result[0].LaunchOptions & DebugLaunchOptions.IntegratedConsole) == DebugLaunchOptions.IntegratedConsole);
+        }
+
+        [Theory]
+        [InlineData("winexe")]
+        [InlineData("appcontainerexe")]
+        [InlineData("library")]
+        [InlineData("WinMDObj")]
+        public async Task QueryDebugTargetsAsync_NonConsoleAppLaunch_DoesNotIncludeIntegrationConsoleInLaunchOptions(string outputType)
+        {
+            var debugger = IVsDebugger10Factory.ImplementIsIntegratedConsoleEnabled(enabled: true);
+            var properties = new Dictionary<string, string>() {
+                {"TargetPath", @"C:\ConsoleApp.exe"},
+                {"TargetFrameworkIdentifier", @".NETFramework" }
+                };
+
+            var provider = GetDebugTargetsProvider(outputType, properties, debugger);
+
+            var activeProfile = new LaunchProfile() { Name = "Name", CommandName = "Project" };
+
+            var result = await provider.QueryDebugTargetsAsync(0, activeProfile);
+
+            Assert.Single(result);
+            Assert.True((result[0].LaunchOptions & DebugLaunchOptions.IntegratedConsole) != DebugLaunchOptions.IntegratedConsole);
+        }
+
         [Theory]
         [InlineData("winexe")]
         [InlineData("appcontainerexe")]
@@ -567,6 +573,71 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         public void ConsoleDebugTargetsProvider_EscapeString_WorksCorrectly(string input, string expected)
         {
             Assert.Equal(expected, ConsoleDebugTargetsProvider.EscapeString(input, new[] { '^', '<', '>', '&' }));
+        }
+
+        private ConsoleDebugTargetsProvider GetDebugTargetsProvider(string outputType = "exe", Dictionary<string, string> properties = null, IVsDebugger10 debugger = null)
+        {
+            _mockFS.WriteAllText(@"c:\test\Project\someapp.exe", "");
+            _mockFS.CreateDirectory(@"c:\test\Project");
+            _mockFS.CreateDirectory(@"c:\test\Project\bin\");
+            _mockFS.WriteAllText(@"c:\program files\dotnet\dotnet.exe", "");
+
+            var project = UnconfiguredProjectFactory.Create(filePath: _ProjectFile);
+
+            var outputTypeEnum = new PageEnumValue(new EnumValue() { Name = outputType });
+            var data = new PropertyPageData()
+            {
+                Category = ConfigurationGeneral.SchemaName,
+                PropertyName = ConfigurationGeneral.OutputTypeProperty,
+                Value = outputTypeEnum
+            };
+            var projectProperties = ProjectPropertiesFactory.Create(project, data);
+
+            if (properties == null)
+            {
+                properties = new Dictionary<string, string>() {
+                    {"RunCommand", @"dotnet"},
+                    {"RunArguments", "exec " + "\"" + @"c:\test\project\bin\project.dll"+ "\""},
+                    {"RunWorkingDirectory",  @"bin\"},
+                    { "TargetFrameworkIdentifier", @".NetCoreApp" },
+                    { "OutDir", @"c:\test\project\bin\" }
+                };
+            }
+            var delegatePropertiesMock = IProjectPropertiesFactory
+             .MockWithPropertiesAndValues(properties);
+
+            var delegateProvider = IProjectPropertiesProviderFactory.Create(null, delegatePropertiesMock.Object);
+
+            var configuredProjectServices = Mock.Of<ConfiguredProjectServices>(o =>
+                o.ProjectPropertiesProvider == delegateProvider);
+
+            var configuredProject = Mock.Of<ConfiguredProject>(o =>
+                o.UnconfiguredProject == project &&
+                o.Services == configuredProjectServices);
+            var environment = IEnvironmentHelperFactory.ImplementGetEnvironmentVariable(_Path);
+
+            return CreateInstance(project: project, configuredProject : configuredProject, fileSystem: _mockFS, properties: projectProperties, environment: environment, debugger : debugger);
+        }
+
+        private ConsoleDebugTargetsProvider CreateInstance(UnconfiguredProject project = null,
+                                                           ConfiguredProject configuredProject = null,
+                                                           IDebugTokenReplacer tokenReplacer = null,
+                                                           IFileSystem fileSystem = null,
+                                                           IEnvironmentHelper environment = null,
+                                                           IActiveDebugFrameworkServices activeDebugFramework = null,
+                                                           ProjectProperties properties = null,
+                                                           IProjectThreadingService threadingService = null,
+                                                           IVsDebugger10 debugger = null)
+        {
+
+            environment = environment ?? Mock.Of<IEnvironmentHelper>();
+            tokenReplacer = tokenReplacer ?? IDebugTokenReplacerFactory.Create();
+            activeDebugFramework = activeDebugFramework ?? IActiveDebugFrameworkServicesFactory.ImplementGetConfiguredProjectForActiveFrameworkAsync(configuredProject);
+            threadingService = threadingService ?? IProjectThreadingServiceFactory.Create();
+            debugger = debugger ?? IVsDebugger10Factory.ImplementIsIntegratedConsoleEnabled(enabled: false);
+            
+            
+            return new ConsoleDebugTargetsProvider(project, tokenReplacer, fileSystem, environment, activeDebugFramework, properties, threadingService, IVsUIServiceFactory.Create<SVsShellDebugger, IVsDebugger10>(debugger));
         }
     }
 }
