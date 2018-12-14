@@ -19,9 +19,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
     [Export(typeof(IProjectAccessor))]
     internal class ProjectAccessor : IProjectAccessor
     {
-        // NOTE: It is very deliberate that we ConfigureAwait(true) in this class to switch 
-        // back to the thread type ("threadpool") where XXXLockAsync switched us too.
-
         private readonly IProjectLockService _projectLockService;
 
         [ImportingConstructor]
