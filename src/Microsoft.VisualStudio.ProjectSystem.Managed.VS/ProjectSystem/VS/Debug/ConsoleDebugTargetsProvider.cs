@@ -10,6 +10,7 @@ using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
+using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Text;
 
 using Task = System.Threading.Tasks.Task;
@@ -32,6 +33,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         private readonly IEnvironmentHelper _environment;
         private readonly IActiveDebugFrameworkServices _activeDebugFramework;
         private readonly ProjectProperties _properties;
+        private readonly IProjectThreadingService _threadingService;
+        private readonly IVsUIService<SVsShellDebugger, IVsDebugger10> _debugger;
         private readonly UnconfiguredProject _project;
 
         [ImportingConstructor]
@@ -40,13 +43,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                                            IFileSystem fileSystem,
                                            IEnvironmentHelper environment,
                                            IActiveDebugFrameworkServices activeDebugFramework,
-                                           ProjectProperties properties)
+                                           ProjectProperties properties,
+                                           IProjectThreadingService threadingService,
+                                           IVsUIService<SVsShellDebugger, IVsDebugger10> debugger)
         {
             _tokenReplacer = tokenReplacer;
             _fileSystem = fileSystem;
             _environment = environment;
             _activeDebugFramework = activeDebugFramework;
             _properties = properties;
+            _threadingService = threadingService;
+            _debugger = debugger;
             _project = project;
         }
 
@@ -122,14 +129,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             // Resolve the tokens in the profile
             ILaunchProfile resolvedProfile = await _tokenReplacer.ReplaceTokensInProfileAsync(activeProfile);
 
-            // For "run project", we want to launch the process if it's a console app via the command shell when 
-            // not debugging, except when this debug session is being launched for profiling.
-            bool useCmdShell =
-                    IsRunProjectCommand(resolvedProfile) &&
-                    (launchOptions & (DebugLaunchOptions.NoDebug | DebugLaunchOptions.Profiling)) == DebugLaunchOptions.NoDebug &&
-                    await IsConsoleAppAsync();
-
-            DebugLaunchSettings consoleTarget = await GetConsoleTargetForProfile(resolvedProfile, launchOptions, useCmdShell, validateSettings);
+            DebugLaunchSettings consoleTarget = await GetConsoleTargetForProfile(resolvedProfile, launchOptions, validateSettings);
 
             launchSettings.Add(consoleTarget);
 
@@ -184,12 +184,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             return string.Equals(profile.CommandName, LaunchSettingsProvider.RunProjectCommandName, StringComparison.OrdinalIgnoreCase);
         }
 
+        private async Task<bool> IsIntegratedConsoleEnabledAsync()
+        {
+            await _threadingService.SwitchToUIThread();
+
+            _debugger.Value.IsIntegratedConsoleEnabled(out bool enabled);
+
+            return enabled;
+        }
+
         /// <summary>
         /// This is called on F5 to return the list of debug targets. What we return depends on the type
         /// of project.
         /// </summary>
-        private async Task<DebugLaunchSettings> GetConsoleTargetForProfile(ILaunchProfile resolvedProfile, DebugLaunchOptions launchOptions,
-                                                                           bool useCmdShell, bool validateSettings)
+        private async Task<DebugLaunchSettings> GetConsoleTargetForProfile(ILaunchProfile resolvedProfile, DebugLaunchOptions launchOptions, bool validateSettings)
         {
             var settings = new DebugLaunchSettings(launchOptions);
 
@@ -297,8 +305,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 ValidateSettings(executable, workingDir, resolvedProfile.Name);
             }
 
-            GetExeAndArguments(useCmdShell, executable, arguments, out string finalExecutable, out string finalArguments);
-
             // Apply environment variables.
             if (resolvedProfile.EnvironmentVariables != null && resolvedProfile.EnvironmentVariables.Count > 0)
             {
@@ -308,9 +314,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 }
             }
 
-            settings.Executable = finalExecutable;
-            settings.Arguments = finalArguments;
-            settings.CurrentDirectory = workingDir;
             settings.LaunchOperation = DebugLaunchOperation.CreateProcess;
             settings.LaunchDebugEngineGuid = await GetDebuggingEngineAsync(configuredProject);
 
@@ -321,10 +324,41 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             if (settings.Environment.Count > 0)
             {
-                settings.LaunchOptions = settings.LaunchOptions | DebugLaunchOptions.MergeEnvironment;
+                settings.LaunchOptions |= DebugLaunchOptions.MergeEnvironment;
             }
 
+            bool useCmdShell = false;
+            if (await IsConsoleAppAsync())
+            {
+                if (await IsIntegratedConsoleEnabledAsync())
+                {
+                    settings.LaunchOptions |= DebugLaunchOptions.IntegratedConsole;
+                }
+
+                useCmdShell = UseCmdShellForConsoleLaunch(resolvedProfile, settings.LaunchOptions);
+            }
+
+            GetExeAndArguments(useCmdShell, executable, arguments, out string finalExecutable, out string finalArguments);
+
+            settings.Executable = finalExecutable;
+            settings.Arguments = finalArguments;
+            settings.CurrentDirectory = workingDir;
+
             return settings;
+        }
+
+        private static bool UseCmdShellForConsoleLaunch(ILaunchProfile profile, DebugLaunchOptions options)
+        {
+            if (!IsRunProjectCommand(profile))
+                return false;
+
+            if ((options & DebugLaunchOptions.IntegratedConsole) == DebugLaunchOptions.IntegratedConsole)
+                return false;
+            
+            if ((options & DebugLaunchOptions.Profiling) == DebugLaunchOptions.Profiling)
+                return false;
+
+            return (options & DebugLaunchOptions.NoDebug) == DebugLaunchOptions.NoDebug;
         }
 
         /// <summary>
