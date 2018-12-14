@@ -14,9 +14,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
 
         [ImportingConstructor]
         public PostBuildEventValueProvider(
-            IProjectLockService projectLockService,
+            IProjectAccessor projectAccessor,
             UnconfiguredProject project)
-            : base(projectLockService,
+            : base(projectAccessor,
                    project,
                    new PostBuildEventHelper())
         { }
