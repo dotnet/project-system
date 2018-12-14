@@ -9,3 +9,8 @@ M:Microsoft.VisualStudio.ProjectSystem.CommonProjectSystemTools.LoadedProject(Mi
 
 T:Microsoft.VisualStudio.ProjectSystem.ProjectAutoLoadAttribute; Using IProjectDynamicLoadComponent avoids accidently reloading the project while loading, switching branches, installing NuGet package, etc.
 T:Microsoft.VisualStudio.ProjectSystem.ConfiguredProjectAutoLoadAttribute; Using IProjectDynamicLoadComponent avoids accidently reloading the project while loading, switching branches, installing NuGet package, etc.
+
+M:System.Threading.Tasks.Task.ConfigureAwait(System.Boolean); "ConfigureAwait(true)" should be removed, and "ConfigureAwait(false)" should be replaced with "await TaskScheduler.Default"
+M:System.Threading.Tasks.Task`1.ConfigureAwait(System.Boolean); "ConfigureAwait(true)" should be removed, and "ConfigureAwait(false)" should be replaced with "await TaskScheduler.Default"
+M:System.Threading.Tasks.ValueTask.ConfigureAwait(System.Boolean); "ConfigureAwait(true)" should be removed, and "ConfigureAwait(false)" should be replaced with "await TaskScheduler.Default"
+M:System.Threading.Tasks.ValueTask`1.ConfigureAwait(System.Boolean); "ConfigureAwait(true)" should be removed, and "ConfigureAwait(false)" should be replaced with "await TaskScheduler.Default"
