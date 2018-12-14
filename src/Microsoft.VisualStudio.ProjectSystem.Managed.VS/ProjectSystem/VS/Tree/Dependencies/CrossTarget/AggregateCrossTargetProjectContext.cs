@@ -8,7 +8,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 {
     internal sealed class AggregateCrossTargetProjectContext
     {
-        private readonly ImmutableDictionary<string, ConfiguredProject> _configuredProjectsByTargetFramework;
+        private readonly ImmutableDictionary<string, ConfiguredProject> _configuredProjectByTargetFramework;
         private readonly ITargetFrameworkProvider _targetFrameworkProvider;
 
         public bool IsCrossTargeting { get; }
@@ -18,30 +18,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         public AggregateCrossTargetProjectContext(
             bool isCrossTargeting,
             ImmutableArray<ITargetFramework> targetFrameworks,
-            ImmutableDictionary<string, ConfiguredProject> configuredProjectsByTargetFramework,
+            ImmutableDictionary<string, ConfiguredProject> configuredProjectByTargetFramework,
             ITargetFramework activeTargetFramework,
             ITargetFrameworkProvider targetFrameworkProvider)
         {
             Requires.Argument(!targetFrameworks.IsDefaultOrEmpty, nameof(targetFrameworks), "Must contain at least one item.");
-            Requires.NotNullOrEmpty(configuredProjectsByTargetFramework, nameof(configuredProjectsByTargetFramework));
+            Requires.NotNullOrEmpty(configuredProjectByTargetFramework, nameof(configuredProjectByTargetFramework));
             Requires.NotNull(activeTargetFramework, nameof(activeTargetFramework));
             Requires.Argument(targetFrameworks.Contains(activeTargetFramework), nameof(targetFrameworks), "Must contain 'activeTargetFramework'.");
 
             IsCrossTargeting = isCrossTargeting;
             TargetFrameworks = targetFrameworks;
-            _configuredProjectsByTargetFramework = configuredProjectsByTargetFramework;
+            _configuredProjectByTargetFramework = configuredProjectByTargetFramework;
             ActiveTargetFramework = activeTargetFramework;
             _targetFrameworkProvider = targetFrameworkProvider;
         }
 
-        public IEnumerable<ConfiguredProject> InnerConfiguredProjects => _configuredProjectsByTargetFramework.Values;
+        public IEnumerable<ConfiguredProject> InnerConfiguredProjects => _configuredProjectByTargetFramework.Values;
 
         public ITargetFramework GetProjectFramework(ProjectConfiguration projectConfiguration)
         {
-            if (projectConfiguration.IsCrossTargeting())
+            if (projectConfiguration.Dimensions.TryGetValue(ConfigurationGeneral.TargetFrameworkProperty, out string targetFrameworkMoniker))
             {
-                string targetFrameworkMoniker = projectConfiguration.Dimensions[ConfigurationGeneral.TargetFrameworkProperty];
-
                 return _targetFrameworkProvider.GetTargetFramework(targetFrameworkMoniker);
             }
             else
@@ -52,7 +50,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
         public ConfiguredProject GetInnerConfiguredProject(ITargetFramework target)
         {
-            return _configuredProjectsByTargetFramework.FirstOrDefault((x, t) => t.Equals(x.Key), target).Value;
+            return _configuredProjectByTargetFramework.FirstOrDefault((x, t) => t.Equals(x.Key), target).Value;
         }
 
         /// <summary>

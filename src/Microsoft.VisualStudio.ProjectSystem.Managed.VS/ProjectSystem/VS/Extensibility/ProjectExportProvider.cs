@@ -4,8 +4,6 @@ using System;
 using System.ComponentModel.Composition;
 using System.Linq;
 
-using Microsoft.VisualStudio.Composition;
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Extensibility
 {
     /// <summary>
@@ -36,14 +34,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Extensibility
             }
 
             IProjectService projectService = _projectServiceAccessor.GetProjectService();
-            if (projectService == null)
-            {
-                return null;
-            }
 
-            UnconfiguredProject project = projectService.LoadedUnconfiguredProjects
-                                                    .FirstOrDefault(x => x.FullPath.Equals(projectFilePath,
-                                                                            StringComparison.OrdinalIgnoreCase));
+            UnconfiguredProject project = projectService?.LoadedUnconfiguredProjects
+                .FirstOrDefault(x => x.FullPath.Equals(projectFilePath, StringComparison.OrdinalIgnoreCase));
+
             return project?.Services.ExportProvider.GetExportedValueOrDefault<T>();
         }
     }
