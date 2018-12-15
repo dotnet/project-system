@@ -165,7 +165,7 @@ function InstallToolset {
   }
 
   if (!(Test-Path $ToolsetBuildProj)) {
-    & $MsbuildExe $ToolsetRestoreProj /t:restore /m /nologo /clp:None /warnaserror /v:quiet /p:NuGetPackageRoot=$NuGetPackageRoot /p:BaseIntermediateOutputPath=$ToolsetDir /p:ExcludeRestorePackageImports=true $logCmd
+    & $MsbuildExe $ToolsetRestoreProj /t:restore /m /nologo /clp:None /p:TreatWarningsAsErrors=true /v:quiet /p:NuGetPackageRoot=$NuGetPackageRoot /p:BaseIntermediateOutputPath=$ToolsetDir /p:ExcludeRestorePackageImports=true $logCmd
   }
 }
 
@@ -180,14 +180,14 @@ function Build {
   $useCodecov = $ci -and $env:CODECOV_TOKEN -and ($configuration -eq 'Debug') -and ($env:ghprbPullAuthorLogin -ne 'dotnet-bot')
   $useOpenCover = $useCodecov
 
-  & $MsbuildExe $ToolsetBuildProj /m /nologo /clp:Summary /nodeReuse:$nodeReuse /warnaserror /v:$verbosity $logCmd /p:Configuration=$configuration /p:SolutionPath=$solution /p:Restore=$restore /p:QuietRestore=true /p:Build=$build /p:Rebuild=$rebuild /p:Deploy=$deploy /p:Test=$test /p:IntegrationTest="false" /p:Sign=$sign /p:Pack=$pack /p:UseCodecov=$useCodecov /p:UseOpenCover=$useOpenCover /p:CIBuild=$ci /p:Optimize=$optimize /p:NuGetPackageRoot=$NuGetPackageRoot $properties
+  & $MsbuildExe $ToolsetBuildProj /m /nologo /clp:Summary /nodeReuse:$nodeReuse /p:TreatWarningsAsErrors=true /v:$verbosity $logCmd /p:Configuration=$configuration /p:SolutionPath=$solution /p:Restore=$restore /p:QuietRestore=true /p:Build=$build /p:Rebuild=$rebuild /p:Deploy=$deploy /p:Test=$test /p:IntegrationTest="false" /p:Sign=$sign /p:Pack=$pack /p:UseCodecov=$useCodecov /p:UseOpenCover=$useOpenCover /p:CIBuild=$ci /p:Optimize=$optimize /p:NuGetPackageRoot=$NuGetPackageRoot $properties
   if ((-not $?) -or ($lastExitCode -ne 0)) {
     throw "Aborting after build failure."
   }
 
   if ($useCodecov) {
     $CodecovProj = Join-Path $PSScriptRoot 'Codecov.proj'
-    & $MsbuildExe $CodecovProj /m /nologo /clp:Summary /nodeReuse:$nodeReuse /warnaserror /v:diag /t:Codecov /p:Configuration=$configuration /p:UseCodecov=$useCodecov /p:NuGetPackageRoot=$NuGetPackageRoot $properties
+    & $MsbuildExe $CodecovProj /m /nologo /clp:Summary /nodeReuse:$nodeReuse /p:TreatWarningsAsErrors=true /v:diag /t:Codecov /p:Configuration=$configuration /p:UseCodecov=$useCodecov /p:NuGetPackageRoot=$NuGetPackageRoot $properties
   }
 
   # create suite.json file

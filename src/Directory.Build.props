@@ -26,6 +26,7 @@
     <LangVersion>8.0</LangVersion>
     <Features>strict</Features>
     <NullableReferenceTypes>true</NullableReferenceTypes>
+    <WarningsNotAsErrors>$(WarningsNotAsErrors);8600;8601;8602;8603;8604;8618;8619;8620;8622;8625;8626;8629</WarningsNotAsErrors>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Language)' == 'VB'">
