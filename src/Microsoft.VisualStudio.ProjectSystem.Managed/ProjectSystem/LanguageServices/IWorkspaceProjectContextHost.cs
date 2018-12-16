@@ -29,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         ///     it will join the load when it starts.
         /// </remarks>
         Task PublishAsync(CancellationToken cancellationToken = default);
-               
+
         /// <summary>
         ///     Opens the <see cref="IWorkspaceProjectContext"/>, passing it to the specified action for writing.
         /// </summary>
@@ -41,6 +41,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         /// </exception>
         /// <exception cref="OperationCanceledException">
         ///     The result is awaited and the <see cref="ConfiguredProject"/> is unloaded.
+        /// </exception>
+        /// <exception cref="ActiveProjectConfigurationChangedException">
+        ///     The <see cref="IWorkspaceProjectContextHost"/> represents the active one, and 
+        ///     the configuration changed.
         /// </exception>
         Task OpenContextForWriteAsync(Func<IWorkspaceProjectContextAccessor, Task> action);
 
@@ -58,6 +62,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         /// </exception>
         /// <exception cref="OperationCanceledException">
         ///     The result is awaited and the <see cref="ConfiguredProject"/> is unloaded.
+        /// </exception>
+        /// <exception cref="ActiveProjectConfigurationChangedException">
+        ///     The <see cref="IWorkspaceProjectContextHost"/> represents the active one, and 
+        ///     the configuration changed.
         /// </exception>
         Task<T> OpenContextForWriteAsync<T>(Func<IWorkspaceProjectContextAccessor, Task<T>> action);
     }
