@@ -746,7 +746,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Dim appType As ApplicationTypeInfo = DirectCast(ApplicationTypeComboBox.SelectedItem, ApplicationTypeInfo)
             If appType IsNot Nothing _
                 AndAlso appType.ApplicationType = ApplicationTypes.WindowsApp _
-                AndAlso Me.UseApplicationFrameworkCheckBox.CheckState = CheckState.Checked _
+                AndAlso UseApplicationFrameworkCheckBox.CheckState = CheckState.Checked _
             Then
                 Return True
             Else

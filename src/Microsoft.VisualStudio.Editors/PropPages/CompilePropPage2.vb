@@ -187,7 +187,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
 
             Dim NotifyColumn As DataGridViewComboBoxColumn = CType(WarningsGridView.Columns.Item(NotifyColumnIndex), DataGridViewComboBoxColumn)
-            If _enabled AndAlso DisableAllWarningsCheckBox.CheckState = CheckState.Unchecked AndAlso Me.WarningsAsErrorCheckBox.CheckState = CheckState.Unchecked Then
+            If _enabled AndAlso DisableAllWarningsCheckBox.CheckState = CheckState.Unchecked AndAlso WarningsAsErrorCheckBox.CheckState = CheckState.Unchecked Then
                 For Each column As DataGridViewColumn In WarningsGridView.Columns
                     column.DefaultCellStyle.BackColor = WarningsGridView.DefaultCellStyle.BackColor
                 Next
@@ -682,11 +682,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Function
 
         Private Function TreatAllWarningsAsErrors() As Boolean
-            Return Me.WarningsAsErrorCheckBox.CheckState = CheckState.Checked
+            Return WarningsAsErrorCheckBox.CheckState = CheckState.Checked
         End Function
 
         Private Function DisableAllWarnings() As Boolean
-            Return Me.DisableAllWarningsCheckBox.CheckState = CheckState.Checked
+            Return DisableAllWarningsCheckBox.CheckState = CheckState.Checked
         End Function
 
         ''' <summary>
@@ -704,7 +704,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     Return True
                 End If
 
-                If Me.DisableAllWarningsCheckBox.CheckState = CheckState.Indeterminate Then
+                If DisableAllWarningsCheckBox.CheckState = CheckState.Indeterminate Then
                     Return True
                 End If
 

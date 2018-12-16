@@ -421,7 +421,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <remarks></remarks>
         Public Property IsCommonProperty() As Boolean
             Get
-                Return ((Me.Flags And ControlDataFlags.CommonProperty) = ControlDataFlags.CommonProperty)
+                Return ((Flags And ControlDataFlags.CommonProperty) = ControlDataFlags.CommonProperty)
             End Get
             Set(Value As Boolean)
                 If Value Then
@@ -463,7 +463,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <remarks></remarks>
         Public Property IsDirty() As Boolean
             Get
-                Return ((Me.Flags And ControlDataFlags.Dirty) = ControlDataFlags.Dirty)
+                Return ((Flags And ControlDataFlags.Dirty) = ControlDataFlags.Dirty)
             End Get
             Set(Value As Boolean)
                 If Value Then
