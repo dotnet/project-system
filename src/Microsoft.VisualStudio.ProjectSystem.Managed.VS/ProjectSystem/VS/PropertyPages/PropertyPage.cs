@@ -363,7 +363,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 }
             }
 
-            OnSetObjects(false);
+            WaitForAsync(() => OnSetObjects(false));
         }
     }
 }
