@@ -13,8 +13,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
     internal sealed class Dependency : IDependency
     {
-        private static readonly DependencyIconSetCache s_iconSetCache = new DependencyIconSetCache();
-
         // These priorities are for graph nodes only and are used to group graph nodes 
         // appropriately in order groups predefined order instead of alphabetically.
         // Order is not changed for top dependency nodes only for graph hierarchies.

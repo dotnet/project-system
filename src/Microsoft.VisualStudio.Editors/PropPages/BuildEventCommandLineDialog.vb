@@ -160,7 +160,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             MacrosPanel.Visible = False
             overarchingTableLayoutPanel.RowStyles.Item(1).SizeType = SizeType.AutoSize
-            Height = Height - MacrosPanel.Height
+            Height -= MacrosPanel.Height
 
             ShowMacrosButton.Focus()
 
@@ -176,7 +176,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             MacrosPanel.Visible = True
             overarchingTableLayoutPanel.RowStyles.Item(1).SizeType = SizeType.Percent
-            Height = Height + MacrosPanel.Height
+            Height += MacrosPanel.Height
 
             HideMacrosButton.Focus()
 

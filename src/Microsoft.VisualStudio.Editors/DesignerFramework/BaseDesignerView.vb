@@ -31,7 +31,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <remarks></remarks>
         Protected Friend Sub EnterProjectCheckoutSection()
             Debug.Assert(_checkoutSectionCount >= 0, "Bad m_CheckoutCriticalSectionCount count")
-            _checkoutSectionCount = _checkoutSectionCount + 1
+            _checkoutSectionCount += 1
         End Sub
 
 
@@ -62,7 +62,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         ''' <remarks></remarks>
         Protected Friend Sub LeaveProjectCheckoutSection()
-            _checkoutSectionCount = _checkoutSectionCount - 1
+            _checkoutSectionCount -= 1
             Debug.Assert(_checkoutSectionCount >= 0, "Mismatched EnterProjectCheckoutSection/LeaveProjectCheckoutSection calls")
             If _checkoutSectionCount = 0 AndAlso _projectReloadedDuringCheckout Then
                 Try

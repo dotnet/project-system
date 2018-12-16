@@ -848,7 +848,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                         ResourceFile.SuspendDelayingCheckingForErrors(True)
                         Return
                     End If
-                    _imageStartIndex = _imageStartIndex + 1
+                    _imageStartIndex += 1
                 End While
             Else
                 ' Try to merge...

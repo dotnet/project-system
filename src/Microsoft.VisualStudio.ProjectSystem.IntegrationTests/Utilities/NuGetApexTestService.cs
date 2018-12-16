@@ -55,7 +55,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             while (!complete)
             {
+#pragma warning disable VSTHRD104 // Offer async methods
                 complete = NuGetUIThreadHelper.JoinableTaskFactory.Run(
+#pragma warning restore VSTHRD104 // Offer async methods
                     () => SolutionRestoreStatusProvider.IsRestoreCompleteAsync(CancellationToken.None));
 
                 if (!complete)

@@ -122,7 +122,7 @@ Namespace Microsoft.VisualStudio.Editors.OptionPages
                     File.WriteAllText(sdkTxtPath, $"UsePreviews={usePreviews}")
                     attempts = 0
                 Catch ex As Exception
-                    attempts = attempts - 1
+                    attempts -= 1
                 End Try
             Loop
         End Sub

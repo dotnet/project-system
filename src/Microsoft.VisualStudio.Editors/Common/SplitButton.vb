@@ -67,7 +67,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
                     y2:=bounds.Bottom - dividerLineVerticalPadding)
 
                 bounds.Offset(_pushButtonWidth, 0)
-                bounds.Width = bounds.Width - _pushButtonWidth
+                bounds.Width -= _pushButtonWidth
             Else
                 g.DrawLine(SystemPens.ButtonHighlight,
                     x1:=bounds.Right - _pushButtonWidth,
@@ -81,7 +81,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
                     x2:=bounds.Right - _pushButtonWidth - singlePixelWidth,
                     y2:=bounds.Bottom - dividerLineVerticalPadding)
 
-                bounds.Width = bounds.Width - _pushButtonWidth
+                bounds.Width -= _pushButtonWidth
             End If
 
             PaintArrow(g, _dropDownRectangle)
