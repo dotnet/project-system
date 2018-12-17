@@ -2591,7 +2591,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     If Not resource.Name.Equals(NewFormattedNames(i), StringComparison.Ordinal) Then
                         resource.Name = NewFormattedNames(i)
                     End If
-                    i = i + 1
+                    i += 1
                 Next
             End If
         End Sub
@@ -2711,7 +2711,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                         ' We should treat Surrogate characters specially. Do not split them into two characters
                         If i < Name.Length - 1 AndAlso IsHighSurrogate(ch) AndAlso IsLowSurrogate(Name.Chars(i + 1)) Then
                             chstr = CStr(ch) + CStr(Name.Chars(i + 1))
-                            i = i + 1
+                            i += 1
                         Else
                             ' broken surrogates are always invalid.
                             unsupported = True

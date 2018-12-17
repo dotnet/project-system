@@ -476,7 +476,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
 
             If RootNamespace <> "" Then
                 'Append period for comparison check
-                RootNamespace = RootNamespace & "."
+                RootNamespace &= "."
                 RootNamespaceLength = RootNamespace.Length
             End If
 
@@ -1388,7 +1388,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 Dim objFrameworkName As New FrameworkName(TryCast(objVersionNumber, String))
                 If objFrameworkName IsNot Nothing Then
                     Dim versionNumber As Integer = objFrameworkName.Version.Major
-                    versionNumber = versionNumber << 16
+                    versionNumber <<= 16
                     versionNumber += objFrameworkName.Version.Minor
                     Return CUInt(versionNumber)
                 Else

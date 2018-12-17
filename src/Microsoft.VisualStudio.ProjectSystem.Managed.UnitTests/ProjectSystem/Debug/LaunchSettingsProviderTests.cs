@@ -543,8 +543,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 // Setup SCC to verify it is called before modifying the file
                 var mockScc = new Mock<ISourceCodeControlIntegration>(MockBehavior.Strict);
                 mockScc.Setup(m => m.CanChangeProjectFilesAsync(It.IsAny<IReadOnlyCollection<string>>())).Returns(Task.FromResult(true));
-                var sccProviders = new OrderPrecedenceImportCollection<ISourceCodeControlIntegration>(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst, (UnconfiguredProject)null);
-                sccProviders.Add(mockScc.Object);
+                var sccProviders = new OrderPrecedenceImportCollection<ISourceCodeControlIntegration>(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst, (UnconfiguredProject)null)
+                {
+                    mockScc.Object
+                };
                 provider.SetSourceControlProviderCollection(sccProviders);
 
                 await provider.UpdateAndSaveSettingsAsync(testSettings.Object);
@@ -619,8 +621,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 testSettings.Setup(m => m.GlobalSettings).Returns(() => ImmutableStringDictionary<object>.EmptyOrdinal);
 
                 var mockScc = new Mock<ISourceCodeControlIntegration>(MockBehavior.Strict);
-                var sccProviders = new OrderPrecedenceImportCollection<ISourceCodeControlIntegration>(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst, (UnconfiguredProject)null);
-                sccProviders.Add(mockScc.Object);
+                var sccProviders = new OrderPrecedenceImportCollection<ISourceCodeControlIntegration>(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst, (UnconfiguredProject)null)
+                {
+                    mockScc.Object
+                };
                 provider.SetSourceControlProviderCollection(sccProviders);
 
                 await provider.UpdateAndSaveSettingsInternalAsyncTest(testSettings.Object, persistToDisk: false);
