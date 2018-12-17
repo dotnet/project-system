@@ -108,8 +108,11 @@
   
     <!-- Publish capability enables the Publish command for the Project -->
     <ProjectCapability Include="Publish"/>
-  </ItemGroup>
 
+    <!-- All Microsoft.NET.Sdk Exe projects, except WPF and WinForms exes, can be published to app service -->
+    <ProjectCapability Include="AppServicePublish" Condition="'$(OutputType)' == 'Exe'" />
+  </ItemGroup>
+  
   <!-- Common Project System rules that override rules defined in msbuild. These are exact copy of the rules defined in msbuild. -->
   <ItemGroup Condition="'$(DefineCommonManagedItemSchemas)' == 'true'">
 
