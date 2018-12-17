@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.Shell.Interop;
+using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 {
@@ -362,7 +363,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 }
             }
 
-            WaitForAsync(() => OnSetObjects(false));
+            OnSetObjects(false).Forget();
         }
     }
 }
