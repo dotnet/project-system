@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Buffers.PooledObjects;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
@@ -170,7 +171,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             };
         }
 
-        private bool TryGetConfiguredProjectState(ConfiguredProject configuredProject, out IWorkspaceProjectContext workspaceProjectContext, out IConfiguredProjectHostObject configuredProjectHostObject)
+        private bool TryGetConfiguredProjectState(
+            ConfiguredProject configuredProject,
+            [NotNullWhenTrue]out IWorkspaceProjectContext? workspaceProjectContext,
+            [NotNullWhenTrue]out IConfiguredProjectHostObject? configuredProjectHostObject)
         {
             lock (_gate)
             {
@@ -181,8 +185,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
                 }
                 else
                 {
-                    workspaceProjectContext = null!;
-                    configuredProjectHostObject = null!;
+                    workspaceProjectContext = null;
+                    configuredProjectHostObject = null;
                     return false;
                 }
             }
@@ -229,7 +233,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 
             foreach ((string targetFramework, ConfiguredProject configuredProject) in configuredProjectsMap)
             {
-                if (!TryGetConfiguredProjectState(configuredProject, out IWorkspaceProjectContext workspaceProjectContext, out IConfiguredProjectHostObject configuredProjectHostObject))
+                if (!TryGetConfiguredProjectState(configuredProject, out IWorkspaceProjectContext? workspaceProjectContext, out IConfiguredProjectHostObject? configuredProjectHostObject))
                 {
                     // Get the target path for the configured project.
                     ProjectProperties projectProperties = configuredProject.Services.ExportProvider.GetExportedValue<ProjectProperties>();
