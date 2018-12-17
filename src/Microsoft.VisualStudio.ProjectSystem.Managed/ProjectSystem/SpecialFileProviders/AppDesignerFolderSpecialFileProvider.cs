@@ -21,6 +21,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
         private readonly Lazy<IPhysicalProjectTree> _projectTree;
         private readonly ProjectProperties _properties;
 
+        // For unit tests - tests will set the fields too.
+#pragma warning disable CS8618
+        protected AppDesignerFolderSpecialFileProvider()
+        {
+        }
+#pragma warning restore CS8618
+
         [ImportingConstructor]
         public AppDesignerFolderSpecialFileProvider(Lazy<IPhysicalProjectTree> projectTree, ProjectProperties properties)
         {
