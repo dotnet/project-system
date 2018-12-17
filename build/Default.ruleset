@@ -69,6 +69,8 @@
     <Rule Id="CA3075" Action="Error" />
   </Rules>
   <Rules AnalyzerId="Microsoft.CodeAnalysis.Analyzers" RuleNamespace="Microsoft.CodeAnalysis.Analyzers">
+    <!-- These diagnostics apply to the source code of analyzers themselves. -->
+    <!-- We do not have any analyzers in this repository, so disable these. -->
     <Rule Id="RS1001" Action="None" />
     <Rule Id="RS1002" Action="None" />
     <Rule Id="RS1003" Action="None" />
@@ -81,8 +83,16 @@
     <Rule Id="RS1011" Action="None" />
     <Rule Id="RS1012" Action="None" />
     <Rule Id="RS1013" Action="None" />
-    <Rule Id="RS1014" Action="Warning" />
-    <Rule Id="RS1022" Action="None" />  <!-- https://github.com/dotnet/roslyn-analyzers/issues/1861 -->
+    <Rule Id="RS1014" Action="Warning" /> <!-- DoNotIgnoreReturnValueOnImmutableObjectMethodInvocation -->
+    <Rule Id="RS1015" Action="None" />
+    <Rule Id="RS1016" Action="None" />
+    <Rule Id="RS1017" Action="None" />
+    <Rule Id="RS1018" Action="None" />
+    <Rule Id="RS1019" Action="None" />
+    <Rule Id="RS1020" Action="None" />
+    <Rule Id="RS1021" Action="None" />
+    <Rule Id="RS1022" Action="None" />
+    <Rule Id="RS1023" Action="None" />
   </Rules>
   <Rules AnalyzerId="Microsoft.Composition.Analyzers" RuleNamespace="Microsoft.Composition.Analyzers">
     <Rule Id="RS0006" Action="Error" />
