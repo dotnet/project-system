@@ -18,9 +18,9 @@ namespace Microsoft.VisualStudio
         private static readonly object[] s_twoArgumentArray = new object[2];
         private static readonly object[] s_threeArgumentArray = new object[3];
         private readonly string _format;
-        private readonly object _argument1;
-        private readonly object _argument2;
-        private readonly object _argument3;
+        private readonly object? _argument1;
+        private readonly object? _argument2;
+        private readonly object? _argument3;
         private readonly object[] _arguments;
 
         public StringFormat(string text)
@@ -68,17 +68,17 @@ namespace Microsoft.VisualStudio
             _arguments = arguments;
         }
 
-        public object Argument1
+        public object? Argument1
         {
             get { return _argument1; }
         }
 
-        public object Argument2
+        public object? Argument2
         {
             get { return _argument2; }
         }
 
-        public object Argument3
+        public object? Argument3
         {
             get { return _argument3; }
         }

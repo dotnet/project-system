@@ -5,12 +5,12 @@ using System.Collections.Generic;
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
     /// <summary>
-    /// This class is used to hold the data serialized from the json file.  
+    /// This class is used to hold the data serialized from the json file.
     /// </summary>
     internal class LaunchSettingsData
     {
-        public Dictionary<string, object> OtherSettings { get; set; }
+        public Dictionary<string, object>? OtherSettings { get; set; }
 
-        public List<LaunchProfileData> Profiles { get; set; }
+        public List<LaunchProfileData>? Profiles { get; set; }
     }
 }

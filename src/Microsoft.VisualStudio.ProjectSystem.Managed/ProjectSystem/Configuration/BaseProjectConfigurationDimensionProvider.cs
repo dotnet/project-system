@@ -24,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         /// <param name="dimensionName">Name of the dimension.</param>
         /// <param name="propertyName">Name of the project property containing the dimension values.</param>
         /// <param name="dimensionDefaultValue">The default value of the dimension, for example "AnyCPU".</param>
-        protected BaseProjectConfigurationDimensionProvider(IProjectAccessor projectAccessor, string dimensionName, string propertyName, string dimensionDefaultValue = null)
+        protected BaseProjectConfigurationDimensionProvider(IProjectAccessor projectAccessor, string dimensionName, string propertyName, string? dimensionDefaultValue = null)
         {
             Requires.NotNull(projectAccessor, nameof(projectAccessor));
 
@@ -44,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             get;
         }
 
-        public string DimensionDefaultValue
+        public string? DimensionDefaultValue
         {
             get;
         }
@@ -134,7 +134,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
 
         public async Task<IEnumerable<KeyValuePair<string, string>>> GetBestGuessDefaultValuesForDimensionsAsync(UnconfiguredProject project)
         {
-            string defaultValue = await FindDefaultValueFromDimensionPropertyAsync(project) ?? DimensionDefaultValue;
+            string? defaultValue = await FindDefaultValueFromDimensionPropertyAsync(project) ?? DimensionDefaultValue;
             if (defaultValue != null)
                 return new[] { new KeyValuePair<string, string>(DimensionName, defaultValue) };
 
@@ -158,7 +158,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         /// <remarks>
         /// This needs to get the evaluated property in order to get inherited properties defines in props or targets.
         /// </remarks>
-        protected async Task<string> GetPropertyValue(UnconfiguredProject project, string propertyName = null)
+        protected async Task<string> GetPropertyValue(UnconfiguredProject project, string? propertyName = null)
         {
             ConfiguredProject configuredProject = await project.GetSuggestedConfiguredProjectAsync();
 
@@ -168,7 +168,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             });
         }
 
-        private async Task<string> FindDefaultValueFromDimensionPropertyAsync(UnconfiguredProject project)
+        private async Task<string?> FindDefaultValueFromDimensionPropertyAsync(UnconfiguredProject project)
         {
             string values = await FindDimensionPropertyAsync(project);
             if (string.IsNullOrEmpty(values))

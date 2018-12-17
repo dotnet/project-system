@@ -82,7 +82,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 UnderlyingContext.AddAnalyzerReference(referencePath);
             }
 
-            public void AddDynamicFile(string filePath, IEnumerable<string> folderNames = null)
+            public void AddDynamicFile(string filePath, IEnumerable<string>? folderNames = null)
             {
                 UnderlyingContext.AddDynamicFile(filePath, folderNames);
             }
@@ -97,7 +97,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 UnderlyingContext.AddProjectReference(project, properties);
             }
 
-            public void AddSourceFile(string filePath, bool isInCurrentContext = true, IEnumerable<string> folderNames = null, SourceCodeKind sourceCodeKind = SourceCodeKind.Regular)
+            public void AddSourceFile(string filePath, bool isInCurrentContext = true, IEnumerable<string>? folderNames = null, SourceCodeKind sourceCodeKind = SourceCodeKind.Regular)
             {
                 UnderlyingContext.AddSourceFile(filePath, isInCurrentContext, folderNames, sourceCodeKind);
             }

@@ -48,7 +48,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
                 }
                 else if (nowActive)
                 {
-                    _activationTask.TrySetResult(null);
+                    _activationTask.TrySetResult(null!);
                 }
 
                 return _activationTask.Task;

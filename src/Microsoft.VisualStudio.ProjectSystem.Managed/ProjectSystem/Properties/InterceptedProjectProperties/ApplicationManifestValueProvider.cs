@@ -36,7 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// These three values map to two MSBuild properties - ApplicationManifest (specified if it's a path) or NoWin32Manifest 
         /// which is true for the second case and false or non-existent for the third.
         /// </remarks>
-        public override async Task<string> OnGetEvaluatedPropertyValueAsync(string evaluatedPropertyValue, IProjectProperties defaultProperties)
+        public override async Task<string?> OnGetEvaluatedPropertyValueAsync(string? evaluatedPropertyValue, IProjectProperties defaultProperties)
         {
             if (!string.IsNullOrEmpty(evaluatedPropertyValue))
             {
@@ -56,9 +56,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// <summary>
         /// Sets the application manifest property
         /// </summary>
-        public override async Task<string> OnSetPropertyValueAsync(string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string> dimensionalConditions = null)
+        public override async Task<string?> OnSetPropertyValueAsync(string? unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
         {
-            string returnValue = null;
+            string? returnValue = null;
 
             // We treat NULL/empty value as reset to default and remove the two properties from the project.
             if (string.IsNullOrEmpty(unevaluatedPropertyValue) || string.Equals(unevaluatedPropertyValue, DefaultManifestValue, StringComparison.InvariantCultureIgnoreCase))

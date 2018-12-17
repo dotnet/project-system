@@ -58,11 +58,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
             //
             // TODO: Read these default values from the rules themselves
             // See: https://github.com/dotnet/roslyn-project-system/issues/209
-            string folderName = ruleSnapshots.GetPropertyOrDefault(AppDesigner.SchemaName, AppDesigner.FolderNameProperty, "Properties");
-            string contextsVisibleOnlyInShowAllFiles = ruleSnapshots.GetPropertyOrDefault(AppDesigner.SchemaName, AppDesigner.ContentsVisibleOnlyInShowAllFilesProperty, "false");
+            string? folderName = ruleSnapshots.GetPropertyOrDefault(AppDesigner.SchemaName, AppDesigner.FolderNameProperty, "Properties");
+            string? contextsVisibleOnlyInShowAllFiles = ruleSnapshots.GetPropertyOrDefault(AppDesigner.SchemaName, AppDesigner.ContentsVisibleOnlyInShowAllFilesProperty, "false");
 
-            projectTreeSettings = projectTreeSettings.SetItem(AppDesigner.FolderNameProperty, folderName);
-            projectTreeSettings = projectTreeSettings.SetItem(AppDesigner.ContentsVisibleOnlyInShowAllFilesProperty, contextsVisibleOnlyInShowAllFiles);
+            projectTreeSettings = projectTreeSettings.SetItem(AppDesigner.FolderNameProperty, folderName!);
+            projectTreeSettings = projectTreeSettings.SetItem(AppDesigner.ContentsVisibleOnlyInShowAllFilesProperty, contextsVisibleOnlyInShowAllFiles!);
         }
 
         protected sealed override bool IsCandidateSpecialFolder(IProjectTreeCustomizablePropertyContext propertyContext, ProjectTreeFlags flags)

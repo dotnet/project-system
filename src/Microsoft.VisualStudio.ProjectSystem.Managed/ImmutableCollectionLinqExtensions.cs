@@ -39,7 +39,8 @@ namespace Microsoft.VisualStudio
             return false;
         }
 
-        public static T FirstOrDefault<T, TArg>(this ImmutableArray<T> immutableArray, Func<T, TArg, bool> predicate, TArg arg)
+        public static T? FirstOrDefault<T, TArg>(this ImmutableArray<T> immutableArray, Func<T, TArg, bool> predicate, TArg arg)
+            where T : class
         {
             foreach (T obj in immutableArray)
             {

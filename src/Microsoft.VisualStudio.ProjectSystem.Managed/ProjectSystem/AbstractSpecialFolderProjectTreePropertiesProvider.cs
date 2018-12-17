@@ -93,7 +93,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             propertyValues.Flags = propertyValues.Flags.Union(FolderFlags);
 
             // Avoid overwriting icon if the image provider didn't provide one
-            ProjectImageMoniker icon = _imageProvider.GetProjectImage(FolderImageKey);
+            ProjectImageMoniker? icon = _imageProvider.GetProjectImage(FolderImageKey);
             if (icon != null)
             {
                 propertyValues.Icon = icon;

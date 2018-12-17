@@ -95,12 +95,12 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public void OnProjectLoadedInHost()
         {
-            _projectLoadedInHost.SetResult(null);
+            _projectLoadedInHost.SetResult(null!);
         }
 
         public void OnPrioritizedProjectLoadedInHost()
         {
-            _prioritizedProjectLoadedInHost.SetResult(null);
+            _prioritizedProjectLoadedInHost.SetResult(null!);
 
             _threadingService.ExecuteSynchronously(() => _prioritizedTaskQueue.DrainAsync());
         }

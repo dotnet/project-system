@@ -23,8 +23,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         private readonly ConfiguredProject _project;
         private readonly IProjectLogger _logger;
         private readonly ExportFactory<IWorkspaceContextHandler>[] _workspaceContextHandlerFactories;
-        private IWorkspaceProjectContext _context;
-        private ExportLifetimeContext<IWorkspaceContextHandler>[] _handlers;
+        private IWorkspaceProjectContext? _context;
+        private ExportLifetimeContext<IWorkspaceContextHandler>[]? _handlers;
 
         [ImportingConstructor]
         public ApplyChangesToWorkspaceContext(ConfiguredProject project, IProjectLogger logger, [ImportMany]ExportFactory<IWorkspaceContextHandler>[] workspaceContextHandlerFactories)
@@ -137,7 +137,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             foreach (ExportLifetimeContext<IWorkspaceContextHandler> handler in _handlers)
             {
-                handler.Value.Initialize(_context);
+                handler.Value.Initialize(_context!);
             }
         }
 
@@ -147,15 +147,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             //
             // We still forward those 'removes' of references, sources, etc onto Roslyn to avoid duplicate/incorrect results when the next
             // successful build occurs, because it will be diff between it and this failed build.
-            _context.LastDesignTimeBuildSucceeded = snapshot.IsEvaluationSucceeded();
+            if (_context != null)
+                _context.LastDesignTimeBuildSucceeded = snapshot.IsEvaluationSucceeded();
         }
 
         private void ProcessOptions(IProjectRuleSnapshot snapshot)
         {
-            // We just pass all options to Roslyn
-            string commandlineArguments = string.Join(" ", snapshot.Items.Keys);
+            if (_context != null)
+            {
+                // We just pass all options to Roslyn
+                string commandlineArguments = string.Join(" ", snapshot.Items.Keys);
 
-            _context.SetOptions(commandlineArguments);
+                _context.SetOptions(commandlineArguments);
+            }
         }
 
         private void ProcessCommandLine(IComparable version, IProjectChangeDiff differences, bool isActiveContext, CancellationToken cancellationToken)
@@ -174,6 +178,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
         private void ProcessCommandLineHandlers(IComparable version, BuildOptions added, BuildOptions removed, bool isActiveContext, CancellationToken cancellationToken)
         {
+            if (_handlers == null)
+                return;
+
             foreach (ExportLifetimeContext<IWorkspaceContextHandler> handler in _handlers)
             {
                 if (cancellationToken.IsCancellationRequested)
@@ -188,6 +195,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
         private void ProcessProjectEvaluationHandlers(IComparable version, IProjectVersionedValue<IProjectSubscriptionUpdate> update, bool isActiveContext, CancellationToken cancellationToken)
         {
+            if (_handlers == null)
+                return;
+
             foreach (ExportLifetimeContext<IWorkspaceContextHandler> handler in _handlers)
             {
                 if (cancellationToken.IsCancellationRequested)

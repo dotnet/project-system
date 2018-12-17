@@ -50,7 +50,7 @@ namespace Microsoft.VisualStudio.Text
             return FirstOrDefault() ?? throw new InvalidOperationException("Sequence is empty.");
         }
 
-        public string FirstOrDefault()
+        public string? FirstOrDefault()
         {
             var enumerator = new Enumerator(this);
             return enumerator.MoveNext() ? enumerator.Current : null;
@@ -67,7 +67,7 @@ namespace Microsoft.VisualStudio.Text
                 _index = 0;
                 _input = split._input;
                 _delimiter = split._delimiter;
-                Current = null;
+                Current = null!;
             }
 
             public string Current { get; private set; }
@@ -106,7 +106,7 @@ namespace Microsoft.VisualStudio.Text
             void IEnumerator.Reset()
             {
                 _index = 0;
-                Current = default;
+                Current = null!;
             }
 
             void IDisposable.Dispose() {}
@@ -120,7 +120,7 @@ namespace Microsoft.VisualStudio.Text
         ///     can compute its result without allocation.
         /// </remarks>
         /// <inheritdoc cref="System.Linq.Enumerable.FirstOrDefault{TSource}(IEnumerable{TSource})"/>
-        public static string FirstOrDefault(this LazyStringSplit lazyStringSplit)
+        public static string? FirstOrDefault(this LazyStringSplit lazyStringSplit)
         {
             LazyStringSplit.Enumerator enumerator = lazyStringSplit.GetEnumerator();
 

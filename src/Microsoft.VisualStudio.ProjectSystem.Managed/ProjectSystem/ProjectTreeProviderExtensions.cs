@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         ///     </para>
         ///     <paramref name="target"/> is <see langword="null"/>.
         /// </exception>
-        public static string GetRootedAddNewItemDirectory(this IProjectTreeProvider provider, IProjectTree target)
+        public static string? GetRootedAddNewItemDirectory(this IProjectTreeProvider provider, IProjectTree target)
         {
             Requires.NotNull(provider, nameof(provider));
             Requires.NotNull(target, nameof(target));

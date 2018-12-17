@@ -42,12 +42,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         /// Note that at any given time, we can have only a single non-disposed aggregate project context.
         /// Otherwise, we can end up with an invalid state of multiple workspace project contexts for the same configured project.
         /// </summary>
-        private AggregateWorkspaceProjectContext _currentAggregateProjectContext;
+        private AggregateWorkspaceProjectContext? _currentAggregateProjectContext;
 
         /// <summary>
         /// Current TargetFramework for non-cross targeting project - accesses to this field must be done with a lock on <see cref="_gate"/>.
         /// </summary>
-        private string _currentTargetFramework;
+        private string? _currentTargetFramework;
 
 
         [ImportingConstructor]
@@ -70,11 +70,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             _projectConfigurationsWithSubscriptions = new HashSet<ProjectConfiguration>();
         }
 
-        public object HostSpecificErrorReporter => _currentAggregateProjectContext?.HostSpecificErrorReporter;
+        public object? HostSpecificErrorReporter => _currentAggregateProjectContext?.HostSpecificErrorReporter;
 
-        public IWorkspaceProjectContext ActiveProjectContext => _currentAggregateProjectContext?.ActiveProjectContext;
+        public IWorkspaceProjectContext? ActiveProjectContext => _currentAggregateProjectContext?.ActiveProjectContext;
 
-        public object HostSpecificEditAndContinueService => _currentAggregateProjectContext?.ENCProjectConfig;
+        public object? HostSpecificEditAndContinueService => _currentAggregateProjectContext?.ENCProjectConfig;
 
 #pragma warning disable RS0030 // symbol ProjectAutoLoad is banned
         [ProjectAutoLoad(completeBy: ProjectLoadCheckpoint.ProjectFactoryCompleted)]
@@ -122,10 +122,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
         private async Task UpdateProjectContextAndSubscriptionsAsync()
         {
-            AggregateWorkspaceProjectContext previousProjectContext = _currentAggregateProjectContext;
-            AggregateWorkspaceProjectContext newProjectContext = await UpdateProjectContextAsync();
+            AggregateWorkspaceProjectContext? previousProjectContext = _currentAggregateProjectContext;
+            AggregateWorkspaceProjectContext? newProjectContext = await UpdateProjectContextAsync();
 
-            if (previousProjectContext != newProjectContext)
+            if (previousProjectContext != newProjectContext && newProjectContext != null)
             {
                 // Add subscriptions for the new configured projects in the new project context.
                 await AddSubscriptionsAsync(newProjectContext);
@@ -146,34 +146,35 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         /// Ensures that <see cref="_currentAggregateProjectContext"/> is updated for the latest target frameworks from the project properties
         /// and returns this value.
         /// </summary>
-        private Task<AggregateWorkspaceProjectContext> UpdateProjectContextAsync()
+        private Task<AggregateWorkspaceProjectContext?> UpdateProjectContextAsync()
         {
             // Ensure that only single thread is attempting to create a project context.
-            AggregateWorkspaceProjectContext previousContextToDispose = null;
+            AggregateWorkspaceProjectContext? previousContextToDispose = null;
             return ExecuteWithinLockAsync(async () =>
             {
                 await _commonServices.ThreadingService.SwitchToUIThread();
 
-                string newTargetFramework = null;
+                string? newTargetFramework = null;
                 ConfigurationGeneral projectProperties = await _commonServices.ActiveConfiguredProjectProperties.GetConfigurationGeneralPropertiesAsync();
 
                 // Check if we have already computed the project context.
-                if (_currentAggregateProjectContext != null)
+                AggregateWorkspaceProjectContext? currentAggregateProjectContext = _currentAggregateProjectContext;
+                if (currentAggregateProjectContext != null)
                 {
                     // For non-cross targeting projects, we can use the current project context if the TargetFramework hasn't changed.
                     // For cross-targeting projects, we need to verify that the current project context matches latest frameworks targeted by the project.
                     // If not, we create a new one and dispose the current one.
 
-                    if (!_currentAggregateProjectContext.IsCrossTargeting)
+                    if (!currentAggregateProjectContext.IsCrossTargeting)
                     {
                         newTargetFramework = (string)await projectProperties.TargetFramework.GetValueAsync();
                         if (StringComparers.PropertyValues.Equals(_currentTargetFramework, newTargetFramework))
                         {
-                            return _currentAggregateProjectContext;
+                            return currentAggregateProjectContext;
                         }
 
                         // Dispose the old workspace project context for the previous target framework.
-                        await DisposeAggregateProjectContextAsync(_currentAggregateProjectContext);
+                        await DisposeAggregateProjectContextAsync(currentAggregateProjectContext);
                     }
                     else
                     {
@@ -181,12 +182,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                         ProjectConfiguration activeProjectConfiguration = _commonServices.ActiveConfiguredProject.ProjectConfiguration;
                         IImmutableSet<ProjectConfiguration> knownProjectConfigurations = await _commonServices.Project.Services.ProjectConfigurationsService.GetKnownProjectConfigurationsAsync();
                         if (knownProjectConfigurations.All(c => c.IsCrossTargeting()) &&
-                            _currentAggregateProjectContext.HasMatchingTargetFrameworks(activeProjectConfiguration, knownProjectConfigurations))
+                            currentAggregateProjectContext.HasMatchingTargetFrameworks(activeProjectConfiguration, knownProjectConfigurations))
                         {
-                            return _currentAggregateProjectContext;
+                            return currentAggregateProjectContext;
                         }
 
-                        previousContextToDispose = _currentAggregateProjectContext;
+                        previousContextToDispose = currentAggregateProjectContext;
                     }
                 }
                 else
@@ -208,7 +209,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                     await DisposeAggregateProjectContextAsync(previousContextToDispose);
                 }
 
-                return _currentAggregateProjectContext;
+                return currentAggregateProjectContext;
             });
         }
 
@@ -267,7 +268,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 }
 
                 // Get the inner workspace project context to update for this change.
-                IWorkspaceProjectContext projectContextToUpdate = _currentAggregateProjectContext.GetInnerProjectContext(update.Value.ProjectConfiguration, out bool isActiveContext);
+                bool isActiveContext = false;
+                IWorkspaceProjectContext? projectContextToUpdate = _currentAggregateProjectContext?.GetInnerProjectContext(update.Value.ProjectConfiguration, out isActiveContext);
                 if (projectContextToUpdate == null)
                 {
                     return;
@@ -300,9 +302,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
                 await ExecuteWithinLockAsync(async () =>
                 {
-                    if (_currentAggregateProjectContext != null)
+                    AggregateWorkspaceProjectContext? currentAggregateProjectContext = _currentAggregateProjectContext;
+                    if (currentAggregateProjectContext != null)
                     {
-                        await _contextProvider.Value.ReleaseProjectContextAsync(_currentAggregateProjectContext);
+                        await _contextProvider.Value.ReleaseProjectContextAsync(currentAggregateProjectContext);
                     }
                 });
             }

@@ -79,9 +79,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             return new Handlers(evaluationHandlers.ToImmutableAndFree(), commandLineHandlers.ToImmutableAndFree());
         }
 
-        private static ImmutableArray<(HandlerFactory factory, string evaluationRuleName)> CreateHandlerFactories()
+        private static ImmutableArray<(HandlerFactory factory, string? evaluationRuleName)> CreateHandlerFactories()
         {
-            return ImmutableArray.Create<(HandlerFactory factory, string evaluationRuleName)>(
+            return ImmutableArray.Create<(HandlerFactory factory, string? evaluationRuleName)>(
 
             // Factory                                             EvaluationRuleName                  Description
 

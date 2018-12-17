@@ -65,7 +65,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             }
         }
 
-        public IWorkspaceProjectContext GetInnerProjectContext(ProjectConfiguration projectConfiguration, out bool isActiveConfiguration)
+        public IWorkspaceProjectContext? GetInnerProjectContext(ProjectConfiguration projectConfiguration, out bool isActiveConfiguration)
         {
             if (projectConfiguration.IsCrossTargeting())
             {

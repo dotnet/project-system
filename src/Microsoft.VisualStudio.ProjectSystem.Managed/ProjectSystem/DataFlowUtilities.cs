@@ -75,7 +75,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         ///     </para>
         ///     <paramref name="target"/> is <see langword="null"/>.
         /// </exception>
-        public static IDisposable LinkToAction(this ISourceBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>> source, Action<IProjectVersionedValue<IProjectSubscriptionUpdate>> target, bool suppressVersionOnlyUpdates = true, IEnumerable<string> ruleNames = null)
+        public static IDisposable LinkToAction(this ISourceBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>> source, Action<IProjectVersionedValue<IProjectSubscriptionUpdate>> target, bool suppressVersionOnlyUpdates = true, IEnumerable<string>? ruleNames = null)
         {
             Requires.NotNull(source, nameof(source));
             Requires.NotNull(target, nameof(target));
@@ -149,7 +149,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         ///     </para>
         ///     <paramref name="target"/> is <see langword="null"/>.
         /// </exception>
-        public static IDisposable LinkToAsyncAction(this ISourceBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>> source, Func<IProjectVersionedValue<IProjectSubscriptionUpdate>, Task> target, bool suppressVersionOnlyUpdates = true, IEnumerable<string> ruleNames = null)
+        public static IDisposable LinkToAsyncAction(this ISourceBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>> source, Func<IProjectVersionedValue<IProjectSubscriptionUpdate>, Task> target, bool suppressVersionOnlyUpdates = true, IEnumerable<string>? ruleNames = null)
         {
             Requires.NotNull(source, nameof(source));
             Requires.NotNull(target, nameof(target));
@@ -227,7 +227,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 SynchronizationContext currentSynchronizationContext = SynchronizationContext.Current;
                 using (ExecutionContext copy = context.CreateCopy())
                 {
-                    Task result = null;
+                    Task? result = null;
                     ExecutionContext.Run(
                         copy,
                         state =>
@@ -236,7 +236,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                             result = function(input);
                         },
                         null);
-                    return result;
+                    return result!;
                 }
             };
         }

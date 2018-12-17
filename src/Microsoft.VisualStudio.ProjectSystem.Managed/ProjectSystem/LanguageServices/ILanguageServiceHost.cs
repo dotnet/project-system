@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         /// <remarks>
         ///     Within a Visual Studio host, this is typically an object implementing IVsLanguageServiceBuildErrorReporter2.
         /// </remarks>
-        object HostSpecificErrorReporter
+        object? HostSpecificErrorReporter
         {
             get;
         }
@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         /// <value>
         ///     An <see cref="IWorkspaceProjectContext"/> that provides access to the language service for the active configured project.
         /// </value>
-        IWorkspaceProjectContext ActiveProjectContext
+        IWorkspaceProjectContext? ActiveProjectContext
         {
             get;
         }
@@ -39,7 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         /// <summary>
         ///     Gets the object that represents the host specific Edit and Continue Service.
         /// </summary>
-        object HostSpecificEditAndContinueService
+        object? HostSpecificEditAndContinueService
         {
             get;
         }

@@ -9,7 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     /// </summary>
     public interface ILaunchSettings
     {
-        ILaunchProfile ActiveProfile { get; }
+        ILaunchProfile? ActiveProfile { get; }
 
         /// <summary>
         /// Access to the current set of launch profiles

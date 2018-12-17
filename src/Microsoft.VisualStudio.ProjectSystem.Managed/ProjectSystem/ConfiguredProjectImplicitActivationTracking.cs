@@ -23,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         private readonly IActiveConfigurationGroupService _activeConfigurationGroupService;
         private readonly ITargetBlock<IProjectVersionedValue<IConfigurationGroup<ProjectConfiguration>>> _targetBlock;
         private TaskCompletionSource<object> _isImplicitlyActiveSource = new TaskCompletionSource<object>();
-        private IDisposable _subscription;
+        private IDisposable? _subscription;
 
         [ImportingConstructor]
         public ConfiguredProjectImplicitActivationTracking(ConfiguredProject project, IActiveConfigurationGroupService activeConfigurationGroupService, [Import(ExportContractNames.Scopes.ConfiguredProject)]IProjectAsynchronousTasksService tasksService)
@@ -121,7 +121,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         private Task OnImplicitlyActivated()
         {
-            _isImplicitlyActiveSource.TrySetResult(null);
+            _isImplicitlyActiveSource.TrySetResult(null!);
 
             IEnumerable<Task> tasks = ImplicitlyActiveServices.Select(c => c.Value.ActivateAsync());
 

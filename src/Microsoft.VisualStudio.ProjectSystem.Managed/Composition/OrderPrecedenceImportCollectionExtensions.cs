@@ -56,7 +56,8 @@ namespace Microsoft.VisualStudio.Composition
             }
         }
 
-        public static T FirstOrDefaultValue<T>(this OrderPrecedenceImportCollection<T> imports, Func<T, bool> predicate)
+        public static T? FirstOrDefaultValue<T>(this OrderPrecedenceImportCollection<T> imports, Func<T, bool> predicate)
+            where T : class
         {
             Requires.NotNull(imports, nameof(imports));
 
@@ -72,7 +73,8 @@ namespace Microsoft.VisualStudio.Composition
             return default;
         }
 
-        public static TImport FirstOrDefaultValue<TImport, TArg>(this OrderPrecedenceImportCollection<TImport> imports, Func<TImport, TArg, bool> predicate, TArg arg)
+        public static TImport? FirstOrDefaultValue<TImport, TArg>(this OrderPrecedenceImportCollection<TImport> imports, Func<TImport, TArg, bool> predicate, TArg arg)
+            where TImport : class
         {
             Requires.NotNull(imports, nameof(imports));
 

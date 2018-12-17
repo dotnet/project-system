@@ -14,12 +14,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     {
         IReceivableSourceBlock<ILaunchSettings> SourceBlock { get; }
 
-        ILaunchSettings CurrentSnapshot { get; }
+        ILaunchSettings? CurrentSnapshot { get; }
 
         [Obsolete("Use ILaunchSettingsProvider2.GetLaunchSettingsFilePathAsync instead.")]
         string LaunchSettingsFile { get; }
 
-        ILaunchProfile ActiveProfile { get; }
+        ILaunchProfile? ActiveProfile { get; }
 
         // Replaces the current set of profiles with the contents of profiles. If changes were
         // made, the file will be checked out and updated. If the active profile is different, the
@@ -27,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         Task UpdateAndSaveSettingsAsync(ILaunchSettings profiles);
 
         // Blocks until at least one snapshot has been generated.
-        Task<ILaunchSettings> WaitForFirstSnapshot(int timeout);
+        Task<ILaunchSettings?> WaitForFirstSnapshot(int timeout);
 
         /// <summary>
         /// Adds the given profile to the list and saves to disk. If a profile with the same 

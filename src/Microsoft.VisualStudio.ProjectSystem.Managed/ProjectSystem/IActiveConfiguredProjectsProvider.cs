@@ -38,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         ///     The order in the returned <see cref="ActiveConfiguredObjects{T}"/> matches the declared ordered within
         ///     the project file.
         /// </remarks>
-        Task<ActiveConfiguredObjects<ConfiguredProject>> GetActiveConfiguredProjectsAsync();
+        Task<ActiveConfiguredObjects<ConfiguredProject>?> GetActiveConfiguredProjectsAsync();
 
         /// <summary>
         ///     Returns the ordered list of project configurations that are active for the current project.
@@ -53,6 +53,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
         ///     The order in the returned <see cref="ActiveConfiguredObjects{T}"/> matches the declared ordered within
         ///     the project file.
         /// </remarks>
-        Task<ActiveConfiguredObjects<ProjectConfiguration>> GetActiveProjectConfigurationsAsync();
+        Task<ActiveConfiguredObjects<ProjectConfiguration>?> GetActiveProjectConfigurationsAsync();
     }
 }

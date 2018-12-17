@@ -18,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             _unconfiguredProject = project;
         }
 
-        public override Task<string> OnSetPropertyValueAsync(string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string> dimensionalConditions = null)
+        public override Task<string?> OnSetPropertyValueAsync(string? unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
         {
             if (Path.IsPathRooted(unevaluatedPropertyValue) &&
                 PathHelper.TryMakeRelativeToProjectDirectory(_unconfiguredProject, unevaluatedPropertyValue, out string relativePath))

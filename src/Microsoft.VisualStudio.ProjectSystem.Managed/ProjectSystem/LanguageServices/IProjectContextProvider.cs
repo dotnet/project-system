@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         ///     When finished with the return <see cref="AggregateWorkspaceProjectContext"/>, callers must call 
         ///     <see cref="ReleaseProjectContextAsync(AggregateWorkspaceProjectContext)"/>.
         /// </remarks>
-        Task<AggregateWorkspaceProjectContext> CreateProjectContextAsync();
+        Task<AggregateWorkspaceProjectContext?> CreateProjectContextAsync();
 
         /// <summary>
         ///     Releases a previously created <see cref="AggregateWorkspaceProjectContext"/>.

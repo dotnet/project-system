@@ -68,7 +68,7 @@ namespace Microsoft.VisualStudio.Build
         /// <returns>Collection of individual values in the property.</returns>
         public static IEnumerable<string> GetPropertyValues(string propertyValue, char delimiter = ';')
         {
-            HashSet<string> seen = null;
+            HashSet<string>? seen = null;
 
             // We need to ensure that we return values in the specified order.
             foreach (string value in new LazyStringSplit(propertyValue, delimiter))

@@ -30,7 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// <summary>
         /// <see cref="IActiveDebugFrameworkServices.GetProjectFrameworksAsync"/>
         /// </summary>
-        public async Task<List<string>> GetProjectFrameworksAsync()
+        public async Task<List<string>?> GetProjectFrameworksAsync()
         {
             // It is important that we return the frameworks in the order they are specified in the project to ensure the default is set
             // correctly. 
@@ -57,10 +57,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// <summary>
         /// <see cref="IActiveDebugFrameworkServices.GetActiveDebuggingFrameworkPropertyAsync"/>
         /// </summary>
-        public async Task<string> GetActiveDebuggingFrameworkPropertyAsync()
+        public async Task<string?> GetActiveDebuggingFrameworkPropertyAsync()
         {
             ProjectDebugger props = await _commonProjectServices.ActiveConfiguredProjectProperties.GetProjectDebuggerPropertiesAsync();
-            string activeValue = await props.ActiveDebugFramework.GetValueAsync() as string;
+            string? activeValue = await props.ActiveDebugFramework.GetValueAsync() as string;
             return activeValue;
         }
 
@@ -79,7 +79,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 return configProjects.First().Value;
             }
 
-            string activeFramework = await GetActiveDebuggingFrameworkPropertyAsync();
+            string? activeFramework = await GetActiveDebuggingFrameworkPropertyAsync();
             if (!string.IsNullOrWhiteSpace(activeFramework))
             {
                 if (configProjects.TryGetValue(activeFramework, out ConfiguredProject configuredProject))
@@ -90,7 +90,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             // We can't just select the first one. If activeFramework is not set we must pick the first one as defined by the 
             // targetFrameworks property. So we need the order as returned by GetProjectFrameworks()
-            List<string> frameworks = await GetProjectFrameworksAsync();
+            List<string>? frameworks = await GetProjectFrameworksAsync();
             if (frameworks != null && frameworks.Count > 0)
             {
                 if (configProjects.TryGetValue(frameworks[0], out ConfiguredProject configuredProject))

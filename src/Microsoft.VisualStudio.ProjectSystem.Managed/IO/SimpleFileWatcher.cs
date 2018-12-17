@@ -10,9 +10,9 @@ namespace Microsoft.VisualStudio.IO
     /// </summary>
     internal sealed class SimpleFileWatcher : IDisposable
     {
-        private FileSystemWatcher FileWatcher { get; set; }
-        private FileSystemEventHandler _handler;
-        private RenamedEventHandler _renameHandler;
+        private FileSystemWatcher? FileWatcher { get; set; }
+        private FileSystemEventHandler? _handler;
+        private RenamedEventHandler? _renameHandler;
 
         // For unit tests
         public SimpleFileWatcher()

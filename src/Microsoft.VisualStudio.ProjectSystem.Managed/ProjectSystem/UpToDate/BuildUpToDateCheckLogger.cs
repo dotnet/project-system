@@ -18,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             _fileName = Path.GetFileNameWithoutExtension(projectPath);
         }
 
-        private void Log(LogLevel level, string message, params object[] values)
+        private void Log(LogLevel level, string message, params object?[] values)
         {
             if (level <= _requestedLogLevel)
             {
@@ -29,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 _logger?.WriteLine($"FastUpToDate: {string.Format(message, values)} ({_fileName})");
             }
         }
-        private static void ConvertToLocalTimes(object[] values)
+        private static void ConvertToLocalTimes(object?[] values)
         {
             for (int i = 0; i < values.Length; i++)
             {
@@ -40,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             }
         }
 
-        public void Info(string message, params object[] values) => Log(LogLevel.Info, message, values);
-        public void Verbose(string message, params object[] values) => Log(LogLevel.Verbose, message, values);
+        public void Info(string message, params object?[] values) => Log(LogLevel.Info, message, values);
+        public void Verbose(string message, params object?[] values) => Log(LogLevel.Verbose, message, values);
     }
 }

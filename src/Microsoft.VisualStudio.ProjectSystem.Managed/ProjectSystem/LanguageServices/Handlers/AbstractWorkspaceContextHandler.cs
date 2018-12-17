@@ -8,7 +8,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 {
     internal class AbstractWorkspaceContextHandler : IWorkspaceContextHandler
     {
-        private IWorkspaceProjectContext _context;
+        private IWorkspaceProjectContext? _context;
 
         protected AbstractWorkspaceContextHandler()
         {
@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             {
                 Assumes.NotNull(_context);
 
-                return _context;
+                return _context!;
             }
         }
 

@@ -41,33 +41,33 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         }
 
         // We don't serialize the name as it the dictionary index
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         // Or serialize the InMemoryProfile state
         public bool InMemoryProfile { get; set; }
 
         [JsonProperty(PropertyName = Prop_commandName)]
-        public string CommandName { get; set; }
+        public string? CommandName { get; set; }
 
         [JsonProperty(PropertyName = Prop_executablePath)]
-        public string ExecutablePath { get; set; }
+        public string? ExecutablePath { get; set; }
 
         [JsonProperty(PropertyName = Prop_commandLineArgs)]
-        public string CommandLineArgs { get; set; }
+        public string? CommandLineArgs { get; set; }
 
         [JsonProperty(PropertyName = Prop_workingDirectory)]
-        public string WorkingDirectory { get; set; }
+        public string? WorkingDirectory { get; set; }
 
         [JsonProperty(PropertyName = Prop_launchBrowser)]
         public bool? LaunchBrowser { get; set; }
 
         [JsonProperty(PropertyName = Prop_launchUrl)]
-        public string LaunchUrl { get; set; }
+        public string? LaunchUrl { get; set; }
 
         [JsonProperty(PropertyName = Prop_environmentVariables)]
-        public IDictionary<string, string> EnvironmentVariables { get; set; }
+        public IDictionary<string, string>? EnvironmentVariables { get; set; }
 
-        public IDictionary<string, object> OtherSettings { get; set; }
+        public IDictionary<string, object>? OtherSettings { get; set; }
 
         /// <summary>
         /// To handle custom settings, we serialize using LaunchProfileData first and then walk the settings

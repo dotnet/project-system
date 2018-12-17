@@ -16,6 +16,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// <param name="parentDocumentMoniker">The path to the node to which the new file will be added.</param>
         /// <param name="fileName">The name of the file to be created.</param>
         /// <returns>true if file is added successfully.</returns>
-        Task<bool> CreateFileAsync(string templateFile, string parentDocumentMoniker, string fileName);
+        Task<bool> CreateFileAsync(string templateFile, string? parentDocumentMoniker, string fileName);
     }
 }

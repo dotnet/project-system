@@ -45,11 +45,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             _unconfiguredProjectHostObject = _projectHostProvider.UnconfiguredProjectHostObject;
         }
 
-        public async Task<AggregateWorkspaceProjectContext> CreateProjectContextAsync()
+        public async Task<AggregateWorkspaceProjectContext?> CreateProjectContextAsync()
         {
             EnsureInitialized();
 
-            AggregateWorkspaceProjectContext context = await CreateProjectContextAsyncCore();
+            AggregateWorkspaceProjectContext? context = await CreateProjectContextAsyncCore();
             if (context == null)
                 return null;
 
@@ -181,8 +181,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
                 }
                 else
                 {
-                    workspaceProjectContext = null;
-                    configuredProjectHostObject = null;
+                    workspaceProjectContext = null!;
+                    configuredProjectHostObject = null!;
                     return false;
                 }
             }
@@ -197,7 +197,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             }
         }
 
-        private async Task<AggregateWorkspaceProjectContext> CreateProjectContextAsyncCore()
+        private async Task<AggregateWorkspaceProjectContext?> CreateProjectContextAsyncCore()
         {
             string languageName = await GetLanguageServiceName();
             if (string.IsNullOrEmpty(languageName))
@@ -225,7 +225,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 
             var innerProjectContextsBuilder = PooledDictionary<string, IWorkspaceProjectContext>.GetInstance();
             string activeTargetFramework = string.Empty;
-            IConfiguredProjectHostObject activeIntellisenseProjectHostObject = null;
+            IConfiguredProjectHostObject? activeIntellisenseProjectHostObject = null;
 
             foreach ((string targetFramework, ConfiguredProject configuredProject) in configuredProjectsMap)
             {

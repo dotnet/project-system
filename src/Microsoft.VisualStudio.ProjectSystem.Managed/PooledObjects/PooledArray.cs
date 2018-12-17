@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.Buffers.PooledObjects
     {
         private readonly ImmutableArray<T>.Builder _builder;
 
-        private readonly ObjectPool<PooledArray<T>> _pool;
+        private readonly ObjectPool<PooledArray<T>>? _pool;
 
         public PooledArray(int size)
         {
@@ -71,7 +71,9 @@ namespace Microsoft.VisualStudio.Buffers.PooledObjects
         {
             while (index > _builder.Count)
             {
+#pragma warning disable CS8625 // Workaround https://github.com/dotnet/roslyn/issues/31865
                 _builder.Add(default);
+#pragma warning restore CS8625
             }
 
             if (index == _builder.Count)
@@ -177,7 +179,10 @@ namespace Microsoft.VisualStudio.Buffers.PooledObjects
             var tmp = PooledArray<U>.GetInstance(Count);
             foreach (T i in this)
             {
+#pragma warning disable CS8600,CS8604 // Workaround for https://github.com/dotnet/roslyn/issues/31866
                 tmp.Add((U)i);
+#pragma warning restore CS8600,CS8604
+
             }
 
             return tmp.ToImmutableAndFree();
@@ -213,7 +218,7 @@ namespace Microsoft.VisualStudio.Buffers.PooledObjects
         // 1) Expose Freeing primitive. 
         public void Free()
         {
-            ObjectPool<PooledArray<T>> pool = _pool;
+            ObjectPool<PooledArray<T>>? pool = _pool;
             if (pool != null)
             {
                 // We do not want to retain (potentially indefinitely) very large builders 
@@ -274,7 +279,7 @@ namespace Microsoft.VisualStudio.Buffers.PooledObjects
 
         public static ObjectPool<PooledArray<T>> CreatePool(int size)
         {
-            ObjectPool<PooledArray<T>> pool = null;
+            ObjectPool<PooledArray<T>>? pool = null;
             pool = new ObjectPool<PooledArray<T>>(() => new PooledArray<T>(pool), size);
             return pool;
         }
@@ -284,7 +289,9 @@ namespace Microsoft.VisualStudio.Buffers.PooledObjects
             return new Enumerator(this);
         }
 
+#pragma warning disable CS8616 // Workaround https://github.com/dotnet/roslyn/issues/31862
         IEnumerator<T> IEnumerable<T>.GetEnumerator()
+#pragma warning restore CS8616
         {
             return GetEnumerator();
         }
@@ -294,7 +301,7 @@ namespace Microsoft.VisualStudio.Buffers.PooledObjects
             return GetEnumerator();
         }
 
-        internal Dictionary<K, ImmutableArray<T>> ToDictionary<K>(Func<T, K> keySelector, IEqualityComparer<K> comparer = null)
+        internal Dictionary<K, ImmutableArray<T>> ToDictionary<K>(Func<T, K> keySelector, IEqualityComparer<K>? comparer = null)
         {
             if (Count == 1)
             {

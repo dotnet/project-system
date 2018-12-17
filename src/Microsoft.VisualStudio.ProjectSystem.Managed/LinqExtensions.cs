@@ -17,11 +17,12 @@ namespace Microsoft.VisualStudio
                     return obj;
             }
 
-            return default;
+            return default!;
         }
 
         [Pure]
-        public static T SingleOrDefault<T, TArg>(this IEnumerable<T> source, Func<T, TArg, bool> predicate, TArg arg)
+        public static T? SingleOrDefault<T, TArg>(this IEnumerable<T> source, Func<T, TArg, bool> predicate, TArg arg)
+            where T : class
         {
             using (IEnumerator<T> enumerator = source.GetEnumerator())
             {

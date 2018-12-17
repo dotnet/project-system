@@ -11,12 +11,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
     internal class LaunchSettings : ILaunchSettings
     {
-        private readonly string _activeProfileName;
+        private readonly string? _activeProfileName;
 
         /// <summary>
         /// Represents the current set of launch settings. Creation from an existing set of profiles. 
         /// </summary>
-        public LaunchSettings(IEnumerable<ILaunchProfile> profiles, IDictionary<string, object> globalSettings, string activeProfile = null)
+        public LaunchSettings(IEnumerable<ILaunchProfile> profiles, IDictionary<string, object>? globalSettings, string? activeProfile = null)
         {
             Profiles = ImmutableList<ILaunchProfile>.Empty;
             foreach (ILaunchProfile profile in profiles)
@@ -28,12 +28,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             _activeProfileName = activeProfile;
         }
 
-        public LaunchSettings(LaunchSettingsData settingsData, string activeProfile = null)
+        public LaunchSettings(LaunchSettingsData settingsData, string? activeProfile = null)
         {
             Profiles = ImmutableList<ILaunchProfile>.Empty;
-            foreach (LaunchProfileData profile in settingsData.Profiles)
+            if (settingsData.Profiles != null)
             {
-                Profiles = Profiles.Add(new LaunchProfile(profile));
+                foreach (LaunchProfileData profile in settingsData.Profiles)
+                {
+                    Profiles = Profiles.Add(new LaunchProfile(profile));
+                }
             }
 
             GlobalSettings = settingsData.OtherSettings == null ? ImmutableStringDictionary<object>.EmptyOrdinal : settingsData.OtherSettings.ToImmutableDictionary();
@@ -62,7 +65,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 else
                 {
                     string jsonString = JsonConvert.SerializeObject(value, Formatting.Indented, jsonSerializerSettings);
-                    object clonedObject = JsonConvert.DeserializeObject(jsonString, value.GetType());
+                    object clonedObject = JsonConvert.DeserializeObject(jsonString, value?.GetType());
                     GlobalSettings = GlobalSettings.Add(key, clonedObject);
                 }
             }
@@ -86,8 +89,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             return o;
         }
 
-        private ILaunchProfile _activeProfile;
-        public ILaunchProfile ActiveProfile
+        private ILaunchProfile? _activeProfile;
+        public ILaunchProfile? ActiveProfile
         {
             get
             {
@@ -96,7 +99,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                     // If no active profile specified, or the active one is no longer valid, assume the first one
                     if (!string.IsNullOrWhiteSpace(_activeProfileName))
                     {
-                        _activeProfile = Profiles.FirstOrDefault(p => LaunchProfile.IsSameProfileName(p.Name, _activeProfileName));
+                        _activeProfile = Profiles.FirstOrDefault(p => LaunchProfile.IsSameProfileName(p?.Name, _activeProfileName));
                     }
 
                     if (_activeProfile == null)

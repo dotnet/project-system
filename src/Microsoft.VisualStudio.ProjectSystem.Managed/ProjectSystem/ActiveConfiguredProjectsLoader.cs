@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         private readonly IActiveConfigurationGroupService _activeConfigurationGroupService;
         private readonly IUnconfiguredProjectTasksService _tasksService;
         private readonly ITargetBlock<IProjectVersionedValue<IConfigurationGroup<ProjectConfiguration>>> _targetBlock;
-        private IDisposable _subscription;
+        private IDisposable? _subscription;
 
         [ImportingConstructor]
         public ActiveConfiguredProjectsLoader(UnconfiguredProject project, IActiveConfigurationGroupService activeConfigurationGroupService, IUnconfiguredProjectTasksService tasksService)

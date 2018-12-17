@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// <summary>
         ///     Gets the value that is associated with the specified rule and property.
         /// </summary>
-        public static string GetPropertyOrDefault(this IImmutableDictionary<string, IProjectRuleSnapshot> snapshots, string ruleName, string propertyName, string defaultValue)
+        public static string? GetPropertyOrDefault(this IImmutableDictionary<string, IProjectRuleSnapshot> snapshots, string ruleName, string propertyName, string? defaultValue)
         {
             Requires.NotNull(snapshots, nameof(snapshots));
             Requires.NotNullOrEmpty(ruleName, nameof(ruleName));
@@ -32,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// </summary>
         public static bool IsPropertyTrue(this IImmutableDictionary<string, IProjectRuleSnapshot> snapshots, string ruleName, string propertyName, bool defaultValue)
         {
-            string value = snapshots.GetPropertyOrDefault(ruleName, propertyName, defaultValue ? "true" : "false");
+            string? value = snapshots.GetPropertyOrDefault(ruleName, propertyName, defaultValue ? "true" : "false");
 
             return StringComparers.PropertyValues.Equals(value, "true");
         }

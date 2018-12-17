@@ -103,7 +103,9 @@ namespace Microsoft.VisualStudio.Threading.Tasks
             GC.SuppressFinalize(this);
 #endif
 
+#pragma warning disable CS8625 // Workaround https://github.com/dotnet/roslyn/issues/31865
             CancellationTokenSource source = Interlocked.Exchange(ref _cts, null);
+#pragma warning restore CS8625
 
             if (source == null)
             {

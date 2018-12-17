@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Logging
         private class ProjectLoggerBatch : IProjectLoggerBatch
         {
             private readonly IProjectLogger _logger;
-            private StringBuilder _builder;
+            private StringBuilder? _builder;
             private int _indentLevel;
 
             internal ProjectLoggerBatch(IProjectLogger logger)
@@ -43,41 +43,43 @@ namespace Microsoft.VisualStudio.ProjectSystem.Logging
             {
                 if (IsEnabled)
                 {
-                    Init();
-                    WriteNewLineIfNeeded();
-                    WriteIndent();
-                    Write(format);
+                    StringBuilder builder = GetOrCreateBuilder();
+                    WriteNewLineIfNeeded(builder);
+                    WriteIndent(builder, _indentLevel);
+                    Write(builder, format);
                 }
             }
 
-            private void Init()
+            private StringBuilder GetOrCreateBuilder()
             {
                 if (_builder == null)
                     _builder = new StringBuilder();
+
+                return _builder;
             }
 
-            private void WriteNewLineIfNeeded()
+            private static void WriteNewLineIfNeeded(StringBuilder builder)
             {
                 // Need to factor in that when we eventually write to the logger
                 // it's going to append a new line to the string we write, so we 
                 // only append the new line just before we write another string.
-                if (_builder.Length != 0)
+                if (builder.Length != 0)
                 {
-                    _builder.AppendLine();
+                    builder.AppendLine();
                 }
             }
 
-            private void WriteIndent()
+            private static void WriteIndent(StringBuilder builder, int indentLevel)
             {
-                for (int i = 0; i < _indentLevel; i++)
+                for (int i = 0; i < indentLevel; i++)
                 {
-                    _builder.Append("    ");
+                    builder.Append("    ");
                 }
             }
 
-            private void Write(in StringFormat format)
+            private static void Write(StringBuilder builder, in StringFormat format)
             {
-                _builder.AppendFormat(format);
+                builder.AppendFormat(format);
             }
 
             public void Dispose()

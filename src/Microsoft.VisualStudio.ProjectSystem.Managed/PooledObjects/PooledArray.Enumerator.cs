@@ -32,7 +32,9 @@ namespace Microsoft.VisualStudio.Buffers.PooledObjects
             {
             }
 
+#pragma warning disable CS8603 // Workaround https://github.com/dotnet/roslyn/issues/31867
             object System.Collections.IEnumerator.Current => Current;
+#pragma warning restore CS8603
 
             public void Reset() => _index = -1;
         }

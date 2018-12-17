@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio
         public static IEqualityComparer<string> WorkspaceProjectContextIds => StringComparer.Ordinal;
         public static IEqualityComparer<string> Paths => StringComparer.OrdinalIgnoreCase;
         public static IEqualityComparer<string> PropertyNames => StringComparer.OrdinalIgnoreCase;
-        public static IEqualityComparer<string> PropertyValues => StringComparer.OrdinalIgnoreCase;
+        public static IEqualityComparer<string?> PropertyValues => StringComparer.OrdinalIgnoreCase;
         public static IEqualityComparer<string> RuleNames => StringComparer.OrdinalIgnoreCase;
         public static IEqualityComparer<string> ConfigurationDimensionNames => StringComparer.Ordinal;
         public static IEqualityComparer<string> DependencyProviderTypes => StringComparer.OrdinalIgnoreCase;

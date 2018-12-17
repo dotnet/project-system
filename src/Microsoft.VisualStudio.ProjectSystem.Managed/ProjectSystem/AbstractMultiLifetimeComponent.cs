@@ -15,14 +15,14 @@ namespace Microsoft.VisualStudio.ProjectSystem
     {
         private readonly object _lock = new object();
         private TaskCompletionSource<object> _loadedSource = new TaskCompletionSource<object>();
-        private IMultiLifetimeInstance _instance;
+        private IMultiLifetimeInstance? _instance;
 
         protected AbstractMultiLifetimeComponent(JoinableTaskContextNode joinableTaskContextNode)
             : base(joinableTaskContextNode)
         {
         }
 
-        public IMultiLifetimeInstance Instance
+        public IMultiLifetimeInstance? Instance
         {
             get { return _instance; }
         }
@@ -49,7 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         private async Task LoadCoreAsync()
         {
-            TaskCompletionSource<object> loadedSource = null;
+            TaskCompletionSource<object>? loadedSource = null;
             IMultiLifetimeInstance instance;
             lock (_lock)
             {
@@ -65,12 +65,12 @@ namespace Microsoft.VisualStudio.ProjectSystem
             // While all callers should wait on InitializeAsync, 
             // only one should complete the completion source
             await instance.InitializeAsync();
-            loadedSource?.SetResult(null);
+            loadedSource?.SetResult(null!);
         }
 
         public Task UnloadAsync()
         {
-            IMultiLifetimeInstance instance = null;
+            IMultiLifetimeInstance? instance = null;
 
             lock (_lock)
             {

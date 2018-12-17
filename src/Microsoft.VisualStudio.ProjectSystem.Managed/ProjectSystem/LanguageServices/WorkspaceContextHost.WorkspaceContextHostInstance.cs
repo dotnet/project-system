@@ -25,9 +25,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             private readonly IActiveWorkspaceProjectContextTracker _activeWorkspaceProjectContextTracker;
             private readonly ExportFactory<IApplyChangesToWorkspaceContext> _applyChangesToWorkspaceContextFactory;
 
-            private DisposableBag _subscriptions;
-            private IWorkspaceProjectContext _context;
-            private ExportLifetimeContext<IApplyChangesToWorkspaceContext> _applyChangesToWorkspaceContext;
+            private DisposableBag? _subscriptions;
+            private IWorkspaceProjectContext? _context;
+            private ExportLifetimeContext<IApplyChangesToWorkspaceContext>? _applyChangesToWorkspaceContext;
 
             public WorkspaceContextHostInstance(ConfiguredProject project,
                                                 IProjectThreadingService threadingService,
@@ -103,15 +103,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             private void ApplyProjectChangesUnderLock(IProjectVersionedValue<IProjectSubscriptionUpdate> update, bool evaluation, CancellationToken cancellationToken)
             {
-                bool isActiveContext = _activeWorkspaceProjectContextTracker.IsActiveContext(_context);
+                bool isActiveContext = _context != null
+                    ? _activeWorkspaceProjectContextTracker.IsActiveContext(_context)
+                    : false;
 
                 if (evaluation)
                 {
-                    _applyChangesToWorkspaceContext.Value.ApplyProjectEvaluation(update, isActiveContext, cancellationToken);
+                    _applyChangesToWorkspaceContext?.Value.ApplyProjectEvaluation(update, isActiveContext, cancellationToken);
                 }
                 else
                 {
-                    _applyChangesToWorkspaceContext.Value.ApplyProjectBuild(update, isActiveContext, cancellationToken);
+                    _applyChangesToWorkspaceContext?.Value.ApplyProjectBuild(update, isActiveContext, cancellationToken);
                 }
             }
         }

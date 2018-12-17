@@ -42,7 +42,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                     else
                     {
                         string jsonString = JsonConvert.SerializeObject(value, Formatting.Indented, jsonSerializerSettings);
-                        object clonedObject = JsonConvert.DeserializeObject(jsonString, value.GetType());
+                        // TODO: Bug in nullable flow analysis her?
+                        object clonedObject = JsonConvert.DeserializeObject(jsonString, value!.GetType());
                         GlobalSettings.Add(key, clonedObject);
                     }
                 }
@@ -50,11 +51,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             if (settings.ActiveProfile != null)
             {
-                ActiveProfile = Profiles.FirstOrDefault((profile) => LaunchProfile.IsSameProfileName(profile.Name, settings.ActiveProfile.Name));
+                ActiveProfile = Profiles.FirstOrDefault((profile) => LaunchProfile.IsSameProfileName(profile.Name, settings.ActiveProfile?.Name));
             }
         }
 
-        public IWritableLaunchProfile ActiveProfile { get; set; }
+        public IWritableLaunchProfile? ActiveProfile { get; set; }
 
         public List<IWritableLaunchProfile> Profiles { get; } = new List<IWritableLaunchProfile>();
         public Dictionary<string, object> GlobalSettings { get; } = new Dictionary<string, object>(StringComparer.Ordinal);

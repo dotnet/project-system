@@ -30,7 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Package
             return Version.TryParse(versionStr, out Version version) ? version : DefaultVersion;
         }
 
-        public override async Task<string> OnGetEvaluatedPropertyValueAsync(string evaluatedPropertyValue, IProjectProperties defaultProperties)
+        public override async Task<string?> OnGetEvaluatedPropertyValueAsync(string? evaluatedPropertyValue, IProjectProperties defaultProperties)
         {
             if (!string.IsNullOrEmpty(evaluatedPropertyValue))
             {
@@ -42,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Package
             return version.ToString();
         }
 
-        public override async Task<string> OnSetPropertyValueAsync(string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string> dimensionalConditions = null)
+        public override async Task<string?> OnSetPropertyValueAsync(string? unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
         {
             // Don't set the new value if both of the following is true:
             //  1. There is no existing property entry AND

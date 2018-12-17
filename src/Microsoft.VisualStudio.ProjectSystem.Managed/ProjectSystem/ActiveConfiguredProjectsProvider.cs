@@ -76,28 +76,31 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             var builder = PooledDictionary<string, ConfiguredProject>.GetInstance();
 
-            ActiveConfiguredObjects<ConfiguredProject> projects = await GetActiveConfiguredProjectsAsync();
+            ActiveConfiguredObjects<ConfiguredProject>? projects = await GetActiveConfiguredProjectsAsync();
 
-            bool isCrossTargeting = projects.Objects.All(project => project.ProjectConfiguration.IsCrossTargeting());
-            if (isCrossTargeting)
+            if (projects != null)
             {
-                foreach (ConfiguredProject project in projects.Objects)
+                bool isCrossTargeting = projects.Objects.All(project => project.ProjectConfiguration.IsCrossTargeting());
+                if (isCrossTargeting)
                 {
-                    string targetFramework = project.ProjectConfiguration.Dimensions[ConfigurationGeneral.TargetFrameworkProperty];
-                    builder.Add(targetFramework, project);
+                    foreach (ConfiguredProject project in projects.Objects)
+                    {
+                        string targetFramework = project.ProjectConfiguration.Dimensions[ConfigurationGeneral.TargetFrameworkProperty];
+                        builder.Add(targetFramework, project);
+                    }
                 }
-            }
-            else
-            {
-                builder.Add(string.Empty, projects.Objects[0]);
+                else
+                {
+                    builder.Add(string.Empty, projects.Objects[0]);
+                }
             }
 
             return builder.ToImmutableDictionaryAndFree();
         }
 
-        public async Task<ActiveConfiguredObjects<ConfiguredProject>> GetActiveConfiguredProjectsAsync()
+        public async Task<ActiveConfiguredObjects<ConfiguredProject>?> GetActiveConfiguredProjectsAsync()
         {
-            ActiveConfiguredObjects<ProjectConfiguration> configurations = await GetActiveProjectConfigurationsAsync();
+            ActiveConfiguredObjects<ProjectConfiguration>? configurations = await GetActiveProjectConfigurationsAsync();
             if (configurations == null)
                 return null;
 
@@ -113,7 +116,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return new ActiveConfiguredObjects<ConfiguredProject>(builder.MoveToImmutable(), configurations.DimensionNames);
         }
 
-        public async Task<ActiveConfiguredObjects<ProjectConfiguration>> GetActiveProjectConfigurationsAsync()
+        public async Task<ActiveConfiguredObjects<ProjectConfiguration>?> GetActiveProjectConfigurationsAsync()
         {
             ProjectConfiguration activeSolutionConfiguration = _services.ActiveConfiguredProjectProvider.ActiveProjectConfiguration;
             if (activeSolutionConfiguration == null)

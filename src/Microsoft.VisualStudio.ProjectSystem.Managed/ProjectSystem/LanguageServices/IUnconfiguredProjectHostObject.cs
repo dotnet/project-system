@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         /// <summary>
         /// <see cref="IConfiguredProjectHostObject"/> for the active intellisense project.
         /// </summary>
-        IConfiguredProjectHostObject ActiveIntellisenseProjectHostObject { get; set; }
+        IConfiguredProjectHostObject? ActiveIntellisenseProjectHostObject { get; set; }
 
         /// <summary>
         /// Flag indicating that we are currently disposing inner configured projects.

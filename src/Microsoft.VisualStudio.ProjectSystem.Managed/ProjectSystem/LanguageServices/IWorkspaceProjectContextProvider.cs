@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         /// <exception cref="ArgumentNullException">
         ///     <paramref name="project"/> is <see langword="null"/>.
         /// </exception>
-        Task<IWorkspaceProjectContext> CreateProjectContextAsync(ConfiguredProject project);
+        Task<IWorkspaceProjectContext?> CreateProjectContextAsync(ConfiguredProject project);
 
         /// <summary>
         ///     Release the <see cref="IWorkspaceProjectContext"/>.
