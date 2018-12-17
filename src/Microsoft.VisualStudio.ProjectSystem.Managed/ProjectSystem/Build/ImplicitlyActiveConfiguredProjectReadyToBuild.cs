@@ -48,7 +48,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
                 }
                 else if (nowActive)
                 {
-                    _activationTask.TrySetResult(null!);
+#pragma warning disable CS8625 // Workaround https://github.com/dotnet/roslyn/issues/31865
+                    _activationTask.TrySetResult(null);
+#pragma warning restore CS8625
                 }
 
                 return _activationTask.Task;

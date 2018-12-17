@@ -61,8 +61,10 @@ namespace Microsoft.VisualStudio.ProjectSystem
             string? folderName = ruleSnapshots.GetPropertyOrDefault(AppDesigner.SchemaName, AppDesigner.FolderNameProperty, "Properties");
             string? contextsVisibleOnlyInShowAllFiles = ruleSnapshots.GetPropertyOrDefault(AppDesigner.SchemaName, AppDesigner.ContentsVisibleOnlyInShowAllFilesProperty, "false");
 
-            projectTreeSettings = projectTreeSettings.SetItem(AppDesigner.FolderNameProperty, folderName!);
-            projectTreeSettings = projectTreeSettings.SetItem(AppDesigner.ContentsVisibleOnlyInShowAllFilesProperty, contextsVisibleOnlyInShowAllFiles!);
+#pragma warning disable CS8604 // Workaround https://github.com/dotnet/roslyn/issues/31865
+            projectTreeSettings = projectTreeSettings.SetItem(AppDesigner.FolderNameProperty, folderName);
+            projectTreeSettings = projectTreeSettings.SetItem(AppDesigner.ContentsVisibleOnlyInShowAllFilesProperty, contextsVisibleOnlyInShowAllFiles);
+#pragma warning restore CS8604
         }
 
         protected sealed override bool IsCandidateSpecialFolder(IProjectTreeCustomizablePropertyContext propertyContext, ProjectTreeFlags flags)

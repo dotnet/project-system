@@ -65,7 +65,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 else
                 {
                     string jsonString = JsonConvert.SerializeObject(value, Formatting.Indented, jsonSerializerSettings);
-                    object clonedObject = JsonConvert.DeserializeObject(jsonString, value?.GetType());
+#pragma warning disable CS8602 // Workaround https://github.com/dotnet/roslyn/issues/31803
+                    object clonedObject = JsonConvert.DeserializeObject(jsonString, value.GetType());
+#pragma warning restore CS8602
                     GlobalSettings = GlobalSettings.Add(key, clonedObject);
                 }
             }

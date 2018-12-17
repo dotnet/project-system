@@ -65,7 +65,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
             // While all callers should wait on InitializeAsync, 
             // only one should complete the completion source
             await instance.InitializeAsync();
-            loadedSource?.SetResult(null!);
+#pragma warning disable CS8625 // Workaround for https://github.com/dotnet/roslyn/issues/31865
+            loadedSource?.SetResult(null);
+#pragma warning restore CS8625
         }
 
         public Task UnloadAsync()
