@@ -1,6 +1,6 @@
 ## Loading components
 
-Components that are exported through MEF will be automatically discovered as necessary by any imports that exist, but loading and initializing is still a manual process. Additionally, components are typically applied to specific capabilities and due to the way SDK projects work these can be dynamic, which come and go throughout the lifetime of a project, when:
+Components that are exported through MEF will be automatically discovered as necessary by any imports that exist, but loading and initializing is still a manual process. Additionally, components are typically applied to specific capabilities which can be dynamic, meaning they can be applied or unapplied throughout the lifetime of a project, when:
 
 * A targets file is present, which carries the capability via `<ProjectCapability Include="Foo"/>`
 * A package is installed with the capability
