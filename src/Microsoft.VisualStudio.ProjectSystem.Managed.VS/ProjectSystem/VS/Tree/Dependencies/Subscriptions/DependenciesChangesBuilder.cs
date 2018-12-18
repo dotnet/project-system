@@ -9,8 +9,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 {
     internal sealed class DependenciesChangesBuilder
     {
-        private HashSet<IDependencyModel> _added;
-        private HashSet<IDependencyModel> _removed;
+        private HashSet<IDependencyModel>? _added;
+        private HashSet<IDependencyModel>? _removed;
 
         public void Added(IDependencyModel model)
         {
