@@ -17,13 +17,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     internal class SourceAssemblyAttributePropertyValueProvider
     {
         private readonly string _assemblyAttributeFullName;
-        private readonly Func<ProjectId> _getActiveProjectId;
+        private readonly Func<ProjectId?> _getActiveProjectId;
         private readonly Workspace _workspace;
         private readonly IProjectThreadingService _threadingService;
 
         public SourceAssemblyAttributePropertyValueProvider(
             string assemblyAttributeFullName,
-            Func<ProjectId> getActiveProjectId,
+            Func<ProjectId?> getActiveProjectId,
             Workspace workspace,
             IProjectThreadingService threadingService)
         {
@@ -35,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         private Project? GetActiveProject()
         {
-            ProjectId activeProjectId = _getActiveProjectId();
+            ProjectId? activeProjectId = _getActiveProjectId();
             if (activeProjectId == null)
             {
                 return null;

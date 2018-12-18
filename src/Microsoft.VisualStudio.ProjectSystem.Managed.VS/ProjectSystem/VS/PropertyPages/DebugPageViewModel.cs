@@ -25,10 +25,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
     internal class DebugPageViewModel : PropertyPageViewModel, INotifyDataErrorInfo
     {
         private readonly string _executableFilter = string.Format("{0} (*.exe)|*.exe|{1} (*.*)|*.*", PropertyPageResources.ExecutableFiles, PropertyPageResources.AllFiles);
-        private IDisposable _debugProfileProviderLink;
+        private IDisposable? _debugProfileProviderLink;
 
         // Unit Tests only
-        private readonly TaskCompletionSource<bool> _firstSnapshotCompleteSource = null;
+        private readonly TaskCompletionSource<bool>? _firstSnapshotCompleteSource = null;
 
         private IProjectThreadingService _projectThreadingService;
         private IProjectThreadingService ProjectThreadingService
@@ -99,8 +99,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             }
         }
 
-        private LaunchType _selectedLaunchType;
-        public LaunchType SelectedLaunchType
+        private LaunchType? _selectedLaunchType;
+        public LaunchType? SelectedLaunchType
         {
             get
             {
@@ -108,7 +108,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             }
             set
             {
-                ILaunchSettingsUIProvider oldActiveProvider = ActiveProvider;
+                ILaunchSettingsUIProvider? oldActiveProvider = ActiveProvider;
                 if (OnPropertyChanged(ref _selectedLaunchType, value))
                 {
                     // Existing commands are shown in the UI as project
@@ -149,7 +149,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// If we have an existing CustomControl, we disconnect from its change notifications
         /// and hook into the new ones. Assumes the activeProvider has already been changed
         /// </summary>
-        public void SwitchProviders(ILaunchSettingsUIProvider oldProvider)
+        public void SwitchProviders(ILaunchSettingsUIProvider? oldProvider)
         {
             // Get the old custom control and disconnect from notifications
             if (oldProvider?.CustomUI?.DataContext is INotifyPropertyChanged context)
@@ -164,18 +164,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             // Now hook into the current providers notifications. We do that after having set the profile on the provider
             // so that we don't get notifications while the control is initializing. Note that this is likely the first time the 
             // custom control is asked for and we want to call it and have it created prior to setting the active profile
-            UserControl customControl = ActiveProvider?.CustomUI;
+            UserControl? customControl = ActiveProvider?.CustomUI;
             if (customControl != null)
             {
-                ActiveProvider.ProfileSelected(CurrentLaunchSettings);
+                ActiveProvider?.ProfileSelected(CurrentLaunchSettings);
 
-                context = customControl.DataContext as INotifyPropertyChanged;
-                if (context != null)
+                var inpc = customControl.DataContext as INotifyPropertyChanged;
+                if (inpc != null)
                 {
-                    context.PropertyChanged += OnCustomUIStateChanged;
+                    inpc.PropertyChanged += OnCustomUIStateChanged;
                 }
 
-                if (context is INotifyDataErrorInfo notifyDataErrorInfo)
+                if (inpc is INotifyDataErrorInfo notifyDataErrorInfo)
                 {
                     notifyDataErrorInfo.ErrorsChanged += OnCustomUIErrorsChanged;
                 }
@@ -191,7 +191,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             OnPropertyChanged("CustomUIDirty");
         }
 
-        public string CommandLineArguments
+        public string? CommandLineArguments
         {
             get
             {
@@ -200,7 +200,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                     return string.Empty;
                 }
 
-                return SelectedDebugProfile.CommandLineArgs;
+                return SelectedDebugProfile?.CommandLineArgs;
             }
             set
             {
@@ -212,7 +212,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             }
         }
 
-        public string ExecutablePath
+        public string? ExecutablePath
         {
             get
             {
@@ -221,7 +221,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                     return string.Empty;
                 }
 
-                return SelectedDebugProfile.ExecutablePath;
+                return SelectedDebugProfile?.ExecutablePath;
             }
             set
             {
@@ -233,7 +233,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             }
         }
 
-        public string LaunchPage
+        public string? LaunchPage
         {
             get
             {
@@ -242,7 +242,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                     return string.Empty;
                 }
 
-                return SelectedDebugProfile.LaunchUrl;
+                return SelectedDebugProfile?.LaunchUrl;
             }
             set
             {
@@ -254,7 +254,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             }
         }
 
-        public string WorkingDirectory
+        public string? WorkingDirectory
         {
             get
             {
@@ -263,7 +263,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                     return string.Empty;
                 }
 
-                return SelectedDebugProfile.WorkingDirectory;
+                return SelectedDebugProfile?.WorkingDirectory;
             }
             set
             {
@@ -284,7 +284,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                     return false;
                 }
 
-                return SelectedDebugProfile.LaunchBrowser;
+                return SelectedDebugProfile?.LaunchBrowser ?? false;
             }
             set
             {
@@ -341,7 +341,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// </summary>
         private bool ActiveProviderSupportsProperty(string propertyName)
         {
-            ILaunchSettingsUIProvider activeProvider = ActiveProvider;
+            ILaunchSettingsUIProvider? activeProvider = ActiveProvider;
             return activeProvider?.ShouldEnableProperty(propertyName) ?? false;
         }
 
@@ -382,7 +382,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// <summary>
         /// Use the active profile in the CurrentLaunchSettings
         /// </summary>
-        public IWritableLaunchProfile SelectedDebugProfile
+        public IWritableLaunchProfile? SelectedDebugProfile
         {
             get
             {
@@ -392,7 +392,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             {
                 if (CurrentLaunchSettings != null && CurrentLaunchSettings.ActiveProfile != value)
                 {
-                    IWritableLaunchProfile oldProfile = CurrentLaunchSettings.ActiveProfile;
+                    IWritableLaunchProfile? oldProfile = CurrentLaunchSettings.ActiveProfile;
                     CurrentLaunchSettings.ActiveProfile = value;
                     NotifySelectedChanged(oldProfile);
                 }
@@ -476,7 +476,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// <summary>
         /// Provides binding to the current UI Provider usercontrol. 
         /// </summary>
-        public UserControl ActiveProviderUserControl
+        public UserControl? ActiveProviderUserControl
         {
             get
             {
@@ -488,7 +488,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// Called when the selection does change. Note that this code relies on the fact the current selection has been
         /// updated
         /// </summary>
-        protected virtual void NotifySelectedChanged(IWritableLaunchProfile oldProfile)
+        protected virtual void NotifySelectedChanged(IWritableLaunchProfile? oldProfile)
         {
             // we need to keep the property page control from setting IsDirty when we are just switching between profiles.
             // we still need to notify the display of the changes though
@@ -556,7 +556,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             await provider.UpdateAndSaveSettingsAsync(CurrentLaunchSettings.ToLaunchSettings());
         }
 
-        private void SetEnvironmentGrid(IWritableLaunchProfile oldProfile)
+        private void SetEnvironmentGrid(IWritableLaunchProfile? oldProfile)
         {
             if (EnvironmentVariables != null && oldProfile != null)
             {
@@ -590,10 +590,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             ((INotifyPropertyChanged)EnvironmentVariables).PropertyChanged += DebugPageViewModel_EnvironmentVariables_PropertyChanged;
         }
 
-        private void EnvironmentVariables_ValidationStatusChanged(object sender, EventArgs e)
+        private void EnvironmentVariables_ValidationStatusChanged(object sender, ValidationStatusChangedEventArgs e)
         {
-            var args = e as ValidationStatusChangedEventArgs;
-            EnvironmentVariablesValid = args.ValidationStatus;
+            EnvironmentVariablesValid = e.ValidationStatus;
         }
 
         /// <summary>
@@ -617,7 +616,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 PushIgnoreEvents();
 
                 // Remember the current selection
-                string curProfileName = SelectedDebugProfile?.Name;
+                string? curProfileName = SelectedDebugProfile?.Name;
 
                 // Update the set of settings and generate a property change so the list of profiles gets updated. Note that we always
                 // clear the active profile on the CurrentLaunchSettings so that when we do set one and property changed event is set
@@ -642,7 +641,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                     // Note that we have to be careful since the collection can be empty. 
                     if (profiles.ActiveProfile != null && !string.IsNullOrEmpty(profiles.ActiveProfile.Name))
                     {
-                        SelectedDebugProfile = LaunchProfiles.Where(p => LaunchProfile.IsSameProfileName(p.Name, profiles.ActiveProfile.Name)).Single();
+                        SelectedDebugProfile = LaunchProfiles.Where(p => LaunchProfile.IsSameProfileName(p.Name, profiles.ActiveProfile?.Name)).Single();
                     }
                     else
                     {
@@ -722,7 +721,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// Returns the active UI provider for the current selected launchType or mull if no selection or the selected item
         /// does not have a provider installed
         /// </summary>
-        private ILaunchSettingsUIProvider ActiveProvider
+        private ILaunchSettingsUIProvider? ActiveProvider
         {
             get
             {
@@ -731,7 +730,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                     return null;
                 }
 
-                Lazy<ILaunchSettingsUIProvider, IOrderPrecedenceMetadataView> activeProvider = _uiProviders.FirstOrDefault((p) => string.Equals(p.Value.CommandName, SelectedLaunchType.CommandName, StringComparison.OrdinalIgnoreCase));
+                Lazy<ILaunchSettingsUIProvider, IOrderPrecedenceMetadataView> activeProvider = _uiProviders.FirstOrDefault((p) => string.Equals(p.Value.CommandName, SelectedLaunchType?.CommandName, StringComparison.OrdinalIgnoreCase));
                 return activeProvider?.Value;
             }
         }
@@ -746,7 +745,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// <summary>
         /// Called when then the user saves the form.
         /// </summary>
-        public override async Task<int> Save()
+        public override async Task Save()
         {
             if (HasErrors)
             {
@@ -754,8 +753,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             }
 
             await SaveLaunchSettings();
-
-            return VSConstants.S_OK;
         }
 
 
@@ -802,7 +799,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                     {
                         using (var dialog = new System.Windows.Forms.FolderBrowserDialog())
                         {
-                            string folder = WorkingDirectory;
+                            string? folder = WorkingDirectory;
                             if (!string.IsNullOrEmpty(folder) && Directory.Exists(folder))
                             {
                                 dialog.SelectedPath = folder;
@@ -827,7 +824,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                     {
                         using (var dialog = new System.Windows.Forms.OpenFileDialog())
                         {
-                            string file = ExecutablePath;
+                            string? file = ExecutablePath;
                             if (!string.IsNullOrEmpty(file) && (file.IndexOfAny(Path.GetInvalidPathChars()) == -1) && Path.IsPathRooted(file))
                             {
                                 dialog.InitialDirectory = Path.GetDirectoryName(file);
@@ -894,7 +891,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 return LazyInitializer.EnsureInitialized(ref _deleteProfileCommand, () =>
                     new DelegateCommand(state =>
                     {
-                        IWritableLaunchProfile profileToRemove = SelectedDebugProfile;
+                        IWritableLaunchProfile? profileToRemove = SelectedDebugProfile;
                         SelectedDebugProfile = null;
 
                         CurrentLaunchSettings.Profiles.Remove(profileToRemove);
@@ -956,15 +953,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 _providerLaunchTypes = new List<LaunchType>();
                 foreach (Lazy<ILaunchSettingsUIProvider, IOrderPrecedenceMetadataView> provider in _uiProviders)
                 {
-                    if (_providerLaunchTypes.FirstOrDefault((lt) => lt.CommandName.Equals(provider.Value.CommandName)) == null)
+                    if (_providerLaunchTypes.FirstOrDefault((lt) => provider.Value.CommandName.Equals(lt.CommandName)) == null)
                     {
                         _providerLaunchTypes.Add(new LaunchType() { CommandName = provider.Value.CommandName, Name = provider.Value.FriendlyName });
                     }
                 }
             }
 
-            IWritableLaunchProfile selectedProfile = SelectedDebugProfile;
-            LaunchType selectedLaunchType = null;
+            IWritableLaunchProfile? selectedProfile = SelectedDebugProfile;
+            LaunchType? selectedLaunchType = null;
 
             _launchTypes = new List<LaunchType>();
             if (selectedProfile != null)
@@ -1032,7 +1029,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             OnPropertyChanged(nameof(DoesNotHaveErrors));
         }
 
-        public IEnumerable GetErrors(string propertyName)
+        public IEnumerable? GetErrors(string propertyName)
         {
             return null;
         }
@@ -1063,8 +1060,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
         public class LaunchType
         {
-            public string CommandName { get; set; }
-            public string Name { get; set; }
+            public string? CommandName { get; set; }
+            public string? Name { get; set; }
 
             public override bool Equals(object obj)
             {

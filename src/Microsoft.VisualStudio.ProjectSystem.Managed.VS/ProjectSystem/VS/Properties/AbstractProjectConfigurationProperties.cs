@@ -145,7 +145,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             }
         }
 
-        public object ExtenderNames => null;
+        public object? ExtenderNames => null;
         public string __id => throw new System.NotImplementedException();
         public bool DebugSymbols { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
         public bool DefineDebug { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }

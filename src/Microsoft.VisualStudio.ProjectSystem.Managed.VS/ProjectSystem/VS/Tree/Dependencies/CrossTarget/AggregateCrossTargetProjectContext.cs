@@ -36,7 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
         public IEnumerable<ConfiguredProject> InnerConfiguredProjects => _configuredProjectByTargetFramework.Values;
 
-        public ITargetFramework GetProjectFramework(ProjectConfiguration projectConfiguration)
+        public ITargetFramework? GetProjectFramework(ProjectConfiguration projectConfiguration)
         {
             if (projectConfiguration.Dimensions.TryGetValue(ConfigurationGeneral.TargetFrameworkProperty, out string targetFrameworkMoniker))
             {

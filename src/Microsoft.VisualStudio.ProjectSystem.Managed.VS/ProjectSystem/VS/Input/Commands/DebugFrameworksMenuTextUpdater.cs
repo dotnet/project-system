@@ -63,11 +63,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
             ImmutableArray<IActiveDebugFrameworkServices> activeDebugFrameworks = StartupProjectHelper.GetExportFromDotNetStartupProjects<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles);
             if (activeDebugFrameworks.Length > 0)
             {
-                string activeFramework = null;
-                List<string> frameworks = null;
+                string? activeFramework = null;
+                List<string>? frameworks = null;
                 ExecuteSynchronously(async () =>
                 {
-                    List<string> first = null;
+                    List<string>? first = null;
 
                     foreach (IActiveDebugFrameworkServices activeDebugFramework in activeDebugFrameworks)
                     {

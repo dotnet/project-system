@@ -128,14 +128,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             return dependenciesTree.SetProperties(icon: rootIcon, expandedIcon: rootIcon);
         }
 
-        public override IProjectTree FindByPath(IProjectTree root, string path)
+        public override IProjectTree? FindByPath(IProjectTree root, string path)
         {
             if (root == null)
             {
                 return null;
             }
 
-            IProjectTree dependenciesNode = root.Flags.Contains(DependencyTreeFlags.DependenciesRootNodeFlags) 
+            IProjectTree? dependenciesNode = root.Flags.Contains(DependencyTreeFlags.DependenciesRootNodeFlags) 
                 ? root 
                 : root.GetSubTreeNode(DependencyTreeFlags.DependenciesRootNodeFlags);
 
@@ -226,13 +226,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             bool isActiveTarget,
             bool shouldCleanup)
         {
-            List<IProjectTree> currentNodes = shouldCleanup 
+            List<IProjectTree>? currentNodes = shouldCleanup 
                 ? new List<IProjectTree>(capacity: dependencies.Count) 
                 : null;
 
             foreach (IDependency dependency in dependencies)
             {
-                IProjectTree dependencyNode = rootNode.FindChildWithCaption(dependency.Caption);
+                IProjectTree? dependencyNode = rootNode.FindChildWithCaption(dependency.Caption);
                 bool isNewDependencyNode = dependencyNode == null;
 
                 if (!isNewDependencyNode
@@ -258,7 +258,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     : dependencyNode.Parent;
             }
 
-            return shouldCleanup 
+            return currentNodes != null
                 ? CleanupOldNodes(rootNode, currentNodes) 
                 : rootNode;
         }
@@ -277,14 +277,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         private async Task<IProjectTree> CreateOrUpdateNodeAsync(
-            IProjectTree node,
+            IProjectTree? node,
             IDependency dependency,
             ITargetedDependenciesSnapshot targetedSnapshot,
             bool isProjectItem,
             ProjectTreeFlags? additionalFlags = null,
             ProjectTreeFlags? excludedFlags = null)
         {
-            IRule rule = null;
+            IRule? rule = null;
             if (dependency.Flags.Contains(DependencyTreeFlags.SupportsRuleProperties))
             {
                 rule = await TreeServices.GetRuleAsync(dependency, targetedSnapshot.Catalogs);
@@ -300,9 +300,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         private IProjectTree CreateOrUpdateNode(
-            IProjectTree node,
+            IProjectTree? node,
             IDependencyViewModel viewModel,
-            IRule rule,
+            IRule? rule,
             bool isProjectItem,
             ProjectTreeFlags? additionalFlags = null,
             ProjectTreeFlags? excludedFlags = null)
@@ -319,7 +319,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
         private IProjectTree CreateProjectTreeNode(
             IDependencyViewModel viewModel,
-            IRule rule,
+            IRule? rule,
             ProjectTreeFlags? additionalFlags = null,
             ProjectTreeFlags? excludedFlags = null)
         {
@@ -329,7 +329,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             ProjectTreeFlags flags = FilterFlags(viewModel.Flags.Except(DependencyTreeFlags.BaseReferenceFlags),
                 additionalFlags,
                 excludedFlags);
-            string filePath = (viewModel.OriginalModel != null && viewModel.OriginalModel.TopLevel &&
+            string? filePath = (viewModel.OriginalModel != null && viewModel.OriginalModel.TopLevel &&
                                viewModel.OriginalModel.Resolved)
                 ? viewModel.OriginalModel.GetTopLevelId()
                 : viewModel.FilePath;
@@ -346,12 +346,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
         private IProjectTree CreateProjectItemTreeNode(
             IDependencyViewModel viewModel,
-            IRule rule,
+            IRule? rule,
             ProjectTreeFlags? additionalFlags = null,
             ProjectTreeFlags? excludedFlags = null)
         {
             ProjectTreeFlags flags = FilterFlags(viewModel.Flags, additionalFlags, excludedFlags);
-            string filePath = (viewModel.OriginalModel != null && viewModel.OriginalModel.TopLevel &&
+            string? filePath = (viewModel.OriginalModel != null && viewModel.OriginalModel.TopLevel &&
                                viewModel.OriginalModel.Resolved)
                 ? viewModel.OriginalModel.GetTopLevelId()
                 : viewModel.FilePath;
@@ -376,7 +376,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         private IProjectTree UpdateTreeNode(
             IProjectTree node,
             IDependencyViewModel viewModel,
-            IRule rule)
+            IRule? rule)
         {
             ProjectTreeCustomizablePropertyContext updatedNodeParentContext = GetCustomPropertyContext(node.Parent);
 

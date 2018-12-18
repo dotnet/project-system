@@ -29,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         private void CallPropertyPageControl()
         {
             var ppvm = new Mock<PropertyPageViewModel>();
-            ppvm.Setup(m => m.Save()).ReturnsAsync(VSConstants.S_OK);
+            ppvm.Setup(m => m.Save());
             ppvm.Setup(m => m.Initialize()).Returns(new Task(() => { }));
             ppvm.CallBase = true;
 

@@ -22,13 +22,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         public const string DependencyRulesSubscriberContract = "DependencyRulesSubscriberContract";
 
 #pragma warning disable CA2213 // OnceInitializedOnceDisposedAsync are not tracked correctly by the IDisposeable analyzer
-        private DisposableBag _subscriptions;
+        private DisposableBag? _subscriptions;
 #pragma warning restore CA2213
         private readonly IUnconfiguredProjectCommonServices _commonServices;
         private readonly IProjectAsynchronousTasksService _tasksService;
         private readonly IDependencyTreeTelemetryService _treeTelemetryService;
         private ICrossTargetSubscriptionsHost _host;
-        private AggregateCrossTargetProjectContext _currentProjectContext;
+        private AggregateCrossTargetProjectContext? _currentProjectContext;
 
         [ImportMany(DependencyRulesSubscriberContract)]
         private readonly OrderPrecedenceImportCollection<IDependenciesRuleHandler> _handlers;
@@ -204,14 +204,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             IProjectCatalogSnapshot catalogSnapshot,
             RuleHandlerType handlerType)
         {
-            AggregateCrossTargetProjectContext currentAggregateContext = await _host.GetCurrentAggregateProjectContext();
+            AggregateCrossTargetProjectContext? currentAggregateContext = await _host.GetCurrentAggregateProjectContext();
             if (currentAggregateContext == null || _currentProjectContext != currentAggregateContext)
             {
                 return;
             }
 
             // Get the inner workspace project context to update for this change.
-            ITargetFramework targetFrameworkToUpdate = currentAggregateContext.GetProjectFramework(projectUpdate.ProjectConfiguration);
+            ITargetFramework? targetFrameworkToUpdate = currentAggregateContext.GetProjectFramework(projectUpdate.ProjectConfiguration);
 
             if (targetFrameworkToUpdate == null)
             {

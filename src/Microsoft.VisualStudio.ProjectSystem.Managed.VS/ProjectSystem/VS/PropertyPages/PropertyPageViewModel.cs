@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         public event PropertyChangedEventHandler PropertyChanged;
 
         public UnconfiguredProject Project { get; set; }
-        public PropertyPageControl ParentControl { get; set; }
+        public PropertyPageControl? ParentControl { get; set; }
 
         /// <summary>
         /// Since calls to ignore events can be nested, a downstream call could change the outer 
@@ -34,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         }
 
         public abstract Task Initialize();
-        public abstract Task<int> Save();
+        public abstract Task Save();
 
         protected virtual void OnPropertyChanged(string propertyName, bool suppressInvalidation = false)
         {
@@ -50,7 +50,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             }
         }
 
-        protected virtual bool OnPropertyChanged<T>(ref T propertyRef, T value, bool suppressInvalidation, [CallerMemberName] string propertyName = null)
+        protected virtual bool OnPropertyChanged<T>(ref T propertyRef, T value, bool suppressInvalidation, [CallerMemberName] string? propertyName = null)
         {
             if (!Equals(propertyRef, value))
             {
@@ -61,7 +61,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             return false;
         }
 
-        protected virtual bool OnPropertyChanged<T>(ref T propertyRef, T value, [CallerMemberName] string propertyName = null)
+        protected virtual bool OnPropertyChanged<T>(ref T propertyRef, T value, [CallerMemberName] string? propertyName = null)
         {
             return OnPropertyChanged(ref propertyRef, value, suppressInvalidation: false, propertyName: propertyName);
         }

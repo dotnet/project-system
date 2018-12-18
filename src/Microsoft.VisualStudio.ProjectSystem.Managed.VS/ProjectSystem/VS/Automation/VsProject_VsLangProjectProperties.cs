@@ -106,7 +106,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             }
         }
 
-        public string ExtenderCATID => null;
+        public string? ExtenderCATID => null;
 
         public string AbsoluteProjectDirectory
         {

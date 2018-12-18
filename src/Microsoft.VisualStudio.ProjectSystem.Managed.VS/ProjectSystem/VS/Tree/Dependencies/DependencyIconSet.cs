@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     /// sets; we can save considerable amounts of memory by giving the sets their
     /// own type and sharing instances.
     /// </summary>
-    internal sealed class DependencyIconSet : IEquatable<DependencyIconSet>
+    internal sealed class DependencyIconSet : IEquatable<DependencyIconSet?>
     {
         public DependencyIconSet(ImageMoniker icon, ImageMoniker expandedIcon, ImageMoniker unresolvedIcon, ImageMoniker unresolvedExpandedIcon)
         {
@@ -26,12 +26,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         public ImageMoniker UnresolvedIcon { get; }
         public ImageMoniker UnresolvedExpandedIcon { get; }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             return Equals(obj as DependencyIconSet);
         }
 
-        public bool Equals(DependencyIconSet other)
+        public bool Equals(DependencyIconSet? other)
         {
             return other != null
                 && Icon.Id == other.Icon.Id

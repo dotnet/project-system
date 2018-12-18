@@ -96,7 +96,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
                         if (!cachedDependencyToMatchingResultsMap
                                 .TryGetValue(topLevelDependency.Id, out HashSet<IDependency> topLevelDependencyMatches))
                         {
-                            IDependenciesGraphViewProvider viewProvider = ViewProviders
+                            IDependenciesGraphViewProvider? viewProvider = ViewProviders
                                 .FirstOrDefaultValue((x, d) => x.SupportsDependency(d), topLevelDependency);
 
                             if (viewProvider == null)

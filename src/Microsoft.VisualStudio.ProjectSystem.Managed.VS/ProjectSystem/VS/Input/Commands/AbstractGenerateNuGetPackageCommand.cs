@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         private readonly IProjectThreadingService _threadingService;
         private readonly IVsService<SVsSolutionBuildManager, IVsSolutionBuildManager2> _vsSolutionBuildManagerService;
         private readonly GeneratePackageOnBuildPropertyProvider _generatePackageOnBuildPropertyProvider;
-        private IVsSolutionBuildManager2 _buildManager;
+        private IVsSolutionBuildManager2? _buildManager;
         private uint _solutionEventsCookie;
 
         protected AbstractGenerateNuGetPackageCommand(
@@ -58,7 +58,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
             // Ensure build manager is initialized.
             await EnsureBuildManagerInitializedAsync();
 
-            ErrorHandler.ThrowOnFailure(_buildManager.QueryBuildManagerBusy(out int busy));
+            ErrorHandler.ThrowOnFailure(_buildManager!.QueryBuildManagerBusy(out int busy));
             return busy == 0;
         }
 
@@ -90,14 +90,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 
                 // Save documents before build.
                 var projectVsHierarchy = (IVsHierarchy)Project.Services.HostObject;
-                ErrorHandler.ThrowOnFailure(_buildManager.SaveDocumentsBeforeBuild(projectVsHierarchy, (uint)VSConstants.VSITEMID.Root, 0 /*docCookie*/));
+                ErrorHandler.ThrowOnFailure(_buildManager!.SaveDocumentsBeforeBuild(projectVsHierarchy, (uint)VSConstants.VSITEMID.Root, 0 /*docCookie*/));
 
                 // Enable generating package on build ("GeneratePackageOnBuild") for all projects being built.
                 _generatePackageOnBuildPropertyProvider.OverrideGeneratePackageOnBuild(true);
 
                 // Kick off the build.
                 uint dwFlags = (uint)(VSSOLNBUILDUPDATEFLAGS.SBF_SUPPRESS_SAVEBEFOREBUILD_QUERY | VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_BUILD);
-                ErrorHandler.ThrowOnFailure(_buildManager.StartSimpleUpdateProjectConfiguration(projectVsHierarchy, null, null, dwFlags, 0, 0));
+                ErrorHandler.ThrowOnFailure(_buildManager!.StartSimpleUpdateProjectConfiguration(projectVsHierarchy, null, null, dwFlags, 0, 0));
             }
 
             return true;
@@ -148,9 +148,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 
                         if (_buildManager != null)
                         {
+#pragma warning disable CS8602 // Workaround https://github.com/dotnet/roslyn/issues/31620
                             // Unregister solution build events.
                             _buildManager.UnadviseUpdateSolutionEvents(_solutionEventsCookie);
                             _buildManager = null;
+#pragma warning restore CS8602
                         }
                     });
                 }

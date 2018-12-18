@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Imaging
         {
         }
 
-        public ProjectImageMoniker GetProjectImage(string key)
+        public ProjectImageMoniker? GetProjectImage(string key)
         {
             Requires.NotNullOrEmpty(key, nameof(key));
 

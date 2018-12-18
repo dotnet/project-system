@@ -10,7 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
         private readonly ImmutableDictionary<string, IDependency>.Builder _worldBuilder;
 
         private bool _acceptedOrRejected;
-        private IDependency _acceptedDependency;
+        private IDependency? _acceptedDependency;
 
         public bool Changed { get; private set; }
 
@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
             _acceptedDependency = null;
         }
 
-        public IDependency GetResult(IDependenciesSnapshotFilter filter)
+        public IDependency? GetResult(IDependenciesSnapshotFilter filter)
         {
             if (!_acceptedOrRejected)
             {

@@ -13,8 +13,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
         /// <summary>
         /// Returns the version of VS as defined by VSVSAPROPID_ProductSemanticVersion with the trailing sem version stripped, or null on failure. 
         /// </summary>
-        Task<Version> GetVSVersionAsync(IVsService<IVsAppId> vsAppIdService);
+        Task<Version?> GetVSVersionAsync(IVsService<IVsAppId> vsAppIdService);
 
-        Task<string> GetLocalAppDataFolderAsync(IVsService<IVsShell> vsShellService);
+        Task<string?> GetLocalAppDataFolderAsync(IVsService<IVsShell> vsShellService);
     }
 }

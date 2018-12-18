@@ -25,13 +25,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
     [ExportMetadata("Name", "DebugProfileProvider")]
     internal class DebugProfileDebugTargetGenerator : ProjectValueDataSourceBase<IReadOnlyList<IEnumValue>>, IDynamicEnumValuesProvider, IDynamicDebugTargetsGenerator
     {
-        private IReceivableSourceBlock<IProjectVersionedValue<IReadOnlyList<IEnumValue>>> _publicBlock;
+        private IReceivableSourceBlock<IProjectVersionedValue<IReadOnlyList<IEnumValue>>>? _publicBlock;
 
         // Represents the link to the launch profiles
-        private IDisposable _launchProfileProviderLink;
+        private IDisposable? _launchProfileProviderLink;
 
         // Represents the link to our source provider
-        private IDisposable _debugProviderLink;
+        private IDisposable? _debugProviderLink;
 
         [ImportingConstructor]
         public DebugProfileDebugTargetGenerator(
@@ -63,7 +63,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             get
             {
                 EnsureInitialized();
-                return _publicBlock;
+                return _publicBlock!;
             }
         }
 

@@ -2,6 +2,7 @@
 
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Runtime.CompilerServices;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 {
@@ -9,6 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
     /// Abstract list with Item method for getting members by index or name
     /// </summary>
     internal abstract class VsItemList<T> : KeyedCollection<string, T>
+        where T : class
     {
         protected VsItemList() : base() { }
 
@@ -22,18 +24,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             }
         }
 
-        public T Item(object index)
+        public T? Item(object index)
         {
             if (index is string)
             {
-                TryGetValue((string)index, out T value);
+                TryGetValue((string)index, out T? value);
                 return value;
             }
 
             return this[(int)index];
         }
 
-        public bool TryGetValue(string key, out T value)
+        public bool TryGetValue(string key, [NotNullWhenTrue]out T? value)
         {
             // Until we have https://github.com/dotnet/corefx/issues/4690
 

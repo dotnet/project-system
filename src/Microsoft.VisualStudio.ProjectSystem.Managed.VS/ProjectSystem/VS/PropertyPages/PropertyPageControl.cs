@@ -16,11 +16,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
         public event EventHandler StatusChanged;
 
-        public PropertyPageViewModel ViewModel
+        public PropertyPageViewModel? ViewModel
         {
             get
             {
-                return DataContext as PropertyPageViewModel;
+                return (PropertyPageViewModel)DataContext;
             }
             set
             {
@@ -56,35 +56,33 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         {
             _ignoreEvents = true;
             IsDirty = false;
-            ViewModel.PropertyChanged -= ViewModel_PropertyChanged;
+            if (ViewModel != null)
+            {
+                ViewModel.PropertyChanged -= ViewModel_PropertyChanged;
 
-            // Let the view model know we are done.
-            ViewModel.ViewModelDetached();
-            ViewModel.ParentControl = null;
-            ViewModel = null;
+                // Let the view model know we are done.
+                ViewModel.ViewModelDetached();
+                ViewModel.ParentControl = null;
+                ViewModel = null;
+            }
             _ignoreEvents = false;
         }
 
         public async Task<int> Apply()
         {
-            int result = VSConstants.S_OK;
-
             if (IsDirty)
             {
-                result = await OnApply();
-                if (result == VSConstants.S_OK)
-                {
-                    IsDirty = false;
-                }
+                await OnApply();
+                IsDirty = false;
             }
 
-            return result;
+            return VSConstants.S_OK;
         }
 
-        protected virtual Task<int> OnApply() { return ViewModel.Save(); }
+        protected virtual Task OnApply() { return ViewModel == null ? Task.CompletedTask : ViewModel.Save(); }
         private void ViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (!_ignoreEvents && !ViewModel.IgnoreEvents)
+            if (!_ignoreEvents && !ViewModel?.IgnoreEvents == true)
             {
                 IsDirty = true;
             }

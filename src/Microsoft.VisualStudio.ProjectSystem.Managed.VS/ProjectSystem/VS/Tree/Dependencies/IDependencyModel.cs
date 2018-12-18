@@ -48,14 +48,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// </summary>
         string Caption { get; }
 
-        string SchemaName { get; }
+        string? SchemaName { get; }
 
-        string SchemaItemType { get; }
+        string? SchemaItemType { get; }
 
         /// <summary>
         /// Version of the dependency
         /// </summary>
-        string Version { get; }
+        string? Version { get; }
 
         /// <summary>
         /// Specifies if dependency is resolved or not

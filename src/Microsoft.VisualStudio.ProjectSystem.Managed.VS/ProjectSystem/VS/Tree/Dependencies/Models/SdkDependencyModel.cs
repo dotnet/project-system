@@ -34,11 +34,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 
         public override string ProviderType => SdkRuleHandler.ProviderTypeString;
 
-        public override string SchemaItemType => SdkReference.PrimaryDataSourceItemType;
+        public override string? SchemaItemType => SdkReference.PrimaryDataSourceItemType;
 
-        public override string SchemaName => Resolved ? ResolvedSdkReference.SchemaName : SdkReference.SchemaName;
+        public override string? SchemaName => Resolved ? ResolvedSdkReference.SchemaName : SdkReference.SchemaName;
 
-        public override string Version { get; }
+        public override string? Version { get; }
 
         public SdkDependencyModel(
             string path,
@@ -55,7 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
                 properties)
         {
             Version = properties.GetStringProperty(ProjectItemMetadata.Version) ?? string.Empty;
-            string baseCaption = new LazyStringSplit(path, ',').FirstOrDefault();
+            string? baseCaption = new LazyStringSplit(path, ',').FirstOrDefault();
             Caption = string.IsNullOrEmpty(Version) ? baseCaption : $"{baseCaption} ({Version})";
         }
     }

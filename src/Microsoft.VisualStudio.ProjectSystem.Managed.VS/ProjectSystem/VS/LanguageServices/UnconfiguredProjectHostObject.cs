@@ -20,8 +20,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         {
         }
 
-        public IConfiguredProjectHostObject ActiveIntellisenseProjectHostObject { get; set; }
-        public override string ActiveWorkspaceProjectContextId => ActiveIntellisenseProjectHostObject?.WorkspaceProjectContextId;
+        public IConfiguredProjectHostObject? ActiveIntellisenseProjectHostObject { get; set; }
+        public override string? ActiveWorkspaceProjectContextId => ActiveIntellisenseProjectHostObject?.WorkspaceProjectContextId;
         public bool DisposingConfiguredProjectHostObjects { get; set; }
 
         public void PushPendingIntellisenseProjectHostObjectUpdates()
@@ -49,7 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             return hr;
         }
 
-        public override int GetProperty(uint itemid, int propid, out object pvar)
+        public override int GetProperty(uint itemid, int propid, out object? pvar)
         {
             if (ActiveIntellisenseProjectHostObject != null)
             {

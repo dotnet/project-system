@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             VisualStudioWorkspace workspace,
             IProjectThreadingService threadingService)
             : base(delegatedProvider, instanceProvider, interceptingValueProviders, project,
-                  getActiveProjectId: () => ((AbstractProject)languageServiceHost.ActiveProjectContext)?.Id,
+                  getActiveProjectId: () => ((AbstractProject?)languageServiceHost.ActiveProjectContext)?.Id,
                   workspace: workspace,
                   threadingService: threadingService)
         {

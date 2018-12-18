@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         {
         }
 
-        public string GetExtenderCATID(ExtenderCATIDType extenderCATIDType, IProjectTree treeNode)
+        public string? GetExtenderCATID(ExtenderCATIDType extenderCATIDType, IProjectTree treeNode)
         {
             // CPS's implementation of ExtenderCATIDType incorrectly treats the same "instances" as distinct items based 
             // where they are accessed in CPS. It also incorrectly maps "HierarchyExtensionObject" and "HierarchyBrowseObject" 

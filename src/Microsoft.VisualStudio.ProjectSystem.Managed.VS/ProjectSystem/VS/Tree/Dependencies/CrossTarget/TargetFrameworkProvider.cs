@@ -32,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             _nuGetFrameworkParser = nugetFrameworkParser;
         }
 
-        public ITargetFramework GetTargetFramework(string shortOrFullName)
+        public ITargetFramework? GetTargetFramework(string shortOrFullName)
         {
             if (string.IsNullOrEmpty(shortOrFullName))
             {
@@ -87,7 +87,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             }
         }
 
-        public ITargetFramework GetNearestFramework(ITargetFramework targetFramework,
+        public ITargetFramework? GetNearestFramework(ITargetFramework targetFramework,
                                                     IEnumerable<ITargetFramework> otherFrameworks)
         {
             if (targetFramework?.FrameworkName == null || otherFrameworks == null)

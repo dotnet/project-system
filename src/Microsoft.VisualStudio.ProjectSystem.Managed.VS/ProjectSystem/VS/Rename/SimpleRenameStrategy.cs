@@ -32,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
         public override async Task RenameAsync(Project myNewProject, string oldFileName, string newFileName, bool isCaseSensitive)
         {
             string oldNameBase = Path.GetFileNameWithoutExtension(oldFileName);
-            Solution renamedSolution = await GetRenamedSolutionAsync(myNewProject, oldNameBase, newFileName, isCaseSensitive);
+            Solution? renamedSolution = await GetRenamedSolutionAsync(myNewProject, oldNameBase, newFileName, isCaseSensitive);
             if (renamedSolution == null)
                 return;
 
@@ -47,10 +47,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             }
         }
 
-        private async Task<Solution> GetRenamedSolutionAsync(Project myNewProject, string oldNameBase, string newFileName, bool isCaseSensitive)
+        private async Task<Solution?> GetRenamedSolutionAsync(Project myNewProject, string oldNameBase, string newFileName, bool isCaseSensitive)
         {
             Project project = myNewProject;
-            Solution renamedSolution = null;
+            Solution? renamedSolution = null;
 
             while (project != null)
             {

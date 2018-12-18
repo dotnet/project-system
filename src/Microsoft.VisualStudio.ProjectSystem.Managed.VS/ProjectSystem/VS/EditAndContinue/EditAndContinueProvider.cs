@@ -19,8 +19,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.EditAndContinue
     [AppliesTo(ProjectCapability.EditAndContinue)]
     internal class EditAndContinueProvider : IVsENCRebuildableProjectCfg, IVsENCRebuildableProjectCfg2, IVsENCRebuildableProjectCfg4, IDisposable
     {
-        private ILanguageServiceHost _host;
-        private IProjectThreadingService _threadingService;
+        private ILanguageServiceHost? _host;
+        private IProjectThreadingService? _threadingService;
 
         [ImportingConstructor]
         public EditAndContinueProvider(ILanguageServiceHost host, IProjectThreadingService threadingService)
@@ -116,11 +116,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.EditAndContinue
 
         private int Invoke(Func<IVsENCRebuildableProjectCfg2, HResult> action)
         {
+            if (_threadingService == null)
+                throw new ObjectDisposedException(nameof(EditAndContinueProvider));
+
             return _threadingService.ExecuteSynchronously(async () =>
             {
                 await _threadingService.SwitchToUIThread();
 
-                var encProvider = (IVsENCRebuildableProjectCfg2)_host?.HostSpecificEditAndContinueService;
+                var encProvider = (IVsENCRebuildableProjectCfg2?)_host?.HostSpecificEditAndContinueService;
                 if (encProvider != null)
                 {
                     return action(encProvider);
@@ -140,7 +143,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.EditAndContinue
 
         // NOTE: Managed ENC always calls through IVsENCRebuildableProjectCfg2/IVsENCRebuildableProjectCfg4.
         // We implement IVsENCRebuildableProjectCfg as this used to sniff the project for EnC support.
-        int IVsENCRebuildableProjectCfg.ENCRebuild(object in_pProgram, out object out_ppSnapshot)
+        int IVsENCRebuildableProjectCfg.ENCRebuild(object in_pProgram, out object? out_ppSnapshot)
         {
             out_ppSnapshot = null;
             return HResult.NotImplemented;

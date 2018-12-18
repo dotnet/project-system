@@ -40,7 +40,7 @@ namespace Microsoft.VisualStudio.Packaging
                                                   ProjectCapability.LanguageService + "; " +
                                                   ProjectCapability.DotNet;
 
-        private IDotNetCoreProjectCompatibilityDetector _dotNetCoreCompatibilityDetector;
+        private IDotNetCoreProjectCompatibilityDetector? _dotNetCoreCompatibilityDetector;
 
         public ManagedProjectSystemPackage()
         {
@@ -53,7 +53,7 @@ namespace Microsoft.VisualStudio.Packaging
             var componentModel = (IComponentModel)(await GetServiceAsync(typeof(SComponentModel)));
             Lazy<DebugFrameworksDynamicMenuCommand> debugFrameworksCmd = componentModel.DefaultExportProvider.GetExport<DebugFrameworksDynamicMenuCommand>();
 
-            var mcs = (await GetServiceAsync(typeof(IMenuCommandService))) as OleMenuCommandService;
+            var mcs = (OleMenuCommandService)await GetServiceAsync(typeof(IMenuCommandService));
             mcs.AddCommand(debugFrameworksCmd.Value);
 
             Lazy<DebugFrameworkPropertyMenuTextUpdater> debugFrameworksMenuTextUpdater = componentModel.DefaultExportProvider.GetExport<DebugFrameworkPropertyMenuTextUpdater>();

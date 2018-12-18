@@ -20,14 +20,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
         }
 
         public string Caption { get; }
-        public string FilePath => null;
-        public string SchemaName => null;
-        public string SchemaItemType => null;
+        public string? FilePath => null;
+        public string? SchemaName => null;
+        public string? SchemaItemType => null;
         public int Priority => Dependency.FrameworkAssemblyNodePriority;
         public ImageMoniker Icon => _hasUnresolvedDependency ? ManagedImageMonikers.LibraryWarning : KnownMonikers.Library;
         public ImageMoniker ExpandedIcon => _hasUnresolvedDependency ? ManagedImageMonikers.LibraryWarning : KnownMonikers.Library;
-        public IImmutableDictionary<string, string> Properties => null;
+        public IImmutableDictionary<string, string>? Properties => null;
         public ProjectTreeFlags Flags { get; }
-        public IDependency OriginalModel => null;
+        public IDependency? OriginalModel => null;
     }
 }

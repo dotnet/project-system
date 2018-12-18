@@ -23,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         private readonly IUnconfiguredProjectVsServices _projectVsServices;
         private readonly IProjectHostProvider _projectHostProvider;
         private readonly ILanguageServiceHost _languageServiceHost;
-        private readonly AsyncLazy<IVsContainedLanguageFactory> _containedLanguageFactory;
+        private readonly AsyncLazy<IVsContainedLanguageFactory?> _containedLanguageFactory;
 
         [ImportingConstructor]
         public VsContainedLanguageComponentsFactory(IVsService<SAsyncServiceProvider, IOleAsyncServiceProvider> serviceProvider,
@@ -36,7 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             _projectHostProvider = projectHostProvider;
             _languageServiceHost = languageServiceHost;
 
-            _containedLanguageFactory = new AsyncLazy<IVsContainedLanguageFactory>(GetContainedLanguageFactoryAsync, projectVsServices.ThreadingService.JoinableTaskFactory);
+            _containedLanguageFactory = new AsyncLazy<IVsContainedLanguageFactory?>(GetContainedLanguageFactoryAsync, projectVsServices.ThreadingService.JoinableTaskFactory);
         }
 
         public int GetContainedLanguageFactoryForFile(string filePath,
@@ -52,7 +52,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             return (hierarchy == null || containedLanguageFactory == null) ? HResult.Fail : HResult.OK;
         }
 
-        private async Task<(HierarchyId itemid, IVsHierarchy hierarchy, IVsContainedLanguageFactory containedLanguageFactory)> GetContainedLanguageFactoryForFileAsync(string filePath)
+        private async Task<(HierarchyId itemid, IVsHierarchy? hierarchy, IVsContainedLanguageFactory? containedLanguageFactory)> GetContainedLanguageFactoryForFileAsync(string filePath)
         {
             await _languageServiceHost.InitializeAsync();
 
@@ -65,19 +65,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 
             Assumes.False(itemid == HierarchyId.Nil);
 
-            IVsContainedLanguageFactory containedLanguageFactory = await _containedLanguageFactory.GetValueAsync();
+            IVsContainedLanguageFactory? containedLanguageFactory = await _containedLanguageFactory.GetValueAsync();
 
             if (containedLanguageFactory == null)
                 return (HierarchyId.Nil, null, null);
 
-            var hierarchy = (IVsHierarchy)_projectHostProvider.UnconfiguredProjectHostObject.ActiveIntellisenseProjectHostObject;
+            var hierarchy = (IVsHierarchy?)_projectHostProvider.UnconfiguredProjectHostObject.ActiveIntellisenseProjectHostObject;
             if (hierarchy == null)
                 return (HierarchyId.Nil, null, null);
 
             return (itemid, hierarchy, containedLanguageFactory);
         }
 
-        private async Task<IVsContainedLanguageFactory> GetContainedLanguageFactoryAsync()
+        private async Task<IVsContainedLanguageFactory?> GetContainedLanguageFactoryAsync()
         {
             Guid languageServiceId = await GetLanguageServiceId();
             if (languageServiceId == Guid.Empty)

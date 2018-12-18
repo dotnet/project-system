@@ -56,8 +56,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
                 result = string.Equals(value, "1", StringComparison.OrdinalIgnoreCase);
             }
-
+#pragma warning disable CS8629 // Workaround https://github.com/dotnet/roslyn/issues/31871
             return result.Value;
+#pragma warning restore CS8629
         }
     }
 }

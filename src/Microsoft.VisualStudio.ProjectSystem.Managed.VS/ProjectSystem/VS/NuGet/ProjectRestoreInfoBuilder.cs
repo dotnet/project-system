@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         private const string DefiningProjectDirectoryProperty = "DefiningProjectDirectory";
         private const string ProjectFileFullPathProperty = "ProjectFileFullPath";
 
-        internal static IVsProjectRestoreInfo Build(IEnumerable<IProjectValueVersions> updates,
+        internal static IVsProjectRestoreInfo? Build(IEnumerable<IProjectValueVersions> updates,
             UnconfiguredProject project)
         {
             Requires.NotNull(updates, nameof(updates));
@@ -25,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             return Build(updates.Cast<IProjectVersionedValue<IProjectSubscriptionUpdate>>(), project);
         }
 
-        internal static IVsProjectRestoreInfo Build(IEnumerable<IProjectVersionedValue<IProjectSubscriptionUpdate>> updates,
+        internal static IVsProjectRestoreInfo? Build(IEnumerable<IProjectVersionedValue<IProjectSubscriptionUpdate>> updates,
             UnconfiguredProject project)
         {
             Requires.NotNull(updates, nameof(updates));
@@ -37,8 +37,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                 return null;
             }
 
-            string msbuildProjectExtensionsPath = null;
-            string originalTargetFrameworks = null;
+            string? msbuildProjectExtensionsPath = null;
+            string? originalTargetFrameworks = null;
             var targetFrameworks = new TargetFrameworks();
             var toolReferences = new ReferenceItems();
 

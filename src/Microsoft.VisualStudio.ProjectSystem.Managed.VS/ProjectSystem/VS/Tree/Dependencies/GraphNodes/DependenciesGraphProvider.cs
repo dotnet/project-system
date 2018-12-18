@@ -110,7 +110,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
         /// <summary>
         /// IGraphProvider.GetExtension
         /// </summary>
-        public T GetExtension<T>(GraphObject graphObject, T previous) where T : class
+        public T? GetExtension<T>(GraphObject graphObject, T previous) where T : class
         {
             return null;
         }
@@ -118,7 +118,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
         /// <summary>
         /// IGraphProvider.Schema
         /// </summary>
-        public Graph Schema => null;
+        public Graph? Schema => null;
 
         internal async Task BeginGetGraphDataAsync(IGraphContext context)
         {
@@ -250,7 +250,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
             GraphNodeId graphNodeId,
             IGraphContext graphContext,
             string projectPath,
-            GraphNode parentNode,
+            GraphNode? parentNode,
             IDependencyViewModel viewModel)
         {
             _iconCache.Register(viewModel.Icon);

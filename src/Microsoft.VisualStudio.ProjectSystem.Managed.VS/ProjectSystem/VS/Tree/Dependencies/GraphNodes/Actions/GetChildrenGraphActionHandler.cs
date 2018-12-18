@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.ComponentModel.Composition;
-using System.Linq;
 
 using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.GraphModel;
@@ -57,7 +56,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
                     continue;
                 }
 
-                IDependenciesGraphViewProvider viewProvider = ViewProviders
+                IDependenciesGraphViewProvider? viewProvider = ViewProviders
                     .FirstOrDefaultValue((x, d) => x.SupportsDependency(d), dependency);
 
                 if (viewProvider == null)

@@ -10,14 +10,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
     internal interface IDependencyViewModel
     {
         string Caption { get; }
-        string FilePath { get; }
-        string SchemaName { get; }
-        string SchemaItemType { get; }
+        string? FilePath { get; }
+        string? SchemaName { get; }
+        string? SchemaItemType { get; }
         int Priority { get; }
         ImageMoniker Icon { get; }
         ImageMoniker ExpandedIcon { get; }
-        IImmutableDictionary<string, string> Properties { get; }
+        IImmutableDictionary<string, string>? Properties { get; }
         ProjectTreeFlags Flags { get; }
-        IDependency OriginalModel { get; }
+        IDependency? OriginalModel { get; }
     }
 }

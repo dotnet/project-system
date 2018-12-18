@@ -29,7 +29,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             _frameworkParser = frameworkParser;
         }
 
-        public override async Task<string> OnSetPropertyValueAsync(string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string> dimensionalConditions = null)
+        public override async Task<string?> OnSetPropertyValueAsync(
+            string? unevaluatedPropertyValue,
+            IProjectProperties defaultProperties,
+            IReadOnlyDictionary<string, string>? dimensionalConditions = null)
         {
             ConfigurationGeneral configuration = await _properties.GetConfigurationGeneralPropertiesAsync();
             string currentTargetFramework = (string)await configuration.TargetFramework.GetValueAsync();

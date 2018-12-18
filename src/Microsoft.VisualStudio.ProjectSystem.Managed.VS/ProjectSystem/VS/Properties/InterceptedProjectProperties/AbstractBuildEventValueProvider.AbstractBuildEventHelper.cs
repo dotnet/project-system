@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
             private string BuildEvent { get; }
             private string TargetName { get; }
 
-            public async Task<(bool success, string property)> TryGetPropertyAsync(IProjectProperties defaultProperties)
+            public async Task<(bool success, string? property)> TryGetPropertyAsync(IProjectProperties defaultProperties)
             {
                 // check if value already exists
                 string unevaluatedPropertyValue = await defaultProperties.GetUnevaluatedPropertyValueAsync(BuildEvent);
@@ -44,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
 
                 return (false, null);
             }
-            public string GetProperty(ProjectRootElement projectXml)
+            public string? GetProperty(ProjectRootElement projectXml)
             {
                 return GetFromTargets(projectXml);
             }
@@ -83,7 +83,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
                 SetParameter(projectXml, unevaluatedPropertyValue);
             }
 
-            private string GetFromTargets(ProjectRootElement projectXml)
+            private string? GetFromTargets(ProjectRootElement projectXml)
             {
                 (bool success, ProjectTaskElement execTask) = FindExecTaskInTargets(projectXml);
 
@@ -129,7 +129,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
                 return (success: foundTarget != null, target: foundTarget);
             }
 
-            private void SetParameter(ProjectRootElement projectXml, string unevaluatedPropertyValue)
+            private void SetParameter(ProjectRootElement projectXml, string? unevaluatedPropertyValue)
             {
                 (bool success, ProjectTaskElement execTask) result = FindExecTaskInTargets(projectXml);
 

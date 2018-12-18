@@ -45,7 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
                 && dependency.Flags.Contains(DependencyTreeFlags.ProjectNodeFlags)
                 && !dependency.Flags.Contains(DependencyTreeFlags.SharedProjectFlags))
             {
-                ITargetedDependenciesSnapshot snapshot = GetSnapshot(dependency);
+                ITargetedDependenciesSnapshot? snapshot = GetSnapshot(dependency);
                 if (snapshot != null && snapshot.HasUnresolvedDependency)
                 {
                     context.Accept(dependency.ToUnresolved(ProjectReference.SchemaName));
@@ -56,7 +56,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
             context.Accept(dependency);
         }
 
-        private ITargetedDependenciesSnapshot GetSnapshot(IDependency dependency)
+        private ITargetedDependenciesSnapshot? GetSnapshot(IDependency dependency)
         {
             IDependenciesSnapshot snapshot = 
                 AggregateSnapshotProvider.GetSnapshotProvider(dependency.FullPath)?.CurrentSnapshot;
@@ -66,7 +66,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
                 return null;
             }
 
-            ITargetFramework targetFramework = TargetFrameworkProvider.GetNearestFramework(
+            ITargetFramework? targetFramework = TargetFrameworkProvider.GetNearestFramework(
                                     dependency.TargetFramework, snapshot.Targets.Keys);
             if (targetFramework == null)
             {

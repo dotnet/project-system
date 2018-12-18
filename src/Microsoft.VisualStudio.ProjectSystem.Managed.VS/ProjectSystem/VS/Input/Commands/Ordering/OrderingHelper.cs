@@ -65,7 +65,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         /// <summary>
         /// Checks to see if the project tree has a valid display order.
         /// </summary>
-        public static bool HasValidDisplayOrder(IProjectTree projectTree)
+        public static bool HasValidDisplayOrder(IProjectTree? projectTree)
         {
             return IsValidDisplayOrder(GetDisplayOrder(projectTree));
         }
@@ -73,7 +73,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         /// <summary>
         /// Gets the display order for a project tree.
         /// </summary>
-        public static int GetDisplayOrder(IProjectTree projectTree)
+        public static int GetDisplayOrder(IProjectTree? projectTree)
         {
             if (projectTree is IProjectTree2 projectTree2)
             {
@@ -133,7 +133,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
             Requires.NotNull(project, nameof(project));
             Requires.NotNull(target, nameof(target));
 
-            ProjectItemElement referenceElement = TryGetReferenceElement(project, target, ImmutableArray<string>.Empty, MoveAction.Above);
+            ProjectItemElement? referenceElement = TryGetReferenceElement(project, target, ImmutableArray<string>.Empty, MoveAction.Above);
             if (referenceElement == null)
             {
                 return false;
@@ -150,7 +150,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
             Requires.NotNull(project, nameof(project));
             Requires.NotNull(target, nameof(target));
 
-            ProjectItemElement referenceElement = TryGetReferenceElement(project, target, ImmutableArray<string>.Empty, MoveAction.Below);
+            ProjectItemElement? referenceElement = TryGetReferenceElement(project, target, ImmutableArray<string>.Empty, MoveAction.Below);
             if (referenceElement == null)
             {
                 return false;
@@ -177,7 +177,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
             }
 
             var excludeIncludes = elements.Select(x => x.Include).ToImmutableArray();
-            ProjectItemElement referenceElement = GetChildren(newTarget).Select(x => TryGetReferenceElement(project, x, excludeIncludes, MoveAction.Above)).FirstOrDefault(x => x != null);
+            ProjectItemElement? referenceElement = GetChildren(newTarget).Select(x => TryGetReferenceElement(project, x, excludeIncludes, MoveAction.Above)).FirstOrDefault(x => x != null);
             if (referenceElement == null)
             {
                 return false;
@@ -288,7 +288,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         /// <param name="projectTree">the given project tree</param>
         /// <param name="returnSibling">passes the index of the given project tree from the given ordered sequence, expecting to return a sibling</param>
         /// <returns>a sibling</returns>
-        private static IProjectTree2 GetSiblingByDisplayOrder(IProjectTree projectTree, Func<int, ImmutableArray<IProjectTree>, IProjectTree2> returnSibling)
+        private static IProjectTree2? GetSiblingByDisplayOrder(IProjectTree projectTree, Func<int, ImmutableArray<IProjectTree>, IProjectTree2?> returnSibling)
         {
             IProjectTree parent = projectTree.Parent;
             int displayOrder = GetDisplayOrder(projectTree);
@@ -314,7 +314,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         /// <summary>
         /// Gets the previous sibling of the given project tree, if there is any. Can return null.
         /// </summary>
-        private static IProjectTree2 GetPreviousSibling(IProjectTree projectTree)
+        private static IProjectTree2? GetPreviousSibling(IProjectTree projectTree)
         {
             return GetSiblingByDisplayOrder(projectTree, (i, orderedChildren) =>
             {
@@ -330,7 +330,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         /// <summary>
         /// Gets the next sibling of the given project tree, if there is any. Can return null.
         /// </summary>
-        private static IProjectTree2 GetNextSibling(IProjectTree projectTree)
+        private static IProjectTree2? GetNextSibling(IProjectTree projectTree)
         {
             return GetSiblingByDisplayOrder(projectTree, (i, orderedChildren) =>
             {
@@ -346,7 +346,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         /// <summary>
         /// Gets a sibling of the given project tree based on the move action. Can return null.
         /// </summary>
-        private static IProjectTree GetSiblingByMoveAction(IProjectTree projectTree, MoveAction moveAction)
+        private static IProjectTree? GetSiblingByMoveAction(IProjectTree projectTree, MoveAction moveAction)
         {
             switch (moveAction)
             {
@@ -364,7 +364,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         /// Gets a reference element based on the given project tree and move action. Can return null.
         /// The reference element is the element for which moved items will be above or below it.
         /// </summary>
-        private static ProjectItemElement TryGetReferenceElement(Project project, IProjectTree projectTree, ImmutableArray<string> excludeIncludes, MoveAction moveAction)
+        private static ProjectItemElement? TryGetReferenceElement(Project project, IProjectTree projectTree, ImmutableArray<string> excludeIncludes, MoveAction moveAction)
         {
             switch (moveAction)
             {
@@ -444,7 +444,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         /// Move project elements based on the given project tree, reference project tree and move action. 
         /// Will modify the project if successful, but not save; only dirty.
         /// </summary>
-        private static bool TryMove(Project project, IProjectTree projectTree, IProjectTree referenceProjectTree, MoveAction moveAction)
+        private static bool TryMove(Project project, IProjectTree projectTree, IProjectTree? referenceProjectTree, MoveAction moveAction)
         {
             if (!HasValidDisplayOrder(projectTree) || !HasValidDisplayOrder(referenceProjectTree))
             {
@@ -459,7 +459,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
             if (referenceProjectTree != null)
             {
                 // The reference element is the element for which moved items will be above or below it.
-                ProjectItemElement referenceElement = TryGetReferenceElement(project, referenceProjectTree, ImmutableArray<string>.Empty, moveAction);
+                ProjectItemElement? referenceElement = TryGetReferenceElement(project, referenceProjectTree, ImmutableArray<string>.Empty, moveAction);
 
                 if (referenceElement != null)
                 {
@@ -478,7 +478,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         private static bool TryMove(Project project, IProjectTree projectTree, MoveAction moveAction)
         {
             // Determine what sibling we want to look at based on if we are moving up or down.
-            IProjectTree sibling = GetSiblingByMoveAction(projectTree, moveAction);
+            IProjectTree? sibling = GetSiblingByMoveAction(projectTree, moveAction);
             return TryMove(project, projectTree, sibling, moveAction);
         }
 

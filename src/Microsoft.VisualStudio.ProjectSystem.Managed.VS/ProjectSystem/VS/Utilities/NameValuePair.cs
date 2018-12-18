@@ -11,19 +11,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
 
     internal class NameValuePair : INotifyPropertyChanged, IDataErrorInfo
     {
-        public ObservableList<NameValuePair> ParentCollection;
+        public ObservableList<NameValuePair>? ParentCollection;
         public bool HasValidationError { get; set; }
 
-        public NameValuePair(ObservableList<NameValuePair> parentCollection = null) { ParentCollection = parentCollection; }
+        public NameValuePair(ObservableList<NameValuePair>? parentCollection = null) { ParentCollection = parentCollection; }
 
-        public NameValuePair(string name, string value, ObservableList<NameValuePair> parentCollection = null)
+        public NameValuePair(string name, string value, ObservableList<NameValuePair>? parentCollection = null)
         {
             ParentCollection = parentCollection;
             Name = name;
             Value = value;
         }
 
-        public NameValuePair(NameValuePair nvPair, ObservableList<NameValuePair> parentCollection = null)
+        public NameValuePair(NameValuePair nvPair, ObservableList<NameValuePair>? parentCollection = null)
         {
             ParentCollection = parentCollection;
             Name = nvPair.Name;
@@ -46,7 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public bool NotifyPropertyChanged<T>(ref T refProperty, T value, [CallerMemberName] string propertyName = null)
+        public bool NotifyPropertyChanged<T>(ref T refProperty, T value, [CallerMemberName] string? propertyName = null)
         {
             if (!Equals(refProperty, value))
             {
@@ -58,7 +58,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
             return false;
         }
 
-        public void NotifyPropertyChanged(string propertyName)
+        public void NotifyPropertyChanged(string? propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
@@ -74,12 +74,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
             }
         }
 
-        public string this[string propertyName]
+        public string? this[string propertyName]
         {
             get
             {
                 //Reset error condition
-                string error = null;
+                string? error = null;
                 HasValidationError = false;
 
                 if (propertyName.Equals("Name", StringComparison.OrdinalIgnoreCase))

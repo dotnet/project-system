@@ -5,7 +5,7 @@
         /// <summary> 
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer _components = null;
+        private System.ComponentModel.IContainer? _components = null;
 
         /// <summary> 
         /// Clean up any resources being used.

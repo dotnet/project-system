@@ -48,16 +48,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
         private void OnFocusEnvironmentVariableGridRow(object sender, EventArgs e)
         {
-            if (DataContext != null && DataContext is DebugPageViewModel)
+            if (DataContext is DebugPageViewModel debugPageViewModel)
             {
                 ThreadHelper.JoinableTaskFactory.StartOnIdle(async () =>
                 {
                     await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-                    if ((DataContext as DebugPageViewModel).EnvironmentVariables.Count > 0)
+                    if (debugPageViewModel.EnvironmentVariables.Count > 0)
                     {
                         // get the new cell, set focus, then open for edit
-                        DataGridCell cell = WpfHelper.GetCell(dataGridEnvironmentVariables, (DataContext as DebugPageViewModel).EnvironmentVariables.Count - 1, 0);
-                        cell.Focus();
+                        DataGridCell? cell = WpfHelper.GetCell(dataGridEnvironmentVariables, debugPageViewModel.EnvironmentVariables.Count - 1, 0);
+                        cell?.Focus();
                         dataGridEnvironmentVariables.BeginEdit();
                     }
                 }).FileAndForget(TelemetryEvents.ProjectSystemRootPath);
@@ -102,7 +102,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 _customControlLayoutUpdateRequired = false;
 
                 // Get the control that was added to the grid
-                UserControl customControl = ((DebugPageViewModel)DataContext).ActiveProviderUserControl;
+                UserControl? customControl = ((DebugPageViewModel)DataContext).ActiveProviderUserControl;
                 if (customControl != null)
                 {
                     if (customControl.Content is Grid childGrid && childGrid.ColumnDefinitions.Count == _mainGrid.ColumnDefinitions.Count)

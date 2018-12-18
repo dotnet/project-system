@@ -40,6 +40,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         /// <param name="topLevel">If <see langword="true"/>, search is first performed on top level
         /// dependencies before searching all dependencies.</param>
         /// <returns>The <see cref="IDependency"/> if found, otherwise <see langword="null"/>.</returns>
-        IDependency FindDependency(string dependencyId, bool topLevel = false);
+        IDependency? FindDependency(string dependencyId, bool topLevel = false);
     }
 }

@@ -37,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         private IDisposable _treeWatcher;
         private uint _filechangeCookie;
         private string _fileBeingWatched;
-        private byte[] _previousContentsHash;
+        private byte[]? _previousContentsHash;
 
         [ImportingConstructor]
         public ProjectAssetFileWatcher(
@@ -95,7 +95,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
             // NOTE: Project lock file path may be null
             IProjectSubscriptionUpdate projectUpdate = dataFlowUpdate.Value.Item2;
-            string projectLockFilePath = GetProjectAssetsFilePath(newTree, projectUpdate);
+            string? projectLockFilePath = GetProjectAssetsFilePath(newTree, projectUpdate);
 
             // project.json may have been renamed to {projectName}.project.json or in the case of the project.assets.json,
             // the immediate path could have changed. In either case, change the file watcher.
@@ -142,9 +142,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             }
         }
 
-        private static byte[] GetFileHashOrNull(string path)
+        private static byte[]? GetFileHashOrNull(string path)
         {
-            byte[] hash = null;
+            byte[]? hash = null;
 
             try
             {
@@ -162,12 +162,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             return hash;
         }
 
-        private static string GetProjectAssetsFilePath(IProjectTree newTree, IProjectSubscriptionUpdate projectUpdate)
+        private static string? GetProjectAssetsFilePath(IProjectTree newTree, IProjectSubscriptionUpdate projectUpdate)
         {
-            string projectFilePath = projectUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.MSBuildProjectFullPathProperty, null);
+            string? projectFilePath = projectUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.MSBuildProjectFullPathProperty, null);
 
             // First check to see if the project has a project.json.
-            IProjectTree projectJsonNode = FindProjectJsonNode(newTree, projectFilePath);
+            IProjectTree? projectJsonNode = FindProjectJsonNode(newTree, projectFilePath);
             if (projectJsonNode != null)
             {
                 string projectDirectory = Path.GetDirectoryName(projectFilePath);
@@ -177,7 +177,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
             // If there is no project.json then get the patch to obj\project.assets.json file which is generated for projects
             // with <PackageReference> items.
-            string objDirectory = projectUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.BaseIntermediateOutputPathProperty, null);
+            string? objDirectory = projectUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.BaseIntermediateOutputPathProperty, null);
 
             if (string.IsNullOrEmpty(objDirectory))
             {
@@ -190,7 +190,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             return projectAssetsFilePath;
         }
 
-        private static IProjectTree FindProjectJsonNode(IProjectTree newTree, string projectFilePath)
+        private static IProjectTree? FindProjectJsonNode(IProjectTree newTree, string projectFilePath)
         {
             if (newTree.TryFindImmediateChild("project.json", out IProjectTree projectJsonNode))
             {
@@ -265,7 +265,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             {
                 // Only notify the project if the contents of the watched file have changed.
                 // In the case if we fail to read the contents, we will opt to notify the project.
-                byte[] newHash = GetFileHashOrNull(_fileBeingWatched);
+                byte[]? newHash = GetFileHashOrNull(_fileBeingWatched);
                 if (newHash == null || _previousContentsHash == null || !newHash.SequenceEqual(_previousContentsHash))
                 {
                     TraceUtilities.TraceVerbose("{0} changed on disk. Marking project dirty", _fileBeingWatched);

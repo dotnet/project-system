@@ -18,10 +18,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
        IPropertyPage,
        IVsDebuggerEvents
     {
-        private IPropertyPageSite _site = null;
+        private IPropertyPageSite? _site = null;
         private bool _isDirty = false;
         private readonly bool _ignoreEvents = false;
-        private IVsDebugger _debugger;
+        private IVsDebugger? _debugger;
         private uint _debuggerCookie;
         private bool _isActivated = false;
         internal IProjectThreadingService _threadHandling;
@@ -42,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             AutoScroll = false;
         }
 
-        internal UnconfiguredProject UnconfiguredProject { get; set; }
+        internal UnconfiguredProject? UnconfiguredProject { get; set; }
 
 
         ///--------------------------------------------------------------------------------------------

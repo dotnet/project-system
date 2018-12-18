@@ -62,7 +62,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             ProjectTreeFlags flags,
             bool isResolved,
             bool isImplicit,
-            IImmutableDictionary<string, string> properties,
+            IImmutableDictionary<string, string>? properties,
             bool isTopLevel = true,
             bool isVisible = true)
         {
@@ -96,12 +96,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
         public abstract string ProviderType { get; }
 
         public virtual string Name => Path;
-        public string Caption { get; protected set; }
+        public string? Caption { get; protected set; }
         public string OriginalItemSpec { get; }
         public string Path { get; }
-        public virtual string SchemaName => null;
-        public virtual string SchemaItemType => null;
-        public virtual string Version => null;
+        public virtual string? SchemaName => null;
+        public virtual string? SchemaItemType => null;
+        public virtual string? Version => null;
         public bool Resolved => (_flags & DependencyFlags.Resolved) != 0;
         public bool TopLevel => (_flags & DependencyFlags.TopLevel) != 0;
         public bool Implicit => (_flags & DependencyFlags.Implicit) != 0;

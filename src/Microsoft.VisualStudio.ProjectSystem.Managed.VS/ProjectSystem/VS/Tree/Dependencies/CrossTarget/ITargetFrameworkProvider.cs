@@ -10,12 +10,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         /// Parses full tfm or short framework name and returns a corresponding <see cref="ITargetFramework"/>
         /// instance, or <see langword="null" /> if the framework name has an invalid format.
         /// </summary>
-        ITargetFramework GetTargetFramework(string shortOrFullName);
+        ITargetFramework? GetTargetFramework(string shortOrFullName);
 
         /// <summary>
         /// Returns the item in <paramref name="otherFrameworks"/> that is most compatible/closest to
         /// <paramref name="targetFramework"/>, or <see langword="null" /> if none are compatible.
         /// </summary>
-        ITargetFramework GetNearestFramework(ITargetFramework targetFramework, IEnumerable<ITargetFramework> otherFrameworks);
+        ITargetFramework? GetNearestFramework(ITargetFramework targetFramework, IEnumerable<ITargetFramework> otherFrameworks);
     }
 }

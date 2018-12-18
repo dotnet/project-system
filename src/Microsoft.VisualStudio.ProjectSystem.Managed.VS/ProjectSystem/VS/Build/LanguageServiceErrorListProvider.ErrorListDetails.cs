@@ -34,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
 
             public string GetFileFullPath(ILanguageServiceHost languageServiceHost)
             {
-                string projectFile = ProjectFile;
+                string? projectFile = ProjectFile;
                 if (string.IsNullOrEmpty(projectFile))
                 {
                     projectFile = languageServiceHost.ActiveProjectContext?.ProjectFilePath;

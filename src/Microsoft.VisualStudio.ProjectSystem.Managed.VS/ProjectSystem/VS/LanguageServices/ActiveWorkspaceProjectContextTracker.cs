@@ -29,13 +29,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         {
         }
 
-        public string ActiveIntellisenseProjectContext
+        public string? ActiveIntellisenseProjectContext
         {
             get;
             set;
         }
 
-        public int GetProjectName(uint itemid, out string pbstrProjectName)
+        public int GetProjectName(uint itemid, out string? pbstrProjectName)
         {
             if (itemid == HierarchyId.Nil || itemid == HierarchyId.Selection || itemid == HierarchyId.Empty)
             {

@@ -28,8 +28,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             private readonly IVsSolutionRestoreService _solutionRestoreService;
             private readonly IActiveConfigurationGroupService _activeConfigurationGroupService;
             private readonly IProjectLogger _logger;
-            private IDisposable _configurationsSubscription;
-            private DisposableBag _designTimeBuildSubscriptionLink;
+            private IDisposable? _configurationsSubscription;
+            private DisposableBag? _designTimeBuildSubscriptionLink;
 
             private static readonly ImmutableHashSet<string> s_designTimeBuildWatchedRules = Empty.OrdinalIgnoreCaseStringSet
                 .Add(NuGetRestore.SchemaName)
@@ -126,7 +126,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
             private void ProjectPropertyChanged(Tuple<ImmutableList<IProjectValueVersions>, TIdentityDictionary> sources)
             {
-                var capabilitiesSnapshot = sources.Item1[0] as IProjectVersionedValue<IProjectCapabilitiesSnapshot>;
+                var capabilitiesSnapshot = (IProjectVersionedValue<IProjectCapabilitiesSnapshot>)sources.Item1[0];
                 using (ProjectCapabilitiesContext.CreateIsolatedContext(_projectVsServices.Project, capabilitiesSnapshot.Value))
                 {
                     NominateProject(sources.Item1.RemoveAt(0));
@@ -135,7 +135,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
             private void NominateProject(ImmutableList<IProjectValueVersions> sources)
             {
-                IVsProjectRestoreInfo projectRestoreInfo = ProjectRestoreInfoBuilder.Build(sources, _projectVsServices.Project);
+                IVsProjectRestoreInfo? projectRestoreInfo = ProjectRestoreInfoBuilder.Build(sources, _projectVsServices.Project);
 
                 if (projectRestoreInfo != null)
                 {
@@ -172,8 +172,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
                         logger.WriteLine($"BaseIntermediatePath:     {projectRestoreInfo.BaseIntermediatePath}");
                         logger.WriteLine($"OriginalTargetFrameworks: {projectRestoreInfo.OriginalTargetFrameworks}");
-                        LogTargetFrameworks(logger, projectRestoreInfo.TargetFrameworks as TargetFrameworks);
-                        LogReferenceItems(logger, "Tool References", projectRestoreInfo.ToolReferences as ReferenceItems);
+                        LogTargetFrameworks(logger, (TargetFrameworks)projectRestoreInfo.TargetFrameworks);
+                        LogReferenceItems(logger, "Tool References", (ReferenceItems)projectRestoreInfo.ToolReferences);
 
                         logger.IndentLevel--;
                         logger.WriteLine();
@@ -202,7 +202,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
                 foreach (IVsTargetFrameworkInfo tf in targetFrameworks)
                 {
-                    LogTargetFramework(logger, tf as TargetFrameworkInfo);
+                    LogTargetFramework(logger, (TargetFrameworkInfo)tf);
                 }
                 logger.IndentLevel--;
             }
@@ -212,9 +212,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                 logger.WriteLine(targetFrameworkInfo.TargetFrameworkMoniker);
                 logger.IndentLevel++;
 
-                LogReferenceItems(logger, "Project References", targetFrameworkInfo.ProjectReferences as ReferenceItems);
-                LogReferenceItems(logger, "Package References", targetFrameworkInfo.PackageReferences as ReferenceItems);
-                LogProperties(logger, "Target Framework Properties", targetFrameworkInfo.Properties as ProjectProperties);
+                LogReferenceItems(logger, "Project References", (ReferenceItems)targetFrameworkInfo.ProjectReferences);
+                LogReferenceItems(logger, "Package References", (ReferenceItems)targetFrameworkInfo.PackageReferences);
+                LogProperties(logger, "Target Framework Properties", (ProjectProperties)targetFrameworkInfo.Properties);
 
                 logger.IndentLevel--;
             }

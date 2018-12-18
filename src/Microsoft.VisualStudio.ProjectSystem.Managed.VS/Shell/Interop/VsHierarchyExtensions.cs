@@ -86,14 +86,14 @@ namespace Microsoft.VisualStudio.Shell.Interop
         /// <summary>
         /// Convenient way to get to the UnconfiguredProject from the hierarchy
         /// </summary>
-        public static UnconfiguredProject GetUnconfiguredProject(this IVsHierarchy hierarchy)
+        public static UnconfiguredProject? GetUnconfiguredProject(this IVsHierarchy hierarchy)
         {
             UIThreadHelper.VerifyOnUIThread();
 
             var context = hierarchy as IVsBrowseObjectContext;
             if (context == null)
             {
-                EnvDTE.Project dteProject = hierarchy.GetDTEProject();
+                EnvDTE.Project? dteProject = hierarchy.GetDTEProject();
                 if (dteProject != null)
                 {
                     context = dteProject.Object as IVsBrowseObjectContext;
@@ -106,7 +106,7 @@ namespace Microsoft.VisualStudio.Shell.Interop
         /// <summary>
         /// Returns EnvDTE.Project object for the hierarchy
         /// </summary>
-        public static EnvDTE.Project GetDTEProject(this IVsHierarchy hierarchy)
+        public static EnvDTE.Project? GetDTEProject(this IVsHierarchy hierarchy)
         {
             UIThreadHelper.VerifyOnUIThread();
             if (ErrorHandler.Succeeded(hierarchy.GetProperty(VSConstants.VSITEMID_ROOT, (int)__VSHPROPID.VSHPROPID_ExtObject, out object extObject)))
@@ -120,7 +120,7 @@ namespace Microsoft.VisualStudio.Shell.Interop
         /// <summary>
         /// Returns the path to the project file. Assumes the hierarchy implements IVsProject. Returns null on failure
         /// </summary>
-        public static string GetProjectFilePath(this IVsHierarchy hierarchy)
+        public static string? GetProjectFilePath(this IVsHierarchy hierarchy)
         {
             if (ErrorHandler.Succeeded(((IVsProject)hierarchy).GetMkDocument(VSConstants.VSITEMID_ROOT, out string projectPath)))
             {

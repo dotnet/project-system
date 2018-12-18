@@ -27,11 +27,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         }
 
         public string WorkspaceProjectContextId => _workspaceProjectContextId;
-        public override string ActiveWorkspaceProjectContextId => _unconfiguredProjectHostObject.ActiveWorkspaceProjectContextId;
+        public override string? ActiveWorkspaceProjectContextId => _unconfiguredProjectHostObject.ActiveWorkspaceProjectContextId;
 
         #region IVsHierarchy overrides
 
-        public override int GetProperty(uint itemid, int propid, out object pvar)
+        public override int GetProperty(uint itemid, int propid, out object? pvar)
         {
             switch (propid)
             {

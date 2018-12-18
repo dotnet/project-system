@@ -23,6 +23,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
         ///     The file name of the special file, or <see langword="null"/> if special file is not 
         ///     handled by the project.
         /// </returns>
-        Task<string> GetFileAsync(SpecialFiles fileId, SpecialFileFlags flags);
+        Task<string?> GetFileAsync(SpecialFiles fileId, SpecialFileFlags flags);
     }
 }

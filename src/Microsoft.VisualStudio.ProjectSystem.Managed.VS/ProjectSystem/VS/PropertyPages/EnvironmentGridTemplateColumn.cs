@@ -9,11 +9,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 {
     internal class EnvironmentDataGridTemplateColumn : DataGridTemplateColumn
     {
-        protected override object PrepareCellForEdit(FrameworkElement frameworkElement, RoutedEventArgs routedEventArgs)
+        protected override object? PrepareCellForEdit(FrameworkElement frameworkElement, RoutedEventArgs routedEventArgs)
         {
             if (frameworkElement is ContentPresenter contentPresenter)
             {
-                TextBox textBox = WpfHelper.GetVisualChild<TextBox>(contentPresenter);
+                TextBox? textBox = WpfHelper.GetVisualChild<TextBox>(contentPresenter);
                 if (textBox != null)
                 {
                     textBox.SelectAll();

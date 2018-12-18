@@ -162,7 +162,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     continue;
                 }
 
-                IDependency dependency = snapshot.FindDependency(filePath, topLevel: true);
+                IDependency? dependency = snapshot.FindDependency(filePath, topLevel: true);
                 if (dependency == null || dependency.Implicit)
                 {
                     return false;
@@ -248,7 +248,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                         continue;
                     }
 
-                    IDependency sharedProjectDependency = snapshot.FindDependency(sharedFilePath, topLevel: true);
+                    IDependency? sharedProjectDependency = snapshot.FindDependency(sharedFilePath, topLevel: true);
                     if (sharedProjectDependency != null)
                     {
                         sharedFilePath = sharedProjectDependency.Path;
@@ -283,7 +283,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// (deeper levels will be graph nodes with additional info, not direct dependencies
         /// specified in the project file)
         /// </summary>
-        public override IProjectTree FindByPath(IProjectTree root, string path)
+        public override IProjectTree? FindByPath(IProjectTree root, string path)
         {
             return _viewProviders.FirstOrDefault()?.Value.FindByPath(root, path);
         }
@@ -446,10 +446,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         public IProjectTree CreateTree(
             string caption,
             IProjectPropertiesContext itemContext,
-            IPropertySheet propertySheet = null,
-            IRule browseObjectProperties = null,
-            ProjectImageMoniker icon = null,
-            ProjectImageMoniker expandedIcon = null,
+            IPropertySheet? propertySheet = null,
+            IRule? browseObjectProperties = null,
+            ProjectImageMoniker? icon = null,
+            ProjectImageMoniker? expandedIcon = null,
             bool visible = true,
             ProjectTreeFlags? flags = default)
         {
@@ -472,9 +472,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         public IProjectTree CreateTree(
             string caption,
             string filePath,
-            IRule browseObjectProperties = null,
-            ProjectImageMoniker icon = null,
-            ProjectImageMoniker expandedIcon = null,
+            IRule? browseObjectProperties = null,
+            ProjectImageMoniker? icon = null,
+            ProjectImageMoniker? expandedIcon = null,
             bool visible = true,
             ProjectTreeFlags? flags = default)
         {

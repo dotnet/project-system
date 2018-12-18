@@ -27,10 +27,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         IProjectTree CreateTree(
             string caption,
             IProjectPropertiesContext itemContext,
-            IPropertySheet propertySheet = null,
-            IRule browseObjectProperties = null,
-            ProjectImageMoniker icon = null,
-            ProjectImageMoniker expandedIcon = null,
+            IPropertySheet? propertySheet = null,
+            IRule? browseObjectProperties = null,
+            ProjectImageMoniker? icon = null,
+            ProjectImageMoniker? expandedIcon = null,
             bool visible = true,
             ProjectTreeFlags? flags = default);
 
@@ -47,10 +47,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// <returns></returns>
         IProjectTree CreateTree(
             string caption,
-            string filePath,
-            IRule browseObjectProperties = null,
-            ProjectImageMoniker icon = null,
-            ProjectImageMoniker expandedIcon = null,
+            string? filePath,
+            IRule? browseObjectProperties = null,
+            ProjectImageMoniker? icon = null,
+            ProjectImageMoniker? expandedIcon = null,
             bool visible = true,
             ProjectTreeFlags? flags = default);
 

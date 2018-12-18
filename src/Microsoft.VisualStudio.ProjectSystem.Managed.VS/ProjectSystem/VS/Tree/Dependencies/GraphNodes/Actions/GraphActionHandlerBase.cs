@@ -48,11 +48,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
             return false;
         }
 
-        protected IDependency GetDependency(GraphNode inputGraphNode, out IDependenciesSnapshot snapshot)
+        protected IDependency? GetDependency(GraphNode inputGraphNode, out IDependenciesSnapshot? snapshot)
         {
             snapshot = null;
 
-            string projectPath = inputGraphNode.Id.GetValue(CodeGraphNodeIdName.Assembly);
+            string? projectPath = inputGraphNode.Id.GetValue(CodeGraphNodeIdName.Assembly);
             if (string.IsNullOrWhiteSpace(projectPath))
             {
                 return null;
@@ -64,7 +64,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
                 return null;
             }
 
-            string id = inputGraphNode.GetValue<string>(DependenciesGraphSchema.DependencyIdProperty);
+            string? id = inputGraphNode.GetValue<string>(DependenciesGraphSchema.DependencyIdProperty);
             if (id == null)
             {
                 // this is top level node and it contains full path 
@@ -96,7 +96,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
             }
         }
 
-        protected IDependency GetDependency(
+        protected IDependency? GetDependency(
             string projectPath,
             string dependencyId,
             out IDependenciesSnapshot snapshot)
@@ -105,7 +105,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
             return snapshot?.FindDependency(dependencyId);
         }
 
-        protected IDependency GetTopLevelDependency(
+        protected IDependency? GetTopLevelDependency(
             string projectPath,
             string dependencyId,
             out IDependenciesSnapshot snapshot)

@@ -87,7 +87,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                         return false;
                     }
 
-                    ITargetFramework packageTargetFramework = targetFrameworkProvider.GetTargetFramework(target);
+                    ITargetFramework? packageTargetFramework = targetFrameworkProvider.GetTargetFramework(target);
 
                     if (packageTargetFramework?.Equals(targetFramework) != true)
                     {
@@ -118,7 +118,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
                 string GetTargetFromDependencyId(string dependencyId)
                 {
-                    string firstPart = new LazyStringSplit(dependencyId, '/').FirstOrDefault();
+                    string? firstPart = new LazyStringSplit(dependencyId, '/').FirstOrDefault();
 
                     if (firstPart == null)
                     {

@@ -18,6 +18,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Logging
         ///     The project <see cref="IVsOutputWindowPane"/> object, or <see langword="null"/> 
         ///     if the <see cref="IVsOutputWindow"/> service is not present.
         /// </returns>
-        Task<IVsOutputWindowPane> GetOutputWindowPaneAsync();
+        Task<IVsOutputWindowPane?> GetOutputWindowPaneAsync();
     }
 }

@@ -14,14 +14,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         public static readonly ImageMoniker RegularIcon = KnownMonikers.Library;
 
         public string Caption => VSResources.FrameworkAssembliesNodeName;
-        public string FilePath => null;
-        public string SchemaName => null;
-        public string SchemaItemType => null;
+        public string? FilePath => null;
+        public string? SchemaName => null;
+        public string? SchemaItemType => null;
         public int Priority => Dependency.FrameworkAssemblyNodePriority;
         public ImageMoniker Icon => RegularIcon;
         public ImageMoniker ExpandedIcon => RegularIcon;
-        public IImmutableDictionary<string, string> Properties => null;
+        public IImmutableDictionary<string, string>? Properties => null;
         public ProjectTreeFlags Flags => DependencyTreeFlags.FrameworkAssembliesNodeFlags;
-        public IDependency OriginalModel => null;
+        public IDependency? OriginalModel => null;
     }
 }

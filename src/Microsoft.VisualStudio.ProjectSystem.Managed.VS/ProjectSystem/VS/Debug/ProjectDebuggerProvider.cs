@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Buffers.PooledObjects;
@@ -60,7 +61,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         private ILaunchSettingsProvider LaunchSettingsProvider { get; }
 
         // Tracks the last launched provider so we can forward calls to IDeployedProjectItemMappingProvider
-        public IDebugProfileLaunchTargetsProvider LastLaunchProvider { get; private set; }
+        public IDebugProfileLaunchTargetsProvider? LastLaunchProvider { get; private set; }
 
         /// <summary>
         /// Called by CPS to determine whether we can launch
@@ -114,8 +115,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         {
             // Get the active debug profile (timeout of 5s, though in reality is should never take this long as even in error conditions
             // a snapshot is produced).
-            ILaunchSettings currentProfiles = await LaunchSettingsProvider.WaitForFirstSnapshot(5000);
-            ILaunchProfile activeProfile = currentProfiles?.ActiveProfile;
+            ILaunchSettings? currentProfiles = await LaunchSettingsProvider.WaitForFirstSnapshot(5000);
+            ILaunchProfile? activeProfile = currentProfiles?.ActiveProfile;
 
             // Should have a profile
             if (activeProfile == null)
@@ -144,7 +145,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// <summary>
         /// Returns the provider which knows how to launch the profile type.
         /// </summary>
-        public IDebugProfileLaunchTargetsProvider GetLaunchTargetsProvider(ILaunchProfile profile)
+        public IDebugProfileLaunchTargetsProvider? GetLaunchTargetsProvider(ILaunchProfile? profile)
         {
             // We search through the imports in order to find the one which supports the profile
             foreach (Lazy<IDebugProfileLaunchTargetsProvider, IOrderPrecedenceMetadataView> provider in ProfileLaunchTargetsProviders)
@@ -165,9 +166,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         {
             IReadOnlyList<IDebugLaunchSettings> targets = await QueryDebugTargetsInternalAsync(launchOptions, fromDebugLaunch: true);
 
-            ILaunchProfile activeProfile = LaunchSettingsProvider.ActiveProfile;
+            ILaunchProfile? activeProfile = LaunchSettingsProvider.ActiveProfile;
 
-            IDebugProfileLaunchTargetsProvider targetProfile = GetLaunchTargetsProvider(activeProfile);
+            IDebugProfileLaunchTargetsProvider? targetProfile = GetLaunchTargetsProvider(activeProfile);
             if (targetProfile != null)
             {
                 await targetProfile.OnBeforeLaunchAsync(launchOptions, activeProfile);
@@ -297,7 +298,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// Converts the environment key value pairs to a valid environment string of the form
         /// key=value/0key2=value2/0/0, with nulls between each entry and a double null terminator.
         /// </summary>
-        private static string GetSerializedEnvironmentString(IDictionary<string, string> environment)
+        private static string? GetSerializedEnvironmentString(IDictionary<string, string> environment)
         {
             // If no dictionary was set, or its empty, the debugger wants null for its environment block.
             if (environment == null || environment.Count == 0)
@@ -346,7 +347,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// IDeployedProjectItemMappingProvider
         /// Implemented so that we can map URL's back to local file item paths
         /// </summary>
-        public bool TryGetProjectItemPathFromDeployedPath(string deployedPath, out string localPath)
+        public bool TryGetProjectItemPathFromDeployedPath(string deployedPath, [NotNullWhenTrue]out string? localPath)
         {
             // Just delegate to the last provider. It needs to figure out how best to map the items
             localPath = null;

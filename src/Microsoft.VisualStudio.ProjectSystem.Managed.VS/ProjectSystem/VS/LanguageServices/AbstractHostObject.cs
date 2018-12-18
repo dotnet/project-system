@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 
         protected IVsHierarchy InnerHierarchy { get; }
         protected IVsProject4 InnerVsProject { get; }
-        public abstract string ActiveWorkspaceProjectContextId { get; }
+        public abstract string? ActiveWorkspaceProjectContextId { get; }
 
         #region IVsHierarchy members
 
@@ -55,7 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             return InnerHierarchy.GetNestedHierarchy(itemid, ref iidHierarchyNested, out ppHierarchyNested, out pitemidNested);
         }
 
-        public virtual int GetProperty(uint itemid, int propid, out object pvar)
+        public virtual int GetProperty(uint itemid, int propid, out object? pvar)
         {
             return InnerHierarchy.GetProperty(itemid, propid, out pvar);
         }
@@ -124,7 +124,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 
         #region IVsContainedLanguageProjectNameProvider members
 
-        public int GetProjectName(uint itemid, out string pbstrProjectName)
+        public int GetProjectName(uint itemid, out string? pbstrProjectName)
         {
             pbstrProjectName = ActiveWorkspaceProjectContextId;
             return VSConstants.S_OK;

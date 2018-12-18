@@ -86,7 +86,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             CrossTargetDependenciesChangesBuilder changesBuilder,
             ITargetFramework targetFramework,
             bool resolved,
-            HashSet<string> unresolvedChanges = null)
+            HashSet<string>? unresolvedChanges = null)
         {
             Requires.NotNull(targetFramework, nameof(targetFramework));
 

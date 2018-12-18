@@ -139,7 +139,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// <summary>
         /// Does some basic validation of the settings. If we don't, the error messages are terrible.
         /// </summary>
-        public void ValidateSettings(string executable, string workingDir, string profileName)
+        public void ValidateSettings(string? executable, string workingDir, string? profileName)
         {
             if (string.IsNullOrEmpty(executable))
             {
@@ -158,12 +158,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// <summary>
         /// Helper returns cmd.exe as the launcher for Ctrl-F5 (useCmdShell == true), otherwise just the exe and args passed in.
         /// </summary>
-        public static void GetExeAndArguments(bool useCmdShell, string debugExe, string debugArgs, out string finalExePath, out string finalArguments)
+        public static void GetExeAndArguments(bool useCmdShell, string? debugExe, string? debugArgs, out string? finalExePath, out string? finalArguments)
         {
             if (useCmdShell)
             {
                 // Escape the characters ^<>& so that they are passed to the application rather than interpreted by cmd.exe.
-                string escapedArgs = EscapeString(debugArgs, s_escapedChars);
+                string? escapedArgs = EscapeString(debugArgs, s_escapedChars);
                 finalArguments = $"/c \"\"{debugExe}\" {escapedArgs} & pause\"";
                 finalExePath = Path.Combine(Environment.SystemDirectory, "cmd.exe");
             }
@@ -201,7 +201,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         {
             var settings = new DebugLaunchSettings(launchOptions);
 
-            string executable, arguments;
+            string? executable, arguments;
 
             string projectFolder = Path.GetDirectoryName(_project.FullPath);
             ConfiguredProject configuredProject = await GetConfiguredProjectForDebugAsync();
@@ -283,7 +283,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                     {
                         // Try to resolve against the current working directory (for compat) and failing that, the environment path.
                         string exeName = executable.EndsWith(".exe", StringComparison.OrdinalIgnoreCase) ? executable : executable + ".exe";
-                        string fullPath = _fileSystem.GetFullPath(exeName);
+                        string? fullPath = _fileSystem.GetFullPath(exeName);
                         if (_fileSystem.FileExists(fullPath))
                         {
                             executable = fullPath;
@@ -338,7 +338,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 useCmdShell = UseCmdShellForConsoleLaunch(resolvedProfile, settings.LaunchOptions);
             }
 
-            GetExeAndArguments(useCmdShell, executable, arguments, out string finalExecutable, out string finalArguments);
+            GetExeAndArguments(useCmdShell, executable, arguments, out string? finalExecutable, out string? finalArguments);
 
             settings.Executable = finalExecutable;
             settings.Arguments = finalArguments;
@@ -394,7 +394,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             bool validateSettings)
         {
             // First try "RunCommand" property
-            string runCommand = await GetRunCommandAsync(properties);
+            string? runCommand = await GetRunCommandAsync(properties);
 
             if (string.IsNullOrEmpty(runCommand))
             {
@@ -412,7 +412,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         }
 
 
-        private async Task<string> GetRunCommandAsync(IProjectProperties properties)
+        private async Task<string?> GetRunCommandAsync(IProjectProperties properties)
         {
             string runCommand = await properties.GetEvaluatedPropertyValueAsync("RunCommand");
 
@@ -429,7 +429,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             // If the path is just the name of an exe like dotnet.exe then we try to find it on the path
             if (runCommand.IndexOf(Path.DirectorySeparatorChar) == -1)
             {
-                string executable = GetFullPathOfExeFromEnvironmentPath(runCommand);
+                string? executable = GetFullPathOfExeFromEnvironmentPath(runCommand);
                 if (executable != null)
                 {
                     runCommand = executable;
@@ -458,7 +458,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// Searches the path variable for the first match of exeToSearchFor. Returns
         /// null if not found.
         /// </summary>
-        public string GetFullPathOfExeFromEnvironmentPath(string exeToSearchFor)
+        public string? GetFullPathOfExeFromEnvironmentPath(string exeToSearchFor)
         {
             string pathEnv = _environment.GetEnvironmentVariable("Path");
 
@@ -492,7 +492,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// <param name="unescaped">The string to escape.</param>
         /// <param name="toEscape">The characters to escape in the string.</param>
         /// <returns>The escaped string.</returns>
-        internal static string EscapeString(string unescaped, char[] toEscape)
+        internal static string? EscapeString(string? unescaped, char[] toEscape)
         {
             if (string.IsNullOrWhiteSpace(unescaped))
                 return unescaped;

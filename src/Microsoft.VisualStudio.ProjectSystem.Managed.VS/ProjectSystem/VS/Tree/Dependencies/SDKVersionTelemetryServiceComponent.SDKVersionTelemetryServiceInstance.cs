@@ -44,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                         ConfigurationGeneral projectProperties = await _projectVsServices.ActiveConfiguredProjectProperties.GetConfigurationGeneralPropertiesAsync();
                         Task<object> task = projectProperties?.NETCoreSdkVersion?.GetValueAsync();
                         string version = task == null ? string.Empty : (string)await task;
-                        string projectId = await GetProjectIdAsync();
+                        string? projectId = await GetProjectIdAsync();
 
                         if (string.IsNullOrEmpty(version) || string.IsNullOrEmpty(projectId))
                         {
@@ -64,7 +64,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             protected override Task DisposeCoreAsync(bool initialized) => Task.CompletedTask;
 
-            private async Task<string> GetProjectIdAsync()
+            private async Task<string?> GetProjectIdAsync()
             {
                 Guid projectGuid = await _projectGuidService.GetProjectGuidAsync();
                 return projectGuid == Guid.Empty ? null : projectGuid.ToString();

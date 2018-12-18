@@ -8,6 +8,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
     /// </summary>
     internal interface IDialogServices
     {
-        bool DontShowAgainMessageBox(string caption, string message, string checkboxText, bool initialStateOfCheckbox, string learnMoreText, string learnMoreUrl);
+        bool DontShowAgainMessageBox(string caption, string message, string? checkboxText, bool initialStateOfCheckbox, string learnMoreText, string learnMoreUrl);
     }
 }

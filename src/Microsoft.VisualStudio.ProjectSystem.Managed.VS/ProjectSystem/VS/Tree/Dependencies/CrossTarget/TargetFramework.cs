@@ -14,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         /// </summary>
         public static readonly ITargetFramework Any = new TargetFramework("any");
 
-        public TargetFramework(FrameworkName frameworkName, string shortName = null)
+        public TargetFramework(FrameworkName frameworkName, string? shortName = null)
         {
             Requires.NotNull(frameworkName, nameof(frameworkName));
 

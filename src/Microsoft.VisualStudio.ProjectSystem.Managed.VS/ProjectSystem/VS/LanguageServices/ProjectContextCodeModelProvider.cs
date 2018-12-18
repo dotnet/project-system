@@ -30,11 +30,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             _languageServiceHost = languageServiceHost;
         }
 
-        public CodeModel GetCodeModel(Project project)
+        public CodeModel? GetCodeModel(Project project)
         {
             Requires.NotNull(project, nameof(project));
 
-            IWorkspaceProjectContext projectContext = _languageServiceHost.ActiveProjectContext;
+            IWorkspaceProjectContext? projectContext = _languageServiceHost.ActiveProjectContext;
             if (projectContext == null)
                 return null;
 
@@ -46,11 +46,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             });
         }
 
-        public FileCodeModel GetFileCodeModel(ProjectItem fileItem)
+        public FileCodeModel? GetFileCodeModel(ProjectItem fileItem)
         {
             Requires.NotNull(fileItem, nameof(fileItem));
 
-            IWorkspaceProjectContext projectContext = _languageServiceHost.ActiveProjectContext;
+            IWorkspaceProjectContext? projectContext = _languageServiceHost.ActiveProjectContext;
             if (projectContext == null)
                 return null;
 

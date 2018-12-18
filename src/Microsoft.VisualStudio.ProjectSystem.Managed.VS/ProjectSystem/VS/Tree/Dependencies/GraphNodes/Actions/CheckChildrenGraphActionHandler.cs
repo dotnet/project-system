@@ -57,7 +57,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
                     continue;
                 }
 
-                IDependenciesGraphViewProvider viewProvider = ViewProviders
+                IDependenciesGraphViewProvider? viewProvider = ViewProviders
                     .FirstOrDefaultValue((x, d) => x.SupportsDependency(d), dependency);
 
                 if (viewProvider == null)

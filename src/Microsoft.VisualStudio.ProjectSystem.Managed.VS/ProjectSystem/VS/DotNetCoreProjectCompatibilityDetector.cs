@@ -81,8 +81,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         private readonly IVsService<SVsAppId, IVsAppId> _vsAppIdService;
         private readonly IVsService<SVsShell, IVsShell> _vsShellService;
 
-        private RemoteCacheFile _versionDataCacheFile;
-        private Version _ourVSVersion;
+        private RemoteCacheFile? _versionDataCacheFile;
+        private Version? _ourVSVersion;
 
         private uint _solutionCookie = VSConstants.VSCOOKIE_NIL;
         private bool _solutionOpened;
@@ -90,15 +90,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         // Tracks how often we meed to look for new data
         private DateTime _timeCurVersionDataLastUpdatedUtc = DateTime.MinValue;
-        private VersionCompatibilityData _curVersionCompatibilityData;
-        private IVsSolution _vsSolution;
+        private VersionCompatibilityData? _curVersionCompatibilityData;
+        private IVsSolution? _vsSolution;
 
         public async Task InitializeAsync()
         {
             await _threadHandling.Value.SwitchToUIThread();
 
             // Initialize our cache file
-            string appDataFolder = await _shellUtilitiesHelper.Value.GetLocalAppDataFolderAsync(_vsShellService);
+            string? appDataFolder = await _shellUtilitiesHelper.Value.GetLocalAppDataFolderAsync(_vsShellService);
             if (appDataFolder != null)
             {
                 _versionDataCacheFile = new RemoteCacheFile(Path.Combine(appDataFolder, VersionDataFilename), VersionCompatibilityDownloadFwlink,
@@ -376,7 +376,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             try
             {
                 // Try the cache file
-                Dictionary<Version, VersionCompatibilityData> versionCompatData = GetCompabilityDataFromCacheFile();
+                Dictionary<Version, VersionCompatibilityData>? versionCompatData = GetCompabilityDataFromCacheFile();
 
                 // See if the cache file needs refreshing and if so, kick off a task to do so
                 if (_versionDataCacheFile != null && _versionDataCacheFile.CacheFileIsStale())
@@ -390,8 +390,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
                 if (versionCompatData != null)
                 {
+                    // This is never null after InitializeAsync (which is called during package load)
+                    Version ourVSVersion = _ourVSVersion!;
+
                     // First try to match exactly on our VS version and if that fails, match on just major, minor
-                    if (versionCompatData.TryGetValue(_ourVSVersion, out VersionCompatibilityData compatData) || versionCompatData.TryGetValue(new Version(_ourVSVersion.Major, _ourVSVersion.Minor), out compatData))
+                    if (versionCompatData.TryGetValue(ourVSVersion, out VersionCompatibilityData compatData) || versionCompatData.TryGetValue(new Version(ourVSVersion.Major, ourVSVersion.Minor), out compatData))
                     {
                         // Now fix up missing data
                         if (string.IsNullOrEmpty(compatData.OpenSupportedMessage))
@@ -423,7 +426,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 });
             }
 
-            return _curVersionCompatibilityData;
+            return _curVersionCompatibilityData!;
         }
 
         private void UpdateInMemoryCachedData(VersionCompatibilityData newData)
@@ -435,11 +438,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// <summary>
         /// If the cached file exists reads the data and returns it
         /// </summary>
-        private Dictionary<Version, VersionCompatibilityData> GetCompabilityDataFromCacheFile()
+        private Dictionary<Version, VersionCompatibilityData>? GetCompabilityDataFromCacheFile()
         {
             try
             {
-                string data = _versionDataCacheFile?.ReadCacheFile();
+                string? data = _versionDataCacheFile?.ReadCacheFile();
                 if (data != null)
                 {
                     return VersionCompatibilityData.DeserializeVersionData(data);

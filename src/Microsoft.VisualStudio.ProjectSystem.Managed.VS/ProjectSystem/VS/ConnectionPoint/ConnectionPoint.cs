@@ -38,9 +38,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.ConnectionPoint
                 Marshal.ThrowExceptionForHR(VSConstants.E_NOINTERFACE);
             }
 
-            _sinks.Add(_nextCookie, sink);
+            _sinks.Add(_nextCookie, sink!);
             pdwCookie = _nextCookie;
-            _source.OnSinkAdded(sink);
+            _source.OnSinkAdded(sink!);
             _nextCookie += 1;
         }
 

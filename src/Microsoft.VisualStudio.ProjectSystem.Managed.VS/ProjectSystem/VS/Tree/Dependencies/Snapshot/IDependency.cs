@@ -37,12 +37,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         /// of IDependency with new properties set.
         /// </summary>
         IDependency SetProperties(
-            string caption = null,
+            string? caption = null,
             bool? resolved = null,
             ProjectTreeFlags? flags = null,
-            string schemaName = null,
-            IImmutableList<string> dependencyIDs = null,
-            DependencyIconSet iconSet = null,
+            string? schemaName = null,
+            IImmutableList<string>? dependencyIDs = null,
+            DependencyIconSet? iconSet = null,
             bool? isImplicit = null);
     }
 }

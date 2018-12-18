@@ -9,7 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
 {
     internal class ObservableList<T> : ObservableCollection<T>
     {
-        public event EventHandler ValidationStatusChanged;
+        public event EventHandler<ValidationStatusChangedEventArgs> ValidationStatusChanged;
 
         public ObservableList()
         {
@@ -24,7 +24,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
             }
 
             foreach (INotifyPropertyChanged item in list)
+#pragma warning disable CS8602 // Workaround https://github.com/dotnet/roslyn/issues/31891
                 item.PropertyChanged += OnItemPropertyChanged;
+#pragma warning restore CS8602
         }
 
         private void OnItemPropertyChanged(object sender, PropertyChangedEventArgs e)

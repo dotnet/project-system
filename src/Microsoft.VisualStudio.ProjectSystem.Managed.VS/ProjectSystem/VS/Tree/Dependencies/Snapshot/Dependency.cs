@@ -102,12 +102,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         /// </summary>
         private Dependency(
             Dependency dependency,
-            string caption,
+            string? caption,
             bool? resolved,
             ProjectTreeFlags? flags,
-            string schemaName,
-            IImmutableList<string> dependencyIDs,
-            DependencyIconSet iconSet,
+            string? schemaName,
+            IImmutableList<string>? dependencyIDs,
+            DependencyIconSet? iconSet,
             bool? isImplicit)
         {
             // Copy values as necessary to create a clone with any properties overridden
@@ -242,12 +242,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         }
 
         public IDependency SetProperties(
-            string caption = null,
+            string? caption = null,
             bool? resolved = null,
             ProjectTreeFlags? flags = null,
-            string schemaName = null,
-            IImmutableList<string> dependencyIDs = null,
-            DependencyIconSet iconSet = null,
+            string? schemaName = null,
+            IImmutableList<string>? dependencyIDs = null,
+            DependencyIconSet? iconSet = null,
             bool? isImplicit = null)
         {
             return new Dependency(this, caption, resolved, flags, schemaName, dependencyIDs, iconSet, isImplicit);

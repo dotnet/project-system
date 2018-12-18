@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
-
+using System.Runtime.CompilerServices;
 using Microsoft.VisualStudio.GraphModel;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
@@ -38,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
 
         public override bool HasChildren(string projectPath, IDependency dependency)
         {
-            ITargetedDependenciesSnapshot targetedSnapshot = GetSnapshot(dependency);
+            ITargetedDependenciesSnapshot? targetedSnapshot = GetSnapshot(dependency);
 
             return targetedSnapshot?.TopLevelDependencies.Length != 0;
         }
@@ -54,7 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
             dependencyGraphNode.SetValue(DependenciesGraphSchema.DependencyIdProperty, dependency.Id);
             dependencyGraphNode.SetValue(DependenciesGraphSchema.ResolvedProperty, dependency.Resolved);
 
-            ITargetedDependenciesSnapshot otherProjectTargetedSnapshot = GetSnapshot(dependency);
+            ITargetedDependenciesSnapshot? otherProjectTargetedSnapshot = GetSnapshot(dependency);
             if (otherProjectTargetedSnapshot == null)
             {
                 return;
@@ -75,7 +75,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
             }
         }
 
-        private ITargetedDependenciesSnapshot GetSnapshot(IDependency dependency)
+        private ITargetedDependenciesSnapshot? GetSnapshot(IDependency dependency)
         {
             IDependenciesSnapshot snapshot =
                 AggregateSnapshotProvider.GetSnapshotProvider(dependency.FullPath)?.CurrentSnapshot;
@@ -85,7 +85,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
                 return null;
             }
 
-            ITargetFramework targetFramework = TargetFrameworkProvider.GetNearestFramework(
+            ITargetFramework? targetFramework = TargetFrameworkProvider.GetNearestFramework(
                                     dependency.TargetFramework, snapshot.Targets.Keys);
 
             if (targetFramework == null)
@@ -112,10 +112,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
         {
             if (!AnyChanges(updatedDependency,
                             dependencyGraphNode,
-                            out IReadOnlyList<DependencyNodeInfo> nodesToAdd,
-                            out IReadOnlyList<DependencyNodeInfo> nodesToRemove,
-                            out System.Collections.Generic.IReadOnlyCollection<IDependency> updatedChildren,
-                            out string dependencyProjectPath))
+                            out IReadOnlyList<DependencyNodeInfo>? nodesToAdd,
+                            out IReadOnlyList<DependencyNodeInfo>? nodesToRemove,
+                            out System.Collections.Generic.IReadOnlyCollection<IDependency>? updatedChildren,
+                            out string? dependencyProjectPath))
             {
                 return false;
             }
@@ -172,7 +172,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
                 return true;
             }
 
-            ITargetFramework nearestTargetFramework = TargetFrameworkProvider.GetNearestFramework(
+            ITargetFramework? nearestTargetFramework = TargetFrameworkProvider.GetNearestFramework(
                 topLevelDependency.TargetFramework,
                 contextResults.Select(x => x.TargetFramework));
             if (nearestTargetFramework == null)
@@ -190,12 +190,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
         private bool AnyChanges(
             IDependency updatedDependency,
             GraphNode dependencyGraphNode,
-            out IReadOnlyList<DependencyNodeInfo> nodesToAdd,
-            out IReadOnlyList<DependencyNodeInfo> nodesToRemove,
-            out System.Collections.Generic.IReadOnlyCollection<IDependency> updatedChildren,
-            out string dependencyProjectPath)
+            [NotNullWhenTrue]out IReadOnlyList<DependencyNodeInfo>? nodesToAdd,
+            [NotNullWhenTrue]out IReadOnlyList<DependencyNodeInfo>? nodesToRemove,
+            [NotNullWhenTrue]out System.Collections.Generic.IReadOnlyCollection<IDependency>? updatedChildren,
+            [NotNullWhenTrue]out string? dependencyProjectPath)
         {
-            ITargetedDependenciesSnapshot snapshot = GetSnapshot(updatedDependency);
+            ITargetedDependenciesSnapshot? snapshot = GetSnapshot(updatedDependency);
 
             if (snapshot == null)
             {

@@ -6,12 +6,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 {
     internal class ProjectRestoreInfo : IVsProjectRestoreInfo
     {
-        public string BaseIntermediatePath { get; set; }
+        public string? BaseIntermediatePath { get; set; }
 
-        public string OriginalTargetFrameworks { get; set; }
+        public string? OriginalTargetFrameworks { get; set; }
 
-        public IVsTargetFrameworks TargetFrameworks { get; set; }
+        public IVsTargetFrameworks? TargetFrameworks { get; set; }
 
-        public IVsReferenceItems ToolReferences { get; set; }
+        public IVsReferenceItems? ToolReferences { get; set; }
     }
 }

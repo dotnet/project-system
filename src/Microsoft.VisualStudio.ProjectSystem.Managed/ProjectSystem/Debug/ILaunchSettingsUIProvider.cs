@@ -45,7 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// null if there are no custom controls but still want to add a new command to the list. Example is the Executable and Project
         /// commands. Neither provide custom controls (though arguable executable should).
         /// </summary>
-        UserControl CustomUI { get; }
+        UserControl? CustomUI { get; }
 
         /// <summary>
         /// Called when the selected profile changes to a profile which matches this command. curSettings will contain 

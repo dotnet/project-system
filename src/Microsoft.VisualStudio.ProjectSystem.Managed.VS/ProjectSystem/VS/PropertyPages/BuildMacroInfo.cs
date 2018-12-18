@@ -14,8 +14,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
     [AppliesTo(ProjectCapability.DotNet)]
     internal class BuildMacroInfo : IVsBuildMacroInfo, IDisposable
     {
-        private IProjectThreadingService _threadingService;
-        private ActiveConfiguredProject<ConfiguredProject> _configuredProject;
+        private IProjectThreadingService? _threadingService;
+        private ActiveConfiguredProject<ConfiguredProject>? _configuredProject;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BuildMacroInfo"/> class.
@@ -37,9 +37,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// <param name="bstrBuildMacroName">String containing the name of the macro.</param>
         /// <param name="pbstrBuildMacroValue">String containing the value or body of the macro.</param>
         /// <returns>If the method succeeds, it returns S_OK. If it fails, it returns an error code.</returns>
-        public int GetBuildMacroValue(string bstrBuildMacroName, out string pbstrBuildMacroValue)
+        public int GetBuildMacroValue(string bstrBuildMacroName, out string? pbstrBuildMacroValue)
         {
-            if (_configuredProject == null)
+            if (_configuredProject == null || _threadingService == null)
             {
                 pbstrBuildMacroValue = null;
                 return HResult.Unexpected;

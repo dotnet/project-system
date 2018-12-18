@@ -29,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
             IImmutableSet<string> projectItemSpecs,
             IAddDependencyContext context)
         {
-            IDependency matchingDependency = null;
+            IDependency? matchingDependency = null;
             bool shouldApplyAlias = false;
 
             foreach ((string _, IDependency other) in context)

@@ -22,8 +22,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
             _helper = helper;
         }
 
-        public override async Task<string> OnGetEvaluatedPropertyValueAsync(
-            string evaluatedPropertyValue,
+        public override async Task<string?> OnGetEvaluatedPropertyValueAsync(
+            string? evaluatedPropertyValue,
             IProjectProperties defaultProperties)
         {
             (bool success, string property) = await _helper.TryGetPropertyAsync(defaultProperties);
@@ -35,10 +35,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
             return await _projectAccessor.OpenProjectXmlForReadAsync(_unconfiguredProject, projectXml => _helper.GetProperty(projectXml));
         }
 
-        public override async Task<string> OnSetPropertyValueAsync(
-            string unevaluatedPropertyValue,
+        public override async Task<string?> OnSetPropertyValueAsync(
+            string? unevaluatedPropertyValue,
             IProjectProperties defaultProperties,
-            IReadOnlyDictionary<string, string> dimensionalConditions = null)
+            IReadOnlyDictionary<string, string>? dimensionalConditions = null)
         {
             if(await _helper.TrySetPropertyAsync(unevaluatedPropertyValue, defaultProperties))
             {

@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         private static readonly Task<AddMessageResult> s_handledAndStopProcessing = Task.FromResult(AddMessageResult.HandledAndStopProcessing);
         private static readonly Task<AddMessageResult> s_notHandled = Task.FromResult(AddMessageResult.NotHandled);
         private readonly ILanguageServiceHost _host;
-        private IVsLanguageServiceBuildErrorReporter2 _languageServiceBuildErrorReporter;
+        private IVsLanguageServiceBuildErrorReporter2? _languageServiceBuildErrorReporter;
 
         /// <remarks>
         /// <see cref="UnconfiguredProject"/> must be imported in the contructor in order for scope of this class' export to be correct.
@@ -101,7 +101,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
             // We defer grabbing error reporter the until the first build event, because the language service is initialized asynchronously
             if (_languageServiceBuildErrorReporter == null)
             {
-                _languageServiceBuildErrorReporter = (IVsLanguageServiceBuildErrorReporter2)_host.HostSpecificErrorReporter;
+                _languageServiceBuildErrorReporter = (IVsLanguageServiceBuildErrorReporter2?)_host.HostSpecificErrorReporter;
             }
         }
 

@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 using Microsoft.VisualStudio.ProjectSystem.VS;
@@ -27,7 +28,7 @@ namespace Microsoft.VisualStudio.Shell
         {
             ppvObject = IntPtr.Zero;
 
-            if (!TryGetService(guidService, out object service))
+            if (!TryGetService(guidService, out object? service))
             {
                 return HResult.NoInterface;
             }
@@ -35,7 +36,7 @@ namespace Microsoft.VisualStudio.Shell
             return GetComInterfaceForObject(service, riid, out ppvObject);
         }
 
-        private bool TryGetService(Guid riid, out object service)
+        private bool TryGetService(Guid riid, [NotNullWhenTrue]out object? service)
         {
             var serviceType = Type.GetTypeFromCLSID(riid, throwOnError: true); // Should only throw on OOM according to MSDN
 

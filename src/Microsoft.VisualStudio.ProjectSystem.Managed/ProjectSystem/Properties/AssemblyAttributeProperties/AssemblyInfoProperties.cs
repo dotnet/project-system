@@ -32,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         public AssemblyInfoProperties(
             IProjectProperties delegatedProjectProperties,
-            Func<ProjectId> getActiveProjectId,
+            Func<ProjectId?> getActiveProjectId,
             Workspace workspace,
             IProjectThreadingService threadingService)
             : base(delegatedProjectProperties)
@@ -41,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         }
 
         private static ImmutableDictionary<string, SourceAssemblyAttributePropertyValueProvider> CreateAttributeValueProviderMap(
-            Func<ProjectId> getActiveProjectId,
+            Func<ProjectId?> getActiveProjectId,
             Workspace workspace,
             IProjectThreadingService threadingService)
         {

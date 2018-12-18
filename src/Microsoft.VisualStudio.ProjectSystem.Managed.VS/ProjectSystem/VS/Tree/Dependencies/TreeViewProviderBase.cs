@@ -32,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             IDependenciesSnapshot snapshot,
             CancellationToken cancellationToken = default);
 
-        public abstract IProjectTree FindByPath(IProjectTree root, string path);
+        public abstract IProjectTree? FindByPath(IProjectTree root, string path);
 
         protected ProjectTreeCustomizablePropertyContext GetCustomPropertyContext(IProjectTree parent)
         {

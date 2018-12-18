@@ -283,11 +283,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
         private void UpdateDependenciesSnapshot(
             ImmutableDictionary<ITargetFramework, IDependenciesChanges> changes,
-            IProjectCatalogSnapshot catalogs,
-            ITargetFramework activeTargetFramework,
+            IProjectCatalogSnapshot? catalogs,
+            ITargetFramework? activeTargetFramework,
             CancellationToken token)
         {
-            IImmutableSet<string> projectItemSpecs = GetProjectItemSpecsFromSnapshot();
+            IImmutableSet<string>? projectItemSpecs = GetProjectItemSpecsFromSnapshot();
 
             bool anyChanges = false;
             
@@ -322,7 +322,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             return;
 
             // Gets the set of items defined directly the project, and not included by imports.
-            IImmutableSet<string> GetProjectItemSpecsFromSnapshot()
+            IImmutableSet<string>? GetProjectItemSpecsFromSnapshot()
             {
                 // We don't have catalog snapshot, we're likely updating because one of our project 
                 // dependencies changed. Just return 'no data'
@@ -372,7 +372,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             }, token);
         }
 
-        public async Task<AggregateCrossTargetProjectContext> GetCurrentAggregateProjectContext()
+        public async Task<AggregateCrossTargetProjectContext?> GetCurrentAggregateProjectContext()
         {
             if (IsDisposing || IsDisposed)
             {
@@ -468,7 +468,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
                     if (!previousContext.IsCrossTargeting)
                     {
-                        ITargetFramework newTargetFramework = _targetFrameworkProvider.GetTargetFramework((string)await projectProperties.TargetFramework.GetValueAsync());
+                        ITargetFramework? newTargetFramework = _targetFrameworkProvider.GetTargetFramework((string)await projectProperties.TargetFramework.GetValueAsync());
                         if (previousContext.ActiveTargetFramework.Equals(newTargetFramework))
                         {
                             return previousContext;
