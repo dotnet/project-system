@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.IO;
-using System.Threading;
 using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.GraphModel;
@@ -14,9 +13,7 @@ using Microsoft.VisualStudio.GraphModel.Schemas;
 using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
-using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
-using Microsoft.VisualStudio.Threading;
 
 using IAsyncServiceProvider = Microsoft.VisualStudio.Shell.IAsyncServiceProvider;
 using Task = System.Threading.Tasks.Task;
@@ -30,8 +27,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
     /// </summary>
     [Export(typeof(DependenciesGraphProvider))]
     [Export(typeof(IDependenciesGraphBuilder))]
+    [Export(ExportContractNames.Scopes.UnconfiguredProject, typeof(IProjectDynamicLoadComponent))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
-    internal sealed class DependenciesGraphProvider : OnceInitializedOnceDisposedAsync, IGraphProvider, IDependenciesGraphBuilder
+    internal sealed class DependenciesGraphProvider : IGraphProvider, IDependenciesGraphBuilder, IProjectDynamicLoadComponent
     {
         private static readonly GraphCommand[] s_containsGraphCommand =
         {
@@ -51,20 +49,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
         [ImportingConstructor]
         public DependenciesGraphProvider(
             IDependenciesGraphChangeTracker changeTracker,
-            [Import(typeof(SAsyncServiceProvider))] IAsyncServiceProvider serviceProvider,
-            JoinableTaskContext joinableTaskContext)
-            : base(new JoinableTaskContextNode(joinableTaskContext))
+            [Import(typeof(SAsyncServiceProvider))] IAsyncServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
             _changeTracker = changeTracker;
         }
 
-        protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
+        public async Task LoadAsync()
         {
-            _iconCache = await GraphIconCache.CreateAsync(_serviceProvider);
+            if (_iconCache == null)
+            {
+                _iconCache = await GraphIconCache.CreateAsync(_serviceProvider);
+            }
         }
 
-        protected override Task DisposeCoreAsync(bool initialized)
+        public Task UnloadAsync()
         {
             return Task.CompletedTask;
         }
@@ -78,20 +77,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
         /// </summary>
         public void BeginGetGraphData(IGraphContext context)
         {
-            ThreadHelper.JoinableTaskFactory.RunAsync(async () =>
+            try
             {
-                try
-                {
-                    await InitializeAsync();
-
-                    _changeTracker.RegisterGraphContext(context);
-                }
-                finally
-                {
-                    // OnCompleted must be called to display changes 
-                    context.OnCompleted();
-                }
-            });
+                _changeTracker.RegisterGraphContext(context);
+            }
+            finally
+            {
+                // OnCompleted must be called to display changes 
+                context.OnCompleted();
+            }
         }
 
         /// <summary>
@@ -121,8 +115,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
             GraphNode parentNode,
             IDependencyViewModel viewModel)
         {
-            Assumes.True(IsInitialized);
-
             string modelId = viewModel.OriginalModel == null ? viewModel.Caption : viewModel.OriginalModel.Id;
             GraphNodeId newNodeId = GetGraphNodeId(projectPath, parentNode, modelId);
             return DoAddGraphNode(newNodeId, graphContext, projectPath, parentNode, viewModel);
@@ -134,8 +126,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
             IDependencyViewModel viewModel)
         {
             Requires.NotNull(viewModel.OriginalModel, nameof(viewModel.OriginalModel));
-            
-            Assumes.True(IsInitialized);
 
             GraphNodeId newNodeId = GetTopLevelGraphNodeId(projectPath, viewModel.OriginalModel.GetTopLevelId());
             return DoAddGraphNode(newNodeId, graphContext, projectPath, parentNode: null, viewModel);
@@ -148,6 +138,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
             GraphNode parentNode,
             IDependencyViewModel viewModel)
         {
+            Assumes.NotNull(_iconCache);
+
             _iconCache.Register(viewModel.Icon);
             _iconCache.Register(viewModel.ExpandedIcon);
 
@@ -180,8 +172,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
             string modelId,
             GraphNode parentNode)
         {
-            Assumes.True(IsInitialized);
-
             GraphNodeId id = GetGraphNodeId(projectPath, parentNode, modelId);
             GraphNode nodeToRemove = graphContext.Graph.Nodes.Get(id);
 
