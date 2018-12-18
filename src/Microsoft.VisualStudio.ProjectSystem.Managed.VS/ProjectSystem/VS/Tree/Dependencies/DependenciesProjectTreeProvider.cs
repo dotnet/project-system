@@ -47,6 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         private readonly ICrossTargetSubscriptionsHost _dependenciesHost;
         private readonly IDependenciesSnapshotProvider _dependenciesSnapshotProvider;
         private readonly IProjectAsynchronousTasksService _tasksService;
+        private readonly IProjectAccessor _projectAccessor;
         private readonly IDependencyTreeTelemetryService _treeTelemetryService;
 
         /// <summary>Latest updated snapshot of all rules schema catalogs.</summary>
@@ -58,6 +59,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         [ImportingConstructor]
         public DependenciesProjectTreeProvider(
             IProjectThreadingService threadingService,
+            IProjectAccessor projectAccessor,
             UnconfiguredProject unconfiguredProject,
             IDependenciesSnapshotProvider dependenciesSnapshotProvider,
             [Import(DependencySubscriptionsHost.DependencySubscriptionsHostContract)] ICrossTargetSubscriptionsHost dependenciesHost,
@@ -76,6 +78,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             _dependenciesSnapshotProvider = dependenciesSnapshotProvider;
             _dependenciesHost = dependenciesHost;
             _tasksService = tasksService;
+            _projectAccessor = projectAccessor;
             _treeTelemetryService = treeTelemetryService;
 
             // Hook this so we can unregister the snapshot change event when the project unloads
@@ -199,11 +202,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             // Get the list of normal reference Item Nodes (this excludes any shared import nodes).
             IEnumerable<IProjectTree> referenceItemNodes = nodes.Except(sharedImportNodes);
 
-#pragma warning disable RS0030 // symbol IProjectLockService is banned
-            await ProjectLockService.WriteLockAsync(async access =>
+            await _projectAccessor.OpenProjectForWriteAsync(ActiveConfiguredProject, project =>
             {
-                Project project = await access.GetProjectAsync(ActiveConfiguredProject);
-
                 // Handle the removal of normal reference Item Nodes (this excludes any shared import nodes).
                 foreach (IProjectTree node in referenceItemNodes)
                 {
@@ -227,7 +227,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     Report.IfNot(unresolvedReferenceItem != null, "Cannot find reference to remove.");
                     if (unresolvedReferenceItem != null)
                     {
-                        await access.CheckoutAsync(unresolvedReferenceItem.Xml.ContainingProject.FullPath);
                         project.RemoveItem(unresolvedReferenceItem);
                     }
                 }
@@ -240,7 +239,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 }
 
                 // Handle the removal of shared import nodes.
-                ProjectRootElement projectXml = await access.GetProjectXmlAsync(UnconfiguredProject.FullPath);
+                ProjectRootElement projectXml = project.Xml;
                 foreach (IProjectTree sharedImportNode in sharedImportNodes)
                 {
                     string sharedFilePath = UnconfiguredProject.MakeRelative(sharedImportNode.FilePath);
@@ -268,13 +267,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                      "Cannot find shared project reference to remove.");
                         if (importingElementToRemove != null)
                         {
-                            await access.CheckoutAsync(importingElementToRemove.ContainingProject.FullPath);
                             importingElementToRemove.Parent.RemoveChild(importingElementToRemove);
                         }
                     }
                 }
             });
-#pragma warning restore RS0030 // symbol IProjectLockService is banned
         }
 
         /// <summary>
