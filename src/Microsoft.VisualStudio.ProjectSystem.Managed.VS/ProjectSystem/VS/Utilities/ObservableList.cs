@@ -24,9 +24,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
             }
 
             foreach (INotifyPropertyChanged item in list)
-#pragma warning disable CS8602 // Workaround https://github.com/dotnet/roslyn/issues/31891
-                item.PropertyChanged += OnItemPropertyChanged;
-#pragma warning restore CS8602
+            {
+                if (item != null)
+                {
+                    item.PropertyChanged += OnItemPropertyChanged;
+                }
+            }
         }
 
         private void OnItemPropertyChanged(object sender, PropertyChangedEventArgs e)
