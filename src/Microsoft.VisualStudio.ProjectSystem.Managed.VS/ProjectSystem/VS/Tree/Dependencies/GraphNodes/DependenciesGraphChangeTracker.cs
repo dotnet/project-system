@@ -39,30 +39,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
 
         public void RegisterGraphContext(IGraphContext context)
         {
-            bool shouldTrackChanges = false;
-
             foreach (Lazy<IDependenciesGraphActionHandler, IOrderPrecedenceMetadataView> handler in _graphActionHandlers)
             {
                 if (handler.Value.CanHandleRequest(context) &&
                     handler.Value.HandleRequest(context))
                 {
-                    shouldTrackChanges = true;
-                    break;
-                }
-            }
+                    lock (_expandedGraphContexts)
+                    {
+                        if (!_expandedGraphContexts.Contains(context))
+                        {
+                            // Remember this graph context in order to track changes.
+                            // When references change, we will adjust children of this graph as necessary
+                            _expandedGraphContexts.Add(context);
+                        }
+                    }
 
-            if (!shouldTrackChanges)
-            {
-                return;
-            }
-
-            lock (_expandedGraphContexts)
-            {
-                if (!_expandedGraphContexts.Contains(context))
-                {
-                    // Remember this graph context in order to track changes.
-                    // When references change, we will adjust children of this graph as necessary
-                    _expandedGraphContexts.Add(context);
+                    // Only one handler should succeed
+                    return;
                 }
             }
         }
