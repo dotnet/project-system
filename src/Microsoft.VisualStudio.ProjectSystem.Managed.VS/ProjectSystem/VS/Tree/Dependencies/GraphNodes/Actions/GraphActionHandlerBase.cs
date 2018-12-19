@@ -27,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
 
         public abstract bool TryHandleRequest(IGraphContext graphContext);
 
-        protected IDependency GetDependency(GraphNode inputGraphNode, out IDependenciesSnapshot snapshot)
+        protected IDependency FindDependency(GraphNode inputGraphNode, out IDependenciesSnapshot snapshot)
         {
             string projectPath = inputGraphNode.Id.GetValue(CodeGraphNodeIdName.Assembly);
             if (string.IsNullOrWhiteSpace(projectPath))

@@ -51,7 +51,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
                         continue;
                     }
 
-                    IDependency dependency = GetDependency(inputGraphNode, out IDependenciesSnapshot snapshot);
+                    IDependency dependency = FindDependency(inputGraphNode, out IDependenciesSnapshot snapshot);
                     if (dependency == null || snapshot == null)
                     {
                         continue;
