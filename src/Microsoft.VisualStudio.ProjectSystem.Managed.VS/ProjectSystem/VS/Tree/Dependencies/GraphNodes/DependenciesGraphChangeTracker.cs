@@ -6,7 +6,6 @@ using System.ComponentModel.Composition;
 using System.Linq;
 
 using Microsoft.VisualStudio.GraphModel;
-using Microsoft.VisualStudio.PlatformUI;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.Actions;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 
@@ -16,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
     [AppliesTo(ProjectCapability.DependenciesTree)]
     internal sealed class DependenciesGraphChangeTracker : IDependenciesGraphChangeTracker
     {
-        private readonly object _snapshotChangeHandlerLock = new object();
+        private readonly object _lock = new object();
 
         /// <summary>
         /// Remembers expanded graph nodes to track changes in their children.
@@ -44,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
                 if (handler.Value.CanHandleRequest(context) &&
                     handler.Value.HandleRequest(context))
                 {
-                    lock (_expandedGraphContexts)
+                    lock (_lock)
                     {
                         if (!_expandedGraphContexts.Contains(context))
                         {
@@ -76,19 +75,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
             // Each context represents one level in the graph, i.e. a node and its first level dependencies
             // Tracking changes over all expanded contexts ensures that all levels are processed
             // and updated when there are any changes in nodes data.
-            lock (_snapshotChangeHandlerLock)
+            lock (_lock)
             {
-                IList<IGraphContext> expandedContexts;
-                lock (_expandedGraphContexts)
-                {
-                    expandedContexts = _expandedGraphContexts.ToList();
-                }
-
-                if (expandedContexts.Count == 0)
-                {
-                    return;
-                }
-
                 var actionHandlers = _graphActionHandlers.Select(x => x.Value).Where(x => x.CanHandleChanges()).ToList();
 
                 if (actionHandlers.Count == 0)
@@ -96,7 +84,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
                     return;
                 }
 
-                foreach (IGraphContext graphContext in expandedContexts)
+                foreach (IGraphContext graphContext in _expandedGraphContexts)
                 {
                     bool anyChanges = false;
 
@@ -125,6 +113,70 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
         public void Dispose()
         {
             _aggregateSnapshotProvider.SnapshotChanged -= OnSnapshotChanged;
+        }
+
+        private sealed class WeakCollection<T> where T : class
+        {
+            private readonly LinkedList<WeakReference> _references = new LinkedList<WeakReference>();
+
+            public void Add(T item)
+            {
+                _references.AddLast(new WeakReference(item));
+            }
+
+            public bool Contains(T item)
+            {
+                foreach (T member in this)
+                {
+                    if (Equals(member, item))
+                    {
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+
+            public Enumerator GetEnumerator() => new Enumerator(_references);
+
+            public struct Enumerator
+            {
+                private readonly LinkedList<WeakReference> _list;
+                private LinkedListNode<WeakReference> _next;
+
+                internal Enumerator(LinkedList<WeakReference> list)
+                {
+                    _list = list;
+                    _next = list.First;
+                    Current = null;
+                }
+
+                public T Current { get; private set; }
+
+                public bool MoveNext()
+                {
+                    while (_next != null)
+                    {
+                        if (_next.Value.Target is T target)
+                        {
+                            // Reference is alive: yield it
+                            Current = target;
+                            _next = _next.Next;
+                            return true;
+                        }
+                        else
+                        {
+                            // Reference has been collected: remove it and continue
+                            LinkedListNode<WeakReference> remove = _next;
+                            _next = _next.Next;
+                            _list.Remove(remove);
+                        }
+                    }
+
+                    Current = null;
+                    return false;
+                }
+            }
         }
     }
 }
