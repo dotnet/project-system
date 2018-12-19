@@ -130,8 +130,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
                 return false;
             }
 
+            bool anyChanges = false;
+
             foreach (DependencyNodeInfo nodeToRemove in nodesToRemove)
             {
+                anyChanges = true;
                 Builder.RemoveGraphNode(graphContext, dependencyProjectPath, nodeToRemove.Id, dependencyGraphNode);
             }
 
@@ -143,6 +146,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
                     continue;
                 }
 
+                anyChanges = true;
                 Builder.AddGraphNode(
                     graphContext,
                     dependencyProjectPath,
@@ -154,7 +158,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
             dependencyGraphNode.SetValue(DependenciesGraphSchema.DependencyIdProperty, updatedDependency.Id);
             dependencyGraphNode.SetValue(DependenciesGraphSchema.ResolvedProperty, updatedDependency.Resolved);
 
-            return true;
+            return anyChanges;
         }
 
         public override bool MatchSearchResults(

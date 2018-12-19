@@ -98,17 +98,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
 
                 foreach (IGraphContext graphContext in expandedContexts)
                 {
+                    bool anyChanges = false;
+
                     try
                     {
                         foreach (IDependenciesGraphActionHandler actionHandler in actionHandlers)
                         {
-                            actionHandler.HandleChanges(graphContext, e);
+                            if (actionHandler.HandleChanges(graphContext, e))
+                            {
+                                anyChanges = true;
+                            }
                         }
                     }
                     finally
                     {
                         // Calling OnCompleted ensures that the changes are reflected in UI
-                        graphContext.OnCompleted();
+                        if (anyChanges)
+                        {
+                            graphContext.OnCompleted();
+                        }
                     }
                 }
             }

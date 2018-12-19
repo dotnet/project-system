@@ -39,6 +39,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
                 return false;
             }
 
+            bool anyChanges = false;
+
             foreach (GraphNode inputGraphNode in graphContext.InputNodes.ToList())
             {
                 string existingDependencyId = inputGraphNode.GetValue<string>(DependenciesGraphSchema.DependencyIdProperty);
@@ -73,18 +75,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
 
                 using (var scope = new GraphTransactionScope())
                 {
-                    viewProvider.TrackChanges(
+                    if (viewProvider.TrackChanges(
                         graphContext,
                         projectPath,
                         updatedDependency,
                         inputGraphNode,
-                        updatedSnapshot.Targets[updatedDependency.TargetFramework]);
+                        updatedSnapshot.Targets[updatedDependency.TargetFramework]))
+                    {
+                        anyChanges = true;
+                    }
 
                     scope.Complete();
                 }
             }
 
-            return false;
+            return anyChanges;
         }
     }
 }
