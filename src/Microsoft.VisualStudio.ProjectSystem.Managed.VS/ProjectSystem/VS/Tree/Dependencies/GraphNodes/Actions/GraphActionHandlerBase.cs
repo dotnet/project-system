@@ -4,6 +4,7 @@ using System;
 using System.ComponentModel.Composition;
 using System.IO;
 
+using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.GraphModel;
 using Microsoft.VisualStudio.GraphModel.Schemas;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.ViewProviders;
@@ -13,19 +14,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
 {
     internal abstract class GraphActionHandlerBase : IDependenciesGraphActionHandler
     {
+        [ImportMany] private readonly OrderPrecedenceImportCollection<IDependenciesGraphViewProvider> _viewProviders;
+
         protected GraphActionHandlerBase(IAggregateDependenciesSnapshotProvider aggregateSnapshotProvider)
         {
             AggregateSnapshotProvider = aggregateSnapshotProvider;
-            ViewProviders = new OrderPrecedenceImportCollection<IDependenciesGraphViewProvider>(
+            _viewProviders = new OrderPrecedenceImportCollection<IDependenciesGraphViewProvider>(
                 ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst);
         }
 
         protected IAggregateDependenciesSnapshotProvider AggregateSnapshotProvider { get; }
 
-        [ImportMany]
-        protected OrderPrecedenceImportCollection<IDependenciesGraphViewProvider> ViewProviders { get; }
-
         public abstract bool TryHandleRequest(IGraphContext graphContext);
+
+        protected IDependenciesGraphViewProvider FindViewProvider(IDependency dependency)
+        {
+            return _viewProviders.FirstOrDefaultValue((x, d) => x.SupportsDependency(d), dependency);
+        }
 
         protected IDependency FindDependency(GraphNode inputGraphNode, out IDependenciesSnapshot snapshot)
         {

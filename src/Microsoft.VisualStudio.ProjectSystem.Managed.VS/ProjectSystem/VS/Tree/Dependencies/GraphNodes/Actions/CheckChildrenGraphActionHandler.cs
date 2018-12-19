@@ -3,7 +3,6 @@
 using System.ComponentModel.Composition;
 using System.Linq;
 
-using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.GraphModel;
 using Microsoft.VisualStudio.GraphModel.Schemas;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.ViewProviders;
@@ -58,8 +57,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
                         continue;
                     }
 
-                    IDependenciesGraphViewProvider viewProvider = ViewProviders
-                        .FirstOrDefaultValue((x, d) => x.SupportsDependency(d), dependency);
+                    IDependenciesGraphViewProvider viewProvider = FindViewProvider(dependency);
 
                     if (viewProvider == null)
                     {

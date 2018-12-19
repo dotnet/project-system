@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 
-using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.GraphModel;
 using Microsoft.VisualStudio.GraphModel.Schemas;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
@@ -98,8 +97,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
                         if (!cachedDependencyToMatchingResultsMap
                                 .TryGetValue(topLevelDependency.Id, out HashSet<IDependency> topLevelDependencyMatches))
                         {
-                            IDependenciesGraphViewProvider viewProvider = ViewProviders
-                                .FirstOrDefaultValue((x, d) => x.SupportsDependency(d), topLevelDependency);
+                            IDependenciesGraphViewProvider viewProvider = FindViewProvider(topLevelDependency);
 
                             if (viewProvider == null)
                             {
