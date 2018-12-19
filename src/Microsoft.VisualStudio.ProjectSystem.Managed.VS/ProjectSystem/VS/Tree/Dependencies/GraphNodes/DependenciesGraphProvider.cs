@@ -12,6 +12,7 @@ using Microsoft.VisualStudio.GraphModel;
 using Microsoft.VisualStudio.GraphModel.CodeSchema;
 using Microsoft.VisualStudio.GraphModel.Schemas;
 using Microsoft.VisualStudio.Imaging.Interop;
+using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.Actions;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 using Microsoft.VisualStudio.Shell;
@@ -46,6 +47,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
 
         private readonly IDependenciesGraphChangeTracker _changeTracker;
 
+        [ImportMany] private readonly OrderPrecedenceImportCollection<IDependenciesGraphActionHandler> _graphActionHandlers;
+
         private GraphIconCache _iconCache;
 
         [ImportingConstructor]
@@ -57,6 +60,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
         {
             _serviceProvider = serviceProvider;
             _changeTracker = changeTracker;
+
+            _graphActionHandlers = new OrderPrecedenceImportCollection<IDependenciesGraphActionHandler>(
+                ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesLast);
         }
 
         protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
@@ -84,7 +90,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
                 {
                     await InitializeAsync();
 
-                    _changeTracker.RegisterGraphContext(context);
+                    foreach (Lazy<IDependenciesGraphActionHandler, IOrderPrecedenceMetadataView> handler in _graphActionHandlers)
+                    {
+                        if (handler.Value.CanHandleRequest(context) &&
+                            handler.Value.HandleRequest(context))
+                        {
+                            _changeTracker.RegisterGraphContext(context);
+
+                            // Only one handler should succeed
+                            return;
+                        }
+                    }
                 }
                 finally
                 {

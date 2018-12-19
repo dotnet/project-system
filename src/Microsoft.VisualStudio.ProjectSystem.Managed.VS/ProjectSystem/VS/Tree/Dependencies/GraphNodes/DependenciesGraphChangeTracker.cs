@@ -3,13 +3,19 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using System.Linq;
 
+using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.GraphModel;
-using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.Actions;
+using Microsoft.VisualStudio.GraphModel.Schemas;
+using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.ViewProviders;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
 {
+    /// <summary>
+    /// Listens to aggregate snapshot changes and updates known graph contexts accordingly.
+    /// </summary>
     [Export(typeof(IDependenciesGraphChangeTracker))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
     internal sealed class DependenciesGraphChangeTracker : IDependenciesGraphChangeTracker
@@ -21,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
         /// </summary>
         private readonly WeakCollection<IGraphContext> _expandedGraphContexts = new WeakCollection<IGraphContext>();
 
-        [ImportMany] private readonly OrderPrecedenceImportCollection<IDependenciesGraphActionHandler> _graphActionHandlers;
+        [ImportMany] private readonly OrderPrecedenceImportCollection<IDependenciesGraphViewProvider> _viewProviders;
 
         private readonly IAggregateDependenciesSnapshotProvider _aggregateSnapshotProvider;
 
@@ -31,29 +37,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
             _aggregateSnapshotProvider = aggregateSnapshotProvider;
             _aggregateSnapshotProvider.SnapshotChanged += OnSnapshotChanged;
 
-            _graphActionHandlers = new OrderPrecedenceImportCollection<IDependenciesGraphActionHandler>(
-                ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesLast);
+            _viewProviders = new OrderPrecedenceImportCollection<IDependenciesGraphViewProvider>(
+                ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst);
         }
 
         public void RegisterGraphContext(IGraphContext context)
         {
-            foreach (Lazy<IDependenciesGraphActionHandler, IOrderPrecedenceMetadataView> handler in _graphActionHandlers)
+            lock (_lock)
             {
-                if (handler.Value.CanHandleRequest(context) &&
-                    handler.Value.HandleRequest(context))
+                if (!_expandedGraphContexts.Contains(context))
                 {
-                    lock (_lock)
-                    {
-                        if (!_expandedGraphContexts.Contains(context))
-                        {
-                            // Remember this graph context in order to track changes.
-                            // When references change, we will adjust children of this graph as necessary
-                            _expandedGraphContexts.Add(context);
-                        }
-                    }
-
-                    // Only one handler should succeed
-                    return;
+                    // Remember this graph context in order to track changes.
+                    // When references change, we will adjust children of this graph as necessary
+                    _expandedGraphContexts.Add(context);
                 }
             }
         }
@@ -82,13 +78,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
 
                     try
                     {
-                        foreach (Lazy<IDependenciesGraphActionHandler, IOrderPrecedenceMetadataView> handler in _graphActionHandlers)
+                        if (HandleChanges(graphContext, e))
                         {
-                            if (handler.Value.CanHandleChanges() &&
-                                handler.Value.HandleChanges(graphContext, e))
-                            {
-                                anyChanges = true;
-                            }
+                            anyChanges = true;
                         }
                     }
                     finally
@@ -101,6 +93,71 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
                     }
                 }
             }
+        }
+
+        private bool HandleChanges(IGraphContext graphContext, SnapshotChangedEventArgs e)
+        {
+            IDependenciesSnapshot snapshot = e.Snapshot;
+
+            if (snapshot == null || e.Token.IsCancellationRequested)
+            {
+                return false;
+            }
+
+            bool anyChanges = false;
+
+            foreach (GraphNode inputGraphNode in graphContext.InputNodes.ToList())
+            {
+                string existingDependencyId = inputGraphNode.GetValue<string>(DependenciesGraphSchema.DependencyIdProperty);
+                if (string.IsNullOrEmpty(existingDependencyId))
+                {
+                    continue;
+                }
+
+                string projectPath = inputGraphNode.Id.GetValue(CodeGraphNodeIdName.Assembly);
+                if (string.IsNullOrEmpty(projectPath))
+                {
+                    continue;
+                }
+
+                IDependenciesSnapshot updatedSnapshot = _aggregateSnapshotProvider.GetSnapshotProvider(projectPath)?.CurrentSnapshot;
+
+                IDependency updatedDependency = updatedSnapshot?.FindDependency(existingDependencyId);
+
+                if (updatedDependency == null)
+                {
+                    continue;
+                }
+
+                IDependenciesGraphViewProvider viewProvider = _viewProviders
+                    .FirstOrDefaultValue((x, d) => x.SupportsDependency(d), updatedDependency);
+                if (viewProvider == null)
+                {
+                    continue;
+                }
+
+                if (!viewProvider.ShouldApplyChanges(projectPath, snapshot.ProjectPath, updatedDependency))
+                {
+                    continue;
+                }
+
+                using (var scope = new GraphTransactionScope())
+                {
+                    if (viewProvider.ApplyChanges(
+                        graphContext,
+                        projectPath,
+                        updatedDependency,
+                        inputGraphNode,
+                        updatedSnapshot.Targets[updatedDependency.TargetFramework]))
+                    {
+                        anyChanges = true;
+                    }
+
+                    scope.Complete();
+                }
+            }
+
+            return anyChanges;
         }
 
         public void Dispose()
