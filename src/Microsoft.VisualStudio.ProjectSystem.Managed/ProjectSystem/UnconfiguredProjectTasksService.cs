@@ -18,8 +18,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
         private readonly IProjectAsynchronousTasksService _tasksService;
         private readonly IProjectThreadingService _threadingService;
         private readonly ILoadedInHostListener _loadedInHostListener;
-        private readonly TaskCompletionSource<object> _projectLoadedInHost = new TaskCompletionSource<object>();
-        private readonly TaskCompletionSource<object> _prioritizedProjectLoadedInHost = new TaskCompletionSource<object>();
+        private readonly TaskCompletionSource<object?> _projectLoadedInHost = new TaskCompletionSource<object?>();
+        private readonly TaskCompletionSource<object?> _prioritizedProjectLoadedInHost = new TaskCompletionSource<object?>();
         private readonly JoinableTaskQueue _prioritizedTaskQueue;
 
         [ImportingConstructor]
@@ -95,12 +95,12 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public void OnProjectLoadedInHost()
         {
-            _projectLoadedInHost.SetResult(null!);
+            _projectLoadedInHost.SetResult(null);
         }
 
         public void OnPrioritizedProjectLoadedInHost()
         {
-            _prioritizedProjectLoadedInHost.SetResult(null!);
+            _prioritizedProjectLoadedInHost.SetResult(null);
 
             _threadingService.ExecuteSynchronously(() => _prioritizedTaskQueue.DrainAsync());
         }

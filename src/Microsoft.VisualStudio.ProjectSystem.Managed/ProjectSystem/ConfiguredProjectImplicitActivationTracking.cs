@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         private readonly IProjectAsynchronousTasksService _tasksService;
         private readonly IActiveConfigurationGroupService _activeConfigurationGroupService;
         private readonly ITargetBlock<IProjectVersionedValue<IConfigurationGroup<ProjectConfiguration>>> _targetBlock;
-        private TaskCompletionSource<object> _isImplicitlyActiveSource = new TaskCompletionSource<object>();
+        private TaskCompletionSource<object?> _isImplicitlyActiveSource = new TaskCompletionSource<object?>();
         private IDisposable? _subscription;
 
         [ImportingConstructor]
@@ -121,9 +121,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         private Task OnImplicitlyActivated()
         {
-#pragma warning disable CS8625 // Workaround https://github.com/dotnet/roslyn/issues/31865
             _isImplicitlyActiveSource.TrySetResult(null);
-#pragma warning restore CS8625
 
             IEnumerable<Task> tasks = ImplicitlyActiveServices.Select(c => c.Value.ActivateAsync());
 

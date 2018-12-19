@@ -318,13 +318,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                     // Does it already have one with this name?
                     if (newSnapshot.Profiles.FirstOrDefault(p => LaunchProfile.IsSameProfileName(p.Name, profile.Name)) == null)
                     {
+                        System.Diagnostics.Debug.Assert(newSnapshot.Profiles != null, $"{nameof(Enumerable.FirstOrDefault)} should have thrown");
+
                         // Create a new one from the existing in-memory profile and insert it in the same location, or the end if it
                         // is beyond the end of the list
-                        if (newSnapshot.Profiles == null)
-                        {
-                            newSnapshot.Profiles = new List<LaunchProfileData>(1);
-                        }
-
                         if (i > newSnapshot.Profiles.Count)
                         {
                             newSnapshot.Profiles.Add(LaunchProfileData.FromILaunchProfile(profile));
@@ -638,7 +635,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                         }
 
                         // Updates need to be sequenced
-                        return sequentialTaskQueue.ExecuteTask((() => UpdateProfilesAsync(null)));
+                        return sequentialTaskQueue.ExecuteTask(() => UpdateProfilesAsync(null));
                     }).Task;
                 }
             }
