@@ -23,18 +23,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
     {
         public const int Order = 110;
 
+        private readonly IAggregateDependenciesSnapshotProvider _aggregateSnapshotProvider;
+        private readonly ITargetFrameworkProvider _targetFrameworkProvider;
+
         [ImportingConstructor]
         public ProjectGraphViewProvider(IDependenciesGraphBuilder builder,
                                         IAggregateDependenciesSnapshotProvider aggregateSnapshotProvider,
                                         ITargetFrameworkProvider targetFrameworkProvider)
             : base(builder)
         {
-            AggregateSnapshotProvider = aggregateSnapshotProvider;
-            TargetFrameworkProvider = targetFrameworkProvider;
+            _aggregateSnapshotProvider = aggregateSnapshotProvider;
+            _targetFrameworkProvider = targetFrameworkProvider;
         }
-
-        private IAggregateDependenciesSnapshotProvider AggregateSnapshotProvider { get; }
-        private ITargetFrameworkProvider TargetFrameworkProvider { get; }
 
         public override bool SupportsDependency(IDependency dependency)
         {
@@ -83,14 +83,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
         private ITargetedDependenciesSnapshot GetSnapshot(IDependency dependency)
         {
             IDependenciesSnapshot snapshot =
-                AggregateSnapshotProvider.GetSnapshotProvider(dependency.FullPath)?.CurrentSnapshot;
+                _aggregateSnapshotProvider.GetSnapshotProvider(dependency.FullPath)?.CurrentSnapshot;
 
             if (snapshot == null)
             {
                 return null;
             }
 
-            ITargetFramework targetFramework = TargetFrameworkProvider.GetNearestFramework(
+            ITargetFramework targetFramework = _targetFrameworkProvider.GetNearestFramework(
                                     dependency.TargetFramework, snapshot.Targets.Keys);
 
             if (targetFramework == null)
@@ -187,7 +187,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
                 return true;
             }
 
-            ITargetFramework nearestTargetFramework = TargetFrameworkProvider.GetNearestFramework(
+            ITargetFramework nearestTargetFramework = _targetFrameworkProvider.GetNearestFramework(
                 topLevelDependency.TargetFramework,
                 contextResults.Select(x => x.TargetFramework));
             if (nearestTargetFramework == null)
