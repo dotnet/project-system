@@ -39,12 +39,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
             GraphNode dependencyGraphNode,
             ITargetedDependenciesSnapshot targetedSnapshot);
 
-        public virtual bool ShouldTrackChanges(string projectPath, string updatedProjectPath, IDependency dependency)
+        public virtual bool ShouldApplyChanges(string projectPath, string updatedProjectPath, IDependency dependency)
         {
             return projectPath.Equals(updatedProjectPath, StringComparison.OrdinalIgnoreCase);
         }
 
-        public virtual bool TrackChanges(
+        public virtual bool ApplyChanges(
             IGraphContext graphContext,
             string projectPath,
             IDependency updatedDependency,

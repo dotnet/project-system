@@ -68,14 +68,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
                     continue;
                 }
 
-                if (!viewProvider.ShouldTrackChanges(projectPath, snapshot.ProjectPath, updatedDependency))
+                if (!viewProvider.ShouldApplyChanges(projectPath, snapshot.ProjectPath, updatedDependency))
                 {
                     continue;
                 }
 
                 using (var scope = new GraphTransactionScope())
                 {
-                    if (viewProvider.TrackChanges(
+                    if (viewProvider.ApplyChanges(
                         graphContext,
                         projectPath,
                         updatedDependency,

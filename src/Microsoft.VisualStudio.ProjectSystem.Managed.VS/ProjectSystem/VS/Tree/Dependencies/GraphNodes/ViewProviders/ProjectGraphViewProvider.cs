@@ -106,14 +106,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
         /// meaning the project dependency has changed and we want to try and update.
         /// </summary>
         /// <inheritdoc />
-        public override bool ShouldTrackChanges(string projectPath, string updatedProjectPath, IDependency dependency)
+        public override bool ShouldApplyChanges(string projectPath, string updatedProjectPath, IDependency dependency)
         {
             string dependencyProjectPath = dependency.FullPath;
             return !string.IsNullOrEmpty(dependencyProjectPath)
                     && dependencyProjectPath.Equals(updatedProjectPath, StringComparison.OrdinalIgnoreCase);
         }
 
-        public override bool TrackChanges(
+        public override bool ApplyChanges(
                     IGraphContext graphContext,
                     string projectPath,
                     IDependency updatedDependency,
