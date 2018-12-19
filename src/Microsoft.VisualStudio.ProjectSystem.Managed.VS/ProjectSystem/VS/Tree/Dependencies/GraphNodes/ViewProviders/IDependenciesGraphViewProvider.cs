@@ -28,10 +28,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
         ///     Gets whether this provider would like to apply changes to a graph node in response to a snapshot update,
         ///     based on the provided arguments.
         /// </summary>
-        /// <param name="projectPath">The project path stored on the graph node that we want to update.</param>
-        /// <param name="updatedProjectPath">The project path according to the updated snapshot we want to apply changes from.</param>
-        /// <param name="dependency">The dependency from the updated snapshot with ID matching the graph node we want to update.</param>
-        bool ShouldApplyChanges(string projectPath, string updatedProjectPath, IDependency dependency);
+        /// <param name="nodeProjectPath">The project path stored on the graph node that we want to update.</param>
+        /// <param name="updatedSnapshotProjectPath">The project path according to the updated snapshot we want to apply changes from.</param>
+        /// <param name="updatedDependency">The dependency from the updated snapshot with ID matching the graph node we want to update.</param>
+        bool ShouldApplyChanges(string nodeProjectPath, string updatedSnapshotProjectPath, IDependency updatedDependency);
 
         bool ApplyChanges(
             IGraphContext graphContext,

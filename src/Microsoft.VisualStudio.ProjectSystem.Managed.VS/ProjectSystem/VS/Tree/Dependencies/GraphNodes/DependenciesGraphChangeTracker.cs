@@ -114,13 +114,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
                     continue;
                 }
 
-                string projectPath = inputGraphNode.Id.GetValue(CodeGraphNodeIdName.Assembly);
-                if (string.IsNullOrEmpty(projectPath))
+                string nodeProjectPath = inputGraphNode.Id.GetValue(CodeGraphNodeIdName.Assembly);
+                if (string.IsNullOrEmpty(nodeProjectPath))
                 {
                     continue;
                 }
 
-                IDependenciesSnapshot updatedSnapshot = _aggregateSnapshotProvider.GetSnapshotProvider(projectPath)?.CurrentSnapshot;
+                IDependenciesSnapshot updatedSnapshot = _aggregateSnapshotProvider.GetSnapshotProvider(nodeProjectPath)?.CurrentSnapshot;
 
                 IDependency updatedDependency = updatedSnapshot?.FindDependency(existingDependencyId);
 
@@ -136,7 +136,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
                     continue;
                 }
 
-                if (!viewProvider.ShouldApplyChanges(projectPath, snapshot.ProjectPath, updatedDependency))
+                if (!viewProvider.ShouldApplyChanges(nodeProjectPath, snapshot.ProjectPath, updatedDependency))
                 {
                     continue;
                 }
@@ -145,7 +145,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
                 {
                     if (viewProvider.ApplyChanges(
                         graphContext,
-                        projectPath,
+                        nodeProjectPath,
                         updatedDependency,
                         inputGraphNode,
                         updatedSnapshot.Targets[updatedDependency.TargetFramework]))

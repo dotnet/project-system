@@ -39,9 +39,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
             GraphNode dependencyGraphNode,
             ITargetedDependenciesSnapshot targetedSnapshot);
 
-        public virtual bool ShouldApplyChanges(string projectPath, string updatedProjectPath, IDependency dependency)
+        public virtual bool ShouldApplyChanges(string nodeProjectPath, string updatedSnapshotProjectPath, IDependency updatedDependency)
         {
-            return projectPath.Equals(updatedProjectPath, StringComparison.OrdinalIgnoreCase);
+            return nodeProjectPath.Equals(updatedSnapshotProjectPath, StringComparison.OrdinalIgnoreCase);
         }
 
         public virtual bool ApplyChanges(
