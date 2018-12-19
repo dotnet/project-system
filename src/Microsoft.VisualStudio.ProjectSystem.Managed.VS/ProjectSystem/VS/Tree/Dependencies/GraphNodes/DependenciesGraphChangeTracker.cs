@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using System.Linq;
 
 using Microsoft.VisualStudio.GraphModel;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.Actions;
@@ -77,22 +76,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
             // and updated when there are any changes in nodes data.
             lock (_lock)
             {
-                var actionHandlers = _graphActionHandlers.Select(x => x.Value).Where(x => x.CanHandleChanges()).ToList();
-
-                if (actionHandlers.Count == 0)
-                {
-                    return;
-                }
-
                 foreach (IGraphContext graphContext in _expandedGraphContexts)
                 {
                     bool anyChanges = false;
 
                     try
                     {
-                        foreach (IDependenciesGraphActionHandler actionHandler in actionHandlers)
+                        foreach (Lazy<IDependenciesGraphActionHandler, IOrderPrecedenceMetadataView> handler in _graphActionHandlers)
                         {
-                            if (actionHandler.HandleChanges(graphContext, e))
+                            if (handler.Value.CanHandleChanges() &&
+                                handler.Value.HandleChanges(graphContext, e))
                             {
                                 anyChanges = true;
                             }
