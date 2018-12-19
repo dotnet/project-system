@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Linq;
 
@@ -123,7 +124,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
                             dependencyGraphNode,
                             out IReadOnlyList<DependencyNodeInfo> nodesToAdd,
                             out IReadOnlyList<DependencyNodeInfo> nodesToRemove,
-                            out System.Collections.Generic.IReadOnlyCollection<IDependency> updatedChildren,
+                            out ImmutableArray<IDependency> updatedChildren,
                             out string dependencyProjectPath))
             {
                 return false;
@@ -201,7 +202,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
             GraphNode dependencyGraphNode,
             out IReadOnlyList<DependencyNodeInfo> nodesToAdd,
             out IReadOnlyList<DependencyNodeInfo> nodesToRemove,
-            out System.Collections.Generic.IReadOnlyCollection<IDependency> updatedChildren,
+            out ImmutableArray<IDependency> updatedChildren,
             out string dependencyProjectPath)
         {
             ITargetedDependenciesSnapshot snapshot = GetSnapshot(updatedDependency);
