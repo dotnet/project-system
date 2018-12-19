@@ -21,16 +21,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
     [Export(typeof(IDependenciesGraphActionHandler))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
     [Order(Order)]
-    internal class SearchGraphActionHandler : GraphActionHandlerBase
+    internal sealed class SearchGraphActionHandler : GraphActionHandlerBase
     {
         public const int Order = 120;
+
+        private readonly IDependenciesGraphBuilder _builder;
 
         [ImportingConstructor]
         public SearchGraphActionHandler(
             IDependenciesGraphBuilder builder,
             IAggregateDependenciesSnapshotProvider aggregateSnapshotProvider)
-            : base(builder, aggregateSnapshotProvider)
+            : base(aggregateSnapshotProvider)
         {
+            _builder = builder;
         }
 
         public override bool TryHandleRequest(IGraphContext graphContext)
@@ -131,12 +134,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
                             continue;
                         }
 
-                        GraphNode topLevelNode = Builder.AddTopLevelGraphNode(graphContext,
+                        GraphNode topLevelNode = _builder.AddTopLevelGraphNode(graphContext,
                                                                 snapshot.ProjectPath,
                                                                 topLevelDependency.ToViewModel(targetedSnapshot));
                         foreach (IDependency matchedDependency in topLevelDependencyMatches)
                         {
-                            GraphNode matchedDependencyNode = Builder.AddGraphNode(graphContext,
+                            GraphNode matchedDependencyNode = _builder.AddGraphNode(graphContext,
                                                                     snapshot.ProjectPath,
                                                                     topLevelNode,
                                                                     matchedDependency.ToViewModel(targetedSnapshot));

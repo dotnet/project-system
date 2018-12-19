@@ -13,16 +13,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
 {
     internal abstract class GraphActionHandlerBase : IDependenciesGraphActionHandler
     {
-        protected GraphActionHandlerBase(IDependenciesGraphBuilder builder,
-                                      IAggregateDependenciesSnapshotProvider aggregateSnapshotProvider)
+        protected GraphActionHandlerBase(IAggregateDependenciesSnapshotProvider aggregateSnapshotProvider)
         {
-            Builder = builder;
             AggregateSnapshotProvider = aggregateSnapshotProvider;
             ViewProviders = new OrderPrecedenceImportCollection<IDependenciesGraphViewProvider>(
-                                    ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst);
+                ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst);
         }
 
-        protected IDependenciesGraphBuilder Builder { get; }
         protected IAggregateDependenciesSnapshotProvider AggregateSnapshotProvider { get; }
 
         [ImportMany]

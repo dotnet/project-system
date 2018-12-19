@@ -19,15 +19,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
     [Export(typeof(IDependenciesGraphActionHandler))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
     [Order(Order)]
-    internal class CheckChildrenGraphActionHandler : GraphActionHandlerBase
+    internal sealed class CheckChildrenGraphActionHandler : GraphActionHandlerBase
     {
         public const int Order = 100;
 
         [ImportingConstructor]
         public CheckChildrenGraphActionHandler(
-            IDependenciesGraphBuilder builder,
             IAggregateDependenciesSnapshotProvider aggregateSnapshotProvider)
-            : base(builder, aggregateSnapshotProvider)
+            : base(aggregateSnapshotProvider)
         {
         }
 
