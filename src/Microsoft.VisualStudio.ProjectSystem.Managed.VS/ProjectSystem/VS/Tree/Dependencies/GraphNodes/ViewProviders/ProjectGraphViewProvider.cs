@@ -124,11 +124,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
                             dependencyGraphNode,
                             out IReadOnlyList<DependencyNodeInfo> nodesToAdd,
                             out IReadOnlyList<DependencyNodeInfo> nodesToRemove,
-                            out ImmutableArray<IDependency> updatedChildren,
-                            out string dependencyProjectPath))
+                            out ImmutableArray<IDependency> updatedChildren))
             {
                 return false;
             }
+
+            string dependencyProjectPath = updatedDependency.FullPath;
 
             bool anyChanges = false;
 
@@ -206,8 +207,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
             GraphNode dependencyGraphNode,
             out IReadOnlyList<DependencyNodeInfo> nodesToAdd,
             out IReadOnlyList<DependencyNodeInfo> nodesToRemove,
-            out ImmutableArray<IDependency> updatedChildren,
-            out string dependencyProjectPath)
+            out ImmutableArray<IDependency> updatedChildren)
         {
             ITargetedDependenciesSnapshot snapshot = GetSnapshot(updatedDependency);
 
@@ -216,11 +216,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
                 nodesToAdd = default;
                 nodesToRemove = default;
                 updatedChildren = default;
-                dependencyProjectPath = default;
                 return false;
             }
 
-            dependencyProjectPath = updatedDependency.FullPath;
             updatedChildren = snapshot.TopLevelDependencies;
             IReadOnlyList<DependencyNodeInfo> existingChildren = GetExistingChildren(dependencyGraphNode);
             IReadOnlyList<DependencyNodeInfo> updatedChildrenInfo = updatedChildren.Select(x => DependencyNodeInfo.FromDependency(x)).ToList();
