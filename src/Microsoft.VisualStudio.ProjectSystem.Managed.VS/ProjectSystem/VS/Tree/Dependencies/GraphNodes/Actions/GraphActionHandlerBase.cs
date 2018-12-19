@@ -28,9 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
         [ImportMany]
         protected OrderPrecedenceImportCollection<IDependenciesGraphViewProvider> ViewProviders { get; }
 
-        public abstract bool CanHandleRequest(IGraphContext graphContext);
-
-        public abstract bool HandleRequest(IGraphContext graphContext);
+        public abstract bool TryHandleRequest(IGraphContext graphContext);
 
         protected IDependency GetDependency(GraphNode inputGraphNode, out IDependenciesSnapshot snapshot)
         {

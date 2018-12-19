@@ -92,8 +92,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
 
                     foreach (Lazy<IDependenciesGraphActionHandler, IOrderPrecedenceMetadataView> handler in _graphActionHandlers)
                     {
-                        if (handler.Value.CanHandleRequest(context) &&
-                            handler.Value.HandleRequest(context))
+                        if (handler.Value.TryHandleRequest(context))
                         {
                             _changeTracker.RegisterGraphContext(context);
 

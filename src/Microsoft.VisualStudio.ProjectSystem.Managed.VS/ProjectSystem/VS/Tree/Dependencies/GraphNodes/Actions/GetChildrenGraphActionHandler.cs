@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.ComponentModel.Composition;
-using System.Linq;
 
 using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.GraphModel;
@@ -24,66 +23,69 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
         public const int Order = 110;
 
         [ImportingConstructor]
-        public GetChildrenGraphActionHandler(IDependenciesGraphBuilder builder,
-                                             IAggregateDependenciesSnapshotProvider aggregateSnapshotProvider)
+        public GetChildrenGraphActionHandler(
+            IDependenciesGraphBuilder builder,
+            IAggregateDependenciesSnapshotProvider aggregateSnapshotProvider)
             : base(builder, aggregateSnapshotProvider)
         {
         }
 
-        public override bool CanHandleRequest(IGraphContext graphContext)
+        public override bool TryHandleRequest(IGraphContext graphContext)
         {
-            return graphContext.Direction == GraphContextDirection.Contains;
-        }
+            return
+                graphContext.Direction == GraphContextDirection.Contains &&
+                GetChildren();
 
-        public override bool HandleRequest(IGraphContext graphContext)
-        {
-            bool trackChanges = false;
-            foreach (GraphNode inputGraphNode in graphContext.InputNodes)
+            bool GetChildren()
             {
-                if (graphContext.CancelToken.IsCancellationRequested)
+                bool trackChanges = false;
+                foreach (GraphNode inputGraphNode in graphContext.InputNodes)
                 {
-                    return trackChanges;
+                    if (graphContext.CancelToken.IsCancellationRequested)
+                    {
+                        return trackChanges;
+                    }
+
+                    string projectPath = inputGraphNode.Id.GetValue(CodeGraphNodeIdName.Assembly);
+                    if (string.IsNullOrEmpty(projectPath))
+                    {
+                        continue;
+                    }
+
+                    IDependency dependency = GetDependency(inputGraphNode, out IDependenciesSnapshot snapshot);
+                    if (dependency == null || snapshot == null)
+                    {
+                        continue;
+                    }
+
+                    IDependenciesGraphViewProvider viewProvider = ViewProviders
+                        .FirstOrDefaultValue((x, d) => x.SupportsDependency(d), dependency);
+
+                    if (viewProvider == null)
+                    {
+                        continue;
+                    }
+
+                    if (graphContext.TrackChanges)
+                    {
+                        trackChanges = true;
+                    }
+
+                    using (var scope = new GraphTransactionScope())
+                    {
+                        viewProvider.BuildGraph(
+                            graphContext,
+                            projectPath,
+                            dependency,
+                            inputGraphNode,
+                            snapshot.Targets[dependency.TargetFramework]);
+
+                        scope.Complete();
+                    }
                 }
 
-                string projectPath = inputGraphNode.Id.GetValue(CodeGraphNodeIdName.Assembly);
-                if (string.IsNullOrEmpty(projectPath))
-                {
-                    continue;
-                }
-
-                IDependency dependency = GetDependency(inputGraphNode, out IDependenciesSnapshot snapshot);
-                if (dependency == null || snapshot == null)
-                {
-                    continue;
-                }
-
-                IDependenciesGraphViewProvider viewProvider = ViewProviders
-                    .FirstOrDefaultValue((x, d) => x.SupportsDependency(d), dependency);
-
-                if (viewProvider == null)
-                {
-                    continue;
-                }
-
-                if (graphContext.TrackChanges)
-                {
-                    trackChanges = true;
-                }
-
-                using (var scope = new GraphTransactionScope())
-                {
-                    viewProvider.BuildGraph(
-                        graphContext,
-                        projectPath,
-                        dependency,
-                        inputGraphNode,
-                        snapshot.Targets[dependency.TargetFramework]);
-
-                    scope.Complete();
-                }
+                return trackChanges;
             }
-
-            return trackChanges;
         }
     }
 }

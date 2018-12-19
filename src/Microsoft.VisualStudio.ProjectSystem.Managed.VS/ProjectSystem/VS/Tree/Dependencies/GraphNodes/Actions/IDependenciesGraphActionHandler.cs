@@ -17,7 +17,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
     /// </remarks>
     internal interface IDependenciesGraphActionHandler
     {
-        bool CanHandleRequest(IGraphContext graphContext);
-        bool HandleRequest(IGraphContext graphContext);
+        /// <summary>
+        /// Attempts to handle the graph request.
+        /// </summary>
+        /// <param name="graphContext">A context object that describes the request to attempt.</param>
+        /// <returns><see langword="true"/> if the request was completed successfully, otherwise <see langword="false"/>.</returns>
+        bool TryHandleRequest(IGraphContext graphContext);
     }
 }

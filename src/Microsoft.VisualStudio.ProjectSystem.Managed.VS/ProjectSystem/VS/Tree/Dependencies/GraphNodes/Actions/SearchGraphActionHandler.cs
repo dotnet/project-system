@@ -26,20 +26,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
         public const int Order = 120;
 
         [ImportingConstructor]
-        public SearchGraphActionHandler(IDependenciesGraphBuilder builder,
-                                        IAggregateDependenciesSnapshotProvider aggregateSnapshotProvider)
+        public SearchGraphActionHandler(
+            IDependenciesGraphBuilder builder,
+            IAggregateDependenciesSnapshotProvider aggregateSnapshotProvider)
             : base(builder, aggregateSnapshotProvider)
         {
         }
 
-        public override bool CanHandleRequest(IGraphContext graphContext)
+        public override bool TryHandleRequest(IGraphContext graphContext)
         {
-            return graphContext.Direction == GraphContextDirection.Custom;
-        }
-
-        public override bool HandleRequest(IGraphContext graphContext)
-        {
-            Search(graphContext);
+            if (graphContext.Direction == GraphContextDirection.Custom)
+            {
+                Search(graphContext);
+            }
 
             return false;
         }
