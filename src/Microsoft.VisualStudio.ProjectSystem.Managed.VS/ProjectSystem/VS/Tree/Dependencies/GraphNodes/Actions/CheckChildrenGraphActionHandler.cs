@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
     [Export(typeof(IDependenciesGraphActionHandler))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
     [Order(Order)]
-    internal sealed class CheckChildrenGraphActionHandler : GraphActionHandlerBase
+    internal sealed class CheckChildrenGraphActionHandler : InputNodeGraphActionHandlerBase
     {
         public const int Order = 100;
 
@@ -37,56 +37,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
         {
         }
 
-        public override bool TryHandleRequest(IGraphContext graphContext)
+        protected override bool CanHandle(IGraphContext graphContext)
         {
-            return 
-                graphContext.Direction == GraphContextDirection.Self && 
-                graphContext.RequestedProperties.Contains(DgmlNodeProperties.ContainsChildren) &&
-                ContainsChildren();
+            return graphContext.Direction == GraphContextDirection.Self &&
+                   graphContext.RequestedProperties.Contains(DgmlNodeProperties.ContainsChildren);
+        }
 
-            bool ContainsChildren()
+        protected override void ProcessInputNode(IGraphContext graphContext, GraphNode inputGraphNode, IDependency dependency, IDependenciesSnapshot snapshot, IDependenciesGraphViewProvider viewProvider, string projectPath, ref bool trackChanges)
+        {
+            inputGraphNode.SetValue(DependenciesGraphSchema.DependencyIdProperty, dependency.Id);
+            inputGraphNode.SetValue(DependenciesGraphSchema.ResolvedProperty, dependency.Resolved);
+
+            if (viewProvider.HasChildren(projectPath, dependency))
             {
-                foreach (GraphNode inputGraphNode in graphContext.InputNodes)
-                {
-                    if (graphContext.CancelToken.IsCancellationRequested)
-                    {
-                        return false;
-                    }
-
-                    string projectPath = inputGraphNode.Id.GetValue(CodeGraphNodeIdName.Assembly);
-                    if (string.IsNullOrEmpty(projectPath))
-                    {
-                        continue;
-                    }
-
-                    IDependency dependency = FindDependency(inputGraphNode, out IDependenciesSnapshot snapshot);
-                    if (dependency == null || snapshot == null)
-                    {
-                        continue;
-                    }
-
-                    IDependenciesGraphViewProvider viewProvider = FindViewProvider(dependency);
-
-                    if (viewProvider == null)
-                    {
-                        continue;
-                    }
-
-                    using (var scope = new GraphTransactionScope())
-                    {
-                        inputGraphNode.SetValue(DependenciesGraphSchema.DependencyIdProperty, dependency.Id);
-                        inputGraphNode.SetValue(DependenciesGraphSchema.ResolvedProperty, dependency.Resolved);
-
-                        if (viewProvider.HasChildren(projectPath, dependency))
-                        {
-                            inputGraphNode.SetValue(DgmlNodeProperties.ContainsChildren, true);
-                        }
-
-                        scope.Complete();
-                    }
-                }
-
-                return false;
+                inputGraphNode.SetValue(DgmlNodeProperties.ContainsChildren, true);
             }
         }
     }
