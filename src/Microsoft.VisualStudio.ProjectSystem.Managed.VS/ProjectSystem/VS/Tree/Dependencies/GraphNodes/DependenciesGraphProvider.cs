@@ -34,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
     [AppliesTo(ProjectCapability.DependenciesTree)]
     internal sealed class DependenciesGraphProvider : OnceInitializedOnceDisposedAsync, IGraphProvider, IDependenciesGraphBuilder
     {
-        private static readonly GraphCommand[] s_containsGraphCommand =
+        private static readonly GraphCommand[] s_commands =
         {
             new GraphCommand(
                 GraphCommandDefinition.Contains,
@@ -112,18 +112,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
         /// <summary>
         /// IGraphProvider.GetCommands
         /// </summary>
-        public IEnumerable<GraphCommand> GetCommands(IEnumerable<GraphNode> nodes)
-        {
-            return s_containsGraphCommand;
-        }
+        public IEnumerable<GraphCommand> GetCommands(IEnumerable<GraphNode> nodes) => s_commands;
 
         /// <summary>
         /// IGraphProvider.GetExtension
         /// </summary>
-        public T GetExtension<T>(GraphObject graphObject, T previous) where T : class
-        {
-            return null;
-        }
+        public T GetExtension<T>(GraphObject graphObject, T previous) where T : class => null;
 
         /// <summary>
         /// IGraphProvider.Schema
