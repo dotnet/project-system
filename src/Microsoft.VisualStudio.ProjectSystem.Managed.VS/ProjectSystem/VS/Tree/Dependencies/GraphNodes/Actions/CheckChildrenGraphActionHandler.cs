@@ -11,10 +11,18 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.Actions
 {
     /// <summary>
-    /// Updates input graph nodes to indicate whether or not they have children.
-    /// Actually adding the child nodes to the graph is handled separately by
-    /// <see cref="GetChildrenGraphActionHandler"/>.
+    ///     Handles requests asking whether a given dependencies graph node has any child nodes.
     /// </summary>
+    /// <remarks>
+    /// <para>
+    ///     This information can be used to determine whether to show an 'expand' marker
+    ///     against graph node items in Solution Explorer.
+    /// </para>
+    /// <para>
+    ///     The actual population of child nodes is performed separately by
+    ///     <see cref="GetChildrenGraphActionHandler"/>.
+    /// </para>
+    /// </remarks>
     [Export(typeof(IDependenciesGraphActionHandler))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
     [Order(Order)]

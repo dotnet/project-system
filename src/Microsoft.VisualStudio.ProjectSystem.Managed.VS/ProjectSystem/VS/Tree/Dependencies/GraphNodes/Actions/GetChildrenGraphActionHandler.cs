@@ -10,10 +10,14 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.Actions
 {
     /// <summary>
-    /// Finds the children of the input <see cref="GraphNode"/>s and adds them to the graph.
-    /// Determining if a <see cref="GraphNode"/> has children is handled separately by
-    /// <see cref="CheckChildrenGraphActionHandler"/>.
+    ///     Handles requests to populate populated children of a given dependencies graph node.
     /// </summary>
+    /// <remarks>
+    /// <para>
+    ///     Determining whether a node has children or not is performed separately by
+    ///     <see cref="CheckChildrenGraphActionHandler"/>.
+    /// </para>
+    /// </remarks>
     [Export(typeof(IDependenciesGraphActionHandler))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
     [Order(Order)]

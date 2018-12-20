@@ -38,6 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
 
         public override bool SupportsDependency(IDependency dependency)
         {
+            // Only supports project dependencies
             return dependency.IsProject();
         }
 

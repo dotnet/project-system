@@ -23,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
 
         public virtual bool SupportsDependency(IDependency dependency)
         {
-            // we support any dependency type
+            // Supports all dependencies
             return true;
         }
 

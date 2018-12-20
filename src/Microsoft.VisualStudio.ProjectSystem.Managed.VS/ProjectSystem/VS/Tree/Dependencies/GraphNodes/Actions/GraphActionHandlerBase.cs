@@ -12,6 +12,10 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.Actions
 {
+    /// <summary>
+    ///     Base class for graph action handlers, providing access to snapshot dependency data and
+    ///     instances of type <see cref="IDependenciesGraphViewProvider"/>.
+    /// </summary>
     internal abstract class GraphActionHandlerBase : IDependenciesGraphActionHandler
     {
         [ImportMany] private readonly OrderPrecedenceImportCollection<IDependenciesGraphViewProvider> _viewProviders;
@@ -19,12 +23,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
         protected GraphActionHandlerBase(IAggregateDependenciesSnapshotProvider aggregateSnapshotProvider)
         {
             AggregateSnapshotProvider = aggregateSnapshotProvider;
+
             _viewProviders = new OrderPrecedenceImportCollection<IDependenciesGraphViewProvider>(
                 ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst);
         }
 
         protected IAggregateDependenciesSnapshotProvider AggregateSnapshotProvider { get; }
 
+        /// <inheritdoc />
         public abstract bool TryHandleRequest(IGraphContext graphContext);
 
         protected IDependenciesGraphViewProvider FindViewProvider(IDependency dependency)
