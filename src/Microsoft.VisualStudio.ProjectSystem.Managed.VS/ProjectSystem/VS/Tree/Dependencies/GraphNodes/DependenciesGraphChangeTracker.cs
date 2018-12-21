@@ -120,7 +120,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
                     continue;
                 }
 
-                IDependenciesSnapshot updatedSnapshot = _aggregateSnapshotProvider.GetSnapshotProvider(nodeProjectPath)?.CurrentSnapshot;
+                IDependenciesSnapshot updatedSnapshot = _aggregateSnapshotProvider.GetSnapshot(nodeProjectPath);
 
                 IDependency updatedDependency = updatedSnapshot?.FindDependency(existingDependencyId);
 

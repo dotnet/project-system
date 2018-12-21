@@ -18,17 +18,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         void RegisterSnapshotProvider(IDependenciesSnapshotProvider snapshotProvider);
 
         /// <summary>
-        /// Returns a snapshot provider for given project path.
+        /// Returns the snapshot for <paramref name="projectFilePath"/>, or <see langword="null"/> if none found.
         /// </summary>
-        /// <param name="projectFilePath">Path to project for which snapshot provider is requested</param>
-        /// <returns><see cref="IDependenciesSnapshotProvider"/> or null if there no such snapshot provider found.</returns>
-        IDependenciesSnapshotProvider GetSnapshotProvider(string projectFilePath);
+        /// <param name="projectFilePath">Path to the project for which the snapshot is requested.</param>
+        /// <returns><see cref="IDependenciesSnapshot"/> or <see langword="null"/> if there no project exists with the specified path.</returns>
+        IDependenciesSnapshot GetSnapshot(string projectFilePath);
 
         /// <summary>
-        /// Get all registered snapshot providers.
+        /// Get the current snapshot from every registered project.
         /// </summary>
-        /// <returns>A collection of <see cref="IDependenciesSnapshotProvider"/></returns>
-        IReadOnlyCollection<IDependenciesSnapshotProvider> GetSnapshotProviders();
+        /// <returns>A collection of <see cref="IDependenciesSnapshot"/>. Will not contain <see langword="null"/> values.</returns>
+        IReadOnlyCollection<IDependenciesSnapshot> GetSnapshots();
 
         /// <summary>
         /// Fired when a snapshot changed in a snapshot provider

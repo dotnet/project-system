@@ -63,28 +63,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
             var cachedDependencyToMatchingResultsMap = new Dictionary<string, HashSet<IDependency>>(StringComparer.OrdinalIgnoreCase);
             var searchResultsPerContext = new Dictionary<string, HashSet<IDependency>>(StringComparer.OrdinalIgnoreCase);
 
-            System.Collections.Generic.IReadOnlyCollection<IDependenciesSnapshotProvider> snapshotProviders = AggregateSnapshotProvider.GetSnapshotProviders();
-            foreach (IDependenciesSnapshotProvider snapshotProvider in snapshotProviders)
-            {
-                IDependenciesSnapshot snapshot = snapshotProvider.CurrentSnapshot;
-                if (snapshot == null)
-                {
-                    continue;
-                }
+            System.Collections.Generic.IReadOnlyCollection<IDependenciesSnapshot> snapshots = AggregateSnapshotProvider.GetSnapshots();
 
+            foreach (IDependenciesSnapshot snapshot in snapshots)
+            {
                 searchResultsPerContext[snapshot.ProjectPath] = SearchFlat(
                     searchTerm.ToLowerInvariant(),
                     snapshot);
             }
 
-            foreach (IDependenciesSnapshotProvider snapshotProvider in snapshotProviders)
+            foreach (IDependenciesSnapshot snapshot in snapshots)
             {
-                IDependenciesSnapshot snapshot = snapshotProvider.CurrentSnapshot;
-                if (snapshot == null)
-                {
-                    continue;
-                }
-
                 IEnumerable<IDependency> allTopLevelDependencies = snapshot.GetFlatTopLevelDependencies();
                 HashSet<IDependency> matchedDependencies = searchResultsPerContext[snapshot.ProjectPath];
 

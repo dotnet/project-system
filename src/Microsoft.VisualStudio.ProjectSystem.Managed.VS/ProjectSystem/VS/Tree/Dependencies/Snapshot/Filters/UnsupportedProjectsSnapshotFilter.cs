@@ -58,8 +58,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
 
         private ITargetedDependenciesSnapshot GetSnapshot(IDependency dependency)
         {
-            IDependenciesSnapshot snapshot = 
-                AggregateSnapshotProvider.GetSnapshotProvider(dependency.FullPath)?.CurrentSnapshot;
+            IDependenciesSnapshot snapshot = AggregateSnapshotProvider.GetSnapshot(dependency.FullPath);
 
             if (snapshot == null)
             {

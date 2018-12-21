@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
@@ -83,8 +82,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
 
         private ITargetedDependenciesSnapshot GetSnapshot(IDependency dependency)
         {
-            IDependenciesSnapshot snapshot =
-                _aggregateSnapshotProvider.GetSnapshotProvider(dependency.FullPath)?.CurrentSnapshot;
+            IDependenciesSnapshot snapshot = _aggregateSnapshotProvider.GetSnapshot(dependency.FullPath);
 
             if (snapshot == null)
             {

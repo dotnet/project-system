@@ -134,7 +134,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
                 topLevel = false;
             }
 
-            snapshot = AggregateSnapshotProvider.GetSnapshotProvider(projectPath)?.CurrentSnapshot;
+            snapshot = AggregateSnapshotProvider.GetSnapshot(projectPath);
 
             return snapshot?.FindDependency(id, topLevel);
         }

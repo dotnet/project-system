@@ -91,9 +91,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 { targetFramework, targetedSnapshot }
             };
             var snapshot = IDependenciesSnapshotFactory.Implement(targets: targets);
-            var snapshotProvider = IDependenciesSnapshotProviderFactory.Implement(currentSnapshot: snapshot);
             var aggregateSnapshotProvider = new Mock<IAggregateDependenciesSnapshotProvider>(MockBehavior.Strict);
-            aggregateSnapshotProvider.Setup(x => x.GetSnapshotProvider(projectPath)).Returns(snapshotProvider);
+            aggregateSnapshotProvider.Setup(x => x.GetSnapshot(projectPath)).Returns(snapshot);
 
             var targetFrameworkProvider = ITargetFrameworkProviderFactory.Implement(getNearestFramework: targetFramework);
 
@@ -137,9 +136,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             const string projectPath = @"c:\project\project.csproj";
 
-            var snapshotProvider = IDependenciesSnapshotProviderFactory.Implement(currentSnapshot: null);
             var aggregateSnapshotProvider = new Mock<IAggregateDependenciesSnapshotProvider>(MockBehavior.Strict);
-            aggregateSnapshotProvider.Setup(x => x.GetSnapshotProvider(projectPath)).Returns(snapshotProvider);
+            aggregateSnapshotProvider.Setup(x => x.GetSnapshot(projectPath)).Returns((IDependenciesSnapshot) null);
 
             var dependency = new TestDependency
             {
@@ -185,9 +183,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 { targetFramework, targetedSnapshot }
             };
             var snapshot = IDependenciesSnapshotFactory.Implement(targets: targets);
-            var snapshotProvider = IDependenciesSnapshotProviderFactory.Implement(currentSnapshot: snapshot);
             var aggregateSnapshotProvider = new Mock<IAggregateDependenciesSnapshotProvider>(MockBehavior.Strict);
-            aggregateSnapshotProvider.Setup(x => x.GetSnapshotProvider(projectPath)).Returns(snapshotProvider);
+            aggregateSnapshotProvider.Setup(x => x.GetSnapshot(projectPath)).Returns(snapshot);
             var targetFrameworkProvider = ITargetFrameworkProviderFactory.Implement(getNearestFramework: null);
 
             var dependency = new TestDependency
@@ -235,9 +232,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 { targetFramework, targetedSnapshot }
             };
             var snapshot = IDependenciesSnapshotFactory.Implement(targets: targets);
-            var snapshotProvider = IDependenciesSnapshotProviderFactory.Implement(currentSnapshot: snapshot);
             var aggregateSnapshotProvider = new Mock<IAggregateDependenciesSnapshotProvider>(MockBehavior.Strict);
-            aggregateSnapshotProvider.Setup(x => x.GetSnapshotProvider(projectPath)).Returns(snapshotProvider);
+            aggregateSnapshotProvider.Setup(x => x.GetSnapshot(projectPath)).Returns(snapshot);
             var targetFrameworkProvider = ITargetFrameworkProviderFactory.Implement(getNearestFramework: targetFramework);
 
             var dependency = new TestDependency

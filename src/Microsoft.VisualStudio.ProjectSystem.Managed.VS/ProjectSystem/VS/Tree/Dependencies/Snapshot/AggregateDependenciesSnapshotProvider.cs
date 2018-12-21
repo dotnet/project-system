@@ -82,33 +82,32 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         }
 
         /// <inheritdoc />
-        public IDependenciesSnapshotProvider GetSnapshotProvider(string projectFilePath)
+        public IDependenciesSnapshot GetSnapshot(string projectFilePath)
         {
             Requires.NotNullOrEmpty(projectFilePath, nameof(projectFilePath));
 
             lock (_snapshotProviders)
             {
-                if (_snapshotProviders.TryGetValue(projectFilePath, out IDependenciesSnapshotProvider snapshotProvider))
+                if (!_snapshotProviders.TryGetValue(projectFilePath, out IDependenciesSnapshotProvider snapshotProvider))
                 {
-                    return snapshotProvider;
+                    snapshotProvider = _projectExportProvider.GetExport<IDependenciesSnapshotProvider>(projectFilePath);
+
+                    if (snapshotProvider != null)
+                    {
+                        RegisterSnapshotProvider(snapshotProvider);
+                    }
                 }
 
-                snapshotProvider = _projectExportProvider.GetExport<IDependenciesSnapshotProvider>(projectFilePath);
-                if (snapshotProvider != null)
-                {
-                    RegisterSnapshotProvider(snapshotProvider);
-                }
-
-                return snapshotProvider;
+                return snapshotProvider?.CurrentSnapshot;
             }
         }
 
         /// <inheritdoc />
-        public IReadOnlyCollection<IDependenciesSnapshotProvider> GetSnapshotProviders()
+        public IReadOnlyCollection<IDependenciesSnapshot> GetSnapshots()
         {
             lock (_snapshotProviders)
             {
-                return _snapshotProviders.Values.ToList();
+                return _snapshotProviders.Values.Select(p => p.CurrentSnapshot).ToList();
             }
         }
     }
