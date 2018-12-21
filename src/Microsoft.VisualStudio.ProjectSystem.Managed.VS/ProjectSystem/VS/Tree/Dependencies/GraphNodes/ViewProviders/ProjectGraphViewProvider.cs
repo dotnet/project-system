@@ -94,11 +94,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
         }
 
         public override bool ApplyChanges(
-                    IGraphContext graphContext,
-                    string projectPath,
-                    IDependency updatedDependency,
-                    GraphNode dependencyGraphNode,
-                    ITargetedDependenciesSnapshot targetedSnapshot)
+            IGraphContext graphContext,
+            string projectPath,
+            IDependency updatedDependency,
+            GraphNode dependencyGraphNode,
+            ITargetedDependenciesSnapshot targetedSnapshot)
         {
             ITargetedDependenciesSnapshot referencedProjectSnapshot = _aggregateSnapshotProvider.GetSnapshot(updatedDependency);
 
@@ -107,9 +107,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
                 return false;
             }
 
-            ImmutableArray<IDependency> updatedChildren = referencedProjectSnapshot.TopLevelDependencies;
-
             IReadOnlyList<DependencyNodeInfo> existingChildrenInfo = GetExistingChildren(dependencyGraphNode);
+            ImmutableArray<IDependency> updatedChildren = referencedProjectSnapshot.TopLevelDependencies;
             IReadOnlyList<DependencyNodeInfo> updatedChildrenInfo = updatedChildren.Select(DependencyNodeInfo.FromDependency).ToList();
 
             if (!AnyChanges(
@@ -121,14 +120,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
                 return false;
             }
 
-            string dependencyProjectPath = updatedDependency.FullPath;
+            string referencedProjectPath = updatedDependency.FullPath;
 
             bool anyChanges = false;
 
             foreach (DependencyNodeInfo nodeToRemove in nodesToRemove)
             {
                 anyChanges = true;
-                Builder.RemoveGraphNode(graphContext, dependencyProjectPath, nodeToRemove.Id, dependencyGraphNode);
+                Builder.RemoveGraphNode(graphContext, referencedProjectPath, nodeToRemove.Id, dependencyGraphNode);
             }
 
             foreach (DependencyNodeInfo nodeToAdd in nodesToAdd)
@@ -142,7 +141,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
                 anyChanges = true;
                 Builder.AddGraphNode(
                     graphContext,
-                    dependencyProjectPath,
+                    referencedProjectPath,
                     dependencyGraphNode,
                     dependency.ToViewModel(targetedSnapshot));
             }
