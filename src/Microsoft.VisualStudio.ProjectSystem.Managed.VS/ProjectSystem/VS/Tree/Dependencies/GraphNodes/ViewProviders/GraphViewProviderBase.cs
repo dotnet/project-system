@@ -89,7 +89,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
             foreach (DependencyNodeInfo nodeToAdd in nodesToAdd)
             {
                 if (!targetedSnapshot.DependenciesWorld.TryGetValue(nodeToAdd.Id, out IDependency dependency)
-                    || dependency == null
                     || !dependency.Visible)
                 {
                     continue;
