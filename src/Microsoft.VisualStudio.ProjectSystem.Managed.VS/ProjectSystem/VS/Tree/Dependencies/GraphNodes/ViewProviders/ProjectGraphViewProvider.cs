@@ -111,7 +111,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
         {
             string dependencyProjectPath = updatedDependency.FullPath;
             return !string.IsNullOrEmpty(dependencyProjectPath)
-                    && dependencyProjectPath.Equals(updatedSnapshotProjectPath, StringComparison.OrdinalIgnoreCase);
+                    && dependencyProjectPath.Equals(updatedSnapshotProjectPath, StringComparisons.Paths);
         }
 
         public override bool ApplyChanges(
