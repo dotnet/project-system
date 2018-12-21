@@ -70,13 +70,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
             IReadOnlyList<DependencyNodeInfo> existingChildrenInfo = GetExistingChildren();
             IReadOnlyList<DependencyNodeInfo> updatedChildrenInfo = updatedChildren.Select(DependencyNodeInfo.FromDependency).ToList();
 
-            IReadOnlyList<DependencyNodeInfo> nodesToRemove = existingChildrenInfo.Except(updatedChildrenInfo).ToList();
-            IReadOnlyList<DependencyNodeInfo> nodesToAdd = updatedChildrenInfo.Except(existingChildrenInfo).ToList();
-
-            if (nodesToAdd.Count == 0 && nodesToRemove.Count == 0)
-            {
-                return false;
-            }
+            IEnumerable<DependencyNodeInfo> nodesToRemove = existingChildrenInfo.Except(updatedChildrenInfo);
+            IEnumerable<DependencyNodeInfo> nodesToAdd = updatedChildrenInfo.Except(existingChildrenInfo);
 
             bool anyChanges = false;
 
