@@ -100,11 +100,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
                     GraphNode dependencyGraphNode,
                     ITargetedDependenciesSnapshot targetedSnapshot)
         {
-            if (!AnyChanges(updatedDependency,
-                            dependencyGraphNode,
-                            out IReadOnlyList<DependencyNodeInfo> nodesToAdd,
-                            out IReadOnlyList<DependencyNodeInfo> nodesToRemove,
-                            out ImmutableArray<IDependency> updatedChildren))
+            ITargetedDependenciesSnapshot referencedProjectSnapshot = _aggregateSnapshotProvider.GetSnapshot(updatedDependency);
+
+            if (referencedProjectSnapshot == null)
+            {
+                return false;
+            }
+
+            ImmutableArray<IDependency> updatedChildren = referencedProjectSnapshot.TopLevelDependencies;
+
+            IReadOnlyList<DependencyNodeInfo> existingChildrenInfo = GetExistingChildren(dependencyGraphNode);
+            IReadOnlyList<DependencyNodeInfo> updatedChildrenInfo = referencedProjectSnapshot.TopLevelDependencies.Select(x => DependencyNodeInfo.FromDependency(x)).ToList();
+
+            if (!AnyChanges(
+                existingChildrenInfo,
+                updatedChildrenInfo,
+                out IReadOnlyList<DependencyNodeInfo> nodesToAdd,
+                out IReadOnlyList<DependencyNodeInfo> nodesToRemove))
             {
                 return false;
             }
@@ -180,30 +192,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
             topLevelDependencyMatches.AddRange(targetedResultsFromContext);
 
             return true;
-        }
-
-        private bool AnyChanges(
-            IDependency updatedDependency,
-            GraphNode dependencyGraphNode,
-            out IReadOnlyList<DependencyNodeInfo> nodesToAdd,
-            out IReadOnlyList<DependencyNodeInfo> nodesToRemove,
-            out ImmutableArray<IDependency> updatedChildren)
-        {
-            ITargetedDependenciesSnapshot snapshot = _aggregateSnapshotProvider.GetSnapshot(updatedDependency);
-
-            if (snapshot == null)
-            {
-                nodesToAdd = default;
-                nodesToRemove = default;
-                updatedChildren = default;
-                return false;
-            }
-
-            updatedChildren = snapshot.TopLevelDependencies;
-            IReadOnlyList<DependencyNodeInfo> existingChildren = GetExistingChildren(dependencyGraphNode);
-            IReadOnlyList<DependencyNodeInfo> updatedChildrenInfo = updatedChildren.Select(x => DependencyNodeInfo.FromDependency(x)).ToList();
-
-            return AnyChanges(existingChildren, updatedChildrenInfo, out nodesToAdd, out nodesToRemove);
         }
     }
 }

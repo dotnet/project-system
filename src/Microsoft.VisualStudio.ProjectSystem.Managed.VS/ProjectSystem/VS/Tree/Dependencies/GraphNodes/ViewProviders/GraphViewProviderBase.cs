@@ -50,12 +50,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
             GraphNode dependencyGraphNode,
             ITargetedDependenciesSnapshot targetedSnapshot)
         {
-            if (!AnyChanges(projectPath,
-                            targetedSnapshot,
-                            updatedDependency,
-                            dependencyGraphNode,
-                            out IReadOnlyList<DependencyNodeInfo> nodesToAdd,
-                            out IReadOnlyList<DependencyNodeInfo> nodesToRemove))
+            IReadOnlyList<DependencyNodeInfo> existingChildrenInfo = GetExistingChildren(dependencyGraphNode);
+            ImmutableArray<IDependency> updatedChildren = targetedSnapshot.GetDependencyChildren(updatedDependency);
+            IReadOnlyList<DependencyNodeInfo> updatedChildrenInfo = updatedChildren.Select(x => DependencyNodeInfo.FromDependency(x)).ToList();
+
+            if (!AnyChanges(
+                existingChildrenInfo,
+                updatedChildrenInfo,
+                out IReadOnlyList<DependencyNodeInfo> nodesToAdd,
+                out IReadOnlyList<DependencyNodeInfo> nodesToRemove))
             {
                 return false;
             }
@@ -100,21 +103,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
         {
             topLevelDependencyMatches = null;
             return false;
-        }
-
-        protected virtual bool AnyChanges(
-            string projectPath,
-            ITargetedDependenciesSnapshot targetedSnapshot,
-            IDependency updatedDependency,
-            GraphNode dependencyGraphNode,
-            out IReadOnlyList<DependencyNodeInfo> nodesToAdd,
-            out IReadOnlyList<DependencyNodeInfo> nodesToRemove)
-        {
-            IReadOnlyList<DependencyNodeInfo> existingChildrenInfo = GetExistingChildren(dependencyGraphNode);
-            ImmutableArray<IDependency> updatedChildren = targetedSnapshot.GetDependencyChildren(updatedDependency);
-            IReadOnlyList<DependencyNodeInfo> updatedChildrenInfo = updatedChildren.Select(x => DependencyNodeInfo.FromDependency(x)).ToList();
-
-            return AnyChanges(existingChildrenInfo, updatedChildrenInfo, out nodesToAdd, out nodesToRemove);
         }
 
         protected static bool AnyChanges(
