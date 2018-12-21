@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 
 using Microsoft.VisualStudio.ProjectSystem.Properties;
+using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.ViewProviders;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions;
@@ -172,9 +173,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                 .ToList();
             IEnumerable<string> currentSharedImportNodePaths = currentSharedImportNodes.Select(x => x.Path);
 
+            var diff = new SetDiff<string>(currentSharedImportNodePaths, sharedFolderProjectPaths);
+
             // process added nodes
-            IEnumerable<string> addedSharedImportPaths = sharedFolderProjectPaths.Except(currentSharedImportNodePaths);
-            foreach (string addedSharedImportPath in addedSharedImportPaths)
+            foreach (string addedSharedImportPath in diff.Added)
             {
                 IDependencyModel added = new SharedProjectDependencyModel(
                     addedSharedImportPath,
@@ -186,8 +188,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             }
 
             // process removed nodes
-            IEnumerable<string> removedSharedImportPaths = currentSharedImportNodePaths.Except(sharedFolderProjectPaths);
-            foreach (string removedSharedImportPath in removedSharedImportPaths)
+            foreach (string removedSharedImportPath in diff.Removed)
             {
                 bool exists = currentSharedImportNodes.Any(node => PathHelper.IsSamePath(node.Path, removedSharedImportPath));
 
