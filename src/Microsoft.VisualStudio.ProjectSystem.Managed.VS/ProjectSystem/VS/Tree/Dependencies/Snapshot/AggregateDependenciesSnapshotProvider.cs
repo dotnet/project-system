@@ -6,6 +6,7 @@ using System.ComponentModel.Composition;
 using System.Linq;
 
 using Microsoft.VisualStudio.ProjectSystem.VS.Extensibility;
+using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
@@ -16,11 +17,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
     {
         private readonly Dictionary<string, IDependenciesSnapshotProvider> _snapshotProviders = new Dictionary<string, IDependenciesSnapshotProvider>(StringComparer.OrdinalIgnoreCase);
         private readonly IProjectExportProvider _projectExportProvider;
+        private readonly ITargetFrameworkProvider _targetFrameworkProvider;
 
         [ImportingConstructor]
-        public AggregateDependenciesSnapshotProvider(IProjectExportProvider projectExportProvider)
+        public AggregateDependenciesSnapshotProvider(
+            IProjectExportProvider projectExportProvider,
+            ITargetFrameworkProvider targetFrameworkProvider)
         {
             _projectExportProvider = projectExportProvider;
+            _targetFrameworkProvider = targetFrameworkProvider;
         }
 
         /// <inheritdoc />
@@ -100,6 +105,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
                 return snapshotProvider?.CurrentSnapshot;
             }
+        }
+
+        public ITargetedDependenciesSnapshot GetSnapshot(IDependency dependency)
+        {
+            IDependenciesSnapshot snapshot = GetSnapshot(dependency.FullPath);
+
+            if (snapshot == null)
+            {
+                return null;
+            }
+
+            ITargetFramework targetFramework = _targetFrameworkProvider.GetNearestFramework(
+                dependency.TargetFramework, snapshot.Targets.Keys);
+
+            if (targetFramework == null)
+            {
+                return null;
+            }
+
+            return snapshot.Targets[targetFramework];
         }
 
         /// <inheritdoc />

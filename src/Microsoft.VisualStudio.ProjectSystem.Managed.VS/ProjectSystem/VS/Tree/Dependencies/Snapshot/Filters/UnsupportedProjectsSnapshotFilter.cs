@@ -20,17 +20,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
     {
         public const int Order = 120;
 
-        [ImportingConstructor]
-        public UnsupportedProjectsSnapshotFilter(
-                IAggregateDependenciesSnapshotProvider aggregateSnapshotProvider,
-                ITargetFrameworkProvider targetFrameworkProvider)
-        {
-            AggregateSnapshotProvider = aggregateSnapshotProvider;
-            TargetFrameworkProvider = targetFrameworkProvider;
-        }
+        private readonly IAggregateDependenciesSnapshotProvider _aggregateSnapshotProvider;
 
-        private IAggregateDependenciesSnapshotProvider AggregateSnapshotProvider { get; }
-        private ITargetFrameworkProvider TargetFrameworkProvider { get; }
+        [ImportingConstructor]
+        public UnsupportedProjectsSnapshotFilter(IAggregateDependenciesSnapshotProvider aggregateSnapshotProvider)
+        {
+            _aggregateSnapshotProvider = aggregateSnapshotProvider;
+        }
 
         public override void BeforeAddOrUpdate(
             string projectPath,
@@ -45,7 +41,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
                 && dependency.Flags.Contains(DependencyTreeFlags.ProjectNodeFlags)
                 && !dependency.Flags.Contains(DependencyTreeFlags.SharedProjectFlags))
             {
-                ITargetedDependenciesSnapshot snapshot = GetSnapshot(dependency);
+                ITargetedDependenciesSnapshot snapshot = _aggregateSnapshotProvider.GetSnapshot(dependency);
+
                 if (snapshot != null && snapshot.HasUnresolvedDependency)
                 {
                     context.Accept(dependency.ToUnresolved(ProjectReference.SchemaName));
@@ -54,25 +51,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
             }
 
             context.Accept(dependency);
-        }
-
-        private ITargetedDependenciesSnapshot GetSnapshot(IDependency dependency)
-        {
-            IDependenciesSnapshot snapshot = AggregateSnapshotProvider.GetSnapshot(dependency.FullPath);
-
-            if (snapshot == null)
-            {
-                return null;
-            }
-
-            ITargetFramework targetFramework = TargetFrameworkProvider.GetNearestFramework(
-                                    dependency.TargetFramework, snapshot.Targets.Keys);
-            if (targetFramework == null)
-            {
-                return null;
-            }
-
-            return snapshot.Targets[targetFramework];
         }
     }
 }

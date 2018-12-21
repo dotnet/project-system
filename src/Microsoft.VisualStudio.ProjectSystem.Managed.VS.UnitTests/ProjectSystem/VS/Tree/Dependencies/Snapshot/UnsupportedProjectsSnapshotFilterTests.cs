@@ -1,9 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System.Collections.Generic;
 using System.Collections.Immutable;
 
-using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Filters;
 
@@ -55,13 +53,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             void AssertNoChange(IDependency dependency)
             {
                 var aggregateSnapshotProvider = IAggregateDependenciesSnapshotProviderFactory.Create();
-                var targetFrameworkProvider = ITargetFrameworkProviderFactory.Create();
 
                 var worldBuilder = new[] { dependency }.ToImmutableDictionary(d => d.Id).ToBuilder();
 
                 var context = new AddDependencyContext(worldBuilder);
 
-                var filter = new UnsupportedProjectsSnapshotFilter(aggregateSnapshotProvider, targetFrameworkProvider);
+                var filter = new UnsupportedProjectsSnapshotFilter(aggregateSnapshotProvider);
 
                 filter.BeforeAddOrUpdate(
                     null,
@@ -85,16 +82,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             const string projectPath = @"c:\project\project.csproj";
 
             var targetFramework = ITargetFrameworkFactory.Implement(moniker: "tfm1");
-            var targetedSnapshot = ITargetedDependenciesSnapshotFactory.Implement(hasUnresolvedDependency: true);
-            var targets = new Dictionary<ITargetFramework, ITargetedDependenciesSnapshot>
-            {
-                { targetFramework, targetedSnapshot }
-            };
-            var snapshot = IDependenciesSnapshotFactory.Implement(targets: targets);
-            var aggregateSnapshotProvider = new Mock<IAggregateDependenciesSnapshotProvider>(MockBehavior.Strict);
-            aggregateSnapshotProvider.Setup(x => x.GetSnapshot(projectPath)).Returns(snapshot);
-
-            var targetFrameworkProvider = ITargetFrameworkProviderFactory.Implement(getNearestFramework: targetFramework);
 
             var dependency = new TestDependency
             {
@@ -106,11 +93,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 FullPath = projectPath
             };
 
+            var targetedSnapshot = ITargetedDependenciesSnapshotFactory.Implement(hasUnresolvedDependency: true);
+
+            var aggregateSnapshotProvider = new Mock<IAggregateDependenciesSnapshotProvider>(MockBehavior.Strict);
+            aggregateSnapshotProvider.Setup(x => x.GetSnapshot(dependency)).Returns(targetedSnapshot);
+
             var worldBuilder = ImmutableDictionary<string, IDependency>.Empty.ToBuilder();
 
             var context = new AddDependencyContext(worldBuilder);
 
-            var filter = new UnsupportedProjectsSnapshotFilter(aggregateSnapshotProvider.Object, targetFrameworkProvider);
+            var filter = new UnsupportedProjectsSnapshotFilter(aggregateSnapshotProvider.Object);
 
             filter.BeforeAddOrUpdate(
                 null,
@@ -136,9 +128,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             const string projectPath = @"c:\project\project.csproj";
 
-            var aggregateSnapshotProvider = new Mock<IAggregateDependenciesSnapshotProvider>(MockBehavior.Strict);
-            aggregateSnapshotProvider.Setup(x => x.GetSnapshot(projectPath)).Returns((IDependenciesSnapshot) null);
-
             var dependency = new TestDependency
             {
                 Id = "dependency1",
@@ -148,60 +137,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 FullPath = projectPath
             };
 
-            var worldBuilder = ImmutableDictionary<string, IDependency>.Empty.ToBuilder();
-
-            var context = new AddDependencyContext(worldBuilder);
-
-            var filter = new UnsupportedProjectsSnapshotFilter(aggregateSnapshotProvider.Object, targetFrameworkProvider: null);
-
-            filter.BeforeAddOrUpdate(
-                null,
-                null,
-                dependency,
-                null,
-                null,
-                context);
-
-            // Accepts unchanged dependency
-            Assert.Same(dependency, context.GetResult(filter));
-
-            // No other changes made
-            Assert.False(context.Changed);
-
-            aggregateSnapshotProvider.VerifyAll();
-        }
-
-        [Fact]
-        public void BeforeAddOrUpdate_WhenProjectSnapshotFoundAndTargetFrameworkNull_ShouldDoNothing()
-        {
-            const string projectPath = @"c:\project\project.csproj";
-
-            var targetFramework = ITargetFrameworkFactory.Implement(moniker: "tfm1");
-            var targetedSnapshot = ITargetedDependenciesSnapshotFactory.Implement(hasUnresolvedDependency: true);
-            var targets = new Dictionary<ITargetFramework, ITargetedDependenciesSnapshot>
-            {
-                { targetFramework, targetedSnapshot }
-            };
-            var snapshot = IDependenciesSnapshotFactory.Implement(targets: targets);
             var aggregateSnapshotProvider = new Mock<IAggregateDependenciesSnapshotProvider>(MockBehavior.Strict);
-            aggregateSnapshotProvider.Setup(x => x.GetSnapshot(projectPath)).Returns(snapshot);
-            var targetFrameworkProvider = ITargetFrameworkProviderFactory.Implement(getNearestFramework: null);
-
-            var dependency = new TestDependency
-            {
-                Id = "dependency1",
-                TopLevel = true,
-                Resolved = true,
-                Flags = DependencyTreeFlags.ProjectNodeFlags.Union(DependencyTreeFlags.ResolvedFlags),
-                FullPath = projectPath,
-                TargetFramework = targetFramework
-            };
+            aggregateSnapshotProvider.Setup(x => x.GetSnapshot(dependency)).Returns((ITargetedDependenciesSnapshot) null);
 
             var worldBuilder = ImmutableDictionary<string, IDependency>.Empty.ToBuilder();
 
             var context = new AddDependencyContext(worldBuilder);
 
-            var filter = new UnsupportedProjectsSnapshotFilter(aggregateSnapshotProvider.Object, targetFrameworkProvider);
+            var filter = new UnsupportedProjectsSnapshotFilter(aggregateSnapshotProvider.Object);
 
             filter.BeforeAddOrUpdate(
                 null,
@@ -227,14 +170,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             var targetFramework = ITargetFrameworkFactory.Implement(moniker: "tfm1");
             var targetedSnapshot = ITargetedDependenciesSnapshotFactory.Implement(hasUnresolvedDependency: false);
-            var targets = new Dictionary<ITargetFramework, ITargetedDependenciesSnapshot>
-            {
-                { targetFramework, targetedSnapshot }
-            };
-            var snapshot = IDependenciesSnapshotFactory.Implement(targets: targets);
-            var aggregateSnapshotProvider = new Mock<IAggregateDependenciesSnapshotProvider>(MockBehavior.Strict);
-            aggregateSnapshotProvider.Setup(x => x.GetSnapshot(projectPath)).Returns(snapshot);
-            var targetFrameworkProvider = ITargetFrameworkProviderFactory.Implement(getNearestFramework: targetFramework);
 
             var dependency = new TestDependency
             {
@@ -246,11 +181,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 TargetFramework = targetFramework
             };
 
+            var aggregateSnapshotProvider = new Mock<IAggregateDependenciesSnapshotProvider>(MockBehavior.Strict);
+            aggregateSnapshotProvider.Setup(x => x.GetSnapshot(dependency)).Returns(targetedSnapshot);
+
             var worldBuilder = ImmutableDictionary<string, IDependency>.Empty.ToBuilder();
 
             var context = new AddDependencyContext(worldBuilder);
 
-            var filter = new UnsupportedProjectsSnapshotFilter(aggregateSnapshotProvider.Object, targetFrameworkProvider);
+            var filter = new UnsupportedProjectsSnapshotFilter(aggregateSnapshotProvider.Object);
 
             filter.BeforeAddOrUpdate(
                 null,

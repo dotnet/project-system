@@ -43,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
 
         public override bool HasChildren(string projectPath, IDependency dependency)
         {
-            ITargetedDependenciesSnapshot targetedSnapshot = GetSnapshot(dependency);
+            ITargetedDependenciesSnapshot targetedSnapshot = _aggregateSnapshotProvider.GetSnapshot(dependency);
 
             return targetedSnapshot?.TopLevelDependencies.Length != 0;
         }
@@ -59,7 +59,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
             dependencyGraphNode.SetValue(DependenciesGraphSchema.DependencyIdProperty, dependency.Id);
             dependencyGraphNode.SetValue(DependenciesGraphSchema.ResolvedProperty, dependency.Resolved);
 
-            ITargetedDependenciesSnapshot otherProjectTargetedSnapshot = GetSnapshot(dependency);
+            ITargetedDependenciesSnapshot otherProjectTargetedSnapshot = _aggregateSnapshotProvider.GetSnapshot(dependency);
+
             if (otherProjectTargetedSnapshot == null)
             {
                 return;
@@ -78,26 +79,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
                     dependencyGraphNode,
                     childDependency.ToViewModel(otherProjectTargetedSnapshot));
             }
-        }
-
-        private ITargetedDependenciesSnapshot GetSnapshot(IDependency dependency)
-        {
-            IDependenciesSnapshot snapshot = _aggregateSnapshotProvider.GetSnapshot(dependency.FullPath);
-
-            if (snapshot == null)
-            {
-                return null;
-            }
-
-            ITargetFramework targetFramework = _targetFrameworkProvider.GetNearestFramework(
-                                    dependency.TargetFramework, snapshot.Targets.Keys);
-
-            if (targetFramework == null)
-            {
-                return null;
-            }
-
-            return snapshot.Targets[targetFramework];
         }
 
         /// <summary>
@@ -208,7 +189,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
             out IReadOnlyList<DependencyNodeInfo> nodesToRemove,
             out ImmutableArray<IDependency> updatedChildren)
         {
-            ITargetedDependenciesSnapshot snapshot = GetSnapshot(updatedDependency);
+            ITargetedDependenciesSnapshot snapshot = _aggregateSnapshotProvider.GetSnapshot(updatedDependency);
 
             if (snapshot == null)
             {
