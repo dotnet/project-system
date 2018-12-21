@@ -35,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
 
         bool ApplyChanges(
             IGraphContext graphContext,
-            string projectPath,
+            string nodeProjectPath,
             IDependency updatedDependency,
             GraphNode dependencyGraphNode,
             ITargetedDependenciesSnapshot targetedSnapshot);

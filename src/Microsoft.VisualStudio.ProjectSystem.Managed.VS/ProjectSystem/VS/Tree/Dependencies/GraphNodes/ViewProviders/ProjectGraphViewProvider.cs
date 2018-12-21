@@ -95,7 +95,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
 
         public override bool ApplyChanges(
             IGraphContext graphContext,
-            string projectPath,
+            string nodeProjectPath,
             IDependency updatedDependency,
             GraphNode dependencyGraphNode,
             ITargetedDependenciesSnapshot targetedSnapshot)
@@ -107,51 +107,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
                 return false;
             }
 
-            IReadOnlyList<DependencyNodeInfo> existingChildrenInfo = GetExistingChildren(dependencyGraphNode);
-            ImmutableArray<IDependency> updatedChildren = referencedProjectSnapshot.TopLevelDependencies;
-            IReadOnlyList<DependencyNodeInfo> updatedChildrenInfo = updatedChildren.Select(DependencyNodeInfo.FromDependency).ToList();
-
-            if (!AnyChanges(
-                existingChildrenInfo,
-                updatedChildrenInfo,
-                out IReadOnlyList<DependencyNodeInfo> nodesToAdd,
-                out IReadOnlyList<DependencyNodeInfo> nodesToRemove))
-            {
-                return false;
-            }
-
-            string referencedProjectPath = updatedDependency.FullPath;
-
-            bool anyChanges = false;
-
-            foreach (DependencyNodeInfo nodeToRemove in nodesToRemove)
-            {
-                anyChanges = true;
-                Builder.RemoveGraphNode(graphContext, referencedProjectPath, nodeToRemove.Id, dependencyGraphNode);
-            }
-
-            foreach (DependencyNodeInfo nodeToAdd in nodesToAdd)
-            {
-                if (!referencedProjectSnapshot.DependenciesWorld.TryGetValue(nodeToAdd.Id, out IDependency dependency) 
-                    || dependency == null
-                    || !dependency.Visible)
-                {
-                    continue;
-                }
-
-                anyChanges = true;
-                Builder.AddGraphNode(
-                    graphContext,
-                    referencedProjectPath,
-                    dependencyGraphNode,
-                    dependency.ToViewModel(targetedSnapshot));
-            }
-
-            // Update the node info saved on the 'inputNode'
-            dependencyGraphNode.SetValue(DependenciesGraphSchema.DependencyIdProperty, updatedDependency.Id);
-            dependencyGraphNode.SetValue(DependenciesGraphSchema.ResolvedProperty, updatedDependency.Resolved);
-
-            return anyChanges;
+            return ApplyChangesInternal(
+                graphContext,
+                updatedDependency,
+                dependencyGraphNode,
+                // Project references list all top level dependencies as direct children
+                updatedChildren: referencedProjectSnapshot.TopLevelDependencies,
+                // Pass the path of the referenced project
+                nodeProjectPath: updatedDependency.FullPath,
+                targetedSnapshot: referencedProjectSnapshot);
         }
 
         public override bool MatchSearchResults(
