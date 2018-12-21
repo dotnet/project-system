@@ -110,7 +110,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
             ImmutableArray<IDependency> updatedChildren = referencedProjectSnapshot.TopLevelDependencies;
 
             IReadOnlyList<DependencyNodeInfo> existingChildrenInfo = GetExistingChildren(dependencyGraphNode);
-            IReadOnlyList<DependencyNodeInfo> updatedChildrenInfo = referencedProjectSnapshot.TopLevelDependencies.Select(x => DependencyNodeInfo.FromDependency(x)).ToList();
+            IReadOnlyList<DependencyNodeInfo> updatedChildrenInfo = updatedChildren.Select(DependencyNodeInfo.FromDependency).ToList();
 
             if (!AnyChanges(
                 existingChildrenInfo,
