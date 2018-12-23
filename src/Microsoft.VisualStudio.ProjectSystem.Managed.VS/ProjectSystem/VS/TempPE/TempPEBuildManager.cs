@@ -15,7 +15,11 @@ using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.VS.Automation;
+using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Threading.Tasks;
+
+using Task = System.Threading.Tasks.Task;
 
 using InputTuple = System.Tuple<Microsoft.VisualStudio.ProjectSystem.IProjectSubscriptionUpdate, Microsoft.VisualStudio.ProjectSystem.IProjectSubscriptionUpdate>;
 
@@ -23,12 +27,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 {
     [Export(typeof(ITempPEBuildManager))]
     [AppliesTo(ProjectCapability.CSharpOrVisualBasicLanguageService)]
-    internal partial class TempPEBuildManager : UnconfiguredProjectHostBridge<IProjectVersionedValue<InputTuple>, TempPEBuildManager.DesignTimeInputsDelta, IProjectVersionedValue<TempPEBuildManager.DesignTimeInputsItem>>, ITempPEBuildManager
+    internal partial class TempPEBuildManager : UnconfiguredProjectHostBridge<IProjectVersionedValue<InputTuple>, TempPEBuildManager.DesignTimeInputsDelta, IProjectVersionedValue<TempPEBuildManager.DesignTimeInputsItem>>, ITempPEBuildManager, IVsFreeThreadedFileChangeEvents2
     {
         protected readonly IUnconfiguredProjectCommonServices _unconfiguredProjectServices;
         private readonly ILanguageServiceHost _languageServiceHost;
         private readonly IActiveConfiguredProjectSubscriptionService _projectSubscriptionService;
         private readonly IFileSystem _fileSystem;
+        private readonly IVsService<SVsFileChangeEx, IVsAsyncFileChangeEx> _fileChangeService;
         private readonly SequentialTaskExecutor _sequentialTaskQueue = new SequentialTaskExecutor();
 
         // protected for unit test purposes
@@ -37,12 +42,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
         [ImportingConstructor]
         public TempPEBuildManager(IProjectThreadingService threadingService,
-            IUnconfiguredProjectCommonServices unconfiguredProjectServices,
-            ILanguageServiceHost languageServiceHost,
-            IActiveConfiguredProjectSubscriptionService projectSubscriptionService,
-            VSLangProj.VSProjectEvents projectEvents,
-            ITempPECompiler compiler,
-            IFileSystem fileSystem)
+                                  IUnconfiguredProjectCommonServices unconfiguredProjectServices,
+                                  ILanguageServiceHost languageServiceHost,
+                                  IActiveConfiguredProjectSubscriptionService projectSubscriptionService,
+                                  VSLangProj.VSProjectEvents projectEvents,
+                                  ITempPECompiler compiler,
+                                  IFileSystem fileSystem,
+                                  IVsService<SVsFileChangeEx, IVsAsyncFileChangeEx> fileChangeService)
              : base(threadingService.JoinableTaskContext)
         {
             _unconfiguredProjectServices = unconfiguredProjectServices;
@@ -51,6 +57,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             _buildManager = new Lazy<VSBuildManager>(() => (VSBuildManager)projectEvents.BuildManagerEvents);
             _compiler = compiler;
             _fileSystem = fileSystem;
+            _fileChangeService = fileChangeService;
         }
 
         public string[] GetTempPEMonikers()
@@ -58,33 +65,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             Initialize();
 
             return AppliedValue.Value.Inputs.ToArray();
-        }
-
-        /// <summary>
-        /// Called externally to fire the TempPEDirty events if the provided fileName is one of the known TempPE input or shared input monikers
-        /// </summary>
-        public async Task NotifySourceFileDirtyAsync(string projectRelativeSourceFileName)
-        {
-            // This method gets called for any file change but unless someone has asked for TempPE information this
-            // class will be uninitialized, so just exit early
-            if (!IsInitialized) return;
-
-            DesignTimeInputsItem inputs = AppliedValue.Value;
-
-            // This might be overkill, but none of the default .NET Core templates have any shared design time files
-            // Non shared design time files will be more common (just needs one .resx files), but its still reasonable to assume these collections will be empty a lot of the time
-            // Since this method is called every time a file is saved checking Count saves us 54ns for the fast path, and only costs 1ns the rest of the time
-            if (inputs.SharedInputs.Count > 0 && inputs.SharedInputs.Contains(projectRelativeSourceFileName))
-            {
-                foreach (string item in inputs.Inputs)
-                {
-                    await FireTempPEDirtyAsync(item, false);
-                }
-            }
-            else if (inputs.Inputs.Count > 0 && inputs.Inputs.Contains(projectRelativeSourceFileName))
-            {
-                await FireTempPEDirtyAsync(projectRelativeSourceFileName, true);
-            }
         }
 
         /// <summary>
@@ -219,6 +199,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             // Calculate the new value
             ImmutableHashSet<string> newDesignTimeInputs;
             ImmutableHashSet<string> newSharedDesignTimeInputs;
+            ImmutableDictionary<string, uint> newCookies;
             var addedDesignTimeInputs = new List<string>();
             var removedDesignTimeInputs = new List<string>();
             bool hasRemovedDesignTimeSharedInputs = false;
@@ -228,12 +209,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             {
                 ImmutableHashSet<string>.Builder designTimeInputs = previousValue.Inputs.ToBuilder();
                 ImmutableHashSet<string>.Builder designTimeSharedInputs = previousValue.SharedInputs.ToBuilder();
+                ImmutableDictionary<string, uint>.Builder cookies = previousValue.Cookies.ToBuilder();
 
                 foreach (string item in value.AddedItems)
                 {
                     if (designTimeInputs.Add(item))
                     {
                         addedDesignTimeInputs.Add(item);
+                        await SubscribeToFileChangesAsync(cookies, item);
                     }
                 }
 
@@ -242,6 +225,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                     if (designTimeInputs.Remove(item))
                     {
                         removedDesignTimeInputs.Add(item);
+                        if (cookies.TryGetValue(item, out uint cookie))
+                        {
+                            cookies.Remove(item);
+                            await UnsubscribeFromFileChangesAsync(cookie);
+                        }
                     }
                 }
 
@@ -250,6 +238,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                     if (designTimeSharedInputs.Add(item))
                     {
                         hasAddedDesignTimeSharedInputs = true;
+                        // A single file can be a design time and a shared design time input, and whilst we need to track it in both places
+                        // for eventing, we don't need to observe file changes twice :)
+                        if (!cookies.ContainsKey(item))
+                        {
+                            await SubscribeToFileChangesAsync(cookies, item);
+                        }
                     }
                 }
 
@@ -258,17 +252,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                     if (designTimeSharedInputs.Remove(item))
                     {
                         hasRemovedDesignTimeSharedInputs = true;
+                        if (cookies.TryGetValue(item, out uint cookie))
+                        {
+                            cookies.Remove(item);
+                            await UnsubscribeFromFileChangesAsync(cookie);
+                        }
                     }
                 }
 
                 newDesignTimeInputs = designTimeInputs.ToImmutable();
                 newSharedDesignTimeInputs = designTimeSharedInputs.ToImmutable();
+                newCookies = cookies.ToImmutable();
             }
             else
             {
                 // If there haven't been file changes we can just flow our previous collections to the new version to avoid roundtriping our collections to builders and back
                 newDesignTimeInputs = previousValue.Inputs;
                 newSharedDesignTimeInputs = previousValue.SharedInputs;
+                newCookies = previousValue.Cookies;
             }
 
             // Apply our new value
@@ -277,7 +278,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                 Inputs = newDesignTimeInputs,
                 SharedInputs = newSharedDesignTimeInputs,
                 // We always need an output path, so if it hasn't changed we just reuse the previous value
-                OutputPath = value.OutputPath ?? previousValue.OutputPath
+                OutputPath = value.OutputPath ?? previousValue.OutputPath,
+                Cookies = newCookies
             }, value.DataSourceVersions);
 
             // Fire off any events necessary
@@ -315,6 +317,55 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             {
                 _buildManager.Value.OnDesignTimeOutputDeleted(item);
             }
+        }
+
+        private async Task NotifySourceFileDirtyAsync(string projectRelativeSourceFileName)
+        {
+            DesignTimeInputsItem inputs = AppliedValue.Value;
+
+            if (inputs.SharedInputs.Contains(projectRelativeSourceFileName))
+            {
+                foreach (string item in inputs.Inputs)
+                {
+                    await FireTempPEDirtyAsync(item, false);
+                }
+            }
+            else if (inputs.Inputs.Contains(projectRelativeSourceFileName))
+            {
+                await FireTempPEDirtyAsync(projectRelativeSourceFileName, true);
+            }
+        }
+
+
+        protected virtual async Task SubscribeToFileChangesAsync(ImmutableDictionary<string, uint>.Builder cookies, string projectRelativeSourceFileName)
+        {
+            IVsAsyncFileChangeEx fileChangeService = await _fileChangeService.GetValueAsync();
+
+            string fileName = UnconfiguredProject.MakeRooted(projectRelativeSourceFileName);
+
+            // We don't care about delete and add here, as they come through data flow, plus they are really bouncy - every file change is a Time, Del and Add event)
+            uint cookie = await fileChangeService.AdviseFileChangeAsync(fileName,
+                                                                        _VSFILECHANGEFLAGS.VSFILECHG_Time | _VSFILECHANGEFLAGS.VSFILECHG_Size,
+                                                                        sink: this);
+
+            cookies.Add(projectRelativeSourceFileName, cookie);
+        }
+
+        protected virtual async Task UnsubscribeFromFileChangesAsync(uint cookie)
+        {
+            IVsAsyncFileChangeEx fileChangeService = await _fileChangeService.GetValueAsync();
+
+            await fileChangeService.UnadviseFileChangeAsync(cookie);
+        }
+
+        protected override async Task DisposeCoreAsync(bool initialized)
+        {
+            if (initialized)
+            {
+                _sequentialTaskQueue?.Dispose();
+                await UnregisterFileWatchersAsync();
+            }
+            await base.DisposeCoreAsync(initialized);
         }
 
         /// <summary>
@@ -486,6 +537,48 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         protected override bool ShouldValueBeApplied(DesignTimeInputsDelta previouslyAppliedOutput, DesignTimeInputsDelta newOutput)
         {
             return newOutput.HasFileChanges || newOutput.HasProjectPropertyChanges;
+        }
+
+        private async Task UnregisterFileWatchersAsync()
+        {
+            DesignTimeInputsItem value = AppliedValue?.Value;
+
+            if (value == null) return;
+
+            // Note file change service is free-threaded
+            IVsAsyncFileChangeEx fileChangeService = await _fileChangeService.GetValueAsync();
+
+            foreach (var cookie in value.Cookies.Values)
+            {
+                await fileChangeService.UnadviseFileChangeAsync(cookie);
+            }
+        }
+
+        public int FilesChanged(uint cChanges, string[] rgpszFile, uint[] rggrfChange)
+        {
+            for (int i = 0; i < cChanges; i++)
+            {
+                string file = _unconfiguredProjectServices.Project.MakeRelative(rgpszFile[i]);
+
+                ThreadingService.ExecuteSynchronously(() => NotifySourceFileDirtyAsync(file));
+            }
+
+            return VSConstants.S_OK;
+        }
+
+        public int DirectoryChanged(string pszDirectory)
+        {
+            return VSConstants.E_NOTIMPL;
+        }
+
+        public int DirectoryChangedEx(string pszDirectory, string pszFile)
+        {
+            return VSConstants.E_NOTIMPL;
+        }
+
+        public int DirectoryChangedEx2(string pszDirectory, uint cChanges, string[] rgpszFile, uint[] rggrfChange)
+        {
+            return VSConstants.E_NOTIMPL;
         }
     }
 }

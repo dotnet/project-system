@@ -6,10 +6,14 @@ using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
+using Microsoft.VisualStudio.ProjectSystem.VS;
 using Microsoft.VisualStudio.ProjectSystem.VS.Automation;
 using Microsoft.VisualStudio.ProjectSystem.VS.TempPE;
-
+using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Shell.Interop;
 using Xunit;
+
+using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.ProjectSystem.TempPE
 {
@@ -949,16 +953,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.TempPE
                       IActiveConfiguredProjectSubscriptionServiceFactory.Create(),
                       null,
                       null,
-                      fileSystem)
+                      fileSystem,
+                      IVsServiceFactory.Create<SVsFileChangeEx, IVsAsyncFileChangeEx>(IVsFileChangeExFactory.CreateWithAdviseUnadviseFileChange(1)))
             {
                 _buildManager = new Lazy<VSBuildManager>(() => new TestBuildManager(this));
-
+                
                 AppliedValue = new ProjectVersionedValue<DesignTimeInputsItem>(new DesignTimeInputsItem() { OutputPath = "TempPE" }, ImmutableDictionary<NamedIdentity, IComparable>.Empty);
             }
 
             protected override Task CompileTempPEAsync(HashSet<string> filesToCompile, string outputFileName)
             {
                 CompiledItems.Add(outputFileName);
+                return Task.CompletedTask;
+            }
+
+            protected override Task SubscribeToFileChangesAsync(ImmutableDictionary<string, uint>.Builder cookies, string projectRelativeSourceFileName)
+            {
+                return Task.CompletedTask;
+            }
+
+            protected override Task UnsubscribeFromFileChangesAsync(uint cookie)
+            {
                 return Task.CompletedTask;
             }
 
