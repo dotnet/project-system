@@ -272,7 +272,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
                         data.SchemasFound = ProjectSchemas.Count
                         Compile(ProjectSchemas, data)
                     Else
-                        pollInterval = pollInterval * 2
+                        pollInterval *= 2
 
                         If pollInterval > MaxPollInterval Then
                             pollInterval = MaxPollInterval

@@ -947,7 +947,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
                         Try
                             Resource = New Resource(Me, Node, orderID, View)
-                            orderID = orderID + 1
+                            orderID += 1
 
                             'If duplicate Names are found, this function will throw an exception (which is what we want - it will keep the
                             '  file from loading)
@@ -1008,7 +1008,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     Dim i As Integer = 0
                     For Each Resource As Resource In _resourcesHash.Values
                         resourceList(i) = Resource
-                        i = i + 1
+                        i += 1
                     Next
 
                     Dim comparer As IComparer

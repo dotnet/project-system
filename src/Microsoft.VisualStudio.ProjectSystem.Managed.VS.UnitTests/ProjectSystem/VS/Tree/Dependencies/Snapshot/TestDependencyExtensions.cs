@@ -9,7 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
     internal static class TestDependencyExtensions
     {
-        public static void AssertEqualTo(this IDependency actual, IDependency expected)
+        public static void AssertEqualTo(this IDependency expected, IDependency actual)
         {
             Xunit.Assert.NotNull(actual);
             Xunit.Assert.NotNull(expected);

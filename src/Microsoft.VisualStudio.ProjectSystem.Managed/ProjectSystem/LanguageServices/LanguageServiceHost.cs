@@ -76,7 +76,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
         public object HostSpecificEditAndContinueService => _currentAggregateProjectContext?.ENCProjectConfig;
 
+#pragma warning disable RS0030 // symbol ProjectAutoLoad is banned
         [ProjectAutoLoad(completeBy: ProjectLoadCheckpoint.ProjectFactoryCompleted)]
+#pragma warning restore RS0030 // symbol ProjectAutoLoad is banned
         [AppliesTo(ProjectCapability.DotNetLanguageService)]
         public Task OnProjectFactoryCompletedAsync()
         {

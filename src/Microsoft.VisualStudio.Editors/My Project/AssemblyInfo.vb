@@ -84,7 +84,10 @@ Imports System.Runtime.InteropServices
 <Assembly: TypeForwardedTo(GetType(Microsoft.VisualStudio.Editors.PropertyPages.ControlDataFlags))>
 <Assembly: TypeForwardedTo(GetType(Microsoft.VisualStudio.Editors.PropertyPages.IPropertyPageInternal))>
 <Assembly: TypeForwardedTo(GetType(Microsoft.VisualStudio.Editors.PropertyPages.IPropertyPageSiteInternal))>
+' TODO why is the analyzer giving a diagnostic here?
+#Disable Warning RS0016 ' Symbol 'New' is not part of the declared API
 <Assembly: TypeForwardedTo(GetType(Microsoft.VisualStudio.Editors.PropertyPages.ProjectReloadedException))>
+#Enable Warning RS0016 ' Symbol 'New' is not part of the declared API
 <Assembly: TypeForwardedTo(GetType(Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData))>
 <Assembly: TypeForwardedTo(GetType(Microsoft.VisualStudio.Editors.PropertyPages.PropertyListener))>
 <Assembly: TypeForwardedTo(GetType(Microsoft.VisualStudio.Editors.PropertyPages.PropertyPageException))>

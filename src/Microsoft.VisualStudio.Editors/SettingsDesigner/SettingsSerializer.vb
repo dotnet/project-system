@@ -95,7 +95,9 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="Reader">Text reader on stream containing serialized settings</param>
         ''' <remarks></remarks>
         Public Shared Sub Deserialize(Settings As DesignTimeSettings, Reader As TextReader, getRuntimeValue As Boolean)
-            Dim XmlDoc As New XmlDocument()
+            Dim XmlDoc As New XmlDocument With {
+                .XmlResolver = Nothing
+            }
 
 #If USE_SETTINGS_XML_SCHEMA_VALIDATION Then
             Dim ValidationErrors As New ValidationErrorBag
@@ -115,6 +117,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             ' of the file and clobber it on the next write
 
             Dim xmlReader As XmlTextReader = New XmlTextReader(Reader) With {
+                .DtdProcessing = DtdProcessing.Prohibit,
                 .Normalization = False
             }
 

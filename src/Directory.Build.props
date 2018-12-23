@@ -57,6 +57,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <AdditionalFiles Include="$(MSBuildThisFileDirectory)\BannedSymbols.txt" />
+  </ItemGroup>
+  
+  <ItemGroup>
     <SuppressFromVsix Include="Microsoft.VSDesigner.dll"/>
     <SuppressFromVsix Include="Microsoft.VisualStudio.DataTools.Interop.dll"/>
     <SuppressFromVsix Include="Microsoft.VisualStudio.XmlEditor.dll"/>

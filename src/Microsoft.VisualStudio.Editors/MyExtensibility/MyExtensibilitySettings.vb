@@ -272,7 +272,9 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             ' Read the settings file in one pass into a XmlDocument.
             Dim fileStream As FileStream = Nothing
             Dim xmlReader As XmlTextReader = Nothing
-            Dim xmlDocument As New XmlDocument()
+            Dim xmlDocument As New XmlDocument With {
+                .XmlResolver = Nothing
+            }
             Try
                 fileStream = New FileStream(_settingsFilePath, FileMode.Open, FileAccess.Read, FileShare.Read)
                 ' Required by Fxcop rule CA3054 - DoNotAllowDTDXmlTextReader

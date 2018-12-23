@@ -146,11 +146,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
                 }
             }
 
-            json = json + @"                }
-                                        }
-                                    }
-                                }
-                            }";
+            json += @"                }
+                                   }
+                               }
+                           }
+                       }";
             return json;
         }
 

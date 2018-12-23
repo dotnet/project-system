@@ -125,7 +125,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
         {
             var dic = ImmutableDictionary<string, string>.Empty;
             Assert.False(dic.TryGetEnumProperty("key", out TestEnum value));
-            Assert.Equal(default(TestEnum), value);
+            Assert.Equal(default, value);
         }
 
         [Theory]

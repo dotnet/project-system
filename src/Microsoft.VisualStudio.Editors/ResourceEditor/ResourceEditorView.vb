@@ -474,7 +474,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     Debug.Assert(localRegistry IsNot Nothing, "why we can not find ILocalRegistry2")
                     If localRegistry IsNot Nothing Then
                         VSErrorHandler.ThrowOnFailure(localRegistry.GetLocalRegistryRoot(_registryRoot))
-                        _registryRoot = _registryRoot & "\ManagedResourcesEditor"
+                        _registryRoot &= "\ManagedResourcesEditor"
                     End If
                 End If
                 Return _registryRoot

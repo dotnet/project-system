@@ -91,10 +91,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
         public IDependenciesSnapshotProvider GetSnapshotProvider(string projectFilePath)
         {
-            if (string.IsNullOrEmpty(projectFilePath))
-            {
-                throw new ArgumentException(nameof(projectFilePath));
-            }
+            Requires.NotNullOrEmpty(projectFilePath, nameof(projectFilePath));
 
             lock (_snapshotProviders)
             {

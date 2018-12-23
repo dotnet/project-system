@@ -23,6 +23,14 @@
     <SuppressOutOfDateMessageOnBuild Condition="'$(SuppressOutOfDateMessageOnBuild)' == ''">true</SuppressOutOfDateMessageOnBuild>
   </PropertyGroup>
 
+  
+  <!--
+    Rule files that don't need localization go in the neutral directory to save duplicating files into each language
+  -->
+  <PropertyGroup Condition="'$(ManagedXamlNeutralResourcesDirectory)' == ''">
+    <ManagedXamlNeutralResourcesDirectory>$(MSBuildThisFileDirectory)</ManagedXamlNeutralResourcesDirectory>
+  </PropertyGroup>
+  
   <!--
     Locate the approriate localized xaml resources based on the language ID or name.
 
@@ -43,15 +51,15 @@
     <!-- 3. Probe for parent by taking portion the portion before the hyphen (e.g. fr-FR -> fr) -->
     <ManagedXamlResourcesDirectory Condition="!Exists('$(ManagedXamlResourcesDirectory)')">$(MSBuildThisFileDirectory)$(LangName.Split('-')[0])</ManagedXamlResourcesDirectory>
 
-    <!-- 4. Fall back to neutral English resources if all of the above fail -->
-    <ManagedXamlResourcesDirectory Condition="!Exists('$(ManagedXamlResourcesDirectory)')">$(MSBuildThisFileDirectory)</ManagedXamlResourcesDirectory>
+    <!-- 4. Fall back to neutral resources if all of the above fail -->
+    <ManagedXamlResourcesDirectory Condition="!Exists('$(ManagedXamlResourcesDirectory)')">$(ManagedXamlNeutralResourcesDirectory)</ManagedXamlResourcesDirectory>
   </PropertyGroup>
 
   <PropertyGroup>
     <ManagedXamlResourcesDirectory Condition="!HasTrailingSlash('$(ManagedXamlResourcesDirectory)')">$(ManagedXamlResourcesDirectory)\</ManagedXamlResourcesDirectory>
     <DebuggerFlavor Condition = "'$(DebuggerFlavor)' == ''">ProjectDebugger</DebuggerFlavor>
   </PropertyGroup>
-
+  
   <!-- Project Capabilities -->
 
   <!-- Capabilities shared between shared projects & binary-producing projects.  -->
@@ -63,6 +71,7 @@
   
   <ItemGroup Condition="'$(DefineCommonManagedCapabilities)' == 'true'">
     <ProjectCapability Include="UseFileGlobs"/>
+    <ProjectCapability Include="DynamicDependentFile"/>
 
     <!-- DependenciesTree capability lights up a Dependencies tree node and it's sub node providers-->
     <ProjectCapability Include="DependenciesTree" />
@@ -111,7 +120,7 @@
     </PropertyPageSchema>
     
     <!-- Files/Folders -->
-    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)AdditionalFiles.xaml">
+    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)AdditionalFiles.xaml">
       <Context>File</Context>
     </PropertyPageSchema>
 
@@ -119,7 +128,7 @@
       <Context>BrowseObject</Context>
     </PropertyPageSchema>
 
-    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ApplicationDefinition.xaml">
+    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)ApplicationDefinition.xaml">
       <Context>File</Context>
     </PropertyPageSchema>
 
@@ -127,7 +136,7 @@
       <Context>BrowseObject</Context>
     </PropertyPageSchema>
 
-    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)Compile.xaml;">
+    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)Compile.xaml;">
       <Context>File</Context>
     </PropertyPageSchema>
     
@@ -135,7 +144,7 @@
       <Context>BrowseObject</Context>
     </PropertyPageSchema>
 
-    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)Content.xaml">
+    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)Content.xaml">
       <Context>File</Context>
     </PropertyPageSchema>
 
@@ -147,7 +156,7 @@
       <Context>File</Context>
     </PropertyPageSchema>
 
-    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)EmbeddedResource.xaml">
+    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)EmbeddedResource.xaml">
       <Context>File</Context>
     </PropertyPageSchema>
 
@@ -159,7 +168,7 @@
       <Context>File;BrowseObject</Context>
     </PropertyPageSchema>
 
-    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)None.xaml">
+    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)None.xaml">
       <Context>File</Context>
     </PropertyPageSchema>
 
@@ -167,7 +176,7 @@
       <Context>BrowseObject</Context>
     </PropertyPageSchema>
 
-    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)Page.xaml">
+    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)Page.xaml">
       <Context>File</Context>
     </PropertyPageSchema>
 
@@ -191,7 +200,7 @@
       <Context>File</Context>
     </PropertyPageSchema>
     
-    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)XamlAppDef.xaml">
+    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)XamlAppDef.xaml">
       <Context>File</Context>
     </PropertyPageSchema>
 
@@ -199,7 +208,7 @@
       <Context>BrowseObject</Context>
     </PropertyPageSchema>
 
-    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)Resource.xaml">
+    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)Resource.xaml">
       <Context>File</Context>
     </PropertyPageSchema>
 

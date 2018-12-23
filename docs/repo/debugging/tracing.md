@@ -64,6 +64,7 @@ None
 ```
 > !DumpArray /d 0c559360; * Print Array
 ```
+This will output the values in the array if it can
 ```
 Name:        System.String[]
 MethodTable: 6e37dfdc
@@ -71,9 +72,9 @@ EEClass:     6df54b80
 Size:        140(0x8c) bytes
 Array:       Rank 1, Number of elements 32, Type CLASS
 Element Methodtable: 6e37d484
-[0] null
-[1] null
-[2] null
+[0] 11c4be4c
+[1] 11c4be4c
+[2] 11c4be4c
 [3] null
 [4] null
 [5] null
@@ -104,3 +105,19 @@ Element Methodtable: 6e37d484
 [30] null
 [31] null
 ```
+> !DumpObj /d 11c4be4c
+```
+Name:        System.String
+MethodTable: 7286eb40
+EEClass:     72444a50
+Size:        190(0xbe) bytes
+File:        C:\WINDOWS\Microsoft.Net\assembly\GAC_32\mscorlib\v4.0_4.0.0.0__b77a5c561934e089\mscorlib.dll
+String:      Generating snapshot for rule "{0}" failed because the rule was missing from the project.
+Fields:
+      MT    Field   Offset                 Type VT     Attr    Value Name
+72870994  4000279        4         System.Int32  1 instance       88 m_stringLength
+7286f588  400027a        8          System.Char  1 instance       47 m_firstChar
+7286eb40  400027e       5c        System.String  0   shared   static Empty
+    >> Domain:Value  01187c20:NotInit  <<
+```
+💡 Maybe there is a problem with a rule?

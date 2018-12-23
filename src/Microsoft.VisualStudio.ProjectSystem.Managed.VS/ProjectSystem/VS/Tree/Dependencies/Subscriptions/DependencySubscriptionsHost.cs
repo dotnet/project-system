@@ -27,6 +27,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
     {
         public const string DependencySubscriptionsHostContract = "DependencySubscriptionsHostContract";
 
+        public event EventHandler<ProjectRenamedEventArgs> SnapshotRenamed;
+        public event EventHandler<SnapshotChangedEventArgs> SnapshotChanged;
+        public event EventHandler<SnapshotProviderUnloadingEventArgs> SnapshotProviderUnloading;
+
         private readonly TimeSpan _dependenciesUpdateThrottleInterval = TimeSpan.FromMilliseconds(250);
 
         private readonly SemaphoreSlim _gate = new SemaphoreSlim(initialCount: 1);
@@ -84,12 +88,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             _targetFrameworkProvider = targetFrameworkProvider;
             _aggregateSnapshotProvider = aggregateSnapshotProvider;
 
+            _currentSnapshot = DependenciesSnapshot.CreateEmpty(_commonServices.Project.FullPath);
+
             _dependencySubscribers = new OrderPrecedenceImportCollection<IDependencyCrossTargetSubscriber>(
                 projectCapabilityCheckProvider: commonServices.Project);
 
             _snapshotFilters = new OrderPrecedenceImportCollection<IDependenciesSnapshotFilter>(
-                projectCapabilityCheckProvider: commonServices.Project,
-                orderingStyle: ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesLast);
+                ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesLast,
+                projectCapabilityCheckProvider: commonServices.Project);
 
             _subTreeProviders = new OrderPrecedenceImportCollection<IProjectDependenciesSubTreeProvider>(
                 ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesLast,
@@ -99,38 +105,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 _dependenciesUpdateThrottleInterval,
                 commonServices.ThreadingService,
                 tasksService.UnloadCancellationToken);
-
-            ProjectFilePath = commonServices.Project.FullPath;
         }
 
-        #region IDependenciesSnapshotProvider
+        public IDependenciesSnapshot CurrentSnapshot => _currentSnapshot;
 
-        public IDependenciesSnapshot CurrentSnapshot
-        {
-            get
-            {
-                if (_currentSnapshot == null)
-                {
-                    lock (_snapshotLock)
-                    {
-                        if (_currentSnapshot == null)
-                        {
-                            _currentSnapshot = DependenciesSnapshot.CreateEmpty(_commonServices.Project.FullPath);
-                        }
-                    }
-                }
-
-                return _currentSnapshot;
-            }
-        }
-
-        public string ProjectFilePath { get; }
-
-        public event EventHandler<ProjectRenamedEventArgs> SnapshotRenamed;
-        public event EventHandler<SnapshotChangedEventArgs> SnapshotChanged;
-        public event EventHandler<SnapshotProviderUnloadingEventArgs> SnapshotProviderUnloading;
-
-        #endregion
+        public string ProjectFilePath => _commonServices.Project.FullPath;
 
         private ImmutableArray<IDependencyCrossTargetSubscriber> Subscribers
         {
@@ -156,7 +135,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             }
         }
 
+#pragma warning disable RS0030 // symbol ProjectAutoLoad is banned
         [ProjectAutoLoad(ProjectLoadCheckpoint.ProjectFactoryCompleted)]
+#pragma warning restore RS0030 // symbol ProjectAutoLoad is banned
         [AppliesTo(ProjectCapability.DependenciesTree)]
         public Task OnProjectFactoryCompletedAsync()
         {

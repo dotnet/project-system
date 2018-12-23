@@ -227,7 +227,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             'Enqueue the index that we used, so we can recycle it later if need be, in order of being added.
             _keys.Add(Key, Index)
             If IsSharedImage Then
-                _reservedImagesCount = _reservedImagesCount + 1
+                _reservedImagesCount += 1
             Else
                 Try
                     UpdateMruList(Index, Key, True)
@@ -474,7 +474,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     Debug.Assert(_keys.Contains(_mruList(i).Key))
                 End If
 
-                count = count + 1
+                count += 1
                 Debug.Assert(count < _mruList.Length)
 
                 prev = i
@@ -483,7 +483,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             For j As Integer = 0 To _mruList.Length - 2
                 If Not IsInMruList(j) Then
-                    count = count + 1
+                    count += 1
                 End If
             Next
 

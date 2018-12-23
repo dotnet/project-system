@@ -64,7 +64,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         /// <summary>
         /// Called on project load.
         /// </summary>
+#pragma warning disable RS0030 // symbol ConfiguredProjectAutoLoad is banned
         [ConfiguredProjectAutoLoad(RequiresUIThread = false)]
+#pragma warning restore RS0030 // symbol ConfiguredProjectAutoLoad is banned
         [AppliesTo(ProjectCapability.DotNet)]
         internal void Load()
         {

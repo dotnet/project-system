@@ -47,6 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         private readonly ICrossTargetSubscriptionsHost _dependenciesHost;
         private readonly IDependenciesSnapshotProvider _dependenciesSnapshotProvider;
         private readonly IProjectAsynchronousTasksService _tasksService;
+        private readonly IProjectAccessor _projectAccessor;
         private readonly IDependencyTreeTelemetryService _treeTelemetryService;
 
         /// <summary>Latest updated snapshot of all rules schema catalogs.</summary>
@@ -58,6 +59,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         [ImportingConstructor]
         public DependenciesProjectTreeProvider(
             IProjectThreadingService threadingService,
+            IProjectAccessor projectAccessor,
             UnconfiguredProject unconfiguredProject,
             IDependenciesSnapshotProvider dependenciesSnapshotProvider,
             [Import(DependencySubscriptionsHost.DependencySubscriptionsHostContract)] ICrossTargetSubscriptionsHost dependenciesHost,
@@ -76,6 +78,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             _dependenciesSnapshotProvider = dependenciesSnapshotProvider;
             _dependenciesHost = dependenciesHost;
             _tasksService = tasksService;
+            _projectAccessor = projectAccessor;
             _treeTelemetryService = treeTelemetryService;
 
             // Hook this so we can unregister the snapshot change event when the project unloads
@@ -153,7 +156,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     return false;
                 }
 
-                string filePath = UnconfiguredProject.GetRelativePath(node.FilePath);
+                string filePath = UnconfiguredProject.MakeRelative(node.FilePath);
                 if (string.IsNullOrEmpty(filePath))
                 {
                     continue;
@@ -199,10 +202,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             // Get the list of normal reference Item Nodes (this excludes any shared import nodes).
             IEnumerable<IProjectTree> referenceItemNodes = nodes.Except(sharedImportNodes);
 
-            await ProjectLockService.WriteLockAsync(async access =>
+            await _projectAccessor.OpenProjectForWriteAsync(ActiveConfiguredProject, project =>
             {
-                Project project = await access.GetProjectAsync(ActiveConfiguredProject);
-
                 // Handle the removal of normal reference Item Nodes (this excludes any shared import nodes).
                 foreach (IProjectTree node in referenceItemNodes)
                 {
@@ -226,7 +227,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     Report.IfNot(unresolvedReferenceItem != null, "Cannot find reference to remove.");
                     if (unresolvedReferenceItem != null)
                     {
-                        await access.CheckoutAsync(unresolvedReferenceItem.Xml.ContainingProject.FullPath);
                         project.RemoveItem(unresolvedReferenceItem);
                     }
                 }
@@ -239,10 +239,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 }
 
                 // Handle the removal of shared import nodes.
-                ProjectRootElement projectXml = await access.GetProjectXmlAsync(UnconfiguredProject.FullPath);
+                ProjectRootElement projectXml = project.Xml;
                 foreach (IProjectTree sharedImportNode in sharedImportNodes)
                 {
-                    string sharedFilePath = UnconfiguredProject.GetRelativePath(sharedImportNode.FilePath);
+                    string sharedFilePath = UnconfiguredProject.MakeRelative(sharedImportNode.FilePath);
                     if (string.IsNullOrEmpty(sharedFilePath))
                     {
                         continue;
@@ -267,7 +267,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                      "Cannot find shared project reference to remove.");
                         if (importingElementToRemove != null)
                         {
-                            await access.CheckoutAsync(importingElementToRemove.ContainingProject.FullPath);
                             importingElementToRemove.Parent.RemoveChild(importingElementToRemove);
                         }
                     }
@@ -304,7 +303,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// </summary>
         protected override void Initialize()
         {
+#pragma warning disable RS0030 // symbol LoadedProject is banned
             using (UnconfiguredProjectAsynchronousTasksService.LoadedProject())
+#pragma warning restore RS0030 // symbol LoadedProject is banned
             {
                 base.Initialize();
 
@@ -412,7 +413,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 return;
             }
 
-            Task<IProjectVersionedValue<IProjectTreeSnapshot>> nowait = SubmitTreeUpdateAsync(
+            _ = SubmitTreeUpdateAsync(
                 async (treeSnapshot, configuredProjectExports, cancellationToken) =>
                 {
                     IProjectTree dependenciesNode = treeSnapshot.Value.Tree;
@@ -420,7 +421,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     {
                         dependenciesNode = await viewProvider.BuildTreeAsync(dependenciesNode, snapshot, cancellationToken);
 
-                        _treeTelemetryService.ObserveTreeUpdateCompleted(snapshot.HasUnresolvedDependency);
+                        await _treeTelemetryService.ObserveTreeUpdateCompletedAsync(snapshot.HasUnresolvedDependency);
                     }
 
                     // TODO We still are getting mismatched data sources and need to figure out better 
@@ -495,7 +496,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 ? ActiveConfiguredProject
                 : await _dependenciesHost.GetConfiguredProject(dependency.TargetFramework) ?? ActiveConfiguredProject;
 
-            ConfiguredProjectExports configuredProjectExports = GetActiveConfiguredProjectExports(project);
             IImmutableDictionary<string, IPropertyPagesCatalog> namedCatalogs = await GetNamedCatalogsAsync();
             Requires.NotNull(namedCatalogs, nameof(namedCatalogs));
 
@@ -511,7 +511,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 // Since we have no browse object, we still need to create *something* so
                 // that standard property pages can pop up.
                 Rule emptyRule = RuleExtensions.SynthesizeEmptyRule(context.ItemType);
-                return configuredProjectExports.PropertyPagesDataModelProvider.GetRule(
+                return GetActiveConfiguredProjectExports(project).PropertyPagesDataModelProvider.GetRule(
                     emptyRule,
                     context.File,
                     context.ItemType,
@@ -520,7 +520,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             if (dependency.Resolved)
             {
-                return configuredProjectExports.RuleFactory.CreateResolvedReferencePageRule(
+                return GetActiveConfiguredProjectExports(project).RuleFactory.CreateResolvedReferencePageRule(
                     schema,
                     context,
                     dependency.Name,

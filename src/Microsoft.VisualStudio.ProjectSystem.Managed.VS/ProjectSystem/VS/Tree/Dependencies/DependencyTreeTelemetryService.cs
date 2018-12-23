@@ -1,9 +1,11 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
+using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.Telemetry;
@@ -25,6 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
         private readonly UnconfiguredProject _project;
         private readonly ITelemetryService _telemetryService;
+        private readonly ISafeProjectGuidService _safeProjectGuidService;
         private readonly ConcurrentDictionary<ITargetFramework, TelemetryState> _telemetryStates =
             new ConcurrentDictionary<ITargetFramework, TelemetryState>();
         private readonly object _stateUpdateLock = new object();
@@ -35,10 +38,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         [ImportingConstructor]
         public DependencyTreeTelemetryService(
             UnconfiguredProject project,
-            ITelemetryService telemetryService)
+            ITelemetryService telemetryService,
+            ISafeProjectGuidService safeProjectGuidService)
         {
             _project = project;
             _telemetryService = telemetryService;
+            _safeProjectGuidService = safeProjectGuidService;
         }
 
         /// <summary>
@@ -92,7 +97,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// Fire telemetry when dependency tree completes an update
         /// </summary>
         /// <param name="hasUnresolvedDependency">indicates if the snapshot used for the update had any unresolved dependencies</param>
-        public void ObserveTreeUpdateCompleted(bool hasUnresolvedDependency)
+        public async Task ObserveTreeUpdateCompletedAsync(bool hasUnresolvedDependency)
         {
             if (_stopTelemetry)
                 return;
@@ -108,7 +113,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             if (_projectId == null)
             {
-                InitializeProjectId();
+                await InitializeProjectIdAsync();
             }
 
             if (hasUnresolvedDependency)
@@ -132,13 +137,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             bool ObservedAllRules() => _telemetryStates.All(state => state.Value.ObservedAllRules());
 
-            void InitializeProjectId()
+            async Task InitializeProjectIdAsync()
             {
-                IProjectGuidService projectGuidService =
-                    _project.Services.ExportProvider.GetExportedValueOrDefault<IProjectGuidService>();
-                if (projectGuidService != null)
+                Guid projectGuild = await _safeProjectGuidService.GetProjectGuidAsync();
+                if (!projectGuild.Equals(Guid.Empty))
                 {
-                    SetProjectId(projectGuidService.ProjectGuid.ToString());
+                    SetProjectId(projectGuild.ToString());
                 }
                 else
                 {
