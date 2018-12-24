@@ -251,8 +251,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
             if (path == null)
                 return null;
 
-            IProjectTree rootNode = _projectTree.CurrentTree;
-
             return _projectTree.TreeProvider.FindByPath(_projectTree.CurrentTree, path);
         }
     }

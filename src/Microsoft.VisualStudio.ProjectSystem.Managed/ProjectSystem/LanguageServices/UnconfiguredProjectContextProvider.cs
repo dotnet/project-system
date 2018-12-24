@@ -221,7 +221,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 #pragma warning restore CS0618 // Type or member is obsolete
 
             // Get the unconfigured project host object (shared host object).
-            var configuredProjectsToRemove = new HashSet<ConfiguredProject>(_configuredProjectHostObjectsMap.Keys);
             ProjectConfiguration activeProjectConfiguration = _commonServices.ActiveConfiguredProject.ProjectConfiguration;
 
             var innerProjectContextsBuilder = PooledDictionary<string, IWorkspaceProjectContext>.GetInstance();

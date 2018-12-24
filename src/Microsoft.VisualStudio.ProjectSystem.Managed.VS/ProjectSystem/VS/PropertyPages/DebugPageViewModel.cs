@@ -480,7 +480,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         {
             get
             {
-                ILaunchSettingsUIProvider provider = ActiveProvider;
                 return ActiveProvider?.CustomUI;
             }
         }

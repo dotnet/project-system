@@ -276,7 +276,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
             var resolution = CreateInstance();
             resolution.Dispose();
 
-            var resolvedPaths = new VsResolvedAssemblyPath[1];
             var result = resolution.ResolveAssemblyPathInTargetFx(new[] { "System" }, 1, new VsResolvedAssemblyPath[1], out _);
 
             Assert.Equal(VSConstants.E_UNEXPECTED, result);

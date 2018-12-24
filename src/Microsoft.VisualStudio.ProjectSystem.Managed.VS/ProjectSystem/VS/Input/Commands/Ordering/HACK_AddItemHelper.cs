@@ -80,7 +80,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
             Guid addItemTemplateGuid = Guid.Empty;  // Let the dialog ask the hierarchy itself
 
             return addItemDialog.AddProjectItemDlg(target.GetHierarchyId(), ref addItemTemplateGuid, vsProject, (uint)uiFlags,
-                null, null, ref strBrowseLocations, ref strFilter, out int iDontShowAgain);
+                null, null, ref strBrowseLocations, ref strFilter, out _);
         }
     }
 }
