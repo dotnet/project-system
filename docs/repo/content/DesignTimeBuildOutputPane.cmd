@@ -3,7 +3,7 @@ setlocal EnableDelayedExpansion
 set DesignTimeBuildOutputPane=1
 set BatchFile=%0
 
-if not exist "%VS150COMNTOOLS%" (
+if not exist "%VSINSTALLDIR%" (
   echo This script needs to be run from an elevated Visual Studio 2017 developer command prompt.
   exit /b 1
 )
@@ -22,19 +22,25 @@ if "%DesignTimeBuildOutputPane%" == "0" (echo Disabling design-time build loggin
 set InstalledVSInstances=%ProgramData%\Microsoft\VisualStudio\Packages\_Instances
 for /F %%d in ('dir /B /D "%InstalledVSInstances%"') do (
 
-    set VSInstance=%VisualStudioVersion%_%%d
-    set VSRegistryHive=%LOCALAPPDATA%\Microsoft\VisualStudio\!VSInstance!\privateregistry.bin
+    for %%x in (%%d %%dExp %%dRoslynDev) do (
+
+        set VSInstance=%VisualStudioVersion%_%%x%
+        set VSRegistryHive=%LOCALAPPDATA%\Microsoft\VisualStudio\!VSInstance!\privateregistry.bin
+
+        if exist "!VSRegistryHive!" (
     
-    echo     !VSInstance!
+            echo    !VSInstance!
 
-    REM Import this VS instance's private registry into HKLM so that we can manipulate it
-    reg load HKLM\VS !VSRegistryHive! > nul || goto :Fail
+            REM Import this VS instance's private registry into HKLM so that we can manipulate it
+            reg load HKLM\VS !VSRegistryHive! > nul || goto :Fail
 
-    REM Set the registry key
-    reg add HKLM\VS\Software\Microsoft\VisualStudio\!VSInstance!\CPS\ /v "Design-time Build Logging" /t REG_DWORD /d %DesignTimeBuildOutputPane% /f > nul || goto :Fail
+            REM Set the registry key
+            reg add HKLM\VS\Software\Microsoft\VisualStudio\!VSInstance!\CPS\ /v "Design-time Build Logging" /t REG_DWORD /d %DesignTimeBuildOutputPane% /f > nul || goto :Fail
 
-    REM Make sure we unload it, otherwise, VS will never start again
-    reg unload HKLM\VS > nul || goto :Fail
+            REM Make sure we unload it, otherwise, VS will never start again
+            reg unload HKLM\VS > nul || goto :Fail
+        )
+    )
 )
 echo.
 echo Done.
