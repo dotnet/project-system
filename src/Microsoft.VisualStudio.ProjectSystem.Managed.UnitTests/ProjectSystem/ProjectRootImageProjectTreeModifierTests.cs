@@ -157,12 +157,7 @@ Root (flags: {ProjectRoot})
 ")]
         public void CalculatePropertyValues_NonProjectRootAsTree_DoesNotSetIcon(string input)
         {
-            var imageProvider = IProjectImageProviderFactory.ImplementGetProjectImage(ProjectImageKey.ProjectRoot, new ProjectImageMoniker(new Guid("{A140CD9F-FF94-483C-87B1-9EF5BE9F469A}"), 1));
-
-            var propertiesProvider = CreateInstance(imageProvider);
-
             var tree = ProjectTreeParser.Parse(input);
-            var result = propertiesProvider.ChangePropertyValuesForEntireTree(tree.Children[0]);
 
             Assert.Null(tree.Icon);
         }

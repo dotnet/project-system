@@ -114,7 +114,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         private async Task<bool> IsAssemblyInfoPropertyGeneratedByBuild(string propertyName)
         {
-            (string attributeName, string generatePropertyInProjectFileName) = AssemblyPropertyInfoMap[propertyName];
+            (_, string generatePropertyInProjectFileName) = AssemblyPropertyInfoMap[propertyName];
 
             // Generate property in project file only if:
             // 1. "GenerateAssemblyInfo" is true AND

@@ -35,7 +35,7 @@ namespace Microsoft.VisualStudio.Shell.Interop
 
         public int GetBoolOrDefault(string collectionPath, string propertyName, int defaultValue, out int value)
         {
-            GetWithDefault(collectionPath, propertyName, 0, out value);
+            GetWithDefault(collectionPath, propertyName, 0, out _);
             value = VSConstants.S_OK != GetWithDefault(collectionPath, propertyName, false, out bool val) ? defaultValue : (val ? 1 : 0);
             return VSConstants.S_OK;
         }

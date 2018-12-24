@@ -101,7 +101,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             var source = new CancellationTokenSource();
             var tasksService = IProjectAsynchronousTasksServiceFactory.ImplementUnloadCancellationToken(source.Token);
-            var service = CreateInstance(tasksService);
 
             Assert.False(tasksService.UnloadCancellationToken.IsCancellationRequested);
 
