@@ -52,8 +52,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
                 });
             var provider = new OutputTypeExValueProvider(properties);
 
-            var actualPropertyValue = await provider.OnSetPropertyValueAsync(incomingValue, null);
-            Assert.Equal(actualPropertyValue, expectedOutputTypeValue);
+            Assert.Equal(setValues.Single(), expectedOutputTypeValue);
         }
 
         [Fact]
