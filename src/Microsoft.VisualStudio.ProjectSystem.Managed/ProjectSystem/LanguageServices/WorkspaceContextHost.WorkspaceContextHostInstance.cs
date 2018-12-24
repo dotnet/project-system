@@ -120,9 +120,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 }
             }
 
-            internal async Task OnProjectChangedAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> update, bool evaluation)
+            internal Task OnProjectChangedAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> update, bool evaluation)
             {
-                await ExecuteUnderLockAsync(ct => ApplyProjectChangesUnderLockAsync(update, evaluation, ct), _tasksService.UnloadCancellationToken);
+                return ExecuteUnderLockAsync(ct => ApplyProjectChangesUnderLockAsync(update, evaluation, ct), _tasksService.UnloadCancellationToken);
             }
 
             private async Task ApplyProjectChangesUnderLockAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> update, bool evaluation, CancellationToken cancellationToken)
