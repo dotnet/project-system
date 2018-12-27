@@ -225,7 +225,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                     if (designTimeInputs.Remove(item))
                     {
                         removedDesignTimeInputs.Add(item);
-                        if (cookies.TryGetValue(item, out uint cookie))
+                        // We only unsubscribe from file changes if there is no other reason to care about this file
+                        if (cookies.TryGetValue(item, out uint cookie) && !designTimeSharedInputs.Contains(item))
                         {
                             cookies.Remove(item);
                             await UnsubscribeFromFileChangesAsync(cookie);
@@ -252,7 +253,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                     if (designTimeSharedInputs.Remove(item))
                     {
                         hasRemovedDesignTimeSharedInputs = true;
-                        if (cookies.TryGetValue(item, out uint cookie))
+                        if (cookies.TryGetValue(item, out uint cookie) && !designTimeInputs.Contains(item))
                         {
                             cookies.Remove(item);
                             await UnsubscribeFromFileChangesAsync(cookie);

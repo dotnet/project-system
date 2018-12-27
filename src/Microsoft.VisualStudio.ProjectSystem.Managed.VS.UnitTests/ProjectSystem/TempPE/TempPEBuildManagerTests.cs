@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
-using Microsoft.VisualStudio.ProjectSystem.VS;
 using Microsoft.VisualStudio.ProjectSystem.VS.Automation;
 using Microsoft.VisualStudio.ProjectSystem.VS.TempPE;
 using Microsoft.VisualStudio.Shell;
@@ -15,7 +14,7 @@ using Xunit;
 
 using Task = System.Threading.Tasks.Task;
 
-namespace Microsoft.VisualStudio.ProjectSystem.TempPE
+namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     public class TempPEBuildManagerTests
     {
@@ -137,6 +136,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.TempPE
             Assert.Empty(mgr.DirtyItems);
             Assert.Empty(mgr.DeletedItems);
             Assert.Empty(mgr.CompiledItems);
+            Assert.Empty(mgr.WatchedFiles);
         }
 
         [Fact]
@@ -170,6 +170,141 @@ namespace Microsoft.VisualStudio.ProjectSystem.TempPE
             Assert.Empty(mgr.DirtyItems);
             Assert.Empty(mgr.DeletedItems);
             Assert.Empty(mgr.CompiledItems);
+            Assert.Single(mgr.WatchedFiles);
+            Assert.Equal("Settings.Designer.cs", mgr.WatchedFiles.First());
+        }
+
+
+        [Fact]
+        public async Task Process_OneFileBothDesignTimeInputs_WatchesOneFile()
+        {
+            // Initial state is an empty object
+            var mgr = new TestTempPEBuildManager();
+
+            // Apply our update
+            var update = IProjectSubscriptionUpdateFactory.FromJson(@"{
+    ""ProjectChanges"": {
+        ""Compile"": {
+            ""Difference"": { 
+                ""AddedItems"": [ ""Settings.Designer.cs"" ]
+            },
+            ""After"": {
+                ""Items"": {
+                    ""Settings.Designer.cs"": {
+                        ""DesignTimeSharedInput"": true,
+                        ""DesignTime"": true
+                    }
+                }
+            }
+        }
+    }
+}");
+            var result = await mgr.TestProcessAsync(update);
+
+            Assert.Single(result.Inputs);
+            Assert.Equal("Settings.Designer.cs", result.Inputs.First());
+            Assert.Single(result.SharedInputs);
+            Assert.Equal("Settings.Designer.cs", result.SharedInputs.First());
+            Assert.Single(mgr.DirtyItems);
+            Assert.Equal("Settings.Designer.cs", mgr.DirtyItems.First());
+            Assert.Empty(mgr.DeletedItems);
+            Assert.Single(mgr.CompiledItems);
+            Assert.Equal("TempPE\\Settings.Designer.cs.dll", mgr.CompiledItems.First());
+            Assert.Single(mgr.WatchedFiles);
+            Assert.Equal("Settings.Designer.cs", mgr.WatchedFiles.First());
+        }
+
+
+        [Fact]
+        public async Task Process_BothDesignTimeInputsToSharedOnly_WatchesOneFile()
+        {
+            // Initial state is an empty object
+            var mgr = new TestTempPEBuildManager();
+
+            await mgr.SetInputs(new[] { "Settings.Designer.cs" }, new[] { "Settings.Designer.cs" });
+
+            // Apply our update
+            var update = IProjectSubscriptionUpdateFactory.FromJson(@"{
+    ""ProjectChanges"": {
+        ""Compile"": {
+            ""Difference"": { 
+                ""ChangedItems"": [ ""Settings.Designer.cs"" ]
+            },
+            ""Before"": {
+                ""Items"": {
+                    ""Settings.Designer.cs"": {
+                        ""DesignTimeSharedInput"": true,
+                        ""DesignTime"": true
+                    }
+                }
+            },
+            ""After"": {
+                ""Items"": {
+                    ""Settings.Designer.cs"": {
+                        ""DesignTimeSharedInput"": true
+                    }
+                }
+            }
+        }
+    }
+}");
+            var result = await mgr.TestProcessAsync(update);
+
+            Assert.Empty(result.Inputs);
+            Assert.Single(result.SharedInputs);
+            Assert.Equal("Settings.Designer.cs", result.SharedInputs.First());
+            Assert.Empty(mgr.DirtyItems);
+            Assert.Single(mgr.DeletedItems);
+            Assert.Equal("Settings.Designer.cs", mgr.DeletedItems.First());
+            Assert.Empty(mgr.CompiledItems);
+            Assert.Single(mgr.WatchedFiles);
+            Assert.Equal("Settings.Designer.cs", mgr.WatchedFiles.First());
+        }
+
+        [Fact]
+        public async Task Process_BothDesignTimeInputsToNormalOnly_WatchesOneFile()
+        {
+            // Initial state is an empty object
+            var mgr = new TestTempPEBuildManager();
+
+            await mgr.SetInputs(new[] { "Settings.Designer.cs" }, new[] { "Settings.Designer.cs" });
+
+            // Apply our update
+            var update = IProjectSubscriptionUpdateFactory.FromJson(@"{
+    ""ProjectChanges"": {
+        ""Compile"": {
+            ""Difference"": { 
+                ""ChangedItems"": [ ""Settings.Designer.cs"" ]
+            },
+            ""Before"": {
+                ""Items"": {
+                    ""Settings.Designer.cs"": {
+                        ""DesignTimeSharedInput"": true,
+                        ""DesignTime"": true
+                    }
+                }
+            },
+            ""After"": {
+                ""Items"": {
+                    ""Settings.Designer.cs"": {
+                        ""DesignTime"": true
+                    }
+                }
+            }
+        }
+    }
+}");
+            var result = await mgr.TestProcessAsync(update);
+
+            Assert.Single(result.Inputs);
+            Assert.Equal("Settings.Designer.cs", result.Inputs.First());
+            Assert.Empty(result.SharedInputs);
+            Assert.Single(mgr.DirtyItems);
+            Assert.Equal("Settings.Designer.cs", mgr.DirtyItems.First());
+            Assert.Empty(mgr.DeletedItems);
+            Assert.Empty(mgr.CompiledItems);
+            Assert.Single(mgr.WatchedFiles);
+            Assert.Equal("Settings.Designer.cs", mgr.WatchedFiles.First());
         }
 
         [Fact]
@@ -217,6 +352,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.TempPE
             Assert.Equal("Resources1.Designer.cs", mgr.DirtyItems.First());
             Assert.Empty(mgr.DeletedItems);
             Assert.Empty(mgr.CompiledItems);
+            Assert.Single(mgr.WatchedFiles);
+            Assert.Equal("Resources1.Designer.cs", mgr.WatchedFiles.First());
         }
 
 
@@ -262,6 +399,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.TempPE
             Assert.Contains("Resources2.Designer.cs", mgr.DirtyItems);
             Assert.Empty(mgr.DeletedItems);
             Assert.Empty(mgr.CompiledItems);
+            Assert.Equal(3, mgr.WatchedFiles.Count);
+            Assert.Contains("Settings.Designer.cs", mgr.WatchedFiles);
+            Assert.Contains("Resources1.Designer.cs", mgr.WatchedFiles);
+            Assert.Contains("Resources2.Designer.cs", mgr.WatchedFiles);
         }
 
         [Fact]
@@ -303,6 +444,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.TempPE
             Assert.Empty(mgr.DeletedItems);
             Assert.Single(mgr.CompiledItems);
             Assert.Contains("TempPE\\Resources1.Designer.cs.dll", mgr.CompiledItems);
+            Assert.Single(mgr.WatchedFiles);
+            Assert.Equal("Resources1.Designer.cs", mgr.WatchedFiles.First());
         }
 
 
@@ -352,6 +495,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.TempPE
             Assert.Equal("Resources1.Designer.cs", mgr.DeletedItems.First());
             Assert.Single(mgr.CompiledItems);
             Assert.Contains("TempPE\\Resources3.Designer.cs.dll", mgr.CompiledItems);
+            Assert.Single(mgr.WatchedFiles);
+            Assert.Equal("Resources3.Designer.cs", mgr.WatchedFiles.First());
         }
 
         [Fact]
@@ -400,6 +545,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.TempPE
             Assert.Equal("Resources1.Designer.cs", mgr.DirtyItems.First());
             Assert.Empty(mgr.DeletedItems);
             Assert.Empty(mgr.CompiledItems);
+            Assert.Equal(2, mgr.WatchedFiles.Count);
+            Assert.Contains("Settings_New.Designer.cs", mgr.WatchedFiles);
+            Assert.Contains("Resources1.Designer.cs", mgr.WatchedFiles);
         }
 
 
@@ -445,6 +593,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.TempPE
             Assert.Empty(mgr.DeletedItems);
             Assert.Single(mgr.CompiledItems);
             Assert.Contains("TempPE\\Resources1.Designer.cs.dll", mgr.CompiledItems);
+            Assert.Single(mgr.WatchedFiles);
+            Assert.Equal("Resources1.Designer.cs", mgr.WatchedFiles.First());
         }
 
         [Fact]
@@ -490,6 +640,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.TempPE
             Assert.Single(mgr.DeletedItems);
             Assert.Equal("Resources1.Designer.cs", mgr.DeletedItems.First());
             Assert.Empty(mgr.CompiledItems);
+            Assert.Empty(mgr.WatchedFiles);
         }
 
         [Fact]
@@ -536,6 +687,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.TempPE
             Assert.Equal("Resources1.Designer.cs", mgr.DirtyItems.First());
             Assert.Empty(mgr.DeletedItems);
             Assert.Empty(mgr.CompiledItems);
+            Assert.Equal(2, mgr.WatchedFiles.Count);
+            Assert.Contains("Settings.Designer.cs", mgr.WatchedFiles);
+            Assert.Contains("Resources1.Designer.cs", mgr.WatchedFiles);
         }
 
         [Fact]
@@ -581,6 +735,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.TempPE
             Assert.Equal("Resources1.Designer.cs", mgr.DirtyItems.First());
             Assert.Empty(mgr.DeletedItems);
             Assert.Empty(mgr.CompiledItems);
+            Assert.Single(mgr.WatchedFiles);
+            Assert.Equal("Resources1.Designer.cs", mgr.WatchedFiles.First());
         }
 
 
@@ -627,6 +783,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.TempPE
             Assert.Empty(mgr.DirtyItems);
             Assert.Empty(mgr.DeletedItems);
             Assert.Empty(mgr.CompiledItems);
+            Assert.Single(mgr.WatchedFiles);
+            Assert.Equal("Resources1.Designer.cs", mgr.WatchedFiles.First());
         }
 
         [Fact]
@@ -673,6 +831,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.TempPE
             Assert.Empty(mgr.DirtyItems);
             Assert.Empty(mgr.DeletedItems);
             Assert.Empty(mgr.CompiledItems);
+            Assert.Equal(2, mgr.WatchedFiles.Count);
+            Assert.Contains("Resources1.Designer.cs", mgr.WatchedFiles);
+            Assert.Contains("Settings.Designer.cs", mgr.WatchedFiles);
         }
 
         [Fact]
@@ -718,6 +879,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.TempPE
             Assert.Equal(2, mgr.CompiledItems.Count);
             Assert.Equal("TempPE\\Resources1.Designer.cs.dll", mgr.CompiledItems.First());
             Assert.Equal("TempPE\\Resources2.Designer.cs.dll", mgr.CompiledItems.Last());
+            Assert.Equal(2, mgr.WatchedFiles.Count);
+            Assert.Contains("Resources1.Designer.cs", mgr.WatchedFiles);
+            Assert.Contains("Resources2.Designer.cs", mgr.WatchedFiles);
         }
 
 
@@ -759,6 +923,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.TempPE
             Assert.Empty(mgr.DirtyItems);
             Assert.Empty(mgr.DeletedItems);
             Assert.Empty(mgr.CompiledItems);
+            Assert.Empty(mgr.WatchedFiles);
         }
 
         [Fact]
@@ -805,6 +970,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.TempPE
             Assert.Empty(mgr.DeletedItems);
             Assert.Single(mgr.CompiledItems);
             Assert.Contains("TempPE\\Resources1.Designer.cs.dll", mgr.CompiledItems);
+            Assert.Equal(2, mgr.WatchedFiles.Count);
+            Assert.Contains("Settings.Designer.cs", mgr.WatchedFiles);
+            Assert.Contains("Resources1.Designer.cs", mgr.WatchedFiles);
         }
 
         [Fact]
@@ -846,6 +1014,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.TempPE
             Assert.Empty(mgr.DeletedItems);
             Assert.Single(mgr.CompiledItems);
             Assert.Contains("TempPE\\Resources2.Designer.cs.dll", mgr.CompiledItems);
+            Assert.Equal(2, mgr.WatchedFiles.Count);
+            Assert.Contains("Resources1.Designer.cs", mgr.WatchedFiles);
+            Assert.Contains("Resources2.Designer.cs", mgr.WatchedFiles);
         }
 
         [Fact]
@@ -887,6 +1058,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.TempPE
             Assert.Single(mgr.DeletedItems);
             Assert.Equal("Resources2.Designer.cs", mgr.DeletedItems.First());
             Assert.Empty(mgr.CompiledItems);
+            Assert.Single(mgr.WatchedFiles);
+            Assert.Contains("Resources1.Designer.cs", mgr.WatchedFiles);
         }
 
         [Fact]
@@ -933,13 +1106,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.TempPE
             Assert.Equal("Resources2.Designer.cs", mgr.DirtyItems.Last());
             Assert.Empty(mgr.DeletedItems);
             Assert.Empty(mgr.CompiledItems);
+            Assert.Equal(2, mgr.WatchedFiles.Count);
+            Assert.Contains("Resources1.Designer.cs", mgr.WatchedFiles);
+            Assert.Contains("Resources2.Designer.cs", mgr.WatchedFiles);
         }
 
         internal class TestTempPEBuildManager : TempPEBuildManager
         {
+            private uint _cookie;
+            private readonly Dictionary<uint, string> _watchedFiles = new Dictionary<uint, string>();
+
             public List<string> DeletedItems { get; } = new List<string>();
             public List<string> DirtyItems { get; } = new List<string>();
             public List<string> CompiledItems { get; } = new List<string>();
+            public Dictionary<uint, string>.ValueCollection WatchedFiles => _watchedFiles.Values;
 
             public TestTempPEBuildManager()
                 : this(null)
@@ -957,7 +1137,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.TempPE
                       IVsServiceFactory.Create<SVsFileChangeEx, IVsAsyncFileChangeEx>(IVsFileChangeExFactory.CreateWithAdviseUnadviseFileChange(1)))
             {
                 _buildManager = new Lazy<VSBuildManager>(() => new TestBuildManager(this));
-                
+
                 AppliedValue = new ProjectVersionedValue<DesignTimeInputsItem>(new DesignTimeInputsItem() { OutputPath = "TempPE" }, ImmutableDictionary<NamedIdentity, IComparable>.Empty);
             }
 
@@ -969,11 +1149,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.TempPE
 
             protected override Task SubscribeToFileChangesAsync(ImmutableDictionary<string, uint>.Builder cookies, string projectRelativeSourceFileName)
             {
+                uint cookie = _cookie++;
+                _watchedFiles.Add(cookie, projectRelativeSourceFileName);
+                cookies.Add(projectRelativeSourceFileName, cookie);
                 return Task.CompletedTask;
             }
 
             protected override Task UnsubscribeFromFileChangesAsync(uint cookie)
             {
+                _watchedFiles.Remove(cookie);
+
                 return Task.CompletedTask;
             }
 
@@ -1017,7 +1202,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.TempPE
                 await base.ApplyAsync(new DesignTimeInputsDelta
                 {
                     AddedItems = ImmutableArray.CreateRange<string>(designTimeInputs),
-                    AddedSharedItems = ImmutableArray.CreateRange<string>(sharedDesignTimeInputs)
+                    AddedSharedItems = ImmutableArray.CreateRange<string>(sharedDesignTimeInputs)                    
                 });
 
                 DeletedItems.Clear();
