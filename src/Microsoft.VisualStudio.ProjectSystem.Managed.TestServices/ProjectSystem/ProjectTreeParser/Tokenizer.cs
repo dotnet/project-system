@@ -67,7 +67,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public string ReadIdentifier(IdentifierParseOptions options)
         {
-            string identifier = ReadIdentifierCore(options);
+            string identifier = ReadIdentifierCore();
 
             CheckIdentifier(identifier, options);
 
@@ -77,7 +77,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return identifier;
         }
 
-        private string ReadIdentifierCore(IdentifierParseOptions options)
+        private string ReadIdentifierCore()
         {
             var identifier = new StringBuilder();
 

@@ -97,7 +97,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
             // File doesn't exist. Create it if we've been asked to.
             if (flags.HasFlag(SpecialFileFlags.CreateIfNotExist))
             {
-                string createdFilePath = await CreateFileAsync(fileId, Name);
+                string createdFilePath = await CreateFileAsync(Name);
                 if (createdFilePath != null)
                 {
                     return createdFilePath;
@@ -202,7 +202,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
         /// <summary>
         /// Create a special file.
         /// </summary>
-        private async Task<string> CreateFileAsync(SpecialFiles fileId, string specialFileName)
+        private async Task<string> CreateFileAsync(string specialFileName)
         {
             IProjectTree rootNode = await GetParentFolderAsync(createIfNotExists: true);
 
