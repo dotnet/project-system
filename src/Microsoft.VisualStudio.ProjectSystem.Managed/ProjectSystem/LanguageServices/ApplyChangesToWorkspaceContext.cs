@@ -137,7 +137,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             //
             // We still forward those 'removes' of references, sources, etc onto Roslyn to avoid duplicate/incorrect results when the next
             // successful build occurs, because it will be diff between it and this failed build.
-            _context.LastDesignTimeBuildSucceeded = snapshot.IsEvaluationSucceeded();
+
+            bool succeeded = snapshot.IsEvaluationSucceeded();
+
+            if (_context.LastDesignTimeBuildSucceeded != succeeded)
+            {
+                _logger.WriteLine(succeeded ? "Last design-time build succeeded, turning semantic errors back on." : "Last design-time build failed, turning semantic errors off.");
+                _context.LastDesignTimeBuildSucceeded = succeeded;
+            }
         }
 
         private void ProcessOptions(IProjectRuleSnapshot snapshot)
