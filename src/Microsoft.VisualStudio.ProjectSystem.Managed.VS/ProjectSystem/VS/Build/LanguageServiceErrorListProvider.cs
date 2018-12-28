@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.Build.Framework;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 using Microsoft.VisualStudio.Shell.Interop;
+using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
 {
@@ -14,23 +15,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
     ///     An implementation of <see cref="IVsErrorListProvider"/> that delegates onto the language
     ///     service so that it de-dup warnings and errors between IntelliSense and build.
     /// </summary>
-    [AppliesTo(ProjectCapability.DotNetLanguageServiceOrLanguageService2)]
+    [AppliesTo(ProjectCapability.DotNetLanguageService)]
     [Export(typeof(IVsErrorListProvider))]
     [Order(Order.Default)]
     internal partial class LanguageServiceErrorListProvider : IVsErrorListProvider
     {
         private static readonly Task<AddMessageResult> s_handledAndStopProcessing = Task.FromResult(AddMessageResult.HandledAndStopProcessing);
         private static readonly Task<AddMessageResult> s_notHandled = Task.FromResult(AddMessageResult.NotHandled);
-        private readonly ILanguageServiceHost _host;
-        private IVsLanguageServiceBuildErrorReporter2 _languageServiceBuildErrorReporter;
+        private readonly UnconfiguredProject _project;
+        private readonly IActiveWorkspaceProjectContextHost _projectContextHost;
 
         /// <remarks>
         /// <see cref="UnconfiguredProject"/> must be imported in the contructor in order for scope of this class' export to be correct.
         /// </remarks>
         [ImportingConstructor]
-        public LanguageServiceErrorListProvider(UnconfiguredProject project, ILanguageServiceHost host)
+        public LanguageServiceErrorListProvider(UnconfiguredProject project, IActiveWorkspaceProjectContextHost projectContextHost)
         {
-            _host = host;
+            _project = project;
+            _projectContextHost = projectContextHost;
         }
 
         public void SuspendRefresh()
@@ -48,37 +50,38 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
             return AddMessageCoreAsync(error);
         }
 
-        private Task<AddMessageResult> AddMessageCoreAsync(TargetGeneratedError error)
+        private async Task<AddMessageResult> AddMessageCoreAsync(TargetGeneratedError error)
         {
             // We only want to pass compiler, analyzers, etc to the language 
             // service, so we skip tasks that do not have a code
             if (!TryExtractErrorListDetails(error.BuildEventArgs, out ErrorListDetails details) || string.IsNullOrEmpty(details.Code))
-                return s_notHandled;
+                return AddMessageResult.NotHandled;
 
-            InitializeBuildErrorReporter();
-
-            bool handled = false;
-            if (_languageServiceBuildErrorReporter != null)
+            bool handled = await _projectContextHost.OpenContextForWriteAsync(accessor =>
             {
+                var errorReporter = (IVsLanguageServiceBuildErrorReporter2)accessor.HostSpecificErrorReporter;
+
                 try
                 {
-                    _languageServiceBuildErrorReporter.ReportError2(details.Message,
-                                                                    details.Code,
-                                                                    details.Priority,
-                                                                    details.LineNumberForErrorList,
-                                                                    details.ColumnNumberForErrorList,
-                                                                    details.EndLineNumberForErrorList,
-                                                                    details.EndColumnNumberForErrorList,
-                                                                    details.GetFileFullPath(_host));
-                    handled = true;
+                    errorReporter.ReportError2(details.Message,
+                                               details.Code,
+                                               details.Priority,
+                                               details.LineNumberForErrorList,
+                                               details.ColumnNumberForErrorList,
+                                               details.EndLineNumberForErrorList,
+                                               details.EndColumnNumberForErrorList,
+                                               details.GetFileFullPath(_project.FullPath));
+                    return TaskResult.True;
                 }
                 catch (NotImplementedException)
                 {   // Language Service doesn't handle it, typically because file 
                     // isn't in the project or because it doesn't have line/column
                 }
-            }
 
-            return handled ? s_handledAndStopProcessing : s_notHandled;
+                return TaskResult.False;
+            });
+
+            return handled ? AddMessageResult.HandledAndStopProcessing : AddMessageResult.NotHandled;
         }
 
         public Task ClearMessageFromTargetAsync(string targetName)
@@ -88,21 +91,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
 
         public Task ClearAllAsync()
         {
-            if (_languageServiceBuildErrorReporter != null)
+            return _projectContextHost.OpenContextForWriteAsync(accessor =>
             {
-                _languageServiceBuildErrorReporter.ClearErrors();
-            }
+                ((IVsLanguageServiceBuildErrorReporter2)accessor.HostSpecificErrorReporter).ClearErrors();
 
-            return Task.CompletedTask;
-        }
+                return Task.CompletedTask;
+            });
 
-        private void InitializeBuildErrorReporter()
-        {
-            // We defer grabbing error reporter the until the first build event, because the language service is initialized asynchronously
-            if (_languageServiceBuildErrorReporter == null)
-            {
-                _languageServiceBuildErrorReporter = (IVsLanguageServiceBuildErrorReporter2)_host.HostSpecificErrorReporter;
-            }
         }
 
         /// <summary>

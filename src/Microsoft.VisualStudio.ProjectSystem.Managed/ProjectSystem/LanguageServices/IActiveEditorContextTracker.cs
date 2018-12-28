@@ -7,17 +7,23 @@ using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
     /// <summary>
-    ///     Tracks the "active" <see cref="IWorkspaceProjectContext"/> for an <see cref="UnconfiguredProject"/>.
+    ///     Tracks the "active" <see cref="IWorkspaceProjectContext"/> for the editor within an <see cref="UnconfiguredProject"/>.
     /// </summary>
     /// <remarks>
-    ///     The "active" <see cref="IWorkspaceProjectContext"/> is the one that Roslyn uses to drive IntelliSense, refactoring
-    ///     and code fixes. This is typically controlled by the user via the project drop down in the top-left of the editor, but
-    ///     can be changed in reaction to other factors.
+    ///     <para>
+    ///         The "active" context for the editor is the one that Roslyn uses to drive IntelliSense, refactorings
+    ///         and code fixes. This is typically controlled by the user via the project drop down in the top-left 
+    ///         of the editor, but can be changed in reaction to other factors.
+    ///     </para>
+    ///     <para>
+    ///         NOTE: This is distinct from the "active" context for an <see cref="UnconfiguredProject"/> which is 
+    ///         tracked via <see cref="IActiveWorkspaceProjectContextHost"/>.
+    ///     </para>
     /// </remarks>
-    internal interface IActiveWorkspaceProjectContextTracker
+    internal interface IActiveEditorContextTracker
     {
         /// <summary>
-        ///     Returns a value indicating whether the specified <see cref="IWorkspaceProjectContext"/> is the active one.
+        ///     Returns a value indicating whether the specified <see cref="IWorkspaceProjectContext"/> is the active one for the editor.
         /// </summary>
         /// <exception cref="ArgumentNullException">
         ///     <paramref name="context"/> is <see langword="null" />
@@ -25,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         /// <exception cref="InvalidOperationException">
         ///     <paramref name="context"/> has not been registered or has already been unregistered.
         /// </exception>
-        bool IsActiveContext(IWorkspaceProjectContext context);
+        bool IsActiveEditorContext(IWorkspaceProjectContext context);
 
         /// <summary>
         ///     Registers the <see cref="IWorkspaceProjectContext"/> with the tracker.

@@ -1,6 +1,8 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System;
 using System.ComponentModel.Composition;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
@@ -12,15 +14,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     ///     on changes to the project to the <see cref="IApplyChangesToWorkspaceContext"/> service.
     /// </summary>
     [Export(typeof(IImplicitlyActiveService))]
-    [AppliesTo(ProjectCapability.DotNetLanguageService2)]
-    internal partial class WorkspaceContextHost : AbstractMultiLifetimeComponent, IImplicitlyActiveService
+    [Export(typeof(IWorkspaceProjectContextHost))]
+    [AppliesTo(ProjectCapability.DotNetLanguageService)]
+    internal partial class WorkspaceContextHost : AbstractMultiLifetimeComponent<WorkspaceContextHost.WorkspaceContextHostInstance>, IImplicitlyActiveService, IWorkspaceProjectContextHost
     {
         private readonly ConfiguredProject _project;
         private readonly IProjectThreadingService _threadingService;
         private readonly IUnconfiguredProjectTasksService _tasksService;
         private readonly IProjectSubscriptionService _projectSubscriptionService;
         private readonly IWorkspaceProjectContextProvider _workspaceProjectContextProvider;
-        private readonly IActiveWorkspaceProjectContextTracker _activeWorkspaceProjectContextTracker;
+        private readonly IActiveEditorContextTracker _activeWorkspaceProjectContextTracker;
         private readonly ExportFactory<IApplyChangesToWorkspaceContext> _applyChangesToWorkspaceContextFactory;
 
         [ImportingConstructor]
@@ -29,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                                     IUnconfiguredProjectTasksService tasksService,
                                     IProjectSubscriptionService projectSubscriptionService,
                                     IWorkspaceProjectContextProvider workspaceProjectContextProvider,
-                                    IActiveWorkspaceProjectContextTracker activeWorkspaceProjectContextTracker,
+                                    IActiveEditorContextTracker activeWorkspaceProjectContextTracker,
                                     ExportFactory<IApplyChangesToWorkspaceContext> applyChangesToWorkspaceContextFactory)
             : base(threadingService.JoinableTaskContext)
         {
@@ -52,7 +55,32 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             return UnloadAsync();
         }
 
-        protected override IMultiLifetimeInstance CreateInstance()
+        public Task PublishAsync(CancellationToken cancellationToken = default)
+        {
+            return WaitForLoadedAsync(cancellationToken);
+        }
+
+        public async Task OpenContextForWriteAsync(Func<IWorkspaceProjectContextAccessor, Task> action)
+        {
+            Requires.NotNull(action, nameof(action));
+
+            WorkspaceContextHostInstance instance = await WaitForLoadedAsync();
+
+            // Throws ActiveProjectConfigurationChangedException if 'instance' is Disposed
+            await instance.OpenContextForWriteAsync(action);
+        }
+
+        public async Task<T> OpenContextForWriteAsync<T>(Func<IWorkspaceProjectContextAccessor, Task<T>> action)
+        {
+            Requires.NotNull(action, nameof(action));
+
+            WorkspaceContextHostInstance instance = await WaitForLoadedAsync();
+
+            // Throws ActiveProjectConfigurationChangedException if 'instance' is Disposed
+            return await instance.OpenContextForWriteAsync(action);
+        }
+
+        protected override WorkspaceContextHostInstance CreateInstance()
         {
             return new WorkspaceContextHostInstance(_project, _threadingService, _tasksService, _projectSubscriptionService, _workspaceProjectContextProvider, _activeWorkspaceProjectContextTracker, _applyChangesToWorkspaceContextFactory);
         }
