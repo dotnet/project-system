@@ -103,7 +103,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                         WriteRuleHasNoChanges(logger);
                     }
 
-                    WriteRuleFooter(logger, ruleName);
+                    WriteRuleFooter(logger);
                 }
 
                 WriteFooter(logger, update);
@@ -137,7 +137,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                     WriteRuleHasNoChanges(logger);
                 }
 
-                WriteRuleFooter(logger, ruleName);
+                WriteRuleFooter(logger);
                 WriteFooter(logger, update);
             }
         }
@@ -237,7 +237,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             logger.IndentLevel++;
         }
 
-        private static void WriteRuleFooter(IProjectLoggerBatch logger, string ruleName)
+        private static void WriteRuleFooter(IProjectLoggerBatch logger)
         {
             logger.IndentLevel--;
         }

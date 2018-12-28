@@ -420,7 +420,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
             var logger = IVsUpgradeLoggerFactory.CreateLogger(loggedMessages);
             var globalJsonBackedUp = Path.Combine(BackupLocation, "global.json");
 
-            migrator.BackupAndDeleteGlobalJson(SlnLocation, solution, BackupLocation, XprojLocation, ProjectName, logger);
+            migrator.BackupAndDeleteGlobalJson(SlnLocation, solution, BackupLocation, ProjectName, logger);
             Assert.True(fileSystem.FileExists(globalJsonBackedUp));
             Assert.Single(loggedMessages);
             Assert.Equal(new LogMessage
@@ -453,7 +453,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
     }
 }");
 
-            migrator.BackupAndDeleteGlobalJson(SlnLocation, solution, BackupLocation, XprojLocation, ProjectName, logger);
+            migrator.BackupAndDeleteGlobalJson(SlnLocation, solution, BackupLocation, ProjectName, logger);
             Assert.True(fileSystem.FileExists(globalJsonBackedUp));
             Assert.Single(loggedMessages);
             Assert.Equal(new LogMessage

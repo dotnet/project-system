@@ -27,11 +27,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                                                   0 /*scope count*/,
                                                   Array.Empty<Guid>() /*scopes*/,
                                                   out Guid cmdGuid,
-                                                  out uint cmdId,
+                                                  out _,
                                                   out int fTranslated,
-                                                  out int fStartsMultiKeyChord);
+                                                  out _);
 
-                if (ShouldRouteCommandBackToVS(cmdGuid, cmdId, fTranslated == 1, fStartsMultiKeyChord == 1))
+                if (ShouldRouteCommandBackToVS(cmdGuid, fTranslated == 1))
                 {
                     return false;
                 }
@@ -40,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             return base.PreProcessMessage(ref msg);
         }
 
-        private static bool ShouldRouteCommandBackToVS(Guid cmdGuid, uint cmdId, bool translated, bool startsMultiKeyChord)
+        private static bool ShouldRouteCommandBackToVS(Guid cmdGuid, bool translated)
         {
             //Any command that wasn't translated by TranslateAcceleratorEx or has no VS handler in global scope should be routed to WPF
             if (!translated || cmdGuid == Guid.Empty)

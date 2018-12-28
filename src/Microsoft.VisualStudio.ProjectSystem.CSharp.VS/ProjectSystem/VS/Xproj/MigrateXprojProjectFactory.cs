@@ -60,7 +60,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
             IVsSolution solution = _serviceProvider.GetService<IVsSolution, SVsSolution>();
             Verify.HResult(solution.GetSolutionInfo(out string solutionDirectory, out _, out _));
 
-            HResult backupResult = BackupAndDeleteGlobalJson(solutionDirectory, solution, backupDirectory, xprojLocation, projectName, logger);
+            HResult backupResult = BackupAndDeleteGlobalJson(solutionDirectory, solution, backupDirectory, projectName, logger);
             if (!backupResult.Succeeded)
             {
                 migratedProjectGuid = GetType().GUID;
@@ -136,7 +136,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
             return true;
         }
 
-        internal HResult BackupAndDeleteGlobalJson(string solutionDirectory, IVsSolution solution, string backupLocation, string xprojLocation, string projectName, IVsUpgradeLogger pLogger)
+        internal HResult BackupAndDeleteGlobalJson(string solutionDirectory, IVsSolution solution, string backupLocation, string projectName, IVsUpgradeLogger pLogger)
         {
             string globalJson = Path.Combine(solutionDirectory, "global.json");
             if (_fileSystem.FileExists(globalJson))
