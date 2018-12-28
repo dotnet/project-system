@@ -42,8 +42,10 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             // Wait until LoadAsync has been called, force switching to thread-pool in case
             // there's already someone waiting for us on the UI thread.
+#pragma warning disable RS0030 // Do not used banned APIs
             (T instance, JoinableTask initializeAsyncTask) = await _instanceTaskSource.Task.WithCancellation(cancellationToken)
                                                                                            .ConfigureAwait(false);
+#pragma warning restore RS0030
 
             // Now join Instance.InitializeAsync so that if someone is waiting on the UI thread for us, 
             // the instance is allowed to switch to that thread to complete if needed.

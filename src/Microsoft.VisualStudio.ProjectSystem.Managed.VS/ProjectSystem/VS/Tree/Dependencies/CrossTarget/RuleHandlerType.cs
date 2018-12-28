@@ -6,13 +6,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
     internal enum RuleHandlerType
     {
         /// <summary>
-        ///     The <see cref="ICrossTargetRuleHandler{T}"/> handles changes 
+        ///     The <see cref="IDependenciesRuleHandler"/> handles changes 
         ///     to evaluation rules.
         /// </summary>
         Evaluation,
 
         /// <summary>
-        ///     The <see cref="ICrossTargetRuleHandler{T}"/> handles changes 
+        ///     The <see cref="IDependenciesRuleHandler"/> handles changes 
         ///     to design-time build rules.
         /// </summary>
         DesignTimeBuild,

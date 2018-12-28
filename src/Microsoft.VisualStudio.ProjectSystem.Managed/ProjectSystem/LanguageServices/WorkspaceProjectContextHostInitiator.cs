@@ -29,7 +29,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             _activeWorkspaceProjectContextHost = activeWorkspaceProjectContextHost;
         }
 
+#pragma warning disable RS0030 // Do not used banned APIs
         [ProjectAutoLoad(startAfter: ProjectLoadCheckpoint.AfterLoadInitialConfiguration, completeBy: ProjectLoadCheckpoint.ProjectFactoryCompleted)]
+#pragma warning restore RS0030
         [AppliesTo(ProjectCapability.DotNetLanguageService)]
         public Task InitializeAsync()
         {
