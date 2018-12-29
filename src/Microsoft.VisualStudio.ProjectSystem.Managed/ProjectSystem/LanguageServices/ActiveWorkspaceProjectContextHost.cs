@@ -43,6 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 try
                 {
                     await _activeHost.Value.OpenContextForWriteAsync(action);
+                    return;
                 }
                 catch (ActiveProjectConfigurationChangedException)
                 {   // Host was unloaded because configuration changed, retry on new config
