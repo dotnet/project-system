@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
-using System.ComponentModel.Composition;
 using System.ComponentModel.Design;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -52,7 +51,6 @@ namespace Microsoft.VisualStudio.Packaging
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
             var componentModel = (IComponentModel)(await GetServiceAsync(typeof(SComponentModel)));
-            ICompositionService compositionService = componentModel.DefaultCompositionService;
             Lazy<DebugFrameworksDynamicMenuCommand> debugFrameworksCmd = componentModel.DefaultExportProvider.GetExport<DebugFrameworksDynamicMenuCommand>();
 
             var mcs = (await GetServiceAsync(typeof(IMenuCommandService))) as OleMenuCommandService;

@@ -343,7 +343,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             if (ppunk.Length < cObjects)
                 throw new ArgumentOutOfRangeException(nameof(cObjects));
 
-            var configurations = new List<string>();
             // Look for an IVsBrowseObject
             for (int i = 0; i < cObjects; ++i)
             {

@@ -164,7 +164,7 @@ Root (flags: {ProjectRoot})
             var tree = ProjectTreeParser.Parse(input);
             var result = propertiesProvider.ChangePropertyValuesForEntireTree(tree.Children[0]);
 
-            Assert.Null(tree.Icon);
+            Assert.Null(result.Icon);
         }
 
         [Fact]

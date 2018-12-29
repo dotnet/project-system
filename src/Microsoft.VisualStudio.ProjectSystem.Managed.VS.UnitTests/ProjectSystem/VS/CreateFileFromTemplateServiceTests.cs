@@ -59,11 +59,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
 
         [Theory]
-        [InlineData(@"Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\""", @"C:\Path\To\TemplateFile", true)]
-        [InlineData(@"Properties, FilePath: ""C:\Foo\""", @"C:\Path\To\TemplateFile", true)]
-        [InlineData(@"Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\""", @"C:\Path\To\TemplateFile", false)]
-        [InlineData(@"Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\""", null, false)]
-        public async Task CreateFile(string input, string templateFilePath, bool expectedResult)
+        [InlineData(@"C:\Path\To\TemplateFile", true)]
+        [InlineData(@"C:\Path\To\TemplateFile", false)]
+        [InlineData(null, false)]
+        public async Task CreateFile(string templateFilePath, bool expectedResult)
         {
             string templateName = "SettingsInternal.zip";
             string fileName = "Settings.settings";
@@ -96,7 +95,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             var service = CreateInstance(projectVsServices, dte, properties);
 
             bool returnValue = await service.CreateFileAsync(templateName, "Moniker", fileName);
-            Assert.Equal(returnValue, expectedResult);
+            Assert.Equal(expectedResult, returnValue);
         }
 
         private CreateFileFromTemplateService CreateInstance()
