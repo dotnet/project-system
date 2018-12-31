@@ -32,11 +32,11 @@
       <DataSource Persistence="ProjectFile" PersistedName="IntermediateOutputPath" HasConfigurationCondition="True" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
-  <BoolProperty Name="NullableReferenceTypes" Visible="False">
-    <BoolProperty.DataSource>
+  <StringProperty Name="NullableContextOptions" Visible="False">
+    <StringProperty.DataSource>
       <DataSource Persistence="ProjectFile" SourceOfDefaultValue="AfterContext" HasConfigurationCondition="False" />
-    </BoolProperty.DataSource>
-  </BoolProperty>
+    </StringProperty.DataSource>
+  </StringProperty>
   <BoolProperty Name="RunCodeAnalysis" Visible="False" />
   <BoolProperty Name="Prefer32Bit" Visible="False"/>
   <BoolProperty Name="AllowUnsafeBlocks"  Default="False"  Visible="False"/>
