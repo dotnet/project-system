@@ -125,7 +125,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             void Add(AddDependencyContext context, IDependencyModel dependencyModel)
             {
                 // Create the unfiltered dependency
-                IDependency dependency = new Dependency(dependencyModel, targetFramework, projectPath);
+                IDependency? dependency = new Dependency(dependencyModel, targetFramework, projectPath);
 
                 context.Reset();
 

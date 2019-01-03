@@ -47,13 +47,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
                     continue;
                 }
 
-                string projectPath = inputGraphNode.Id.GetValue(CodeGraphNodeIdName.Assembly);
+                string? projectPath = inputGraphNode.Id.GetValue(CodeGraphNodeIdName.Assembly);
                 if (string.IsNullOrEmpty(projectPath))
                 {
                     continue;
                 }
 
-                IDependency updatedDependency = GetDependency(projectPath, existingDependencyId, out IDependenciesSnapshot updatedSnapshot);
+                IDependency? updatedDependency = GetDependency(projectPath, existingDependencyId, out IDependenciesSnapshot? updatedSnapshot);
                 if (updatedDependency == null)
                 {
                     continue;

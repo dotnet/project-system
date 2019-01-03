@@ -23,12 +23,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
             _provider = provider;
         }
 
-        public Graph Schema => _provider.Schema;
+        public Graph? Schema => _provider.Schema;
 
         public void BeginGetGraphData(IGraphContext context) => _provider.BeginGetGraphData(context);
 
         public IEnumerable<GraphCommand> GetCommands(IEnumerable<GraphNode> nodes) => _provider.GetCommands(nodes);
 
-        public T GetExtension<T>(GraphObject graphObject, T previous) where T : class => _provider.GetExtension(graphObject, previous);
+        public T? GetExtension<T>(GraphObject graphObject, T previous) where T : class => _provider.GetExtension(graphObject, previous);
     }
 }

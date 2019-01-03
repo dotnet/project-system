@@ -25,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         /// <summary>
         /// Catalogs of rules for project items (optional, custom dependency providers might not provide it).
         /// </summary>
-        IProjectCatalogSnapshot Catalogs { get; }
+        IProjectCatalogSnapshot? Catalogs { get; }
 
         /// <summary>
         /// Top level project dependencies.

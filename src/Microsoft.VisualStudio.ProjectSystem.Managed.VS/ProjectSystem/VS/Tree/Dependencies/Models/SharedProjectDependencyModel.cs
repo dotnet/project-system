@@ -33,9 +33,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 
         public override string ProviderType => ProjectRuleHandler.ProviderTypeString;
 
-        public override string SchemaItemType => ProjectReference.PrimaryDataSourceItemType;
+        public override string? SchemaItemType => ProjectReference.PrimaryDataSourceItemType;
 
-        public override string SchemaName => Resolved ? ResolvedProjectReference.SchemaName : ProjectReference.SchemaName;
+        public override string? SchemaName => Resolved ? ResolvedProjectReference.SchemaName : ProjectReference.SchemaName;
 
         public SharedProjectDependencyModel(
             string path,

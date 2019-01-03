@@ -63,8 +63,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             Assumes.True(activeProjectConfiguration.IsCrossTargeting());
             Assumes.True(knownProjectConfigurations.All(c => c.IsCrossTargeting()));
 
-            ITargetFramework activeTargetFramework = _targetFrameworkProvider.GetTargetFramework(activeProjectConfiguration.Dimensions[ConfigurationGeneral.TargetFrameworkProperty]);
-            if (!ActiveTargetFramework.Equals(activeTargetFramework))
+            ITargetFramework? activeTargetFramework = _targetFrameworkProvider.GetTargetFramework(activeProjectConfiguration.Dimensions[ConfigurationGeneral.TargetFrameworkProperty]);
+            if (activeTargetFramework == null || !ActiveTargetFramework.Equals(activeTargetFramework))
             {
                 // Active target framework is different.
                 return false;
@@ -83,9 +83,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
             foreach (string targetFrameworkMoniker in targetFrameworkMonikers)
             {
-                ITargetFramework targetFramework = _targetFrameworkProvider.GetTargetFramework(targetFrameworkMoniker);
+                ITargetFramework? targetFramework = _targetFrameworkProvider.GetTargetFramework(targetFrameworkMoniker);
 
-                if (!TargetFrameworks.Contains(targetFramework))
+                if (targetFramework == null || !TargetFrameworks.Contains(targetFramework))
                 {
                     // Differing TargetFramework
                     return false;

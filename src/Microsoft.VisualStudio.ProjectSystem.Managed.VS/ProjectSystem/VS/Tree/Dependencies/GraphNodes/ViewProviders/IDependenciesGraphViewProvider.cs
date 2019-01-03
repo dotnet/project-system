@@ -37,6 +37,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
             string projectPath,
             IDependency topLevelDependency,
             Dictionary<string, HashSet<IDependency>> searchResultsPerContext,
-            out HashSet<IDependency> topLevelDependencyMatches);
+            out HashSet<IDependency>? topLevelDependencyMatches);
     }
 }

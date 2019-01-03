@@ -147,12 +147,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// </summary>
         public IDebugProfileLaunchTargetsProvider? GetLaunchTargetsProvider(ILaunchProfile? profile)
         {
-            // We search through the imports in order to find the one which supports the profile
-            foreach (Lazy<IDebugProfileLaunchTargetsProvider, IOrderPrecedenceMetadataView> provider in ProfileLaunchTargetsProviders)
+            if (profile != null)
             {
-                if (provider.Value.SupportsProfile(profile))
+                // We search through the imports in order to find the one which supports the profile
+                foreach (Lazy<IDebugProfileLaunchTargetsProvider, IOrderPrecedenceMetadataView> provider in ProfileLaunchTargetsProviders)
                 {
-                    return provider.Value;
+                    if (provider.Value.SupportsProfile(profile))
+                    {
+                        return provider.Value;
+                    }
                 }
             }
 

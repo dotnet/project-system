@@ -8,7 +8,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
     {
         private readonly struct ResolvedReference
         {
-            public ResolvedReference(string resolvedPath, Version version)
+            public ResolvedReference(string resolvedPath, Version? version)
             {
                 Assumes.NotNull(resolvedPath);
 
@@ -21,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
                 get;
             }
 
-            public Version Version
+            public Version? Version
             {
                 get;
             }

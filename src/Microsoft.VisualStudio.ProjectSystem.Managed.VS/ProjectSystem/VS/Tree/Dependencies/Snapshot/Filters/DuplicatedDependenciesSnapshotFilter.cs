@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
             ITargetFramework targetFramework,
             IDependency dependency,
             IReadOnlyDictionary<string, IProjectDependenciesSubTreeProvider> subTreeProviderByProviderType,
-            IImmutableSet<string> projectItemSpecs,
+            IImmutableSet<string>? projectItemSpecs,
             IAddDependencyContext context)
         {
             IDependency? matchingDependency = null;

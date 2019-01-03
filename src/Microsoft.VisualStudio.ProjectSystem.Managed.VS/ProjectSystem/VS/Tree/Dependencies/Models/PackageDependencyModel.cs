@@ -37,11 +37,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 
         public override string ProviderType => PackageRuleHandler.ProviderTypeString;
 
-        public override string SchemaItemType => PackageReference.PrimaryDataSourceItemType;
+        public override string? SchemaItemType => PackageReference.PrimaryDataSourceItemType;
 
-        public override string SchemaName => Resolved ? ResolvedPackageReference.SchemaName : PackageReference.SchemaName;
+        public override string? SchemaName => Resolved ? ResolvedPackageReference.SchemaName : PackageReference.SchemaName;
 
-        public override string Version { get; }
+        public override string? Version { get; }
 
         public PackageDependencyModel(
             string path,
@@ -73,6 +73,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             if (dependenciesIDs != null)
             {
                 DependencyIDs = ImmutableArray.CreateRange(dependenciesIDs);
+            }
+            else
+            {
+                DependencyIDs = ImmutableArray<string>.Empty;
             }
         }
     }

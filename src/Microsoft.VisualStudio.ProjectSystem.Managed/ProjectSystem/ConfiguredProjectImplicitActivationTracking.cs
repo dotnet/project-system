@@ -130,7 +130,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         private Task OnImplicitlyDeactivated()
         {
-            var source = new TaskCompletionSource<object>();
+            var source = new TaskCompletionSource<object?>();
 
             // Make sure the writes in constructor don't 
             // move to after we publish the value

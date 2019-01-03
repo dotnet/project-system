@@ -44,8 +44,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
                         sln.GetProjectOfUniqueName(projectName, out IVsHierarchy hier);
                         if (hier != null && hier.IsCapabilityMatch(capabilityMatch))
                         {
-                            string projectPath = hier.GetProjectFilePath();
-                            results.Add(ProjectExportProvider.GetExport<T>(projectPath));
+                            string? projectPath = hier.GetProjectFilePath();
+                            if (projectPath != null)
+                            {
+                                results.Add(ProjectExportProvider.GetExport<T>(projectPath));
+                            }
                         }
                     }
                     return results.ToImmutableAndFree();

@@ -894,8 +894,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                         IWritableLaunchProfile? profileToRemove = SelectedDebugProfile;
                         SelectedDebugProfile = null;
 
-                        CurrentLaunchSettings.Profiles.Remove(profileToRemove);
-                        LaunchProfiles.Remove(profileToRemove);
+                        if (profileToRemove != null)
+                        {
+                            CurrentLaunchSettings.Profiles.Remove(profileToRemove);
+                            LaunchProfiles.Remove(profileToRemove);
+                        }
 
                         SelectedDebugProfile = LaunchProfiles.Count > 0 ? LaunchProfiles[0] : null;
                         NotifyProfileCollectionChanged();

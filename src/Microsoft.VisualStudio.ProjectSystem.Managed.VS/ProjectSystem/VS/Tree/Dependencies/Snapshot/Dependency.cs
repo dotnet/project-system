@@ -186,11 +186,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             }
         }
 
-        public string SchemaName { get; }
+        public string? SchemaName { get; }
 
-        private readonly string _schemaItemType;
+        private readonly string? _schemaItemType;
 
-        public string SchemaItemType
+        public string? SchemaItemType
         {
             get
             {
@@ -205,7 +205,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         }
 
         public string Caption { get; }
-        public string Version { get; }
+        public string? Version { get; }
         public bool Resolved { get; }
         public bool TopLevel { get; }
         public bool Implicit { get; }

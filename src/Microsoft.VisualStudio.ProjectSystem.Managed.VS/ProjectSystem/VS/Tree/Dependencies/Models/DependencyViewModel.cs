@@ -24,16 +24,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             _hasUnresolvedDependency = hasUnresolvedDependency;
         }
 
-        public IDependency OriginalModel { get; }
+        public IDependency? OriginalModel { get; }
 
         public string Caption => _model.Caption;
-        public string FilePath => _model.Id;
-        public string SchemaName => _model.SchemaName;
-        public string SchemaItemType => _model.SchemaItemType;
+        public string? FilePath => _model.Id;
+        public string? SchemaName => _model.SchemaName;
+        public string? SchemaItemType => _model.SchemaItemType;
         public int Priority => _model.Priority;
         public ImageMoniker Icon => _hasUnresolvedDependency ? _model.UnresolvedIcon : _model.Icon;
         public ImageMoniker ExpandedIcon => _hasUnresolvedDependency ? _model.UnresolvedExpandedIcon : _model.ExpandedIcon;
-        public IImmutableDictionary<string, string> Properties => _model.Properties;
+        public IImmutableDictionary<string, string>? Properties => _model.Properties;
         public ProjectTreeFlags Flags => _model.Flags;
     }
 }

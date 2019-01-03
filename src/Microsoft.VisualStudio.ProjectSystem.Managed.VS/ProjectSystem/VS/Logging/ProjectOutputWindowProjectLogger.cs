@@ -43,9 +43,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Logging
                 _threadingService.Fork(async () =>
                 {
 
-                    IVsOutputWindowPane pane = await _outputWindowProvider.GetOutputWindowPaneAsync();
+                    IVsOutputWindowPane? pane = await _outputWindowProvider.GetOutputWindowPaneAsync();
 
-                    pane.OutputStringNoPump(text);
+                    pane?.OutputStringNoPump(text);
 
                 }, options: ForkOptions.HideLocks | ForkOptions.StartOnMainThread,
                    factory: _threadingService.JoinableTaskFactory);

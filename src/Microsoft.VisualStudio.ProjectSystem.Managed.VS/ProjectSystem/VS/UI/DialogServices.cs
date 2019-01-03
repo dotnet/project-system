@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
             _userNotificationServices = userNotificationServices;
         }
 
-        public bool DontShowAgainMessageBox(string caption, string message, string checkboxText, bool initialStateOfCheckbox, string learnMoreText, string learnMoreUrl)
+        public bool DontShowAgainMessageBox(string caption, string message, string? checkboxText, bool initialStateOfCheckbox, string learnMoreText, string learnMoreUrl)
         {
             var dlg = new DontShowAgainMessageBox(caption, message, checkboxText, initialStateOfCheckbox, learnMoreText, learnMoreUrl, _userNotificationServices);
             bool? result = dlg.ShowModal();

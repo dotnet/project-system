@@ -247,7 +247,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
             if (createIfNotExists)
                 flags |= SpecialFileFlags.CreateIfNotExist;
 
-            string path = await _specialFilesManager.GetFileAsync(SpecialFiles.AppDesigner, flags);
+            string? path = await _specialFilesManager.GetFileAsync(SpecialFiles.AppDesigner, flags);
             if (path == null)
                 return null;
 

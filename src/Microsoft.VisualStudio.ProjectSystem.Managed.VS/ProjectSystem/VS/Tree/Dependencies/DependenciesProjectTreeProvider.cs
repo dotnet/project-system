@@ -471,7 +471,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
         public IProjectTree CreateTree(
             string caption,
-            string filePath,
+            string? filePath,
             IRule? browseObjectProperties = null,
             ProjectImageMoniker? icon = null,
             ProjectImageMoniker? expandedIcon = null,
