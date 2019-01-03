@@ -143,29 +143,6 @@ namespace Microsoft.VisualStudio.Buffers.PooledObjects
             => Count == 0 ? default : ToImmutable();
 
         /// <summary>
-        /// Realizes the array, downcasting each element to a derived type.
-        /// </summary>
-        public ImmutableArray<U> ToDowncastedImmutable<U>()
-            where U : T
-        {
-            if (Count == 0)
-            {
-                return ImmutableArray<U>.Empty;
-            }
-
-            var tmp = PooledArray<U>.GetInstance(Count);
-            foreach (T i in this)
-            {
-#pragma warning disable CS8600,CS8604 // Workaround for https://github.com/dotnet/roslyn/issues/31866
-                tmp.Add((U)i);
-#pragma warning restore CS8600,CS8604
-
-            }
-
-            return tmp.ToImmutableAndFree();
-        }
-
-        /// <summary>
         /// Realizes the array and disposes the builder in one operation.
         /// </summary>
         public ImmutableArray<T> ToImmutableAndFree()
