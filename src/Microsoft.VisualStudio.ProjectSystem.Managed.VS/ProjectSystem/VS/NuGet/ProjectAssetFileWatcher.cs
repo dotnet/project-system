@@ -32,11 +32,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         private readonly IActiveConfiguredProjectSubscriptionService _activeConfiguredProjectSubscriptionService;
         private readonly IProjectTreeProvider _fileSystemTreeProvider;
 
-        private CancellationTokenSource _watchedFileResetCancellationToken;
-        private ITaskDelayScheduler _taskDelayScheduler;
-        private IDisposable _treeWatcher;
+        private CancellationTokenSource? _watchedFileResetCancellationToken;
+        private ITaskDelayScheduler? _taskDelayScheduler;
+        private IDisposable? _treeWatcher;
         private uint _filechangeCookie;
-        private string _fileBeingWatched;
+        private string? _fileBeingWatched;
         private byte[]? _previousContentsHash;
 
         [ImportingConstructor]
@@ -137,7 +137,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             if (initialized)
             {
                 _taskDelayScheduler?.Dispose();
-                _treeWatcher.Dispose();
+                _treeWatcher?.Dispose();
                 await UnregisterFileWatcherIfAnyAsync();
             }
         }
@@ -167,12 +167,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             string? projectFilePath = projectUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.MSBuildProjectFullPathProperty, null);
 
             // First check to see if the project has a project.json.
-            IProjectTree? projectJsonNode = FindProjectJsonNode(newTree, projectFilePath);
-            if (projectJsonNode != null)
+            if (projectFilePath != null)
             {
-                string projectDirectory = Path.GetDirectoryName(projectFilePath);
-                string projectLockJsonFilePath = Path.ChangeExtension(PathHelper.Combine(projectDirectory, projectJsonNode.Caption), ".lock.json");
-                return projectLockJsonFilePath;
+                IProjectTree? projectJsonNode = FindProjectJsonNode(newTree, projectFilePath);
+                if (projectJsonNode != null)
+                {
+                    string projectDirectory = Path.GetDirectoryName(projectFilePath);
+                    string projectLockJsonFilePath = Path.ChangeExtension(PathHelper.Combine(projectDirectory, projectJsonNode.Caption), ".lock.json");
+                    return projectLockJsonFilePath;
+                }
             }
 
             // If there is no project.json then get the patch to obj\project.assets.json file which is generated for projects
@@ -206,7 +209,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             return null;
         }
 
-        private async Task RegisterFileWatcherAsync(string projectLockJsonFilePath)
+        private async Task RegisterFileWatcherAsync(string? projectLockJsonFilePath)
         {
             // Note file change service is free-threaded
             if (projectLockJsonFilePath != null)

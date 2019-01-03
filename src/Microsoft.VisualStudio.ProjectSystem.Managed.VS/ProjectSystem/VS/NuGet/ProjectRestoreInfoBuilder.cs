@@ -64,13 +64,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                     IProjectChangeDescription projectReferencesChanges = update.Value.ProjectChanges[ProjectReference.SchemaName];
                     IProjectChangeDescription packageReferencesChanges = update.Value.ProjectChanges[PackageReference.SchemaName];
 
-                    targetFrameworks.Add(new TargetFrameworkInfo
-                    {
-                        TargetFrameworkMoniker = targetFramework,
-                        ProjectReferences = GetProjectReferences(projectReferencesChanges.After.Items, project),
-                        PackageReferences = GetReferences(packageReferencesChanges.After.Items),
-                        Properties = GetProperties(nugetRestoreChanges.After.Properties)
-                    });
+                    targetFrameworks.Add(new TargetFrameworkInfo(
+                        targetFramework,
+                        GetProjectReferences(projectReferencesChanges.After.Items, project),
+                        GetReferences(packageReferencesChanges.After.Items),
+                        GetProperties(nugetRestoreChanges.After.Properties)
+                    ));
                 }
 
                 IProjectChangeDescription toolReferencesChanges = update.Value.ProjectChanges[DotNetCliToolReference.SchemaName];
@@ -105,24 +104,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
         private static IVsProjectProperties GetProperties(IImmutableDictionary<string, string> items)
         {
-            return new ProjectProperties(items.Select(v => new ProjectProperty
-            {
-                Name = v.Key,
-                Value = v.Value
-            }));
+            return new ProjectProperties(items.Select(v => new ProjectProperty(v.Key, v.Value)));
         }
 
         private static IVsReferenceItem GetReferenceItem(KeyValuePair<string, IImmutableDictionary<string, string>> item)
         {
-            return new ReferenceItem
-            {
-                Name = item.Key,
-                Properties = new ReferenceProperties(item.Value.Select(v => new ReferenceProperty
-                {
-                    Name = v.Key,
-                    Value = v.Value
-                }))
-            };
+            return new ReferenceItem(
+                item.Key,
+                new ReferenceProperties(item.Value.Select(v => new ReferenceProperty(v.Key, v.Value))));
         }
 
         private static IVsReferenceItems GetReferences(IImmutableDictionary<string, IImmutableDictionary<string, string>> items)
@@ -144,11 +133,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                     ? MakeRooted(definingProjectDirectory.Value, item.Name)
                     : project.MakeRooted(item.Name);
 
-                ((ReferenceProperties)item.Properties).Add(new ReferenceProperty
-                {
-                    Name = ProjectFileFullPathProperty,
-                    Value = projectFileFullPath
-                });
+                ((ReferenceProperties)item.Properties).Add(new ReferenceProperty(
+                    name: ProjectFileFullPathProperty,
+                    value: projectFileFullPath
+                ));
             }
 
             return referenceItems;
