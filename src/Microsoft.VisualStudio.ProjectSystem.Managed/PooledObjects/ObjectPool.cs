@@ -28,7 +28,7 @@ namespace Microsoft.VisualStudio.Buffers.PooledObjects
         [DebuggerDisplay("{Value,nq}")]
         private struct Element
         {
-            internal T Value;
+            internal T? Value;
         }
 
         // Storage for the pool objects. The first item is stored in a dedicated field because we
@@ -90,12 +90,10 @@ namespace Microsoft.VisualStudio.Buffers.PooledObjects
                 // Note that the initial read is optimistically not synchronized. That is intentional. 
                 // We will interlock only when we have a candidate. in a worst case we may miss some
                 // recently returned objects. Not a big deal.
-                T inst = items[i].Value;
+                T? inst = items[i].Value;
                 if (inst != null)
                 {
-#pragma warning disable CS8625 // Workaround https://github.com/dotnet/roslyn/issues/31865
                     if (inst == Interlocked.CompareExchange(ref items[i].Value, null, inst))
-#pragma warning restore CS8625
                     {
                         return inst;
                     }

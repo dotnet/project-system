@@ -14,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
     internal abstract class AbstractMultiLifetimeComponent : OnceInitializedOnceDisposedAsync
     {
         private readonly object _lock = new object();
-        private TaskCompletionSource<object> _loadedSource = new TaskCompletionSource<object>();
+        private TaskCompletionSource<object?> _loadedSource = new TaskCompletionSource<object?>();
         private IMultiLifetimeInstance? _instance;
 
         protected AbstractMultiLifetimeComponent(JoinableTaskContextNode joinableTaskContextNode)
@@ -49,7 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         private async Task LoadCoreAsync()
         {
-            TaskCompletionSource<object>? loadedSource = null;
+            TaskCompletionSource<object?>? loadedSource = null;
             IMultiLifetimeInstance instance;
             lock (_lock)
             {
@@ -65,9 +65,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             // While all callers should wait on InitializeAsync, 
             // only one should complete the completion source
             await instance.InitializeAsync();
-#pragma warning disable CS8625 // Workaround for https://github.com/dotnet/roslyn/issues/31865
             loadedSource?.SetResult(null);
-#pragma warning restore CS8625
         }
 
         public Task UnloadAsync()
@@ -80,7 +78,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 {
                     instance = _instance;
                     _instance = null;
-                    _loadedSource = new TaskCompletionSource<object>();
+                    _loadedSource = new TaskCompletionSource<object?>();
                 }
             }
 

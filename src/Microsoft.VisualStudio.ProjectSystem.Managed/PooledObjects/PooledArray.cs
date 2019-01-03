@@ -63,29 +63,6 @@ namespace Microsoft.VisualStudio.Buffers.PooledObjects
             }
         }
 
-        /// <summary>
-        /// Write <paramref name="value"/> to slot <paramref name="index"/>. 
-        /// Fills in unallocated slots preceding the <paramref name="index"/>, if any.
-        /// </summary>
-        public void SetItem(int index, T value)
-        {
-            while (index > _builder.Count)
-            {
-#pragma warning disable CS8625 // Workaround https://github.com/dotnet/roslyn/issues/31865
-                _builder.Add(default);
-#pragma warning restore CS8625
-            }
-
-            if (index == _builder.Count)
-            {
-                _builder.Add(value);
-            }
-            else
-            {
-                _builder[index] = value;
-            }
-        }
-
         public void Add(T item) => _builder.Add(item);
 
         public void Insert(int index, T item) => _builder.Insert(index, item);

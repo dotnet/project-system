@@ -14,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
         private readonly ConfiguredProject _configuredProject;
         private readonly IActiveConfiguredProjectProvider _activeConfiguredProjectProvider;
 
-        private TaskCompletionSource<object> _activationTask;
+        private TaskCompletionSource<object?> _activationTask;
 
         [ImportingConstructor]
         public ImplicitlyActiveConfiguredProjectReadyToBuild(
@@ -23,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
         {
             _configuredProject = configuredProject;
             _activeConfiguredProjectProvider = activeConfiguredProjectProvider;
-            _activationTask = new TaskCompletionSource<object>();
+            _activationTask = new TaskCompletionSource<object?>();
 
             _activeConfiguredProjectProvider.Changed += ActiveConfiguredProject_Changed;
         }
@@ -43,14 +43,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
                 {
                     if (!nowActive)
                     {
-                        _activationTask = new TaskCompletionSource<object>();
+                        _activationTask = new TaskCompletionSource<object?>();
                     }
                 }
                 else if (nowActive)
                 {
-#pragma warning disable CS8625 // Workaround https://github.com/dotnet/roslyn/issues/31865
                     _activationTask.TrySetResult(null);
-#pragma warning restore CS8625
                 }
 
                 return _activationTask.Task;
