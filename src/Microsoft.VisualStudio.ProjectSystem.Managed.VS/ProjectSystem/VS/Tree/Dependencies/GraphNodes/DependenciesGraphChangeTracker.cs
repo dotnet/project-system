@@ -76,6 +76,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
             {
                 foreach (IGraphContext graphContext in _expandedGraphContexts)
                 {
+                    if (e.Token.IsCancellationRequested)
+                    {
+                        return;
+                    }
+
                     bool anyChanges = false;
 
                     try
@@ -100,11 +105,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
 
             bool HandleChanges(IGraphContext graphContext)
             {
-                if (e.Token.IsCancellationRequested)
-                {
-                    return false;
-                }
-
                 bool anyChanges = false;
 
                 foreach (GraphNode inputGraphNode in graphContext.InputNodes.ToList())
