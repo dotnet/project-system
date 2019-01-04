@@ -32,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 #pragma warning disable RS0030 // symbol ProjectAutoLoad is banned
         [ProjectAutoLoad(ProjectLoadCheckpoint.ProjectInitialCapabilitiesEstablished)]
 #pragma warning restore RS0030 // symbol ProjectAutoLoad is banned
-        [AppliesTo(ProjectCapability.DotNetLanguageServiceOrLanguageService2)]
+        [AppliesTo(ProjectCapability.DotNetLanguageService)]
         public Task InitializeAsync()
         {
             EnsureInitialized();

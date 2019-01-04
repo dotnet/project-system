@@ -3,36 +3,43 @@
 using System;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
-
+using System.Threading.Tasks;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
-using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.TextManager.Interop;
 using Microsoft.VisualStudio.Threading;
+
+using HierarchyId = Microsoft.VisualStudio.Shell.HierarchyId;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 {
     /// <summary>
-    ///     Provides an implementation of <see cref="IActiveWorkspaceProjectContextTracker"/> that tracks the 
-    ///     "active" context by handling the VSHPROPID_ActiveIntellisenseProjectContext IVsHierarchy property.
+    ///     Provides an implementation of <see cref="IActiveEditorContextTracker"/> that tracks the 
+    ///     "active" context for the editor by handling the VSHPROPID_ActiveIntellisenseProjectContext 
+    ///     hierarchy property.
     /// </summary>
     [Export(typeof(IActiveIntellisenseProjectProvider))]
-    [Export(typeof(IActiveWorkspaceProjectContextTracker))]
+    [Export(typeof(IActiveEditorContextTracker))]
     [ExportProjectNodeComService(typeof(IVsContainedLanguageProjectNameProvider))]
-    [AppliesTo(ProjectCapability.DotNetLanguageService2)]
-    internal class ActiveWorkspaceProjectContextTracker : IActiveIntellisenseProjectProvider, IVsContainedLanguageProjectNameProvider, IActiveWorkspaceProjectContextTracker
+    [AppliesTo(ProjectCapability.DotNetLanguageService)]
+    internal class ActiveEditorContextTracker : IActiveIntellisenseProjectProvider, IVsContainedLanguageProjectNameProvider, IActiveEditorContextTracker
     {
+        private readonly IActiveWorkspaceProjectContextHost _activeWorkspaceProjectContextHost;
+        private readonly IProjectThreadingService _threadingService;
         private ImmutableDictionary<IWorkspaceProjectContext, string> _contexts = ImmutableDictionary<IWorkspaceProjectContext, string>.Empty;
+        private string _activeIntellisenseProjectContext;
 
         [ImportingConstructor]
-        public ActiveWorkspaceProjectContextTracker(UnconfiguredProject project) // For scoping
+        public ActiveEditorContextTracker(IProjectThreadingService threadingService, IActiveWorkspaceProjectContextHost activeWorkspaceProjectContextHost)
         {
+            _threadingService = threadingService;
+            _activeWorkspaceProjectContextHost = activeWorkspaceProjectContextHost;
         }
 
         public string ActiveIntellisenseProjectContext
         {
-            get;
-            set;
+            get { return _activeIntellisenseProjectContext ?? GetWorkspaceContextIdFromActiveContext(); }
+            set { _activeIntellisenseProjectContext = value; }
         }
 
         public int GetProjectName(uint itemid, out string pbstrProjectName)
@@ -48,7 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             return HResult.OK;
         }
 
-        public bool IsActiveContext(IWorkspaceProjectContext context)
+        public bool IsActiveEditorContext(IWorkspaceProjectContext context)
         {
             Requires.NotNull(context, nameof(context));
 
@@ -81,6 +88,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 
             if (!changed)
                 throw new InvalidOperationException("'context' has not been registered or has already been unregistered");
+        }
+
+        private string GetWorkspaceContextIdFromActiveContext()
+        {
+            return _threadingService.ExecuteSynchronously(async () =>
+            {
+                try
+                {
+                    // If we're never been set an active context, we just
+                    // pick one based on the active configuration.
+                    return await _activeWorkspaceProjectContextHost.OpenContextForWriteAsync(a => Task.FromResult(a.ContextId));
+                }
+                catch (OperationCanceledException)
+                {   // Project unloading
+
+                    return null;
+                }
+            });
         }
     }
 }

@@ -3,7 +3,7 @@
 using System;
 using System.ComponentModel.Composition;
 using System.Runtime.InteropServices;
-
+using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.TextManager.Interop;
@@ -19,13 +19,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.EditAndContinue
     [AppliesTo(ProjectCapability.EditAndContinue)]
     internal class EditAndContinueProvider : IVsENCRebuildableProjectCfg, IVsENCRebuildableProjectCfg2, IVsENCRebuildableProjectCfg4, IDisposable
     {
-        private ILanguageServiceHost _host;
+        private IActiveWorkspaceProjectContextHost _projectContextHost;
         private IProjectThreadingService _threadingService;
 
         [ImportingConstructor]
-        public EditAndContinueProvider(ILanguageServiceHost host, IProjectThreadingService threadingService)
+        public EditAndContinueProvider(IActiveWorkspaceProjectContextHost projectContextHost, IProjectThreadingService threadingService)
         {
-            _host = host;
+            _projectContextHost = projectContextHost;
             _threadingService = threadingService;
         }
 
@@ -120,13 +120,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.EditAndContinue
             {
                 await _threadingService.SwitchToUIThread();
 
-                var encProvider = (IVsENCRebuildableProjectCfg2)_host?.HostSpecificEditAndContinueService;
-                if (encProvider != null)
+                return await _projectContextHost.OpenContextForWriteAsync(accessor =>
                 {
-                    return action(encProvider);
-                }
-
-                return HResult.Unexpected;
+                    return Task.FromResult(action((IVsENCRebuildableProjectCfg2)accessor.HostSpecificEditAndContinueService));
+                });
             });
         }
 
@@ -134,7 +131,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.EditAndContinue
         {
             // Important for ProjectNodeComServices to null out fields to reduce the amount 
             // of data we leak when extensions incorrectly holds onto the IVsHierarchy.
-            _host = null;
+            _projectContextHost = null;
             _threadingService = null;
         }
 
