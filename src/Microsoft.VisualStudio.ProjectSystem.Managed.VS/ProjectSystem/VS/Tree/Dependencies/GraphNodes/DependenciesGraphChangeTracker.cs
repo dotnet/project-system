@@ -61,7 +61,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
         /// </summary>
         private void OnSnapshotChanged(object sender, SnapshotChangedEventArgs e)
         {
-            if (e.Snapshot == null || e.Token.IsCancellationRequested)
+            IDependenciesSnapshot snapshot = e.Snapshot;
+
+            if (snapshot == null || e.Token.IsCancellationRequested)
             {
                 return;
             }
@@ -98,9 +100,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
 
             bool HandleChanges(IGraphContext graphContext)
             {
-                IDependenciesSnapshot snapshot = e.Snapshot;
-
-                if (snapshot == null || e.Token.IsCancellationRequested)
+                if (e.Token.IsCancellationRequested)
                 {
                     return false;
                 }
