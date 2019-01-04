@@ -14,6 +14,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             return Mock.Of<IActiveWorkspaceProjectContextHost>();
         }
 
+        public static IActiveWorkspaceProjectContextHost ImplementContextId(string contextId)
+        {
+            var accessor = IWorkspaceProjectContextAccessorFactory.ImplementContextId(contextId);
+
+            return new ActiveWorkspaceProjectContextHost(accessor);
+        }
+
         public static IActiveWorkspaceProjectContextHost ImplementHostSpecificErrorReporter(Func<object> action)
         {
             var accessor = IWorkspaceProjectContextAccessorFactory.ImplementHostSpecificErrorReporter(action);
