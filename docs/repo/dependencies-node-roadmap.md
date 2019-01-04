@@ -24,7 +24,7 @@ Internally every individual dependency (both direct and transitive) is represent
 
 All the [`IDependency`][IDependency]s for a given target framework in a given project are collected together into an [`ITargetedDependenciesSnapshot`][ITargetedDependenciesSnapshot]. All of those for a given project are, in turn, collected into an [`IDependenciesSnapshot`][IDependenciesSnapshot].
 
-The [`IDependenciesSnapshotProvider`][IDependenciesSnapshotProvider] is responsible for providing access to the current [`IDependenciesSnapshot`][IDependenciesSnapshot] and firing events when the snapshot has changed. It is implemented by [`DependencySubscriptionsHost`][DependencySubscriptionsHost].
+The [`IDependenciesSnapshotProvider`][IDependenciesSnapshotProvider] is responsible for providing access to the current [`IDependenciesSnapshot`][IDependenciesSnapshot] and firing events when the snapshot has changed. It is implemented by [`DependenciesSnapshotProvider`][DependenciesSnapshotProvider].
 
 Much of the code for the Dependencies node is concerned with creating [`IDependency`][IDependency]s and translating them into new `IProjectTree`s when they change.
 
@@ -130,7 +130,7 @@ Whenever this event fires we find the corresponding [`IDependency`][IDependency]
 
 [IDependenciesSnapshot]: /src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/Tree/Dependencies/Snapshot/IDependenciesSnapshot.cs "IDependenciesSnapshot.cs"
 
-[DependencySubscriptionsHost]: /src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/Tree/Dependencies/Subscriptions/DependencySubscriptionsHost.cs "DependencySubscriptionsHost.cs"
+[DependenciesSnapshotProvider]: /src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/Tree/Dependencies/Subscriptions/DependenciesSnapshotProvider.cs "DependenciesSnapshotProvider.cs"
 
 [DependenciesTreeViewProvider]: /src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/Tree/Dependencies/DependenciesTreeViewProvider.cs "DependenciesTreeViewProvider.cs"
 
