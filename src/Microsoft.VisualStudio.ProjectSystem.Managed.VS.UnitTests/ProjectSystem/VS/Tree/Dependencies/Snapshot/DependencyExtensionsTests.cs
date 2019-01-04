@@ -129,34 +129,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         [Fact]
-        public void GetIcons()
-        {
-            var dependency = IDependencyFactory.FromJson(@"
-{
-    ""ProviderType"": ""Yyy"",
-    ""Id"": ""tfm1\\yyy\\dependencyExisting"",
-    ""Name"":""dependencyExisting"",
-    ""Caption"":""DependencyExisting"",
-    ""HasUnresolvedDependency"":""false"",
-    ""SchemaName"":""MySchema"",
-    ""SchemaItemType"":""MySchemaItemType"",
-    ""Priority"":""1"",
-    ""Resolved"":""true""
-}", icon: KnownMonikers.Uninstall,
-    expandedIcon: KnownMonikers.AbsolutePosition,
-    unresolvedIcon: KnownMonikers.AboutBox,
-    unresolvedExpandedIcon: KnownMonikers.Abbreviation);
-
-            var icons = dependency.GetIcons();
-
-            Assert.Equal(4, icons.Count());
-            Assert.Contains(icons, x => x.Equals(KnownMonikers.Uninstall));
-            Assert.Contains(icons, x => x.Equals(KnownMonikers.AbsolutePosition));
-            Assert.Contains(icons, x => x.Equals(KnownMonikers.AboutBox));
-            Assert.Contains(icons, x => x.Equals(KnownMonikers.Abbreviation));
-        }
-
-        [Fact]
         public void IsPackage()
         {
             var dependency = IDependencyFactory.FromJson(@"
