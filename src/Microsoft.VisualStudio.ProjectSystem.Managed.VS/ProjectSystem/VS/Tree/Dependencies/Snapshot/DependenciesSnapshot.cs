@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics;
 
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
@@ -11,7 +12,8 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Filters
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
     /// <inheritdoc />
-    internal class DependenciesSnapshot : IDependenciesSnapshot
+    [DebuggerDisplay("{Targets.Count} targets - {ProjectPath}")]
+    internal sealed class DependenciesSnapshot : IDependenciesSnapshot
     {
         #region Factories and private constructor
 
