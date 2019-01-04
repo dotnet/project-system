@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Linq;
 
@@ -18,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
     [Export(typeof(IDependenciesGraphViewProvider))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
     [Order(Order)]
-    internal class ProjectGraphViewProvider : GraphViewProviderBase
+    internal sealed class ProjectGraphViewProvider : GraphViewProviderBase
     {
         public const int Order = 110;
 
@@ -26,9 +25,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
         private readonly ITargetFrameworkProvider _targetFrameworkProvider;
 
         [ImportingConstructor]
-        public ProjectGraphViewProvider(IDependenciesGraphBuilder builder,
-                                        IAggregateDependenciesSnapshotProvider aggregateSnapshotProvider,
-                                        ITargetFrameworkProvider targetFrameworkProvider)
+        public ProjectGraphViewProvider(
+            IDependenciesGraphBuilder builder,
+            IAggregateDependenciesSnapshotProvider aggregateSnapshotProvider,
+            ITargetFrameworkProvider targetFrameworkProvider)
             : base(builder)
         {
             _aggregateSnapshotProvider = aggregateSnapshotProvider;
@@ -37,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
 
         public override bool SupportsDependency(IDependency dependency)
         {
-            // Only supports project dependencies
+            // Only supports project reference dependencies
             return dependency.IsProject();
         }
 
@@ -137,6 +137,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
             }
 
             string projectFullPath = topLevelDependency.FullPath;
+
             if (!searchResultsPerContext.TryGetValue(projectFullPath, out HashSet<IDependency> contextResults)
                 || contextResults.Count == 0)
             {
@@ -146,6 +147,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
             ITargetFramework nearestTargetFramework = _targetFrameworkProvider.GetNearestFramework(
                 topLevelDependency.TargetFramework,
                 contextResults.Select(x => x.TargetFramework));
+
             if (nearestTargetFramework == null)
             {
                 return true;
@@ -153,6 +155,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
 
             IEnumerable<IDependency> targetedResultsFromContext =
                 contextResults.Where(x => nearestTargetFramework.Equals(x.TargetFramework));
+
             topLevelDependencyMatches.AddRange(targetedResultsFromContext);
 
             return true;
