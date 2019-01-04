@@ -32,18 +32,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         ITargetedDependenciesSnapshot GetSnapshot(IDependency dependency);
 
         /// <summary>
-        /// Get the current snapshot from every registered project.
+        /// Gets the current snapshot from every registered project.
         /// </summary>
         /// <returns>A collection of <see cref="IDependenciesSnapshot"/>. Will not contain <see langword="null"/> values.</returns>
         IReadOnlyCollection<IDependenciesSnapshot> GetSnapshots();
 
         /// <summary>
-        /// Fired when a snapshot changed in a snapshot provider
+        /// Fired when a snapshot changed in a snapshot provider.
         /// </summary>
         event EventHandler<SnapshotChangedEventArgs> SnapshotChanged;
 
         /// <summary>
-        /// Fired when snapshot provider is unloading
+        /// Fired when snapshot provider is unloading.
         /// </summary>
         event EventHandler<SnapshotProviderUnloadingEventArgs> SnapshotProviderUnloading;
     }
