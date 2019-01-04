@@ -23,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
     [Export(DependencySubscriptionsHostContract, typeof(ICrossTargetSubscriptionsHost))]
     [Export(typeof(IDependenciesSnapshotProvider))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
-    internal sealed class DependencySubscriptionsHost : OnceInitializedOnceDisposedAsync, ICrossTargetSubscriptionsHost, IDependenciesSnapshotProvider
+    internal sealed class DependenciesSnapshotProvider : OnceInitializedOnceDisposedAsync, ICrossTargetSubscriptionsHost, IDependenciesSnapshotProvider
     {
         public const string DependencySubscriptionsHostContract = "DependencySubscriptionsHostContract";
 
@@ -63,7 +63,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         private AggregateCrossTargetProjectContext _currentAggregateProjectContext;
 
         [ImportingConstructor]
-        public DependencySubscriptionsHost(
+        public DependenciesSnapshotProvider(
             IUnconfiguredProjectCommonServices commonServices,
             Lazy<IAggregateCrossTargetProjectContextProvider> contextProvider,
             [Import(ExportContractNames.Scopes.UnconfiguredProject)] IProjectAsynchronousTasksService tasksService,
