@@ -78,7 +78,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
 
                     try
                     {
-                        if (HandleChanges(graphContext, e))
+                        if (HandleChanges(graphContext))
                         {
                             anyChanges = true;
                         }
@@ -93,71 +93,73 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
                     }
                 }
             }
-        }
 
-        private bool HandleChanges(IGraphContext graphContext, SnapshotChangedEventArgs e)
-        {
-            IDependenciesSnapshot snapshot = e.Snapshot;
+            return;
 
-            if (snapshot == null || e.Token.IsCancellationRequested)
+            bool HandleChanges(IGraphContext graphContext)
             {
-                return false;
-            }
+                IDependenciesSnapshot snapshot = e.Snapshot;
 
-            bool anyChanges = false;
-
-            foreach (GraphNode inputGraphNode in graphContext.InputNodes.ToList())
-            {
-                string existingDependencyId = inputGraphNode.GetValue<string>(DependenciesGraphSchema.DependencyIdProperty);
-                if (string.IsNullOrEmpty(existingDependencyId))
+                if (snapshot == null || e.Token.IsCancellationRequested)
                 {
-                    continue;
+                    return false;
                 }
 
-                string nodeProjectPath = inputGraphNode.Id.GetValue(CodeGraphNodeIdName.Assembly);
-                if (string.IsNullOrEmpty(nodeProjectPath))
+                bool anyChanges = false;
+
+                foreach (GraphNode inputGraphNode in graphContext.InputNodes.ToList())
                 {
-                    continue;
-                }
-
-                IDependenciesSnapshot updatedSnapshot = _aggregateSnapshotProvider.GetSnapshot(nodeProjectPath);
-
-                IDependency updatedDependency = updatedSnapshot?.FindDependency(existingDependencyId);
-
-                if (updatedDependency == null)
-                {
-                    continue;
-                }
-
-                IDependenciesGraphViewProvider viewProvider = _viewProviders
-                    .FirstOrDefaultValue((x, d) => x.SupportsDependency(d), updatedDependency);
-                if (viewProvider == null)
-                {
-                    continue;
-                }
-
-                if (!viewProvider.ShouldApplyChanges(nodeProjectPath, snapshot.ProjectPath, updatedDependency))
-                {
-                    continue;
-                }
-
-                using (var scope = new GraphTransactionScope())
-                {
-                    if (viewProvider.ApplyChanges(
-                        graphContext,
-                        nodeProjectPath,
-                        updatedDependency,
-                        inputGraphNode,
-                        updatedSnapshot.Targets[updatedDependency.TargetFramework]))
+                    string existingDependencyId = inputGraphNode.GetValue<string>(DependenciesGraphSchema.DependencyIdProperty);
+                    if (string.IsNullOrEmpty(existingDependencyId))
                     {
-                        anyChanges = true;
+                        continue;
                     }
 
-                    scope.Complete();
-                }
-            }
+                    string nodeProjectPath = inputGraphNode.Id.GetValue(CodeGraphNodeIdName.Assembly);
+                    if (string.IsNullOrEmpty(nodeProjectPath))
+                    {
+                        continue;
+                    }
 
-            return anyChanges;
+                    IDependenciesSnapshot updatedSnapshot = _aggregateSnapshotProvider.GetSnapshot(nodeProjectPath);
+
+                    IDependency updatedDependency = updatedSnapshot?.FindDependency(existingDependencyId);
+
+                    if (updatedDependency == null)
+                    {
+                        continue;
+                    }
+
+                    IDependenciesGraphViewProvider viewProvider = _viewProviders
+                        .FirstOrDefaultValue((x, d) => x.SupportsDependency(d), updatedDependency);
+                    if (viewProvider == null)
+                    {
+                        continue;
+                    }
+
+                    if (!viewProvider.ShouldApplyChanges(nodeProjectPath, snapshot.ProjectPath, updatedDependency))
+                    {
+                        continue;
+                    }
+
+                    using (var scope = new GraphTransactionScope())
+                    {
+                        if (viewProvider.ApplyChanges(
+                            graphContext,
+                            nodeProjectPath,
+                            updatedDependency,
+                            inputGraphNode,
+                            updatedSnapshot.Targets[updatedDependency.TargetFramework]))
+                        {
+                            anyChanges = true;
+                        }
+
+                        scope.Complete();
+                    }
+                }
+
+                return anyChanges;
+            }
         }
 
         public void Dispose()
