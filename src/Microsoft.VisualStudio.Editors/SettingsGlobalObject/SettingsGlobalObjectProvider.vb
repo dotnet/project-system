@@ -2313,7 +2313,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         ''' 
         ''' </summary>
         ''' <remarks></remarks>
-        <Serializable()>
         Private Class ConcreteApplicationSettings
             Inherits ApplicationSettingsBase
 
