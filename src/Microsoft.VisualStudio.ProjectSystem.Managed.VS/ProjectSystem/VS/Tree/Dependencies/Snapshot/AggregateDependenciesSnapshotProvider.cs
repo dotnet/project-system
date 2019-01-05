@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Linq;
 
@@ -13,9 +14,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
     /// <inheritdoc />
     [Export(typeof(IAggregateDependenciesSnapshotProvider))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
-    internal class AggregateDependenciesSnapshotProvider : IAggregateDependenciesSnapshotProvider
+    internal sealed class AggregateDependenciesSnapshotProvider : IAggregateDependenciesSnapshotProvider
     {
-        private readonly Dictionary<string, IDependenciesSnapshotProvider> _snapshotProviderByProjectPath = new Dictionary<string, IDependenciesSnapshotProvider>(StringComparer.OrdinalIgnoreCase);
+        private ImmutableDictionary<string, IDependenciesSnapshotProvider> _snapshotProviderByProjectPath
+            = ImmutableDictionary.Create<string, IDependenciesSnapshotProvider>(StringComparer.OrdinalIgnoreCase);
+
         private readonly IProjectExportProvider _projectExportProvider;
         private readonly ITargetFrameworkProvider _targetFrameworkProvider;
 
@@ -42,42 +45,49 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 return;
             }
 
-            lock (_snapshotProviderByProjectPath)
-            {
-                _snapshotProviderByProjectPath[snapshotProvider.CurrentSnapshot.ProjectPath] = snapshotProvider;
-                snapshotProvider.SnapshotRenamed += OnSnapshotRenamed;
-                snapshotProvider.SnapshotChanged += OnSnapshotChanged;
-                snapshotProvider.SnapshotProviderUnloading += OnSnapshotProviderUnloading;
-            }
+            ImmutableInterlocked.Update(
+                ref _snapshotProviderByProjectPath,
+                (dic, provider) => dic.SetItem(provider.CurrentSnapshot.ProjectPath, provider),
+                snapshotProvider);
+
+            snapshotProvider.SnapshotRenamed += OnSnapshotRenamed;
+            snapshotProvider.SnapshotChanged += OnSnapshotChanged;
+            snapshotProvider.SnapshotProviderUnloading += OnSnapshotProviderUnloading;
 
             // When a given project context is unloaded, remove it from the cache and unregister event handlers
             void OnSnapshotProviderUnloading(object sender, SnapshotProviderUnloadingEventArgs e)
             {
                 SnapshotProviderUnloading?.Invoke(this, e);
 
-                lock (_snapshotProviderByProjectPath)
-                {
-                    _snapshotProviderByProjectPath.Remove(snapshotProvider.CurrentSnapshot.ProjectPath);
-                    snapshotProvider.SnapshotRenamed -= OnSnapshotRenamed;
-                    snapshotProvider.SnapshotChanged -= OnSnapshotChanged;
-                    snapshotProvider.SnapshotProviderUnloading -= OnSnapshotProviderUnloading;
-                }
+                ImmutableInterlocked.Update(
+                    ref _snapshotProviderByProjectPath,
+                    (dic, projectPath) => dic.Remove(projectPath),
+                    snapshotProvider.CurrentSnapshot.ProjectPath);
+
+                snapshotProvider.SnapshotRenamed -= OnSnapshotRenamed;
+                snapshotProvider.SnapshotChanged -= OnSnapshotChanged;
+                snapshotProvider.SnapshotProviderUnloading -= OnSnapshotProviderUnloading;
             }
 
             void OnSnapshotRenamed(object sender, ProjectRenamedEventArgs e)
             {
-                lock (_snapshotProviderByProjectPath)
-                {
-                    // Remove and re-add provider with new project path
-                    if (!string.IsNullOrEmpty(e.OldFullPath)
-                        && _snapshotProviderByProjectPath.TryGetValue(e.OldFullPath, out IDependenciesSnapshotProvider provider)
-                        && _snapshotProviderByProjectPath.Remove(e.OldFullPath)
-                        && provider != null
-                        && !string.IsNullOrEmpty(e.NewFullPath))
+                // Remove and re-add provider with new project path
+                ImmutableInterlocked.Update(
+                    ref _snapshotProviderByProjectPath,
+                    (dic, args) =>
                     {
-                        _snapshotProviderByProjectPath[e.NewFullPath] = provider;
-                    }
-                }
+                        if (dic.TryGetValue(args.OldFullPath, out IDependenciesSnapshotProvider provider))
+                        {
+                            dic = dic.Remove(args.OldFullPath);
+                            if (!string.IsNullOrEmpty(args.NewFullPath))
+                            {
+                                dic = dic.SetItem(args.NewFullPath, provider);
+                            }
+                        }
+
+                        return dic;
+                    },
+                    e);
             }
 
             void OnSnapshotChanged(object sender, SnapshotChangedEventArgs e)
@@ -91,20 +101,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         {
             Requires.NotNullOrEmpty(projectFilePath, nameof(projectFilePath));
 
-            lock (_snapshotProviderByProjectPath)
+            if (!_snapshotProviderByProjectPath.TryGetValue(projectFilePath, out IDependenciesSnapshotProvider snapshotProvider))
             {
-                if (!_snapshotProviderByProjectPath.TryGetValue(projectFilePath, out IDependenciesSnapshotProvider snapshotProvider))
+                snapshotProvider = _projectExportProvider.GetExport<IDependenciesSnapshotProvider>(projectFilePath);
+
+                if (snapshotProvider != null)
                 {
-                    snapshotProvider = _projectExportProvider.GetExport<IDependenciesSnapshotProvider>(projectFilePath);
-
-                    if (snapshotProvider != null)
-                    {
-                        RegisterSnapshotProvider(snapshotProvider);
-                    }
+                    RegisterSnapshotProvider(snapshotProvider);
                 }
-
-                return snapshotProvider?.CurrentSnapshot;
             }
+
+            return snapshotProvider?.CurrentSnapshot;
         }
 
         public ITargetedDependenciesSnapshot GetSnapshot(IDependency dependency)
@@ -130,10 +137,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         /// <inheritdoc />
         public IReadOnlyCollection<IDependenciesSnapshot> GetSnapshots()
         {
-            lock (_snapshotProviderByProjectPath)
-            {
-                return _snapshotProviderByProjectPath.Values.Select(p => p.CurrentSnapshot).ToList();
-            }
+            return _snapshotProviderByProjectPath.Values.Select(p => p.CurrentSnapshot).ToList();
         }
     }
 }
