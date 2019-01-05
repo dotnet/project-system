@@ -113,7 +113,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
         '''<summary>
         '''</summary>
-        '''<remarks> We need handle OnClick to make Accessiblity work... </remarks>
+        '''<remarks> We need handle OnClick to make Accessibility work... </remarks>
         Protected Overrides Sub OnClick(e As EventArgs)
             MyBase.OnClick(e)
 
@@ -151,28 +151,45 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                     If parent IsNot Nothing Then
                         parent.OnItemClick(Me, reactivatePage:=True)
                     End If
-                Case Keys.Tab, Keys.Up, Keys.Down
-
-                    If keyCode <> Keys.Tab OrElse (keyData And Keys.Control) <> Keys.Control Then                                   ' Don't process if Ctrl+Tab, but do Process for Ctrl+Up and Ctrl+Down
-                        Dim parent As ProjectDesignerTabControl = ParentTabControl
-                        If parent IsNot Nothing Then
-                            Dim nextIndex As Integer = ButtonIndex
-                            If (keyCode = Keys.Tab AndAlso (keyData And Keys.Shift) = Keys.Shift) OrElse keyCode = Keys.Up Then     ' Process if Shift+Tab or Up
-                                nextIndex -= 1
-                                If nextIndex < 0 Then
-                                    nextIndex = parent.TabButtonCount - 1
-                                End If
-                            Else
-                                nextIndex += 1
-                                If nextIndex >= parent.TabButtonCount Then
-                                    nextIndex = 0
-                                End If
-                            End If
-                            Dim nextButton = parent.GetTabButton(nextIndex)
-                            nextButton.Focus()
-                            nextButton.FocusedFromKeyboardNav = True
-                            Return True
+                Case Keys.Up
+                    Dim parent As ProjectDesignerTabControl = ParentTabControl
+                    If parent IsNot Nothing Then
+                        Dim nextIndex As Int32 = ButtonIndex - 1
+                        If nextIndex < 0 Then
+                            nextIndex = parent.TabButtonCount - 1
                         End If
+                        Dim nextButton = parent.GetTabButton(nextIndex)
+                        nextButton.Focus()
+                        nextButton.FocusedFromKeyboardNav = True
+                        Return True
+                    End If
+                Case Keys.Down
+                    Dim parent As ProjectDesignerTabControl = ParentTabControl
+                    If parent IsNot Nothing Then
+                        Dim nextIndex As Int32 = ButtonIndex + 1
+                        If nextIndex >= parent.TabButtonCount Then
+                            nextIndex = 0
+                        End If
+                        Dim nextButton = parent.GetTabButton(nextIndex)
+                        nextButton.Focus()
+                        nextButton.FocusedFromKeyboardNav = True
+                        Return True
+                    End If
+                Case Keys.Left, Keys.Right
+                    ' Don't move focus for left or right
+                    Return True
+                Case Keys.Tab
+                    ' Don't process if Ctrl+Tab, it is reserved for navigation between editor pages
+                    If (keyData And Keys.Control) <> Keys.Control Then
+                        Dim parent As ProjectDesignerTabControl = ParentTabControl
+                        Dim regularTab As Boolean = (keyData And Keys.Shift) <> Keys.Shift
+
+                        If parent IsNot Nothing Then
+                            ' Return focus back to the active property page
+                            parent.OnItemClick(parent.SelectedItem, reactivatePage:=True)
+                            parent.SetControl(regularTab)
+                        End If
+                        Return True
                     End If
             End Select
             Return MyBase.ProcessDialogKey(keyData)
@@ -284,9 +301,9 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             ''' Calls default action when select is called. Checks for correct flag
             ''' </summary>
             Public Overrides Sub [Select](flags As AccessibleSelection)
-                '''AccessibleSelection.TakeSelection is the flag set when an object is selected,
-                '''specfically from SelectionItem.Select If this flag is set, we call the default
-                '''action on the PageTab, which gives the desired behavior of selecting the item.
+                ' AccessibleSelection.TakeSelection is the flag set when an object is selected,
+                ' specifically from SelectionItem.Select If this flag is set, we call the default
+                ' action on the PageTab, which gives the desired behavior of selecting the item.
                 If (flags And AccessibleSelection.TakeSelection) = AccessibleSelection.TakeSelection Then
                     DoDefaultAction()
                 Else

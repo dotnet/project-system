@@ -53,10 +53,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         'The project guid for VB (Project.Kind)
         Private ReadOnly _projectGuid_VB As New Guid("F184B08F-C81C-45F6-A57F-5ABD9991F28F")
 
-        'Indicates whether the UI has actually been initialized yet (useful because many events fire during
-        '  form load, and we may not be ready to handle them  yet)
-        Private _uiInitialized As Boolean
-
         'The set of categories handled by this instance of the resource editor.
         Private ReadOnly _categories As New CategoryCollection
 
@@ -139,7 +135,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private Const DESIGNER_PADDING_TOP As Integer = 23
 
         ' the separator character to save multiple extensions in one string
-        Private Const SAFE_EXTENSION_SEPERATOR As Char = "|"c
+        Private Const SAFE_EXTENSION_SEPARATOR As Char = "|"c
 
 #End Region
 
@@ -478,7 +474,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     Debug.Assert(localRegistry IsNot Nothing, "why we can not find ILocalRegistry2")
                     If localRegistry IsNot Nothing Then
                         VSErrorHandler.ThrowOnFailure(localRegistry.GetLocalRegistryRoot(_registryRoot))
-                        _registryRoot = _registryRoot & "\ManagedResourcesEditor"
+                        _registryRoot &= "\ManagedResourcesEditor"
                     End If
                 End If
                 Return _registryRoot
@@ -531,7 +527,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 #Region " Windows Form Designer generated code "
 
         'Required by the Windows Form Designer
-        Private _components As System.ComponentModel.IContainer
+        Private ReadOnly _components As System.ComponentModel.IContainer
 
         'NOTE: The following procedure is required by the Windows Form Designer
         'It can be modified using the Windows Form Designer.  
@@ -599,7 +595,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private Sub InitializeUI(ServiceProvider As IServiceProvider)
             AllowDrop = True
             StringTable.RowHeadersWidth = DpiHelper.LogicalToDeviceUnitsX(35)
-            _uiInitialized = True
         End Sub
 
 
@@ -1677,7 +1672,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                                 Resource.SetTypeResolutionContext(Me)
 
                                 ' We should check whether the project can accept the item before adding the external file to the project
-                                If Not IsValidResourseItem(Resource, Message, HelpID) Then
+                                If Not IsValidResourceItem(Resource, Message, HelpID) Then
                                     DsMsgBox(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_CantAddUnsupportedResource_1Arg, Resource.Name) & vbCrLf & vbCrLf & Message, MessageBoxButtons.OK, MessageBoxIcon.Error, , HelpID)
                                     Continue For
                                 End If
@@ -1786,7 +1781,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Dim Message As String = String.Empty
                 Dim HelpID As String = String.Empty
 
-                If Not IsValidResourseItem(NewResource, Message, HelpID) Then
+                If Not IsValidResourceItem(NewResource, Message, HelpID) Then
                     DsMsgBox(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_CantAddUnsupportedResource_1Arg, NewResource.Name) & vbCrLf & vbCrLf & Message, MessageBoxButtons.OK, MessageBoxIcon.Error, , HelpID)
                     Return
                 End If
@@ -2187,7 +2182,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Checks to see whether we can add a resource to this file
         ''' </summary>
         ''' <remarks></remarks>
-        Private Function IsValidResourseItem(NewResource As Resource, ByRef Message As String, ByRef HelpID As String) As Boolean
+        Private Function IsValidResourceItem(NewResource As Resource, ByRef Message As String, ByRef HelpID As String) As Boolean
             Return NewResource.ResourceTypeEditor.IsResourceItemValid(NewResource, _resourceFile, Message, HelpID)
         End Function
 
@@ -2388,7 +2383,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' The Cancel Edit command is never enabled. 
         ''' </summary>
-        ''' <param name="menucommand">Ignored</param>
+        ''' <param name="menuCommand">Ignored</param>
         ''' <returns>False</returns>
         ''' <remarks>
         ''' We never enable this command because we are currently trying to commit all pending edits in our 
@@ -2397,7 +2392,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' we basically unbind the keyboard shortcut and let the DataGridView do it's built-in thing (which happens to be the 
         ''' right thing :)            
         ''' </remarks>
-        Private Function MenuCancelEditEnableHandler(menucommand As DesignerMenuCommand) As Boolean
+        Private Function MenuCancelEditEnableHandler(menuCommand As DesignerMenuCommand) As Boolean
             Return False
         End Function
 
@@ -3526,7 +3521,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                         ' Check the registry setting, which remembers a list of extensions that the customer told us not to pop up a warning dialog again...
                         Dim extraSafeExtensions As String = SafeExtensions
                         If Not String.IsNullOrEmpty(extraSafeExtensions) Then
-                            Dim extensions As String() = extraSafeExtensions.Split(New Char() {SAFE_EXTENSION_SEPERATOR})
+                            Dim extensions As String() = extraSafeExtensions.Split(New Char() {SAFE_EXTENSION_SEPARATOR})
                             For Each safeExtension As String In extensions
                                 If String.Equals(fileExtension, safeExtension, StringComparison.OrdinalIgnoreCase) Then
                                     isSafe = True
@@ -3547,7 +3542,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                                     If String.IsNullOrEmpty(extraSafeExtensions) Then
                                         extraSafeExtensions = fileExtension
                                     Else
-                                        extraSafeExtensions = extraSafeExtensions & SAFE_EXTENSION_SEPERATOR & fileExtension
+                                        extraSafeExtensions = extraSafeExtensions & SAFE_EXTENSION_SEPARATOR & fileExtension
                                     End If
                                     SafeExtensions = extraSafeExtensions
                                 End If
@@ -3703,7 +3698,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                             Using NewResourceItem As New Resource(_resourceFile, "Test", "", NewResourceValue, Me)
                                 Dim Message As String = String.Empty
                                 Dim HelpID As String = String.Empty
-                                If Not IsValidResourseItem(NewResourceItem, Message, HelpID) Then
+                                If Not IsValidResourceItem(NewResourceItem, Message, HelpID) Then
                                     DsMsgBox(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_CantAddUnsupportedResource_1Arg, ResourceToImportTo.Name) & vbCrLf & vbCrLf & Message, MessageBoxButtons.OK, MessageBoxIcon.Error, , HelpID)
                                     Return
                                 End If
@@ -4856,14 +4851,12 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Private ReadOnly _errorGlyphState As Image
             Private ReadOnly _sortUpGlyph As Image
             Private ReadOnly _sortDownGlyph As Image
-            Private ReadOnly _backgroundColor As Color
 
             ''' <summary>
             ''' Constructor
             ''' </summary>
             ''' <remarks></remarks>
             Public Sub New(background As Color)
-                _backgroundColor = background
                 _errorGlyphLarge = GetImageFromImageService(KnownMonikers.Blank, 96, 96, background)
                 _errorGlyphSmall = GetImageFromImageService(KnownMonikers.Blank, 16, 16, background)
                 _errorGlyphState = GetImageFromImageService(KnownMonikers.StatusError, 12, 12, background)
@@ -5235,16 +5228,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             Return isLocalizedFileName
 
-        End Function
-
-        ''' <summary>
-        ''' Returns true if the given project is a C++ project
-        ''' </summary>
-        ''' <param name="Project"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Private Function IsCppProject(Project As Project) As Boolean
-            Return Project IsNot Nothing AndAlso (New Guid(Project.Kind).Equals(_projectGuid_CPlusPlus))
         End Function
 
         ''' <summary>

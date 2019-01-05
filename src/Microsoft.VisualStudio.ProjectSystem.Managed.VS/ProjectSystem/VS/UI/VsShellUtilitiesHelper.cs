@@ -26,16 +26,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
         /// <summary>
         /// <see cref="IVsShellUtilitiesHelper.GetVSVersionAsync"/>
         /// </summary>
-        public async Task<Version> GetVSVersionAsync(IServiceProvider serviceProvider)
+        public async Task<Version> GetVSVersionAsync(IVsService<IVsAppId> vsAppIdService)
         {
             await _threadingService.SwitchToUIThread();
 
-            IVsAppId vsAppId = serviceProvider.GetService<IVsAppId, SVsAppId>();
+            IVsAppId vsAppId = await vsAppIdService.GetValueAsync();
+
             if (ErrorHandler.Succeeded(vsAppId.GetProperty((int)VSAPropID.VSAPROPID_ProductSemanticVersion, out object oVersion)) &&
                 oVersion is string semVersion)
             {
                 // This is a semantic version string. We only care about the non-semantic version part
-                int index = semVersion.IndexOfAny(new char[] { '-', '+' });
+                int index = semVersion.IndexOfAny(Delimiter.PlusAndMinus);
                 if (index != -1)
                 {
                     semVersion = semVersion.Substring(0, index);
@@ -50,11 +51,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
             return null;
         }
 
-        public async Task<string> GetLocalAppDataFolderAsync(IServiceProvider serviceProvider)
+        public async Task<string> GetLocalAppDataFolderAsync(IVsService<IVsShell> vsShellService)
         {
             await _threadingService.SwitchToUIThread();
 
-            IVsShell shell = serviceProvider.GetService<IVsShell, SVsShell>();
+            IVsShell shell = await vsShellService.GetValueAsync();
+
             if (ErrorHandler.Succeeded(shell.GetProperty((int)__VSSPROPID4.VSSPROPID_LocalAppDataDir, out object objDataFolder)) && objDataFolder is string appDataFolder)
             {
                 return appDataFolder;

@@ -51,9 +51,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             _launchSettingsFilePath = new AsyncLazy<string>(GetLaunchSettingsFilePathNoCacheAsync, commonProjectServices.ThreadingService.JoinableTaskFactory);
         }
 
-        // TODO: Add error list support. Tracked by https://github.com/dotnet/roslyn-project-system/issues/424
-        //protected IProjectErrorManager ProjectErrorManager { get; }
-
         private IUnconfiguredProjectServices ProjectServices { get; }
         private IUnconfiguredProjectCommonServices CommonProjectServices { get; }
         private IActiveConfiguredProjectSubscriptionService ProjectSubscriptionService { get; }
@@ -62,7 +59,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         protected OrderPrecedenceImportCollection<ILaunchSettingsSerializationProvider, IJsonSection> JsonSerializationProviders { get; set; }
 
         [ImportMany]
-        private OrderPrecedenceImportCollection<ISourceCodeControlIntegration> SourceControlIntegrations { get; set; }
+        protected OrderPrecedenceImportCollection<ISourceCodeControlIntegration> SourceControlIntegrations { get; set; }
 
         // The source for our dataflow
         private IReceivableSourceBlock<ILaunchSettings> _changedSourceBlock;
@@ -333,20 +330,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         {
             if (prevSnapshot.GlobalSettings != null)
             {
-                foreach (KeyValuePair<string, object> kvp in prevSnapshot.GlobalSettings)
+                foreach ((string key, object value) in prevSnapshot.GlobalSettings)
                 {
-                    if (kvp.Value.IsInMemoryObject())
+                    if (value.IsInMemoryObject())
                     {
                         if (newSnapshot.OtherSettings == null)
                         {
                             newSnapshot.OtherSettings = new Dictionary<string, object>
                             {
-                                [kvp.Key] = kvp.Value
+                                [key] = value
                             };
                         }
-                        else if (!newSnapshot.OtherSettings.TryGetValue(kvp.Key, out object existingValue))
+                        else if (!newSnapshot.OtherSettings.TryGetValue(key, out _))
                         {
-                            newSnapshot.OtherSettings[kvp.Key] = kvp.Value;
+                            newSnapshot.OtherSettings[key] = value;
                         }
                     }
                 }
@@ -416,9 +413,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             }
             else
             {
-                // Still clear errors even if no file on disk. This handles the case where there was a file with errors on
-                // disk and the user deletes the file.
-                ClearErrors();
                 settings = new LaunchSettingsData();
             }
 
@@ -439,63 +433,40 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         {
             string fileName = await GetLaunchSettingsFilePathAsync();
 
-            // Clear errors
-            ClearErrors();
-            try
-            {
-                string jsonString = FileManager.ReadAllText(fileName);
+            string jsonString = FileManager.ReadAllText(fileName);
 
-                // Since the sections in the settings file are extensible we iterate through each one and have the appropriate provider
-                // serialize their section. Unfortunately, this means the data is string to object which is messy to deal with
-                var launchSettingsData = new LaunchSettingsData() { OtherSettings = new Dictionary<string, object>(StringComparer.Ordinal) };
-                var jsonObject = JObject.Parse(jsonString);
-                foreach (KeyValuePair<string, JToken> pair in jsonObject)
+            // Since the sections in the settings file are extensible we iterate through each one and have the appropriate provider
+            // serialize their section. Unfortunately, this means the data is string to object which is messy to deal with
+            var launchSettingsData = new LaunchSettingsData() { OtherSettings = new Dictionary<string, object>(StringComparer.Ordinal) };
+            var jsonObject = JObject.Parse(jsonString);
+            foreach ((string key, JToken jToken) in jsonObject)
+            {
+                if (key.Equals(ProfilesSectionName, StringComparison.Ordinal) && jToken is JObject jObject)
                 {
-                    if (pair.Key.Equals(ProfilesSectionName, StringComparison.Ordinal) && pair.Value is JObject jObject)
+                    Dictionary<string, LaunchProfileData> profiles = LaunchProfileData.DeserializeProfiles(jObject);
+                    launchSettingsData.Profiles = FixupProfilesAndLogErrors(profiles);
+                }
+                else
+                {
+                    // Find the matching json serialization handler for this section
+                    Lazy<ILaunchSettingsSerializationProvider, IJsonSection> handler = JsonSerializationProviders.FirstOrDefault(sp => string.Equals(sp.Metadata.JsonSection, key));
+                    if (handler != null)
                     {
-                        Dictionary<string, LaunchProfileData> profiles = LaunchProfileData.DeserializeProfiles(jObject);
-                        launchSettingsData.Profiles = FixupProfilesAndLogErrors(profiles);
+                        object sectionObject = JsonConvert.DeserializeObject(jToken.ToString(), handler.Metadata.SerializationType);
+                        launchSettingsData.OtherSettings.Add(key, sectionObject);
                     }
                     else
                     {
-                        // Find the matching json serialization handler for this section
-                        Lazy<ILaunchSettingsSerializationProvider, IJsonSection> handler = JsonSerializationProviders.FirstOrDefault(sp => string.Equals(sp.Metadata.JsonSection, pair.Key));
-                        if (handler != null)
-                        {
-                            object sectionObject = JsonConvert.DeserializeObject(pair.Value.ToString(), handler.Metadata.SerializationType);
-                            launchSettingsData.OtherSettings.Add(pair.Key, sectionObject);
-                        }
-                        else
-                        {
-                            // We still need to remember settings for which we don't have an extensibility component installed. For this we
-                            // just keep the jObject which can be serialized back out when the file is written.
-                            launchSettingsData.OtherSettings.Add(pair.Key, pair.Value);
-                        }
+                        // We still need to remember settings for which we don't have an extensibility component installed. For this we
+                        // just keep the jObject which can be serialized back out when the file is written.
+                        launchSettingsData.OtherSettings.Add(key, jToken);
                     }
                 }
+            }
 
-                // Remember the time we are sync'd to
-                LastSettingsFileSyncTime = FileManager.LastFileWriteTime(fileName);
-                return launchSettingsData;
-            }
-            catch (JsonReaderException readerEx)
-            {
-                string err = string.Format(Resources.JsonErrorReadingLaunchSettings, readerEx.Message);
-                LogError(err, fileName, readerEx.LineNumber, readerEx.LinePosition, false);
-                throw;
-            }
-            catch (JsonException jsonEx)
-            {
-                string err = string.Format(Resources.JsonErrorReadingLaunchSettings, jsonEx.Message);
-                LogError(err, fileName, -1, -1, false);
-                throw;
-            }
-            catch (Exception ex)
-            {
-                string err = string.Format(Resources.ErrorReadingLaunchSettings, fileName, ex.Message);
-                LogError(err, false);
-                throw;
-            }
+            // Remember the time we are sync'd to
+            LastSettingsFileSyncTime = FileManager.LastFileWriteTime(fileName);
+            return launchSettingsData;
         }
 
         public Task<string> GetLaunchSettingsFilePathAsync()
@@ -515,37 +486,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             }
 
             var validProfiles = new List<LaunchProfileData>();
-            foreach (KeyValuePair<string, LaunchProfileData> kvp in profilesData)
+            foreach ((string name, LaunchProfileData launchProfileData) in profilesData)
             {
-                if (!string.IsNullOrWhiteSpace(kvp.Key))
+                if (!string.IsNullOrWhiteSpace(name))
                 {
                     // The name is if the profile is set to the value key
-                    kvp.Value.Name = kvp.Key;
-                    validProfiles.Add(kvp.Value);
+                    launchProfileData.Name = name;
+                    validProfiles.Add(launchProfileData);
                 }
             }
 
-            if (validProfiles.Count < profilesData.Count)
-            {
-                LogError(Resources.ProfileMissingName, false);
-            }
-
             return validProfiles;
-        }
-
-        private static void LogError(string errorText, bool isWarning)
-        {
-            // ProjectErrorManager.AddError(ErrorOwnerString, errorText, isWarning);
-        }
-
-        private static void LogError(string errorText, string filename, int line, int col, bool isWarning)
-        {
-            // ProjectErrorManager.AddError(ErrorOwnerString, errorText, filename, line, col, isWarning);
-        }
-
-        private static void ClearErrors()
-        {
-            //ProjectErrorManager.ClearErrorsForOwner(ErrorOwnerString);
         }
 
         /// <summary>
@@ -554,8 +505,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// </summary>
         protected async Task SaveSettingsToDiskAsync(ILaunchSettings newSettings)
         {
-            // Clear stale errors since we are saving
-            ClearErrors();
             Dictionary<string, object> serializationData = GetSettingsToSerialize(newSettings);
             string fileName = await GetLaunchSettingsFilePathAsync();
 
@@ -572,12 +521,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
                 // Update the last write time
                 LastSettingsFileSyncTime = FileManager.LastFileWriteTime(fileName);
-            }
-            catch (Exception ex)
-            {
-                string err = string.Format(Resources.ErrorWritingDebugSettings, fileName, ex.Message);
-                LogError(err, false);
-                throw;
             }
             finally
             {
@@ -603,11 +546,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             var dataToSave = new Dictionary<string, object>(StringComparer.Ordinal);
 
-            foreach (KeyValuePair<string, object> setting in curSettings.GlobalSettings)
+            foreach ((string key, object value) in curSettings.GlobalSettings)
             {
-                if (!setting.Value.IsInMemoryObject())
+                if (!value.IsInMemoryObject())
                 {
-                    dataToSave.Add(setting.Key, setting.Value);
+                    dataToSave.Add(key, value);
                 }
             }
 
@@ -646,7 +589,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// file with the name LaunchSettings.json. We don't need to special case because, if a file with this name
         /// changes we will only check if the one we cared about was modified.
         /// </summary>
-        protected void LaunchSettingsFile_Changed(object sender, FileSystemEventArgs e)
+        private void LaunchSettingsFile_Changed(object sender, FileSystemEventArgs e)
+        {
+            HandleLaunchSettingsFileChangedAsync().Forget();
+        }
+
+        protected Task HandleLaunchSettingsFileChangedAsync()
         {
             if (!IgnoreFileChanges)
             {
@@ -658,22 +606,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 // throttle.
                 if (!FileManager.FileExists(fileName) || FileManager.LastFileWriteTime(fileName) != LastSettingsFileSyncTime)
                 {
-                    FileChangeScheduler.ScheduleAsyncTask(async token =>
+                    return FileChangeScheduler.ScheduleAsyncTask(token =>
                     {
-
                         if (token.IsCancellationRequested)
                         {
-                            return;
+                            return Task.CompletedTask;
                         }
 
                         // Updates need to be sequenced
-                        await _sequentialTaskQueue.ExecuteTask(async () =>
-                                        {
-                                            await UpdateProfilesAsync(null);
-                                        });
-                    });
+                        return _sequentialTaskQueue.ExecuteTask(() => UpdateProfilesAsync(null));
+                    }).Task;
                 }
             }
+
+            return null;
         }
 
         /// <summary>
@@ -709,10 +655,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         {
             if (FileWatcher == null)
             {
+                FileChangeScheduler?.Dispose();
+
                 // Create our scheduler for processing file changes
                 FileChangeScheduler = new TaskDelayScheduler(FileChangeProcessingDelay, CommonProjectServices.ThreadingService,
                     ProjectServices.ProjectAsynchronousTasks.UnloadCancellationToken);
-               
+
                 try
                 {
                     FileWatcher = new SimpleFileWatcher(Path.GetDirectoryName(CommonProjectServices.Project.FullPath),
@@ -722,7 +670,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                                                         LaunchSettingsFile_Changed,
                                                         LaunchSettingsFile_Changed);
                 }
-                catch (Exception ex)  when (ex is IOException || ex is ArgumentException)
+                catch (Exception ex) when (ex is IOException || ex is ArgumentException)
                 {
                     // If the project folder is no longer available this will throw, which can happen during branch switching
                 }
@@ -769,14 +717,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// made, the file will be checked out and saved. Note it ignores the value of the active profile
         /// as this setting is controlled by a user property.
         /// </summary>
-        public async Task UpdateAndSaveSettingsAsync(ILaunchSettings newSettings)
+        public Task UpdateAndSaveSettingsAsync(ILaunchSettings newSettings)
         {
             // Updates need to be sequenced. Do not call this version from within an ExecuteTask as it
             // will deadlock
-            await _sequentialTaskQueue.ExecuteTask(async () =>
-            {
-                await UpdateAndSaveSettingsInternalAsync(newSettings);
-            });
+            return _sequentialTaskQueue.ExecuteTask(() => UpdateAndSaveSettingsInternalAsync(newSettings));
         }
 
         /// <summary>
@@ -784,9 +729,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// made, the file will be checked out and saved. Note it ignores the value of the active profile
         /// as this setting is controlled by a user property.
         /// </summary>
-        private async Task UpdateAndSaveSettingsInternalAsync(ILaunchSettings newSettings, bool persistToDisk = true)
+        protected async Task UpdateAndSaveSettingsInternalAsync(ILaunchSettings newSettings, bool persistToDisk = true)
         {
-            await CheckoutSettingsFileAsync();
+            if (persistToDisk)
+            {
+                await CheckoutSettingsFileAsync();
+            }
 
             // Make sure the profiles are copied. We don't want them to mutate.
             string activeProfileName = ActiveProfile?.Name;
@@ -822,10 +770,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// their just added profile to be listed first in the start menu. If addToFront is false but there is
         /// an existing profile, the new one will be inserted at the same location rather than at the end.
         /// </summary>
-        public async Task AddOrUpdateProfileAsync(ILaunchProfile profile, bool addToFront)
+        public Task AddOrUpdateProfileAsync(ILaunchProfile profile, bool addToFront)
         {
             // Updates need to be sequenced
-            await _sequentialTaskQueue.ExecuteTask(async () =>
+            return _sequentialTaskQueue.ExecuteTask(async () =>
             {
                 ILaunchSettings currentSettings = await GetSnapshotThrowIfErrors();
                 ILaunchProfile existingProfile = null;
@@ -873,10 +821,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// <summary>
         /// Removes the specified profile from the list and saves to disk.
         /// </summary>
-        public async Task RemoveProfileAsync(string profileName)
+        public Task RemoveProfileAsync(string profileName)
         {
             // Updates need to be sequenced
-            await _sequentialTaskQueue.ExecuteTask(async () =>
+            return _sequentialTaskQueue.ExecuteTask(async () =>
             {
                 ILaunchSettings currentSettings = await GetSnapshotThrowIfErrors();
                 ILaunchProfile existingProfile = currentSettings.Profiles.FirstOrDefault(p => LaunchProfile.IsSameProfileName(p.Name, profileName));
@@ -896,10 +844,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// Adds or updates the global settings represented by settingName. Saves the
         /// updated settings to disk. Note that the settings object must be serializable.
         /// </summary>
-        public async Task AddOrUpdateGlobalSettingAsync(string settingName, object settingContent)
+        public Task AddOrUpdateGlobalSettingAsync(string settingName, object settingContent)
         {
             // Updates need to be sequenced
-            await _sequentialTaskQueue.ExecuteTask(async () =>
+            return _sequentialTaskQueue.ExecuteTask(async () =>
             {
                 ILaunchSettings currentSettings = await GetSnapshotThrowIfErrors();
                 ImmutableDictionary<string, object> globalSettings = ImmutableStringDictionary<object>.EmptyOrdinal;
@@ -922,10 +870,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// <summary>
         /// Removes the specified global setting and saves the settings to disk
         /// </summary>
-        public async Task RemoveGlobalSettingAsync(string settingName)
+        public Task RemoveGlobalSettingAsync(string settingName)
         {
             // Updates need to be sequenced
-            await _sequentialTaskQueue.ExecuteTask(async () =>
+            return _sequentialTaskQueue.ExecuteTask(async () =>
             {
                 ILaunchSettings currentSettings = await GetSnapshotThrowIfErrors();
                 if (currentSettings.GlobalSettings.TryGetValue(settingName, out object currentValue))

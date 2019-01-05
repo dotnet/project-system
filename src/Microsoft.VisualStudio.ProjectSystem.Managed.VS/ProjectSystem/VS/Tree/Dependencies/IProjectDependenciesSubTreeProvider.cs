@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Immutable;
+using System.Threading;
 
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
@@ -14,42 +15,56 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     public interface IProjectDependenciesSubTreeProvider
     {
         /// <summary>
-        /// Must be unique, represents a type of the provider that will be associated
-        /// with provider's nodes (via project tree flags)
+        /// Gets a string that uniquely identifies the type of dependency nodes emitted by this provider.
         /// </summary>
+        /// <remarks>
+        /// This string will be associated with provider's nodes (via project tree flags).
+        /// </remarks>
         string ProviderType { get; }
 
         /// <summary>
-        /// Returns a node metadata for given nodeId.
+        /// Returns the root node for this provider's dependency nodes.
         /// </summary>
+        /// <remarks>
+        /// Despite the method's name, implementations may return the same instance for repeated
+        /// calls, so long as the returned value is immutable.
+        /// </remarks>
         IDependencyModel CreateRootDependencyNode();
 
         /// <summary>
-        /// Raised when provider's dependencies changed 
+        /// Raised when this provider's dependencies changed.
         /// </summary>
         event EventHandler<DependenciesChangedEventArgs> DependenciesChanged;
     }
 
-    public class DependenciesChangedEventArgs
+    public sealed class DependenciesChangedEventArgs
     {
-        public DependenciesChangedEventArgs(IProjectDependenciesSubTreeProvider provider,
-                                            string targetShortOrFullName,
-                                            IDependenciesChanges changes,
-                                            IProjectCatalogSnapshot catalogs,
-                                            IImmutableDictionary<NamedIdentity, IComparable> dataSourceVersions)
+        [Obsolete("Constructor includes unused properties")]
+        public DependenciesChangedEventArgs(
+            IProjectDependenciesSubTreeProvider provider,
+            string targetShortOrFullName,
+            IDependenciesChanges changes,
+            IProjectCatalogSnapshot catalogs,
+            IImmutableDictionary<NamedIdentity, IComparable> dataSourceVersions)
+            : this(provider, targetShortOrFullName, changes, CancellationToken.None)
+        {
+        }
+
+        public DependenciesChangedEventArgs(
+            IProjectDependenciesSubTreeProvider provider,
+            string targetShortOrFullName,
+            IDependenciesChanges changes,
+            CancellationToken token)
         {
             Provider = provider;
             TargetShortOrFullName = targetShortOrFullName;
             Changes = changes;
-            Catalogs = catalogs;
-            DataSourceVersions = dataSourceVersions;
+            Token = token;
         }
 
         public IProjectDependenciesSubTreeProvider Provider { get; }
-
         public string TargetShortOrFullName { get; }
         public IDependenciesChanges Changes { get; }
-        public IProjectCatalogSnapshot Catalogs { get; }
-        public IImmutableDictionary<NamedIdentity, IComparable> DataSourceVersions { get; }
+        public CancellationToken Token { get; }
     }
 }

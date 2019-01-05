@@ -46,6 +46,7 @@
     <Rule Id="CA1721" Action="None" />
     <Rule Id="CA1724" Action="None" />
     <Rule Id="CA1815" Action="None" />
+    <Rule Id="CA1820" Action="None" />
     <Rule Id="CA2007" Action="None" />
     <Rule Id="CA2211" Action="None" />
     <Rule Id="CA2213" Action="None" /> <!-- https://github.com/dotnet/roslyn-analyzers/issues/1796 -->
@@ -57,7 +58,19 @@
     <Rule Id="CA2231" Action="None" />
     <Rule Id="CA2234" Action="None" />
   </Rules>
+  <Rules AnalyzerId="Microsoft.CodeQuality.Analyzers.Exp" RuleNamespace="Microsoft.CodeQuality.Analyzers.Exp">
+    <Rule Id="CA1062" Action="None" />
+    <Rule Id="CA1303" Action="None" />
+    <Rule Id="CA1508" Action="None" /> <!-- disable until 2.9.x per https://github.com/dotnet/roslyn-analyzers/issues/1921#issuecomment-446702992 -->
+  </Rules>
+  <Rules AnalyzerId="Microsoft.NetFramework.Analyzers" RuleNamespace="Microsoft.NetFramework.Analyzers">
+    <Rule Id="CA2153" Action="None" /> <!-- TODO do not catch CorruptedStateExceptions -->
+    <Rule Id="CA2235" Action="None" /> <!-- TODO mark all non-serializable fields -->
+    <Rule Id="CA3075" Action="Error" />
+  </Rules>
   <Rules AnalyzerId="Microsoft.CodeAnalysis.Analyzers" RuleNamespace="Microsoft.CodeAnalysis.Analyzers">
+    <!-- These diagnostics apply to the source code of analyzers themselves. -->
+    <!-- We do not have any analyzers in this repository, so disable these. -->
     <Rule Id="RS1001" Action="None" />
     <Rule Id="RS1002" Action="None" />
     <Rule Id="RS1003" Action="None" />
@@ -70,8 +83,16 @@
     <Rule Id="RS1011" Action="None" />
     <Rule Id="RS1012" Action="None" />
     <Rule Id="RS1013" Action="None" />
-    <Rule Id="RS1014" Action="Warning" />
-    <Rule Id="RS1022" Action="None" />  <!-- https://github.com/dotnet/roslyn-analyzers/issues/1861 -->
+    <Rule Id="RS1014" Action="Warning" /> <!-- DoNotIgnoreReturnValueOnImmutableObjectMethodInvocation -->
+    <Rule Id="RS1015" Action="None" />
+    <Rule Id="RS1016" Action="None" />
+    <Rule Id="RS1017" Action="None" />
+    <Rule Id="RS1018" Action="None" />
+    <Rule Id="RS1019" Action="None" />
+    <Rule Id="RS1020" Action="None" />
+    <Rule Id="RS1021" Action="None" />
+    <Rule Id="RS1022" Action="None" />
+    <Rule Id="RS1023" Action="None" />
   </Rules>
   <Rules AnalyzerId="Microsoft.Composition.Analyzers" RuleNamespace="Microsoft.Composition.Analyzers">
     <Rule Id="RS0006" Action="Error" />
@@ -91,6 +112,8 @@
     <Rule Id="RS0025" Action="Error" />
     <Rule Id="RS0026" Action="Error" />
     <Rule Id="RS0027" Action="Error" />
+    <Rule Id="RS0030" Action="Error" />
+    <Rule Id="RS0031" Action="Error" />
   </Rules>
   <Rules AnalyzerId="System.Collections.Immutable.Analyzers" RuleNamespace="System.Collections.Immutable.Analyzers">
     <Rule Id="RS0012" Action="Warning" />

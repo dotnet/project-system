@@ -1,6 +1,8 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System;
 using System.Text;
+using Microsoft.VisualStudio.Buffers.PooledObjects;
 
 namespace Microsoft.VisualStudio.Text
 {
@@ -19,7 +21,7 @@ namespace Microsoft.VisualStudio.Text
         /// <exception cref="FormatException">
         ///     The format specification in <paramref name="format"/> is invalid.
         /// </exception>
-        public static void AppendFormat(this StringBuilder builder, StringFormat format)
+        public static void AppendFormat(this StringBuilder builder, in StringFormat format)
         {
             Requires.NotNull(builder, nameof(builder));
 
@@ -47,7 +49,7 @@ namespace Microsoft.VisualStudio.Text
             }
         }
 
-        public static StringBuilder TrimEnd(this StringBuilder builder, params char[] trimChars)
+        public static StringBuilder TrimEnd(this PooledStringBuilder builder, params char[] trimChars)
         {
             while (builder.Length > 0)
             {

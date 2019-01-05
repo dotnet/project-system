@@ -79,19 +79,19 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             If cacheTimeout <> 0 Then
                 'Let's see whether we should display this as minutes, which we'll do if we have an even number of minutes...
                 If cacheTimeout Mod 60 = 0 Then
-                    cacheTimeout = cacheTimeout \ 60
+                    cacheTimeout \= 60
                     unit = TimeUnit.Minutes
                 End If
 
                 'How about hours?
                 If cacheTimeout Mod 60 = 0 Then
-                    cacheTimeout = cacheTimeout \ 60
+                    cacheTimeout \= 60
                     unit = TimeUnit.Hours
                 End If
 
                 'Days?
                 If cacheTimeout Mod 24 = 0 Then
-                    cacheTimeout = cacheTimeout \ 24
+                    cacheTimeout \= 24
                     unit = TimeUnit.Days
                 End If
             End If

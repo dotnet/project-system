@@ -796,7 +796,7 @@
     <value>4</value>
   </data>
   <data name="AssemblyVersionRevisionTextBox.AccessibleName" xml:space="preserve">
-    <value>Revision</value>
+    <value>Assembly Version Revision</value>
   </data>
   <data name="AssemblyVersionRevisionTextBox.Location" type="System.Drawing.Point, System.Drawing">
     <value>174, 3</value>
@@ -820,7 +820,7 @@
     <value>0</value>
   </data>
   <data name="AssemblyVersionBuildTextBox.AccessibleName" xml:space="preserve">
-    <value>Build</value>
+    <value>Assembly Version Build</value>
   </data>
   <data name="AssemblyVersionBuildTextBox.Location" type="System.Drawing.Point, System.Drawing">
     <value>117, 3</value>
@@ -844,7 +844,7 @@
     <value>1</value>
   </data>
   <data name="AssemblyVersionMinorTextBox.AccessibleName" xml:space="preserve">
-    <value>Minor</value>
+    <value>Assembly Version Minor</value>
   </data>
   <data name="AssemblyVersionMinorTextBox.Location" type="System.Drawing.Point, System.Drawing">
     <value>60, 3</value>
@@ -868,7 +868,7 @@
     <value>2</value>
   </data>
   <data name="AssemblyVersionMajorTextBox.AccessibleName" xml:space="preserve">
-    <value>Major</value>
+    <value>Assembly Version Major</value>
   </data>
   <data name="AssemblyVersionMajorTextBox.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 3</value>
@@ -922,7 +922,7 @@
     <value>4</value>
   </data>
   <data name="FileVersionRevisionTextBox.AccessibleName" xml:space="preserve">
-    <value>Revision</value>
+    <value>Assembly File Verison Revision</value>
   </data>
   <data name="FileVersionRevisionTextBox.Location" type="System.Drawing.Point, System.Drawing">
     <value>174, 3</value>
@@ -946,7 +946,7 @@
     <value>0</value>
   </data>
   <data name="FileVersionBuildTextBox.AccessibleName" xml:space="preserve">
-    <value>Build</value>
+    <value>Assembly File Verison Build</value>
   </data>
   <data name="FileVersionBuildTextBox.Location" type="System.Drawing.Point, System.Drawing">
     <value>117, 3</value>
@@ -970,7 +970,7 @@
     <value>1</value>
   </data>
   <data name="FileVersionMinorTextBox.AccessibleName" xml:space="preserve">
-    <value>Minor</value>
+    <value>Assembly File Verison Minor</value>
   </data>
   <data name="FileVersionMinorTextBox.Location" type="System.Drawing.Point, System.Drawing">
     <value>60, 3</value>
@@ -994,7 +994,7 @@
     <value>2</value>
   </data>
   <data name="FileVersionMajorTextBox.AccessibleName" xml:space="preserve">
-    <value>Major</value>
+    <value>Assembly File Verison Major</value>
   </data>
   <data name="FileVersionMajorTextBox.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 3</value>
@@ -1410,9 +1410,9 @@
   <data name="TableLayoutPanel.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
     <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="AssemblyVersionLabel" Row="25" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="CopyrightLabel" Row="10" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="Copyright" Row="10" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="DescriptionLabel" Row="9" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="Description" Row="9" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="PackageIconUrl" Row="15" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="PackageIconUrlLabel" Row="15" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="PackageProjectUrl" Row="14" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="PackageVersion" Row="4" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="PackageVersionLabel" Row="4" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="PackageLicenseUrlLabel" Row="13" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="RepositoryUrl" Row="16" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="RepositoryType" Row="17" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="PackageTagsLabel" Row="18" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="RepositoryUrlLabel" Row="16" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="PackageReleaseNotesLabel" Row="19" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="RepositoryTypeLabel" Row="17" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="PackageTags" Row="18" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="PackageReleaseNotes" Row="19" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="PackageProjectUrlLabel" Row="14" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="GeneratePackageOnBuild" Row="0" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;Control Name="NeutralLanguageLabel" Row="24" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="AssemblyVersionLayoutPanel" Row="25" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="FileVersionLayoutPanel" Row="26" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="PackageLicenseUrl" Row="13" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="NeutralLanguageComboBox" Row="24" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="PackageRequireLicenseAcceptance" Row="1" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;Control Name="PackageIdLabel" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="PackageId" Row="2" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="AuthorsLabel" Row="5" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="Authors" Row="5" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="AssemblyCompanyLabel" Row="6" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="ProductLabel" Row="7" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="AssemblyCompany" Row="6" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="Product" Row="7" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="AssemblyFileVersionLabel" Row="26" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,Percent,100" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
-  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  <data name="$this.Localizable" type="System.Boolean, mscorlib">
     <value>True</value>
-  </metadata>
+  </data>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
     <value>6, 13</value>
   </data>

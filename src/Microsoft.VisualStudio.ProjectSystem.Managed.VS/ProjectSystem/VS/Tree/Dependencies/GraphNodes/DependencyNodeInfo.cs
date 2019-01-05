@@ -6,42 +6,30 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
 {
-    internal struct DependencyNodeInfo : IEquatable<DependencyNodeInfo>
+    internal readonly struct DependencyNodeInfo : IEquatable<DependencyNodeInfo>
     {
-        public string Id;
-        public string Caption;
-        public bool Resolved;
+        public string Id { get; }
+        public string Caption { get; }
+        public bool Resolved { get; }
 
-        public override int GetHashCode()
+        public DependencyNodeInfo(string id, string caption, bool resolved)
         {
-            return StringComparer.OrdinalIgnoreCase.GetHashCode(Id);
+            Id = id;
+            Caption = caption;
+            Resolved = resolved;
         }
 
-        public override bool Equals(object obj)
-        {
-            if (obj is DependencyNodeInfo other)
-            {
-                return Equals(other);
-            }
+        public override int GetHashCode() => StringComparer.OrdinalIgnoreCase.GetHashCode(Id);
 
-            return false;
-        }
+        public override bool Equals(object obj) => obj is DependencyNodeInfo other && Equals(other);
 
-        public bool Equals(DependencyNodeInfo other)
-        {
-            return other.GetHashCode() == GetHashCode();
-        }
+        public bool Equals(DependencyNodeInfo other) => StringComparer.OrdinalIgnoreCase.Equals(Id, other.Id);
 
         public static DependencyNodeInfo FromDependency(IDependency dependency)
         {
             Requires.NotNull(dependency, nameof(dependency));
 
-            return new DependencyNodeInfo
-            {
-                Id = dependency.Id,
-                Caption = dependency.Caption,
-                Resolved = dependency.Resolved
-            };
+            return new DependencyNodeInfo(dependency.Id, dependency.Caption, dependency.Resolved);
         }
     }
 }

@@ -3,22 +3,18 @@
 Imports System.Text
 Imports System.Windows.Forms
 Imports System.Windows.Forms.Design
-Imports System.Drawing
 
 Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
     Friend NotInheritable Class BuildEventCommandLineDialog
         Inherits Form
 
-        Private Shared s_defaultInstance As BuildEventCommandLineDialog
-        Private Shared s_syncObject As New Object
         Private _eventCommandLine As String
         Private _tokens() As String
         Private _values() As String
         Private _dte As EnvDTE.DTE
         Private _serviceProvider As IServiceProvider
         Private _page As PropPageUserControlBase
-        Private _initialFormSize As Size
         Private _helpTopic As String
 
         Public Sub New()
@@ -164,7 +160,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             MacrosPanel.Visible = False
             overarchingTableLayoutPanel.RowStyles.Item(1).SizeType = SizeType.AutoSize
-            Height = Height - MacrosPanel.Height
+            Height -= MacrosPanel.Height
+
+            ShowMacrosButton.Focus()
 
             '// Disable and hide the Insert button
             SetInsertButtonState(False)
@@ -178,7 +176,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             MacrosPanel.Visible = True
             overarchingTableLayoutPanel.RowStyles.Item(1).SizeType = SizeType.Percent
-            Height = Height + MacrosPanel.Height
+            Height += MacrosPanel.Height
+
+            HideMacrosButton.Focus()
 
             '// Show the Insert button
             SetInsertButtonState(True)

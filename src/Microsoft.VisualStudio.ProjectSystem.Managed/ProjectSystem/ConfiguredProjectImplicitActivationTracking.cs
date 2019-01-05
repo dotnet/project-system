@@ -42,7 +42,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
             get;
         }
 
+#pragma warning disable RS0030 // symbol ConfiguredProjectAutoLoad is banned
         [ConfiguredProjectAutoLoad]
+#pragma warning restore RS0030 // symbol ConfiguredProjectAutoLoad is banned
         [AppliesTo(ProjectCapability.DotNet)]
         public void Load()
         {
@@ -61,7 +63,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             }
         }
 
-        public Task IsImplicitlyActiveTask
+        public Task ImplicitlyActive
         {
             get
             {
@@ -79,7 +81,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             _tasksService.UnloadCancellationToken.Register(RegisterOptions.ExecuteImmediatelyIfAlreadyCanceledAndDisposed, () =>
             {
-                /// Unloading, notify anyone listening that we're never going to be active
+                // Unloading, notify anyone listening that we're never going to be active
                 OnCanceled();
             });
         }

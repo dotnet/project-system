@@ -5,7 +5,7 @@ using System.Collections.Immutable;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using System.Windows.Controls;
-
+using Microsoft.VisualStudio.PlatformUI;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 
 using Moq;
@@ -75,10 +75,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             var project = UnconfiguredProjectFactory.Create(filePath: @"C:\Foo\foo.proj");
             var viewModel = new DebugPageViewModel(null, project);
 
-            Assert.IsType<Utilities.DelegateCommand>(viewModel.BrowseDirectoryCommand);
-            Assert.IsType<Utilities.DelegateCommand>(viewModel.BrowseExecutableCommand);
-            Assert.IsType<Utilities.DelegateCommand>(viewModel.NewProfileCommand);
-            Assert.IsType<Utilities.DelegateCommand>(viewModel.DeleteProfileCommand);
+            Assert.IsType<DelegateCommand>(viewModel.BrowseDirectoryCommand);
+            Assert.IsType<DelegateCommand>(viewModel.BrowseExecutableCommand);
+            Assert.IsType<DelegateCommand>(viewModel.NewProfileCommand);
+            Assert.IsType<DelegateCommand>(viewModel.DeleteProfileCommand);
         }
 
         [Fact]

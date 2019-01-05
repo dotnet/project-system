@@ -6,7 +6,7 @@ using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading.Tasks;
-
+using Microsoft.VisualStudio.Buffers.PooledObjects;
 using Microsoft.VisualStudio.ProjectSystem.Configuration;
 
 namespace Microsoft.VisualStudio.ProjectSystem
@@ -74,7 +74,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public async Task<ImmutableDictionary<string, ConfiguredProject>> GetActiveConfiguredProjectsMapAsync()
         {
-            ImmutableDictionary<string, ConfiguredProject>.Builder builder = ImmutableDictionary.CreateBuilder<string, ConfiguredProject>();
+            var builder = PooledDictionary<string, ConfiguredProject>.GetInstance();
 
             ActiveConfiguredObjects<ConfiguredProject> projects = await GetActiveConfiguredProjectsAsync();
 
@@ -92,7 +92,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 builder.Add(string.Empty, projects.Objects[0]);
             }
 
-            return builder.ToImmutable();
+            return builder.ToImmutableDictionaryAndFree();
         }
 
         public async Task<ActiveConfiguredObjects<ConfiguredProject>> GetActiveConfiguredProjectsAsync()
@@ -121,7 +121,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             IImmutableSet<ProjectConfiguration> configurations = await _services.ProjectConfigurationsService.GetKnownProjectConfigurationsAsync();
 
-            ImmutableArray<ProjectConfiguration>.Builder builder = ImmutableArray.CreateBuilder<ProjectConfiguration>(configurations.Count);
+            var builder = PooledArray<ProjectConfiguration>.GetInstance();
             IImmutableSet<string> dimensionNames = GetDimensionNames();
 
             foreach (ProjectConfiguration configuration in configurations)
@@ -133,7 +133,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             }
 
             Assumes.True(builder.Count > 0, "We have an active configuration that isn't one of the known configurations");
-            return new ActiveConfiguredObjects<ProjectConfiguration>(builder.ToImmutable(), dimensionNames);
+            return new ActiveConfiguredObjects<ProjectConfiguration>(builder.ToImmutableAndFree(), dimensionNames);
         }
 
         private IImmutableSet<string> GetDimensionNames()
@@ -150,13 +150,13 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         private static bool IsActiveConfigurationCandidate(ProjectConfiguration activeSolutionConfiguration, ProjectConfiguration configuration, IImmutableSet<string> ignoredDimensionNames)
         {
-            foreach (KeyValuePair<string, string> dimension in activeSolutionConfiguration.Dimensions)
+            foreach ((string dimensionName, string dimensionValue) in activeSolutionConfiguration.Dimensions)
             {
-                if (ignoredDimensionNames.Contains(dimension.Key))
+                if (ignoredDimensionNames.Contains(dimensionName))
                     continue;
 
-                if (!configuration.Dimensions.TryGetValue(dimension.Key, out string otherDimensionValue) ||
-                    !string.Equals(dimension.Value, otherDimensionValue, StringComparison.Ordinal))
+                if (!configuration.Dimensions.TryGetValue(dimensionName, out string otherDimensionValue) ||
+                    !string.Equals(dimensionValue, otherDimensionValue, StringComparison.Ordinal))
                 {
                     return false;
                 }

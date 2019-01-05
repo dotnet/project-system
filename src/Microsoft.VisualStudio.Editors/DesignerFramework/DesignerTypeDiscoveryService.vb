@@ -112,12 +112,12 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 activeConfig2 = TryCast(activeConfig(0), IVsProjectCfg2)
 
                 If activeConfig2 IsNot Nothing Then
-                    Dim outputgroup As IVsOutputGroup = Nothing
-                    activeConfig2.OpenOutputGroup(BuildOutputGroup.Built, outputgroup)
-                    Dim outputgroup2 As IVsOutputGroup2 = TryCast(outputgroup, IVsOutputGroup2)
-                    If outputgroup2 IsNot Nothing Then
+                    Dim outputGroup As IVsOutputGroup = Nothing
+                    activeConfig2.OpenOutputGroup(BuildOutputGroup.Built, outputGroup)
+                    Dim outputGroup2 As IVsOutputGroup2 = TryCast(outputGroup, IVsOutputGroup2)
+                    If outputGroup2 IsNot Nothing Then
                         Dim output As IVsOutput2 = Nothing
-                        VSErrorHandler.ThrowOnFailure(outputgroup2.get_KeyOutputObject(output))
+                        VSErrorHandler.ThrowOnFailure(outputGroup2.get_KeyOutputObject(output))
                         If output IsNot Nothing Then
                             Dim url As String = Nothing
                             VSErrorHandler.ThrowOnFailure(output.get_DeploySourceURL(url))

@@ -412,3 +412,51 @@
 <Assembly: CodeAnalysis.SuppressMessage("Design", "CA1063:Implement IDisposable Correctly", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.ApplicationDesigner.PropertyPageSite.Dispose")>
 <Assembly: CodeAnalysis.SuppressMessage("Design", "CA1063:Implement IDisposable Correctly", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.ApplicationDesigner.CustomViewProvider.Dispose")>
 <Assembly: CodeAnalysis.SuppressMessage("Design", "CA1063:Implement IDisposable Correctly", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.ApplicationDesigner.PropertyPageSite.Dispose(System.Boolean)")>
+
+' https://github.com/dotnet/roslyn-analyzers/issues/1872
+<Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Scope:="member", Target:="~M:VSThemedLinkLabel.VsThemedLinkLabel_MouseEnter(System.Object,System.EventArgs)")>
+<Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Scope:="member", Target:="~M:VSThemedLinkLabel.VsThemedLinkLabel_MouseLeave(System.Object,System.EventArgs)")>
+<Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.ApplicationDesigner.SpecialFileCustomView.LinkLabel_LinkClicked(System.Object,System.Windows.Forms.LinkLabelLinkClickedEventArgs)")>
+<Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.ApplicationDesigner.SpecialFileCustomViewProvider.DesignerView_ThemeChanged(System.Object,System.EventArgs)")>
+<Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.BuildBegin(EnvDTE.vsBuildScope,EnvDTE.vsBuildAction)")>
+<Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.BuildDone(EnvDTE.vsBuildScope,EnvDTE.vsBuildAction)")>
+<Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.PropertyPages.PropPageHostDialog.Cancel_Click(System.Object,System.EventArgs)")>
+<Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.PropertyPages.PropPageHostDialog.OK_Click(System.Object,System.EventArgs)")>
+<Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.PropertyPages.PropPageHostDialog.PropPageHostDialog_HelpButtonClicked(System.Object,System.ComponentModel.CancelEventArgs)")>
+<Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerView.OnDesignerHostTransactionClosed(System.Object,System.ComponentModel.Design.DesignerTransactionCloseEventArgs)")>
+<Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerView.OnUndoEngineUndone(System.Object,System.EventArgs)")>
+<Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerView.PlatformComboBox_DropDown(System.Object,System.EventArgs)")>
+<Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerView.PropertyPagePanel_GotFocus(System.Object,System.EventArgs)")>
+<Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerView.ConfigurationComboBox_DropDown(System.Object,System.EventArgs)")>
+<Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerView.ConfigurationPanel_SizeChanged(System.Object,System.EventArgs)")>
+<Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerView.OnBroadcastMessageEventsHelperBroadcastMessage(System.UInt32,System.IntPtr,System.IntPtr)")>
+<Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerView.SelectedConfigurationOrPlatformIndexChanged(System.Object,System.EventArgs)")>
+<Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabControl.OnBroadcastMessageEventsHelperBroadcastMessage(System.UInt32,System.IntPtr,System.IntPtr)")>
+<Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabControl.OverflowButton_Click(System.Object,System.EventArgs)")>
+<Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerView.ApplicationDesignerView_SizeChanged(System.Object,System.EventArgs)")>
+<Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerWindowPane.OnBroadcastMessageEventsHelperBroadcastMessage(System.UInt32,System.IntPtr,System.IntPtr)")>
+<Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerWindowPaneControl.ApplicationDesignerWindowPaneControl_SizeChanged(System.Object,System.EventArgs)")>
+<Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerPanel.ApplicationDesignerPanel_VisibleChanged(System.Object,System.EventArgs)")>
+<Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerPanel.PageHostingPanel_HandleCreated(System.Object,System.EventArgs)")>
+<Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerPanel.PageHostingPanel_Layout(System.Object,System.Windows.Forms.LayoutEventArgs)")>
+<Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.AppDesDesignerFramework.ErrorControl.ErrorText_GotFocus(System.Object,System.EventArgs)")>
+
+' https://github.com/dotnet/roslyn-analyzers/issues/1874
+<Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.PropertyPages.ProjectReloadedException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)")>
+<Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.PropPageDesigner.PropertyPageSerializationService.PropertyPageSerializationStore.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)")>
+
+' https://github.com/dotnet/roslyn-analyzers/issues/1878
+<Assembly: CodeAnalysis.SuppressMessage("Performance", "CA1812:Avoid uninstantiated internal classes", Scope:="type", Target:="~T:Microsoft.VisualStudio.Editors.AppDesCommon.DTEUtils")>
+<Assembly: CodeAnalysis.SuppressMessage("Performance", "CA1812:Avoid uninstantiated internal classes", Scope:="type", Target:="~T:Microsoft.VisualStudio.Editors.AppDesDesignerFramework.DesignUtil")>
+<Assembly: CodeAnalysis.SuppressMessage("Performance", "CA1812:Avoid uninstantiated internal classes", Scope:="type", Target:="~T:Microsoft.VisualStudio.Editors.Constants.MenuConstants")>
+
+' https://github.com/dotnet/roslyn/issues/30882
+<Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.AppDesDesignerFramework.DesignUtil.DesignUtil")>
+<Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.Constants.MenuConstants.MenuConstants")>
+
+' https://github.com/dotnet/roslyn/issues/30895
+<Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0052:Remove unread private members", Scope:="member", Target:="~P:Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerView._broadcastMessageEventsHelper")>
+<Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0052:Remove unread private members", Scope:="member", Target:="~P:Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase._buildEvents")>
+
+<Assembly: CodeAnalysis.SuppressMessage("Design", "CA1058:Types should not extend certain base types", Justification:="Public API and cannot be changed.", Scope:="type", Target:="~T:Microsoft.VisualStudio.Editors.Package.InternalException")>
+<Assembly: CodeAnalysis.SuppressMessage("Design", "CA1058:Types should not extend certain base types", Justification:="Public API and cannot be changed.", Scope:="type", Target:="~T:Microsoft.VisualStudio.Editors.PropertyPages.PropertyPageException")>

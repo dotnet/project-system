@@ -3,12 +3,75 @@
 using System.Threading.Tasks;
 
 using Xunit;
-using static Microsoft.VisualStudio.ProjectSystem.AbstractMultiLifetimeComponentFactory.MultiLifetimeComponent;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     public class AbstractMultiLifetimeComponentTests
     {
+        [Fact]
+        public void WaitForLoadedAsync_WhenNotLoadedAsync_ReturnsNonCompletedTask()
+        {
+            var component = CreateInstance();
+
+            var result = component.WaitForLoadedAsync();
+
+            Assert.False(result.IsCanceled);
+            Assert.False(result.IsCompleted);
+            Assert.False(result.IsFaulted);
+        }
+
+        [Fact]
+        public async Task WaitForLoadedAsync_WhenLoaded_ReturnsCompletedTask()
+        {
+            var component = CreateInstance();
+
+            await component.LoadAsync();
+
+            var result = component.WaitForLoadedAsync();
+
+            Assert.True(result.IsCompleted);
+        }
+
+        [Fact]
+        public async Task WaitForLoadedAsync_WhenUnloaded_ReturnsNonCompletedTask()
+        {
+            var component = CreateInstance();
+
+            await component.LoadAsync();
+            await component.UnloadAsync();
+
+            var result = component.WaitForLoadedAsync();
+
+            Assert.False(result.IsCanceled);
+            Assert.False(result.IsCompleted);
+            Assert.False(result.IsFaulted);
+        }
+
+        [Fact]
+        public async Task WaitForLoadedAsync_DisposedWhenUnloaded_ReturnsCancelledTask()
+        {
+            var component = CreateInstance();
+
+            await component.DisposeAsync();
+
+            var result = component.WaitForLoadedAsync();
+
+            Assert.True(result.IsCanceled);
+        }
+
+        [Fact]
+        public async Task WaitForLoadedAsync_DisposedWhenLoaded_ReturnsCancelledTask()
+        {
+            var component = CreateInstance();
+
+            await component.LoadAsync();
+            await component.DisposeAsync();
+
+            var result = component.WaitForLoadedAsync();
+
+            Assert.True(result.IsCanceled);
+        }
+
         [Fact]
         public async Task LoadAsync_Initializes()
         {
@@ -26,7 +89,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             await component.LoadAsync();
 
-            var result = (MultiLifetimeInstance)component.Instance;
+            var result = await component.WaitForLoadedAsync();
 
             Assert.True(result.IsInitialized);
         }
@@ -38,11 +101,13 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             await component.LoadAsync();
 
-            var instance = component.Instance;
+            var instance = await component.WaitForLoadedAsync();
 
             await component.LoadAsync();
 
-            Assert.Same(instance, component.Instance);
+            var result = await component.WaitForLoadedAsync();
+
+            Assert.Same(instance, result);
         }
 
         [Fact]
@@ -52,14 +117,16 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             await component.LoadAsync();
 
-            var instance = component.Instance;
+            var instance = await component.WaitForLoadedAsync();
 
             await component.UnloadAsync();
 
             // We should create a new instance here
             await component.LoadAsync();
 
-            Assert.NotSame(instance, component.Instance);
+            var result = await component.WaitForLoadedAsync();
+
+            Assert.NotSame(instance, result);
         }
 
         [Fact]
@@ -68,12 +135,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var component = CreateInstance();
 
             await component.LoadAsync();
-            var instance = component.Instance;
+            var result = await component.WaitForLoadedAsync();
 
             await component.UnloadAsync();
 
-            Assert.Null(component.Instance);
-            Assert.True(((MultiLifetimeInstance)instance).IsDisposed);
+            Assert.True(result.IsDisposed);
         }
 
         [Fact]
@@ -82,8 +148,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var component = CreateInstance();
 
             await component.UnloadAsync();
-
-            Assert.Null(component.Instance);
         }
 
         [Fact]
@@ -111,11 +175,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var component = CreateInstance();
 
             await component.LoadAsync();
-            var instance = component.Instance;
+            var instance = await component.WaitForLoadedAsync();
 
             component.Dispose();
 
-            Assert.True(((MultiLifetimeInstance)instance).IsDisposed);
+            Assert.True(instance.IsDisposed);
         }
 
         private static AbstractMultiLifetimeComponentFactory.MultiLifetimeComponent CreateInstance()

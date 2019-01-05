@@ -5,11 +5,15 @@ using System.Reflection;
 
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
+using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions.RuleHandlers;
+using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 {
     internal class AssemblyDependencyModel : DependencyModel
     {
+        private static readonly DependencyFlagCache s_flagCache = new DependencyFlagCache(add: DependencyTreeFlags.AssemblySubTreeNodeFlags);
+
         private static readonly DependencyIconSet s_iconSet = new DependencyIconSet(
             icon: KnownMonikers.Reference,
             expandedIcon: KnownMonikers.Reference,
@@ -22,45 +26,40 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             unresolvedIcon: KnownMonikers.ReferenceWarning,
             unresolvedExpandedIcon: KnownMonikers.ReferenceWarning);
 
+        public override DependencyIconSet IconSet => Implicit ? s_implicitIconSet : s_iconSet;
+
+        public override string ProviderType => AssemblyRuleHandler.ProviderTypeString;
+
+        public override int Priority => Dependency.FrameworkAssemblyNodePriority;
+
+        public override string SchemaItemType => AssemblyReference.PrimaryDataSourceItemType;
+
+        public override string SchemaName => Resolved ? ResolvedAssemblyReference.SchemaName : AssemblyReference.SchemaName;
+
         public AssemblyDependencyModel(
-            string providerType,
             string path,
             string originalItemSpec,
-            ProjectTreeFlags flags,
-            bool resolved,
+            bool isResolved,
             bool isImplicit,
             IImmutableDictionary<string, string> properties)
-            : base(providerType, path, originalItemSpec, flags, resolved, isImplicit, properties)
+            : base(
+                path,
+                originalItemSpec,
+                flags: s_flagCache.Get(isResolved, isImplicit),
+                isResolved,
+                isImplicit,
+                properties)
         {
-            string fusionName = null;
-            if (Properties != null)
+            if (isResolved)
             {
-                Properties.TryGetValue(ResolvedAssemblyReference.FusionNameProperty, out fusionName);
-            }
+                string fusionName = Properties.GetStringProperty(ResolvedAssemblyReference.FusionNameProperty);
 
-            if (Resolved)
-            {
-                if (!string.IsNullOrEmpty(fusionName))
-                {
-                    var assemblyName = new AssemblyName(fusionName);
-                    Caption = assemblyName.Name;
-                }
-                else
-                {
-                    Caption = Name;
-                }
-
-                SchemaName = ResolvedAssemblyReference.SchemaName;
+                Caption = fusionName == null ? path : new AssemblyName(fusionName).Name;
             }
             else
             {
-                Caption = Name;
-                SchemaName = AssemblyReference.SchemaName;
+                Caption = path;
             }
-
-            SchemaItemType = AssemblyReference.PrimaryDataSourceItemType;
-            Priority = Dependency.FrameworkAssemblyNodePriority;
-            IconSet = isImplicit ? s_implicitIconSet : s_iconSet;
         }
     }
 }

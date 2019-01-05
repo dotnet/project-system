@@ -1,5 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System;
+
 namespace Microsoft.VisualStudio.ProjectSystem.Logging
 {
     /// <summary>
@@ -28,6 +30,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Logging
         ///     <see cref="IsEnabled"/> is <see langword="true"/> and the format 
         ///     specification in <paramref name="format"/> is invalid.
         /// </exception>
-        void WriteLine(StringFormat format);
+        void WriteLine(in StringFormat format);
     }
 }

@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
     internal static class ManagedPathHelper
     {
         /// <summary>
-        /// Tests a path to see if it is absolute or not. More reliable than Path.IsPathRooted.
+        /// Tests a path to see if it is absolute or not. More reliable than <see cref="System.IO.Path.IsPathRooted"/>.
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
@@ -21,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
             // We don't use System.IO.Path.IsPathRooted because it doesn't support
             // URIs, and because it returns true for paths like "\dir\file", which is
             // relative to whatever drive we're talking about.
-            return Uri.TryCreate(path, UriKind.Absolute, out Uri result);
+            return Uri.TryCreate(path, UriKind.Absolute, out _);
         }
 
         /// <summary>

@@ -29,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                                                IProjectThreadingService threadingService,
                                                ISafeProjectGuidService projectGuidService,
                                                ITelemetryService telemetryService,
-                                               Lazy<IWorkspaceProjectContextFactory> workspaceProjectContextFactory)
+                                               Lazy<IWorkspaceProjectContextFactory> workspaceProjectContextFactory)        // From Roslyn, so lazy
         {
             _project = project;
             _threadingService = threadingService;
@@ -38,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             _projectGuidService = projectGuidService;
         }
 
-        public async Task<IWorkspaceProjectContext> CreateProjectContextAsync(ConfiguredProject project)
+        public async Task<IWorkspaceProjectContextAccessor> CreateProjectContextAsync(ConfiguredProject project)
         {
             Requires.NotNull(project, nameof(project));
 
@@ -52,20 +52,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             if (context == null)
                 return null;
 
-            // Wrap to enforce UI-thread
-            return new ForegroundWorkspaceProjectContext(_threadingService, context);
+            return new WorkspaceProjectContextAccessor(data.WorkspaceProjectContextId, context);
         }
 
-        public async Task ReleaseProjectContextAsync(IWorkspaceProjectContext projectContext)
+        public async Task ReleaseProjectContextAsync(IWorkspaceProjectContextAccessor accessor)
         {
-            Requires.NotNull(projectContext, nameof(projectContext));
+            Requires.NotNull(accessor, nameof(accessor));
 
             // TODO: https://github.com/dotnet/project-system/issues/353.
             await _threadingService.SwitchToUIThread();
 
             try
             {
-                projectContext.Dispose();
+                accessor.Context.Dispose();
             }
             catch (Exception ex) when(_telemetryService.PostFault(TelemetryEventName.LanguageServiceInitFault, ex))
             {

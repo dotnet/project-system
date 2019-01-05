@@ -104,7 +104,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 
             'Serialization keys for ISerializable
             Private Const KEY_STATE As String = "State"
-            Private Const KEY_OBJECTNAMES As String = "ObjectNames"
 
             ''' <summary>
             '''     Implements the save part of ISerializable.
@@ -349,8 +348,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 End Try
 
             End Function
-
-            Private Const Const_Configuration As String = "{Configuration}"
 
             Private Shared Sub SetProperty(component As Component, PropertyName As String, Value As Object)
                 Dim View As PropPageDesignerView

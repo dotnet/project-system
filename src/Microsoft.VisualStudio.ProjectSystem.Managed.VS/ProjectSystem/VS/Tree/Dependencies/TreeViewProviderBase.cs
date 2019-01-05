@@ -13,11 +13,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
     internal abstract class TreeViewProviderBase : IDependenciesTreeViewProvider
     {
-        public TreeViewProviderBase(UnconfiguredProject project)
+        protected TreeViewProviderBase(UnconfiguredProject project)
         {
-            ProjectTreePropertiesProviders = new OrderPrecedenceImportCollection<IProjectTreePropertiesProvider>(
-                            ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesLast,
-                            projectCapabilityCheckProvider: project);
+            _projectTreePropertiesProviders = new OrderPrecedenceImportCollection<IProjectTreePropertiesProvider>(
+                ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesLast,
+                projectCapabilityCheckProvider: project);
         }
 
         /// <summary>
@@ -25,8 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// that apply to the references tree.
         /// </summary>
         [ImportMany(ReferencesProjectTreeCustomizablePropertyValues.ContractName)]
-        private OrderPrecedenceImportCollection<IProjectTreePropertiesProvider> ProjectTreePropertiesProviders { get; set; }
-
+        private readonly OrderPrecedenceImportCollection<IProjectTreePropertiesProvider> _projectTreePropertiesProviders;
 
         public abstract Task<IProjectTree> BuildTreeAsync(
             IProjectTree dependenciesTree,
@@ -45,10 +44,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         protected void ApplyProjectTreePropertiesCustomization(
-                        IProjectTreeCustomizablePropertyContext context,
-                        ReferencesProjectTreeCustomizablePropertyValues values)
+            IProjectTreeCustomizablePropertyContext context,
+            ReferencesProjectTreeCustomizablePropertyValues values)
         {
-            foreach (IProjectTreePropertiesProvider provider in ProjectTreePropertiesProviders.ExtensionValues())
+            foreach (IProjectTreePropertiesProvider provider in _projectTreePropertiesProviders.ExtensionValues())
             {
                 provider.CalculatePropertyValues(context, values);
             }
@@ -69,21 +68,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             public bool ExistsOnDisk { get; set; }
 
-            public bool IsFolder
-            {
-                get
-                {
-                    return false;
-                }
-            }
+            public bool IsFolder => false;
 
-            public bool IsNonFileSystemProjectItem
-            {
-                get
-                {
-                    return true;
-                }
-            }
+            public bool IsNonFileSystemProjectItem => true;
 
             public IImmutableDictionary<string, string> ProjectTreeSettings { get; set; }
         }

@@ -14,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
     {
         public static IProjectVersionedValue<IProjectSubscriptionUpdate> CreateEmptyVersionedValue()
         {
-            return IProjectVersionedValueFactory<IProjectSubscriptionUpdate>.Create(Mock.Of<IProjectSubscriptionUpdate>());
+            return IProjectVersionedValueFactory.Create(Mock.Of<IProjectSubscriptionUpdate>());
         }
 
         public static IProjectSubscriptionUpdate Create()
@@ -25,10 +25,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public static IProjectSubscriptionUpdate Implement(
                         IDictionary<string, IProjectRuleSnapshot> currentState = null,
                         IDictionary<string, IProjectChangeDescription> projectChanges = null,
-                        MockBehavior? mockBehavior = null)
+                        MockBehavior mockBehavior = MockBehavior.Default)
         {
-            var behavior = mockBehavior ?? MockBehavior.Default;
-            var mock = new Mock<IProjectSubscriptionUpdate>(behavior);
+            var mock = new Mock<IProjectSubscriptionUpdate>(mockBehavior);
 
             if (currentState != null)
             {

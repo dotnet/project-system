@@ -26,10 +26,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                                                  string caption = null,
                                                  IEnumerable<string> dependencyIDs = null,
                                                  bool? resolved = null,
-                                                 MockBehavior? mockBehavior = null)
+                                                 MockBehavior mockBehavior = MockBehavior.Default)
         {
-            var behavior = mockBehavior ?? MockBehavior.Default;
-            var mock = new Mock<IDependencyModel>(behavior);
+            var mock = new Mock<IDependencyModel>(mockBehavior);
 
             if (providerType != null)
             {
@@ -61,7 +60,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 mock.Setup(x => x.DependencyIDs).Returns(ImmutableList<string>.Empty.AddRange(dependencyIDs));
             }
 
-            if (resolved != null && resolved.HasValue)
+            if (resolved.HasValue)
             {
                 mock.Setup(x => x.Resolved).Returns(resolved.Value);
             }
@@ -69,7 +68,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             return mock.Object;
         }
 
-        public static IDependencyModel FromJson(
+        public static TestDependencyModel FromJson(
             string jsonString,
             ProjectTreeFlags? flags = null,
             ImageMoniker? icon = null,
@@ -87,27 +86,31 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             var json = JObject.Parse(jsonString);
             var data = json.ToObject<TestDependencyModel>();
 
-            if (flags != null && flags.HasValue)
+            if (flags.HasValue)
             {
-                data.Flags = data.Flags.Union(flags.Value);
+                data.Flags += flags.Value;
             }
 
-            if (icon != null && icon.HasValue)
+            data.Flags += data.Resolved
+                ? DependencyTreeFlags.ResolvedFlags
+                : DependencyTreeFlags.UnresolvedFlags;
+
+            if (icon.HasValue)
             {
                 data.Icon = icon.Value;
             }
 
-            if (expandedIcon != null && expandedIcon.HasValue)
+            if (expandedIcon.HasValue)
             {
                 data.ExpandedIcon = expandedIcon.Value;
             }
 
-            if (unresolvedIcon != null && unresolvedIcon.HasValue)
+            if (unresolvedIcon.HasValue)
             {
                 data.UnresolvedIcon = unresolvedIcon.Value;
             }
 
-            if (unresolvedExpandedIcon != null && unresolvedExpandedIcon.HasValue)
+            if (unresolvedExpandedIcon.HasValue)
             {
                 data.UnresolvedExpandedIcon = unresolvedExpandedIcon.Value;
             }
@@ -123,35 +126,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             }
 
             return data;
-        }
-
-        private class TestDependencyModel : IDependencyModel
-        {
-            public TestDependencyModel()
-            {
-            }
-
-            public string ProviderType { get; set; }
-            public string Name { get; set; }
-            public string Caption { get; set; }
-            public string OriginalItemSpec { get; set; }
-            public string Path { get; set; }
-            public string SchemaName { get; set; }
-            public string SchemaItemType { get; set; }
-            public string Version { get; set; }
-            public bool Resolved { get; set; } = false;
-            public bool TopLevel { get; set; } = true;
-            public bool Implicit { get; set; } = false;
-            public bool Visible { get; set; } = true;
-            public int Priority { get; set; } = 0;
-            public ImageMoniker Icon { get; set; }
-            public ImageMoniker ExpandedIcon { get; set; }
-            public ImageMoniker UnresolvedIcon { get; set; }
-            public ImageMoniker UnresolvedExpandedIcon { get; set; }
-            public IImmutableDictionary<string, string> Properties { get; set; }
-            public IImmutableList<string> DependencyIDs { get; set; } = ImmutableList<string>.Empty;
-            public ProjectTreeFlags Flags { get; set; } = ProjectTreeFlags.Empty;
-            public string Id { get; set; }
         }
     }
 }

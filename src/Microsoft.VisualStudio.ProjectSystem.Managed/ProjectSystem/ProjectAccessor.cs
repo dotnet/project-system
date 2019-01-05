@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using Microsoft.Build.Construction;
 using Microsoft.Build.Evaluation;
 
+#pragma warning disable RS0030 // symbol IProjectLockService is banned
+
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     /// <summary>
@@ -17,9 +19,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
     [Export(typeof(IProjectAccessor))]
     internal class ProjectAccessor : IProjectAccessor
     {
-        // NOTE: It is very deliberate that we ConfigureAwait(true) in this class to switch 
-        // back to the thread type ("threadpool") where XXXLockAsync switched us too.
-
         private readonly IProjectLockService _projectLockService;
 
         [ImportingConstructor]
@@ -107,14 +106,17 @@ namespace Microsoft.VisualStudio.ProjectSystem
             }, cancellationToken);
         }
 
-        public async Task OpenProjectForWriteAsync(ConfiguredProject project, Action<Project> action, CancellationToken cancellationToken = default)
+        public async Task OpenProjectForWriteAsync(ConfiguredProject project, Action<Project> action, ProjectCheckoutOption option = ProjectCheckoutOption.Checkout, CancellationToken cancellationToken = default)
         {
             Requires.NotNull(project, nameof(project));
             Requires.NotNull(project, nameof(action));
 
             await _projectLockService.WriteLockAsync(async access =>
             {
-                await access.CheckoutAsync(project.UnconfiguredProject.FullPath);
+                if (option == ProjectCheckoutOption.Checkout)
+                {
+                    await access.CheckoutAsync(project.UnconfiguredProject.FullPath);
+                }
 
                 Project evaluatedProject = await access.GetProjectAsync(project, cancellationToken);
 

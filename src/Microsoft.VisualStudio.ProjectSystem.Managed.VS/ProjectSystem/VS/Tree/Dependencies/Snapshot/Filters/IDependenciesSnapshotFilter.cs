@@ -8,55 +8,54 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Filters
 {
     /// <summary>
-    /// When snapshot being updated with new, changed, removed dependencies it calls
-    /// a list of available filters which can changed new/old items depending on particular
-    /// filter condition.
-    /// Filter can also prevent snapshot from doing update for given dependency when needed.
+    /// Implementations of this interface control how the addition and removal of <see cref="IDependency"/>
+    /// objects influences the sequence of <see cref="TargetedDependenciesSnapshot"/> objects.
     /// </summary>
+    /// <remarks>
+    /// For each added and removed dependency in an update, <see cref="TargetedDependenciesSnapshot.FromChanges"/>
+    /// iterates through an ordered set of these filters, allowing each to influence how the dependency data is
+    /// integrated into the next snapshot.
+    /// </remarks>
     internal interface IDependenciesSnapshotFilter
     {
         /// <summary>
-        /// Is called before adding a given dependency.
+        /// Called before adding or updated a dependency to a snapshot.
         /// </summary>
-        /// <returns>
-        ///     Returns original or modified dependency depending on filter's logic. 
-        ///     If returns null, snapshot does not do any updates for this dependency.
-        /// </returns>
+        /// <remarks>
+        /// When an <see cref="IDependency"/> is added or updated, implementations of this method may:
+        /// <list type="bullet">
+        ///   <item>accept the dependency as is,</item>
+        ///   <item>accept the dependency but modify it before it is added/updated,</item>
+        ///   <item>reject the dependency outright (though any previous state of the dependency is kept)</item>
+        /// </list>
+        /// In addition to the above operations, implementations of this method may also modify other
+        /// dependencies in the snapshot. All these operations are performed via the <paramref name="context"/>.
+        /// </remarks>
         /// <param name="projectPath">Path to current project.</param>
         /// <param name="targetFramework">Target framework for which dependency was resolved.</param>
         /// <param name="dependency">The dependency to which filter should be applied.</param>
-        /// <param name="worldBuilder">Builder for immutable world dictionary of updating snapshot.</param>
-        /// <param name="topLevelBuilder">Top level dependencies list builder of updating snapshot.</param>
-        /// <param name="subTreeProviders">All known subtree providers</param>
-        /// <param name="projectItemSpecs">List of all items contained in project's xml at given moment, otherwise, <see langword="null"/> if we do not have any data.</param>
-        /// <param name="filterAnyChanges">True if filter did any changes in the snapshot</param>
-        /// <returns>Dependency to be added if addition is approved, null if dependency should not be added to snapshot</returns>
-        IDependency BeforeAdd(
+        /// <param name="subTreeProviderByProviderType">All dictionary of subtree providers keyed by <see cref="IProjectDependenciesSubTreeProvider.ProviderType"/>.</param>
+        /// <param name="projectItemSpecs">List of all items contained in project's xml at given moment (non-imported items), otherwise, <see langword="null"/> if we do not have any data.</param>
+        /// <param name="context">An object via which the filter must signal acceptance or rejection, in addition to making further changes to other dependencies.</param>
+        void BeforeAddOrUpdate(
             string projectPath,
             ITargetFramework targetFramework,
             IDependency dependency,
-            ImmutableDictionary<string, IDependency>.Builder worldBuilder,
-            ImmutableHashSet<IDependency>.Builder topLevelBuilder,
-            Dictionary<string, IProjectDependenciesSubTreeProvider> subTreeProviders,
-            HashSet<string> projectItemSpecs,
-            out bool filterAnyChanges);
+            IReadOnlyDictionary<string, IProjectDependenciesSubTreeProvider> subTreeProviderByProviderType,
+            IImmutableSet<string> projectItemSpecs,
+            IAddDependencyContext context);
 
         /// <summary>
-        /// Is called before removing a given dependency.
+        /// Called before removing a dependency from a snapshot.
         /// </summary>
         /// <param name="projectPath">Path to current project.</param>
         /// <param name="targetFramework">Target framework for which dependency was resolved.</param>
         /// <param name="dependency">The dependency to which filter should be applied.</param>
-        /// <param name="worldBuilder">Builder for immutable world dictionary of updating snapshot.</param>
-        /// <param name="topLevelBuilder">Top level dependencies list builder of updating snapshot.</param>
-        /// <param name="filterAnyChanges">True if filter did any changes in the snapshot</param>
-        /// <returns>Dependency itself if removal is approved, null if dependency should not be removed</returns>
-        IDependency BeforeRemove(
+        /// <param name="context">An object via which the filter must signal acceptance or rejection, in addition to making further changes to other dependencies.</param>
+        void BeforeRemove(
             string projectPath,
             ITargetFramework targetFramework,
             IDependency dependency,
-            ImmutableDictionary<string, IDependency>.Builder worldBuilder,
-            ImmutableHashSet<IDependency>.Builder topLevelBuilder,
-            out bool filterAnyChanges);
+            IRemoveDependencyContext context);
     }
 }

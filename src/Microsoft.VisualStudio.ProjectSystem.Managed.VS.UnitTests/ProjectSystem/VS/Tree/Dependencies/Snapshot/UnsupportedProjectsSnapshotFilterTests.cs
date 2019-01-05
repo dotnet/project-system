@@ -7,98 +7,83 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Filters;
 
+using Moq;
+
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
-    public class UnsupportedProjectsSnapshotFilterTests
+    public sealed class UnsupportedProjectsSnapshotFilterTests
     {
         [Fact]
-        public void UnsupportedProjectsSnapshotFilter_WhenDependencyNotRecognized_ShouldDoNothing()
+        public void BeforeAddOrUpdate_WhenDependencyNotRecognized_ShouldDoNothing()
         {
-            var aggregateSnapshotProvider = IAggregateDependenciesSnapshotProviderFactory.Create();
-            var targetFRameworkProvider = ITargetFrameworkProviderFactory.Create();
-
-            var dependency = IDependencyFactory.Implement(
-                id: "mydependency1",
-                topLevel: false);
-
-            var topLevelDependency = IDependencyFactory.Implement(
-                    id: "mydependency2",
-                    topLevel: true,
-                    resolved: false);
-
-            var topLevelResolvedDependency = IDependencyFactory.Implement(
-                    id: "mydependency3",
-                    topLevel: true,
-                    resolved: true,
-                    flags: ProjectTreeFlags.Empty);
-
-            var topLevelResolvedSharedProjectDependency = IDependencyFactory.Implement(
-                    id: "mydependency4",
-                    topLevel: true,
-                    resolved: true,
-                    flags: DependencyTreeFlags.ProjectNodeFlags.Union(DependencyTreeFlags.SharedProjectFlags));
-
-            var worldBuilder = new Dictionary<string, IDependency>()
+            var acceptable = new TestDependency
             {
-                { dependency.Object.Id, dependency.Object },
-                { topLevelDependency.Object.Id, topLevelDependency.Object },
-                { topLevelResolvedDependency.Object.Id, topLevelResolvedDependency.Object },
-                { topLevelResolvedSharedProjectDependency.Object.Id, topLevelResolvedSharedProjectDependency.Object },
+                Id = "dependency1",
+                TopLevel = true,
+                Resolved = true,
+                Flags = DependencyTreeFlags.ProjectNodeFlags
+            };
 
-            }.ToImmutableDictionary().ToBuilder();
+            AssertNoChange(new TestDependency
+            {
+                ClonePropertiesFrom = acceptable,
+                TopLevel = false
+            });
 
-            var filter = new UnsupportedProjectsSnapshotFilter(aggregateSnapshotProvider, targetFRameworkProvider);
+            AssertNoChange(new TestDependency
+            {
+                ClonePropertiesFrom = acceptable,
+                Resolved = false
+            });
 
-            var resultDependency = filter.BeforeAdd(
-                null,
-                null,
-                dependency.Object,
-                worldBuilder,
-                null,
-                null,
-                null,
-                out bool filterAnyChanges);
+            AssertNoChange(new TestDependency
+            {
+                ClonePropertiesFrom = acceptable,
+                Flags = ProjectTreeFlags.Empty
+            });
 
-            resultDependency = filter.BeforeAdd(
-                null,
-                null,
-                topLevelDependency.Object,
-                worldBuilder,
-                null,
-                null,
-                null,
-                out bool filterAnyChanges2);
+            AssertNoChange(new TestDependency
+            {
+                ClonePropertiesFrom = acceptable,
+                Flags = DependencyTreeFlags.ProjectNodeFlags.Union(DependencyTreeFlags.SharedProjectFlags)
+            });
 
-            resultDependency = filter.BeforeAdd(
-                null,
-                null,
-                topLevelResolvedDependency.Object,
-                worldBuilder,
-                null,
-                null,
-                null,
-                out bool filterAnyChanges3);
+            return;
 
-            resultDependency = filter.BeforeAdd(
-                null,
-                null,
-                topLevelResolvedSharedProjectDependency.Object,
-                worldBuilder,
-                null,
-                null,
-                null,
-                out bool filterAnyChanges4);
+            void AssertNoChange(IDependency dependency)
+            {
+                var aggregateSnapshotProvider = IAggregateDependenciesSnapshotProviderFactory.Create();
+                var targetFrameworkProvider = ITargetFrameworkProviderFactory.Create();
 
-            dependency.VerifyAll();
-            topLevelDependency.VerifyAll();
+                var worldBuilder = new[] { dependency }.ToImmutableDictionary(d => d.Id).ToBuilder();
+
+                var context = new AddDependencyContext(worldBuilder);
+
+                var filter = new UnsupportedProjectsSnapshotFilter(aggregateSnapshotProvider, targetFrameworkProvider);
+
+                filter.BeforeAddOrUpdate(
+                    null,
+                    null,
+                    dependency,
+                    null,
+                    null,
+                    context);
+
+                // Accepts unchanged dependency
+                Assert.Same(dependency, context.GetResult(filter));
+
+                // No other changes made
+                Assert.False(context.Changed);
+            }
         }
 
         [Fact]
-        public void UnsupportedProjectsSnapshotFilter_WhenProjectSnapshotFoundAndHasUnresolvedDependencies_ShouldMakeUnresolved()
+        public void BeforeAddOrUpdate_WhenProjectSnapshotFoundAndHasUnresolvedDependencies_ShouldMakeUnresolved()
         {
-            // Arrange 
+            const string projectPath = @"c:\project\project.csproj";
+
             var targetFramework = ITargetFrameworkFactory.Implement(moniker: "tfm1");
             var targetedSnapshot = ITargetedDependenciesSnapshotFactory.Implement(hasUnresolvedDependency: true);
             var targets = new Dictionary<ITargetFramework, ITargetedDependenciesSnapshot>
@@ -107,66 +92,92 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             };
             var snapshot = IDependenciesSnapshotFactory.Implement(targets: targets);
             var snapshotProvider = IDependenciesSnapshotProviderFactory.Implement(currentSnapshot: snapshot);
-            var aggregateSnapshotProvider = IAggregateDependenciesSnapshotProviderFactory.Implement(getSnapshotProvider: snapshotProvider);
+            var aggregateSnapshotProvider = new Mock<IAggregateDependenciesSnapshotProvider>(MockBehavior.Strict);
+            aggregateSnapshotProvider.Setup(x => x.GetSnapshotProvider(projectPath)).Returns(snapshotProvider);
+
             var targetFrameworkProvider = ITargetFrameworkProviderFactory.Implement(getNearestFramework: targetFramework);
 
-            var dependency = IDependencyFactory.Implement(
-                    targetFramework: targetFramework,
-                    topLevel: true,
-                    resolved: true,
-                    flags: DependencyTreeFlags.ProjectNodeFlags.Union(DependencyTreeFlags.ResolvedFlags),
-                    fullPath: @"c:\myproject1\project.csproj",
-                    setPropertiesResolved: false,
-                    setPropertiesSchemaName: ProjectReference.SchemaName,
-                    setPropertiesFlags: DependencyTreeFlags.ProjectNodeFlags.Union(DependencyTreeFlags.UnresolvedFlags));
+            var dependency = new TestDependency
+            {
+                Id = "dependency1",
+                TopLevel = true,
+                Resolved = true,
+                Flags = DependencyTreeFlags.ProjectNodeFlags.Union(DependencyTreeFlags.ResolvedFlags),
+                TargetFramework = targetFramework,
+                FullPath = projectPath
+            };
 
-            var filter = new UnsupportedProjectsSnapshotFilter(aggregateSnapshotProvider, targetFrameworkProvider);
+            var worldBuilder = ImmutableDictionary<string, IDependency>.Empty.ToBuilder();
 
-            var resultDependency = filter.BeforeAdd(
-                null,
-                null,
-                dependency.Object,
-                null,
-                null,
-                null,
-                null,
-                out bool filterAnyChanges);
+            var context = new AddDependencyContext(worldBuilder);
 
-            dependency.VerifyAll();
+            var filter = new UnsupportedProjectsSnapshotFilter(aggregateSnapshotProvider.Object, targetFrameworkProvider);
+
+            filter.BeforeAddOrUpdate(
+                null,
+                null,
+                dependency,
+                null,
+                null,
+                context);
+
+            // Accepts unresolved version
+            var acceptedDependency = context.GetResult(filter);
+            acceptedDependency.AssertEqualTo(
+                dependency.ToUnresolved(ProjectReference.SchemaName));
+
+            // No other changes made
+            Assert.False(context.Changed);
+
+            aggregateSnapshotProvider.VerifyAll();
         }
 
         [Fact]
-        public void UnsupportedProjectsSnapshotFilter_WhenProjectSnapshotNotFound_ShouldDoNothing()
+        public void BeforeAddOrUpdate_WhenProjectSnapshotNotFound_ShouldDoNothing()
         {
-            // Arrange 
+            const string projectPath = @"c:\project\project.csproj";
+
             var snapshotProvider = IDependenciesSnapshotProviderFactory.Implement(currentSnapshot: null);
-            var aggregateSnapshotProvider = IAggregateDependenciesSnapshotProviderFactory.Implement(getSnapshotProvider: snapshotProvider);
+            var aggregateSnapshotProvider = new Mock<IAggregateDependenciesSnapshotProvider>(MockBehavior.Strict);
+            aggregateSnapshotProvider.Setup(x => x.GetSnapshotProvider(projectPath)).Returns(snapshotProvider);
 
-            var dependency = IDependencyFactory.Implement(
-                    topLevel: true,
-                    resolved: true,
-                    flags: DependencyTreeFlags.ProjectNodeFlags.Union(DependencyTreeFlags.ResolvedFlags),
-                    fullPath: @"c:\myproject1\project.csproj");
+            var dependency = new TestDependency
+            {
+                Id = "dependency1",
+                TopLevel = true,
+                Resolved = true,
+                Flags = DependencyTreeFlags.ProjectNodeFlags.Union(DependencyTreeFlags.ResolvedFlags),
+                FullPath = projectPath
+            };
 
-            var filter = new UnsupportedProjectsSnapshotFilter(aggregateSnapshotProvider, null);
+            var worldBuilder = ImmutableDictionary<string, IDependency>.Empty.ToBuilder();
 
-            var resultDependency = filter.BeforeAdd(
-                null,
-                null,
-                dependency.Object,
-                null,
-                null,
-                null,
-                null,
-                out bool filterAnyChanges);
+            var context = new AddDependencyContext(worldBuilder);
 
-            dependency.VerifyAll();
+            var filter = new UnsupportedProjectsSnapshotFilter(aggregateSnapshotProvider.Object, targetFrameworkProvider: null);
+
+            filter.BeforeAddOrUpdate(
+                null,
+                null,
+                dependency,
+                null,
+                null,
+                context);
+
+            // Accepts unchanged dependency
+            Assert.Same(dependency, context.GetResult(filter));
+
+            // No other changes made
+            Assert.False(context.Changed);
+
+            aggregateSnapshotProvider.VerifyAll();
         }
 
         [Fact]
-        public void UnsupportedProjectsSnapshotFilter_WhenProjectSnapshotFoundAndTargetFrameworkNull_ShouldDoNothing()
+        public void BeforeAddOrUpdate_WhenProjectSnapshotFoundAndTargetFrameworkNull_ShouldDoNothing()
         {
-            // Arrange 
+            const string projectPath = @"c:\project\project.csproj";
+
             var targetFramework = ITargetFrameworkFactory.Implement(moniker: "tfm1");
             var targetedSnapshot = ITargetedDependenciesSnapshotFactory.Implement(hasUnresolvedDependency: true);
             var targets = new Dictionary<ITargetFramework, ITargetedDependenciesSnapshot>
@@ -175,35 +186,48 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             };
             var snapshot = IDependenciesSnapshotFactory.Implement(targets: targets);
             var snapshotProvider = IDependenciesSnapshotProviderFactory.Implement(currentSnapshot: snapshot);
-            var aggregateSnapshotProvider = IAggregateDependenciesSnapshotProviderFactory.Implement(getSnapshotProvider: snapshotProvider);
+            var aggregateSnapshotProvider = new Mock<IAggregateDependenciesSnapshotProvider>(MockBehavior.Strict);
+            aggregateSnapshotProvider.Setup(x => x.GetSnapshotProvider(projectPath)).Returns(snapshotProvider);
             var targetFrameworkProvider = ITargetFrameworkProviderFactory.Implement(getNearestFramework: null);
 
-            var dependency = IDependencyFactory.Implement(
-                    topLevel: true,
-                    resolved: true,
-                    flags: DependencyTreeFlags.ProjectNodeFlags.Union(DependencyTreeFlags.ResolvedFlags),
-                    fullPath: @"c:\myproject1\project.csproj",
-                    targetFramework: targetFramework);
+            var dependency = new TestDependency
+            {
+                Id = "dependency1",
+                TopLevel = true,
+                Resolved = true,
+                Flags = DependencyTreeFlags.ProjectNodeFlags.Union(DependencyTreeFlags.ResolvedFlags),
+                FullPath = projectPath,
+                TargetFramework = targetFramework
+            };
 
-            var filter = new UnsupportedProjectsSnapshotFilter(aggregateSnapshotProvider, targetFrameworkProvider);
+            var worldBuilder = ImmutableDictionary<string, IDependency>.Empty.ToBuilder();
 
-            var resultDependency = filter.BeforeAdd(
-                null,
-                null,
-                dependency.Object,
-                null,
-                null,
-                null,
-                null,
-                out bool filterAnyChanges);
+            var context = new AddDependencyContext(worldBuilder);
 
-            dependency.VerifyAll();
+            var filter = new UnsupportedProjectsSnapshotFilter(aggregateSnapshotProvider.Object, targetFrameworkProvider);
+
+            filter.BeforeAddOrUpdate(
+                null,
+                null,
+                dependency,
+                null,
+                null,
+                context);
+
+            // Accepts unchanged dependency
+            Assert.Same(dependency, context.GetResult(filter));
+
+            // No other changes made
+            Assert.False(context.Changed);
+
+            aggregateSnapshotProvider.VerifyAll();
         }
 
         [Fact]
-        public void UnsupportedProjectsSnapshotFilter_WhenProjectSnapshotFoundAndNoUnresolvedDependencies_ShouldDoNothing()
+        public void BeforeAddOrUpdate_WhenProjectSnapshotFoundAndNoUnresolvedDependencies_ShouldDoNothing()
         {
-            // Arrange 
+            const string projectPath = @"c:\project\project.csproj";
+
             var targetFramework = ITargetFrameworkFactory.Implement(moniker: "tfm1");
             var targetedSnapshot = ITargetedDependenciesSnapshotFactory.Implement(hasUnresolvedDependency: false);
             var targets = new Dictionary<ITargetFramework, ITargetedDependenciesSnapshot>
@@ -212,30 +236,41 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             };
             var snapshot = IDependenciesSnapshotFactory.Implement(targets: targets);
             var snapshotProvider = IDependenciesSnapshotProviderFactory.Implement(currentSnapshot: snapshot);
-            var aggregateSnapshotProvider = IAggregateDependenciesSnapshotProviderFactory.Implement(getSnapshotProvider: snapshotProvider);
+            var aggregateSnapshotProvider = new Mock<IAggregateDependenciesSnapshotProvider>(MockBehavior.Strict);
+            aggregateSnapshotProvider.Setup(x => x.GetSnapshotProvider(projectPath)).Returns(snapshotProvider);
             var targetFrameworkProvider = ITargetFrameworkProviderFactory.Implement(getNearestFramework: targetFramework);
 
-            var dependency = IDependencyFactory.Implement(
-                    topLevel: true,
-                    resolved: true,
-                    flags: DependencyTreeFlags.ProjectNodeFlags.Union(DependencyTreeFlags.ResolvedFlags),
-                    fullPath: @"c:\myproject1\project.csproj",
-                    targetFramework: targetFramework
-                 );
+            var dependency = new TestDependency
+            {
+                Id = "dependency1",
+                TopLevel = true,
+                Resolved = true,
+                Flags = DependencyTreeFlags.ProjectNodeFlags.Union(DependencyTreeFlags.ResolvedFlags),
+                FullPath = projectPath,
+                TargetFramework = targetFramework
+            };
 
-            var filter = new UnsupportedProjectsSnapshotFilter(aggregateSnapshotProvider, targetFrameworkProvider);
+            var worldBuilder = ImmutableDictionary<string, IDependency>.Empty.ToBuilder();
 
-            var resultDependency = filter.BeforeAdd(
-                null,
-                null,
-                dependency.Object,
-                null,
-                null,
-                null,
-                null,
-                out bool filterAnyChanges);
+            var context = new AddDependencyContext(worldBuilder);
 
-            dependency.VerifyAll();
+            var filter = new UnsupportedProjectsSnapshotFilter(aggregateSnapshotProvider.Object, targetFrameworkProvider);
+
+            filter.BeforeAddOrUpdate(
+                null,
+                null,
+                dependency,
+                null,
+                null,
+                context);
+
+            // Accepts unchanged dependency
+            Assert.Same(dependency, context.GetResult(filter));
+
+            // No other changes made
+            Assert.False(context.Changed);
+
+            aggregateSnapshotProvider.VerifyAll();
         }
     }
 }

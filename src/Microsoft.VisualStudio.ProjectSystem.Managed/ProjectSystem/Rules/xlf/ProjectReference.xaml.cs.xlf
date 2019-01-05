@@ -32,16 +32,6 @@
         <target state="translated">Určuje, zda se do výstupního adresáře tohoto projektu mají zkopírovat satelitní sestavení cíle odkazu.</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|Project|Description">
-        <source>the Guid the solution tracks an individual project reference target with</source>
-        <target state="translated">Identifikátor GUID, pomocí něhož řešení sleduje jednotlivý cíl odkazu na projekt</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|ReferencedProjectIdentifier|Description">
-        <source>The old (VS2010 beta) way to store the Guid the solution tracks an individual project reference target with</source>
-        <target state="translated">Starý způsob (beta verze VS2010) uložení identifikátoru GUID, pomocí něhož řešení sleduje jednotlivý cíl odkazu na projekt</target>
-        <note />
-      </trans-unit>
       <trans-unit id="BoolProperty|CopyLocal|DisplayName">
         <source>Copy Local</source>
         <target state="translated">Kopírovat místně</target>

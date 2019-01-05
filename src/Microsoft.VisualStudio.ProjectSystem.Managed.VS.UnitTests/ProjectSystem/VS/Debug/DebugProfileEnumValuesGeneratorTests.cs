@@ -41,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             var generator =
                 new DebugProfileEnumValuesGenerator(moqProfileProvider.Object, threadingService);
             ICollection<IEnumValue> results = await generator.GetListedValuesAsync();
-            Assert.True(results.Count == 5);
+            AssertEx.CollectionLength(results, 5);
             Assert.True(results.ElementAt(0).Name == "Profile1" && results.ElementAt(0).DisplayName == "Profile1");
             Assert.True(results.ElementAt(1).Name == "MyCommand" && results.ElementAt(1).DisplayName == "MyCommand");
             Assert.True(results.ElementAt(2).Name == "Foo" && results.ElementAt(2).DisplayName == "Foo");

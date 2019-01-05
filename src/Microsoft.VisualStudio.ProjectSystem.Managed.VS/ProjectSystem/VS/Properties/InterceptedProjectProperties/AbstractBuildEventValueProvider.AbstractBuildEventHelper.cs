@@ -6,7 +6,6 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using Microsoft.Build.Construction;
-using Microsoft.Build.Evaluation;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectProperties
@@ -34,27 +33,43 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
             private string BuildEvent { get; }
             private string TargetName { get; }
 
-            public async Task<string> GetPropertyAsync(ProjectRootElement projectXml, IProjectProperties defaultProperties)
+            public async Task<(bool success, string property)> TryGetPropertyAsync(IProjectProperties defaultProperties)
             {
                 // check if value already exists
                 string unevaluatedPropertyValue = await defaultProperties.GetUnevaluatedPropertyValueAsync(BuildEvent);
                 if (unevaluatedPropertyValue != null)
                 {
-                    return unevaluatedPropertyValue;
+                    return (true, unevaluatedPropertyValue);
                 }
 
-                // Check if build events can be found in targets
+                return (false, null);
+            }
+            public string GetProperty(ProjectRootElement projectXml)
+            {
                 return GetFromTargets(projectXml);
             }
 
-            public async Task SetPropertyAsync(string unevaluatedPropertyValue, IProjectProperties defaultProperties, ProjectRootElement projectXml)
+            public async Task<bool> TrySetPropertyAsync(string unevaluatedPropertyValue, IProjectProperties defaultProperties)
             {
-                // Check if project file already has props in place for this.
-                if (await TrySetPropertyAsync(unevaluatedPropertyValue, defaultProperties, projectXml))
+                string currentValue = await defaultProperties.GetUnevaluatedPropertyValueAsync(BuildEvent);
+                if (currentValue == null)
                 {
-                    return;
+                    return false;
                 }
 
+                if (OnlyWhitespaceCharacters(unevaluatedPropertyValue))
+                {
+                    await defaultProperties.DeletePropertyAsync(BuildEvent);
+                    return true;
+                }
+
+                await defaultProperties.SetPropertyValueAsync(BuildEvent, unevaluatedPropertyValue);
+                return true;
+            }
+
+
+            public void SetProperty(string unevaluatedPropertyValue, ProjectRootElement projectXml)
+            {
                 if (OnlyWhitespaceCharacters(unevaluatedPropertyValue))
                 {
                     (bool success, ProjectTargetElement target) = FindTargetToRemove(projectXml);
@@ -83,24 +98,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
                 }
 
                 return null; // exec task as written in the project file is invalid, we should be resilient to this case.
-            }
-
-            private async Task<bool> TrySetPropertyAsync(string unevaluatedPropertyValue, IProjectProperties defaultProperties, ProjectRootElement projectXml)
-            {
-                string currentValue = await defaultProperties.GetUnevaluatedPropertyValueAsync(BuildEvent);
-                if (currentValue == null)
-                {
-                    return false;
-                }
-
-                if (OnlyWhitespaceCharacters(unevaluatedPropertyValue))
-                {
-                    await defaultProperties.DeletePropertyAsync(BuildEvent);
-                    return true;
-                }
-
-                await defaultProperties.SetPropertyValueAsync(BuildEvent, unevaluatedPropertyValue);
-                return true;
             }
 
             private static bool OnlyWhitespaceCharacters(string unevaluatedPropertyValue)

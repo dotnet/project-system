@@ -79,8 +79,6 @@
     <StringProperty Name="HintPath" Visible="false" />
 
     <StringProperty Name="ImageRuntime"
-                    DisplayName="Runtime Version"
-                    Description="The CLR runtime version targeted by this assembly."
                     Visible="False"
                     ReadOnly="True" />
 
@@ -91,7 +89,6 @@
     <BoolProperty Name="IsWinMDFile" Visible="false" />
 
     <StringProperty Name="RequiredTargetFramework"
-                    DisplayName="Required Target Framework"
                     Visible="False" />
 
     <StringProperty Name="SDKName" Visible="false" />

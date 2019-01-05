@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         [Fact]
         public void Constructor_DoesNotThrow()
         {
-            var selector = new FSharpProjectSelector();
+            new FSharpProjectSelector();
         }
 
         [Theory]
@@ -28,7 +28,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 
         public void GetProjectFactoryGuid(string projectFile, string expectedGuid)
         {
-            var selector = new FSharpProjectSelector();
             var doc = XDocument.Parse(projectFile);
             FSharpProjectSelector.GetProjectFactoryGuid(doc, out var resultGuid);
 

@@ -4,11 +4,16 @@ using System.Collections.Immutable;
 
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
+using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions.RuleHandlers;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 {
     internal class ProjectDependencyModel : DependencyModel
     {
+        private static readonly DependencyFlagCache s_flagCache = new DependencyFlagCache(
+            add: DependencyTreeFlags.ProjectNodeFlags +
+                 DependencyTreeFlags.SupportsHierarchy);
+
         private static readonly DependencyIconSet s_iconSet = new DependencyIconSet(
             icon: KnownMonikers.Application,
             expandedIcon: KnownMonikers.Application,
@@ -21,31 +26,31 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             unresolvedIcon: ManagedImageMonikers.ApplicationWarning,
             unresolvedExpandedIcon: ManagedImageMonikers.ApplicationWarning);
 
+        public override DependencyIconSet IconSet => Implicit ? s_implicitIconSet : s_iconSet;
+
+        public override int Priority => Dependency.ProjectNodePriority;
+
+        public override string ProviderType => ProjectRuleHandler.ProviderTypeString;
+
+        public override string SchemaItemType => ProjectReference.PrimaryDataSourceItemType;
+
+        public override string SchemaName => Resolved ? ResolvedProjectReference.SchemaName : ProjectReference.SchemaName;
+
         public ProjectDependencyModel(
-            string providerType,
             string path,
             string originalItemSpec,
-            ProjectTreeFlags flags,
-            bool resolved,
+            bool isResolved,
             bool isImplicit,
             IImmutableDictionary<string, string> properties)
-            : base(providerType, path, originalItemSpec, flags, resolved, isImplicit, properties)
+            : base(
+                path,
+                originalItemSpec,
+                flags: s_flagCache.Get(isResolved, isImplicit),
+                isResolved,
+                isImplicit,
+                properties)
         {
-            Flags = Flags.Union(DependencyTreeFlags.SupportsHierarchy);
-
-            if (Resolved)
-            {
-                SchemaName = ResolvedProjectReference.SchemaName;
-            }
-            else
-            {
-                SchemaName = ProjectReference.SchemaName;
-            }
-
-            Caption = System.IO.Path.GetFileNameWithoutExtension(Name);
-            SchemaItemType = ProjectReference.PrimaryDataSourceItemType;
-            Priority = Dependency.ProjectNodePriority;
-            IconSet = isImplicit ? s_implicitIconSet : s_iconSet;
+            Caption = System.IO.Path.GetFileNameWithoutExtension(path);
         }
     }
 }

@@ -10,9 +10,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
     /// </summary>
     internal abstract class VsItemList<T> : KeyedCollection<string, T>
     {
-        public VsItemList() : base() { }
+        protected VsItemList() : base() { }
 
-        public VsItemList(IEnumerable<T> collection) : base()
+        protected VsItemList(IEnumerable<T> collection) : base()
         {
             Requires.NotNull(collection, nameof(collection));
 

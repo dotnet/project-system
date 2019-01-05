@@ -1,9 +1,9 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System;
 using System.ComponentModel.Composition;
 using System.Linq;
 
+using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.GraphModel;
 using Microsoft.VisualStudio.GraphModel.Schemas;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.ViewProviders;
@@ -51,13 +51,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
                     continue;
                 }
 
-                IDependency dependency = GetDependency(graphContext, inputGraphNode, out IDependenciesSnapshot snapshot);
+                IDependency dependency = GetDependency(inputGraphNode, out IDependenciesSnapshot snapshot);
                 if (dependency == null || snapshot == null)
                 {
                     continue;
                 }
 
-                Lazy<IDependenciesGraphViewProvider, IOrderPrecedenceMetadataView> viewProvider = ViewProviders.FirstOrDefault(x => x.Value.SupportsDependency(dependency));
+                IDependenciesGraphViewProvider viewProvider = ViewProviders
+                    .FirstOrDefaultValue((x, d) => x.SupportsDependency(d), dependency);
+
                 if (viewProvider == null)
                 {
                     continue;
@@ -68,7 +70,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
                     inputGraphNode.SetValue(DependenciesGraphSchema.DependencyIdProperty, dependency.Id);
                     inputGraphNode.SetValue(DependenciesGraphSchema.ResolvedProperty, dependency.Resolved);
 
-                    if (viewProvider.Value.HasChildren(projectPath, dependency))
+                    if (viewProvider.HasChildren(projectPath, dependency))
                     {
                         inputGraphNode.SetValue(DgmlNodeProperties.ContainsChildren, true);
                     }

@@ -194,7 +194,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         }
 
         [Fact]
-        public void AddEvalautionChanges_CanAddItemWithMetadata()
+        public void AddEvaluationChanges_CanAddItemWithMetadata()
         {
             var handler = CreateInstance(@"C:\Project\Project.csproj");
 
@@ -378,7 +378,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         }
 
         [Fact]
-        public void ApplyProjectEvaluationCHanges_WithExistingEvaluationChanges_CanAddChangeMetadata()
+        public void ApplyProjectEvaluationChanges_WithExistingEvaluationChanges_CanAddChangeMetadata()
         {
             var file = "A.cs";
             var handler = CreateInstanceWithEvaluationItems(@"C:\Project\Project.csproj", file);

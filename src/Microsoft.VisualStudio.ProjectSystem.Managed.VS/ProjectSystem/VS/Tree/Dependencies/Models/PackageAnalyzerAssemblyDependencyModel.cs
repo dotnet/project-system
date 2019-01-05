@@ -2,65 +2,57 @@
 
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Linq;
 
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
+using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions.RuleHandlers;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 {
     internal class PackageAnalyzerAssemblyDependencyModel : DependencyModel
     {
+        private static readonly DependencyFlagCache s_flagCache = new DependencyFlagCache(add: DependencyTreeFlags.NuGetSubTreeNodeFlags);
+
         private static readonly DependencyIconSet s_iconSet = new DependencyIconSet(
             icon: KnownMonikers.CodeInformation,
             expandedIcon: KnownMonikers.CodeInformation,
             unresolvedIcon: ManagedImageMonikers.CodeInformationWarning,
             unresolvedExpandedIcon: ManagedImageMonikers.CodeInformationWarning);
 
+        public override IImmutableList<string> DependencyIDs { get; }
+
+        public override DependencyIconSet IconSet => s_iconSet;
+
+        public override string Name { get; }
+
+        public override int Priority => Resolved ? Dependency.PackageAssemblyNodePriority : Dependency.UnresolvedReferenceNodePriority;
+
+        public override string ProviderType => PackageRuleHandler.ProviderTypeString;
+
         public PackageAnalyzerAssemblyDependencyModel(
-            string providerType,
             string path,
             string originalItemSpec,
             string name,
-            ProjectTreeFlags flags,
-            bool resolved,
+            bool isResolved,
             IImmutableDictionary<string, string> properties,
             IEnumerable<string> dependenciesIDs)
-            : base(providerType, path, originalItemSpec, flags, resolved, isImplicit: false, properties: properties)
+            : base(
+                path,
+                originalItemSpec,
+                flags: s_flagCache.Get(isResolved, isImplicit: false),
+                isResolved,
+                isImplicit: false,
+                properties: properties,
+                isTopLevel: false)
         {
             Requires.NotNullOrEmpty(name, nameof(name));
 
             Name = name;
             Caption = name;
-            TopLevel = false;
-            IconSet = s_iconSet;
 
-            if (dependenciesIDs != null && dependenciesIDs.Any())
+            if (dependenciesIDs != null)
             {
-                DependencyIDs = ImmutableList.CreateRange(dependenciesIDs);
-            }
-
-            if (resolved)
-            {
-                Priority = Dependency.PackageAssemblyNodePriority;
-            }
-            else
-            {
-                Priority = Dependency.UnresolvedReferenceNodePriority;
-            }
-        }
-
-        private string _id;
-        public override string Id
-        {
-            get
-            {
-                if (_id == null)
-                {
-                    _id = OriginalItemSpec;
-                }
-
-                return _id;
+                DependencyIDs = ImmutableArray.CreateRange(dependenciesIDs);
             }
         }
     }

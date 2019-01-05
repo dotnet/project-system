@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+
+using System.IO;
 using System.Xml;
 
 using Microsoft.Build.Construction;
@@ -10,7 +12,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
         public static ProjectRootElement AsProjectRootElement(this string @string)
         {
             var stringReader = new System.IO.StringReader(@string);
-            var xmlReader = new XmlTextReader(stringReader);
+            var xmlReader = new XmlTextReader(stringReader)
+            {
+                DtdProcessing = DtdProcessing.Prohibit
+            };
             var root = ProjectRootElement.Create(xmlReader);
             return root;
         }

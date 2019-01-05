@@ -5,9 +5,8 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading.Tasks;
-
+using Microsoft.VisualStudio.Buffers.PooledObjects;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Threading;
@@ -25,15 +24,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
     [AppliesTo(ProjectCapability.LaunchProfiles)]
     internal class ProjectDebuggerProvider : DebugLaunchProviderBase, IDeployedProjectItemMappingProvider
     {
-
         /// <summary>
         /// Constructors. Unit test one is 2nd
         /// </summary>
         [ImportingConstructor]
-        public ProjectDebuggerProvider(ConfiguredProject configuredProject, ILaunchSettingsProvider launchSettingsProvider)
+        public ProjectDebuggerProvider(ConfiguredProject configuredProject, ILaunchSettingsProvider launchSettingsProvider, IVsService<SVsShellDebugger, IVsDebugger4> vsDebuggerService)
             : base(configuredProject)
         {
             LaunchSettingsProvider = launchSettingsProvider;
+            _vsDebuggerService = vsDebuggerService;
 
             // We want it sorted so that higher numbers come first (is the default for these collections but explicitly expressed here)
             ProfileLaunchTargetsProviders = new OrderPrecedenceImportCollection<IDebugProfileLaunchTargetsProvider>(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst,
@@ -41,18 +40,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         }
 
         public ProjectDebuggerProvider(ConfiguredProject configuredProject, ILaunchSettingsProvider launchSettingsProvider,
-                                       OrderPrecedenceImportCollection<IDebugProfileLaunchTargetsProvider> providers)
+                                       OrderPrecedenceImportCollection<IDebugProfileLaunchTargetsProvider> providers,
+                                       IVsService<SVsShellDebugger, IVsDebugger4> vsDebuggerService)
             : base(configuredProject)
         {
             ProfileLaunchTargetsProviders = providers;
+            _vsDebuggerService = vsDebuggerService;
             LaunchSettingsProvider = launchSettingsProvider;
         }
+
+        private readonly IVsService<SVsShellDebugger, IVsDebugger4> _vsDebuggerService;
 
         /// <summary>
         /// Import the LaunchTargetProviders which know how to run profiles
         /// </summary>
         [ImportMany]
-        private OrderPrecedenceImportCollection<IDebugProfileLaunchTargetsProvider> ProfileLaunchTargetsProviders { get; set; }
+        private OrderPrecedenceImportCollection<IDebugProfileLaunchTargetsProvider> ProfileLaunchTargetsProviders { get; }
 
         private ILaunchSettingsProvider LaunchSettingsProvider { get; }
 
@@ -89,14 +92,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// </summary>
         public static bool IsDotNetCoreFramework(string targetFramework)
         {
-            const string NetStandardAppPrefix = ".NetStandardApp";
             const string NetStandardPrefix = ".NetStandard";
             const string NetCorePrefix = ".NetCore";
-            const string NetCoreAppPrefix = ".NetCoreApp";
-            return targetFramework.StartsWith(NetCoreAppPrefix, StringComparison.OrdinalIgnoreCase) ||
-                   targetFramework.StartsWith(NetCorePrefix, StringComparison.OrdinalIgnoreCase) ||
-                   targetFramework.StartsWith(NetStandardPrefix, StringComparison.OrdinalIgnoreCase) ||
-                   targetFramework.StartsWith(NetStandardAppPrefix, StringComparison.OrdinalIgnoreCase);
+            return targetFramework.StartsWith(NetCorePrefix, StringComparison.OrdinalIgnoreCase) ||
+                   targetFramework.StartsWith(NetStandardPrefix, StringComparison.OrdinalIgnoreCase);
         }
 
         /// <summary>
@@ -198,7 +197,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 // The debugger needs to be called on the UI thread
                 await ThreadingService.SwitchToUIThread();
 
-                var shellDebugger = ServiceProvider.GetService(typeof(SVsShellDebugger)) as IVsDebugger4;
+                IVsDebugger4 shellDebugger = await _vsDebuggerService.GetValueAsync();
                 var launchResults = new VsDebugTargetProcessInfo[launchSettingsNative.Length];
                 shellDebugger.LaunchDebugTargets4((uint)launchSettingsNative.Length, launchSettingsNative, launchResults);
                 return launchResults;
@@ -307,12 +306,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             }
 
             // Collect all the variables as a null delimited list of key=value pairs.
-            var result = new StringBuilder();
-            foreach (KeyValuePair<string, string> pair in environment)
+            var result = PooledStringBuilder.GetInstance();
+            foreach ((string key, string value) in environment)
             {
-                result.Append(pair.Key);
+                result.Append(key);
                 result.Append('=');
-                result.Append(pair.Value);
+                result.Append(value);
                 result.Append('\0');
             }
 
@@ -321,7 +320,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             // But the contract of the format of the data requires that this be a null-delimited,
             // null-terminated list.
             result.Append('\0');
-            return result.ToString();
+            return result.ToStringAndFree();
         }
 
         /// <summary>

@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         }
 
         [Fact]
-        public async Task GetPagesAsync_WhenAllCapabiltiesPresent_ReturnsPagesInOrder()
+        public async Task GetPagesAsync_WhenAllCapabilitiesPresent_ReturnsPagesInOrder()
         {
             var provider = CreateInstance(ProjectCapability.LaunchProfiles, ProjectCapability.Pack);
             var result = await provider.GetPagesAsync();

@@ -7,7 +7,7 @@ namespace Microsoft.VisualStudio.Threading
 {
     internal partial class SemaphoreSlimExtensions
     {
-        internal struct SemaphoreDisposer : IDisposable
+        internal readonly struct SemaphoreDisposer : IDisposable
         {
             private readonly SemaphoreSlim _semaphore;
 

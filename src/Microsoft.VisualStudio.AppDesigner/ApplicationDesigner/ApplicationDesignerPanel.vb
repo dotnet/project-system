@@ -28,7 +28,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         Private _editorCaption As String
         Private _physicalView As String
         Private _editFlags As UInteger
-        Private _pageHostingPanelLastSize As Drawing.Size
         Private _windowFrameLastSize As Drawing.Size
         Private _windowFrameShown As Boolean 'True iff ShowWindowFrame() has been called
 #Disable Warning IDE1006 ' Naming Styles (Compat)
@@ -50,7 +49,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         Private _hierarchy As IVsHierarchy
         Private _itemId As UInteger
         Private _docCookie As UInteger
-        Private ReadOnly _ownerCaption As String
         Private _docData As Object
         'The DocView for the designer, if we were able to retrieve it (if we understood the designer type).  This would
         '  be a PropPageDesignerView for our hosted property pages, ResourceEditorView for the resource editor, etc.
@@ -116,7 +114,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             _view = View
             _hierarchy = Hierarchy
             _itemId = ItemId
-            _ownerCaption = "%1"
 
             SuspendLayout()
 
@@ -299,14 +296,14 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                                 If EditorGuid.Equals(Guid.Empty) Then
                                     VSErrorHandler.ThrowOnFailure(VsUIShellOpenDocument.OpenDocumentViaProject(MkDocument, (LogicalViewGuid), OleServiceProvider, VsUIHierarchy, ItemId, WindowFrame))
                                 Else
-                                    Dim OpenHierachy As IVsUIHierarchy = Nothing
+                                    Dim OpenHierarchy As IVsUIHierarchy = Nothing
                                     Dim OpenItemId As UInteger
                                     Dim OpenWindowFrame As IVsWindowFrame = Nothing
                                     Dim fOpen As Integer
 
                                     'Is this file already opened in the specific editor we want to open it in?  If so, we will not be able to open it
                                     '  as a nested document window.
-                                    Dim hr As Integer = VsUIShellOpenDocument.IsSpecificDocumentViewOpen(VsUIHierarchy, ItemId, MkDocument, (EditorGuid), PhysicalView, CUInt(__VSIDOFLAGS2.IDO_IncludeUninitializedFrames), OpenHierachy, OpenItemId, OpenWindowFrame, fOpen)
+                                    Dim hr As Integer = VsUIShellOpenDocument.IsSpecificDocumentViewOpen(VsUIHierarchy, ItemId, MkDocument, (EditorGuid), PhysicalView, CUInt(__VSIDOFLAGS2.IDO_IncludeUninitializedFrames), OpenHierarchy, OpenItemId, OpenWindowFrame, fOpen)
                                     Debug.Assert(VSErrorHandler.Succeeded(hr), "Unexpected failure from VsUIShellOpenDocument.IsSpecificDocumentViewOpen")
                                     If VSErrorHandler.Succeeded(hr) Then
                                         If fOpen <> 0 Then

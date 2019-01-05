@@ -26,7 +26,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                    TypeOf _comboBox.Items(_comboBox.SelectedIndex) Is InstallOtherFrameworksComboBoxValue
         End Function
 
-        Private Sub NativageToInstallOtherFrameworksFWLink()
+        Private Sub NavigateToInstallOtherFrameworksFWLink()
 
             If Site Is Nothing Then
                 ' Can't do anything without a site
@@ -34,25 +34,29 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Return
             End If
 
-            Dim serviceProvider As New Shell.ServiceProvider(Site)
-            Dim vsUIShellOpenDocument As IVsUIShellOpenDocument = TryCast(serviceProvider.GetService(GetType(SVsUIShellOpenDocument).GUID), IVsUIShellOpenDocument)
+            Using serviceProvider As New Shell.ServiceProvider(Site)
 
-            If vsUIShellOpenDocument Is Nothing Then
-                ' Can't do anything without a IVsUIShellOpenDocument
-                Debug.Fail("Why is there no IVsUIShellOpenDocument service?")
-                Return
-            End If
+                Dim vsUIShellOpenDocument As IVsUIShellOpenDocument = TryCast(serviceProvider.GetService(GetType(SVsUIShellOpenDocument).GUID), IVsUIShellOpenDocument)
 
-            Dim flags As UInteger = 0
-            Dim url As String = My.Resources.Strings.InstallOtherFrameworksFWLink
-            Dim resolution As VSPREVIEWRESOLUTION = VSPREVIEWRESOLUTION.PR_Default
-            Dim reserved As UInteger = 0
+                If vsUIShellOpenDocument Is Nothing Then
+                    ' Can't do anything without a IVsUIShellOpenDocument
+                    Debug.Fail("Why is there no IVsUIShellOpenDocument service?")
+                    Return
+                End If
 
-            If ErrorHandler.Failed(vsUIShellOpenDocument.OpenStandardPreviewer(flags, url, resolution, reserved)) Then
-                ' Behavior for OpenStandardPreviewer with no flags is to show a message box if
-                ' it fails (will always return S_OK)
-                Debug.Fail("IVsUIShellOpenDocument.OpenStandardPreviewer failed!")
-            End If
+                Dim flags As UInteger = 0
+                Dim url As String = My.Resources.Strings.InstallOtherFrameworksFWLink
+                Dim resolution As VSPREVIEWRESOLUTION = VSPREVIEWRESOLUTION.PR_Default
+                Dim reserved As UInteger = 0
+
+                If ErrorHandler.Failed(vsUIShellOpenDocument.OpenStandardPreviewer(flags, url, resolution, reserved)) Then
+                    ' Behavior for OpenStandardPreviewer with no flags is to show a message box if
+                    ' it fails (will always return S_OK)
+                    Debug.Fail("IVsUIShellOpenDocument.OpenStandardPreviewer failed!")
+                End If
+
+            End Using
+
 
         End Sub
 
@@ -77,7 +81,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 ' If the user chooses 'Install other frameworks...', move the selection back to the last target
                 ' framework value and navigate to the fwlink
                 _comboBox.SelectedIndex = IndexOfLastCommittedValue
-                NativageToInstallOtherFrameworksFWLink()
+                NavigateToInstallOtherFrameworksFWLink()
 
             ElseIf _comboBox.SelectedIndex <> IndexOfLastCommittedValue Then
 

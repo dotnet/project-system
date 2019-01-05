@@ -41,7 +41,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         End Sub
 
         'Required by the Windows Form Designer
-        Private _components As System.ComponentModel.IContainer
+        Private ReadOnly _components As System.ComponentModel.IContainer
 
         'NOTE: The following procedure is required by the Windows Form Designer
         'It can be modified using the Windows Form Designer.  
@@ -59,12 +59,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         End Sub
 
 #End Region
-
-#If DEBUG Then
-        Private Shared s_applicationDesignerViewCount As Integer = 0
-        Private Shared s_instanceCount As Integer = 0
-        Private ReadOnly _myInstanceCount As Integer
-#End If
 
         ' explicitly hard-coding these strings since that's what QA's
         '   automation will look for in order to find our various tabs
@@ -146,12 +140,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 #If DEBUG Then
             AddHandler HostingPanel.Layout, AddressOf HostingPanel_Layout
             AddHandler HostingPanel.SizeChanged, AddressOf HostingPanel_SizeChanged
-
-            s_applicationDesignerViewCount += 1
-            s_instanceCount += 1
-            _myInstanceCount = s_instanceCount
-            'Need to allow for multiple VB projects in this assert
-            'Debug.Assert(ApplicationDesignerViewCount = 1, "Multiple ApplicationDesigners created!")
 #End If
 
             HostingPanel.ResumeLayout(False)
@@ -497,10 +485,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                     _configurationState.Dispose()
                     _configurationState = Nothing
                 End If
-
-#If DEBUG Then
-                s_applicationDesignerViewCount -= 1
-#End If
             End If
             MyBase.Dispose(disposing)
         End Sub
@@ -1106,7 +1090,8 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                         Dim PropPageView As PropPageDesigner.PropPageDesignerView
                         PropPageView = TryCast(NewCurrentPanel.DocView, PropPageDesigner.PropPageDesignerView)
                         If PropPageView IsNot Nothing Then
-                            PropPageView.ActivatePage(PropPageView.PropPage)
+                            'We are looping in the same page, do not set the undo status to clean
+                            PropPageView.SetControls(PropPageView.PropPage, True)
                         Else
                             'Must have had error loading
                         End If
@@ -1186,11 +1171,13 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="HelpLink">The help link</param>
         ''' <returns>One of the DialogResult values</returns>
         ''' <remarks></remarks>
+#Disable Warning RS0026 ' Do not add multiple public overloads with optional parameters
         Public Function DsMsgBox(Message As String,
                 Buttons As MessageBoxButtons,
                 Icon As MessageBoxIcon,
                 Optional DefaultButton As MessageBoxDefaultButton = MessageBoxDefaultButton.Button1,
                 Optional HelpLink As String = Nothing) As DialogResult
+#Enable Warning RS0026 ' Do not add multiple public overloads with optional parameters
 
             Debug.Assert(_serviceProvider IsNot Nothing)
             Return AppDesDesignerFramework.DesignerMessageBox.Show(_serviceProvider, Message, _messageBoxCaption,
@@ -1204,8 +1191,10 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="ex">The exception whose text should be displayed.</param>
         ''' <param name="HelpLink">The help link</param>
         ''' <remarks></remarks>
+#Disable Warning RS0026 ' Do not add multiple public overloads with optional parameters
         Public Sub DsMsgBox(ex As Exception,
                 Optional HelpLink As String = Nothing) Implements IPropertyPageSiteOwner.DsMsgBox
+#Enable Warning RS0026 ' Do not add multiple public overloads with optional parameters
 
             Debug.Assert(_serviceProvider IsNot Nothing)
             AppDesDesignerFramework.DesignerMessageBox.Show(_serviceProvider, ex, _messageBoxCaption, HelpLink:=HelpLink)
@@ -1244,11 +1233,21 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         Public Overrides Sub OnItemClick(item As ProjectDesignerTabButton, reactivatePage As Boolean)
             Common.Switches.TracePDFocus(TraceLevel.Warning, "ApplicationDesignerView.OnItemClick")
             MyBase.OnItemClick(item, reactivatePage)
-            ShowTab(SelectedIndex, ForceShow:=True, ForceActivate:=reactivatePage)
+            ShowTab(SelectedIndex, ForceShow:=True)
 
             ' we need set back the tab, if we failed to switch...
             If SelectedIndex <> _activePanelIndex Then
                 SelectedIndex = _activePanelIndex
+            End If
+        End Sub
+
+        Friend Overrides Sub SetControl(firstControl As Boolean)
+            Dim NewCurrentPanel As ApplicationDesignerPanel = _designerPanels(SelectedIndex)
+            Dim PropPageView As PropPageDesigner.PropPageDesignerView
+            PropPageView = TryCast(NewCurrentPanel.DocView, PropPageDesigner.PropPageDesignerView)
+            If PropPageView IsNot Nothing Then
+                'We are looping in the same page, do not set the undo status to clean
+                PropPageView.SetControls(PropPageView.PropPage, firstControl)
             End If
         End Sub
 

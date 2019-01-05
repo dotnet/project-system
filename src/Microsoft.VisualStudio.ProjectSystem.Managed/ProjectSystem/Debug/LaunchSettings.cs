@@ -48,20 +48,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 Profiles = Profiles.Add(new LaunchProfile(profile));
             }
 
+            var jsonSerializerSettings = new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore };
+
             // For global settings we want to make new copies of each entry so that the snapshot remains immutable. If the object implements 
             // ICloneable that is used, otherwise, it is serialized back to json, and a new object rehydrated from that
             GlobalSettings = ImmutableStringDictionary<object>.EmptyOrdinal;
-            foreach (KeyValuePair<string, object> kvp in settings.GlobalSettings)
+            foreach ((string key, object value) in settings.GlobalSettings)
             {
-                if (kvp.Value is ICloneable clonableObject)
+                if (value is ICloneable cloneableObject)
                 {
-                    GlobalSettings = GlobalSettings.Add(kvp.Key, clonableObject.Clone());
+                    GlobalSettings = GlobalSettings.Add(key, cloneableObject.Clone());
                 }
                 else
                 {
-                    string jsonString = JsonConvert.SerializeObject(kvp.Value, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
-                    object clonedObject = JsonConvert.DeserializeObject(jsonString, kvp.Value.GetType());
-                    GlobalSettings = GlobalSettings.Add(kvp.Key, clonedObject);
+                    string jsonString = JsonConvert.SerializeObject(value, Formatting.Indented, jsonSerializerSettings);
+                    object clonedObject = JsonConvert.DeserializeObject(jsonString, value.GetType());
+                    GlobalSettings = GlobalSettings.Add(key, clonedObject);
                 }
             }
 

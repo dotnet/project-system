@@ -83,15 +83,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             }
 
             // We walk the profilesObject and serialize each subobject component as either a string, or a dictionary<string,string>
-            foreach (KeyValuePair<string, JToken> profile in profilesObject)
+            foreach ((string key, JToken jToken) in profilesObject)
             {
                 // Name of profile is the key, value is it's contents. We have specific serializing of the data based on the 
                 // JToken type
-                LaunchProfileData profileData = JsonConvert.DeserializeObject<LaunchProfileData>(profile.Value.ToString());
+                LaunchProfileData profileData = JsonConvert.DeserializeObject<LaunchProfileData>(jToken.ToString());
 
                 // Now pick up any custom properties. Handle string, int, boolean
                 var customSettings = new Dictionary<string, object>(StringComparer.Ordinal);
-                foreach (JToken data in profile.Value.Children())
+                foreach (JToken data in jToken.Children())
                 {
                     if (!(data is JProperty dataProperty))
                     {
@@ -146,7 +146,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                     profileData.OtherSettings = customSettings;
                 }
 
-                profiles.Add(profile.Key, profileData);
+                profiles.Add(key, profileData);
             }
 
             return profiles;
@@ -198,9 +198,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             if (profile.OtherSettings != null)
             {
-                foreach (KeyValuePair<string, object> kvp in profile.OtherSettings)
+                foreach ((string key, object value) in profile.OtherSettings)
                 {
-                    data.Add(kvp.Key, kvp.Value);
+                    data.Add(key, value);
                 }
             }
 

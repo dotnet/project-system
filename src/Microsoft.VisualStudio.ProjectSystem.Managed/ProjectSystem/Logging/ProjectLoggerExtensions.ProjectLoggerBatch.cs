@@ -39,7 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Logging
                 get { return _logger.IsEnabled; }
             }
 
-            public void WriteLine(StringFormat format)
+            public void WriteLine(in StringFormat format)
             {
                 if (IsEnabled)
                 {
@@ -75,7 +75,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Logging
                 }
             }
 
-            private void Write(StringFormat format)
+            private void Write(in StringFormat format)
             {
                 _builder.AppendFormat(format);
             }

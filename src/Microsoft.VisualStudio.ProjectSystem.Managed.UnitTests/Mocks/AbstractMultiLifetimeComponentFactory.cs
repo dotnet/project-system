@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Threading;
 
@@ -14,17 +15,14 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return new MultiLifetimeComponent(joinableTaskContextNode);
         }
 
-        public class MultiLifetimeComponent : AbstractMultiLifetimeComponent
+        public class MultiLifetimeComponent : AbstractMultiLifetimeComponent<MultiLifetimeComponent.MultiLifetimeInstance>
         {
-            private readonly JoinableTaskContextNode _joinableTaskContextNode;
-
             public MultiLifetimeComponent(JoinableTaskContextNode joinableTaskContextNode) 
                 : base(joinableTaskContextNode)
             {
-                _joinableTaskContextNode = joinableTaskContextNode;
             }
 
-            protected override IMultiLifetimeInstance CreateInstance()
+            protected override MultiLifetimeInstance CreateInstance()
             {
                 return new MultiLifetimeInstance();
             }
@@ -32,6 +30,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
             public new bool IsInitialized
             {
                 get { return base.IsInitialized; }
+            }
+
+            public new Task<MultiLifetimeInstance> WaitForLoadedAsync(CancellationToken cancellationToken = default)
+            {
+                return base.WaitForLoadedAsync(cancellationToken);
             }
 
             public class MultiLifetimeInstance : IMultiLifetimeInstance

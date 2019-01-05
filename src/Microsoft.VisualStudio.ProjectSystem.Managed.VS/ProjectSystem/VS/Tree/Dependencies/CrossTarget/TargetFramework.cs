@@ -38,21 +38,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             FriendlyName = moniker;
         }
 
+        /// <inheritdoc />
         public FrameworkName FrameworkName { get; }
 
-        /// <summary>
-        /// Gets the full name of the target framework.
-        /// </summary>
+        /// <inheritdoc />
         public string FullName { get; }
 
-        /// <summary>
-        /// Gets the short name.
-        /// </summary>
+        /// <inheritdoc />
         public string ShortName { get; }
 
-        /// <summary>
-        /// Gets the display name.
-        /// </summary>
+        /// <inheritdoc />
         public string FriendlyName { get; }
 
         /// <summary>

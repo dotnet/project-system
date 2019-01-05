@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Logging
             get { return _options.IsProjectOutputPaneEnabled; }
         }
 
-        public void WriteLine(StringFormat format)
+        public void WriteLine(in StringFormat format)
         {
             if (IsEnabled)
             {

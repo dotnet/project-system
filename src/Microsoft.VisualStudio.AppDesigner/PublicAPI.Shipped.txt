@@ -1,0 +1,1042 @@
+Const Microsoft.VisualStudio.Editors.AppDesInterop.Win32Constant.CLSCTX_ESERVER_HANDLER = 256 -> Integer
+Const Microsoft.VisualStudio.Editors.AppDesInterop.Win32Constant.CLSCTX_INPROC_HANDLER = 2 -> Integer
+Const Microsoft.VisualStudio.Editors.AppDesInterop.Win32Constant.CLSCTX_INPROC_HANDLER16 = 32 -> Integer
+Const Microsoft.VisualStudio.Editors.AppDesInterop.Win32Constant.CLSCTX_INPROC_HANDLERX86 = 128 -> Integer
+Const Microsoft.VisualStudio.Editors.AppDesInterop.Win32Constant.CLSCTX_INPROC_SERVER = 1 -> Integer
+Const Microsoft.VisualStudio.Editors.AppDesInterop.Win32Constant.CLSCTX_INPROC_SERVER16 = 8 -> Integer
+Const Microsoft.VisualStudio.Editors.AppDesInterop.Win32Constant.CLSCTX_INPROC_SERVERX86 = 64 -> Integer
+Const Microsoft.VisualStudio.Editors.AppDesInterop.Win32Constant.CLSCTX_LOCAL_SERVER = 4 -> Integer
+Const Microsoft.VisualStudio.Editors.AppDesInterop.Win32Constant.CLSCTX_NO_CODE_DOWNLOAD = 1024 -> Integer
+Const Microsoft.VisualStudio.Editors.AppDesInterop.Win32Constant.CLSCTX_REMOTE_SERVER = 16 -> Integer
+Const Microsoft.VisualStudio.Editors.AppDesInterop.Win32Constant.CLSCTX_RESERVED = 512 -> Integer
+Const Microsoft.VisualStudio.Editors.AppDesInterop.Win32Constant.DISP_E_MEMBERNOTFOUND = -2147352573 -> Integer
+Const Microsoft.VisualStudio.Editors.AppDesInterop.Win32Constant.DISPID_UNKNOWN = -1 -> Integer
+Const Microsoft.VisualStudio.Editors.AppDesInterop.Win32Constant.DLGC_WANTTAB = 2 -> Integer
+Const Microsoft.VisualStudio.Editors.AppDesInterop.Win32Constant.EM_UNDO = 199 -> Integer
+Const Microsoft.VisualStudio.Editors.AppDesInterop.Win32Constant.FACILITY_WIN32 = 7 -> Integer
+Const Microsoft.VisualStudio.Editors.AppDesInterop.Win32Constant.FALSE = 0 -> Integer
+Const Microsoft.VisualStudio.Editors.AppDesInterop.Win32Constant.FNERR_BUFFERTOOSMALL = 12291 -> Integer
+Const Microsoft.VisualStudio.Editors.AppDesInterop.Win32Constant.GW_CHILD = 5 -> UInteger
+Const Microsoft.VisualStudio.Editors.AppDesInterop.Win32Constant.HDF_BITMAP_ON_RIGHT = 4096 -> Integer
+Const Microsoft.VisualStudio.Editors.AppDesInterop.Win32Constant.HDF_IMAGE = 2048 -> Integer
+Const Microsoft.VisualStudio.Editors.AppDesInterop.Win32Constant.HDF_STRING = 16384 -> Integer
+Const Microsoft.VisualStudio.Editors.AppDesInterop.Win32Constant.HDI_FORMAT = 4 -> Integer
+Const Microsoft.VisualStudio.Editors.AppDesInterop.Win32Constant.HDI_IMAGE = 32 -> Integer
+Const Microsoft.VisualStudio.Editors.AppDesInterop.Win32Constant.HDI_TEXT = 2 -> Integer
+Const Microsoft.VisualStudio.Editors.AppDesInterop.Win32Constant.HDM_SETIMAGELIST = 4616 -> Integer
+Const Microsoft.VisualStudio.Editors.AppDesInterop.Win32Constant.HDM_SETITEMW = 4620 -> Integer
+Const Microsoft.VisualStudio.Editors.AppDesInterop.Win32Constant.LVM_EDITLABELA = 4119 -> Integer
+Const Microsoft.VisualStudio.Editors.AppDesInterop.Win32Constant.LVM_EDITLABELW = 4214 -> Integer
+Const Microsoft.VisualStudio.Editors.AppDesInterop.Win32Constant.LVM_GETHEADER = 4127 -> Integer
+Const Microsoft.VisualStudio.Editors.AppDesInterop.Win32Constant.MAX_PATH = 260 -> Integer
+Const Microsoft.VisualStudio.Editors.AppDesInterop.Win32Constant.OLE_E_PROMPTSAVECANCELLED = -2147221492 -> Integer
+Const Microsoft.VisualStudio.Editors.AppDesInterop.Win32Constant.OLECMDERR_E_NOTSUPPORTED = -2147221248 -> Integer
+Const Microsoft.VisualStudio.Editors.AppDesInterop.Win32Constant.QS_ALLEVENTS = 191 -> Integer
+Const Microsoft.VisualStudio.Editors.AppDesInterop.Win32Constant.QS_ALLINPUT = 255 -> Integer
+Const Microsoft.VisualStudio.Editors.AppDesInterop.Win32Constant.QS_ALLPOSTMESSAGE = 256 -> Integer
+Const Microsoft.VisualStudio.Editors.AppDesInterop.Win32Constant.QS_HOTKEY = 128 -> Integer
+Const Microsoft.VisualStudio.Editors.AppDesInterop.Win32Constant.QS_INPUT = 7 -> Integer
+Const Microsoft.VisualStudio.Editors.AppDesInterop.Win32Constant.QS_KEY = 1 -> Integer
+Const Microsoft.VisualStudio.Editors.AppDesInterop.Win32Constant.QS_MOUSE = 6 -> Integer
+Const Microsoft.VisualStudio.Editors.AppDesInterop.Win32Constant.QS_MOUSEBUTTON = 4 -> Integer
+Const Microsoft.VisualStudio.Editors.AppDesInterop.Win32Constant.QS_MOUSEMOVE = 2 -> Integer
+Const Microsoft.VisualStudio.Editors.AppDesInterop.Win32Constant.QS_PAINT = 32 -> Integer
+Const Microsoft.VisualStudio.Editors.AppDesInterop.Win32Constant.QS_POSTMESSAGE = 8 -> Integer
+Const Microsoft.VisualStudio.Editors.AppDesInterop.Win32Constant.QS_SENDMESSAGE = 64 -> Integer
+Const Microsoft.VisualStudio.Editors.AppDesInterop.Win32Constant.QS_TIMER = 16 -> Integer
+Const Microsoft.VisualStudio.Editors.AppDesInterop.Win32Constant.SC_CONTEXTHELP = 61824 -> Integer
+Const Microsoft.VisualStudio.Editors.AppDesInterop.Win32Constant.SPI_GETSCREENREADER = 70 -> Integer
+Const Microsoft.VisualStudio.Editors.AppDesInterop.Win32Constant.TRUE = 1 -> Integer
+Const Microsoft.VisualStudio.Editors.AppDesInterop.Win32Constant.TVIF_STATE = 8 -> Integer
+Const Microsoft.VisualStudio.Editors.AppDesInterop.Win32Constant.TVIS_STATEIMAGEMASK = 61440 -> Integer
+Const Microsoft.VisualStudio.Editors.AppDesInterop.Win32Constant.TVM_SETITEMA = 4365 -> Integer
+Const Microsoft.VisualStudio.Editors.AppDesInterop.Win32Constant.WAVE_FORMAT_ADPCM = 2 -> Integer
+Const Microsoft.VisualStudio.Editors.AppDesInterop.Win32Constant.WAVE_FORMAT_IEEE_FLOAT = 3 -> Integer
+Const Microsoft.VisualStudio.Editors.AppDesInterop.Win32Constant.WAVE_FORMAT_PCM = 1 -> Integer
+Const Microsoft.VisualStudio.Editors.AppDesInterop.Win32Constant.WM_CHAR = 258 -> Integer
+Const Microsoft.VisualStudio.Editors.AppDesInterop.Win32Constant.WM_CONTEXTMENU = 123 -> Integer
+Const Microsoft.VisualStudio.Editors.AppDesInterop.Win32Constant.WM_GETDLGCODE = 135 -> Integer
+Const Microsoft.VisualStudio.Editors.AppDesInterop.Win32Constant.WM_HELP = 83 -> Integer
+Const Microsoft.VisualStudio.Editors.AppDesInterop.Win32Constant.WM_KEYDOWN = 256 -> Integer
+Const Microsoft.VisualStudio.Editors.AppDesInterop.Win32Constant.WM_KEYUP = 257 -> Integer
+Const Microsoft.VisualStudio.Editors.AppDesInterop.Win32Constant.WM_PALETTECHANGED = 785 -> Integer
+Const Microsoft.VisualStudio.Editors.AppDesInterop.Win32Constant.WM_PASTE = 770 -> Integer
+Const Microsoft.VisualStudio.Editors.AppDesInterop.Win32Constant.WM_RBUTTONDOWN = 516 -> Integer
+Const Microsoft.VisualStudio.Editors.AppDesInterop.Win32Constant.WM_RBUTTONUP = 517 -> Integer
+Const Microsoft.VisualStudio.Editors.AppDesInterop.Win32Constant.WM_SETFOCUS = 7 -> Integer
+Const Microsoft.VisualStudio.Editors.AppDesInterop.Win32Constant.WM_SETTINGCHANGE = 26 -> Integer
+Const Microsoft.VisualStudio.Editors.AppDesInterop.Win32Constant.WM_SYSCHAR = 262 -> Integer
+Const Microsoft.VisualStudio.Editors.AppDesInterop.Win32Constant.WM_SYSCOLORCHANGE = 21 -> Integer
+Const Microsoft.VisualStudio.Editors.AppDesInterop.Win32Constant.WM_SYSCOMMAND = 274 -> Integer
+Const Microsoft.VisualStudio.Editors.AppDesInterop.Win32Constant.WM_SYSKEYDOWN = 260 -> Integer
+Const Microsoft.VisualStudio.Editors.AppDesInterop.Win32Constant.WM_SYSKEYUP = 261 -> Integer
+Const Microsoft.VisualStudio.Editors.AppDesInterop.Win32Constant.WM_THEMECHANGED = 794 -> Integer
+Const Microsoft.VisualStudio.Editors.AppDesInterop.Win32Constant.WM_USER = 1024 -> Integer
+Const Microsoft.VisualStudio.Editors.ApplicationDesigner.PropertyPageSite.PROPPAGESTATUS_CLEAN = 4 -> Integer
+Const Microsoft.VisualStudio.Editors.ApplicationDesigner.PropertyPageSite.PROPPAGESTATUS_DIRTY = 1 -> Integer
+Const Microsoft.VisualStudio.Editors.ApplicationDesigner.PropertyPageSite.PROPPAGESTATUS_VALIDATE = 2 -> Integer
+Const Microsoft.VisualStudio.Editors.Constants.WS_CHILD = 1073741824 -> Integer
+Const Microsoft.VisualStudio.Editors.Constants.WS_CLIPSIBLINGS = 67108864 -> Integer
+Const Microsoft.VisualStudio.Editors.PropertyPages.ChildPageSite.NestingCharacter = ":" -> String
+Const Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerView.SW_HIDE = 0 -> Integer
+Const Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerView.SW_SHOW = 5 -> Integer
+Const Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerView.SW_SHOWNORMAL = 1 -> Integer
+Microsoft.VisualStudio.Editors.AppDesDesignerFramework.BaseDialog
+Microsoft.VisualStudio.Editors.AppDesDesignerFramework.BaseDialog.CurrentDesignerHost() -> System.ComponentModel.Design.IDesignerHost
+Microsoft.VisualStudio.Editors.AppDesDesignerFramework.BaseDialog.New() -> Void
+Microsoft.VisualStudio.Editors.AppDesDesignerFramework.BaseDialog.New(ServiceProvider As System.IServiceProvider) -> Void
+Microsoft.VisualStudio.Editors.AppDesDesignerFramework.BaseDialog.ServiceProvider() -> System.IServiceProvider
+Microsoft.VisualStudio.Editors.AppDesDesignerFramework.BaseDialog.ServiceProvider(Value As System.IServiceProvider) -> Void
+Microsoft.VisualStudio.Editors.AppDesDesignerFramework.BaseDialog.SetFontStyles() -> Void
+Microsoft.VisualStudio.Editors.AppDesDesignerFramework.BaseDialog.ShowDialog() -> System.Windows.Forms.DialogResult
+Microsoft.VisualStudio.Editors.AppDesDesignerFramework.BaseDialog.ShowHelp() -> Void
+Microsoft.VisualStudio.Editors.AppDesDesignerFramework.BaseRootDesigner
+Microsoft.VisualStudio.Editors.AppDesDesignerFramework.BaseRootDesigner.GetService(ServiceType As System.Type) -> Object
+Microsoft.VisualStudio.Editors.AppDesDesignerFramework.BaseRootDesigner.New() -> Void
+Microsoft.VisualStudio.Editors.AppDesDesignerFramework.BaseRootDesigner.RefreshMenuStatus() -> Void
+Microsoft.VisualStudio.Editors.AppDesDesignerFramework.BaseRootDesigner.RegisterMenuCommands(MenuCommands As System.Collections.ArrayList, KeepRegisteredMenuCommands As Boolean = True) -> Void
+Microsoft.VisualStudio.Editors.AppDesDesignerFramework.BaseRootDesigner.RemoveMenuCommands() -> Void
+Microsoft.VisualStudio.Editors.AppDesDesignerFramework.BaseRootDesigner.SelectionService() -> System.ComponentModel.Design.ISelectionService
+Microsoft.VisualStudio.Editors.AppDesDesignerFramework.BaseRootDesigner.ShowContextMenu(ContextMenuID As System.ComponentModel.Design.CommandID, X As Integer, Y As Integer) -> Void
+Microsoft.VisualStudio.Editors.AppDesDesignerFramework.CheckCommandStatusHandler
+Microsoft.VisualStudio.Editors.AppDesDesignerFramework.DeferrableWindowPaneProviderServiceBase
+Microsoft.VisualStudio.Editors.AppDesDesignerFramework.DeferrableWindowPaneProviderServiceBase.DesignerWindowPaneBase
+Microsoft.VisualStudio.Editors.AppDesDesignerFramework.DeferrableWindowPaneProviderServiceBase.DesignerWindowPaneBase.IVsWindowPaneCommit_CommitPendingEdit(ByRef pfCommitFailed As Integer) -> Integer
+Microsoft.VisualStudio.Editors.AppDesDesignerFramework.DeferrableWindowPaneProviderServiceBase.DesignerWindowPaneBase.New(surface As System.ComponentModel.Design.DesignSurface, SupportToolbox As Boolean) -> Void
+Microsoft.VisualStudio.Editors.AppDesDesignerFramework.DeferrableWindowPaneProviderServiceBase.DesignerWindowPaneBase.View() -> System.Windows.Forms.Control
+Microsoft.VisualStudio.Editors.AppDesDesignerFramework.DeferrableWindowPaneProviderServiceBase.New(provider As System.IServiceProvider, SupportToolbox As Boolean) -> Void
+Microsoft.VisualStudio.Editors.AppDesDesignerFramework.DesignerMenuCommand
+Microsoft.VisualStudio.Editors.AppDesDesignerFramework.DesignerMenuCommand.New(RootDesigner As Microsoft.VisualStudio.Editors.AppDesDesignerFramework.BaseRootDesigner, CommandID As System.ComponentModel.Design.CommandID, CommandHandler As System.EventHandler, CommandEnabledHandler As Microsoft.VisualStudio.Editors.AppDesDesignerFramework.CheckCommandStatusHandler = Nothing, CommandCheckedHandler As Microsoft.VisualStudio.Editors.AppDesDesignerFramework.CheckCommandStatusHandler = Nothing, CommandVisibleHandler As Microsoft.VisualStudio.Editors.AppDesDesignerFramework.CheckCommandStatusHandler = Nothing, AlwaysCheckStatus As Boolean = False, CommandText As String = Nothing) -> Void
+Microsoft.VisualStudio.Editors.AppDesDesignerFramework.DesignerMenuCommand.RefreshStatus() -> Void
+Microsoft.VisualStudio.Editors.AppDesDesignerFramework.DesignerMessageBox
+Microsoft.VisualStudio.Editors.AppDesDesignerFramework.DesignerMessageBox.New() -> Void
+Microsoft.VisualStudio.Editors.AppDesDesignerFramework.ErrorControl
+Microsoft.VisualStudio.Editors.AppDesDesignerFramework.ErrorControl.New() -> Void
+Microsoft.VisualStudio.Editors.AppDesDesignerFramework.ErrorControl.New(errors As System.Collections.ICollection) -> Void
+Microsoft.VisualStudio.Editors.AppDesDesignerFramework.ErrorControl.New(ex As System.Exception) -> Void
+Microsoft.VisualStudio.Editors.AppDesDesignerFramework.ErrorControl.New(Text As String) -> Void
+Microsoft.VisualStudio.Editors.AppDesDesignerFramework.SourceCodeControlManager
+Microsoft.VisualStudio.Editors.AppDesDesignerFramework.SourceCodeControlManager.AreFilesEditable() -> Boolean
+Microsoft.VisualStudio.Editors.AppDesDesignerFramework.SourceCodeControlManager.EnsureFilesEditable() -> Void
+Microsoft.VisualStudio.Editors.AppDesDesignerFramework.SourceCodeControlManager.ManagedFiles() -> System.Collections.Generic.List(Of String)
+Microsoft.VisualStudio.Editors.AppDesDesignerFramework.SourceCodeControlManager.ManagedFiles(value As System.Collections.Generic.List(Of String)) -> Void
+Microsoft.VisualStudio.Editors.AppDesDesignerFramework.SourceCodeControlManager.ManageFile(mkDocument As String) -> Void
+Microsoft.VisualStudio.Editors.AppDesDesignerFramework.SourceCodeControlManager.New(sp As System.IServiceProvider, Hierarchy As Microsoft.VisualStudio.Shell.Interop.IVsHierarchy) -> Void
+Microsoft.VisualStudio.Editors.AppDesDesignerFramework.SourceCodeControlManager.StopManagingFile(mkDocument As String) -> Void
+Microsoft.VisualStudio.Editors.AppDesInterop.CAUUIDMarshaler
+Microsoft.VisualStudio.Editors.AppDesInterop.CAUUIDMarshaler.New() -> Void
+Microsoft.VisualStudio.Editors.AppDesInterop.CorMetaDataDispenser
+Microsoft.VisualStudio.Editors.AppDesInterop.CorMetaDataDispenser.New() -> Void
+Microsoft.VisualStudio.Editors.AppDesInterop.ILangInactiveCfgPropertyNotifySink
+Microsoft.VisualStudio.Editors.AppDesInterop.ILangInactiveCfgPropertyNotifySink.OnChanged(dispid As Integer, wszConfigName As String) -> Integer
+Microsoft.VisualStudio.Editors.AppDesInterop.ILangPropertyProvideBatchUpdate
+Microsoft.VisualStudio.Editors.AppDesInterop.ILangPropertyProvideBatchUpdate.BeginBatch() -> Void
+Microsoft.VisualStudio.Editors.AppDesInterop.ILangPropertyProvideBatchUpdate.EndBatch() -> Void
+Microsoft.VisualStudio.Editors.AppDesInterop.ILangPropertyProvideBatchUpdate.IsBatchModeEnabled(ByRef BatchModeEnabled As Boolean) -> Void
+Microsoft.VisualStudio.Editors.AppDesInterop.ILangPropertyProvideBatchUpdate.PushOptionsToCompiler(dispid As UInteger) -> Void
+Microsoft.VisualStudio.Editors.AppDesInterop.Win32Constant
+Microsoft.VisualStudio.Editors.AppDesInterop.Win32Constant.New() -> Void
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerEditorFactory
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerEditorFactory.Close() -> Integer
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerEditorFactory.MapLogicalView(ByRef rguidLogicalView As System.Guid, ByRef pbstrPhysicalView As String) -> Integer
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerEditorFactory.New() -> Void
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerEditorFactory.SetSite(Site As Microsoft.VisualStudio.OLE.Interop.IServiceProvider) -> Integer
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerLoader
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerLoader.InitializeEx(ServiceProvider As Microsoft.VisualStudio.Shell.ServiceProvider, Hierarchy As Microsoft.VisualStudio.Shell.Interop.IVsHierarchy, ItemId As UInteger, punkDocData As Object) -> Void
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerLoader.New() -> Void
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerPanel
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerPanel.ActualGuid() -> System.Guid
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerPanel.CloseFrame() -> Void
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerPanel.CommitPendingEdit() -> Boolean
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerPanel.CreateDesigner() -> Void
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerPanel.CustomMkDocumentProvider() -> Microsoft.VisualStudio.Editors.ApplicationDesigner.CustomDocumentMonikerProvider
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerPanel.CustomMkDocumentProvider(Value As Microsoft.VisualStudio.Editors.ApplicationDesigner.CustomDocumentMonikerProvider) -> Void
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerPanel.CustomViewProvider() -> Microsoft.VisualStudio.Editors.ApplicationDesigner.CustomViewProvider
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerPanel.CustomViewProvider(value As Microsoft.VisualStudio.Editors.ApplicationDesigner.CustomViewProvider) -> Void
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerPanel.DocCookie() -> UInteger
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerPanel.DocData() -> Object
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerPanel.DocData(Value As Object) -> Void
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerPanel.DocView() -> System.Windows.Forms.Control
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerPanel.DocView(Value As System.Windows.Forms.Control) -> Void
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerPanel.EditFlags() -> UInteger
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerPanel.EditFlags(Value As UInteger) -> Void
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerPanel.EditorCaption() -> String
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerPanel.EditorCaption(Value As String) -> Void
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerPanel.EditorGuid() -> System.Guid
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerPanel.EditorGuid(Value As System.Guid) -> Void
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerPanel.Hierarchy() -> Microsoft.VisualStudio.Shell.Interop.IVsHierarchy
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerPanel.IsDirty() -> Boolean
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerPanel.IsPropertyPage() -> Boolean
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerPanel.ItemId() -> UInteger
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerPanel.m_Debug_cWindowFrameBoundsUpdated -> Integer
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerPanel.m_Debug_cWindowFrameShow -> Integer
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerPanel.MkDocument() -> String
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerPanel.MkDocument(Value As String) -> Void
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerPanel.New(View As Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerView, Hierarchy As Microsoft.VisualStudio.Shell.Interop.IVsHierarchy, ItemId As UInteger, PropertyPageInfo As Microsoft.VisualStudio.Editors.ApplicationDesigner.PropertyPageInfo) -> Void
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerPanel.New(View As Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerView, Hierarchy As Microsoft.VisualStudio.Shell.Interop.IVsHierarchy, ItemId As UInteger) -> Void
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerPanel.OnWindowActivated(activated As Boolean) -> Void
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerPanel.PhysicalView() -> String
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerPanel.PhysicalView(Value As String) -> Void
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerPanel.PropertyPageInfo() -> Microsoft.VisualStudio.Editors.ApplicationDesigner.PropertyPageInfo
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerPanel.ShowDesigner(Show As Boolean = True) -> Void
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerPanel.TabAutomationName() -> String
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerPanel.TabAutomationName(value As String) -> Void
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerPanel.TabTitle() -> String
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerPanel.TabTitle(value As String) -> Void
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerPanel.UpdateWindowFrameBounds() -> Void
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerPanel.VsUIShell5() -> Microsoft.VisualStudio.Shell.Interop.IVsUIShell5
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerPanel.VsWindowFrame() -> Microsoft.VisualStudio.Shell.Interop.IVsWindowFrame
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerPanel.VsWindowFrame(Value As Microsoft.VisualStudio.Shell.Interop.IVsWindowFrame) -> Void
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerRootComponent
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerRootComponent.Hierarchy() -> Microsoft.VisualStudio.Shell.Interop.IVsHierarchy
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerRootComponent.Hierarchy(Value As Microsoft.VisualStudio.Shell.Interop.IVsHierarchy) -> Void
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerRootComponent.ItemId() -> UInteger
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerRootComponent.ItemId(Value As UInteger) -> Void
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerRootComponent.New() -> Void
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerRootComponent.RootDesigner() -> Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerRootDesigner
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerRootDesigner
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerRootDesigner.CommitAnyPendingChanges() -> Void
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerRootDesigner.Component() -> Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerRootComponent
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerRootDesigner.GetService(ServiceType As System.Type) -> Object
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerRootDesigner.GetView() -> Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerView
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerRootDesigner.New() -> Void
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerView
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerView.ActiveView() -> System.Guid
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerView.ActiveView(Value As System.Guid) -> Void
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerView.CommitAnyPendingChanges() -> Boolean
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerView.DelayRefreshDirtyIndicators() -> Void
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerView.DsMsgBox(ex As System.Exception, HelpLink As String = Nothing) -> Void
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerView.DsMsgBox(Message As String, Buttons As System.Windows.Forms.MessageBoxButtons, Icon As System.Windows.Forms.MessageBoxIcon, DefaultButton As System.Windows.Forms.MessageBoxDefaultButton = System.Windows.Forms.MessageBoxDefaultButton.Button1, HelpLink As String = Nothing) -> System.Windows.Forms.DialogResult
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerView.DTEProject() -> EnvDTE.Project
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerView.GetPropertyPages() -> Microsoft.VisualStudio.Editors.ApplicationDesigner.PropertyPageInfo()
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerView.GetSaveTreeItems(flags As Microsoft.VisualStudio.Shell.Interop.__VSRDTSAVEOPTIONS) -> Microsoft.VisualStudio.Shell.Interop.VSSAVETREEITEM()
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerView.GetService(ServiceType As System.Type) -> Object
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerView.InitializationComplete() -> Boolean
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerView.InitView() -> Void
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerView.New() -> Void
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerView.New(serviceProvider As System.IServiceProvider) -> Void
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerView.NotifyShuttingDown() -> Void
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerView.OnAfterAttributeChange(docCookie As UInteger, grfAttribs As UInteger) -> Integer
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerView.OnAfterDocumentWindowHide(docCookie As UInteger, pFrame As Microsoft.VisualStudio.Shell.Interop.IVsWindowFrame) -> Integer
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerView.OnAfterFirstDocumentLock(docCookie As UInteger, dwRDTLockType As UInteger, dwReadLocksRemaining As UInteger, dwEditLocksRemaining As UInteger) -> Integer
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerView.OnAfterLastDocumentUnlock(Hierarchy As Microsoft.VisualStudio.Shell.Interop.IVsHierarchy, ItemId As UInteger, MkDocument As String, ClosedWithoutSaving As Integer) -> Integer
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerView.OnAfterSave(docCookie As UInteger) -> Integer
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerView.OnAfterSaveAll() -> Integer
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerView.OnBeforeDocumentWindowShow(docCookie As UInteger, fFirstShow As Integer, pFrame As Microsoft.VisualStudio.Shell.Interop.IVsWindowFrame) -> Integer
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerView.OnBeforeFirstDocumentLock(Hierarchy As Microsoft.VisualStudio.Shell.Interop.IVsHierarchy, ItemId As UInteger, MkDocument As String) -> Integer
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerView.OnBeforeLastDocumentUnlock(docCookie As UInteger, dwRDTLockType As UInteger, dwReadLocksRemaining As UInteger, dwEditLocksRemaining As UInteger) -> Integer
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerView.OnCmdUIContextChanged(dwCmdUICookie As UInteger, fActive As Integer) -> Integer
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerView.OnElementValueChanged(elementid As UInteger, varValueOld As Object, varValueNew As Object) -> Integer
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerView.OnInitializationComplete() -> Void
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerView.OnSelectionChanged(pHierOld As Microsoft.VisualStudio.Shell.Interop.IVsHierarchy, itemidOld As UInteger, pMISOld As Microsoft.VisualStudio.Shell.Interop.IVsMultiItemSelect, pSCOld As Microsoft.VisualStudio.Shell.Interop.ISelectionContainer, pHierNew As Microsoft.VisualStudio.Shell.Interop.IVsHierarchy, itemidNew As UInteger, pMISNew As Microsoft.VisualStudio.Shell.Interop.IVsMultiItemSelect, pSCNew As Microsoft.VisualStudio.Shell.Interop.ISelectionContainer) -> Integer
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerView.SetUndoRedoCleanStateOnAllPropertyPages() -> Void
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerView.SpecialFiles() -> Microsoft.VisualStudio.Shell.Interop.IVsProjectSpecialFiles
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerView.SwitchTab(forward As Boolean) -> Void
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerView.WindowFrame() -> Microsoft.VisualStudio.Shell.Interop.IVsWindowFrame
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerWindowPane
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerWindowPane.ActivateLogicalView(ByRef rguidLogicalView As System.Guid) -> Integer
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerWindowPane.AppDesignerView() -> Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerView
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerWindowPane.CloseFrameNoSave() -> Integer
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerWindowPane.ClosePromptSave() -> Integer
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerWindowPane.GetActiveLogicalView(ByRef pguidLogicalView As System.Guid) -> Integer
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerWindowPane.IsLogicalViewActive(ByRef rguidLogicalView As System.Guid, ByRef pIsActive As Integer) -> Integer
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerWindowPane.IVsWindowPaneCommit_CommitPendingEdit(ByRef pfCommitFailed As Integer) -> Integer
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerWindowPane.New(surface As System.ComponentModel.Design.DesignSurface) -> Void
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerWindowPane.NextTab() -> Void
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerWindowPane.PrevTab() -> Void
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerWindowPane.SaveChildren(flags As Microsoft.VisualStudio.Shell.Interop.__VSRDTSAVEOPTIONS) -> Integer
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerWindowPane.SaveProjectFile() -> Integer
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerWindowPane.VsUIShell2Service() -> Microsoft.VisualStudio.Shell.Interop.IVsUIShell2
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerWindowPane.VsUIShell5Service() -> Microsoft.VisualStudio.Shell.Interop.IVsUIShell5
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerWindowPane.VsUIShellService() -> Microsoft.VisualStudio.Shell.Interop.IVsUIShell
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerWindowPaneControl
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerWindowPaneControl.New() -> Void
+Microsoft.VisualStudio.Editors.ApplicationDesigner.CmdTargetHelper
+Microsoft.VisualStudio.Editors.ApplicationDesigner.CmdTargetHelper.New(WindowPane As Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerWindowPane) -> Void
+Microsoft.VisualStudio.Editors.ApplicationDesigner.CustomDocumentMonikerProvider
+Microsoft.VisualStudio.Editors.ApplicationDesigner.CustomDocumentMonikerProvider.New() -> Void
+Microsoft.VisualStudio.Editors.ApplicationDesigner.CustomViewProvider
+Microsoft.VisualStudio.Editors.ApplicationDesigner.CustomViewProvider.Dispose() -> Void
+Microsoft.VisualStudio.Editors.ApplicationDesigner.CustomViewProvider.New() -> Void
+Microsoft.VisualStudio.Editors.ApplicationDesigner.DeferrableWindowPaneProviderService
+Microsoft.VisualStudio.Editors.ApplicationDesigner.DeferrableWindowPaneProviderService.New(provider As System.IServiceProvider, docData As Microsoft.VisualStudio.Shell.Design.Serialization.DocData) -> Void
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ErrorControlCustomViewProvider
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ErrorControlCustomViewProvider.New(ErrorText As String) -> Void
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ErrorControlCustomViewProvider.New(Exception As System.Exception) -> Void
+Microsoft.VisualStudio.Editors.ApplicationDesigner.IPropertyPageSiteOwner
+Microsoft.VisualStudio.Editors.ApplicationDesigner.IPropertyPageSiteOwner.DelayRefreshDirtyIndicators() -> Void
+Microsoft.VisualStudio.Editors.ApplicationDesigner.IPropertyPageSiteOwner.DsMsgBox(ex As System.Exception, HelpLink As String = Nothing) -> Void
+Microsoft.VisualStudio.Editors.ApplicationDesigner.IPropertyPageSiteOwner.GetLocaleID() -> UInteger
+Microsoft.VisualStudio.Editors.ApplicationDesigner.IPropertyPageSiteOwner.GetService(ServiceType As System.Type) -> Object
+Microsoft.VisualStudio.Editors.ApplicationDesigner.IVsEditWindowNotify
+Microsoft.VisualStudio.Editors.ApplicationDesigner.IVsEditWindowNotify.OnActivated(activated As Boolean) -> Void
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabButton
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabButton.AccessibleState() -> System.Windows.Forms.AccessibleStates
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabButton.ButtonIndex() -> Integer
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabButton.DirtyIndicator() -> Boolean
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabButton.DirtyIndicator(value As Boolean) -> Void
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabButton.Location() -> System.Drawing.Point
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabButton.Location(value As System.Drawing.Point) -> Void
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabButton.New() -> Void
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabButton.SetIndex(index As Integer) -> Void
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabButton.TextWithDirtyIndicator() -> String
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabControl
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabControl.AddTab(Title As String, AutomationName As String) -> Integer
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabControl.ClearTabs() -> Void
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabControl.GetTabButton(index As Integer) -> Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabButton
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabControl.HostingPanel() -> System.Windows.Forms.Panel
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabControl.HoverItem() -> Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabButton
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabControl.InvalidateLayout() -> Void
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabControl.New() -> Void
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabControl.OnItemEnter(e As System.EventArgs, item As Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabButton) -> Void
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabControl.OnItemLeave(e As System.EventArgs, item As Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabButton) -> Void
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabControl.Renderer() -> Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabRenderer
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabControl.SelectedIndex() -> Integer
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabControl.SelectedIndex(value As Integer) -> Void
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabControl.SelectedItem() -> Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabButton
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabControl.SelectedItem(value As Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabButton) -> Void
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabControl.ServiceProvider() -> System.IServiceProvider
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabControl.ServiceProvider(value As System.IServiceProvider) -> Void
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabControl.TabButtonCount() -> Integer
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabControl.TabButtons() -> System.Collections.Generic.IEnumerable(Of Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabButton)
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabControl.ThemeChanged(sender As Object, args As System.EventArgs) -> Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabControl.ThemeChangedEventHandler
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabControl.VsUIShell2Service() -> Microsoft.VisualStudio.Shell.Interop.IVsUIShell2
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabControl.VsUIShell5Service() -> Microsoft.VisualStudio.Shell.Interop.IVsUIShell5
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabControl.VsUIShellService() -> Microsoft.VisualStudio.Shell.Interop.IVsUIShell
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabRenderer
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabRenderer.CreateGDIObjects(ForceUpdate As Boolean = False) -> Void
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabRenderer.New(owner As Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabControl) -> Void
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabRenderer.PerformLayout() -> Void
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabRenderer.PreferredButtonForSwitchableSlot() -> Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabButton
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabRenderer.PreferredButtonForSwitchableSlot(value As Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabButton) -> Void
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabRenderer.RenderBackground(g As System.Drawing.Graphics) -> Void
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabRenderer.RenderButton(g As System.Drawing.Graphics, button As Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabButton, IsSelected As Boolean, IsHovered As Boolean) -> Void
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabRenderer.ServiceProvider() -> System.IServiceProvider
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabRenderer.ServiceProvider(value As System.IServiceProvider) -> Void
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabRenderer.UpdateCacheState() -> Void
+Microsoft.VisualStudio.Editors.ApplicationDesigner.PropertyPageInfo
+Microsoft.VisualStudio.Editors.ApplicationDesigner.PropertyPageInfo.ComPropPageInstance() -> Microsoft.VisualStudio.OLE.Interop.IPropertyPage
+Microsoft.VisualStudio.Editors.ApplicationDesigner.PropertyPageInfo.Guid() -> System.Guid
+Microsoft.VisualStudio.Editors.ApplicationDesigner.PropertyPageInfo.IsConfigPage() -> Boolean
+Microsoft.VisualStudio.Editors.ApplicationDesigner.PropertyPageInfo.LoadException() -> System.Exception
+Microsoft.VisualStudio.Editors.ApplicationDesigner.PropertyPageInfo.New(ParentView As Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerView, Guid As System.Guid, IsConfigurationDependentPage As Boolean) -> Void
+Microsoft.VisualStudio.Editors.ApplicationDesigner.PropertyPageInfo.Site() -> Microsoft.VisualStudio.Editors.ApplicationDesigner.PropertyPageSite
+Microsoft.VisualStudio.Editors.ApplicationDesigner.PropertyPageInfo.Title() -> String
+Microsoft.VisualStudio.Editors.ApplicationDesigner.PropertyPageSite
+Microsoft.VisualStudio.Editors.ApplicationDesigner.PropertyPageSite.BackingServiceProvider() -> System.IServiceProvider
+Microsoft.VisualStudio.Editors.ApplicationDesigner.PropertyPageSite.BackingServiceProvider(value As System.IServiceProvider) -> Void
+Microsoft.VisualStudio.Editors.ApplicationDesigner.PropertyPageSite.CommitPendingChanges() -> Boolean
+Microsoft.VisualStudio.Editors.ApplicationDesigner.PropertyPageSite.GetLocaleID(ByRef pLocaleID As UInteger) -> Void
+Microsoft.VisualStudio.Editors.ApplicationDesigner.PropertyPageSite.GetPageContainer(ByRef ppunk As Object) -> Void
+Microsoft.VisualStudio.Editors.ApplicationDesigner.PropertyPageSite.GetService(serviceType As System.Type) -> Object
+Microsoft.VisualStudio.Editors.ApplicationDesigner.PropertyPageSite.HasBeenSetDirty() -> Boolean
+Microsoft.VisualStudio.Editors.ApplicationDesigner.PropertyPageSite.HasBeenSetDirty(value As Boolean) -> Void
+Microsoft.VisualStudio.Editors.ApplicationDesigner.PropertyPageSite.New(View As Microsoft.VisualStudio.Editors.ApplicationDesigner.IPropertyPageSiteOwner, PropPage As Microsoft.VisualStudio.OLE.Interop.IPropertyPage) -> Void
+Microsoft.VisualStudio.Editors.ApplicationDesigner.PropertyPageSite.OnStatusChange(dwFlags As UInteger) -> Void
+Microsoft.VisualStudio.Editors.ApplicationDesigner.PropertyPageSite.QueryService(ByRef guidService As System.Guid, ByRef riid As System.Guid, ByRef ppvObject As System.IntPtr) -> Integer
+Microsoft.VisualStudio.Editors.ApplicationDesigner.PropertyPageSite.TranslateAccelerator(pMsg As Microsoft.VisualStudio.OLE.Interop.MSG()) -> Integer
+Microsoft.VisualStudio.Editors.ApplicationDesigner.SpecialFileCustomDocumentMonikerProvider
+Microsoft.VisualStudio.Editors.ApplicationDesigner.SpecialFileCustomDocumentMonikerProvider.New(DesignerView As Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerView, SpecialFileId As Integer) -> Void
+Microsoft.VisualStudio.Editors.ApplicationDesigner.SpecialFileCustomView
+Microsoft.VisualStudio.Editors.ApplicationDesigner.SpecialFileCustomView.New() -> Void
+Microsoft.VisualStudio.Editors.ApplicationDesigner.SpecialFileCustomView.SetSite(ViewProvider As Microsoft.VisualStudio.Editors.ApplicationDesigner.SpecialFileCustomViewProvider) -> Void
+Microsoft.VisualStudio.Editors.ApplicationDesigner.SpecialFileCustomViewProvider
+Microsoft.VisualStudio.Editors.ApplicationDesigner.SpecialFileCustomViewProvider.DesignerPanel() -> Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerPanel
+Microsoft.VisualStudio.Editors.ApplicationDesigner.SpecialFileCustomViewProvider.DesignerView() -> Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerView
+Microsoft.VisualStudio.Editors.ApplicationDesigner.SpecialFileCustomViewProvider.LinkText() -> String
+Microsoft.VisualStudio.Editors.ApplicationDesigner.SpecialFileCustomViewProvider.New(DesignerView As Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerView, DesignerPanel As Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerPanel, SpecialFileId As Integer, LinkText As String) -> Void
+Microsoft.VisualStudio.Editors.ApplicationDesigner.SpecialFileCustomViewProvider.SpecialFileId() -> Integer
+Microsoft.VisualStudio.Editors.Constants
+Microsoft.VisualStudio.Editors.Constants.New() -> Void
+Microsoft.VisualStudio.Editors.IVBPackage
+Microsoft.VisualStudio.Editors.IVBPackage.GetLastShownApplicationDesignerTab(projectHierarchy As Microsoft.VisualStudio.Shell.Interop.IVsHierarchy) -> Integer
+Microsoft.VisualStudio.Editors.IVBPackage.SetLastShownApplicationDesignerTab(projectHierarchy As Microsoft.VisualStudio.Shell.Interop.IVsHierarchy, tab As Integer) -> Void
+Microsoft.VisualStudio.Editors.MyApplication.MyApplicationPropertiesBase
+Microsoft.VisualStudio.Editors.MyApplication.MyApplicationPropertiesBase.New() -> Void
+Microsoft.VisualStudio.Editors.Package.InternalException
+Microsoft.VisualStudio.Editors.Package.InternalException.New() -> Void
+Microsoft.VisualStudio.Editors.Package.InternalException.New(info As System.Runtime.Serialization.SerializationInfo, context As System.Runtime.Serialization.StreamingContext) -> Void
+Microsoft.VisualStudio.Editors.Package.InternalException.New(InnerException As System.Exception) -> Void
+Microsoft.VisualStudio.Editors.Package.InternalException.New(Message As String, InnerException As System.Exception) -> Void
+Microsoft.VisualStudio.Editors.Package.InternalException.New(Message As String) -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.ChildPageSite
+Microsoft.VisualStudio.Editors.PropertyPages.ChildPageSite.GetLocaleID() -> Integer
+Microsoft.VisualStudio.Editors.PropertyPages.ChildPageSite.GetService(ServiceType As System.Type) -> Object
+Microsoft.VisualStudio.Editors.PropertyPages.ChildPageSite.GetTransaction(description As String) -> System.ComponentModel.Design.DesignerTransaction
+Microsoft.VisualStudio.Editors.PropertyPages.ChildPageSite.New(childPage As Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase, wrappedInternalSite As Microsoft.VisualStudio.Editors.PropertyPages.IPropertyPageSiteInternal, wrappedUndoSite As Microsoft.VisualStudio.ManagedInterfaces.ProjectDesigner.IVsProjectDesignerPageSite) -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.ChildPageSite.OnPropertyChanged(propertyName As String, propertyDescriptor As System.ComponentModel.PropertyDescriptor, oldValue As Object, newValue As Object) -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.ChildPageSite.OnPropertyChanging(propertyName As String, propertyDescriptor As System.ComponentModel.PropertyDescriptor) -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.ChildPageSite.OnStatusChange(flags As Microsoft.VisualStudio.Editors.PropertyPages.PROPPAGESTATUS) -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.ChildPageSite.TranslateAccelerator(msg As System.Windows.Forms.Message) -> Integer
+Microsoft.VisualStudio.Editors.PropertyPages.ControlDataFlags
+Microsoft.VisualStudio.Editors.PropertyPages.ControlDataFlags.CommonProperty = 2 -> Microsoft.VisualStudio.Editors.PropertyPages.ControlDataFlags
+Microsoft.VisualStudio.Editors.PropertyPages.ControlDataFlags.Dirty = 1 -> Microsoft.VisualStudio.Editors.PropertyPages.ControlDataFlags
+Microsoft.VisualStudio.Editors.PropertyPages.ControlDataFlags.Hidden = 64 -> Microsoft.VisualStudio.Editors.PropertyPages.ControlDataFlags
+Microsoft.VisualStudio.Editors.PropertyPages.ControlDataFlags.None = 0 -> Microsoft.VisualStudio.Editors.PropertyPages.ControlDataFlags
+Microsoft.VisualStudio.Editors.PropertyPages.ControlDataFlags.NoOptimisticFileCheckout = 32768 -> Microsoft.VisualStudio.Editors.PropertyPages.ControlDataFlags
+Microsoft.VisualStudio.Editors.PropertyPages.ControlDataFlags.PersistedInApplicationDefinitionFile = 16384 -> Microsoft.VisualStudio.Editors.PropertyPages.ControlDataFlags
+Microsoft.VisualStudio.Editors.PropertyPages.ControlDataFlags.PersistedInAppManifestFile = 1024 -> Microsoft.VisualStudio.Editors.PropertyPages.ControlDataFlags
+Microsoft.VisualStudio.Editors.PropertyPages.ControlDataFlags.PersistedInAssemblyInfoFile = 2048 -> Microsoft.VisualStudio.Editors.PropertyPages.ControlDataFlags
+Microsoft.VisualStudio.Editors.PropertyPages.ControlDataFlags.PersistedInProjectUserFile = 256 -> Microsoft.VisualStudio.Editors.PropertyPages.ControlDataFlags
+Microsoft.VisualStudio.Editors.PropertyPages.ControlDataFlags.PersistedInVBMyAppFile = 512 -> Microsoft.VisualStudio.Editors.PropertyPages.ControlDataFlags
+Microsoft.VisualStudio.Editors.PropertyPages.ControlDataFlags.ProjectMayBeReloadedDuringPropertySet = 4096 -> Microsoft.VisualStudio.Editors.PropertyPages.ControlDataFlags
+Microsoft.VisualStudio.Editors.PropertyPages.ControlDataFlags.RefreshAllPropertiesWhenChanged = 8192 -> Microsoft.VisualStudio.Editors.PropertyPages.ControlDataFlags
+Microsoft.VisualStudio.Editors.PropertyPages.ControlDataFlags.UserHandledEvents = 32 -> Microsoft.VisualStudio.Editors.PropertyPages.ControlDataFlags
+Microsoft.VisualStudio.Editors.PropertyPages.ControlDataFlags.UserPersisted = 16 -> Microsoft.VisualStudio.Editors.PropertyPages.ControlDataFlags
+Microsoft.VisualStudio.Editors.PropertyPages.CpsPropertyDescriptorWrapper
+Microsoft.VisualStudio.Editors.PropertyPages.CpsPropertyDescriptorWrapper.New(defaultDescriptor As System.ComponentModel.PropertyDescriptor) -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.HiddenIfMissingPropertyControlData
+Microsoft.VisualStudio.Editors.PropertyPages.HiddenIfMissingPropertyControlData.New(id As Integer, name As String, formControl As System.Windows.Forms.Control) -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.IPropertyPageInternal
+Microsoft.VisualStudio.Editors.PropertyPages.IPropertyPageInternal.Apply() -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.IPropertyPageInternal.EditProperty(dispid As Integer) -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.IPropertyPageInternal.GetHelpContextF1Keyword() -> String
+Microsoft.VisualStudio.Editors.PropertyPages.IPropertyPageInternal.Help(HelpDir As String) -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.IPropertyPageInternal.IsPageDirty() -> Boolean
+Microsoft.VisualStudio.Editors.PropertyPages.IPropertyPageInternal.SetObjects(objects As Object()) -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.IPropertyPageInternal.SetPageSite(base As Microsoft.VisualStudio.Editors.PropertyPages.IPropertyPageSiteInternal) -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.IPropertyPageSiteInternal
+Microsoft.VisualStudio.Editors.PropertyPages.IPropertyPageSiteInternal.GetLocaleID() -> Integer
+Microsoft.VisualStudio.Editors.PropertyPages.IPropertyPageSiteInternal.GetService(ServiceType As System.Type) -> Object
+Microsoft.VisualStudio.Editors.PropertyPages.IPropertyPageSiteInternal.OnStatusChange(flags As Microsoft.VisualStudio.Editors.PropertyPages.PROPPAGESTATUS) -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.IPropertyPageSiteInternal.TranslateAccelerator(msg As System.Windows.Forms.Message) -> Integer
+Microsoft.VisualStudio.Editors.PropertyPages.ProjectReloadedException
+Microsoft.VisualStudio.Editors.PropertyPages.ProjectReloadedException.New() -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.ProjectReloadedException.New(Info As System.Runtime.Serialization.SerializationInfo, Context As System.Runtime.Serialization.StreamingContext) -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData
+Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.AllInitialValues() -> Object()
+Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.AllInitialValuesExpanded() -> Object()
+Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.AssociatedControls -> System.Windows.Forms.Control()
+Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.CommonPropertiesObject() -> Object
+Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.DispId() -> Integer
+Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.DisplayPropertyName -> String
+Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.EnableAssociatedControl(control As System.Windows.Forms.Control, Enabled As Boolean) -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.EnableControls(Enabled As Boolean) -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.Flags -> Microsoft.VisualStudio.Editors.PropertyPages.ControlDataFlags
+Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.FormControl() -> System.Windows.Forms.Control
+Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.GetCallback -> Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.GetDelegate
+Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.GetControlValueMultipleValues() -> Object()
+Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.GetControlValueNative() -> Object
+Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.GetDelegate
+Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.GetFlags() -> Microsoft.VisualStudio.Editors.PropertyPages.ControlDataFlags
+Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.InitialValue() -> Object
+Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.IsCommonProperty() -> Boolean
+Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.IsCommonProperty(Value As Boolean) -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.IsConfigurationSpecificProperty() -> Boolean
+Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.IsDirty() -> Boolean
+Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.IsDirty(Value As Boolean) -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.IsHidden() -> Boolean
+Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.IsHidden(Value As Boolean) -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.IsIndeterminate() -> Boolean
+Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.IsMissing() -> Boolean
+Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.IsReadOnly() -> Boolean
+Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.IsSpecialValue() -> Boolean
+Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.IsUserHandledEvents() -> Boolean
+Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.IsUserHandledEvents(Value As Boolean) -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.IsUserPersisted() -> Boolean
+Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.IsUserPersisted(Value As Boolean) -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.m_FormControl -> System.Windows.Forms.Control
+Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.m_Initializing -> Boolean
+Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.m_isCommitingChange -> Boolean
+Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.m_PropPage -> Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase
+Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.MultiValueGetCallback -> Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.MultiValueGetDelegate
+Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.MultiValueGetDelegate
+Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.MultiValueSetCallback -> Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.MultiValueSetDelegate
+Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.MultiValueSetDelegate
+Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.New(id As Integer, name As String, FormControl As System.Windows.Forms.Control, AssocControls As System.Windows.Forms.Control()) -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.New(id As Integer, name As String, FormControl As System.Windows.Forms.Control, flags As Microsoft.VisualStudio.Editors.PropertyPages.ControlDataFlags, AssocControls As System.Windows.Forms.Control()) -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.New(id As Integer, name As String, FormControl As System.Windows.Forms.Control, flags As Microsoft.VisualStudio.Editors.PropertyPages.ControlDataFlags) -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.New(id As Integer, name As String, FormControl As System.Windows.Forms.Control, setter As Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.MultiValueSetDelegate, getter As Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.MultiValueGetDelegate, flags As Microsoft.VisualStudio.Editors.PropertyPages.ControlDataFlags, AssocControls As System.Windows.Forms.Control()) -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.New(id As Integer, name As String, FormControl As System.Windows.Forms.Control, setter As Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.SetDelegate, getter As Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.GetDelegate, flags As Microsoft.VisualStudio.Editors.PropertyPages.ControlDataFlags, AssocControls As System.Windows.Forms.Control()) -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.New(id As Integer, name As String, FormControl As System.Windows.Forms.Control, setter As Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.SetDelegate, getter As Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.GetDelegate, flags As Microsoft.VisualStudio.Editors.PropertyPages.ControlDataFlags) -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.New(id As Integer, name As String, FormControl As System.Windows.Forms.Control, setter As Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.SetDelegate, getter As Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.GetDelegate, multiValueSetter As Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.MultiValueSetDelegate, multiValueGetter As Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.MultiValueGetDelegate, flags As Microsoft.VisualStudio.Editors.PropertyPages.ControlDataFlags, AssociatedControls As System.Windows.Forms.Control()) -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.New(id As Integer, name As String, FormControl As System.Windows.Forms.Control, setter As Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.SetDelegate, getter As Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.GetDelegate) -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.New(id As Integer, name As String, FormControl As System.Windows.Forms.Control) -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.ObjectsPropertyDescriptorsArray() -> System.ComponentModel.PropertyDescriptorCollection()
+Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.PropDesc -> System.ComponentModel.PropertyDescriptor
+Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.PropertyName() -> String
+Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.PropPage() -> Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase
+Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.SetCallback -> Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.SetDelegate
+Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.SetControlValue(value As Object) -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.SetDelegate
+Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.SetDirty(ReadyToApply As Boolean) -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.SetInitialValues(AllInitialValues As Object()) -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.SetInitialValues(InitialValue As Object, AllInitialValues As Object()) -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.SetInitialValues(InitialValue As Object) -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.PropertyListener
+Microsoft.VisualStudio.Editors.PropertyPages.PropertyListener.OnChanged(dispid As Integer, wszConfigName As String) -> Integer
+Microsoft.VisualStudio.Editors.PropertyPages.PropertyPageException
+Microsoft.VisualStudio.Editors.PropertyPages.PropertyPageException.New(Info As System.Runtime.Serialization.SerializationInfo, Context As System.Runtime.Serialization.StreamingContext) -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.PropertyPageException.New(message As String, helpLink As String, innerException As System.Exception) -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.PropertyPageException.New(message As String, helpLink As String) -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.PropertyPageException.New(message As String, innerException As System.Exception, ShowHeaderAndFooterInErrorControl As Boolean) -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.PropertyPageException.New(message As String, innerException As System.Exception) -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.PropertyPageException.New(message As String) -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.PropertyPageException.ShowHeaderAndFooterInErrorControl() -> Boolean
+Microsoft.VisualStudio.Editors.PropertyPages.PropertyPageException.ShowHeaderAndFooterInErrorControl(value As Boolean) -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageBase
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageBase.FinishPendingValidations() -> Boolean
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageBase.GetLocaleID() -> Integer
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageBase.GetService(ServiceType As System.Type) -> Object
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageBase.New() -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageBase.OnStatusChange(flags As Microsoft.VisualStudio.Editors.PropertyPages.PROPPAGESTATUS) -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageBase.OnWindowActivated(activated As Boolean) -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageBase.TranslateAccelerator(msg As System.Windows.Forms.Message) -> Integer
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageHostDialog
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageHostDialog.New(ServiceProvider As System.IServiceProvider, F1Keyword As String) -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageHostDialog.PropPage() -> Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageHostDialog.PropPage(Value As Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase) -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageHostDialog.SetFocusToPage() -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.PROPPAGESTATUS
+Microsoft.VisualStudio.Editors.PropertyPages.PROPPAGESTATUS.Clean = 4 -> Microsoft.VisualStudio.Editors.PropertyPages.PROPPAGESTATUS
+Microsoft.VisualStudio.Editors.PropertyPages.PROPPAGESTATUS.Dirty = 1 -> Microsoft.VisualStudio.Editors.PropertyPages.PROPPAGESTATUS
+Microsoft.VisualStudio.Editors.PropertyPages.PROPPAGESTATUS.Validate = 2 -> Microsoft.VisualStudio.Editors.PropertyPages.PROPPAGESTATUS
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.AddChangeHandlers() -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.ApplyChanges(sender As Object) -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.CanApplyNow() -> Boolean
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.CanApplyNow(Value As Boolean) -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.CheckoutProjectFile(ByRef ProjectReloaded As Boolean) -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.ClearIsDirty() -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.CommonPropertiesObject() -> Object
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.DelayValidate(dataControl As System.Windows.Forms.Control) -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.DISPID_UNKNOWN -> Integer
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.DTE() -> EnvDTE.DTE
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.DTEProject() -> EnvDTE.Project
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.EnableControl(control As System.Windows.Forms.Control, enabled As Boolean) -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.Enabled() -> Boolean
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.Enabled(value As Boolean) -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.EnterProjectCheckoutSection() -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.ExtendedPropertiesObjects(Data As Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData) -> Object()
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.GetCommonPropertyDescriptor(PropertyName As String) -> System.ComponentModel.PropertyDescriptor
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.GetCommonPropertyValue(prop As System.ComponentModel.PropertyDescriptor) -> Object
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.GetCommonPropertyValue(PropertyName As String) -> Object
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.GetCommonPropertyValueNative(prop As System.ComponentModel.PropertyDescriptor) -> Object
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.GetCommonPropertyValueNative(PropertyName As String) -> Object
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.GetControlValue(name As String) -> Object
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.GetControlValueNative(name As String) -> Object
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.GetCurrentProperty(dispid As Integer, PropertyName As String, ByRef obj As Object) -> Boolean
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.GetDialogFont() -> System.Drawing.Font
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.GetDirectoryViaBrowse(InitialDirectory As String, DialogTitle As String, ByRef NewValue As String) -> Boolean
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.GetDirectoryViaBrowseRelative(RelativeInitialDirectory As String, BasePath As String, DialogTitle As String, ByRef NewRelativePath As String) -> Boolean
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.GetDirectoryViaBrowseRelativeToProject(InitialDirectory As String, DialogTitle As String, ByRef NewValue As String) -> Boolean
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.GetDirty(sender As Object) -> Boolean
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.GetFileViaBrowse(InitialDirectory As String, ByRef NewValue As String, Filter As String) -> Boolean
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.GetProjectPath() -> String
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.GetProjectRelativeDirectoryPath(DirectoryPath As String) -> String
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.GetProjectRelativeFilePath(FilePath As String) -> String
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.GetPropertyDescriptor(PropertyName As String) -> System.ComponentModel.PropertyDescriptor
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.GetRelativeDirectoryPath(BasePath As String, DirectoryPath As String) -> String
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.GetRelativeFilePath(BasePath As String, FilePath As String) -> String
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.GetServiceFromPropertyPageSite(ServiceType As System.Type) -> Object
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.InitializeAllProperties() -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.IsActivated() -> Boolean
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.IsAnyPropertyDirty() -> Boolean
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.IsConfigurationSpecificPage() -> Boolean
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.IsCSProject() -> Boolean
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.IsDirty() -> Boolean
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.IsDirty(Value As Boolean) -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.IsInProjectCheckoutSection() -> Boolean
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.IsJSProject() -> Boolean
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.IsUndoEnabled() -> Boolean
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.IsVBProject() -> Boolean
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.LeaveProjectCheckoutSection() -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.m_CommonPropertyDescriptors -> System.ComponentModel.PropertyDescriptorCollection
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.m_ControlData -> Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData()
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.m_ExtendedObjects -> Object()
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.m_fInsideInit -> Boolean
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.m_IsDirty -> Boolean
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.m_Objects -> Object()
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.m_ObjectsPropertyDescriptorsArray -> System.ComponentModel.PropertyDescriptorCollection()
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.m_ScalingCompleted -> Boolean
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.ManualPageScaling() -> Boolean
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.ManualPageScaling(value As Boolean) -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.MultiProjectSelect() -> Boolean
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.New() -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.New(serviceProvider As Microsoft.VisualStudio.Shell.ServiceProvider) -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.OnExternalPropertyChanged(DISPID As Integer, DebugSourceName As String) -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.OnExternalPropertyRequestEdit(DISPID As Integer, DebugSourceName As String) -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.PageRequiresScaling() -> Boolean
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.PageRequiresScaling(Value As Boolean) -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.ProcessDelayValidationQueue(canThrow As Boolean) -> Boolean
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.ProjectHierarchy() -> Microsoft.VisualStudio.Shell.Interop.IVsHierarchy
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.ProjectKind() -> String
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.ProjectLanguage() -> String
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.ProjectProperties() -> VSLangProj.ProjectProperties
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.ProjectReloadedDuringCheckout() -> Boolean
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.PropertyChangeSource
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.PropertyChangeSource.Direct = 0 -> Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.PropertyChangeSource
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.PropertyChangeSource.External = 2 -> Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.PropertyChangeSource
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.PropertyChangeSource.Indirect = 1 -> Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.PropertyChangeSource
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.PropertyPageSite() -> Microsoft.VisualStudio.OLE.Interop.IPropertyPageSite
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.RawPropertiesObjects(Data As Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData) -> Object()
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.ResumePropertyChangeListening(DispId As Integer) -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.ServiceProvider() -> Microsoft.VisualStudio.Shell.ServiceProvider
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.SetCommonPropertyValue(prop As System.ComponentModel.PropertyDescriptor, Value As Object) -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.SetCommonPropertyValue(PropertyName As String, value As Object) -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.SetCommonPropertyValueNative(prop As System.ComponentModel.PropertyDescriptor, Value As Object) -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.SetCommonPropertyValueNative(PropertyName As String, Value As Object) -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.SetDirty(dispid As Integer, ReadyToApply As Boolean) -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.SetDirty(dispid As Integer) -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.SetDirty(ReadyToApply As Boolean) -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.SetDirty(sender As Object, ReadyToApply As Boolean) -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.SetDirty(sender As Object) -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.ShowChildPage(Title As String, PageType As System.Type, F1Keyword As String) -> System.Windows.Forms.DialogResult
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.ShowChildPage(Title As String, PageType As System.Type) -> System.Windows.Forms.DialogResult
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.ShowErrorMessage(errorMessage As String, ex As System.Exception) -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.ShowErrorMessage(errorMessage As String, HelpLink As String) -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.ShowErrorMessage(errorMessage As String) -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.ShowErrorMessage(ex As System.Exception, HelpLink As String) -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.ShowErrorMessage(ex As System.Exception) -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.SkipValidating(dataControl As System.Windows.Forms.Control) -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.SuspendPropertyChangeListening(DispId As Integer) -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.TryGetNonCommonPropertyValue(Descriptor As System.ComponentModel.PropertyDescriptor) -> Object
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.ValidatePageChanges(allowDelayValidation As Boolean) -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.VsUIShell2Service() -> Microsoft.VisualStudio.Shell.Interop.IVsUIShell2
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.VsUIShell5Service() -> Microsoft.VisualStudio.Shell.Interop.IVsUIShell5
+Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.VsUIShellService() -> Microsoft.VisualStudio.Shell.Interop.IVsUIShell
+Microsoft.VisualStudio.Editors.PropertyPages.SKUMatrix
+Microsoft.VisualStudio.Editors.PropertyPages.ValidationResult
+Microsoft.VisualStudio.Editors.PropertyPages.ValidationResult.Failed = 2 -> Microsoft.VisualStudio.Editors.PropertyPages.ValidationResult
+Microsoft.VisualStudio.Editors.PropertyPages.ValidationResult.Succeeded = 0 -> Microsoft.VisualStudio.Editors.PropertyPages.ValidationResult
+Microsoft.VisualStudio.Editors.PropertyPages.ValidationResult.Warning = 1 -> Microsoft.VisualStudio.Editors.PropertyPages.ValidationResult
+Microsoft.VisualStudio.Editors.PropertyPages.VBPropPageBase
+Microsoft.VisualStudio.Editors.PropertyPages.VBPropPageBase.New() -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.VSProductSKU
+Microsoft.VisualStudio.Editors.PropertyPages.VSProductSKU.New() -> Void
+Microsoft.VisualStudio.Editors.PropertyPages.VSProductSKU.VSASKUEdition
+Microsoft.VisualStudio.Editors.PropertyPages.VSProductSKU.VSASKUEdition.AcademicProfessional = 2100 -> Microsoft.VisualStudio.Editors.PropertyPages.VSProductSKU.VSASKUEdition
+Microsoft.VisualStudio.Editors.PropertyPages.VSProductSKU.VSASKUEdition.AcademicStudent = 2100 -> Microsoft.VisualStudio.Editors.PropertyPages.VSProductSKU.VSASKUEdition
+Microsoft.VisualStudio.Editors.PropertyPages.VSProductSKU.VSASKUEdition.DownloadTrial = 2500 -> Microsoft.VisualStudio.Editors.PropertyPages.VSProductSKU.VSASKUEdition
+Microsoft.VisualStudio.Editors.PropertyPages.VSProductSKU.VSASKUEdition.Enterprise = 3000 -> Microsoft.VisualStudio.Editors.PropertyPages.VSProductSKU.VSASKUEdition
+Microsoft.VisualStudio.Editors.PropertyPages.VSProductSKU.VSASKUEdition.Express = 500 -> Microsoft.VisualStudio.Editors.PropertyPages.VSProductSKU.VSASKUEdition
+Microsoft.VisualStudio.Editors.PropertyPages.VSProductSKU.VSASKUEdition.None = 0 -> Microsoft.VisualStudio.Editors.PropertyPages.VSProductSKU.VSASKUEdition
+Microsoft.VisualStudio.Editors.PropertyPages.VSProductSKU.VSASKUEdition.Professional = 2000 -> Microsoft.VisualStudio.Editors.PropertyPages.VSProductSKU.VSASKUEdition
+Microsoft.VisualStudio.Editors.PropertyPages.VSProductSKU.VSASKUEdition.Standard = 1000 -> Microsoft.VisualStudio.Editors.PropertyPages.VSProductSKU.VSASKUEdition
+Microsoft.VisualStudio.Editors.PropertyPages.VSProductSKU.VSASKUEdition.VSTO = 1500 -> Microsoft.VisualStudio.Editors.PropertyPages.VSProductSKU.VSASKUEdition
+Microsoft.VisualStudio.Editors.PropertyPages.VSProductSKU.VSASubSKUEdition
+Microsoft.VisualStudio.Editors.PropertyPages.VSProductSKU.VSASubSKUEdition.Architect = 8 -> Microsoft.VisualStudio.Editors.PropertyPages.VSProductSKU.VSASubSKUEdition
+Microsoft.VisualStudio.Editors.PropertyPages.VSProductSKU.VSASubSKUEdition.CSharp = 4 -> Microsoft.VisualStudio.Editors.PropertyPages.VSProductSKU.VSASubSKUEdition
+Microsoft.VisualStudio.Editors.PropertyPages.VSProductSKU.VSASubSKUEdition.IDE = 16 -> Microsoft.VisualStudio.Editors.PropertyPages.VSProductSKU.VSASubSKUEdition
+Microsoft.VisualStudio.Editors.PropertyPages.VSProductSKU.VSASubSKUEdition.JSharp = 32 -> Microsoft.VisualStudio.Editors.PropertyPages.VSProductSKU.VSASubSKUEdition
+Microsoft.VisualStudio.Editors.PropertyPages.VSProductSKU.VSASubSKUEdition.None = 0 -> Microsoft.VisualStudio.Editors.PropertyPages.VSProductSKU.VSASubSKUEdition
+Microsoft.VisualStudio.Editors.PropertyPages.VSProductSKU.VSASubSKUEdition.VB = 2 -> Microsoft.VisualStudio.Editors.PropertyPages.VSProductSKU.VSASubSKUEdition
+Microsoft.VisualStudio.Editors.PropertyPages.VSProductSKU.VSASubSKUEdition.VC = 1 -> Microsoft.VisualStudio.Editors.PropertyPages.VSProductSKU.VSASubSKUEdition
+Microsoft.VisualStudio.Editors.PropertyPages.VSProductSKU.VSASubSKUEdition.Web = 64 -> Microsoft.VisualStudio.Editors.PropertyPages.VSProductSKU.VSASubSKUEdition
+Microsoft.VisualStudio.Editors.PropPageDesigner.ConfigurationState
+Microsoft.VisualStudio.Editors.PropPageDesigner.ConfigurationState.ChangeSelection(ConfigIndex As Integer, PlatformIndex As Integer, FireNotifications As Boolean) -> Void
+Microsoft.VisualStudio.Editors.PropPageDesigner.ConfigurationState.ChangeSelection(ConfigName As String, ConfigSelectionType As Microsoft.VisualStudio.Editors.PropPageDesigner.ConfigurationState.SelectionTypes, PlatformName As String, PlatformSelectionType As Microsoft.VisualStudio.Editors.PropPageDesigner.ConfigurationState.SelectionTypes, PreferExactMatch As Boolean, FireNotifications As Boolean) -> Void
+Microsoft.VisualStudio.Editors.PropPageDesigner.ConfigurationState.CheckForModeChanges() -> Void
+Microsoft.VisualStudio.Editors.PropPageDesigner.ConfigurationState.ClearConfigPageUndoRedoStacks() -> Microsoft.VisualStudio.Editors.PropPageDesigner.ConfigurationState.ClearConfigPageUndoRedoStacksEventHandler
+Microsoft.VisualStudio.Editors.PropPageDesigner.ConfigurationState.ConfigurationDropdownEntries() -> Microsoft.VisualStudio.Editors.PropPageDesigner.ConfigurationState.DropdownItem()
+Microsoft.VisualStudio.Editors.PropPageDesigner.ConfigurationState.ConfigurationListAndSelectionChanged() -> Microsoft.VisualStudio.Editors.PropPageDesigner.ConfigurationState.ConfigurationListAndSelectionChangedEventHandler
+Microsoft.VisualStudio.Editors.PropPageDesigner.ConfigurationState.Dispose() -> Void
+Microsoft.VisualStudio.Editors.PropPageDesigner.ConfigurationState.DropdownItem
+Microsoft.VisualStudio.Editors.PropPageDesigner.ConfigurationState.DropdownItem.DisplayName() -> String
+Microsoft.VisualStudio.Editors.PropPageDesigner.ConfigurationState.DropdownItem.Name -> String
+Microsoft.VisualStudio.Editors.PropPageDesigner.ConfigurationState.DropdownItem.New(Name As String, SelectionType As Microsoft.VisualStudio.Editors.PropPageDesigner.ConfigurationState.SelectionTypes) -> Void
+Microsoft.VisualStudio.Editors.PropPageDesigner.ConfigurationState.DropdownItem.SelectionType -> Microsoft.VisualStudio.Editors.PropPageDesigner.ConfigurationState.SelectionTypes
+Microsoft.VisualStudio.Editors.PropPageDesigner.ConfigurationState.GetAllConfigs() -> Microsoft.VisualStudio.Shell.Interop.IVsCfg()
+Microsoft.VisualStudio.Editors.PropPageDesigner.ConfigurationState.IsSimplifiedConfigMode() -> Boolean
+Microsoft.VisualStudio.Editors.PropPageDesigner.ConfigurationState.New(Project As EnvDTE.Project, ProjectHierarchy As Microsoft.VisualStudio.Shell.Interop.IVsHierarchy, View As Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerView) -> Void
+Microsoft.VisualStudio.Editors.PropPageDesigner.ConfigurationState.OnActiveProjectCfgChange(pIVsHierarchy As Microsoft.VisualStudio.Shell.Interop.IVsHierarchy) -> Integer
+Microsoft.VisualStudio.Editors.PropPageDesigner.ConfigurationState.OnCfgNameAdded(pszCfgName As String) -> Integer
+Microsoft.VisualStudio.Editors.PropPageDesigner.ConfigurationState.OnCfgNameDeleted(CfgName As String) -> Integer
+Microsoft.VisualStudio.Editors.PropPageDesigner.ConfigurationState.OnCfgNameRenamed(OldName As String, NewName As String) -> Integer
+Microsoft.VisualStudio.Editors.PropPageDesigner.ConfigurationState.OnPlatformNameAdded(pszPlatformName As String) -> Integer
+Microsoft.VisualStudio.Editors.PropPageDesigner.ConfigurationState.OnPlatformNameDeleted(pszPlatformName As String) -> Integer
+Microsoft.VisualStudio.Editors.PropPageDesigner.ConfigurationState.PlatformDropdownEntries() -> Microsoft.VisualStudio.Editors.PropPageDesigner.ConfigurationState.DropdownItem()
+Microsoft.VisualStudio.Editors.PropPageDesigner.ConfigurationState.Project() -> EnvDTE.Project
+Microsoft.VisualStudio.Editors.PropPageDesigner.ConfigurationState.SelectedConfigIndex() -> Integer
+Microsoft.VisualStudio.Editors.PropPageDesigner.ConfigurationState.SelectedConfigurationChanged() -> Microsoft.VisualStudio.Editors.PropPageDesigner.ConfigurationState.SelectedConfigurationChangedEventHandler
+Microsoft.VisualStudio.Editors.PropPageDesigner.ConfigurationState.SelectedPlatformIndex() -> Integer
+Microsoft.VisualStudio.Editors.PropPageDesigner.ConfigurationState.SelectionTypes
+Microsoft.VisualStudio.Editors.PropPageDesigner.ConfigurationState.SelectionTypes.Active = 1 -> Microsoft.VisualStudio.Editors.PropPageDesigner.ConfigurationState.SelectionTypes
+Microsoft.VisualStudio.Editors.PropPageDesigner.ConfigurationState.SelectionTypes.All = 2 -> Microsoft.VisualStudio.Editors.PropPageDesigner.ConfigurationState.SelectionTypes
+Microsoft.VisualStudio.Editors.PropPageDesigner.ConfigurationState.SelectionTypes.Normal = 0 -> Microsoft.VisualStudio.Editors.PropPageDesigner.ConfigurationState.SelectionTypes
+Microsoft.VisualStudio.Editors.PropPageDesigner.ConfigurationState.SimplifiedConfigModeChanged() -> Microsoft.VisualStudio.Editors.PropPageDesigner.ConfigurationState.SimplifiedConfigModeChangedEventHandler
+Microsoft.VisualStudio.Editors.PropPageDesigner.ConfigurationState.UpdateSolution_Begin(ByRef pfCancelUpdate As Integer) -> Integer
+Microsoft.VisualStudio.Editors.PropPageDesigner.ConfigurationState.UpdateSolution_Cancel() -> Integer
+Microsoft.VisualStudio.Editors.PropPageDesigner.ConfigurationState.UpdateSolution_Done(fSucceeded As Integer, fModified As Integer, fCancelCommand As Integer) -> Integer
+Microsoft.VisualStudio.Editors.PropPageDesigner.ConfigurationState.UpdateSolution_StartUpdate(ByRef pfCancelUpdate As Integer) -> Integer
+Microsoft.VisualStudio.Editors.PropPageDesigner.ConfigurationState.VsCfgProvider() -> Microsoft.VisualStudio.Shell.Interop.IVsCfgProvider2
+Microsoft.VisualStudio.Editors.PropPageDesigner.DeferrableWindowPaneProviderService
+Microsoft.VisualStudio.Editors.PropPageDesigner.DeferrableWindowPaneProviderService.New(provider As System.IServiceProvider) -> Void
+Microsoft.VisualStudio.Editors.PropPageDesigner.MultipleValuesStore
+Microsoft.VisualStudio.Editors.PropPageDesigner.MultipleValuesStore.ConfigNames -> String()
+Microsoft.VisualStudio.Editors.PropPageDesigner.MultipleValuesStore.DebugTrace(Message As String) -> Void
+Microsoft.VisualStudio.Editors.PropPageDesigner.MultipleValuesStore.GetObjects(VsCfgProvider As Microsoft.VisualStudio.Shell.Interop.IVsCfgProvider2) -> Object()
+Microsoft.VisualStudio.Editors.PropPageDesigner.MultipleValuesStore.New(VsCfgProvider As Microsoft.VisualStudio.Shell.Interop.IVsCfgProvider2, Objects As Object(), Values As Object(), SelectedConfigName As String, SelectedPlatformName As String) -> Void
+Microsoft.VisualStudio.Editors.PropPageDesigner.MultipleValuesStore.PlatformNames -> String()
+Microsoft.VisualStudio.Editors.PropPageDesigner.MultipleValuesStore.SelectedConfigName -> String
+Microsoft.VisualStudio.Editors.PropPageDesigner.MultipleValuesStore.SelectedPlatformName -> String
+Microsoft.VisualStudio.Editors.PropPageDesigner.MultipleValuesStore.Values -> Object()
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropertyPagePropertyDescriptor
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropertyPagePropertyDescriptor.New(PropDesc As System.ComponentModel.PropertyDescriptor, PropertyName As String) -> Void
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropertyPageSerializationService
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropertyPageSerializationService.New(Provider As System.IServiceProvider) -> Void
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerDocData
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerDocData.Close() -> Integer
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerDocData.Close2() -> Integer
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerDocData.FileChangedDelegate
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerDocData.GetData(ByRef riidKey As System.Guid, ByRef pvtData As Object) -> Integer
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerDocData.GetGuidEditorType(ByRef pClassID As System.Guid) -> Integer
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerDocData.GetGuidEditorType2(ByRef pClassID As System.Guid) -> Integer
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerDocData.GetSite(ByRef riid As System.Guid, ByRef ppvSite As System.IntPtr) -> Void
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerDocData.GetTextBuffer(ByRef ppTextBuffer As Microsoft.VisualStudio.TextManager.Interop.IVsTextLines) -> Integer
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerDocData.IsDocDataDirty(ByRef pfDirty As Integer) -> Integer
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerDocData.IsDocDataDirty2(ByRef pfDirty As Integer) -> Integer
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerDocData.IsDocDataReadOnly(ByRef pfReadOnly As Integer) -> Integer
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerDocData.IsDocDataReloadable(ByRef pfReloadable As Integer) -> Integer
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerDocData.IsDocDataReloadable2(ByRef pfReloadable As Integer) -> Integer
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerDocData.LoadCompletedDelegate
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerDocData.LoadDocData(pszMkDocument As String) -> Integer
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerDocData.LoadDocData2(pszMkDocument As String) -> Integer
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerDocData.LockTextBuffer(fLock As Integer) -> Integer
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerDocData.New(BaseProvider As System.IServiceProvider) -> Void
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerDocData.OnFileChanged -> Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerDocData.FileChangedDelegate
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerDocData.OnLoadCompleted -> Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerDocData.LoadCompletedDelegate
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerDocData.OnRegisterDocData(docCookie As UInteger, pHierNew As Microsoft.VisualStudio.Shell.Interop.IVsHierarchy, itemidNew As UInteger) -> Integer
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerDocData.OnRegisterDocData2(docCookie As UInteger, pHierNew As Microsoft.VisualStudio.Shell.Interop.IVsHierarchy, itemidNew As UInteger) -> Integer
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerDocData.ReloadDocData(grfFlags As UInteger) -> Integer
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerDocData.ReloadDocData2(grfFlags As UInteger) -> Integer
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerDocData.RenameDocData(grfAttribs As UInteger, pHierNew As Microsoft.VisualStudio.Shell.Interop.IVsHierarchy, itemidNew As UInteger, pszMkDocumentNew As String) -> Integer
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerDocData.RenameDocData2(grfAttribs As UInteger, pHierNew As Microsoft.VisualStudio.Shell.Interop.IVsHierarchy, itemidNew As UInteger, pszMkDocumentNew As String) -> Integer
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerDocData.SaveDocData(dwSave As Microsoft.VisualStudio.Shell.Interop.VSSAVEFLAGS, ByRef pbstrMkDocumentNew As String, ByRef pfSaveCanceled As Integer) -> Integer
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerDocData.SaveDocData2(dwSave As Microsoft.VisualStudio.Shell.Interop.VSSAVEFLAGS, ByRef pbstrMkDocumentNew As String, ByRef pfSaveCanceled As Integer) -> Integer
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerDocData.SetData(ByRef riidKey As System.Guid, vtData As Object) -> Integer
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerDocData.SetDocDataDirty(fDirty As Integer) -> Integer
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerDocData.SetDocDataReadOnly(fReadOnly As Integer) -> Integer
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerDocData.SetSite(pUnkSite As Object) -> Void
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerDocData.SetTextBuffer(pTextBuffer As Microsoft.VisualStudio.TextManager.Interop.IVsTextLines) -> Integer
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerDocData.SetUntitledDocPath(pszDocDataPath As String) -> Integer
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerDocData.SetUntitledDocPath2(pszDocDataPath As String) -> Integer
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerEditorFactory
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerEditorFactory.Close() -> Integer
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerEditorFactory.MapLogicalView(ByRef rguidLogicalView As System.Guid, ByRef pbstrPhysicalView As String) -> Integer
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerEditorFactory.New() -> Void
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerEditorFactory.SetSite(Site As Microsoft.VisualStudio.OLE.Interop.IServiceProvider) -> Integer
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerLoader
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerLoader.InitializeEx(ServiceProvider As Microsoft.VisualStudio.Shell.ServiceProvider, Hierarchy As Microsoft.VisualStudio.Shell.Interop.IVsHierarchy, ItemId As UInteger, punkDocData As Object) -> Void
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerLoader.New() -> Void
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerRootComponent
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerRootComponent.Hierarchy() -> Microsoft.VisualStudio.Shell.Interop.IVsHierarchy
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerRootComponent.Hierarchy(Value As Microsoft.VisualStudio.Shell.Interop.IVsHierarchy) -> Void
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerRootComponent.ItemId() -> UInteger
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerRootComponent.ItemId(Value As UInteger) -> Void
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerRootComponent.Name() -> String
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerRootComponent.New() -> Void
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerRootComponent.RootDesigner() -> Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerRootDesigner
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerRootDesigner
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerRootDesigner.Component() -> Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerRootComponent
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerRootDesigner.GetService(ServiceType As System.Type) -> Object
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerRootDesigner.GetView() -> Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerView
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerRootDesigner.New() -> Void
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerView
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerView.ActivatePage(PropPage As Microsoft.VisualStudio.OLE.Interop.IPropertyPage) -> Void
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerView.DesignerHost() -> System.ComponentModel.Design.IDesignerHost
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerView.DsMsgBox(Message As String, Buttons As System.Windows.Forms.MessageBoxButtons, Icon As System.Windows.Forms.MessageBoxIcon, DefaultButton As System.Windows.Forms.MessageBoxDefaultButton = System.Windows.Forms.MessageBoxDefaultButton.Button1, HelpLink As String = Nothing) -> System.Windows.Forms.DialogResult
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerView.DTEProject() -> EnvDTE.Project
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerView.FocusFirstOrLastPropertyPageControl(First As Boolean) -> Boolean
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerView.GetProperty(PropertyName As String) -> Object
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerView.GetPropertyPageTopHwnd() -> System.IntPtr
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerView.GetService(ServiceType As System.Type) -> Object
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerView.GetTransaction(Description As String) -> System.ComponentModel.Design.DesignerTransaction
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerView.Init(DTEProject As EnvDTE.Project, PropPage As Microsoft.VisualStudio.OLE.Interop.IPropertyPage, PropPageSite As Microsoft.VisualStudio.Editors.ApplicationDesigner.PropertyPageSite, Hierarchy As Microsoft.VisualStudio.Shell.Interop.IVsHierarchy, IsConfigPage As Boolean) -> Void
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerView.IsConfigPage() -> Boolean
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerView.IsConfigPage(Value As Boolean) -> Void
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerView.IsNativeHostedPropertyPageActivated() -> Boolean
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerView.IVsProjectDesignerPageSite_OnPropertyChanged(PropertyName As String, PropertyDescriptor As System.ComponentModel.PropertyDescriptor, OldValue As Object, NewValue As Object) -> Void
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerView.IVsProjectDesignerPageSite_OnPropertyChanging(PropertyName As String, PropertyDescriptor As System.ComponentModel.PropertyDescriptor) -> Void
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerView.IVsWindowPaneCommit_CommitPendingEdit(ByRef pfCommitFailed As Integer) -> Integer
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerView.New() -> Void
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerView.New(RootDesigner As Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerRootDesigner) -> Void
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerView.OnActivated(activated As Boolean) -> Void
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerView.PropPage() -> Microsoft.VisualStudio.OLE.Interop.IPropertyPage
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerView.ScrollablePanel
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerView.ScrollablePanel.New() -> Void
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerView.ScrollablePanel.StopAutoScrollToControl(needStop As Boolean) -> Void
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerView.SetProperty(PropertyName As String, Value As Object) -> Void
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerView.SetUndoRedoCleanState() -> Void
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerView.ShouldShowDirtyIndicator() -> Boolean
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerView.ShowErrorMessage(Message As String, HelpLink As String = Nothing) -> Void
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerView.UnLoadPage() -> Void
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerWindowPane
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerWindowPane.New(surface As System.ComponentModel.Design.DesignSurface) -> Void
+Microsoft.VisualStudio.Editors.VBPackageUtils
+Microsoft.VisualStudio.Editors.VBPackageUtils.getServiceDelegate
+Microsoft.VisualStudio.Editors.VBPackageUtils.New() -> Void
+MustOverride Microsoft.VisualStudio.Editors.ApplicationDesigner.CustomDocumentMonikerProvider.GetDocumentMoniker() -> String
+MustOverride Microsoft.VisualStudio.Editors.ApplicationDesigner.CustomViewProvider.CloseView() -> Void
+MustOverride Microsoft.VisualStudio.Editors.ApplicationDesigner.CustomViewProvider.CreateView() -> Void
+MustOverride Microsoft.VisualStudio.Editors.PropertyPages.PropPageBase.CreateControl() -> System.Windows.Forms.Control
+Overloads Microsoft.VisualStudio.Editors.AppDesDesignerFramework.BaseDialog.ReportError(errorMessage As String, helpLink As String) -> Void
+Overloads Microsoft.VisualStudio.Editors.AppDesDesignerFramework.BaseDialog.ReportError(ErrorMessage As String) -> Void
+Overloads Microsoft.VisualStudio.Editors.AppDesDesignerFramework.BaseDialog.ShowMessage(Message As String, Caption As String, Buttons As System.Windows.Forms.MessageBoxButtons, Icon As System.Windows.Forms.MessageBoxIcon, DefaultButton As System.Windows.Forms.MessageBoxDefaultButton) -> System.Windows.Forms.DialogResult
+Overloads Microsoft.VisualStudio.Editors.AppDesDesignerFramework.BaseDialog.ShowMessage(Message As String, Caption As String, Buttons As System.Windows.Forms.MessageBoxButtons, Icon As System.Windows.Forms.MessageBoxIcon) -> System.Windows.Forms.DialogResult
+Overloads Microsoft.VisualStudio.Editors.ApplicationDesigner.PropertyPageInfo.Dispose() -> Void
+Overloads Microsoft.VisualStudio.Editors.ApplicationDesigner.PropertyPageInfo.Dispose(disposing As Boolean) -> Void
+Overloads Microsoft.VisualStudio.Editors.ApplicationDesigner.PropertyPageSite.Dispose() -> Void
+Overloads Microsoft.VisualStudio.Editors.ApplicationDesigner.PropertyPageSite.Dispose(disposing As Boolean) -> Void
+Overloads Microsoft.VisualStudio.Editors.PropertyPages.PropertyListener.Dispose() -> Void
+Overloads Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.AddFileToProject(FileName As String, CopyFile As Boolean) -> EnvDTE.ProjectItem
+Overloads Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.AddFileToProject(FileName As String) -> EnvDTE.ProjectItem
+Overloads Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.AddFileToProject(ProjectItems As EnvDTE.ProjectItems, FileName As String, CopyFile As Boolean, BuildAction As VSLangProj.prjBuildAction) -> EnvDTE.ProjectItem
+Overloads Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.AddFileToProject(ProjectItems As EnvDTE.ProjectItems, FileName As String, CopyFile As Boolean) -> EnvDTE.ProjectItem
+Overloads Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerDocData.Dispose() -> Void
+Overridable Microsoft.VisualStudio.Editors.AppDesDesignerFramework.BaseDialog.F1Keyword() -> String
+Overridable Microsoft.VisualStudio.Editors.AppDesDesignerFramework.BaseDialog.F1Keyword(Value As String) -> Void
+Overridable Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerPanel.CloseFrameInternal(WindowFrame As Microsoft.VisualStudio.Shell.Interop.IVsWindowFrame, flags As Microsoft.VisualStudio.Shell.Interop.__FRAMECLOSE) -> Void
+Overridable Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerPanel.ShowWindowFrame() -> Void
+Overridable Microsoft.VisualStudio.Editors.ApplicationDesigner.CustomViewProvider.Dispose(Disposing As Boolean) -> Void
+Overridable Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabControl.OnItemClick(item As Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabButton, reactivatePage As Boolean) -> Void
+Overridable Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabControl.OnItemClick(item As Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabButton) -> Void
+Overridable Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabControl.OnItemGotFocus(e As System.EventArgs, item As Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabButton) -> Void
+Overridable Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabControl.OnThemeChanged() -> Void
+Overridable Microsoft.VisualStudio.Editors.ApplicationDesigner.PropertyPageInfo.TryLoadPropertyPage() -> Void
+Overridable Microsoft.VisualStudio.Editors.MyApplication.MyApplicationPropertiesBase.FilesToCheckOut(CreateIfNotExist As Boolean) -> String()
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.AddChangeHandlers() -> Void
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.ApplyChanges() -> Void
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.ComboBox_SelectionChangeCommitted(sender As Object, e As System.EventArgs) -> Void
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.ExtendedPropertiesObjects() -> Object()
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.FilesToCheckOut() -> String()
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.GetAllPropertyValuesNative(Extenders As Object(), ByRef Values As Object(), ByRef ValueOrIndeterminate As Object) -> Void
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.GetControlValue() -> Object
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.GetPropertyValueNative(Extender As Object) -> Object
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.GetUserDefinedPropertyDescriptor() -> System.ComponentModel.PropertyDescriptor
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.Initialize(PropertyPage As Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase) -> Void
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.InitPropertyUI() -> Void
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.InitPropertyValue() -> Void
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.OnPropertyChanged(OldValue As Object, NewValue As Object) -> Void
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.OnPropertyChanging() -> Void
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.RawPropertiesObjects() -> Object()
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.ReadUserDefinedProperty(PropertyName As String, ByRef Value As Object) -> Boolean
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.RefreshValue() -> Void
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.RestoreInitialValue() -> Void
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.SetNonCommonPropertyValueCore(Value As Object) -> Void
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.SetNonCommonPropertyValueMultipleValuesCore(Objects As Object(), Values As Object()) -> Void
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.SetPropertyValue(Value As Object) -> Void
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.SetPropertyValueNative(Value As Object) -> Void
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.SetPropertyValueNativeMultipleValues(Objects As Object(), Values As Object()) -> Void
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.SupportsMultipleValueUndo() -> Boolean
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.TryGetPropertyValueNative(Extenders As Object()) -> Object
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.WriteUserDefinedProperty(PropertyName As String, Value As Object) -> Boolean
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageBase.Apply() -> Void
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageBase.ControlTypeForResources() -> System.Type
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageBase.Deactivate() -> Void
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageBase.DefaultSize() -> System.Drawing.Size
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageBase.DefaultSize(value As System.Drawing.Size) -> Void
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageBase.DocString() -> String
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageBase.DocString(value As String) -> Void
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageBase.GetProperty(PropertyName As String) -> Object
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageBase.GetPropertyMultipleValues(PropertyName As String, ByRef Objects As Object(), ByRef Values As Object()) -> Boolean
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageBase.Help(strHelpDir As String) -> Void
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageBase.HelpContext() -> UInteger
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageBase.HelpContext(value As UInteger) -> Void
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageBase.HelpFile() -> String
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageBase.HelpFile(value As String) -> Void
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageBase.IsPageDirty() -> Integer
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageBase.Objects() -> Object()
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageBase.SetObjects(cObjects As UInteger, objects As Object()) -> Void
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageBase.SetProperty(PropertyName As String, Value As Object) -> Void
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageBase.SetPropertyMultipleValues(PropertyName As String, Objects As Object(), Values As Object()) -> Void
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageBase.SetSite(site As Microsoft.VisualStudio.ManagedInterfaces.ProjectDesigner.IVsProjectDesignerPageSite) -> Void
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageBase.SupportsMultipleValueUndo(PropertyName As String) -> Boolean
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageBase.SupportsTheming() -> Boolean
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageBase.TranslateAccelerator(pMsg As Microsoft.VisualStudio.OLE.Interop.MSG()) -> Integer
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.Apply() -> Void
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.ApplyPageChanges() -> Void
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.CleanupCOMReferences() -> Void
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.CommitTransaction(Transaction As System.ComponentModel.Design.DesignerTransaction) -> Void
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.ControlData() -> Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData()
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.DisableOnBuild() -> Boolean
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.DisableOnDebug() -> Boolean
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.DisableWhenDebugMode(mode As Microsoft.VisualStudio.Shell.Interop.DBGMODE) -> Boolean
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.EditProperty(dispid As Integer) -> Void
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.EnableAllControls(_enabled As Boolean) -> Void
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.GetF1HelpKeyword() -> String
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.GetProperty(dispid As Integer, ByRef obj As Object) -> Boolean
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.GetPropertyControl(PropertyId As Integer) -> System.Windows.Forms.Control
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.GetPropertyControlData(PropertyId As Integer) -> Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.GetPropertyControlData(PropertyName As String) -> Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.GetTransaction() -> System.ComponentModel.Design.DesignerTransaction
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.GetTransactionDescription() -> String
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.GetUserDefinedPropertyDescriptor(PropertyName As String) -> System.ComponentModel.PropertyDescriptor
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.Help(HelpTopic As String) -> Void
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.InitPage() -> Void
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.IsPageDirty() -> Boolean
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.IVsProjectDesignerPage_GetPropertyMultipleValues(PropertyName As String, ByRef Objects As Object(), ByRef Values As Object()) -> Boolean
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.IVsProjectDesignerPage_GetPropertyValue(PropertyName As String) -> Object
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.IVsProjectDesignerPage_SetPropertyValue(PropertyName As String, Value As Object) -> Void
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.IVsProjectDesignerPage_SetPropertyValueMultipleValues(PropertyName As String, Objects As Object(), Values As Object()) -> Void
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.IVsProjectDesignerPage_SupportsMultipleValueUndo(PropertyName As String) -> Boolean
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.OnApplyComplete(ApplySuccessful As Boolean) -> Void
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.OnExternalPropertyChanged(Data As Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData, Source As Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.PropertyChangeSource) -> Void
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.OnExternalPropertyChanged(DISPID As Integer, Source As Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.PropertyChangeSource) -> Void
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.OnPageActivated(activated As Boolean) -> Void
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.OnPropertyChanged(PropertyName As String, PropDesc As System.ComponentModel.PropertyDescriptor, OldValue As Object, NewValue As Object) -> Void
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.OnPropertyChanging(PropertyName As String, PropDesc As System.ComponentModel.PropertyDescriptor) -> Void
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.OnSetSite(site As Microsoft.VisualStudio.OLE.Interop.IPropertyPageSite) -> Void
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.OnThemeChanged() -> Void
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.PageResizable() -> Boolean
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.PostApplyPageChanges() -> Void
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.PostInitPage() -> Void
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.PreApplyPageChanges() -> Void
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.PreInitPage() -> Void
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.ReadUserDefinedProperty(PropertyName As String, ByRef Value As Object) -> Boolean
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.RefreshPropertyStandardValues() -> Void
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.RefreshPropertyValues() -> Void
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.RestoreInitialValues() -> Void
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.ScaleWindowToCurrentFont() -> Void
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.SetDialogFont(ScaleDialog As Boolean) -> Void
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.SetObjects(objects As Object()) -> Void
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.SupportsTheming() -> Boolean
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.ValidateProperty(controlData As Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData, ByRef message As String, ByRef returnControl As System.Windows.Forms.Control) -> Microsoft.VisualStudio.Editors.PropertyPages.ValidationResult
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.ValidationControlGroups() -> System.Windows.Forms.Control()()
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.WriteUserDefinedProperty(PropertyName As String, Value As Object) -> Boolean
+Overrides Microsoft.VisualStudio.Editors.AppDesDesignerFramework.BaseDialog.GetService(ServiceType As System.Type) -> Object
+Overrides Microsoft.VisualStudio.Editors.AppDesDesignerFramework.BaseRootDesigner.Dispose(Disposing As Boolean) -> Void
+Overrides Microsoft.VisualStudio.Editors.AppDesDesignerFramework.DeferrableWindowPaneProviderServiceBase.CreateWindowPane(surface As System.ComponentModel.Design.DesignSurface) -> Microsoft.VisualStudio.Shell.Design.DesignerWindowPane
+Overrides Microsoft.VisualStudio.Editors.AppDesDesignerFramework.DeferrableWindowPaneProviderServiceBase.DesignerWindowPaneBase.Dispose(disposing As Boolean) -> Void
+Overrides Microsoft.VisualStudio.Editors.AppDesDesignerFramework.DeferrableWindowPaneProviderServiceBase.DesignerWindowPaneBase.GetToolboxItemSupported(toolboxItem As Microsoft.VisualStudio.OLE.Interop.IDataObject) -> Boolean
+Overrides Microsoft.VisualStudio.Editors.AppDesDesignerFramework.DeferrableWindowPaneProviderServiceBase.DesignerWindowPaneBase.OnClose() -> Void
+Overrides Microsoft.VisualStudio.Editors.AppDesDesignerFramework.DeferrableWindowPaneProviderServiceBase.DesignerWindowPaneBase.OnCreate() -> Void
+Overrides Microsoft.VisualStudio.Editors.AppDesDesignerFramework.DeferrableWindowPaneProviderServiceBase.DesignerWindowPaneBase.Window() -> System.Windows.Forms.IWin32Window
+Overrides Microsoft.VisualStudio.Editors.AppDesDesignerFramework.DesignerMenuCommand.Invoke() -> Void
+Overrides Microsoft.VisualStudio.Editors.AppDesDesignerFramework.DesignerMenuCommand.Invoke(inArg As Object, outArg As System.IntPtr) -> Void
+Overrides Microsoft.VisualStudio.Editors.AppDesDesignerFramework.DesignerMenuCommand.Invoke(inArg As Object) -> Void
+Overrides Microsoft.VisualStudio.Editors.AppDesDesignerFramework.DesignerMenuCommand.OleStatus() -> Integer
+Overrides Microsoft.VisualStudio.Editors.AppDesDesignerFramework.ErrorControl.GetPreferredSize(proposedSize As System.Drawing.Size) -> System.Drawing.Size
+Overrides Microsoft.VisualStudio.Editors.AppDesDesignerFramework.ErrorControl.Text() -> String
+Overrides Microsoft.VisualStudio.Editors.AppDesDesignerFramework.ErrorControl.Text(value As String) -> Void
+Overrides Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerLoader.Dispose() -> Void
+Overrides Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerPanel.Dispose(disposing As Boolean) -> Void
+Overrides Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerPanel.OnLayout(levent As System.Windows.Forms.LayoutEventArgs) -> Void
+Overrides Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerRootDesigner.Initialize(component As System.ComponentModel.IComponent) -> Void
+Overrides Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerView.OnItemClick(item As Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabButton, reactivatePage As Boolean) -> Void
+Overrides Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerView.OnItemClick(item As Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabButton) -> Void
+Overrides Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerWindowPane.EditorView() -> Object
+Overrides Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerWindowPane.Window() -> System.Windows.Forms.IWin32Window
+Overrides Microsoft.VisualStudio.Editors.ApplicationDesigner.DeferrableWindowPaneProviderService.CreateWindowPane(surface As System.ComponentModel.Design.DesignSurface) -> Microsoft.VisualStudio.Shell.Design.DesignerWindowPane
+Overrides Microsoft.VisualStudio.Editors.ApplicationDesigner.ErrorControlCustomViewProvider.CloseView() -> Void
+Overrides Microsoft.VisualStudio.Editors.ApplicationDesigner.ErrorControlCustomViewProvider.CreateView() -> Void
+Overrides Microsoft.VisualStudio.Editors.ApplicationDesigner.ErrorControlCustomViewProvider.Dispose(Disposing As Boolean) -> Void
+Overrides Microsoft.VisualStudio.Editors.ApplicationDesigner.ErrorControlCustomViewProvider.View() -> System.Windows.Forms.Control
+Overrides Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabButton.CreateAccessibilityInstance() -> System.Windows.Forms.AccessibleObject
+Overrides Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabButton.OnClick(e As System.EventArgs) -> Void
+Overrides Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabButton.OnGotFocus(e As System.EventArgs) -> Void
+Overrides Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabButton.OnLostFocus(e As System.EventArgs) -> Void
+Overrides Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabButton.OnMouseEnter(e As System.EventArgs) -> Void
+Overrides Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabButton.OnMouseLeave(e As System.EventArgs) -> Void
+Overrides Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabButton.OnPaint(e As System.Windows.Forms.PaintEventArgs) -> Void
+Overrides Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabButton.ProcessDialogKey(keyData As System.Windows.Forms.Keys) -> Boolean
+Overrides Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabControl.CreateAccessibilityInstance() -> System.Windows.Forms.AccessibleObject
+Overrides Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabControl.Dispose(disposing As Boolean) -> Void
+Overrides Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabControl.OnLayout(levent As System.Windows.Forms.LayoutEventArgs) -> Void
+Overrides Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabControl.OnPaint(e As System.Windows.Forms.PaintEventArgs) -> Void
+Overrides Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabControl.OnPaintBackground(e As System.Windows.Forms.PaintEventArgs) -> Void
+Overrides Microsoft.VisualStudio.Editors.ApplicationDesigner.SpecialFileCustomDocumentMonikerProvider.GetDocumentMoniker() -> String
+Overrides Microsoft.VisualStudio.Editors.ApplicationDesigner.SpecialFileCustomView.Dispose(disposing As Boolean) -> Void
+Overrides Microsoft.VisualStudio.Editors.ApplicationDesigner.SpecialFileCustomViewProvider.CloseView() -> Void
+Overrides Microsoft.VisualStudio.Editors.ApplicationDesigner.SpecialFileCustomViewProvider.CreateView() -> Void
+Overrides Microsoft.VisualStudio.Editors.ApplicationDesigner.SpecialFileCustomViewProvider.Dispose(Disposing As Boolean) -> Void
+Overrides Microsoft.VisualStudio.Editors.ApplicationDesigner.SpecialFileCustomViewProvider.View() -> System.Windows.Forms.Control
+Overrides Microsoft.VisualStudio.Editors.PropertyPages.CpsPropertyDescriptorWrapper.Attributes() -> System.ComponentModel.AttributeCollection
+Overrides Microsoft.VisualStudio.Editors.PropertyPages.CpsPropertyDescriptorWrapper.CanResetValue(component As Object) -> Boolean
+Overrides Microsoft.VisualStudio.Editors.PropertyPages.CpsPropertyDescriptorWrapper.Category() -> String
+Overrides Microsoft.VisualStudio.Editors.PropertyPages.CpsPropertyDescriptorWrapper.ComponentType() -> System.Type
+Overrides Microsoft.VisualStudio.Editors.PropertyPages.CpsPropertyDescriptorWrapper.Converter() -> System.ComponentModel.TypeConverter
+Overrides Microsoft.VisualStudio.Editors.PropertyPages.CpsPropertyDescriptorWrapper.Description() -> String
+Overrides Microsoft.VisualStudio.Editors.PropertyPages.CpsPropertyDescriptorWrapper.DesignTimeOnly() -> Boolean
+Overrides Microsoft.VisualStudio.Editors.PropertyPages.CpsPropertyDescriptorWrapper.DisplayName() -> String
+Overrides Microsoft.VisualStudio.Editors.PropertyPages.CpsPropertyDescriptorWrapper.GetChildProperties(instance As Object, filter As System.Attribute()) -> System.ComponentModel.PropertyDescriptorCollection
+Overrides Microsoft.VisualStudio.Editors.PropertyPages.CpsPropertyDescriptorWrapper.GetEditor(editorBaseType As System.Type) -> Object
+Overrides Microsoft.VisualStudio.Editors.PropertyPages.CpsPropertyDescriptorWrapper.GetValue(component As Object) -> Object
+Overrides Microsoft.VisualStudio.Editors.PropertyPages.CpsPropertyDescriptorWrapper.IsBrowsable() -> Boolean
+Overrides Microsoft.VisualStudio.Editors.PropertyPages.CpsPropertyDescriptorWrapper.IsLocalizable() -> Boolean
+Overrides Microsoft.VisualStudio.Editors.PropertyPages.CpsPropertyDescriptorWrapper.IsReadOnly() -> Boolean
+Overrides Microsoft.VisualStudio.Editors.PropertyPages.CpsPropertyDescriptorWrapper.PropertyType() -> System.Type
+Overrides Microsoft.VisualStudio.Editors.PropertyPages.CpsPropertyDescriptorWrapper.ResetValue(component As Object) -> Void
+Overrides Microsoft.VisualStudio.Editors.PropertyPages.CpsPropertyDescriptorWrapper.SetValue(component As Object, value As Object) -> Void
+Overrides Microsoft.VisualStudio.Editors.PropertyPages.CpsPropertyDescriptorWrapper.ShouldSerializeValue(component As Object) -> Boolean
+Overrides Microsoft.VisualStudio.Editors.PropertyPages.CpsPropertyDescriptorWrapper.SupportsChangeEvents() -> Boolean
+Overrides Microsoft.VisualStudio.Editors.PropertyPages.HiddenIfMissingPropertyControlData.InitPropertyValue() -> Void
+Overrides Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.Dispose(disposing As Boolean) -> Void
+Overrides Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.GetPreferredSize(startSize As System.Drawing.Size) -> System.Drawing.Size
+Overrides Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.OnLayout(levent As System.Windows.Forms.LayoutEventArgs) -> Void
+Overrides Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.ProcessDialogKey(keyData As System.Windows.Forms.Keys) -> Boolean
+Overrides Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.WndProc(ByRef m As System.Windows.Forms.Message) -> Void
+Overrides Microsoft.VisualStudio.Editors.PropPageDesigner.DeferrableWindowPaneProviderService.CreateWindowPane(surface As System.ComponentModel.Design.DesignSurface) -> Microsoft.VisualStudio.Shell.Design.DesignerWindowPane
+Overrides Microsoft.VisualStudio.Editors.PropPageDesigner.PropertyPagePropertyDescriptor.CanResetValue(Component As Object) -> Boolean
+Overrides Microsoft.VisualStudio.Editors.PropPageDesigner.PropertyPagePropertyDescriptor.ComponentType() -> System.Type
+Overrides Microsoft.VisualStudio.Editors.PropPageDesigner.PropertyPagePropertyDescriptor.Converter() -> System.ComponentModel.TypeConverter
+Overrides Microsoft.VisualStudio.Editors.PropPageDesigner.PropertyPagePropertyDescriptor.DisplayName() -> String
+Overrides Microsoft.VisualStudio.Editors.PropPageDesigner.PropertyPagePropertyDescriptor.GetChildProperties(instance As Object, filter As System.Attribute()) -> System.ComponentModel.PropertyDescriptorCollection
+Overrides Microsoft.VisualStudio.Editors.PropPageDesigner.PropertyPagePropertyDescriptor.GetEditor(editorBaseType As System.Type) -> Object
+Overrides Microsoft.VisualStudio.Editors.PropPageDesigner.PropertyPagePropertyDescriptor.GetValue(Component As Object) -> Object
+Overrides Microsoft.VisualStudio.Editors.PropPageDesigner.PropertyPagePropertyDescriptor.IsReadOnly() -> Boolean
+Overrides Microsoft.VisualStudio.Editors.PropPageDesigner.PropertyPagePropertyDescriptor.Name() -> String
+Overrides Microsoft.VisualStudio.Editors.PropPageDesigner.PropertyPagePropertyDescriptor.PropertyType() -> System.Type
+Overrides Microsoft.VisualStudio.Editors.PropPageDesigner.PropertyPagePropertyDescriptor.ResetValue(Component As Object) -> Void
+Overrides Microsoft.VisualStudio.Editors.PropPageDesigner.PropertyPagePropertyDescriptor.SetValue(Component As Object, Value As Object) -> Void
+Overrides Microsoft.VisualStudio.Editors.PropPageDesigner.PropertyPagePropertyDescriptor.ShouldSerializeValue(Component As Object) -> Boolean
+Overrides Microsoft.VisualStudio.Editors.PropPageDesigner.PropertyPageSerializationService.CreateStore() -> System.ComponentModel.Design.Serialization.SerializationStore
+Overrides Microsoft.VisualStudio.Editors.PropPageDesigner.PropertyPageSerializationService.Deserialize(Store As System.ComponentModel.Design.Serialization.SerializationStore, Container As System.ComponentModel.IContainer) -> System.Collections.ICollection
+Overrides Microsoft.VisualStudio.Editors.PropPageDesigner.PropertyPageSerializationService.Deserialize(Store As System.ComponentModel.Design.Serialization.SerializationStore) -> System.Collections.ICollection
+Overrides Microsoft.VisualStudio.Editors.PropPageDesigner.PropertyPageSerializationService.DeserializeTo(Store As System.ComponentModel.Design.Serialization.SerializationStore, Container As System.ComponentModel.IContainer, ValidateRecycledTypes As Boolean, applyDefaults As Boolean) -> Void
+Overrides Microsoft.VisualStudio.Editors.PropPageDesigner.PropertyPageSerializationService.LoadStore(Stream As System.IO.Stream) -> System.ComponentModel.Design.Serialization.SerializationStore
+Overrides Microsoft.VisualStudio.Editors.PropPageDesigner.PropertyPageSerializationService.Serialize(Store As System.ComponentModel.Design.Serialization.SerializationStore, Value As Object) -> Void
+Overrides Microsoft.VisualStudio.Editors.PropPageDesigner.PropertyPageSerializationService.SerializeAbsolute(store As System.ComponentModel.Design.Serialization.SerializationStore, value As Object) -> Void
+Overrides Microsoft.VisualStudio.Editors.PropPageDesigner.PropertyPageSerializationService.SerializeMember(Store As System.ComponentModel.Design.Serialization.SerializationStore, OwningObject As Object, Member As System.ComponentModel.MemberDescriptor) -> Void
+Overrides Microsoft.VisualStudio.Editors.PropPageDesigner.PropertyPageSerializationService.SerializeMemberAbsolute(Store As System.ComponentModel.Design.Serialization.SerializationStore, OwningObject As Object, Member As System.ComponentModel.MemberDescriptor) -> Void
+Overrides Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerLoader.Dispose() -> Void
+Overrides Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerView.PreProcessMessage(ByRef msg As System.Windows.Forms.Message) -> Boolean
+Overrides Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerView.ScrollablePanel.ScrollToControl(activeControl As System.Windows.Forms.Control) -> System.Drawing.Point
+Shared Microsoft.VisualStudio.Editors.AppDesDesignerFramework.DesignerMessageBox.Show(RootDesigner As Microsoft.VisualStudio.Editors.AppDesDesignerFramework.BaseRootDesigner, Message As String, Caption As String, Buttons As System.Windows.Forms.MessageBoxButtons, Icon As System.Windows.Forms.MessageBoxIcon, DefaultButton As System.Windows.Forms.MessageBoxDefaultButton = System.Windows.Forms.MessageBoxDefaultButton.Button1, HelpLink As String = Nothing) -> System.Windows.Forms.DialogResult
+Shared Microsoft.VisualStudio.Editors.AppDesDesignerFramework.DesignerMessageBox.Show(ServiceProvider As System.IServiceProvider, ex As System.Exception, Caption As String, HelpLink As String = Nothing) -> Void
+Shared Microsoft.VisualStudio.Editors.AppDesDesignerFramework.DesignerMessageBox.Show(ServiceProvider As System.IServiceProvider, Message As String, Caption As String, Buttons As System.Windows.Forms.MessageBoxButtons, Icon As System.Windows.Forms.MessageBoxIcon, DefaultButton As System.Windows.Forms.MessageBoxDefaultButton = System.Windows.Forms.MessageBoxDefaultButton.Button1, HelpLink As String = Nothing) -> System.Windows.Forms.DialogResult
+Shared Microsoft.VisualStudio.Editors.AppDesDesignerFramework.DesignerMessageBox.Show(ServiceProvider As System.IServiceProvider, Message As String, ex As System.Exception, Caption As String, HelpLink As String = Nothing) -> Void
+Shared Microsoft.VisualStudio.Editors.AppDesDesignerFramework.DesignerMessageBox.ShowInternal(UIService As System.Windows.Forms.Design.IUIService, VsUIShell As Microsoft.VisualStudio.Shell.Interop.IVsUIShell, Message As String, Caption As String, Buttons As System.Windows.Forms.MessageBoxButtons, Icon As System.Windows.Forms.MessageBoxIcon, DefaultButton As System.Windows.Forms.MessageBoxDefaultButton, HelpLink As String) -> System.Windows.Forms.DialogResult
+Shared Microsoft.VisualStudio.Editors.AppDesDesignerFramework.SourceCodeControlManager.QueryEditableFiles(sp As System.IServiceProvider, files As System.Collections.Generic.List(Of String), throwOnFailure As Boolean, checkOnly As Boolean, ByRef fileReloaded As Boolean, allowInMemoryEdits As Boolean = True, allowFileReload As Boolean = True) -> Boolean
+Shared Microsoft.VisualStudio.Editors.AppDesDesignerFramework.SourceCodeControlManager.QueryEditableFiles(sp As System.IServiceProvider, files As System.Collections.Generic.List(Of String), throwOnFailure As Boolean, checkOnly As Boolean) -> Boolean
+Shared Microsoft.VisualStudio.Editors.AppDesDesignerFramework.SourceCodeControlManager.QuerySave(sp As System.IServiceProvider, files As System.Collections.Generic.List(Of String), throwOnFailure As Boolean) -> Boolean
+Shared Microsoft.VisualStudio.Editors.AppDesInterop.CAUUIDMarshaler.GetData(cauuid As Microsoft.VisualStudio.OLE.Interop.CAUUID) -> System.Guid()
+Shared Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerEditorFactory.CommandUIGuid() -> System.Guid
+Shared Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerEditorFactory.EditorGuid() -> System.Guid
+Shared Microsoft.VisualStudio.Editors.PropertyPages.CpsPropertyDescriptorWrapper.IsAnyCpsComponent(components As Object()) -> Boolean
+Shared Microsoft.VisualStudio.Editors.PropertyPages.CpsPropertyDescriptorWrapper.IsCpsComponent(component As Object) -> Boolean
+Shared Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.GetAllPropertyValuesNative(Descriptor As System.ComponentModel.PropertyDescriptor, Extenders As Object(), ByRef Values As Object(), ByRef ValueOrIndeterminate As Object) -> Void
+Shared Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.GetCommonPropertyValue(Descriptor As System.ComponentModel.PropertyDescriptor, ProjectCommonPropertiesObject As Object) -> Object
+Shared Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.GetCommonPropertyValueNative(Descriptor As System.ComponentModel.PropertyDescriptor, ProjectCommonPropertiesObject As Object) -> Object
+Shared Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.GetNonCommonPropertyValueNative(Descriptor As System.ComponentModel.PropertyDescriptor, Extender As Object) -> Object
+Shared Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.GetValueOrIndeterminateFromArray(Values As Object()) -> Object
+Shared Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.HideOrDisableControls(Controls As System.Windows.Forms.Control(), Hide As Boolean) -> Void
+Shared Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.Indeterminate() -> Object
+Shared Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.IsSpecialValue(Value As Object) -> Boolean
+Shared Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.MissingProperty() -> Object
+Shared Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.ObjectsAreEqual(Object1 As Object, Object2 As Object) -> Boolean
+Shared Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.PropertyDescriptorSetValue(Descriptor As System.ComponentModel.PropertyDescriptor, Component As Object, Value As Object) -> Void
+Shared Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.SetCommonPropertyValueNative(Descriptor As System.ComponentModel.PropertyDescriptor, Value As Object, ProjectCommonPropertiesObject As Object) -> Void
+Shared Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.TryGetNonCommonPropertyValueNative(Descriptor As System.ComponentModel.PropertyDescriptor, Extenders As Object()) -> Object
+Shared Microsoft.VisualStudio.Editors.PropertyPages.PropertyListener.TryCreate(PropPage As Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase, EventSource As Object, DebugSourceName As String, ProjectHierarchy As Microsoft.VisualStudio.Shell.Interop.IVsHierarchy, ListenToInactiveConfigs As Boolean) -> Microsoft.VisualStudio.Editors.PropertyPages.PropertyListener
+Shared Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.GetPropertyFromRunningPages(SourcePage As Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase, dispid As Integer, ByRef obj As Object) -> Boolean
+Shared Microsoft.VisualStudio.Editors.PropertyPages.SKUMatrix.IsHidden(PropertyId As Integer) -> Boolean
+Shared Microsoft.VisualStudio.Editors.PropertyPages.VSProductSKU.IsAcademic() -> Boolean
+Shared Microsoft.VisualStudio.Editors.PropertyPages.VSProductSKU.IsEnterprise() -> Boolean
+Shared Microsoft.VisualStudio.Editors.PropertyPages.VSProductSKU.IsExpress() -> Boolean
+Shared Microsoft.VisualStudio.Editors.PropertyPages.VSProductSKU.IsProfessional() -> Boolean
+Shared Microsoft.VisualStudio.Editors.PropertyPages.VSProductSKU.IsStandard() -> Boolean
+Shared Microsoft.VisualStudio.Editors.PropertyPages.VSProductSKU.IsVB() -> Boolean
+Shared Microsoft.VisualStudio.Editors.PropertyPages.VSProductSKU.IsVC() -> Boolean
+Shared Microsoft.VisualStudio.Editors.PropertyPages.VSProductSKU.IsVSTO() -> Boolean
+Shared Microsoft.VisualStudio.Editors.PropertyPages.VSProductSKU.ProductSKU() -> Microsoft.VisualStudio.Editors.PropertyPages.VSProductSKU.VSASKUEdition
+Shared Microsoft.VisualStudio.Editors.PropertyPages.VSProductSKU.ProductSubSKU() -> Microsoft.VisualStudio.Editors.PropertyPages.VSProductSKU.VSASubSKUEdition
+Shared Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerEditorFactory.CommandUIGuid() -> System.Guid
+Shared Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerEditorFactory.EditorGuid() -> System.Guid
+Shared Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerRootDesigner.CommitAnyPendingChanges() -> Void
+Shared Microsoft.VisualStudio.Editors.VBPackageUtils.PackageInstance(GetService As Microsoft.VisualStudio.Editors.VBPackageUtils.getServiceDelegate) -> Microsoft.VisualStudio.Editors.IVBPackage
+Shared ReadOnly Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.PropPageBackColor -> System.Drawing.Color
+VSThemedLinkLabel
+VSThemedLinkLabel.New() -> Void
+VSThemedLinkLabel.SetThemedColor(vsUIShell5 As Microsoft.VisualStudio.Shell.Interop.IVsUIShell5, supportsTheming As Boolean) -> Void
+VSThemedLinkLabel.SetThemedColor(vsUIShell5 As Microsoft.VisualStudio.Shell.Interop.IVsUIShell5) -> Void

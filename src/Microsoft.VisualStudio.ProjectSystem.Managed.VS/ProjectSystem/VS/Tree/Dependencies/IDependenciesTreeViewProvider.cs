@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     internal interface IDependenciesTreeViewProvider
     {
         /// <summary>
-        /// Builds Dependency node contents (target frameworks, groups and top level dependencies)
+        /// Builds Dependency node contents (target frameworks, groups and top level dependencies) for a given snapshot.
         /// </summary>
         /// <param name="dependenciesTree">Old dependencies node</param>
         /// <param name="snapshot">Current dependencies snapshot</param>

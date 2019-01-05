@@ -607,12 +607,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Setter for MainForm.  We handle this so that we also get notified when the property
         '''   has changed.
         ''' </summary>
-        ''' <param name="conrol"></param>
+        ''' <param name="control"></param>
         ''' <param name="prop"></param>
         ''' <param name="value"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Protected Function MainFormNoRootNSSet(conrol As Control, prop As PropertyDescriptor, value As Object) As Boolean
+        Protected Function MainFormNoRootNSSet(control As Control, prop As PropertyDescriptor, value As Object) As Boolean
             If Not PropertyControlData.IsSpecialValue(value) Then
                 MainFormTextboxNoRootNS.Text = DirectCast(value, String)
 
@@ -746,7 +746,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Dim appType As ApplicationTypeInfo = DirectCast(ApplicationTypeComboBox.SelectedItem, ApplicationTypeInfo)
             If appType IsNot Nothing _
                 AndAlso appType.ApplicationType = ApplicationTypes.WindowsApp _
-                AndAlso Me.UseApplicationFrameworkCheckBox.CheckState = CheckState.Checked _
+                AndAlso UseApplicationFrameworkCheckBox.CheckState = CheckState.Checked _
             Then
                 Return True
             Else
@@ -1275,24 +1275,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
 
             Return True
-        End Function
-
-
-
-        ''' <summary>
-        ''' Get the current value of MyType from the UI
-        ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Private Function GetMyTypeFromUI() As String
-
-            Dim MyTypeObject As Object = Nothing
-            MyTypeGet(Nothing, Nothing, MyTypeObject)
-
-            Dim MyType As String
-            MyType = TryCast(MyTypeObject, String)
-
-            Return MyType
         End Function
 
 

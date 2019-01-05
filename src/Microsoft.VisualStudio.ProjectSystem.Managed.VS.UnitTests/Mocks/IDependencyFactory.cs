@@ -38,16 +38,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                                             bool? setPropertiesResolved = null,
                                             ProjectTreeFlags? setPropertiesFlags = null,
                                             bool? setPropertiesImplicit = null,
+                                            IDependency setPropertiesReturn = null,
                                             bool? equals = null,
                                             IImmutableList<string> setPropertiesDependencyIDs = null,
                                             string setPropertiesSchemaName = null,
                                             ITargetFramework targetFramework = null,
                                             DependencyIconSet iconSet = null,
                                             DependencyIconSet setPropertiesIconSet = null,
-                                            MockBehavior? mockBehavior = null)
+                                            MockBehavior mockBehavior = MockBehavior.Strict)
         {
-            var behavior = mockBehavior ?? MockBehavior.Strict;
-            var mock = new Mock<IDependency>(behavior);
+            var mock = new Mock<IDependency>(mockBehavior);
 
             if (providerType != null)
             {
@@ -94,22 +94,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 mock.Setup(x => x.DependencyIDs).Returns(ImmutableList<string>.Empty.AddRange(dependencyIDs));
             }
 
-            if (resolved != null && resolved.HasValue)
+            if (resolved.HasValue)
             {
                 mock.Setup(x => x.Resolved).Returns(resolved.Value);
             }
 
-            if (topLevel != null && topLevel.HasValue)
+            if (topLevel.HasValue)
             {
                 mock.Setup(x => x.TopLevel).Returns(topLevel.Value);
             }
 
-            if (isImplicit != null && isImplicit.HasValue)
+            if (isImplicit.HasValue)
             {
                 mock.Setup(x => x.Implicit).Returns(isImplicit.Value);
             }
 
-            if (flags != null && flags.HasValue)
+            if (flags.HasValue)
             {
                 mock.Setup(x => x.Flags).Returns(flags.Value);
             }
@@ -139,10 +139,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                             setPropertiesDependencyIDs,
                             setPropertiesIconSet,
                             setPropertiesImplicit))
-                    .Returns(mock.Object);
+                    .Returns(setPropertiesReturn ?? mock.Object);
             }
 
-            if (equals != null && equals.HasValue && equals.Value)
+            if (equals == true)
             {
                 mock.Setup(x => x.Equals(It.IsAny<IDependency>())).Returns(true);
             }
@@ -169,27 +169,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             var json = JObject.Parse(jsonString);
             var data = json.ToObject<TestDependency>();
 
-            if (flags != null && flags.HasValue)
+            if (flags.HasValue)
             {
                 data.Flags = data.Flags.Union(flags.Value);
             }
 
-            if (icon != null && icon.HasValue)
+            if (icon.HasValue)
             {
                 data.Icon = icon.Value;
             }
 
-            if (expandedIcon != null && expandedIcon.HasValue)
+            if (expandedIcon.HasValue)
             {
                 data.ExpandedIcon = expandedIcon.Value;
             }
 
-            if (unresolvedIcon != null && unresolvedIcon.HasValue)
+            if (unresolvedIcon.HasValue)
             {
                 data.UnresolvedIcon = unresolvedIcon.Value;
             }
 
-            if (unresolvedExpandedIcon != null && unresolvedExpandedIcon.HasValue)
+            if (unresolvedExpandedIcon.HasValue)
             {
                 data.UnresolvedExpandedIcon = unresolvedExpandedIcon.Value;
             }

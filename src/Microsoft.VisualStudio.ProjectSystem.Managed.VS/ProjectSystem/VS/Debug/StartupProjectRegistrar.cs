@@ -24,6 +24,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         private Guid _projectGuid;
         private IDisposable _subscription;
 
+        /// <remarks>
+        /// <see cref="UnconfiguredProject"/> must be imported in the contructor in order for scope of this class' export to be correct.
+        /// </remarks>
         [ImportingConstructor]
         public StartupProjectRegistrar(
             UnconfiguredProject project,
@@ -40,7 +43,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             _launchProviders = launchProviders;
         }
 
+#pragma warning disable RS0030 // symbol ProjectAutoLoad is banned
         [ProjectAutoLoad(startAfter: ProjectLoadCheckpoint.ProjectFactoryCompleted)]
+#pragma warning restore RS0030 // symbol ProjectAutoLoad is banned
         [AppliesTo(ProjectCapability.DotNet)]
         public Task InitializeAsync()
         {

@@ -26,26 +26,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         public ImageMoniker UnresolvedIcon { get; }
         public ImageMoniker UnresolvedExpandedIcon { get; }
 
-        public DependencyIconSet WithIcon(ImageMoniker newIcon)
-        {
-            if (Icon.Id == newIcon.Id && Icon.Guid == newIcon.Guid)
-            {
-                return this;
-            }
-
-            return new DependencyIconSet(newIcon, ExpandedIcon, UnresolvedIcon, UnresolvedExpandedIcon);
-        }
-
-        public DependencyIconSet WithExpandedIcon(ImageMoniker newExpandedIcon)
-        {
-            if (ExpandedIcon.Id == newExpandedIcon.Id && ExpandedIcon.Guid == newExpandedIcon.Guid)
-            {
-                return this;
-            }
-
-            return new DependencyIconSet(Icon, newExpandedIcon, UnresolvedIcon, UnresolvedExpandedIcon);
-        }
-
         public override bool Equals(object obj)
         {
             return Equals(obj as DependencyIconSet);
@@ -66,7 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
         public override int GetHashCode()
         {
-            var hashCode = Icon.Id.GetHashCode();
+            int hashCode = Icon.Id.GetHashCode();
             hashCode = hashCode * -1521134295 + Icon.Guid.GetHashCode();
             hashCode = hashCode * -1521134295 + ExpandedIcon.Id.GetHashCode();
             hashCode = hashCode * -1521134295 + ExpandedIcon.Guid.GetHashCode();

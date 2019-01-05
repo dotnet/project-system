@@ -64,7 +64,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         /// <summary>
         /// Called on project load.
         /// </summary>
+#pragma warning disable RS0030 // symbol ConfiguredProjectAutoLoad is banned
         [ConfiguredProjectAutoLoad(RequiresUIThread = false)]
+#pragma warning restore RS0030 // symbol ConfiguredProjectAutoLoad is banned
         [AppliesTo(ProjectCapability.DotNet)]
         internal void Load()
         {
@@ -134,6 +136,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         {
             if (initialized)
             {
+                _taskDelayScheduler?.Dispose();
                 _treeWatcher.Dispose();
                 await UnregisterFileWatcherIfAnyAsync();
             }
@@ -209,6 +212,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             if (projectLockJsonFilePath != null)
             {
                 _previousContentsHash = GetFileHashOrNull(projectLockJsonFilePath);
+                _taskDelayScheduler?.Dispose();
                 _taskDelayScheduler = new TaskDelayScheduler(
                     s_notifyDelay,
                     _projectServices.ThreadingService,
@@ -255,7 +259,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             return _watchedFileResetCancellationToken.Token;
         }
 
-        private async Task HandleFileChangedAsync(CancellationToken cancellationToken = default)
+        private async Task HandleFileChangedAsync(CancellationToken cancellationToken)
         {
             try
             {
@@ -280,7 +284,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                                     project.MarkDirty();
                                     configuredProject.NotifyProjectChange();
 
-                                }, cancellationToken); // Stay on same thread that took lock
+                                }, ProjectCheckoutOption.DoNotCheckout, cancellationToken); // Stay on same thread that took lock
                             }
                         }, cancellationToken); // Stay on same thread that took lock
                     });

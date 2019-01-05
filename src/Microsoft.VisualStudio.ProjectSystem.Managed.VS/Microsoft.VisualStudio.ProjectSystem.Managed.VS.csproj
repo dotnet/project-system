@@ -13,6 +13,7 @@
     <Description>Microsoft VisualStudio ProjectSystem for Managed Languages Project hosts that interact with VisualStudio interfaces.</Description>
     <Summary>Microsoft VisualStudio Managed Project System VS Components</Summary>
     <PackageTags>Roslyn Managed Project System VisualStudio</PackageTags>
+    <NoWarn>$(NoWarn);NU5125</NoWarn>    
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.Managed\Microsoft.VisualStudio.ProjectSystem.Managed.csproj" />
@@ -55,9 +56,6 @@
     <Compile Update="ProjectSystem\VS\UI\DontShowAgainMessageBox.xaml.cs">
       <DependentUpon>DontShowAgainMessageBox.xaml</DependentUpon>
     </Compile>
-    <Compile Update="ProjectSystem\VS\UI\MultiChoiceMsgBox.Xaml.cs">
-      <DependentUpon>MultiChoiceMsgBox.xaml</DependentUpon>
-    </Compile>
     <Compile Update="VSResources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -84,10 +82,6 @@
     </Page>
     <Page Include="ProjectSystem\VS\UI\DontShowAgainMessageBox.xaml">
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ProjectSystem\VS\UI\MultiChoiceMsgBox.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Resource Include="Resources\Icons\LibraryWarning_16x.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -220,5 +214,9 @@
       <ResourceName>Menus.ctmenu</ResourceName>
       <SubType>Designer</SubType>
     </VSCTCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <AdditionalFiles Include="PublicAPI.Shipped.txt" />
+    <AdditionalFiles Include="PublicAPI.Unshipped.txt" />
   </ItemGroup>
 </Project>

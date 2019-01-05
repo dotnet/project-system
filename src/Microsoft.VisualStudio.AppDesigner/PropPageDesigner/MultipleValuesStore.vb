@@ -20,8 +20,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         Public Values As Object()        'The stored values themselves
 
         Public SelectedConfigName As String 'The currently-selected configuration in the comboboxes.  Empty value indicates "All Configurations".
-        Public SelectedPlatformName As String 'The currently-selected platform in the comboboxes.  Empty value indicates "All Configurations".
-
+        Public SelectedPlatformName As String 'The currently-selected platform in the comboboxes.  Empty value indicates "All Platforms".
 
         ''' <summary>
         ''' Constructor.

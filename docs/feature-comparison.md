@@ -9,7 +9,7 @@ For a list of behavior differences; see [Compability](compatibility.md).
 **Platforms**                                                               |
 .NET Standard                                                               |          | ●
 .NET Core                                                                   |          | ●
-.NET Framework                                                              | ●        | ◖  | No designer/AppModel support for new project system
+.NET Framework                                                              | ●        | ◖  | No ASP.NET AppModel support in new project system
 **App Models**                                                              |
 ASP.NET Core (.NET Framework & .NET Core)                                   |          | ●
 ASP.NET                                                                     | ●        |   
@@ -32,28 +32,29 @@ Launch with remote debugging                                                | �
 Launch with Azure Snapshot Debugger                                         |          | ●
 **Publish**                                                                 |
 Publish to Azure                                                            |          | ●
-ClickOnce Publish                                                           | ●        |   
+ClickOnce Publish                                                           | ●        | 
 **Project**                                                                 |
 Globbing support                                                            |          | ●    | `<Compile Include="*.cs" />`
 Simplified project format                                                   |          | ●    | `<Project Sdk="Microsoft.Net.Sdk">`
 Simplified configuration syntax                                             |          | ●    | `<Configurations>Debug;Release<Configurations>;<Platforms>AnyCPU;x64</Platforms>`
 Implicit configuration syntax                                               | ●        |      | `<PropertyGroup Condition="'$(Configuration)\|$(Platform)' == 'Debug\|AnyCPU'">`
 Edit project XML while loaded                                               |          | ●
+Find & Find in Files in project file                                        |          | [16.0](https://github.com/dotnet/project-system/issues/4061)
 Automatically reload project file with no prompts                           |          | ●
 Automatically reload targets files                                          |          | ●
 Automatically refresh Solution Explorer to reflect file system              |          | ●
 Show items included in imports (.targets/.props)                            |          | ●
 **Dependencies**|
 Auto-restore packages on load and external edit                             |          | ● 
-PackageReference support                                                    | ◖        | ● | Legacy does not reload package targets file without VS restart. Also does not support using MSBuild properties in name, version and metadata.
+PackageReference support                                                    | ◖ ● (15.9)        | ● | Starting in 15.9, legacy reloads package targets file without VS restart and supports using MSBuild properties in name, version and metadata.
 Dependency node showing package/project graph                               |          | ● 
 Transitive ProjectReference                                                 |          | ●
 Generate NuGet package on build                                             |          | ● 
 **Features**|
 Add Service Reference                                                       | ●        | 
 Add Web Reference                                                           | ●        | 
-Add Data Source                                                             | ●        | 
-DataSet Designer                                                            | ●        |
+Add Data Source                                                             | ●        | 16.0
+DataSet Designer                                                            | ●        | 16.0
 "Initialize Interactive Window with Project"                                | ●        | ● (15.8) | Only when targeting .NET Framework.
 Class Diagrams                                                              | ●        | ● (15.8) |
 Code Analysis                                                               | ●        | 
@@ -61,6 +62,4 @@ Code Metrics                                                                | �
 Code Clones                                                                 | ●        | ● (15.8) | 
 Fakes                                                                       | ●        | 
 T4 Templates                                                                | ●        | 
-Zero Impact Projects ("Save new projects when created")                     | ●        | 
-Simplified configurations ("Show advanced build configurations")            | ●        | 
 [Automation Extenders](https://msdn.microsoft.com/en-us/library/0y92k2w2.aspx)| ●        | ● (15.8) | 

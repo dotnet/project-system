@@ -20,14 +20,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         public static IDependenciesViewModelFactory Implement(
             ImageMoniker? getDependenciesRootIcon = null,
-            IEnumerable<IDependency> createRootViewModel = null,
-            IEnumerable<IDependency> createTargetViewModel = null,
-            MockBehavior? mockBehavior = null)
+            IEnumerable<IDependencyModel> createRootViewModel = null,
+            IEnumerable<IDependencyModel> createTargetViewModel = null,
+            MockBehavior mockBehavior = MockBehavior.Strict)
         {
-            var behavior = mockBehavior ?? MockBehavior.Strict;
-            var mock = new Mock<IDependenciesViewModelFactory>(behavior);
+            var mock = new Mock<IDependenciesViewModelFactory>(mockBehavior);
 
-            if (getDependenciesRootIcon != null && getDependenciesRootIcon.HasValue)
+            if (getDependenciesRootIcon.HasValue)
             {
                 mock.Setup(x => x.GetDependenciesRootIcon(It.IsAny<bool>())).Returns(getDependenciesRootIcon.Value);
             }
@@ -37,9 +36,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 foreach (var d in createRootViewModel)
                 {
                     mock.Setup(x => x.CreateRootViewModel(
-                                        It.Is<string>((t) => string.Equals(t, d.ProviderType, System.StringComparison.OrdinalIgnoreCase)),
-                                        false))
-                        .Returns(((IDependencyModel)d).ToViewModel(false));
+                            It.Is<string>(t => string.Equals(t, d.ProviderType, System.StringComparison.OrdinalIgnoreCase)),
+                            false))
+                        .Returns(d.ToViewModel(false));
                 }
             }
 
@@ -49,14 +48,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 {
                     mock.Setup(x => x.CreateTargetViewModel(
                             It.Is<ITargetedDependenciesSnapshot>(
-                                (t) => string.Equals(t.TargetFramework.FullName, d.Caption, System.StringComparison.OrdinalIgnoreCase))))
-                        .Returns(((IDependencyModel)d).ToViewModel(false));
+                                t => string.Equals(t.TargetFramework.FullName, d.Caption, System.StringComparison.OrdinalIgnoreCase))))
+                        .Returns(d.ToViewModel(false));
                 }
             }
 
             return mock.Object;
         }
-
-
     }
 }

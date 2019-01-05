@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 
 using Microsoft.VisualStudio.GraphModel;
@@ -11,8 +12,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
 {
     internal abstract class GraphViewProviderBase : IDependenciesGraphViewProvider
     {
-        public GraphViewProviderBase(IDependenciesGraphBuilder builder)
+        protected GraphViewProviderBase(IDependenciesGraphBuilder builder)
         {
+            Requires.NotNull(builder, nameof(builder));
+
             Builder = builder;
         }
 
@@ -26,40 +29,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
 
         public virtual bool HasChildren(string projectPath, IDependency dependency)
         {
-            return dependency.DependencyIDs.Count > 0;
+            return dependency.DependencyIDs.Count != 0;
         }
 
-        public virtual void BuildGraph(
+        public abstract void BuildGraph(
             IGraphContext graphContext,
             string projectPath,
             IDependency dependency,
             GraphNode dependencyGraphNode,
-            ITargetedDependenciesSnapshot targetedSnapshot)
-        {
-            // store refreshed dependency info
-            dependencyGraphNode.SetValue(DependenciesGraphSchema.DependencyIdProperty, dependency.Id);
-            dependencyGraphNode.SetValue(DependenciesGraphSchema.ResolvedProperty, dependency.Resolved);
-
-            IEnumerable<IDependency> children = targetedSnapshot.GetDependencyChildren(dependency);
-            if (children == null)
-            {
-                return;
-            }
-
-            foreach (IDependency childDependency in children)
-            {
-                if (!childDependency.Visible)
-                {
-                    continue;
-                }
-
-                Builder.AddGraphNode(
-                    graphContext,
-                    projectPath,
-                    dependencyGraphNode,
-                    childDependency.ToViewModel(targetedSnapshot));
-            }
-        }
+            ITargetedDependenciesSnapshot targetedSnapshot);
 
         public virtual bool ShouldTrackChanges(string projectPath, string updatedProjectPath, IDependency dependency)
         {
@@ -77,9 +55,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
                             targetedSnapshot,
                             updatedDependency,
                             dependencyGraphNode,
-                            out IEnumerable<DependencyNodeInfo> nodesToAdd,
-                            out IEnumerable<DependencyNodeInfo> nodesToRemove,
-                            out string dependencyProjectPath))
+                            out IReadOnlyList<DependencyNodeInfo> nodesToAdd,
+                            out IReadOnlyList<DependencyNodeInfo> nodesToRemove))
             {
                 return false;
             }
@@ -127,35 +104,32 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
             ITargetedDependenciesSnapshot targetedSnapshot,
             IDependency updatedDependency,
             GraphNode dependencyGraphNode,
-            out IEnumerable<DependencyNodeInfo> nodesToAdd,
-            out IEnumerable<DependencyNodeInfo> nodesToRemove,
-            out string dependencyProjectPath)
+            out IReadOnlyList<DependencyNodeInfo> nodesToAdd,
+            out IReadOnlyList<DependencyNodeInfo> nodesToRemove)
         {
-            dependencyProjectPath = projectPath;
-
-            IEnumerable<DependencyNodeInfo> existingChildrenInfo = GetExistingChildren(dependencyGraphNode);
-            IEnumerable<IDependency> updatedChildren = targetedSnapshot.GetDependencyChildren(updatedDependency)
-                ?? Enumerable.Empty<IDependency>();
-            IEnumerable<DependencyNodeInfo> updatedChildrenInfo = updatedChildren.Select(x => DependencyNodeInfo.FromDependency(x));
+            IReadOnlyList<DependencyNodeInfo> existingChildrenInfo = GetExistingChildren(dependencyGraphNode);
+            ImmutableArray<IDependency> updatedChildren = targetedSnapshot.GetDependencyChildren(updatedDependency);
+            IReadOnlyList<DependencyNodeInfo> updatedChildrenInfo = updatedChildren.Select(x => DependencyNodeInfo.FromDependency(x)).ToList();
 
             return AnyChanges(existingChildrenInfo, updatedChildrenInfo, out nodesToAdd, out nodesToRemove);
         }
 
         protected static bool AnyChanges(
-            IEnumerable<DependencyNodeInfo> existingChildren,
-            IEnumerable<DependencyNodeInfo> updatedChildren,
-            out IEnumerable<DependencyNodeInfo> nodesToAdd,
-            out IEnumerable<DependencyNodeInfo> nodesToRemove)
+            IReadOnlyList<DependencyNodeInfo> existingChildren,
+            IReadOnlyList<DependencyNodeInfo> updatedChildren,
+            out IReadOnlyList<DependencyNodeInfo> nodesToAdd,
+            out IReadOnlyList<DependencyNodeInfo> nodesToRemove)
         {
-            var comparer = new DependencyResolvedStateComparer();
             nodesToRemove = existingChildren.Except(updatedChildren).ToList();
             nodesToAdd = updatedChildren.Except(existingChildren).ToList();
-            return nodesToAdd.Any() || nodesToRemove.Any();
+
+            return nodesToAdd.Count != 0 || nodesToRemove.Count != 0;
         }
 
-        protected static IEnumerable<DependencyNodeInfo> GetExistingChildren(GraphNode inputGraphNode)
+        protected static IReadOnlyList<DependencyNodeInfo> GetExistingChildren(GraphNode inputGraphNode)
         {
             var children = new List<DependencyNodeInfo>();
+
             foreach (GraphNode childNode in inputGraphNode.FindDescendants())
             {
                 string id = childNode.GetValue<string>(DependenciesGraphSchema.DependencyIdProperty);
@@ -164,14 +138,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
                     continue;
                 }
 
-                var dependencyInfo = new DependencyNodeInfo
-                {
-                    Id = id,
-                    Caption = childNode.Label,
-                    Resolved = childNode.GetValue<bool>(DependenciesGraphSchema.ResolvedProperty)
-                };
-
-                children.Add(dependencyInfo);
+                children.Add(new DependencyNodeInfo(
+                    id, 
+                    childNode.Label, 
+                    childNode.GetValue<bool>(DependenciesGraphSchema.ResolvedProperty)));
             }
 
             return children;

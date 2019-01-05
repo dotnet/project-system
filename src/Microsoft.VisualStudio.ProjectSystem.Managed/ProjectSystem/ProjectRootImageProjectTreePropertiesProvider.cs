@@ -46,10 +46,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
         private void SetImage(IProjectTreeCustomizablePropertyValues propertyValues, string imageKey)
         {
             ProjectImageMoniker icon = _imageProvider.GetProjectImage(imageKey);
-            if (icon == null)
-                return;
 
-            propertyValues.Icon = icon;
+            if (icon != null)
+            {
+                propertyValues.Icon = icon;
+            }
         }
     }
 }

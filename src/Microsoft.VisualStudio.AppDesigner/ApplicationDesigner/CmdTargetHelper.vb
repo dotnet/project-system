@@ -25,21 +25,12 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             _windowPane = WindowPane
         End Sub
 
-        ' Window navigation items
-        Private Const CmdIdPaneNextSubPane As Integer = 1062
-        Private Const CmdIdPanePrevSubPane As Integer = 1063
-        Private Const CmdIdPaneNextPane As Integer = 316
-        Private Const CmdIdPanePrevPane As Integer = 317
         Private Const CmdIdPaneNextTab As Integer = 286
         Private Const CmdIdPanePrevTab As Integer = 287
         Private Const CmdIdCloseDocument As Integer = 658
         'case cmdidPaneCloseToolWindow
         'case cmdidPaneActivateDocWindow
         Private Const CmdIdCloseAllDocuments As Integer = 627
-        Private Const CmdIdNextDocumentNav As Integer = 1124
-        Private Const CmdIdPrevDocumentNav As Integer = 1125
-        Private Const CmdIdNextDocument As Integer = 628
-        Private Const CmdIdPrevDocument As Integer = 629
         Private Const CmdIdSaveSolution As Integer = 224
 
         ''' <summary>

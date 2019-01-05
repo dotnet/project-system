@@ -35,13 +35,13 @@ namespace Microsoft.VisualStudio.ProjectSystem
         [Fact]
         public void UpdateProjectTreeSettings_NullAsProjectTreeSettings_ThrowsArgumentNull()
         {
-            var ruleSnapsnots = IProjectRuleSnapshotsFactory.Create();
+            var ruleSnapshots = IProjectRuleSnapshotsFactory.Create();
             var propertiesProvider = CreateInstance();
             IImmutableDictionary<string, string> projectTreeSettings = null;
 
             Assert.Throws<ArgumentNullException>("projectTreeSettings", () =>
             {
-                propertiesProvider.UpdateProjectTreeSettings(ruleSnapsnots, ref projectTreeSettings);
+                propertiesProvider.UpdateProjectTreeSettings(ruleSnapshots, ref projectTreeSettings);
             });
         }
 

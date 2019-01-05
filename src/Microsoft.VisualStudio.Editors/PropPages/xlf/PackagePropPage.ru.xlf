@@ -68,43 +68,43 @@
         <note />
       </trans-unit>
       <trans-unit id="AssemblyVersionRevisionTextBox.AccessibleName">
-        <source>Revision</source>
-        <target state="translated">Редакция</target>
+        <source>Assembly Version Revision</source>
+        <target state="needs-review-translation">Редакция</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyVersionBuildTextBox.AccessibleName">
-        <source>Build</source>
-        <target state="translated">Сборка</target>
+        <source>Assembly Version Build</source>
+        <target state="needs-review-translation">Сборка</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyVersionMinorTextBox.AccessibleName">
-        <source>Minor</source>
-        <target state="translated">Дополнительный номер</target>
+        <source>Assembly Version Minor</source>
+        <target state="needs-review-translation">Дополнительный номер</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyVersionMajorTextBox.AccessibleName">
-        <source>Major</source>
-        <target state="translated">Основной номер</target>
+        <source>Assembly Version Major</source>
+        <target state="needs-review-translation">Основной номер</target>
         <note />
       </trans-unit>
       <trans-unit id="FileVersionRevisionTextBox.AccessibleName">
-        <source>Revision</source>
-        <target state="translated">Редакция</target>
+        <source>Assembly File Verison Revision</source>
+        <target state="needs-review-translation">Редакция</target>
         <note />
       </trans-unit>
       <trans-unit id="FileVersionBuildTextBox.AccessibleName">
-        <source>Build</source>
-        <target state="translated">Сборка</target>
+        <source>Assembly File Verison Build</source>
+        <target state="needs-review-translation">Сборка</target>
         <note />
       </trans-unit>
       <trans-unit id="FileVersionMinorTextBox.AccessibleName">
-        <source>Minor</source>
-        <target state="translated">Дополнительный номер</target>
+        <source>Assembly File Verison Minor</source>
+        <target state="needs-review-translation">Дополнительный номер</target>
         <note />
       </trans-unit>
       <trans-unit id="FileVersionMajorTextBox.AccessibleName">
-        <source>Major</source>
-        <target state="translated">Основной номер</target>
+        <source>Assembly File Verison Major</source>
+        <target state="needs-review-translation">Основной номер</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageRequireLicenseAcceptance.Text">

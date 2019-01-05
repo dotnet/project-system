@@ -59,7 +59,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 _projectBuildSystem.StartBatchEdit()
                 _batchCount = 1
             Else
-                _batchCount = _batchCount + 1
+                _batchCount += 1
             End If
         End Sub
 
@@ -72,7 +72,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
                     _projectBuildSystem.EndBatchEdit()
                     _batchCount = 0
                 Else
-                    _batchCount = _batchCount - 1
+                    _batchCount -= 1
                 End If
             Else
                 Debug.Fail("We should never call EndBatch more than StartBatch.")

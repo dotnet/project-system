@@ -2,9 +2,10 @@
 
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
+
 using Moq;
 using Moq.Protected;
+
 using Xunit;
 
 namespace Microsoft.VisualStudio.Telemetry

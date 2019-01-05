@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         ///     Represents a set of differences made to a project along with a version.
         /// </summary>
         [DebuggerDisplay("{Version}")]
-        private struct VersionedProjectChangeDiff
+        private readonly struct VersionedProjectChangeDiff
         {
             public readonly IComparable Version;
             public readonly IProjectChangeDiff Difference;

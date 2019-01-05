@@ -16,13 +16,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         [Fact]
         public void Constructor_NullAsUnconfiguredProject_ThrowsArgumentNull()
         {
-            Assert.Throws<ArgumentNullException>(() => CreateInstanceCore(null, IProjectThreadingServiceFactory.Create(), SVsServiceProviderFactory.Create(null), CreateGeneratePackageOnBuildPropertyProvider()));
+            Assert.Throws<ArgumentNullException>(() => CreateInstanceCore(null, IProjectThreadingServiceFactory.Create(), IVsServiceFactory.Create<SVsSolutionBuildManager, IVsSolutionBuildManager2>(null), CreateGeneratePackageOnBuildPropertyProvider()));
         }
 
         [Fact]
         public void Constructor_NullAsProjectThreadingServiceFactory_ThrowsArgumentNull()
         {
-            Assert.Throws<ArgumentNullException>(() => CreateInstanceCore(UnconfiguredProjectFactory.Create(), null, SVsServiceProviderFactory.Create(null), CreateGeneratePackageOnBuildPropertyProvider()));
+            Assert.Throws<ArgumentNullException>(() => CreateInstanceCore(UnconfiguredProjectFactory.Create(), null, IVsServiceFactory.Create<SVsSolutionBuildManager, IVsSolutionBuildManager2>(null), CreateGeneratePackageOnBuildPropertyProvider()));
         }
 
         [Fact]
@@ -34,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         [Fact]
         public void Constructor_NullAsGeneratePackageOnBuildPropertyProvider_ThrowsArgumentNull()
         {
-            Assert.Throws<ArgumentNullException>(() => CreateInstanceCore(UnconfiguredProjectFactory.Create(), IProjectThreadingServiceFactory.Create(), SVsServiceProviderFactory.Create(null), null));
+            Assert.Throws<ArgumentNullException>(() => CreateInstanceCore(UnconfiguredProjectFactory.Create(), IProjectThreadingServiceFactory.Create(), IVsServiceFactory.Create<SVsSolutionBuildManager, IVsSolutionBuildManager2>(null), null));
         }
 
         [Fact]
@@ -156,13 +156,13 @@ Root (flags: {ProjectRoot})
             var project = UnconfiguredProjectFactory.Create(hierarchy);
             var threadingService = IProjectThreadingServiceFactory.Create();
             buildManager = buildManager ?? IVsSolutionBuildManager2Factory.Create(solutionEventsListener, hierarchy, isBuilding, cancelBuild);
-            var serviceProvider = SVsServiceProviderFactory.Create(buildManager);
+            var serviceProvider = IVsServiceFactory.Create<SVsSolutionBuildManager, IVsSolutionBuildManager2>(buildManager);
             generatePackageOnBuildPropertyProvider = generatePackageOnBuildPropertyProvider ?? CreateGeneratePackageOnBuildPropertyProvider();
 
             return CreateInstanceCore(project, threadingService, serviceProvider, generatePackageOnBuildPropertyProvider);
         }
 
-        private GeneratePackageOnBuildPropertyProvider CreateGeneratePackageOnBuildPropertyProvider(IProjectService projectService = null)
+        private static GeneratePackageOnBuildPropertyProvider CreateGeneratePackageOnBuildPropertyProvider(IProjectService projectService = null)
         {
             projectService = projectService ?? IProjectServiceFactory.Create();
             return new GeneratePackageOnBuildPropertyProvider(projectService);
@@ -171,7 +171,7 @@ Root (flags: {ProjectRoot})
         internal abstract AbstractGenerateNuGetPackageCommand CreateInstanceCore(
             UnconfiguredProject project,
             IProjectThreadingService threadingService,
-            Shell.SVsServiceProvider serviceProvider,
+            IVsService<SVsSolutionBuildManager, IVsSolutionBuildManager2> vsSolutionBuildManagerService,
             GeneratePackageOnBuildPropertyProvider generatePackageOnBuildPropertyProvider);
     }
 }

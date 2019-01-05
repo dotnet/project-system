@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System.Collections.Generic;
 using System.Collections.Immutable;
 
 using Microsoft.VisualStudio.ProjectSystem.Properties;
@@ -31,11 +30,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         /// <summary>
         /// Top level project dependencies.
         /// </summary>
-        ImmutableHashSet<IDependency> TopLevelDependencies { get; }
+        ImmutableArray<IDependency> TopLevelDependencies { get; }
 
         /// <summary>
         /// Flat hash table of all unique dependencies in the project (from all levels). Having this table,
-        /// a given dependency A can find it's actual <see cref="IDependency"/> children having their string
+        /// a given dependency A can find its actual <see cref="IDependency"/> children having their string
         /// ids.
         /// </summary>
         ImmutableDictionary<string, IDependency> DependenciesWorld { get; }
@@ -64,6 +63,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         /// </summary>
         /// <param name="dependency"></param>
         /// <returns></returns>
-        IEnumerable<IDependency> GetDependencyChildren(IDependency dependency);
+        ImmutableArray<IDependency> GetDependencyChildren(IDependency dependency);
     }
 }

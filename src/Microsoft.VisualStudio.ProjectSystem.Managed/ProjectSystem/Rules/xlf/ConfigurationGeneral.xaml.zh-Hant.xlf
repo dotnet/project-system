@@ -107,26 +107,6 @@
         <target state="translated">True 即只建置過期的專案，不提示使用者確認。</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|SharedProjectAppliesTo|Description">
-        <source>Capability match expression that at a minimum tests for the language of the Shared Project; used to filter Add Shared Project Reference choices.</source>
-        <target state="translated">共用專案語言之基本測試的功能比對運算式; 可用於篩選加入共用專案參考選項。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|AlwaysUseNumericalSuffixInItemNames|Description">
-        <source>Indicates if names of newly added items should always be suffixed with a number.</source>
-        <target state="translated">指出新增項目的名稱是否一律要在字尾附加數字。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|LanguageServiceName|Description">
-        <source>Represents the LanguageName that is passed to Roslyn</source>
-        <target state="translated">代表傳遞至 Roslyn 的 LanguageName</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|TemplateLanguage|Description">
-        <source>Represent the language that is persisted in items and project templates</source>
-        <target state="translated">代表保存在項目和專案範本中的語言</target>
-        <note />
-      </trans-unit>
       <trans-unit id="EnumValue|OutputType.Exe|DisplayName">
         <source>Console Application</source>
         <target state="translated">主控台應用程式</target>
@@ -137,11 +117,6 @@
         <target state="translated">Windows 應用程式</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|LanguageServiceId|Description">
-        <source>Represents the GUID of object that implements the language service for the project.</source>
-        <target state="translated">代表實作專案語言服務的物件 GUID。</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|TargetFrameworkMonikers|DisplayName">
         <source>Target Framework Monikers</source>
         <target state="translated">目標 Framework Moniker</target>
@@ -150,11 +125,6 @@
       <trans-unit id="BoolProperty|DisableFastUpToDateCheck|DisplayName">
         <source>Disable Fast Up To Date Check</source>
         <target state="translated">停用快速最新版檢查</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|NETCoreSdkVersion|Description">
-        <source>Represents the version of the dotnet sdk being used (if any).</source>
-        <target state="translated">代表目前使用的 dotnet SDK 版本 (如果有的話)。</target>
         <note />
       </trans-unit>
     </body>

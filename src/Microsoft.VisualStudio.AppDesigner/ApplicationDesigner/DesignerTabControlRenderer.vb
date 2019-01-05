@@ -49,7 +49,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ' Tab button hover foreground/background
         Private _hoverButtonForegroundColor As Color
         Private _hoverButtonBackgroundColor As Color
-        Private _hoverButtonBorderColor As Color
 
 #End Region
 
@@ -89,12 +88,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         Private _visibleButtonSlots As Integer '# of button positions we are currently displaying (min = 1), the rest go into overflow when not enough room
         Private _buttonPagePadding As Padding
 
-        'The width/height of the downward-slanting line underneath the buttons (not including the two curved ends' (arcs') width/height)
-
-        Private Const ButtonBorderWidth As Integer = 1   'Thickness of each half of the separators between buttons
-
         Private Const OverflowButtonTopOffset As Integer = 2 'Offset of overflow button (the button's edge, not the glyph inside it) from the bottom of the bottommost button
-        Private Const OverflowButtonRightOffset As Integer = 2 'Offset of right edge of overflow button from vertical line 3
 
         Private _tabControlRect As Rectangle 'The entire area of the tab control, including the tabs and panel area
 
@@ -264,7 +258,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
                 _hoverButtonForegroundColor = Common.ShellUtil.GetProjectDesignerThemeColor(VsUIShell, "MouseOverCategoryTab", __THEMEDCOLORTYPE.TCT_Foreground, SystemColors.HighlightText)
                 _hoverButtonBackgroundColor = Common.ShellUtil.GetProjectDesignerThemeColor(VsUIShell, "MouseOverCategoryTab", __THEMEDCOLORTYPE.TCT_Background, SystemColors.HotTrack)
-                _hoverButtonBorderColor = _hoverButtonForegroundColor
 
                 'Get GDI objects
                 _controlBackgroundBrush = New SolidBrush(_controlBackgroundColor)
@@ -583,7 +576,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             If IsSelected Then
 
                 ' Create an array of points which describes the path of the triangle
-                Dim trainglePoints() As PointF =
+                Dim trianglePoints() As PointF =
                 {
                     New PointF(triangleHorizontalStart - 1, triangleVerticalStart),
                     New PointF(button.Width, CSng(triangleVerticalStart) + CSng(TriangleHeight) / 2),
@@ -592,7 +585,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
                 Using trianglePath As New GraphicsPath()
 
-                    trianglePath.AddPolygon(trainglePoints)
+                    trianglePath.AddPolygon(trianglePoints)
 
                     ' Draw the rectangle using Fill Rectangle with the default smoothing mode
                     ' If the rectangle is drawn with SmoothingMode.HighQuality / AntiAliased it

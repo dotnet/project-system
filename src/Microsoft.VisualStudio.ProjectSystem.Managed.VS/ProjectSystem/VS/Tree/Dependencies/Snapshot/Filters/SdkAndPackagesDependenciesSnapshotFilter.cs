@@ -5,115 +5,111 @@ using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
-using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions;
+using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions.RuleHandlers;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Filters
 {
     /// <summary>
     /// Sdk nodes are actually packages and their hierarchy of dependencies is resolved from
-    /// NuGet's assets json file. However Sdk them selves are brought by DesignTime build for rules
+    /// NuGet's assets json file. However Sdk themselves are brought by DesignTime build for rules
     /// SdkReference. This filter matches Sdk to their corresponding NuGet package and sets  
-    /// of top level sdk dependencies from the package. Packages are in visible to avoid visual
+    /// of top level sdk dependencies from the package. Packages are invisible to avoid visual
     /// duplication and confusion.
     /// </summary>
     [Export(typeof(IDependenciesSnapshotFilter))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
     [Order(Order)]
-    internal class SdkAndPackagesDependenciesSnapshotFilter : DependenciesSnapshotFilterBase
+    internal sealed class SdkAndPackagesDependenciesSnapshotFilter : DependenciesSnapshotFilterBase
     {
         public const int Order = 110;
 
-        public override IDependency BeforeAdd(
+        public override void BeforeAddOrUpdate(
             string projectPath,
             ITargetFramework targetFramework,
             IDependency dependency,
-            ImmutableDictionary<string, IDependency>.Builder worldBuilder,
-            ImmutableHashSet<IDependency>.Builder topLevelBuilder,
-            Dictionary<string, IProjectDependenciesSubTreeProvider> subTreeProviders,
-            HashSet<string> projectItemSpecs,
-            out bool filterAnyChanges)
+            IReadOnlyDictionary<string, IProjectDependenciesSubTreeProvider> subTreeProviderByProviderType,
+            IImmutableSet<string> projectItemSpecs,
+            IAddDependencyContext context)
         {
-            filterAnyChanges = false;
-
-            IDependency resultDependency = dependency;
             if (!dependency.TopLevel)
             {
-                return resultDependency;
+                context.Accept(dependency);
+                return;
             }
 
             if (dependency.Flags.Contains(DependencyTreeFlags.SdkSubTreeNodeFlags))
             {
-                // find package with the same name
-                string packageModelId = dependency.Name;
-                string packageId = Dependency.GetID(targetFramework, PackageRuleHandler.ProviderTypeString, packageModelId);
+                // This is an SDK dependency.
+                //
+                // Try to find a resolved package dependency with the same name.
 
-                if (worldBuilder.TryGetValue(packageId, out IDependency package) && package.Resolved)
+                string packageId = Dependency.GetID(targetFramework, PackageRuleHandler.ProviderTypeString, modelId: dependency.Name);
+
+                if (context.TryGetDependency(packageId, out IDependency package) && package.Resolved)
                 {
-                    filterAnyChanges = true;
-                    resultDependency = dependency.ToResolved(
+                    // Set to resolved, and copy dependencies.
+
+                    context.Accept(dependency.ToResolved(
                         schemaName: ResolvedSdkReference.SchemaName,
-                        dependencyIDs: package.DependencyIDs);
+                        dependencyIDs: package.DependencyIDs));
+                    return;
                 }
             }
             else if (dependency.Flags.Contains(DependencyTreeFlags.PackageNodeFlags) && dependency.Resolved)
             {
-                // find sdk with the same name
-                string sdkModelId = dependency.Name;
-                string sdkId = Dependency.GetID(targetFramework, SdkRuleHandler.ProviderTypeString, sdkModelId);
+                // This is a resolved package dependency.
+                //
+                // Try to find an SDK dependency with the same name.
 
-                if (worldBuilder.TryGetValue(sdkId, out IDependency sdk))
+                string sdkId = Dependency.GetID(targetFramework, SdkRuleHandler.ProviderTypeString, modelId: dependency.Name);
+
+                if (context.TryGetDependency(sdkId, out IDependency sdk))
                 {
-                    filterAnyChanges = true;
-                    sdk = sdk.ToResolved(
-                        schemaName: ResolvedSdkReference.SchemaName,
-                        dependencyIDs: dependency.DependencyIDs);
+                    // We have an SDK dependency for this package. Such dependencies, when implicit, are created
+                    // as unresolved by SdkRuleHandler, and are only marked resolved here once we have resolved the
+                    // corresponding package.
+                    //
+                    // Set to resolved, and copy dependencies.
 
-                    worldBuilder.Remove(sdk.Id);
-                    worldBuilder.Add(sdk.Id, sdk);
-                    topLevelBuilder.Remove(sdk);
-                    topLevelBuilder.Add(sdk);
+                    context.AddOrUpdate(sdk.ToResolved(
+                        schemaName: ResolvedSdkReference.SchemaName,
+                        dependencyIDs: dependency.DependencyIDs));
                 }
             }
 
-            return resultDependency;
+            context.Accept(dependency);
         }
 
-        public override IDependency BeforeRemove(
+        public override void BeforeRemove(
             string projectPath,
             ITargetFramework targetFramework,
             IDependency dependency,
-            ImmutableDictionary<string, IDependency>.Builder worldBuilder,
-            ImmutableHashSet<IDependency>.Builder topLevelBuilder,
-            out bool filterAnyChanges)
+            IRemoveDependencyContext context)
         {
-            filterAnyChanges = false;
-            if (!dependency.TopLevel || !dependency.Resolved)
+            if (dependency.TopLevel && 
+                dependency.Resolved && 
+                dependency.Flags.Contains(DependencyTreeFlags.PackageNodeFlags))
             {
-                return dependency;
-            }
+                // This is a package dependency.
+                //
+                // Try to find an SDK dependency with the same name.
 
-            if (dependency.Flags.Contains(DependencyTreeFlags.PackageNodeFlags))
-            {
-                // find sdk with the same name and clean dependencyIDs
-                string sdkModelId = dependency.Name;
-                string sdkId = Dependency.GetID(targetFramework, SdkRuleHandler.ProviderTypeString, sdkModelId);
+                string sdkId = Dependency.GetID(targetFramework, SdkRuleHandler.ProviderTypeString, modelId: dependency.Name);
 
-                if (worldBuilder.TryGetValue(sdkId, out IDependency sdk))
+                if (context.TryGetDependency(sdkId, out IDependency sdk))
                 {
-                    filterAnyChanges = true;
-                    // clean up sdk when corresponding package is removing
-                    sdk = sdk.ToUnresolved(
-                        schemaName: SdkReference.SchemaName,
-                        dependencyIDs: ImmutableList<string>.Empty);
+                    // We are removing the package dependency related to this SDK dependency
+                    // and must undo the changes made above in BeforeAdd.
+                    //
+                    // Set to unresolved, and clear dependencies.
 
-                    worldBuilder.Remove(sdk.Id);
-                    worldBuilder.Add(sdk.Id, sdk);
-                    topLevelBuilder.Remove(sdk);
-                    topLevelBuilder.Add(sdk);
+                    context.AddOrUpdate(sdk.ToUnresolved(
+                        schemaName: SdkReference.SchemaName,
+                        dependencyIDs: ImmutableList<string>.Empty));
                 }
             }
 
-            return dependency;
+            context.Accept();
         }
     }
 }

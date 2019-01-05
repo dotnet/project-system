@@ -15,16 +15,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
         [ImportingConstructor]
         public DependenciesViewModelFactory(UnconfiguredProject project)
         {
-            Project = project;
             SubTreeProviders = new OrderPrecedenceImportCollection<IProjectDependenciesSubTreeProvider>(
-                        ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesLast,
-                        projectCapabilityCheckProvider: project);
+                ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesLast,
+                projectCapabilityCheckProvider: project);
         }
 
-        private UnconfiguredProject Project { get; }
-
         [ImportMany]
-        protected OrderPrecedenceImportCollection<IProjectDependenciesSubTreeProvider> SubTreeProviders { get; set; }
+        protected OrderPrecedenceImportCollection<IProjectDependenciesSubTreeProvider> SubTreeProviders { get; }
 
         public IDependencyViewModel CreateTargetViewModel(ITargetedDependenciesSnapshot snapshot)
         {
@@ -47,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 
         private IProjectDependenciesSubTreeProvider GetProvider(string providerType)
         {
-            return SubTreeProviders.FirstOrDefault(x => x.Value.ProviderType.Equals(providerType)).Value;
+            return SubTreeProviders.First(x => StringComparers.DependencyProviderTypes.Equals(x.Value.ProviderType, providerType)).Value;
         }
     }
 }

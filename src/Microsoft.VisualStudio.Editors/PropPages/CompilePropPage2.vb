@@ -35,16 +35,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private ReadOnly _notifyWarning As String
         Private Const ConditionColumnIndex As Integer = 0
         Private Const NotifyColumnIndex As Integer = 1
-        Private Const ConditionColumnWidthPercentage As Integer = 35 'non-resizable column
-        Private Const NotifyColumnWidthPercentage As Integer = 100
-
-        'Minimum scrolling widths - widths below which resizing the settings designer will cause a horizontal
-        '  scrollbar to appear rather than sizing the column below this size
-        Private Const ConditionColumnMinScrollingWidth As Integer = 100
-        Private Const NotifyColumnMinScrollingWidth As Integer = 100 'non-resizable column
-
-        ' Cached extended objects for all configurations...
-        Private _cachedExtendedObjects() As Object
 
         Private _optionStrictCustomText As String
         Private _optionStrictOnText As String
@@ -197,7 +187,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
 
             Dim NotifyColumn As DataGridViewComboBoxColumn = CType(WarningsGridView.Columns.Item(NotifyColumnIndex), DataGridViewComboBoxColumn)
-            If _enabled AndAlso DisableAllWarningsCheckBox.CheckState = CheckState.Unchecked AndAlso Me.WarningsAsErrorCheckBox.CheckState = CheckState.Unchecked Then
+            If _enabled AndAlso DisableAllWarningsCheckBox.CheckState = CheckState.Unchecked AndAlso WarningsAsErrorCheckBox.CheckState = CheckState.Unchecked Then
                 For Each column As DataGridViewColumn In WarningsGridView.Columns
                     column.DefaultCellStyle.BackColor = WarningsGridView.DefaultCellStyle.BackColor
                 Next
@@ -692,11 +682,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Function
 
         Private Function TreatAllWarningsAsErrors() As Boolean
-            Return Me.WarningsAsErrorCheckBox.CheckState = CheckState.Checked
+            Return WarningsAsErrorCheckBox.CheckState = CheckState.Checked
         End Function
 
         Private Function DisableAllWarnings() As Boolean
-            Return Me.DisableAllWarningsCheckBox.CheckState = CheckState.Checked
+            Return DisableAllWarningsCheckBox.CheckState = CheckState.Checked
         End Function
 
         ''' <summary>
@@ -714,7 +704,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     Return True
                 End If
 
-                If Me.DisableAllWarningsCheckBox.CheckState = CheckState.Indeterminate Then
+                If DisableAllWarningsCheckBox.CheckState = CheckState.Indeterminate Then
                     Return True
                 End If
 
@@ -1411,7 +1401,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Friend Class ConfigurationObjectCache
                 ' Cached properties for the extended and raw config objects
                 Private _extendedObjects() As Object
-                Private _rawObjects() As Object
 
                 ' Cached instance of our IVsCfgProvider2 instance
                 Private _vscfgprovider As IVsCfgProvider2
@@ -1438,7 +1427,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         _hierarchy = Hierarchy
                         _serviceProvider = ServiceProvider
                         _extendedObjects = Nothing
-                        _rawObjects = Nothing
                         _vscfgprovider = Nothing
                     End If
                 End Sub

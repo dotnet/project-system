@@ -14,13 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         private PropertyPageControl _control;
         private PropertyPageViewModel _viewModel;
 
-        public WpfBasedPropertyPage()
-        {
-            InitializeComponent();
-        }
-
-        // For unit testing
-        internal WpfBasedPropertyPage(bool useJoinableTaskFactory) : base(useJoinableTaskFactory)
+        protected WpfBasedPropertyPage()
         {
             InitializeComponent();
         }
@@ -84,7 +78,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             var viewer = new ScrollViewer
             {
                 VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
-                HorizontalScrollBarVisibility = ScrollBarVisibility.Auto
+                HorizontalScrollBarVisibility = ScrollBarVisibility.Auto,
+                Focusable = false,
             };
 
             viewer.Content = _control;

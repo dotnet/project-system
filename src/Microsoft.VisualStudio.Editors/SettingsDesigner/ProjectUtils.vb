@@ -455,7 +455,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
         Friend Class FindPropertyFilter
             Implements IFindFilter
 
-            Private ReadOnly _containtingClass As EnvDTE.CodeElement
+            Private ReadOnly _containingClass As EnvDTE.CodeElement
             Private ReadOnly _propertyName As String
 
             Public Sub New(ContainingClass As EnvDTE.CodeElement, PropertyName As String)
@@ -469,7 +469,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
                     Throw New ArgumentNullException()
                 End If
 
-                _containtingClass = ContainingClass
+                _containingClass = ContainingClass
                 _propertyName = PropertyName
             End Sub
 
@@ -498,7 +498,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
                     Return False
                 End If
 
-                If Prop.Parent.FullName.Equals(_containtingClass.FullName, comparisonType) Then
+                If Prop.Parent.FullName.Equals(_containingClass.FullName, comparisonType) Then
                     Return True
                 Else
                     Return False
@@ -513,7 +513,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
         Friend Class FindFunctionFilter
             Implements IFindFilter
 
-            Private ReadOnly _containtingClass As EnvDTE.CodeElement
+            Private ReadOnly _containingClass As EnvDTE.CodeElement
             Private ReadOnly _functionName As String
 
             Public Sub New(ContainingClass As EnvDTE.CodeElement, FunctionName As String)
@@ -527,7 +527,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
                     Throw New ArgumentNullException()
                 End If
 
-                _containtingClass = ContainingClass
+                _containingClass = ContainingClass
                 _functionName = FunctionName
             End Sub
 
@@ -561,8 +561,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
                     Return False
                 End If
 
-                Dim ContaintingClass As EnvDTE.CodeClass = TryCast(Func.Parent, EnvDTE.CodeClass)
-                If ContaintingClass IsNot Nothing AndAlso ContaintingClass.FullName.Equals(_containtingClass.FullName, comparisonType) Then
+                Dim ContainingClass As EnvDTE.CodeClass = TryCast(Func.Parent, EnvDTE.CodeClass)
+                If ContainingClass IsNot Nothing AndAlso ContainingClass.FullName.Equals(_containingClass.FullName, comparisonType) Then
                     Return True
                 Else
                     Return False
@@ -675,20 +675,20 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
             Const SettingsSavingEventHandlerName As String = "SettingsSavingEventHandler"
 
             ' Add constructor
-            Dim constr As New CodeConstructor With {
+            Dim constructor As New CodeConstructor With {
                 .Attributes = MemberAttributes.Public
             }
 
             ' Generate a series of statements to add to the constructor
             Dim thisExpr As New CodeThisReferenceExpression()
-            Dim stmts As New CodeStatementCollection From {
+            Dim statements As New CodeStatementCollection From {
                 New CodeCommentStatement(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_CODEGENCMT_HOWTO_ATTACHEVTS),
                 New CodeAttachEventStatement(thisExpr, SettingChangingEventName, New CodeMethodReferenceExpression(thisExpr, SettingChangingEventHandlerName)),
                 New CodeAttachEventStatement(thisExpr, SettingsSavingEventName, New CodeMethodReferenceExpression(thisExpr, SettingsSavingEventHandlerName))
             }
 
-            For Each stmt As CodeStatement In stmts
-                constr.Statements.Add(CommentStatement(stmt, generator, True))
+            For Each stmt As CodeStatement In statements
+                constructor.Statements.Add(CommentStatement(stmt, generator, True))
             Next
 
             ' Add stubs for settingschanging/settingssaving event handlers
@@ -709,7 +709,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
             savingStub.Parameters.Add(New CodeParameterDeclarationExpression(GetType(ComponentModel.CancelEventArgs), "e"))
             savingStub.Statements.Add(New CodeCommentStatement(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_CODEGENCMT_HANDLE_SAVING))
 
-            ct.Members.Add(constr)
+            ct.Members.Add(constructor)
             ct.Members.Add(changingStub)
             ct.Members.Add(savingStub)
         End Sub

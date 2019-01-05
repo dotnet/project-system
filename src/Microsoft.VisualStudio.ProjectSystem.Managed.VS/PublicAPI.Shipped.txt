@@ -1,0 +1,554 @@
+const Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.ProfileCommandNames.Executable = "Executable" -> string
+const Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.ProfileCommandNames.IISExpress = "IISExpress" -> string
+const Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.ProfileCommandNames.NoAction = "NoAction" -> string
+const Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.ProfileCommandNames.Project = "Project" -> string
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.__id.get -> string
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.__project.get -> object
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.AbsoluteProjectDirectory.get -> string
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.ActiveConfigurationSettings.get -> VSLangProj.ProjectConfigurationProperties
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.ActiveFileSharePath.get -> string
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.ActiveWebAccessMethod.get -> VSLangProj.prjWebAccessMethod
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.AddWebReference(string bstrUrl) -> EnvDTE.ProjectItem
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.ApplicationIcon.get -> string
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.ApplicationIcon.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.AssemblyKeyContainerName.get -> string
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.AssemblyKeyContainerName.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.AssemblyName.get -> string
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.AssemblyName.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.AssemblyOriginatorKeyFile.get -> string
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.AssemblyOriginatorKeyFile.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.AssemblyOriginatorKeyMode.get -> VSLangProj.prjOriginatorKeyMode
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.AssemblyOriginatorKeyMode.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.AutoGenerateBindingRedirects.get -> bool
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.AutoGenerateBindingRedirects.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.BuildManager.get -> VSLangProj.BuildManager
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.CopyProject(string bstrDestFolder, string bstrDestUNCPath, VSLangProj.prjCopyProjectOption copyProjectOption, string bstrUsername, string bstrPassword) -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.CreateWebReferencesFolder() -> EnvDTE.ProjectItem
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.DefaultClientScript.get -> VSLangProj.prjScriptLanguage
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.DefaultClientScript.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.DefaultHTMLPageLayout.get -> VSLangProj.prjHTMLPageLayout
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.DefaultHTMLPageLayout.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.DefaultNamespace.get -> string
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.DefaultNamespace.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.DefaultTargetSchema.get -> VSLangProj.prjTargetSchema
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.DefaultTargetSchema.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.DelaySign.get -> bool
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.DelaySign.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.DTE.get -> EnvDTE.DTE
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.EnumConnectionPoints(out Microsoft.VisualStudio.OLE.Interop.IEnumConnectionPoints ppEnum) -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.Events.get -> VSLangProj.VSProjectEvents
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.Exec(VSLangProj.prjExecCommand command, int bSuppressUI, object varIn, out object pVarOut) -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.ExtenderCATID.get -> string
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.ExtenderNames.get -> object
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.FileName.get -> string
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.FileName.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.FileSharePath.get -> string
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.FileSharePath.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.FindConnectionPoint(ref System.Guid riid, out Microsoft.VisualStudio.OLE.Interop.IConnectionPoint ppCP) -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.FullPath.get -> string
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.GenerateKeyPairFiles(string strPublicPrivateFile, string strPublicOnlyFile = "0") -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.get_Extender(string ExtenderName) -> object
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.GetUniqueFilename(object pDispatch, string bstrRoot, string bstrDesiredExt) -> string
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.Imports.get -> VSLangProj.Imports
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.LinkRepair.get -> bool
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.LinkRepair.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.LocalPath.get -> string
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.OfflineURL.get -> string
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.OnSinkAdded(Microsoft.VisualStudio.OLE.Interop.IPropertyNotifySink sink) -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.OnSinkRemoved(Microsoft.VisualStudio.OLE.Interop.IPropertyNotifySink sink) -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.OptionCompare.get -> VSLangProj.prjCompare
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.OptionCompare.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.OptionExplicit.get -> VSLangProj.prjOptionExplicit
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.OptionExplicit.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.OptionStrict.get -> VSLangProj.prjOptionStrict
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.OptionStrict.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.OutputFileName.get -> string
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.OutputType.get -> VSLangProj.prjOutputType
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.OutputType.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.OutputTypeEx.get -> VSLangProj110.prjOutputTypeEx
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.OutputTypeEx.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.Project.get -> EnvDTE.Project
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.ProjectType.get -> VSLangProj.prjProjectType
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.ReferencePath.get -> string
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.ReferencePath.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.References.get -> VSLangProj.References
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.Refresh() -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.RootNamespace.get -> string
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.RootNamespace.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.ServerExtensionsVersion.get -> string
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.StartupObject.get -> string
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.StartupObject.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.TemplatePath.get -> string
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.URL.get -> string
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.WebAccessMethod.get -> VSLangProj.prjWebAccessMethod
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.WebAccessMethod.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.WebReferencesFolder.get -> EnvDTE.ProjectItem
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.WebServer.get -> string
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.WebServerVersion.get -> string
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.WorkOffline.get -> bool
+Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.WorkOffline.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.ConnectionPoint.ConnectionPointContainer
+Microsoft.VisualStudio.ProjectSystem.VS.Debug.IDebugProfileLaunchTargetsProvider
+Microsoft.VisualStudio.ProjectSystem.VS.Debug.IDebugProfileLaunchTargetsProvider.OnAfterLaunchAsync(Microsoft.VisualStudio.ProjectSystem.Debug.DebugLaunchOptions launchOptions, Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile profile) -> System.Threading.Tasks.Task
+Microsoft.VisualStudio.ProjectSystem.VS.Debug.IDebugProfileLaunchTargetsProvider.OnBeforeLaunchAsync(Microsoft.VisualStudio.ProjectSystem.Debug.DebugLaunchOptions launchOptions, Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile profile) -> System.Threading.Tasks.Task
+Microsoft.VisualStudio.ProjectSystem.VS.Debug.IDebugProfileLaunchTargetsProvider.QueryDebugTargetsAsync(Microsoft.VisualStudio.ProjectSystem.Debug.DebugLaunchOptions launchOptions, Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile profile) -> System.Threading.Tasks.Task<System.Collections.Generic.IReadOnlyList<Microsoft.VisualStudio.ProjectSystem.VS.Debug.IDebugLaunchSettings>>
+Microsoft.VisualStudio.ProjectSystem.VS.Debug.IDebugProfileLaunchTargetsProvider.SupportsProfile(Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile profile) -> bool
+Microsoft.VisualStudio.ProjectSystem.VS.Debug.IDebugProfileLaunchTargetsProvider2
+Microsoft.VisualStudio.ProjectSystem.VS.Debug.IDebugProfileLaunchTargetsProvider2.QueryDebugTargetsForDebugLaunchAsync(Microsoft.VisualStudio.ProjectSystem.Debug.DebugLaunchOptions launchOptions, Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile profile) -> System.Threading.Tasks.Task<System.Collections.Generic.IReadOnlyList<Microsoft.VisualStudio.ProjectSystem.VS.Debug.IDebugLaunchSettings>>
+Microsoft.VisualStudio.ProjectSystem.VS.Extensibility.IProjectExportProvider
+Microsoft.VisualStudio.ProjectSystem.VS.Extensibility.IProjectExportProvider.GetExport<T>(string projectFilePath) -> T
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.IVsAppId
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.IVsAppId.GetGuidProperty(int propid, out System.Guid guid) -> int
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.IVsAppId.GetProperty(int propid, out object pvar) -> int
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.IVsAppId.Initialize() -> int
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.IVsAppId.SetGuidProperty(int propid, ref System.Guid rguid) -> int
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.IVsAppId.SetProperty(int propid, object var) -> int
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.IVsAppId.SetSite(Microsoft.VisualStudio.OLE.Interop.IServiceProvider pSP) -> int
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.SVsAppId
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.AboutBoxTheme = -8565 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.AddinsAllowed = -8556 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.AllowCurrentUserSafeDomains = -8541 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.AllowLoadingAllPackages = -8588 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.AllowsDroppedFilesOnMainWindow = -8529 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.AltMSODLL = -8510 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.App64Icon = -8557 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.AppDataDir = -8580 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.AppIcon = -8512 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.AppName = -8502 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.AppShortName = -8517 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.AppSmallIcon = -8513 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.AutoRecoveryTookPlace = -8564 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.AutoSaveNewUnsavedFiles = -8567 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.ClsidAppIdServer = -8518 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.CmdLineError = -8540 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.CmdLineOptDialog = -8503 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.CmdLineOptStrFirst = -8522 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.CmdLineOptStrLast = -8523 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.CommonAppDataDir = -8582 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.CommonExtensionSearchPath = -8584 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.ConfigurationRoot = -8575 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.ConfigurationTimestampUtc = -8583 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.CreateProjShortcuts = -8511 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.DaysUntilExpiration = -8569 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.DDEApplication = -8536 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.DDETopic = -8537 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.DefaultHomePage = -8514 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.DefaultProjectsLocation = -8549 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.DefaultSearchPage = -8515 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.DefaultUserFilesFolderRoot = -8552 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.DisableAnsiCodePageCheck = -8531 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.DisableAnswerWizardControl = -8530 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.DisableDynamicHelp = -8527 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.DisableInstructionUnitStepping = -8532 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.DisableOutputWindow = -8559 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.DisableStartPage = -8560 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.DisableUACSupport = -8573 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.DontWriteToUserAppData = -8576 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.DropFilesOnMainWindowHandler = -8539 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.GuidAppIDPackage = -8501 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.GuidDefaultDebugEngine = -8521 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.GuidGeneralOutput = -8519 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.HideMiscellaneousFilesByDefault = -8543 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.HideSolutionConcept = -8504 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.HideSolutionExplorerToolbar = -8551 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.IncludeAddNewOnlineTemplateIcon = -8555 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.IsRegisteredAsRuntimeJITDebugger = -8524 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.LAST = -8500 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.LicenseGUID = -8562 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.LoadedUserExtensions = -8587 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.LoadUserExtensions = -8586 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.LocalAppDataDir = -8581 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.Logo = -8535 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.NewProjDlgInstalledTemplatesHdr = -8554 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.NewProjDlgSlnTreeNodeTitle = -8548 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.NIL = -1 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.PersistProjExplorerState = -8525 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.PredefinedAliasesID = -8526 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.PredefinedAliasesString = -8544 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.Preview = -8568 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.RegistrationDlgBanner = -8563 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.RegistryRoots = -8572 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.ReleaseString = -8570 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.ReleaseString_Short = -8571 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.RunAsNormalUser = -8574 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.RunningInSafeMode = -8589 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.SamplesURL = -8579 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.ShowHierarchyRootInTitle = -8507 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.ShowIDE = -8506 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.ShowRuntimeInAboutBox = -8545 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.ShowStartupDialogs = -8505 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.SKUEdition = -8534 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.SolutionFileCreatorIdentifier = -8550 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.SolutionFileExt = -8508 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.SQMLogFile = -8577 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.SQMTitle = -8566 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.StartPageTheme = -8561 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.StatusBarClientText = -8547 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.SubSKUEdition = -8546 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.SupportRestartManager = -8578 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.TechSupportLink = -8542 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.UseAutoRecovery = -8558 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.UseDebugLaunchService = -8520 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.UserExtensionsRootFolder = -8585 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.UserFilesSubFolderName = -8553 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.UserOptsFileExt = -8509 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.UsesMRUCommandsOnFileMenu = -8528 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.UseVisualStudioDialogShortcuts = -8533 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.VSAPROPID_ActivityLogPath = -8596 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.VSAPROPID_ActivityLogServiceObject = -8606 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.VSAPROPID_AlphaPacksCount = -8645 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.VSAPROPID_AppBrandName = -8602 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.VSAPROPID_AppHostVersion = -8647 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.VSAPROPID_ApplicationExtensionsFolder = -8594 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.VSAPROPID_ApplicationRootFolder = -8593 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.VSAPROPID_AppQueryLoadServiceObject = -8621 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.VSAPROPID_AppShortBrandName = -8603 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.VSAPROPID_AppUpdate64Icon = -8609 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.VSAPROPID_AppUpdateIcon = -8607 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.VSAPROPID_AppUpdateSmallIcon = -8608 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.VSAPROPID_AppVectorIcon = -8601 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.VSAPROPID_BranchName = -8649 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.VSAPROPID_CampaignId = -8646 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.VSAPROPID_ChannelId = -8638 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.VSAPROPID_ChannelManifestId = -8639 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.VSAPROPID_ChannelSuffix = -8644 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.VSAPROPID_ChannelTitle = -8643 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.VSAPROPID_CommonExtensionExclusionList = -8636 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.VSAPROPID_CommunityEdition = -8618 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.VSAPROPID_DefaultProfile = -8616 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.VSAPROPID_EditionName = -8620 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.VSAPROPID_EnableMicrosoftGalleries = -8599 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.VSAPROPID_EnableNoToolWinMode = -8625 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.VSAPROPID_EnableOfflineHelpNotification = -8615 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.VSAPROPID_EnablePrivateGalleries = -8600 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.VSAPROPID_EnableSamples = -8598 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.VSAPROPID_GenericTheme = -8595 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.VSAPROPID_GuidDefaultColorTheme = -8605 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.VSAPROPID_InIsolationMode = -8626 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.VSAPROPID_InstallationNickname = -8640 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.VSAPROPID_IsolationInstallationId = -8628 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.VSAPROPID_IsolationInstallationLogsDirectory = -8633 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.VSAPROPID_IsolationInstallationName = -8627 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.VSAPROPID_IsolationInstallationPackages = -8631 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.VSAPROPID_IsolationInstallationUserDataFilePath = -8632 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.VSAPROPID_IsolationInstallationVersion = -8629 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.VSAPROPID_IsolationInstallationWorkloads = -8630 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.VSAPROPID_IsSubscriptionAware = -8610 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.VSAPROPID_IsVSTelemetryEnabled = -8622 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.VSAPROPID_LegacyCompatDirectory = -8635 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.VSAPROPID_LicenseURL = -8619 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.VSAPROPID_ProductDisplayVersion = -8641 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.VSAPROPID_ProductFamily = -8590 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.VSAPROPID_ProductSemanticVersion = -8642 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.VSAPROPID_ReleaseVersion = -8597 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.VSAPROPID_RequiresElevation = -8592 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.VSAPROPID_SettingsRegistryRoots = -8614 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.VSAPROPID_SetupEngineFilePath = -8634 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.VSAPROPID_SetupIsValid = -8637 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.VSAPROPID_SKUInfo = -8604 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.VSAPROPID_SKUName = -8648 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.VSAPROPID_SplashScreenTheme = -8591 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.VSAPROPID_SubscriptionLicenseId = -8611 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.VSAPROPID_SubscriptionRightsName = -8612 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.VSAPROPID_SupportsConnectedUser = -8613 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.VSAPROPID_ThemeThumbnailProvider = -8617 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.VSAPROPID_UnlocalizedReleaseString_Short = -8624 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.VSAPROPID_WorkingFodersRootExt = -8623 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.VSIPLicenseRequired = -8538 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.WBExternalObject = -8516 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSASKUEdition
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSASKUEdition.AcademicProfessional = 2100 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSASKUEdition
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSASKUEdition.AcademicStudent = 2100 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSASKUEdition
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSASKUEdition.BizApps = 1600 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSASKUEdition
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSASKUEdition.Book = 2400 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSASKUEdition
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSASKUEdition.Community = 1800 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSASKUEdition
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSASKUEdition.DownloadTrial = 2500 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSASKUEdition
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSASKUEdition.Enterprise = 3000 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSASKUEdition
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSASKUEdition.Express = 500 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSASKUEdition
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSASKUEdition.None = 0 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSASKUEdition
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSASKUEdition.Professional = 2000 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSASKUEdition
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSASKUEdition.SQL = 9192 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSASKUEdition
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSASKUEdition.Standard = 1000 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSASKUEdition
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSASKUEdition.TeamExplorer = 1400 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSASKUEdition
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSASKUEdition.VSTO = 1500 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSASKUEdition
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSASubSKUEdition
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSASubSKUEdition.Architect = 8 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSASubSKUEdition
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSASubSKUEdition.CSharp = 4 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSASubSKUEdition
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSASubSKUEdition.Data = 1024 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSASubSKUEdition
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSASubSKUEdition.Developer = 128 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSASubSKUEdition
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSASubSKUEdition.IDE = 16 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSASubSKUEdition
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSASubSKUEdition.JSharp = 32 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSASubSKUEdition
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSASubSKUEdition.None = 0 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSASubSKUEdition
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSASubSKUEdition.Phone = 4096 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSASubSKUEdition
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSASubSKUEdition.SQLTools = 8192 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSASubSKUEdition
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSASubSKUEdition.Team_Suite = 392 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSASubSKUEdition
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSASubSKUEdition.Test = 256 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSASubSKUEdition
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSASubSKUEdition.TFC = 512 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSASubSKUEdition
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSASubSKUEdition.VB = 2 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSASubSKUEdition
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSASubSKUEdition.VC = 1 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSASubSKUEdition
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSASubSKUEdition.VSLS = 2048 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSASubSKUEdition
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSASubSKUEdition.VSWin = 16384 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSASubSKUEdition
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSASubSKUEdition.VSWinDesktop = 32768 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSASubSKUEdition
+Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSASubSKUEdition.Web = 64 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSASubSKUEdition
+Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices.IVsContainedLanguageComponentsFactory
+Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices.IVsContainedLanguageComponentsFactory.GetContainedLanguageFactoryForFile(string filePath, out Microsoft.VisualStudio.Shell.Interop.IVsHierarchy hierarchy, out uint itemid, out Microsoft.VisualStudio.TextManager.Interop.IVsContainedLanguageFactory containedLanguageFactory) -> int
+Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.__id.get -> string
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.AllowUnsafeBlocks.get -> bool
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.AllowUnsafeBlocks.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.BaseAddress.get -> uint
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.BaseAddress.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.CheckForOverflowUnderflow.get -> bool
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.CheckForOverflowUnderflow.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.CodeAnalysisCulture.get -> string
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.CodeAnalysisCulture.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.CodeAnalysisDictionaries.get -> string
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.CodeAnalysisDictionaries.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.CodeAnalysisFailOnMissingRules.get -> bool
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.CodeAnalysisFailOnMissingRules.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.CodeAnalysisIgnoreBuiltInRules.get -> bool
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.CodeAnalysisIgnoreBuiltInRules.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.CodeAnalysisIgnoreBuiltInRuleSets.get -> bool
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.CodeAnalysisIgnoreBuiltInRuleSets.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.CodeAnalysisIgnoreGeneratedCode.get -> bool
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.CodeAnalysisIgnoreGeneratedCode.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.CodeAnalysisInputAssembly.get -> string
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.CodeAnalysisInputAssembly.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.CodeAnalysisLogFile.get -> string
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.CodeAnalysisLogFile.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.CodeAnalysisModuleSuppressionsFile.get -> string
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.CodeAnalysisModuleSuppressionsFile.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.CodeAnalysisOverrideRuleVisibilities.get -> bool
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.CodeAnalysisOverrideRuleVisibilities.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.CodeAnalysisRuleAssemblies.get -> string
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.CodeAnalysisRuleAssemblies.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.CodeAnalysisRuleDirectories.get -> string
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.CodeAnalysisRuleDirectories.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.CodeAnalysisRules.get -> string
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.CodeAnalysisRules.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.CodeAnalysisRuleSet.get -> string
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.CodeAnalysisRuleSet.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.CodeAnalysisRuleSetDirectories.get -> string
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.CodeAnalysisRuleSetDirectories.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.CodeAnalysisSpellCheckLanguages.get -> string
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.CodeAnalysisSpellCheckLanguages.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.CodeAnalysisUseTypeNameInSuppression.get -> bool
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.CodeAnalysisUseTypeNameInSuppression.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.ConfigurationOverrideFile.get -> string
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.ConfigurationOverrideFile.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.DebugInfo.get -> string
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.DebugInfo.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.DebugSymbols.get -> bool
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.DebugSymbols.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.DefineConstants.get -> string
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.DefineConstants.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.DefineDebug.get -> bool
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.DefineDebug.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.DefineTrace.get -> bool
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.DefineTrace.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.DocumentationFile.get -> string
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.DocumentationFile.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.EnableASPDebugging.get -> bool
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.EnableASPDebugging.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.EnableASPXDebugging.get -> bool
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.EnableASPXDebugging.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.EnableSQLServerDebugging.get -> bool
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.EnableSQLServerDebugging.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.EnableUnmanagedDebugging.get -> bool
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.EnableUnmanagedDebugging.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.ExtenderCATID.get -> string
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.ExtenderNames.get -> object
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.FileAlignment.get -> uint
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.FileAlignment.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.GenerateSerializationAssemblies.get -> VSLangProj80.sgenGenerationOption
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.GenerateSerializationAssemblies.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.get_Extender(string arg) -> object
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.IncrementalBuild.get -> bool
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.IncrementalBuild.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.IntermediatePath.get -> string
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.IntermediatePath.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.LanguageVersion.get -> string
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.LanguageVersion.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.NoStdLib.get -> bool
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.NoStdLib.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.NoWarn.get -> string
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.NoWarn.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.Optimize.get -> bool
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.Optimize.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.OutputPath.get -> string
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.OutputPath.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.PlatformTarget.get -> string
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.PlatformTarget.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.Prefer32Bit.get -> bool
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.Prefer32Bit.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.RegisterForComInterop.get -> bool
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.RegisterForComInterop.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.RemoteDebugEnabled.get -> bool
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.RemoteDebugEnabled.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.RemoteDebugMachine.get -> string
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.RemoteDebugMachine.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.RemoveIntegerChecks.get -> bool
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.RemoveIntegerChecks.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.RunCodeAnalysis.get -> bool
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.RunCodeAnalysis.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.StartAction.get -> VSLangProj.prjStartAction
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.StartAction.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.StartArguments.get -> string
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.StartArguments.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.StartPage.get -> string
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.StartPage.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.StartProgram.get -> string
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.StartProgram.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.StartURL.get -> string
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.StartURL.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.StartWithIE.get -> bool
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.StartWithIE.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.StartWorkingDirectory.get -> string
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.StartWorkingDirectory.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.TreatSpecificWarningsAsErrors.get -> string
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.TreatSpecificWarningsAsErrors.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.TreatWarningsAsErrors.get -> bool
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.TreatWarningsAsErrors.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.UseVSHostingProcess.get -> bool
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.UseVSHostingProcess.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.WarningLevel.get -> VSLangProj.prjWarningLevel
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.WarningLevel.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.GetProfileNameDialog
+Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.GetProfileNameDialog.GetProfileNameDialog(Microsoft.VisualStudio.Shell.SVsServiceProvider sp, Microsoft.VisualStudio.ProjectSystem.IProjectThreadingService threadingService, string suggestedName, System.Predicate<string> validator) -> void
+Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.GetProfileNameDialog.InitializeComponent() -> void
+Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.GetProfileNameDialog.ProfileName.get -> string
+Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.GetProfileNameDialog.ProfileName.set -> void
+Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.ProfileCommandNames
+Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPage
+Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPage.Activate(System.IntPtr hWndParent, Microsoft.VisualStudio.OLE.Interop.RECT[] pRect, int bModal) -> void
+Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPage.Apply() -> int
+Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPage.ContextObjects.get -> System.Collections.Generic.List<Microsoft.VisualStudio.ProjectSystem.Properties.IVsBrowseObjectContext>
+Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPage.Deactivate() -> void
+Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPage.GetPageInfo(Microsoft.VisualStudio.OLE.Interop.PROPPAGEINFO[] pPageInfo) -> void
+Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPage.Help(string pszHelpDir) -> void
+Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPage.IsPageDirty() -> int
+Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPage.Move(Microsoft.VisualStudio.OLE.Interop.RECT[] pRect) -> void
+Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPage.OnModeChange(Microsoft.VisualStudio.Shell.Interop.DBGMODE dbgmodeNew) -> int
+Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPage.SetObjects(uint cObjects, object[] ppunk) -> void
+Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPage.SetPageSite(Microsoft.VisualStudio.OLE.Interop.IPropertyPageSite pPageSite) -> void
+Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPage.Show(uint nCmdShow) -> void
+Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPage.TranslateAccelerator(Microsoft.VisualStudio.OLE.Interop.MSG[] pMsg) -> int
+Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.DependenciesChangedEventArgs
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.DependenciesChangedEventArgs.Changes.get -> Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependenciesChanges
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.DependenciesChangedEventArgs.DependenciesChangedEventArgs(Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IProjectDependenciesSubTreeProvider provider, string targetShortOrFullName, Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependenciesChanges changes, Microsoft.VisualStudio.ProjectSystem.Properties.IProjectCatalogSnapshot catalogs, System.Collections.Immutable.IImmutableDictionary<Microsoft.VisualStudio.ProjectSystem.NamedIdentity, System.IComparable> dataSourceVersions) -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.DependenciesChangedEventArgs.DependenciesChangedEventArgs(Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IProjectDependenciesSubTreeProvider provider, string targetShortOrFullName, Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependenciesChanges changes, System.Threading.CancellationToken token) -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.DependenciesChangedEventArgs.Provider.get -> Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IProjectDependenciesSubTreeProvider
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.DependenciesChangedEventArgs.TargetShortOrFullName.get -> string
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.DependenciesChangedEventArgs.Token.get -> System.Threading.CancellationToken
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.DependencyTreeFlags
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependenciesChanges
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependenciesChanges.AddedNodes.get -> System.Collections.Immutable.IImmutableList<Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel>
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependenciesChanges.RemovedNodes.get -> System.Collections.Immutable.IImmutableList<Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel>
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel.Caption.get -> string
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel.DependencyIDs.get -> System.Collections.Immutable.IImmutableList<string>
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel.ExpandedIcon.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel.Flags.get -> Microsoft.VisualStudio.ProjectSystem.ProjectTreeFlags
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel.Icon.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel.Id.get -> string
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel.Implicit.get -> bool
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel.Name.get -> string
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel.OriginalItemSpec.get -> string
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel.Path.get -> string
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel.Priority.get -> int
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel.Properties.get -> System.Collections.Immutable.IImmutableDictionary<string, string>
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel.ProviderType.get -> string
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel.Resolved.get -> bool
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel.SchemaItemType.get -> string
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel.SchemaName.get -> string
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel.TopLevel.get -> bool
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel.UnresolvedExpandedIcon.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel.UnresolvedIcon.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel.Version.get -> string
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel.Visible.get -> bool
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IProjectDependenciesSubTreeProvider
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IProjectDependenciesSubTreeProvider.CreateRootDependencyNode() -> Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IProjectDependenciesSubTreeProvider.DependenciesChanged -> System.EventHandler<Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.DependenciesChangedEventArgs>
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IProjectDependenciesSubTreeProvider.ProviderType.get -> string
+Microsoft.VisualStudio.ProjectSystem.VS.Utilities.FocusAttacher
+Microsoft.VisualStudio.ProjectSystem.VS.Utilities.FocusAttacher.FocusAttacher() -> void
+static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.ApplicationPrivate.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
+static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.ApplicationWarning.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
+static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.CodeInformationPrivate.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
+static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.CodeInformationWarning.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
+static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.Component.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
+static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.ComponentPrivate.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
+static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.ComponentWarning.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
+static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.ErrorSmall.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
+static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.LibraryWarning.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
+static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.NuGetGrey.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
+static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.NuGetGreyPrivate.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
+static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.NuGetGreyWarning.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
+static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.ReferenceGroup.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
+static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.ReferenceGroupWarning.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
+static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.ReferencePrivate.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
+static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.Sdk.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
+static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.SdkPrivate.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
+static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.SdkWarning.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
+static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.SharedProject.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
+static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.SharedProjectPrivate.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
+static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.SharedProjectWarning.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
+static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.WarningSmall.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
+static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.GetProfileNameDialog.DialogCaption.get -> string
+static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.AddBtn.get -> string
+static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.AllFiles.get -> string
+static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.ApplicationArguments.get -> string
+static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.ApplicationArgumentsWatermark.get -> string
+static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.BrowseBtn.get -> string
+static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.CancelBtn.get -> string
+static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.Culture.get -> System.Globalization.CultureInfo
+static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.Culture.set -> void
+static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.DebugPropertyPageTitle.get -> string
+static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.DeleteBtn.get -> string
+static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.DuplicateKey.get -> string
+static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.EnvironmentVariables.get -> string
+static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.EnvVariableNameWatermark.get -> string
+static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.EnvVariableValueWatermark.get -> string
+static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.ErrorsMustBeCorrectedPriorToSaving.get -> string
+static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.Executable.get -> string
+static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.ExecutableFiles.get -> string
+static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.ExecutablePathWatermark.get -> string
+static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.Launch.get -> string
+static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.LaunchURL.get -> string
+static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.LaunchUrlWatermark.get -> string
+static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.NameCannotBeEmpty.get -> string
+static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.NameHeader.get -> string
+static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.NewBtn.get -> string
+static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.NewProfileCaption.get -> string
+static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.NewProfileSeedName.get -> string
+static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.OKBtn.get -> string
+static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.Profile.get -> string
+static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.ProfileKindExecutableName.get -> string
+static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.ProfileKindIISExpressName.get -> string
+static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.ProfileKindNoActionName.get -> string
+static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.ProfileKindProjectName.get -> string
+static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.ProfileName.get -> string
+static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.ProfileNameInvalid.get -> string
+static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.ProfileNameRequired.get -> string
+static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.RemoveBtn.get -> string
+static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.ResourceManager.get -> System.Resources.ResourceManager
+static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.ValueCannotBeEmpty.get -> string
+static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.ValueHeader.get -> string
+static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.WorkingDirectory.get -> string
+static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.WorkingDirectoryWatermark.get -> string
+static Microsoft.VisualStudio.ProjectSystem.VS.Utilities.FocusAttacher.GetFocus(System.Windows.DependencyObject d) -> bool
+static Microsoft.VisualStudio.ProjectSystem.VS.Utilities.FocusAttacher.SetFocus(System.Windows.DependencyObject d, bool value) -> void
+static readonly Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.DependencyTreeFlags.BaseReferenceFlags -> Microsoft.VisualStudio.ProjectSystem.ProjectTreeFlags
+static readonly Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.DependencyTreeFlags.DependencyFlags -> Microsoft.VisualStudio.ProjectSystem.ProjectTreeFlags
+static readonly Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.DependencyTreeFlags.ResolvedDependencyFlags -> Microsoft.VisualStudio.ProjectSystem.ProjectTreeFlags
+static readonly Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.DependencyTreeFlags.ShowEmptyProviderRootNode -> Microsoft.VisualStudio.ProjectSystem.ProjectTreeFlags
+static readonly Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.DependencyTreeFlags.SupportsHierarchy -> Microsoft.VisualStudio.ProjectSystem.ProjectTreeFlags
+static readonly Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.DependencyTreeFlags.SupportsRemove -> Microsoft.VisualStudio.ProjectSystem.ProjectTreeFlags
+static readonly Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.DependencyTreeFlags.UnresolvedDependencyFlags -> Microsoft.VisualStudio.ProjectSystem.ProjectTreeFlags
+static readonly Microsoft.VisualStudio.ProjectSystem.VS.Utilities.FocusAttacher.FocusProperty -> System.Windows.DependencyProperty
+XamlGeneratedNamespace.GeneratedInternalTypeHelper
+XamlGeneratedNamespace.GeneratedInternalTypeHelper.GeneratedInternalTypeHelper() -> void

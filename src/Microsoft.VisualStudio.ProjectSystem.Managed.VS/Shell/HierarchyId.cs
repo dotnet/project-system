@@ -5,7 +5,7 @@ namespace Microsoft.VisualStudio.Shell
     /// <summary>
     ///     Represents an ITEMID in an IVsHierarchy.
     /// </summary>
-    internal struct HierarchyId
+    internal readonly struct HierarchyId
     {
         private readonly uint _id;
 

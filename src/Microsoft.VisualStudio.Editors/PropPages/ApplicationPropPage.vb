@@ -746,7 +746,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             If root IsNot Nothing Then
                 'Append period for comparison check
-                root = root & "."
+                root &= "."
                 RootLength = root.Length
             End If
 

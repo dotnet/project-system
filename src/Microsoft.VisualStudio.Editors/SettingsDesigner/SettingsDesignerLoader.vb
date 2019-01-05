@@ -28,8 +28,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
         Private _flushing As Boolean
 
-        Private Const PrjKindVenus As String = "{E24C65DC-7377-472b-9ABA-BC803B73C61A}"
-
         ' Set flag if we make changes to the settings object during load that should
         ' set the docdata to dirty immediately after we have loaded.
         Private _modifiedDuringLoad As Boolean
@@ -253,17 +251,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                     Debug.Fail("Our loader host is disposed!")
                     Throw
                 End Try
-            End Get
-        End Property
-
-        ''' <summary>
-        ''' Get the current EndDTE.Project instance for the project containing the .settings
-        ''' file
-        ''' </summary>
-        ''' <remarks></remarks>
-        Private ReadOnly Property EnvDTEProject() As EnvDTE.Project
-            Get
-                Return DTEUtils.EnvDTEProject(VsHierarchy)
             End Get
         End Property
 
@@ -550,7 +537,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 SetReadOnlyMode(False, String.Empty)
                 _readOnly = False
             End If
-            If _modifiedDuringLoad AndAlso InDesignMode() Then
+            If _modifiedDuringLoad AndAlso IsDesignerEditable() Then
                 Try
                     OnModifying()
                     Modified = True
@@ -655,6 +642,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         End Sub
 
         Friend Function EnsureCheckedOut() As Boolean
+
+            If Not IsDesignerEditable() Then
+                Return False
+            End If
+
             Try
                 Dim ProjectReloaded As Boolean
                 ManualCheckOut(ProjectReloaded)
@@ -706,8 +698,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End Get
         End Property
 
-
-        Friend Function InDesignMode() As Boolean
+        Private Function InDesignMode() As Boolean
             Return _currentDebugMode = DBGMODE.DBGMODE_Design
         End Function
 
@@ -772,8 +763,15 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End If
         End Sub
 
-        Friend Function IsReadOnly() As Boolean
-            Return _readOnly
+        ''' <summary>
+        '''     Returns a value indicating whether the designer is currently editable; that is, 
+        '''     we're not debugging in any form and the solution is not currently building.
+        ''' </summary>
+        ''' <returns></returns>
+        Friend Function IsDesignerEditable() As Boolean
+
+            Return InDesignMode() AndAlso Not _readOnly
+
         End Function
 
         ''' <summary>

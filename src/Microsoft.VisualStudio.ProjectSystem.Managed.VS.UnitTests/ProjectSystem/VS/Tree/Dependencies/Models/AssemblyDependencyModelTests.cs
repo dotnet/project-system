@@ -5,6 +5,7 @@ using System.Collections.Immutable;
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
+using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions.RuleHandlers;
 
 using Xunit;
 
@@ -17,17 +18,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             var properties = ImmutableStringDictionary<string>.EmptyOrdinal.Add("myProp", "myVal");
 
-            var flag = ProjectTreeFlags.Create("MyCustomFlag");
             var model = new AssemblyDependencyModel(
-                "myProvider",
                 "c:\\myPath",
                 "myOriginalItemSpec",
-                flags: flag,
-                resolved: true,
+                isResolved: true,
                 isImplicit: false,
                 properties: properties);
 
-            Assert.Equal("myProvider", model.ProviderType);
+            Assert.Equal(AssemblyRuleHandler.ProviderTypeString, model.ProviderType);
             Assert.Equal("c:\\myPath", model.Path);
             Assert.Equal("myOriginalItemSpec", model.OriginalItemSpec);
             Assert.Equal("c:\\myPath", model.Caption);
@@ -41,7 +39,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(KnownMonikers.Reference, model.ExpandedIcon);
             Assert.Equal(KnownMonikers.ReferenceWarning, model.UnresolvedIcon);
             Assert.Equal(KnownMonikers.ReferenceWarning, model.UnresolvedExpandedIcon);
-            Assert.True(model.Flags.Contains(flag));
+            Assert.Equal(
+                DependencyTreeFlags.AssemblySubTreeNodeFlags +
+                DependencyTreeFlags.GenericResolvedDependencyFlags,
+                model.Flags);
         }
 
         [Fact]
@@ -49,17 +50,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             var properties = ImmutableStringDictionary<string>.EmptyOrdinal.Add(ResolvedAssemblyReference.FusionNameProperty, "myAssembly.dll");
 
-            var flag = ProjectTreeFlags.Create("MyCustomFlag");
             var model = new AssemblyDependencyModel(
-                "myProvider",
                 "c:\\myPath",
                 "myOriginalItemSpec",
-                flags: flag,
-                resolved: true,
+                isResolved: true,
                 isImplicit: false,
                 properties: properties);
 
-            Assert.Equal("myProvider", model.ProviderType);
+            Assert.Equal(AssemblyRuleHandler.ProviderTypeString, model.ProviderType);
             Assert.Equal("c:\\myPath", model.Path);
             Assert.Equal("myOriginalItemSpec", model.OriginalItemSpec);
             Assert.Equal("myAssembly.dll", model.Caption);
@@ -73,7 +71,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(KnownMonikers.Reference, model.ExpandedIcon);
             Assert.Equal(KnownMonikers.ReferenceWarning, model.UnresolvedIcon);
             Assert.Equal(KnownMonikers.ReferenceWarning, model.UnresolvedExpandedIcon);
-            Assert.True(model.Flags.Contains(flag));
+            Assert.Equal(
+                DependencyTreeFlags.AssemblySubTreeNodeFlags +
+                DependencyTreeFlags.GenericResolvedDependencyFlags,
+                model.Flags);
         }
 
         [Fact]
@@ -81,17 +82,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             var properties = ImmutableStringDictionary<string>.EmptyOrdinal.Add("myProp", "myVal");
 
-            var flag = ProjectTreeFlags.Create("MyCustomFlag");
             var model = new AssemblyDependencyModel(
-                "myProvider",
                 "c:\\myPath",
                 "myOriginalItemSpec",
-                flags: flag,
-                resolved: false,
+                isResolved: false,
                 isImplicit: false,
                 properties: properties);
 
-            Assert.Equal("myProvider", model.ProviderType);
+            Assert.Equal(AssemblyRuleHandler.ProviderTypeString, model.ProviderType);
             Assert.Equal("c:\\myPath", model.Path);
             Assert.Equal("myOriginalItemSpec", model.OriginalItemSpec);
             Assert.Equal("c:\\myPath", model.Caption);
@@ -105,7 +103,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(KnownMonikers.Reference, model.ExpandedIcon);
             Assert.Equal(KnownMonikers.ReferenceWarning, model.UnresolvedIcon);
             Assert.Equal(KnownMonikers.ReferenceWarning, model.UnresolvedExpandedIcon);
-            Assert.True(model.Flags.Contains(flag));
+            Assert.Equal(
+                DependencyTreeFlags.AssemblySubTreeNodeFlags +
+                DependencyTreeFlags.GenericUnresolvedDependencyFlags,
+                model.Flags);
         }
 
         [Fact]
@@ -113,17 +114,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             var properties = ImmutableStringDictionary<string>.EmptyOrdinal.Add("myProp", "myVal");
 
-            var flag = ProjectTreeFlags.Create("MyCustomFlag");
             var model = new AssemblyDependencyModel(
-                "myProvider",
                 "c:\\myPath",
                 "myOriginalItemSpec",
-                flags: flag,
-                resolved: true,
+                isResolved: true,
                 isImplicit: true,
                 properties: properties);
 
-            Assert.Equal("myProvider", model.ProviderType);
+            Assert.Equal(AssemblyRuleHandler.ProviderTypeString, model.ProviderType);
             Assert.Equal("c:\\myPath", model.Path);
             Assert.Equal("myOriginalItemSpec", model.OriginalItemSpec);
             Assert.Equal("c:\\myPath", model.Caption);
@@ -137,7 +135,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(ManagedImageMonikers.ReferencePrivate, model.ExpandedIcon);
             Assert.Equal(KnownMonikers.ReferenceWarning, model.UnresolvedIcon);
             Assert.Equal(KnownMonikers.ReferenceWarning, model.UnresolvedExpandedIcon);
-            Assert.True(model.Flags.Contains(flag));
+            Assert.Equal(
+                DependencyTreeFlags.AssemblySubTreeNodeFlags +
+                DependencyTreeFlags.GenericResolvedDependencyFlags -
+                DependencyTreeFlags.SupportsRemove,
+                model.Flags);
         }
     }
 }

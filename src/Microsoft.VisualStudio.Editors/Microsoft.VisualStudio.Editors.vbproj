@@ -4,9 +4,9 @@
   <PropertyGroup>
     <Prefer32Bit>false</Prefer32Bit>
     <StrongNameKeyId>Microsoft</StrongNameKeyId>
-    <TargetFramework>net46</TargetFramework>
+    <TargetFramework>net472</TargetFramework>
     <!-- TODO: Function/Property doesn't return a value on all code paths (https://github.com/dotnet/project-system/issues/2592) -->
-    <NoWarn>$(NoWarn);42353;42355;42105</NoWarn>
+    <NoWarn>$(NoWarn);42353;42355;42105;NU5125</NoWarn>
 
     <!-- Nuget -->
     <IsPackable>true</IsPackable>
@@ -600,6 +600,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="**\*.xlf" />
+  </ItemGroup>
+  <ItemGroup>
+    <AdditionalFiles Include="PublicAPI.Shipped.txt" />
+    <AdditionalFiles Include="PublicAPI.Unshipped.txt" />
   </ItemGroup>
   <!-- We don't generate pkgdef, but we want it to end up in VSIX,
        implement the right output group so that ProjectSystemSetup pulls it in -->

@@ -5,14 +5,10 @@ Imports System.Windows.Forms
 
 Namespace Microsoft.VisualStudio.Editors.AddImports
     Friend Class AutoAddImportsCollisionDialog
-        Private _importMnemonic As Char? = Nothing
-        Private _doNotImportMnemonic As Char? = Nothing
-        Private _lastFocus As Control
         Private ReadOnly _helpCallBack As IVBAddImportsDialogHelpCallback
 
         Public Sub New([namespace] As String, identifier As String, minimallyQualifiedName As String, callBack As IVBAddImportsDialogHelpCallback, isp As IServiceProvider)
             MyBase.New(isp)
-            _lastFocus = Me
             _helpCallBack = callBack
             InitializeComponent()
             SuspendLayout()
@@ -25,14 +21,10 @@ Namespace Microsoft.VisualStudio.Editors.AddImports
                 m_lblMain.Text = String.Format(My.Resources.AddImports.AddImportsMainTextFormatString, [namespace], identifier, minimallyQualifiedName)
                 m_lblMain.AutoSize = True
 
-                Dim importAnywaysText As String = String.Format(My.Resources.AddImports.ImportsAnywaysFormatString, [namespace], [identifier], minimallyQualifiedName)
-                _importMnemonic = ProcessMnemonicString(importAnywaysText)
-                m_lblImportsAnyways.Text = importAnywaysText
+                m_lblImportsAnyways.Text = String.Format(My.Resources.AddImports.ImportsAnywaysFormatString, [namespace], [identifier], minimallyQualifiedName)
                 m_lblImportsAnyways.AutoSize = True
 
-                Dim qualifyCurrentText As String = String.Format(My.Resources.AddImports.QualifyCurrentLineFormatString, [namespace], [identifier], minimallyQualifiedName)
-                _doNotImportMnemonic = ProcessMnemonicString(qualifyCurrentText)
-                m_lblQualifyCurrentLine.Text = qualifyCurrentText
+                m_lblQualifyCurrentLine.Text = String.Format(My.Resources.AddImports.QualifyCurrentLineFormatString, [namespace], [identifier], minimallyQualifiedName)
                 m_lblQualifyCurrentLine.AutoSize = True
 
                 m_layoutPanel.AutoSize = True

@@ -1,4 +1,5 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -6,10 +7,8 @@ using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-using Microsoft.VisualStudio.ComponentModelHost;
 using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
-using Microsoft.VisualStudio.ProjectSystem.VS.Extensibility;
 using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
@@ -21,19 +20,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         private IPropertyPageSite _site = null;
         private bool _isDirty = false;
         private readonly bool _ignoreEvents = false;
-        private bool _useJoinableTaskFactory = true;
         private IVsDebugger _debugger;
         private uint _debuggerCookie;
         private bool _isActivated = false;
         internal IProjectThreadingService _threadHandling;
 
         // WIN32 Constants
-        private const int
-            WM_KEYFIRST = 0x0100,
-            WM_KEYLAST = 0x0108,
-            WM_MOUSEFIRST = 0x0200,
-            WM_MOUSELAST = 0x020A,
-            SW_HIDE = 0;
+        private const int SW_HIDE = 0;
 
         internal static class NativeMethods
         {
@@ -46,12 +39,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         internal PropertyPage()
         {
             AutoScroll = false;
-        }
-
-        // For unit testing
-        internal PropertyPage(bool useJoinableTaskFactory)
-        {
-            _useJoinableTaskFactory = useJoinableTaskFactory;
         }
 
         internal UnconfiguredProject UnconfiguredProject { get; set; }
@@ -111,7 +98,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             // Initialization can cause some events to be fired when we change some values
             // so we use this flag (_ignoreEvents) to notify IsDirty to ignore
             // any changes that happen during initialization
-            Win32Methods.SetParent(Handle, hWndParent);
+
+            Control parent = FromHandle(hWndParent);
+            if (parent != null)
+            {   // We're hosted in WinForms, make sure we 
+                // set Parent so that we inherit Font & Colors
+                Parent = parent;
+            }
+            else
+            {
+                Win32Methods.SetParent(Handle, hWndParent);
+            }
+
             ResumeLayout();
             _isActivated = true;
 
@@ -345,7 +343,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             if (ppunk.Length < cObjects)
                 throw new ArgumentOutOfRangeException(nameof(cObjects));
 
-            var configurations = new List<string>();
             // Look for an IVsBrowseObject
             for (int i = 0; i < cObjects; ++i)
             {

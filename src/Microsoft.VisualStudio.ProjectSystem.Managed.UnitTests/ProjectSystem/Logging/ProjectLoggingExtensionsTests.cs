@@ -127,7 +127,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Logging
                 set;
             }
 
-            public void WriteLine(StringFormat format)
+            public void WriteLine(in StringFormat format)
             {
                 Text = format.Text;
             }

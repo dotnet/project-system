@@ -9,7 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     ///     The type of the service to retrieve.
     /// </typeparam>
     /// <typeparam name="TInterface">
-    ///     The type of the service to return from <see cref="IVsService{T}.Value"/>
+    ///     The type of the service to return from <see cref="IVsService{T}.GetValueAsync"/>
     /// </typeparam>
     internal interface IVsUIService<TService, TInterface> : IVsUIService<TInterface>
     {

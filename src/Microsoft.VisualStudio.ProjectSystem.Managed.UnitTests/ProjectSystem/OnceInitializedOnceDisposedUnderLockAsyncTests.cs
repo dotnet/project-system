@@ -24,6 +24,17 @@ namespace Microsoft.VisualStudio.ProjectSystem
         }
 
         [Fact]
+        public void ExecuteUnderLockAsyncOfT_NullAsAction_ThrowsArgumentNullException()
+        {
+            var instance = CreateInstance();
+
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                instance.ExecuteUnderLockAsync((Func<CancellationToken, Task<string>>)null, CancellationToken.None);
+            });
+        }
+
+        [Fact]
         public async Task ExecuteUnderLockAsync_PassesCancellationTokenToAction()
         {
             var cancellationTokenSource = new CancellationTokenSource();
@@ -45,7 +56,28 @@ namespace Microsoft.VisualStudio.ProjectSystem
         }
 
         [Fact]
-        public void ExecuteUnderLockAsync_WhenPassedCancelledToken_DoesNotExecuteAction()
+        public async Task ExecuteUnderLockAsyncOfT_PassesCancellationTokenToAction()
+        {
+            var cancellationTokenSource = new CancellationTokenSource();
+
+            var instance = CreateInstance();
+
+            bool result = default;
+            await instance.ExecuteUnderLockAsync(ct =>
+            {
+                cancellationTokenSource.Cancel();
+
+                result = ct.IsCancellationRequested;
+
+                return Task.FromResult<string>(null);
+
+            }, cancellationTokenSource.Token);
+
+            Assert.True(result);
+        }
+
+        [Fact]
+        public async Task ExecuteUnderLockAsync_WhenPassedCancelledToken_DoesNotExecuteAction()
         {
             var cancellationToken = new CancellationToken(canceled: true);
 
@@ -54,8 +86,24 @@ namespace Microsoft.VisualStudio.ProjectSystem
             bool called = false;
             var result = instance.ExecuteUnderLockAsync(ct => { called = true; return Task.CompletedTask; }, cancellationToken);
 
-            Assert.ThrowsAsync<TaskCanceledException>(() => result);
+            var exception = await Assert.ThrowsAnyAsync<OperationCanceledException>(() => result);
             Assert.False(called);
+            Assert.Equal(cancellationToken, exception.CancellationToken);
+        }
+
+        [Fact]
+        public async Task ExecuteUnderLockAsyncOfT_WhenPassedCancelledToken_DoesNotExecuteAction()
+        {
+            var cancellationToken = new CancellationToken(canceled: true);
+
+            var instance = CreateInstance();
+
+            bool called = false;
+            var result = instance.ExecuteUnderLockAsync(ct => { called = true; return Task.FromResult<string>(null); }, cancellationToken);
+
+            var exception = await Assert.ThrowsAnyAsync<OperationCanceledException>(() => result);
+            Assert.False(called);
+            Assert.Equal(cancellationToken, exception.CancellationToken);
         }
 
         [Fact]
@@ -65,6 +113,17 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             int callCount = 0;
             await instance.ExecuteUnderLockAsync((ct) => { callCount++; return Task.CompletedTask; }, CancellationToken.None);
+
+            Assert.Equal(1, callCount);
+        }
+
+        [Fact]
+        public async Task ExecuteUnderLockAsyncOfT_WithNoContention_ExecutesAction()
+        {
+            var instance = CreateInstance();
+
+            int callCount = 0;
+            await instance.ExecuteUnderLockAsync((ct) => { callCount++; return Task.FromResult<string>(null); }, CancellationToken.None);
 
             Assert.Equal(1, callCount);
         }
@@ -82,6 +141,88 @@ namespace Microsoft.VisualStudio.ProjectSystem
             {
                 firstEntered.Set();
                 await firstRelease;
+
+            }, CancellationToken.None);
+
+            Task secondAction() => Task.Run(() => instance.ExecuteUnderLockAsync((ct) =>
+            {
+                secondEntered.Set();
+                return Task.CompletedTask;
+
+            }, CancellationToken.None));
+
+            await AssertNoOverlap(firstAction, secondAction, firstEntered, firstRelease, secondEntered);
+        }
+
+        [Fact]
+        public async Task ExecuteUnderLockAsyncOfT_AvoidsOverlappingActions()
+        {
+            var firstEntered = new AsyncManualResetEvent();
+            var firstRelease = new AsyncManualResetEvent();
+            var secondEntered = new AsyncManualResetEvent();
+
+            var instance = CreateInstance();
+
+            Task firstAction() => instance.ExecuteUnderLockAsync(async (ct) =>
+            {
+                firstEntered.Set();
+                await firstRelease;
+
+                return string.Empty;
+
+            }, CancellationToken.None);
+
+            Task secondAction() => Task.Run(() => instance.ExecuteUnderLockAsync((ct) =>
+            {
+                secondEntered.Set();
+                return Task.FromResult<string>(null);
+
+            }, CancellationToken.None));
+
+            await AssertNoOverlap(firstAction, secondAction, firstEntered, firstRelease, secondEntered);
+        }
+
+        [Fact]
+        public async Task ExecuteUnderLockAsyncOfT_AvoidsOverlappingActionsWithExecuteUnderLockAsync()
+        {
+            var firstEntered = new AsyncManualResetEvent();
+            var firstRelease = new AsyncManualResetEvent();
+            var secondEntered = new AsyncManualResetEvent();
+
+            var instance = CreateInstance();
+
+            Task firstAction() => instance.ExecuteUnderLockAsync(async (ct) =>
+            {
+                firstEntered.Set();
+                await firstRelease;
+
+            }, CancellationToken.None);
+
+            Task secondAction() => Task.Run(() => instance.ExecuteUnderLockAsync((ct) =>
+            {
+                secondEntered.Set();
+                return Task.FromResult<string>(null);
+
+            }, CancellationToken.None));
+
+            await AssertNoOverlap(firstAction, secondAction, firstEntered, firstRelease, secondEntered);
+        }
+
+        [Fact]
+        public async Task ExecuteUnderLockAsync_AvoidsOverlappingActionsWithExecuteUnderLockAsyncOfT()
+        {
+            var firstEntered = new AsyncManualResetEvent();
+            var firstRelease = new AsyncManualResetEvent();
+            var secondEntered = new AsyncManualResetEvent();
+
+            var instance = CreateInstance();
+
+            Task firstAction() => instance.ExecuteUnderLockAsync(async (ct) =>
+            {
+                firstEntered.Set();
+                await firstRelease;
+
+                return string.Empty;
 
             }, CancellationToken.None);
 
@@ -117,6 +258,31 @@ namespace Microsoft.VisualStudio.ProjectSystem
         }
 
         [Fact]
+        public async Task ExecuteUnderLockAsyncOfT_CanBeNested()
+        {
+            var instance = CreateInstance();
+
+            int callCount = 0;
+            await instance.ExecuteUnderLockAsync(async (_) =>
+            {
+                await instance.ExecuteUnderLockAsync(async (__) =>
+                {
+                    await instance.ExecuteUnderLockAsync((___) =>
+                    {
+                        callCount++;
+                        return Task.FromResult<string>(null);
+                    });
+
+                    return string.Empty;
+                });
+
+                return string.Empty;
+            });
+
+            Assert.Equal(1, callCount);
+        }
+
+        [Fact]
         public async Task ExecuteUnderLockAsync_AvoidsOverlappingWithDispose()
         {
             var firstEntered = new AsyncManualResetEvent();
@@ -144,6 +310,35 @@ namespace Microsoft.VisualStudio.ProjectSystem
         }
 
         [Fact]
+        public async Task ExecuteUnderLockAsyncOfT_AvoidsOverlappingWithDispose()
+        {
+            var firstEntered = new AsyncManualResetEvent();
+            var firstRelease = new AsyncManualResetEvent();
+            var disposeEntered = new AsyncManualResetEvent();
+
+            ConcreteOnceInitializedOnceDisposedUnderLockAsync instance = null;
+
+            Task firstAction() => instance.ExecuteUnderLockAsync(async (ct) =>
+            {
+                firstEntered.Set();
+                await firstRelease.WaitAsync();
+
+                return string.Empty;
+
+            }, CancellationToken.None);
+
+            instance = CreateInstance(() =>
+            {
+                disposeEntered.Set();
+                return Task.CompletedTask;
+            });
+
+            Task disposeAction() => Task.Run(instance.DisposeAsync);
+
+            await AssertNoOverlap(firstAction, disposeAction, firstEntered, firstRelease, disposeEntered);
+        }
+
+        [Fact]
         public async Task DisposeAsync_DoesNotThrow()
         {
             var instance = CreateInstance();
@@ -154,16 +349,33 @@ namespace Microsoft.VisualStudio.ProjectSystem
         }
 
         [Fact]
-        public async Task ExecuteUnderLockAsync_WhenDisposed_ThrowsOperationCancellated()
+        public async Task ExecuteUnderLockAsync_WhenDisposed_ThrowsOperationCanceled()
         {
             var instance = CreateInstance();
 
             await instance.DisposeAsync();
 
-            await Assert.ThrowsAnyAsync<OperationCanceledException>(() =>
+            var result = await Assert.ThrowsAnyAsync<OperationCanceledException>(() =>
             {
                 return instance.ExecuteUnderLockAsync((ct) => { return Task.CompletedTask; }, CancellationToken.None);
             });
+
+            Assert.Equal(instance.DisposalToken, result.CancellationToken);
+        }
+
+        [Fact]
+        public async Task ExecuteUnderLockAsyncOfT_WhenDisposed_ThrowsOperationCancellated()
+        {
+            var instance = CreateInstance();
+
+            await instance.DisposeAsync();
+
+            var result = await Assert.ThrowsAnyAsync<OperationCanceledException>(() =>
+            {
+                return instance.ExecuteUnderLockAsync((ct) => { return Task.FromResult<string>(null); }, CancellationToken.None);
+            });
+
+            Assert.Equal(instance.DisposalToken, result.CancellationToken);
         }
 
         private async Task AssertNoOverlap(Func<Task> firstAction, Func<Task> secondAction, AsyncManualResetEvent firstEntered, AsyncManualResetEvent firstRelease, AsyncManualResetEvent secondEntered)
@@ -204,7 +416,17 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 _disposed = disposed;
             }
 
+            public new CancellationToken DisposalToken
+            {
+                get { return base.DisposalToken; }
+            }
+
             public new Task ExecuteUnderLockAsync(Func<CancellationToken, Task> action, CancellationToken cancellationToken = default)
+            {
+                return base.ExecuteUnderLockAsync(action, cancellationToken);
+            }
+
+            public new Task<T> ExecuteUnderLockAsync<T>(Func<CancellationToken, Task<T>> action, CancellationToken cancellationToken = default)
             {
                 return base.ExecuteUnderLockAsync(action, cancellationToken);
             }

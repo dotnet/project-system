@@ -31,21 +31,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ' Give clients a chance to prevent the "edit on click" caused by some custom cell types
         Public Event CellClickBeginEdit(sender As Object, e As System.ComponentModel.CancelEventArgs)
 
-        'Backing property fields
-        Private ReadOnly _dfAutoSizeColumnWidths As Boolean
-        Private ReadOnly _columnMinimumScrollingWidths() As Integer
-
-        'Current percentage of the total width of the control that each column takes up, as a decimal
-        '  between 0 and 1.0
-        Private ReadOnly _columnWidthPercentages() As Double
-
-        'True iff we are changing a column's width programmatically
-        Private ReadOnly _columnWidthChangingProgrammatically As Boolean
-
-        'True iff the last time the control resized, we weren't able to contract all of the column
-        '  widths to the proper values because we hit at least one column's minimum scrolling width.
-        Private ReadOnly _currentGridSizeTooSmall As Boolean
-
         ' In the multiple selection mode, we shouldn't enter editMode automatically
         Private _inMultiSelectionMode As Boolean
 

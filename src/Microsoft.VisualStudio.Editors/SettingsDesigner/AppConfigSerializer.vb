@@ -2,7 +2,6 @@
 
 Imports System.IO
 Imports System.Windows.Forms.Design
-Imports System.Xml
 Imports System.Configuration
 
 Imports Microsoft.VisualStudio.Shell.Design.Serialization
@@ -176,14 +175,14 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' exist.
         ''' </summary>
         ''' <param name="Hierarchy"></param>
-        ''' <param name="Writeable">
+        ''' <param name="Writable">
         ''' If the DocData should be write:able, and a DocDataService is provider, all write:able files added to the
         ''' DocDataService will be checked out
         ''' </param>
         ''' <param name="DocDataService">If specified, the DesignerDocDataService to add/get this DocData to/from</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Friend Shared Function GetAppConfigDocData(ServiceProvider As IServiceProvider, Hierarchy As IVsHierarchy, CreateIfNotExists As Boolean, Writeable As Boolean, Optional DocDataService As DesignerDocDataService = Nothing) As DocData
+        Friend Shared Function GetAppConfigDocData(ServiceProvider As IServiceProvider, Hierarchy As IVsHierarchy, CreateIfNotExists As Boolean, Writable As Boolean, Optional DocDataService As DesignerDocDataService = Nothing) As DocData
             Dim ProjSpecialFiles As IVsProjectSpecialFiles = TryCast(Hierarchy, IVsProjectSpecialFiles)
             Dim AppConfigDocData As DocData = Nothing
 
@@ -210,7 +209,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 If AppConfigItemId <> VSITEMID.NIL Then
                     If DocDataService IsNot Nothing Then
                         Dim Access As FileAccess
-                        If Writeable Then
+                        If Writable Then
                             Access = FileAccess.ReadWrite
                         Else
                             Access = FileAccess.Read
@@ -461,26 +460,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 End If
             Next
         End Sub
-
-        ''' <summary>
-        ''' Load the contents of the stream pointed to by Reader into a XML DOM Document
-        ''' </summary>
-        ''' <param name="Reader"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Private Shared Function LoadAppConfigDocument(Reader As TextReader) As XmlDocument
-            Dim AppConfigXmlDoc As New XmlDocument With {
-                .PreserveWhitespace = False
-            }
-            ' Load App.Config into XML Doc
-            ' Required by Fxcop rule CA3054 - DoNotAllowDTDXmlTextReader
-            Dim XmlAppConfigReader As New XmlTextReader(Reader) With {
-                .DtdProcessing = DtdProcessing.Prohibit,
-                .WhitespaceHandling = WhitespaceHandling.All
-            }
-            AppConfigXmlDoc.Load(XmlAppConfigReader)
-            Return AppConfigXmlDoc
-        End Function
 
         ''' <summary>
         ''' If the value in the app.config file differs from the value in the .settings file,

@@ -65,9 +65,9 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         Private _site As Object 'The site that owns this editor factory
         Private _serviceProvider As Shell.ServiceProvider 'The service provider from m_Site
         Private ReadOnly _designerLoaderType As Type 'The type of designer loader to create.  Typically there is a separate designer loader class per editor factory (and therefore per designer type)
-        Private Shared ReadOnly s_defaultPhysicalViewName As String = Nothing 'The default physical view *must* be Nothing
 
 #End Region
+
 
 
         ''' <summary>

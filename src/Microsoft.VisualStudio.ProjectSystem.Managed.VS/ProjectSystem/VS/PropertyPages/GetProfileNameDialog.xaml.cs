@@ -33,8 +33,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         //------------------------------------------------------------------------------
         private void OKButton_Click(object sender, RoutedEventArgs e)
         {
-            string newName = ProfileName;
-            newName = newName?.Trim();
+            string newName = ProfileName?.Trim();
+
             var notifyService = new UserNotificationServices(_serviceProvider, _threadingService);
 
             if (string.IsNullOrEmpty(newName))

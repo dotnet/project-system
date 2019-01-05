@@ -142,6 +142,9 @@
           ContinueOnError="true"
           IgnoreExitCode="true" />
 
-  </Target>
+   <!--
+    Import NuGet targets to WPF temp projects (workaround for https://github.com/dotnet/sourcelink/issues/91) 
+  -->
+  <Import Project="$(_WpfTempProjectNuGetFileNameNoExt).targets" Condition="'$(_WpfTempProjectNuGetFileNameNoExt)' != '' and Exists('$(_WpfTempProjectNuGetFileNameNoExt).targets')"/> </Target>
 
 </Project>

@@ -3,7 +3,7 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
-
+using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Filters
@@ -17,61 +17,56 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
     [Export(typeof(IDependenciesSnapshotFilter))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
     [Order(Order)]
-    internal class ImplicitTopLevelDependenciesSnapshotFilter : DependenciesSnapshotFilterBase
+    internal sealed class ImplicitTopLevelDependenciesSnapshotFilter : DependenciesSnapshotFilterBase
     {
         public const int Order = 130;
 
-        private IAggregateDependenciesSnapshotProvider AggregateSnapshotProvider { get; }
-        private ITargetFrameworkProvider TargetFrameworkProvider { get; }
-
-        public override IDependency BeforeAdd(
+        public override void BeforeAddOrUpdate(
             string projectPath,
             ITargetFramework targetFramework,
             IDependency dependency,
-            ImmutableDictionary<string, IDependency>.Builder worldBuilder,
-            ImmutableHashSet<IDependency>.Builder topLevelBuilder,
-            Dictionary<string, IProjectDependenciesSubTreeProvider> subTreeProviders,
-            HashSet<string> projectItemSpecs,
-            out bool filterAnyChanges)
+            IReadOnlyDictionary<string, IProjectDependenciesSubTreeProvider> subTreeProviderByProviderType,
+            IImmutableSet<string> projectItemSpecs,
+            IAddDependencyContext context)
         {
-            filterAnyChanges = false;
-            IDependency resultDependency = dependency;
-
-            if (!resultDependency.TopLevel
-                || resultDependency.Implicit
-                || !resultDependency.Resolved
-                || !resultDependency.Flags.Contains(DependencyTreeFlags.GenericDependencyFlags))
+            if (!dependency.TopLevel
+                || dependency.Implicit
+                || !dependency.Resolved
+                || !dependency.Flags.Contains(DependencyTreeFlags.GenericDependencyFlags))
             {
-                return resultDependency;
+                context.Accept(dependency);
+                return;
             }
 
-            if (projectItemSpecs == null)   // No data, so don't update
-                return resultDependency;
-
-            if (!projectItemSpecs.Contains(resultDependency.OriginalItemSpec))
+            if (projectItemSpecs == null)
             {
-                // it is an implicit dependency
-                if (!subTreeProviders.TryGetValue(resultDependency.ProviderType, out IProjectDependenciesSubTreeProvider provider))
-                {
-                    return resultDependency;
-                }
-
-                if (!(provider is IProjectDependenciesSubTreeProviderInternal internalProvider))
-                {
-                    return resultDependency;
-                }
-
-                DependencyIconSet implicitIconSet = resultDependency.IconSet
-                    .WithIcon(internalProvider.GetImplicitIcon())
-                    .WithExpandedIcon(internalProvider.GetImplicitIcon());
-
-                resultDependency = resultDependency.SetProperties(
-                    iconSet: implicitIconSet,
-                    isImplicit: true);
-                filterAnyChanges = true;
+                // No data, so don't update
+                context.Accept(dependency);
+                return;
             }
 
-            return resultDependency;
+            if (!projectItemSpecs.Contains(dependency.OriginalItemSpec))
+            {
+                // It is an implicit dependency
+                if (subTreeProviderByProviderType.TryGetValue(dependency.ProviderType, out IProjectDependenciesSubTreeProvider provider) && 
+                    provider is IProjectDependenciesSubTreeProviderInternal internalProvider)
+                {
+                    ImageMoniker implicitIcon = internalProvider.GetImplicitIcon();
+
+                    DependencyIconSet implicitIconSet = DependencyIconSetCache.Instance.GetOrAddIconSet(
+                        implicitIcon,
+                        implicitIcon,
+                        dependency.IconSet.UnresolvedIcon,
+                        dependency.IconSet.UnresolvedExpandedIcon);
+
+                    context.Accept(dependency.SetProperties(
+                        iconSet: implicitIconSet,
+                        isImplicit: true));
+                    return;
+                }
+            }
+
+            context.Accept(dependency);
         }
     }
 }

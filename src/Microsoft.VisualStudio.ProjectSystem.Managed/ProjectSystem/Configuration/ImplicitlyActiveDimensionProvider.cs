@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Linq;
+using Microsoft.VisualStudio.Buffers.PooledObjects;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Configuration
 {
@@ -44,7 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
 
         private ImmutableArray<string> CalculateBuiltInImplicitlyActiveDimensions()
         {
-            var implicitlyActiveDimensions = ImmutableArray.CreateBuilder<string>();
+            var implicitlyActiveDimensions = PooledArray<string>.GetInstance();
 
             foreach (Lazy<IProjectConfigurationDimensionsProvider, IConfigurationDimensionDescriptionMetadataView> provider in DimensionProviders)
             {
@@ -58,7 +59,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
                 }
             }
 
-            return implicitlyActiveDimensions.ToImmutable();
+            return implicitlyActiveDimensions.ToImmutableAndFree();
         }
     }
 }

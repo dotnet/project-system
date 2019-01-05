@@ -45,10 +45,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                             string ruleName = null,
                             IDictionary<string, IImmutableDictionary<string, string>> items = null,
                             IDictionary<string, string> properties = null,
-                            MockBehavior? mockBehavior = null)
+                            MockBehavior mockBehavior = MockBehavior.Default)
         {
-            var behavior = mockBehavior ?? MockBehavior.Default;
-            var mock = new Mock<IProjectRuleSnapshot>(behavior);
+            var mock = new Mock<IProjectRuleSnapshot>(mockBehavior);
 
             if (ruleName != null)
             {

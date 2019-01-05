@@ -21,8 +21,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         'After 65535, the project system doesn't complain, but you get a compile error.
         Private Const MaxAssemblyVersionPartValue As UInteger = 65534
 
-        Private _neutralLanguageNoneText As String 'Text for "None" in the neutral language combobox (stored in case thread language changes)
-
         ''' <summary>
         ''' Customizable processing done before the class has populated controls in the ControlData array
         ''' </summary>
@@ -52,7 +50,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 FileVersionMajorTextBox, FileVersionMinorTextBox, FileVersionBuildTextBox, FileVersionRevisionTextBox}
             _assemblyVersionTextBoxes = New TextBox(3) {
                 AssemblyVersionMajorTextBox, AssemblyVersionMinorTextBox, AssemblyVersionBuildTextBox, AssemblyVersionRevisionTextBox}
-            _neutralLanguageNoneText = My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_NeutralLanguage_None
         End Sub
 
         Protected Overrides ReadOnly Property ControlData() As PropertyControlData()
@@ -175,6 +172,27 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Common.SetComboBoxDropdownWidth(NeutralLanguageComboBox)
         End Sub
 
+        Private _neutralLanguageWasDroppedDown As Boolean = False
+
+        ''' <summary>
+        ''' For checking if the NeutralLanguageComboBox was DroppedDown when the escape key was pressed.
+        ''' With a combination of AutoCompleteMode.SuggestAppend and AutoCompleteSource.ListItems the 
+        ''' NeutralLanguageComboBox and the Assembly Info window will both handle a Escape key press and both close.
+        ''' We only want the NeutralLanguageComboBox to close in that case.
+        ''' </summary>
+        Private Sub NeutralLanguageComboBox_PreviewKeyDown(sender As Object, e As PreviewKeyDownEventArgs) Handles NeutralLanguageComboBox.PreviewKeyDown
+            If (e.KeyData And Keys.KeyCode) = Keys.Escape And NeutralLanguageComboBox.DroppedDown Then
+                _neutralLanguageWasDroppedDown = True
+            End If
+        End Sub
+
+        Protected Overrides Function ProcessDialogKey(keyData As Keys) As Boolean
+            If _neutralLanguageWasDroppedDown Then
+                _neutralLanguageWasDroppedDown = False
+                Return True
+            End If
+            Return MyBase.ProcessDialogKey(keyData)
+        End Function
 
         Protected Overrides Function GetF1HelpKeyword() As String
             Return HelpKeywords.VBProjPropAssemblyInfo

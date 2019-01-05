@@ -227,7 +227,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             'Enqueue the index that we used, so we can recycle it later if need be, in order of being added.
             _keys.Add(Key, Index)
             If IsSharedImage Then
-                _reservedImagesCount = _reservedImagesCount + 1
+                _reservedImagesCount += 1
             Else
                 Try
                     UpdateMruList(Index, Key, True)
@@ -405,8 +405,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="Index">Index in the ImageList.</param>
         ''' <param name="Key">Key to be removed.</param>
-        ''' <param name="BeLastestItem">It should be the last item in the MRU list, otherwise, it will be the first item, and will be recycle soon.</param>
-        Private Sub UpdateMruList(Index As Integer, Key As Object, BeLastestItem As Boolean)
+        ''' <param name="BeLastItem">It should be the last item in the MRU list, otherwise, it will be the first item, and will be recycle soon.</param>
+        Private Sub UpdateMruList(Index As Integer, Key As Object, BeLastItem As Boolean)
             Dim MruIndex As Integer = Index + 1
 
             ' Check whether we need grow the size of the MRU table...
@@ -418,7 +418,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             _mruList(MruIndex).Key = Key
             If IsInMruList(Index) Then
                 ' It is an item in the list...
-                If (BeLastestItem AndAlso _mruList(0).PreviousIndex = MruIndex) OrElse (Not BeLastestItem AndAlso _mruList(0).NextIndex = MruIndex) Then
+                If (BeLastItem AndAlso _mruList(0).PreviousIndex = MruIndex) OrElse (Not BeLastItem AndAlso _mruList(0).NextIndex = MruIndex) Then
                     ' already in the position
                     Return
                 End If
@@ -429,7 +429,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End If
 
             ' insert it to the right position...
-            If BeLastestItem Then
+            If BeLastItem Then
                 _mruList(MruIndex).NextIndex = 0
                 _mruList(MruIndex).PreviousIndex = _mruList(0).PreviousIndex
                 _mruList(_mruList(0).PreviousIndex).NextIndex = MruIndex
@@ -474,7 +474,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     Debug.Assert(_keys.Contains(_mruList(i).Key))
                 End If
 
-                count = count + 1
+                count += 1
                 Debug.Assert(count < _mruList.Length)
 
                 prev = i
@@ -483,7 +483,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             For j As Integer = 0 To _mruList.Length - 2
                 If Not IsInMruList(j) Then
-                    count = count + 1
+                    count += 1
                 End If
             Next
 

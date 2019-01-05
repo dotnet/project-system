@@ -32,16 +32,6 @@
         <target state="translated">Indique si les assemblys satellites de la cible de référence doivent être copiés dans le répertoire de sortie de ce projet.</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|Project|Description">
-        <source>the Guid the solution tracks an individual project reference target with</source>
-        <target state="translated">Guid avec lequel la solution suit une cible de référence d'un projet individuel</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|ReferencedProjectIdentifier|Description">
-        <source>The old (VS2010 beta) way to store the Guid the solution tracks an individual project reference target with</source>
-        <target state="translated">Ancienne méthode(VS2010 bêta) pour stocker le Guid avec lequel la solution suit une cible de référence d'un projet individuel</target>
-        <note />
-      </trans-unit>
       <trans-unit id="BoolProperty|CopyLocal|DisplayName">
         <source>Copy Local</source>
         <target state="translated">Copie locale</target>

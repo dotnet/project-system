@@ -3,7 +3,6 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
-using System.Linq;
 
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 
@@ -17,28 +16,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
     [Export(typeof(IDependenciesSnapshotFilter))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
     [Order(Order)]
-    internal class UnresolvedDependenciesSnapshotFilter : DependenciesSnapshotFilterBase
+    internal sealed class UnresolvedDependenciesSnapshotFilter : DependenciesSnapshotFilterBase
     {
         public const int Order = 100;
 
-        public override IDependency BeforeAdd(
+        public override void BeforeAddOrUpdate(
             string projectPath,
             ITargetFramework targetFramework,
             IDependency dependency,
-            ImmutableDictionary<string, IDependency>.Builder worldBuilder,
-            ImmutableHashSet<IDependency>.Builder topLevelBuilder,
-            Dictionary<string, IProjectDependenciesSubTreeProvider> subTreeProviders,
-            HashSet<string> projectItemSpecs,
-            out bool filterAnyChanges)
+            IReadOnlyDictionary<string, IProjectDependenciesSubTreeProvider> subTreeProviderByProviderType,
+            IImmutableSet<string> projectItemSpecs,
+            IAddDependencyContext context)
         {
-            filterAnyChanges = false;
-
-            if (dependency.Resolved == false && worldBuilder.Keys.Contains(dependency.Id))
+            // TODO should this verify that the existing one is actually resolved?
+            if (!dependency.Resolved && context.Contains(dependency.Id))
             {
-                return null;
+                context.Reject();
+                return;
             }
 
-            return dependency;
+            context.Accept(dependency);
         }
     }
 }

@@ -36,11 +36,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 return projectConfiguration1.Equals(projectConfiguration2);
             }
 
-            foreach (KeyValuePair<string, string> dimensionKvp in projectConfiguration1.Dimensions)
+            foreach ((string dimensionName, string dimensionValue) in projectConfiguration1.Dimensions)
             {
-                string dimensionName = dimensionKvp.Key;
-                string dimensionValue = dimensionKvp.Value;
-
                 // Ignore the TargetFramework.
                 if (StringComparers.ConfigurationDimensionNames.Equals(dimensionName, ConfigurationGeneral.TargetFrameworkProperty))
                 {

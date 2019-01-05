@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System;
 using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.Composition;
@@ -35,7 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         ///     The returned <see cref="Task"/> is canceled when the <see cref="ConfiguredProject"/> 
         ///     is unloaded.
         /// </remarks>
-        Task IsImplicitlyActiveTask
+        Task ImplicitlyActive
         {
             get;
         }

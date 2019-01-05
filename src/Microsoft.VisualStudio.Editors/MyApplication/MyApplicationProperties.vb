@@ -282,8 +282,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
 
         Private _myAppFileName As String 'The actual file for the XML file that we found and are using (*not* including the path)
 
-        Private Const Const_MyApplicationEntryPoint As String = "My.MyApplication"
-
         'The name of the file where users hook up My events
         Private Const Const_MyEventsFileName As String = "ApplicationEvents.vb"
         Private Const Const_MyEventsFileName_B2Compat As String = "Application.vb"
@@ -748,18 +746,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
 
 
         ''' <summary>
-        ''' The filename (*not*) including path) of the .myapp filename in use or to be created
-        ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
-        Private ReadOnly Property MyAppFileName() As String
-            Get
-                Return _myAppFileName
-            End Get
-        End Property
-
-
-        ''' <summary>
         ''' Returns the full path/filename of the .myapp file
         ''' </summary>
         ''' <returns></returns>
@@ -802,17 +788,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         Private ReadOnly Property MyAppDocData() As DocData
             Get
                 Return _myAppDocData
-            End Get
-        End Property
-
-        ''' <summary>
-        ''' Returns the data storage values for the .myapp portion of the page
-        ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
-        Private ReadOnly Property MyAppData() As MyApplicationData
-            Get
-                Return _myAppData
             End Get
         End Property
 

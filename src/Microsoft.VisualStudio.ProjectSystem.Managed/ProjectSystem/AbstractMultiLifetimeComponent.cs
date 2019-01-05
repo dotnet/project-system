@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -11,19 +12,46 @@ namespace Microsoft.VisualStudio.ProjectSystem
     ///     An <see langword="abstract"/> base class that simplifies the lifetime of 
     ///     a component that is loaded and unloaded multiple times.
     /// </summary>
-    internal abstract partial class AbstractMultiLifetimeComponent : OnceInitializedOnceDisposedAsync
+    internal abstract class AbstractMultiLifetimeComponent<T> : OnceInitializedOnceDisposedAsync
+        where T : class, IMultiLifetimeInstance
     {
         private readonly object _lock = new object();
-        private IMultiLifetimeInstance _instance;
+        private TaskCompletionSource<(T instance, JoinableTask initializeAsyncTask)> _instanceTaskSource = new TaskCompletionSource<(T instance, JoinableTask initializeAsyncTask)>(TaskCreationOptions.RunContinuationsAsynchronously);
 
         protected AbstractMultiLifetimeComponent(JoinableTaskContextNode joinableTaskContextNode)
-            : base(joinableTaskContextNode)
+             : base(joinableTaskContextNode)
         {
         }
 
-        public IMultiLifetimeInstance Instance
+        /// <summary>
+        ///     Returns a task that will complete when current <see cref="AbstractMultiLifetimeComponent{T}"/> has completed
+        ///     loading and has published its instance.
+        /// </summary>
+        /// <exception cref="OperationCanceledException">
+        ///     The result is awaited and the <see cref="ConfiguredProject"/> is unloaded.
+        ///     <para>
+        ///         -or
+        ///     </para>
+        ///     The result is awaited and <paramref name="cancellationToken"/> is cancelled.
+        /// </exception>
+        /// <remarks>
+        ///     This method does not initiate loading of the <see cref="AbstractMultiLifetimeComponent{T}"/>, however,
+        ///     it will join the load when it starts.
+        /// </remarks>
+        protected async Task<T> WaitForLoadedAsync(CancellationToken cancellationToken = default)
         {
-            get { return _instance; }
+            // Wait until LoadAsync has been called, force switching to thread-pool in case
+            // there's already someone waiting for us on the UI thread.
+#pragma warning disable RS0030 // Do not used banned APIs
+            (T instance, JoinableTask initializeAsyncTask) = await _instanceTaskSource.Task.WithCancellation(cancellationToken)
+                                                                                           .ConfigureAwait(false);
+#pragma warning restore RS0030
+
+            // Now join Instance.InitializeAsync so that if someone is waiting on the UI thread for us, 
+            // the instance is allowed to switch to that thread to complete if needed.
+            await initializeAsyncTask.JoinAsync(cancellationToken);
+
+            return instance;
         }
 
         public async Task LoadAsync()
@@ -33,32 +61,37 @@ namespace Microsoft.VisualStudio.ProjectSystem
             await LoadCoreAsync();
         }
 
-        private Task LoadCoreAsync()
+        public async Task LoadCoreAsync()
         {
-            IMultiLifetimeInstance instance;
+            JoinableTask initializeAsyncTask;
+
             lock (_lock)
             {
-                if (_instance == null)
+                if (!_instanceTaskSource.Task.IsCompleted)
                 {
-                    _instance = CreateInstance();
+                    (T instance, JoinableTask initializeAsyncTask) result = CreateInitializedInstanceAsync();
+                    _instanceTaskSource.SetResult(result);
                 }
 
-                instance = _instance;
+                Assumes.True(_instanceTaskSource.Task.IsCompleted);
+
+                // Should throw TaskCanceledException if already cancelled in Dispose
+                (_, initializeAsyncTask) = _instanceTaskSource.Task.GetAwaiter().GetResult();
             }
 
-            return instance.InitializeAsync();
+            await initializeAsyncTask;
         }
 
         public Task UnloadAsync()
         {
-            IMultiLifetimeInstance instance = null;
-
+            T instance = null;
             lock (_lock)
             {
-                if (_instance != null)
+                if (_instanceTaskSource.Task.IsCompleted)
                 {
-                    instance = _instance;
-                    _instance = null;
+                    // Should throw TaskCanceledException if already cancelled in Dispose
+                    (instance, _) = _instanceTaskSource.Task.GetAwaiter().GetResult();
+                    _instanceTaskSource = new TaskCompletionSource<(T instance, JoinableTask initializeAsyncTask)>(TaskCreationOptions.RunContinuationsAsynchronously);
                 }
             }
 
@@ -70,9 +103,14 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return Task.CompletedTask;
         }
 
-        protected override Task DisposeCoreAsync(bool initialized)
+        protected override async Task DisposeCoreAsync(bool initialized)
         {
-            return UnloadAsync();
+            await UnloadAsync();
+
+            lock (_lock)
+            {
+                _instanceTaskSource.TrySetCanceled();
+            }
         }
 
         protected override Task InitializeCoreAsync(CancellationToken cancellationToken)
@@ -83,6 +121,15 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// <summary>
         ///     Creates a new instance of the underlying <see cref="IMultiLifetimeInstance"/>.
         /// </summary>
-        protected abstract IMultiLifetimeInstance CreateInstance();
+        protected abstract T CreateInstance();
+
+        private (T instance, JoinableTask initializeAsyncTask) CreateInitializedInstanceAsync()
+        {
+            T instance = CreateInstance();
+
+            JoinableTask initializeAsyncTask = JoinableFactory.RunAsync(instance.InitializeAsync);
+
+            return (instance, initializeAsyncTask);
+        }
     }
 }

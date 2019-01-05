@@ -37,8 +37,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Friend WithEvents AddUserImportButton As Button
         Friend WithEvents UpdateUserImportButton As Button
         Friend WithEvents UserImportTextBox As TextBox
-        'To contain list of VSLangProj.Reference objects
-        Private _refreshListsAfterApply As Boolean
 
         Private _referencesEventsCookie As NativeMethods.ConnectionPointCookie
         Private _importsEventsCookie As NativeMethods.ConnectionPointCookie
@@ -970,7 +968,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                                 If errorString Is Nothing Then
                                     errorString = err
                                 Else
-                                    errorString = errorString + err
+                                    errorString += err
                                 End If
                             End If
                         Next
@@ -2214,9 +2212,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ' We can not push the selection when the propertyGrid calls us to change the selection, and sometime, we hold it to prevent refreshing the propertyGrid when we do something...
         Private Sub HoldSelectionChange(needHold As Boolean)
             If needHold Then
-                _holdSelectionChange = _holdSelectionChange + 1
+                _holdSelectionChange += 1
             Else
-                _holdSelectionChange = _holdSelectionChange - 1
+                _holdSelectionChange -= 1
             End If
         End Sub
 

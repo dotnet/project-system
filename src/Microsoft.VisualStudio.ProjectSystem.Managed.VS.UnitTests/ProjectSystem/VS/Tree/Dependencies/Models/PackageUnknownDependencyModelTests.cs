@@ -5,6 +5,7 @@ using System.Collections.Immutable;
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
+using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions.RuleHandlers;
 
 using Xunit;
 
@@ -18,18 +19,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var properties = ImmutableStringDictionary<string>.EmptyOrdinal.Add("myProp", "myVal");
             var dependencyIDs = new[] { "id1", "id2" };
 
-            var flag = ProjectTreeFlags.Create("MyCustomFlag");
             var model = new PackageUnknownDependencyModel(
-                providerType: "myProvider",
                 path: "c:\\myPath",
                 originalItemSpec: "myOriginalItemSpec",
                 name: "myPath",
-                flags: flag,
-                resolved: true,
+                isResolved: true,
                 properties: properties,
                 dependenciesIDs: dependencyIDs);
 
-            Assert.Equal("myProvider", model.ProviderType);
+            Assert.Equal(PackageRuleHandler.ProviderTypeString, model.ProviderType);
             Assert.Equal("c:\\myPath", model.Path);
             Assert.Equal("myPath", model.Name);
             Assert.Equal("myOriginalItemSpec", model.OriginalItemSpec);
@@ -46,7 +44,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(KnownMonikers.QuestionMark, model.UnresolvedIcon);
             Assert.Equal(KnownMonikers.QuestionMark, model.UnresolvedExpandedIcon);
             AssertEx.CollectionLength(model.DependencyIDs, 2);
-            Assert.True(model.Flags.Contains(flag));
+            Assert.Equal(
+                DependencyTreeFlags.NuGetSubTreeNodeFlags +
+                DependencyTreeFlags.GenericResolvedDependencyFlags,
+                model.Flags);
         }
     }
 }

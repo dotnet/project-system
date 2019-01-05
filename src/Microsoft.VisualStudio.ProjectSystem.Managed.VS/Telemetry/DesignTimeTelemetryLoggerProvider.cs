@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
@@ -10,6 +9,7 @@ using System.Threading.Tasks;
 using Microsoft.Build.Framework;
 using Microsoft.VisualStudio.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.Build;
+using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 
 using Task = System.Threading.Tasks.Task;
 
@@ -26,8 +26,7 @@ namespace Microsoft.VisualStudio.Telemetry
         {
             IImmutableSet<ILogger> loggers = ImmutableHashSet<ILogger>.Empty;
 
-            if (properties.TryGetValue("DesignTimeBuild", out string designTimeBuildValue) &&
-                string.Equals(designTimeBuildValue, "true", StringComparison.OrdinalIgnoreCase))
+            if (properties.GetBoolProperty("DesignTimeBuild") == true)
             {
                 loggers = loggers.Add(new DesignTimeTelemetryLogger(TelemetryService));
             }

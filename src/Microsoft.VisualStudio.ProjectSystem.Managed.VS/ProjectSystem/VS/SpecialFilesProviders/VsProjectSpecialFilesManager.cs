@@ -27,8 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.SpecialFilesProviders
             await _projectVsServices.ThreadingService.SwitchToUIThread();
 
             var files = (IVsProjectSpecialFiles)_projectVsServices.VsHierarchy;
-
-            HResult result = files.GetFile((int)fileId, (uint)flags, out uint itemId, out string fileName);
+            HResult result = files.GetFile((int)fileId, (uint)flags, out _, out string fileName);
             if (result.IsOK)
                 return fileName;
 

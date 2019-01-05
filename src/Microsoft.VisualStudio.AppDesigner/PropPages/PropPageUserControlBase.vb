@@ -1,19 +1,22 @@
 ﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-Imports Common = Microsoft.VisualStudio.Editors.AppDesCommon
-Imports Microsoft.VisualStudio.ManagedInterfaces.ProjectDesigner
-Imports System.ComponentModel.Design
-Imports System.IO
-Imports System.Windows.Forms
-Imports System.Drawing
-Imports Interop = Microsoft.VisualStudio.Editors.AppDesInterop
-Imports System.Runtime.InteropServices
 Imports System.Collections.Specialized
-Imports Microsoft.VisualStudio.Shell.Interop
 Imports System.ComponentModel
-
+Imports System.ComponentModel.Design
+Imports System.Drawing
+Imports System.IO
+Imports System.Runtime.InteropServices
+Imports System.Windows.Forms
 Imports System.Windows.Forms.Design
+
+Imports Microsoft.VisualStudio.Editors.AppDesInterop
+Imports Microsoft.VisualStudio.Editors.AppDesInterop.NativeMethods
+Imports Microsoft.VisualStudio.Editors.AppDesInterop.Win32Constant
+Imports Microsoft.VisualStudio.ManagedInterfaces.ProjectDesigner
 Imports Microsoft.VisualStudio.Shell
+Imports Microsoft.VisualStudio.Shell.Interop
+
+Imports Common = Microsoft.VisualStudio.Editors.AppDesCommon
 Imports VB = Microsoft.VisualBasic
 Imports VSITEMID = Microsoft.VisualStudio.Editors.VSITEMIDAPPDES
 
@@ -123,7 +126,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
 
         'Required by the Windows Form Designer
-        Private _components As IContainer
+        Private ReadOnly _components As IContainer
 
         'NOTE: The following procedure is required by the Windows Form Designer
         'It can be modified using the Windows Form Designer.  
@@ -229,10 +232,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private _serviceProvider As ServiceProvider 'Cached service provider
         Private _projectHierarchy As IVsHierarchy 'The IVsHierarchy for the current project
 
-        'Debug mode stuff
-
-        Private _currentDebugMode As DBGMODE
-
         ' Cached IVsDebugger from shell in case we don't have a service provider at
         ' shutdown so we can undo our event handler
         Private _vsDebugger As IVsDebugger
@@ -284,7 +283,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private ReadOnly _suspendPropertyChangeListeningDispIds As New List(Of Integer)
 
         'DISPID_UNKNOWN
-        Public DISPID_UNKNOWN As Integer = Interop.Win32Constant.DISPID_UNKNOWN
+        Public DISPID_UNKNOWN As Integer = DISPID_UNKNOWN
 
         'Cookie for use with IVsShell.{Advise,Unadvise}BroadcastMessages
         Private _cookieBroadcastMessages As UInteger
@@ -854,7 +853,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <remarks></remarks>
         Protected Sub EnterProjectCheckoutSection()
             Debug.Assert(_checkoutSectionCount >= 0, "Bad m_CheckoutCriticalSectionCount count")
-            _checkoutSectionCount = _checkoutSectionCount + 1
+            _checkoutSectionCount += 1
         End Sub
 
 
@@ -886,7 +885,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <remarks></remarks>
         Protected Sub LeaveProjectCheckoutSection()
-            _checkoutSectionCount = _checkoutSectionCount - 1
+            _checkoutSectionCount -= 1
             Debug.Assert(_checkoutSectionCount >= 0, "Mismatched EnterProjectCheckoutSection/LeaveProjectCheckoutSection calls")
             If _checkoutSectionCount = 0 AndAlso _projectReloadedDuringCheckout Then
                 Try
@@ -1737,7 +1736,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private Sub PostValidation()
             ' NOTE: We always post the message, but start validation only the focus is really out.
             ' We delay check this, so we don't get into the problem when winForm hasn't sync status correctly, which IS a problem in some cases (tab).
-            Interop.NativeMethods.PostMessage(Handle, Common.WmUserConstants.WM_PAGE_POSTVALIDATION, 0, 0)
+            PostMessage(Handle, Common.WmUserConstants.WM_PAGE_POSTVALIDATION, 0, 0)
         End Sub
 
 #End Region
@@ -1960,7 +1959,7 @@ NextControl:
             'The objects which we have called ILangPropertyProvideBatchUpdate.BeginBatch on (and which need a corresponding
             '  EndBatch).  This could be a superset of m_Objects because individual properties can proffer objects not in
             '  m_Objects.  Entries which have not called BeginBatch or which do not support it will be Nothing.
-            Dim BatchObjects() As Interop.ILangPropertyProvideBatchUpdate = Nothing
+            Dim BatchObjects() As ILangPropertyProvideBatchUpdate = Nothing
             Dim vsProjectBuildSystem As IVsProjectBuildSystem = Nothing
 
             Debug.Assert(Not _fIsApplying)
@@ -2007,12 +2006,12 @@ NextControl:
                     '  to wait until all changes have been made before notifying the compiler of the changes.  This keeps the compiler from
                     '  doing things like restarting compilation several times in a row, if multiple properties have been changed.
                     'Note that this must happen before PreApplyPageChanges
-                    BatchObjects = New Interop.ILangPropertyProvideBatchUpdate(RawPropertiesObjectsOfAllProperties.Length - 1 + 1) {} '+1 for CommonPropertiesObject
+                    BatchObjects = New ILangPropertyProvideBatchUpdate(RawPropertiesObjectsOfAllProperties.Length - 1 + 1) {} '+1 for CommonPropertiesObject
                     Dim i As Integer = 0
-                    Dim BatchObject As Interop.ILangPropertyProvideBatchUpdate
+                    Dim BatchObject As ILangPropertyProvideBatchUpdate
 
                     'First the common properties object
-                    BatchObject = TryCast(CommonPropertiesObject, Interop.ILangPropertyProvideBatchUpdate)
+                    BatchObject = TryCast(CommonPropertiesObject, ILangPropertyProvideBatchUpdate)
                     If BatchObject IsNot Nothing Then
                         Try
                             BatchObject.BeginBatch()
@@ -2023,7 +2022,7 @@ NextControl:
                     '... then individual objects from SetObjects
                     i += 1
                     For Each Obj As Object In RawPropertiesObjectsOfAllProperties
-                        BatchObject = TryCast(Obj, Interop.ILangPropertyProvideBatchUpdate)
+                        BatchObject = TryCast(Obj, ILangPropertyProvideBatchUpdate)
                         If BatchObject IsNot Nothing Then
                             Try
                                 BatchObject.BeginBatch()
@@ -2117,7 +2116,7 @@ NextControl:
 
                         'Notify batch update that we're done changing property values.
                         If BatchObjects IsNot Nothing Then
-                            For Each BatchObject As Interop.ILangPropertyProvideBatchUpdate In BatchObjects
+                            For Each BatchObject As ILangPropertyProvideBatchUpdate In BatchObjects
                                 If BatchObject IsNot Nothing Then
                                     Try
                                         BatchObject.EndBatch()
@@ -3817,12 +3816,12 @@ NextControl:
         ''' <returns></returns>
         ''' <remarks></remarks>
         Private Function OnBroadcastMessage(msg As UInteger, wParam As IntPtr, lParam As IntPtr) As Integer Implements IVsBroadcastMessageEvents.OnBroadcastMessage
-            If msg = Interop.Win32Constant.WM_SETTINGCHANGE Then
+            If msg = WM_SETTINGCHANGE Then
                 If IsHandleCreated Then
                     m_ScalingCompleted = False
                     SetDialogFont(PageRequiresScaling)
                 End If
-            ElseIf msg = Interop.Win32Constant.WM_PALETTECHANGED OrElse msg = Interop.Win32Constant.WM_SYSCOLORCHANGE OrElse msg = Interop.Win32Constant.WM_THEMECHANGED Then
+            ElseIf msg = WM_PALETTECHANGED OrElse msg = WM_SYSCOLORCHANGE OrElse msg = WM_THEMECHANGED Then
                 OnThemeChanged()
             End If
         End Function
@@ -4184,7 +4183,6 @@ NextControl:
         ''' <param name="mode"></param>
         ''' <remarks></remarks>
         Private Sub UpdateDebuggerStatus(mode As DBGMODE)
-            _currentDebugMode = mode
             If DisableOnDebug AndAlso DisableWhenDebugMode(mode) Then
                 _pageEnabledPerDebugMode = False
             Else
@@ -4401,9 +4399,9 @@ NextControl:
             Common.Switches.TracePDProperties(TraceLevel.Verbose, "OnExternalPropertyChanged(DISPID=" & DISPID & ", Source=" & Source.ToString() & ")")
             'Go through all the properties on the page to see if any match the DISPID that changed.
             For Each Data As PropertyControlData In ControlData
-                If Data.DispId = DISPID OrElse DISPID = Interop.Win32Constant.DISPID_UNKNOWN Then
+                If Data.DispId = DISPID OrElse DISPID = DISPID_UNKNOWN Then
                     OnExternalPropertyChanged(Data, Source)
-                    If DISPID <> Interop.Win32Constant.DISPID_UNKNOWN Then
+                    If DISPID <> DISPID_UNKNOWN Then
                         'If the DISPID was a specific value, we only have one specific property to update, otherwise
                         '  we need to continue for all properties.
                         Return

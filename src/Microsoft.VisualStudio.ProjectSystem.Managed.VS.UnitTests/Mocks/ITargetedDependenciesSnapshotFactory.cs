@@ -1,13 +1,17 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 
 using Moq;
+
+using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
@@ -19,15 +23,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         }
 
         public static ITargetedDependenciesSnapshot Implement(
+            string projectPath = null,
             ITargetFramework targetFramework = null,
-            Dictionary<string, IDependency> dependenciesWorld = null,
+            IEnumerable<IDependency> dependenciesWorld = null,
             bool? hasUnresolvedDependency = null,
             IProjectCatalogSnapshot catalogs = null,
             IEnumerable<IDependency> topLevelDependencies = null,
             bool? checkForUnresolvedDependencies = null,
-            MockBehavior? mockBehavior = null)
+            MockBehavior mockBehavior = MockBehavior.Default)
         {
             return ImplementMock(
+                projectPath,
                 targetFramework,
                 dependenciesWorld,
                 hasUnresolvedDependency,
@@ -38,16 +44,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         }
 
         public static Mock<ITargetedDependenciesSnapshot> ImplementMock(
+            string projectPath = null,
             ITargetFramework targetFramework = null,
-            Dictionary<string, IDependency> dependenciesWorld = null,
+            IEnumerable<IDependency> dependenciesWorld = null,
             bool? hasUnresolvedDependency = null,
             IProjectCatalogSnapshot catalogs = null,
             IEnumerable<IDependency> topLevelDependencies = null,
             bool? checkForUnresolvedDependencies = null,
-            MockBehavior? mockBehavior = null)
+            MockBehavior mockBehavior = MockBehavior.Default)
         {
-            var behavior = mockBehavior ?? MockBehavior.Default;
-            var mock = new Mock<ITargetedDependenciesSnapshot>(behavior);
+            var mock = new Mock<ITargetedDependenciesSnapshot>(mockBehavior);
+
+            if (projectPath != null)
+            {
+                mock.Setup(x => x.ProjectPath).Returns(projectPath);
+            }
 
             if (targetFramework != null)
             {
@@ -57,10 +68,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             if (dependenciesWorld != null)
             {
                 mock.Setup(x => x.DependenciesWorld)
-                    .Returns(ImmutableStringDictionary<IDependency>.EmptyOrdinalIgnoreCase.AddRange(dependenciesWorld));
+                    .Returns(dependenciesWorld.ToImmutableDictionary(d => d.Id, StringComparer.OrdinalIgnoreCase));
             }
 
-            if (hasUnresolvedDependency != null && hasUnresolvedDependency.HasValue)
+            if (hasUnresolvedDependency.HasValue)
             {
                 mock.Setup(x => x.HasUnresolvedDependency).Returns(hasUnresolvedDependency.Value);
             }
@@ -72,18 +83,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             if (topLevelDependencies != null)
             {
-                var dependencies = ImmutableHashSet<IDependency>.Empty;
-                foreach (var d in topLevelDependencies)
-                {
-                    dependencies = dependencies.Add(d);
-                }
+                Assert.True(topLevelDependencies.All(d => d.TopLevel));
 
-                mock.Setup(x => x.TopLevelDependencies).Returns(dependencies);
+                mock.Setup(x => x.TopLevelDependencies)
+                    .Returns(ImmutableArray.CreateRange(topLevelDependencies));
             }
 
-            if (checkForUnresolvedDependencies != null && checkForUnresolvedDependencies.HasValue)
+            if (checkForUnresolvedDependencies.HasValue)
             {
                 mock.Setup(x => x.CheckForUnresolvedDependencies(It.IsAny<string>())).Returns(checkForUnresolvedDependencies.Value);
+                mock.Setup(x => x.CheckForUnresolvedDependencies(It.IsAny<IDependency>())).Returns(checkForUnresolvedDependencies.Value);
             }
 
             return mock;
@@ -92,12 +101,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         public static ITargetedDependenciesSnapshot ImplementHasUnresolvedDependency(
             string id,
             bool hasUnresolvedDependency,
-            MockBehavior? mockBehavior = null)
+            MockBehavior mockBehavior = MockBehavior.Default)
         {
-            var behavior = mockBehavior ?? MockBehavior.Default;
-            var mock = new Mock<ITargetedDependenciesSnapshot>(behavior);
+            var mock = new Mock<ITargetedDependenciesSnapshot>(mockBehavior);
 
-            mock.Setup(x => x.CheckForUnresolvedDependencies(It.Is<IDependency>(y => y.Id.Equals(id, System.StringComparison.OrdinalIgnoreCase))))
+            mock.Setup(x => x.CheckForUnresolvedDependencies(It.Is<IDependency>(y => y.Id.Equals(id, StringComparison.OrdinalIgnoreCase))))
                 .Returns(hasUnresolvedDependency);
 
             return mock.Object;

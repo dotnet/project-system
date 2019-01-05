@@ -765,7 +765,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                                                                                              Common.ShellUtil.GetVSColor(Shell.Interop.__VSSYSCOLOREX3.VSCOLOR_GRAYTEXT, SystemColors.GrayText, UseVSTheme:=False))
 
                 ' Reset column header sort indicator
-                If Me.View = ResourceView.Details AndAlso _sorter IsNot Nothing Then
+                If View = ResourceView.Details AndAlso _sorter IsNot Nothing Then
                     SetColumnSortImage(_sorter.ColumnIndex, _sorter.InReverseOrder)
                 End If
             End If
@@ -811,9 +811,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     ' NOTE: 3 pages cache looks too conservative, for list/detail view, the tiny icon shouldn't cost a lot memory,
                     '  and Thumbnail view doesn't show many in one page
                     Const PagesInCache As Integer = 5
-                    Const PagesInCachDetailView As Integer = 20
-                    If Me.View = ResourceView.Details Then
-                        _thumbnailCache.MaximumSuggestedCacheSize = _thumbnailCache.MinimumSizeBeforeRecycling * PagesInCachDetailView
+                    Const PagesInCacheDetailView As Integer = 20
+                    If View = ResourceView.Details Then
+                        _thumbnailCache.MaximumSuggestedCacheSize = _thumbnailCache.MinimumSizeBeforeRecycling * PagesInCacheDetailView
                     Else
                         _thumbnailCache.MaximumSuggestedCacheSize = _thumbnailCache.MinimumSizeBeforeRecycling * PagesInCache
                     End If
@@ -848,7 +848,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                         ResourceFile.SuspendDelayingCheckingForErrors(True)
                         Return
                     End If
-                    _imageStartIndex = _imageStartIndex + 1
+                    _imageStartIndex += 1
                 End While
             Else
                 ' Try to merge...
@@ -1028,7 +1028,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End If
 
             'We also need to fill in the sub items (the additional columns in a details view)
-            If Me.View = ResourceView.Details Then
+            If View = ResourceView.Details Then
 
 
                 Dim LinkFileName As String
@@ -1171,7 +1171,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             Try
                 'Currently we only draw borders for the "Thumbnails" view
-                Dim DrawBorder As Boolean = (Me.View = ResourceView.Thumbnail)
+                Dim DrawBorder As Boolean = (View = ResourceView.Thumbnail)
 
                 'NOTE: This is a slow operation, we should prevent to do so if it is possible...
                 Thumbnail = CreateThumbnail(ThumbnailSourceImage, ThumbnailSize, DrawBorder, _borderWidth, _selectionBorderWidth, _thumbnailImageList.TransparentColor)

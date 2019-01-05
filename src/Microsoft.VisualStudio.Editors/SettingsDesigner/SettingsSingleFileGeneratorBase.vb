@@ -536,7 +536,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
             ' Add SettingsManageabilityAttribute if this setting is roaming (but only if this is a USER scoped setting...
             If Instance.Roaming AndAlso Instance.Scope = DesignTimeSettingInstance.SettingScope.User Then
-                AddManagebilityAttribue(CodeProperty, Configuration.SettingsManageability.Roaming)
+                AddManageabilityAttribute(CodeProperty, Configuration.SettingsManageability.Roaming)
             End If
 
             Return CodeProperty
@@ -549,7 +549,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             CodeProperty.CustomAttributes.Add(DefaultValueAttribute)
         End Sub
 
-        Private Shared Sub AddManagebilityAttribue(CodeProperty As CodeMemberProperty, Value As Configuration.SettingsManageability)
+        Private Shared Sub AddManageabilityAttribute(CodeProperty As CodeMemberProperty, Value As Configuration.SettingsManageability)
             Dim SettingsManageability As New CodeTypeReferenceExpression(CreateGlobalCodeTypeReference(GetType(Configuration.SettingsManageability)))
             Dim FieldExp As New CodeFieldReferenceExpression(SettingsManageability, Value.ToString)
             Dim Parameters() As CodeAttributeArgument = {New CodeAttributeArgument(FieldExp)}
@@ -599,9 +599,9 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Dim Parameters() As CodeExpression = {New CodePrimitiveExpression(Instance.Name)}
             Dim IndexerStatement As New CodeIndexerExpression(New CodeThisReferenceExpression(), Parameters)
             ' Make sure we case this value to the correct type
-            Dim AssignmentStatment As New CodeAssignStatement(IndexerStatement, New CodePropertySetValueReferenceExpression)
+            Dim AssignmentStatement As New CodeAssignStatement(IndexerStatement, New CodePropertySetValueReferenceExpression)
 
-            Statements.Add(AssignmentStatment)
+            Statements.Add(AssignmentStatement)
             Return Statements
         End Function
 
@@ -630,27 +630,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             fullTypeName &= typeName
 
             Return fullTypeName
-
-        End Function
-
-        ''' <summary>
-        ''' Generates a SuppressMessageAttribute for the given memberName
-        ''' </summary>
-        ''' <param name="memberName"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Private Shared Function GenerateSuppressMessageAttribute(memberName As String) As CodeAttributeDeclaration
-
-            Dim suppressMessageAttribute As New CodeAttributeDeclaration(CreateGlobalCodeTypeReference(GetType(System.Diagnostics.CodeAnalysis.SuppressMessageAttribute)))
-
-            Dim categoryArgument As New CodeAttributeArgument(New CodePrimitiveExpression("Microsoft.Performance"))
-            Dim checkIdArgument As New CodeAttributeArgument(New CodePrimitiveExpression("CA1811:AvoidUncalledPrivateCode"))
-            Dim scopeArgument As New CodeAttributeArgument("Scope", New CodePrimitiveExpression("member"))
-            Dim targetArgument As New CodeAttributeArgument("Target", New CodePrimitiveExpression(memberName))
-
-            suppressMessageAttribute.Arguments.AddRange(New CodeAttributeArgument() {categoryArgument, checkIdArgument, scopeArgument, targetArgument})
-
-            Return suppressMessageAttribute
 
         End Function
 
@@ -1065,7 +1044,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="rgszParamIndexes">the indexes of the new parameters</param>
         ''' <param name="rgszRQTypeNames">RQName-syntax strings that identify the types of the new parameters</param>
         ''' <param name="rgszParamNames">the names of the parameters</param>
-        ''' <param name="prgAdditionalCheckoutVSITEMIDS">array of VSITEMID's if the RefactorNotify implementor needs to check out additional files</param>
         ''' <returns>error code</returns>
         Private Function OnAddParams(phier As IVsHierarchy, itemId As UInteger, lpszRQName As String, cParams As UInteger, rgszParamIndexes() As UInteger, rgszRQTypeNames() As String, rgszParamNames() As String) As Integer Implements IVsRefactorNotify.OnAddParams
             Common.SetErrorInfo(Common.ServiceProviderFromHierarchy(phier), NativeMethods.E_NOTIMPL, My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ERR_ModifyParamsNotSupported)
@@ -1130,7 +1108,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="lpszRQName">RQName-syntax string that identifies the method whose params are being removed</param>
         ''' <param name="cParamIndexes">number of parameters in rgParamIndexes</param>
         ''' <param name="rgParamIndexes">array of param indexes where each value indicates the index of the parameter being removed</param>
-        ''' <param name="prgAdditionalCheckoutVSITEMIDS">array of VSITEMID's if the RefactorNotify implementor needs to check out additional files</param>
         ''' <returns>error code</returns>
         Private Function OnRemoveParams(phier As IVsHierarchy, itemId As UInteger, lpszRQName As String, cParamIndexes As UInteger, rgParamIndexes() As UInteger) As Integer Implements IVsRefactorNotify.OnRemoveParams
             Common.SetErrorInfo(Common.ServiceProviderFromHierarchy(phier), NativeMethods.E_NOTIMPL, My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ERR_ModifyParamsNotSupported)

@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
     [Export(typeof(IDependenciesSnapshotFilter))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
     [Order(Order)]
-    internal class UnsupportedProjectsSnapshotFilter : DependenciesSnapshotFilterBase
+    internal sealed class UnsupportedProjectsSnapshotFilter : DependenciesSnapshotFilterBase
     {
         public const int Order = 120;
 
@@ -32,44 +32,35 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
         private IAggregateDependenciesSnapshotProvider AggregateSnapshotProvider { get; }
         private ITargetFrameworkProvider TargetFrameworkProvider { get; }
 
-        public override IDependency BeforeAdd(
+        public override void BeforeAddOrUpdate(
             string projectPath,
             ITargetFramework targetFramework,
             IDependency dependency,
-            ImmutableDictionary<string, IDependency>.Builder worldBuilder,
-            ImmutableHashSet<IDependency>.Builder topLevelBuilder,
-            Dictionary<string, IProjectDependenciesSubTreeProvider> subTreeProviders,
-            HashSet<string> projectItemSpecs,
-            out bool filterAnyChanges)
+            IReadOnlyDictionary<string, IProjectDependenciesSubTreeProvider> subTreeProviderByProviderType,
+            IImmutableSet<string> projectItemSpecs,
+            IAddDependencyContext context)
         {
-            filterAnyChanges = false;
-            IDependency resultDependency = dependency;
-
-            if (resultDependency.TopLevel
-                && resultDependency.Resolved
-                && resultDependency.Flags.Contains(DependencyTreeFlags.ProjectNodeFlags)
-                && !resultDependency.Flags.Contains(DependencyTreeFlags.SharedProjectFlags))
+            if (dependency.TopLevel
+                && dependency.Resolved
+                && dependency.Flags.Contains(DependencyTreeFlags.ProjectNodeFlags)
+                && !dependency.Flags.Contains(DependencyTreeFlags.SharedProjectFlags))
             {
-                ITargetedDependenciesSnapshot snapshot = GetSnapshot(projectPath, resultDependency);
+                ITargetedDependenciesSnapshot snapshot = GetSnapshot(dependency);
                 if (snapshot != null && snapshot.HasUnresolvedDependency)
                 {
-                    filterAnyChanges = true;
-                    resultDependency = resultDependency.ToUnresolved(ProjectReference.SchemaName);
+                    context.Accept(dependency.ToUnresolved(ProjectReference.SchemaName));
+                    return;
                 }
             }
 
-            return resultDependency;
+            context.Accept(dependency);
         }
 
-        private ITargetedDependenciesSnapshot GetSnapshot(string projectPath, IDependency dependency)
+        private ITargetedDependenciesSnapshot GetSnapshot(IDependency dependency)
         {
-            IDependenciesSnapshotProvider snapshotProvider = AggregateSnapshotProvider.GetSnapshotProvider(dependency.FullPath);
-            if (snapshotProvider == null)
-            {
-                return null;
-            }
+            IDependenciesSnapshot snapshot = 
+                AggregateSnapshotProvider.GetSnapshotProvider(dependency.FullPath)?.CurrentSnapshot;
 
-            IDependenciesSnapshot snapshot = snapshotProvider.CurrentSnapshot;
             if (snapshot == null)
             {
                 return null;

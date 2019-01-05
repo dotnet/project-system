@@ -54,7 +54,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             return _list.GetEnumerator();
         }
 
+#pragma warning disable RS0030 // symbol ProjectAutoLoad is banned
         [ProjectAutoLoad(startAfter: ProjectLoadCheckpoint.ProjectFactoryCompleted)]
+#pragma warning restore RS0030 // symbol ProjectAutoLoad is banned
         [AppliesTo(ProjectCapability.VisualBasic)]
         internal Task OnProjectFactoryCompletedAsync()
         {

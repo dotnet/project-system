@@ -95,7 +95,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Friend Shared Function XmlDocumentFromText(contents As String) As XmlDocument
             Dim doc As XmlDocument = Nothing
             If Not String.IsNullOrEmpty(contents) Then
-                doc = New XmlDocument()
+                doc = New XmlDocument With {
+                    .XmlResolver = Nothing
+                }
                 Try
                     Using reader As XmlReader = XmlReader.Create(New StringReader(contents))
                         doc.Load(reader)

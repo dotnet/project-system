@@ -4,6 +4,7 @@ using System.Collections.Immutable;
 
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
+using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions.RuleHandlers;
 
 using Xunit;
 
@@ -12,21 +13,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     public class SdkDependencyModelTests
     {
         [Fact]
-        public void SdkDependencyModelTests_Resolved()
+        public void Resolved()
         {
             var properties = ImmutableStringDictionary<string>.EmptyOrdinal.Add("Version", "2.0.0");
 
-            var flag = ProjectTreeFlags.Create("MyCustomFlag");
             var model = new SdkDependencyModel(
-                "myProvider",
                 "c:\\myPath.dll",
                 "myOriginalItemSpec",
-                flags: flag,
-                resolved: true,
+                isResolved: true,
                 isImplicit: false,
                 properties: properties);
 
-            Assert.Equal("myProvider", model.ProviderType);
+            Assert.Equal(SdkRuleHandler.ProviderTypeString, model.ProviderType);
             Assert.Equal("c:\\myPath.dll", model.Path);
             Assert.Equal("myOriginalItemSpec", model.OriginalItemSpec);
             Assert.Equal("c:\\myPath.dll (2.0.0)", model.Caption);
@@ -41,26 +39,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(ManagedImageMonikers.Sdk, model.ExpandedIcon);
             Assert.Equal(ManagedImageMonikers.SdkWarning, model.UnresolvedIcon);
             Assert.Equal(ManagedImageMonikers.SdkWarning, model.UnresolvedExpandedIcon);
-            Assert.True(model.Flags.Contains(DependencyTreeFlags.SupportsHierarchy));
-            Assert.True(model.Flags.Contains(flag));
+            Assert.Equal(
+                DependencyTreeFlags.SdkSubTreeNodeFlags +
+                DependencyTreeFlags.SupportsHierarchy +
+                DependencyTreeFlags.GenericResolvedDependencyFlags,
+                model.Flags);
         }
 
         [Fact]
-        public void SdkDependencyModelTests_Unresolved()
+        public void Unresolved()
         {
             var properties = ImmutableStringDictionary<string>.EmptyOrdinal.Add("Version", "2.0.0");
 
-            var flag = ProjectTreeFlags.Create("MyCustomFlag");
             var model = new SdkDependencyModel(
-                "myProvider",
                 "c:\\myPath.dll",
                 "myOriginalItemSpec",
-                flags: flag,
-                resolved: false,
+                isResolved: false,
                 isImplicit: false,
                 properties: properties);
 
-            Assert.Equal("myProvider", model.ProviderType);
+            Assert.Equal(SdkRuleHandler.ProviderTypeString, model.ProviderType);
             Assert.Equal("c:\\myPath.dll", model.Path);
             Assert.Equal("myOriginalItemSpec", model.OriginalItemSpec);
             Assert.Equal("c:\\myPath.dll (2.0.0)", model.Caption);
@@ -75,26 +73,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(ManagedImageMonikers.Sdk, model.ExpandedIcon);
             Assert.Equal(ManagedImageMonikers.SdkWarning, model.UnresolvedIcon);
             Assert.Equal(ManagedImageMonikers.SdkWarning, model.UnresolvedExpandedIcon);
-            Assert.True(model.Flags.Contains(DependencyTreeFlags.SupportsHierarchy));
-            Assert.True(model.Flags.Contains(flag));
+            Assert.Equal(
+                DependencyTreeFlags.SdkSubTreeNodeFlags +
+                DependencyTreeFlags.SupportsHierarchy +
+                DependencyTreeFlags.GenericUnresolvedDependencyFlags,
+                model.Flags);
         }
 
         [Fact]
-        public void SdkDependencyModelTests_Implicit()
+        public void Implicit()
         {
             var properties = ImmutableStringDictionary<string>.EmptyOrdinal.Add("Version", "2.0.0");
 
-            var flag = ProjectTreeFlags.Create("MyCustomFlag");
             var model = new SdkDependencyModel(
-                "myProvider",
                 "c:\\myPath.dll",
                 "myOriginalItemSpec",
-                flags: flag,
-                resolved: true,
+                isResolved: true,
                 isImplicit: true,
                 properties: properties);
 
-            Assert.Equal("myProvider", model.ProviderType);
+            Assert.Equal(SdkRuleHandler.ProviderTypeString, model.ProviderType);
             Assert.Equal("c:\\myPath.dll", model.Path);
             Assert.Equal("myOriginalItemSpec", model.OriginalItemSpec);
             Assert.Equal("c:\\myPath.dll (2.0.0)", model.Caption);
@@ -109,8 +107,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(ManagedImageMonikers.SdkPrivate, model.ExpandedIcon);
             Assert.Equal(ManagedImageMonikers.SdkWarning, model.UnresolvedIcon);
             Assert.Equal(ManagedImageMonikers.SdkWarning, model.UnresolvedExpandedIcon);
-            Assert.True(model.Flags.Contains(DependencyTreeFlags.SupportsHierarchy));
-            Assert.True(model.Flags.Contains(flag));
+            Assert.Equal(
+                DependencyTreeFlags.SdkSubTreeNodeFlags +
+                DependencyTreeFlags.SupportsHierarchy +
+                DependencyTreeFlags.GenericResolvedDependencyFlags -
+                DependencyTreeFlags.SupportsRemove,
+                model.Flags);
         }
     }
 }

@@ -7,6 +7,8 @@ using System.ComponentModel.Composition;
 using System.Globalization;
 using System.Linq;
 
+using Microsoft.VisualStudio.Text;
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 {
     /// <summary>
@@ -88,8 +90,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         {
             Requires.NotNullOrEmpty(name, nameof(name));
 
-            IEnumerable<string> namespaceNames = name.Split(Delimiter.Period, StringSplitOptions.RemoveEmptyEntries)
-                                                     .Select(MakeProperIdentifier);
+            IEnumerable<string> namespaceNames = new LazyStringSplit(name, '.').Select(MakeProperIdentifier);
 
             return string.Join(".", namespaceNames);
         }

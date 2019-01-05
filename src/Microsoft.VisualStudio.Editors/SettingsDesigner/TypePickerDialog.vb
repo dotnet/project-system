@@ -76,7 +76,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         Private WithEvents _overarchingTableLayoutPanel As TableLayoutPanel
 
         'Required by the Windows Form Designer
-        Private _components As System.ComponentModel.IContainer
+        Private ReadOnly _components As System.ComponentModel.IContainer
 
         'NOTE: The following procedure is required by the Windows Form Designer
         'It can be modified using the Windows Form Designer.  
@@ -197,11 +197,17 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                     Node.RemoveDummyNode()
                     Using mtsrv As New VSDesigner.MultiTargetService(_vsHierarchy, _projectItemid, False)
                         If (mtsrv IsNot Nothing) Then
-                            Dim typs As Type() = mtsrv.GetSupportedTypes(Node.Text, AddressOf GetAssemblyCallback)
-                            For Each availableType As Type In typs
-                                'TypeTextBox.AutoCompleteCustomSource.Add(availableType.FullName)
-                                If availableType.FullName.Contains(".") AndAlso SettingTypeValidator.IsValidSettingType(mtsrv.GetRuntimeType(availableType)) Then
-                                    _typeTreeView.AddTypeNode(Node, availableType.FullName)
+                            Dim availableTypes As Type() = mtsrv.GetSupportedTypes(Node.Text, AddressOf GetAssemblyCallback)
+                            For Each availableType As Type In availableTypes
+
+                                If availableType.FullName.Contains(".") Then
+
+                                    ' NOTE that GetRuntimeType returns null when there's a failure resolving the type
+                                    Dim runtimeType = mtsrv.GetRuntimeType(availableType)
+                                    If runtimeType IsNot Nothing AndAlso SettingTypeValidator.IsValidSettingType(runtimeType) Then
+                                        _typeTreeView.AddTypeNode(Node, availableType.FullName)
+                                    End If
+
                                 End If
                             Next
                         End If

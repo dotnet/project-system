@@ -20,18 +20,21 @@ namespace Microsoft.VisualStudio.ProjectSystem
         private readonly ILoadedInHostListener _loadedInHostListener;
         private readonly TaskCompletionSource<object> _projectLoadedInHost = new TaskCompletionSource<object>();
         private readonly TaskCompletionSource<object> _prioritizedProjectLoadedInHost = new TaskCompletionSource<object>();
-        private readonly JoinableTaskQueue _prioritizedTaskQueue;
+        private readonly JoinableTaskCollection _prioritizedTasks;
 
         [ImportingConstructor]
         public UnconfiguredProjectTasksService([Import(ExportContractNames.Scopes.UnconfiguredProject)]IProjectAsynchronousTasksService tasksService, IProjectThreadingService threadingService, ILoadedInHostListener loadedInHostListener)
         {
-            _prioritizedTaskQueue = new JoinableTaskQueue(threadingService.JoinableTaskContext);
+            _prioritizedTasks = threadingService.JoinableTaskContext.CreateCollection();
+            _prioritizedTasks.DisplayName = "PrioritizedProjectLoadedInHostTasks";
             _tasksService = tasksService;
             _threadingService = threadingService;
             _loadedInHostListener = loadedInHostListener;
         }
 
+#pragma warning disable RS0030 // symbol ProjectAutoLoad is banned
         [ProjectAutoLoad(completeBy: ProjectLoadCheckpoint.ProjectFactoryCompleted)]
+#pragma warning restore RS0030 // symbol ProjectAutoLoad is banned
         [AppliesTo(ProjectCapability.DotNet)]
         public Task OnProjectFactoryCompleted()
         {
@@ -74,7 +77,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
             _tasksService.UnloadCancellationToken.ThrowIfCancellationRequested();
 
             JoinableTask<T> task = _threadingService.JoinableTaskFactory.RunAsync(action);
-            _prioritizedTaskQueue.Register(task);
+
+            _prioritizedTasks.Add(task);
 
             return task.Task;
         }
@@ -86,7 +90,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
             _tasksService.UnloadCancellationToken.ThrowIfCancellationRequested();
 
             JoinableTask task = _threadingService.JoinableTaskFactory.RunAsync(action);
-            _prioritizedTaskQueue.Register(task);
+
+            _prioritizedTasks.Add(task);
 
             return task.Task;
         }
@@ -100,7 +105,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             _prioritizedProjectLoadedInHost.SetResult(null);
 
-            _threadingService.ExecuteSynchronously(() => _prioritizedTaskQueue.DrainAsync());
+            _threadingService.ExecuteSynchronously(() => _prioritizedTasks.JoinTillEmptyAsync());
         }
     }
 }

@@ -88,7 +88,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     unresolvedIcon: KnownMonikers.AboutBox,
     unresolvedExpandedIcon: KnownMonikers.Abbreviation);
 
-            var mockSnapshot = ITargetedDependenciesSnapshotFactory.ImplementHasUnresolvedDependency("someId1", true);
+            var mockSnapshot = ITargetedDependenciesSnapshotFactory.ImplementMock(checkForUnresolvedDependencies: false).Object;
+            var mockSnapshotUnresolvedDependency = ITargetedDependenciesSnapshotFactory.ImplementMock(checkForUnresolvedDependencies: true).Object;
 
             var viewModelResolved = dependencyResolved.ToViewModel(mockSnapshot);
 
@@ -113,6 +114,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(dependencyUnresolved.UnresolvedIcon, viewModelUnresolved.Icon);
             Assert.Equal(dependencyUnresolved.UnresolvedExpandedIcon, viewModelUnresolved.ExpandedIcon);
             Assert.Equal(dependencyUnresolved.Properties, viewModelUnresolved.Properties);
+
+            var viewModelUnresolvedDependency = dependencyResolved.ToViewModel(mockSnapshotUnresolvedDependency);
+
+            Assert.Equal(dependencyUnresolved.Caption, viewModelUnresolvedDependency.Caption);
+            Assert.Equal(dependencyUnresolved.Flags, viewModelUnresolvedDependency.Flags);
+            Assert.Equal(dependencyUnresolved.Id, viewModelUnresolvedDependency.FilePath);
+            Assert.Equal(dependencyUnresolved.SchemaName, viewModelUnresolvedDependency.SchemaName);
+            Assert.Equal(dependencyUnresolved.SchemaItemType, viewModelUnresolvedDependency.SchemaItemType);
+            Assert.Equal(dependencyUnresolved.Priority, viewModelUnresolvedDependency.Priority);
+            Assert.Equal(dependencyUnresolved.UnresolvedIcon, viewModelUnresolvedDependency.Icon);
+            Assert.Equal(dependencyUnresolved.UnresolvedExpandedIcon, viewModelUnresolvedDependency.ExpandedIcon);
+            Assert.Equal(dependencyUnresolved.Properties, viewModelUnresolvedDependency.Properties);
         }
 
         [Fact]
@@ -188,7 +201,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var dependency1 = IDependencyFactory.Implement(targetFramework: targetFramework1).Object;
             var dependency2 = IDependencyFactory.Implement(targetFramework: targetFramework1).Object;
             var dependency3 = IDependencyFactory.Implement(targetFramework: targetFramework2).Object;
-
 
             Assert.True(dependency1.HasSameTarget(dependency2));
             Assert.False(dependency1.HasSameTarget(dependency3));

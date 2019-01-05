@@ -11,31 +11,31 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     /// </summary>
     [Export(ExportContractNames.Scopes.UnconfiguredProject, typeof(IProjectDynamicLoadComponent))]
     [AppliesTo(ProjectCapability.DotNet)]
-    internal partial class SDKVersionTelemetryServiceComponent : AbstractMultiLifetimeComponent, IProjectDynamicLoadComponent
+    internal partial class SDKVersionTelemetryServiceComponent : AbstractMultiLifetimeComponent<SDKVersionTelemetryServiceComponent.SDKVersionTelemetryServiceInstance>, IProjectDynamicLoadComponent
     {
         private readonly IUnconfiguredProjectVsServices _projectVsServices;
         private readonly ITelemetryService _telemetryService;
-        private readonly ISafeProjectGuidService _projectGuidSevice;
+        private readonly ISafeProjectGuidService _projectGuidService;
         private readonly IUnconfiguredProjectTasksService _unconfiguredProjectTasksService;
 
         [ImportingConstructor]
         public SDKVersionTelemetryServiceComponent(
             IUnconfiguredProjectVsServices projectVsServices,
-            ISafeProjectGuidService projectGuidSevice,
+            ISafeProjectGuidService projectGuidService,
             ITelemetryService telemetryService,
             IUnconfiguredProjectTasksService unconfiguredProjectTasksService)
             : base(projectVsServices.ThreadingService.JoinableTaskContext)
         {
             _projectVsServices = projectVsServices;
-            _projectGuidSevice = projectGuidSevice;
+            _projectGuidService = projectGuidService;
             _telemetryService = telemetryService;
             _unconfiguredProjectTasksService = unconfiguredProjectTasksService;
         }
 
-        protected override IMultiLifetimeInstance CreateInstance()
+        protected override SDKVersionTelemetryServiceInstance CreateInstance()
             => new SDKVersionTelemetryServiceInstance(
                 _projectVsServices,
-                _projectGuidSevice,
+                _projectGuidService,
                 _telemetryService,
                 _unconfiguredProjectTasksService);
     }

@@ -48,9 +48,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             IAdditionalRuleDefinitionsService ruleService = Mock.Of<IAdditionalRuleDefinitionsService>();
 
-            ConfiguredProjectServices configuredProjectServices = Mock.Of<ConfiguredProjectServices>(o =>
-                o.PropertyPagesCatalog == propertyPagesCatalogProvider &&
-                o.AdditionalRuleDefinitions == ruleService);
+            var configuredProjectServices = ConfiguredProjectServicesFactory.Create(
+                propertyPagesCatalogProvider: propertyPagesCatalogProvider,
+                ruleService: ruleService);
 
             var cfg = new StandardProjectConfiguration("Debug|" + "AnyCPU", Empty.PropertiesMap.SetItem("Configuration", "Debug").SetItem("Platform", "AnyCPU"));
             ConfiguredProject configuredProject = Mock.Of<ConfiguredProject>(o =>

@@ -1528,15 +1528,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             Return Nothing
         End Function 'GetSerializerCore
 
-        ''' <summary>
-        ''' 
-        ''' </summary>
-        ''' <param name="service"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Private Function GetService(service As Type) As Object
-            Return DirectCast(_provider, IServiceProvider).GetService(service)
-        End Function
 
         ''' <summary>
         ''' Loads a DesignTimeSettings object from the given fileName
@@ -1618,12 +1609,12 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
 
                         If AppConfigDocData IsNot Nothing Then
                             Dim cfgHelper As New ConfigurationHelperService
-                            Dim FullyQualifedClassName As String = ProjectUtils.FullyQualifiedClassName(ProjectUtils.GeneratedSettingsClassNamespace(_hierarchy, _itemid, True), _className)
+                            Dim FullyQualifiedClassName As String = ProjectUtils.FullyQualifiedClassName(ProjectUtils.GeneratedSettingsClassNamespace(_hierarchy, _itemid, True), _className)
                             Try
                                 AppConfigSerializer.Deserialize(dtSettings,
                                                                     _typeCache,
                                                                     _valueCache,
-                                                                    cfgHelper.GetSectionName(FullyQualifedClassName, String.Empty),
+                                                                    cfgHelper.GetSectionName(FullyQualifiedClassName, String.Empty),
                                                                     AppConfigDocData,
                                                                     AppConfigSerializer.MergeValueMode.UseAppConfigFileValue)
                             Catch ex As ConfigurationErrorsException

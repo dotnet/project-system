@@ -17,7 +17,8 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
     '**************************************************************************
     Friend NotInheritable Class DesignUtil
 
-        '= Public =============================================================
+        Private Sub DesignUtil()
+        End Sub
 
         '**************************************************************************
         ';ReportError

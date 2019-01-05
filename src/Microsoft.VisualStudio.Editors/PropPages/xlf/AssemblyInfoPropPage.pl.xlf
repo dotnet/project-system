@@ -53,23 +53,23 @@
         <note />
       </trans-unit>
       <trans-unit id="FileVersionMajorTextBox.AccessibleName">
-        <source>Major</source>
-        <target state="translated">Główna</target>
+        <source>File Version major</source>
+        <target state="needs-review-translation">Główna</target>
         <note />
       </trans-unit>
       <trans-unit id="FileVersionMinorTextBox.AccessibleName">
-        <source>Minor</source>
-        <target state="translated">Pomocnicza</target>
+        <source>File Version minor</source>
+        <target state="needs-review-translation">Pomocnicza</target>
         <note />
       </trans-unit>
       <trans-unit id="FileVersionBuildTextBox.AccessibleName">
-        <source>Build</source>
-        <target state="translated">Kompilacja</target>
+        <source>File Version build</source>
+        <target state="needs-review-translation">Kompilacja</target>
         <note />
       </trans-unit>
       <trans-unit id="FileVersionRevisionTextBox.AccessibleName">
-        <source>Revision</source>
-        <target state="translated">Poprawka</target>
+        <source>File Version revision</source>
+        <target state="needs-review-translation">Poprawka</target>
         <note />
       </trans-unit>
       <trans-unit id="GuidLabel.Text">
@@ -78,23 +78,23 @@
         <note />
       </trans-unit>
       <trans-unit id="AssemblyVersionMajorTextBox.AccessibleName">
-        <source>Major</source>
-        <target state="translated">Główna</target>
+        <source>Assembly Version major</source>
+        <target state="needs-review-translation">Główna</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyVersionMinorTextBox.AccessibleName">
-        <source>Minor</source>
-        <target state="translated">Pomocnicza</target>
+        <source>Assembly Version minor</source>
+        <target state="needs-review-translation">Pomocnicza</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyVersionBuildTextBox.AccessibleName">
-        <source>Build</source>
-        <target state="translated">Kompilacja</target>
+        <source>Assembly Version build</source>
+        <target state="needs-review-translation">Kompilacja</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyVersionRevisionTextBox.AccessibleName">
-        <source>Revision</source>
-        <target state="translated">Poprawka</target>
+        <source>Assembly Version revision</source>
+        <target state="needs-review-translation">Poprawka</target>
         <note />
       </trans-unit>
     </body>

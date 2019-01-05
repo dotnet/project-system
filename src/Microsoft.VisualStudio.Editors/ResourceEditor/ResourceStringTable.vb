@@ -36,9 +36,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         'The ResourceFile used to populate this grid.
         Private _resourceFile As ResourceFile
 
-        'True if this is the first time the grid is being populated.
-        Private ReadOnly _firstTimeShowingStringTable As Boolean = True
-
         'A Resource which is created when the user starts entering data, but
         '  hasn't committed any of that data yet.
         Private _uncommittedResource As Resource
@@ -688,7 +685,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             If _inEditActions = 0 Then
                 _checkOutFailedInTheAction = False
             End If
-            _inEditActions = _inEditActions + 1
+            _inEditActions += 1
         End Sub
 
         ''' <summary>
@@ -697,7 +694,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' CONSIDER: should we implement this on the DesignerLoader?
         ''' </summary>
         Friend Sub EndOneAction()
-            _inEditActions = _inEditActions - 1
+            _inEditActions -= 1
             Debug.Assert(_inEditActions >= 0, "we should never call EndOneAction more than StartOneAction!")
         End Sub
 
@@ -1414,7 +1411,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                         Debug.Assert(Row IsNot Nothing)
                         If Row.Index < RowCountVirtual Then
                             indexArray(rowCount) = Row.Index
-                            rowCount = rowCount + 1
+                            rowCount += 1
                         End If
                     Next
                 End If
@@ -1426,7 +1423,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     For Each cell As DataGridViewCell In cells
                         If cell.RowIndex < RowCountVirtual Then
                             indexArray(rowCount) = cell.RowIndex
-                            rowCount = rowCount + 1
+                            rowCount += 1
                         End If
                     Next
                 End If
@@ -1442,7 +1439,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                         Dim i As Integer = 0
                         For j As Integer = 1 To rowCount - 1
                             If indexArray(i) <> indexArray(j) Then
-                                i = i + 1
+                                i += 1
                                 indexArray(i) = indexArray(j)
                             End If
                         Next
@@ -1698,7 +1695,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                         If resource.ValidateValueAsString(String.Empty, NewParsedValue) Then
                             resource.SetValue(NewParsedValue)
                         Else
-                            failedCount = failedCount + 1
+                            failedCount += 1
                         End If
 
                     Case COLUMN_COMMENT

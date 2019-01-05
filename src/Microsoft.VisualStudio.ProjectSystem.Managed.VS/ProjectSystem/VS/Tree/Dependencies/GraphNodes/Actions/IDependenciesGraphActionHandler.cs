@@ -14,6 +14,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
         bool CanHandleRequest(IGraphContext graphContext);
         bool CanHandleChanges();
         bool HandleRequest(IGraphContext graphContext);
-        bool HandleChanges(IGraphContext graphContext, SnapshotChangedEventArgs changes);
+        bool HandleChanges(IGraphContext graphContext, SnapshotChangedEventArgs e);
     }
 }

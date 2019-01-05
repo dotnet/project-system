@@ -3,7 +3,7 @@
 namespace Microsoft.VisualStudio
 {
     /// <summary>
-    ///     Contains commonly-used delimiters used for splitting <see cref="String"/> instances.
+    ///     Contains commonly-used delimiters used for splitting <see cref="string"/> instances.
     /// </summary>
     internal static class Delimiter
     {
@@ -31,6 +31,11 @@ namespace Microsoft.VisualStudio
         /// Single, static instance of an array that contains a back slash '\', which is used to split strings.
         /// </summary>
         internal static readonly char[] BackSlash = new char[] { '\\' };
+
+        /// <summary>
+        /// Single, static instance of an array that contains '+' and '-' characters.
+        /// </summary>
+        internal static readonly char[] PlusAndMinus = new char[] { '+', '-' };
 
         /// <summary>
         /// Single, static instance of an array that contains platform-specific path separators

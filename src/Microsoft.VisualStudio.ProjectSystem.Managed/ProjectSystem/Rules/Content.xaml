@@ -2,9 +2,7 @@
 <!--Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.-->
 <Rule
   Name="Content"
-  DisplayName="File Properties"
   PageTemplate="generic"
-  Description="File Properties"
   PropertyPagesHidden="true"
   xmlns="http://schemas.microsoft.com/build/2009/properties">
 
@@ -12,34 +10,21 @@
     <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" ItemType="Content" SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
 
-  <Rule.Categories>
-    <Category Name="Advanced" DisplayName="Advanced" />
-    <Category Name="Misc" DisplayName="Misc" />
-  </Rule.Categories>
-
   <DynamicEnumProperty
       Name="{}{ItemType}"
-      DisplayName="Build Action"
-      Category="Advanced"
-      Description="How the file relates to the build and deployment processes."
       EnumProvider="ItemTypes" />
 
   <EnumProperty
-      Name="CopyToOutputDirectory"
-      DisplayName="Copy to Output Directory"
-      Category="Advanced"
-      Description="Specifies the source file will be copied to the output directory.">
-    <EnumValue Name="Never" DisplayName="Do not copy" />
-    <EnumValue Name="Always" DisplayName="Copy always" />
-    <EnumValue Name="PreserveNewest" DisplayName="Copy if newer" />
+      Name="CopyToOutputDirectory">
+    <EnumValue Name="Never" />
+    <EnumValue Name="Always" />
+    <EnumValue Name="PreserveNewest" />
   </EnumProperty>
 
   <StringProperty
     Name="Identity"
     Visible="false"
-    ReadOnly="true"
-    Category="Misc"
-    Description="The item specified in the Include attribute.">
+    ReadOnly="true">
     <StringProperty.DataSource>
       <DataSource Persistence="Intrinsic" ItemType="Content" PersistedName="Identity" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
@@ -47,10 +32,7 @@
 
   <StringProperty
       Name="FullPath"
-      DisplayName="Full Path"
-      ReadOnly="true"
-      Category="Misc"
-      Description="Location of the file.">
+      ReadOnly="true">
     <StringProperty.DataSource>
       <DataSource Persistence="Intrinsic" ItemType="Content" PersistedName="FullPath" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
@@ -58,10 +40,7 @@
 
   <StringProperty
     Name="FileNameAndExtension"
-    DisplayName="File Name"
-    ReadOnly="true"
-    Category="Misc"
-    Description="Name of the file or folder.">
+    ReadOnly="true">
     <StringProperty.DataSource>
       <DataSource Persistence="Intrinsic" ItemType="Content" PersistedName="FileNameAndExtension" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>

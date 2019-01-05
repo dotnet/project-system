@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 using Microsoft.Build.Construction;
 using Microsoft.Build.Evaluation;
+using Microsoft.VisualStudio.Buffers.PooledObjects;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
 {
@@ -205,7 +206,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
 
         private static ImmutableArray<ProjectItemElement> GetItemElements(Project project, ImmutableArray<string> includes)
         {
-            ImmutableArray<ProjectItemElement>.Builder elements = ImmutableArray.CreateBuilder<ProjectItemElement>();
+            var elements = PooledArray<ProjectItemElement>.GetInstance();
 
             foreach (string include in includes)
             {
@@ -220,7 +221,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
                 }
             }
 
-            return elements.ToImmutable();
+            return elements.ToImmutableAndFree();
         }
 
         /// <summary>
@@ -380,7 +381,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         /// <summary>
         /// Moves child elements based on the reference element and move action.
         /// </summary>
+        /// <param name="elements"></param>
         /// <param name="referenceElement">element for which moved items will be above or below it</param>
+        /// <param name="moveAction"></param>
         /// <returns>true or false; 'true' if all elements were successfully moved. 'false' if just one element was not moved successfully.</returns>
         private static bool TryMoveElements(ImmutableArray<ProjectItemElement> elements, ProjectItemElement referenceElement, MoveAction moveAction)
         {
@@ -485,7 +488,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
                 // We are excluding folder elements until CPS allows empty folders to be part of the order; when they do, we can omit checking the item type for "Folder".
                 // Related changes will also need to happen in TryMoveElementsToTop when CPS allows empty folders in ordering.
                 // Don't choose items that were imported. Most likely won't happen on added elements, but just in case for sanity.
-                .Where(x => !previousIncludes.Contains(x.EvaluatedInclude, StringComparer.OrdinalIgnoreCase) && !x.ItemType.Equals("Folder", StringComparison.OrdinalIgnoreCase) && !x.IsImported)
+                .Where(x => !previousIncludes.Contains(x.EvaluatedInclude, StringComparer.OrdinalIgnoreCase) && !x.ItemType.Equals("Folder", StringComparisons.ItemTypes) && !x.IsImported)
                 .Select(x => x.Xml)
                 .ToImmutableArray();
         }

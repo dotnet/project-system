@@ -24,9 +24,7 @@ Namespace Microsoft.VisualStudio.Editors
             ' *********************************************************************
 
             Private Const IDM_CTX_RESX_ContextMenu As Integer = &H100
-            Private Const IDM_VS_MENU_Resources As Integer = &H105
             Private Const IDM_CTX_SETTINGSDESIGNER_ContextMenu As Integer = &H110
-            Private Const IDM_VS_MNUCTRL_NAVIGATE As Integer = &H106
             Public Const IDM_VS_TOOLBAR_Settings As Integer = &H210
             Public Const IDM_VS_TOOLBAR_Resources As Integer = &H211
             Public Const IDM_VS_TOOLBAR_Resources_ResW As Integer = &H212
@@ -79,9 +77,6 @@ Namespace Microsoft.VisualStudio.Editors
             Private Const CmdIdSETTINGSDESIGNERAccessModifierCombobox As Integer = &H2106
             Private Const CmdIdSETTINGSDESIGNERGetAccessModifierOptions As Integer = &H2107
             Private Const CmdIdSETTINGSDESIGNERLoadWebSettings As Integer = &H2108
-
-            Private Const CmdIdCurrentProfile As Integer = &H2201
-            Private Const CmdIdCurrentProfileListGet As Integer = &H2202
 
             Private Const CmdIdCOMMONEditCell As Integer = &H2F00
             Private Const CmdIdCOMMONAddRow As Integer = &H2F01
@@ -200,8 +195,6 @@ Namespace Microsoft.VisualStudio.Editors
             Private Shared ReadOnly s_GUID_MYEXTENSION_Menu As New Guid("6C37AED7-D987-4fdf-ADF5-B71EB3F7236C")
             ' ID for My Extension context menu.
             Private Const IDM_CTX_MYEXTENSION_ContextMenu As Integer = &H110
-            ' ID for My Extension context menu's only group.
-            Private Const IDG_MYEXTENSION_CTX_AddRemove As Integer = &H1101
             ' ID for My Extension menu buttons.
             Private Const CmdIdMYEXTENSIONAddExtension As Integer = &H2001
             Private Const CmdIdMYEXTENSIONRemoveExtension As Integer = &H2002

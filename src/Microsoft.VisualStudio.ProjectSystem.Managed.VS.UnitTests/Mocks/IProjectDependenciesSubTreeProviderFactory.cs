@@ -20,10 +20,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         public static IProjectDependenciesSubTreeProvider Implement(
             string providerType = null,
             IDependency createRootDependencyNode = null,
-            MockBehavior? mockBehavior = null)
+            MockBehavior mockBehavior = MockBehavior.Strict)
         {
-            var behavior = mockBehavior ?? MockBehavior.Strict;
-            var mock = new Mock<IProjectDependenciesSubTreeProvider>(behavior);
+            var mock = new Mock<IProjectDependenciesSubTreeProvider>(mockBehavior);
 
             if (providerType != null)
             {
@@ -40,24 +39,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         public static IProjectDependenciesSubTreeProviderInternal ImplementInternal(
             string providerType = null,
-            ImageMoniker icon = new ImageMoniker(),
-            MockBehavior? mockBehavior = null)
+            ImageMoniker implicitIcon = default,
+            MockBehavior mockBehavior = MockBehavior.Strict)
         {
-            var behavior = mockBehavior ?? MockBehavior.Strict;
-            var mock = new Mock<IProjectDependenciesSubTreeProviderInternal>(behavior);
+            var mock = new Mock<IProjectDependenciesSubTreeProviderInternal>(mockBehavior);
 
             if (providerType != null)
             {
                 mock.Setup(x => x.ProviderType).Returns(providerType);
             }
 
-            if (icon.Id != 0 || icon.Guid != Guid.Empty)
+            if (implicitIcon.Id != 0 || implicitIcon.Guid != Guid.Empty)
             {
-                mock.Setup(x => x.GetImplicitIcon()).Returns(icon);
+                mock.Setup(x => x.GetImplicitIcon()).Returns(implicitIcon);
             }
 
             return mock.Object;
         }
-
     }
 }

@@ -159,7 +159,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         Friend WithEvents buttonOK As Button
         Friend WithEvents tableLayoutOKCancelButtons As TableLayoutPanel
         Friend WithEvents colHeaderExtensionName As ColumnHeader
-        Friend WithEvents colHeaderExensionDescription As ColumnHeader
+        Friend WithEvents colHeaderExtensionDescription As ColumnHeader
         Friend WithEvents colHeaderExtensionVersion As ColumnHeader
         Friend WithEvents tableLayoutOverarching As TableLayoutPanel
 
@@ -172,7 +172,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             listViewExtensions = New ListView
             colHeaderExtensionName = New ColumnHeader
             colHeaderExtensionVersion = New ColumnHeader
-            colHeaderExensionDescription = New ColumnHeader
+            colHeaderExtensionDescription = New ColumnHeader
             tableLayoutOverarching.SuspendLayout()
             tableLayoutOKCancelButtons.SuspendLayout()
             SuspendLayout()
@@ -206,7 +206,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             '
             'listViewExtensions
             '
-            listViewExtensions.Columns.AddRange(New ColumnHeader() {colHeaderExtensionName, colHeaderExtensionVersion, colHeaderExensionDescription})
+            listViewExtensions.Columns.AddRange(New ColumnHeader() {colHeaderExtensionName, colHeaderExtensionVersion, colHeaderExtensionDescription})
             resources.ApplyResources(listViewExtensions, "listViewExtensions")
             listViewExtensions.FullRowSelect = True
             listViewExtensions.HideSelection = False
@@ -225,7 +225,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             '
             'colHeaderExtensionDescription
             '
-            resources.ApplyResources(colHeaderExensionDescription, "colHeaderExensionDescription")
+            resources.ApplyResources(colHeaderExtensionDescription, "colHeaderExtensionDescription")
             '
             'AddMyExtensionsDialog
             '

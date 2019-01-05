@@ -22,12 +22,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
     internal partial class PackageRestoreInitiator
     {
-        private class PackageRestoreInitiatorInstance : OnceInitializedOnceDisposedAsync, IMultiLifetimeInstance
+        internal class PackageRestoreInitiatorInstance : OnceInitializedOnceDisposedAsync, IMultiLifetimeInstance
         {
             private readonly IUnconfiguredProjectVsServices _projectVsServices;
             private readonly IVsSolutionRestoreService _solutionRestoreService;
             private readonly IActiveConfigurationGroupService _activeConfigurationGroupService;
-            private readonly IActiveConfiguredProjectSubscriptionService _activeConfiguredProjectSubscriptionService;
             private readonly IProjectLogger _logger;
             private IDisposable _configurationsSubscription;
             private DisposableBag _designTimeBuildSubscriptionLink;
@@ -46,14 +45,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             public PackageRestoreInitiatorInstance(
                 IUnconfiguredProjectVsServices projectVsServices,
                 IVsSolutionRestoreService solutionRestoreService,
-                IActiveConfiguredProjectSubscriptionService activeConfiguredProjectSubscriptionService,
                 IActiveConfigurationGroupService activeConfigurationGroupService,
                 IProjectLogger logger)
                 : base(projectVsServices.ThreadingService.JoinableTaskContext)
             {
                 _projectVsServices = projectVsServices;
                 _solutionRestoreService = solutionRestoreService;
-                _activeConfiguredProjectSubscriptionService = activeConfiguredProjectSubscriptionService;
                 _activeConfigurationGroupService = activeConfigurationGroupService;
                 _logger = logger;
             }
@@ -106,7 +103,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                     Action<Tuple<ImmutableList<IProjectValueVersions>, TIdentityDictionary>> action = ProjectPropertyChanged;
                     var target = DataflowBlockSlim.CreateActionBlock(action);
 
-                    var targetLinkOptions = DataflowOption.PropagateCompletion;
+                    DataflowLinkOptions targetLinkOptions = DataflowOption.PropagateCompletion;
 
                     ImmutableList<ProjectDataSources.SourceBlockAndLink<IProjectValueVersions>> sourceBlocksAndCapabilitiesOptions = sourceBlocks.ToImmutableList()
                         .Insert(0, _projectVsServices.Project.Capabilities.SourceBlock.SyncLinkOptions<IProjectValueVersions>());

@@ -23,16 +23,16 @@ namespace Microsoft.VisualStudio.Telemetry
             var version = "42.42.42.42";
             var (success, result) = await CreateComponentAndGetResult(guid, version);
             Assert.True(success);
-            Assert.Equal("SDKVersion", result.EventName);
+            Assert.Equal("vs/projectsystem/managed/sdkversion", result.EventName);
             Assert.Collection(result.Properties,
                 args =>
                 {
-                    Assert.Equal("Project", args.propertyName);
+                    Assert.Equal("vs.projectsystem.managed.sdkversion.project", args.propertyName);
                     Assert.Equal(guid.ToString(), args.propertyValue as string);
                 },
                 args =>
                 {
-                    Assert.Equal("NETCoreSdkVersion", args.propertyName);
+                    Assert.Equal("vs.projectsystem.managed.sdkversion.netcoresdkversion", args.propertyName);
                     Assert.Equal(version, args.propertyValue);
                 });
         }
@@ -42,7 +42,7 @@ namespace Microsoft.VisualStudio.Telemetry
         {
             var guid = Guid.Empty;
             var version = "42.42.42.42";
-            var (success, result) = await CreateComponentAndGetResult(guid, version);
+            var (success, _) = await CreateComponentAndGetResult(guid, version);
             Assert.False(success);
         }
 
@@ -51,7 +51,7 @@ namespace Microsoft.VisualStudio.Telemetry
         public static async Task TestCreateComponentNoSDKVersionDefined()
         {
             var guid = Guid.NewGuid();
-            var (success, result) = await CreateComponentAndGetResult(guid);
+            var (success, _) = await CreateComponentAndGetResult(guid);
             Assert.False(success);
         }
 
@@ -59,7 +59,7 @@ namespace Microsoft.VisualStudio.Telemetry
         public static async Task TestCreateComponentNoSDKVersionDefinedInvalidProjectGuid()
         {
             var guid = Guid.Empty;
-            var (success, result) = await CreateComponentAndGetResult(guid);
+            var (success, _) = await CreateComponentAndGetResult(guid);
             Assert.False(success);
         }
 
@@ -84,7 +84,7 @@ namespace Microsoft.VisualStudio.Telemetry
         private static SDKVersionTelemetryServiceComponent CreateComponent(Guid guid, Action<TelemetryParameters> onTelemetryLogged, string version, SemaphoreSlim semaphore)
         {
             var projectVsServices = CreateProjectServices(version);
-            var projectGuidSevice = CreateISafeProjectGuidService(guid);
+            var projectGuidService = CreateISafeProjectGuidService(guid);
             var telemetryService = CreateITelemetryService(onTelemetryLogged);
             var unconfiguredProjectTasksService = IUnconfiguredProjectTasksServiceFactory.ImplementLoadedProjectAsync(async t =>
             {
@@ -93,7 +93,7 @@ namespace Microsoft.VisualStudio.Telemetry
             });
             return new SDKVersionTelemetryServiceComponent(
                 projectVsServices,
-                projectGuidSevice,
+                projectGuidService,
                 telemetryService,
                 unconfiguredProjectTasksService);
         }

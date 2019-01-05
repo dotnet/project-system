@@ -15,10 +15,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         public static IDependenciesSnapshotProvider Implement(
             IDependenciesSnapshot currentSnapshot = null,
-            MockBehavior? mockBehavior = null)
+            MockBehavior mockBehavior = MockBehavior.Default)
         {
-            var behavior = mockBehavior ?? MockBehavior.Default;
-            var mock = new Mock<IDependenciesSnapshotProvider>(behavior);
+            var mock = new Mock<IDependenciesSnapshotProvider>(mockBehavior);
 
             if (currentSnapshot != null)
             {

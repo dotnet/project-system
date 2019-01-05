@@ -81,7 +81,7 @@ function GetVsWhereExe{
     Create-Directory $vsWhereDir
     Write-Host "Downloading vswhere"
     [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-    Invoke-WebRequest "http://github.com/Microsoft/vswhere/releases/download/$vswhereVersion/vswhere.exe" -OutFile $vswhereExe
+    Invoke-WebRequest "https://github.com/Microsoft/vswhere/releases/download/$vswhereVersion/vswhere.exe" -OutFile $vswhereExe
   }
   
   return $vsWhereExe
@@ -125,7 +125,7 @@ function InstallVSIX([string] $vsixExpInstalleExe, [string] $rootsuffix, [string
 
 function LocateVisualStudio {
   if ($InVSEnvironment) {
-    return Join-Path $env:VS150COMNTOOLS "..\.."
+    return $env:VSINSTALLDIR
   }
 
   $vsWhereExe = GetVsWhereExe
@@ -136,6 +136,19 @@ function LocateVisualStudio {
   }
 
   return $vsInstallDir
+}
+
+function LocateMSBuild {
+
+  # Dev15
+  $msbuildExe = Join-Path $vsInstallDir "MSBuild\15.0\Bin\msbuild.exe"
+  
+  if (Test-Path $msbuildExe) {
+     return $msbuildExe
+  }
+
+  # Dev16
+  return Join-Path $vsInstallDir "MSBuild\Current\Bin\msbuild.exe"
 }
 
 function Get-VisualStudioId(){
@@ -175,6 +188,23 @@ function Build {
   if ($useCodecov) {
     $CodecovProj = Join-Path $PSScriptRoot 'Codecov.proj'
     & $MsbuildExe $CodecovProj /m /nologo /clp:Summary /nodeReuse:$nodeReuse /warnaserror /v:diag /t:Codecov /p:Configuration=$configuration /p:UseCodecov=$useCodecov /p:NuGetPackageRoot=$NuGetPackageRoot $properties
+  }
+
+  # create suite.json file
+  $IntegrationTestDir = Join-Path (Join-Path $ArtifactsDir $configuration) "bin\IntegrationTests"
+  $testSuite = Join-Path $IntegrationTestDir "suite.json"
+  if (!(Test-Path $testSuite)) {
+    $testSuiteContents = @'
+{
+    "_comment":  "dotnet project-system built tests",
+    "testcontainer":  [
+                          {
+                              "name":  "Microsoft.VisualStudio.ProjectSystem.IntegrationTests.dll"
+                          }
+                      ]
+}
+'@
+    $testSuiteContents >> $testSuite
   }
 }
 
@@ -307,7 +337,7 @@ function RunIntegrationTests {
 }
 
 try {
-  $InVSEnvironment = !($env:VS150COMNTOOLS -eq $null) -and (Test-Path $env:VS150COMNTOOLS)
+  $InVSEnvironment = !($env:VSINSTALLDIR -eq $null) -and (Test-Path $env:VSINSTALLDIR)
   $RepoRoot = Join-Path $PSScriptRoot "..\"
   $ToolsRoot = Join-Path $RepoRoot ".tools"
   $ToolsetRestoreProj = Join-Path $PSScriptRoot "Toolset.proj"
@@ -334,7 +364,7 @@ try {
   $ToolsetBuildProj = Join-Path $NuGetPackageRoot "RoslynTools.RepoToolset\$ToolsetVersion\tools\Build.proj"
 
   $vsInstallDir = LocateVisualStudio
-  $MsbuildExe = Join-Path $vsInstallDir "MSBuild\15.0\Bin\msbuild.exe"
+  $MsbuildExe = LocateMSBuild
 
   if ($ci) {
     Create-Directory $TempDir
@@ -354,8 +384,6 @@ try {
   }
 
   if (!$InVSEnvironment) {
-    $env:VS150COMNTOOLS = Join-Path $vsInstallDir "Common7\Tools\"
-    $env:VSSDK150Install = Join-Path $vsInstallDir "VSSDK\"
     $env:VSSDKInstall = Join-Path $vsInstallDir "VSSDK\"
   }
 

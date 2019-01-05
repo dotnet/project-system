@@ -52,11 +52,6 @@
         <target state="translated">Copia local de ensamblados de referencia expandidos</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|DisplayName|DisplayName">
-        <source>Display Name</source>
-        <target state="translated">Nombre para mostrar</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|Name|DisplayName">
         <source>Name</source>
         <target state="translated">Nombre</target>

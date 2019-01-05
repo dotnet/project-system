@@ -73,7 +73,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         Public WithEvents ConfigurationPanel As TableLayoutPanel
 
         'Required by the Windows Form Designer
-        Private _components As IContainer
+        Private ReadOnly _components As IContainer
 
         'NOTE: The following procedure is required by the Windows Form Designer
         'It can be modified using the Windows Form Designer.  
@@ -263,11 +263,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <remarks></remarks>
         Public Sub New(RootDesigner As PropPageDesignerRootDesigner)
             Me.New()
-#If DEBUG Then
-            s_propPageDesignerViewCount += 1
-            s_instanceCount += 1
-            _myInstanceCount = s_instanceCount
-#End If
             SetSite(RootDesigner)
         End Sub
 
@@ -292,22 +287,10 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 Catch ex As Exception When ReportWithoutCrash(ex, NameOf(Dispose), NameOf(PropPageDesignerView))
                     'Don't throw here trying to cleanup
                 End Try
-#If DEBUG Then
-                s_propPageDesignerViewCount -= 1
-#End If
             End If
             MyBase.Dispose(disposing)
         End Sub
 #End Region
-
-
-#If DEBUG Then
-        'These are placed here to prevent breaking the WinForms designer
-        'resulting from the #if DEBUG
-        Private Shared s_propPageDesignerViewCount As Integer = 0
-        Private Shared s_instanceCount As Integer
-        Private ReadOnly _myInstanceCount As Integer
-#End If
 
         ''' <summary>
         ''' Get DesignerHost
@@ -578,6 +561,24 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             End Select
         End Sub
 
+        Friend Sub SetControls(propPage As OleInterop.IPropertyPage, firstControl As Boolean)
+            If firstControl Then
+                If _isNativeHostedPropertyPage Then
+                    'Try to set initial focus to the property page, not the configuration panel
+                    FocusFirstOrLastPropertyPageControl(True)
+                Else
+                    ' Select the configuration panel to ensure it gains focus. For configuration pages, this
+                    ' ensures that the configuration panel receives focus and allows a screen reader to give
+                    ' the page context before reading the values of any properties themselves. For other pages
+                    ' this ensures that the first control of the page receives focus, which allows tab navigation
+                    ' to work in a reliable and predicable manner for users who can only use the keyboard.
+                    SelectNextControl(ConfigurationPanel, forward:=True, tabStopOnly:=True, nested:=True, wrap:=True)
+                End If
+            Else
+                FocusFirstOrLastPropertyPageControl(False)
+            End If
+        End Sub
+
         ''' <summary>
         ''' Show the property page 
         ''' </summary>
@@ -601,7 +602,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 End If
 
                 Try
-
                     ' Check the minimum size for the control and make sure that we show scrollbars
                     ' if the PropertyPagePanel becomes smaller...
                     Dim Info As OleInterop.PROPPAGEINFO() = New OleInterop.PROPPAGEINFO(0) {}
@@ -626,8 +626,8 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                     If PropertyPagePanel.Controls.Count > 0 Then
                         Dim controlSize As Size = PropertyPagePanel.Controls(0).Size
                         PropertyPagePanel.AutoScrollMinSize = New Size(
-                                Math.Min(controlSize.Width + Padding.Right + Padding.Left, PropertyPagePanel.AutoScrollMinSize.Width),
-                                Math.Min(controlSize.Height + Padding.Top + Padding.Bottom, PropertyPagePanel.AutoScrollMinSize.Height))
+                            Math.Min(controlSize.Width + Padding.Right + Padding.Left, PropertyPagePanel.AutoScrollMinSize.Width),
+                            Math.Min(controlSize.Height + Padding.Top + Padding.Bottom, PropertyPagePanel.AutoScrollMinSize.Height))
                     End If
 
                     _isPageActivated = True
@@ -652,8 +652,8 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                         SelectNextControl(ConfigurationPanel, forward:=True, tabStopOnly:=True, nested:=True, wrap:=True)
                     End If
 
+                    ''Only set the undo redo state if we are loading a new page
                     SetUndoRedoCleanState()
-
                 Catch ex As Exception When ReportWithoutCrash(ex, NameOf(ActivatePage), NameOf(PropPageDesignerView))
                     'There was a problem displaying the property page.  Show the error control.
                     DisplayErrorControl(ex)
@@ -681,31 +681,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             _errorControl.Visible = True
             PropertyPagePanel.Controls.Add(_errorControl)
             PropertyPagePanel.ResumeLayout(True)
-        End Sub
-
-        ''' <summary>
-        ''' Fixup the window styles so the mnemonics work on the new property page window
-        ''' </summary>
-        ''' <param name="Hwnd"></param>
-        ''' <remarks></remarks>
-        Private Sub UpdateWindowStyles(Hwnd As IntPtr)
-            Dim HwndPage As IntPtr = NativeMethods.GetTopWindow(Hwnd)
-            Dim StyleValue, PreviousStyle As IntPtr
-            Dim PreviousExStyle As IntPtr
-            Dim ExStyleValue As Long
-
-            If (Not HwndPage.Equals(IntPtr.Zero)) Then
-                PreviousStyle = NativeMethods.GetWindowLong(HwndPage, NativeMethods.GWL_STYLE)
-                StyleValue = New IntPtr(PreviousStyle.ToInt64() And (Not (NativeMethods.DS_CONTROL Or NativeMethods.WS_TABSTOP)))
-
-                NativeMethods.SetWindowLong(HwndPage, NativeMethods.GWL_STYLE, StyleValue)
-
-                PreviousExStyle = NativeMethods.GetWindowLong(HwndPage, NativeMethods.GWL_EXSTYLE)
-                '// if WS_EX_CONTROLPARENT isn't on, then mnemonics for buttons on the frame
-                '// won't work if your focus is inside the sheet
-                ExStyleValue = PreviousExStyle.ToInt64() Or NativeMethods.WS_EX_CONTROLPARENT
-                NativeMethods.SetWindowLong(HwndPage, NativeMethods.GWL_EXSTYLE, New IntPtr(ExStyleValue))
-            End If
         End Sub
 
         ''' <summary>
@@ -1453,9 +1428,8 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 
         ''' <summary>
         ''' Returns the selection state of the configuration and platform comboboxes to the pre-undo/redo state.
-        ''' <param name="SelectedConfigName">The selected configuration in the drop-down combobox.  Empty string indicates "All Configurations".</param>
-        ''' <param name="SelectedPlatformName">The selected platform in the drop-down combobox.  Empty string indicates "All Platforms".</param>
         ''' </summary>
+        ''' <param name="MultiValues">Specifies the selected configuration and platform in the drop-down combobox.</param>
         ''' <remarks></remarks>
         Private Sub ReselectConfigurationsForUndoRedo(MultiValues As MultipleValuesStore)
             If Not IsConfigPage Then

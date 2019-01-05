@@ -82,42 +82,42 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
 
             // Initial add
             list.OnNamespaceImportChanged(
-                IProjectVersionedValueFactory<IProjectSubscriptionUpdate>.Create(GetProjectSubscriptionUpdate("A", "B", "C", "D")));
+                IProjectVersionedValueFactory.Create(GetProjectSubscriptionUpdate("A", "B", "C", "D")));
             VerifyList(dataList, "A", "B", "C", "D");
 
             // Remove from the end
             list.OnNamespaceImportChanged(
-                IProjectVersionedValueFactory<IProjectSubscriptionUpdate>.Create(GetProjectSubscriptionUpdate("A", "B", "C")));
+                IProjectVersionedValueFactory.Create(GetProjectSubscriptionUpdate("A", "B", "C")));
             VerifyList(dataList, "A", "B", "C");
 
             // Remove from the beginning
             list.OnNamespaceImportChanged(
-                IProjectVersionedValueFactory<IProjectSubscriptionUpdate>.Create(GetProjectSubscriptionUpdate("B", "C")));
+                IProjectVersionedValueFactory.Create(GetProjectSubscriptionUpdate("B", "C")));
             VerifyList(dataList, "B", "C");
 
             // Add at the beginning
             list.OnNamespaceImportChanged(
-                IProjectVersionedValueFactory<IProjectSubscriptionUpdate>.Create(GetProjectSubscriptionUpdate("A", "B", "C")));
+                IProjectVersionedValueFactory.Create(GetProjectSubscriptionUpdate("A", "B", "C")));
             VerifyList(dataList, "A", "B", "C");
 
             // Add at the end
             list.OnNamespaceImportChanged(
-                IProjectVersionedValueFactory<IProjectSubscriptionUpdate>.Create(GetProjectSubscriptionUpdate("A", "B", "C", "E")));
+                IProjectVersionedValueFactory.Create(GetProjectSubscriptionUpdate("A", "B", "C", "E")));
             VerifyList(dataList, "A", "B", "C", "E");
 
             // Add in the middle
             list.OnNamespaceImportChanged(
-                IProjectVersionedValueFactory<IProjectSubscriptionUpdate>.Create(GetProjectSubscriptionUpdate("A", "B", "C", "D", "E")));
+                IProjectVersionedValueFactory.Create(GetProjectSubscriptionUpdate("A", "B", "C", "D", "E")));
             VerifyList(dataList, "A", "B", "C", "D", "E");
 
             // Remove from the middle
             list.OnNamespaceImportChanged(
-                IProjectVersionedValueFactory<IProjectSubscriptionUpdate>.Create(GetProjectSubscriptionUpdate("A", "B", "D", "E")));
+                IProjectVersionedValueFactory.Create(GetProjectSubscriptionUpdate("A", "B", "D", "E")));
             VerifyList(dataList, "A", "B", "D", "E");
 
             // Addition and Deletion in jumbled order with the same no of elements as before
             list.OnNamespaceImportChanged(
-                IProjectVersionedValueFactory<IProjectSubscriptionUpdate>.Create(GetProjectSubscriptionUpdate("F", "C", "B", "E")));
+                IProjectVersionedValueFactory.Create(GetProjectSubscriptionUpdate("F", "C", "B", "E")));
             VerifyList(dataList, "B", "C", "E", "F");
         }
 
@@ -146,11 +146,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
                 }
             }
 
-            json = json + @"                }
-                                        }
-                                    }
-                                }
-                            }";
+            json += @"                }
+                                   }
+                               }
+                           }
+                       }";
             return json;
         }
 

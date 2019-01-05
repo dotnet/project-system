@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Threading;
 using System.Threading.Tasks;
@@ -11,28 +10,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
     internal partial class SDKVersionTelemetryServiceComponent
     {
-        protected class SDKVersionTelemetryServiceInstance : OnceInitializedOnceDisposedAsync, IMultiLifetimeInstance
+        internal class SDKVersionTelemetryServiceInstance : OnceInitializedOnceDisposedAsync, IMultiLifetimeInstance
         {
-            private const string TelemetryEventName = "SDKVersion";
-            private const string ProjectProperty = "Project";
-            private const string NameProperty = "Name";
-            private const string NETCoreSdkVersionProperty = "NETCoreSdkVersion";
-
             private readonly IUnconfiguredProjectVsServices _projectVsServices;
-            private readonly ISafeProjectGuidService _projectGuidSevice;
+            private readonly ISafeProjectGuidService _projectGuidService;
             private readonly ITelemetryService _telemetryService;
             private readonly IUnconfiguredProjectTasksService _unconfiguredProjectTasksService;
 
             [ImportingConstructor]
             public SDKVersionTelemetryServiceInstance(
                 IUnconfiguredProjectVsServices projectVsServices,
-                ISafeProjectGuidService projectGuidSevice,
+                ISafeProjectGuidService projectGuidService,
                 ITelemetryService telemetryService,
                 IUnconfiguredProjectTasksService unconfiguredProjectTasksService)
                 : base(projectVsServices.ThreadingService.JoinableTaskContext)
             {
                 _projectVsServices = projectVsServices;
-                _projectGuidSevice = projectGuidSevice;
+                _projectGuidService = projectGuidService;
                 _telemetryService = telemetryService;
                 _unconfiguredProjectTasksService = unconfiguredProjectTasksService;
             }
@@ -57,15 +51,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                             return;
                         }
 
-                        _telemetryService.PostProperties(
-                            TelemetryEventName,
-                            new List<(string, object)>
-                            {
-                                (ProjectProperty, projectId),
-                                (NETCoreSdkVersionProperty, version)
-                            });
+                        _telemetryService.PostProperties(TelemetryEventName.SDKVersion, new []
+                        {
+                            (TelemetryPropertyName.SDKVersionProject, (object)projectId),
+                            (TelemetryPropertyName.SDKVersionNETCoreSdkVersion, version)
+                        });
                     });
-                });
+                }, cancellationToken);
 
                 return Task.CompletedTask;
             }
@@ -74,7 +66,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             private async Task<string> GetProjectIdAsync()
             {
-                Guid projectGuid = await _projectGuidSevice.GetProjectGuidAsync();
+                Guid projectGuid = await _projectGuidService.GetProjectGuidAsync();
                 return projectGuid == Guid.Empty ? null : projectGuid.ToString();
             }
 

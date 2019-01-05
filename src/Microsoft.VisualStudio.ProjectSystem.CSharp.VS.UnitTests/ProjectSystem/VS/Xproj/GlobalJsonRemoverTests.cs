@@ -149,7 +149,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
         }
 
         [Fact]
-        public void GlobaJsonSetup_NoExistingRemover_RegistersForAdvise()
+        public void GlobalJsonSetup_NoExistingRemover_RegistersForAdvise()
         {
             UnitTestHelper.IsRunningUnitTests = true;
             GlobalJsonRemover.Remover = null;
@@ -168,7 +168,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
             GlobalJsonRemover.Remover = remover;
             Assert.False(new GlobalJsonRemover.GlobalJsonSetup().SetupRemoval(IVsSolutionFactory.Create(),
                 IServiceProviderFactory.Create(), IFileSystemFactory.Create()));
-            Assert.True(ReferenceEquals(remover, GlobalJsonRemover.Remover));
+            Assert.Same(remover, GlobalJsonRemover.Remover);
         }
 
         private int DirectoryInfoCallback(out string directory, out string solutionFile, out string opts)

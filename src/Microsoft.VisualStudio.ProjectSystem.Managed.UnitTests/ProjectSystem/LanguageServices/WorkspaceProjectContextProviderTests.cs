@@ -26,13 +26,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         }
 
         [Fact]
-        public async Task ReleaseProjectContextAsync_NullAsContext_ThrowsArgumentNull()
+        public async Task ReleaseProjectContextAsync_NullAsAccessor_ThrowsArgumentNull()
         {
             var provider = CreateInstance();
 
-            await Assert.ThrowsAsync<ArgumentNullException>(() =>
+            await Assert.ThrowsAsync<ArgumentNullException>("accessor", () =>
             {
-                return provider.ReleaseProjectContextAsync((IWorkspaceProjectContext)null);
+                return provider.ReleaseProjectContextAsync((IWorkspaceProjectContextAccessor)null);
             });
         }
 
@@ -161,7 +161,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         }
 
         [Fact]
-        public async Task CreateProjectContextAsync_ReturnsContextWithLastDesignTimeBuildSuceeededSetToFalse()
+        public async Task CreateProjectContextAsync_ReturnsContextWithLastDesignTimeBuildSucceededSetToFalse()
         {
             var context = IWorkspaceProjectContextMockFactory.Create();
             var workspaceProjectContextFactory = IWorkspaceProjectContextFactoryFactory.ImplementCreateProjectContext((_, __, ___, ____, ______, _______) => context);
@@ -195,8 +195,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             int callCount = 0;
             var projectContext = IWorkspaceProjectContextMockFactory.ImplementDispose(() => callCount++);
+            var accessor = IWorkspaceProjectContextAccessorFactory.ImplementContext(projectContext);
 
-            await provider.ReleaseProjectContextAsync(projectContext);
+            await provider.ReleaseProjectContextAsync(accessor);
 
             Assert.Equal(1, callCount);
         }
@@ -207,8 +208,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             var provider = CreateInstance();
 
             var projectContext = IWorkspaceProjectContextMockFactory.ImplementDispose(() => throw new Exception());
+            var accessor = IWorkspaceProjectContextAccessorFactory.ImplementContext(projectContext);
 
-            await provider.ReleaseProjectContextAsync(projectContext);
+            await provider.ReleaseProjectContextAsync(accessor);
         }
 
         private static WorkspaceProjectContextProvider CreateInstance(UnconfiguredProject project = null, IProjectThreadingService threadingService = null, IWorkspaceProjectContextFactory workspaceProjectContextFactory = null, ISafeProjectGuidService projectGuidService = null, IProjectRuleSnapshot projectRuleSnapshot = null)

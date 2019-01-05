@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 
         protected abstract string DirName { get; }
 
-        public AbstractAddClassProjectCommand(IPhysicalProjectTree projectTree, IUnconfiguredProjectVsServices projectVsServices, SVsServiceProvider serviceProvider)
+        protected AbstractAddClassProjectCommand(IPhysicalProjectTree projectTree, IUnconfiguredProjectVsServices projectVsServices, SVsServiceProvider serviceProvider)
         {
             Requires.NotNull(projectTree, nameof(IPhysicalProjectTree));
             Requires.NotNull(projectVsServices, nameof(IUnconfiguredProjectVsServices));
@@ -59,7 +59,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 
             Guid addItemTemplateGuid = Guid.Empty;  // Let the dialog ask the hierarchy itself
             HResult res = addItemDialog.AddProjectItemDlg(node.GetHierarchyId(), ref addItemTemplateGuid, _projectVsServices.VsProject, (uint)uiFlags,
-                DirName, VSResources.ClassTemplateName, ref strBrowseLocations, ref strFilter, out int iDontShowAgain);
+                DirName, VSResources.ClassTemplateName, ref strBrowseLocations, ref strFilter, out _);
 
             // Return true here regardless of whether or not the user clicked OK or they clicked Cancel. This ensures that some other
             // handler isn't called after we run.

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26811.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28301.62
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProjectSystemSetup", "src\ProjectSystemSetup\ProjectSystemSetup.csproj", "{9FBD7EF2-9449-486D-9FDD-FA56160AA8BB}"
 EndProject
@@ -47,37 +47,36 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.VisualStudio.Proj
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.VisualStudio.ProjectSystem.FSharp.VS.UnitTests", "src\Microsoft.VisualStudio.ProjectSystem.FSharp.VS.UnitTests\Microsoft.VisualStudio.ProjectSystem.FSharp.VS.UnitTests.csproj", "{B70FA177-894C-4964-B6A7-937A361321BF}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Templates", "Templates", "{6DE4B49E-AC38-4E35-82CD-D52731503111}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.VisualStudio.ProjectSystem.IntegrationTests", "src\Microsoft.VisualStudio.ProjectSystem.IntegrationTests\Microsoft.VisualStudio.ProjectSystem.IntegrationTests.csproj", "{FB209C68-77C0-4EE9-BCA9-0B3D5721C436}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.NetCore.CSharp.ProjectTemplates", "src\Templates\Microsoft.NetCore.CSharp.ProjectTemplates\Microsoft.NetCore.CSharp.ProjectTemplates.csproj", "{3F9AAB66-580B-40D1-94DC-1D67EA8F8D80}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.NetCore.CSharp.ProjectTemplates.Test", "src\Templates\Microsoft.NetCore.CSharp.ProjectTemplates.Test\Microsoft.NetCore.CSharp.ProjectTemplates.Test.csproj", "{3CDA4A1F-8BD1-4704-8AC7-16A647F720E9}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.NetCore.FSharp.ProjectTemplates", "src\Templates\Microsoft.NetCore.FSharp.ProjectTemplates\Microsoft.NetCore.FSharp.ProjectTemplates.csproj", "{47F8E44B-8003-4C17-A258-64958F496F78}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.NetCore.FSharp.ProjectTemplates.Test", "src\Templates\Microsoft.NetCore.FSharp.ProjectTemplates.Test\Microsoft.NetCore.FSharp.ProjectTemplates.Test.csproj", "{3540E8CB-FADA-42F7-BDB5-6459306B686B}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.NetCore.VB.ProjectTemplates", "src\Templates\Microsoft.NetCore.VB.ProjectTemplates\Microsoft.NetCore.VB.ProjectTemplates.csproj", "{6EAAD831-E5E0-478C-A681-4AF87FC30125}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.NetCore.VB.ProjectTemplates.Test", "src\Templates\Microsoft.NetCore.VB.ProjectTemplates.Test\Microsoft.NetCore.VB.ProjectTemplates.Test.csproj", "{24D38B30-F48A-4792-9F78-907814BAA3A0}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.NetStandard.CSharp.ProjectTemplates", "src\Templates\Microsoft.NetStandard.CSharp.ProjectTemplates\Microsoft.NetStandard.CSharp.ProjectTemplates.csproj", "{EBB6B471-A09B-494E-BCBF-C288A6298553}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.NetStandard.FSharp.ProjectTemplates", "src\Templates\Microsoft.NetStandard.FSharp.ProjectTemplates\Microsoft.NetStandard.FSharp.ProjectTemplates.csproj", "{DFE95971-3D5C-4474-900A-C1D874B4F323}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.NetStandard.VB.ProjectTemplates", "src\Templates\Microsoft.NetStandard.VB.ProjectTemplates\Microsoft.NetStandard.VB.ProjectTemplates.csproj", "{3446B359-058A-4AAD-8414-274458DB9E60}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles", "setup\Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles\Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles.csproj", "{46C756B9-2D8E-4453-8F06-42BBE25D1805}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.VisualStudio.NetCore.ProjectTemplates.1.x", "setup\Microsoft.VisualStudio.NetCore.ProjectTemplates.1.x\Microsoft.VisualStudio.NetCore.ProjectTemplates.1.x.csproj", "{5B4A2596-6078-415B-A6D6-08E90FFBF58C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeployTestDependencies", "src\DeployTestDependencies\DeployTestDependencies.csproj", "{892500A5-BF6B-4FD5-A7B9-5EEA20EB775F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeployIntegrationDependencies", "src\DeployIntegrationDependencies\DeployIntegrationDependencies.csproj", "{C16993CC-6063-4447-AE16-BE671AFDE08A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.NetCore.FSharp.ProjectTemplates.Web", "src\Templates\Microsoft.NetCore.FSharp.ProjectTemplates.Web\Microsoft.NetCore.FSharp.ProjectTemplates.Web.csproj", "{3EFADEFD-2BC8-4F25-947A-71CBF3FF294D}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{DD7EF107-AAD4-4C43-8A58-0DC1BC614ADE}"
+	ProjectSection(SolutionItems) = preProject
+		build\Packages.targets = build\Packages.targets
+		build\SignToolData.json = build\SignToolData.json
+		build\Versions.props = build\Versions.props
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Rulesets", "Rulesets", "{E09AD054-22FC-4E70-8889-0F3DCF1267C7}"
+	ProjectSection(SolutionItems) = preProject
+		build\Default.ruleset = build\Default.ruleset
+		build\Test.ruleset = build\Test.ruleset
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nuget", "Nuget", "{6A95E22E-6D85-4494-AEB5-FCD60A8E88A3}"
+	ProjectSection(SolutionItems) = preProject
+		src\HostAgnostic.props = src\HostAgnostic.props
+		build\Packages.targets = build\Packages.targets
+		src\VisualStudio.props = src\VisualStudio.props
+		src\VisualStudioDesigner.props = src\VisualStudioDesigner.props
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Documentation", "docs\Documentation.csproj", "{C51202A5-0C1F-4146-8059-5F7B8A048232}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -178,50 +177,10 @@ Global
 		{FB209C68-77C0-4EE9-BCA9-0B3D5721C436}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FB209C68-77C0-4EE9-BCA9-0B3D5721C436}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FB209C68-77C0-4EE9-BCA9-0B3D5721C436}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3F9AAB66-580B-40D1-94DC-1D67EA8F8D80}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3F9AAB66-580B-40D1-94DC-1D67EA8F8D80}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3F9AAB66-580B-40D1-94DC-1D67EA8F8D80}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3F9AAB66-580B-40D1-94DC-1D67EA8F8D80}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3CDA4A1F-8BD1-4704-8AC7-16A647F720E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3CDA4A1F-8BD1-4704-8AC7-16A647F720E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3CDA4A1F-8BD1-4704-8AC7-16A647F720E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3CDA4A1F-8BD1-4704-8AC7-16A647F720E9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{47F8E44B-8003-4C17-A258-64958F496F78}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{47F8E44B-8003-4C17-A258-64958F496F78}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{47F8E44B-8003-4C17-A258-64958F496F78}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{47F8E44B-8003-4C17-A258-64958F496F78}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3540E8CB-FADA-42F7-BDB5-6459306B686B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3540E8CB-FADA-42F7-BDB5-6459306B686B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3540E8CB-FADA-42F7-BDB5-6459306B686B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3540E8CB-FADA-42F7-BDB5-6459306B686B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6EAAD831-E5E0-478C-A681-4AF87FC30125}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6EAAD831-E5E0-478C-A681-4AF87FC30125}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6EAAD831-E5E0-478C-A681-4AF87FC30125}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6EAAD831-E5E0-478C-A681-4AF87FC30125}.Release|Any CPU.Build.0 = Release|Any CPU
-		{24D38B30-F48A-4792-9F78-907814BAA3A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{24D38B30-F48A-4792-9F78-907814BAA3A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{24D38B30-F48A-4792-9F78-907814BAA3A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{24D38B30-F48A-4792-9F78-907814BAA3A0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EBB6B471-A09B-494E-BCBF-C288A6298553}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EBB6B471-A09B-494E-BCBF-C288A6298553}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EBB6B471-A09B-494E-BCBF-C288A6298553}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EBB6B471-A09B-494E-BCBF-C288A6298553}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DFE95971-3D5C-4474-900A-C1D874B4F323}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DFE95971-3D5C-4474-900A-C1D874B4F323}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DFE95971-3D5C-4474-900A-C1D874B4F323}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DFE95971-3D5C-4474-900A-C1D874B4F323}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3446B359-058A-4AAD-8414-274458DB9E60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3446B359-058A-4AAD-8414-274458DB9E60}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3446B359-058A-4AAD-8414-274458DB9E60}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3446B359-058A-4AAD-8414-274458DB9E60}.Release|Any CPU.Build.0 = Release|Any CPU
 		{46C756B9-2D8E-4453-8F06-42BBE25D1805}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{46C756B9-2D8E-4453-8F06-42BBE25D1805}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{46C756B9-2D8E-4453-8F06-42BBE25D1805}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{46C756B9-2D8E-4453-8F06-42BBE25D1805}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5B4A2596-6078-415B-A6D6-08E90FFBF58C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5B4A2596-6078-415B-A6D6-08E90FFBF58C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5B4A2596-6078-415B-A6D6-08E90FFBF58C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5B4A2596-6078-415B-A6D6-08E90FFBF58C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{892500A5-BF6B-4FD5-A7B9-5EEA20EB775F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{892500A5-BF6B-4FD5-A7B9-5EEA20EB775F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{892500A5-BF6B-4FD5-A7B9-5EEA20EB775F}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -230,26 +189,15 @@ Global
 		{C16993CC-6063-4447-AE16-BE671AFDE08A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C16993CC-6063-4447-AE16-BE671AFDE08A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C16993CC-6063-4447-AE16-BE671AFDE08A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3EFADEFD-2BC8-4F25-947A-71CBF3FF294D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3EFADEFD-2BC8-4F25-947A-71CBF3FF294D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3EFADEFD-2BC8-4F25-947A-71CBF3FF294D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3EFADEFD-2BC8-4F25-947A-71CBF3FF294D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C51202A5-0C1F-4146-8059-5F7B8A048232}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C51202A5-0C1F-4146-8059-5F7B8A048232}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{3F9AAB66-580B-40D1-94DC-1D67EA8F8D80} = {6DE4B49E-AC38-4E35-82CD-D52731503111}
-		{3CDA4A1F-8BD1-4704-8AC7-16A647F720E9} = {6DE4B49E-AC38-4E35-82CD-D52731503111}
-		{47F8E44B-8003-4C17-A258-64958F496F78} = {6DE4B49E-AC38-4E35-82CD-D52731503111}
-		{3540E8CB-FADA-42F7-BDB5-6459306B686B} = {6DE4B49E-AC38-4E35-82CD-D52731503111}
-		{6EAAD831-E5E0-478C-A681-4AF87FC30125} = {6DE4B49E-AC38-4E35-82CD-D52731503111}
-		{24D38B30-F48A-4792-9F78-907814BAA3A0} = {6DE4B49E-AC38-4E35-82CD-D52731503111}
-		{EBB6B471-A09B-494E-BCBF-C288A6298553} = {6DE4B49E-AC38-4E35-82CD-D52731503111}
-		{DFE95971-3D5C-4474-900A-C1D874B4F323} = {6DE4B49E-AC38-4E35-82CD-D52731503111}
-		{3446B359-058A-4AAD-8414-274458DB9E60} = {6DE4B49E-AC38-4E35-82CD-D52731503111}
-		{5B4A2596-6078-415B-A6D6-08E90FFBF58C} = {6DE4B49E-AC38-4E35-82CD-D52731503111}
-		{3EFADEFD-2BC8-4F25-947A-71CBF3FF294D} = {6DE4B49E-AC38-4E35-82CD-D52731503111}
+		{E09AD054-22FC-4E70-8889-0F3DCF1267C7} = {DD7EF107-AAD4-4C43-8A58-0DC1BC614ADE}
+		{6A95E22E-6D85-4494-AEB5-FCD60A8E88A3} = {DD7EF107-AAD4-4C43-8A58-0DC1BC614ADE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6B652C28-D1FD-4885-A0CA-4704C54E78E7}

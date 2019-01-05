@@ -29,17 +29,17 @@
 
     <StringProperty Name="IncludeAssets" 
                     Visible="True"
-                    DisplayName="IncludeAssets"
+                    DisplayName="Included assets"
                     Description="Assets to include from this reference" />
 
     <StringProperty Name="ExcludeAssets" 
                     Visible="True"
-                    DisplayName="ExcludeAssets"
+                    DisplayName="Excluded assets"
                     Description="Assets to exclude from this reference" />
 
     <StringProperty Name="PrivateAssets" 
                     Visible="True"
-                    DisplayName="PrivateAssets"
+                    DisplayName="Private assets"
                     Description="Assets that are private in this reference" />
 
     <StringProperty Name="Name" 
@@ -48,8 +48,7 @@
 
     <StringProperty Name="OriginalItemSpec" 
                     Visible="False" 
-                    ReadOnly="True" 
-                    Description="The evaluated item name of the original reference item whose resolution resulted in this resolved reference item." />
+                    ReadOnly="True" />
 
     <StringProperty Name="Path" 
                     Visible="True" 
@@ -82,7 +81,7 @@
 
     <StringProperty Name="NoWarn" 
                     Visible="True"
-                    DisplayName="NoWarn"
+                    DisplayName="Suppress warnings"
                     Description="Comma-delimited list of warnings that should be suppressed for this package" />
 
     <BoolProperty Name="Visible"

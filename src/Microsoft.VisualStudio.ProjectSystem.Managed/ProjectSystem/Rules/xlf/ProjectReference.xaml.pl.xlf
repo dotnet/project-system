@@ -32,16 +32,6 @@
         <target state="translated">Wskazuje, czy zestawy satelickie docelowego odwołania powinny być kopiowane do katalogu wyjściowego tego projektu.</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|Project|Description">
-        <source>the Guid the solution tracks an individual project reference target with</source>
-        <target state="translated">identyfikator Guid rozwiązania śledzi docelowe odwołanie pojedynczego projektu za pomocą</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|ReferencedProjectIdentifier|Description">
-        <source>The old (VS2010 beta) way to store the Guid the solution tracks an individual project reference target with</source>
-        <target state="translated">Stary (VS2010 beta) sposób zapisywania identyfikatora Guid rozwiązania śledzącego odwołanie pojedynczego projektu za pomocą</target>
-        <note />
-      </trans-unit>
       <trans-unit id="BoolProperty|CopyLocal|DisplayName">
         <source>Copy Local</source>
         <target state="translated">Kopia lokalna</target>

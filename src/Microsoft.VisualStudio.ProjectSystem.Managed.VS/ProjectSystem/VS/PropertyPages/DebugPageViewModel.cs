@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
 
+using Microsoft.VisualStudio.PlatformUI;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 using Microsoft.VisualStudio.Shell;
@@ -450,9 +451,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 if (_environmentVariablesValid != value)
                 {
                     _environmentVariablesValid = value;
-                    if (value == true && ClearEnvironmentVariablesGridError != null)
+                    if (value == true)
                     {
-                        ClearEnvironmentVariablesGridError.Invoke(this, EventArgs.Empty);
+                        ClearEnvironmentVariablesGridError?.Invoke(this, EventArgs.Empty);
                     }
                     OnPropertyChanged(nameof(EnvironmentVariablesValid), suppressInvalidation: true);
                 }
@@ -479,7 +480,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         {
             get
             {
-                ILaunchSettingsUIProvider provider = ActiveProvider;
                 return ActiveProvider?.CustomUI;
             }
         }
@@ -606,7 +606,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             IWritableLaunchSettings newSettings = profiles.ToWritableLaunchSettings();
 
             // Since this get's reentered if the user saves or the user switches active profiles.
-            if (CurrentLaunchSettings != null && !CurrentLaunchSettings.SetttingsDiffer(newSettings))
+            if (CurrentLaunchSettings != null && !CurrentLaunchSettings.SettingsDiffer(newSettings))
             {
                 return;
             }
@@ -759,22 +759,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         }
 
 
-        private ICommand _addEnironmentVariableRowCommand;
+        private ICommand _addEnvironmentVariableRowCommand;
         public ICommand AddEnvironmentVariableRowCommand
         {
             get
             {
-                return LazyInitializer.EnsureInitialized(ref _addEnironmentVariableRowCommand, () =>
+                return LazyInitializer.EnsureInitialized(ref _addEnvironmentVariableRowCommand, () =>
                     new DelegateCommand((state) =>
                     {
                         var newRow = new NameValuePair(PropertyPageResources.EnvVariableNameWatermark, PropertyPageResources.EnvVariableValueWatermark, EnvironmentVariables);
                         EnvironmentVariables.Add(newRow);
                         EnvironmentVariablesRowSelectedIndex = EnvironmentVariables.Count - 1;
                         //Raise event to focus on 
-                        if (FocusEnvironmentVariablesGridRow != null)
-                        {
-                            FocusEnvironmentVariablesGridRow.Invoke(this, EventArgs.Empty);
-                        }
+                        FocusEnvironmentVariablesGridRow?.Invoke(this, EventArgs.Empty);
                     }));
             }
         }
@@ -924,8 +921,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
         internal bool IsNewProfileNameValid(string name)
         {
-            return LaunchProfiles.Where(
-                profile => LaunchProfile.IsSameProfileName(profile.Name, name)).Count() == 0;
+            return !LaunchProfiles.Any(
+                profile => LaunchProfile.IsSameProfileName(profile.Name, name));
         }
 
         internal string GetNewProfileName()
