@@ -141,7 +141,33 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         [AppliesTo(ProjectCapability.DependenciesTree)]
         public Task OnProjectFactoryCompletedAsync()
         {
-            return AddInitialSubscriptionsAsync();
+            return _tasksService.LoadedProjectAsync(AddInitialSubscriptionsAsync).Task;
+
+            Task AddInitialSubscriptionsAsync()
+            {
+                SubscribeToConfiguredProjectEvaluation(
+                    _activeConfiguredProjectSubscriptionService, 
+                    OnActiveConfiguredProjectEvaluatedAsync);
+
+                foreach (IDependencyCrossTargetSubscriber subscriber in Subscribers)
+                {
+                    subscriber.InitializeSubscriber(this, _activeConfiguredProjectSubscriptionService);
+                }
+
+                return Task.CompletedTask;
+            }
+
+            async Task OnActiveConfiguredProjectEvaluatedAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e)
+            {
+                if (IsDisposing || IsDisposed)
+                {
+                    return;
+                }
+
+                await EnsureInitializedAsync();
+
+                await OnConfiguredProjectEvaluatedAsync(e);
+            }
         }
 
         /// <summary>
@@ -214,44 +240,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             SnapshotRenamed?.Invoke(this, e);
 
             return Task.CompletedTask;
-        }
-
-        private void OnAggregateContextChanged(
-            AggregateCrossTargetProjectContext oldContext,
-            AggregateCrossTargetProjectContext newContext)
-        {
-            if (oldContext == null)
-            {
-                // all new rules will be sent to new context , we don't need to clean up anything
-                return;
-            }
-
-            var targetsToClean = new HashSet<ITargetFramework>();
-
-            ImmutableArray<ITargetFramework> oldTargets = oldContext.TargetFrameworks;
-
-            if (newContext == null)
-            {
-                targetsToClean.AddRange(oldTargets);
-            }
-            else
-            {
-                ImmutableArray<ITargetFramework> newTargets = newContext.TargetFrameworks;
-
-                targetsToClean.AddRange(oldTargets.Except(newTargets));
-            }
-
-            if (targetsToClean.Count == 0)
-            {
-                return;
-            }
-
-            lock (_snapshotLock)
-            {
-                _currentSnapshot = _currentSnapshot.RemoveTargets(targetsToClean);
-            }
-
-            ScheduleDependenciesUpdate();
         }
 
         private void OnSubscriberDependenciesChanged(object sender, DependencySubscriptionChangedEventArgs e)
@@ -389,55 +377,31 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             return ExecuteWithinLockAsync(() => _currentAggregateProjectContext.GetInnerConfiguredProject(target));
         }
 
-        private Task AddInitialSubscriptionsAsync()
-        {
-            JoinableTask joinableTask = _tasksService.LoadedProjectAsync(() =>
-            {
-                SubscribeToConfiguredProject(
-                    _activeConfiguredProjectSubscriptionService,
-                    e => OnProjectChangedAsync(e)); // evaluation
-
-                foreach (IDependencyCrossTargetSubscriber subscriber in Subscribers)
-                {
-                    subscriber.InitializeSubscriber(this, _activeConfiguredProjectSubscriptionService);
-                }
-
-                return Task.CompletedTask;
-            });
-
-            return joinableTask.Task;
-        }
-
-        private async Task OnProjectChangedAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e)
-        {
-            if (IsDisposing || IsDisposed)
-            {
-                return;
-            }
-
-            await EnsureInitializedAsync();
-
-            await OnProjectChangedCoreAsync(e);
-        }
-
-        private Task OnProjectChangedCoreAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e)
+        private Task OnConfiguredProjectEvaluatedAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e)
         {
             // If "TargetFrameworks" property has changed, we need to refresh the project context and subscriptions.
-            if (HasTargetFrameworksChanged(e))
+            if (HasTargetFrameworksChanged())
             {
                 return UpdateProjectContextAndSubscriptionsAsync();
             }
 
             return Task.CompletedTask;
+
+            bool HasTargetFrameworksChanged()
+            {
+                // remember actual property value and compare
+                return e.Value.ProjectChanges.TryGetValue(ConfigurationGeneral.SchemaName, out IProjectChangeDescription projectChange) &&
+                       (projectChange.Difference.ChangedProperties.Contains(ConfigurationGeneral.TargetFrameworkProperty) ||
+                        projectChange.Difference.ChangedProperties.Contains(ConfigurationGeneral.TargetFrameworksProperty));
+            }
         }
 
         private async Task UpdateProjectContextAndSubscriptionsAsync()
         {
-            AggregateCrossTargetProjectContext previousProjectContext = await ExecuteWithinLockAsync(() => _currentAggregateProjectContext);
+            // Ensure that only single thread is attempting to create a project context.
+            AggregateCrossTargetProjectContext newProjectContext = await ExecuteWithinLockAsync(TryUpdateCurrentAggregateProjectContextAsync);
 
-            AggregateCrossTargetProjectContext newProjectContext = await UpdateProjectContextAsync();
-
-            if (previousProjectContext != newProjectContext)
+            if (newProjectContext != null)
             {
                 // Dispose existing subscriptions.
                 DisposeAndClearSubscriptions();
@@ -445,16 +409,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 // Add subscriptions for the configured projects in the new project context.
                 await AddSubscriptionsAsync(newProjectContext);
             }
-        }
 
-        /// <summary>
-        /// Ensures that <see cref="_currentAggregateProjectContext"/> is updated for the latest TargetFrameworks from the project properties
-        /// and returns this value.
-        /// </summary>
-        private Task<AggregateCrossTargetProjectContext> UpdateProjectContextAsync()
-        {
-            // Ensure that only single thread is attempting to create a project context.
-            return ExecuteWithinLockAsync(async () =>
+            return;
+
+            async Task<AggregateCrossTargetProjectContext> TryUpdateCurrentAggregateProjectContextAsync()
             {
                 AggregateCrossTargetProjectContext previousContext = _currentAggregateProjectContext;
 
@@ -468,10 +426,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
                     if (!previousContext.IsCrossTargeting)
                     {
-                        ITargetFramework newTargetFramework = _targetFrameworkProvider.GetTargetFramework((string)await projectProperties.TargetFramework.GetValueAsync());
+                        string newTargetFrameworkName = (string)await projectProperties.TargetFramework.GetValueAsync();
+                        ITargetFramework newTargetFramework = _targetFrameworkProvider.GetTargetFramework(newTargetFrameworkName);
                         if (previousContext.ActiveTargetFramework.Equals(newTargetFramework))
                         {
-                            return previousContext;
+                            // No change
+                            return null;
                         }
                     }
                     else
@@ -480,9 +440,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                         ProjectConfiguration activeProjectConfiguration = _commonServices.ActiveConfiguredProject.ProjectConfiguration;
                         IImmutableSet<ProjectConfiguration> knownProjectConfigurations = await _commonServices.Project.Services.ProjectConfigurationsService.GetKnownProjectConfigurationsAsync();
                         if (knownProjectConfigurations.All(c => c.IsCrossTargeting()) &&
-                            previousContext.HasMatchingTargetFrameworks(activeProjectConfiguration, knownProjectConfigurations))
+                            HasMatchingTargetFrameworks(previousContext, activeProjectConfiguration, knownProjectConfigurations))
                         {
-                            return previousContext;
+                            // No change
+                            return null;
                         }
                     }
                 }
@@ -497,7 +458,82 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 OnAggregateContextChanged(previousContext, _currentAggregateProjectContext);
 
                 return _currentAggregateProjectContext;
-            });
+            }
+
+            bool HasMatchingTargetFrameworks(
+                AggregateCrossTargetProjectContext previousContext,
+                ProjectConfiguration activeProjectConfiguration,
+                IReadOnlyCollection<ProjectConfiguration> knownProjectConfigurations)
+            {
+                Assumes.True(activeProjectConfiguration.IsCrossTargeting());
+
+                ITargetFramework activeTargetFramework = _targetFrameworkProvider.GetTargetFramework(activeProjectConfiguration.Dimensions[ConfigurationGeneral.TargetFrameworkProperty]);
+                if (!previousContext.ActiveTargetFramework.Equals(activeTargetFramework))
+                {
+                    // Active target framework is different.
+                    return false;
+                }
+
+                var targetFrameworkMonikers = knownProjectConfigurations
+                    .Select(c => c.Dimensions[ConfigurationGeneral.TargetFrameworkProperty])
+                    .Distinct()
+                    .ToList();
+
+                if (targetFrameworkMonikers.Count != previousContext.TargetFrameworks.Length)
+                {
+                    // Different number of target frameworks.
+                    return false;
+                }
+
+                foreach (string targetFrameworkMoniker in targetFrameworkMonikers)
+                {
+                    ITargetFramework targetFramework = _targetFrameworkProvider.GetTargetFramework(targetFrameworkMoniker);
+
+                    if (!previousContext.TargetFrameworks.Contains(targetFramework))
+                    {
+                        // Differing TargetFramework
+                        return false;
+                    }
+                }
+
+                return true;
+            }
+
+            void OnAggregateContextChanged(
+                AggregateCrossTargetProjectContext oldContext,
+                AggregateCrossTargetProjectContext newContext)
+            {
+                if (oldContext == null)
+                {
+                    // all new rules will be sent to new context, we don't need to clean up anything
+                    return;
+                }
+
+                var targetsToClean = new HashSet<ITargetFramework>();
+
+                ImmutableArray<ITargetFramework> oldTargets = oldContext.TargetFrameworks;
+
+                if (newContext == null)
+                {
+                    targetsToClean.AddRange(oldTargets);
+                }
+                else
+                {
+                    ImmutableArray<ITargetFramework> newTargets = newContext.TargetFrameworks;
+
+                    targetsToClean.AddRange(oldTargets.Except(newTargets));
+                }
+
+                if (targetsToClean.Count != 0)
+                {
+                    lock (_snapshotLock)
+                    {
+                        _currentSnapshot = _currentSnapshot.RemoveTargets(targetsToClean);
+                    }
+
+                    ScheduleDependenciesUpdate();
+                }
+            }
         }
 
         private Task AddSubscriptionsAsync(AggregateCrossTargetProjectContext newProjectContext)
@@ -510,9 +546,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 {
                     foreach (ConfiguredProject configuredProject in newProjectContext.InnerConfiguredProjects)
                     {
-                        SubscribeToConfiguredProject(
+                        SubscribeToConfiguredProjectEvaluation(
                             configuredProject.Services.ProjectSubscription,
-                            e => OnProjectChangedCoreAsync(e)); // evaluation
+                            OnConfiguredProjectEvaluatedAsync);
                     }
 
                     foreach (IDependencyCrossTargetSubscriber subscriber in Subscribers)
@@ -527,7 +563,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             return joinableTask.Task;
         }
 
-        private void SubscribeToConfiguredProject(
+        private void SubscribeToConfiguredProjectEvaluation(
             IProjectSubscriptionService subscriptionService,
             Func<IProjectVersionedValue<IProjectSubscriptionUpdate>, Task> action)
         {
@@ -535,14 +571,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 subscriptionService.ProjectRuleSource.SourceBlock.LinkToAsyncAction(
                     action,
                     ruleNames: ConfigurationGeneral.SchemaName));
-        }
-
-        private static bool HasTargetFrameworksChanged(IProjectVersionedValue<IProjectSubscriptionUpdate> e)
-        {
-            // remember actual property value and compare
-            return e.Value.ProjectChanges.TryGetValue(ConfigurationGeneral.SchemaName, out IProjectChangeDescription projectChange) &&
-                   (projectChange.Difference.ChangedProperties.Contains(ConfigurationGeneral.TargetFrameworkProperty) ||
-                    projectChange.Difference.ChangedProperties.Contains(ConfigurationGeneral.TargetFrameworksProperty));
         }
 
         private void DisposeAndClearSubscriptions()

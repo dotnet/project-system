@@ -2,7 +2,6 @@
 
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Linq;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 {
@@ -51,48 +50,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         public ConfiguredProject GetInnerConfiguredProject(ITargetFramework target)
         {
             return _configuredProjectByTargetFramework.FirstOrDefault((x, t) => t.Equals(x.Key), target).Value;
-        }
-
-        /// <summary>
-        /// Returns true if this cross-targeting aggregate project context has the same set of target frameworks and active target framework as the given active and known configurations.
-        /// </summary>
-        public bool HasMatchingTargetFrameworks(ProjectConfiguration activeProjectConfiguration,
-                                                IReadOnlyCollection<ProjectConfiguration> knownProjectConfigurations)
-        {
-            Assumes.True(IsCrossTargeting);
-            Assumes.True(activeProjectConfiguration.IsCrossTargeting());
-            Assumes.True(knownProjectConfigurations.All(c => c.IsCrossTargeting()));
-
-            ITargetFramework activeTargetFramework = _targetFrameworkProvider.GetTargetFramework(activeProjectConfiguration.Dimensions[ConfigurationGeneral.TargetFrameworkProperty]);
-            if (!ActiveTargetFramework.Equals(activeTargetFramework))
-            {
-                // Active target framework is different.
-                return false;
-            }
-
-            var targetFrameworkMonikers = knownProjectConfigurations
-                .Select(c => c.Dimensions[ConfigurationGeneral.TargetFrameworkProperty])
-                .Distinct()
-                .ToList();
-
-            if (targetFrameworkMonikers.Count != TargetFrameworks.Length)
-            {
-                // Different number of target frameworks.
-                return false;
-            }
-
-            foreach (string targetFrameworkMoniker in targetFrameworkMonikers)
-            {
-                ITargetFramework targetFramework = _targetFrameworkProvider.GetTargetFramework(targetFrameworkMoniker);
-
-                if (!TargetFrameworks.Contains(targetFramework))
-                {
-                    // Differing TargetFramework
-                    return false;
-                }
-            }
-
-            return true;
         }
     }
 }
