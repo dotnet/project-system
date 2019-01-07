@@ -334,7 +334,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             }
         }
 
-        public async Task<AggregateCrossTargetProjectContext> GetCurrentAggregateProjectContext()
+        public async Task<AggregateCrossTargetProjectContext> GetCurrentAggregateProjectContextAsync()
         {
             if (IsDisposing || IsDisposed)
             {
