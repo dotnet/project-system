@@ -65,7 +65,7 @@
   </Rules>
   <Rules AnalyzerId="Microsoft.NetFramework.Analyzers" RuleNamespace="Microsoft.NetFramework.Analyzers">
     <Rule Id="CA2153" Action="None" /> <!-- TODO do not catch CorruptedStateExceptions -->
-    <Rule Id="CA2235" Action="None" /> <!-- TODO mark all non-serializable fields -->
+    <Rule Id="CA2235" Action="Error" />
     <Rule Id="CA3075" Action="Error" />
   </Rules>
   <Rules AnalyzerId="Microsoft.CodeAnalysis.Analyzers" RuleNamespace="Microsoft.CodeAnalysis.Analyzers">
