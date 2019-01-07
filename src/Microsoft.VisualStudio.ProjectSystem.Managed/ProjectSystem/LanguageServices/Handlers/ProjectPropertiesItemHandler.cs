@@ -21,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
         public string ProjectEvaluationRule
         {
-            get { return ConfigurationGeneral.SchemaName; }
+            get { return LanguageService.SchemaName; }
         }
 
         public void Handle(IComparable version, IProjectChangeDescription projectChange, bool isActiveContext, IProjectLogger logger)
@@ -32,6 +32,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             VerifyInitialized();
 
+            foreach (string name in projectChange.Difference.ChangedProperties)
+            {
+                string value = projectChange.After.Properties[name];
+
+                // It is a property we're specifically aware of?
+                if (TryHandleSpecificProperties(name, value, logger))
+                    continue;
+
+                // Otherwise, just pass it through
+                logger.WriteLine("{0}: {1}", name, value);
+                Context.SetProperty(name, value);
+            }
+        }
+
+        private bool TryHandleSpecificProperties(string name, string value, IProjectLogger logger)
+        {
             // The language service wants both the intermediate (bin\obj) and output (bin\debug)) paths
             // so that it can automatically hook up project-to-project references. It does this by matching the 
             // bin output path with the another project's /reference argument, if they match, then it automatically 
@@ -39,15 +55,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             // command-line argument and set via one of the other handlers, where as the latter is calculated via 
             // the TargetPath property and explicitly set on the context.
 
-            if (projectChange.Difference.ChangedProperties.Contains(ConfigurationGeneral.TargetPathProperty))
+            if (StringComparers.PropertyNames.Equals(name, ConfigurationGeneral.TargetPathProperty))
             {
-                string newBinOutputPath = projectChange.After.Properties[ConfigurationGeneral.TargetPathProperty];
-                if (!string.IsNullOrEmpty(newBinOutputPath))
+                if (!string.IsNullOrEmpty(value))
                 {
-                    logger.WriteLine("BinOutputPath: {0}", newBinOutputPath);
-                    Context.BinOutputPath = newBinOutputPath;
+                    logger.WriteLine("BinOutputPath: {0}", value);
+                    Context.BinOutputPath = value;
                 }
+
+                return true;
             }
+
+            return false;
         }
     }
 }
