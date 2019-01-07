@@ -57,9 +57,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         private int _isInitialized;
 
         /// <summary>
-        /// Current AggregateCrossTargetProjectContext - accesses to this field must be done with a lock.
-        /// Note that at any given time, we can have only a single non-disposed aggregate project context.
+        ///     Current <see cref="AggregateCrossTargetProjectContext"/>, which is an immutable map of
+        ///     configured project to target framework.
         /// </summary>
+        /// <remarks>
+        /// <para>
+        ///     Updates of this field are serialized within a lock, but reads are free threaded as any
+        ///     potential race can only be handled outside this class.
+        /// </para>
+        /// <para>
+        ///     Value is null before initialization, and not null after.
+        /// </para>
+        /// </remarks>
         private AggregateCrossTargetProjectContext _currentAggregateProjectContext;
 
         [ImportingConstructor]
@@ -334,12 +343,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
             await EnsureInitializedAsync();
 
-            return await ExecuteWithinLockAsync(() => _currentAggregateProjectContext);
+            return _currentAggregateProjectContext;
         }
 
-        public Task<ConfiguredProject> GetConfiguredProject(ITargetFramework target)
+        public ConfiguredProject GetConfiguredProject(ITargetFramework target)
         {
-            return ExecuteWithinLockAsync(() => _currentAggregateProjectContext.GetInnerConfiguredProject(target));
+            return _currentAggregateProjectContext.GetInnerConfiguredProject(target);
         }
 
         private Task OnConfiguredProjectEvaluatedAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e)
@@ -422,11 +431,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 await _activeProjectConfigurationRefreshService.RefreshActiveProjectConfigurationAsync();
 
                 // Create new project context.
-                _currentAggregateProjectContext = await _contextProvider.Value.CreateProjectContextAsync();
+                AggregateCrossTargetProjectContext newContext = await _contextProvider.Value.CreateProjectContextAsync();
 
-                OnAggregateContextChanged(previousContext, _currentAggregateProjectContext);
+                _currentAggregateProjectContext = newContext;
 
-                return _currentAggregateProjectContext;
+                OnAggregateContextChanged(previousContext, newContext);
+
+                return newContext;
             }
 
             bool HasMatchingTargetFrameworks(

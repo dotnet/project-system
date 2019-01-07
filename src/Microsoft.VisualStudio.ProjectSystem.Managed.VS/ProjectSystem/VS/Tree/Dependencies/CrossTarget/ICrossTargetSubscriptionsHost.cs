@@ -7,6 +7,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
     internal interface ICrossTargetSubscriptionsHost
     {
         Task<AggregateCrossTargetProjectContext> GetCurrentAggregateProjectContext();
-        Task<ConfiguredProject> GetConfiguredProject(ITargetFramework target);
+        ConfiguredProject GetConfiguredProject(ITargetFramework target);
     }
 }
