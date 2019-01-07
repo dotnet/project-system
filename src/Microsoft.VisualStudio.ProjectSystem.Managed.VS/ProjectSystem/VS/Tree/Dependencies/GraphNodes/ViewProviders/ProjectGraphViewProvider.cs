@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Linq;
 
@@ -11,6 +12,10 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.ViewProviders
 {
+    /// <summary>
+    /// Provides the graph of project reference dependencies.
+    /// Allows drilling into the transitive dependencies of a given <c>&lt;ProjectReference&gt;</c>.
+    /// </summary>
     [Export(typeof(IDependenciesGraphViewProvider))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
     [Order(Order)]
@@ -96,6 +101,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
             return snapshot.Targets[targetFramework];
         }
 
+        /// <summary>
+        /// Returns true if the updated dependency's path matches the updated snapshot's project path,
+        /// meaning the project dependency has changed and we want to try and update.
+        /// </summary>
+        /// <inheritdoc />
         public override bool ShouldTrackChanges(string projectPath, string updatedProjectPath, IDependency dependency)
         {
             string dependencyProjectPath = dependency.FullPath;
@@ -114,14 +124,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
                             dependencyGraphNode,
                             out IReadOnlyList<DependencyNodeInfo> nodesToAdd,
                             out IReadOnlyList<DependencyNodeInfo> nodesToRemove,
-                            out System.Collections.Generic.IReadOnlyCollection<IDependency> updatedChildren,
+                            out ImmutableArray<IDependency> updatedChildren,
                             out string dependencyProjectPath))
             {
                 return false;
             }
 
+            bool anyChanges = false;
+
             foreach (DependencyNodeInfo nodeToRemove in nodesToRemove)
             {
+                anyChanges = true;
                 Builder.RemoveGraphNode(graphContext, dependencyProjectPath, nodeToRemove.Id, dependencyGraphNode);
             }
 
@@ -133,6 +146,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
                     continue;
                 }
 
+                anyChanges = true;
                 Builder.AddGraphNode(
                     graphContext,
                     dependencyProjectPath,
@@ -144,7 +158,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
             dependencyGraphNode.SetValue(DependenciesGraphSchema.DependencyIdProperty, updatedDependency.Id);
             dependencyGraphNode.SetValue(DependenciesGraphSchema.ResolvedProperty, updatedDependency.Resolved);
 
-            return true;
+            return anyChanges;
         }
 
         public override bool MatchSearchResults(
@@ -192,7 +206,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
             GraphNode dependencyGraphNode,
             out IReadOnlyList<DependencyNodeInfo> nodesToAdd,
             out IReadOnlyList<DependencyNodeInfo> nodesToRemove,
-            out System.Collections.Generic.IReadOnlyCollection<IDependency> updatedChildren,
+            out ImmutableArray<IDependency> updatedChildren,
             out string dependencyProjectPath)
         {
             ITargetedDependenciesSnapshot snapshot = GetSnapshot(updatedDependency);

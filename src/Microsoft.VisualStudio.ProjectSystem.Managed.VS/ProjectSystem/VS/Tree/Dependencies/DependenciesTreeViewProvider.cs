@@ -23,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     [Export(typeof(IDependenciesTreeViewProvider))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
     [Order(Order)]
-    internal class GroupedByTargetTreeViewProvider : IDependenciesTreeViewProvider
+    internal sealed class DependenciesTreeViewProvider : IDependenciesTreeViewProvider
     {
         private const int Order = 1000;
 
@@ -36,7 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         private readonly OrderPrecedenceImportCollection<IProjectTreePropertiesProvider> _projectTreePropertiesProviders;
 
         [ImportingConstructor]
-        public GroupedByTargetTreeViewProvider(
+        public DependenciesTreeViewProvider(
             IDependenciesTreeServices treeServices,
             IDependenciesViewModelFactory viewModelFactory,
             IUnconfiguredProjectCommonServices commonServices)
