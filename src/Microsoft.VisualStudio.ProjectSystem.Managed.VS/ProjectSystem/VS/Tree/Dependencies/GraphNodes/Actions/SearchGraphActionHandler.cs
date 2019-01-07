@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 
-using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.GraphModel;
 using Microsoft.VisualStudio.GraphModel.Schemas;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
@@ -21,25 +20,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
     [Export(typeof(IDependenciesGraphActionHandler))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
     [Order(Order)]
-    internal class SearchGraphActionHandler : GraphActionHandlerBase
+    internal sealed class SearchGraphActionHandler : GraphActionHandlerBase
     {
         public const int Order = 120;
 
+        private readonly IDependenciesGraphBuilder _builder;
+
         [ImportingConstructor]
-        public SearchGraphActionHandler(IDependenciesGraphBuilder builder,
-                                        IAggregateDependenciesSnapshotProvider aggregateSnapshotProvider)
-            : base(builder, aggregateSnapshotProvider)
+        public SearchGraphActionHandler(
+            IDependenciesGraphBuilder builder,
+            IAggregateDependenciesSnapshotProvider aggregateSnapshotProvider)
+            : base(aggregateSnapshotProvider)
         {
+            _builder = builder;
         }
 
-        public override bool CanHandleRequest(IGraphContext graphContext)
+        public override bool TryHandleRequest(IGraphContext graphContext)
         {
-            return graphContext.Direction == GraphContextDirection.Custom;
-        }
-
-        public override bool HandleRequest(IGraphContext graphContext)
-        {
-            Search(graphContext);
+            if (graphContext.Direction == GraphContextDirection.Custom)
+            {
+                Search(graphContext);
+            }
 
             return false;
         }
@@ -96,8 +97,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
                         if (!cachedDependencyToMatchingResultsMap
                                 .TryGetValue(topLevelDependency.Id, out HashSet<IDependency> topLevelDependencyMatches))
                         {
-                            IDependenciesGraphViewProvider viewProvider = ViewProviders
-                                .FirstOrDefaultValue((x, d) => x.SupportsDependency(d), topLevelDependency);
+                            IDependenciesGraphViewProvider viewProvider = FindViewProvider(topLevelDependency);
 
                             if (viewProvider == null)
                             {
@@ -132,12 +132,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
                             continue;
                         }
 
-                        GraphNode topLevelNode = Builder.AddTopLevelGraphNode(graphContext,
+                        GraphNode topLevelNode = _builder.AddTopLevelGraphNode(graphContext,
                                                                 snapshot.ProjectPath,
                                                                 topLevelDependency.ToViewModel(targetedSnapshot));
                         foreach (IDependency matchedDependency in topLevelDependencyMatches)
                         {
-                            GraphNode matchedDependencyNode = Builder.AddGraphNode(graphContext,
+                            GraphNode matchedDependencyNode = _builder.AddGraphNode(graphContext,
                                                                     snapshot.ProjectPath,
                                                                     topLevelNode,
                                                                     matchedDependency.ToViewModel(targetedSnapshot));

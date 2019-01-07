@@ -31,9 +31,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
         /// <param name="projectPath">The project path stored on the graph node that we want to update.</param>
         /// <param name="updatedProjectPath">The project path according to the updated snapshot we want to apply changes from.</param>
         /// <param name="dependency">The dependency from the updated snapshot with ID matching the graph node we want to update.</param>
-        bool ShouldTrackChanges(string projectPath, string updatedProjectPath, IDependency dependency);
+        bool ShouldApplyChanges(string projectPath, string updatedProjectPath, IDependency dependency);
 
-        bool TrackChanges(
+        bool ApplyChanges(
             IGraphContext graphContext,
             string projectPath,
             IDependency updatedDependency,

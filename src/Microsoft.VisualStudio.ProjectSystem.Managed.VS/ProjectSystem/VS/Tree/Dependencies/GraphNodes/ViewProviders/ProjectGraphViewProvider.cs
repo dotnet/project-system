@@ -23,18 +23,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
     {
         public const int Order = 110;
 
+        private readonly IAggregateDependenciesSnapshotProvider _aggregateSnapshotProvider;
+        private readonly ITargetFrameworkProvider _targetFrameworkProvider;
+
         [ImportingConstructor]
         public ProjectGraphViewProvider(IDependenciesGraphBuilder builder,
                                         IAggregateDependenciesSnapshotProvider aggregateSnapshotProvider,
                                         ITargetFrameworkProvider targetFrameworkProvider)
             : base(builder)
         {
-            AggregateSnapshotProvider = aggregateSnapshotProvider;
-            TargetFrameworkProvider = targetFrameworkProvider;
+            _aggregateSnapshotProvider = aggregateSnapshotProvider;
+            _targetFrameworkProvider = targetFrameworkProvider;
         }
-
-        private IAggregateDependenciesSnapshotProvider AggregateSnapshotProvider { get; }
-        private ITargetFrameworkProvider TargetFrameworkProvider { get; }
 
         public override bool SupportsDependency(IDependency dependency)
         {
@@ -83,14 +83,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
         private ITargetedDependenciesSnapshot GetSnapshot(IDependency dependency)
         {
             IDependenciesSnapshot snapshot =
-                AggregateSnapshotProvider.GetSnapshotProvider(dependency.FullPath)?.CurrentSnapshot;
+                _aggregateSnapshotProvider.GetSnapshotProvider(dependency.FullPath)?.CurrentSnapshot;
 
             if (snapshot == null)
             {
                 return null;
             }
 
-            ITargetFramework targetFramework = TargetFrameworkProvider.GetNearestFramework(
+            ITargetFramework targetFramework = _targetFrameworkProvider.GetNearestFramework(
                                     dependency.TargetFramework, snapshot.Targets.Keys);
 
             if (targetFramework == null)
@@ -106,14 +106,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
         /// meaning the project dependency has changed and we want to try and update.
         /// </summary>
         /// <inheritdoc />
-        public override bool ShouldTrackChanges(string projectPath, string updatedProjectPath, IDependency dependency)
+        public override bool ShouldApplyChanges(string projectPath, string updatedProjectPath, IDependency dependency)
         {
             string dependencyProjectPath = dependency.FullPath;
             return !string.IsNullOrEmpty(dependencyProjectPath)
                     && dependencyProjectPath.Equals(updatedProjectPath, StringComparison.OrdinalIgnoreCase);
         }
 
-        public override bool TrackChanges(
+        public override bool ApplyChanges(
                     IGraphContext graphContext,
                     string projectPath,
                     IDependency updatedDependency,
@@ -124,11 +124,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
                             dependencyGraphNode,
                             out IReadOnlyList<DependencyNodeInfo> nodesToAdd,
                             out IReadOnlyList<DependencyNodeInfo> nodesToRemove,
-                            out ImmutableArray<IDependency> updatedChildren,
-                            out string dependencyProjectPath))
+                            out ImmutableArray<IDependency> updatedChildren))
             {
                 return false;
             }
+
+            string dependencyProjectPath = updatedDependency.FullPath;
 
             bool anyChanges = false;
 
@@ -186,7 +187,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
                 return true;
             }
 
-            ITargetFramework nearestTargetFramework = TargetFrameworkProvider.GetNearestFramework(
+            ITargetFramework nearestTargetFramework = _targetFrameworkProvider.GetNearestFramework(
                 topLevelDependency.TargetFramework,
                 contextResults.Select(x => x.TargetFramework));
             if (nearestTargetFramework == null)
@@ -206,8 +207,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
             GraphNode dependencyGraphNode,
             out IReadOnlyList<DependencyNodeInfo> nodesToAdd,
             out IReadOnlyList<DependencyNodeInfo> nodesToRemove,
-            out ImmutableArray<IDependency> updatedChildren,
-            out string dependencyProjectPath)
+            out ImmutableArray<IDependency> updatedChildren)
         {
             ITargetedDependenciesSnapshot snapshot = GetSnapshot(updatedDependency);
 
@@ -216,11 +216,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
                 nodesToAdd = default;
                 nodesToRemove = default;
                 updatedChildren = default;
-                dependencyProjectPath = default;
                 return false;
             }
 
-            dependencyProjectPath = updatedDependency.FullPath;
             updatedChildren = snapshot.TopLevelDependencies;
             IReadOnlyList<DependencyNodeInfo> existingChildren = GetExistingChildren(dependencyGraphNode);
             IReadOnlyList<DependencyNodeInfo> updatedChildrenInfo = updatedChildren.Select(x => DependencyNodeInfo.FromDependency(x)).ToList();
