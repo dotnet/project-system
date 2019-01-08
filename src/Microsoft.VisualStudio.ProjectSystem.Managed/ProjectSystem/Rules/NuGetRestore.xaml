@@ -38,7 +38,7 @@
     </StringProperty>    
     <StringProperty Name="TargetFrameworkMoniker" DisplayName="Target Framework Moniker">
         <StringProperty.DataSource>
-            <DataSource Persistence="ProjectFileWithInterception" PersistedName="TargetFrameworkMoniker" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+            <DataSource Persistence="ProjectFileWithInterceptionViaSnapshot" PersistedName="TargetFrameworkMoniker" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
         </StringProperty.DataSource>
     </StringProperty>
 

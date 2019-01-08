@@ -23,19 +23,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.ProjectPropertiesProviders
 
             var project = UnconfiguredProjectFactory.Create();
             var properties = ProjectPropertiesFactory.Create(project, data);
-            var instanceProvider = IProjectInstancePropertiesProviderFactory.Create();
+            var delegateProvider = IProjectPropertiesProviderFactory.Create();
 
-            var delegatePropertiesMock = IProjectPropertiesFactory
+            var instancePropertiesMock = IProjectPropertiesFactory
                 .MockWithProperty(TargetFrameworkPropertyName);
 
-            var delegateProperties = delegatePropertiesMock.Object;
-            var delegateProvider = IProjectPropertiesProviderFactory.Create(delegateProperties);
+            var instanceProperties = instancePropertiesMock.Object;
+            var instanceProvider = IProjectInstancePropertiesProviderFactory.ImplementsGetCommonProperties(instanceProperties);
 
             var targetFrameworkProvider = new TargetFrameworkValueProvider(properties);
             var providerMetadata = IInterceptingPropertyValueProviderMetadataFactory.Create(TargetFrameworkPropertyName);
             var lazyArray = new[] { new Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>(
                 () => targetFrameworkProvider, providerMetadata) };
-            return new ProjectFileInterceptedProjectPropertiesProvider(delegateProvider, instanceProvider, project, lazyArray);
+            return new ProjectFileInterceptedViaSnapshotProjectPropertiesProvider(delegateProvider, instanceProvider, project, lazyArray);
         }
 
         [Fact]
@@ -44,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.ProjectPropertiesProviders
             var configuredTargetFramework = new FrameworkName(".NETFramework", new Version(4, 5));
             var expectedTargetFrameworkPropertyValue = (uint)0x40005;
             var provider = CreateInstance(configuredTargetFramework);
-            var properties = provider.GetProperties("path/to/project.testproj", null, null);
+            var properties = provider.GetCommonProperties(null);
             var propertyValueStr = await properties.GetEvaluatedPropertyValueAsync(TargetFrameworkPropertyName);
             Assert.True(uint.TryParse(propertyValueStr, out uint propertyValue));
             Assert.Equal(expectedTargetFrameworkPropertyValue, propertyValue);

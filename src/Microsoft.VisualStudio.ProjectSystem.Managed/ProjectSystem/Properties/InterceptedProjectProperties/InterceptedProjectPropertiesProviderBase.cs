@@ -28,6 +28,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         public override IProjectProperties GetProperties(string file, string itemType, string item)
         {
             IProjectProperties defaultProperties = base.GetProperties(file, itemType, item);
+            return InterceptProperties(defaultProperties);
+        }
+
+        protected IProjectProperties InterceptProperties(IProjectProperties defaultProperties)
+        {
             return _interceptingValueProviders.IsDefaultOrEmpty ? defaultProperties : new InterceptedProjectProperties(_interceptingValueProviders, defaultProperties);
         }
     }
