@@ -87,6 +87,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
         {
             ThreadHelper.JoinableTaskFactory.RunAsync(async () =>
             {
+                bool anyChanges = false;
+
                 try
                 {
                     await InitializeAsync();
@@ -95,6 +97,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
                     {
                         if (handler.Value.TryHandleRequest(context))
                         {
+                            anyChanges = true;
+
                             _changeTracker.RegisterGraphContext(context);
 
                             // Only one handler should succeed
@@ -105,7 +109,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
                 finally
                 {
                     // OnCompleted must be called to display changes 
-                    context.OnCompleted();
+                    if (anyChanges)
+                    {
+                        context.OnCompleted();
+                    }
                 }
             });
         }
