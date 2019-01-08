@@ -211,7 +211,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
                     .ImageType = CType(_UIImageType.IT_Bitmap, UInteger),
                     .Format = CType(_UIDataFormat.DF_WinForms, UInteger),
                     .LogicalWidth = width,
-                    .LogicalHeight = width
+                    .LogicalHeight = height
                 }
 
                 Dim backgroundValue As UInteger = ConvertColorToUInteger(background)
