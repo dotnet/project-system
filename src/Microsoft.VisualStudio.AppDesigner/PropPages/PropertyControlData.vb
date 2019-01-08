@@ -1433,9 +1433,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </param>
         ''' <remarks></remarks>
         Public Shared Sub GetAllPropertyValuesNative(Descriptor As PropertyDescriptor, Extenders As Object(), ByRef Values As Object(), ByRef ValueOrIndeterminate As Object)
-            Values = Nothing
-            ValueOrIndeterminate = Nothing
-
             If Extenders Is Nothing Then
                 Throw New ArgumentNullException(NameOf(Extenders))
             End If

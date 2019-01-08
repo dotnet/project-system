@@ -427,8 +427,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             If IsCurrentCellDirty Then
                 'We have a cell dirty.  We should commit it.  However, we need to verify that it's okay to commit
                 '  (e.g., validate the Name, etc.), so we'll validate the cell first.
-                Dim Cancel As Boolean = False
-                Cancel = Not ValidateCell(CurrentCell.RowIndex, CurrentCell.ColumnIndex, CStr(CurrentCell.EditedFormattedValue))
+                Dim Cancel As Boolean = Not ValidateCell(CurrentCell.RowIndex, CurrentCell.ColumnIndex, CStr(CurrentCell.EditedFormattedValue))
                 If Not Cancel Then
                     'The cell has validated successfully.  Go ahead and commit the changes.
                     EndEdit(DataGridViewDataErrorContexts.Commit)
@@ -501,8 +500,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <returns>True if the cell validates, or False if it fails.</returns>
         ''' <remarks></remarks>
         Protected Function ValidateCell(RowIndex As Integer, ColumnIndex As Integer, FormattedValue As String, Optional ByRef Exception As Exception = Nothing) As Boolean
-            Dim Cancel As Boolean = False
-
             If Rows(RowIndex).ReadOnly OrElse Rows.SharedRow(RowIndex).Cells(ColumnIndex).ReadOnly Then
                 'No reason to do any checking for cells that we don't allow the user to change
                 Return True
@@ -814,7 +811,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             '... Add any remaining shared rows that we've accumulated
             If SharedRowsToAdd > 0 Then
                 Rows.AddCopies(IndexOfFirstSharableRow, SharedRowsToAdd)
-                SharedRowsToAdd = 0
             End If
 
             'Verify we've added the correct number of rows
@@ -1116,8 +1112,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Select Case e.ColumnIndex
                 Case COLUMN_NAME
                     Debug.WriteLineIf(Switches.RSEVirtualStringTable.TraceVerbose, "RSEVirtualStringTable: OnCellValuePushed: Name: " & CStr(value))
-
-                    Dim NewName As String = CStr(value)
                     Dim NewParsedName As String = "" 'May be different from NewName in that blanks are automatically trimmed
 
                     If Not Resource.ValidateName(CStr(value), Resource.Name, NewParsedName) Then
@@ -1660,8 +1654,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' </summary>
             Private Shared Function GetColumnValue(obj As Object, column As Integer) As String
                 If TypeOf obj Is Resource Then
-                    Dim value As String = Nothing
-                    value = GetResourceCellStringValue(DirectCast(obj, Resource), column)
+                    Dim value As String = GetResourceCellStringValue(DirectCast(obj, Resource), column)
                     If value IsNot Nothing Then
                         Return value
                     End If

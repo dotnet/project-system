@@ -275,9 +275,11 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
                 Exit Sub
             End If
 
+
             ' Prompt the user if necessary.
-            Dim addExtensions As Boolean = True
             Dim assemblyOption As AssemblyOption = _extensibilitySettings.GetAssemblyAutoAdd(assemblyFullName)
+
+            Dim addExtensions As Boolean
             If assemblyOption = AssemblyOption.Prompt Then
                 Dim addExtensionDialog As AssemblyOptionDialog =
                     AssemblyOptionDialog.GetAssemblyOptionDialog(
@@ -346,11 +348,15 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
                 End If
             End If
 
+
             ' Either there's a pending "Add Foo" activity or some project items to remove. Prompt if necessary.
-            Dim removeExtensions As Boolean = True
             Dim assemblyOption As AssemblyOption = _extensibilitySettings.GetAssemblyAutoRemove(assemblyFullName)
+
+            Dim removeExtensions As Boolean
             If assemblyOption = AssemblyOption.Prompt Then
-                Dim itemList As IList = Nothing
+
+                Dim itemList As IList
+
                 If previousAddActivityIndex > 0 Then
                     itemList = _pendingAssemblyChangesList(previousAddActivityIndex).ExtensionTemplates
                 Else

@@ -817,11 +817,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
                         elementTagStart, elementTagEndPlusOne)
                 Else
                     Dim valueStart As Location
-                    Dim valueEndPlusOne As Location = Nothing
-
-                    'The element tag is of the <xyz>blah</xyz> form.  The reader is at the 'x' in "xyz"
-
-                    Dim foundEndTag As Boolean = False
                     Dim unescapedValue As String
 
                     'Find the start of the content (reader's location after doing a Read through
@@ -846,7 +841,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
 
                     'Reader is at location 'x' of </xyz>.  So we want -2 from this location.
                     Dim currentPosition2 As New Location(reader)
-                    valueEndPlusOne = New Location(reader).Shift(-2)
+                    Dim valueEndPlusOne As Location = New Location(reader).Shift(-2)
 
                     'Get the inner text and unescape it.
                     Dim innerText As String = GetText(valueStart, valueEndPlusOne)

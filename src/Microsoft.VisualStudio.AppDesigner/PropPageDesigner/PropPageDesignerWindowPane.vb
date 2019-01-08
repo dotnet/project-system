@@ -32,7 +32,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <returns></returns>
         ''' <remarks></remarks>
         Private Function GetPropPageDesignerView() As PropPageDesignerView
-            Dim PPDView As PropPageDesignerView = Nothing
             If View IsNot Nothing AndAlso View.Controls IsNot Nothing AndAlso View.Controls.Count > 0 Then
                 Return TryCast(View.Controls(0), PropPageDesignerView)
             End If

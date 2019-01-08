@@ -25,14 +25,14 @@ Namespace Microsoft.VisualStudio.Editors.AddImports
             If (i < input.Length - 1) Then
                 mnemonicChar = input(i + 1)
 
-                Dim first As String = ""
                 If (i > 0) Then
-                    first = input.Substring(0, i)
+                    Dim first As String = input.Substring(0, i)
+
                 End If
 
-                Dim second As String = ""
                 If (i < input.Length - 2) Then
-                    second = input.Substring(i + 2, input.Length - i - 2)
+                    Dim second As String = input.Substring(i + 2, input.Length - i - 2)
+
                 End If
             End If
 

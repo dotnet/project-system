@@ -3036,7 +3036,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                             ActualEffect = DragDropEffects.None
                     End Select
                 Catch ex As Exception
-                    ActualEffect = DragDropEffects.None
                     Throw
                 End Try
             End Using
@@ -5391,14 +5390,12 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Dim CurrentCustomTool As String = TryCast(ToolProperty.Value, String)
             Dim Hierarchy As IVsHierarchy = GetVsHierarchy()
             Dim ItemId As UInteger = GetVsItemId()
-            Dim UsingVbMyCustomTool As Boolean
 
             If CurrentCustomTool.Equals(STANDARDCUSTOMTOOL, StringComparison.OrdinalIgnoreCase) Then
                 'This uses our standard single file generator.  We know how it works, so we can go ahead and
                 '  attempt a rename.
             ElseIf CurrentCustomTool.Equals(VBMYCUSTOMTOOL, StringComparison.OrdinalIgnoreCase) Then
                 'This uses our special My.VB file generator.  We can attempt a rename.
-                UsingVbMyCustomTool = True
             Else
                 'We don't recognize this generator, so we don't want to try renaming, so we return empty string.
                 Return String.Empty

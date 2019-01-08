@@ -175,9 +175,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <param name="DTE">The DTE extensibility object</param>
         ''' <remarks></remarks>
         Private Shared Function ToolsOptionsShowAdvancedBuildConfigurations(DTE As DTE) As Boolean
-            'Now check for if the Tools option setting to show Advanced Config Settings is on
-            Dim ShowAdvancedBuildIntValue As Integer = -1
-
             Dim ShowValue As Boolean
             Dim ProjAndSolutionProperties As Properties
             Const EnvironmentCategory As String = "Environment"
@@ -414,7 +411,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
             Finally
                 If (localPunk <> IntPtr.Zero) Then
                     System.Runtime.InteropServices.Marshal.Release(localPunk)
-                    localPunk = IntPtr.Zero
                 End If
             End Try
         End Sub

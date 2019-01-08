@@ -127,7 +127,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <returns></returns>
         ''' <remarks></remarks>
         Private Function ResolveType(persistedSettingTypeName As String, caseSensitive As Boolean) As Type
-            Dim t As Type = Nothing
+            Dim t As Type
+
             If String.Equals(persistedSettingTypeName, SettingsSerializer.CultureInvariantVirtualTypeNameConnectionString, StringComparison.Ordinal) Then
                 Return GetType(VSDesignerPackage.SerializableConnectionString)
             ElseIf String.Equals(persistedSettingTypeName, SettingsSerializer.CultureInvariantVirtualTypeNameWebReference, StringComparison.Ordinal) Then

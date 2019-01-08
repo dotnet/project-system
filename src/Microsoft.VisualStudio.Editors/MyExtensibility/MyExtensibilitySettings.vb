@@ -73,7 +73,6 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
 
                 extensionLists.Clear()
                 extensionLists.AddRange(templateDict.Values)
-                templateDict = Nothing
 
                 Return extensionLists
             Else
@@ -139,7 +138,9 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             End If
             Dim asmDictionary As AssemblyDictionary(Of MyExtensionTemplate) = _extensionInfos(projectTypeID)
             If asmDictionary IsNot Nothing Then
-                Dim extensionTemplates As List(Of MyExtensionTemplate) = Nothing
+
+                Dim extensionTemplates As List(Of MyExtensionTemplate)
+
                 If assemblyName IsNot Nothing Then
                     extensionTemplates = asmDictionary.GetItems(assemblyName)
                 Else

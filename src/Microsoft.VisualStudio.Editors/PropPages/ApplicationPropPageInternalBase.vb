@@ -159,10 +159,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private Function TargetFrameworksDefined() As Boolean
             Dim obj As Object
             Dim propTargetFrameworks As PropertyDescriptor
-            Dim stTargetFrameworks As String = Nothing
             propTargetFrameworks = GetPropertyDescriptor("TargetFrameworks")
             obj = TryGetNonCommonPropertyValue(propTargetFrameworks)
-            stTargetFrameworks = TryCast(obj, String)
+            Dim stTargetFrameworks As String = TryCast(obj, String)
             If (String.IsNullOrEmpty(stTargetFrameworks)) Then
                 Return False
             End If

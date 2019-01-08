@@ -689,7 +689,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             Finally
                 If (localPunk <> IntPtr.Zero) Then
                     Marshal.Release(localPunk)
-                    localPunk = IntPtr.Zero
                 End If
             End Try
 
@@ -1733,7 +1732,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             ' If we don't have a persisted namespace, that means that we have a newly created
             ' instance, which doesn't exist in the app.config (yet)
             If _dtSettings.PersistedNamespace IsNot Nothing Then
-                Dim namespaceAsInAppConfig As String = ""
+
+                Dim namespaceAsInAppConfig As String
                 ' We've gotta check if we have the complete namespace persisted in the .settings file,
                 ' or if we had the root namespace part changed....
                 If ProjectUtils.PersistedNamespaceIncludesRootNamespace(_hierarchy, _itemid) Then

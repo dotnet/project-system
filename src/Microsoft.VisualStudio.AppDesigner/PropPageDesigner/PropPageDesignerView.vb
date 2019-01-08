@@ -791,9 +791,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' </summary>
         ''' <remarks></remarks>
         Private Sub OnPropertyChanged(Component As Component, PropDesc As PropertyDescriptor, OldValue As Object, NewValue As Object)
-            Dim ChangeService As IComponentChangeService = Nothing
-
-            ChangeService = DirectCast(GetService(GetType(IComponentChangeService)), IComponentChangeService)
+            Dim ChangeService As IComponentChangeService = DirectCast(GetService(GetType(IComponentChangeService)), IComponentChangeService)
             ChangeService.OnComponentChanged(Component, PropDesc, OldValue, NewValue)
         End Sub
 
@@ -819,10 +817,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' </summary>
         ''' <remarks></remarks>
         Private Sub OnPropertyChanging(Component As Component, PropDesc As PropertyDescriptor)
-            Dim ChangeService As IComponentChangeService = Nothing
-            Dim oldValue As Object = Nothing
-
-            ChangeService = DirectCast(GetService(GetType(IComponentChangeService)), IComponentChangeService)
+            Dim ChangeService As IComponentChangeService = DirectCast(GetService(GetType(IComponentChangeService)), IComponentChangeService)
 
             If PropDesc Is Nothing Then
                 Debug.Fail("We should not be here")

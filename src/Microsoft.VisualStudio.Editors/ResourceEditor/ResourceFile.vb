@@ -1757,9 +1757,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <returns></returns>
         ''' <remarks></remarks>
         Public Function GetCodeDomProvider() As CodeDomProvider
-            Dim CodeDomProvider As CodeDomProvider = Nothing
-            Dim CodeGenerator As ICodeGenerator = Nothing
-
             If RootComponent IsNot Nothing AndAlso RootComponent.IsGlobalResourceInASP() Then
                 ' Venus project always use C# CodeDomProvider to generate StrongType code for the resource file.
                 Return New CSharp.CSharpCodeProvider()

@@ -66,7 +66,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Return False
             End Try
 
-            Dim uintValue As UInteger = 0
+            Dim uintValue As UInteger
+
             Try
                 uintValue = CUInt(propertyValue)
             Catch ex As InvalidCastException

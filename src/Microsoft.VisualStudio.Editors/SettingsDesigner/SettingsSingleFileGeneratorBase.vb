@@ -931,7 +931,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Finally
                 If (pUnknownPointer <> IntPtr.Zero) Then
                     Marshal.Release(pUnknownPointer)
-                    pUnknownPointer = IntPtr.Zero
                 End If
             End Try
         End Sub

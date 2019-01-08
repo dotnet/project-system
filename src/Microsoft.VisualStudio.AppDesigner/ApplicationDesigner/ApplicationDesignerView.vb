@@ -154,8 +154,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             Dim WindowFrame As IVsWindowFrame
             Dim Value As Object = Nothing
             Dim hr As Integer
-            Dim AppDesignerFileName As String = Nothing
-
             Common.Switches.TracePDFocus(TraceLevel.Warning, "ApplicationDesignerView.InitView()")
             Common.Switches.TracePDPerfBegin("ApplicationDesignerView.InitView")
 
@@ -1410,7 +1408,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         Private Function IsProjectFileDirty(Project As Project) As Boolean
             Debug.Assert(Project IsNot Nothing)
 
-            Dim hr As Integer = NativeMethods.E_FAIL
             If Project IsNot Nothing Then
                 Dim ProjectFullName As String = Project.FullName
                 Dim rdt As IVsRunningDocumentTable = TryCast(GetService(GetType(IVsRunningDocumentTable)), IVsRunningDocumentTable)
@@ -1420,7 +1417,8 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                         Dim Hierarchy As IVsHierarchy = Nothing
                         Dim ItemId As UInteger
                         Dim dwCookie As UInteger
-                        hr = rdt.FindAndLockDocument(CUInt(_VSRDTFLAGS.RDT_NoLock), ProjectFullName, Hierarchy, ItemId, punkDocData, dwCookie)
+                        Dim hr As Integer = rdt.FindAndLockDocument(CUInt(_VSRDTFLAGS.RDT_NoLock), ProjectFullName, Hierarchy, ItemId, punkDocData, dwCookie)
+
                         If VSErrorHandler.Succeeded(hr) Then
                             Return IsDocDataDirty(dwCookie, Hierarchy, ItemId)
                         End If
@@ -1444,7 +1442,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         Private Function GetProjectFileCookie(Project As Project) As UInteger
             Debug.Assert(Project IsNot Nothing)
 
-            Dim hr As Integer = NativeMethods.E_FAIL
             If Project IsNot Nothing Then
                 Dim ProjectFullName As String = Project.FullName
                 Dim rdt As IVsRunningDocumentTable = TryCast(GetService(GetType(IVsRunningDocumentTable)), IVsRunningDocumentTable)
@@ -1454,7 +1451,8 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                         Dim Hierarchy As IVsHierarchy = Nothing
                         Dim ItemId As UInteger
                         Dim dwCookie As UInteger
-                        hr = rdt.FindAndLockDocument(CUInt(_VSRDTFLAGS.RDT_NoLock), ProjectFullName, Hierarchy, ItemId, punkDocData, dwCookie)
+                        Dim hr As Integer = rdt.FindAndLockDocument(CUInt(_VSRDTFLAGS.RDT_NoLock), ProjectFullName, Hierarchy, ItemId, punkDocData, dwCookie)
+
                         If VSErrorHandler.Succeeded(hr) Then
                             Return dwCookie
                         End If

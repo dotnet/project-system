@@ -190,9 +190,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <param name="DTE">The DTE extensibility object</param>
         ''' <remarks></remarks>
         Private Shared Function ToolsOptionsShowAdvancedBuildConfigurations(DTE As DTE) As Boolean
-            'Now check for if the Tools option setting to show Advanced Config Settings is on
-            Dim ShowAdvancedBuildIntValue As Integer = -1
-
             Dim ShowValue As Boolean
             Dim ProjAndSolutionProperties As Properties
             Const EnvironmentCategory As String = "Environment"

@@ -1024,7 +1024,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <returns>a new image
         ''' </returns>
         Friend Function MapBitmapColor(unmappedBitmap As Image, originalColor As Color, newColor As Color) As Image
-            Dim mappedBitmap As Bitmap = Nothing
+            Dim mappedBitmap As Bitmap
 
             Try
                 mappedBitmap = New Bitmap(unmappedBitmap)

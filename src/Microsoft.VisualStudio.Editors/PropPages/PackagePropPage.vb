@@ -72,7 +72,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Property set for either file or assembly version.
         ''' </summary>
         Private Function VersionSet(control As Control, prop As PropertyDescriptor, value As Object) As Boolean
-            Dim Major As String = Nothing, Minor As String = Nothing, Build As String = Nothing, Revision As String = Nothing
             Dim Version As String
             Dim Values As String()
 

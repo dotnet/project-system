@@ -32,9 +32,12 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
                 Return Nothing
             End If
 
-            Dim templateID As String = Nothing
-            Dim templateVersion As Version = Nothing
-            Dim assemblyFullName As String = Nothing
+            Dim templateID As String
+
+
+            Dim templateVersion As Version
+
+            Dim assemblyFullName As String
 
             Try
                 Dim xmlDocument As New XmlDocument With {

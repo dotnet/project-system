@@ -785,7 +785,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
                 Throw New ArgumentNullException(NameOf(cc2))
             End If
 
-            Dim returnValue As TypeAttributes = 0
+            Dim returnValue As TypeAttributes
 
             Select Case cc2.Access
                 Case EnvDTE.vsCMAccess.vsCMAccessProject

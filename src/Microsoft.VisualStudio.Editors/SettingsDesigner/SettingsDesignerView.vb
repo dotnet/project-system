@@ -1768,9 +1768,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Dim allDeletedFiles As New List(Of String)
             Dim allDeletedDirectories As New List(Of String)
 
-            Dim OneOrMoreFailed As Boolean = False
-
-
             If DesignerLoader IsNot Nothing AndAlso DesignerLoader.VsHierarchy IsNot Nothing Then
                 Dim configDirs As List(Of String) = Nothing
                 Dim filesToDelete As List(Of String) = Nothing
