@@ -5403,7 +5403,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             Dim ClassName As String = GetGeneratedClassNameFromFileName(Path.GetFileName(RootDesigner.GetResXFileNameAndPath()))
             Dim Project As Project = GetProject()
-            Dim RootNamespace As String = GetRootNamespace(ItemId, Project)
+            Dim RootNamespace As String = GetRootNamespace(Project)
 
             'Now get the custom tool namespace
             Dim CustomToolNamespace As String = String.Empty
@@ -5458,7 +5458,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Gets the namespace that will be generated for the given hierarchy/itemid
         ''' </summary>
-        Private Shared Function GetRootNamespace(ItemId As UInteger, Project As Project) As String
+        Private Shared Function GetRootNamespace(Project As Project) As String
             Dim RootNamespace As String = String.Empty
             If Project IsNot Nothing Then
                 Try
