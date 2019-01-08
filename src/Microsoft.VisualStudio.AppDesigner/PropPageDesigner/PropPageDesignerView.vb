@@ -561,7 +561,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             End Select
         End Sub
 
-        Friend Sub SetControls(propPage As OleInterop.IPropertyPage, firstControl As Boolean)
+        Friend Sub SetControls(firstControl As Boolean)
             If firstControl Then
                 If _isNativeHostedPropertyPage Then
                     'Try to set initial focus to the property page, not the configuration panel

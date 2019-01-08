@@ -48,14 +48,9 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' new setting will be added to it. 
         ''' If one or more values have been added to the settings object, the user is notified after deserialization is complete.
         ''' </summary>
-        ''' <param name="Settings"></param>
-        ''' <param name="SectionName"></param>
-        ''' <param name="AppConfigDocData"></param>
-        ''' <param name="mergeMode"></param>
-        ''' <param name="UIService"></param>
         ''' <returns>True if we made any changes to the object, false otherwise</returns>
         ''' <remarks></remarks>
-        Friend Shared Function Deserialize(Settings As DesignTimeSettings, typeCache As SettingsTypeCache, valueCache As SettingsValueCache, SectionName As String, AppConfigDocData As DocData, mergeMode As MergeValueMode, Optional UIService As IUIService = Nothing) As DirtyState
+        Friend Shared Function Deserialize(Settings As DesignTimeSettings, typeCache As SettingsTypeCache, SectionName As String, AppConfigDocData As DocData, mergeMode As MergeValueMode, Optional UIService As IUIService = Nothing) As DirtyState
             Dim objectDirty As DirtyState = DirtyState.NoChange
 
             ' Create a "master" list of existing settings....

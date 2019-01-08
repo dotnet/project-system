@@ -1089,7 +1089,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                         PropPageView = TryCast(NewCurrentPanel.DocView, PropPageDesigner.PropPageDesignerView)
                         If PropPageView IsNot Nothing Then
                             'We are looping in the same page, do not set the undo status to clean
-                            PropPageView.SetControls(PropPageView.PropPage, True)
+                            PropPageView.SetControls(True)
                         Else
                             'Must have had error loading
                         End If
@@ -1245,7 +1245,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             PropPageView = TryCast(NewCurrentPanel.DocView, PropPageDesigner.PropPageDesignerView)
             If PropPageView IsNot Nothing Then
                 'We are looping in the same page, do not set the undo status to clean
-                PropPageView.SetControls(PropPageView.PropPage, firstControl)
+                PropPageView.SetControls(firstControl)
             End If
         End Sub
 

@@ -497,7 +497,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 Dim objectDirty As AppConfigSerializer.DirtyState =
                     AppConfigSerializer.Deserialize(RootComponent,
                                                     DirectCast(GetService(GetType(SettingsTypeCache)), SettingsTypeCache),
-                                                    DirectCast(GetService(GetType(SettingsValueCache)), SettingsValueCache),
                                                     cfgHelper.GetSectionName(ProjectUtils.FullyQualifiedClassName(GeneratedClassNamespace(True), GeneratedClassName), String.Empty),
                                                     _appConfigDocData,
                                                     AppConfigSerializer.MergeValueMode.Prompt,

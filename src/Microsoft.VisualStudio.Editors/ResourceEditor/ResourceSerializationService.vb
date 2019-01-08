@@ -51,10 +51,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   be passed to any of the various Serialize methods to build up serialization 
         '''   state for a group of objects.
         ''' </summary>
-        ''' <param name="Provider">Ignored.</param>
-        ''' <remarks></remarks>
-        Public Sub New(Provider As IServiceProvider)
-            'We don't need th service provider, we ignore it.
+        Public Sub New()
         End Sub
 
 

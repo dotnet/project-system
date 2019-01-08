@@ -325,10 +325,8 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             Try
                 CreateGDIObjects()
 
-                Dim rect As Rectangle = _owner.Bounds
-
                 ' Calling this calculates the button width and height for each tab, we need the height for calculating the VerticalButtonSpace 
-                CalcLineOffsets(rect)
+                CalcLineOffsets()
 
                 'Calculate the number of buttons we have space to show
                 Dim VerticalButtonSpace As Integer = _owner.Height - _buttonPagePadding.Vertical - _owner.OverflowButton.Height
@@ -340,8 +338,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 End If
 
 
-                rect = _owner.ClientRectangle
-                _tabControlRect = rect
+                _tabControlRect = _owner.ClientRectangle
 
                 'Reposition the tab panel
                 Dim BoundingRect As Rectangle = Rectangle.FromLTRB(_tabControlRect.Left + _buttonWidth + _buttonPagePadding.Left, _tabControlRect.Top, _tabControlRect.Right, _tabControlRect.Bottom)
@@ -378,8 +375,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' Calculates the positions of various lines in the UI
         ''' </summary>
-        ''' <param name="rect"></param>
-        Private Sub CalcLineOffsets(rect As Rectangle)
+        Private Sub CalcLineOffsets()
             'const int yOffset = 10;
             Dim minimumWidth, minimumHeight As Integer
 

@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.Runtime.InteropServices
 Imports Common = Microsoft.VisualStudio.Editors.AppDesCommon
@@ -47,9 +47,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' Creates a new editor for the given pile of flags.  Helper function for the overload
         ''' which implements IVsEditorFactory.CreateEditorInstance
         ''' </summary>
-        ''' <param name="VsCreateEditorFlags"></param>
         ''' <param name="FileName">[In] Filename being opened</param>
-        ''' <param name="PhysicalView"></param>
         ''' <param name="Hierarchy">[In] IVsHierarchy of node being opened</param>
         ''' <param name="ItemId">[In] ItemId for node being opened</param>
         ''' <param name="ExistingDocData">[In] Existing DocData if any</param>
@@ -58,10 +56,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <param name="Caption">Returns caption for document window</param>
         ''' <param name="CmdUIGuid">Returns guid for CMDUI</param>
         ''' <param name="Canceled">Returns True if user canceled</param>
-        ''' <remarks></remarks>
-        Private Sub InternalCreateEditorInstance(VsCreateEditorFlags As UInteger,
-                FileName As String,
-                PhysicalView As String,
+        Private Sub InternalCreateEditorInstance(FileName As String,
                 Hierarchy As IVsHierarchy,
                 ItemId As UInteger,
                 ExistingDocData As Object,
@@ -170,7 +165,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 
             Caption = Nothing
 
-            InternalCreateEditorInstance(vscreateeditorflags, FileName, PhysicalView, Hierarchy, Itemid, ExistingDocData,
+            InternalCreateEditorInstance(FileName, Hierarchy, Itemid, ExistingDocData,
                 DocView, DocData, Caption, CmdUIGuid, CanceledAsBoolean)
 
             If CanceledAsBoolean Then

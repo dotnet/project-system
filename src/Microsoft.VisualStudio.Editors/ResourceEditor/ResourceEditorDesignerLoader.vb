@@ -216,7 +216,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             MyBase.Initialize()
 
             'Add our ComponentSerializationService so that the basic designer will give us automatic Undo/Redo
-            Dim SerializationService As New ResourceSerializationService(LoaderHost)
+            Dim SerializationService As New ResourceSerializationService()
             LoaderHost.AddService(GetType(ComponentSerializationService), SerializationService)
             Debug.Assert(GetService(GetType(ComponentSerializationService)) IsNot Nothing,
                 "We just made the ComponentSerializationService service available.  Why isn't it there?")

@@ -2,7 +2,6 @@
 
 Imports Microsoft.VisualStudio.Shell.Interop
 Imports System.Windows.Forms
-Imports System.Windows.Forms.Design
 Imports System.Reflection
 
 Namespace Microsoft.VisualStudio.Editors.DesignerFramework
@@ -153,8 +152,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
             If ServiceProvider IsNot Nothing Then
                 Try
-                    Return ShowInternal(CType(ServiceProvider.GetService(GetType(IUIService)), IUIService),
-                        CType(ServiceProvider.GetService(GetType(IVsUIShell)), IVsUIShell),
+                    Return ShowInternal(CType(ServiceProvider.GetService(GetType(IVsUIShell)), IVsUIShell),
                         Message, Caption, Buttons, Icon, DefaultButton, HelpLink)
                 Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(ShowHelper), NameOf(DesignerMessageBox))
                 End Try
@@ -187,7 +185,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         '   So instead of this we cut this feature. When no help is needed, a standard MessageBox will be shown 
         '   but parented using the service provider if available, the caption will also be shown normally.
         '**************************************************************************
-        Protected Shared Function ShowInternal(UIService As IUIService, VsUIShell As IVsUIShell,
+        Protected Shared Function ShowInternal(VsUIShell As IVsUIShell,
                 Message As String, Caption As String, Buttons As MessageBoxButtons,
                 Icon As MessageBoxIcon, DefaultButton As MessageBoxDefaultButton, HelpLink As String) _
         As DialogResult

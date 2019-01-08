@@ -1368,7 +1368,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
 
             Dim isDesignTime As Boolean = True
 
-            Dim ccu As CodeCompileUnit = SettingsSingleFileGeneratorBase.Create(_hierarchy, designTimeSettingsToPresent, _namespace, fileName, isDesignTime, Nothing, TypeAttributes.Public Or TypeAttributes.Sealed)
+            Dim ccu As CodeCompileUnit = SettingsSingleFileGeneratorBase.Create(_hierarchy, designTimeSettingsToPresent, _namespace, fileName, isDesignTime, TypeAttributes.Public Or TypeAttributes.Sealed)
             Debug.Assert(ccu.Namespaces.Count = 1, "Expected a single namespace from SettingsSingleFileGenerator")
 
             ' Remove structure from the compile unit that virtual types can't handle.  
@@ -1612,7 +1612,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                             Try
                                 AppConfigSerializer.Deserialize(dtSettings,
                                                                     _typeCache,
-                                                                    _valueCache,
                                                                     cfgHelper.GetSectionName(FullyQualifiedClassName, String.Empty),
                                                                     AppConfigDocData,
                                                                     AppConfigSerializer.MergeValueMode.UseAppConfigFileValue)
@@ -1736,7 +1735,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                 Dim namespaceAsInAppConfig As String
                 ' We've gotta check if we have the complete namespace persisted in the .settings file,
                 ' or if we had the root namespace part changed....
-                If ProjectUtils.PersistedNamespaceIncludesRootNamespace(_hierarchy, _itemid) Then
+                If ProjectUtils.PersistedNamespaceIncludesRootNamespace(_hierarchy) Then
                     ' Everything was there...
                     namespaceAsInAppConfig = _dtSettings.PersistedNamespace
                 Else

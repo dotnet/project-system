@@ -46,7 +46,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 Case Interop.Win32Constant.WM_CONTEXTMENU
                     Debug.WriteLineIf(Switches.DFContextMenu.TraceVerbose, "WM_CONTEXTMENU")
 
-                    Dim EventArgs As MouseEventArgs = DesignUtil.GetContextMenuMouseEventArgs(Me, m)
+                    Dim EventArgs As MouseEventArgs = DesignUtil.GetContextMenuMouseEventArgs(m)
                     RaiseEvent ContextMenuShow(Me, EventArgs)
                 Case Else
                     MyBase.WndProc(m)

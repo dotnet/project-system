@@ -138,8 +138,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         '''  it will display the error control.
         ''' </summary>
         ''' <remarks></remarks>
-        Private Sub PopulateView(guidLogicalView As Guid)
-            'Debug.Assert(guidLogicalView.Equals(Guid.Empty), "NYI: PopulateView with a non-empty GUID")
+        Private Sub PopulateView()
 
             Common.Switches.TracePDFocus(TraceLevel.Warning, "ApplicationDesignerWindowPane.PopulateView")
             Using New Common.WaitCursor()
@@ -249,7 +248,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             CodeMarkers.Instance.CodeMarker(RoslynCodeMarkerEvent.PerfMSVSEditorsActivateLogicalViewStart)
 
             If AppDesignerView Is Nothing Then
-                PopulateView(rguidLogicalView)
+                PopulateView()
                 If Not rguidLogicalView.Equals(Guid.Empty) And Not rguidLogicalView.Equals(GetActiveView()) Then
                     SetActiveView(rguidLogicalView)
                 End If

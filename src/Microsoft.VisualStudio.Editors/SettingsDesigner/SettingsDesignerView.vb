@@ -2012,21 +2012,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
 #End Region
 
-        ''' <summary>
-        ''' The SettingsDesigner will forward IOleCommandTarget calls to it's view. In this case, we never actually implement any
-        ''' commands, so we always return FALSE to indicate that we haven't done anything
-        ''' </summary>
-        ''' <param name="pguidCmdGroup"></param>
-        ''' <param name="nCmdID"></param>
-        ''' <param name="nCmdexecopt"></param>
-        ''' <param name="pvaIn"></param>
-        ''' <param name="pvaOut"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Friend Function HandleCommand(ByRef pguidCmdGroup As Guid, nCmdID As UInteger, nCmdexecopt As UInteger, pvaIn As IntPtr, pvaOut As IntPtr) As Boolean
-            Return False
-        End Function
-
 #Region "IVsWindowPaneCommit implementation"
         Public Function IVsWindowPaneCommit_CommitPendingEdit(ByRef pfCommitFailed As Integer) As Integer Implements IVsWindowPaneCommit.CommitPendingEdit
             If CommitPendingChanges(False, False) Then
