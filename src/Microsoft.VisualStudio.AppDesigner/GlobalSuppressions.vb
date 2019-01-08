@@ -460,3 +460,6 @@
 
 <Assembly: CodeAnalysis.SuppressMessage("Design", "CA1058:Types should not extend certain base types", Justification:="Public API and cannot be changed.", Scope:="type", Target:="~T:Microsoft.VisualStudio.Editors.Package.InternalException")>
 <Assembly: CodeAnalysis.SuppressMessage("Design", "CA1058:Types should not extend certain base types", Justification:="Public API and cannot be changed.", Scope:="type", Target:="~T:Microsoft.VisualStudio.Editors.PropertyPages.PropertyPageException")>
+
+' https://github.com/dotnet/roslyn/issues/32228
+<Assembly: CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.PropPageDesigner.PropertyPageSerializationService.PropertyPageSerializationStore.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)")>
