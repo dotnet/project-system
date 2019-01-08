@@ -13,6 +13,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         /// <summary>
         /// Current immutable dependencies snapshot.
         /// </summary>
+        /// <remarks>
+        /// Never null.
+        /// </remarks>
         IDependenciesSnapshot CurrentSnapshot { get; }
 
         /// <summary>

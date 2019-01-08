@@ -3,21 +3,24 @@
 using System.ComponentModel.Composition;
 
 using Microsoft.VisualStudio.GraphModel;
-using Microsoft.VisualStudio.GraphModel.Schemas;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.ViewProviders;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.Actions
 {
     /// <summary>
-    /// Finds the children of the input <see cref="GraphNode"/>s and adds them to the graph.
-    /// Determining if a <see cref="GraphNode"/> has children is handled separately by
-    /// <see cref="CheckChildrenGraphActionHandler"/>.
+    ///     Handles requests to populate populated children of a given dependencies graph node.
     /// </summary>
+    /// <remarks>
+    /// <para>
+    ///     Determining whether a node has children or not is performed separately by
+    ///     <see cref="CheckChildrenGraphActionHandler"/>.
+    /// </para>
+    /// </remarks>
     [Export(typeof(IDependenciesGraphActionHandler))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
     [Order(Order)]
-    internal sealed class GetChildrenGraphActionHandler : GraphActionHandlerBase
+    internal sealed class GetChildrenGraphActionHandler : InputNodeGraphActionHandlerBase
     {
         public const int Order = 110;
 
@@ -28,61 +31,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
         {
         }
 
-        public override bool TryHandleRequest(IGraphContext graphContext)
+        protected override bool CanHandle(IGraphContext graphContext)
         {
-            return
-                graphContext.Direction == GraphContextDirection.Contains &&
-                GetChildren();
+            return graphContext.Direction == GraphContextDirection.Contains;
+        }
 
-            bool GetChildren()
+        protected override void ProcessInputNode(IGraphContext graphContext, GraphNode inputGraphNode, IDependency dependency, IDependenciesSnapshot snapshot, IDependenciesGraphViewProvider viewProvider, string projectPath, ref bool trackChanges)
+        {
+            if (graphContext.TrackChanges)
             {
-                bool trackChanges = false;
-                foreach (GraphNode inputGraphNode in graphContext.InputNodes)
-                {
-                    if (graphContext.CancelToken.IsCancellationRequested)
-                    {
-                        return trackChanges;
-                    }
-
-                    string projectPath = inputGraphNode.Id.GetValue(CodeGraphNodeIdName.Assembly);
-                    if (string.IsNullOrEmpty(projectPath))
-                    {
-                        continue;
-                    }
-
-                    IDependency dependency = FindDependency(inputGraphNode, out IDependenciesSnapshot snapshot);
-                    if (dependency == null || snapshot == null)
-                    {
-                        continue;
-                    }
-
-                    IDependenciesGraphViewProvider viewProvider = FindViewProvider(dependency);
-
-                    if (viewProvider == null)
-                    {
-                        continue;
-                    }
-
-                    if (graphContext.TrackChanges)
-                    {
-                        trackChanges = true;
-                    }
-
-                    using (var scope = new GraphTransactionScope())
-                    {
-                        viewProvider.BuildGraph(
-                            graphContext,
-                            projectPath,
-                            dependency,
-                            inputGraphNode,
-                            snapshot.Targets[dependency.TargetFramework]);
-
-                        scope.Complete();
-                    }
-                }
-
-                return trackChanges;
+                trackChanges = true;
             }
+
+            viewProvider.BuildGraph(
+                graphContext,
+                projectPath,
+                dependency,
+                inputGraphNode,
+                snapshot.Targets[dependency.TargetFramework]);
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -23,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
 
         public virtual bool SupportsDependency(IDependency dependency)
         {
-            // we support any dependency type
+            // Supports all dependencies
             return true;
         }
 
@@ -39,9 +38,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
             GraphNode dependencyGraphNode,
             ITargetedDependenciesSnapshot targetedSnapshot);
 
-        public virtual bool ShouldApplyChanges(string projectPath, string updatedProjectPath, IDependency dependency)
+        public virtual bool ShouldApplyChanges(string nodeProjectPath, string updatedSnapshotProjectPath, IDependency updatedDependency)
         {
-            return projectPath.Equals(updatedProjectPath, StringComparison.OrdinalIgnoreCase);
+            return nodeProjectPath.Equals(updatedSnapshotProjectPath, StringComparisons.Paths);
         }
 
         public virtual bool ApplyChanges(
@@ -51,12 +50,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
             GraphNode dependencyGraphNode,
             ITargetedDependenciesSnapshot targetedSnapshot)
         {
-            if (!AnyChanges(projectPath,
-                            targetedSnapshot,
-                            updatedDependency,
-                            dependencyGraphNode,
-                            out IReadOnlyList<DependencyNodeInfo> nodesToAdd,
-                            out IReadOnlyList<DependencyNodeInfo> nodesToRemove))
+            IReadOnlyList<DependencyNodeInfo> existingChildrenInfo = GetExistingChildren(dependencyGraphNode);
+            ImmutableArray<IDependency> updatedChildren = targetedSnapshot.GetDependencyChildren(updatedDependency);
+            IReadOnlyList<DependencyNodeInfo> updatedChildrenInfo = updatedChildren.Select(DependencyNodeInfo.FromDependency).ToList();
+
+            if (!AnyChanges(
+                existingChildrenInfo,
+                updatedChildrenInfo,
+                out IReadOnlyList<DependencyNodeInfo> nodesToAdd,
+                out IReadOnlyList<DependencyNodeInfo> nodesToRemove))
             {
                 return false;
             }
@@ -101,21 +103,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
         {
             topLevelDependencyMatches = null;
             return false;
-        }
-
-        protected virtual bool AnyChanges(
-            string projectPath,
-            ITargetedDependenciesSnapshot targetedSnapshot,
-            IDependency updatedDependency,
-            GraphNode dependencyGraphNode,
-            out IReadOnlyList<DependencyNodeInfo> nodesToAdd,
-            out IReadOnlyList<DependencyNodeInfo> nodesToRemove)
-        {
-            IReadOnlyList<DependencyNodeInfo> existingChildrenInfo = GetExistingChildren(dependencyGraphNode);
-            ImmutableArray<IDependency> updatedChildren = targetedSnapshot.GetDependencyChildren(updatedDependency);
-            IReadOnlyList<DependencyNodeInfo> updatedChildrenInfo = updatedChildren.Select(x => DependencyNodeInfo.FromDependency(x)).ToList();
-
-            return AnyChanges(existingChildrenInfo, updatedChildrenInfo, out nodesToAdd, out nodesToRemove);
         }
 
         protected static bool AnyChanges(

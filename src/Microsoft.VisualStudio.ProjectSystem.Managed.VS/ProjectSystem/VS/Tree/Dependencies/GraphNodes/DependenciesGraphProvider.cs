@@ -34,8 +34,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
     [AppliesTo(ProjectCapability.DependenciesTree)]
     internal sealed class DependenciesGraphProvider : OnceInitializedOnceDisposedAsync, IGraphProvider, IDependenciesGraphBuilder
     {
-        private static readonly GraphCommand[] s_containsGraphCommand =
+        /// <summary>The set of commands this provider supports.</summary>
+        private static readonly GraphCommand[] s_commands =
         {
+            // The "Contains" command finds a graph node's children
             new GraphCommand(
                 GraphCommandDefinition.Contains,
                 targetCategories: null,
@@ -76,7 +78,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
         }
 
         /// <summary>
-        /// IGraphProvider.BeginGetGraphData
         /// Entry point for progression. Gets called every time when progression
         ///  - Needs to know if a node has children
         ///  - Wants to get children for a node
@@ -109,25 +110,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
             });
         }
 
-        /// <summary>
-        /// IGraphProvider.GetCommands
-        /// </summary>
-        public IEnumerable<GraphCommand> GetCommands(IEnumerable<GraphNode> nodes)
-        {
-            return s_containsGraphCommand;
-        }
+        public IEnumerable<GraphCommand> GetCommands(IEnumerable<GraphNode> nodes) => s_commands;
 
-        /// <summary>
-        /// IGraphProvider.GetExtension
-        /// </summary>
-        public T GetExtension<T>(GraphObject graphObject, T previous) where T : class
-        {
-            return null;
-        }
+        public T GetExtension<T>(GraphObject graphObject, T previous) where T : class => null;
 
-        /// <summary>
-        /// IGraphProvider.Schema
-        /// </summary>
         public Graph Schema => null;
 
         public GraphNode AddGraphNode(
