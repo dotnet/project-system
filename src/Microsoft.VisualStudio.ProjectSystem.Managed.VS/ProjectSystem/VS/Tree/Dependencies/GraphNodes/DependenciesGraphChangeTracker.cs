@@ -23,7 +23,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
         private readonly object _lock = new object();
 
         /// <summary>
-        /// Remembers expanded graph nodes to track changes in their children.
+        /// Remembers expanded graph nodes to track changes in their children. We don't control the lifetime
+        /// of these objects, so use weak references to track which contexts are still alive. Elements in this
+        /// collection will be forgotten once garbage collected.
         /// </summary>
         private readonly WeakCollection<IGraphContext> _expandedGraphContexts = new WeakCollection<IGraphContext>();
 
@@ -165,13 +167,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
             _aggregateSnapshotProvider.SnapshotChanged -= OnSnapshotChanged;
         }
 
+        /// <summary>
+        /// Maintains a collection of objects via <see cref="WeakReference{T}"/>, allowing elements to be
+        /// garbage collected.
+        /// </summary>
+        /// <remarks>
+        /// Note this implementation exists intentionally, despite <see cref="PlatformUI.WeakCollection{T}"/>.
+        /// It allocates less memory during use, and combines pruning with enumeration. Neither type is
+        /// free-threaded.
+        /// </remarks>
+        /// <typeparam name="T">Type of objects tracked within this collection.</typeparam>
         private sealed class WeakCollection<T> where T : class
         {
-            private readonly LinkedList<WeakReference> _references = new LinkedList<WeakReference>();
+            private readonly LinkedList<WeakReference<T>> _references = new LinkedList<WeakReference<T>>();
 
             public void Add(T item)
             {
-                _references.AddLast(new WeakReference(item));
+                _references.AddLast(new WeakReference<T>(item));
             }
 
             public bool Contains(T item)
@@ -189,12 +201,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
 
             public Enumerator GetEnumerator() => new Enumerator(_references);
 
+            /// <summary>
+            /// A struct enumerator for items within the weak collection, allowing enumeration without
+            /// allocation. Dead references are cleaned up during enumeration.
+            /// </summary>
             public struct Enumerator
             {
-                private readonly LinkedList<WeakReference> _list;
-                private LinkedListNode<WeakReference> _next;
+                private readonly LinkedList<WeakReference<T>> _list;
+                private LinkedListNode<WeakReference<T>> _next;
 
-                internal Enumerator(LinkedList<WeakReference> list)
+                internal Enumerator(LinkedList<WeakReference<T>> list)
                 {
                     _list = list;
                     _next = list.First;
@@ -207,7 +223,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
                 {
                     while (_next != null)
                     {
-                        if (_next.Value.Target is T target)
+                        if (_next.Value.TryGetTarget(out T target))
                         {
                             // Reference is alive: yield it
                             Current = target;
@@ -217,7 +233,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
                         else
                         {
                             // Reference has been collected: remove it and continue
-                            LinkedListNode<WeakReference> remove = _next;
+                            LinkedListNode<WeakReference<T>> remove = _next;
                             _next = _next.Next;
                             _list.Remove(remove);
                         }
