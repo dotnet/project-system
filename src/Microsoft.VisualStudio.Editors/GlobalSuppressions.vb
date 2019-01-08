@@ -1470,3 +1470,9 @@
 ' https://github.com/dotnet/roslyn/issues/30895
 <Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0052:Remove unread private members", Scope:="member", Target:="~P:Microsoft.VisualStudio.Editors.ResourceEditor.ResourceEditorRootDesigner._buildEvents")>
 <Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0052:Remove unread private members", Scope:="member", Target:="~P:Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsDesignerLoader._buildEvents")>
+
+' https://github.com/dotnet/roslyn/issues/32227
+<Assembly: CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.DesignerFramework.GenericComponentSerializationStore.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)")>
+<Assembly: CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.ResourceEditor.Resource.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)")>
+<Assembly: CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.ResourceEditor.ResourceSerializationService.ResourceSerializationStore.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)")>
+<Assembly: CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.ResourceEditor.SerializableEncoding.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)")>
