@@ -168,7 +168,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
         }
 
         /// <summary>
-        /// Maintains a collection of objects via <see cref="WeakReference"/>, allowing elements to be
+        /// Maintains a collection of objects via <see cref="WeakReference{T}"/>, allowing elements to be
         /// garbage collected.
         /// </summary>
         /// <remarks>
@@ -179,11 +179,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
         /// <typeparam name="T">Type of objects tracked within this collection.</typeparam>
         private sealed class WeakCollection<T> where T : class
         {
-            private readonly LinkedList<WeakReference> _references = new LinkedList<WeakReference>();
+            private readonly LinkedList<WeakReference<T>> _references = new LinkedList<WeakReference<T>>();
 
             public void Add(T item)
             {
-                _references.AddLast(new WeakReference(item));
+                _references.AddLast(new WeakReference<T>(item));
             }
 
             public bool Contains(T item)
@@ -207,10 +207,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
             /// </summary>
             public struct Enumerator
             {
-                private readonly LinkedList<WeakReference> _list;
-                private LinkedListNode<WeakReference> _next;
+                private readonly LinkedList<WeakReference<T>> _list;
+                private LinkedListNode<WeakReference<T>> _next;
 
-                internal Enumerator(LinkedList<WeakReference> list)
+                internal Enumerator(LinkedList<WeakReference<T>> list)
                 {
                     _list = list;
                     _next = list.First;
@@ -223,7 +223,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
                 {
                     while (_next != null)
                     {
-                        if (_next.Value.Target is T target)
+                        if (_next.Value.TryGetTarget(out T target))
                         {
                             // Reference is alive: yield it
                             Current = target;
@@ -233,7 +233,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
                         else
                         {
                             // Reference has been collected: remove it and continue
-                            LinkedListNode<WeakReference> remove = _next;
+                            LinkedListNode<WeakReference<T>> remove = _next;
                             _next = _next.Next;
                             _list.Remove(remove);
                         }
