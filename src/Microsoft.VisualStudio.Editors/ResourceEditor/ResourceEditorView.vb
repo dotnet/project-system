@@ -5337,7 +5337,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     Dim FindFunctionFilter As New SettingsDesigner.ProjectUtils.FindFunctionFilter(GeneratedClassCodeElement, "get_" & OldName)
                     Dim FunctionCodeElement As CodeElement = SettingsDesigner.ProjectUtils.FindElement(ProjItem, ExpandChildElements:=True, ExpandChildItems:=True, Filter:=FindFunctionFilter)
                     If FunctionCodeElement IsNot Nothing Then
-                        OldName = "get_" & OldName
                         NewName = "get_" & NewName
                         PropertyDefinitionCodeElement2 = TryCast(FunctionCodeElement, EnvDTE80.CodeElement2)
                         Debug.Assert(PropertyDefinitionCodeElement2 IsNot Nothing, "Failed to get CodeElement2 interface from CodeElement - CodeModel doesn't support ReplaceSymbol?")

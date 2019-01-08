@@ -1158,8 +1158,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Dim ErrorsList As New List(Of Integer)
                 Dim NoNotifyList As New List(Of Integer)
 
-                cell = WarningsGridView.CurrentCell
-
                 For Index As Integer = 0 To WarningsGridView.Rows.Count - 1
                     cell = WarningsGridView.Rows.Item(Index).Cells.Item(1)
                     CellValue = DirectCast(cell.EditedFormattedValue, String)

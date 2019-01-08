@@ -172,7 +172,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 If NativeMethods.Succeeded(hr) Then
                     Dim Hierarchy As IVsHierarchy = CType(Value, IVsHierarchy)
                     Dim ItemId As UInteger
-                    hr = WindowFrame.GetProperty(__VSFPROPID.VSFPROPID_ItemID, Value)
+                    WindowFrame.GetProperty(__VSFPROPID.VSFPROPID_ItemID, Value)
                     ItemId = Common.NoOverflowCUInt(Value)
 
                     'We now have the Hierarchy/ItemId that were stored in the windowframe.

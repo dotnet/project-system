@@ -381,8 +381,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="rect"></param>
         Private Sub CalcLineOffsets(rect As Rectangle)
             'const int yOffset = 10;
-            Dim width As Integer = rect.Width
-            Dim height As Integer = rect.Height
             Dim minimumWidth, minimumHeight As Integer
 
             Dim largestButtonTextSize As Size = GetLargestButtonTextSize()
@@ -392,15 +390,12 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
             'Now calculate the minimum width 
             minimumWidth = _owner.HostingPanel.MinimumSize.Width + 1 + _buttonPagePadding.Right + 1
-            width = Math.Max(width, minimumWidth)
 
             'Now calculate required height 
             minimumHeight = _owner.HostingPanel.MinimumSize.Height + 1 + _buttonPagePadding.Bottom + 1
-            height = Math.Max(height, minimumHeight)
 
             ' Calculate the required height by tab button area...
             Dim panelMinimumHeight As Integer = _buttonHeight * _visibleButtonSlots + 1 + _buttonPagePadding.Bottom + 1
-            height = Math.Max(height, panelMinimumHeight)
 
             _owner.MinimumSize = New Size(minimumWidth, minimumHeight)
 
