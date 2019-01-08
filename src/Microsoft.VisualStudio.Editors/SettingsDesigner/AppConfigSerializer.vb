@@ -294,8 +294,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Dim AddedInstances As New Specialized.StringCollection()
 
             Dim ConfigHelperService As New ConfigurationHelperService(AddressOf typeCache.TypeTransformer)
-            Dim valueSerializer As New SettingsValueSerializer()
-
 
             For Each Instance As DesignTimeSettingInstance In Settings
                 Dim settingType As Type = typeCache.GetSettingType(Instance.SettingTypeName)
