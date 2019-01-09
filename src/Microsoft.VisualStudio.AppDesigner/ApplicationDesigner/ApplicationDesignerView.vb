@@ -154,8 +154,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             Dim WindowFrame As IVsWindowFrame
             Dim Value As Object = Nothing
             Dim hr As Integer
-            Dim AppDesignerFileName As String = Nothing
-
             Common.Switches.TracePDFocus(TraceLevel.Warning, "ApplicationDesignerView.InitView()")
             Common.Switches.TracePDPerfBegin("ApplicationDesignerView.InitView")
 
@@ -174,7 +172,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 If NativeMethods.Succeeded(hr) Then
                     Dim Hierarchy As IVsHierarchy = CType(Value, IVsHierarchy)
                     Dim ItemId As UInteger
-                    hr = WindowFrame.GetProperty(__VSFPROPID.VSFPROPID_ItemID, Value)
+                    WindowFrame.GetProperty(__VSFPROPID.VSFPROPID_ItemID, Value)
                     ItemId = Common.NoOverflowCUInt(Value)
 
                     'We now have the Hierarchy/ItemId that were stored in the windowframe.
@@ -1091,7 +1089,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                         PropPageView = TryCast(NewCurrentPanel.DocView, PropPageDesigner.PropPageDesignerView)
                         If PropPageView IsNot Nothing Then
                             'We are looping in the same page, do not set the undo status to clean
-                            PropPageView.SetControls(PropPageView.PropPage, True)
+                            PropPageView.SetControls(True)
                         Else
                             'Must have had error loading
                         End If
@@ -1247,7 +1245,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             PropPageView = TryCast(NewCurrentPanel.DocView, PropPageDesigner.PropPageDesignerView)
             If PropPageView IsNot Nothing Then
                 'We are looping in the same page, do not set the undo status to clean
-                PropPageView.SetControls(PropPageView.PropPage, firstControl)
+                PropPageView.SetControls(firstControl)
             End If
         End Sub
 
@@ -1410,7 +1408,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         Private Function IsProjectFileDirty(Project As Project) As Boolean
             Debug.Assert(Project IsNot Nothing)
 
-            Dim hr As Integer = NativeMethods.E_FAIL
             If Project IsNot Nothing Then
                 Dim ProjectFullName As String = Project.FullName
                 Dim rdt As IVsRunningDocumentTable = TryCast(GetService(GetType(IVsRunningDocumentTable)), IVsRunningDocumentTable)
@@ -1420,7 +1417,8 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                         Dim Hierarchy As IVsHierarchy = Nothing
                         Dim ItemId As UInteger
                         Dim dwCookie As UInteger
-                        hr = rdt.FindAndLockDocument(CUInt(_VSRDTFLAGS.RDT_NoLock), ProjectFullName, Hierarchy, ItemId, punkDocData, dwCookie)
+                        Dim hr As Integer = rdt.FindAndLockDocument(CUInt(_VSRDTFLAGS.RDT_NoLock), ProjectFullName, Hierarchy, ItemId, punkDocData, dwCookie)
+
                         If VSErrorHandler.Succeeded(hr) Then
                             Return IsDocDataDirty(dwCookie, Hierarchy, ItemId)
                         End If
@@ -1444,7 +1442,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         Private Function GetProjectFileCookie(Project As Project) As UInteger
             Debug.Assert(Project IsNot Nothing)
 
-            Dim hr As Integer = NativeMethods.E_FAIL
             If Project IsNot Nothing Then
                 Dim ProjectFullName As String = Project.FullName
                 Dim rdt As IVsRunningDocumentTable = TryCast(GetService(GetType(IVsRunningDocumentTable)), IVsRunningDocumentTable)
@@ -1454,7 +1451,8 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                         Dim Hierarchy As IVsHierarchy = Nothing
                         Dim ItemId As UInteger
                         Dim dwCookie As UInteger
-                        hr = rdt.FindAndLockDocument(CUInt(_VSRDTFLAGS.RDT_NoLock), ProjectFullName, Hierarchy, ItemId, punkDocData, dwCookie)
+                        Dim hr As Integer = rdt.FindAndLockDocument(CUInt(_VSRDTFLAGS.RDT_NoLock), ProjectFullName, Hierarchy, ItemId, punkDocData, dwCookie)
+
                         If VSErrorHandler.Succeeded(hr) Then
                             Return dwCookie
                         End If

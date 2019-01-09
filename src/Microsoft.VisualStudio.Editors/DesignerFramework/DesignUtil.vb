@@ -205,7 +205,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="m">Window's message.</param>
         ''' <returns>The context event args to use for raising the event.</returns>
         ''' <remarks></remarks>
-        Public Shared Function GetContextMenuMouseEventArgs(Control As Control, ByRef m As Message) As MouseEventArgs
+        Public Shared Function GetContextMenuMouseEventArgs(ByRef m As Message) As MouseEventArgs
             Dim x As Integer = SignedLoWord(m.LParam)
             Dim y As Integer = SignedHiWord(m.LParam)
 

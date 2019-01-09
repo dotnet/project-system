@@ -169,11 +169,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                                                             wszDefaultNamespace,
                                                             wszInputFilePath,
                                                             False,
-                                                            pGenerateProgress,
                                                             typeAttrs,
-                                                            CodeDomProvider.Supports(GeneratorSupport.TryCatchStatements),
                                                             shouldGenerateMyStuff,
-                                                            projectRootNamespace,
                                                             generatedClass)
 
                 ' For VB, we need to add Option Strict ON, Option Explicit ON plus check whether or not we
@@ -247,9 +244,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="DefaultNamespace">namespace to generate code within</param>
         ''' <param name="FilePath">path to the file this Settings object is (used to create the class name)</param>
         ''' <param name="IsDesignTime">flag to tell whether we are generating for design-time consumers like SettingsGlobalObjectProvider users or not.</param>
-        ''' <param name="GenerateProgress">optional reporting mechanism</param>
         ''' <param name="GeneratedClassVisibility"></param>
-        ''' <param name="GeneratorSupportsTryCatch">Does the CodeDom generator support try/catch statements?</param>
         ''' <param name="GenerateVBMyAutoSave"></param>
         ''' <returns>CodeCompileUnit of the given DesignTimeSettings object</returns>
         ''' <remarks></remarks>
@@ -258,11 +253,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                                       DefaultNamespace As String,
                                       FilePath As String,
                                       IsDesignTime As Boolean,
-                                      GenerateProgress As IVsGeneratorProgress,
                                       GeneratedClassVisibility As TypeAttributes,
-                                      Optional GeneratorSupportsTryCatch As Boolean = True,
                                       Optional GenerateVBMyAutoSave As Boolean = False,
-                                      Optional ProjectRootNamespace As String = "",
                                       <Out()> Optional ByRef generatedType As CodeTypeDeclaration = Nothing) As CodeCompileUnit
 
             Dim CompileUnit As New CodeCompileUnit
@@ -311,16 +303,15 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
             ' add the shared getter that fetches the default instance
             '
-            AddDefaultInstance(generatedType, GenerateProgress, GeneratorSupportsTryCatch, GenerateVBMyAutoSave)
+            AddDefaultInstance(generatedType, GenerateVBMyAutoSave)
 
             ' and then add each setting as a property
             '
 
             ' We don't really care about the current language since we only want to translate the virtual type names
             ' into .NET FX type names...
-            Dim typeNameResolver As New SettingTypeNameResolutionService("")
             For Each Instance As DesignTimeSettingInstance In Settings
-                generatedType.Members.Add(CodeDomPropertyFromSettingInstance(typeNameResolver, Instance, IsDesignTime, GenerateProgress))
+                generatedType.Members.Add(CodeDomPropertyFromSettingInstance(Instance, IsDesignTime))
             Next
 
             ' Add our class to the namespace...
@@ -359,11 +350,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Generate a CodeDomProperty to be the shared accessor
         ''' </summary>
-        ''' <param name="GeneratedType"></param>
-        ''' <param name="SupportsTryCatch"></param>
-        ''' <param name="GenerateVBMyAutoSave"></param>
-        ''' <remarks></remarks>
-        Private Shared Sub AddDefaultInstance(GeneratedType As CodeTypeDeclaration, GenerateProgress As IVsGeneratorProgress, Optional SupportsTryCatch As Boolean = True, Optional GenerateVBMyAutoSave As Boolean = False)
+        Private Shared Sub AddDefaultInstance(GeneratedType As CodeTypeDeclaration, Optional GenerateVBMyAutoSave As Boolean = False)
 
             ' type-reference that both the default-instance field and the property will be
             '
@@ -455,11 +442,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Given a setting instance, generate a CodeDomProperty
         ''' </summary>
-        ''' <param name="Instance"></param>
-        ''' <param name="GenerateProgress"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Private Shared Function CodeDomPropertyFromSettingInstance(TypeNameResolver As SettingTypeNameResolutionService, Instance As DesignTimeSettingInstance, IsDesignTime As Boolean, GenerateProgress As IVsGeneratorProgress) As CodeMemberProperty
+        Private Shared Function CodeDomPropertyFromSettingInstance(Instance As DesignTimeSettingInstance, IsDesignTime As Boolean) As CodeMemberProperty
             Dim CodeProperty As New CodeMemberProperty With {
                 .Attributes = SettingsPropertyVisibility,
                 .Name = Instance.Name
@@ -931,7 +914,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Finally
                 If (pUnknownPointer <> IntPtr.Zero) Then
                     Marshal.Release(pUnknownPointer)
-                    pUnknownPointer = IntPtr.Zero
                 End If
             End Try
         End Sub

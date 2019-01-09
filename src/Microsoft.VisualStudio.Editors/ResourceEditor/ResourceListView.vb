@@ -1035,7 +1035,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 If Resource.IsLink Then
                     LinkFileName = Resource.RelativeLinkPathAndFileName
                 Else
-                    LinkFileName = ""
                 End If
 
                 'The order of items here corresponds to the order of the columns we established in InitializeUI(),

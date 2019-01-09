@@ -154,7 +154,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 Case Keys.Up
                     Dim parent As ProjectDesignerTabControl = ParentTabControl
                     If parent IsNot Nothing Then
-                        Dim nextIndex As Int32 = ButtonIndex - 1
+                        Dim nextIndex As Integer = ButtonIndex - 1
                         If nextIndex < 0 Then
                             nextIndex = parent.TabButtonCount - 1
                         End If
@@ -166,7 +166,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 Case Keys.Down
                     Dim parent As ProjectDesignerTabControl = ParentTabControl
                     If parent IsNot Nothing Then
-                        Dim nextIndex As Int32 = ButtonIndex + 1
+                        Dim nextIndex As Integer = ButtonIndex + 1
                         If nextIndex >= parent.TabButtonCount Then
                             nextIndex = 0
                         End If

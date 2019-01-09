@@ -588,15 +588,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             If VSProductSKU.IsExpress Then
                 BuildEventsButton.Visible = False
             End If
-
             ' Only show the separator/all configurations label if we have the
             ' ShowAllConfigurations setting on...
-            Dim SimplifiedConfigMode As Boolean = False
-            Dim ConfigurationState As PropPageDesigner.ConfigurationState = Nothing
-            ConfigurationState = TryCast(GetServiceFromPropertyPageSite(GetType(PropPageDesigner.ConfigurationState)), PropPageDesigner.ConfigurationState)
+            Dim ConfigurationState As PropPageDesigner.ConfigurationState = TryCast(GetServiceFromPropertyPageSite(GetType(PropPageDesigner.ConfigurationState)), PropPageDesigner.ConfigurationState)
             Debug.Assert(ConfigurationState IsNot Nothing, "Couldn't QS for ConfigurationState")
             If ConfigurationState IsNot Nothing Then
-                SimplifiedConfigMode = ConfigurationState.IsSimplifiedConfigMode
+                Dim SimplifiedConfigMode As Boolean = ConfigurationState.IsSimplifiedConfigMode
             End If
 
             RefreshEnabledStatusForPrefer32Bit(Prefer32BitCheckBox)
@@ -1160,8 +1157,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
                 Dim ErrorsList As New List(Of Integer)
                 Dim NoNotifyList As New List(Of Integer)
-
-                cell = WarningsGridView.CurrentCell
 
                 For Index As Integer = 0 To WarningsGridView.Rows.Count - 1
                     cell = WarningsGridView.Rows.Item(Index).Cells.Item(1)

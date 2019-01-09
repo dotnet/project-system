@@ -176,7 +176,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Finally
                 If (localPunk <> IntPtr.Zero) Then
                     Marshal.Release(localPunk)
-                    localPunk = IntPtr.Zero
                 End If
             End Try
 

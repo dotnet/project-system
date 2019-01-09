@@ -87,12 +87,12 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   are more specific local exceptions, they can be added to ErrorList manually.
         ''' </remarks>
         Protected Overrides Sub HandleLoad(SerializationManager As IDesignerSerializationManager)
-            Dim NewResourceEditorRoot As ResourceEditorRootComponent = Nothing
             Using New WaitCursor
                 If LoaderHost IsNot Nothing Then
                     ' Create the root component (this will also automatically create its root designer
                     '   and hook it up to the component)
-                    NewResourceEditorRoot = CType(LoaderHost.CreateComponent(GetType(ResourceEditorRootComponent)), ResourceEditorRootComponent)
+                    Dim NewResourceEditorRoot As ResourceEditorRootComponent = CType(LoaderHost.CreateComponent(GetType(ResourceEditorRootComponent)), ResourceEditorRootComponent)
+
                     Debug.Assert(Not NewResourceEditorRoot Is Nothing, "should have thrown on failure")
 
                     'Figure out the base path to use for relative links in the resx file.  This should be the directory where the resx file
@@ -216,7 +216,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             MyBase.Initialize()
 
             'Add our ComponentSerializationService so that the basic designer will give us automatic Undo/Redo
-            Dim SerializationService As New ResourceSerializationService(LoaderHost)
+            Dim SerializationService As New ResourceSerializationService()
             LoaderHost.AddService(GetType(ComponentSerializationService), SerializationService)
             Debug.Assert(GetService(GetType(ComponentSerializationService)) IsNot Nothing,
                 "We just made the ComponentSerializationService service available.  Why isn't it there?")

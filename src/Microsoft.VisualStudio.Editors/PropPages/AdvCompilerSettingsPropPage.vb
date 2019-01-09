@@ -124,12 +124,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         Private Shared Function GetBaseAddressFromControl(control As Control) As UInteger
             Dim StringValue As String = Trim(control.Text)
-            Dim LongValue As ULong = 0
 
             'DLL Baseaddress must be &Hxxxxxxxx format
             If String.Compare(VBStrings.Left(StringValue, 2), "&H", StringComparison.OrdinalIgnoreCase) = 0 AndAlso IsNumeric(StringValue) Then
                 Try
-                    LongValue = CULng(StringValue)
+                    Dim LongValue As ULong = CULng(StringValue)
                     If LongValue < UInteger.MaxValue Then
                         Return CUInt(LongValue)
                     End If

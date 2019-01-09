@@ -187,7 +187,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Public Overrides Function IsResourceItemValid(NewResource As IResource, ResourceContentFile As IResourceContentFile, ByRef Message As String, ByRef HelpID As String) As Boolean
             ValidateResourceValue(NewResource)
             If ResourceContentFile.IsInsideDeviceProject() Then
-                Dim Extension As String = String.Empty
+
+                Dim Extension As String
+
                 If NewResource.IsLink() Then
                     Extension = IO.Path.GetExtension(NewResource.LinkedFilePath)
                 Else

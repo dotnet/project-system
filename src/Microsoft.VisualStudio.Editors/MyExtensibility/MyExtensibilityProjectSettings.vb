@@ -220,7 +220,6 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             Dim parentProjectItems As ProjectItems = GetParentProjectItems()
             Debug.Assert(parentProjectItems IsNot Nothing, "Could not find parent ProjectItems!")
 
-            Dim result As ProjectItem = Nothing
             For Each projectItem As ProjectItem In parentProjectItems
                 If StringEquals(projectItem.Name, EXTENSION_FOLDER_NAME) Then
                     _extensionFolderProjectItem = projectItem

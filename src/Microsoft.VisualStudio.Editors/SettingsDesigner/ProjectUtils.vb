@@ -63,11 +63,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
         ''' VB projects don't store the root namespace as part of the generated
         ''' namespace in the .settings file.
         ''' </summary>
-        ''' <param name="Hierarchy"></param>
-        ''' <param name="ItemId"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Friend Function PersistedNamespaceIncludesRootNamespace(Hierarchy As IVsHierarchy, ItemId As UInteger) As Boolean
+        Friend Function PersistedNamespaceIncludesRootNamespace(Hierarchy As IVsHierarchy) As Boolean
             If Common.IsVbProject(Hierarchy) Then
                 Return False
             Else
@@ -103,7 +99,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
         ''' <returns></returns>
         ''' <remarks></remarks>
         Friend Function GeneratedSettingsClassNamespace(Hierarchy As IVsHierarchy, ItemId As UInteger) As String
-            Dim IncludeRootNamespace As Boolean = PersistedNamespaceIncludesRootNamespace(Hierarchy, ItemId)
+            Dim IncludeRootNamespace As Boolean = PersistedNamespaceIncludesRootNamespace(Hierarchy)
             Return GeneratedSettingsClassNamespace(Hierarchy, ItemId, IncludeRootNamespace)
         End Function
 
@@ -785,7 +781,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
                 Throw New ArgumentNullException(NameOf(cc2))
             End If
 
-            Dim returnValue As TypeAttributes = 0
+            Dim returnValue As TypeAttributes
 
             Select Case cc2.Access
                 Case EnvDTE.vsCMAccess.vsCMAccessProject

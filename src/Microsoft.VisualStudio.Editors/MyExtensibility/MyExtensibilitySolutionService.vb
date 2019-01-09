@@ -325,7 +325,6 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
                 _projectServices.Remove(project)
                 If removedProjectService IsNot Nothing Then
                     removedProjectService.Dispose()
-                    removedProjectService = Nothing
                 End If
             End If
         End Sub

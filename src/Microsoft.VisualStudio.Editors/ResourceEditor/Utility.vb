@@ -484,8 +484,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <returns>The Int32 combined from these four bytes in a way used by the mmio functions.</returns>
         ''' <remarks></remarks>
         Private Function BytesToInt(ch0 As Byte, ch1 As Byte, ch2 As Byte, ch3 As Byte) As Integer
-            Dim Result As Integer = 0
-            Result = ch3
+            Dim Result As Integer = ch3
             Result = Result Or (CInt(ch2) << 8)
             Result = Result Or (CInt(ch1) << 16)
             Result = Result Or (CInt(ch0) << 24)

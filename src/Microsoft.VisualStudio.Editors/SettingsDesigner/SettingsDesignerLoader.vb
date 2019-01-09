@@ -67,11 +67,10 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             LoaderHost.AddService(GetType(ComponentSerializationService), New DesignerFramework.GenericComponentSerializationService(Nothing))
 
             ' Add our dynamic type service...
-            Dim typeDiscoveryService As ITypeDiscoveryService = Nothing
             Dim dynamicTypeService As DynamicTypeService =
                 DirectCast(_serviceProvider.GetService(GetType(DynamicTypeService)), DynamicTypeService)
             If dynamicTypeService IsNot Nothing Then
-                typeDiscoveryService = dynamicTypeService.GetTypeDiscoveryService(VsHierarchy, ProjectItemid)
+                Dim typeDiscoveryService As ITypeDiscoveryService = dynamicTypeService.GetTypeDiscoveryService(VsHierarchy, ProjectItemid)
             End If
 
             Dim cm As EnvDTE.CodeModel = Nothing
@@ -498,7 +497,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 Dim objectDirty As AppConfigSerializer.DirtyState =
                     AppConfigSerializer.Deserialize(RootComponent,
                                                     DirectCast(GetService(GetType(SettingsTypeCache)), SettingsTypeCache),
-                                                    DirectCast(GetService(GetType(SettingsValueCache)), SettingsValueCache),
                                                     cfgHelper.GetSectionName(ProjectUtils.FullyQualifiedClassName(GeneratedClassNamespace(True), GeneratedClassName), String.Empty),
                                                     _appConfigDocData,
                                                     AppConfigSerializer.MergeValueMode.Prompt,
