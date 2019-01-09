@@ -5,7 +5,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         Inherits System.Windows.Forms.UserControl
 
         'UserControl overrides dispose to clean up the component list.
-        <System.Diagnostics.DebuggerNonUserCode()> _
+        <System.Diagnostics.DebuggerNonUserCode()>
         Protected Overloads Overrides Sub Dispose(disposing As Boolean)
             If disposing AndAlso components IsNot Nothing Then
                 components.Dispose()
@@ -19,7 +19,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         'NOTE: The following procedure is required by the Windows Form Designer
         'It can be modified using the Windows Form Designer.  
         'Do not modify it using the code editor.
-        <System.Diagnostics.DebuggerStepThrough()> _
+        <System.Diagnostics.DebuggerStepThrough()>
         Private Sub InitializeComponent()
             Me.IconGlyph = New System.Windows.Forms.PictureBox
             Me.ErrorText = New System.Windows.Forms.TextBox

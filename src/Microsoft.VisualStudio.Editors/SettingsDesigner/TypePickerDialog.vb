@@ -1,12 +1,13 @@
 ﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-Imports Microsoft.VisualStudio.Editors.DesignerFramework
-Imports System.Windows.Forms
 Imports System.Drawing
 Imports System.Reflection
-Imports Microsoft.VisualStudio.Shell.Interop
+Imports System.Windows.Forms
+
 Imports Microsoft.VisualStudio.Editors.Common
+Imports Microsoft.VisualStudio.Editors.DesignerFramework
 Imports Microsoft.VisualStudio.PlatformUI
+Imports Microsoft.VisualStudio.Shell.Interop
 
 Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 

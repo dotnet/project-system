@@ -1,7 +1,8 @@
 ﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-Imports Common = Microsoft.VisualStudio.Editors.AppDesCommon
 Imports Microsoft.VisualStudio.Editors.AppDesInterop
+
+Imports Common = Microsoft.VisualStudio.Editors.AppDesCommon
 
 'NOTE: To test property pages under different SKUs, use the PDSku and PDSubSku
 '  switches (see common\switches.vb).

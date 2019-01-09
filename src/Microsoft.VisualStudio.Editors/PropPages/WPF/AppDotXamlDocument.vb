@@ -4,8 +4,9 @@ Imports System.IO
 Imports System.Runtime.InteropServices
 Imports System.Text
 Imports System.Xml
-Imports Microsoft.VisualStudio.TextManager.Interop
+
 Imports Microsoft.VisualStudio.Editors.Common.ArgumentValidation
+Imports Microsoft.VisualStudio.TextManager.Interop
 
 Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
 

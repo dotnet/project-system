@@ -4,10 +4,13 @@ using System;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading;
+
 using EnvDTE;
+
 using Microsoft.Test.Apex;
 using Microsoft.Test.Apex.VisualStudio;
 using Microsoft.VisualStudio.Shell.Interop;
+
 using NuGet.SolutionRestoreManager;
 using NuGet.VisualStudio;
 

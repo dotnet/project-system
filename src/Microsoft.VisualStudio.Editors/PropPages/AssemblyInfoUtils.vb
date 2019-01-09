@@ -4,6 +4,7 @@ Option Strict On
 Option Explicit On
 Imports System.ComponentModel
 Imports System.Globalization
+
 Imports Microsoft.VisualStudio.Editors.Common
 
 Namespace Microsoft.VisualStudio.Editors.PropertyPages

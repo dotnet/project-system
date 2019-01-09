@@ -44,7 +44,7 @@ namespace Microsoft.VisualStudio.Telemetry
 
             PostTelemetryEvent(telemetryEvent);
         }
-      
+
         public void PostProperties(string eventName, IEnumerable<(string propertyName, object propertyValue)> properties)
         {
             Requires.NotNullOrEmpty(eventName, nameof(eventName));

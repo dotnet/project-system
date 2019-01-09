@@ -4,12 +4,13 @@ Option Explicit On
 Option Strict On
 Option Compare Binary
 
-Imports Microsoft.VisualStudio.Editors.Common
 Imports System.ComponentModel
 Imports System.Drawing
 Imports System.IO
 Imports System.Text
 Imports System.Text.RegularExpressions
+
+Imports Microsoft.VisualStudio.Editors.Common
 
 Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 

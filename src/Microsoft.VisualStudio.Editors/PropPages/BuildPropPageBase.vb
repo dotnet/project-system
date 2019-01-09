@@ -1,10 +1,12 @@
 ﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-Imports Microsoft.VisualStudio.Editors.Common
 Imports System.ComponentModel
-Imports System.Windows.Forms
-Imports VSLangProj110
 Imports System.Reflection
+Imports System.Windows.Forms
+
+Imports Microsoft.VisualStudio.Editors.Common
+
+Imports VSLangProj110
 
 Namespace Microsoft.VisualStudio.Editors.PropertyPages
 

@@ -15,8 +15,8 @@ Imports Microsoft.VisualStudio.Editors.Common
 Imports Microsoft.VisualStudio.Editors.DesignerFramework
 Imports Microsoft.VisualStudio.Editors.Interop
 Imports Microsoft.VisualStudio.Editors.PropertyPages
-Imports Microsoft.VisualStudio.Shell.Interop
 Imports Microsoft.VisualStudio.PlatformUI
+Imports Microsoft.VisualStudio.Shell.Interop
 Imports Microsoft.VSDesigner.VSDesignerPackage
 
 Namespace Microsoft.VisualStudio.Editors.SettingsDesigner

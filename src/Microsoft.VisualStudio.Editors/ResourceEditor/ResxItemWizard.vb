@@ -4,7 +4,9 @@ Option Strict On
 Option Explicit On
 Option Compare Binary
 Imports System.Collections.Specialized
+
 Imports EnvDTE
+
 Imports Microsoft.VisualStudio.TemplateWizard
 
 Namespace Microsoft.VisualStudio.Editors.ResourceEditor

@@ -113,7 +113,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             // Check to see if a solution is already open. If so we set _solutionOpened to true so that subsequent projects added to 
             // this solution are processed.
             if (ErrorHandler.Succeeded(_vsSolution.GetProperty((int)__VSPROPID4.VSPROPID_IsSolutionFullyLoaded, out object isFullyLoaded)) &&
-                isFullyLoaded is bool isFullyLoadedBool && 
+                isFullyLoaded is bool isFullyLoadedBool &&
                 isFullyLoadedBool)
             {
                 _solutionOpened = true;
@@ -236,7 +236,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 if (compatLevel == CompatibilityLevel.Supported)
                 {
                     // Get current dontShowAgain value
-                    var settingsManager = await _settingsManagerService.GetValueAsync();
+                    ISettingsManager settingsManager = await _settingsManagerService.GetValueAsync();
                     bool suppressPrompt = false;
                     if (settingsManager != null)
                     {

@@ -1,20 +1,21 @@
 ﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-Imports EnvDTE
-Imports Microsoft.VisualStudio.Editors.Interop
-Imports Microsoft.VisualStudio.Editors.SettingsDesigner
-Imports Microsoft.VisualStudio.Shell.Design
-Imports Microsoft.VisualStudio.Shell.Design.Serialization
-Imports Microsoft.VisualStudio.Shell.Interop
 Imports System.CodeDom
 Imports System.ComponentModel
 Imports System.ComponentModel.Design
 Imports System.ComponentModel.Design.Serialization
 Imports System.Configuration
+Imports System.Reflection
 Imports System.Runtime.InteropServices
 
+Imports EnvDTE
+
+Imports Microsoft.VisualStudio.Editors.Interop
+Imports Microsoft.VisualStudio.Editors.SettingsDesigner
+Imports Microsoft.VisualStudio.Shell.Design
+Imports Microsoft.VisualStudio.Shell.Design.Serialization
+Imports Microsoft.VisualStudio.Shell.Interop
 Imports Microsoft.VSDesigner
-Imports System.Reflection
 
 Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
     ''' <summary>

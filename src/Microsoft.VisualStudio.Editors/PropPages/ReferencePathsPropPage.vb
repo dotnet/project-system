@@ -3,9 +3,11 @@
 Imports System.ComponentModel
 Imports System.Drawing
 Imports System.Windows.Forms
-Imports Microsoft.Win32
+
 Imports Microsoft.VisualStudio.Editors.Common
 Imports Microsoft.VisualStudio.PlatformUI
+Imports Microsoft.Win32
+
 Imports VSLangProj80
 
 Namespace Microsoft.VisualStudio.Editors.PropertyPages

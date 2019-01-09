@@ -4,6 +4,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
+
 using Microsoft.VisualStudio.Buffers.PooledObjects;
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.Packaging;

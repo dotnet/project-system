@@ -4,6 +4,7 @@ Option Strict On
 Option Explicit On
 Imports System.Reflection
 Imports System.Xml
+
 Imports Microsoft.VisualStudio.Editors.Common.Utils
 Imports Microsoft.VisualStudio.Editors.MyExtensibility.MyExtensibilityUtil
 

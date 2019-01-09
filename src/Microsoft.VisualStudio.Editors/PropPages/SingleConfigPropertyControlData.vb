@@ -1,8 +1,9 @@
 ﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+Imports System.Windows.Forms
+
 Imports Microsoft.VisualStudio.Editors.Common
 Imports Microsoft.VisualStudio.Shell.Interop
-Imports System.Windows.Forms
 
 
 Namespace Microsoft.VisualStudio.Editors.PropertyPages

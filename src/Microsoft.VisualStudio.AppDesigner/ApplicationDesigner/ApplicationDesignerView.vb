@@ -1,12 +1,15 @@
 ﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-Imports EnvDTE
-Imports Common = Microsoft.VisualStudio.Editors.AppDesCommon
-Imports Microsoft.VisualStudio.Editors.AppDesInterop
 Imports System.Runtime.InteropServices
 Imports System.Windows.Forms
+
+Imports EnvDTE
+
 Imports Microsoft.Internal.Performance
+Imports Microsoft.VisualStudio.Editors.AppDesInterop
 Imports Microsoft.VisualStudio.Shell.Interop
+
+Imports Common = Microsoft.VisualStudio.Editors.AppDesCommon
 Imports OleInterop = Microsoft.VisualStudio.OLE.Interop
 Imports VSITEMID = Microsoft.VisualStudio.Editors.VSITEMIDAPPDES
 

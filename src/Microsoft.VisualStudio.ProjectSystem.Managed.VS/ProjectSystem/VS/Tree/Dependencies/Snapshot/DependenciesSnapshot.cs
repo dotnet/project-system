@@ -144,8 +144,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             ImmutableDictionary<ITargetFramework, ITargetedDependenciesSnapshot> newTargets = Targets.RemoveRange(targetToRemove);
 
             // Return this if no targets changed
-            return ReferenceEquals(newTargets, Targets) 
-                ? this 
+            return ReferenceEquals(newTargets, Targets)
+                ? this
                 : new DependenciesSnapshot(ProjectPath, ActiveTarget, newTargets);
         }
 

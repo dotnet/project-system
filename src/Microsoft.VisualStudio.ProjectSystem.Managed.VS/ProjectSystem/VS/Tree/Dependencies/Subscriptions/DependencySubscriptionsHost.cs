@@ -140,7 +140,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         public Task OnProjectFactoryCompletedAsync()
         {
             // The project factory is completing.
-            
+
             // Subscribe to project data. Ensure the project doesn't unload during subscription.
             return _tasksService.LoadedProjectAsync(AddInitialSubscriptionsAsync).Task;
 
@@ -148,7 +148,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             {
                 // This host object subscribes to configured project evaluation data for its own purposes.
                 SubscribeToConfiguredProjectEvaluation(
-                    _activeConfiguredProjectSubscriptionService, 
+                    _activeConfiguredProjectSubscriptionService,
                     OnActiveConfiguredProjectEvaluatedAsync);
 
                 // Each of the host's subscribers are initialized.

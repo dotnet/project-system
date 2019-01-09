@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
     {
         private static readonly DependencyFlagCache s_flagCache = new DependencyFlagCache(
             add: DependencyTreeFlags.NuGetSubTreeNodeFlags +
-                 DependencyTreeFlags.PackageNodeFlags + 
+                 DependencyTreeFlags.PackageNodeFlags +
                  DependencyTreeFlags.SupportsHierarchy);
 
         private static readonly DependencyIconSet s_iconSet = new DependencyIconSet(
@@ -55,13 +55,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             IImmutableDictionary<string, string> properties,
             IEnumerable<string> dependenciesIDs)
             : base(
-                path, 
+                path,
                 originalItemSpec,
                 flags: s_flagCache.Get(isResolved, isImplicit),
-                isResolved, 
-                isImplicit, 
-                properties, 
-                isTopLevel, 
+                isResolved,
+                isImplicit,
+                properties,
+                isTopLevel,
                 isVisible)
         {
             Requires.NotNullOrEmpty(name, nameof(name));

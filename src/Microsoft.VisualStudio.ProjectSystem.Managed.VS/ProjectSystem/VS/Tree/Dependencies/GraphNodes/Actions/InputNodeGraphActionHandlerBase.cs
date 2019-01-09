@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
     /// </summary>
     internal abstract class InputNodeGraphActionHandlerBase : GraphActionHandlerBase
     {
-        protected InputNodeGraphActionHandlerBase(IAggregateDependenciesSnapshotProvider aggregateSnapshotProvider) 
+        protected InputNodeGraphActionHandlerBase(IAggregateDependenciesSnapshotProvider aggregateSnapshotProvider)
             : base(aggregateSnapshotProvider)
         {
         }

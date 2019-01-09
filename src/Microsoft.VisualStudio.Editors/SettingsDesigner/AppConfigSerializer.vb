@@ -1,8 +1,8 @@
 ﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+Imports System.Configuration
 Imports System.IO
 Imports System.Windows.Forms.Design
-Imports System.Configuration
 
 Imports Microsoft.VisualStudio.Shell.Design.Serialization
 Imports Microsoft.VisualStudio.Shell.Interop

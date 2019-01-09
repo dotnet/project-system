@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             Resolved = 1 << 0,
             TopLevel = 1 << 1,
             Implicit = 1 << 2,
-            Visible  = 1 << 3
+            Visible = 1 << 3
         }
 
         /// <summary>
@@ -43,10 +43,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
                 // The 'isImplicit' dimension only enforces, when true, that the dependency cannot be removed.
 
                 _lookup = new ProjectTreeFlags[4];
-                _lookup[Index(isResolved: true,  isImplicit: false)] = resolved;
-                _lookup[Index(isResolved: true,  isImplicit: true )] = resolved.Except(DependencyTreeFlags.SupportsRemove);
+                _lookup[Index(isResolved: true, isImplicit: false)] = resolved;
+                _lookup[Index(isResolved: true, isImplicit: true)] = resolved.Except(DependencyTreeFlags.SupportsRemove);
                 _lookup[Index(isResolved: false, isImplicit: false)] = unresolved;
-                _lookup[Index(isResolved: false, isImplicit: true )] = unresolved.Except(DependencyTreeFlags.SupportsRemove);
+                _lookup[Index(isResolved: false, isImplicit: true)] = unresolved.Except(DependencyTreeFlags.SupportsRemove);
             }
 
             /// <summary>Retrieves the cached <see cref="ProjectTreeFlags"/> given the arguments.</summary>
@@ -105,7 +105,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
         public bool Resolved => (_flags & DependencyFlags.Resolved) != 0;
         public bool TopLevel => (_flags & DependencyFlags.TopLevel) != 0;
         public bool Implicit => (_flags & DependencyFlags.Implicit) != 0;
-        public bool Visible  => (_flags & DependencyFlags.Visible ) != 0;
+        public bool Visible => (_flags & DependencyFlags.Visible) != 0;
         public virtual int Priority => 0;
         public ImageMoniker Icon => IconSet.Icon;
         public ImageMoniker ExpandedIcon => IconSet.ExpandedIcon;

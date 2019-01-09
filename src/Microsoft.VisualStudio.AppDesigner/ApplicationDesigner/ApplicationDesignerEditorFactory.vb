@@ -1,11 +1,13 @@
 ﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.Runtime.InteropServices
-Imports Common = Microsoft.VisualStudio.Editors.AppDesCommon
+
 Imports Microsoft.VisualStudio.Designer.Interfaces
+Imports Microsoft.VisualStudio.Editors.AppDesInterop
 Imports Microsoft.VisualStudio.Shell
 Imports Microsoft.VisualStudio.Shell.Interop
-Imports Microsoft.VisualStudio.Editors.AppDesInterop
+
+Imports Common = Microsoft.VisualStudio.Editors.AppDesCommon
 
 Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 

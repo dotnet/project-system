@@ -2,9 +2,12 @@
 
 
 using System;
+
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.Logging;
+
 using Moq;
+
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
@@ -20,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             Assert.Throws<ArgumentNullException>("version", () =>
             {
-                handler.Handle((IComparable)null, projectChange, true, logger);
+                handler.Handle(null, projectChange, true, logger);
             });
         }
 
@@ -32,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             Assert.Throws<ArgumentNullException>("projectChange", () =>
             {
-                handler.Handle(10, (IProjectChangeDescription)null, true, logger);
+                handler.Handle(10, null, true, logger);
             });
         }
 
@@ -44,7 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             Assert.Throws<ArgumentNullException>("logger", () =>
             {
-                handler.Handle(10, projectChange, true, (IProjectLogger)null);
+                handler.Handle(10, projectChange, true, null);
             });
         }
 

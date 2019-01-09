@@ -7,6 +7,7 @@ Imports System.Reflection
 Imports System.Runtime.InteropServices
 Imports System.Text.RegularExpressions
 Imports System.Windows.Forms
+
 Imports Microsoft.VisualStudio.Shell
 Imports Microsoft.VisualStudio.Telemetry
 

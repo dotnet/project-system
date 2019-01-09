@@ -4,12 +4,15 @@
 
 Imports System.ComponentModel
 Imports System.IO
+Imports System.Reflection
 Imports System.Windows.Forms
+
 Imports Microsoft.VisualStudio.Editors.Common
 Imports Microsoft.VisualStudio.Shell.Interop
-Imports VSLangProj80
+
 Imports VSLangProj110
-Imports System.Reflection
+
+Imports VSLangProj80
 
 Namespace Microsoft.VisualStudio.Editors.PropertyPages
 

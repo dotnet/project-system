@@ -1,7 +1,8 @@
 ﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-Imports Microsoft.VisualStudio.Editors.AppDesDesignerFramework
 Imports System.Windows.Forms
+
+Imports Microsoft.VisualStudio.Editors.AppDesDesignerFramework
 
 Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
