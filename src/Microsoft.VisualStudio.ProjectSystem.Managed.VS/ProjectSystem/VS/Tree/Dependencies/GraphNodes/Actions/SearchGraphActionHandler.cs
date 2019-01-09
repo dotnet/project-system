@@ -164,7 +164,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
             {
                 foreach ((string _, IDependency dependency) in targetedSnapshot.DependenciesWorld)
                 {
-                    if (dependency.Visible && dependency.Caption.IndexOf(searchTerm, StringComparison.InvariantCultureIgnoreCase) != -1)
+                    if (dependency.Visible && dependency.Caption.IndexOf(searchTerm, StringComparison.CurrentCultureIgnoreCase) != -1)
                     {
                         matchedDependencies.Add(dependency);
                     }
