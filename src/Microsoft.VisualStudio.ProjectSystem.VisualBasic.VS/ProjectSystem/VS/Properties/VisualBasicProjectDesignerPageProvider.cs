@@ -41,6 +41,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
                 builder.Add(VisualBasicProjectDesignerPage.Debug);
             }
 
+            builder.Add(VisualBasicProjectDesignerPage.Signing);
+
             return Task.FromResult<IReadOnlyCollection<IPageMetadata>>(builder.ToImmutableAndFree());
         }
     }
