@@ -21,17 +21,17 @@
     <MicrosoftDotNetIBCMergeVersion>4.7.1-alpha-00001</MicrosoftDotNetIBCMergeVersion>
     <MicrosoftNetCompilersVersion>2.11.0-beta2-63529-05</MicrosoftNetCompilersVersion>
     <MicrosoftDiaSymReaderPdb2PdbVersion>1.1.0-beta1-62624-01</MicrosoftDiaSymReaderPdb2PdbVersion>
-    <RoslynAnalyzersPackagesVersion>2.6.3-beta1.19055.1</RoslynAnalyzersPackagesVersion>
+    <RoslynAnalyzersPackagesVersion>2.6.3-beta1.19059.2</RoslynAnalyzersPackagesVersion>
     <OpenCoverVersion>4.6.519</OpenCoverVersion>
     <CodecovVersion>1.1.0</CodecovVersion>
-   
+
     <!--
       TODO:
       Override SwixBuild version. We need newer SwixBuild than the one referenced by the current RepoToolset.
       Remove once RepoToolset is updated to at least 1.0.0-beta2-63110-06 (https://github.com/dotnet/project-system/issues/3700).
     -->
     <MicroBuildPluginsSwixBuildVersion>1.0.422</MicroBuildPluginsSwixBuildVersion>
-    
+
     <!-- Microsoft.DotNet.*.ProjectTemplates -->
     <MicrosoftDotNetProjectTemplatesVersion>1.0.0-beta2-20170629-269</MicrosoftDotNetProjectTemplatesVersion>
 
