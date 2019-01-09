@@ -17,14 +17,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     {
         public static DependencyIconSetCache Instance { get; } = new DependencyIconSetCache();
 
-        private ImmutableDictionary<(ImageMoniker Icon, ImageMoniker ExpandedIcon, ImageMoniker UnresolvedIcon, ImageMoniker UnresolvedExpandedIcon), DependencyIconSet> 
+        private ImmutableDictionary<(ImageMoniker Icon, ImageMoniker ExpandedIcon, ImageMoniker UnresolvedIcon, ImageMoniker UnresolvedExpandedIcon), DependencyIconSet>
             _iconSets = ImmutableDictionary<(ImageMoniker, ImageMoniker, ImageMoniker, ImageMoniker), DependencyIconSet>.Empty.WithComparers(Comparer.Instance);
 
         public DependencyIconSet GetOrAddIconSet(DependencyIconSet iconSet)
         {
             return ImmutableInterlocked.GetOrAdd(
-                ref _iconSets, 
-                (iconSet.Icon, iconSet.ExpandedIcon, iconSet.UnresolvedIcon, iconSet.UnresolvedExpandedIcon), 
+                ref _iconSets,
+                (iconSet.Icon, iconSet.ExpandedIcon, iconSet.UnresolvedIcon, iconSet.UnresolvedExpandedIcon),
                 (key, arg) => arg,
                 iconSet);
         }

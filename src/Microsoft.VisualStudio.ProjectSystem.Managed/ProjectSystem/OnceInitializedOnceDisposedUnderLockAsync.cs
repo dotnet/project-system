@@ -27,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             _semaphore = ReentrantSemaphore.Create(1, joinableTaskContextNode.Context, ReentrantSemaphore.ReentrancyMode.Stack);
         }
 
-        protected override sealed async Task DisposeCoreAsync(bool initialized)
+        protected sealed override async Task DisposeCoreAsync(bool initialized)
         {
             await _semaphore.ExecuteAsync(() => DisposeCoreUnderLockAsync(initialized));
 

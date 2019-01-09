@@ -107,13 +107,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                             additionalFlags: ProjectTreeFlags.Create(ProjectTreeFlags.Common.BubbleUp));
 
                         node = await BuildSubTreesAsync(
-                            rootNode: node, 
-                            snapshot.ActiveTarget, 
-                            targetedSnapshot, 
+                            rootNode: node,
+                            snapshot.ActiveTarget,
+                            targetedSnapshot,
                             CleanupOldNodes);
 
-                        dependenciesTree = shouldAddTargetNode 
-                            ? dependenciesTree.Add(node).Parent 
+                        dependenciesTree = shouldAddTargetNode
+                            ? dependenciesTree.Add(node).Parent
                             : node.Parent;
 
                         currentTopLevelNodes.Add(node);
@@ -146,8 +146,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 return null;
             }
 
-            IProjectTree dependenciesNode = root.Flags.Contains(DependencyTreeFlags.DependenciesRootNodeFlags) 
-                ? root 
+            IProjectTree dependenciesNode = root.Flags.Contains(DependencyTreeFlags.DependenciesRootNodeFlags)
+                ? root
                 : root.GetSubTreeNode(DependencyTreeFlags.DependenciesRootNodeFlags);
 
             return dependenciesNode?.GetSelfAndDescendentsBreadthFirst()
@@ -199,8 +199,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 IProjectTree subTreeNode = rootNode.FindChildWithCaption(subTreeViewModel.Caption);
                 bool isNewSubTreeNode = subTreeNode == null;
 
-                ProjectTreeFlags excludedFlags = targetedSnapshot.TargetFramework.Equals(TargetFramework.Any) 
-                    ? ProjectTreeFlags.Create(ProjectTreeFlags.Common.BubbleUp) 
+                ProjectTreeFlags excludedFlags = targetedSnapshot.TargetFramework.Equals(TargetFramework.Any)
+                    ? ProjectTreeFlags.Create(ProjectTreeFlags.Common.BubbleUp)
                     : ProjectTreeFlags.Empty;
 
                 subTreeNode = CreateOrUpdateNode(
@@ -219,8 +219,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
                 currentNodes.Add(subTreeNode);
 
-                rootNode = isNewSubTreeNode 
-                    ? rootNode.Add(subTreeNode).Parent 
+                rootNode = isNewSubTreeNode
+                    ? rootNode.Add(subTreeNode).Parent
                     : subTreeNode.Parent;
             }
 
@@ -237,8 +237,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             bool isActiveTarget,
             bool shouldCleanup)
         {
-            List<IProjectTree> currentNodes = shouldCleanup 
-                ? new List<IProjectTree>(capacity: dependencies.Count) 
+            List<IProjectTree> currentNodes = shouldCleanup
+                ? new List<IProjectTree>(capacity: dependencies.Count)
                 : null;
 
             foreach (IDependency dependency in dependencies)
@@ -269,8 +269,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     : dependencyNode.Parent;
             }
 
-            return shouldCleanup 
-                ? CleanupOldNodes(rootNode, currentNodes) 
+            return shouldCleanup
+                ? CleanupOldNodes(rootNode, currentNodes)
                 : rootNode;
         }
 
@@ -323,7 +323,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 return UpdateTreeNode();
             }
 
-            string filePath = viewModel.OriginalModel != null && 
+            string filePath = viewModel.OriginalModel != null &&
                               viewModel.OriginalModel.TopLevel &&
                               viewModel.OriginalModel.Resolved
                 ? viewModel.OriginalModel.GetTopLevelId()

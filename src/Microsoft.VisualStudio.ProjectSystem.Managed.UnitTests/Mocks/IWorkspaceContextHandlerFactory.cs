@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             var mock = new Mock<IWorkspaceContextHandler>();
             mock.Setup(x => x.Initialize(It.IsAny<IWorkspaceProjectContext>()))
                 .Callback(action);
-                       
+
             return mock.Object;
         }
     }

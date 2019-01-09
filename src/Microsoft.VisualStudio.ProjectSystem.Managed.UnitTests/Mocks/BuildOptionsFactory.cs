@@ -10,9 +10,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     {
         public static BuildOptions CreateEmpty()
         {
-            return new BuildOptions(ImmutableArray<CommandLineSourceFile>.Empty, 
-                                    ImmutableArray<CommandLineSourceFile>.Empty, 
-                                    ImmutableArray<CommandLineReference>.Empty, 
+            return new BuildOptions(ImmutableArray<CommandLineSourceFile>.Empty,
+                                    ImmutableArray<CommandLineSourceFile>.Empty,
+                                    ImmutableArray<CommandLineReference>.Empty,
                                     ImmutableArray<CommandLineAnalyzerReference>.Empty);
         }
     }

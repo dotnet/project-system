@@ -66,7 +66,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             {
                 accessor.Context.Dispose();
             }
-            catch (Exception ex) when(_telemetryService.PostFault(TelemetryEventName.LanguageServiceInitFault, ex))
+            catch (Exception ex) when (_telemetryService.PostFault(TelemetryEventName.LanguageServiceInitFault, ex))
             {
             }
         }
@@ -80,11 +80,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             {
                 // Call into Roslyn to init language service for this project
                 IWorkspaceProjectContext context = _workspaceProjectContextFactory.Value.CreateProjectContext(
-                                                                                    data.LanguageName, 
-                                                                                    data.WorkspaceProjectContextId, 
-                                                                                    data.ProjectFilePath, 
-                                                                                    data.ProjectGuid, 
-                                                                                    hostObject, 
+                                                                                    data.LanguageName,
+                                                                                    data.WorkspaceProjectContextId,
+                                                                                    data.ProjectFilePath,
+                                                                                    data.ProjectGuid,
+                                                                                    hostObject,
                                                                                     data.BinOutputPath);
 
                 context.LastDesignTimeBuildSucceeded = false;  // By default, turn off diagnostics until the first design time build succeeds for this project.
@@ -92,7 +92,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 return context;
             }
             catch (Exception ex) when (_telemetryService.PostFault(TelemetryEventName.LanguageServiceInitFault, ex))
-            {   
+            {
             }
 
             return null;

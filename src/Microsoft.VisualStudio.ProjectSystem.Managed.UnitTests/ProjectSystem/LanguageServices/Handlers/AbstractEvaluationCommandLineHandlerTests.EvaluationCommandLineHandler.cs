@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     {
         private class EvaluationCommandLineHandler : AbstractEvaluationCommandLineHandler
         {
-            public EvaluationCommandLineHandler(UnconfiguredProject project) 
+            public EvaluationCommandLineHandler(UnconfiguredProject project)
                 : base(project)
             {
                 Files = new Dictionary<string, IImmutableDictionary<string, string>>();

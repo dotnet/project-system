@@ -3,7 +3,7 @@
     Partial Public Class SpecialFileCustomView
         Inherits System.Windows.Forms.UserControl
 
-        <System.Diagnostics.DebuggerNonUserCode()> _
+        <System.Diagnostics.DebuggerNonUserCode()>
         Public Sub New()
             MyBase.New()
 
@@ -13,7 +13,7 @@
         End Sub
 
         'Control overrides dispose to clean up the component list.
-        <System.Diagnostics.DebuggerNonUserCode()> _
+        <System.Diagnostics.DebuggerNonUserCode()>
         Protected Overloads Overrides Sub Dispose(disposing As Boolean)
             If disposing AndAlso components IsNot Nothing Then
                 components.Dispose()

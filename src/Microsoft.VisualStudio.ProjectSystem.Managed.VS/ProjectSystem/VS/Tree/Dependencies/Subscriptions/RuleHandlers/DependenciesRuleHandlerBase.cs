@@ -59,8 +59,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             if (changesByRuleName.TryGetValue(UnresolvedRuleName, out IProjectChangeDescription unresolvedChanges))
             {
                 HandleChangesForRule(
-                    resolved: false, 
-                    projectChange: unresolvedChanges, 
+                    resolved: false,
+                    projectChange: unresolvedChanges,
                     shouldProcess: dependencyId => true);
             }
 
@@ -69,8 +69,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 changesByRuleName.TryGetValue(ResolvedRuleName, out IProjectChangeDescription resolvedChanges))
             {
                 HandleChangesForRule(
-                    resolved: true, 
-                    projectChange: resolvedChanges, 
+                    resolved: true,
+                    projectChange: resolvedChanges,
                     shouldProcess: unresolvedChanges.After.Items.ContainsKey);
             }
 

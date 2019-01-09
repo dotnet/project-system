@@ -8,7 +8,7 @@ namespace System.Threading.Tasks
         {
             using (var cts = new CancellationTokenSource())
             {
-                Task timeoutTask = Task.Delay(timeout, cts.Token);
+                var timeoutTask = Task.Delay(timeout, cts.Token);
                 Task completedTask = await Task.WhenAny(task, timeoutTask);
 
                 if (timeoutTask == completedTask)
@@ -23,7 +23,7 @@ namespace System.Threading.Tasks
         {
             using (var cts = new CancellationTokenSource())
             {
-                Task timeoutTask = Task.Delay(timeout, cts.Token);
+                var timeoutTask = Task.Delay(timeout, cts.Token);
                 Task completedTask = await Task.WhenAny(task, timeoutTask);
 
                 if (timeoutTask == completedTask)

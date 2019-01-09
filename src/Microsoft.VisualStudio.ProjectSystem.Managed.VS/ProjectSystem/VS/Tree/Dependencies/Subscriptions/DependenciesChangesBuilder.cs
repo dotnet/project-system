@@ -39,7 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         public IDependenciesChanges Build()
         {
             return new DependenciesChanges(
-                _added   == null ? (IImmutableList<IDependencyModel>)ImmutableList<IDependencyModel>.Empty : ImmutableArray.CreateRange(_added),
+                _added == null ? (IImmutableList<IDependencyModel>)ImmutableList<IDependencyModel>.Empty : ImmutableArray.CreateRange(_added),
                 _removed == null ? (IImmutableList<IDependencyModel>)ImmutableList<IDependencyModel>.Empty : ImmutableArray.CreateRange(_removed));
         }
 

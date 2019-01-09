@@ -72,7 +72,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         {
             Requires.NotNull(context, nameof(context));
             Requires.NotNullOrEmpty(contextId, nameof(contextId));
-            
+
             bool changed = ThreadingTools.ApplyChangeOptimistically(ref _contexts,
                                                                     projectContexts => projectContexts.SetItem(context, contextId));
 

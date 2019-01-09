@@ -39,7 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 {
                     // Wait for the project to be loaded so that we don't prematurely load the active configuration
                     await _unconfiguredProjectTasksService.ProjectLoadedInHost;
-                    
+
                     await _unconfiguredProjectTasksService.LoadedProjectAsync(async () =>
                     {
                         ConfigurationGeneral projectProperties = await _projectVsServices.ActiveConfiguredProjectProperties.GetConfigurationGeneralPropertiesAsync();
@@ -52,7 +52,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                             return;
                         }
 
-                        _telemetryService.PostProperties(TelemetryEventName.SDKVersion, new []
+                        _telemetryService.PostProperties(TelemetryEventName.SDKVersion, new[]
                         {
                             (TelemetryPropertyName.SDKVersionProject, (object)projectId),
                             (TelemetryPropertyName.SDKVersionNETCoreSdkVersion, version)

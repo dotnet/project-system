@@ -196,7 +196,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             if (!_paths.Contains(fullPath))
             {
                 IImmutableDictionary<string, string> itemMetadata = metadata.GetValueOrDefault(includePath, ImmutableStringDictionary<string>.EmptyOrdinal);
-                
+
                 // Add to the context first so if Roslyn throws due to a bug or
                 // other reason, that our state of the world remains consistent
                 AddToContext(fullPath, itemMetadata, isActiveContext, logger);

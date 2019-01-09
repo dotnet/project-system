@@ -81,7 +81,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                     suppressVersionOnlyUpdates: false,
                     linkOptions: DataflowOption.PropagateCompletion));
 
-            var actionBlock =
+            ITargetBlock<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectSharedFoldersSnapshot, IProjectCatalogSnapshot>>> actionBlock =
                 DataflowBlockSlim.CreateActionBlock<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectSharedFoldersSnapshot, IProjectCatalogSnapshot>>>(
                     e => OnProjectChangedAsync(e.Value),
                     new ExecutionDataflowBlockOptions()
@@ -194,8 +194,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                 if (exists)
                 {
                     changesBuilder.Removed(
-                        targetFramework, 
-                        ProjectRuleHandler.ProviderTypeString, 
+                        targetFramework,
+                        ProjectRuleHandler.ProviderTypeString,
                         dependencyId: removedSharedImportPath);
                 }
             }
@@ -204,7 +204,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         public event EventHandler<DependencySubscriptionChangedEventArgs> DependenciesChanged;
 
         protected override void Initialize()
-        {   
+        {
         }
 
         protected override void Dispose(bool disposing)

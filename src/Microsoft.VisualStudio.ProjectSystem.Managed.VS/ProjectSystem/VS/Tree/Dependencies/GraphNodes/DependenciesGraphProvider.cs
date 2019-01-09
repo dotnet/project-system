@@ -135,7 +135,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
             IDependencyViewModel viewModel)
         {
             Requires.NotNull(viewModel.OriginalModel, nameof(viewModel.OriginalModel));
-            
+
             Assumes.True(IsInitialized);
 
             GraphNodeId newNodeId = GetTopLevelGraphNodeId(projectPath, viewModel.OriginalModel.GetTopLevelId());
@@ -153,9 +153,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
             _iconCache.Register(viewModel.ExpandedIcon);
 
             GraphNode newNode = graphContext.Graph.Nodes.GetOrCreate(graphNodeId, label: viewModel.Caption, category: DependenciesGraphSchema.CategoryDependency);
-            
+
             newNode.SetValue(DgmlNodeProperties.Icon, _iconCache.GetName(viewModel.Icon));
-            
+
             // priority sets correct order among peers
             newNode.SetValue(CodeNodeProperties.SourceLocation, new SourceLocation(projectPath, new Position(viewModel.Priority, 0)));
 
@@ -240,7 +240,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
             public static async Task<GraphIconCache> CreateAsync(IAsyncServiceProvider serviceProvider)
             {
                 var imageService = (IVsImageService2)await serviceProvider.GetServiceAsync(typeof(SVsImageService));
-                
+
                 return new GraphIconCache(imageService);
             }
 

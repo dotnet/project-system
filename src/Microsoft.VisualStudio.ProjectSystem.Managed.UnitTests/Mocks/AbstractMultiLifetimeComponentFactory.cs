@@ -18,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public class MultiLifetimeComponent : AbstractMultiLifetimeComponent<MultiLifetimeComponent.MultiLifetimeInstance>
         {
-            public MultiLifetimeComponent(JoinableTaskContextNode joinableTaskContextNode) 
+            public MultiLifetimeComponent(JoinableTaskContextNode joinableTaskContextNode)
                 : base(joinableTaskContextNode)
             {
             }

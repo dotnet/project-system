@@ -254,13 +254,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             return new Dependency(this, caption, resolved, flags, schemaName, dependencyIDs, iconSet, isImplicit);
         }
 
-        public override int GetHashCode() 
+        public override int GetHashCode()
             => StringComparer.OrdinalIgnoreCase.GetHashCode(Id);
 
-        public override bool Equals(object obj) 
+        public override bool Equals(object obj)
             => obj is IDependency other && Equals(other);
 
-        public bool Equals(IDependency other) 
+        public bool Equals(IDependency other)
             => StringComparer.OrdinalIgnoreCase.Equals(Id, other?.Id);
 
         public override string ToString()
@@ -274,7 +274,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             if (Resolved) sb.Append(" Resolved");
             if (TopLevel) sb.Append(" TopLevel");
             if (Implicit) sb.Append(" Implicit");
-            if (Visible)  sb.Append(" Visible");
+            if (Visible) sb.Append(" Visible");
 
             return sb.ToStringAndFree();
         }

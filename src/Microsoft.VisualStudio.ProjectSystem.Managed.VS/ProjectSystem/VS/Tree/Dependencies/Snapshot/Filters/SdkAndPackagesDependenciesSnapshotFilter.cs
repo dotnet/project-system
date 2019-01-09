@@ -86,8 +86,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
             IDependency dependency,
             IRemoveDependencyContext context)
         {
-            if (dependency.TopLevel && 
-                dependency.Resolved && 
+            if (dependency.TopLevel &&
+                dependency.Resolved &&
                 dependency.Flags.Contains(DependencyTreeFlags.PackageNodeFlags))
             {
                 // This is a package dependency.

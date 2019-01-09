@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
         private protected void VerifyUnchangedOnAdd(IDependency dependency, IImmutableSet<string> projectItemSpecs = null)
         {
-            var worldBuilder = new [] { dependency }.ToImmutableDictionary(d => d.Id).ToBuilder();
+            var worldBuilder = new[] { dependency }.ToImmutableDictionary(d => d.Id).ToBuilder();
 
             var context = new AddDependencyContext(worldBuilder);
 

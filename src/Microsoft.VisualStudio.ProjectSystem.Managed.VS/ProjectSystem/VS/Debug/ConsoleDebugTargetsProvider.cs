@@ -355,7 +355,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             if ((options & DebugLaunchOptions.IntegratedConsole) == DebugLaunchOptions.IntegratedConsole)
                 return false;
-            
+
             if ((options & DebugLaunchOptions.Profiling) == DebugLaunchOptions.Profiling)
                 return false;
 
