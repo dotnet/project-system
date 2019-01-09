@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Linq;
 
@@ -18,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
     [Export(typeof(IDependenciesGraphViewProvider))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
     [Order(Order)]
-    internal class ProjectGraphViewProvider : GraphViewProviderBase
+    internal sealed class ProjectGraphViewProvider : GraphViewProviderBase
     {
         public const int Order = 110;
 
@@ -26,9 +25,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
         private readonly ITargetFrameworkProvider _targetFrameworkProvider;
 
         [ImportingConstructor]
-        public ProjectGraphViewProvider(IDependenciesGraphBuilder builder,
-                                        IAggregateDependenciesSnapshotProvider aggregateSnapshotProvider,
-                                        ITargetFrameworkProvider targetFrameworkProvider)
+        public ProjectGraphViewProvider(
+            IDependenciesGraphBuilder builder,
+            IAggregateDependenciesSnapshotProvider aggregateSnapshotProvider,
+            ITargetFrameworkProvider targetFrameworkProvider)
             : base(builder)
         {
             _aggregateSnapshotProvider = aggregateSnapshotProvider;
@@ -37,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
 
         public override bool SupportsDependency(IDependency dependency)
         {
-            // Only supports project dependencies
+            // Only supports project reference dependencies
             return dependency.IsProject();
         }
 
@@ -95,7 +95,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
 
         public override bool ApplyChanges(
             IGraphContext graphContext,
-            string projectPath,
+            string nodeProjectPath,
             IDependency updatedDependency,
             GraphNode dependencyGraphNode,
             ITargetedDependenciesSnapshot targetedSnapshot)
@@ -107,51 +107,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
                 return false;
             }
 
-            IReadOnlyList<DependencyNodeInfo> existingChildrenInfo = GetExistingChildren(dependencyGraphNode);
-            ImmutableArray<IDependency> updatedChildren = referencedProjectSnapshot.TopLevelDependencies;
-            IReadOnlyList<DependencyNodeInfo> updatedChildrenInfo = updatedChildren.Select(DependencyNodeInfo.FromDependency).ToList();
-
-            if (!AnyChanges(
-                existingChildrenInfo,
-                updatedChildrenInfo,
-                out IReadOnlyList<DependencyNodeInfo> nodesToAdd,
-                out IReadOnlyList<DependencyNodeInfo> nodesToRemove))
-            {
-                return false;
-            }
-
-            string referencedProjectPath = updatedDependency.FullPath;
-
-            bool anyChanges = false;
-
-            foreach (DependencyNodeInfo nodeToRemove in nodesToRemove)
-            {
-                anyChanges = true;
-                Builder.RemoveGraphNode(graphContext, referencedProjectPath, nodeToRemove.Id, dependencyGraphNode);
-            }
-
-            foreach (DependencyNodeInfo nodeToAdd in nodesToAdd)
-            {
-                if (!referencedProjectSnapshot.DependenciesWorld.TryGetValue(nodeToAdd.Id, out IDependency dependency)
-                    || dependency == null
-                    || !dependency.Visible)
-                {
-                    continue;
-                }
-
-                anyChanges = true;
-                Builder.AddGraphNode(
-                    graphContext,
-                    referencedProjectPath,
-                    dependencyGraphNode,
-                    dependency.ToViewModel(targetedSnapshot));
-            }
-
-            // Update the node info saved on the 'inputNode'
-            dependencyGraphNode.SetValue(DependenciesGraphSchema.DependencyIdProperty, updatedDependency.Id);
-            dependencyGraphNode.SetValue(DependenciesGraphSchema.ResolvedProperty, updatedDependency.Resolved);
-
-            return anyChanges;
+            return ApplyChangesInternal(
+                graphContext,
+                updatedDependency,
+                dependencyGraphNode,
+                // Project references list all top level dependencies as direct children
+                updatedChildren: referencedProjectSnapshot.TopLevelDependencies,
+                // Pass the path of the referenced project
+                nodeProjectPath: updatedDependency.FullPath,
+                targetedSnapshot: referencedProjectSnapshot);
         }
 
         public override bool MatchSearchResults(
@@ -173,6 +137,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
             }
 
             string projectFullPath = topLevelDependency.FullPath;
+
             if (!searchResultsPerContext.TryGetValue(projectFullPath, out HashSet<IDependency> contextResults)
                 || contextResults.Count == 0)
             {
@@ -182,6 +147,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
             ITargetFramework nearestTargetFramework = _targetFrameworkProvider.GetNearestFramework(
                 topLevelDependency.TargetFramework,
                 contextResults.Select(x => x.TargetFramework));
+
             if (nearestTargetFramework == null)
             {
                 return true;
@@ -189,6 +155,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
 
             IEnumerable<IDependency> targetedResultsFromContext =
                 contextResults.Where(x => nearestTargetFramework.Equals(x.TargetFramework));
+
             topLevelDependencyMatches.AddRange(targetedResultsFromContext);
 
             return true;

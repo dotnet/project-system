@@ -15,6 +15,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         /// <summary>
         /// Gets the path to the project whose dependencies this snapshot contains.
         /// </summary>
+        /// <remarks>
+        /// Cannot be null or empty.
+        /// </remarks>
         string ProjectPath { get; }
 
         /// <summary>

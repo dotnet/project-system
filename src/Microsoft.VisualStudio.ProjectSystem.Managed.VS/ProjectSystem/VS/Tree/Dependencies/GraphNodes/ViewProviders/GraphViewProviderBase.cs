@@ -45,36 +45,44 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
 
         public virtual bool ApplyChanges(
             IGraphContext graphContext,
-            string projectPath,
+            string nodeProjectPath,
             IDependency updatedDependency,
             GraphNode dependencyGraphNode,
             ITargetedDependenciesSnapshot targetedSnapshot)
         {
-            IReadOnlyList<DependencyNodeInfo> existingChildrenInfo = GetExistingChildren(dependencyGraphNode);
-            ImmutableArray<IDependency> updatedChildren = targetedSnapshot.GetDependencyChildren(updatedDependency);
-            IReadOnlyList<DependencyNodeInfo> updatedChildrenInfo = updatedChildren.Select(DependencyNodeInfo.FromDependency).ToList();
+            return ApplyChangesInternal(
+                graphContext,
+                updatedDependency,
+                dependencyGraphNode,
+                updatedChildren: targetedSnapshot.GetDependencyChildren(updatedDependency),
+                nodeProjectPath: nodeProjectPath,
+                targetedSnapshot);
+        }
 
-            if (!AnyChanges(
-                existingChildrenInfo,
-                updatedChildrenInfo,
-                out IReadOnlyList<DependencyNodeInfo> nodesToAdd,
-                out IReadOnlyList<DependencyNodeInfo> nodesToRemove))
-            {
-                return false;
-            }
+        protected bool ApplyChangesInternal(
+            IGraphContext graphContext,
+            IDependency updatedDependency,
+            GraphNode dependencyGraphNode,
+            ImmutableArray<IDependency> updatedChildren,
+            string nodeProjectPath,
+            ITargetedDependenciesSnapshot targetedSnapshot)
+        {
+            IEnumerable<DependencyNodeInfo> existingChildrenInfo = GetExistingChildren();
+            IEnumerable<DependencyNodeInfo> updatedChildrenInfo = updatedChildren.Select(DependencyNodeInfo.FromDependency);
+
+            var diff = new SetDiff<DependencyNodeInfo>(existingChildrenInfo, updatedChildrenInfo);
 
             bool anyChanges = false;
 
-            foreach (DependencyNodeInfo nodeToRemove in nodesToRemove)
+            foreach (DependencyNodeInfo nodeToRemove in diff.Removed)
             {
                 anyChanges = true;
-                Builder.RemoveGraphNode(graphContext, projectPath, nodeToRemove.Id, dependencyGraphNode);
+                Builder.RemoveGraphNode(graphContext, nodeProjectPath, nodeToRemove.Id, dependencyGraphNode);
             }
 
-            foreach (DependencyNodeInfo nodeToAdd in nodesToAdd)
+            foreach (DependencyNodeInfo nodeToAdd in diff.Added)
             {
                 if (!targetedSnapshot.DependenciesWorld.TryGetValue(nodeToAdd.Id, out IDependency dependency)
-                    || dependency == null
                     || !dependency.Visible)
                 {
                     continue;
@@ -83,7 +91,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
                 anyChanges = true;
                 Builder.AddGraphNode(
                     graphContext,
-                    projectPath,
+                    nodeProjectPath,
                     dependencyGraphNode,
                     dependency.ToViewModel(targetedSnapshot));
             }
@@ -93,6 +101,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
             dependencyGraphNode.SetValue(DependenciesGraphSchema.ResolvedProperty, updatedDependency.Resolved);
 
             return anyChanges;
+
+            IEnumerable<DependencyNodeInfo> GetExistingChildren()
+            {
+                foreach (GraphNode childNode in dependencyGraphNode.FindDescendants())
+                {
+                    string id = childNode.GetValue<string>(DependenciesGraphSchema.DependencyIdProperty);
+
+                    if (!string.IsNullOrEmpty(id))
+                    {
+                        bool resolved = childNode.GetValue<bool>(DependenciesGraphSchema.ResolvedProperty);
+
+                        yield return new DependencyNodeInfo(id, childNode.Label, resolved);
+                    }
+                }
+            }
         }
 
         public virtual bool MatchSearchResults(

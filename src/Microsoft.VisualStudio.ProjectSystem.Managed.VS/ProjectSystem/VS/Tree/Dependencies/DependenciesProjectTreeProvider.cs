@@ -62,7 +62,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             IProjectAccessor projectAccessor,
             UnconfiguredProject unconfiguredProject,
             IDependenciesSnapshotProvider dependenciesSnapshotProvider,
-            [Import(DependencySubscriptionsHost.DependencySubscriptionsHostContract)] ICrossTargetSubscriptionsHost dependenciesHost,
+            [Import(DependenciesSnapshotProvider.DependencySubscriptionsHostContract)] ICrossTargetSubscriptionsHost dependenciesHost,
             [Import(ExportContractNames.Scopes.UnconfiguredProject)] IProjectAsynchronousTasksService tasksService,
             IDependencyTreeTelemetryService treeTelemetryService)
             : base(threadingService, unconfiguredProject)
