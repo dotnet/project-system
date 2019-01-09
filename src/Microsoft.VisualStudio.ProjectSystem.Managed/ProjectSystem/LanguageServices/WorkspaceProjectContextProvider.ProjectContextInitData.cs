@@ -2,8 +2,8 @@
 
 using System;
 
-using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
+using Microsoft.VisualStudio.ProjectSystem.Properties;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {

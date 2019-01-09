@@ -113,7 +113,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             bool shouldBeResolved,
             CancellationToken token)
         {
-            if (token.IsCancellationRequested || 
+            if (token.IsCancellationRequested ||
                 StringComparers.Paths.Equals(thisProjectSnapshot.ProjectPath, otherProjectSnapshot.ProjectPath))
             {
                 // if any of the snapshots is not provided or this is the same project - skip

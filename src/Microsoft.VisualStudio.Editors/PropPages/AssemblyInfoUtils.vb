@@ -4,6 +4,7 @@ Option Strict On
 Option Explicit On
 Imports System.ComponentModel
 Imports System.Globalization
+
 Imports Microsoft.VisualStudio.Editors.Common
 
 Namespace Microsoft.VisualStudio.Editors.PropertyPages
@@ -181,14 +182,16 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             If PropertyControlData.IsSpecialValue(value) Then
                 NeutralLanguageComboBox.SelectedIndex = -1
             Else
-                Dim SelectedText As String = ""
+
                 Dim LanguageAbbrev As String = CStr(value)
-                Dim Culture As CultureInfo = Nothing
+
+                Dim SelectedText As String
                 If LanguageAbbrev = "" Then
                     SelectedText = s_neutralLanguageNoneText
                 Else
                     Try
-                        Culture = CultureInfo.GetCultureInfo(LanguageAbbrev)
+                        Dim Culture As CultureInfo = CultureInfo.GetCultureInfo(LanguageAbbrev)
+
                         SelectedText = Culture.DisplayName
                     Catch ex As ArgumentException
                         SelectedText = LanguageAbbrev

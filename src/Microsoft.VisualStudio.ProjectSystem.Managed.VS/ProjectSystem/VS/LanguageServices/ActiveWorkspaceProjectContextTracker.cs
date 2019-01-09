@@ -4,6 +4,7 @@ using System;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
+
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 using Microsoft.VisualStudio.TextManager.Interop;
@@ -71,7 +72,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         {
             Requires.NotNull(context, nameof(context));
             Requires.NotNullOrEmpty(contextId, nameof(contextId));
-            
+
             bool changed = ThreadingTools.ApplyChangeOptimistically(ref _contexts,
                                                                     projectContexts => projectContexts.SetItem(context, contextId));
 

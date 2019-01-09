@@ -3,15 +3,21 @@
 Imports System.ComponentModel
 Imports System.Runtime.InteropServices
 Imports System.Windows.Forms
+
 Imports EnvDTE
+
 Imports Microsoft.VisualStudio.Editors.Common
 Imports Microsoft.VisualStudio.Editors.MyApplication
 Imports Microsoft.VisualStudio.Shell.Design.Serialization
 Imports Microsoft.VisualStudio.Shell.Interop
 Imports Microsoft.VisualStudio.TextManager.Interop
+
 Imports VslangProj100
+
 Imports VSLangProj158
+
 Imports VSLangProj80
+
 Imports VslangProj90
 
 Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF

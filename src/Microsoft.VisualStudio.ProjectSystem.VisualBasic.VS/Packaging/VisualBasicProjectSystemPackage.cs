@@ -9,13 +9,13 @@ using Microsoft.VisualStudio.Shell;
 
 // Register ourselves as a CPS project type
 [assembly: ProjectTypeRegistration(
-    projectTypeGuid: VisualBasicProjectSystemPackage.ProjectTypeGuid, 
-    displayName: "#1", 
-    displayProjectFileExtensions: "#2", 
-    defaultProjectExtension: "vbproj", 
-    language: "VisualBasic", 
-    resourcePackageGuid: VisualBasicProjectSystemPackage.PackageGuid, 
-    Capabilities = ManagedProjectSystemPackage.DefaultCapabilities + "; " + ProjectCapability.VisualBasic, 
+    projectTypeGuid: VisualBasicProjectSystemPackage.ProjectTypeGuid,
+    displayName: "#1",
+    displayProjectFileExtensions: "#2",
+    defaultProjectExtension: "vbproj",
+    language: "VisualBasic",
+    resourcePackageGuid: VisualBasicProjectSystemPackage.PackageGuid,
+    Capabilities = ManagedProjectSystemPackage.DefaultCapabilities + "; " + ProjectCapability.VisualBasic,
     DisableAsynchronousProjectTreeLoad = true)]
 
 namespace Microsoft.VisualStudio.Packaging

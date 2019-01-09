@@ -460,7 +460,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="FindBackwards">TRUE indicates finding backwards; otherwise, FALSE.</param>
         ''' <remarks></remarks>
         Private Sub IncrementCurrentIndexAndField(FindBackwards As Boolean)
-            Dim NextFieldIndex As Integer = CInt(_currentFieldInCurrentIndex)
+            Dim NextFieldIndex As Integer
+
             If FindBackwards Then
                 NextFieldIndex = _currentFieldInCurrentIndex - 1
                 If NextFieldIndex < 0 Then
@@ -575,7 +576,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             'Start searching after or before the selected resources, if there are any
             Dim SelectedResources() As Resource = View.GetSelectedResources()
             If SelectedResources.Length > 0 Then
-                Dim Index As Integer = 0
                 Dim StartAtBeginningOfSelection As Boolean
 
                 'For find in selection and going forwards, we start at the beginning of the selection.

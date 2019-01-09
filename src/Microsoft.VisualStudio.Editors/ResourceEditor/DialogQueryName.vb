@@ -4,8 +4,9 @@ Option Explicit On
 Option Strict On
 Option Compare Binary
 
-Imports Microsoft.VisualStudio.Editors.DesignerFramework
 Imports System.Windows.Forms
+
+Imports Microsoft.VisualStudio.Editors.DesignerFramework
 
 Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 

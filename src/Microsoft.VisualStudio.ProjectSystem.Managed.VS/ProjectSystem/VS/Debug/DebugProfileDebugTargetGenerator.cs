@@ -81,7 +81,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
         protected override void Initialize()
         {
-            var debugProfilesBlock = DataflowBlockSlim.CreateTransformBlock<ILaunchSettings, IProjectVersionedValue<IReadOnlyList<IEnumValue>>>(
+            IPropagatorBlock<ILaunchSettings, IProjectVersionedValue<IReadOnlyList<IEnumValue>>> debugProfilesBlock = DataflowBlockSlim.CreateTransformBlock<ILaunchSettings, IProjectVersionedValue<IReadOnlyList<IEnumValue>>>(
                 update =>
                 {
                     // Compute the new enum values from the profile provider
@@ -91,7 +91,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                     return new ProjectVersionedValue<IReadOnlyList<IEnumValue>>(generatedResult, dataSources);
                 });
 
-            var broadcastBlock = DataflowBlockSlim.CreateBroadcastBlock<IProjectVersionedValue<IReadOnlyList<IEnumValue>>>();
+            IBroadcastBlock<IProjectVersionedValue<IReadOnlyList<IEnumValue>>> broadcastBlock = DataflowBlockSlim.CreateBroadcastBlock<IProjectVersionedValue<IReadOnlyList<IEnumValue>>>();
 
             _launchProfileProviderLink = LaunchSettingProvider.SourceBlock.LinkTo(
                 debugProfilesBlock,

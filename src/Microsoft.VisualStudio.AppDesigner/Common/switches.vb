@@ -2,6 +2,7 @@
 
 #If DEBUG Then
 Imports System.Text
+
 Imports Microsoft.VisualStudio.Editors.AppDesInterop
 #End If
 

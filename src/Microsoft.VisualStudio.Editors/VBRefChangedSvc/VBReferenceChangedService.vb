@@ -4,9 +4,8 @@ Option Strict On
 Option Explicit On
 Imports System.Runtime.InteropServices
 
-Imports Microsoft.VisualStudio.Shell.Interop
-
 Imports Microsoft.VisualStudio.Editors.Interop
+Imports Microsoft.VisualStudio.Shell.Interop
 
 Namespace Microsoft.VisualStudio.Editors.VBRefChangedSvc
 

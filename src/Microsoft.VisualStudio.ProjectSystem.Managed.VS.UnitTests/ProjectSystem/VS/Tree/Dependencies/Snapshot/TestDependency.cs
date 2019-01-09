@@ -10,7 +10,7 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
-    [DebuggerDisplay("{" + nameof(Id) +",nq}")]
+    [DebuggerDisplay("{" + nameof(Id) + ",nq}")]
     internal sealed class TestDependency : IDependency
     {
         public IDependency ClonePropertiesFrom
@@ -109,13 +109,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             };
         }
 
-        public override int GetHashCode() 
+        public override int GetHashCode()
             => StringComparer.OrdinalIgnoreCase.GetHashCode(Id);
 
-        public override bool Equals(object obj) 
+        public override bool Equals(object obj)
             => obj is IDependency other && Equals(other);
 
-        public bool Equals(IDependency other) 
+        public bool Equals(IDependency other)
             => other != null && other.Id.Equals(Id, StringComparison.OrdinalIgnoreCase);
     }
 }

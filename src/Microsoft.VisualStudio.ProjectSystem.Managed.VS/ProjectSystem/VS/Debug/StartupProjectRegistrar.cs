@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         private readonly ISafeProjectGuidService _projectGuidService;
         private readonly IActiveConfiguredProjectSubscriptionService _projectSubscriptionService;
         private readonly ActiveConfiguredProject<DebuggerLaunchProviders> _launchProviders;
-        
+
         private Guid _projectGuid;
         private IDisposable _subscription;
 

@@ -1,11 +1,12 @@
 ﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+Imports System.ComponentModel
 Imports System.ComponentModel.Design
 Imports System.Windows.Forms
-Imports Common = Microsoft.VisualStudio.Editors.AppDesCommon
-Imports Microsoft.VisualStudio.Shell.Interop
-Imports System.ComponentModel
 
+Imports Microsoft.VisualStudio.Shell.Interop
+
+Imports Common = Microsoft.VisualStudio.Editors.AppDesCommon
 Imports VSITEMID = Microsoft.VisualStudio.Editors.VSITEMIDAPPDES
 
 Namespace Microsoft.VisualStudio.Editors.PropertyPages
@@ -1433,9 +1434,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </param>
         ''' <remarks></remarks>
         Public Shared Sub GetAllPropertyValuesNative(Descriptor As PropertyDescriptor, Extenders As Object(), ByRef Values As Object(), ByRef ValueOrIndeterminate As Object)
-            Values = Nothing
-            ValueOrIndeterminate = Nothing
-
             If Extenders Is Nothing Then
                 Throw New ArgumentNullException(NameOf(Extenders))
             End If

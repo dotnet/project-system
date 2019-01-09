@@ -1,19 +1,20 @@
 ﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-Imports System.ComponentModel
-Imports System.Runtime.InteropServices
 Imports System.CodeDom
 Imports System.CodeDom.Compiler
+Imports System.ComponentModel
 Imports System.IO
+Imports System.Reflection
+Imports System.Runtime.InteropServices
 
 Imports EnvDTE
-Imports Microsoft.VisualStudio.Shell
-Imports Microsoft.VisualStudio.Shell.Interop
-Imports Microsoft.VisualStudio.OLE.Interop
+
 Imports Microsoft.VisualStudio.Designer.Interfaces
 Imports Microsoft.VisualStudio.Editors.Interop
+Imports Microsoft.VisualStudio.OLE.Interop
+Imports Microsoft.VisualStudio.Shell
+Imports Microsoft.VisualStudio.Shell.Interop
 Imports Microsoft.VSDesigner.Common
-Imports System.Reflection
 
 Namespace Microsoft.VisualStudio.Editors.MyApplication
 
@@ -83,7 +84,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
 
                 ' get the DesignTimeSettings from the file content
                 '
-                Dim data As MyApplicationData = DeserializeMyApplicationData(bstrInputFileContents, pGenerateProgress)
+                Dim data As MyApplicationData = DeserializeMyApplicationData(bstrInputFileContents)
 
                 ' then get the CodeCompileUnit for this .settings file
                 '
@@ -394,11 +395,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <summary>
         ''' Deserialize contents of XML input string into a DesignTimeSettings object
         ''' </summary>
-        ''' <param name="InputString"></param>
-        ''' <param name="GenerateProgress"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Private Function DeserializeMyApplicationData(InputString As String, GenerateProgress As IVsGeneratorProgress) As MyApplicationData
+        Private Function DeserializeMyApplicationData(InputString As String) As MyApplicationData
             Dim Hierarchy As IVsHierarchy = DirectCast(GetService(GetType(IVsHierarchy)), IVsHierarchy)
             Debug.Assert(Hierarchy IsNot Nothing, "Failed to get a Hierarchy item for item to generate code from")
             Dim data As MyApplicationData = Nothing
@@ -502,7 +499,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             Finally
                 If (pUnknownPointer <> IntPtr.Zero) Then
                     Marshal.Release(pUnknownPointer)
-                    pUnknownPointer = IntPtr.Zero
                 End If
             End Try
         End Sub

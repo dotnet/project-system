@@ -49,7 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
                 logger.WriteLine("DisplayName: {0}", displayName);
                 logger.WriteLine("ProjectFilePath: {0}", projectFilePath);
-                
+
                 Context.ProjectFilePath = projectFilePath;
                 Context.DisplayName = displayName;
             }

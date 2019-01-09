@@ -4,6 +4,7 @@ Option Strict On
 Option Explicit On
 Imports System.Reflection
 Imports System.Xml
+
 Imports Microsoft.VisualStudio.Editors.Common.Utils
 Imports Microsoft.VisualStudio.Editors.MyExtensibility.MyExtensibilityUtil
 
@@ -138,7 +139,9 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
                     _assemblyDictionary = New Dictionary(Of String, AssemblyVersionDictionary(Of T))(
                         StringComparer.OrdinalIgnoreCase)
                 End If
-                Dim asmVersionDictionary As AssemblyVersionDictionary(Of T) = Nothing
+
+                Dim asmVersionDictionary As AssemblyVersionDictionary(Of T)
+
                 If _assemblyDictionary.ContainsKey(assemblyName) Then
                     asmVersionDictionary = _assemblyDictionary(assemblyName)
                 Else
@@ -260,10 +263,13 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
                     End If
                     _versionIndependentList.Add(item)
                 Else
-                    Dim itemList As List(Of Y) = Nothing
+
                     If _versionDependentDictionary Is Nothing Then
                         _versionDependentDictionary = New Dictionary(Of Version, List(Of Y))()
                     End If
+
+                    Dim itemList As List(Of Y)
+
                     If _versionDependentDictionary.ContainsKey(version) Then
                         itemList = _versionDependentDictionary(version)
                     Else

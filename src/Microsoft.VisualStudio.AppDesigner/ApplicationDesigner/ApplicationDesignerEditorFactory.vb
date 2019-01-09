@@ -1,11 +1,13 @@
 ﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.Runtime.InteropServices
-Imports Common = Microsoft.VisualStudio.Editors.AppDesCommon
+
 Imports Microsoft.VisualStudio.Designer.Interfaces
+Imports Microsoft.VisualStudio.Editors.AppDesInterop
 Imports Microsoft.VisualStudio.Shell
 Imports Microsoft.VisualStudio.Shell.Interop
-Imports Microsoft.VisualStudio.Editors.AppDesInterop
+
+Imports Common = Microsoft.VisualStudio.Editors.AppDesCommon
 
 Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
@@ -47,9 +49,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' Creates a new editor for the given pile of flags.  Helper function for the overload
         ''' which implements IVsEditorFactory.CreateEditorInstance
         ''' </summary>
-        ''' <param name="VsCreateEditorFlags"></param>
         ''' <param name="FileName">[In] Filename being opened</param>
-        ''' <param name="PhysicalView"></param>
         ''' <param name="Hierarchy">[In] IVsHierarchy of node being opened</param>
         ''' <param name="ItemId">[In] ItemId for node being opened</param>
         ''' <param name="ExistingDocData">[In] Existing DocData if any</param>
@@ -58,10 +58,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="Caption">Returns caption for document window</param>
         ''' <param name="CmdUIGuid">Returns guid for CMDUI</param>
         ''' <param name="pgrfCDW">[out] Flags to be passed to CreateDocumentWindow</param>
-        ''' <remarks></remarks>
-        Private Function InternalCreateEditorInstance(VsCreateEditorFlags As UInteger,
-                FileName As String,
-                PhysicalView As String,
+        Private Function InternalCreateEditorInstance(FileName As String,
                 Hierarchy As IVsHierarchy,
                 ItemId As UInteger,
                 ExistingDocData As Object,
@@ -190,7 +187,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
             Caption = Nothing
 
-            Dim hr As Integer = InternalCreateEditorInstance(vscreateeditorflags, FileName, PhysicalView, Hierarchy, Itemid, ExistingDocData,
+            Dim hr As Integer = InternalCreateEditorInstance(FileName, Hierarchy, Itemid, ExistingDocData,
                 DocView, DocData, Caption, CmdUIGuid, pgrfCDW)
             If NativeMethods.Failed(hr) Then
                 Return hr

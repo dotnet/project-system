@@ -1,12 +1,16 @@
 ﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-Imports EnvDTE
-Imports Microsoft.VisualStudio.Editors.Common
 Imports System.ComponentModel
 Imports System.Drawing
 Imports System.Drawing.Drawing2D
 Imports System.Windows.Forms
+
+Imports EnvDTE
+
+Imports Microsoft.VisualStudio.Editors.Common
+
 Imports VSLangProj80
+
 Imports VslangProj90
 
 Namespace Microsoft.VisualStudio.Editors.PropertyPages
@@ -335,7 +339,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 If ApplicationIconCombobox.SelectedIndex = -1 Then
                     'Icon is not in the project, so add it, if requested
                     If AddToProject Then
-                        Dim ProjectItem As ProjectItem = Nothing
+
+                        Dim ProjectItem As ProjectItem
+
                         Try
                             ProjectItem = AddIconFileToProject(path)
                         Catch ex As Exception When ReportWithoutCrash(ex, My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_CantAddIcon, NameOf(ApplicationPropPageBase))

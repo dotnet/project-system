@@ -1,10 +1,12 @@
 ﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-Imports EnvDTE
-Imports Microsoft.VisualStudio.Shell.Interop
 Imports System.Drawing
 Imports System.Windows.Forms
 Imports System.Windows.Forms.Design
+
+Imports EnvDTE
+
+Imports Microsoft.VisualStudio.Shell.Interop
 
 
 Namespace Microsoft.VisualStudio.Editors.Common
@@ -175,9 +177,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <param name="DTE">The DTE extensibility object</param>
         ''' <remarks></remarks>
         Private Shared Function ToolsOptionsShowAdvancedBuildConfigurations(DTE As DTE) As Boolean
-            'Now check for if the Tools option setting to show Advanced Config Settings is on
-            Dim ShowAdvancedBuildIntValue As Integer = -1
-
             Dim ShowValue As Boolean
             Dim ProjAndSolutionProperties As Properties
             Const EnvironmentCategory As String = "Environment"
@@ -414,7 +413,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
             Finally
                 If (localPunk <> IntPtr.Zero) Then
                     System.Runtime.InteropServices.Marshal.Release(localPunk)
-                    localPunk = IntPtr.Zero
                 End If
             End Try
         End Sub

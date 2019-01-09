@@ -13,7 +13,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
     ''' <remarks></remarks>
     Friend NotInheritable Class SettingsValueSerializer
 
-        Private Sub SettingsValueSerializer()
+        Private Sub New()
         End Sub
 
         Public Shared Function Deserialize(ValueType As Type, serializedValue As String, culture As Globalization.CultureInfo) As Object

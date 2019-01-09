@@ -9,12 +9,14 @@ Imports System.Runtime.Versioning
 Imports System.Text
 Imports System.Text.RegularExpressions
 Imports System.Windows.Forms
+
 Imports Microsoft.VisualStudio.Editors.Interop
 Imports Microsoft.VisualStudio.Imaging.Interop
 Imports Microsoft.VisualStudio.Shell
 Imports Microsoft.VisualStudio.Shell.Interop
 Imports Microsoft.VisualStudio.Telemetry
 Imports Microsoft.VSDesigner
+
 Imports GelUtilities = Microsoft.Internal.VisualStudio.PlatformUI.Utilities
 
 Namespace Microsoft.VisualStudio.Editors.Common
@@ -211,7 +213,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
                     .ImageType = CType(_UIImageType.IT_Bitmap, UInteger),
                     .Format = CType(_UIDataFormat.DF_WinForms, UInteger),
                     .LogicalWidth = width,
-                    .LogicalHeight = width
+                    .LogicalHeight = height
                 }
 
                 Dim backgroundValue As UInteger = ConvertColorToUInteger(background)
@@ -1024,7 +1026,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <returns>a new image
         ''' </returns>
         Friend Function MapBitmapColor(unmappedBitmap As Image, originalColor As Color, newColor As Color) As Image
-            Dim mappedBitmap As Bitmap = Nothing
+            Dim mappedBitmap As Bitmap
 
             Try
                 mappedBitmap = New Bitmap(unmappedBitmap)

@@ -4,6 +4,7 @@ Option Strict On
 Option Explicit On
 Imports System.ComponentModel.Design
 Imports System.Windows.Forms
+
 Imports Microsoft.VisualStudio.Editors.DesignerFramework
 
 Namespace Microsoft.VisualStudio.Editors.MyExtensibility

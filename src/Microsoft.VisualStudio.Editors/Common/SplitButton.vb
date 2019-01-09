@@ -4,6 +4,7 @@ Option Infer On
 Imports System.Drawing
 Imports System.Windows.Forms
 Imports System.Windows.Forms.VisualStyles
+
 Imports Microsoft.VisualStudio.PlatformUI
 
 Namespace Microsoft.VisualStudio.Editors.Common

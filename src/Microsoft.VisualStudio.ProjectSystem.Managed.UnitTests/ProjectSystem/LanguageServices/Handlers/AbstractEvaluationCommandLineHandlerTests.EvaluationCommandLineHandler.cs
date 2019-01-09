@@ -2,6 +2,7 @@
 
 using System.Collections.Generic;
 using System.Collections.Immutable;
+
 using Microsoft.VisualStudio.ProjectSystem.Logging;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
@@ -10,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     {
         private class EvaluationCommandLineHandler : AbstractEvaluationCommandLineHandler
         {
-            public EvaluationCommandLineHandler(UnconfiguredProject project) 
+            public EvaluationCommandLineHandler(UnconfiguredProject project)
                 : base(project)
             {
                 Files = new Dictionary<string, IImmutableDictionary<string, string>>();

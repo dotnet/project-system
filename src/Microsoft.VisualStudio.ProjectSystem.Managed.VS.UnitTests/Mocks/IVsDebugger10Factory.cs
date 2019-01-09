@@ -4,7 +4,7 @@ using Moq;
 
 namespace Microsoft.VisualStudio.Shell.Interop
 {
-    internal static class IVsDebugger10Factory 
+    internal static class IVsDebugger10Factory
     {
         public static IVsDebugger10 ImplementIsIntegratedConsoleEnabled(bool enabled)
         {

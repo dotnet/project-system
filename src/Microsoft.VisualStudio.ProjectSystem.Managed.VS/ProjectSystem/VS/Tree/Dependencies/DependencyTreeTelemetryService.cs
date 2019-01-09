@@ -118,7 +118,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             if (hasUnresolvedDependency)
             {
-                _telemetryService.PostProperties(TelemetryEventName.TreeUpdatedUnresolved, new[] 
+                _telemetryService.PostProperties(TelemetryEventName.TreeUpdatedUnresolved, new[]
                 {
                     (TelemetryPropertyName.TreeUpdatedUnresolvedProject, (object)_projectId),
                     (TelemetryPropertyName.TreeUpdatedUnresolvedObservedAllRules, observedAllRules)
@@ -126,7 +126,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             }
             else
             {
-                _telemetryService.PostProperties(TelemetryEventName.TreeUpdatedResolved, new[] 
+                _telemetryService.PostProperties(TelemetryEventName.TreeUpdatedResolved, new[]
                 {
                     (TelemetryPropertyName.TreeUpdatedResolvedProject, (object)_projectId),
                     (TelemetryPropertyName.TreeUpdatedResolvedObservedAllRules, observedAllRules)

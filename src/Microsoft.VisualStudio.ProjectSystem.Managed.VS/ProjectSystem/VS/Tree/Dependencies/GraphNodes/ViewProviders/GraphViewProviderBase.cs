@@ -127,5 +127,38 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
             topLevelDependencyMatches = null;
             return false;
         }
+
+        protected static bool AnyChanges(
+            IReadOnlyList<DependencyNodeInfo> existingChildren,
+            IReadOnlyList<DependencyNodeInfo> updatedChildren,
+            out IReadOnlyList<DependencyNodeInfo> nodesToAdd,
+            out IReadOnlyList<DependencyNodeInfo> nodesToRemove)
+        {
+            nodesToRemove = existingChildren.Except(updatedChildren).ToList();
+            nodesToAdd = updatedChildren.Except(existingChildren).ToList();
+
+            return nodesToAdd.Count != 0 || nodesToRemove.Count != 0;
+        }
+
+        protected static IReadOnlyList<DependencyNodeInfo> GetExistingChildren(GraphNode inputGraphNode)
+        {
+            var children = new List<DependencyNodeInfo>();
+
+            foreach (GraphNode childNode in inputGraphNode.FindDescendants())
+            {
+                string id = childNode.GetValue<string>(DependenciesGraphSchema.DependencyIdProperty);
+                if (string.IsNullOrEmpty(id))
+                {
+                    continue;
+                }
+
+                children.Add(new DependencyNodeInfo(
+                    id,
+                    childNode.Label,
+                    childNode.GetValue<bool>(DependenciesGraphSchema.ResolvedProperty)));
+            }
+
+            return children;
+        }
     }
 }

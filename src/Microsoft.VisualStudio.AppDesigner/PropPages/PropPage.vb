@@ -1,12 +1,14 @@
 ﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.ComponentModel.Design
-Imports Common = Microsoft.VisualStudio.Editors.AppDesCommon
+Imports System.Drawing
+Imports System.Runtime.InteropServices
+Imports System.Windows.Forms
+
 Imports Microsoft.VisualStudio.ManagedInterfaces.ProjectDesigner
 Imports Microsoft.VisualStudio.OLE.Interop
-Imports System.Windows.Forms
-Imports System.Runtime.InteropServices
-Imports System.Drawing
+
+Imports Common = Microsoft.VisualStudio.Editors.AppDesCommon
 Imports NativeMethods = Microsoft.VisualStudio.Editors.AppDesInterop.NativeMethods
 
 Namespace Microsoft.VisualStudio.Editors.PropertyPages

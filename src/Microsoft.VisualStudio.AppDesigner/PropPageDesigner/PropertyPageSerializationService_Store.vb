@@ -246,7 +246,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             ''' <param name="Container">The container to add deserialized objects to (or Nothing if none)</param>
             ''' <remarks></remarks>
             Public Sub DeserializeTo(Container As IContainer)
-                DeserializeHelper(Container, True)
+                DeserializeHelper(Container)
             End Sub
 
 
@@ -259,7 +259,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             ''' <returns>The set of components that were deserialized.</returns>
             ''' <remarks></remarks>
             Public Function Deserialize() As ICollection
-                Return DeserializeHelper(Nothing, False)
+                Return DeserializeHelper(Nothing)
             End Function
 
 
@@ -273,7 +273,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             ''' <returns>The list of objects that were deserialized.</returns>
             ''' <remarks></remarks>
             Public Function Deserialize(Container As IContainer) As ICollection
-                Return DeserializeHelper(Container, False)
+                Return DeserializeHelper(Container)
             End Function
 
 
@@ -282,11 +282,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             '''   arguments.
             ''' </summary>
             ''' <param name="Container">The container to add deserialized objects to (or Nothing if none)</param>
-            ''' <param name="RecycleInstances">If True, we are applying property changes to existing
-            '''   instances of Component components (this is always the case for Undo/Redo).</param>
-            ''' <returns>The objects which have been serialized.</returns>
-            ''' <remarks></remarks>
-            Private Function DeserializeHelper(Container As IContainer, RecycleInstances As Boolean) As ICollection
+            Private Function DeserializeHelper(Container As IContainer) As ICollection
 
                 Try
                     Dim NewObjects As New ArrayList(_serializedState.Count)

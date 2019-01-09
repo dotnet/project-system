@@ -62,7 +62,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             Return _publicMethods
         End Function 'GetPublicMethods
 
-        Public Shared Function CanSerialize(type As Type) As Boolean
+        Public Shared Function CanSerialize() As Boolean
             Return False
         End Function 'CanSerialize 
     End Class 'MyApplicationDataSerializationWriter

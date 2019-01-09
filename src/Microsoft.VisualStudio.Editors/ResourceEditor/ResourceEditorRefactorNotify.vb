@@ -4,8 +4,9 @@ Option Explicit On
 Option Strict On
 Option Compare Binary
 Imports System.Runtime.InteropServices
-Imports Microsoft.VisualStudio.Shell.Interop
+
 Imports Microsoft.VisualStudio.Editors.Interop
+Imports Microsoft.VisualStudio.Shell.Interop
 Imports Microsoft.VSDesigner.Common
 
 

@@ -1,20 +1,21 @@
 ﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-Imports EnvDTE
-Imports Microsoft.VisualStudio.Editors.Interop
-Imports Microsoft.VisualStudio.Editors.SettingsDesigner
-Imports Microsoft.VisualStudio.Shell.Design
-Imports Microsoft.VisualStudio.Shell.Design.Serialization
-Imports Microsoft.VisualStudio.Shell.Interop
 Imports System.CodeDom
 Imports System.ComponentModel
 Imports System.ComponentModel.Design
 Imports System.ComponentModel.Design.Serialization
 Imports System.Configuration
+Imports System.Reflection
 Imports System.Runtime.InteropServices
 
+Imports EnvDTE
+
+Imports Microsoft.VisualStudio.Editors.Interop
+Imports Microsoft.VisualStudio.Editors.SettingsDesigner
+Imports Microsoft.VisualStudio.Shell.Design
+Imports Microsoft.VisualStudio.Shell.Design.Serialization
+Imports Microsoft.VisualStudio.Shell.Interop
 Imports Microsoft.VSDesigner
-Imports System.Reflection
 
 Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
     ''' <summary>
@@ -689,7 +690,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             Finally
                 If (localPunk <> IntPtr.Zero) Then
                     Marshal.Release(localPunk)
-                    localPunk = IntPtr.Zero
                 End If
             End Try
 
@@ -1369,7 +1369,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
 
             Dim isDesignTime As Boolean = True
 
-            Dim ccu As CodeCompileUnit = SettingsSingleFileGeneratorBase.Create(_hierarchy, designTimeSettingsToPresent, _namespace, fileName, isDesignTime, Nothing, TypeAttributes.Public Or TypeAttributes.Sealed)
+            Dim ccu As CodeCompileUnit = SettingsSingleFileGeneratorBase.Create(_hierarchy, designTimeSettingsToPresent, _namespace, fileName, isDesignTime, TypeAttributes.Public Or TypeAttributes.Sealed)
             Debug.Assert(ccu.Namespaces.Count = 1, "Expected a single namespace from SettingsSingleFileGenerator")
 
             ' Remove structure from the compile unit that virtual types can't handle.  
@@ -1613,7 +1613,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                             Try
                                 AppConfigSerializer.Deserialize(dtSettings,
                                                                     _typeCache,
-                                                                    _valueCache,
                                                                     cfgHelper.GetSectionName(FullyQualifiedClassName, String.Empty),
                                                                     AppConfigDocData,
                                                                     AppConfigSerializer.MergeValueMode.UseAppConfigFileValue)
@@ -1733,10 +1732,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             ' If we don't have a persisted namespace, that means that we have a newly created
             ' instance, which doesn't exist in the app.config (yet)
             If _dtSettings.PersistedNamespace IsNot Nothing Then
-                Dim namespaceAsInAppConfig As String = ""
+
+                Dim namespaceAsInAppConfig As String
                 ' We've gotta check if we have the complete namespace persisted in the .settings file,
                 ' or if we had the root namespace part changed....
-                If ProjectUtils.PersistedNamespaceIncludesRootNamespace(_hierarchy, _itemid) Then
+                If ProjectUtils.PersistedNamespaceIncludesRootNamespace(_hierarchy) Then
                     ' Everything was there...
                     namespaceAsInAppConfig = _dtSettings.PersistedNamespace
                 Else

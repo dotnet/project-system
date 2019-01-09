@@ -4,7 +4,9 @@ using System;
 using System.ComponentModel.Composition;
 using System.Threading;
 using System.Threading.Tasks;
+
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
+
 using Xunit;
 
 using static Microsoft.VisualStudio.ProjectSystem.LanguageServices.WorkspaceContextHost;
