@@ -204,7 +204,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             SetFonts(ServiceProvider)
 
             InitializeResourceCategories()
-            InitializeUI(ServiceProvider)
+            InitializeUI()
         End Sub
 
 
@@ -592,7 +592,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Initializes all UI elements.
         ''' </summary>
         ''' <remarks></remarks>
-        Private Sub InitializeUI(ServiceProvider As IServiceProvider)
+        Private Sub InitializeUI()
             AllowDrop = True
             StringTable.RowHeadersWidth = DpiHelper.LogicalToDeviceUnitsX(35)
         End Sub
@@ -5425,7 +5425,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 End If
             End If
 
-            Dim defaultNamespace As String = GetDefaultNamespace(Hierarchy, ItemId, Project)
+            Dim defaultNamespace As String = GetDefaultNamespace(Hierarchy, ItemId)
             If String.IsNullOrEmpty(defaultNamespace) Then
                 defaultNamespace = RootNamespace
             End If
@@ -5437,12 +5437,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Gets the namespace that will be generated for the given hierarchy/itemid
         ''' </summary>
-        ''' <param name="Hierarchy"></param>
-        ''' <param name="ItemId"></param>
-        ''' <param name="Project"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Private Shared Function GetDefaultNamespace(Hierarchy As IVsHierarchy, ItemId As UInteger, Project As Project) As String
+        Private Shared Function GetDefaultNamespace(Hierarchy As IVsHierarchy, ItemId As UInteger) As String
             Dim objDefaultNamespace As Object = Nothing
             Hierarchy.GetProperty(ItemId, __VSHPROPID.VSHPROPID_DefaultNamespace, objDefaultNamespace)
 
