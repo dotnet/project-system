@@ -54,7 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
             string searchParametersTypeName = typeof(ISolutionSearchParameters).GUID.ToString();
             ISolutionSearchParameters searchParameters = graphContext.GetValue<ISolutionSearchParameters>(searchParametersTypeName);
 
-            string searchTerm = searchParameters?.SearchQuery.SearchString?.ToLowerInvariant();
+            string searchTerm = searchParameters?.SearchQuery.SearchString;
             if (searchTerm == null)
             {
                 return;
@@ -68,7 +68,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
             foreach (IDependenciesSnapshot snapshot in snapshots)
             {
                 searchResultsPerContext[snapshot.ProjectPath] = SearchFlat(
-                    searchTerm.ToLowerInvariant(),
+                    searchTerm,
                     snapshot);
             }
 
@@ -164,7 +164,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
             {
                 foreach ((string _, IDependency dependency) in targetedSnapshot.DependenciesWorld)
                 {
-                    if (dependency.Visible && dependency.Caption.ToLowerInvariant().Contains(searchTerm))
+                    if (dependency.Visible && dependency.Caption.IndexOf(searchTerm, StringComparison.CurrentCultureIgnoreCase) != -1)
                     {
                         matchedDependencies.Add(dependency);
                     }
