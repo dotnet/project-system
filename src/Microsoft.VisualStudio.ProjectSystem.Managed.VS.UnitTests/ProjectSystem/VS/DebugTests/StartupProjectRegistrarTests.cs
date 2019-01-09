@@ -2,8 +2,10 @@
 
 using System;
 using System.Threading.Tasks;
+
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.Shell.Interop;
+
 using Xunit;
 
 using static Microsoft.VisualStudio.ProjectSystem.VS.Debug.StartupProjectRegistrar;

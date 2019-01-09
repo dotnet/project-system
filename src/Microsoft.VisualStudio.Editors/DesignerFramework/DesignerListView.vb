@@ -3,8 +3,9 @@
 Option Strict On
 Option Explicit On
 
-Imports Microsoft.VisualStudio.Editors.Common
 Imports System.Windows.Forms
+
+Imports Microsoft.VisualStudio.Editors.Common
 
 Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 

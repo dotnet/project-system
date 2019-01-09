@@ -8,8 +8,11 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.VS;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
+
 using Moq;
+
 using Xunit;
+
 using static Microsoft.VisualStudio.Telemetry.ITelemetryServiceFactory;
 
 namespace Microsoft.VisualStudio.Telemetry

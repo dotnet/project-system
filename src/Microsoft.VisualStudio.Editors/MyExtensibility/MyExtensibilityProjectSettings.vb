@@ -4,12 +4,15 @@ Option Strict On
 Option Explicit On
 Imports System.IO
 Imports System.Windows.Forms
+
 Imports EnvDTE
-Imports Microsoft.VisualStudio.Shell.Interop
+
 Imports Microsoft.VisualStudio.Editors.Common
 Imports Microsoft.VisualStudio.Editors.DesignerFramework
 Imports Microsoft.VisualStudio.Editors.MyApplication
 Imports Microsoft.VisualStudio.Editors.MyExtensibility.MyExtensibilityUtil
+Imports Microsoft.VisualStudio.Shell.Interop
+
 Imports Res = My.Resources.MyExtensibilityRes
 
 Namespace Microsoft.VisualStudio.Editors.MyExtensibility

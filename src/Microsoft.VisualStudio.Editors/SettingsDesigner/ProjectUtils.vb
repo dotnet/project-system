@@ -1,9 +1,10 @@
 ﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-Imports Microsoft.VisualStudio.Shell.Interop
 Imports System.CodeDom
 Imports System.CodeDom.Compiler
 Imports System.Reflection
+
+Imports Microsoft.VisualStudio.Shell.Interop
 
 Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
     Friend Module ProjectUtils

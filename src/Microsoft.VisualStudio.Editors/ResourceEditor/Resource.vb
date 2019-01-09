@@ -3,8 +3,6 @@
 Option Explicit On
 Option Strict On
 Option Compare Binary
-Imports Microsoft.VisualStudio.Editors.Common.Utils
-Imports Microsoft.VisualStudio.Shell
 Imports System.CodeDom.Compiler
 Imports System.ComponentModel
 Imports System.ComponentModel.Design
@@ -14,6 +12,10 @@ Imports System.Reflection
 Imports System.Resources
 Imports System.Runtime.Serialization
 Imports System.Text
+
+Imports Microsoft.VisualStudio.Editors.Common.Utils
+Imports Microsoft.VisualStudio.Shell
+
 Imports VB = Microsoft.VisualBasic
 
 

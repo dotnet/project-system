@@ -3,13 +3,14 @@
 Option Strict On
 Option Explicit On
 
+Imports System.ComponentModel.Design
+Imports System.ComponentModel.Design.Serialization
+Imports System.IO
+
 Imports Microsoft.VisualStudio.Editors.Common
 Imports Microsoft.VisualStudio.Shell.Design.Serialization
 Imports Microsoft.VisualStudio.Shell.Interop
 Imports Microsoft.VisualStudio.TextManager.Interop
-Imports System.ComponentModel.Design
-Imports System.ComponentModel.Design.Serialization
-Imports System.IO
 
 
 Namespace Microsoft.VisualStudio.Editors.DesignerFramework

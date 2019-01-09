@@ -3,6 +3,7 @@
 Option Strict On
 Option Explicit On
 Imports EnvDTE
+
 Imports Microsoft.VisualStudio.Editors.MyExtensibility.MyExtensibilityUtil
 
 Namespace Microsoft.VisualStudio.Editors.MyExtensibility

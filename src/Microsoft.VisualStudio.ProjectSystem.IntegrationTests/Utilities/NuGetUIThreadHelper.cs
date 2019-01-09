@@ -2,6 +2,7 @@
 
 using System;
 using System.Threading;
+
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Threading;
 

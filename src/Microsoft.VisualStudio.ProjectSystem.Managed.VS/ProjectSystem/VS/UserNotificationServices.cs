@@ -5,6 +5,7 @@ using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
+
 using static Microsoft.VisualStudio.VSConstants;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS

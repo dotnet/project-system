@@ -6,6 +6,7 @@ Option Compare Binary
 Imports System.Drawing
 Imports System.Runtime.InteropServices
 Imports System.Windows.Forms
+
 Imports Microsoft.VisualStudio.Editors.Common.Utils
 Imports Microsoft.VisualStudio.PlatformUI
 

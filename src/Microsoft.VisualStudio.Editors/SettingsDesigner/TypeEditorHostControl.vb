@@ -1,11 +1,12 @@
 ﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-Imports Microsoft.VisualStudio.Editors.Common
-Imports System.Drawing
 Imports System.ComponentModel
+Imports System.Drawing
 Imports System.Drawing.Design
 Imports System.Windows.Forms
 Imports System.Windows.Forms.Design
+
+Imports Microsoft.VisualStudio.Editors.Common
 
 Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 

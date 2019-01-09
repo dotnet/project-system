@@ -1,19 +1,20 @@
 ﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-Imports System.ComponentModel
-Imports System.Runtime.InteropServices
 Imports System.CodeDom
 Imports System.CodeDom.Compiler
+Imports System.ComponentModel
 Imports System.IO
+Imports System.Reflection
+Imports System.Runtime.InteropServices
 
 Imports EnvDTE
-Imports Microsoft.VisualStudio.Shell
-Imports Microsoft.VisualStudio.Shell.Interop
-Imports Microsoft.VisualStudio.OLE.Interop
+
 Imports Microsoft.VisualStudio.Designer.Interfaces
 Imports Microsoft.VisualStudio.Editors.Interop
+Imports Microsoft.VisualStudio.OLE.Interop
+Imports Microsoft.VisualStudio.Shell
+Imports Microsoft.VisualStudio.Shell.Interop
 Imports Microsoft.VSDesigner.Common
-Imports System.Reflection
 
 Namespace Microsoft.VisualStudio.Editors.MyApplication
 

@@ -3,7 +3,9 @@
 Option Infer On
 Imports System.IO
 Imports System.Windows.Forms.Design
+
 Imports EnvDTE
+
 Imports Microsoft.VisualStudio.TemplateWizard
 
 Namespace Microsoft.VisualStudio.Editors.XmlToSchema

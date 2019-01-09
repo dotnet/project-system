@@ -2,6 +2,7 @@
 
 Imports System.ComponentModel.Design.Serialization
 Imports System.Diagnostics.CodeAnalysis
+
 Imports Microsoft.VisualStudio.Editors.AppDesCommon
 Imports Microsoft.VisualStudio.Shell.Interop
 

@@ -5,6 +5,7 @@ Option Strict On
 Option Compare Binary
 Imports System.Drawing
 Imports System.IO
+
 Imports Microsoft.VisualStudio.Imaging
 
 Namespace Microsoft.VisualStudio.Editors.ResourceEditor

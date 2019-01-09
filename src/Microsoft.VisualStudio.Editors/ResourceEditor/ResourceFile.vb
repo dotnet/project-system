@@ -3,18 +3,19 @@
 Option Explicit On
 Option Strict On
 Option Compare Binary
+Imports System.CodeDom.Compiler
+Imports System.ComponentModel.Design
+Imports System.IO
+Imports System.Resources
+Imports System.Windows.Forms
+Imports System.Xml
+
 Imports Microsoft.VisualStudio.Designer.Interfaces
 Imports Microsoft.VisualStudio.Editors.Common
 Imports Microsoft.VisualStudio.Shell
 Imports Microsoft.VisualStudio.Shell.Interop
 Imports Microsoft.VSDesigner
-Imports System.CodeDom.Compiler
-Imports System.ComponentModel.Design
-Imports System.Resources
-Imports System.IO
-Imports System.Windows.Forms
 Imports Microsoft.Win32
-Imports System.Xml
 
 Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 

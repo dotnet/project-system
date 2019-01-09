@@ -2,8 +2,10 @@
 
 using System;
 using System.Threading.Tasks;
+
 using Microsoft.Build;
 using Microsoft.Build.Construction;
+
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties

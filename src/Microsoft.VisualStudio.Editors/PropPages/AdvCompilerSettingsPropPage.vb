@@ -4,8 +4,10 @@
 
 Imports System.ComponentModel
 Imports System.Windows.Forms
-Imports VBStrings = Microsoft.VisualBasic.Strings
+
 Imports VSLangProj80
+
+Imports VBStrings = Microsoft.VisualBasic.Strings
 Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
     Partial Friend Class AdvCompilerSettingsPropPage

@@ -1,12 +1,16 @@
 ﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-Imports Microsoft.VisualStudio.Shell.Interop
 Imports System.ComponentModel
 Imports System.IO
 Imports System.Windows.Forms
-Imports VSLangProj80
-Imports VslangProj90
+
+Imports Microsoft.VisualStudio.Shell.Interop
+
 Imports VSLangProj110
+
+Imports VSLangProj80
+
+Imports VslangProj90
 
 'This is the VB version of this page.  BuildPropPage.vb is the C#/J# version.
 

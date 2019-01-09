@@ -3,7 +3,9 @@
 Option Strict On
 Option Explicit On
 Imports System.Xml
+
 Imports EnvDTE90
+
 Imports Microsoft.VisualStudio.Editors.MyExtensibility.MyExtensibilityUtil
 
 Namespace Microsoft.VisualStudio.Editors.MyExtensibility

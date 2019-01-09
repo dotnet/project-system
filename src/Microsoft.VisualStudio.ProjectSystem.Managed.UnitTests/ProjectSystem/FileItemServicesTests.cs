@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Immutable;
+
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem

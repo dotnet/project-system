@@ -1,14 +1,15 @@
 ﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-Imports Microsoft.VisualStudio.Shell.Interop
 Imports System.Diagnostics.CodeAnalysis
 Imports System.Globalization
 Imports System.IO
 Imports System.Runtime.InteropServices
 Imports System.Text
 Imports System.Xml
+
 Imports Microsoft.VisualStudio.Editors.SettingsDesigner
 Imports Microsoft.VisualStudio.Shell.Design.Serialization
+Imports Microsoft.VisualStudio.Shell.Interop
 Imports Microsoft.VSDesigner
 
 Namespace Microsoft.VisualStudio.Editors.PropertyPages

@@ -1,11 +1,16 @@
 ﻿Imports System.ComponentModel
 Imports System.IO
 Imports System.Windows.Forms
+
 Imports Microsoft.VisualStudio.Editors.Common
 Imports Microsoft.VisualStudio.Shell
+
 Imports VSLangProj110
+
 Imports VSLangProj158
+
 Imports VSLangProj80
+
 Imports VslangProj90
 
 Namespace Microsoft.VisualStudio.Editors.PropertyPages

@@ -9,12 +9,14 @@ Imports System.Runtime.Versioning
 Imports System.Text
 Imports System.Text.RegularExpressions
 Imports System.Windows.Forms
+
 Imports Microsoft.VisualStudio.Editors.Interop
 Imports Microsoft.VisualStudio.Imaging.Interop
 Imports Microsoft.VisualStudio.Shell
 Imports Microsoft.VisualStudio.Shell.Interop
 Imports Microsoft.VisualStudio.Telemetry
 Imports Microsoft.VSDesigner
+
 Imports GelUtilities = Microsoft.Internal.VisualStudio.PlatformUI.Utilities
 
 Namespace Microsoft.VisualStudio.Editors.Common

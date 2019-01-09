@@ -1,9 +1,9 @@
 ﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports Microsoft.VisualStudio.Editors.AppDesInterop
-Imports OleInterop = Microsoft.VisualStudio.OLE.Interop
 
 Imports Common = Microsoft.VisualStudio.Editors.AppDesCommon
+Imports OleInterop = Microsoft.VisualStudio.OLE.Interop
 
 Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 

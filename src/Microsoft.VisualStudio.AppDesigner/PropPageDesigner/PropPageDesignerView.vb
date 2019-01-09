@@ -7,6 +7,7 @@ Imports System.Drawing
 Imports System.Runtime.InteropServices
 Imports System.Windows.Forms
 Imports System.Windows.Forms.Design
+
 Imports Microsoft.VisualStudio.Editors.AppDesCommon
 Imports Microsoft.VisualStudio.Editors.AppDesCommon.Utils
 Imports Microsoft.VisualStudio.Editors.AppDesDesignerFramework
@@ -16,6 +17,7 @@ Imports Microsoft.VisualStudio.Editors.PropertyPages
 Imports Microsoft.VisualStudio.ManagedInterfaces.ProjectDesigner
 Imports Microsoft.VisualStudio.PlatformUI
 Imports Microsoft.VisualStudio.Shell.Interop
+
 Imports OleInterop = Microsoft.VisualStudio.OLE.Interop
 Imports VSITEMID = Microsoft.VisualStudio.Editors.VSITEMIDAPPDES
 

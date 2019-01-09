@@ -6,8 +6,11 @@ Imports System.ComponentModel
 Imports System.IO
 Imports System.Text
 Imports System.Xml
+
 Imports EnvDTE
+
 Imports EnvDTE90
+
 Imports Microsoft.VisualStudio.Editors.Common
 Imports Microsoft.VisualStudio.Editors.MyExtensibility.MyExtensibilityUtil
 

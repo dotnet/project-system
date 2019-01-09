@@ -1,12 +1,13 @@
 ﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.Drawing.Design
+
 Imports Microsoft.VisualStudio.Data.Core
 Imports Microsoft.VisualStudio.Data.Services
 Imports Microsoft.VisualStudio.Data.Services.SupportEntities
 Imports Microsoft.VisualStudio.DataTools.Interop
-Imports Microsoft.VSDesigner.VSDesignerPackage
 Imports Microsoft.VSDesigner.Data.Local
+Imports Microsoft.VSDesigner.VSDesignerPackage
 
 Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 

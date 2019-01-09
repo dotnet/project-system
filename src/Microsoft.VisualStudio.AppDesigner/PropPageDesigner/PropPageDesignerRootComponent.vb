@@ -2,6 +2,7 @@
 
 Imports System.ComponentModel
 Imports System.ComponentModel.Design
+
 Imports Microsoft.VisualStudio.Shell.Interop
 
 Namespace Microsoft.VisualStudio.Editors.PropPageDesigner

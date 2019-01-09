@@ -1,16 +1,18 @@
 ﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-Imports Microsoft.VisualStudio.Editors.Common
-Imports Microsoft.VisualStudio.Editors.Common.Utils
-Imports Microsoft.VisualStudio.Shell.Interop
-Imports System.Runtime.InteropServices
-Imports Microsoft.VisualStudio.Shell.Design.Serialization
-Imports System.IO
 Imports System.ComponentModel
+Imports System.IO
+Imports System.Runtime.InteropServices
+
+Imports EnvDTE
+
+Imports Microsoft.VisualStudio.Editors.Common
 Imports Microsoft.VisualStudio.Editors.Common.CodeModelUtils
 Imports Microsoft.VisualStudio.Editors.Common.DTEUtils
+Imports Microsoft.VisualStudio.Editors.Common.Utils
 Imports Microsoft.VisualStudio.Editors.Interop
-Imports EnvDTE
+Imports Microsoft.VisualStudio.Shell.Design.Serialization
+Imports Microsoft.VisualStudio.Shell.Interop
 
 Namespace Microsoft.VisualStudio.Editors.MyApplication
 

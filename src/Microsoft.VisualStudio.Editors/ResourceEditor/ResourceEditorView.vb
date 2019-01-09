@@ -13,7 +13,9 @@ Imports System.Runtime.InteropServices
 Imports System.Text
 Imports System.Windows.Forms
 Imports System.Windows.Forms.Design
+
 Imports EnvDTE
+
 Imports Microsoft.VisualStudio.Editors.Common
 Imports Microsoft.VisualStudio.Editors.Common.DTEUtils
 Imports Microsoft.VisualStudio.Editors.DesignerFramework
@@ -23,6 +25,7 @@ Imports Microsoft.VisualStudio.PlatformUI
 Imports Microsoft.VisualStudio.Shell.Design
 Imports Microsoft.VisualStudio.Shell.Interop
 Imports Microsoft.Win32
+
 Imports VB = Microsoft.VisualBasic
 
 Namespace Microsoft.VisualStudio.Editors.ResourceEditor
