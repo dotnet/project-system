@@ -58,17 +58,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         }
 
         /// <summary>
-        /// Returns all icons specified for given dependency.
-        /// </summary>
-        public static IEnumerable<ImageMoniker> GetIcons(this IDependency self)
-        {
-            yield return self.Icon;
-            yield return self.ExpandedIcon;
-            yield return self.UnresolvedIcon;
-            yield return self.UnresolvedExpandedIcon;
-        }
-
-        /// <summary>
         /// Returns true if given dependency is a nuget package.
         /// </summary>
         public static bool IsPackage(this IDependency self)
