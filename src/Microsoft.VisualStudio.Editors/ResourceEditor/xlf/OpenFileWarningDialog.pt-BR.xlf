@@ -1,10 +1,10 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="pt-BR" original="../OpenFileWarningDialog.resx">
     <body>
       <trans-unit id="alwaysCheckCheckBox.Text">
         <source>&amp;Always ask before opening this file type.</source>
-        <target state="translated">&amp;Sempre perguntar antes de abrir este tipo de arquivo.</target>
+        <target state="translated">&Sempre perguntar antes de abrir este tipo de arquivo.</target>
         <note />
       </trans-unit>
       <trans-unit id="messageLabel.Text">
@@ -29,7 +29,7 @@
       </trans-unit>
       <trans-unit id="$this.Text">
         <source>Open File</source>
-        <target state="translated">Abrir Arquivo</target>
+        <target state="translated">Abrir arquivo</target>
         <note />
       </trans-unit>
     </body>

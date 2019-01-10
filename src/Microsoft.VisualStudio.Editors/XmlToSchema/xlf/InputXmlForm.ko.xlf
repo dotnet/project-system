@@ -29,7 +29,7 @@
       </trans-unit>
       <trans-unit id="_addAsTextButton.Text">
         <source>Type or paste &amp;XML</source>
-        <target state="translated">XML 입력 또는 붙여넣기(&amp;X)</target>
+        <target state="translated">XML 입력 또는 붙여넣기(&X)</target>
         <note />
       </trans-unit>
       <trans-unit id="Label1.Text">
@@ -44,7 +44,7 @@
       </trans-unit>
       <trans-unit id="_addFromFileButton.Text">
         <source>Add from &amp;File</source>
-        <target state="translated">파일에서 추가(&amp;F)</target>
+        <target state="translated">파일에서 추가(&F)</target>
         <note />
       </trans-unit>
       <trans-unit id="_addFromWebButton.AccessibleName">
@@ -54,7 +54,7 @@
       </trans-unit>
       <trans-unit id="_addFromWebButton.Text">
         <source>Add from &amp;Web</source>
-        <target state="translated">웹에서 추가(&amp;W)</target>
+        <target state="translated">웹에서 추가(&W)</target>
         <note />
       </trans-unit>
       <trans-unit id="_okButton.Text">
@@ -64,7 +64,7 @@
       </trans-unit>
       <trans-unit id="_xmlFileDialog.Filter">
         <source>XML files (*.xml)|*.xml|All files (*.*)|*.*</source>
-        <target state="translated">XML 파일(*.xml)|*.xml|모든 파일(*.*)|*.*</target>
+        <target state="translated">XML 파일 (*.xml)|*.xml|모든 파일 (*.*)|*.*</target>
         <note />
       </trans-unit>
       <trans-unit id="_xmlFileDialog.Title">

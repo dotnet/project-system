@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="ko" original="../Menus.vsct">
     <body>
@@ -9,7 +9,7 @@
       </trans-unit>
       <trans-unit id="cmdidGenerateNuGetPackageProjectContextMenu|ButtonText">
         <source>&amp;Pack</source>
-        <target state="translated">팩(&amp;P)</target>
+        <target state="translated">팩(&P)</target>
         <note />
       </trans-unit>
       <trans-unit id="cmdidGenerateNuGetPackageProjectContextMenu|ToolTipText">
@@ -24,7 +24,7 @@
       </trans-unit>
       <trans-unit id="cmdidGenerateNuGetPackageTopLevelBuild|ButtonText">
         <source>&amp;Pack selection</source>
-        <target state="translated">팩 선택(&amp;P)</target>
+        <target state="translated">팩 선택(&P)</target>
         <note />
       </trans-unit>
       <trans-unit id="cmdidGenerateNuGetPackageTopLevelBuild|ToolTipText">
@@ -39,22 +39,22 @@
       </trans-unit>
       <trans-unit id="DebugTargetMenuDebugFrameworkMenu|ButtonText">
         <source>Framework</source>
-        <target state="translated">프레임워크</target>
+        <target state="translated">FRAMEWORK</target>
         <note />
       </trans-unit>
       <trans-unit id="cmdidDebugFrameworks|ButtonText">
         <source>Framework</source>
-        <target state="translated">프레임워크</target>
+        <target state="translated">FRAMEWORK</target>
         <note />
       </trans-unit>
       <trans-unit id="AddAboveMenu|ButtonText">
         <source>&amp;Add Above</source>
-        <target state="translated">위에 추가(&amp;A)</target>
+        <target state="translated">위에 추가(&A)</target>
         <note />
       </trans-unit>
       <trans-unit id="cmdidAddNewItemAbove|ButtonText">
         <source>&amp;Add New Item...</source>
-        <target state="translated">새 항목 추가(&amp;A)...</target>
+        <target state="translated">새 항목 추가(&A)...</target>
         <note />
       </trans-unit>
       <trans-unit id="cmdidAddNewItemAbove|CommandName">
@@ -64,12 +64,12 @@
       </trans-unit>
       <trans-unit id="AddBelowMenu|ButtonText">
         <source>&amp;Add Below</source>
-        <target state="translated">아래에 추가(&amp;A)</target>
+        <target state="translated">아래에 추가(&A)</target>
         <note />
       </trans-unit>
       <trans-unit id="cmdidAddExistingItemAbove|ButtonText">
         <source>&amp;Add Existing Item...</source>
-        <target state="translated">기존 항목 추가(&amp;A)...</target>
+        <target state="translated">기존 항목 추가(&A)...</target>
         <note />
       </trans-unit>
       <trans-unit id="cmdidAddExistingItemAbove|CommandName">
@@ -79,7 +79,7 @@
       </trans-unit>
       <trans-unit id="cmdidAddNewItemBelow|ButtonText">
         <source>&amp;Add New Item...</source>
-        <target state="translated">새 항목 추가(&amp;A)...</target>
+        <target state="translated">새 항목 추가(&A)...</target>
         <note />
       </trans-unit>
       <trans-unit id="cmdidAddNewItemBelow|CommandName">
@@ -89,7 +89,7 @@
       </trans-unit>
       <trans-unit id="cmdidAddExistingItemBelow|ButtonText">
         <source>&amp;Add Existing Item...</source>
-        <target state="translated">기존 항목 추가(&amp;A)...</target>
+        <target state="translated">기존 항목 추가(&A)...</target>
         <note />
       </trans-unit>
       <trans-unit id="cmdidAddExistingItemBelow|CommandName">

@@ -1,25 +1,25 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="ja" original="../AdvBuildSettingsPropPage.resx">
     <body>
       <trans-unit id="lblLanguageVersion.Text">
         <source>&amp;Language version:</source>
-        <target state="translated">言語バージョン(&amp;L):</target>
+        <target state="translated">言語バージョン(&L):</target>
         <note />
       </trans-unit>
       <trans-unit id="lblReportCompilerErrors.Text">
         <source>&amp;Internal compiler error reporting:</source>
-        <target state="translated">内部コンパイル エラー報告(&amp;I):</target>
+        <target state="translated">内部コンパイル エラー報告(&I):</target>
         <note />
       </trans-unit>
       <trans-unit id="lblDebugInfo.Text">
         <source>D&amp;ebugging information:</source>
-        <target state="translated">デバッグ情報(&amp;E):</target>
+        <target state="translated">デバッグ情報(&E):</target>
         <note />
       </trans-unit>
       <trans-unit id="lblFileAlignment.Text">
         <source>&amp;File alignment:</source>
-        <target state="translated">ファイルの配置(&amp;F):</target>
+        <target state="translated">ファイルの配置(&F):</target>
         <note />
       </trans-unit>
       <trans-unit id="cboFileAlignment.Items">
@@ -49,7 +49,7 @@
       </trans-unit>
       <trans-unit id="lblDLLBase.Text">
         <source>Library &amp;base address:</source>
-        <target state="translated">ライブラリ ベース アドレス(&amp;B):</target>
+        <target state="translated">ライブラリ ベース アドレス(&B):</target>
         <note />
       </trans-unit>
       <trans-unit id="outputLabel.Text">
@@ -64,7 +64,7 @@
       </trans-unit>
       <trans-unit id="chkOverflow.Text">
         <source>Chec&amp;k for arithmetic overflow/underflow</source>
-        <target state="translated">演算のオーバーフローおよびアンダーフローのチェック(&amp;K)</target>
+        <target state="translated">演算のオーバーフローおよびアンダーフローのチェック(&K)</target>
         <note />
       </trans-unit>
       <trans-unit id="CSharpLanguageVerison.Default">

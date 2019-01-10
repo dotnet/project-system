@@ -1,10 +1,10 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="pt-BR" original="../BuildPropPage.resx">
     <body>
       <trans-unit id="lblConditionalCompilationSymbols.Text">
         <source>Conditional compilation s&amp;ymbols:</source>
-        <target state="translated">&amp;Símbolos de compilação condicional:</target>
+        <target state="translated">S&ímbolos de compilação condicional:</target>
         <note />
       </trans-unit>
       <trans-unit id="outputLabel.Text">
@@ -29,12 +29,12 @@
       </trans-unit>
       <trans-unit id="chkRegisterForCOM.Text">
         <source>Register for &amp;COM interop</source>
-        <target state="translated">Registrar para a interoperabilidade &amp;COM</target>
+        <target state="translated">Registre-se para a interoperabilidade &COM</target>
         <note />
       </trans-unit>
       <trans-unit id="chkXMLDocumentationFile.Text">
         <source>&amp;XML documentation file:</source>
-        <target state="translated">Arquivo de documentação &amp;XML:</target>
+        <target state="translated">Arquivo de documentação &XML:</target>
         <note />
       </trans-unit>
       <trans-unit id="btnOutputPathBrowse.Text">
@@ -44,27 +44,27 @@
       </trans-unit>
       <trans-unit id="lblOutputPath.Text">
         <source>&amp;Output path:</source>
-        <target state="translated">Caminh&amp;o de saída:</target>
+        <target state="translated">&Caminho de saída:</target>
         <note />
       </trans-unit>
       <trans-unit id="rbWarningSpecific.Text">
         <source>Specif&amp;ic warnings:</source>
-        <target state="translated">Avisos específ&amp;icos:</target>
+        <target state="translated">Avisos específ&icos:</target>
         <note />
       </trans-unit>
       <trans-unit id="rbWarningAll.Text">
         <source>A&amp;ll</source>
-        <target state="translated">T&amp;odos</target>
+        <target state="translated">Todo&s</target>
         <note />
       </trans-unit>
       <trans-unit id="rbWarningNone.Text">
         <source>&amp;None</source>
-        <target state="translated">&amp;Nenhum</target>
+        <target state="translated">&Nenhum</target>
         <note />
       </trans-unit>
       <trans-unit id="lblSupressWarnings.Text">
         <source>&amp;Suppress warnings:</source>
-        <target state="translated">&amp;Suprimir avisos:</target>
+        <target state="translated">&Suprimir avisos:</target>
         <note />
       </trans-unit>
       <trans-unit id="cboWarningLevel.Items">
@@ -94,57 +94,57 @@
       </trans-unit>
       <trans-unit id="lblWarningLevel.Text">
         <source>W&amp;arning level:</source>
-        <target state="translated">Nível de &amp;aviso:</target>
+        <target state="translated">Nível de &aviso:</target>
         <note />
       </trans-unit>
       <trans-unit id="chkOptimizeCode.Text">
         <source>Optimi&amp;ze code</source>
-        <target state="translated">Otimi&amp;zar código</target>
+        <target state="translated">Otimi&zar código</target>
         <note />
       </trans-unit>
       <trans-unit id="chkAllowUnsafeCode.Text">
         <source>Allow unsa&amp;fe code</source>
-        <target state="translated">Permitir código não &amp;seguro</target>
+        <target state="translated">Permitir código não seguro</target>
         <note />
       </trans-unit>
       <trans-unit id="chkPrefer32Bit.Text">
         <source>&amp;Prefer 32-bit</source>
-        <target state="translated">&amp;Preferir 32 bits</target>
+        <target state="translated">&Preferir 32 bits</target>
         <note />
       </trans-unit>
       <trans-unit id="chkDefineTrace.Text">
         <source>Define &amp;TRACE constant</source>
-        <target state="translated">Definir a constante &amp;TRACE</target>
+        <target state="translated">Definir constante &TRACE</target>
         <note />
       </trans-unit>
       <trans-unit id="lblPlatformTarget.Text">
         <source>Platform tar&amp;get:</source>
-        <target state="translated">Plataforma de desti&amp;no:</target>
+        <target state="translated">Dest&ino da plataforma:</target>
         <note />
       </trans-unit>
       <trans-unit id="lblSGenOption.Text">
         <source>G&amp;enerate serialization assembly:</source>
-        <target state="translated">G&amp;erar assembly de serialização:</target>
+        <target state="translated">G&erar assembly de serialização:</target>
         <note />
       </trans-unit>
       <trans-unit id="btnAdvanced.Text">
         <source>A&amp;dvanced...</source>
-        <target state="translated">A&amp;vançado...</target>
+        <target state="translated">A&vançado...</target>
         <note />
       </trans-unit>
       <trans-unit id="chkDefineDebug.Text">
         <source>Define DEB&amp;UG constant</source>
-        <target state="translated">Definir constante DEB&amp;UG</target>
+        <target state="translated">Definir constante DEB&UG</target>
         <note />
       </trans-unit>
       <trans-unit id="txtSpecificWarnings.AccessibleName">
         <source>Specific Warnings To Treat As Errors</source>
-        <target state="new">Specific Warnings To Treat As Errors</target>
+        <target state="translated">Avisos específicos a serem tratados como erros</target>
         <note />
       </trans-unit>
       <trans-unit id="txtXMLDocumentationFile.AccessibleName">
         <source>XML Document File Path</source>
-        <target state="new">XML Document File Path</target>
+        <target state="translated">Caminho do Arquivo do Documento XML</target>
         <note />
       </trans-unit>
     </body>

@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="ru" original="../Designer.resx">
     <body>
@@ -126,7 +126,7 @@
       </trans-unit>
       <trans-unit id="DFX_Error_Default_Caption">
         <source>Microsoft Visual Studio</source>
-        <target state="translated">Microsoft Visual Studio</target>
+        <target state="translated">Службы Microsoft Visual Studio</target>
         <note>Error reporting</note>
       </trans-unit>
       <trans-unit id="DFX_IncompatibleBuffer">
@@ -265,12 +265,12 @@ Click OK to ignore and continue. Click CANCEL to choose a different output path.
       </trans-unit>
       <trans-unit id="PPG_PostBuildCommandLineTitle">
         <source>Post-build Event Command Line</source>
-        <target state="translated">Командная строка событий после сборки</target>
+        <target state="translated">Командная строка события после сборки</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_PreBuildCommandLineTitle">
         <source>Pre-build Event Command Line</source>
-        <target state="translated">Командная строка событий перед сборкой</target>
+        <target state="translated">Командная строка события перед сборкой</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_ProjectReloadedSomePropertiesMayNotHaveBeenSet">
@@ -290,12 +290,12 @@ Click OK to ignore and continue. Click CANCEL to choose a different output path.
       </trans-unit>
       <trans-unit id="PPG_SelectOutputPathTitle">
         <source>Select Output Path</source>
-        <target state="translated">Выбор выходного пути</target>
+        <target state="translated">Выбор пути для вывода</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_SelectReferencePath">
         <source>Select Reference Path</source>
-        <target state="translated">Выбор пути для ссылок</target>
+        <target state="translated">Выберите путь для ссылки</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_SelectWorkingDirectoryTitle">

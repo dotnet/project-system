@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="zh-Hans" original="../PackagePropPage.resx">
     <body>
@@ -9,7 +9,7 @@
       </trans-unit>
       <trans-unit id="CopyrightLabel.Text">
         <source>&amp;Copyright:</source>
-        <target state="translated">版权(&amp;C):</target>
+        <target state="translated">版权(&amp;C)：</target>
         <note />
       </trans-unit>
       <trans-unit id="DescriptionLabel.Text">
@@ -19,7 +19,7 @@
       </trans-unit>
       <trans-unit id="PackageIconUrlLabel.Text">
         <source>&amp;Icon URL:</source>
-        <target state="translated">图标 URL (&amp;I):</target>
+        <target state="translated">图标 URL(&amp;I):</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageVersionLabel.Text">
@@ -29,17 +29,17 @@
       </trans-unit>
       <trans-unit id="PackageLicenseUrlLabel.Text">
         <source>&amp;License URL:</source>
-        <target state="translated">许可证 URL (&amp;L):</target>
+        <target state="translated">许可证 URL(&amp;L):</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageTagsLabel.Text">
         <source>&amp;Tags:</source>
-        <target state="translated">标记(&amp;T):</target>
+        <target state="translated">标签(&amp;T):</target>
         <note />
       </trans-unit>
       <trans-unit id="RepositoryUrlLabel.Text">
         <source>&amp;Repository URL:</source>
-        <target state="translated">存储库 URL (&amp;R):</target>
+        <target state="translated">存储库 URL(&amp;R):</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageReleaseNotesLabel.Text">
@@ -54,12 +54,12 @@
       </trans-unit>
       <trans-unit id="PackageProjectUrlLabel.Text">
         <source>&amp;Project URL:</source>
-        <target state="translated">项目 URL (&amp;P):</target>
+        <target state="translated">项目 URL(&amp;P):</target>
         <note />
       </trans-unit>
       <trans-unit id="GeneratePackageOnBuild.Text">
         <source>&amp;Generate NuGet package on build</source>
-        <target state="translated">在版本中生成 NuGet 包(&amp;G)</target>
+        <target state="translated">在构建时生成 NuGet 包(&amp;G)</target>
         <note />
       </trans-unit>
       <trans-unit id="NeutralLanguageLabel.Text">
@@ -69,57 +69,57 @@
       </trans-unit>
       <trans-unit id="AssemblyVersionRevisionTextBox.AccessibleName">
         <source>Assembly Version Revision</source>
-        <target state="needs-review-translation">修订</target>
+        <target state="translated">程序集版本修订</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyVersionBuildTextBox.AccessibleName">
         <source>Assembly Version Build</source>
-        <target state="needs-review-translation">生成</target>
+        <target state="translated">程序集版本生成</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyVersionMinorTextBox.AccessibleName">
         <source>Assembly Version Minor</source>
-        <target state="needs-review-translation">次要</target>
+        <target state="translated">程序集次要版本</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyVersionMajorTextBox.AccessibleName">
         <source>Assembly Version Major</source>
-        <target state="needs-review-translation">主要</target>
+        <target state="translated">程序集主要版本</target>
         <note />
       </trans-unit>
       <trans-unit id="FileVersionRevisionTextBox.AccessibleName">
         <source>Assembly File Verison Revision</source>
-        <target state="needs-review-translation">修订</target>
+        <target state="translated">程序集文件版本修订</target>
         <note />
       </trans-unit>
       <trans-unit id="FileVersionBuildTextBox.AccessibleName">
         <source>Assembly File Verison Build</source>
-        <target state="needs-review-translation">生成</target>
+        <target state="translated">程序集文件版本生成</target>
         <note />
       </trans-unit>
       <trans-unit id="FileVersionMinorTextBox.AccessibleName">
         <source>Assembly File Verison Minor</source>
-        <target state="needs-review-translation">次要</target>
+        <target state="translated">程序集文件次要版本</target>
         <note />
       </trans-unit>
       <trans-unit id="FileVersionMajorTextBox.AccessibleName">
         <source>Assembly File Verison Major</source>
-        <target state="needs-review-translation">主要</target>
+        <target state="translated">程序集文件主要版本</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageRequireLicenseAcceptance.Text">
         <source>Require &amp;license acceptance</source>
-        <target state="translated">需要和许可证接受 (&amp;L)</target>
+        <target state="translated">要求接受许可证(&amp;L)</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageIdLabel.Text">
         <source>Package &amp;id:</source>
-        <target state="translated">包 ID (&amp;I):</target>
+        <target state="translated">包 ID(&amp;I)</target>
         <note />
       </trans-unit>
       <trans-unit id="AuthorsLabel.Text">
         <source>&amp;Authors:</source>
-        <target state="translated">作者(&amp;A):</target>
+        <target state="translated">作者(&A):</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyCompanyLabel.Text">
@@ -129,12 +129,12 @@
       </trans-unit>
       <trans-unit id="ProductLabel.Text">
         <source>&amp;Product:</source>
-        <target state="translated">产品(&amp;P):</target>
+        <target state="translated">产品（&amp;P）：</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyFileVersionLabel.Text">
         <source>Assembly &amp;file version:</source>
-        <target state="translated">程序集文件版本(&amp;F):</target>
+        <target state="translated">程序集文件版本(&amp;f):</target>
         <note />
       </trans-unit>
     </body>

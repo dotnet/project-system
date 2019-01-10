@@ -1,10 +1,10 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="ja" original="../ReferencePropPage.resx">
     <body>
       <trans-unit id="ReferenceListLabel.Text">
         <source>&amp;References:</source>
-        <target state="translated">参照(&amp;R):</target>
+        <target state="translated">参照(&R):</target>
         <note />
       </trans-unit>
       <trans-unit id="ColHdr_RefName.Text">
@@ -29,22 +29,22 @@
       </trans-unit>
       <trans-unit id="ColHdr_Path.Text">
         <source>Path</source>
-        <target state="translated">パス</target>
+        <target state="translated">PATH</target>
         <note />
       </trans-unit>
       <trans-unit id="UnusedReferences.Text">
         <source>U&amp;nused References...</source>
-        <target state="translated">未使用の参照(&amp;N)...</target>
+        <target state="translated">未使用の参照(&N)...</target>
         <note />
       </trans-unit>
       <trans-unit id="ReferencePathsButton.Text">
         <source>Reference &amp;Paths...</source>
-        <target state="translated">参照パス(&amp;P)...</target>
+        <target state="translated">参照パス(&P)...</target>
         <note />
       </trans-unit>
       <trans-unit id="RemoveReference.Text">
         <source>Remo&amp;ve</source>
-        <target state="translated">削除(&amp;V)</target>
+        <target state="translated">削除(&V)</target>
         <note />
       </trans-unit>
       <trans-unit id="referenceToolStripMenuItem.Text">
@@ -64,22 +64,22 @@
       </trans-unit>
       <trans-unit id="addSplitButton.Text">
         <source>&amp;Add...</source>
-        <target state="translated">追加(&amp;A)...</target>
+        <target state="translated">追加(&A)...</target>
         <note />
       </trans-unit>
       <trans-unit id="UpdateReferences.Text">
         <source>&amp;Update</source>
-        <target state="translated">更新(&amp;U)</target>
+        <target state="translated">更新(&U)</target>
         <note />
       </trans-unit>
       <trans-unit id="AddUserImportButton.Text">
         <source>Add User Imp&amp;ort</source>
-        <target state="translated">ユーザー インポートの追加(&amp;O)</target>
+        <target state="translated">ユーザー インポートの追加(&O)</target>
         <note />
       </trans-unit>
       <trans-unit id="UpdateUserImportButton.Text">
         <source>Up&amp;date User Import</source>
-        <target state="translated">ユーザー インポートの更新(&amp;D)</target>
+        <target state="translated">ユーザー インポートの更新(&D)</target>
         <note />
       </trans-unit>
       <trans-unit id="ImportList.AccessibleDescription">
@@ -99,7 +99,7 @@
       </trans-unit>
       <trans-unit id="ImportsListLabel.Text">
         <source>&amp;Imported namespaces:</source>
-        <target state="translated">インポートされた名前空間(&amp;I):</target>
+        <target state="translated">インポートされた名前空間(&I):</target>
         <note />
       </trans-unit>
       <trans-unit id="ReferencePageSplitContainer.Text">

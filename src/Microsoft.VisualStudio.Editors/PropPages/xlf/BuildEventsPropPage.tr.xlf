@@ -1,25 +1,25 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="tr" original="../BuildEventsPropPage.resx">
     <body>
       <trans-unit id="lblPreBuildEventCommandLine.Text">
         <source>P&amp;re-build event command line:</source>
-        <target state="translated">D&amp;erleme öncesi olay komut satırı:</target>
+        <target state="translated">&Derleme öncesi olay komut satırı:</target>
         <note />
       </trans-unit>
       <trans-unit id="btnPreBuildBuilder.Text">
         <source>Ed&amp;it Pre-build...</source>
-        <target state="translated">Derleme Öncesini Dü&amp;zenle...</target>
+        <target state="translated">Derleme Öncesini Dü&zenle...</target>
         <note />
       </trans-unit>
       <trans-unit id="lblPostBuildEventCommandLine.Text">
         <source>P&amp;ost-build event command line:</source>
-        <target state="translated">D&amp;erleme sonrası olay komut satırı:</target>
+        <target state="translated">D&erleme sonrası olay komut satırı:</target>
         <note />
       </trans-unit>
       <trans-unit id="btnPostBuildBuilder.Text">
         <source>Edit Post-b&amp;uild...</source>
-        <target state="translated">Derleme Sonrasını Dü&amp;zenle...</target>
+        <target state="translated">Derleme Sonrasını Dü&zenle...</target>
         <note />
       </trans-unit>
       <trans-unit id="lblRunPostBuildEvent.Text">

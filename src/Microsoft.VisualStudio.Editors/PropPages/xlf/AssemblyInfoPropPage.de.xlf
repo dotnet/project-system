@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="de" original="../AssemblyInfoPropPage.resx">
     <body>
@@ -9,12 +9,12 @@
       </trans-unit>
       <trans-unit id="TrademarkLabel.Text">
         <source>T&amp;rademark:</source>
-        <target state="translated">Ma&amp;rke:</target>
+        <target state="translated">&amp;Marke:</target>
         <note />
       </trans-unit>
       <trans-unit id="CopyrightLabel.Text">
         <source>C&amp;opyright:</source>
-        <target state="translated">C&amp;opyright:</target>
+        <target state="translated">&amp;Copyright:</target>
         <note />
       </trans-unit>
       <trans-unit id="ProductLabel.Text">
@@ -34,7 +34,7 @@
       </trans-unit>
       <trans-unit id="ComVisibleCheckBox.Text">
         <source>&amp;Make assembly COM-Visible</source>
-        <target state="translated">Assembly COM-sichtbar &amp;machen</target>
+        <target state="translated">&amp;Assembly COM-sichtbar machen</target>
         <note />
       </trans-unit>
       <trans-unit id="NeutralLanguageLabel.Text">
@@ -54,22 +54,22 @@
       </trans-unit>
       <trans-unit id="FileVersionMajorTextBox.AccessibleName">
         <source>File Version major</source>
-        <target state="needs-review-translation">Hauptversion</target>
+        <target state="translated">Hauptversion der Datei</target>
         <note />
       </trans-unit>
       <trans-unit id="FileVersionMinorTextBox.AccessibleName">
         <source>File Version minor</source>
-        <target state="needs-review-translation">Nebenversion</target>
+        <target state="translated">Nebenversion der Datei</target>
         <note />
       </trans-unit>
       <trans-unit id="FileVersionBuildTextBox.AccessibleName">
         <source>File Version build</source>
-        <target state="needs-review-translation">Build</target>
+        <target state="translated">Versionsbuild der Datei</target>
         <note />
       </trans-unit>
       <trans-unit id="FileVersionRevisionTextBox.AccessibleName">
         <source>File Version revision</source>
-        <target state="needs-review-translation">Revision</target>
+        <target state="translated">Revision der Dateiversion</target>
         <note />
       </trans-unit>
       <trans-unit id="GuidLabel.Text">
@@ -79,22 +79,22 @@
       </trans-unit>
       <trans-unit id="AssemblyVersionMajorTextBox.AccessibleName">
         <source>Assembly Version major</source>
-        <target state="needs-review-translation">Hauptversion</target>
+        <target state="translated">Hauptversion der Assembly</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyVersionMinorTextBox.AccessibleName">
         <source>Assembly Version minor</source>
-        <target state="needs-review-translation">Nebenversion</target>
+        <target state="translated">Nebenversion der Assembly</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyVersionBuildTextBox.AccessibleName">
         <source>Assembly Version build</source>
-        <target state="needs-review-translation">Build</target>
+        <target state="translated">Versionsbuild der Assembly</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyVersionRevisionTextBox.AccessibleName">
         <source>Assembly Version revision</source>
-        <target state="needs-review-translation">Revision</target>
+        <target state="translated">Revision der Assemblyversion</target>
         <note />
       </trans-unit>
     </body>

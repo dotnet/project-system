@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="it" original="../AdvCompilerSettingsPropPage.resx">
     <body>
@@ -9,42 +9,42 @@
       </trans-unit>
       <trans-unit id="RemoveIntegerChecks.Text">
         <source>&amp;Remove integer overflow checks</source>
-        <target state="translated">&amp;Rimuovi controllo dell'overflow di numeri interi</target>
+        <target state="translated">&Rimuovi controllo dell'overflow di numeri interi</target>
         <note />
       </trans-unit>
       <trans-unit id="Optimize.Text">
         <source>&amp;Enable optimizations</source>
-        <target state="translated">A&amp;bilita ottimizzazioni</target>
+        <target state="translated">A&bilita ottimizzazioni</target>
         <note />
       </trans-unit>
       <trans-unit id="DllBaseLabel.Text">
         <source>DLL &amp;base address:</source>
-        <target state="translated">&amp;Indirizzo di base DLL:</target>
+        <target state="translated">&Indirizzo di base DLL:</target>
         <note />
       </trans-unit>
       <trans-unit id="DefineDebug.Text">
         <source>Define &amp;DEBUG constant</source>
-        <target state="translated">Definisci costante &amp;DEBUG</target>
+        <target state="translated">Definisci costante &DEBUG</target>
         <note />
       </trans-unit>
       <trans-unit id="DefineTrace.Text">
         <source>Define &amp;TRACE constant</source>
-        <target state="translated">Definisci costante TRAC&amp;E</target>
+        <target state="translated">Definisci costante TRAC&E</target>
         <note />
       </trans-unit>
       <trans-unit id="GenerateSerializationAssembliesLabel.Text">
         <source>Generate &amp;serialization assemblies:</source>
-        <target state="translated">Genera assembly di &amp;serializzazione:</target>
+        <target state="translated">Genera assembly di &serializzazione:</target>
         <note />
       </trans-unit>
       <trans-unit id="CustomConstantsLabel.Text">
         <source>&amp;Custom constants:</source>
-        <target state="translated">&amp;Costanti personalizzate:</target>
+        <target state="translated">&Costanti personalizzate:</target>
         <note />
       </trans-unit>
       <trans-unit id="GenerateDebugInfoLabel.Text">
         <source>&amp;Generate debug info:</source>
-        <target state="translated">&amp;Genera informazioni di debug:</target>
+        <target state="translated">&Genera informazioni di debug:</target>
         <note />
       </trans-unit>
       <trans-unit id="CustomConstantsExampleLabel.Text">

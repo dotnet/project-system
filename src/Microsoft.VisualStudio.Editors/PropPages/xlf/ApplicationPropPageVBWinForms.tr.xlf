@@ -1,85 +1,85 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="tr" original="../ApplicationPropPageVBWinForms.resx">
     <body>
       <trans-unit id="AssemblyNameLabel.Text">
         <source>Assembly &amp;name:</source>
-        <target state="translated">Bütünleştirilmiş kod &amp;adı:</target>
+        <target state="translated">Bütünleştirilmiş kod &adı:</target>
         <note />
       </trans-unit>
       <trans-unit id="RootNamespaceLabel.Text">
         <source>&amp;Root namespace:</source>
-        <target state="translated">&amp;Kök ad alanı:</target>
+        <target state="translated">&Kök ad alanı:</target>
         <note />
       </trans-unit>
       <trans-unit id="TargetFrameworkLabel.Text">
         <source>&amp;Target framework:</source>
-        <target state="translated">&amp;Hedef çerçeve:</target>
+        <target state="translated">&Hedef çerçeve:</target>
         <note />
       </trans-unit>
       <trans-unit id="StartupObjectLabel.Text">
         <source>Startup &amp;object:</source>
-        <target state="translated">Başlangıç &amp;nesnesi:</target>
+        <target state="translated">Başlangıç &nesnesi:</target>
         <note />
       </trans-unit>
       <trans-unit id="ApplicationTypeLabel.Text">
         <source>&amp;Application type:</source>
-        <target state="translated">&amp;Uygulama türü:</target>
+        <target state="translated">&Uygulama türü:</target>
         <note />
       </trans-unit>
       <trans-unit id="IconLabel.Text">
         <source>&amp;Icon:</source>
-        <target state="translated">&amp;Simge:</target>
+        <target state="translated">&Simge:</target>
         <note />
       </trans-unit>
       <trans-unit id="UseApplicationFrameworkCheckBox.Text">
         <source>Enable application framewor&amp;k</source>
-        <target state="translated">Uygulama ç&amp;erçevesini etkinleştir</target>
+        <target state="translated">Uygulama ç&erçevesini etkinleştir</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyInfoButton.Text">
         <source>Assembl&amp;y Information...</source>
-        <target state="translated">Bütünleştiril&amp;miş Kod Bilgileri...</target>
+        <target state="translated">Bütünleştiril&miş Kod Bilgileri...</target>
         <note />
       </trans-unit>
       <trans-unit id="ViewUACSettingsButton.Text">
         <source>View Windows Settin&amp;gs</source>
-        <target state="translated">Pencere Ayarl&amp;arını Görüntüle</target>
+        <target state="translated">Pencere Ayarl&arını Görüntüle</target>
         <note />
       </trans-unit>
       <trans-unit id="EnableXPThemesCheckBox.Text">
         <source>Enable &amp;XP visual styles</source>
-        <target state="translated">&amp;XP görsel stillerini etkinleştir</target>
+        <target state="translated">&XP görsel stillerini etkinleştir</target>
         <note />
       </trans-unit>
       <trans-unit id="SingleInstanceCheckBox.Text">
         <source>Make &amp;single instance application</source>
-        <target state="translated">&amp;Tek örnek başvurusu yap</target>
+        <target state="translated">&Tek örnek başvurusu yap</target>
         <note />
       </trans-unit>
       <trans-unit id="SaveMySettingsCheckbox.Text">
         <source>Save My.Settin&amp;gs on Shutdown</source>
-        <target state="translated">Ka&amp;patma Sırasında Ayarlarım'ı Kaydet</target>
+        <target state="translated">Ka&patma Sırasında Ayarlarım'ı Kaydet</target>
         <note />
       </trans-unit>
       <trans-unit id="AuthenticationModeLabel.Text">
         <source>Aut&amp;hentication mode:</source>
-        <target state="translated">Kim&amp;lik doğrulama modu:</target>
+        <target state="translated">Kim&lik doğrulama modu:</target>
         <note />
       </trans-unit>
       <trans-unit id="ShutdownModeLabel.Text">
         <source>Sh&amp;utdown mode:</source>
-        <target state="translated">Ka&amp;patma modu:</target>
+        <target state="translated">Ka&patma modu:</target>
         <note />
       </trans-unit>
       <trans-unit id="SplashScreenLabel.Text">
         <source>Sp&amp;lash screen:</source>
-        <target state="translated">Gi&amp;riş ekranı:</target>
+        <target state="translated">Gi&riş ekranı:</target>
         <note />
       </trans-unit>
       <trans-unit id="ViewCodeButton.Text">
         <source>&amp;View Application Events</source>
-        <target state="translated">&amp;Uygulama Olaylarını Görüntüle</target>
+        <target state="translated">&Uygulama Olaylarını Görüntüle</target>
         <note />
       </trans-unit>
       <trans-unit id="WindowsAppGroupBox.Text">
@@ -89,7 +89,7 @@
       </trans-unit>
       <trans-unit id="AutoGenerateBindingRedirectsCheckBox.Text">
         <source>Auto-generate &amp;binding redirects</source>
-        <target state="translated">Otomatik olarak &amp;bağlama yeniden yönlendirmeleri oluştur</target>
+        <target state="translated">Otomatik olarak &bağlama yeniden yönlendirmeleri oluştur</target>
         <note />
       </trans-unit>
     </body>

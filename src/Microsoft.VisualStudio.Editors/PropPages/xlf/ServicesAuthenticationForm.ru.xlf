@@ -1,30 +1,30 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="ru" original="../ServicesAuthenticationForm.resx">
     <body>
       <trans-unit id="AuthenticationServiceUrlLabel.Text">
         <source>&amp;Authentication service location:</source>
-        <target state="translated">&amp;Расположение службы проверки подлинности:</target>
+        <target state="translated">&Расположение службы проверки подлинности:</target>
         <note />
       </trans-unit>
       <trans-unit id="UserNameLabel.Text">
         <source>&amp;Username:</source>
-        <target state="translated">&amp;Имя пользователя:</target>
+        <target state="translated">&Имя пользователя:</target>
         <note />
       </trans-unit>
       <trans-unit id="PasswordLabel.Text">
         <source>&amp;Password:</source>
-        <target state="translated">&amp;Пароль:</target>
+        <target state="translated">Пар&оль:</target>
         <note />
       </trans-unit>
       <trans-unit id="OKButton.Text">
         <source>&amp;Log In</source>
-        <target state="translated">&amp;Войти</target>
+        <target state="translated">&Войти</target>
         <note />
       </trans-unit>
       <trans-unit id="Cancel.Text">
         <source>&amp;Skip Login</source>
-        <target state="translated">Пропу&amp;стить вход</target>
+        <target state="translated">Пропу&стить вход</target>
         <note />
       </trans-unit>
       <trans-unit id="InfoLabel.Text">

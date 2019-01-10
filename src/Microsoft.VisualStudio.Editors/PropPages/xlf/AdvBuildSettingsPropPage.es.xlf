@@ -1,25 +1,25 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="es" original="../AdvBuildSettingsPropPage.resx">
     <body>
       <trans-unit id="lblLanguageVersion.Text">
         <source>&amp;Language version:</source>
-        <target state="translated">Ver&amp;sión del lenguaje:</target>
+        <target state="translated">Ver&sión del lenguaje:</target>
         <note />
       </trans-unit>
       <trans-unit id="lblReportCompilerErrors.Text">
         <source>&amp;Internal compiler error reporting:</source>
-        <target state="translated">Infor&amp;me de errores internos del compilador:</target>
+        <target state="translated">Infor&me de errores internos del compilador:</target>
         <note />
       </trans-unit>
       <trans-unit id="lblDebugInfo.Text">
         <source>D&amp;ebugging information:</source>
-        <target state="translated">Información de &amp;depuración:</target>
+        <target state="translated">Información de &depuración:</target>
         <note />
       </trans-unit>
       <trans-unit id="lblFileAlignment.Text">
         <source>&amp;File alignment:</source>
-        <target state="translated">&amp;Alineación de archivo:</target>
+        <target state="translated">&Alineación de archivo:</target>
         <note />
       </trans-unit>
       <trans-unit id="cboFileAlignment.Items">
@@ -49,7 +49,7 @@
       </trans-unit>
       <trans-unit id="lblDLLBase.Text">
         <source>Library &amp;base address:</source>
-        <target state="translated">Dirección &amp;base de la biblioteca:</target>
+        <target state="translated">Dirección &base de la biblioteca:</target>
         <note />
       </trans-unit>
       <trans-unit id="outputLabel.Text">
@@ -64,7 +64,7 @@
       </trans-unit>
       <trans-unit id="chkOverflow.Text">
         <source>Chec&amp;k for arithmetic overflow/underflow</source>
-        <target state="translated">Co&amp;mprobar el desbordamiento y subdesbordamiento aritmético</target>
+        <target state="translated">Co&mprobar el desbordamiento y subdesbordamiento aritmético</target>
         <note />
       </trans-unit>
       <trans-unit id="CSharpLanguageVerison.Default">

@@ -14,12 +14,12 @@
       </trans-unit>
       <trans-unit id="buttonRemove.Text">
         <source>Remo&amp;ve extension</source>
-        <target state="translated">移除延伸模組(&amp;V)</target>
+        <target state="translated">移除延伸模組(&V)</target>
         <note />
       </trans-unit>
       <trans-unit id="buttonAdd.Text">
         <source>&amp;Add extension...</source>
-        <target state="translated">新增延伸模組(&amp;A)...</target>
+        <target state="translated">新增延伸模組(&A)...</target>
         <note />
       </trans-unit>
       <trans-unit id="colHeaderExtensionName.HeaderText">

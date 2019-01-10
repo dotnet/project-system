@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="cs" original="../Menus.vsct">
     <body>
@@ -9,7 +9,7 @@
       </trans-unit>
       <trans-unit id="cmdidGenerateNuGetPackageProjectContextMenu|ButtonText">
         <source>&amp;Pack</source>
-        <target state="translated">&amp;Zabalit</target>
+        <target state="translated">&Zabalit</target>
         <note />
       </trans-unit>
       <trans-unit id="cmdidGenerateNuGetPackageProjectContextMenu|ToolTipText">
@@ -24,7 +24,7 @@
       </trans-unit>
       <trans-unit id="cmdidGenerateNuGetPackageTopLevelBuild|ButtonText">
         <source>&amp;Pack selection</source>
-        <target state="translated">&amp;Zabalit výběr</target>
+        <target state="translated">&Zabalit výběr</target>
         <note />
       </trans-unit>
       <trans-unit id="cmdidGenerateNuGetPackageTopLevelBuild|ToolTipText">
@@ -49,12 +49,12 @@
       </trans-unit>
       <trans-unit id="AddAboveMenu|ButtonText">
         <source>&amp;Add Above</source>
-        <target state="translated">&amp;Přidat výše</target>
+        <target state="translated">&Přidat výše</target>
         <note />
       </trans-unit>
       <trans-unit id="cmdidAddNewItemAbove|ButtonText">
         <source>&amp;Add New Item...</source>
-        <target state="translated">&amp;Přidat novou položku...</target>
+        <target state="translated">&Přidat novou položku...</target>
         <note />
       </trans-unit>
       <trans-unit id="cmdidAddNewItemAbove|CommandName">
@@ -64,12 +64,12 @@
       </trans-unit>
       <trans-unit id="AddBelowMenu|ButtonText">
         <source>&amp;Add Below</source>
-        <target state="translated">&amp;Přidat níže</target>
+        <target state="translated">&Přidat níže</target>
         <note />
       </trans-unit>
       <trans-unit id="cmdidAddExistingItemAbove|ButtonText">
         <source>&amp;Add Existing Item...</source>
-        <target state="translated">&amp;Přidat existující položku...</target>
+        <target state="translated">&Přidat existující položku...</target>
         <note />
       </trans-unit>
       <trans-unit id="cmdidAddExistingItemAbove|CommandName">
@@ -79,7 +79,7 @@
       </trans-unit>
       <trans-unit id="cmdidAddNewItemBelow|ButtonText">
         <source>&amp;Add New Item...</source>
-        <target state="translated">&amp;Přidat novou položku...</target>
+        <target state="translated">&Přidat novou položku...</target>
         <note />
       </trans-unit>
       <trans-unit id="cmdidAddNewItemBelow|CommandName">
@@ -89,7 +89,7 @@
       </trans-unit>
       <trans-unit id="cmdidAddExistingItemBelow|ButtonText">
         <source>&amp;Add Existing Item...</source>
-        <target state="translated">&amp;Přidat existující položku...</target>
+        <target state="translated">&Přidat existující položku...</target>
         <note />
       </trans-unit>
       <trans-unit id="cmdidAddExistingItemBelow|CommandName">

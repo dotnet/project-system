@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="pl" original="../MyExtensibilityPropPage.resx">
     <body>
@@ -14,12 +14,12 @@
       </trans-unit>
       <trans-unit id="buttonRemove.Text">
         <source>Remo&amp;ve extension</source>
-        <target state="translated">Us&amp;uń rozszerzenie</target>
+        <target state="translated">Us&uń rozszerzenie</target>
         <note />
       </trans-unit>
       <trans-unit id="buttonAdd.Text">
         <source>&amp;Add extension...</source>
-        <target state="translated">&amp;Dodaj rozszerzenie...</target>
+        <target state="translated">&Dodaj rozszerzenie...</target>
         <note />
       </trans-unit>
       <trans-unit id="colHeaderExtensionName.HeaderText">

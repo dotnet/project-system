@@ -4,22 +4,22 @@
     <body>
       <trans-unit id="lblLanguageVersion.Text">
         <source>&amp;Language version:</source>
-        <target state="translated">语言版本(&amp;L):</target>
+        <target state="translated">语言版本(&L):</target>
         <note />
       </trans-unit>
       <trans-unit id="lblReportCompilerErrors.Text">
         <source>&amp;Internal compiler error reporting:</source>
-        <target state="translated">内部编译器错误报告(&amp;I):</target>
+        <target state="translated">内部编译器错误报告(&I):</target>
         <note />
       </trans-unit>
       <trans-unit id="lblDebugInfo.Text">
         <source>D&amp;ebugging information:</source>
-        <target state="translated">调试信息(&amp;E):</target>
+        <target state="translated">调试信息(&E):</target>
         <note />
       </trans-unit>
       <trans-unit id="lblFileAlignment.Text">
         <source>&amp;File alignment:</source>
-        <target state="translated">文件对齐(&amp;F):</target>
+        <target state="translated">文件对齐(&F):</target>
         <note />
       </trans-unit>
       <trans-unit id="cboFileAlignment.Items">
@@ -49,7 +49,7 @@
       </trans-unit>
       <trans-unit id="lblDLLBase.Text">
         <source>Library &amp;base address:</source>
-        <target state="translated">库基址(&amp;B):</target>
+        <target state="translated">库基址(&B):</target>
         <note />
       </trans-unit>
       <trans-unit id="outputLabel.Text">
@@ -64,7 +64,7 @@
       </trans-unit>
       <trans-unit id="chkOverflow.Text">
         <source>Chec&amp;k for arithmetic overflow/underflow</source>
-        <target state="translated">检查运算上溢/下溢(&amp;K)</target>
+        <target state="translated">检查运算上溢/下溢(&K)</target>
         <note />
       </trans-unit>
       <trans-unit id="CSharpLanguageVerison.Default">

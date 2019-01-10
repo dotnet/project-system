@@ -1,30 +1,30 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="pt-BR" original="../BuildEventsPropPage.resx">
     <body>
       <trans-unit id="lblPreBuildEventCommandLine.Text">
         <source>P&amp;re-build event command line:</source>
-        <target state="translated">Linha de comando do evento p&amp;ré-build:</target>
+        <target state="translated">&Linha de comando do evento de pré-compilação:</target>
         <note />
       </trans-unit>
       <trans-unit id="btnPreBuildBuilder.Text">
         <source>Ed&amp;it Pre-build...</source>
-        <target state="translated">Ed&amp;itar pré-build...</target>
+        <target state="translated">Ed&itar pré-build...</target>
         <note />
       </trans-unit>
       <trans-unit id="lblPostBuildEventCommandLine.Text">
         <source>P&amp;ost-build event command line:</source>
-        <target state="translated">Linha de comando do event&amp;o pós-build:</target>
+        <target state="translated">&Linha de comando do evento de pós-compilação:</target>
         <note />
       </trans-unit>
       <trans-unit id="btnPostBuildBuilder.Text">
         <source>Edit Post-b&amp;uild...</source>
-        <target state="translated">Editar pós-b&amp;uild...</target>
+        <target state="translated">Editar pós-b&uild...</target>
         <note />
       </trans-unit>
       <trans-unit id="lblRunPostBuildEvent.Text">
         <source>Ru&amp;n the post-build event:</source>
-        <target state="translated">Executar o eve&amp;nto pós-build:</target>
+        <target state="translated">Executar o eve&nto pós-build:</target>
         <note />
       </trans-unit>
       <trans-unit id="cboRunPostBuildEvent.Items">

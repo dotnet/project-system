@@ -1,20 +1,20 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="de" original="../ApplicationPropPageVBWPF.resx">
     <body>
       <trans-unit id="AssemblyNameLabel.Text">
         <source>Assembly &amp;name:</source>
-        <target state="translated">Assembly&amp;name:</target>
+        <target state="translated">Assembly&name:</target>
         <note />
       </trans-unit>
       <trans-unit id="RootNamespaceLabel.Text">
         <source>&amp;Root namespace:</source>
-        <target state="translated">&amp;Stammnamespace:</target>
+        <target state="translated">&Stammnamespace:</target>
         <note />
       </trans-unit>
       <trans-unit id="TargetFrameworkLabel.Text">
         <source>&amp;Target framework:</source>
-        <target state="translated">&amp;Zielframework:</target>
+        <target state="translated">&Zielframework:</target>
         <note />
       </trans-unit>
       <trans-unit id="StartupObjectOrUriLabel.Text">
@@ -24,27 +24,27 @@
       </trans-unit>
       <trans-unit id="ApplicationTypeLabel.Text">
         <source>&amp;Application type:</source>
-        <target state="translated">&amp;Anwendungstyp:</target>
+        <target state="translated">&Anwendungstyp:</target>
         <note />
       </trans-unit>
       <trans-unit id="UseApplicationFrameworkCheckBox.Text">
         <source>Enable application framewor&amp;k</source>
-        <target state="translated">Anwendungsframewor&amp;k aktivieren</target>
+        <target state="translated">Anwendungsframewor&k aktivieren</target>
         <note />
       </trans-unit>
       <trans-unit id="IconLabel.Text">
         <source>&amp;Icon:</source>
-        <target state="translated">Sym&amp;bol:</target>
+        <target state="translated">Sym&bol:</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyInfoButton.Text">
         <source>Assembl&amp;y Information...</source>
-        <target state="translated">Assembl&amp;yinformationen...</target>
+        <target state="translated">Assembl&yinformationen...</target>
         <note />
       </trans-unit>
       <trans-unit id="ViewUACSettingsButton.Text">
         <source>View Windows Settin&amp;gs</source>
-        <target state="translated">Windows-Einstellun&amp;gen anzeigen</target>
+        <target state="translated">Windows-Einstellun&gen anzeigen</target>
         <note />
       </trans-unit>
       <trans-unit id="WindowsAppGroupBox.Text">
@@ -54,22 +54,22 @@
       </trans-unit>
       <trans-unit id="EditXamlButton.Text">
         <source>Edit &amp;XAML</source>
-        <target state="translated">&amp;XAML bearbeiten</target>
+        <target state="translated">&XAML bearbeiten</target>
         <note />
       </trans-unit>
       <trans-unit id="ViewCodeButton.Text">
         <source>&amp;View Application Events</source>
-        <target state="translated">An&amp;wendungsereignisse anzeigen</target>
+        <target state="translated">An&wendungsereignisse anzeigen</target>
         <note />
       </trans-unit>
       <trans-unit id="ShutdownModeLabel.Text">
         <source>Shutdown m&amp;ode:</source>
-        <target state="translated">M&amp;odus für das Herunterfahren:</target>
+        <target state="translated">M&odus für das Herunterfahren:</target>
         <note />
       </trans-unit>
       <trans-unit id="AutoGenerateBindingRedirectsCheckBox.Text">
         <source>Auto-generate &amp;binding redirects</source>
-        <target state="translated">&amp;Bindungsumleitungen automatisch generieren</target>
+        <target state="translated">&Bindungsumleitungen automatisch generieren</target>
         <note />
       </trans-unit>
     </body>

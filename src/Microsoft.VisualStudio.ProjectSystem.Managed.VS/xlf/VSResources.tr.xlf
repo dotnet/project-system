@@ -1,10 +1,10 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="tr" original="../VSResources.resx">
     <body>
       <trans-unit id="ClassTemplateName">
         <source>Class</source>
-        <target state="translated">Sınıf</target>
+        <target state="translated">sınıf</target>
         <note />
       </trans-unit>
       <trans-unit id="ProjectModificationsPrompt">
@@ -253,12 +253,12 @@ Bu projede hata ayıklamak için bu çözüme, kitaplık projesine başvuran bir
       </trans-unit>
       <trans-unit id="PackCommand">
         <source>&amp;Pack</source>
-        <target state="translated">&amp;Paketle</target>
+        <target state="translated">&amp;Paket</target>
         <note />
       </trans-unit>
       <trans-unit id="PackSelectedProjectCommand">
         <source>&amp;Pack {0}</source>
-        <target state="translated">{0} öğesini &amp;paketle</target>
+        <target state="translated">&amp;{0} Paketi</target>
         <note />
       </trans-unit>
       <trans-unit id="XprojMigrationFailedCannotReadReport">
@@ -278,17 +278,17 @@ Bu projede hata ayıklamak için bu çözüme, kitaplık projesine başvuran bir
       </trans-unit>
       <trans-unit id="OutputWindowPaneTitle">
         <source>Project</source>
-        <target state="translated">Proje</target>
+        <target state="translated">PROJE</target>
         <note />
       </trans-unit>
       <trans-unit id="PartialSupportedDotNetCoreProject">
         <source>A newer version of Visual Studio is recommended for projects targeting .NET Core {0}.{1}.</source>
-        <target state="needs-review-translation">.NET Core {0}.{1} projeleri için Visual Studio 2017 sürüm 15.7 veya daha yeni bir sürüm önerilir.</target>
+        <target state="translated">.NET Core {0}.{1} sürümünü hedefleyen projeler için Visual Studio'nun daha yeni bir sürümü önerilir.</target>
         <note />
       </trans-unit>
       <trans-unit id="NotSupportedDotNetCoreProject">
         <source>Projects targeting .NET Core {0}.{1} or newer are not supported by this version of Visual Studio.</source>
-        <target state="needs-review-translation">.NET Core {0}.{1} sürümünden daha yeni sürümleri hedefleyen projeler bu Visual Studio sürümünde desteklenmez.</target>
+        <target state="translated">.NET Core {0}.{1} veya daha yeni sürümleri hedefleyen projeler Visual Studio'nun bu sürümü tarafından desteklenmez.</target>
         <note />
       </trans-unit>
       <trans-unit id="DontShowAgain">

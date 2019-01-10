@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="zh-Hant" original="../compileproppage2.resx">
     <body>
@@ -9,52 +9,52 @@
       </trans-unit>
       <trans-unit id="BuildOutputPathButton.Text">
         <source>B&amp;rowse...</source>
-        <target state="translated">瀏覽(&amp;R)...</target>
+        <target state="translated">瀏覽(&R)...</target>
         <note />
       </trans-unit>
       <trans-unit id="OptionExplicitLabel.Text">
         <source>Option e&amp;xplicit:</source>
-        <target state="translated">Option Explicit(&amp;X):</target>
+        <target state="translated">Option Explicit(&X):</target>
         <note />
       </trans-unit>
       <trans-unit id="DisableAllWarningsCheckBox.Text">
         <source>D&amp;isable all warnings</source>
-        <target state="translated">停用所有警告(&amp;I)</target>
+        <target state="translated">停用所有警告(&I)</target>
         <note />
       </trans-unit>
       <trans-unit id="WarningsAsErrorCheckBox.Text">
         <source>Treat a&amp;ll warnings as errors</source>
-        <target state="translated">將所有警告視為錯誤(&amp;L)</target>
+        <target state="translated">將所有警告視為錯誤(&L)</target>
         <note />
       </trans-unit>
       <trans-unit id="BuildEventsButton.Text">
         <source>Build Eve&amp;nts...</source>
-        <target state="translated">建置事件(&amp;N)...</target>
+        <target state="translated">建置事件(&N)...</target>
         <note />
       </trans-unit>
       <trans-unit id="RegisterForComInteropCheckBox.Text">
         <source>R&amp;egister for COM interop</source>
-        <target state="translated">註冊 COM Interop(&amp;E)</target>
+        <target state="translated">註冊 COM Interop(&E)</target>
         <note />
       </trans-unit>
       <trans-unit id="GenerateXMLCheckBox.Text">
         <source>&amp;Generate XML documentation file</source>
-        <target state="translated">產生 XML 文件檔案(&amp;G)</target>
+        <target state="translated">產生 XML 文件檔案(&G)</target>
         <note />
       </trans-unit>
       <trans-unit id="OptionStrictLabel.Text">
         <source>Option &amp;strict:</source>
-        <target state="translated">Option Strict(&amp;S):</target>
+        <target state="translated">Option Strict(&S):</target>
         <note />
       </trans-unit>
       <trans-unit id="OptionCompareLabel.Text">
         <source>Option c&amp;ompare:</source>
-        <target state="translated">Option Compare(&amp;O):</target>
+        <target state="translated">Option Compare(&O):</target>
         <note />
       </trans-unit>
       <trans-unit id="OptionInferLabel.Text">
         <source>Option in&amp;fer:</source>
-        <target state="translated">Option Infer(&amp;F):</target>
+        <target state="translated">Option Infer(&F):</target>
         <note />
       </trans-unit>
       <trans-unit id="WarningsConfigurationsGridViewLabel.Text">
@@ -74,7 +74,7 @@
       </trans-unit>
       <trans-unit id="AdvancedOptionsButton.Text">
         <source>&amp;Advanced Compile Options...</source>
-        <target state="translated">進階編譯選項(&amp;A)...</target>
+        <target state="translated">進階編譯選項(&A)...</target>
         <note />
       </trans-unit>
       <trans-unit id="CompileOptionsGroupBox.Text">
@@ -84,17 +84,17 @@
       </trans-unit>
       <trans-unit id="BuildOutputPathLabel.Text">
         <source>B&amp;uild output path:</source>
-        <target state="translated">建置輸出路徑(&amp;U):</target>
+        <target state="translated">建置輸出路徑(&U):</target>
         <note />
       </trans-unit>
       <trans-unit id="TargetCPULabel.Text">
         <source>&amp;Target CPU:</source>
-        <target state="translated">目標 CPU(&amp;T):</target>
+        <target state="translated">目標 CPU(&T):</target>
         <note />
       </trans-unit>
       <trans-unit id="Prefer32BitCheckBox.Text">
         <source>&amp;Prefer 32-bit</source>
-        <target state="translated">建議使用 32 位元(&amp;P)</target>
+        <target state="translated">建議使用 32 位元(&P)</target>
         <note />
       </trans-unit>
     </body>

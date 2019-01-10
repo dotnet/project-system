@@ -1,85 +1,85 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="pl" original="../ApplicationPropPageVBWinForms.resx">
     <body>
       <trans-unit id="AssemblyNameLabel.Text">
         <source>Assembly &amp;name:</source>
-        <target state="translated">&amp;Nazwa zestawu:</target>
+        <target state="translated">&Nazwa zestawu:</target>
         <note />
       </trans-unit>
       <trans-unit id="RootNamespaceLabel.Text">
         <source>&amp;Root namespace:</source>
-        <target state="translated">&amp;Główna przestrzeń nazw:</target>
+        <target state="translated">&Główna przestrzeń nazw:</target>
         <note />
       </trans-unit>
       <trans-unit id="TargetFrameworkLabel.Text">
         <source>&amp;Target framework:</source>
-        <target state="translated">Platforma &amp;docelowa:</target>
+        <target state="translated">Platforma &docelowa:</target>
         <note />
       </trans-unit>
       <trans-unit id="StartupObjectLabel.Text">
         <source>Startup &amp;object:</source>
-        <target state="translated">Obiekt &amp;uruchomieniowy:</target>
+        <target state="translated">Obiekt &uruchomieniowy:</target>
         <note />
       </trans-unit>
       <trans-unit id="ApplicationTypeLabel.Text">
         <source>&amp;Application type:</source>
-        <target state="translated">Typ &amp;aplikacji:</target>
+        <target state="translated">Typ &aplikacji:</target>
         <note />
       </trans-unit>
       <trans-unit id="IconLabel.Text">
         <source>&amp;Icon:</source>
-        <target state="translated">&amp;Ikona:</target>
+        <target state="translated">&Ikona:</target>
         <note />
       </trans-unit>
       <trans-unit id="UseApplicationFrameworkCheckBox.Text">
         <source>Enable application framewor&amp;k</source>
-        <target state="translated">Włącz platformę apli&amp;kacji</target>
+        <target state="translated">Włącz platformę apli&kacji</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyInfoButton.Text">
         <source>Assembl&amp;y Information...</source>
-        <target state="translated">Informacje o zestaw&amp;ie...</target>
+        <target state="translated">Informacje o zestaw&ie...</target>
         <note />
       </trans-unit>
       <trans-unit id="ViewUACSettingsButton.Text">
         <source>View Windows Settin&amp;gs</source>
-        <target state="translated">Wyświetl ustawie&amp;nia systemu Windows</target>
+        <target state="translated">Wyświetl ustawie&nia systemu Windows</target>
         <note />
       </trans-unit>
       <trans-unit id="EnableXPThemesCheckBox.Text">
         <source>Enable &amp;XP visual styles</source>
-        <target state="translated">Włącz style wizualne &amp;XP</target>
+        <target state="translated">Włącz style wizualne &XP</target>
         <note />
       </trans-unit>
       <trans-unit id="SingleInstanceCheckBox.Text">
         <source>Make &amp;single instance application</source>
-        <target state="translated">Utwórz aplikację o &amp;jednym wystąpieniu</target>
+        <target state="translated">Utwórz aplikację o &jednym wystąpieniu</target>
         <note />
       </trans-unit>
       <trans-unit id="SaveMySettingsCheckbox.Text">
         <source>Save My.Settin&amp;gs on Shutdown</source>
-        <target state="translated">Zapisz My.Settin&amp;gs przy zamknięciu</target>
+        <target state="translated">Zapisz My.Settin&gs przy zamknięciu</target>
         <note />
       </trans-unit>
       <trans-unit id="AuthenticationModeLabel.Text">
         <source>Aut&amp;hentication mode:</source>
-        <target state="translated">Tryb uwi&amp;erzytelniania:</target>
+        <target state="translated">Tryb uwi&erzytelniania:</target>
         <note />
       </trans-unit>
       <trans-unit id="ShutdownModeLabel.Text">
         <source>Sh&amp;utdown mode:</source>
-        <target state="translated">Tryb za&amp;mykania:</target>
+        <target state="translated">Tryb za&mykania:</target>
         <note />
       </trans-unit>
       <trans-unit id="SplashScreenLabel.Text">
         <source>Sp&amp;lash screen:</source>
-        <target state="translated">Ekran po&amp;witalny:</target>
+        <target state="translated">Ekran po&witalny:</target>
         <note />
       </trans-unit>
       <trans-unit id="ViewCodeButton.Text">
         <source>&amp;View Application Events</source>
-        <target state="translated">&amp;Wyświetl zdarzenia aplikacji</target>
+        <target state="translated">&Wyświetl zdarzenia aplikacji</target>
         <note />
       </trans-unit>
       <trans-unit id="WindowsAppGroupBox.Text">
@@ -89,7 +89,7 @@
       </trans-unit>
       <trans-unit id="AutoGenerateBindingRedirectsCheckBox.Text">
         <source>Auto-generate &amp;binding redirects</source>
-        <target state="translated">Auto&amp;matycznie generuj przekierowania powiązań</target>
+        <target state="translated">Auto&matycznie generuj przekierowania powiązań</target>
         <note />
       </trans-unit>
     </body>

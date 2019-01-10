@@ -1,25 +1,25 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="ru" original="../AdvBuildSettingsPropPage.resx">
     <body>
       <trans-unit id="lblLanguageVersion.Text">
         <source>&amp;Language version:</source>
-        <target state="translated">Версия &amp;языка:</target>
+        <target state="translated">Версия &языка:</target>
         <note />
       </trans-unit>
       <trans-unit id="lblReportCompilerErrors.Text">
         <source>&amp;Internal compiler error reporting:</source>
-        <target state="translated">&amp;Отчеты о внутренней ошибке компилятора:</target>
+        <target state="translated">&Отчеты о внутренней ошибке компилятора:</target>
         <note />
       </trans-unit>
       <trans-unit id="lblDebugInfo.Text">
         <source>D&amp;ebugging information:</source>
-        <target state="translated">&amp;Сведения об отладке:</target>
+        <target state="translated">&Сведения об отладке:</target>
         <note />
       </trans-unit>
       <trans-unit id="lblFileAlignment.Text">
         <source>&amp;File alignment:</source>
-        <target state="translated">&amp;Выравнивание файла:</target>
+        <target state="translated">&Выравнивание файла:</target>
         <note />
       </trans-unit>
       <trans-unit id="cboFileAlignment.Items">
@@ -49,22 +49,22 @@
       </trans-unit>
       <trans-unit id="lblDLLBase.Text">
         <source>Library &amp;base address:</source>
-        <target state="translated">Базовый адрес &amp;библиотеки:</target>
+        <target state="translated">Базовый адрес &библиотеки:</target>
         <note />
       </trans-unit>
       <trans-unit id="outputLabel.Text">
         <source>Output</source>
-        <target state="translated">Выходные данные</target>
+        <target state="translated">Вывод</target>
         <note />
       </trans-unit>
       <trans-unit id="generalLabel.Text">
         <source>General</source>
-        <target state="translated">Общие</target>
+        <target state="translated">Общее</target>
         <note />
       </trans-unit>
       <trans-unit id="chkOverflow.Text">
         <source>Chec&amp;k for arithmetic overflow/underflow</source>
-        <target state="translated">&amp;Проверять арифметические переполнения и потери точности</target>
+        <target state="translated">&Проверять арифметические переполнения и потери точности</target>
         <note />
       </trans-unit>
       <trans-unit id="CSharpLanguageVerison.Default">

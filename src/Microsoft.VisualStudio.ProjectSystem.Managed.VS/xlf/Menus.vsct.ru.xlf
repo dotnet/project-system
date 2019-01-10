@@ -9,7 +9,7 @@
       </trans-unit>
       <trans-unit id="cmdidGenerateNuGetPackageProjectContextMenu|ButtonText">
         <source>&amp;Pack</source>
-        <target state="translated">&amp;Упаковать</target>
+        <target state="translated">&Упаковать</target>
         <note />
       </trans-unit>
       <trans-unit id="cmdidGenerateNuGetPackageProjectContextMenu|ToolTipText">
@@ -24,7 +24,7 @@
       </trans-unit>
       <trans-unit id="cmdidGenerateNuGetPackageTopLevelBuild|ButtonText">
         <source>&amp;Pack selection</source>
-        <target state="translated">&amp;Упаковать выбранное</target>
+        <target state="translated">&Упаковать выбранное</target>
         <note />
       </trans-unit>
       <trans-unit id="cmdidGenerateNuGetPackageTopLevelBuild|ToolTipText">
@@ -39,22 +39,22 @@
       </trans-unit>
       <trans-unit id="DebugTargetMenuDebugFrameworkMenu|ButtonText">
         <source>Framework</source>
-        <target state="translated">Платформа</target>
+        <target state="translated">FRAMEWORK</target>
         <note />
       </trans-unit>
       <trans-unit id="cmdidDebugFrameworks|ButtonText">
         <source>Framework</source>
-        <target state="translated">Платформа</target>
+        <target state="translated">FRAMEWORK</target>
         <note />
       </trans-unit>
       <trans-unit id="AddAboveMenu|ButtonText">
         <source>&amp;Add Above</source>
-        <target state="translated">&amp;Добавить выше</target>
+        <target state="translated">&Добавить выше</target>
         <note />
       </trans-unit>
       <trans-unit id="cmdidAddNewItemAbove|ButtonText">
         <source>&amp;Add New Item...</source>
-        <target state="translated">&amp;Добавить новый элемент…</target>
+        <target state="translated">&Добавить новый элемент…</target>
         <note />
       </trans-unit>
       <trans-unit id="cmdidAddNewItemAbove|CommandName">
@@ -64,12 +64,12 @@
       </trans-unit>
       <trans-unit id="AddBelowMenu|ButtonText">
         <source>&amp;Add Below</source>
-        <target state="translated">&amp;Добавить ниже</target>
+        <target state="translated">&Добавить ниже</target>
         <note />
       </trans-unit>
       <trans-unit id="cmdidAddExistingItemAbove|ButtonText">
         <source>&amp;Add Existing Item...</source>
-        <target state="translated">&amp;Добавить существующий элемент…</target>
+        <target state="translated">&Добавить существующий элемент…</target>
         <note />
       </trans-unit>
       <trans-unit id="cmdidAddExistingItemAbove|CommandName">
@@ -79,7 +79,7 @@
       </trans-unit>
       <trans-unit id="cmdidAddNewItemBelow|ButtonText">
         <source>&amp;Add New Item...</source>
-        <target state="translated">&amp;Добавить новый элемент…</target>
+        <target state="translated">&Добавить новый элемент…</target>
         <note />
       </trans-unit>
       <trans-unit id="cmdidAddNewItemBelow|CommandName">
@@ -89,7 +89,7 @@
       </trans-unit>
       <trans-unit id="cmdidAddExistingItemBelow|ButtonText">
         <source>&amp;Add Existing Item...</source>
-        <target state="translated">&amp;Добавить существующий элемент…</target>
+        <target state="translated">&Добавить существующий элемент…</target>
         <note />
       </trans-unit>
       <trans-unit id="cmdidAddExistingItemBelow|CommandName">

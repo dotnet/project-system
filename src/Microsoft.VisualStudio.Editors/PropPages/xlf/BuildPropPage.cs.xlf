@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="cs" original="../BuildPropPage.resx">
     <body>
@@ -29,7 +29,7 @@
       </trans-unit>
       <trans-unit id="chkRegisterForCOM.Text">
         <source>Register for &amp;COM interop</source>
-        <target state="translated">Zaregistrovat pro spolupráci s modelem COM</target>
+        <target state="translated">Zaregistrovat pro zprostředkovatele komunika&amp;ce s objekty COM</target>
         <note />
       </trans-unit>
       <trans-unit id="chkXMLDocumentationFile.Text">
@@ -44,7 +44,7 @@
       </trans-unit>
       <trans-unit id="lblOutputPath.Text">
         <source>&amp;Output path:</source>
-        <target state="translated">Výstu&amp;pní cesta:</target>
+        <target state="translated">&amp;Výstupní cesta:</target>
         <note />
       </trans-unit>
       <trans-unit id="rbWarningSpecific.Text">
@@ -54,17 +54,17 @@
       </trans-unit>
       <trans-unit id="rbWarningAll.Text">
         <source>A&amp;ll</source>
-        <target state="translated">&amp;Vše</target>
+        <target state="translated">Vš&amp;e</target>
         <note />
       </trans-unit>
       <trans-unit id="rbWarningNone.Text">
         <source>&amp;None</source>
-        <target state="translated">Žá&amp;dná</target>
+        <target state="translated">Žád&amp;né</target>
         <note />
       </trans-unit>
       <trans-unit id="lblSupressWarnings.Text">
         <source>&amp;Suppress warnings:</source>
-        <target state="translated">Potlačit upozo&amp;rnění:</target>
+        <target state="translated">&amp;Potlačit upozornění:</target>
         <note />
       </trans-unit>
       <trans-unit id="cboWarningLevel.Items">
@@ -94,7 +94,7 @@
       </trans-unit>
       <trans-unit id="lblWarningLevel.Text">
         <source>W&amp;arning level:</source>
-        <target state="translated">Úro&amp;veň upozornění:</target>
+        <target state="translated">Úro&amp;veň pro upozornění:</target>
         <note />
       </trans-unit>
       <trans-unit id="chkOptimizeCode.Text">
@@ -104,7 +104,7 @@
       </trans-unit>
       <trans-unit id="chkAllowUnsafeCode.Text">
         <source>Allow unsa&amp;fe code</source>
-        <target state="translated">Povolit nezab&amp;ezpečený kód</target>
+        <target state="translated">Povolit nebe&amp;zpečný kód</target>
         <note />
       </trans-unit>
       <trans-unit id="chkPrefer32Bit.Text">
@@ -114,7 +114,7 @@
       </trans-unit>
       <trans-unit id="chkDefineTrace.Text">
         <source>Define &amp;TRACE constant</source>
-        <target state="translated">Definovat konstantu &amp;TRACE</target>
+        <target state="translated">Definova&amp;t konstantu TRACE</target>
         <note />
       </trans-unit>
       <trans-unit id="lblPlatformTarget.Text">
@@ -124,7 +124,7 @@
       </trans-unit>
       <trans-unit id="lblSGenOption.Text">
         <source>G&amp;enerate serialization assembly:</source>
-        <target state="translated">G&amp;enerovat serializační sestavení:</target>
+        <target state="translated">G&amp;enerovat sestavení serializace:</target>
         <note />
       </trans-unit>
       <trans-unit id="btnAdvanced.Text">
@@ -134,17 +134,17 @@
       </trans-unit>
       <trans-unit id="chkDefineDebug.Text">
         <source>Define DEB&amp;UG constant</source>
-        <target state="translated">Definovat konstantu DEB&amp;UG</target>
+        <target state="translated">Definovat konstant&amp;u DEBUG</target>
         <note />
       </trans-unit>
       <trans-unit id="txtSpecificWarnings.AccessibleName">
         <source>Specific Warnings To Treat As Errors</source>
-        <target state="new">Specific Warnings To Treat As Errors</target>
+        <target state="translated">Konkrétní upozornění, která se budou zpracovávat jako chyby</target>
         <note />
       </trans-unit>
       <trans-unit id="txtXMLDocumentationFile.AccessibleName">
         <source>XML Document File Path</source>
-        <target state="new">XML Document File Path</target>
+        <target state="translated">Cesta k souboru dokumentu XML</target>
         <note />
       </trans-unit>
     </body>

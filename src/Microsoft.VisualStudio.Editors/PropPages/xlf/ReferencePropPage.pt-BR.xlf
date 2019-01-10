@@ -1,10 +1,10 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="pt-BR" original="../ReferencePropPage.resx">
     <body>
       <trans-unit id="ReferenceListLabel.Text">
         <source>&amp;References:</source>
-        <target state="translated">&amp;Referências:</target>
+        <target state="translated">&Referências:</target>
         <note />
       </trans-unit>
       <trans-unit id="ColHdr_RefName.Text">
@@ -24,27 +24,27 @@
       </trans-unit>
       <trans-unit id="ColHdr_CopyLocal.Text">
         <source>Copy Local</source>
-        <target state="translated">Local da Cópia</target>
+        <target state="translated">Copiar Local</target>
         <note />
       </trans-unit>
       <trans-unit id="ColHdr_Path.Text">
         <source>Path</source>
-        <target state="translated">Caminho</target>
+        <target state="translated">PATH</target>
         <note />
       </trans-unit>
       <trans-unit id="UnusedReferences.Text">
         <source>U&amp;nused References...</source>
-        <target state="translated">Referências &amp;Não Utilizadas...</target>
+        <target state="translated">Referências &Não Utilizadas...</target>
         <note />
       </trans-unit>
       <trans-unit id="ReferencePathsButton.Text">
         <source>Reference &amp;Paths...</source>
-        <target state="translated">&amp;Caminhos de Referência...</target>
+        <target state="translated">&Caminhos de Referência...</target>
         <note />
       </trans-unit>
       <trans-unit id="RemoveReference.Text">
         <source>Remo&amp;ve</source>
-        <target state="translated">Remo&amp;ver</target>
+        <target state="translated">Remo&ver</target>
         <note />
       </trans-unit>
       <trans-unit id="referenceToolStripMenuItem.Text">
@@ -64,22 +64,22 @@
       </trans-unit>
       <trans-unit id="addSplitButton.Text">
         <source>&amp;Add...</source>
-        <target state="translated">&amp;Adicionar...</target>
+        <target state="translated">&Adicionar...</target>
         <note />
       </trans-unit>
       <trans-unit id="UpdateReferences.Text">
         <source>&amp;Update</source>
-        <target state="translated">At&amp;ualizar</target>
+        <target state="translated">&Atualizar</target>
         <note />
       </trans-unit>
       <trans-unit id="AddUserImportButton.Text">
         <source>Add User Imp&amp;ort</source>
-        <target state="translated">Adicionar Imp&amp;ortação de Usuário</target>
+        <target state="translated">Adicionar Imp&ortação de Usuário</target>
         <note />
       </trans-unit>
       <trans-unit id="UpdateUserImportButton.Text">
         <source>Up&amp;date User Import</source>
-        <target state="translated">Atualizar Importação &amp;de Usuário</target>
+        <target state="translated">Atualizar Importação &de Usuário</target>
         <note />
       </trans-unit>
       <trans-unit id="ImportList.AccessibleDescription">
@@ -99,7 +99,7 @@
       </trans-unit>
       <trans-unit id="ImportsListLabel.Text">
         <source>&amp;Imported namespaces:</source>
-        <target state="translated">Namespaces &amp;importados:</target>
+        <target state="translated">Namespaces &importados:</target>
         <note />
       </trans-unit>
       <trans-unit id="ReferencePageSplitContainer.Text">

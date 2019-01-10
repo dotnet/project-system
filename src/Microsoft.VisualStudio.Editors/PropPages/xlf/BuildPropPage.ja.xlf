@@ -49,12 +49,12 @@
       </trans-unit>
       <trans-unit id="rbWarningSpecific.Text">
         <source>Specif&amp;ic warnings:</source>
-        <target state="translated">特定の警告(&amp;I):</target>
+        <target state="translated">特定の警告</target>
         <note />
       </trans-unit>
       <trans-unit id="rbWarningAll.Text">
         <source>A&amp;ll</source>
-        <target state="translated">すべて(&amp;L)</target>
+        <target state="translated">すべて(&amp;A)</target>
         <note />
       </trans-unit>
       <trans-unit id="rbWarningNone.Text">
@@ -64,7 +64,7 @@
       </trans-unit>
       <trans-unit id="lblSupressWarnings.Text">
         <source>&amp;Suppress warnings:</source>
-        <target state="translated">警告の表示なし(&amp;S):</target>
+        <target state="translated">警告の非表示(&amp;S):</target>
         <note />
       </trans-unit>
       <trans-unit id="cboWarningLevel.Items">
@@ -94,22 +94,22 @@
       </trans-unit>
       <trans-unit id="lblWarningLevel.Text">
         <source>W&amp;arning level:</source>
-        <target state="translated">警告レベル(&amp;A):</target>
+        <target state="translated">警告のレベル(&amp;A):</target>
         <note />
       </trans-unit>
       <trans-unit id="chkOptimizeCode.Text">
         <source>Optimi&amp;ze code</source>
-        <target state="translated">コードの最適化(&amp;Z)</target>
+        <target state="translated">最適化コード(&amp;Z)</target>
         <note />
       </trans-unit>
       <trans-unit id="chkAllowUnsafeCode.Text">
         <source>Allow unsa&amp;fe code</source>
-        <target state="translated">アンセーフ コードの許可(&amp;F)</target>
+        <target state="translated">アンセーフコードの許可(&amp;F)</target>
         <note />
       </trans-unit>
       <trans-unit id="chkPrefer32Bit.Text">
         <source>&amp;Prefer 32-bit</source>
-        <target state="translated">32 ビットを優先(&amp;P)</target>
+        <target state="translated">32 ビットを選ぶ(&amp;P)</target>
         <note />
       </trans-unit>
       <trans-unit id="chkDefineTrace.Text">
@@ -119,17 +119,17 @@
       </trans-unit>
       <trans-unit id="lblPlatformTarget.Text">
         <source>Platform tar&amp;get:</source>
-        <target state="translated">プラットフォーム ターゲット(&amp;G):</target>
+        <target state="translated">対象プラットフォーム(&amp;G):</target>
         <note />
       </trans-unit>
       <trans-unit id="lblSGenOption.Text">
         <source>G&amp;enerate serialization assembly:</source>
-        <target state="translated">シリアル化アセンブリの生成(&amp;E):</target>
+        <target state="translated">シリアル化アセンブリの生成(&amp;A):</target>
         <note />
       </trans-unit>
       <trans-unit id="btnAdvanced.Text">
         <source>A&amp;dvanced...</source>
-        <target state="translated">詳細設定(&amp;D)...</target>
+        <target state="translated">詳細(&amp;D)...</target>
         <note />
       </trans-unit>
       <trans-unit id="chkDefineDebug.Text">
@@ -139,12 +139,12 @@
       </trans-unit>
       <trans-unit id="txtSpecificWarnings.AccessibleName">
         <source>Specific Warnings To Treat As Errors</source>
-        <target state="new">Specific Warnings To Treat As Errors</target>
+        <target state="translated">エラーとして処理する警告</target>
         <note />
       </trans-unit>
       <trans-unit id="txtXMLDocumentationFile.AccessibleName">
         <source>XML Document File Path</source>
-        <target state="new">XML Document File Path</target>
+        <target state="translated">XML ドキュメント ファイルのパス</target>
         <note />
       </trans-unit>
     </body>

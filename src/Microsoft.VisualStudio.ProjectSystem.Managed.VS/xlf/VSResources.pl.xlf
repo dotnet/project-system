@@ -1,10 +1,10 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="pl" original="../VSResources.resx">
     <body>
       <trans-unit id="ClassTemplateName">
         <source>Class</source>
-        <target state="translated">Klasa</target>
+        <target state="translated">klasa</target>
         <note />
       </trans-unit>
       <trans-unit id="ProjectModificationsPrompt">
@@ -104,7 +104,7 @@ Naciśnij pozycję Ignoruj, aby zignorować zewnętrzne zmiany. Twoje zmiany mog
       </trans-unit>
       <trans-unit id="ComNodeName">
         <source>COM</source>
-        <target state="translated">COM</target>
+        <target state="translated">Model COM</target>
         <note />
       </trans-unit>
       <trans-unit id="SdkNodeName">
@@ -253,12 +253,12 @@ Aby debugować ten projekt, dodaj projekt wykonywalny do tego rozwiązania, któ
       </trans-unit>
       <trans-unit id="PackCommand">
         <source>&amp;Pack</source>
-        <target state="translated">&amp;Spakuj</target>
+        <target state="translated">&amp;Pakuj</target>
         <note />
       </trans-unit>
       <trans-unit id="PackSelectedProjectCommand">
         <source>&amp;Pack {0}</source>
-        <target state="translated">&amp;Spakuj element {0}</target>
+        <target state="translated">&amp;Pakuj {0}</target>
         <note />
       </trans-unit>
       <trans-unit id="XprojMigrationFailedCannotReadReport">
@@ -283,12 +283,12 @@ Aby debugować ten projekt, dodaj projekt wykonywalny do tego rozwiązania, któ
       </trans-unit>
       <trans-unit id="PartialSupportedDotNetCoreProject">
         <source>A newer version of Visual Studio is recommended for projects targeting .NET Core {0}.{1}.</source>
-        <target state="needs-review-translation">Dla projektów platformy .NET Core {0}.{1} zalecany jest program Visual Studio 2017 w wersji 15.7 lub nowszej.</target>
+        <target state="translated">W przypadku projektów, których platforma docelowa to .NET Core {0}.{1} zaleca się korzystanie z nowszej wersji programu Visual Studio.</target>
         <note />
       </trans-unit>
       <trans-unit id="NotSupportedDotNetCoreProject">
         <source>Projects targeting .NET Core {0}.{1} or newer are not supported by this version of Visual Studio.</source>
-        <target state="needs-review-translation">Projekty przeznaczone dla wersji nowszych niż platforma .NET Core {0}.{1} nie są obsługiwane przez tę wersję programu Visual Studio.</target>
+        <target state="translated">Projekty z docelową platformą .NET Core {0}.{1} lub nowszą nie są obsługiwane przez tę wersję programu Visual Studio.</target>
         <note />
       </trans-unit>
       <trans-unit id="DontShowAgain">

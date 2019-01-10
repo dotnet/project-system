@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="pl" original="../AssemblyInfoPropPage.resx">
     <body>
@@ -9,12 +9,12 @@
       </trans-unit>
       <trans-unit id="TrademarkLabel.Text">
         <source>T&amp;rademark:</source>
-        <target state="translated">Z&amp;nak towarowy:</target>
+        <target state="translated">Znak towa&amp;rowy:</target>
         <note />
       </trans-unit>
       <trans-unit id="CopyrightLabel.Text">
         <source>C&amp;opyright:</source>
-        <target state="translated">P&amp;rawa autorskie:</target>
+        <target state="translated">Prawa aut&amp;orskie:</target>
         <note />
       </trans-unit>
       <trans-unit id="ProductLabel.Text">
@@ -39,62 +39,62 @@
       </trans-unit>
       <trans-unit id="NeutralLanguageLabel.Text">
         <source>&amp;Neutral language:</source>
-        <target state="translated">&amp;Język neutralny:</target>
+        <target state="translated">Język &amp;neutralny:</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyVersionLabel.Text">
         <source>&amp;Assembly version:</source>
-        <target state="translated">&amp;Wersja zestawu:</target>
+        <target state="translated">Wersj&amp;a zestawu:</target>
         <note />
       </trans-unit>
       <trans-unit id="FileVersionLabel.Text">
         <source>&amp;File version:</source>
-        <target state="translated">Wersja pli&amp;ku:</target>
+        <target state="translated">&amp;Wersja pliku:</target>
         <note />
       </trans-unit>
       <trans-unit id="FileVersionMajorTextBox.AccessibleName">
         <source>File Version major</source>
-        <target state="needs-review-translation">Główna</target>
+        <target state="translated">Wersja główna pliku</target>
         <note />
       </trans-unit>
       <trans-unit id="FileVersionMinorTextBox.AccessibleName">
         <source>File Version minor</source>
-        <target state="needs-review-translation">Pomocnicza</target>
+        <target state="translated">Wersja pomocnicza pliku</target>
         <note />
       </trans-unit>
       <trans-unit id="FileVersionBuildTextBox.AccessibleName">
         <source>File Version build</source>
-        <target state="needs-review-translation">Kompilacja</target>
+        <target state="translated">Kompilacja wersji pliku</target>
         <note />
       </trans-unit>
       <trans-unit id="FileVersionRevisionTextBox.AccessibleName">
         <source>File Version revision</source>
-        <target state="needs-review-translation">Poprawka</target>
+        <target state="translated">Poprawka wersji pliku</target>
         <note />
       </trans-unit>
       <trans-unit id="GuidLabel.Text">
         <source>&amp;GUID:</source>
-        <target state="translated">Identyfikator &amp;GUID:</target>
+        <target state="translated">&amp;GUID:</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyVersionMajorTextBox.AccessibleName">
         <source>Assembly Version major</source>
-        <target state="needs-review-translation">Główna</target>
+        <target state="translated">Wersja główna zestawu</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyVersionMinorTextBox.AccessibleName">
         <source>Assembly Version minor</source>
-        <target state="needs-review-translation">Pomocnicza</target>
+        <target state="translated">Wersja pomocnicza zestawu</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyVersionBuildTextBox.AccessibleName">
         <source>Assembly Version build</source>
-        <target state="needs-review-translation">Kompilacja</target>
+        <target state="translated">Kompilacja wersji zestawu</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyVersionRevisionTextBox.AccessibleName">
         <source>Assembly Version revision</source>
-        <target state="needs-review-translation">Poprawka</target>
+        <target state="translated">Poprawka wersji zestawu</target>
         <note />
       </trans-unit>
     </body>

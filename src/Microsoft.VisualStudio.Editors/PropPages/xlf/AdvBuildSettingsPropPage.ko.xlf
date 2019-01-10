@@ -4,22 +4,22 @@
     <body>
       <trans-unit id="lblLanguageVersion.Text">
         <source>&amp;Language version:</source>
-        <target state="translated">언어 버전(&amp;L):</target>
+        <target state="translated">언어 버전(&L):</target>
         <note />
       </trans-unit>
       <trans-unit id="lblReportCompilerErrors.Text">
         <source>&amp;Internal compiler error reporting:</source>
-        <target state="translated">내부 컴파일러 오류 보고(&amp;I):</target>
+        <target state="translated">내부 컴파일러 오류 보고(&I):</target>
         <note />
       </trans-unit>
       <trans-unit id="lblDebugInfo.Text">
         <source>D&amp;ebugging information:</source>
-        <target state="translated">디버깅 정보(&amp;E):</target>
+        <target state="translated">디버깅 정보(&E):</target>
         <note />
       </trans-unit>
       <trans-unit id="lblFileAlignment.Text">
         <source>&amp;File alignment:</source>
-        <target state="translated">파일 맞춤(&amp;F):</target>
+        <target state="translated">파일 맞춤(&F):</target>
         <note />
       </trans-unit>
       <trans-unit id="cboFileAlignment.Items">
@@ -49,7 +49,7 @@
       </trans-unit>
       <trans-unit id="lblDLLBase.Text">
         <source>Library &amp;base address:</source>
-        <target state="translated">라이브러리 기준 주소(&amp;B):</target>
+        <target state="translated">라이브러리 기준 주소(&B):</target>
         <note />
       </trans-unit>
       <trans-unit id="outputLabel.Text">
@@ -64,7 +64,7 @@
       </trans-unit>
       <trans-unit id="chkOverflow.Text">
         <source>Chec&amp;k for arithmetic overflow/underflow</source>
-        <target state="translated">산술 연산 오버플로/언더플로 확인(&amp;K)</target>
+        <target state="translated">산술 연산 오버플로/언더플로 확인(&K)</target>
         <note />
       </trans-unit>
       <trans-unit id="CSharpLanguageVerison.Default">

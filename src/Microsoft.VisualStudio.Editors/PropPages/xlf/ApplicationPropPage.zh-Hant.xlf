@@ -4,32 +4,32 @@
     <body>
       <trans-unit id="AssemblyNameLabel.Text">
         <source>Assembly &amp;name:</source>
-        <target state="translated">組件名稱(&amp;N):</target>
+        <target state="translated">組件名稱(&N): </target>
         <note />
       </trans-unit>
       <trans-unit id="RootNamespaceLabel.Text">
         <source>Defau&amp;lt namespace:</source>
-        <target state="translated">預設命名空間(&amp;L):</target>
+        <target state="translated">預設命名空間(&L):</target>
         <note />
       </trans-unit>
       <trans-unit id="OutputTypeLabel.Text">
         <source>O&amp;utput type:</source>
-        <target state="translated">輸出類型(&amp;U):</target>
+        <target state="translated">輸出類型(&U):</target>
         <note />
       </trans-unit>
       <trans-unit id="StartupObjectLabel.Text">
         <source>Startup &amp;object:</source>
-        <target state="translated">啟始物件(&amp;O):</target>
+        <target state="translated">啟始物件(&O):</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyInfoButton.Text">
         <source>Assembly &amp;Information...</source>
-        <target state="translated">組件資訊(&amp;I)...</target>
+        <target state="translated">組件資訊(&I)...</target>
         <note />
       </trans-unit>
       <trans-unit id="TargetFrameworkLabel.Text">
         <source>Tar&amp;get framework:</source>
-        <target state="translated">目標 Framework(&amp;G):</target>
+        <target state="translated">目標 Framework(&G):</target>
         <note />
       </trans-unit>
       <trans-unit id="ResourcesLabel.Text">
@@ -39,7 +39,7 @@
       </trans-unit>
       <trans-unit id="IconRadioButton.Text">
         <source>I&amp;con and manifest</source>
-        <target state="translated">圖示和資訊清單(&amp;C)</target>
+        <target state="translated">圖示和資訊清單(&C)</target>
         <note />
       </trans-unit>
       <trans-unit id="ManifestExplanationLabel.Text">
@@ -64,7 +64,7 @@
       </trans-unit>
       <trans-unit id="Win32ResourceRadioButton.Text">
         <source>Re&amp;source file:</source>
-        <target state="translated">資源檔(&amp;S):</target>
+        <target state="translated">資源檔(&S):</target>
         <note />
       </trans-unit>
       <trans-unit id="Win32ResourceFileBrowse.Text">
@@ -84,7 +84,7 @@
       </trans-unit>
       <trans-unit id="AutoGenerateBindingRedirects.Text">
         <source>&amp;Auto-generate binding redirects</source>
-        <target state="translated">自動產生繫結重新導向(&amp;A)</target>
+        <target state="translated">自動產生繫結重新導向(&A)</target>
         <note />
       </trans-unit>
     </body>

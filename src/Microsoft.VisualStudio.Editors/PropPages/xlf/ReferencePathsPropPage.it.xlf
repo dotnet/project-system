@@ -1,25 +1,25 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="it" original="../ReferencePathsPropPage.resx">
     <body>
       <trans-unit id="AddFolder.Text">
         <source>&amp;Add Folder</source>
-        <target state="translated">&amp;Aggiungi cartella</target>
+        <target state="translated">&Aggiungi cartella</target>
         <note />
       </trans-unit>
       <trans-unit id="UpdateFolder.Text">
         <source>&amp;Update</source>
-        <target state="translated">Aggi&amp;orna</target>
+        <target state="translated">Aggi&orna</target>
         <note />
       </trans-unit>
       <trans-unit id="ReferencePath.AccessibleName">
         <source>Order of Reference Paths</source>
-        <target state="translated">Ordine dei percorsi del riferimento</target>
+        <target state="translated">Ordine dei percorsi di riferimento</target>
         <note />
       </trans-unit>
       <trans-unit id="ReferencePathLabel.Text">
         <source>Reference &amp;paths:</source>
-        <target state="translated">&amp;Percorsi del riferimento:</target>
+        <target state="translated">&Percorsi del riferimento:</target>
         <note />
       </trans-unit>
       <trans-unit id="FolderBrowse.AccessibleName">
@@ -49,7 +49,7 @@
       </trans-unit>
       <trans-unit id="FolderLabel.Text">
         <source>&amp;Folder:</source>
-        <target state="translated">Carte&amp;lla:</target>
+        <target state="translated">Carte&lla:</target>
         <note />
       </trans-unit>
     </body>

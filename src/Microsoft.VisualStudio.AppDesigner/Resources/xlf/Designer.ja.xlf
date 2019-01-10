@@ -186,7 +186,7 @@
       </trans-unit>
       <trans-unit id="PermissionSet_Requires">
         <source>Requires:</source>
-        <target state="translated">必須:</target>
+        <target state="translated">必要なアクセス許可:</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_ActiveConfigOrPlatformFormatString_1Arg">
@@ -265,12 +265,12 @@ Click OK to ignore and continue. Click CANCEL to choose a different output path.
       </trans-unit>
       <trans-unit id="PPG_PostBuildCommandLineTitle">
         <source>Post-build Event Command Line</source>
-        <target state="translated">ビルド後イベントのコマンド ライン</target>
+        <target state="translated">ビルド後に実行するコマンド ライン</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_PreBuildCommandLineTitle">
         <source>Pre-build Event Command Line</source>
-        <target state="translated">ビルド前イベントのコマンド ライン</target>
+        <target state="translated">ビルド前に実行するコマンド ライン</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_ProjectReloadedSomePropertiesMayNotHaveBeenSet">

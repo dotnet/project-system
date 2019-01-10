@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="pt-BR" original="../VSPackage.resx">
     <body>
@@ -64,12 +64,12 @@
       </trans-unit>
       <trans-unit id="13">
         <source>NUnit Test Project (.NET Core)</source>
-        <target state="translated">Projeto de Teste do NUnit (.NET Core)</target>
+        <target state="translated">NUnit Test Project (.NET Core)</target>
         <note />
       </trans-unit>
       <trans-unit id="14">
         <source>A project that contains NUnit tests that can run on .NET Core on Windows, Linux and MacOS.</source>
-        <target state="translated">Um projeto que contém testes do NUnit que podem ser executados no .NET Core no Windows, no Linux e no MacOS.</target>
+        <target state="translated">A project that contains NUnit tests that can run on .NET Core on Windows, Linux and MacOS.</target>
         <note />
       </trans-unit>
     </body>

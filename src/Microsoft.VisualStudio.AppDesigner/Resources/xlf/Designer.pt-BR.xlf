@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="pt-BR" original="../Designer.resx">
     <body>
@@ -186,7 +186,7 @@
       </trans-unit>
       <trans-unit id="PermissionSet_Requires">
         <source>Requires:</source>
-        <target state="translated">Requer:</target>
+        <target state="translated">Necessita de:</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_ActiveConfigOrPlatformFormatString_1Arg">
@@ -265,12 +265,12 @@ Clique em OK para ignorar e continuar. Clique em CANCELAR para escolher um camin
       </trans-unit>
       <trans-unit id="PPG_PostBuildCommandLineTitle">
         <source>Post-build Event Command Line</source>
-        <target state="translated">Linha de Comando de Eventos Pós-build</target>
+        <target state="translated">Linha de comando do evento de pós-compilação</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_PreBuildCommandLineTitle">
         <source>Pre-build Event Command Line</source>
-        <target state="translated">Linha de Comando de Eventos Pré-build</target>
+        <target state="translated">Linha de comando do evento de pré-compilação</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_ProjectReloadedSomePropertiesMayNotHaveBeenSet">

@@ -1,25 +1,25 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="pt-BR" original="../AdvBuildSettingsPropPage.resx">
     <body>
       <trans-unit id="lblLanguageVersion.Text">
         <source>&amp;Language version:</source>
-        <target state="translated">Versão do &amp;idioma:</target>
+        <target state="translated">Versão do &idioma:</target>
         <note />
       </trans-unit>
       <trans-unit id="lblReportCompilerErrors.Text">
         <source>&amp;Internal compiler error reporting:</source>
-        <target state="translated">Relatório de erros do compilador &amp;interno:</target>
+        <target state="translated">Relatório de erros do compilador &interno:</target>
         <note />
       </trans-unit>
       <trans-unit id="lblDebugInfo.Text">
         <source>D&amp;ebugging information:</source>
-        <target state="translated">Informações de d&amp;epuração:</target>
+        <target state="translated">Informações de d&epuração:</target>
         <note />
       </trans-unit>
       <trans-unit id="lblFileAlignment.Text">
         <source>&amp;File alignment:</source>
-        <target state="translated">Alinhamento de &amp;arquivo:</target>
+        <target state="translated">Alinhamento de &arquivo:</target>
         <note />
       </trans-unit>
       <trans-unit id="cboFileAlignment.Items">
@@ -49,7 +49,7 @@
       </trans-unit>
       <trans-unit id="lblDLLBase.Text">
         <source>Library &amp;base address:</source>
-        <target state="translated">Endereço &amp;básico da biblioteca:</target>
+        <target state="translated">Endereço &básico da biblioteca:</target>
         <note />
       </trans-unit>
       <trans-unit id="outputLabel.Text">
@@ -64,7 +64,7 @@
       </trans-unit>
       <trans-unit id="chkOverflow.Text">
         <source>Chec&amp;k for arithmetic overflow/underflow</source>
-        <target state="translated">&amp;Verificar estouro/estouro negativo aritmético</target>
+        <target state="translated">&Verificar estouro/estouro negativo aritmético</target>
         <note />
       </trans-unit>
       <trans-unit id="CSharpLanguageVerison.Default">

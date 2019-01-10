@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="ru" original="../AdvCompilerSettingsPropPage.resx">
     <body>
@@ -9,47 +9,47 @@
       </trans-unit>
       <trans-unit id="RemoveIntegerChecks.Text">
         <source>&amp;Remove integer overflow checks</source>
-        <target state="translated">&amp;Удалять проверки переполнения для целочисленных значений</target>
+        <target state="translated">&Удалять проверки переполнения для целочисленных значений</target>
         <note />
       </trans-unit>
       <trans-unit id="Optimize.Text">
         <source>&amp;Enable optimizations</source>
-        <target state="translated">Включить &amp;оптимизации</target>
+        <target state="translated">Включить &оптимизации</target>
         <note />
       </trans-unit>
       <trans-unit id="DllBaseLabel.Text">
         <source>DLL &amp;base address:</source>
-        <target state="translated">Базовый &amp;адрес DLL:</target>
+        <target state="translated">Базовый &адрес DLL:</target>
         <note />
       </trans-unit>
       <trans-unit id="DefineDebug.Text">
         <source>Define &amp;DEBUG constant</source>
-        <target state="translated">Определить &amp;константу DEBUG</target>
+        <target state="translated">Определить &константу DEBUG</target>
         <note />
       </trans-unit>
       <trans-unit id="DefineTrace.Text">
         <source>Define &amp;TRACE constant</source>
-        <target state="translated">Определить ко&amp;нстанту TRACE</target>
+        <target state="translated">Определить ко&нстанту TRACE</target>
         <note />
       </trans-unit>
       <trans-unit id="GenerateSerializationAssembliesLabel.Text">
         <source>Generate &amp;serialization assemblies:</source>
-        <target state="translated">&amp;Создать сборки сериализации:</target>
+        <target state="translated">&Создать сборки сериализации:</target>
         <note />
       </trans-unit>
       <trans-unit id="CustomConstantsLabel.Text">
         <source>&amp;Custom constants:</source>
-        <target state="translated">&amp;Пользовательские константы:</target>
+        <target state="translated">&Пользовательские константы:</target>
         <note />
       </trans-unit>
       <trans-unit id="GenerateDebugInfoLabel.Text">
         <source>&amp;Generate debug info:</source>
-        <target state="translated">Создать сведения об &amp;отладке:</target>
+        <target state="translated">Создать сведения об &отладке:</target>
         <note />
       </trans-unit>
       <trans-unit id="CustomConstantsExampleLabel.Text">
         <source>Example: Name1="Value1",Name2="Value2",Name3="Value3"</source>
-        <target state="translated">Пример: Name1="значение1",Name2="значение2",Name3="значение3"</target>
+        <target state="translated">Пример: Name1="Значение1",Name2="Значение2",Name3="Value3"</target>
         <note />
       </trans-unit>
       <trans-unit id="CompilationConstantsLabel.Text">

@@ -1,25 +1,25 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="fr" original="../AdvBuildSettingsPropPage.resx">
     <body>
       <trans-unit id="lblLanguageVersion.Text">
         <source>&amp;Language version:</source>
-        <target state="translated">Version du &amp;langage :</target>
+        <target state="translated">Version du &langage :</target>
         <note />
       </trans-unit>
       <trans-unit id="lblReportCompilerErrors.Text">
         <source>&amp;Internal compiler error reporting:</source>
-        <target state="translated">Rapport d'erreurs du comp&amp;ilateur interne :</target>
+        <target state="translated">Rapport d'erreurs du comp&ilateur interne :</target>
         <note />
       </trans-unit>
       <trans-unit id="lblDebugInfo.Text">
         <source>D&amp;ebugging information:</source>
-        <target state="translated">Informations d&amp;e débogage :</target>
+        <target state="translated">Informations d&e débogage :</target>
         <note />
       </trans-unit>
       <trans-unit id="lblFileAlignment.Text">
         <source>&amp;File alignment:</source>
-        <target state="translated">Alignement des &amp;fichiers :</target>
+        <target state="translated">Alignement des &fichiers :</target>
         <note />
       </trans-unit>
       <trans-unit id="cboFileAlignment.Items">
@@ -64,7 +64,7 @@
       </trans-unit>
       <trans-unit id="chkOverflow.Text">
         <source>Chec&amp;k for arithmetic overflow/underflow</source>
-        <target state="translated">&amp;Vérifier les dépassements de capacité arithmétiques positifs et négatifs</target>
+        <target state="translated">&Vérifier les dépassements de capacité arithmétiques positifs et négatifs</target>
         <note />
       </trans-unit>
       <trans-unit id="CSharpLanguageVerison.Default">

@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="ko" original="../VSResources.resx">
     <body>
@@ -79,12 +79,12 @@ Press Ignore to ignore the external changes. Your changes may be lost if you clo
       </trans-unit>
       <trans-unit id="RenameSymbolFailed">
         <source>Renaming the code element '{0}' failed.</source>
-        <target state="translated">코드 포인트 '&lt;0/&gt;'의 이름을 바꾸지 못했습니다.</target>
+        <target state="translated">코드 포인트 '<0/>'의 이름을 바꾸지 못했습니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="RenameSymbolPrompt">
         <source>You are renaming a file. Would you also like to perform a rename in this project of all references to the code element '{0}'?</source>
-        <target state="translated">파일의 이름을 바꾸고 있습니다. 이 프로젝트에서 코드 포인트 '&lt;0/&gt;'의 모든 참조 이름도 바꾸시겠습니까?</target>
+        <target state="translated">파일의 이름을 바꾸고 있습니다. 이 프로젝트에서 코드 포인트 '<0/>'의 모든 참조 이름도 바꾸시겠습니까?</target>
         <note />
       </trans-unit>
       <trans-unit id="SaveAs">
@@ -258,7 +258,7 @@ In order to debug this project, add an executable project to this solution which
       </trans-unit>
       <trans-unit id="PackSelectedProjectCommand">
         <source>&amp;Pack {0}</source>
-        <target state="translated">{0} 팩(&amp;P)</target>
+        <target state="translated">팩 {0}(&amp;P)</target>
         <note />
       </trans-unit>
       <trans-unit id="XprojMigrationFailedCannotReadReport">
@@ -283,12 +283,12 @@ In order to debug this project, add an executable project to this solution which
       </trans-unit>
       <trans-unit id="PartialSupportedDotNetCoreProject">
         <source>A newer version of Visual Studio is recommended for projects targeting .NET Core {0}.{1}.</source>
-        <target state="needs-review-translation">.NET Core {0}.{1} 프로젝트에는 Visual Studio 2017 버전 15.7 이상이 권장됩니다.</target>
+        <target state="translated">.NET Core {0}.{1}을(를) 대상으로 하는 프로젝트에는 최신 버전의 Visual Studio를 사용하는 것이 좋습니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="NotSupportedDotNetCoreProject">
         <source>Projects targeting .NET Core {0}.{1} or newer are not supported by this version of Visual Studio.</source>
-        <target state="needs-review-translation">.NET Core {0}.{1} 이상의 버전을 대상으로 하는 프로젝트는 이 버전의 Visual Studio에서 지원되지 않습니다.</target>
+        <target state="translated">.NET Core {0}.{1} 이상을 대상으로 하는 프로젝트는 이 버전의 Visual Studio에서 지원되지 않습니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="DontShowAgain">

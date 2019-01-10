@@ -1,35 +1,35 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="it" original="../ApplicationPropPage.resx">
     <body>
       <trans-unit id="AssemblyNameLabel.Text">
         <source>Assembly &amp;name:</source>
-        <target state="translated">&amp;Nome dell'assembly:</target>
+        <target state="translated">&Nome dell'assembly:</target>
         <note />
       </trans-unit>
       <trans-unit id="RootNamespaceLabel.Text">
         <source>Defau&amp;lt namespace:</source>
-        <target state="translated">&amp;Spazio dei nomi predefinito:</target>
+        <target state="translated">&Spazio dei nomi predefinito:</target>
         <note />
       </trans-unit>
       <trans-unit id="OutputTypeLabel.Text">
         <source>O&amp;utput type:</source>
-        <target state="translated">Tipo di o&amp;utput:</target>
+        <target state="translated">Tipo di o&utput:</target>
         <note />
       </trans-unit>
       <trans-unit id="StartupObjectLabel.Text">
         <source>Startup &amp;object:</source>
-        <target state="translated">&amp;Oggetto di avvio:</target>
+        <target state="translated">&Oggetto di avvio:</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyInfoButton.Text">
         <source>Assembly &amp;Information...</source>
-        <target state="translated">Informazioni sull'assembl&amp;y...</target>
+        <target state="translated">Informazioni sull'assembl&y...</target>
         <note />
       </trans-unit>
       <trans-unit id="TargetFrameworkLabel.Text">
         <source>Tar&amp;get framework:</source>
-        <target state="translated">Frame&amp;work di destinazione:</target>
+        <target state="translated">Frame&work di destinazione:</target>
         <note />
       </trans-unit>
       <trans-unit id="ResourcesLabel.Text">
@@ -39,7 +39,7 @@
       </trans-unit>
       <trans-unit id="IconRadioButton.Text">
         <source>I&amp;con and manifest</source>
-        <target state="translated">Icona e mani&amp;festo</target>
+        <target state="translated">Icona e mani&festo</target>
         <note />
       </trans-unit>
       <trans-unit id="ManifestExplanationLabel.Text">
@@ -64,7 +64,7 @@
       </trans-unit>
       <trans-unit id="Win32ResourceRadioButton.Text">
         <source>Re&amp;source file:</source>
-        <target state="translated">File di &amp;risorse:</target>
+        <target state="translated">File di &risorse:</target>
         <note />
       </trans-unit>
       <trans-unit id="Win32ResourceFileBrowse.Text">
@@ -84,7 +84,7 @@
       </trans-unit>
       <trans-unit id="AutoGenerateBindingRedirects.Text">
         <source>&amp;Auto-generate binding redirects</source>
-        <target state="translated">&amp;Genera automaticamente reindirizzamenti di binding</target>
+        <target state="translated">&Genera automaticamente reindirizzamenti di binding</target>
         <note />
       </trans-unit>
     </body>

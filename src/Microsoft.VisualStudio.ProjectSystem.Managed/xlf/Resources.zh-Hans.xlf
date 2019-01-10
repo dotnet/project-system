@@ -24,7 +24,7 @@
       </trans-unit>
       <trans-unit id="NoActionProfileName">
         <source>Start</source>
-        <target state="translated">启动</target>
+        <target state="translated">开始</target>
         <note />
       </trans-unit>
       <trans-unit id="JsonErrorNeedToBeCorrected">

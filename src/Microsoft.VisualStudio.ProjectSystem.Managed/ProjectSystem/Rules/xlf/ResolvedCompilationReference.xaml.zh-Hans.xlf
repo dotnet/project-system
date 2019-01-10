@@ -14,7 +14,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|ResolvedPath|DisplayName">
         <source>Path</source>
-        <target state="translated">路径</target>
+        <target state="translated">PATH</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ResolvedPath|Description">

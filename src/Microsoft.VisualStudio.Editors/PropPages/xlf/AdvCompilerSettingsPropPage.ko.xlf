@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="ko" original="../AdvCompilerSettingsPropPage.resx">
     <body>
@@ -9,42 +9,42 @@
       </trans-unit>
       <trans-unit id="RemoveIntegerChecks.Text">
         <source>&amp;Remove integer overflow checks</source>
-        <target state="translated">정수 오버플로 검사 해제(&amp;R)</target>
+        <target state="translated">정수 오버플로 검사 해제(&R)</target>
         <note />
       </trans-unit>
       <trans-unit id="Optimize.Text">
         <source>&amp;Enable optimizations</source>
-        <target state="translated">최적화 사용(&amp;E)</target>
+        <target state="translated">최적화 사용(&E)</target>
         <note />
       </trans-unit>
       <trans-unit id="DllBaseLabel.Text">
         <source>DLL &amp;base address:</source>
-        <target state="translated">DLL 기준 주소(&amp;B):</target>
+        <target state="translated">DLL 기준 주소(&B):</target>
         <note />
       </trans-unit>
       <trans-unit id="DefineDebug.Text">
         <source>Define &amp;DEBUG constant</source>
-        <target state="translated">DEBUG 상수 정의(&amp;D)</target>
+        <target state="translated">DEBUG 상수 정의(&D)</target>
         <note />
       </trans-unit>
       <trans-unit id="DefineTrace.Text">
         <source>Define &amp;TRACE constant</source>
-        <target state="translated">TRACE 상수 정의(&amp;T)</target>
+        <target state="translated">TRACE 상수 정의(&T)</target>
         <note />
       </trans-unit>
       <trans-unit id="GenerateSerializationAssembliesLabel.Text">
         <source>Generate &amp;serialization assemblies:</source>
-        <target state="translated">Serialization 어셈블리 생성(&amp;S):</target>
+        <target state="translated">Serialization 어셈블리 생성(&S):</target>
         <note />
       </trans-unit>
       <trans-unit id="CustomConstantsLabel.Text">
         <source>&amp;Custom constants:</source>
-        <target state="translated">사용자 지정 상수(&amp;C):</target>
+        <target state="translated">사용자 지정 상수(&C):</target>
         <note />
       </trans-unit>
       <trans-unit id="GenerateDebugInfoLabel.Text">
         <source>&amp;Generate debug info:</source>
-        <target state="translated">디버그 정보 생성(&amp;G):</target>
+        <target state="translated">디버그 정보 생성(&G):</target>
         <note />
       </trans-unit>
       <trans-unit id="CustomConstantsExampleLabel.Text">

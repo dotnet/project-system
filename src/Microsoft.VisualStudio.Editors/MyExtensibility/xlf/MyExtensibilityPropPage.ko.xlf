@@ -14,12 +14,12 @@
       </trans-unit>
       <trans-unit id="buttonRemove.Text">
         <source>Remo&amp;ve extension</source>
-        <target state="translated">확장 제거(&amp;V)</target>
+        <target state="translated">확장 제거(&V)</target>
         <note />
       </trans-unit>
       <trans-unit id="buttonAdd.Text">
         <source>&amp;Add extension...</source>
-        <target state="translated">확장 추가(&amp;A)...</target>
+        <target state="translated">확장 추가(&A)...</target>
         <note />
       </trans-unit>
       <trans-unit id="colHeaderExtensionName.HeaderText">

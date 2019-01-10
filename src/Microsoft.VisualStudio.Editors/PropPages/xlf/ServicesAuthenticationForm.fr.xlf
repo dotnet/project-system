@@ -1,30 +1,30 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="fr" original="../ServicesAuthenticationForm.resx">
     <body>
       <trans-unit id="AuthenticationServiceUrlLabel.Text">
         <source>&amp;Authentication service location:</source>
-        <target state="translated">Emplacement du service d'&amp;authentification :</target>
+        <target state="translated">Emplacement du service d'&authentification :</target>
         <note />
       </trans-unit>
       <trans-unit id="UserNameLabel.Text">
         <source>&amp;Username:</source>
-        <target state="translated">Nom d'&amp;utilisateur :</target>
+        <target state="translated">Nom d'&utilisateur :</target>
         <note />
       </trans-unit>
       <trans-unit id="PasswordLabel.Text">
         <source>&amp;Password:</source>
-        <target state="translated">&amp;Mot de passe :</target>
+        <target state="translated">&Mot de passe :</target>
         <note />
       </trans-unit>
       <trans-unit id="OKButton.Text">
         <source>&amp;Log In</source>
-        <target state="translated">&amp;Se connecter</target>
+        <target state="translated">&Se connecter</target>
         <note />
       </trans-unit>
       <trans-unit id="Cancel.Text">
         <source>&amp;Skip Login</source>
-        <target state="translated">&amp;Ignorer la connexion</target>
+        <target state="translated">&Ignorer la connexion</target>
         <note />
       </trans-unit>
       <trans-unit id="InfoLabel.Text">

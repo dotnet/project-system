@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="zh-Hans" original="../PackageReference.xaml">
     <body>
@@ -34,7 +34,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|IncludeAssets|DisplayName">
         <source>Included assets</source>
-        <target state="needs-review-translation">IncludeAssets</target>
+        <target state="translated">包含的资产</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|IncludeAssets|Description">
@@ -44,7 +44,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|ExcludeAssets|DisplayName">
         <source>Excluded assets</source>
-        <target state="needs-review-translation">ExcludeAssets</target>
+        <target state="translated">排除资产</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ExcludeAssets|Description">
@@ -54,7 +54,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|PrivateAssets|DisplayName">
         <source>Private assets</source>
-        <target state="needs-review-translation">PrivateAssets</target>
+        <target state="translated">私有资产</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PrivateAssets|Description">
@@ -64,7 +64,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|NoWarn|DisplayName">
         <source>Suppress warnings</source>
-        <target state="needs-review-translation">NoWarn</target>
+        <target state="translated">取消显示警告</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|NoWarn|Description">

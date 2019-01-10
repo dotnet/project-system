@@ -1,10 +1,10 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="ru" original="../ReferencePropPage.resx">
     <body>
       <trans-unit id="ReferenceListLabel.Text">
         <source>&amp;References:</source>
-        <target state="translated">&amp;Ссылки:</target>
+        <target state="translated">&Ссылки:</target>
         <note />
       </trans-unit>
       <trans-unit id="ColHdr_RefName.Text">
@@ -34,17 +34,17 @@
       </trans-unit>
       <trans-unit id="UnusedReferences.Text">
         <source>U&amp;nused References...</source>
-        <target state="translated">&amp;Неиспользуемые ссылки...</target>
+        <target state="translated">&Неиспользуемые ссылки...</target>
         <note />
       </trans-unit>
       <trans-unit id="ReferencePathsButton.Text">
         <source>Reference &amp;Paths...</source>
-        <target state="translated">&amp;Пути для ссылок...</target>
+        <target state="translated">&Пути для ссылок...</target>
         <note />
       </trans-unit>
       <trans-unit id="RemoveReference.Text">
         <source>Remo&amp;ve</source>
-        <target state="translated">&amp;Удалить</target>
+        <target state="translated">&Удалить</target>
         <note />
       </trans-unit>
       <trans-unit id="referenceToolStripMenuItem.Text">
@@ -64,22 +64,22 @@
       </trans-unit>
       <trans-unit id="addSplitButton.Text">
         <source>&amp;Add...</source>
-        <target state="translated">Д&amp;обавить...</target>
+        <target state="translated">Д&обавить...</target>
         <note />
       </trans-unit>
       <trans-unit id="UpdateReferences.Text">
         <source>&amp;Update</source>
-        <target state="translated">&amp;Обновить</target>
+        <target state="translated">&Обновить</target>
         <note />
       </trans-unit>
       <trans-unit id="AddUserImportButton.Text">
         <source>Add User Imp&amp;ort</source>
-        <target state="translated">Добавить импор&amp;т пользователей</target>
+        <target state="translated">Добавить импор&т пользователей</target>
         <note />
       </trans-unit>
       <trans-unit id="UpdateUserImportButton.Text">
         <source>Up&amp;date User Import</source>
-        <target state="translated">&amp;Изменить импорт пользователей</target>
+        <target state="translated">&Изменить импорт пользователей</target>
         <note />
       </trans-unit>
       <trans-unit id="ImportList.AccessibleDescription">
@@ -99,7 +99,7 @@
       </trans-unit>
       <trans-unit id="ImportsListLabel.Text">
         <source>&amp;Imported namespaces:</source>
-        <target state="translated">&amp;Импортированные пространства имен:</target>
+        <target state="translated">&Импортированные пространства имен:</target>
         <note />
       </trans-unit>
       <trans-unit id="ReferencePageSplitContainer.Text">

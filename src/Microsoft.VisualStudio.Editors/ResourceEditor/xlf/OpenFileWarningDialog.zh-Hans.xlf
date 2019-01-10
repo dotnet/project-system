@@ -4,7 +4,7 @@
     <body>
       <trans-unit id="alwaysCheckCheckBox.Text">
         <source>&amp;Always ask before opening this file type.</source>
-        <target state="translated">打开此类文件前始终询问(&amp;A)。</target>
+        <target state="translated">打开此类文件前始终询问(&A)。</target>
         <note />
       </trans-unit>
       <trans-unit id="messageLabel.Text">

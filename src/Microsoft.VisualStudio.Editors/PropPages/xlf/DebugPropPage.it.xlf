@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="it" original="../DebugPropPage.resx">
     <body>
@@ -9,17 +9,17 @@
       </trans-unit>
       <trans-unit id="rbStartProject.Text">
         <source>&amp;Start project</source>
-        <target state="translated">A&amp;vvia progetto</target>
+        <target state="translated">A&vvia progetto</target>
         <note />
       </trans-unit>
       <trans-unit id="rbStartProgram.Text">
         <source>Start e&amp;xternal program:</source>
-        <target state="translated">Avvia &amp;programma esterno:</target>
+        <target state="translated">Avvia &programma esterno:</target>
         <note />
       </trans-unit>
       <trans-unit id="rbStartURL.Text">
         <source>Start browser with U&amp;RL:</source>
-        <target state="translated">Avvia browser con U&amp;RL:</target>
+        <target state="translated">Avvia browser con U&RL:</target>
         <note />
       </trans-unit>
       <trans-unit id="StartProgram.AccessibleName">
@@ -39,7 +39,7 @@
       </trans-unit>
       <trans-unit id="StartProgramBrowse.Text">
         <source>&amp;Browse...</source>
-        <target state="translated">&amp;Sfoglia...</target>
+        <target state="translated">&Sfoglia...</target>
         <note />
       </trans-unit>
       <trans-unit id="StartOptionsLabel.Text">
@@ -49,17 +49,17 @@
       </trans-unit>
       <trans-unit id="CommandLineArgsLabel.Text">
         <source>Comma&amp;nd line arguments:</source>
-        <target state="translated">Argomenti della riga di coman&amp;do:</target>
+        <target state="translated">Argomenti della riga di coman&do:</target>
         <note />
       </trans-unit>
       <trans-unit id="WorkingDirLabel.Text">
         <source>Wor&amp;king directory:</source>
-        <target state="translated">Dire&amp;ctory di lavoro:</target>
+        <target state="translated">Dire&ctory di lavoro:</target>
         <note />
       </trans-unit>
       <trans-unit id="RemoteDebugEnabled.Text">
         <source>Use remote m&amp;achine</source>
-        <target state="translated">&amp;Usa computer remoto</target>
+        <target state="translated">&Usa computer remoto</target>
         <note />
       </trans-unit>
       <trans-unit id="RemoteDebugMachine.AccessibleName">
@@ -74,7 +74,7 @@
       </trans-unit>
       <trans-unit id="StartWorkingDirectoryBrowse.Text">
         <source>Bro&amp;wse...</source>
-        <target state="translated">&amp;Sfoglia...</target>
+        <target state="translated">&Sfoglia...</target>
         <note />
       </trans-unit>
       <trans-unit id="EnableDebuggerLabel.Text">
@@ -84,12 +84,12 @@
       </trans-unit>
       <trans-unit id="EnableSQLServerDebugging.Text">
         <source>Enable SQ&amp;L Server debugging</source>
-        <target state="translated">Abilita debug SQ&amp;L Server</target>
+        <target state="translated">Abilita debug SQ&L Server</target>
         <note />
       </trans-unit>
       <trans-unit id="EnableUnmanagedDebugging.Text">
         <source>Enable na&amp;tive code debugging</source>
-        <target state="translated">Abilita de&amp;bug codice nativo</target>
+        <target state="translated">Abilita de&bug codice nativo</target>
         <note />
       </trans-unit>
       <trans-unit id="StartArguments.AccessibleName">

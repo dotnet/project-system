@@ -1,35 +1,35 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="de" original="../ApplicationPropPage.resx">
     <body>
       <trans-unit id="AssemblyNameLabel.Text">
         <source>Assembly &amp;name:</source>
-        <target state="translated">Assembly&amp;name:</target>
+        <target state="translated">Assembly&name:</target>
         <note />
       </trans-unit>
       <trans-unit id="RootNamespaceLabel.Text">
         <source>Defau&amp;lt namespace:</source>
-        <target state="translated">Standa&amp;rdnamespace:</target>
+        <target state="translated">Standa&rdnamespace:</target>
         <note />
       </trans-unit>
       <trans-unit id="OutputTypeLabel.Text">
         <source>O&amp;utput type:</source>
-        <target state="translated">A&amp;usgabetyp:</target>
+        <target state="translated">A&usgabetyp:</target>
         <note />
       </trans-unit>
       <trans-unit id="StartupObjectLabel.Text">
         <source>Startup &amp;object:</source>
-        <target state="translated">Start&amp;objekt:</target>
+        <target state="translated">Start&objekt:</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyInfoButton.Text">
         <source>Assembly &amp;Information...</source>
-        <target state="translated">Assembly&amp;informationen...</target>
+        <target state="translated">Assembly&informationen...</target>
         <note />
       </trans-unit>
       <trans-unit id="TargetFrameworkLabel.Text">
         <source>Tar&amp;get framework:</source>
-        <target state="translated">Zielframe&amp;work:</target>
+        <target state="translated">Zie&lframework:</target>
         <note />
       </trans-unit>
       <trans-unit id="ResourcesLabel.Text">
@@ -39,7 +39,7 @@
       </trans-unit>
       <trans-unit id="IconRadioButton.Text">
         <source>I&amp;con and manifest</source>
-        <target state="translated">Sym&amp;bol und Manifest</target>
+        <target state="translated">Sym&bol und Manifest</target>
         <note />
       </trans-unit>
       <trans-unit id="ManifestExplanationLabel.Text">
@@ -64,7 +64,7 @@
       </trans-unit>
       <trans-unit id="Win32ResourceRadioButton.Text">
         <source>Re&amp;source file:</source>
-        <target state="translated">Re&amp;ssourcendatei:</target>
+        <target state="translated">Re&ssourcendatei:</target>
         <note />
       </trans-unit>
       <trans-unit id="Win32ResourceFileBrowse.Text">
@@ -84,7 +84,7 @@
       </trans-unit>
       <trans-unit id="AutoGenerateBindingRedirects.Text">
         <source>&amp;Auto-generate binding redirects</source>
-        <target state="translated">Bindungsumleitungen &amp;automatisch generieren</target>
+        <target state="translated">Bindungsumleitungen &automatisch generieren</target>
         <note />
       </trans-unit>
     </body>

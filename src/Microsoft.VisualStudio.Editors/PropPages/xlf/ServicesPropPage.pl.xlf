@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="pl" original="../ServicesPropPage.resx">
     <body>
@@ -9,24 +9,24 @@
       </trans-unit>
       <trans-unit id="WindowsBasedAuth.Text">
         <source>Use &amp;Windows authentication</source>
-        <target state="translated">Użyj uwierzytelniania &amp;systemu Windows</target>
+        <target state="translated">Użyj uwierzytelniania &systemu Windows</target>
         <note />
       </trans-unit>
       <trans-unit id="FormBasedAuth.Text">
         <source>Use &amp;Forms authentication</source>
-        <target state="translated">Użyj uwierzytelniania &amp;formularzy</target>
+        <target state="translated">Użyj uwierzytelniania &formularzy</target>
         <note />
       </trans-unit>
       <trans-unit id="CustomCredentialProviderTypeLabel.Text">
         <source>Optional: Credentials &amp;provider
 (for example: MyNamespace.MyLoginClass, MyAssembly):</source>
-        <target state="translated">Opcjonalnie: &amp;Dostawca poświadczeń
+        <target state="translated">Opcjonalnie: &Dostawca poświadczeń
 (na przykład: PrzestrzeńNazw.KlasaLogowania, Zestaw):</target>
         <note />
       </trans-unit>
       <trans-unit id="AuthenticationServiceUrlLabel.Text">
         <source>&amp;Authentication service location:</source>
-        <target state="translated">Lokalizacja usługi &amp;uwierzytelniania:</target>
+        <target state="translated">Lokalizacja usługi &uwierzytelniania:</target>
         <note />
       </trans-unit>
       <trans-unit id="AuthenticationProviderGroupBox.Text">
@@ -36,22 +36,22 @@
       </trans-unit>
       <trans-unit id="RolesServiceUrlLabel.Text">
         <source>&amp;Roles service location:</source>
-        <target state="translated">Lokalizacja usługi &amp;ról:</target>
+        <target state="translated">Lokalizacja usługi &ról:</target>
         <note />
       </trans-unit>
       <trans-unit id="WebSettingsUrlLabel.Text">
         <source>We&amp;b settings service location:</source>
-        <target state="translated">Lokalizacja usługi ustawień sieci We&amp;b:</target>
+        <target state="translated">Lokalizacja usługi ustawień sieci We&b:</target>
         <note />
       </trans-unit>
       <trans-unit id="AdvancedSettings.Text">
         <source>A&amp;dvanced...</source>
-        <target state="translated">Za&amp;awansowane...</target>
+        <target state="translated">Za&awansowane...</target>
         <note />
       </trans-unit>
       <trans-unit id="EnableApplicationServices.Text">
         <source>&amp;Enable client application services</source>
-        <target state="translated">&amp;Włącz usługi aplikacji klienckich</target>
+        <target state="translated">&Włącz usługi aplikacji klienckich</target>
         <note />
       </trans-unit>
     </body>

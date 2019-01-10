@@ -9,24 +9,24 @@
       </trans-unit>
       <trans-unit id="WindowsBasedAuth.Text">
         <source>Use &amp;Windows authentication</source>
-        <target state="translated">使用 Windows 身份验证(&amp;W)</target>
+        <target state="translated">使用 Windows 身份验证(&W)</target>
         <note />
       </trans-unit>
       <trans-unit id="FormBasedAuth.Text">
         <source>Use &amp;Forms authentication</source>
-        <target state="translated">使用 Forms 身份验证(&amp;F)</target>
+        <target state="translated">使用 Forms 身份验证(&F)</target>
         <note />
       </trans-unit>
       <trans-unit id="CustomCredentialProviderTypeLabel.Text">
         <source>Optional: Credentials &amp;provider
 (for example: MyNamespace.MyLoginClass, MyAssembly):</source>
-        <target state="translated">可选:凭据提供程序(&amp;P)
+        <target state="translated">可选:凭据提供程序(&P)
 (例如:MyNamespace.MyLoginClass、MyAssembly):</target>
         <note />
       </trans-unit>
       <trans-unit id="AuthenticationServiceUrlLabel.Text">
         <source>&amp;Authentication service location:</source>
-        <target state="translated">身份验证服务位置(&amp;A):</target>
+        <target state="translated">身份验证服务位置(&A):</target>
         <note />
       </trans-unit>
       <trans-unit id="AuthenticationProviderGroupBox.Text">
@@ -36,22 +36,22 @@
       </trans-unit>
       <trans-unit id="RolesServiceUrlLabel.Text">
         <source>&amp;Roles service location:</source>
-        <target state="translated">角色服务位置(&amp;R):</target>
+        <target state="translated">角色服务位置(&R):</target>
         <note />
       </trans-unit>
       <trans-unit id="WebSettingsUrlLabel.Text">
         <source>We&amp;b settings service location:</source>
-        <target state="translated">Web 设置服务位置(&amp;B):</target>
+        <target state="translated">Web 设置服务位置(&B):</target>
         <note />
       </trans-unit>
       <trans-unit id="AdvancedSettings.Text">
         <source>A&amp;dvanced...</source>
-        <target state="translated">高级(&amp;D)...</target>
+        <target state="translated">高级(&D)...</target>
         <note />
       </trans-unit>
       <trans-unit id="EnableApplicationServices.Text">
         <source>&amp;Enable client application services</source>
-        <target state="translated">启用客户端应用程序服务(&amp;E)</target>
+        <target state="translated">启用客户端应用程序服务(&E)</target>
         <note />
       </trans-unit>
     </body>

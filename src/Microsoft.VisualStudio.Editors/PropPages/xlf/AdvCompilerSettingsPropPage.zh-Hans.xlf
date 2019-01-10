@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="zh-Hans" original="../AdvCompilerSettingsPropPage.resx">
     <body>
@@ -9,47 +9,47 @@
       </trans-unit>
       <trans-unit id="RemoveIntegerChecks.Text">
         <source>&amp;Remove integer overflow checks</source>
-        <target state="translated">删除整数溢出检查(&amp;R)</target>
+        <target state="translated">删除整数溢出检查(&R)</target>
         <note />
       </trans-unit>
       <trans-unit id="Optimize.Text">
         <source>&amp;Enable optimizations</source>
-        <target state="translated">启用优化(&amp;E)</target>
+        <target state="translated">启用优化(&E)</target>
         <note />
       </trans-unit>
       <trans-unit id="DllBaseLabel.Text">
         <source>DLL &amp;base address:</source>
-        <target state="translated">DLL 基址(&amp;B):</target>
+        <target state="translated">DLL 基址(&B):</target>
         <note />
       </trans-unit>
       <trans-unit id="DefineDebug.Text">
         <source>Define &amp;DEBUG constant</source>
-        <target state="translated">定义 DEBUG 常量(&amp;D)</target>
+        <target state="translated">定义 DEBUG 常量(&D)</target>
         <note />
       </trans-unit>
       <trans-unit id="DefineTrace.Text">
         <source>Define &amp;TRACE constant</source>
-        <target state="translated">定义 TRACE 常量(&amp;T)</target>
+        <target state="translated">定义 TRACE 常量(&T)</target>
         <note />
       </trans-unit>
       <trans-unit id="GenerateSerializationAssembliesLabel.Text">
         <source>Generate &amp;serialization assemblies:</source>
-        <target state="translated">生成序列化程序集(&amp;S):</target>
+        <target state="translated">生成序列化程序集(&S):</target>
         <note />
       </trans-unit>
       <trans-unit id="CustomConstantsLabel.Text">
         <source>&amp;Custom constants:</source>
-        <target state="translated">自定义常量(&amp;C):</target>
+        <target state="translated">自定义常量(&C):</target>
         <note />
       </trans-unit>
       <trans-unit id="GenerateDebugInfoLabel.Text">
         <source>&amp;Generate debug info:</source>
-        <target state="translated">生成调试信息(&amp;G):</target>
+        <target state="translated">生成调试信息(&G):</target>
         <note />
       </trans-unit>
       <trans-unit id="CustomConstantsExampleLabel.Text">
         <source>Example: Name1="Value1",Name2="Value2",Name3="Value3"</source>
-        <target state="translated">示例:Name1="Value1",Name2="Value2",Name3="Value3"</target>
+        <target state="translated">示例: Name1="Value1",Name2="Value2",Name3="Value3"</target>
         <note />
       </trans-unit>
       <trans-unit id="CompilationConstantsLabel.Text">
