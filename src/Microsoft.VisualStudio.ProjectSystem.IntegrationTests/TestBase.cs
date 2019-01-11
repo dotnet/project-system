@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         protected TestBase()
         {
-            // TestCleanup will fire up another instance of Visual Studio to reset 
+            // TestCleanup will fire up another instance of Visual Studio to reset
             // the AutoloadExternalChanges if it thinks the default changed even if
             // that was just caused by settings to be sync'd. Just turn this feature off.
             SuppressReloadPrompt = false;

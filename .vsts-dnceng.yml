@@ -4,35 +4,39 @@ phases:
     timeoutInMinutes: 90
   steps:
     - script: build\CIBuild.cmd -configuration $(_configuration) -prepareMachine $(_additionalArgs)
+
     - task: PublishBuildArtifacts@1
+      displayName: publish integration artifacts on failure
+      inputs:
+        PathtoPublish: '$(Build.SourcesDirectory)\artifacts\$(_configuration)\IntegrationTestTemp'
+        ArtifactName: 'integration artifacts'
+        parallel: true
+        publishLocation: Container
+      continueOnError: true
+      condition: failed()
+
+    - task: PublishBuildArtifacts@1
+      displayName: publish binary logs on failure
       inputs:
         PathtoPublish: '$(Build.SourcesDirectory)\artifacts\$(_configuration)\log'
-        ArtifactName: '$(_configuration) unit test logs'
+        ArtifactName: 'binary logs'
+        parallel: true
         publishLocation: Container
       continueOnError: true
       condition: failed()
+      
     - task: PublishBuildArtifacts@1
-      inputs:
-        PathtoPublish: '$(Build.SourcesDirectory)\artifacts\$(_configuration)\bin'
-        ArtifactName: '$(_configuration) bin folder'
-        publishLocation: Container
-      continueOnError: true
-      condition: failed()
-    - task: PublishBuildArtifacts@1
-      inputs:
-        PathtoPublish: '$(Build.SourcesDirectory)\artifacts\$(_configuration)\VSSetup'
-        ArtifactName: '$(_configuration) VSSetup folder'
-        publishLocation: Container
-      continueOnError: true
-      condition: failed()
-    - task: PublishBuildArtifacts@1
+      displayName: publish test results folder on failure
       inputs:
         PathtoPublish: '$(Build.SourcesDirectory)\artifacts\$(_configuration)\TestResults'
-        ArtifactName: '$(_configuration) Test Result Logs'
+        ArtifactName: 'test results'
+        parallel: true
         publishLocation: Container
       continueOnError: true
       condition: failed()
+
     - task: PublishTestResults@2
+      displayName: upload XML test results
       inputs:
         testRunner: 'xUnit'
         testResultsFiles: '**/*.xml' 
