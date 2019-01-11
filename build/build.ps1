@@ -73,7 +73,11 @@ function GetVersion([string] $name) {
 }
 
 function LocateVisualStudio {
-  if ($InVSEnvironment) {
+  if ($InVS16Environment) {
+    return Join-Path $env:VS160COMNTOOLS "..\.."
+  }
+
+  if ($InVS15Environment) {
     return Join-Path $env:VS150COMNTOOLS "..\.."
   }
 
@@ -131,7 +135,8 @@ function Clear-NuGetCache() {
 }
 
 try {
-  $InVSEnvironment = !($env:VS150COMNTOOLS -eq $null) -and (Test-Path $env:VS150COMNTOOLS)
+  $InVS15Environment = !($env:VS150COMNTOOLS -eq $null) -and (Test-Path $env:VS150COMNTOOLS)
+  $InVS16Environment = !($env:VS160COMNTOOLS -eq $null) -and (Test-Path $env:VS160COMNTOOLS)
   $RepoRoot = Join-Path $PSScriptRoot "..\"
   $ToolsRoot = Join-Path $RepoRoot ".tools"
   $ToolsetRestoreProj = Join-Path $PSScriptRoot "Toolset.proj"
@@ -155,7 +160,11 @@ try {
   $ToolsetBuildProj = Join-Path $NuGetPackageRoot "RoslynTools.RepoToolset\$ToolsetVersion\tools\Build.proj"
 
   $vsInstallDir = LocateVisualStudio
-  $MsbuildExe = Join-Path $vsInstallDir "MSBuild\15.0\Bin\msbuild.exe"
+  if ($InVS16Environment) {
+    $MsbuildExe = Join-Path $vsInstallDir "MSBuild\Current\Bin\msbuild.exe"
+  } else {
+    $MsbuildExe = Join-Path $vsInstallDir "MSBuild\15.0\Bin\msbuild.exe"
+  }
 
   if ($ci) {
     Create-Directory $TempDir
@@ -165,7 +174,8 @@ try {
     Write-Host "Using $MsbuildExe"
   }
 
-  if (!$InVSEnvironment) {
+  if (!$InVS15Environment -and !$InVS16Environment) {
+    # If we're not in a VS shell, assume Dev15
     $env:VS150COMNTOOLS = Join-Path $vsInstallDir "Common7\Tools\"
     $env:VSSDK150Install = Join-Path $vsInstallDir "VSSDK\"
     $env:VSSDKInstall = Join-Path $vsInstallDir "VSSDK\"
