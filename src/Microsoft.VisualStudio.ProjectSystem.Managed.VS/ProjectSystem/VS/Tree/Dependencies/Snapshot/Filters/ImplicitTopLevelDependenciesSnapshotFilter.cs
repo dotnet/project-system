@@ -46,7 +46,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
                 return;
             }
 
-            if (!projectItemSpecs.Contains(dependency.OriginalItemSpec))
+            //The check for SharedProjectDependency is needed because a SharedProject is not a dependency reference
+            if (!projectItemSpecs.Contains(dependency.OriginalItemSpec) && !dependency.Flags.Contains("SharedProjectDependency"))
             {
                 // It is an implicit dependency
                 if (subTreeProviderByProviderType.TryGetValue(dependency.ProviderType, out IProjectDependenciesSubTreeProvider provider) &&
