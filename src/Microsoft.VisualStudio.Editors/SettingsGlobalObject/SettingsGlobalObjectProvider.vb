@@ -2312,11 +2312,17 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         ''' <summary>
         ''' 
         ''' </summary>
-        ''' <remarks></remarks>
+        ''' <remarks>
+        ''' This type must be serializable to satisfy the VS shell.
+        ''' https://devdiv.visualstudio.com/DevDiv/_workitems/edit/765098
+        ''' </remarks>
+        <Serializable>
         Private Class ConcreteApplicationSettings
             Inherits ApplicationSettingsBase
 
+            <NonSerialized>
             Private ReadOnly _globalObject As SettingsFileGlobalObject
+            <NonSerialized>
             Private _properties As SettingsPropertyCollection
 
             ''' <summary>
