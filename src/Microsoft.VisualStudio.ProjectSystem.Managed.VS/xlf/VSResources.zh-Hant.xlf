@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="zh-Hant" original="../VSResources.resx">
     <body>
@@ -253,12 +253,12 @@ In order to debug this project, add an executable project to this solution which
       </trans-unit>
       <trans-unit id="PackCommand">
         <source>&amp;Pack</source>
-        <target state="translated">封裝(&amp;P)</target>
+        <target state="translated">套件(&amp;P)</target>
         <note />
       </trans-unit>
       <trans-unit id="PackSelectedProjectCommand">
         <source>&amp;Pack {0}</source>
-        <target state="translated">封裝 {0}(&amp;P)</target>
+        <target state="translated">套件 {0}(&amp;P)</target>
         <note />
       </trans-unit>
       <trans-unit id="XprojMigrationFailedCannotReadReport">
@@ -283,12 +283,12 @@ In order to debug this project, add an executable project to this solution which
       </trans-unit>
       <trans-unit id="PartialSupportedDotNetCoreProject">
         <source>A newer version of Visual Studio is recommended for projects targeting .NET Core {0}.{1}.</source>
-        <target state="needs-review-translation">建議在 .NET Core {0}.{1} 專案使用 Visual Studio 2017 15.7 以上的版本。</target>
+        <target state="translated">建議為以 .NET Core {0}.{1} 為目標的專案使用較新的 Visual Studio 版本。</target>
         <note />
       </trans-unit>
       <trans-unit id="NotSupportedDotNetCoreProject">
         <source>Projects targeting .NET Core {0}.{1} or newer are not supported by this version of Visual Studio.</source>
-        <target state="needs-review-translation">這一版本的 Visual Studio 不支援以 .NET Core {0}.{1} 以上版本為目標的專案。</target>
+        <target state="translated">此版本的 Visual Studio 不支援以 .NET Core {0}.{1} 或更新版本為目標的專案。</target>
         <note />
       </trans-unit>
       <trans-unit id="DontShowAgain">

@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="zh-Hant" original="../AssemblyInfoPropPage.resx">
     <body>
@@ -34,7 +34,7 @@
       </trans-unit>
       <trans-unit id="ComVisibleCheckBox.Text">
         <source>&amp;Make assembly COM-Visible</source>
-        <target state="translated">讓組件成為 COM 可見(&amp;M)</target>
+        <target state="translated">讓組件具有 COM 可見度(&amp;M)</target>
         <note />
       </trans-unit>
       <trans-unit id="NeutralLanguageLabel.Text">
@@ -54,22 +54,22 @@
       </trans-unit>
       <trans-unit id="FileVersionMajorTextBox.AccessibleName">
         <source>File Version major</source>
-        <target state="needs-review-translation">主要</target>
+        <target state="translated">檔案版本主要</target>
         <note />
       </trans-unit>
       <trans-unit id="FileVersionMinorTextBox.AccessibleName">
         <source>File Version minor</source>
-        <target state="needs-review-translation">次要</target>
+        <target state="translated">檔案版本次要</target>
         <note />
       </trans-unit>
       <trans-unit id="FileVersionBuildTextBox.AccessibleName">
         <source>File Version build</source>
-        <target state="needs-review-translation">組建</target>
+        <target state="translated">檔案版本組建</target>
         <note />
       </trans-unit>
       <trans-unit id="FileVersionRevisionTextBox.AccessibleName">
         <source>File Version revision</source>
-        <target state="needs-review-translation">修訂</target>
+        <target state="translated">檔案版本修訂</target>
         <note />
       </trans-unit>
       <trans-unit id="GuidLabel.Text">
@@ -79,22 +79,22 @@
       </trans-unit>
       <trans-unit id="AssemblyVersionMajorTextBox.AccessibleName">
         <source>Assembly Version major</source>
-        <target state="needs-review-translation">主要</target>
+        <target state="translated">組件版本主要</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyVersionMinorTextBox.AccessibleName">
         <source>Assembly Version minor</source>
-        <target state="needs-review-translation">次要</target>
+        <target state="translated">組件本版次要</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyVersionBuildTextBox.AccessibleName">
         <source>Assembly Version build</source>
-        <target state="needs-review-translation">組建</target>
+        <target state="translated">組件版本組建</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyVersionRevisionTextBox.AccessibleName">
         <source>Assembly Version revision</source>
-        <target state="needs-review-translation">修訂</target>
+        <target state="translated">組件版本修訂</target>
         <note />
       </trans-unit>
     </body>

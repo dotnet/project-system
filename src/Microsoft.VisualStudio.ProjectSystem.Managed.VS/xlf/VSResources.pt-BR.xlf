@@ -1,10 +1,10 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="pt-BR" original="../VSResources.resx">
     <body>
       <trans-unit id="ClassTemplateName">
         <source>Class</source>
-        <target state="translated">Classe</target>
+        <target state="translated">classe</target>
         <note />
       </trans-unit>
       <trans-unit id="ProjectModificationsPrompt">
@@ -283,12 +283,12 @@ Para depurar esse projeto, adicione um projeto executável a essa solução que 
       </trans-unit>
       <trans-unit id="PartialSupportedDotNetCoreProject">
         <source>A newer version of Visual Studio is recommended for projects targeting .NET Core {0}.{1}.</source>
-        <target state="needs-review-translation">O Visual Studio 2017 versão 15.7 ou mais recente é recomendado para o .NET Core {0}. Projetos {1}.</target>
+        <target state="translated">Recomenda-se uma versão mais recente do Visual Studio para projetos de direcionamento para .NET Core {0}.{1}.</target>
         <note />
       </trans-unit>
       <trans-unit id="NotSupportedDotNetCoreProject">
         <source>Projects targeting .NET Core {0}.{1} or newer are not supported by this version of Visual Studio.</source>
-        <target state="needs-review-translation">Projetos que destinam versões mais recentes que o .NET Core {0}. {1} não são compatíveis com esta versão do Visual Studio.</target>
+        <target state="translated">Os projetos destinados ao .NET Core {0}.{1} ou mais recente não são suportados por esta versão do Visual Studio.</target>
         <note />
       </trans-unit>
       <trans-unit id="DontShowAgain">

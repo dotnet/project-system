@@ -1,10 +1,10 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="cs" original="../VSResources.resx">
     <body>
       <trans-unit id="ClassTemplateName">
         <source>Class</source>
-        <target state="translated">Třída</target>
+        <target state="translated">třída</target>
         <note />
       </trans-unit>
       <trans-unit id="ProjectModificationsPrompt">
@@ -104,7 +104,7 @@ Pokud chcete ignorovat externí změny, stiskněte Ignorovat. Pokud projekt zav�
       </trans-unit>
       <trans-unit id="ComNodeName">
         <source>COM</source>
-        <target state="translated">COM</target>
+        <target state="translated">Model COM</target>
         <note />
       </trans-unit>
       <trans-unit id="SdkNodeName">
@@ -283,12 +283,12 @@ Pokud chcete projekt ladit, přidejte do řešení spustitelný projekt, který 
       </trans-unit>
       <trans-unit id="PartialSupportedDotNetCoreProject">
         <source>A newer version of Visual Studio is recommended for projects targeting .NET Core {0}.{1}.</source>
-        <target state="needs-review-translation">Pro projekty .NET Core {0}.{1} se doporučuje Visual Studio 2017 verze 15.7 nebo novější.</target>
+        <target state="translated">Pro projekty zacílené na .NET Core {0}.{1} se doporučuje novější verze sady Visual Studio.</target>
         <note />
       </trans-unit>
       <trans-unit id="NotSupportedDotNetCoreProject">
         <source>Projects targeting .NET Core {0}.{1} or newer are not supported by this version of Visual Studio.</source>
-        <target state="needs-review-translation">Tato verze sady Visual Studio nepodporuje projekty, které cílí na verze novější než .NET Core {0}.{1}.</target>
+        <target state="translated">Tato verze sady Visual Studio nepodporuje projekty zacílené na .NET Core {0}.{1} nebo novější.</target>
         <note />
       </trans-unit>
       <trans-unit id="DontShowAgain">

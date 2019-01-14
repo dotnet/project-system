@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="it" original="../Compile.BrowseObject.xaml">
     <body>
@@ -29,7 +29,7 @@
       </trans-unit>
       <trans-unit id="EnumProperty|CopyToOutputDirectory|Description">
         <source>Specifies the source file will be copied to the output directory.</source>
-        <target state="translated">Specifica se il file di origine verrà copiato nella directory di output.</target>
+        <target state="translated">Consente di specificare se il file di origine verrà copiato nella directory di output.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|CopyToOutputDirectory.Never|DisplayName">
@@ -79,7 +79,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|CustomToolNamespace|DisplayName">
         <source>Custom Tool Namespace</source>
-        <target state="translated">Spazio dei nomi strumento personalizzato</target>
+        <target state="translated">Spazio dei nomi dello strumento personalizzato</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|CustomToolNamespace|Description">

@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="zh-Hant" original="../VSPackage.resx">
     <body>
@@ -69,7 +69,7 @@
       </trans-unit>
       <trans-unit id="14">
         <source>A project that contains NUnit tests that can run on .NET Core on Windows, Linux and MacOS.</source>
-        <target state="translated">此專案包含 NUnit 測試，可以在 Windows、Linux 及 MacOS 的 .NET Core 上執行。</target>
+        <target state="translated">包含可在 Windows、Linux 和 MacOS 上於 .NET Core 執行之 NUnit 測試的專案。</target>
         <note />
       </trans-unit>
     </body>

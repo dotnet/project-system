@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="pl" original="../BuildPropPage.resx">
     <body>
@@ -29,7 +29,7 @@
       </trans-unit>
       <trans-unit id="chkRegisterForCOM.Text">
         <source>Register for &amp;COM interop</source>
-        <target state="translated">Zarejestruj w celu interakcji z modelem &amp;COM</target>
+        <target state="translated">Rejestruj w usłudze międzyoperacyjnej modelu &amp;COM</target>
         <note />
       </trans-unit>
       <trans-unit id="chkXMLDocumentationFile.Text">
@@ -44,17 +44,17 @@
       </trans-unit>
       <trans-unit id="lblOutputPath.Text">
         <source>&amp;Output path:</source>
-        <target state="translated">Ścieżka &amp;wyjściowa:</target>
+        <target state="translated">&amp;Ścieżka wyjściowa:</target>
         <note />
       </trans-unit>
       <trans-unit id="rbWarningSpecific.Text">
         <source>Specif&amp;ic warnings:</source>
-        <target state="translated">Specy&amp;ficzne ostrzeżenia:</target>
+        <target state="translated">Określone ostrzeżen&amp;ia:</target>
         <note />
       </trans-unit>
       <trans-unit id="rbWarningAll.Text">
         <source>A&amp;ll</source>
-        <target state="translated">W&amp;szystkie</target>
+        <target state="translated">&amp;Wszystko</target>
         <note />
       </trans-unit>
       <trans-unit id="rbWarningNone.Text">
@@ -64,7 +64,7 @@
       </trans-unit>
       <trans-unit id="lblSupressWarnings.Text">
         <source>&amp;Suppress warnings:</source>
-        <target state="translated">&amp;Pomiń ostrzeżenia:</target>
+        <target state="translated">Pomiń o&amp;strzeżenia:</target>
         <note />
       </trans-unit>
       <trans-unit id="cboWarningLevel.Items">
@@ -94,7 +94,7 @@
       </trans-unit>
       <trans-unit id="lblWarningLevel.Text">
         <source>W&amp;arning level:</source>
-        <target state="translated">Poziom o&amp;strzeżenia:</target>
+        <target state="translated">Poziom &amp;ostrzeżeń:</target>
         <note />
       </trans-unit>
       <trans-unit id="chkOptimizeCode.Text">
@@ -104,12 +104,12 @@
       </trans-unit>
       <trans-unit id="chkAllowUnsafeCode.Text">
         <source>Allow unsa&amp;fe code</source>
-        <target state="translated">Zezwalaj na niebez&amp;pieczny kod</target>
+        <target state="translated">Z&amp;ezwalaj na niebezpieczny kod</target>
         <note />
       </trans-unit>
       <trans-unit id="chkPrefer32Bit.Text">
         <source>&amp;Prefer 32-bit</source>
-        <target state="translated">&amp;Preferuj wersję 32-bitową</target>
+        <target state="translated">&amp;Preferuj 32-bitowe</target>
         <note />
       </trans-unit>
       <trans-unit id="chkDefineTrace.Text">
@@ -119,7 +119,7 @@
       </trans-unit>
       <trans-unit id="lblPlatformTarget.Text">
         <source>Platform tar&amp;get:</source>
-        <target state="translated">Platforma doce&amp;lowa:</target>
+        <target state="translated">&amp;Cel platformy:</target>
         <note />
       </trans-unit>
       <trans-unit id="lblSGenOption.Text">
@@ -129,7 +129,7 @@
       </trans-unit>
       <trans-unit id="btnAdvanced.Text">
         <source>A&amp;dvanced...</source>
-        <target state="translated">Za&amp;awansowane...</target>
+        <target state="translated">Zaawa&amp;nsowane...</target>
         <note />
       </trans-unit>
       <trans-unit id="chkDefineDebug.Text">
@@ -139,12 +139,12 @@
       </trans-unit>
       <trans-unit id="txtSpecificWarnings.AccessibleName">
         <source>Specific Warnings To Treat As Errors</source>
-        <target state="new">Specific Warnings To Treat As Errors</target>
+        <target state="translated">Konkretne ostrzeżenia, które mają być traktowane jak błędy</target>
         <note />
       </trans-unit>
       <trans-unit id="txtXMLDocumentationFile.AccessibleName">
         <source>XML Document File Path</source>
-        <target state="new">XML Document File Path</target>
+        <target state="translated">Ścieżka pliku dokumentu XML</target>
         <note />
       </trans-unit>
     </body>

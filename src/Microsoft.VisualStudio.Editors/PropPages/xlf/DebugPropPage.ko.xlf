@@ -39,7 +39,7 @@
       </trans-unit>
       <trans-unit id="StartProgramBrowse.Text">
         <source>&amp;Browse...</source>
-        <target state="translated">찾아보기(&amp;B)...</target>
+        <target state="translated">&amp; 찾아보기...</target>
         <note />
       </trans-unit>
       <trans-unit id="StartOptionsLabel.Text">

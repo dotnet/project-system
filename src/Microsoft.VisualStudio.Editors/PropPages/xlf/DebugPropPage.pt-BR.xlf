@@ -1,10 +1,10 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="pt-BR" original="../DebugPropPage.resx">
     <body>
       <trans-unit id="StartActionLabel.Text">
         <source>Start action</source>
-        <target state="translated">Iniciar ação</target>
+        <target state="translated">Iniciar Ação</target>
         <note />
       </trans-unit>
       <trans-unit id="rbStartProject.Text">
@@ -44,12 +44,12 @@
       </trans-unit>
       <trans-unit id="StartOptionsLabel.Text">
         <source>Start options</source>
-        <target state="translated">Opções de inicialização</target>
+        <target state="translated">Opções de Inicialização</target>
         <note />
       </trans-unit>
       <trans-unit id="CommandLineArgsLabel.Text">
         <source>Comma&amp;nd line arguments:</source>
-        <target state="translated">Argumentos da linha de coma&amp;ndo:</target>
+        <target state="translated">Argumentos de linha de coma&amp;ndo:</target>
         <note />
       </trans-unit>
       <trans-unit id="WorkingDirLabel.Text">

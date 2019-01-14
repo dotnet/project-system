@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="fr" original="../BuildPropPage.resx">
     <body>
@@ -49,7 +49,7 @@
       </trans-unit>
       <trans-unit id="rbWarningSpecific.Text">
         <source>Specif&amp;ic warnings:</source>
-        <target state="translated">Avert&amp;issements spécifiques :</target>
+        <target state="translated">Avertissements spécif&amp;iques :</target>
         <note />
       </trans-unit>
       <trans-unit id="rbWarningAll.Text">
@@ -94,7 +94,7 @@
       </trans-unit>
       <trans-unit id="lblWarningLevel.Text">
         <source>W&amp;arning level:</source>
-        <target state="translated">Nive&amp;au d'avertissement :</target>
+        <target state="translated">Niveau d'&amp;avertissement :</target>
         <note />
       </trans-unit>
       <trans-unit id="chkOptimizeCode.Text">
@@ -104,7 +104,7 @@
       </trans-unit>
       <trans-unit id="chkAllowUnsafeCode.Text">
         <source>Allow unsa&amp;fe code</source>
-        <target state="translated">Autoriser les blocs de code unsa&amp;fe</target>
+        <target state="translated">Autoriser le code unsa&amp;fe</target>
         <note />
       </trans-unit>
       <trans-unit id="chkPrefer32Bit.Text">
@@ -119,17 +119,17 @@
       </trans-unit>
       <trans-unit id="lblPlatformTarget.Text">
         <source>Platform tar&amp;get:</source>
-        <target state="translated">Plate&amp;forme cible :</target>
+        <target state="translated">Plateforme ci&amp;ble :</target>
         <note />
       </trans-unit>
       <trans-unit id="lblSGenOption.Text">
         <source>G&amp;enerate serialization assembly:</source>
-        <target state="translated">Génér&amp;er un assembly de sérialisation :</target>
+        <target state="translated">Génér&amp;er l'assembly de sérialisation :</target>
         <note />
       </trans-unit>
       <trans-unit id="btnAdvanced.Text">
         <source>A&amp;dvanced...</source>
-        <target state="translated">Options a&amp;vancées...</target>
+        <target state="translated">A&amp;vancé...</target>
         <note />
       </trans-unit>
       <trans-unit id="chkDefineDebug.Text">
@@ -139,12 +139,12 @@
       </trans-unit>
       <trans-unit id="txtSpecificWarnings.AccessibleName">
         <source>Specific Warnings To Treat As Errors</source>
-        <target state="new">Specific Warnings To Treat As Errors</target>
+        <target state="translated">Avertissements spécifiques à traiter comme des erreurs</target>
         <note />
       </trans-unit>
       <trans-unit id="txtXMLDocumentationFile.AccessibleName">
         <source>XML Document File Path</source>
-        <target state="new">XML Document File Path</target>
+        <target state="translated">Chemin de fichier du document XML</target>
         <note />
       </trans-unit>
     </body>

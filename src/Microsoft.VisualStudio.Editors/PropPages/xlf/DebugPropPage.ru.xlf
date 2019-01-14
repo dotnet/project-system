@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="ru" original="../DebugPropPage.resx">
     <body>
@@ -24,7 +24,7 @@
       </trans-unit>
       <trans-unit id="StartProgram.AccessibleName">
         <source>Program to start</source>
-        <target state="translated">Запускаемая программа</target>
+        <target state="translated">Программа для запуска</target>
         <note />
       </trans-unit>
       <trans-unit id="StartURL.AccessibleName">
@@ -34,7 +34,7 @@
       </trans-unit>
       <trans-unit id="StartProgramBrowse.AccessibleName">
         <source>Browse for external program</source>
-        <target state="translated">Поиск внешней программы</target>
+        <target state="translated">Выбор внешней программы</target>
         <note />
       </trans-unit>
       <trans-unit id="StartProgramBrowse.Text">
@@ -69,7 +69,7 @@
       </trans-unit>
       <trans-unit id="StartWorkingDirectoryBrowse.AccessibleName">
         <source>Browse for working directory</source>
-        <target state="translated">Поиск рабочего каталога</target>
+        <target state="translated">Выбор рабочего каталога</target>
         <note />
       </trans-unit>
       <trans-unit id="StartWorkingDirectoryBrowse.Text">
@@ -84,7 +84,7 @@
       </trans-unit>
       <trans-unit id="EnableSQLServerDebugging.Text">
         <source>Enable SQ&amp;L Server debugging</source>
-        <target state="translated">Включить &amp;отладку SQL Server</target>
+        <target state="translated">&amp;Включить отладку SQL Server</target>
         <note />
       </trans-unit>
       <trans-unit id="EnableUnmanagedDebugging.Text">

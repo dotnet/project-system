@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="it" original="../Designer.resx">
     <body>
@@ -290,7 +290,7 @@ Fare clic su OK per ignorare e continuare. Fare clic su ANNULLA per selezionare 
       </trans-unit>
       <trans-unit id="PPG_SelectOutputPathTitle">
         <source>Select Output Path</source>
-        <target state="translated">Seleziona percorso di output</target>
+        <target state="translated">Seleziona percorso output</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_SelectReferencePath">

@@ -49,7 +49,7 @@
       </trans-unit>
       <trans-unit id="NameCannotBeEmpty">
         <source>Name cannot be empty.</source>
-        <target state="translated">名前を空にすることはできません。</target>
+        <target state="translated">名前は空にできません。</target>
         <note />
       </trans-unit>
       <trans-unit id="NewProfileCaption">
@@ -74,7 +74,7 @@
       </trans-unit>
       <trans-unit id="ProfileKindNoActionName">
         <source>Start</source>
-        <target state="translated">開始</target>
+        <target state="translated">スタート</target>
         <note />
       </trans-unit>
       <trans-unit id="ProfileKindProjectName">
@@ -154,7 +154,7 @@
       </trans-unit>
       <trans-unit id="NewBtn">
         <source>New...</source>
-        <target state="translated">新規...</target>
+        <target state="translated">新規作成...</target>
         <note />
       </trans-unit>
       <trans-unit id="Profile">

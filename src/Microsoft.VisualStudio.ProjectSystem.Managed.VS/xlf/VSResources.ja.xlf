@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="ja" original="../VSResources.resx">
     <body>
@@ -258,7 +258,7 @@ In order to debug this project, add an executable project to this solution which
       </trans-unit>
       <trans-unit id="PackSelectedProjectCommand">
         <source>&amp;Pack {0}</source>
-        <target state="translated">{0} のパック(&amp;P)</target>
+        <target state="translated">パッケージ {0}(&amp;P)</target>
         <note />
       </trans-unit>
       <trans-unit id="XprojMigrationFailedCannotReadReport">
@@ -283,12 +283,12 @@ In order to debug this project, add an executable project to this solution which
       </trans-unit>
       <trans-unit id="PartialSupportedDotNetCoreProject">
         <source>A newer version of Visual Studio is recommended for projects targeting .NET Core {0}.{1}.</source>
-        <target state="needs-review-translation">.NET Core {0}.{1} プロジェクトでは、Visual Studio 2017 バージョン 15.7 以降が推奨されています。</target>
+        <target state="translated">.NET Core {0}.{1} をターゲットとしたプロジェクトには、より新しいバージョンの Visual Studio をお勧めします。</target>
         <note />
       </trans-unit>
       <trans-unit id="NotSupportedDotNetCoreProject">
         <source>Projects targeting .NET Core {0}.{1} or newer are not supported by this version of Visual Studio.</source>
-        <target state="needs-review-translation">.NET Core {0}.{1} 以降のバージョンをターゲットとするプロジェクトは、このバージョンの Visual Studio ではサポートされていません。</target>
+        <target state="translated">.NET Core {0}.{1} 以上をターゲットとしたプロジェクトは、このバージョンの Visual Studio ではサポートされていません。</target>
         <note />
       </trans-unit>
       <trans-unit id="DontShowAgain">
@@ -298,7 +298,7 @@ In order to debug this project, add an executable project to this solution which
       </trans-unit>
       <trans-unit id="LearnMore">
         <source>Learn more</source>
-        <target state="translated">詳細</target>
+        <target state="translated">詳細を表示</target>
         <note />
       </trans-unit>
       <trans-unit id="OKButtonText">

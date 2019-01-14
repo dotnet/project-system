@@ -1,10 +1,10 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="es" original="../ApplicationPropPage.resx">
     <body>
       <trans-unit id="AssemblyNameLabel.Text">
         <source>Assembly &amp;name:</source>
-        <target state="translated">Nombre de ensam&amp;blado:</target>
+        <target state="translated">&amp;Nombre del ensamblado:</target>
         <note />
       </trans-unit>
       <trans-unit id="RootNamespaceLabel.Text">
@@ -29,7 +29,7 @@
       </trans-unit>
       <trans-unit id="TargetFrameworkLabel.Text">
         <source>Tar&amp;get framework:</source>
-        <target state="translated">&amp;Plataforma de destino:</target>
+        <target state="translated">&amp;Versión de .NET Framework de destino:</target>
         <note />
       </trans-unit>
       <trans-unit id="ResourcesLabel.Text">

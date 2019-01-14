@@ -1,10 +1,10 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="de" original="../DebugPropPage.resx">
     <body>
       <trans-unit id="StartActionLabel.Text">
         <source>Start action</source>
-        <target state="translated">Aktion starten</target>
+        <target state="translated">Startaktion</target>
         <note />
       </trans-unit>
       <trans-unit id="rbStartProject.Text">
@@ -49,7 +49,7 @@
       </trans-unit>
       <trans-unit id="CommandLineArgsLabel.Text">
         <source>Comma&amp;nd line arguments:</source>
-        <target state="translated">Befehlszeile&amp;nargumente:</target>
+        <target state="translated">Befehlszeilenargume&amp;nte:</target>
         <note />
       </trans-unit>
       <trans-unit id="WorkingDirLabel.Text">
