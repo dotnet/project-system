@@ -30,10 +30,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
             IImmutableSet<string> projectItemSpecs,
             IAddDependencyContext context)
         {
+            // The check for SharedProjectDependency is needed because a SharedProject is not a dependency reference
             if (!dependency.TopLevel
                 || dependency.Implicit
                 || !dependency.Resolved
-                || !dependency.Flags.Contains(DependencyTreeFlags.GenericDependencyFlags))
+                || !dependency.Flags.Contains(DependencyTreeFlags.GenericDependencyFlags)
+                || dependency.Flags.Contains(DependencyTreeFlags.SharedProjectFlags))
             {
                 context.Accept(dependency);
                 return;
@@ -46,8 +48,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
                 return;
             }
 
-            //The check for SharedProjectDependency is needed because a SharedProject is not a dependency reference
-            if (!projectItemSpecs.Contains(dependency.OriginalItemSpec) && !dependency.Flags.Contains("SharedProjectDependency"))
+            if (!projectItemSpecs.Contains(dependency.OriginalItemSpec))
             {
                 // It is an implicit dependency
                 if (subTreeProviderByProviderType.TryGetValue(dependency.ProviderType, out IProjectDependenciesSubTreeProvider provider) &&
