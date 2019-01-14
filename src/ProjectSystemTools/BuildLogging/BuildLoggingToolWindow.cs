@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -28,6 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
         public const string BuildLoggingToolWindowGuidString = "391238ea-dad7-488c-94d1-e2b6b5172bf3";
 
         private readonly IBuildTableDataSource _dataSource;
+        private readonly IVsUIShellOpenDocument _openDocument;
 
         private BuildType _filterType = BuildType.All;
 
@@ -43,6 +43,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
         {
             var componentModel = (IComponentModel)GetService(typeof(SComponentModel));
             _dataSource = componentModel.GetService<IBuildTableDataSource>();
+
+            _openDocument = (IVsUIShellOpenDocument)GetService(typeof(SVsUIShellOpenDocument));
 
             ResetTableControl();
         }
@@ -219,52 +221,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
         {
             foreach (var entry in TableControl.SelectedEntries)
             {
-                if (!entry.TryGetValue(TableKeyNames.LogPath, out string logPath))
-                {
-                    continue;
-                }
-
-                try
-                {
-                    Process.Start(logPath);
-                }
-                catch (Exception e)
-                {
-                    var title = $"Error opening {Path.GetFileName(logPath)}";
-                    ShowExceptionMessageDialog(e, title);
-                }
+                OpenLog(entry);
             }
         }
 
-        private void ExploreLogs()
-        {
-            var window = ProjectSystemToolsPackage.Instance.BuildLogExplorerToolWindow;
-            var windowFrame = (IVsWindowFrame)window.Frame;
-            ErrorHandler.ThrowOnFailure(windowFrame.Show());
-
-            foreach (var entry in TableControl.SelectedEntries)
-            {
-                if (!entry.TryGetValue(TableKeyNames.LogPath, out string logPath))
-                {
-                    continue;
-                }
-
-                window.AddLog(logPath);
-            }
-        }
-
-        public void ExploreLog(ITableEntryHandle tableEntry)
+        public void OpenLog(ITableEntryHandle tableEntry)
         {
             if (!tableEntry.TryGetValue(TableKeyNames.LogPath, out string logPath))
             {
                 return;
             }
 
-            var window = ProjectSystemToolsPackage.Instance.BuildLogExplorerToolWindow;
-            var windowFrame = (IVsWindowFrame)window.Frame;
-            ErrorHandler.ThrowOnFailure(windowFrame.Show());
-
-            window.AddLog(logPath);
+            var guid = VSConstants.LOGVIEWID_Primary;
+            _openDocument.OpenDocumentViaProject(logPath, ref guid, out _, out _, out _, out var frame);
+            frame.Show();
         }
 
         private static void ShowExceptionMessageDialog(Exception e, string title)
@@ -307,7 +277,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
                 case ProjectSystemToolsPackage.ClearCommandId:
                 case ProjectSystemToolsPackage.SaveLogsCommandId:
                 case ProjectSystemToolsPackage.OpenLogsCommandId:
-                case ProjectSystemToolsPackage.ExploreLogsCommandId:
                     visible = true;
                     enabled = true;
                     break;
@@ -382,10 +351,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
 
                 case ProjectSystemToolsPackage.OpenLogsCommandId:
                     OpenLogs();
-                    break;
-
-                case ProjectSystemToolsPackage.ExploreLogsCommandId:
-                    ExploreLogs();
                     break;
 
                 case ProjectSystemToolsPackage.BuildTypeComboCommandId:

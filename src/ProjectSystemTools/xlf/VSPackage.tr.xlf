@@ -12,6 +12,11 @@
         <target state="new">Tools for working with C#, VisualBasic, and F# projects.</target>
         <note />
       </trans-unit>
+      <trans-unit id="113">
+        <source>MSBuild Binary Log Viewer</source>
+        <target state="new">MSBuild Binary Log Viewer</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>

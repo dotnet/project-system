@@ -40,8 +40,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="xlf\*" />
+    <EmbeddedResource Include="BinaryLogEditor\BinaryLogEditorResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>BinaryLogEditorResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="BuildLogging\BuildLoggingResources.resx" GenerateSource="true" />
-    <EmbeddedResource Include="BuildLogExplorer\BuildLogExplorerResources.resx" GenerateSource="true" />
     <EmbeddedResource Include="TableControl\TableControlResources.resx" GenerateSource="true" />
     <EmbeddedResource Include="VSPackage.resx">
       <MergeWithCTO>true</MergeWithCTO>
@@ -68,14 +71,38 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="BuildLogExplorer\BuildTreeViewControl.xaml">
+    <Page Include="BinaryLogEditor\BuildTreeViewControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="BinaryLogEditor\LogViewControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="BinaryLogEditor\EvaluationTreeViewControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="BuildLogExplorer\BuildTreeViewControl.xaml.cs">
+    <Compile Update="BinaryLogEditor\BinaryLogEditorResources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>BinaryLogEditorResources.resx</DependentUpon>
+    </Compile>
+    <Compile Update="BinaryLogEditor\BuildTreeViewControl.xaml.cs">
       <DependentUpon>BuildTreeViewControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="BinaryLogEditor\EvaluationTreeViewControl.xaml.cs">
+      <DependentUpon>EvaluationTreeViewControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="BinaryLogEditor\LogViewControl.xaml.cs">
+      <DependentUpon>LogViewControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="VSPackage.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>VSPackage.resx</DependentUpon>
     </Compile>
   </ItemGroup>
 </Project>

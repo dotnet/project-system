@@ -9,13 +9,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
     {
         public ImmutableArray<EvaluatedPassInfo> Passes { get; }
         public TimeInfo EvaluationTimeInfo { get; }
-        public TimeInfo GlobTimeInfo { get; }
 
-        public EvaluatedProfileInfo(IEnumerable<EvaluatedPassInfo> passes, TimeInfo evalutionTimeInfo, TimeInfo globTimeInfo)
+        public EvaluatedProfileInfo(IEnumerable<EvaluatedPassInfo> passes, TimeInfo evalutionTimeInfo)
         {
             Passes = passes.ToImmutableArray();
             EvaluationTimeInfo = evalutionTimeInfo;
-            GlobTimeInfo = globTimeInfo;
         }
     }
 }

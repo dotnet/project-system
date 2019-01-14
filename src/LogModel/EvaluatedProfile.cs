@@ -8,13 +8,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel
     {
         public ImmutableArray<EvaluatedPass> Passes { get; }
         public Time EvaluationTime { get; }
-        public Time GlobTime { get; }
 
-        public EvaluatedProfile(ImmutableArray<EvaluatedPass> passes, Time evaluationTime, Time globTime)
+        public EvaluatedProfile(ImmutableArray<EvaluatedPass> passes, Time evaluationTime)
         {
             Passes = passes;
             EvaluationTime = evaluationTime;
-            GlobTime = globTime;
         }
     }
 }
