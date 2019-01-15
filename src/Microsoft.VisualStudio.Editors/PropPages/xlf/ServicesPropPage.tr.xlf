@@ -20,7 +20,7 @@
       <trans-unit id="CustomCredentialProviderTypeLabel.Text">
         <source>Optional: Credentials &amp;provider
 (for example: MyNamespace.MyLoginClass, MyAssembly):</source>
-        <target state="translated">İsteğe bağlı: Kimlik bilgileri &sağlayıcısı
+        <target state="translated">İsteğe bağlı: Kimlik bilgileri &amp;sağlayıcısı
 (örneğin: MyNamespace.MyLoginClass, MyAssembly):</target>
         <note />
       </trans-unit>

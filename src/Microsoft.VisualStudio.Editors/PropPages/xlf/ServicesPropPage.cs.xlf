@@ -20,7 +20,7 @@
       <trans-unit id="CustomCredentialProviderTypeLabel.Text">
         <source>Optional: Credentials &amp;provider
 (for example: MyNamespace.MyLoginClass, MyAssembly):</source>
-        <target state="translated">Volitelné: &Poskytovatel pověření
+        <target state="translated">Volitelné: &amp;Poskytovatel pověření
 (např.: MyNamespace.MyLoginClass, MyAssembly):</target>
         <note />
       </trans-unit>

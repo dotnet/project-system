@@ -20,7 +20,7 @@
       <trans-unit id="CustomCredentialProviderTypeLabel.Text">
         <source>Optional: Credentials &amp;provider
 (for example: MyNamespace.MyLoginClass, MyAssembly):</source>
-        <target state="translated">옵션: 자격 증명 공급자(&P)
+        <target state="translated">옵션: 자격 증명 공급자(&amp;P)
 (예: MyNamespace.MyLoginClass, MyAssembly):</target>
         <note />
       </trans-unit>

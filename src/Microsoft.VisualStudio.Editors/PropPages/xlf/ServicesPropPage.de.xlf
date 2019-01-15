@@ -20,7 +20,7 @@
       <trans-unit id="CustomCredentialProviderTypeLabel.Text">
         <source>Optional: Credentials &amp;provider
 (for example: MyNamespace.MyLoginClass, MyAssembly):</source>
-        <target state="translated">Optional: Anmeldeinfor&mationsanbieter
+        <target state="translated">Optional: Anmeldeinfor&amp;mationsanbieter
 (Beispiel: EigenerNamespace.EigeneAnmeldeklasse, EigeneAssembly):</target>
         <note />
       </trans-unit>
