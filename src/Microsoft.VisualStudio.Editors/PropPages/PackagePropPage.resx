@@ -122,7 +122,7 @@
     <value>True</value>
   </data>
   <data name="TableLayoutPanel.ColumnCount" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>3</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="AssemblyVersionLabel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -136,16 +136,16 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="AssemblyVersionLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 530</value>
+    <value>0, 742</value>
   </data>
   <data name="AssemblyVersionLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 3, 0, 3</value>
+    <value>0, 5, 0, 5</value>
   </data>
   <data name="AssemblyVersionLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>91, 13</value>
+    <value>135, 20</value>
   </data>
   <data name="AssemblyVersionLabel.TabIndex" type="System.Int32, mscorlib">
-    <value>32</value>
+    <value>0</value>
   </data>
   <data name="AssemblyVersionLabel.Text" xml:space="preserve">
     <value>&amp;Assembly version:</value>
@@ -172,16 +172,16 @@
     <value>NoControl</value>
   </data>
   <data name="CopyrightLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 259</value>
+    <value>0, 342</value>
   </data>
   <data name="CopyrightLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 3, 0, 3</value>
+    <value>0, 5, 0, 5</value>
   </data>
   <data name="CopyrightLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>54, 13</value>
+    <value>80, 20</value>
   </data>
   <data name="CopyrightLabel.TabIndex" type="System.Int32, mscorlib">
-    <value>14</value>
+    <value>0</value>
   </data>
   <data name="CopyrightLabel.Text" xml:space="preserve">
     <value>&amp;Copyright:</value>
@@ -198,14 +198,20 @@
   <data name="&gt;&gt;CopyrightLabel.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
+  <data name="Copyright.AccessibleName" xml:space="preserve">
+    <value>Package Copyright</value>
+  </data>
   <data name="Copyright.Location" type="System.Drawing.Point, System.Drawing">
-    <value>139, 256</value>
+    <value>208, 339</value>
+  </data>
+  <data name="Copyright.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 5, 4, 5</value>
   </data>
   <data name="Copyright.Size" type="System.Drawing.Size, System.Drawing">
-    <value>571, 20</value>
+    <value>854, 26</value>
   </data>
   <data name="Copyright.TabIndex" type="System.Int32, mscorlib">
-    <value>15</value>
+    <value>8</value>
   </data>
   <data name="&gt;&gt;Copyright.Name" xml:space="preserve">
     <value>Copyright</value>
@@ -229,16 +235,16 @@
     <value>NoControl</value>
   </data>
   <data name="DescriptionLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 218</value>
+    <value>0, 281</value>
   </data>
   <data name="DescriptionLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 3, 0, 3</value>
+    <value>0, 5, 0, 5</value>
   </data>
   <data name="DescriptionLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>63, 13</value>
+    <value>93, 20</value>
   </data>
   <data name="DescriptionLabel.TabIndex" type="System.Int32, mscorlib">
-    <value>12</value>
+    <value>0</value>
   </data>
   <data name="DescriptionLabel.Text" xml:space="preserve">
     <value>&amp;Description:</value>
@@ -255,8 +261,14 @@
   <data name="&gt;&gt;DescriptionLabel.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
+  <data name="Description.AccessibleName" xml:space="preserve">
+    <value>Package Description</value>
+  </data>
   <data name="Description.Location" type="System.Drawing.Point, System.Drawing">
-    <value>139, 199</value>
+    <value>208, 253</value>
+  </data>
+  <data name="Description.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 5, 4, 5</value>
   </data>
   <data name="Description.Multiline" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -265,10 +277,10 @@
     <value>Both</value>
   </data>
   <data name="Description.Size" type="System.Drawing.Size, System.Drawing">
-    <value>571, 51</value>
+    <value>854, 76</value>
   </data>
   <data name="Description.TabIndex" type="System.Int32, mscorlib">
-    <value>13</value>
+    <value>7</value>
   </data>
   <data name="&gt;&gt;Description.Name" xml:space="preserve">
     <value>Description</value>
@@ -282,14 +294,20 @@
   <data name="&gt;&gt;Description.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
+  <data name="PackageIconUrl.AccessibleName" xml:space="preserve">
+    <value>Package Icon URL</value>
+  </data>
   <data name="PackageIconUrl.Location" type="System.Drawing.Point, System.Drawing">
-    <value>139, 334</value>
+    <value>208, 461</value>
+  </data>
+  <data name="PackageIconUrl.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 5, 4, 5</value>
   </data>
   <data name="PackageIconUrl.Size" type="System.Drawing.Size, System.Drawing">
-    <value>571, 20</value>
+    <value>854, 26</value>
   </data>
   <data name="PackageIconUrl.TabIndex" type="System.Int32, mscorlib">
-    <value>21</value>
+    <value>11</value>
   </data>
   <data name="&gt;&gt;PackageIconUrl.Name" xml:space="preserve">
     <value>PackageIconUrl</value>
@@ -313,16 +331,16 @@
     <value>NoControl</value>
   </data>
   <data name="PackageIconUrlLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 337</value>
+    <value>0, 464</value>
   </data>
   <data name="PackageIconUrlLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 3, 0, 3</value>
+    <value>0, 5, 0, 5</value>
   </data>
   <data name="PackageIconUrlLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>56, 13</value>
+    <value>81, 20</value>
   </data>
   <data name="PackageIconUrlLabel.TabIndex" type="System.Int32, mscorlib">
-    <value>20</value>
+    <value>0</value>
   </data>
   <data name="PackageIconUrlLabel.Text" xml:space="preserve">
     <value>&amp;Icon URL:</value>
@@ -339,14 +357,20 @@
   <data name="&gt;&gt;PackageIconUrlLabel.ZOrder" xml:space="preserve">
     <value>6</value>
   </data>
+  <data name="PackageProjectUrl.AccessibleName" xml:space="preserve">
+    <value>Package Project URL</value>
+  </data>
   <data name="PackageProjectUrl.Location" type="System.Drawing.Point, System.Drawing">
-    <value>139, 308</value>
+    <value>208, 425</value>
+  </data>
+  <data name="PackageProjectUrl.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 5, 4, 5</value>
   </data>
   <data name="PackageProjectUrl.Size" type="System.Drawing.Size, System.Drawing">
-    <value>571, 20</value>
+    <value>854, 26</value>
   </data>
   <data name="PackageProjectUrl.TabIndex" type="System.Int32, mscorlib">
-    <value>19</value>
+    <value>10</value>
   </data>
   <data name="&gt;&gt;PackageProjectUrl.Name" xml:space="preserve">
     <value>PackageProjectUrl</value>
@@ -360,14 +384,20 @@
   <data name="&gt;&gt;PackageProjectUrl.ZOrder" xml:space="preserve">
     <value>7</value>
   </data>
+  <data name="PackageVersion.AccessibleName" xml:space="preserve">
+    <value>Package Version</value>
+  </data>
   <data name="PackageVersion.Location" type="System.Drawing.Point, System.Drawing">
-    <value>139, 95</value>
+    <value>208, 109</value>
+  </data>
+  <data name="PackageVersion.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 5, 4, 5</value>
   </data>
   <data name="PackageVersion.Size" type="System.Drawing.Size, System.Drawing">
-    <value>571, 20</value>
+    <value>854, 26</value>
   </data>
   <data name="PackageVersion.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
+    <value>3</value>
   </data>
   <data name="&gt;&gt;PackageVersion.Name" xml:space="preserve">
     <value>PackageVersion</value>
@@ -391,16 +421,16 @@
     <value>NoControl</value>
   </data>
   <data name="PackageVersionLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 98</value>
+    <value>0, 112</value>
   </data>
   <data name="PackageVersionLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 3, 0, 3</value>
+    <value>0, 5, 0, 5</value>
   </data>
   <data name="PackageVersionLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>90, 13</value>
+    <value>129, 20</value>
   </data>
   <data name="PackageVersionLabel.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
+    <value>0</value>
   </data>
   <data name="PackageVersionLabel.Text" xml:space="preserve">
     <value>Package &amp;version:</value>
@@ -417,50 +447,20 @@
   <data name="&gt;&gt;PackageVersionLabel.ZOrder" xml:space="preserve">
     <value>9</value>
   </data>
-  <data name="PackageLicenseUrlLabel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Left</value>
-  </data>
-  <data name="PackageLicenseUrlLabel.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="PackageLicenseUrlLabel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="PackageLicenseUrlLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 285</value>
-  </data>
-  <data name="PackageLicenseUrlLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 3, 0, 3</value>
-  </data>
-  <data name="PackageLicenseUrlLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>72, 13</value>
-  </data>
-  <data name="PackageLicenseUrlLabel.TabIndex" type="System.Int32, mscorlib">
-    <value>16</value>
-  </data>
-  <data name="PackageLicenseUrlLabel.Text" xml:space="preserve">
-    <value>&amp;License URL:</value>
-  </data>
-  <data name="&gt;&gt;PackageLicenseUrlLabel.Name" xml:space="preserve">
-    <value>PackageLicenseUrlLabel</value>
-  </data>
-  <data name="&gt;&gt;PackageLicenseUrlLabel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;PackageLicenseUrlLabel.Parent" xml:space="preserve">
-    <value>TableLayoutPanel</value>
-  </data>
-  <data name="&gt;&gt;PackageLicenseUrlLabel.ZOrder" xml:space="preserve">
-    <value>10</value>
+  <data name="RepositoryUrl.AccessibleName" xml:space="preserve">
+    <value>Package Repository URL</value>
   </data>
   <data name="RepositoryUrl.Location" type="System.Drawing.Point, System.Drawing">
-    <value>139, 360</value>
+    <value>208, 497</value>
+  </data>
+  <data name="RepositoryUrl.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 5, 4, 5</value>
   </data>
   <data name="RepositoryUrl.Size" type="System.Drawing.Size, System.Drawing">
-    <value>571, 20</value>
+    <value>854, 26</value>
   </data>
   <data name="RepositoryUrl.TabIndex" type="System.Int32, mscorlib">
-    <value>23</value>
+    <value>12</value>
   </data>
   <data name="&gt;&gt;RepositoryUrl.Name" xml:space="preserve">
     <value>RepositoryUrl</value>
@@ -472,16 +472,22 @@
     <value>TableLayoutPanel</value>
   </data>
   <data name="&gt;&gt;RepositoryUrl.ZOrder" xml:space="preserve">
-    <value>11</value>
+    <value>10</value>
+  </data>
+  <data name="RepositoryType.AccessibleName" xml:space="preserve">
+    <value>Package Repository Type</value>
   </data>
   <data name="RepositoryType.Location" type="System.Drawing.Point, System.Drawing">
-    <value>139, 386</value>
+    <value>208, 533</value>
+  </data>
+  <data name="RepositoryType.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 5, 4, 5</value>
   </data>
   <data name="RepositoryType.Size" type="System.Drawing.Size, System.Drawing">
-    <value>571, 20</value>
+    <value>854, 26</value>
   </data>
   <data name="RepositoryType.TabIndex" type="System.Int32, mscorlib">
-    <value>25</value>
+    <value>13</value>
   </data>
   <data name="&gt;&gt;RepositoryType.Name" xml:space="preserve">
     <value>RepositoryType</value>
@@ -493,7 +499,7 @@
     <value>TableLayoutPanel</value>
   </data>
   <data name="&gt;&gt;RepositoryType.ZOrder" xml:space="preserve">
-    <value>12</value>
+    <value>11</value>
   </data>
   <data name="PackageTagsLabel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left</value>
@@ -505,16 +511,16 @@
     <value>NoControl</value>
   </data>
   <data name="PackageTagsLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 415</value>
+    <value>0, 572</value>
   </data>
   <data name="PackageTagsLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 3, 0, 3</value>
+    <value>0, 5, 0, 5</value>
   </data>
   <data name="PackageTagsLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>34, 13</value>
+    <value>48, 20</value>
   </data>
   <data name="PackageTagsLabel.TabIndex" type="System.Int32, mscorlib">
-    <value>26</value>
+    <value>0</value>
   </data>
   <data name="PackageTagsLabel.Text" xml:space="preserve">
     <value>&amp;Tags:</value>
@@ -529,7 +535,7 @@
     <value>TableLayoutPanel</value>
   </data>
   <data name="&gt;&gt;PackageTagsLabel.ZOrder" xml:space="preserve">
-    <value>13</value>
+    <value>12</value>
   </data>
   <data name="RepositoryUrlLabel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left</value>
@@ -541,16 +547,16 @@
     <value>NoControl</value>
   </data>
   <data name="RepositoryUrlLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 363</value>
+    <value>0, 500</value>
   </data>
   <data name="RepositoryUrlLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 3, 0, 3</value>
+    <value>0, 5, 0, 5</value>
   </data>
   <data name="RepositoryUrlLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>85, 13</value>
+    <value>126, 20</value>
   </data>
   <data name="RepositoryUrlLabel.TabIndex" type="System.Int32, mscorlib">
-    <value>22</value>
+    <value>0</value>
   </data>
   <data name="RepositoryUrlLabel.Text" xml:space="preserve">
     <value>&amp;Repository URL:</value>
@@ -565,7 +571,7 @@
     <value>TableLayoutPanel</value>
   </data>
   <data name="&gt;&gt;RepositoryUrlLabel.ZOrder" xml:space="preserve">
-    <value>14</value>
+    <value>13</value>
   </data>
   <data name="PackageReleaseNotesLabel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left</value>
@@ -577,16 +583,16 @@
     <value>NoControl</value>
   </data>
   <data name="PackageReleaseNotesLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 458</value>
+    <value>0, 634</value>
   </data>
   <data name="PackageReleaseNotesLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 3, 0, 3</value>
+    <value>0, 5, 0, 5</value>
   </data>
   <data name="PackageReleaseNotesLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>78, 13</value>
+    <value>116, 20</value>
   </data>
   <data name="PackageReleaseNotesLabel.TabIndex" type="System.Int32, mscorlib">
-    <value>28</value>
+    <value>0</value>
   </data>
   <data name="PackageReleaseNotesLabel.Text" xml:space="preserve">
     <value>Release &amp;notes:</value>
@@ -601,7 +607,7 @@
     <value>TableLayoutPanel</value>
   </data>
   <data name="&gt;&gt;PackageReleaseNotesLabel.ZOrder" xml:space="preserve">
-    <value>15</value>
+    <value>14</value>
   </data>
   <data name="RepositoryTypeLabel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left</value>
@@ -613,16 +619,16 @@
     <value>NoControl</value>
   </data>
   <data name="RepositoryTypeLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 389</value>
+    <value>0, 536</value>
   </data>
   <data name="RepositoryTypeLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 3, 0, 3</value>
+    <value>0, 5, 0, 5</value>
   </data>
   <data name="RepositoryTypeLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>83, 13</value>
+    <value>123, 20</value>
   </data>
   <data name="RepositoryTypeLabel.TabIndex" type="System.Int32, mscorlib">
-    <value>24</value>
+    <value>0</value>
   </data>
   <data name="RepositoryTypeLabel.Text" xml:space="preserve">
     <value>&amp;Repository type:</value>
@@ -637,16 +643,22 @@
     <value>TableLayoutPanel</value>
   </data>
   <data name="&gt;&gt;RepositoryTypeLabel.ZOrder" xml:space="preserve">
-    <value>16</value>
+    <value>15</value>
+  </data>
+  <data name="PackageTags.AccessibleName" xml:space="preserve">
+    <value>Package Tags</value>
   </data>
   <data name="PackageTags.Location" type="System.Drawing.Point, System.Drawing">
-    <value>139, 412</value>
+    <value>208, 569</value>
+  </data>
+  <data name="PackageTags.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 5, 4, 5</value>
   </data>
   <data name="PackageTags.Size" type="System.Drawing.Size, System.Drawing">
-    <value>571, 20</value>
+    <value>854, 26</value>
   </data>
   <data name="PackageTags.TabIndex" type="System.Int32, mscorlib">
-    <value>27</value>
+    <value>14</value>
   </data>
   <data name="&gt;&gt;PackageTags.Name" xml:space="preserve">
     <value>PackageTags</value>
@@ -658,10 +670,16 @@
     <value>TableLayoutPanel</value>
   </data>
   <data name="&gt;&gt;PackageTags.ZOrder" xml:space="preserve">
-    <value>17</value>
+    <value>16</value>
+  </data>
+  <data name="PackageReleaseNotes.AccessibleName" xml:space="preserve">
+    <value>Package Release Notes</value>
   </data>
   <data name="PackageReleaseNotes.Location" type="System.Drawing.Point, System.Drawing">
-    <value>139, 438</value>
+    <value>208, 605</value>
+  </data>
+  <data name="PackageReleaseNotes.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 5, 4, 5</value>
   </data>
   <data name="PackageReleaseNotes.Multiline" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -670,10 +688,10 @@
     <value>Both</value>
   </data>
   <data name="PackageReleaseNotes.Size" type="System.Drawing.Size, System.Drawing">
-    <value>571, 53</value>
+    <value>854, 79</value>
   </data>
   <data name="PackageReleaseNotes.TabIndex" type="System.Int32, mscorlib">
-    <value>29</value>
+    <value>15</value>
   </data>
   <data name="&gt;&gt;PackageReleaseNotes.Name" xml:space="preserve">
     <value>PackageReleaseNotes</value>
@@ -685,7 +703,7 @@
     <value>TableLayoutPanel</value>
   </data>
   <data name="&gt;&gt;PackageReleaseNotes.ZOrder" xml:space="preserve">
-    <value>18</value>
+    <value>17</value>
   </data>
   <data name="PackageProjectUrlLabel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left</value>
@@ -697,16 +715,16 @@
     <value>NoControl</value>
   </data>
   <data name="PackageProjectUrlLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 311</value>
+    <value>0, 428</value>
   </data>
   <data name="PackageProjectUrlLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 3, 0, 3</value>
+    <value>0, 5, 0, 5</value>
   </data>
   <data name="PackageProjectUrlLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>68, 13</value>
+    <value>99, 20</value>
   </data>
   <data name="PackageProjectUrlLabel.TabIndex" type="System.Int32, mscorlib">
-    <value>18</value>
+    <value>0</value>
   </data>
   <data name="PackageProjectUrlLabel.Text" xml:space="preserve">
     <value>&amp;Project URL:</value>
@@ -721,7 +739,7 @@
     <value>TableLayoutPanel</value>
   </data>
   <data name="&gt;&gt;PackageProjectUrlLabel.ZOrder" xml:space="preserve">
-    <value>19</value>
+    <value>18</value>
   </data>
   <data name="GeneratePackageOnBuild.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left</value>
@@ -733,10 +751,13 @@
     <value>NoControl</value>
   </data>
   <data name="GeneratePackageOnBuild.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 3</value>
+    <value>4, 5</value>
+  </data>
+  <data name="GeneratePackageOnBuild.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 5, 4, 5</value>
   </data>
   <data name="GeneratePackageOnBuild.Size" type="System.Drawing.Size, System.Drawing">
-    <value>202, 27</value>
+    <value>278, 24</value>
   </data>
   <data name="GeneratePackageOnBuild.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -754,7 +775,7 @@
     <value>TableLayoutPanel</value>
   </data>
   <data name="&gt;&gt;GeneratePackageOnBuild.ZOrder" xml:space="preserve">
-    <value>20</value>
+    <value>19</value>
   </data>
   <data name="NeutralLanguageLabel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left</value>
@@ -766,16 +787,16 @@
     <value>NoControl</value>
   </data>
   <data name="NeutralLanguageLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 501</value>
+    <value>0, 698</value>
   </data>
   <data name="NeutralLanguageLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 3, 0, 3</value>
+    <value>0, 5, 0, 5</value>
   </data>
   <data name="NeutralLanguageLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>136, 13</value>
+    <value>204, 20</value>
   </data>
   <data name="NeutralLanguageLabel.TabIndex" type="System.Int32, mscorlib">
-    <value>30</value>
+    <value>0</value>
   </data>
   <data name="NeutralLanguageLabel.Text" xml:space="preserve">
     <value>Assembly &amp;neutral language:</value>
@@ -790,7 +811,7 @@
     <value>TableLayoutPanel</value>
   </data>
   <data name="&gt;&gt;NeutralLanguageLabel.ZOrder" xml:space="preserve">
-    <value>21</value>
+    <value>20</value>
   </data>
   <data name="AssemblyVersionLayoutPanel.ColumnCount" type="System.Int32, mscorlib">
     <value>4</value>
@@ -799,10 +820,13 @@
     <value>Assembly Version Revision</value>
   </data>
   <data name="AssemblyVersionRevisionTextBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>174, 3</value>
+    <value>262, 5</value>
+  </data>
+  <data name="AssemblyVersionRevisionTextBox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 5, 4, 5</value>
   </data>
   <data name="AssemblyVersionRevisionTextBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>53, 20</value>
+    <value>78, 26</value>
   </data>
   <data name="AssemblyVersionRevisionTextBox.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -823,10 +847,13 @@
     <value>Assembly Version Build</value>
   </data>
   <data name="AssemblyVersionBuildTextBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>117, 3</value>
+    <value>176, 5</value>
+  </data>
+  <data name="AssemblyVersionBuildTextBox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 5, 4, 5</value>
   </data>
   <data name="AssemblyVersionBuildTextBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>51, 20</value>
+    <value>74, 26</value>
   </data>
   <data name="AssemblyVersionBuildTextBox.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -847,10 +874,13 @@
     <value>Assembly Version Minor</value>
   </data>
   <data name="AssemblyVersionMinorTextBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>60, 3</value>
+    <value>90, 5</value>
+  </data>
+  <data name="AssemblyVersionMinorTextBox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 5, 4, 5</value>
   </data>
   <data name="AssemblyVersionMinorTextBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>51, 20</value>
+    <value>74, 26</value>
   </data>
   <data name="AssemblyVersionMinorTextBox.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -871,10 +901,13 @@
     <value>Assembly Version Major</value>
   </data>
   <data name="AssemblyVersionMajorTextBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 3</value>
+    <value>4, 5</value>
+  </data>
+  <data name="AssemblyVersionMajorTextBox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 5, 4, 5</value>
   </data>
   <data name="AssemblyVersionMajorTextBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>51, 20</value>
+    <value>74, 26</value>
   </data>
   <data name="AssemblyVersionMajorTextBox.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -892,16 +925,19 @@
     <value>3</value>
   </data>
   <data name="AssemblyVersionLayoutPanel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>139, 524</value>
+    <value>208, 732</value>
+  </data>
+  <data name="AssemblyVersionLayoutPanel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 5, 4, 5</value>
   </data>
   <data name="AssemblyVersionLayoutPanel.RowCount" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
   <data name="AssemblyVersionLayoutPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>230, 26</value>
+    <value>345, 40</value>
   </data>
   <data name="AssemblyVersionLayoutPanel.TabIndex" type="System.Int32, mscorlib">
-    <value>33</value>
+    <value>17</value>
   </data>
   <data name="&gt;&gt;AssemblyVersionLayoutPanel.Name" xml:space="preserve">
     <value>AssemblyVersionLayoutPanel</value>
@@ -913,7 +949,7 @@
     <value>TableLayoutPanel</value>
   </data>
   <data name="&gt;&gt;AssemblyVersionLayoutPanel.ZOrder" xml:space="preserve">
-    <value>22</value>
+    <value>21</value>
   </data>
   <data name="AssemblyVersionLayoutPanel.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
     <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="AssemblyVersionRevisionTextBox" Row="0" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="AssemblyVersionBuildTextBox" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="AssemblyVersionMinorTextBox" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="AssemblyVersionMajorTextBox" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,25,Percent,25,Percent,25,Percent,25" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
@@ -925,10 +961,13 @@
     <value>Assembly File Verison Revision</value>
   </data>
   <data name="FileVersionRevisionTextBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>174, 3</value>
+    <value>262, 5</value>
+  </data>
+  <data name="FileVersionRevisionTextBox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 5, 4, 5</value>
   </data>
   <data name="FileVersionRevisionTextBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>53, 20</value>
+    <value>78, 26</value>
   </data>
   <data name="FileVersionRevisionTextBox.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -949,10 +988,13 @@
     <value>Assembly File Verison Build</value>
   </data>
   <data name="FileVersionBuildTextBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>117, 3</value>
+    <value>176, 5</value>
+  </data>
+  <data name="FileVersionBuildTextBox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 5, 4, 5</value>
   </data>
   <data name="FileVersionBuildTextBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>51, 20</value>
+    <value>74, 26</value>
   </data>
   <data name="FileVersionBuildTextBox.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -973,10 +1015,13 @@
     <value>Assembly File Verison Minor</value>
   </data>
   <data name="FileVersionMinorTextBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>60, 3</value>
+    <value>90, 5</value>
+  </data>
+  <data name="FileVersionMinorTextBox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 5, 4, 5</value>
   </data>
   <data name="FileVersionMinorTextBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>51, 20</value>
+    <value>74, 26</value>
   </data>
   <data name="FileVersionMinorTextBox.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -997,10 +1042,13 @@
     <value>Assembly File Verison Major</value>
   </data>
   <data name="FileVersionMajorTextBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 3</value>
+    <value>4, 5</value>
+  </data>
+  <data name="FileVersionMajorTextBox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 5, 4, 5</value>
   </data>
   <data name="FileVersionMajorTextBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>51, 20</value>
+    <value>74, 26</value>
   </data>
   <data name="FileVersionMajorTextBox.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1018,16 +1066,19 @@
     <value>3</value>
   </data>
   <data name="FileVersionLayoutPanel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>139, 556</value>
+    <value>208, 782</value>
+  </data>
+  <data name="FileVersionLayoutPanel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 5, 4, 5</value>
   </data>
   <data name="FileVersionLayoutPanel.RowCount" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
   <data name="FileVersionLayoutPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>230, 25</value>
+    <value>345, 38</value>
   </data>
   <data name="FileVersionLayoutPanel.TabIndex" type="System.Int32, mscorlib">
-    <value>35</value>
+    <value>18</value>
   </data>
   <data name="&gt;&gt;FileVersionLayoutPanel.Name" xml:space="preserve">
     <value>FileVersionLayoutPanel</value>
@@ -1039,40 +1090,61 @@
     <value>TableLayoutPanel</value>
   </data>
   <data name="&gt;&gt;FileVersionLayoutPanel.ZOrder" xml:space="preserve">
-    <value>23</value>
+    <value>22</value>
   </data>
   <data name="FileVersionLayoutPanel.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
     <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="FileVersionRevisionTextBox" Row="0" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="FileVersionBuildTextBox" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="FileVersionMinorTextBox" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="FileVersionMajorTextBox" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,25,Percent,25,Percent,25,Percent,25" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
-  <data name="PackageLicenseUrl.Location" type="System.Drawing.Point, System.Drawing">
-    <value>139, 282</value>
+  <data name="PackageLicenseLabel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Left</value>
   </data>
-  <data name="PackageLicenseUrl.Size" type="System.Drawing.Size, System.Drawing">
-    <value>571, 20</value>
+  <data name="PackageLicenseLabel.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
-  <data name="PackageLicenseUrl.TabIndex" type="System.Int32, mscorlib">
-    <value>17</value>
+  <data name="PackageLicenseLabel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
-  <data name="&gt;&gt;PackageLicenseUrl.Name" xml:space="preserve">
-    <value>PackageLicenseUrl</value>
+  <data name="PackageLicenseLabel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 385</value>
   </data>
-  <data name="&gt;&gt;PackageLicenseUrl.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="PackageLicenseLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 5, 0, 5</value>
   </data>
-  <data name="&gt;&gt;PackageLicenseUrl.Parent" xml:space="preserve">
+  <data name="PackageLicenseLabel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>68, 20</value>
+  </data>
+  <data name="PackageLicenseLabel.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="PackageLicenseLabel.Text" xml:space="preserve">
+    <value>&amp;License:</value>
+  </data>
+  <data name="&gt;&gt;PackageLicenseLabel.Name" xml:space="preserve">
+    <value>PackageLicenseLabel</value>
+  </data>
+  <data name="&gt;&gt;PackageLicenseLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;PackageLicenseLabel.Parent" xml:space="preserve">
     <value>TableLayoutPanel</value>
   </data>
-  <data name="&gt;&gt;PackageLicenseUrl.ZOrder" xml:space="preserve">
-    <value>24</value>
+  <data name="&gt;&gt;PackageLicenseLabel.ZOrder" xml:space="preserve">
+    <value>23</value>
+  </data>
+  <data name="NeutralLanguageComboBox.AccessibleName" xml:space="preserve">
+    <value>Package Assembly Neutral Language</value>
   </data>
   <data name="NeutralLanguageComboBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>139, 497</value>
+    <value>208, 694</value>
+  </data>
+  <data name="NeutralLanguageComboBox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 5, 4, 5</value>
   </data>
   <data name="NeutralLanguageComboBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>571, 21</value>
+    <value>854, 28</value>
   </data>
   <data name="NeutralLanguageComboBox.TabIndex" type="System.Int32, mscorlib">
-    <value>31</value>
+    <value>16</value>
   </data>
   <data name="&gt;&gt;NeutralLanguageComboBox.Name" xml:space="preserve">
     <value>NeutralLanguageComboBox</value>
@@ -1084,7 +1156,7 @@
     <value>TableLayoutPanel</value>
   </data>
   <data name="&gt;&gt;NeutralLanguageComboBox.ZOrder" xml:space="preserve">
-    <value>25</value>
+    <value>24</value>
   </data>
   <data name="PackageRequireLicenseAcceptance.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left</value>
@@ -1096,10 +1168,13 @@
     <value>NoControl</value>
   </data>
   <data name="PackageRequireLicenseAcceptance.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 36</value>
+    <value>4, 39</value>
+  </data>
+  <data name="PackageRequireLicenseAcceptance.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 5, 4, 5</value>
   </data>
   <data name="PackageRequireLicenseAcceptance.Size" type="System.Drawing.Size, System.Drawing">
-    <value>172, 27</value>
+    <value>231, 24</value>
   </data>
   <data name="PackageRequireLicenseAcceptance.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -1117,7 +1192,7 @@
     <value>TableLayoutPanel</value>
   </data>
   <data name="&gt;&gt;PackageRequireLicenseAcceptance.ZOrder" xml:space="preserve">
-    <value>26</value>
+    <value>25</value>
   </data>
   <data name="PackageIdLabel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left</value>
@@ -1129,16 +1204,16 @@
     <value>NoControl</value>
   </data>
   <data name="PackageIdLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 72</value>
+    <value>0, 76</value>
   </data>
   <data name="PackageIdLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 3, 0, 3</value>
+    <value>0, 5, 0, 5</value>
   </data>
   <data name="PackageIdLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>64, 13</value>
+    <value>91, 20</value>
   </data>
   <data name="PackageIdLabel.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>0</value>
   </data>
   <data name="PackageIdLabel.Text" xml:space="preserve">
     <value>Package &amp;id:</value>
@@ -1153,16 +1228,22 @@
     <value>TableLayoutPanel</value>
   </data>
   <data name="&gt;&gt;PackageIdLabel.ZOrder" xml:space="preserve">
-    <value>27</value>
+    <value>26</value>
+  </data>
+  <data name="PackageId.AccessibleName" xml:space="preserve">
+    <value>Package ID</value>
   </data>
   <data name="PackageId.Location" type="System.Drawing.Point, System.Drawing">
-    <value>139, 69</value>
+    <value>208, 73</value>
+  </data>
+  <data name="PackageId.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 5, 4, 5</value>
   </data>
   <data name="PackageId.Size" type="System.Drawing.Size, System.Drawing">
-    <value>571, 20</value>
+    <value>854, 26</value>
   </data>
   <data name="PackageId.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>2</value>
   </data>
   <data name="&gt;&gt;PackageId.Name" xml:space="preserve">
     <value>PackageId</value>
@@ -1174,7 +1255,7 @@
     <value>TableLayoutPanel</value>
   </data>
   <data name="&gt;&gt;PackageId.ZOrder" xml:space="preserve">
-    <value>28</value>
+    <value>27</value>
   </data>
   <data name="AuthorsLabel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left</value>
@@ -1186,16 +1267,16 @@
     <value>NoControl</value>
   </data>
   <data name="AuthorsLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 124</value>
+    <value>0, 148</value>
   </data>
   <data name="AuthorsLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 3, 0, 3</value>
+    <value>0, 5, 0, 5</value>
   </data>
   <data name="AuthorsLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>46, 13</value>
+    <value>69, 20</value>
   </data>
   <data name="AuthorsLabel.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
+    <value>0</value>
   </data>
   <data name="AuthorsLabel.Text" xml:space="preserve">
     <value>&amp;Authors:</value>
@@ -1210,16 +1291,22 @@
     <value>TableLayoutPanel</value>
   </data>
   <data name="&gt;&gt;AuthorsLabel.ZOrder" xml:space="preserve">
-    <value>29</value>
+    <value>28</value>
+  </data>
+  <data name="Authors.AccessibleName" xml:space="preserve">
+    <value>Package Authors</value>
   </data>
   <data name="Authors.Location" type="System.Drawing.Point, System.Drawing">
-    <value>139, 121</value>
+    <value>208, 145</value>
+  </data>
+  <data name="Authors.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 5, 4, 5</value>
   </data>
   <data name="Authors.Size" type="System.Drawing.Size, System.Drawing">
-    <value>571, 20</value>
+    <value>854, 26</value>
   </data>
   <data name="Authors.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
+    <value>4</value>
   </data>
   <data name="&gt;&gt;Authors.Name" xml:space="preserve">
     <value>Authors</value>
@@ -1231,7 +1318,7 @@
     <value>TableLayoutPanel</value>
   </data>
   <data name="&gt;&gt;Authors.ZOrder" xml:space="preserve">
-    <value>30</value>
+    <value>29</value>
   </data>
   <data name="AssemblyCompanyLabel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left</value>
@@ -1243,16 +1330,16 @@
     <value>NoControl</value>
   </data>
   <data name="AssemblyCompanyLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 150</value>
+    <value>0, 184</value>
   </data>
   <data name="AssemblyCompanyLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 3, 0, 3</value>
+    <value>0, 5, 0, 5</value>
   </data>
   <data name="AssemblyCompanyLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>54, 13</value>
+    <value>80, 20</value>
   </data>
   <data name="AssemblyCompanyLabel.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
+    <value>0</value>
   </data>
   <data name="AssemblyCompanyLabel.Text" xml:space="preserve">
     <value>Compan&amp;y:</value>
@@ -1267,7 +1354,7 @@
     <value>TableLayoutPanel</value>
   </data>
   <data name="&gt;&gt;AssemblyCompanyLabel.ZOrder" xml:space="preserve">
-    <value>31</value>
+    <value>30</value>
   </data>
   <data name="ProductLabel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left</value>
@@ -1279,16 +1366,16 @@
     <value>NoControl</value>
   </data>
   <data name="ProductLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 176</value>
+    <value>0, 220</value>
   </data>
   <data name="ProductLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 3, 0, 3</value>
+    <value>0, 5, 0, 5</value>
   </data>
   <data name="ProductLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>47, 13</value>
+    <value>68, 20</value>
   </data>
   <data name="ProductLabel.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
+    <value>0</value>
   </data>
   <data name="ProductLabel.Text" xml:space="preserve">
     <value>&amp;Product:</value>
@@ -1303,16 +1390,22 @@
     <value>TableLayoutPanel</value>
   </data>
   <data name="&gt;&gt;ProductLabel.ZOrder" xml:space="preserve">
-    <value>32</value>
+    <value>31</value>
+  </data>
+  <data name="AssemblyCompany.AccessibleName" xml:space="preserve">
+    <value>Package Company</value>
   </data>
   <data name="AssemblyCompany.Location" type="System.Drawing.Point, System.Drawing">
-    <value>139, 147</value>
+    <value>208, 181</value>
+  </data>
+  <data name="AssemblyCompany.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 5, 4, 5</value>
   </data>
   <data name="AssemblyCompany.Size" type="System.Drawing.Size, System.Drawing">
-    <value>571, 20</value>
+    <value>854, 26</value>
   </data>
   <data name="AssemblyCompany.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
+    <value>5</value>
   </data>
   <data name="&gt;&gt;AssemblyCompany.Name" xml:space="preserve">
     <value>AssemblyCompany</value>
@@ -1324,16 +1417,22 @@
     <value>TableLayoutPanel</value>
   </data>
   <data name="&gt;&gt;AssemblyCompany.ZOrder" xml:space="preserve">
-    <value>33</value>
+    <value>32</value>
+  </data>
+  <data name="Product.AccessibleName" xml:space="preserve">
+    <value>Package Product</value>
   </data>
   <data name="Product.Location" type="System.Drawing.Point, System.Drawing">
-    <value>139, 173</value>
+    <value>208, 217</value>
+  </data>
+  <data name="Product.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 5, 4, 5</value>
   </data>
   <data name="Product.Size" type="System.Drawing.Size, System.Drawing">
-    <value>571, 20</value>
+    <value>854, 26</value>
   </data>
   <data name="Product.TabIndex" type="System.Int32, mscorlib">
-    <value>11</value>
+    <value>6</value>
   </data>
   <data name="&gt;&gt;Product.Name" xml:space="preserve">
     <value>Product</value>
@@ -1345,7 +1444,7 @@
     <value>TableLayoutPanel</value>
   </data>
   <data name="&gt;&gt;Product.ZOrder" xml:space="preserve">
-    <value>34</value>
+    <value>33</value>
   </data>
   <data name="AssemblyFileVersionLabel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left</value>
@@ -1357,16 +1456,16 @@
     <value>NoControl</value>
   </data>
   <data name="AssemblyFileVersionLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 562</value>
+    <value>0, 791</value>
   </data>
   <data name="AssemblyFileVersionLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 3, 0, 3</value>
+    <value>0, 5, 0, 5</value>
   </data>
   <data name="AssemblyFileVersionLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>107, 13</value>
+    <value>159, 20</value>
   </data>
   <data name="AssemblyFileVersionLabel.TabIndex" type="System.Int32, mscorlib">
-    <value>34</value>
+    <value>0</value>
   </data>
   <data name="AssemblyFileVersionLabel.Text" xml:space="preserve">
     <value>Assembly &amp;file version:</value>
@@ -1381,16 +1480,265 @@
     <value>TableLayoutPanel</value>
   </data>
   <data name="&gt;&gt;AssemblyFileVersionLabel.ZOrder" xml:space="preserve">
+    <value>34</value>
+  </data>
+  <data name="LicenseLayoutPanel.ColumnCount" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="LicenseBrowseButton.AccessibleName" xml:space="preserve">
+    <value>Package License File Browse</value>
+  </data>
+  <data name="LicenseBrowseButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Right</value>
+  </data>
+  <data name="LicenseBrowseButton.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="LicenseBrowseButton.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
+  </data>
+  <data name="LicenseBrowseButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="LicenseBrowseButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>769, 5</value>
+  </data>
+  <data name="LicenseBrowseButton.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="LicenseBrowseButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>84, 30</value>
+  </data>
+  <data name="LicenseBrowseButton.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="LicenseBrowseButton.Text" xml:space="preserve">
+    <value>Browse...</value>
+  </data>
+  <data name="&gt;&gt;LicenseBrowseButton.Name" xml:space="preserve">
+    <value>LicenseBrowseButton</value>
+  </data>
+  <data name="&gt;&gt;LicenseBrowseButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;LicenseBrowseButton.Parent" xml:space="preserve">
+    <value>LicenseLayoutPanel</value>
+  </data>
+  <data name="&gt;&gt;LicenseBrowseButton.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="LicenseFileNameTextBox.AccessibleName" xml:space="preserve">
+    <value>Package License File Path</value>
+  </data>
+  <data name="LicenseFileNameTextBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>None</value>
+  </data>
+  <data name="LicenseFileNameTextBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>498, 7</value>
+  </data>
+  <data name="LicenseFileNameTextBox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 5, 4, 5</value>
+  </data>
+  <data name="LicenseFileNameTextBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>243, 26</value>
+  </data>
+  <data name="LicenseFileNameTextBox.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;LicenseFileNameTextBox.Name" xml:space="preserve">
+    <value>LicenseFileNameTextBox</value>
+  </data>
+  <data name="&gt;&gt;LicenseFileNameTextBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;LicenseFileNameTextBox.Parent" xml:space="preserve">
+    <value>LicenseLayoutPanel</value>
+  </data>
+  <data name="&gt;&gt;LicenseFileNameTextBox.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="ExpressionLabel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Left</value>
+  </data>
+  <data name="ExpressionLabel.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="ExpressionLabel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="ExpressionLabel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 10</value>
+  </data>
+  <data name="ExpressionLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 5, 0, 5</value>
+  </data>
+  <data name="ExpressionLabel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>91, 20</value>
+  </data>
+  <data name="ExpressionLabel.TabIndex" type="System.Int32, mscorlib">
+    <value>16</value>
+  </data>
+  <data name="ExpressionLabel.Text" xml:space="preserve">
+    <value>&amp;Expression:</value>
+  </data>
+  <data name="&gt;&gt;ExpressionLabel.Name" xml:space="preserve">
+    <value>ExpressionLabel</value>
+  </data>
+  <data name="&gt;&gt;ExpressionLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;ExpressionLabel.Parent" xml:space="preserve">
+    <value>LicenseLayoutPanel</value>
+  </data>
+  <data name="&gt;&gt;ExpressionLabel.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="FileLabel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Left</value>
+  </data>
+  <data name="FileLabel.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="FileLabel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="FileLabel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>456, 10</value>
+  </data>
+  <data name="FileLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 5, 0, 5</value>
+  </data>
+  <data name="FileLabel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>38, 20</value>
+  </data>
+  <data name="FileLabel.TabIndex" type="System.Int32, mscorlib">
+    <value>16</value>
+  </data>
+  <data name="FileLabel.Text" xml:space="preserve">
+    <value>&amp;File:</value>
+  </data>
+  <data name="&gt;&gt;FileLabel.Name" xml:space="preserve">
+    <value>FileLabel</value>
+  </data>
+  <data name="&gt;&gt;FileLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;FileLabel.Parent" xml:space="preserve">
+    <value>LicenseLayoutPanel</value>
+  </data>
+  <data name="&gt;&gt;FileLabel.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="OrLabel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Left</value>
+  </data>
+  <data name="OrLabel.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="OrLabel.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 8pt, style=Bold</value>
+  </data>
+  <data name="OrLabel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="OrLabel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>419, 10</value>
+  </data>
+  <data name="OrLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 5, 0, 5</value>
+  </data>
+  <data name="OrLabel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>35, 20</value>
+  </data>
+  <data name="OrLabel.TabIndex" type="System.Int32, mscorlib">
+    <value>16</value>
+  </data>
+  <data name="OrLabel.Text" xml:space="preserve">
+    <value>&amp;OR</value>
+  </data>
+  <data name="&gt;&gt;OrLabel.Name" xml:space="preserve">
+    <value>OrLabel</value>
+  </data>
+  <data name="&gt;&gt;OrLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;OrLabel.Parent" xml:space="preserve">
+    <value>LicenseLayoutPanel</value>
+  </data>
+  <data name="&gt;&gt;OrLabel.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="PackageLicenseExpression.AccessibleName" xml:space="preserve">
+    <value>Package License Expression</value>
+  </data>
+  <data name="PackageLicenseExpression.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>None</value>
+  </data>
+  <data name="PackageLicenseExpression.Location" type="System.Drawing.Point, System.Drawing">
+    <value>99, 7</value>
+  </data>
+  <data name="PackageLicenseExpression.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 5, 4, 5</value>
+  </data>
+  <data name="PackageLicenseExpression.Size" type="System.Drawing.Size, System.Drawing">
+    <value>312, 26</value>
+  </data>
+  <data name="PackageLicenseExpression.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;PackageLicenseExpression.Name" xml:space="preserve">
+    <value>PackageLicenseExpression</value>
+  </data>
+  <data name="&gt;&gt;PackageLicenseExpression.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;PackageLicenseExpression.Parent" xml:space="preserve">
+    <value>LicenseLayoutPanel</value>
+  </data>
+  <data name="&gt;&gt;PackageLicenseExpression.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="LicenseLayoutPanel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>208, 375</value>
+  </data>
+  <data name="LicenseLayoutPanel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 5, 4, 5</value>
+  </data>
+  <data name="LicenseLayoutPanel.RowCount" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="LicenseLayoutPanel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>853, 40</value>
+  </data>
+  <data name="LicenseLayoutPanel.TabIndex" type="System.Int32, mscorlib">
+    <value>9</value>
+  </data>
+  <data name="&gt;&gt;LicenseLayoutPanel.Name" xml:space="preserve">
+    <value>LicenseLayoutPanel</value>
+  </data>
+  <data name="&gt;&gt;LicenseLayoutPanel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;LicenseLayoutPanel.Parent" xml:space="preserve">
+    <value>TableLayoutPanel</value>
+  </data>
+  <data name="&gt;&gt;LicenseLayoutPanel.ZOrder" xml:space="preserve">
     <value>35</value>
   </data>
+  <data name="LicenseLayoutPanel.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="LicenseBrowseButton" Row="0" RowSpan="1" Column="5" ColumnSpan="1" /&gt;&lt;Control Name="LicenseFileNameTextBox" Row="0" RowSpan="1" Column="4" ColumnSpan="1" /&gt;&lt;Control Name="ExpressionLabel" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="FileLabel" Row="0" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="OrLabel" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="PackageLicenseExpression" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,10.86449,Percent,38.31776,Percent,4.439252,Percent,4.556075,Percent,29.43925,Percent,12.26636" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
   <data name="TableLayoutPanel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 3</value>
+    <value>4, 5</value>
+  </data>
+  <data name="TableLayoutPanel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 5, 4, 5</value>
   </data>
   <data name="TableLayoutPanel.RowCount" type="System.Int32, mscorlib">
     <value>28</value>
   </data>
   <data name="TableLayoutPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>786, 626</value>
+    <value>1179, 963</value>
   </data>
   <data name="TableLayoutPanel.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1408,16 +1756,19 @@
     <value>0</value>
   </data>
   <data name="TableLayoutPanel.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="AssemblyVersionLabel" Row="25" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="CopyrightLabel" Row="10" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="Copyright" Row="10" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="DescriptionLabel" Row="9" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="Description" Row="9" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="PackageIconUrl" Row="15" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="PackageIconUrlLabel" Row="15" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="PackageProjectUrl" Row="14" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="PackageVersion" Row="4" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="PackageVersionLabel" Row="4" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="PackageLicenseUrlLabel" Row="13" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="RepositoryUrl" Row="16" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="RepositoryType" Row="17" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="PackageTagsLabel" Row="18" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="RepositoryUrlLabel" Row="16" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="PackageReleaseNotesLabel" Row="19" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="RepositoryTypeLabel" Row="17" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="PackageTags" Row="18" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="PackageReleaseNotes" Row="19" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="PackageProjectUrlLabel" Row="14" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="GeneratePackageOnBuild" Row="0" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;Control Name="NeutralLanguageLabel" Row="24" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="AssemblyVersionLayoutPanel" Row="25" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="FileVersionLayoutPanel" Row="26" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="PackageLicenseUrl" Row="13" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="NeutralLanguageComboBox" Row="24" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="PackageRequireLicenseAcceptance" Row="1" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;Control Name="PackageIdLabel" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="PackageId" Row="2" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="AuthorsLabel" Row="5" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="Authors" Row="5" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="AssemblyCompanyLabel" Row="6" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="ProductLabel" Row="7" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="AssemblyCompany" Row="6" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="Product" Row="7" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="AssemblyFileVersionLabel" Row="26" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,Percent,100" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="AssemblyVersionLabel" Row="25" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="CopyrightLabel" Row="10" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="Copyright" Row="10" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="DescriptionLabel" Row="9" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="Description" Row="9" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="PackageIconUrl" Row="15" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="PackageIconUrlLabel" Row="15" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="PackageProjectUrl" Row="14" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="PackageVersion" Row="4" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="PackageVersionLabel" Row="4" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="RepositoryUrl" Row="16" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="RepositoryType" Row="17" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="PackageTagsLabel" Row="18" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="RepositoryUrlLabel" Row="16" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="PackageReleaseNotesLabel" Row="19" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="RepositoryTypeLabel" Row="17" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="PackageTags" Row="18" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="PackageReleaseNotes" Row="19" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="PackageProjectUrlLabel" Row="14" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="GeneratePackageOnBuild" Row="0" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;Control Name="NeutralLanguageLabel" Row="24" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="AssemblyVersionLayoutPanel" Row="25" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="FileVersionLayoutPanel" Row="26" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="PackageLicenseLabel" Row="13" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="NeutralLanguageComboBox" Row="24" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="PackageRequireLicenseAcceptance" Row="1" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;Control Name="PackageIdLabel" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="PackageId" Row="2" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="AuthorsLabel" Row="5" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="Authors" Row="5" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="AssemblyCompanyLabel" Row="6" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="ProductLabel" Row="7" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="AssemblyCompany" Row="6" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="Product" Row="7" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="AssemblyFileVersionLabel" Row="26" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="LicenseLayoutPanel" Row="13" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="$this.Localizable" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>6, 13</value>
+    <value>9, 20</value>
+  </data>
+  <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 5, 4, 5</value>
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>813, 629</value>
+    <value>1220, 968</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>PackagePropPage</value>

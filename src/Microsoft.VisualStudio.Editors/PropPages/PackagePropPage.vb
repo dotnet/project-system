@@ -2,6 +2,8 @@
 
 Imports System.ComponentModel
 Imports System.Windows.Forms
+Imports Microsoft.VisualStudio.Editors.Common
+Imports System.IO
 
 Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
@@ -186,7 +188,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     datalist.Add(data)
                     data = New PropertyControlData(105, "Copyright", Copyright, ControlDataFlags.None, New Control() {CopyrightLabel})
                     datalist.Add(data)
-                    data = New PropertyControlData(107, "PackageLicenseUrl", PackageLicenseUrl, ControlDataFlags.None, New Control() {PackageLicenseUrlLabel})
+                    data = New PropertyControlData(107, "PackageLicenseExpression", PackageLicenseExpression, ControlDataFlags.None, New Control() {PackageLicenseLabel})
                     datalist.Add(data)
                     data = New PropertyControlData(108, "PackageProjectUrl", PackageProjectUrl, ControlDataFlags.None, New Control() {PackageProjectUrlLabel})
                     datalist.Add(data)
@@ -230,7 +232,32 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         Private Sub NeutralLanguageComboBox_DropDown(sender As Object, e As EventArgs) Handles NeutralLanguageComboBox.DropDown
             PopulateNeutralLanguageComboBox(NeutralLanguageComboBox)
-            Common.SetComboBoxDropdownWidth(NeutralLanguageComboBox)
+            SetComboBoxDropdownWidth(NeutralLanguageComboBox)
+        End Sub
+
+        Private Sub LicenseBrowseButton_Click(sender As Object, e As EventArgs) Handles LicenseBrowseButton.Click
+            Dim sInitialDirectory = ""
+            Dim sFileName = ""
+
+            Dim fileNames As ArrayList = GetFilesViaBrowse(ServiceProvider, Handle, sInitialDirectory, My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_AddExistingFilesTitle,
+                    CombineDialogFilters(
+                        CreateDialogFilter(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Filter_Text, "txt"),
+                        GetAllFilesDialogFilter()
+                        ),
+                        0, False, sFileName)
+
+            If fileNames IsNot Nothing AndAlso fileNames.Count = 1 Then
+                sFileName = DirectCast(fileNames(0), String)
+                If File.Exists(sFileName) Then
+                    LicenseFileNameTextBox.Text = sFileName
+                    SetDirty(LicenseFileNameTextBox, True)
+                Else
+                    DelayValidate(LicenseFileNameTextBox)
+                End If
+            Else
+                DelayValidate(LicenseFileNameTextBox)
+            End If
+
         End Sub
 
         Protected Overrides Function GetF1HelpKeyword() As String
