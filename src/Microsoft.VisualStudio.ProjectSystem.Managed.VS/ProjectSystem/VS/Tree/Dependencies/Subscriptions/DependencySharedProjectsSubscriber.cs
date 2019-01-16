@@ -167,10 +167,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             }
 
             IEnumerable<string> sharedFolderProjectPaths = sharedFolders.Value.Select(sf => sf.ProjectPath);
-            var currentSharedImportNodes = targetedSnapshot.TopLevelDependencies
+            var currentSharedImportNodePaths = targetedSnapshot.TopLevelDependencies
                 .Where(x => x.Flags.Contains(DependencyTreeFlags.SharedProjectFlags))
+                .Select(x => x.Path)
                 .ToList();
-            IEnumerable<string> currentSharedImportNodePaths = currentSharedImportNodes.Select(x => x.Path);
 
             var diff = new SetDiff<string>(currentSharedImportNodePaths, sharedFolderProjectPaths);
 
@@ -189,7 +189,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             // process removed nodes
             foreach (string removedSharedImportPath in diff.Removed)
             {
-                bool exists = currentSharedImportNodes.Any(node => PathHelper.IsSamePath(node.Path, removedSharedImportPath));
+                bool exists = currentSharedImportNodePaths.Any(nodePath => PathHelper.IsSamePath(nodePath, removedSharedImportPath));
 
                 if (exists)
                 {
