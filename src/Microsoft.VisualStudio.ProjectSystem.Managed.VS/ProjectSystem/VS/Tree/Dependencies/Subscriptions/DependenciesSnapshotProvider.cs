@@ -39,7 +39,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         private readonly object _linksLock = new object();
         private readonly List<IDisposable> _evaluationSubscriptionLinks = new List<IDisposable>();
 
-        private readonly IAggregateDependenciesSnapshotProvider _aggregateSnapshotProvider;
         private readonly ITargetFrameworkProvider _targetFrameworkProvider;
         private readonly IUnconfiguredProjectCommonServices _commonServices;
         private readonly ITaskDelayScheduler _dependenciesUpdateScheduler;
@@ -95,7 +94,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             _activeConfiguredProjectSubscriptionService = activeConfiguredProjectSubscriptionService;
             _activeProjectConfigurationRefreshService = activeProjectConfigurationRefreshService;
             _targetFrameworkProvider = targetFrameworkProvider;
-            _aggregateSnapshotProvider = aggregateSnapshotProvider;
 
             _currentSnapshot = DependenciesSnapshot.CreateEmpty(_commonServices.Project.FullPath);
 
@@ -114,6 +112,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 _dependenciesUpdateThrottleInterval,
                 commonServices.ThreadingService,
                 tasksService.UnloadCancellationToken);
+
+            aggregateSnapshotProvider.RegisterSnapshotProvider(this);
         }
 
         public IDependenciesSnapshot CurrentSnapshot => _currentSnapshot;
@@ -201,8 +201,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
             _commonServices.Project.ProjectUnloading += OnUnconfiguredProjectUnloadingAsync;
             _commonServices.Project.ProjectRenamed += OnUnconfiguredProjectRenamedAsync;
-
-            _aggregateSnapshotProvider.RegisterSnapshotProvider(this);
 
             foreach (Lazy<IProjectDependenciesSubTreeProvider, IOrderPrecedenceMetadataView> provider in _subTreeProviders)
             {
