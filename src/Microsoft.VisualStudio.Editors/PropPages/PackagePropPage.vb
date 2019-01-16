@@ -1,9 +1,13 @@
 ﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+Option Strict Off
 
 Imports System.ComponentModel
 Imports System.Windows.Forms
 Imports Microsoft.VisualStudio.Editors.Common
 Imports System.IO
+Imports Microsoft.VisualStudio.Shell.Interop
+Imports Microsoft.VisualStudio.ProjectSystem.Properties
+Imports Microsoft.VisualStudio.Shell
 
 Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
@@ -34,6 +38,53 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             MyBase.PreInitPage()
         End Sub
 
+        Private Function GetUnconfiguredProject(project As IVsProject) As ProjectSystem.UnconfiguredProject
+            Dim context = CType(project, IVsBrowseObjectContext)
+            If context Is Nothing Then
+                Dim hierarchy = CType(project, IVsHierarchy)
+                If hierarchy IsNot Nothing Then
+                    Dim extObject As Object = Nothing
+                    If ErrorHandler.Succeeded(hierarchy.GetProperty(CType(VSConstants.VSITEMID.Root, UInteger), CType(__VSHPROPID.VSHPROPID_ExtObject, Integer), <Out>CType(extObject, Object)</Out>)) Then
+                        Dim dteProject = CType(extObject, EnvDTE.Projects)
+                        If (dteProject IsNot Nothing) Then
+                            'This is not allowed with Strict is on, need to figure out why
+                            context = CType(dteProject.Object, IVsBrowseObjectContext)
+                        End If
+                    End If
+                End If
+            End If
+
+            Return context?.UnconfiguredProject
+        End Function
+
+        Private Function GetUnconfiguredProject(project As EnvDTE.Project) As ProjectSystem.UnconfiguredProject
+            Dim context = CType(project, IVsBrowseObjectContext)
+            If context IsNot Nothing And project IsNot Nothing Then
+                context = CType(DTEProject.Object, IVsBrowseObjectContext)
+            End If
+
+            Return context?.UnconfiguredProject
+        End Function
+
+        Private Function GetUnconfiguredProject(hierarchy As IVsHierarchy) As ProjectSystem.UnconfiguredProject
+            Dim context = CType(hierarchy, IVsBrowseObjectContext)
+            If context IsNot Nothing Then
+                Dim dteProject = CType(GetDTEProject(hierarchy), EnvDTE.Project)
+                If (dteProject IsNot Nothing) Then
+                    context = CType(dteProject.Object, IVsBrowseObjectContext)
+                End If
+            End If
+            Return context?.UnconfiguredProject
+        End Function
+
+        Private Function GetDTEProject(hierarchy As IVsHierarchy) As EnvDTE.Project
+            Dim extObject As Object = Nothing
+            If ErrorHandler.Succeeded(hierarchy.GetProperty(CType(VSConstants.VSITEMID.Root, UInteger), CType(__VSHPROPID.VSHPROPID_ExtObject, Integer), <Out>CType(extObject, Object)</Out>)) Then
+                Return CType(extObject, EnvDTE.Project)
+            End If
+            Return Nothing
+        End Function
+
         Public Sub New()
             MyBase.New()
 
@@ -41,7 +92,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             InitializeComponent()
 
             'Add any initialization after the InitializeComponent() call
-
             AddChangeHandlers()
 
             PageRequiresScaling = False
@@ -61,7 +111,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             If (control Is FileVersionLayoutPanel) Then
                 ValidateAssemblyFileVersion(Version)
             Else
-                Debug.Assert(control Is AssemblyVersionLayoutPanel)
+                'Debug.Assert(control Is AssemblyVersionLayoutPanel)
                 ValidateAssemblyVersion(Version)
             End If
 
@@ -94,7 +144,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             If (control Is FileVersionLayoutPanel) Then
                 Textboxes = _fileVersionTextBoxes
             Else
-                Debug.Assert(control Is AssemblyVersionLayoutPanel)
+                'Debug.Assert(control Is AssemblyVersionLayoutPanel)
                 Textboxes = _assemblyVersionTextBoxes
             End If
             For index As Integer = 0 To 3
@@ -237,6 +287,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             SetComboBoxDropdownWidth(NeutralLanguageComboBox)
         End Sub
 
+        Public Function AccessTheConfiguredProject(unconfiguredProject As ProjectSystem.UnconfiguredProject) As ProjectSystem.ConfiguredProject
+            Return ThreadHelper.JoinableTaskFactory.Run(Function()
+                                                            Return unconfiguredProject.GetSuggestedConfiguredProjectAsync
+                                                        End Function)
+        End Function
+
         Private Sub LicenseBrowseButton_Click(sender As Object, e As EventArgs) Handles LicenseBrowseButton.Click
             Dim sInitialDirectory = ""
             Dim sFileName = ""
@@ -251,8 +307,23 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             If fileNames IsNot Nothing AndAlso fileNames.Count = 1 Then
                 sFileName = DirectCast(fileNames(0), String)
                 If File.Exists(sFileName) Then
-                    LicenseFileNameTextBox.Text = sFileName
+                    LicenseFileNameTextBox.Text = Path.GetFileName(sFileName)
                     SetDirty(LicenseFileNameTextBox, True)
+                    Dim unconfiguredProject = CType(GetUnconfiguredProject(ProjectHierarchy), ProjectSystem.UnconfiguredProject)
+                    Dim configuredProject As ProjectSystem.ConfiguredProject = AccessTheConfiguredProject(unconfiguredProject)
+
+
+                    configuredProject = CType(configuredProject, ProjectSystem.ConfiguredProject)
+                    Dim projectSourceItemProvider = configuredProject.Services.ExportProvider.GetExportedValue(Of ProjectSystem.IProjectSourceItemProvider)()
+                    'projectSourceItemProvider = CType(projectSourceItemProvider, ProjectSystem.SourceItemsService)
+                    ThreadHelper.JoinableTaskFactory.Run(Function()
+                                                             'Return projectSourceItemProvider.AddAsync(ItemData)
+                                                             Return projectSourceItemProvider.AddAsync("None", LicenseFileNameTextBox.Text, {(New KeyValuePair(Of String, String)("Pack", "True")), New KeyValuePair(Of String, String)("PackagePath", "")})
+
+                                                         End Function)
+                    Dim correctDirectory = Directory.GetParent(unconfiguredProject.FullPath).ToString
+                    Dim fileWriteLocation = correctDirectory + "\" + LicenseFileNameTextBox.Text
+                    File.Copy(sFileName, fileWriteLocation)
                 End If
             End If
 
