@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
     internal interface IDependenciesSnapshot : IEquatable<IDependenciesSnapshot>
     {
         /// <summary>
-        /// Gets the path to the project whose dependencies this snapshot contains.
+        /// Gets the full path to the project file whose dependencies this snapshot contains.
         /// </summary>
         /// <remarks>
         /// Cannot be null or empty.

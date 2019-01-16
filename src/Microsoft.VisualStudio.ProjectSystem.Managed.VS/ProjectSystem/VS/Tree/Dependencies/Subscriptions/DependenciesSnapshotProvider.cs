@@ -530,7 +530,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 _currentSnapshot = updatedSnapshot;
             }
 
-            // avoid unnecessary tree updates
+            // Conflate rapid snapshot updates by debouncing events over a short window.
+            // This reduces the frequency of tree updates with minimal perceived latency.
             _dependenciesUpdateScheduler.ScheduleAsyncTask(
                 ct =>
                 {
@@ -539,6 +540,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                         return Task.FromCanceled(ct);
                     }
 
+                    // Always publish the latest snapshot
                     IDependenciesSnapshot snapshot = _currentSnapshot;
 
                     if (snapshot != null)
