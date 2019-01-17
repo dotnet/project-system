@@ -34,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         event EventHandler<SnapshotProviderUnloadingEventArgs> SnapshotProviderUnloading;
     }
 
-    internal sealed class SnapshotChangedEventArgs
+    internal sealed class SnapshotChangedEventArgs : EventArgs
     {
         public SnapshotChangedEventArgs(IDependenciesSnapshot snapshot, CancellationToken token)
         {
