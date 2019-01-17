@@ -541,10 +541,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     // Always publish the latest snapshot
                     IDependenciesSnapshot snapshot = _currentSnapshot;
 
-                    if (snapshot != null)
-                    {
-                        SnapshotChanged?.Invoke(this, new SnapshotChangedEventArgs(snapshot, ct));
-                    }
+                    SnapshotChanged?.Invoke(this, new SnapshotChangedEventArgs(snapshot, ct));
 
                     return Task.CompletedTask;
                 }, token);
