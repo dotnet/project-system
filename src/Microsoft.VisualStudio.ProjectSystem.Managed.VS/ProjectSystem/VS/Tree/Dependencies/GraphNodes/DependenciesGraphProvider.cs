@@ -102,6 +102,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
                         }
                     }
                 }
+                catch (Exception ex)
+                {
+                    context.ReportError(ex);
+                }
                 finally
                 {
                     // OnCompleted must be called to display changes 
