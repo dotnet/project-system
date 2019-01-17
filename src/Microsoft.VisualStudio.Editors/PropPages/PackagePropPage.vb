@@ -1,5 +1,4 @@
 ﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
-Option Strict Off
 
 Imports System.ComponentModel
 Imports System.Windows.Forms
@@ -38,33 +37,34 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             MyBase.PreInitPage()
         End Sub
 
-        Private Function GetUnconfiguredProject(project As IVsProject) As ProjectSystem.UnconfiguredProject
-            Dim context = CType(project, IVsBrowseObjectContext)
-            If context Is Nothing Then
-                Dim hierarchy = CType(project, IVsHierarchy)
-                If hierarchy IsNot Nothing Then
-                    Dim extObject As Object = Nothing
-                    If ErrorHandler.Succeeded(hierarchy.GetProperty(CType(VSConstants.VSITEMID.Root, UInteger), CType(__VSHPROPID.VSHPROPID_ExtObject, Integer), <Out>CType(extObject, Object)</Out>)) Then
-                        Dim dteProject = CType(extObject, EnvDTE.Projects)
-                        If (dteProject IsNot Nothing) Then
-                            'This is not allowed with Strict is on, need to figure out why
-                            context = CType(dteProject.Object, IVsBrowseObjectContext)
-                        End If
-                    End If
-                End If
-            End If
+        'Unused for now, leaving in case needed for different implementation. Please ignore.
+        'Private Function GetUnconfiguredProject(project As IVsProject) As ProjectSystem.UnconfiguredProject
+        '    Dim context = CType(project, IVsBrowseObjectContext)
+        '    If context Is Nothing Then
+        '        Dim hierarchy = CType(project, IVsHierarchy)
+        '        If hierarchy IsNot Nothing Then
+        '            Dim extObject As Object = Nothing
+        '            If ErrorHandler.Succeeded(hierarchy.GetProperty(CType(VSConstants.VSITEMID.Root, UInteger), CType(__VSHPROPID.VSHPROPID_ExtObject, Integer), <Out>CType(extObject, Object)</Out>)) Then
+        '                Dim dteProject = CType(extObject, EnvDTE.Projects)
+        '                If (dteProject IsNot Nothing) Then
+        '                    'context = CType(dteProject.Object, IVsBrowseObjectContext)
+        '                End If
+        '            End If
+        '        End If
+        '    End If
 
-            Return context?.UnconfiguredProject
-        End Function
+        '    Return context?.UnconfiguredProject
+        'End Function
 
-        Private Function GetUnconfiguredProject(project As EnvDTE.Project) As ProjectSystem.UnconfiguredProject
-            Dim context = CType(project, IVsBrowseObjectContext)
-            If context IsNot Nothing And project IsNot Nothing Then
-                context = CType(DTEProject.Object, IVsBrowseObjectContext)
-            End If
+        'Unused for now, leaving in case needed for different implementation. Please ignore.
+        'Private Function GetUnconfiguredProject(project As EnvDTE.Project) As ProjectSystem.UnconfiguredProject
+        '    Dim context = CType(project, IVsBrowseObjectContext)
+        '    If context IsNot Nothing And project IsNot Nothing Then
+        '        context = CType(project.Object, IVsBrowseObjectContext)
+        '    End If
 
-            Return context?.UnconfiguredProject
-        End Function
+        '    Return context?.UnconfiguredProject
+        'End Function
 
         Private Function GetUnconfiguredProject(hierarchy As IVsHierarchy) As ProjectSystem.UnconfiguredProject
             Dim context = CType(hierarchy, IVsBrowseObjectContext)
@@ -77,7 +77,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return context?.UnconfiguredProject
         End Function
 
-        Private Function GetDTEProject(hierarchy As IVsHierarchy) As EnvDTE.Project
+        Private Shared Function GetDTEProject(hierarchy As IVsHierarchy) As EnvDTE.Project
             Dim extObject As Object = Nothing
             If ErrorHandler.Succeeded(hierarchy.GetProperty(CType(VSConstants.VSITEMID.Root, UInteger), CType(__VSHPROPID.VSHPROPID_ExtObject, Integer), <Out>CType(extObject, Object)</Out>)) Then
                 Return CType(extObject, EnvDTE.Project)
