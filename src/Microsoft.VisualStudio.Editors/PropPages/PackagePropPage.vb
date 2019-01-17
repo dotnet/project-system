@@ -79,7 +79,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Private Shared Function GetDTEProject(hierarchy As IVsHierarchy) As EnvDTE.Project
             Dim extObject As Object = Nothing
-            If ErrorHandler.Succeeded(hierarchy.GetProperty(CType(VSConstants.VSITEMID.Root, UInteger), CType(__VSHPROPID.VSHPROPID_ExtObject, Integer), <Out>CType(extObject, Object)</Out>)) Then
+            If ErrorHandler.Succeeded(hierarchy.GetProperty(VSConstants.VSITEMID.Root, __VSHPROPID.VSHPROPID_ExtObject, <Out>CType(extObject, Object)</Out>)) Then
                 Return CType(extObject, EnvDTE.Project)
             End If
             Return Nothing
@@ -309,17 +309,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 If File.Exists(sFileName) Then
                     LicenseFileNameTextBox.Text = Path.GetFileName(sFileName)
                     SetDirty(LicenseFileNameTextBox, True)
-                    Dim unconfiguredProject = CType(GetUnconfiguredProject(ProjectHierarchy), ProjectSystem.UnconfiguredProject)
+                    Dim unconfiguredProject = GetUnconfiguredProject(ProjectHierarchy)
                     Dim configuredProject As ProjectSystem.ConfiguredProject = AccessTheConfiguredProject(unconfiguredProject)
-
-
-                    configuredProject = CType(configuredProject, ProjectSystem.ConfiguredProject)
                     Dim projectSourceItemProvider = configuredProject.Services.ExportProvider.GetExportedValue(Of ProjectSystem.IProjectSourceItemProvider)()
-                    'projectSourceItemProvider = CType(projectSourceItemProvider, ProjectSystem.SourceItemsService)
-                    ThreadHelper.JoinableTaskFactory.Run(Function()
-                                                             'Return projectSourceItemProvider.AddAsync(ItemData)
-                                                             Return projectSourceItemProvider.AddAsync("None", LicenseFileNameTextBox.Text, {(New KeyValuePair(Of String, String)("Pack", "True")), New KeyValuePair(Of String, String)("PackagePath", "")})
 
+                    ThreadHelper.JoinableTaskFactory.Run(Function()
+                                                             Return projectSourceItemProvider.AddAsync("None", LicenseFileNameTextBox.Text, {(New KeyValuePair(Of String, String)("Pack", "True")), New KeyValuePair(Of String, String)("PackagePath", "")})
                                                          End Function)
                     Dim correctDirectory = Directory.GetParent(unconfiguredProject.FullPath).ToString
                     Dim fileWriteLocation = correctDirectory + "\" + LicenseFileNameTextBox.Text
