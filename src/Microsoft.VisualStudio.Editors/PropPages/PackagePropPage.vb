@@ -293,6 +293,15 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                                                         End Function)
         End Function
 
+        Private Shared Function GetRelativePath(fullPath As String, basePath As String) As String
+            Dim baseUri = New Uri(basePath)
+            Dim fullUri = New Uri(fullPath)
+
+            Dim relativeUri = baseUri.MakeRelativeUri(fullUri)
+
+            Return relativeUri.ToString().Replace("/", "\")
+        End Function
+
         Private Sub LicenseBrowseButton_Click(sender As Object, e As EventArgs) Handles LicenseBrowseButton.Click
             Dim sInitialDirectory = ""
             Dim sFileName = ""
@@ -307,18 +316,21 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             If fileNames IsNot Nothing AndAlso fileNames.Count = 1 Then
                 sFileName = DirectCast(fileNames(0), String)
                 If File.Exists(sFileName) Then
-                    LicenseFileNameTextBox.Text = Path.GetFileName(sFileName)
-                    SetDirty(LicenseFileNameTextBox, True)
+
                     Dim unconfiguredProject = GetUnconfiguredProject(ProjectHierarchy)
                     Dim configuredProject As ProjectSystem.ConfiguredProject = AccessTheConfiguredProject(unconfiguredProject)
                     Dim projectSourceItemProvider = configuredProject.Services.ExportProvider.GetExportedValue(Of ProjectSystem.IProjectSourceItemProvider)()
-
-                    ThreadHelper.JoinableTaskFactory.Run(Function()
-                                                             Return projectSourceItemProvider.AddAsync("None", LicenseFileNameTextBox.Text, {(New KeyValuePair(Of String, String)("Pack", "True")), New KeyValuePair(Of String, String)("PackagePath", "")})
-                                                         End Function)
                     Dim correctDirectory = Directory.GetParent(unconfiguredProject.FullPath).ToString
                     Dim fileWriteLocation = correctDirectory + "\" + LicenseFileNameTextBox.Text
-                    File.Copy(sFileName, fileWriteLocation)
+                    Dim relativePath As String = GetRelativePath(Path.GetFullPath(sFileName), fileWriteLocation)
+                    LicenseFileNameTextBox.Text = Path.GetFullPath(sFileName)
+                    SetDirty(LicenseFileNameTextBox, True)
+                    LicenseFileNameTextBox.Text = relativePath
+                    ThreadHelper.JoinableTaskFactory.Run(Function()
+                                                             Return projectSourceItemProvider.AddAsync("None", relativePath, {(New KeyValuePair(Of String, String)("Pack", "True")), New KeyValuePair(Of String, String)("PackagePath", "")})
+                                                         End Function)
+                    'No copy
+                    'File.Copy(sFileName, fileWriteLocation)
                 End If
             End If
 
