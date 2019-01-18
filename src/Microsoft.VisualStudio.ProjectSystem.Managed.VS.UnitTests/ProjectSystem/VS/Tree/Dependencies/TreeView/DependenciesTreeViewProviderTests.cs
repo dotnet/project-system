@@ -12,7 +12,7 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 
 using Xunit;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.TreeView
 {
     public sealed class DependenciesTreeViewProviderTests
     {

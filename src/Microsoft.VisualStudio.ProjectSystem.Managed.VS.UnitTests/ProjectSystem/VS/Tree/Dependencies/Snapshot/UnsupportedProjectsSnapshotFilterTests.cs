@@ -2,14 +2,13 @@
 
 using System.Collections.Immutable;
 
-using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Filters;
 
 using Moq;
 
 using Xunit;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
     public sealed class UnsupportedProjectsSnapshotFilterTests
     {

@@ -3,13 +3,12 @@
 using System.Collections.Immutable;
 
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
-using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Filters;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions.RuleHandlers;
 
 using Xunit;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
     public sealed class SdkAndPackagesDependenciesSnapshotFilterTests : DependenciesSnapshotFilterTestsBase
     {
