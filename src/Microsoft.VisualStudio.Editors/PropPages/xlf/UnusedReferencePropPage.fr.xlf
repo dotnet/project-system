@@ -9,7 +9,7 @@
       </trans-unit>
       <trans-unit id="ColHdr_Path.Text">
         <source>Path</source>
-        <target state="translated">Chemin</target>
+        <target state="translated">PATH</target>
         <note />
       </trans-unit>
       <trans-unit id="UnusedReferenceList.AccessibleName">

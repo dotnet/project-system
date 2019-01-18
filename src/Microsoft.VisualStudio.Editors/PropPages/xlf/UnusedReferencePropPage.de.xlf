@@ -24,7 +24,7 @@
       </trans-unit>
       <trans-unit id="ColHdr_Version.Text">
         <source>Version</source>
-        <target state="translated">Version</target>
+        <target state="translated">VERSION</target>
         <note />
       </trans-unit>
       <trans-unit id="ColHdr_CopyLocal.Text">

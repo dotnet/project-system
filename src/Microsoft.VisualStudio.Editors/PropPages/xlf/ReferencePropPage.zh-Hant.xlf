@@ -14,7 +14,7 @@
       </trans-unit>
       <trans-unit id="ColHdr_Type.Text">
         <source>Type</source>
-        <target state="translated">類型</target>
+        <target state="translated">型別</target>
         <note />
       </trans-unit>
       <trans-unit id="ColHdr_Version.Text">
@@ -29,7 +29,7 @@
       </trans-unit>
       <trans-unit id="ColHdr_Path.Text">
         <source>Path</source>
-        <target state="translated">路徑</target>
+        <target state="translated">PATH</target>
         <note />
       </trans-unit>
       <trans-unit id="UnusedReferences.Text">

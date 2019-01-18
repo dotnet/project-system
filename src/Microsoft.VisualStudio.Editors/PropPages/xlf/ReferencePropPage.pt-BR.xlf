@@ -24,12 +24,12 @@
       </trans-unit>
       <trans-unit id="ColHdr_CopyLocal.Text">
         <source>Copy Local</source>
-        <target state="translated">Local da Cópia</target>
+        <target state="translated">Copiar Local</target>
         <note />
       </trans-unit>
       <trans-unit id="ColHdr_Path.Text">
         <source>Path</source>
-        <target state="translated">Caminho</target>
+        <target state="translated">PATH</target>
         <note />
       </trans-unit>
       <trans-unit id="UnusedReferences.Text">
@@ -69,7 +69,7 @@
       </trans-unit>
       <trans-unit id="UpdateReferences.Text">
         <source>&amp;Update</source>
-        <target state="translated">At&amp;ualizar</target>
+        <target state="translated">&amp;Atualizar</target>
         <note />
       </trans-unit>
       <trans-unit id="AddUserImportButton.Text">

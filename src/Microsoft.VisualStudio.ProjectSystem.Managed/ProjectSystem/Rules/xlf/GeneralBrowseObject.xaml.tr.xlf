@@ -64,7 +64,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|FullProjectFileName|DisplayName">
         <source>Full Path</source>
-        <target state="translated">Tam Yol</target>
+        <target state="translated">Tam yol</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|FullProjectFileName|Description">

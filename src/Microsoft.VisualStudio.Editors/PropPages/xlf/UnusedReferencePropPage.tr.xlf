@@ -9,7 +9,7 @@
       </trans-unit>
       <trans-unit id="ColHdr_Path.Text">
         <source>Path</source>
-        <target state="translated">Yol</target>
+        <target state="translated">PATH</target>
         <note />
       </trans-unit>
       <trans-unit id="UnusedReferenceList.AccessibleName">
@@ -24,7 +24,7 @@
       </trans-unit>
       <trans-unit id="ColHdr_Version.Text">
         <source>Version</source>
-        <target state="translated">Sürüm</target>
+        <target state="translated">SÜRÜM</target>
         <note />
       </trans-unit>
       <trans-unit id="ColHdr_CopyLocal.Text">
