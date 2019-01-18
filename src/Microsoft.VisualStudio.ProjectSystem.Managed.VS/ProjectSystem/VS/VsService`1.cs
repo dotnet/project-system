@@ -25,7 +25,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             Requires.NotNull(serviceProvider, nameof(serviceProvider));
             Requires.NotNull(threadingService, nameof(threadingService));
 
-            _value = new AsyncLazy<T>(() => GetServiceAsync(serviceProvider, threadingService), threadingService.JoinableTaskFactory);
+            _value = new AsyncLazy<T>(async () =>
+            {
+                // If the service request requires a package load, GetServiceAsync will 
+                // happily do that on a background thread.
+                object iunknown = await serviceProvider.GetServiceAsync(ServiceType);
+
+                // We explicitly switch to the UI thread to avoid doing a QueryInterface 
+                // via blocking RPC for STA objects when we cast explicitly to the type
+                await threadingService.SwitchToUIThread();
+
+                return (T)iunknown;
+
+            }, threadingService.JoinableTaskFactory);
         }
 
         public Task<T> GetValueAsync()
@@ -36,19 +48,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         protected virtual Type ServiceType
         {
             get { return typeof(T); }
-        }
-
-        private async Task<T> GetServiceAsync(IAsyncServiceProvider serviceProvider, IProjectThreadingService threadingService)
-        {
-            // If the service request requires a package load, GetServiceAsync will 
-            // happily do that on a background thread.
-            object iunknown = await serviceProvider.GetServiceAsync(ServiceType);
-
-            // We explicitly switch to the UI thread to avoid doing a QueryInterface 
-            // via blocking RPC for STA objects when we cast explicitly to the type
-            await threadingService.SwitchToUIThread();
-
-            return (T)iunknown;
         }
     }
 }
