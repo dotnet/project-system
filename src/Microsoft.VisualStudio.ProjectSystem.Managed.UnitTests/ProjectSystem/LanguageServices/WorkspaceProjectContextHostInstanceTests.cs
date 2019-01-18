@@ -9,11 +9,11 @@ using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 
 using Xunit;
 
-using static Microsoft.VisualStudio.ProjectSystem.LanguageServices.WorkspaceContextHost;
+using static Microsoft.VisualStudio.ProjectSystem.LanguageServices.WorkspaceProjectContextHost;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
-    public class WorkspaceContextHostInstanceTests
+    public class WorkspaceProjectContextHostInstanceTests
     {
         [Fact]
         public async Task Dispose_WhenNotInitialized_DoesNotThrow()
@@ -169,7 +169,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         [InlineData(false)]     // Project Build
         public async Task OnProjectChangedAsync_WhenInstanceDisposed_TriggersCancellation(bool evaluation)
         {
-            WorkspaceContextHostInstance instance = null;
+            WorkspaceProjectContextHostInstance instance = null;
 
             void applyChanges(IProjectVersionedValue<IProjectSubscriptionUpdate> _, bool __, CancellationToken cancellationToken)
             {
@@ -237,7 +237,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             Assert.Equal(isActiveContext, isActiveContextResult);
         }
 
-        private async Task<WorkspaceContextHostInstance> CreateInitializedInstanceAsync(ConfiguredProject project = null, IProjectThreadingService threadingService = null, IUnconfiguredProjectTasksService tasksService = null, IProjectSubscriptionService projectSubscriptionService = null, IActiveEditorContextTracker activeWorkspaceProjectContextTracker = null, IWorkspaceProjectContextProvider workspaceProjectContextProvider = null, IApplyChangesToWorkspaceContext applyChangesToWorkspaceContext = null)
+        private async Task<WorkspaceProjectContextHostInstance> CreateInitializedInstanceAsync(ConfiguredProject project = null, IProjectThreadingService threadingService = null, IUnconfiguredProjectTasksService tasksService = null, IProjectSubscriptionService projectSubscriptionService = null, IActiveEditorContextTracker activeWorkspaceProjectContextTracker = null, IWorkspaceProjectContextProvider workspaceProjectContextProvider = null, IApplyChangesToWorkspaceContext applyChangesToWorkspaceContext = null)
         {
             var instance = CreateInstance(project, threadingService, tasksService, projectSubscriptionService, activeWorkspaceProjectContextTracker, workspaceProjectContextProvider, applyChangesToWorkspaceContext);
 
@@ -246,7 +246,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             return instance;
         }
 
-        private WorkspaceContextHostInstance CreateInstance(ConfiguredProject project = null, IProjectThreadingService threadingService = null, IUnconfiguredProjectTasksService tasksService = null, IProjectSubscriptionService projectSubscriptionService = null, IActiveEditorContextTracker activeWorkspaceProjectContextTracker = null, IWorkspaceProjectContextProvider workspaceProjectContextProvider = null, IApplyChangesToWorkspaceContext applyChangesToWorkspaceContext = null)
+        private WorkspaceProjectContextHostInstance CreateInstance(ConfiguredProject project = null, IProjectThreadingService threadingService = null, IUnconfiguredProjectTasksService tasksService = null, IProjectSubscriptionService projectSubscriptionService = null, IActiveEditorContextTracker activeWorkspaceProjectContextTracker = null, IWorkspaceProjectContextProvider workspaceProjectContextProvider = null, IApplyChangesToWorkspaceContext applyChangesToWorkspaceContext = null)
         {
             project = project ?? ConfiguredProjectFactory.Create();
             threadingService = threadingService ?? IProjectThreadingServiceFactory.Create();
@@ -256,7 +256,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             workspaceProjectContextProvider = workspaceProjectContextProvider ?? IWorkspaceProjectContextProviderFactory.ImplementCreateProjectContextAsync(IWorkspaceProjectContextAccessorFactory.Create());
             applyChangesToWorkspaceContext = applyChangesToWorkspaceContext ?? IApplyChangesToWorkspaceContextFactory.Create();
 
-            return new WorkspaceContextHostInstance(project,
+            return new WorkspaceProjectContextHostInstance(project,
                                                     threadingService,
                                                     tasksService,
                                                     projectSubscriptionService,

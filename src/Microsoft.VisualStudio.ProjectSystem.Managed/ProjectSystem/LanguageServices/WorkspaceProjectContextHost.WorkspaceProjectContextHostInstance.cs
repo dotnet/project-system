@@ -10,13 +10,13 @@ using Microsoft.VisualStudio.ProjectSystem.Utilities;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
-    internal partial class WorkspaceContextHost
+    internal partial class WorkspaceProjectContextHost
     {
         /// <summary>
         ///     Responsible for lifetime of a <see cref="IWorkspaceProjectContext"/> and appling changes to a 
         ///     project to the context via the <see cref="IApplyChangesToWorkspaceContext"/> service.
         /// </summary>
-        internal partial class WorkspaceContextHostInstance : OnceInitializedOnceDisposedUnderLockAsync, IMultiLifetimeInstance
+        internal partial class WorkspaceProjectContextHostInstance : OnceInitializedOnceDisposedUnderLockAsync, IMultiLifetimeInstance
         {
             private readonly ConfiguredProject _project;
             private readonly IProjectSubscriptionService _projectSubscriptionService;
@@ -29,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             private IWorkspaceProjectContextAccessor _contextAccessor;
             private ExportLifetimeContext<IApplyChangesToWorkspaceContext> _applyChangesToWorkspaceContext;
 
-            public WorkspaceContextHostInstance(ConfiguredProject project,
+            public WorkspaceProjectContextHostInstance(ConfiguredProject project,
                                                 IProjectThreadingService threadingService,
                                                 IUnconfiguredProjectTasksService tasksService,
                                                 IProjectSubscriptionService projectSubscriptionService,
