@@ -15,11 +15,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     ///     Provides an implementation of <see cref="IVsService{T}"/> that calls into Visual Studio's <see cref="IAsyncServiceProvider"/>.
     /// </summary>
     [Export(typeof(IVsService<>))]
-    internal class VsService<T>
+    internal class VsService<T> : IVsService<T>
     {
         private readonly AsyncLazy<T> _value;
-        private readonly IAsyncServiceProvider _serviceProvider;
-        private readonly IProjectThreadingService _threadingService;
 
         [ImportingConstructor]
         public VsService([Import(typeof(SAsyncServiceProvider))]IAsyncServiceProvider serviceProvider, IProjectThreadingService threadingService)
@@ -27,9 +25,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             Requires.NotNull(serviceProvider, nameof(serviceProvider));
             Requires.NotNull(threadingService, nameof(threadingService));
 
-            _value = new AsyncLazy<T>(GetServiceAsync, threadingService.JoinableTaskFactory);
-            _serviceProvider = serviceProvider;
-            _threadingService = threadingService;
+            _value = new AsyncLazy<T>(async () =>
+            {
+                // If the service request requires a package load, GetServiceAsync will 
+                // happily do that on a background thread.
+                object iunknown = await serviceProvider.GetServiceAsync(ServiceType);
+
+                // We explicitly switch to the UI thread to avoid doing a QueryInterface 
+                // via blocking RPC for STA objects when we cast explicitly to the type
+                await threadingService.SwitchToUIThread();
+
+                return (T)iunknown;
+
+            }, threadingService.JoinableTaskFactory);
         }
 
         public Task<T> GetValueAsync()
@@ -40,19 +48,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         protected virtual Type ServiceType
         {
             get { return typeof(T); }
-        }
-
-        private async Task<T> GetServiceAsync()
-        {
-            // If the service request requires a package load, GetServiceAsync will 
-            // happily do that on a background thread.
-            object iunknown = await _serviceProvider.GetServiceAsync(ServiceType);
-
-            // We explicitly switch to the UI thread to avoid doing a QueryInterface 
-            // via blocking RPC for STA objects when we cast explicitly to the type
-            await _threadingService.SwitchToUIThread();
-
-            return (T)iunknown;
         }
     }
 }
