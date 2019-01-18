@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     ///     Provides an implementation of <see cref="IVsService{T}"/> that calls into Visual Studio's <see cref="IAsyncServiceProvider"/>.
     /// </summary>
     [Export(typeof(IVsService<>))]
-    internal class VsService<T>
+    internal class VsService<T> : IVsService<T>
     {
         private readonly AsyncLazy<T> _value;
 
