@@ -8,7 +8,7 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
-    public class WorkspaceContextHostTests
+    public class WorkspaceProjectContextHostTests
     {
         [Fact]
         public void PublishAsync_WhenNotActivated_ReturnsNonCompletedTask()
@@ -122,7 +122,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             });
         }
 
-        private WorkspaceContextHost CreateInstance(ConfiguredProject project = null, IProjectThreadingService threadingService = null, IUnconfiguredProjectTasksService tasksService = null, IProjectSubscriptionService projectSubscriptionService = null, IActiveEditorContextTracker activeWorkspaceProjectContextTracker = null, IWorkspaceProjectContextProvider workspaceProjectContextProvider = null, IApplyChangesToWorkspaceContext applyChangesToWorkspaceContext = null)
+        private WorkspaceProjectContextHost CreateInstance(ConfiguredProject project = null, IProjectThreadingService threadingService = null, IUnconfiguredProjectTasksService tasksService = null, IProjectSubscriptionService projectSubscriptionService = null, IActiveEditorContextTracker activeWorkspaceProjectContextTracker = null, IWorkspaceProjectContextProvider workspaceProjectContextProvider = null, IApplyChangesToWorkspaceContext applyChangesToWorkspaceContext = null)
         {
             project = project ?? ConfiguredProjectFactory.Create();
             threadingService = threadingService ?? IProjectThreadingServiceFactory.Create();
@@ -132,7 +132,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             workspaceProjectContextProvider = workspaceProjectContextProvider ?? IWorkspaceProjectContextProviderFactory.ImplementCreateProjectContextAsync(IWorkspaceProjectContextAccessorFactory.Create());
             applyChangesToWorkspaceContext = applyChangesToWorkspaceContext ?? IApplyChangesToWorkspaceContextFactory.Create();
 
-            return new WorkspaceContextHost(project,
+            return new WorkspaceProjectContextHost(project,
                                             threadingService,
                                             tasksService,
                                             projectSubscriptionService,

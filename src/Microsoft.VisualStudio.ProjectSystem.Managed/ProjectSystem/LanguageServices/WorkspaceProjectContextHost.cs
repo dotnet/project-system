@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     [Export(typeof(IImplicitlyActiveService))]
     [Export(typeof(IWorkspaceProjectContextHost))]
     [AppliesTo(ProjectCapability.DotNetLanguageService)]
-    internal partial class WorkspaceContextHost : AbstractMultiLifetimeComponent<WorkspaceContextHost.WorkspaceContextHostInstance>, IImplicitlyActiveService, IWorkspaceProjectContextHost
+    internal partial class WorkspaceProjectContextHost : AbstractMultiLifetimeComponent<WorkspaceProjectContextHost.WorkspaceProjectContextHostInstance>, IImplicitlyActiveService, IWorkspaceProjectContextHost
     {
         private readonly ConfiguredProject _project;
         private readonly IProjectThreadingService _threadingService;
@@ -27,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         private readonly ExportFactory<IApplyChangesToWorkspaceContext> _applyChangesToWorkspaceContextFactory;
 
         [ImportingConstructor]
-        public WorkspaceContextHost(ConfiguredProject project,
+        public WorkspaceProjectContextHost(ConfiguredProject project,
                                     IProjectThreadingService threadingService,
                                     IUnconfiguredProjectTasksService tasksService,
                                     IProjectSubscriptionService projectSubscriptionService,
@@ -64,7 +64,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         {
             Requires.NotNull(action, nameof(action));
 
-            WorkspaceContextHostInstance instance = await WaitForLoadedAsync();
+            WorkspaceProjectContextHostInstance instance = await WaitForLoadedAsync();
 
             // Throws ActiveProjectConfigurationChangedException if 'instance' is Disposed
             await instance.OpenContextForWriteAsync(action);
@@ -74,15 +74,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         {
             Requires.NotNull(action, nameof(action));
 
-            WorkspaceContextHostInstance instance = await WaitForLoadedAsync();
+            WorkspaceProjectContextHostInstance instance = await WaitForLoadedAsync();
 
             // Throws ActiveProjectConfigurationChangedException if 'instance' is Disposed
             return await instance.OpenContextForWriteAsync(action);
         }
 
-        protected override WorkspaceContextHostInstance CreateInstance()
+        protected override WorkspaceProjectContextHostInstance CreateInstance()
         {
-            return new WorkspaceContextHostInstance(_project, _threadingService, _tasksService, _projectSubscriptionService, _workspaceProjectContextProvider, _activeWorkspaceProjectContextTracker, _applyChangesToWorkspaceContextFactory);
+            return new WorkspaceProjectContextHostInstance(_project, _threadingService, _tasksService, _projectSubscriptionService, _workspaceProjectContextProvider, _activeWorkspaceProjectContextTracker, _applyChangesToWorkspaceContextFactory);
         }
     }
 }
