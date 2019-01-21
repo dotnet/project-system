@@ -15,7 +15,7 @@ Namespace Microsoft.VisualStudio.Editors
     Partial Public Class Constants
         Friend NotInheritable Class MenuConstants
 
-            Private Sub MenuConstants()
+            Private Sub New()
             End Sub
 
             ' Constants for menu command IDs and GUIDs. 

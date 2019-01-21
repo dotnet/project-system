@@ -18,7 +18,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
     '**************************************************************************
     Friend NotInheritable Class DesignUtil
 
-        Private Sub DesignUtil()
+        Private Sub New()
         End Sub
 
         '**************************************************************************
