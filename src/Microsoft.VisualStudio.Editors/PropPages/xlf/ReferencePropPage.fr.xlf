@@ -95,4 +95,18 @@
       <trans-unit id="UserImportTextBox.AccessibleName">
         <source>Imported Namespace:</source>
         <target state="translated">Espace de noms importé :</target>
-     
+        <note />
+      </trans-unit>
+      <trans-unit id="ImportsListLabel.Text">
+        <source>&amp;Imported namespaces:</source>
+        <target state="translated">Espaces de noms &amp;importés :</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ReferencePageSplitContainer.Text">
+        <source>ReferencePageSplitContainer</source>
+        <target state="translated">ReferencePageSplitContainer</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
