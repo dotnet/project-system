@@ -1097,7 +1097,7 @@
 <Assembly: CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Scope:="member", Target:="~P:Microsoft.VisualStudio.Editors.DesignerFramework.BaseDesignerLoader.m_WindowEvents")>
 <Assembly: CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Scope:="member", Target:="~P:Microsoft.VisualStudio.Editors.MyExtensibility.AddMyExtensionsDialog.buttonCancel")>
 <Assembly: CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Scope:="member", Target:="~P:Microsoft.VisualStudio.Editors.MyExtensibility.AddMyExtensionsDialog.buttonOK")>
-<Assembly: CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Scope:="member", Target:="~P:Microsoft.VisualStudio.Editors.MyExtensibility.AddMyExtensionsDialog.colHeaderExensionDescription")>
+<Assembly: CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Scope:="member", Target:="~P:Microsoft.VisualStudio.Editors.MyExtensibility.AddMyExtensionsDialog.colHeaderExtensionDescription")>
 <Assembly: CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Scope:="member", Target:="~P:Microsoft.VisualStudio.Editors.MyExtensibility.AddMyExtensionsDialog.colHeaderExtensionName")>
 <Assembly: CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Scope:="member", Target:="~P:Microsoft.VisualStudio.Editors.MyExtensibility.AddMyExtensionsDialog.colHeaderExtensionVersion")>
 <Assembly: CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Scope:="member", Target:="~P:Microsoft.VisualStudio.Editors.MyExtensibility.AddMyExtensionsDialog.listViewExtensions")>
