@@ -12,6 +12,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     public abstract class EvaluationHandlerTestBase
     {
         [Fact]
+        public void EvaluationRuleName_ReturnsValue()
+        {
+            var handler = CreateInstance();
+
+            Assert.NotEmpty(handler.ProjectEvaluationRule);
+        }
+
+        [Fact]
         public void Handle_NullAsVersion_ThrowsArgumentNull()
         {
             var handler = CreateInstance();
