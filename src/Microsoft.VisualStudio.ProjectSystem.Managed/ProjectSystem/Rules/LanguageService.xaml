@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Rule
+    Name="LanguageService"
+    DisplayName="LanguageService"
+    PageTemplate="generic"
+    xmlns="http://schemas.microsoft.com/build/2009/properties">
+    
+    <Rule.DataSource>
+        <DataSource Persistence="ProjectFile" SourceOfDefaultValue="AfterContext" />
+    </Rule.DataSource>
+
+    <StringProperty Name="RootNamespace" 
+                    Visible="False" 
+                    ReadOnly="True" />
+
+    <StringProperty Name="TargetPath" 
+                    Visible="False" 
+                    ReadOnly="True" />
+
+</Rule>

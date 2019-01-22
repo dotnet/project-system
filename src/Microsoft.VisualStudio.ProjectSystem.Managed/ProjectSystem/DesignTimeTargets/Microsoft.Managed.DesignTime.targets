@@ -172,6 +172,10 @@
       <Context>File;BrowseObject</Context>
     </PropertyPageSchema>
 
+    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)LanguageService.xaml">
+      <Context>File</Context>
+    </PropertyPageSchema>
+    
     <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)None.xaml">
       <Context>File</Context>
     </PropertyPageSchema>
