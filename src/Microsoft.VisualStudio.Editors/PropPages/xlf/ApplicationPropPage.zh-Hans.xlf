@@ -29,7 +29,7 @@
       </trans-unit>
       <trans-unit id="TargetFrameworkLabel.Text">
         <source>Tar&amp;get framework:</source>
-        <target state="translated">目标框架(&amp;G):</target>
+        <target state="translated">目标框架(&amp;G): </target>
         <note />
       </trans-unit>
       <trans-unit id="ResourcesLabel.Text">

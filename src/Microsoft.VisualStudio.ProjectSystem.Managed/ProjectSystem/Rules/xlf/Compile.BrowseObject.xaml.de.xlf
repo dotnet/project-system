@@ -9,7 +9,7 @@
       </trans-unit>
       <trans-unit id="Category|Misc|DisplayName">
         <source>Misc</source>
-        <target state="translated">Sonst.</target>
+        <target state="translated">Verschiedenes</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|{}{ItemType}|DisplayName">

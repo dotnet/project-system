@@ -4,7 +4,7 @@
     <body>
       <trans-unit id="Rule|ProjectReference|DisplayName">
         <source>Project Reference</source>
-        <target state="translated">Ссылка проекта</target>
+        <target state="translated">Ссылка на проект</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|ProjectReference|Description">
@@ -39,7 +39,7 @@
       </trans-unit>
       <trans-unit id="BoolProperty|CopyLocal|Description">
         <source>Indicates whether the reference will be copied to the output directory.</source>
-        <target state="translated">Указывает, будет ли ссылочная сборка скопирована в выходной каталог.</target>
+        <target state="translated">Указывает, что ссылка будет скопирована в папку вывода.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|IncludeAssets|DisplayName">

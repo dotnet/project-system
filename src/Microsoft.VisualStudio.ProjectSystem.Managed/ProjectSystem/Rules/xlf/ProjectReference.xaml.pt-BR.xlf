@@ -4,7 +4,7 @@
     <body>
       <trans-unit id="Rule|ProjectReference|DisplayName">
         <source>Project Reference</source>
-        <target state="translated">Referência de Projeto</target>
+        <target state="translated">Referência do projeto</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|ProjectReference|Description">
@@ -34,12 +34,12 @@
       </trans-unit>
       <trans-unit id="BoolProperty|CopyLocal|DisplayName">
         <source>Copy Local</source>
-        <target state="translated">Local da Cópia</target>
+        <target state="translated">Copiar Local</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|CopyLocal|Description">
         <source>Indicates whether the reference will be copied to the output directory.</source>
-        <target state="translated">Indica se a referência será copiada no diretório de saída.</target>
+        <target state="translated">Indica se a referência será copiada para o diretório de saída.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|IncludeAssets|DisplayName">

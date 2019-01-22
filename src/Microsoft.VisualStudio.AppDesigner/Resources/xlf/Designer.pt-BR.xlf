@@ -186,7 +186,7 @@
       </trans-unit>
       <trans-unit id="PermissionSet_Requires">
         <source>Requires:</source>
-        <target state="translated">Requer:</target>
+        <target state="translated">Necessita de:</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_ActiveConfigOrPlatformFormatString_1Arg">
@@ -265,12 +265,12 @@ Clique em OK para ignorar e continuar. Clique em CANCELAR para escolher um camin
       </trans-unit>
       <trans-unit id="PPG_PostBuildCommandLineTitle">
         <source>Post-build Event Command Line</source>
-        <target state="translated">Linha de Comando de Eventos Pós-build</target>
+        <target state="translated">Linha de comando do evento de pós-compilação</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_PreBuildCommandLineTitle">
         <source>Pre-build Event Command Line</source>
-        <target state="translated">Linha de Comando de Eventos Pré-build</target>
+        <target state="translated">Linha de comando do evento de pré-compilação</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_ProjectReloadedSomePropertiesMayNotHaveBeenSet">

@@ -93,7 +93,7 @@ Pokud chcete tento stav ignorovat a pokračovat v operaci , klikněte na OK. Pok
       </trans-unit>
       <trans-unit id="PPG_BrowseText">
         <source>&lt;Browse...&gt;</source>
-        <target state="translated">&lt;procházet...&gt;</target>
+        <target state="translated">&lt;Procházet...&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_StartupObjectNone">
@@ -103,12 +103,12 @@ Pokud chcete tento stav ignorovat a pokračovat v operaci , klikněte na OK. Pok
       </trans-unit>
       <trans-unit id="PPG_KeyFileNewText">
         <source>&lt;New...&gt;</source>
-        <target state="translated">&lt;nové...&gt;</target>
+        <target state="translated">&lt;Nový...&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_KeyFileBrowseText">
         <source>&lt;Browse...&gt;</source>
-        <target state="translated">&lt;procházet...&gt;</target>
+        <target state="translated">&lt;Procházet...&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_ComboBoxSelect_None">
@@ -315,7 +315,7 @@ Vyberte prosím platnou cestu ke složce.</target>
       </trans-unit>
       <trans-unit id="PPG_Application_StartupFormLabelText">
         <source>Startup f&amp;orm:</source>
-        <target state="translated">Úv&amp;odní formulář:</target>
+        <target state="translated">Sp&amp;ouštěcí formulář:</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Application_AppEventsCommentLine1">
@@ -355,7 +355,7 @@ Vyberte prosím platnou cestu ke složce.</target>
       </trans-unit>
       <trans-unit id="PPG_Compile_Notification_None">
         <source>None</source>
-        <target state="translated">Žádné</target>
+        <target state="translated">žádné</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Compile_Notification_Warning">
@@ -789,12 +789,12 @@ Chyba:</target>
       </trans-unit>
       <trans-unit id="PPG_Signing_OpenExistingKeyPasswordPrompt">
         <source>Enter &amp;password to open file {0}</source>
-        <target state="translated">Zadejte heslo &amp;pro otevření souboru {0}</target>
+        <target state="translated">Zadejte &amp;heslo pro otevření souboru {0}</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Signing_CreateNewKeyPasswordPrompt">
         <source>Enter &amp;password for new file {0}</source>
-        <target state="translated">Zadejte heslo &amp;pro nový soubor {0}</target>
+        <target state="translated">Zadejte &amp;heslo pro nový soubor {0}</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Signing_ProjectAlreadyContainsFile">
@@ -824,7 +824,7 @@ Chyba:</target>
       </trans-unit>
       <trans-unit id="PPG_WindowsApp">
         <source>Windows Application</source>
-        <target state="translated">Aplikace pro systém Windows</target>
+        <target state="translated">Aplikace systému Windows</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_WindowsService">
@@ -955,7 +955,7 @@ Chyba:</target>
       </trans-unit>
       <trans-unit id="PropPage_ReferenceNotFound">
         <source>&lt;The system cannot find the reference specified&gt;</source>
-        <target state="translated">&lt;Systému se nepovedlo najít zadané odkazy.&gt;</target>
+        <target state="translated">&lt;Systém nemůže najít zadaný odkaz.&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="PropPage_ImportedNamespacesTitle">
@@ -1000,7 +1000,7 @@ Chyba:</target>
       </trans-unit>
       <trans-unit id="PPG_InvalidHexString">
         <source>Base address must be a hexadecimal number with less than or equal to 8 digits, for example, &amp;H11000000.</source>
-        <target state="translated">Základní adresa musí být hexadecimální číslo s osmi nebo méně číslicemi, např. &amp;H11000000.</target>
+        <target state="translated">Základní adresa musí být hexadecimální číslo s osmi nebo méně číslicemi, třeba &amp;H11000000.</target>
         <note />
       </trans-unit>
       <trans-unit id="PropPage_NeedResFile">
@@ -1367,7 +1367,7 @@ Chyba:</target>
       </trans-unit>
       <trans-unit id="RSE_Err_BadIdentifier_2Arg">
         <source>The name of the resource '{0}' cannot be used as a valid identifier, because it contains one or more invalid characters: '{1}'.  Please remove or replace those characters and try again.</source>
-        <target state="translated">Název prostředku {0} se nedá použít jako platný identifikátor, protože obsahuje jeden nebo více neplatných znaků: {1}. Odstraňte nebo nahraďte tyto znaky a zkuste to znovu.</target>
+        <target state="translated">Název prostředku {0} nejde použít jako platný identifikátor, protože obsahuje jeden nebo více neplatných znaků: {1}.  Odeberte prosím tyto znaky nebo je nahraďte a zkuste to znovu.</target>
         <note>{0} = Resource name</note>
       </trans-unit>
       <trans-unit id="RSE_Err_MaxFilesLimitation">
@@ -1500,7 +1500,6 @@ CONSIDER: get this from CodeDom</note>
         <source>{0} x {1}</source>
         <target state="translated">{0} x {1}</target>
         <note>Format string for showing a graphic's size
-
 #  {0} = width (as an integer)
 #  {1} = height (as an integer)
 #Example, for a bitmap of width=123, height = 456, the English version of this string would be "123x456"</note>
@@ -1564,42 +1563,42 @@ CONSIDER: get this from CodeDom</note>
       </trans-unit>
       <trans-unit id="RSE_Btn_Add_ExistingFile">
         <source>&amp;Existing File...</source>
-        <target state="translated">Stávají&amp;cí soubor...</target>
+        <target state="translated">&amp;Existující soubor...</target>
         <note>Menu items under the "Add" button</note>
       </trans-unit>
       <trans-unit id="RSE_Btn_Add_String">
         <source>New &amp;String</source>
-        <target state="translated">Nový ře&amp;tězec</target>
+        <target state="translated">No&amp;vý řetězec</target>
         <note>Menu items under the "Add" button</note>
       </trans-unit>
       <trans-unit id="RSE_Btn_Add_Image">
         <source>New &amp;Image</source>
-        <target state="translated">Nový obráze&amp;k</target>
+        <target state="translated">Nový o&amp;brázek</target>
         <note>Menu items under the "Add" button</note>
       </trans-unit>
       <trans-unit id="RSE_Btn_Add_Image_PNG">
         <source>&amp;PNG Image...</source>
-        <target state="translated">Obrázek &amp;PNG...</target>
+        <target state="translated">Obrázek ve formátu &amp;PNG...</target>
         <note>Menu items under the "Add" button</note>
       </trans-unit>
       <trans-unit id="RSE_Btn_Add_Image_BMP">
         <source>&amp;BMP Image...</source>
-        <target state="translated">Obrázek &amp;BMP...</target>
+        <target state="translated">O&amp;brázek ve formátu BMP...</target>
         <note>Menu items under the "Add" button</note>
       </trans-unit>
       <trans-unit id="RSE_Btn_Add_Image_GIF">
         <source>&amp;GIF Image...</source>
-        <target state="translated">Obrázek &amp;GIF...</target>
+        <target state="translated">Obrázek ve formátu &amp;GIF...</target>
         <note>Menu items under the "Add" button</note>
       </trans-unit>
       <trans-unit id="RSE_Btn_Add_Image_JPEG">
         <source>&amp;JPEG Image...</source>
-        <target state="translated">Obrázek &amp;JPEG...</target>
+        <target state="translated">Obrázek ve formátu &amp;JPEG...</target>
         <note>Menu items under the "Add" button</note>
       </trans-unit>
       <trans-unit id="RSE_Btn_Add_Image_TIFF">
         <source>&amp;TIFF Image...</source>
-        <target state="translated">Obrázek &amp;TIFF...</target>
+        <target state="translated">Obrázek ve formá&amp;tu TIFF...</target>
         <note>Menu items under the "Add" button</note>
       </trans-unit>
       <trans-unit id="RSE_Btn_Add_Icon">
@@ -1778,7 +1777,7 @@ CONSIDER: get this from CodeDom</note>
       </trans-unit>
       <trans-unit id="RSE_Btn_Views_List">
         <source>&amp;List</source>
-        <target state="translated">Sezna&amp;m</target>
+        <target state="translated">&amp;Seznam</target>
         <note>Resource editor listview view styles (like changing the view style of a folder in Windows XP)</note>
       </trans-unit>
       <trans-unit id="RSE_Btn_Views_Details">
@@ -1788,7 +1787,7 @@ CONSIDER: get this from CodeDom</note>
       </trans-unit>
       <trans-unit id="RSE_Btn_Views_Thumbnail">
         <source>&amp;Thumbnail</source>
-        <target state="translated">Minia&amp;tura</target>
+        <target state="translated">&amp;Miniatura</target>
         <note>Resource editor listview view styles (like changing the view style of a folder in Windows XP)</note>
       </trans-unit>
       <trans-unit id="RSE_ResourceEditor">
@@ -2400,12 +2399,12 @@ Chcete aktualizovat hodnotu v souboru .settings?</target>
       </trans-unit>
       <trans-unit id="PPG_Application_StartupObjectLabelText">
         <source>Startup &amp;object:</source>
-        <target state="translated">Spouštěcí &amp;objekt:</target>
+        <target state="translated">Sp&amp;ouštěcí objekt:</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Application_StartupUriLabelText">
         <source>Startup &amp;URI:</source>
-        <target state="translated">Spouštěcí identifikátor &amp;URI:</target>
+        <target state="translated">Spo&amp;uštěcí URI:</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_WPFApp_AppXamlOpenInUnsupportedEditor">
@@ -2505,22 +2504,22 @@ Chcete aktualizovat hodnotu v souboru .settings?</target>
       </trans-unit>
       <trans-unit id="PPG_Services_Seconds">
         <source>seconds</source>
-        <target state="translated">sekundy</target>
+        <target state="translated">Sekundy</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Services_Minutes">
         <source>minutes</source>
-        <target state="translated">minuty</target>
+        <target state="translated">Minuty</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Services_Hours">
         <source>hours</source>
-        <target state="translated">hodiny</target>
+        <target state="translated">Hodiny</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Services_Days">
         <source>days</source>
-        <target state="translated">dny</target>
+        <target state="translated">Dny</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Services_VersionWarning">
@@ -2530,7 +2529,7 @@ Chcete aktualizovat hodnotu v souboru .settings?</target>
       </trans-unit>
       <trans-unit id="PPG_Services_InvalidAppConfigXml">
         <source>An error occurred while reading the Application configuration file.  The file might be corrupted or contain invalid XML.</source>
-        <target state="translated">Při čtení konfiguračního souboru aplikace došlo k chybě.  Soubor může být poškozený nebo může obsahovat neplatný kód XML.</target>
+        <target state="translated">Při čtení konfiguračního souboru aplikace došlo k chybě. Soubor může být poškozený, nebo obsahuje neplatný kód XML.</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Services_InvalidUrl">
@@ -2615,7 +2614,7 @@ Chcete aktualizovat hodnotu v souboru .settings?</target>
       </trans-unit>
       <trans-unit id="PPG_SecurityPage_XBAPOutOfTrustZoneToolTip">
         <source>The application will fail to run in the selected zone because of this requested elevated permission. Click the help link above for more info.</source>
-        <target state="translated">Aplikace ve vybrané zóně nejde spustit, protože chybí požadované vyšší oprávnění. Další informace získáte, když kliknete na odkaz na nápovědu.</target>
+        <target state="translated">Aplikace kvůli vyžadovaným oprávněním vyšší úrovně ve vybrané zóně selže. Další informace se dozvíte kliknutím na odkaz nápovědy nahoře.</target>
         <note />
       </trans-unit>
       <trans-unit id="XmlToSchema_InvalidXMLFormat">
@@ -2675,7 +2674,7 @@ Chcete aktualizovat hodnotu v souboru .settings?</target>
       </trans-unit>
       <trans-unit id="CSRDlg_MultipleURL">
         <source>Multiple addresses (editable in .svcmap file)</source>
-        <target state="translated">Více adres (editovatelných v souboru .svcmap)</target>
+        <target state="translated">Víc adres (upravitelné v souboru .svcmap)</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_WinMDObj">
@@ -2720,7 +2719,7 @@ Chcete aktualizovat hodnotu v souboru .settings?</target>
       </trans-unit>
       <trans-unit id="PPG_AdvancedBuildSettings_ReportCompilerErrors_None">
         <source>None</source>
-        <target state="translated">Žádné</target>
+        <target state="translated">žádné</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_AdvancedBuildSettings_ReportCompilerErrors_Prompt">
@@ -2750,7 +2749,7 @@ Chcete aktualizovat hodnotu v souboru .settings?</target>
       </trans-unit>
       <trans-unit id="PPG_AdvancedBuildSettings_DebugInfo_None">
         <source>None</source>
-        <target state="translated">Žádné</target>
+        <target state="translated">žádné</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_AdvancedBuildSettings_DebugInfo_PdbOnly">
@@ -2770,12 +2769,12 @@ Chcete aktualizovat hodnotu v souboru .settings?</target>
       </trans-unit>
       <trans-unit id="RSE_Type_WMF">
         <source>Windows Metafile</source>
-        <target state="new">Windows Metafile</target>
+        <target state="translated">Windows Metafile</target>
         <note />
       </trans-unit>
       <trans-unit id="RSE_Type_EMF">
         <source>Extended Metafile</source>
-        <target state="new">Extended Metafile</target>
+        <target state="translated">Extended Metafile</target>
         <note />
       </trans-unit>
     </body>

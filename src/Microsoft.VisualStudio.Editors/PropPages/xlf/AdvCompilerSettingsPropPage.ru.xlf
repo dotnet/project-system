@@ -49,7 +49,7 @@
       </trans-unit>
       <trans-unit id="CustomConstantsExampleLabel.Text">
         <source>Example: Name1="Value1",Name2="Value2",Name3="Value3"</source>
-        <target state="translated">Пример: Name1="значение1",Name2="значение2",Name3="значение3"</target>
+        <target state="translated">Пример: Name1="Значение1",Name2="Значение2",Name3="Value3"</target>
         <note />
       </trans-unit>
       <trans-unit id="CompilationConstantsLabel.Text">

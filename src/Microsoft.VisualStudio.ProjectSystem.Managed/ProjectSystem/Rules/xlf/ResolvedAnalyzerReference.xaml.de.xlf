@@ -9,7 +9,7 @@
       </trans-unit>
       <trans-unit id="Rule|ResolvedAnalyzerReference|Description">
         <source>Analyzer Properties</source>
-        <target state="translated">Eigenschaften von Analysetools</target>
+        <target state="translated">Eigenschaften des Analysetools</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ResolvedPath|DisplayName">

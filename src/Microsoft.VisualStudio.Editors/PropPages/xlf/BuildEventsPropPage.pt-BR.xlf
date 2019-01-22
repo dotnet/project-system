@@ -4,7 +4,7 @@
     <body>
       <trans-unit id="lblPreBuildEventCommandLine.Text">
         <source>P&amp;re-build event command line:</source>
-        <target state="translated">Linha de comando do evento p&amp;ré-build:</target>
+        <target state="translated">&amp;Linha de comando do evento de pré-compilação:</target>
         <note />
       </trans-unit>
       <trans-unit id="btnPreBuildBuilder.Text">
@@ -14,7 +14,7 @@
       </trans-unit>
       <trans-unit id="lblPostBuildEventCommandLine.Text">
         <source>P&amp;ost-build event command line:</source>
-        <target state="translated">Linha de comando do event&amp;o pós-build:</target>
+        <target state="translated">&amp;Linha de comando do evento de pós-compilação:</target>
         <note />
       </trans-unit>
       <trans-unit id="btnPostBuildBuilder.Text">

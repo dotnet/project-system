@@ -4,7 +4,7 @@
     <body>
       <trans-unit id="AssemblyNameLabel.Text">
         <source>Assembly &amp;name:</source>
-        <target state="translated">&amp;Název sestavení:</target>
+        <target state="translated">Název s&amp;estavení:</target>
         <note />
       </trans-unit>
       <trans-unit id="RootNamespaceLabel.Text">
@@ -29,7 +29,7 @@
       </trans-unit>
       <trans-unit id="TargetFrameworkLabel.Text">
         <source>Tar&amp;get framework:</source>
-        <target state="translated">Cílová &amp;platforma:</target>
+        <target state="translated">&amp;Cílová verze rozhraní .NET Framework:</target>
         <note />
       </trans-unit>
       <trans-unit id="ResourcesLabel.Text">

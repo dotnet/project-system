@@ -4,7 +4,7 @@
     <body>
       <trans-unit id="Rule|SourceControl|DisplayName">
         <source>Source control</source>
-        <target state="translated">ソース管理</target>
+        <target state="translated">TFVC ソース管理</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|SourceControl|Description">

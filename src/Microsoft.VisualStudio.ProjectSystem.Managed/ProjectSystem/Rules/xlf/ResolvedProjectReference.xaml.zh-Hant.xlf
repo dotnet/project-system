@@ -44,7 +44,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|Description|DisplayName">
         <source>Description</source>
-        <target state="translated">說明</target>
+        <target state="translated">描述</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Description|Description">
@@ -74,7 +74,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|ResolvedPath|DisplayName">
         <source>Path</source>
-        <target state="translated">路徑</target>
+        <target state="translated">類型</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ResolvedPath|Description">

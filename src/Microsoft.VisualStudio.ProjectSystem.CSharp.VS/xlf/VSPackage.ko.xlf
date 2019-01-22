@@ -19,7 +19,7 @@
       </trans-unit>
       <trans-unit id="4">
         <source>A project for creating a command-line application that can run on .NET Core on Windows, Linux and MacOS.</source>
-        <target state="translated">Windows, Linux 및 MacOS의 .NET Core에서 실행할 수 있는 명령줄 응용 프로그램을 만드는 프로젝트입니다.</target>
+        <target state="translated">Windows, Linux 및 MacOS의 .NET Core에서 실행할 수 있는 명령줄 애플리케이션을 만드는 프로젝트입니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="5">
@@ -64,12 +64,12 @@
       </trans-unit>
       <trans-unit id="13">
         <source>NUnit Test Project (.NET Core)</source>
-        <target state="translated">NUnit 테스트 프로젝트(.NET Core)</target>
+        <target state="translated">NUnit Test Project (.NET Core)</target>
         <note />
       </trans-unit>
       <trans-unit id="14">
         <source>A project that contains NUnit tests that can run on .NET Core on Windows, Linux and MacOS.</source>
-        <target state="translated">Windows, Linux 및 macOS의 .NET Core에서 실행할 수 있는 NUnit 테스트를 포함하는 프로젝트입니다.</target>
+        <target state="translated">Windows, Linux 및 MacOS의 .NET Core에서 실행할 수 있는 NUnit 테스트를 포함하는 프로젝트입니다.</target>
         <note />
       </trans-unit>
     </body>

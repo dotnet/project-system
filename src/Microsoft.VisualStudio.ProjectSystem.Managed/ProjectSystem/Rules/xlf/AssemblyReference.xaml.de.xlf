@@ -44,7 +44,7 @@
       </trans-unit>
       <trans-unit id="BoolProperty|SpecificVersion|DisplayName">
         <source>Specific Version</source>
-        <target state="translated">Spezifische Version</target>
+        <target state="translated">Bestimmte Version</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|SpecificVersion|Description">
@@ -74,7 +74,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|Version|DisplayName">
         <source>Version</source>
-        <target state="translated">Version</target>
+        <target state="translated">VERSION</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Version|Description">

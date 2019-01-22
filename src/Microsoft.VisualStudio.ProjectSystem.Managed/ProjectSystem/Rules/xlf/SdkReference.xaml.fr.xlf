@@ -54,7 +54,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|Name|DisplayName">
         <source>Name</source>
-        <target state="translated">Nom</target>
+        <target state="translated">Nom </target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Version|DisplayName">

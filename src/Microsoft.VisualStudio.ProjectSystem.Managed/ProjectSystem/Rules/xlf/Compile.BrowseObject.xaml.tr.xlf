@@ -9,7 +9,7 @@
       </trans-unit>
       <trans-unit id="Category|Misc|DisplayName">
         <source>Misc</source>
-        <target state="translated">Çeşitli</target>
+        <target state="translated">Misc</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|{}{ItemType}|DisplayName">
@@ -49,7 +49,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|FullPath|DisplayName">
         <source>Full Path</source>
-        <target state="translated">Tam Yol</target>
+        <target state="translated">Tam yol</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|FullPath|Description">
@@ -84,17 +84,17 @@
       </trans-unit>
       <trans-unit id="StringProperty|CustomToolNamespace|Description">
         <source>The namespace into which the output of the custom tool is placed.</source>
-        <target state="translated">Özel aracın çıkışının yerleştirileceği isim uzayı.</target>
+        <target state="translated">Özel aracın çıktısının yerleştirileceği ad alanı.</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|Compile|DisplayName">
         <source>File Properties</source>
-        <target state="translated">Dosya Özellikleri</target>
+        <target state="translated">Dosya özellikleri</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|Compile|Description">
         <source>File Properties</source>
-        <target state="translated">Dosya Özellikleri</target>
+        <target state="translated">Dosya özellikleri</target>
         <note />
       </trans-unit>
     </body>

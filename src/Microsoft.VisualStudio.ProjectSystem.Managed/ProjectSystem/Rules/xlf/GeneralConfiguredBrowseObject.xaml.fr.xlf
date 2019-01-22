@@ -29,12 +29,12 @@
       </trans-unit>
       <trans-unit id="EnumValue|OptionExplicit.Off|DisplayName">
         <source>Off</source>
-        <target state="translated">Désactivé</target>
+        <target state="translated">DESACTIVÉ</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|OptionExplicit.On|DisplayName">
         <source>On</source>
-        <target state="translated">Activé</target>
+        <target state="translated">ACTIVÉ</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|OptionCompare.Binary|DisplayName">
@@ -49,12 +49,12 @@
       </trans-unit>
       <trans-unit id="EnumValue|OptionInfer.Off|DisplayName">
         <source>Off</source>
-        <target state="translated">Désactivé</target>
+        <target state="translated">DESACTIVÉ</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|OptionInfer.On|DisplayName">
         <source>On</source>
-        <target state="translated">Activé</target>
+        <target state="translated">ACTIVÉ</target>
         <note />
       </trans-unit>
     </body>

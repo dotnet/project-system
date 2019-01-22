@@ -19,7 +19,7 @@
       </trans-unit>
       <trans-unit id="colHeaderExtensionVersion.Text">
         <source>Version</source>
-        <target state="translated">Version</target>
+        <target state="translated">VERSION</target>
         <note />
       </trans-unit>
       <trans-unit id="listViewExtensions.AccessibleName">
@@ -34,7 +34,7 @@
       </trans-unit>
       <trans-unit id="colHeaderExtensionDescription.Text">
         <source>Description</source>
-        <target state="new">Description</target>
+        <target state="translated">Beschreibung</target>
         <note />
       </trans-unit>
     </body>

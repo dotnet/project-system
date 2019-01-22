@@ -74,12 +74,12 @@
       </trans-unit>
       <trans-unit id="PPG_PreBuildCommandLineTitle">
         <source>Pre-build Event Command Line</source>
-        <target state="translated">Командная строка событий перед сборкой</target>
+        <target state="translated">Командная строка события перед сборкой</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_PostBuildCommandLineTitle">
         <source>Post-build Event Command Line</source>
-        <target state="translated">Командная строка событий после сборки</target>
+        <target state="translated">Командная строка события после сборки</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_OutputPathNotSecure">
@@ -173,12 +173,12 @@ Click OK to ignore and continue. Click CANCEL to choose a different output path.
       </trans-unit>
       <trans-unit id="PPG_SelectOutputPathTitle">
         <source>Select Output Path</source>
-        <target state="translated">Выбор выходного пути</target>
+        <target state="translated">Выбор пути для вывода</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_SelectReferencePath">
         <source>Select Reference Path</source>
-        <target state="translated">Выбор пути для ссылок</target>
+        <target state="translated">Выберите путь для ссылки</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_AddWin32ResourceFilter">
@@ -235,7 +235,7 @@ Please select a valid folder path.</source>
       </trans-unit>
       <trans-unit id="PPG_AssemblyInfo_BadWildcard">
         <source>A wildcard ("*") is not allowed in this field.</source>
-        <target state="translated">Знак подстановки ("*") не допускается в этом поле.</target>
+        <target state="translated">Подстановочный символ ("*") недопустим в этом поле.</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_AssemblyInfo_VersionOutOfRange_2Args">
@@ -315,7 +315,7 @@ Please select a valid folder path.</source>
       </trans-unit>
       <trans-unit id="PPG_Application_StartupFormLabelText">
         <source>Startup f&amp;orm:</source>
-        <target state="translated">Начальная ф&amp;орма:</target>
+        <target state="translated">Ф&amp;орма запуска:</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Application_AppEventsCommentLine1">
@@ -355,7 +355,7 @@ Please select a valid folder path.</source>
       </trans-unit>
       <trans-unit id="PPG_Compile_Notification_None">
         <source>None</source>
-        <target state="translated">Нет</target>
+        <target state="translated">NONE</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Compile_Notification_Warning">
@@ -370,7 +370,7 @@ Please select a valid folder path.</source>
       </trans-unit>
       <trans-unit id="PPG_Compile_OptionStrict_Custom">
         <source>(custom)</source>
-        <target state="translated">(настраиваемое)</target>
+        <target state="translated">(Настраиваемое)</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Compile_42016">
@@ -390,7 +390,7 @@ Please select a valid folder path.</source>
       </trans-unit>
       <trans-unit id="PPG_Compile_42104">
         <source>Use of variable prior to assignment</source>
-        <target state="translated">Использование переменной до присваивания</target>
+        <target state="translated">Использование переменной до инициализации</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Compile_42105_42106_42107">
@@ -714,12 +714,12 @@ Error:</source>
       </trans-unit>
       <trans-unit id="PPG_Signing_IssuedTo">
         <source>Issued To</source>
-        <target state="translated">Получатель сертификата</target>
+        <target state="translated">Выдан (кому)</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Signing_IssuedBy">
         <source>Issued By</source>
-        <target state="translated">Кем выдан</target>
+        <target state="translated">Выдан (кем)</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Signing_Purpose">
@@ -779,12 +779,12 @@ Error:</source>
       </trans-unit>
       <trans-unit id="PPG_Signing_NoData">
         <source>(none)</source>
-        <target state="translated">(нет)</target>
+        <target state="translated">(Нет)</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Signing_OpenExistingKeyPasswordTitle">
         <source>Enter password to open file</source>
-        <target state="translated">Введите пароль, чтобы открыть файл</target>
+        <target state="translated">Введите пароль для открытия файла</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Signing_OpenExistingKeyPasswordPrompt">
@@ -880,7 +880,7 @@ Error:</source>
       </trans-unit>
       <trans-unit id="PPG_UrlBehavior_Static">
         <source>Static</source>
-        <target state="translated">Статическая</target>
+        <target state="translated">Static</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_UrlBehavior_Dynamic">
@@ -955,7 +955,7 @@ Error:</source>
       </trans-unit>
       <trans-unit id="PropPage_ReferenceNotFound">
         <source>&lt;The system cannot find the reference specified&gt;</source>
-        <target state="translated">&lt;Система не может найти указанную ссылку&gt;</target>
+        <target state="translated">&lt;Системе не удается найти указанную ссылку&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="PropPage_ImportedNamespacesTitle">
@@ -975,7 +975,7 @@ Error:</source>
       </trans-unit>
       <trans-unit id="PropPage_UnusedReferenceRemoveButton">
         <source>&amp;Remove</source>
-        <target state="translated">Уда&amp;лить</target>
+        <target state="translated">&amp;Удалить</target>
         <note />
       </trans-unit>
       <trans-unit id="PropPage_UnusedReferenceNoUnusedReferences">
@@ -1000,7 +1000,7 @@ Error:</source>
       </trans-unit>
       <trans-unit id="PPG_InvalidHexString">
         <source>Base address must be a hexadecimal number with less than or equal to 8 digits, for example, &amp;H11000000.</source>
-        <target state="translated">&amp;Базовый адрес должен быть шестнадцатеричным числом (длина — не более 8 цифр), например: H11000000.</target>
+        <target state="translated">Базовый адрес должен представлять собой шестнадцатеричное число, включающее не более 8 цифр, например, &amp;H11000000.</target>
         <note />
       </trans-unit>
       <trans-unit id="PropPage_NeedResFile">
@@ -1232,7 +1232,7 @@ Error:</source>
       </trans-unit>
       <trans-unit id="DFX_Error_Default_Caption">
         <source>Microsoft Visual Studio</source>
-        <target state="translated">Microsoft Visual Studio</target>
+        <target state="translated">Службы Microsoft Visual Studio</target>
         <note>Error reporting</note>
       </trans-unit>
       <trans-unit id="OptionPage_Editor_InvalidTabSize">
@@ -1367,7 +1367,7 @@ Error:</source>
       </trans-unit>
       <trans-unit id="RSE_Err_BadIdentifier_2Arg">
         <source>The name of the resource '{0}' cannot be used as a valid identifier, because it contains one or more invalid characters: '{1}'.  Please remove or replace those characters and try again.</source>
-        <target state="translated">Имя ресурса "{0}" невозможно использовать в качестве идентификатора, так как оно содержит недопустимые символы: "{1}". Удалите или замените их и повторите попытку.</target>
+        <target state="translated">Имя ресурса "{0}" не может быть действительным идентификатором, так как оно содержит один или несколько недопустимых символов: "{1}".  Удалите или замените эти символы и повторите попытку.</target>
         <note>{0} = Resource name</note>
       </trans-unit>
       <trans-unit id="RSE_Err_MaxFilesLimitation">
@@ -1483,7 +1483,7 @@ CONSIDER: get this from CodeDom</note>
       </trans-unit>
       <trans-unit id="RSE_DetailsCol_Size">
         <source>Size</source>
-        <target state="translated">Размер</target>
+        <target state="translated">Size</target>
         <note>Columns for the "Details" view of the resource editor</note>
       </trans-unit>
       <trans-unit id="RSE_DetailsCol_Comment">
@@ -1500,7 +1500,6 @@ CONSIDER: get this from CodeDom</note>
         <source>{0} x {1}</source>
         <target state="translated">{0} x {1}</target>
         <note>Format string for showing a graphic's size
-
 #  {0} = width (as an integer)
 #  {1} = height (as an integer)
 #Example, for a bitmap of width=123, height = 456, the English version of this string would be "123x456"</note>
@@ -1549,12 +1548,12 @@ CONSIDER: get this from CodeDom</note>
       </trans-unit>
       <trans-unit id="RSE_Btn_Add">
         <source>&amp;Add</source>
-        <target state="translated">Д&amp;обавить</target>
+        <target state="translated">До&amp;бавить</target>
         <note>Add, Delete and Views button text in the main ToolStrip</note>
       </trans-unit>
       <trans-unit id="RSE_Btn_Remove">
         <source>&amp;Remove</source>
-        <target state="translated">Уда&amp;лить</target>
+        <target state="translated">&amp;Удалить</target>
         <note>Add, Delete and Views button text in the main ToolStrip</note>
       </trans-unit>
       <trans-unit id="RSE_Btn_Views">
@@ -1569,12 +1568,12 @@ CONSIDER: get this from CodeDom</note>
       </trans-unit>
       <trans-unit id="RSE_Btn_Add_String">
         <source>New &amp;String</source>
-        <target state="translated">Создать с&amp;троку</target>
+        <target state="translated">Добавить &amp;строку</target>
         <note>Menu items under the "Add" button</note>
       </trans-unit>
       <trans-unit id="RSE_Btn_Add_Image">
         <source>New &amp;Image</source>
-        <target state="translated">Создать &amp;изображение</target>
+        <target state="translated">Новое &amp;изображение</target>
         <note>Menu items under the "Add" button</note>
       </trans-unit>
       <trans-unit id="RSE_Btn_Add_Image_PNG">
@@ -1604,7 +1603,7 @@ CONSIDER: get this from CodeDom</note>
       </trans-unit>
       <trans-unit id="RSE_Btn_Add_Icon">
         <source>New I&amp;con...</source>
-        <target state="translated">Создать &amp;значок...</target>
+        <target state="translated">Новый з&amp;начок...</target>
         <note>Menu items under the "Add" button</note>
       </trans-unit>
       <trans-unit id="RSE_Btn_Add_TextFile">
@@ -1783,12 +1782,12 @@ CONSIDER: get this from CodeDom</note>
       </trans-unit>
       <trans-unit id="RSE_Btn_Views_Details">
         <source>&amp;Details</source>
-        <target state="translated">С&amp;ведения</target>
+        <target state="translated">&amp;Сведения</target>
         <note>Resource editor listview view styles (like changing the view style of a folder in Windows XP)</note>
       </trans-unit>
       <trans-unit id="RSE_Btn_Views_Thumbnail">
         <source>&amp;Thumbnail</source>
-        <target state="translated">&amp;Эскиз</target>
+        <target state="translated">Стили отображения для списка в редакторе ресурсов (например, изменение стиля отображения папки в Windows XP)</target>
         <note>Resource editor listview view styles (like changing the view style of a folder in Windows XP)</note>
       </trans-unit>
       <trans-unit id="RSE_ResourceEditor">
@@ -2192,12 +2191,12 @@ Do you want to update the value in the .settings file?</source>
       </trans-unit>
       <trans-unit id="SD_MNU_AddSettingText">
         <source>&amp;Add Setting</source>
-        <target state="translated">Добавить &amp;параметр</target>
+        <target state="translated">&amp;Добавить параметр</target>
         <note />
       </trans-unit>
       <trans-unit id="SD_MNU_RemoveSettingText">
         <source>R&amp;emove Setting</source>
-        <target state="translated">&amp;Удалить параметр</target>
+        <target state="translated">У&amp;далить параметр</target>
         <note />
       </trans-unit>
       <trans-unit id="SD_FullDescriptionText">
@@ -2350,7 +2349,7 @@ Do you want to update the value in the .settings file?</source>
       </trans-unit>
       <trans-unit id="PPG_Application_RootNamespaceJSharp">
         <source>Default pac&amp;kage:</source>
-        <target state="translated">Па&amp;кет по умолчанию:</target>
+        <target state="translated">Пакет по ум&amp;олчанию:</target>
         <note>J# Specific String for Root Namespace</note>
       </trans-unit>
       <trans-unit id="RSE_AccessModifier_Custom">
@@ -2400,7 +2399,7 @@ Do you want to update the value in the .settings file?</source>
       </trans-unit>
       <trans-unit id="PPG_Application_StartupObjectLabelText">
         <source>Startup &amp;object:</source>
-        <target state="translated">Автоматически запускаемый &amp;объект:</target>
+        <target state="translated">Объект &amp;запуска:</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Application_StartupUriLabelText">
@@ -2505,22 +2504,22 @@ Do you want to update the value in the .settings file?</source>
       </trans-unit>
       <trans-unit id="PPG_Services_Seconds">
         <source>seconds</source>
-        <target state="translated">с</target>
+        <target state="translated">Секунды</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Services_Minutes">
         <source>minutes</source>
-        <target state="translated">мин</target>
+        <target state="translated">Минуты</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Services_Hours">
         <source>hours</source>
-        <target state="translated">ч</target>
+        <target state="translated">Часы</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Services_Days">
         <source>days</source>
-        <target state="translated">дн.</target>
+        <target state="translated">Дни</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Services_VersionWarning">
@@ -2530,7 +2529,7 @@ Do you want to update the value in the .settings file?</source>
       </trans-unit>
       <trans-unit id="PPG_Services_InvalidAppConfigXml">
         <source>An error occurred while reading the Application configuration file.  The file might be corrupted or contain invalid XML.</source>
-        <target state="translated">Произошла ошибка при чтении файла конфигурации приложения.  Возможно, файл поврежден или содержит недопустимый XML-код.</target>
+        <target state="translated">Произошла ошибка при чтении конфигурационного файла приложения.  Возможно, файл поврежден или содержит недопустимый XML-код.</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Services_InvalidUrl">
@@ -2615,7 +2614,7 @@ Do you want to update the value in the .settings file?</source>
       </trans-unit>
       <trans-unit id="PPG_SecurityPage_XBAPOutOfTrustZoneToolTip">
         <source>The application will fail to run in the selected zone because of this requested elevated permission. Click the help link above for more info.</source>
-        <target state="translated">Приложению не удастся запуститься в выбранной зоне из-за запрошенного повышенного разрешения. Для просмотра дополнительных сведений щелкните ссылку справки ниже.</target>
+        <target state="translated">Приложению не удастся запуститься в выбранной зоне из-за запрошенного повышенного разрешения. Для просмотра дополнительных сведений нажмите ссылку справки.</target>
         <note />
       </trans-unit>
       <trans-unit id="XmlToSchema_InvalidXMLFormat">
@@ -2675,7 +2674,7 @@ Do you want to update the value in the .settings file?</source>
       </trans-unit>
       <trans-unit id="CSRDlg_MultipleURL">
         <source>Multiple addresses (editable in .svcmap file)</source>
-        <target state="translated">Несколько адресов (изменяются в SVCMAP-файле)</target>
+        <target state="translated">Несколько адресов (изменяются в файле .svcmap)</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_WinMDObj">
@@ -2720,7 +2719,7 @@ Do you want to update the value in the .settings file?</source>
       </trans-unit>
       <trans-unit id="PPG_AdvancedBuildSettings_ReportCompilerErrors_None">
         <source>None</source>
-        <target state="translated">Нет</target>
+        <target state="translated">NONE</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_AdvancedBuildSettings_ReportCompilerErrors_Prompt">
@@ -2745,12 +2744,12 @@ Do you want to update the value in the .settings file?</source>
       </trans-unit>
       <trans-unit id="PPG_AdvancedBuildSettings_DebugInfo_Full">
         <source>Full</source>
-        <target state="translated">Полный</target>
+        <target state="translated">Полное</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_AdvancedBuildSettings_DebugInfo_None">
         <source>None</source>
-        <target state="translated">Нет</target>
+        <target state="translated">NONE</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_AdvancedBuildSettings_DebugInfo_PdbOnly">
@@ -2770,12 +2769,12 @@ Do you want to update the value in the .settings file?</source>
       </trans-unit>
       <trans-unit id="RSE_Type_WMF">
         <source>Windows Metafile</source>
-        <target state="new">Windows Metafile</target>
+        <target state="translated">Windows Metafile</target>
         <note />
       </trans-unit>
       <trans-unit id="RSE_Type_EMF">
         <source>Extended Metafile</source>
-        <target state="new">Extended Metafile</target>
+        <target state="translated">Extended Metafile</target>
         <note />
       </trans-unit>
     </body>

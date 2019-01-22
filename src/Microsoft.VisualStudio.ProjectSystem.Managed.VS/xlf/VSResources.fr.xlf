@@ -4,7 +4,7 @@
     <body>
       <trans-unit id="ClassTemplateName">
         <source>Class</source>
-        <target state="translated">Classe</target>
+        <target state="translated">classe</target>
         <note />
       </trans-unit>
       <trans-unit id="ProjectModificationsPrompt">
@@ -109,7 +109,7 @@ Appuyez sur Ignorer pour ignorer les modifications externes. Vous risquez de per
       </trans-unit>
       <trans-unit id="SdkNodeName">
         <source>SDK</source>
-        <target state="translated">SDK</target>
+        <target state="translated">Kit de développement logiciel</target>
         <note />
       </trans-unit>
       <trans-unit id="AssembliesNodeName">
@@ -253,12 +253,12 @@ Pour déboguer ce projet, ajoutez à cette solution un projet exécutable qui fa
       </trans-unit>
       <trans-unit id="PackCommand">
         <source>&amp;Pack</source>
-        <target state="translated">&amp;Compresser</target>
+        <target state="translated">&amp;Pack</target>
         <note />
       </trans-unit>
       <trans-unit id="PackSelectedProjectCommand">
         <source>&amp;Pack {0}</source>
-        <target state="translated">&amp;Compresser {0}</target>
+        <target state="translated">&amp;Pack {0}</target>
         <note />
       </trans-unit>
       <trans-unit id="XprojMigrationFailedCannotReadReport">
@@ -283,12 +283,12 @@ Pour déboguer ce projet, ajoutez à cette solution un projet exécutable qui fa
       </trans-unit>
       <trans-unit id="PartialSupportedDotNetCoreProject">
         <source>A newer version of Visual Studio is recommended for projects targeting .NET Core {0}.{1}.</source>
-        <target state="needs-review-translation">Visual Studio 2017 version 15.7 ou ultérieur est recommandé pour les projets .NET Core {0}.{1}.</target>
+        <target state="translated">Une version plus récente de Visual Studio est recommandée pour les projets qui ciblent .NET Core {0}.{1}.</target>
         <note />
       </trans-unit>
       <trans-unit id="NotSupportedDotNetCoreProject">
         <source>Projects targeting .NET Core {0}.{1} or newer are not supported by this version of Visual Studio.</source>
-        <target state="needs-review-translation">Les projets ciblant des versions plus récentes que .NET Core {0}.{1} ne sont pas pris en charge par cette version de Visual Studio.</target>
+        <target state="translated">Les projets qui ciblent .NET Core {0}.{1} ou version supérieure ne sont pas pris en charge par cette version de Visual Studio.</target>
         <note />
       </trans-unit>
       <trans-unit id="DontShowAgain">

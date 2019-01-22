@@ -4,7 +4,7 @@
     <body>
       <trans-unit id="lblConditionalCompilationSymbols.Text">
         <source>Conditional compilation s&amp;ymbols:</source>
-        <target state="translated">条件编译符号(&amp;Y):</target>
+        <target state="translated">条件编译和符号(&amp;Y):</target>
         <note />
       </trans-unit>
       <trans-unit id="outputLabel.Text">
@@ -54,7 +54,7 @@
       </trans-unit>
       <trans-unit id="rbWarningAll.Text">
         <source>A&amp;ll</source>
-        <target state="translated">所有(&amp;L)</target>
+        <target state="translated">全部(&amp;l)</target>
         <note />
       </trans-unit>
       <trans-unit id="rbWarningNone.Text">
@@ -64,7 +64,7 @@
       </trans-unit>
       <trans-unit id="lblSupressWarnings.Text">
         <source>&amp;Suppress warnings:</source>
-        <target state="translated">禁止显示警告(&amp;S):</target>
+        <target state="translated">取消显示警告(&amp;S):</target>
         <note />
       </trans-unit>
       <trans-unit id="cboWarningLevel.Items">
@@ -94,12 +94,12 @@
       </trans-unit>
       <trans-unit id="lblWarningLevel.Text">
         <source>W&amp;arning level:</source>
-        <target state="translated">警告等级(&amp;A):</target>
+        <target state="translated">警告级别(&amp;A):</target>
         <note />
       </trans-unit>
       <trans-unit id="chkOptimizeCode.Text">
         <source>Optimi&amp;ze code</source>
-        <target state="translated">优化代码(&amp;Z)</target>
+        <target state="translated">优化编码(&amp;z)</target>
         <note />
       </trans-unit>
       <trans-unit id="chkAllowUnsafeCode.Text">
@@ -119,7 +119,7 @@
       </trans-unit>
       <trans-unit id="lblPlatformTarget.Text">
         <source>Platform tar&amp;get:</source>
-        <target state="translated">平台目标(&amp;G):</target>
+        <target state="translated">目标平台(&amp;G):</target>
         <note />
       </trans-unit>
       <trans-unit id="lblSGenOption.Text">
@@ -134,17 +134,17 @@
       </trans-unit>
       <trans-unit id="chkDefineDebug.Text">
         <source>Define DEB&amp;UG constant</source>
-        <target state="translated">定义 DEBUG 常量(&amp;U)</target>
+        <target state="translated">定义 DEBUG 常数(&amp;U)</target>
         <note />
       </trans-unit>
       <trans-unit id="txtSpecificWarnings.AccessibleName">
         <source>Specific Warnings To Treat As Errors</source>
-        <target state="new">Specific Warnings To Treat As Errors</target>
+        <target state="translated">要视为错误的特定警告</target>
         <note />
       </trans-unit>
       <trans-unit id="txtXMLDocumentationFile.AccessibleName">
         <source>XML Document File Path</source>
-        <target state="new">XML Document File Path</target>
+        <target state="translated">xml 文档文件路径</target>
         <note />
       </trans-unit>
     </body>

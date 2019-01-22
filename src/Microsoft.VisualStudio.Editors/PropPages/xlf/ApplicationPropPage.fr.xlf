@@ -14,7 +14,7 @@
       </trans-unit>
       <trans-unit id="OutputTypeLabel.Text">
         <source>O&amp;utput type:</source>
-        <target state="translated">&amp;Type de sortie :</target>
+        <target state="translated">T&amp;ype de sortie :</target>
         <note />
       </trans-unit>
       <trans-unit id="StartupObjectLabel.Text">
@@ -29,7 +29,7 @@
       </trans-unit>
       <trans-unit id="TargetFrameworkLabel.Text">
         <source>Tar&amp;get framework:</source>
-        <target state="translated">Framework ci&amp;ble :</target>
+        <target state="translated">Framework ci&amp;ble :</target>
         <note />
       </trans-unit>
       <trans-unit id="ResourcesLabel.Text">
@@ -54,7 +54,7 @@
       </trans-unit>
       <trans-unit id="AppIconBrowse.Text">
         <source>Browse...</source>
-        <target state="translated">Parcourir...</target>
+        <target state="translated">Parcourir</target>
         <note />
       </trans-unit>
       <trans-unit id="ApplicationManifestLabel.Text">
@@ -69,7 +69,7 @@
       </trans-unit>
       <trans-unit id="Win32ResourceFileBrowse.Text">
         <source>Browse...</source>
-        <target state="translated">Parcourir...</target>
+        <target state="translated">Parcourir</target>
         <note />
       </trans-unit>
       <trans-unit id="ResourcesGroupBox.Text">

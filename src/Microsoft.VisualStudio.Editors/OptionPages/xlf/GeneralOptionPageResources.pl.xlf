@@ -19,7 +19,7 @@
       </trans-unit>
       <trans-unit id="General_FastUpToDateCheck_LogLevel_None">
         <source>None</source>
-        <target state="translated">Brak</target>
+        <target state="translated">brak</target>
         <note />
       </trans-unit>
       <trans-unit id="General_FastUpToDateCheck_LogLevel_Verbose">
@@ -34,7 +34,7 @@
       </trans-unit>
       <trans-unit id="General_UsePreviewSdk">
         <source>Use previews of the .NET Core SDK</source>
-        <target state="translated">Używaj wersji zapoznawczych zestawu .NET Core SDK</target>
+        <target state="translated">Użyj wersji zapoznawczych zestawu .NET Core SDK</target>
         <note />
       </trans-unit>
     </body>

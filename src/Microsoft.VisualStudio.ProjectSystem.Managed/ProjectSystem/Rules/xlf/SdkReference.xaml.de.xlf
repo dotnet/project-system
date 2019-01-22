@@ -59,7 +59,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|Version|DisplayName">
         <source>Version</source>
-        <target state="translated">Version</target>
+        <target state="translated">VERSION</target>
         <note />
       </trans-unit>
     </body>

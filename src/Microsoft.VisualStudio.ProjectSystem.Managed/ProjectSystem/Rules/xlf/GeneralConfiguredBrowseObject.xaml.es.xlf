@@ -24,17 +24,17 @@
       </trans-unit>
       <trans-unit id="StringProperty|FullPath|DisplayName">
         <source>Project Folder</source>
-        <target state="translated">Carpeta de proyecto</target>
+        <target state="translated">Carpeta del proyecto</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|OptionExplicit.Off|DisplayName">
         <source>Off</source>
-        <target state="translated">Desactivar</target>
+        <target state="translated">OFF</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|OptionExplicit.On|DisplayName">
         <source>On</source>
-        <target state="translated">Activar</target>
+        <target state="translated">ON</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|OptionCompare.Binary|DisplayName">
@@ -49,12 +49,12 @@
       </trans-unit>
       <trans-unit id="EnumValue|OptionInfer.Off|DisplayName">
         <source>Off</source>
-        <target state="translated">Desactivar</target>
+        <target state="translated">OFF</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|OptionInfer.On|DisplayName">
         <source>On</source>
-        <target state="translated">Activar</target>
+        <target state="translated">ON</target>
         <note />
       </trans-unit>
     </body>

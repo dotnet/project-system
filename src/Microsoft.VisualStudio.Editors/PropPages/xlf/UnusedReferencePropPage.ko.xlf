@@ -4,12 +4,12 @@
     <body>
       <trans-unit id="ColHdr_Type.Text">
         <source>Type</source>
-        <target state="translated">Type</target>
+        <target state="translated">형식</target>
         <note />
       </trans-unit>
       <trans-unit id="ColHdr_Path.Text">
         <source>Path</source>
-        <target state="translated">PATH</target>
+        <target state="translated">형식</target>
         <note />
       </trans-unit>
       <trans-unit id="UnusedReferenceList.AccessibleName">

@@ -39,7 +39,7 @@
       </trans-unit>
       <trans-unit id="BoolProperty|CopyLocal|Description">
         <source>Indicates whether the reference will be copied to the output directory.</source>
-        <target state="translated">참조를 출력 디렉터리로 복사할지 여부를 나타냅니다.</target>
+        <target state="translated">참조를 출력 디렉터리에 복사할지 여부를 나타냅니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|IncludeAssets|DisplayName">
@@ -84,7 +84,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|Culture|DisplayName">
         <source>Culture</source>
-        <target state="translated">문화권</target>
+        <target state="translated">Culture</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Culture|Description">
@@ -124,7 +124,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|ResolvedPath|DisplayName">
         <source>Path</source>
-        <target state="translated">경로</target>
+        <target state="translated">형식</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ResolvedPath|Description">

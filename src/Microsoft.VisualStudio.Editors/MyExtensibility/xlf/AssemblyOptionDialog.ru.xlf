@@ -4,7 +4,7 @@
     <body>
       <trans-unit id="buttonYes.Text">
         <source>&amp;Yes</source>
-        <target state="translated">&amp;Да</target>
+        <target state="translated">Д&amp;а</target>
         <note />
       </trans-unit>
       <trans-unit id="buttonNo.Text">

@@ -49,7 +49,7 @@
       </trans-unit>
       <trans-unit id="NameCannotBeEmpty">
         <source>Name cannot be empty.</source>
-        <target state="translated">Název nesmí být prázdný.</target>
+        <target state="translated">Název nemůže být prázdný.</target>
         <note />
       </trans-unit>
       <trans-unit id="NewProfileCaption">
@@ -134,7 +134,7 @@
       </trans-unit>
       <trans-unit id="Executable">
         <source>Executable</source>
-        <target state="translated">Spustitelný soubor</target>
+        <target state="translated">Ke spuštění</target>
         <note />
       </trans-unit>
       <trans-unit id="Launch">

@@ -186,7 +186,7 @@
       </trans-unit>
       <trans-unit id="PermissionSet_Requires">
         <source>Requires:</source>
-        <target state="translated">Voraussetzungen:</target>
+        <target state="translated">Erforderlich:</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_ActiveConfigOrPlatformFormatString_1Arg">
@@ -251,7 +251,7 @@
       </trans-unit>
       <trans-unit id="PPG_NotApplicable">
         <source>N/A</source>
-        <target state="translated">Nicht zutreffend</target>
+        <target state="translated">N/V</target>
         <note>This is used in the platform and configuration comboboxes when showing pages that don't care about the current platform/configuration</note>
       </trans-unit>
       <trans-unit id="PPG_OutputPathNotSecure">

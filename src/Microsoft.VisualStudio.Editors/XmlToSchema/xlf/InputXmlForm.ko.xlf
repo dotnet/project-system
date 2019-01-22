@@ -64,7 +64,7 @@
       </trans-unit>
       <trans-unit id="_xmlFileDialog.Filter">
         <source>XML files (*.xml)|*.xml|All files (*.*)|*.*</source>
-        <target state="translated">XML 파일(*.xml)|*.xml|모든 파일(*.*)|*.*</target>
+        <target state="translated">XML 파일 (*.xml)|*.xml|모든 파일 (*.*)|*.*</target>
         <note />
       </trans-unit>
       <trans-unit id="_xmlFileDialog.Title">

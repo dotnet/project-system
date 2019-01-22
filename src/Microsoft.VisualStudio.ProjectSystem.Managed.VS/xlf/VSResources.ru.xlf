@@ -4,7 +4,7 @@
     <body>
       <trans-unit id="ClassTemplateName">
         <source>Class</source>
-        <target state="translated">Класс</target>
+        <target state="translated">класс</target>
         <note />
       </trans-unit>
       <trans-unit id="ProjectModificationsPrompt">
@@ -109,7 +109,7 @@ Press Ignore to ignore the external changes. Your changes may be lost if you clo
       </trans-unit>
       <trans-unit id="SdkNodeName">
         <source>SDK</source>
-        <target state="translated">SDK</target>
+        <target state="translated">ПАКЕТ SDK</target>
         <note />
       </trans-unit>
       <trans-unit id="AssembliesNodeName">
@@ -283,12 +283,12 @@ In order to debug this project, add an executable project to this solution which
       </trans-unit>
       <trans-unit id="PartialSupportedDotNetCoreProject">
         <source>A newer version of Visual Studio is recommended for projects targeting .NET Core {0}.{1}.</source>
-        <target state="needs-review-translation">Для проектов .NET Core {0}.{1} рекомендуем использовать Visual Studio 2017 версии 15.7 или более новую версию.</target>
+        <target state="translated">Для проектов, предназначенных для .NET Core {0}.{1}, рекомендуется использовать более новую версию Visual Studio.</target>
         <note />
       </trans-unit>
       <trans-unit id="NotSupportedDotNetCoreProject">
         <source>Projects targeting .NET Core {0}.{1} or newer are not supported by this version of Visual Studio.</source>
-        <target state="needs-review-translation">Эта версия Visual Studio не поддерживает проекты, нацеленные на версии новее .NET Core {0}.{1}.</target>
+        <target state="translated">Проекты, предназначенные для .NET Core {0}.{1} или более поздней версии, не поддерживаются в этой версии Visual Studio.</target>
         <note />
       </trans-unit>
       <trans-unit id="DontShowAgain">
@@ -298,7 +298,7 @@ In order to debug this project, add an executable project to this solution which
       </trans-unit>
       <trans-unit id="LearnMore">
         <source>Learn more</source>
-        <target state="translated">Дополнительные сведения</target>
+        <target state="translated">Подробнее...</target>
         <note />
       </trans-unit>
       <trans-unit id="OKButtonText">

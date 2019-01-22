@@ -69,7 +69,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|Generator|DisplayName">
         <source>Custom Tool</source>
-        <target state="translated">Ferramenta Personalizada</target>
+        <target state="translated">Ferramenta personalizada</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Generator|Description">

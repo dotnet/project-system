@@ -4,7 +4,7 @@
     <body>
       <trans-unit id="AllFiles">
         <source>All files</source>
-        <target state="translated">Tüm dosyalar</target>
+        <target state="translated">Tüm Dosyalar</target>
         <note />
       </trans-unit>
       <trans-unit id="ApplicationArgumentsWatermark">
@@ -34,7 +34,7 @@
       </trans-unit>
       <trans-unit id="ExecutableFiles">
         <source>Executable files</source>
-        <target state="translated">Yürütülebilir dosyalar</target>
+        <target state="translated">Yürütülebilir Dosyalar</target>
         <note />
       </trans-unit>
       <trans-unit id="ExecutablePathWatermark">
@@ -79,7 +79,7 @@
       </trans-unit>
       <trans-unit id="ProfileKindProjectName">
         <source>Project</source>
-        <target state="translated">Proje</target>
+        <target state="translated">PROJE</target>
         <note />
       </trans-unit>
       <trans-unit id="ProfileNameInvalid">

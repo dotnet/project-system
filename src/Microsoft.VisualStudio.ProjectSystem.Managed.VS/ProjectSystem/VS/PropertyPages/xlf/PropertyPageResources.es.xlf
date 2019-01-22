@@ -14,7 +14,7 @@
       </trans-unit>
       <trans-unit id="DebugPropertyPageTitle">
         <source>Debug</source>
-        <target state="translated">Depurar</target>
+        <target state="translated">depurar</target>
         <note />
       </trans-unit>
       <trans-unit id="DuplicateKey">

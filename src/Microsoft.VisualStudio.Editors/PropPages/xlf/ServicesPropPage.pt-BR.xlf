@@ -31,7 +31,7 @@
       </trans-unit>
       <trans-unit id="AuthenticationProviderGroupBox.Text">
         <source>Authentication</source>
-        <target state="translated">Autenticação</target>
+        <target state="translated">autenticação</target>
         <note />
       </trans-unit>
       <trans-unit id="RolesServiceUrlLabel.Text">

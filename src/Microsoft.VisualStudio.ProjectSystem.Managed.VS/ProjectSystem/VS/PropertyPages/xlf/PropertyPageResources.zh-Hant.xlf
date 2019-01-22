@@ -74,7 +74,7 @@
       </trans-unit>
       <trans-unit id="ProfileKindNoActionName">
         <source>Start</source>
-        <target state="translated">啟動</target>
+        <target state="translated">開始</target>
         <note />
       </trans-unit>
       <trans-unit id="ProfileKindProjectName">
@@ -109,7 +109,7 @@
       </trans-unit>
       <trans-unit id="AddBtn">
         <source>Add</source>
-        <target state="translated">新增</target>
+        <target state="translated">加入</target>
         <note />
       </trans-unit>
       <trans-unit id="ApplicationArguments">

@@ -9,7 +9,7 @@
       </trans-unit>
       <trans-unit id="Rule|SourceControl|Description">
         <source>General</source>
-        <target state="translated">Общие</target>
+        <target state="translated">Общее</target>
         <note />
       </trans-unit>
     </body>

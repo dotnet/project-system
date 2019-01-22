@@ -14,7 +14,7 @@
       </trans-unit>
       <trans-unit id="colHeaderExtensionName.Text">
         <source>Name</source>
-        <target state="translated">Nom</target>
+        <target state="translated">Nom </target>
         <note />
       </trans-unit>
       <trans-unit id="colHeaderExtensionVersion.Text">
@@ -34,7 +34,7 @@
       </trans-unit>
       <trans-unit id="colHeaderExtensionDescription.Text">
         <source>Description</source>
-        <target state="new">Description</target>
+        <target state="translated">Description</target>
         <note />
       </trans-unit>
     </body>

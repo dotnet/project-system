@@ -29,7 +29,7 @@
       </trans-unit>
       <trans-unit id="TargetFrameworkLabel.Text">
         <source>Tar&amp;get framework:</source>
-        <target state="translated">Zielframe&amp;work:</target>
+        <target state="translated">Zie&amp;lframework:</target>
         <note />
       </trans-unit>
       <trans-unit id="ResourcesLabel.Text">

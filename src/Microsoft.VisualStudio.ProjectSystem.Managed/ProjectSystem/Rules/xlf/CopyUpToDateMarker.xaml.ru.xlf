@@ -14,7 +14,7 @@
       </trans-unit>
       <trans-unit id="Category|Advanced|DisplayName">
         <source>Advanced</source>
-        <target state="translated">Дополнительно</target>
+        <target state="translated">Дополнительный</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|Misc|DisplayName">

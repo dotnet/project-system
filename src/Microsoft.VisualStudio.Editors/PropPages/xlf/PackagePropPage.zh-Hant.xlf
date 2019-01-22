@@ -34,7 +34,7 @@
       </trans-unit>
       <trans-unit id="PackageTagsLabel.Text">
         <source>&amp;Tags:</source>
-        <target state="translated">標記(&amp;T):</target>
+        <target state="translated">標籤(&amp;T):</target>
         <note />
       </trans-unit>
       <trans-unit id="RepositoryUrlLabel.Text">
@@ -59,7 +59,7 @@
       </trans-unit>
       <trans-unit id="GeneratePackageOnBuild.Text">
         <source>&amp;Generate NuGet package on build</source>
-        <target state="translated">建置時產生 NuGet 套件(&amp;G)</target>
+        <target state="translated">在建置時產生 NuGet 套件(&amp;G)</target>
         <note />
       </trans-unit>
       <trans-unit id="NeutralLanguageLabel.Text">
@@ -69,47 +69,47 @@
       </trans-unit>
       <trans-unit id="AssemblyVersionRevisionTextBox.AccessibleName">
         <source>Assembly Version Revision</source>
-        <target state="needs-review-translation">修訂</target>
+        <target state="translated">組件版本修訂</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyVersionBuildTextBox.AccessibleName">
         <source>Assembly Version Build</source>
-        <target state="needs-review-translation">組建</target>
+        <target state="translated">組件版本組建</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyVersionMinorTextBox.AccessibleName">
         <source>Assembly Version Minor</source>
-        <target state="needs-review-translation">次要</target>
+        <target state="translated">次要組件版本</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyVersionMajorTextBox.AccessibleName">
         <source>Assembly Version Major</source>
-        <target state="needs-review-translation">主要</target>
+        <target state="translated">組件版本主要</target>
         <note />
       </trans-unit>
       <trans-unit id="FileVersionRevisionTextBox.AccessibleName">
         <source>Assembly File Verison Revision</source>
-        <target state="needs-review-translation">修訂</target>
+        <target state="translated">組件檔案版本修訂</target>
         <note />
       </trans-unit>
       <trans-unit id="FileVersionBuildTextBox.AccessibleName">
         <source>Assembly File Verison Build</source>
-        <target state="needs-review-translation">組建</target>
+        <target state="translated">組件檔案版本組建</target>
         <note />
       </trans-unit>
       <trans-unit id="FileVersionMinorTextBox.AccessibleName">
         <source>Assembly File Verison Minor</source>
-        <target state="needs-review-translation">次要</target>
+        <target state="translated">組件檔案版本次要</target>
         <note />
       </trans-unit>
       <trans-unit id="FileVersionMajorTextBox.AccessibleName">
         <source>Assembly File Verison Major</source>
-        <target state="needs-review-translation">主要</target>
+        <target state="translated">組件檔案版本主要</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageRequireLicenseAcceptance.Text">
         <source>Require &amp;license acceptance</source>
-        <target state="translated">要求接受授權(&amp;L)</target>
+        <target state="translated">需要授權接受(&amp;L)</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageIdLabel.Text">
@@ -134,7 +134,7 @@
       </trans-unit>
       <trans-unit id="AssemblyFileVersionLabel.Text">
         <source>Assembly &amp;file version:</source>
-        <target state="translated">組件檔版本(&amp;F):</target>
+        <target state="translated">組件檔案版本(&amp;F):</target>
         <note />
       </trans-unit>
     </body>

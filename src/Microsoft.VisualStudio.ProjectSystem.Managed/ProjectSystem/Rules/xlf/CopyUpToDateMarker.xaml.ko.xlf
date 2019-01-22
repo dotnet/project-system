@@ -19,7 +19,7 @@
       </trans-unit>
       <trans-unit id="Category|Misc|DisplayName">
         <source>Misc</source>
-        <target state="translated">기타</target>
+        <target state="translated">Misc</target>
         <note />
       </trans-unit>
     </body>

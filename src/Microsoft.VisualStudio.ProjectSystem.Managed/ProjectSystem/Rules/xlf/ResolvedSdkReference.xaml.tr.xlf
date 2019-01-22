@@ -54,7 +54,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|Version|DisplayName">
         <source>Version</source>
-        <target state="translated">Sürüm</target>
+        <target state="translated">SÜRÜM</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|CopyPayloadToSubDirectory|DisplayName">

@@ -59,7 +59,7 @@
       </trans-unit>
       <trans-unit id="WarningsConfigurationsGridViewLabel.Text">
         <source>Warning configurations:</source>
-        <target state="translated">Configurazioni degli avvisi:</target>
+        <target state="translated">Configurazioni avvisi:</target>
         <note />
       </trans-unit>
       <trans-unit id="ConditionColumn.HeaderText">
