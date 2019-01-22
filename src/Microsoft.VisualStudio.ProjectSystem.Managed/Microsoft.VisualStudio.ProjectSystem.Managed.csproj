@@ -143,6 +143,9 @@
     <Compile Update="ProjectSystem\Rules\NuGetRestore.cs">
       <DependentUpon>NuGetRestore.xaml</DependentUpon>
     </Compile>
+    <Compile Update="ProjectSystem\Rules\LanguageService.cs">
+      <DependentUpon>LanguageService.xaml</DependentUpon>
+    </Compile>
     <Compile Update="ProjectSystem\Rules\XamlAppDef.cs">
       <DependentUpon>XamlAppDef.xaml</DependentUpon>
     </Compile>
@@ -250,6 +253,11 @@
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
     </XamlPropertyRule>
     <XamlPropertyRule Include="ProjectSystem\Rules\NuGetRestore.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\LanguageService.xaml">
+      <XlfInput>false</XlfInput>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
     </XamlPropertyRule>

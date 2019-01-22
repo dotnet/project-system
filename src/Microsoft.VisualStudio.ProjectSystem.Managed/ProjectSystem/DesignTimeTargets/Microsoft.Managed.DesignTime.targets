@@ -229,6 +229,10 @@
       <Context>ProjectSubscriptionService</Context>
     </PropertyPageSchema>
 
+    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)LanguageService.xaml">
+      <Context>ProjectSubscriptionService</Context>
+    </PropertyPageSchema>
+
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ConfigurationGeneral.xaml">
       <Context>Project;ProjectSubscriptionService</Context>
     </PropertyPageSchema>

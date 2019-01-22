@@ -22,6 +22,16 @@ namespace Microsoft.VisualStudio.LanguageServices.ProjectSystem
             return mock.Object;
         }
 
+        public static IWorkspaceProjectContext ImplementSetProperty(Action<string, string> action)
+        {
+            var mock = new Mock<IWorkspaceProjectContext>();
+
+            mock.Setup(c => c.SetProperty(It.IsAny<string>(), It.IsAny<string>()))
+                .Callback(action);
+
+            return mock.Object;
+        }
+
         public static IWorkspaceProjectContext Create()
         {
             return new IWorkspaceProjectContextMock().Object;
