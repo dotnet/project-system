@@ -36,7 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             {
                 string value = projectChange.After.Properties[name];
 
-                // It is a property we're specifically aware of?
+                // Is it a property we're specifically aware of?
                 if (TryHandleSpecificProperties(name, value, logger))
                     continue;
 
@@ -55,7 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             // command-line argument and set via one of the other handlers, where as the latter is calculated via 
             // the TargetPath property and explicitly set on the context.
 
-            if (StringComparers.PropertyNames.Equals(name, ConfigurationGeneral.TargetPathProperty))
+            if (StringComparers.PropertyNames.Equals(name, LanguageService.TargetPathProperty))
             {
                 if (!string.IsNullOrEmpty(value))
                 {
