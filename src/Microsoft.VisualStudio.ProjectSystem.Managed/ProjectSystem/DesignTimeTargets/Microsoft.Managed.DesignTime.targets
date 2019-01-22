@@ -172,10 +172,6 @@
       <Context>File;BrowseObject</Context>
     </PropertyPageSchema>
 
-    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)LanguageService.xaml">
-      <Context>File</Context>
-    </PropertyPageSchema>
-    
     <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)None.xaml">
       <Context>File</Context>
     </PropertyPageSchema>
@@ -230,6 +226,10 @@
     </PropertyPageSchema>
 
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)CompilerCommandLineArgs.xaml">
+      <Context>ProjectSubscriptionService</Context>
+    </PropertyPageSchema>
+
+    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)LanguageService.xaml">
       <Context>ProjectSubscriptionService</Context>
     </PropertyPageSchema>
 
