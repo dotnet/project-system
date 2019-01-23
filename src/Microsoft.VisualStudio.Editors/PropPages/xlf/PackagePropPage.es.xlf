@@ -133,8 +133,8 @@
         <note />
       </trans-unit>
       <trans-unit id="PackageLicenseLabel.Text">
-        <source>&amp;License:</source>
-        <target state="new">&amp;License:</target>
+        <source>&amp;Licensing:</source>
+        <target state="new">&amp;Licensing:</target>
         <note />
       </trans-unit>
       <trans-unit id="ExpressionLabel.Text">
@@ -240,6 +240,11 @@
       <trans-unit id="PackageTags.AccessibleName">
         <source>Package Tags</source>
         <target state="new">Package Tags</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="LicenseLineLabel.Text">
+        <source>PackageLicenseURL property was detected, but it has been deprecated. Please change to either an Expression or File.</source>
+        <target state="new">PackageLicenseURL property was detected, but it has been deprecated. Please change to either an Expression or File.</target>
         <note />
       </trans-unit>
     </body>

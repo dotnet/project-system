@@ -384,7 +384,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                             'Since the ApplicationDesignerPanel starts out intentionally hidden, PerformLayout()
                             '  will not dock it to its parent size.  So we do that manually here to minimize
                             '  size changes.
-                            Debug.Assert(Parent.Size.Width <> 0 AndAlso Parent.Size.Height <> 0)
+                            'Debug.Assert(Parent.Size.Width <> 0 AndAlso Parent.Size.Height <> 0)
                             Size = Parent.Size
                             _pageHostingPanel.ResumeLayout(False)
                             ResumeLayout(True) 'Must give the PageHostingPanel a chance to dock properly to its parent

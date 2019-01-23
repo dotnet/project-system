@@ -200,7 +200,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                         '(Note: we don't expect this code path anymore, as I believe the project designer 
                         '  is always set up using the solution hierarchy because of the fact that it's
                         '  an editor on the project file.)
-                        Debug.Fail("GetNestedHierarchy failed")
+                        'Debug.Fail("GetNestedHierarchy failed")
                     End If
 
                     Debug.Assert(TypeOf Hierarchy Is IVsProject, "We didn't get a hierarchy to a project?")
@@ -1051,7 +1051,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                                 Else
                                     Common.Switches.TracePDFocus(TraceLevel.Info, "  ... Calling CreateDesigner")
                                     HostingPanel.SuspendLayout()
-                                    Debug.Assert(HostingPanel.Size.Width <> 0 AndAlso HostingPanel.Size.Height <> 0)
+                                    'Debug.Assert(HostingPanel.Size.Width <> 0 AndAlso HostingPanel.Size.Height <> 0)
                                     Try
                                         .CreateDesigner()
                                     Finally
