@@ -49,6 +49,11 @@ namespace Microsoft.VisualStudio.Telemetry
         /// </summary>
         public static readonly string SDKVersion = BuildEventName("SDKVersion");
 
+        /// <summary>
+        ///     Indicates that a compilation of a TempPE output is being performed
+        /// </summary>
+        public static readonly string TempPECompilation = BuildEventName("TempPECompilation");
+
         private static string BuildEventName(string eventName)
         {
             return Prefix + "/" + eventName.ToLowerInvariant();

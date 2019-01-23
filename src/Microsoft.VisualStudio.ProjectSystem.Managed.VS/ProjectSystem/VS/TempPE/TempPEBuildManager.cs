@@ -17,6 +17,8 @@ using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.VS.Automation;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
+using Microsoft.VisualStudio.Telemetry;
+using Microsoft.VisualStudio.Threading;
 using Microsoft.VisualStudio.Threading.Tasks;
 
 using Task = System.Threading.Tasks.Task;
@@ -29,11 +31,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
     [AppliesTo(ProjectCapability.CSharpOrVisualBasicLanguageService)]
     internal partial class TempPEBuildManager : UnconfiguredProjectHostBridge<IProjectVersionedValue<InputTuple>, TempPEBuildManager.DesignTimeInputsDelta, IProjectVersionedValue<TempPEBuildManager.DesignTimeInputsItem>>, ITempPEBuildManager, IVsFreeThreadedFileChangeEvents2
     {
+        private static readonly TimeSpan s_compilationWaitTime = TimeSpan.FromMilliseconds(500);
+
         protected readonly IUnconfiguredProjectCommonServices _unconfiguredProjectServices;
         private readonly ILanguageServiceHost _languageServiceHost;
         private readonly IActiveConfiguredProjectSubscriptionService _projectSubscriptionService;
         private readonly IFileSystem _fileSystem;
         private readonly IVsService<SVsFileChangeEx, IVsAsyncFileChangeEx> _fileChangeService;
+        private readonly ITelemetryService _telemetryService;
         private readonly SequentialTaskExecutor _sequentialTaskQueue = new SequentialTaskExecutor();
 
         // protected for unit test purposes
@@ -48,7 +53,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                                   VSLangProj.VSProjectEvents projectEvents,
                                   ITempPECompiler compiler,
                                   IFileSystem fileSystem,
-                                  IVsService<SVsFileChangeEx, IVsAsyncFileChangeEx> fileChangeService)
+                                  IVsService<SVsFileChangeEx, IVsAsyncFileChangeEx> fileChangeService,
+                                  ITelemetryService telemetryService)
              : base(threadingService.JoinableTaskContext)
         {
             _unconfiguredProjectServices = unconfiguredProjectServices;
@@ -58,6 +64,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             _compiler = compiler;
             _fileSystem = fileSystem;
             _fileChangeService = fileChangeService;
+            _telemetryService = telemetryService;
         }
 
         public string[] GetTempPEMonikers()
@@ -78,11 +85,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             if (shouldCompile)
             {
                 DesignTimeInputsItem inputs = AppliedValue.Value;
-                HashSet<string> files = GetFilesToCompile(moniker, inputs.SharedInputs);
-                string outputFileName = GetOutputFileName(inputs.OutputPath, moniker);
-                await CompileTempPEAsync(files, outputFileName);
+                if (inputs.TaskSchedulers.TryGetValue(moniker, out ITaskDelayScheduler scheduler))
+                {
+                    HashSet<string> files = GetFilesToCompile(moniker, inputs.SharedInputs);
+                    string outputFileName = GetOutputFileName(inputs.OutputPath, moniker);
+                    CompileTempPEAsync(scheduler, files, outputFileName).Forget();
+                }
             }
-
             _buildManager.Value.OnDesignTimeOutputDirty(moniker);
         }
 
@@ -105,8 +114,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             string outputFileName = GetOutputFileName(outputPath, moniker);
             if (CompilationNeeded(files, outputFileName))
             {
-                // For parity with legacy we don't care about the compilation result: Legacy only errors here if it runs out of memory queuing the compilation
-                await CompileTempPEAsync(files, outputFileName);
+                if (inputs.TaskSchedulers.TryGetValue(moniker, out ITaskDelayScheduler scheduler))
+                {
+                    // For parity with legacy we don't care about the compilation result: Legacy only errors here if it runs out of memory queuing the compilation
+                    await CompileTempPEAsync(scheduler, files, outputFileName);
+                }
             }
 
             // VSTypeResolutionService is the only consumer, and it only uses the codebase element so it's fine to default most of these (VC++ does the same)
@@ -154,11 +166,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             return Path.Combine(outputPath, moniker.Replace('\\', '.') + ".dll");
         }
 
-        protected virtual Task CompileTempPEAsync(HashSet<string> filesToCompile, string outputFileName)
+        protected virtual Task CompileTempPEAsync(ITaskDelayScheduler scheduler, HashSet<string> filesToCompile, string outputFileName)
         {
-            return _sequentialTaskQueue.ExecuteTask(async () =>
+            return scheduler.ScheduleAsyncTask(async token =>
             {
-                bool result = await _compiler.CompileAsync(_languageServiceHost.ActiveProjectContext, outputFileName, filesToCompile, default);
+                _telemetryService.PostProperty(TelemetryEventName.TempPECompilation, TelemetryPropertyName.TempPECompilationOutputFileName, outputFileName);
+                bool result = await _compiler.CompileAsync(_languageServiceHost.ActiveProjectContext, outputFileName, filesToCompile, token);
 
                 // if the compilation failed or was cancelled we should clean up any old TempPE outputs lest a designer gets the wrong types, plus its what legacy did
                 if (!result)
@@ -172,7 +185,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                     catch (UnauthorizedAccessException)
                     { }
                 }
-            });
+            }).Task;
         }
 
         protected virtual HashSet<string> GetFilesToCompile(string moniker, ImmutableHashSet<string> sharedInputs)
@@ -200,6 +213,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             ImmutableHashSet<string> newDesignTimeInputs;
             ImmutableHashSet<string> newSharedDesignTimeInputs;
             ImmutableDictionary<string, uint> newCookies;
+            ImmutableDictionary<string, ITaskDelayScheduler> newSchedulers;
             var addedDesignTimeInputs = new List<string>();
             var removedDesignTimeInputs = new List<string>();
             bool hasRemovedDesignTimeSharedInputs = false;
@@ -210,6 +224,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                 ImmutableHashSet<string>.Builder designTimeInputs = previousValue.Inputs.ToBuilder();
                 ImmutableHashSet<string>.Builder designTimeSharedInputs = previousValue.SharedInputs.ToBuilder();
                 ImmutableDictionary<string, uint>.Builder cookies = previousValue.Cookies.ToBuilder();
+                ImmutableDictionary<string, ITaskDelayScheduler>.Builder schedulers = previousValue.TaskSchedulers.ToBuilder();
 
                 foreach (string item in value.AddedItems)
                 {
@@ -217,6 +232,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                     {
                         addedDesignTimeInputs.Add(item);
                         await SubscribeToFileChangesAsync(cookies, item);
+                        schedulers.Add(item, new TaskDelayScheduler(s_compilationWaitTime, _unconfiguredProjectServices.ThreadingService, DisposalToken));
                     }
                 }
 
@@ -226,10 +242,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                     {
                         removedDesignTimeInputs.Add(item);
                         // We only unsubscribe from file changes if there is no other reason to care about this file
-                        if (cookies.TryGetValue(item, out uint cookie) && !designTimeSharedInputs.Contains(item))
+                        if (TryGetValueIfUnused(item, cookies, designTimeSharedInputs, out uint cookie))
                         {
                             cookies.Remove(item);
                             await UnsubscribeFromFileChangesAsync(cookie);
+                        }
+                        if (TryGetValueIfUnused(item, schedulers, designTimeSharedInputs, out ITaskDelayScheduler scheduler))
+                        {
+                            schedulers.Remove(item);
+                            scheduler.Dispose();
                         }
                     }
                 }
@@ -245,6 +266,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                         {
                             await SubscribeToFileChangesAsync(cookies, item);
                         }
+                        if (!schedulers.ContainsKey(item))
+                        {
+                            schedulers.Add(item, new TaskDelayScheduler(s_compilationWaitTime, ThreadingService, DisposalToken));
+                        }
                     }
                 }
 
@@ -253,10 +278,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                     if (designTimeSharedInputs.Remove(item))
                     {
                         hasRemovedDesignTimeSharedInputs = true;
-                        if (cookies.TryGetValue(item, out uint cookie) && !designTimeInputs.Contains(item))
+                        if (TryGetValueIfUnused(item, cookies, designTimeInputs, out uint cookie))
                         {
                             cookies.Remove(item);
                             await UnsubscribeFromFileChangesAsync(cookie);
+                        }
+                        if (TryGetValueIfUnused(item, schedulers, designTimeInputs, out ITaskDelayScheduler scheduler))
+                        {
+                            schedulers.Remove(item);
+                            scheduler.Dispose();
                         }
                     }
                 }
@@ -264,6 +294,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                 newDesignTimeInputs = designTimeInputs.ToImmutable();
                 newSharedDesignTimeInputs = designTimeSharedInputs.ToImmutable();
                 newCookies = cookies.ToImmutable();
+                newSchedulers = schedulers.ToImmutable();
             }
             else
             {
@@ -271,6 +302,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                 newDesignTimeInputs = previousValue.Inputs;
                 newSharedDesignTimeInputs = previousValue.SharedInputs;
                 newCookies = previousValue.Cookies;
+                newSchedulers = previousValue.TaskSchedulers;
             }
 
             // Apply our new value
@@ -280,7 +312,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                 SharedInputs = newSharedDesignTimeInputs,
                 // We always need an output path, so if it hasn't changed we just reuse the previous value
                 OutputPath = value.OutputPath ?? previousValue.OutputPath,
-                Cookies = newCookies
+                Cookies = newCookies,
+                TaskSchedulers = newSchedulers
             }, value.DataSourceVersions);
 
             // Fire off any events necessary
@@ -318,7 +351,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             {
                 _buildManager.Value.OnDesignTimeOutputDeleted(item);
             }
+
+            bool TryGetValueIfUnused<T>(string item, ImmutableDictionary<string, T>.Builder source, ImmutableHashSet<string>.Builder otherSources, out T result)
+            {
+                // return the value from the source, but only if it doesn't appear in other sources
+                return source.TryGetValue(item, out result) && !otherSources.Contains(item);
+            }
+
         }
+
 
         private async Task NotifySourceFileDirtyAsync(string projectRelativeSourceFileName)
         {

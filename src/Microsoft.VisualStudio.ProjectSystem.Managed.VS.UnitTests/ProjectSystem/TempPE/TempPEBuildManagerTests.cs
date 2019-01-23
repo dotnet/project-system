@@ -10,6 +10,7 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Automation;
 using Microsoft.VisualStudio.ProjectSystem.VS.TempPE;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
+using Microsoft.VisualStudio.Threading.Tasks;
 using Xunit;
 
 using Task = System.Threading.Tasks.Task;
@@ -1134,14 +1135,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                       null,
                       null,
                       fileSystem,
-                      IVsServiceFactory.Create<SVsFileChangeEx, IVsAsyncFileChangeEx>(IVsFileChangeExFactory.CreateWithAdviseUnadviseFileChange(1)))
+                      IVsServiceFactory.Create<SVsFileChangeEx, IVsAsyncFileChangeEx>(IVsFileChangeExFactory.CreateWithAdviseUnadviseFileChange(1)),
+                      Telemetry.ITelemetryServiceFactory.Create())
             {
                 _buildManager = new Lazy<VSBuildManager>(() => new TestBuildManager(this));
 
                 AppliedValue = new ProjectVersionedValue<DesignTimeInputsItem>(new DesignTimeInputsItem() { OutputPath = "TempPE" }, ImmutableDictionary<NamedIdentity, IComparable>.Empty);
             }
 
-            protected override Task CompileTempPEAsync(HashSet<string> filesToCompile, string outputFileName)
+            protected override Task CompileTempPEAsync(ITaskDelayScheduler scheduler, HashSet<string> filesToCompile, string outputFileName)
             {
                 CompiledItems.Add(outputFileName);
                 return Task.CompletedTask;
