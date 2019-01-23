@@ -6,7 +6,8 @@ using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
-
+using System.Threading.Tasks;
+using Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers.Rename;
 using Microsoft.VisualStudio.ProjectSystem.Logging;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
@@ -22,10 +23,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
         [ImportingConstructor]
         public SourceItemHandler(UnconfiguredProject project)
-            : base(project)
+            :base(project)
         {
             _project = project;
         }
+
+        [ImportMany]
+        private readonly IEnumerable<IFileRenameHandler> _fileRenameHandlers = null;
 
         public string ProjectEvaluationRule
         {
@@ -57,12 +61,34 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             ApplyProjectBuild(version, difference, isActiveContext, logger);
         }
 
+        protected override void RenameContext(string fullPathBefore, string fullPathAfter, IProjectLogger logger)
+        {
+            foreach (IFileRenameHandler fileRenameHandler in _fileRenameHandlers)
+            {
+                fileRenameHandler.HandleRename(fullPathBefore, fullPathAfter);
+            }
+        }
+
+        protected override Task AddToContextAsync(string fullPath, IImmutableDictionary<string, string> metadata, bool isActiveContext, IProjectLogger logger)
+        {
+            string[] folderNames = FileItemServices.GetLogicalFolderNames(Path.GetDirectoryName(_project.FullPath), fullPath, metadata);
+
+            logger.WriteLine("Adding source file '{0}'", fullPath);
+            return Context.AddSourceFileAsync(fullPath, isInCurrentContext: isActiveContext, folderNames: folderNames);
+        }
+
         protected override void AddToContext(string fullPath, IImmutableDictionary<string, string> metadata, bool isActiveContext, IProjectLogger logger)
         {
             string[] folderNames = FileItemServices.GetLogicalFolderNames(Path.GetDirectoryName(_project.FullPath), fullPath, metadata);
 
             logger.WriteLine("Adding source file '{0}'", fullPath);
             Context.AddSourceFile(fullPath, isInCurrentContext: isActiveContext, folderNames: folderNames);
+        }
+
+        protected override Task RemoveFromContextAsync(string fullPath, IProjectLogger logger)
+        {
+            logger.WriteLine("Removing source file '{0}'", fullPath);
+            return Context.RemoveSourceFileAsync(fullPath);
         }
 
         protected override void RemoveFromContext(string fullPath, IProjectLogger logger)

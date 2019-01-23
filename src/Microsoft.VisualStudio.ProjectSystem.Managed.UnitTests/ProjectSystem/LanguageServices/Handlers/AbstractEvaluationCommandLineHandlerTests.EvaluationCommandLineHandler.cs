@@ -2,7 +2,7 @@
 
 using System.Collections.Generic;
 using System.Collections.Immutable;
-
+using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Logging;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
@@ -31,10 +31,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             {
                 Files.Add(fullPath, metadata);
             }
+            protected override Task AddToContextAsync(string fullPath, IImmutableDictionary<string, string> metadata, bool isActiveContext, IProjectLogger logger)
+            {
+                Files.Add(fullPath, metadata);
+                return Task.CompletedTask;
+            }
 
             protected override void RemoveFromContext(string fullPath, IProjectLogger logger)
             {
                 Files.Remove(fullPath);
+            }
+
+            protected override Task RemoveFromContextAsync(string fullPath, IProjectLogger logger)
+            {
+                Files.Remove(fullPath);
+                return Task.CompletedTask;
+            }
+
+            protected override void RenameContext(string fullPathBefore, string fullPathAfter, IProjectLogger logger)
+            {
             }
         }
     }

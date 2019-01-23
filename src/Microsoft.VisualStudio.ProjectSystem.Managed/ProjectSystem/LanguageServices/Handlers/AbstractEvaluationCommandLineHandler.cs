@@ -3,7 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-
+using System.Threading.Tasks;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.Logging;
 
@@ -113,10 +113,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             if (!difference.AnyChanges)
                 return;
 
+            IImmutableDictionary<string, string> renamedItems = difference.RenamedItems;
+
             difference = HandlerServices.NormalizeRenames(difference);
             EnqueueProjectEvaluation(version, difference);
 
-            ApplyChangesToContext(difference, metadata, isActiveContext, logger);
+            ApplyChangesToContext(difference, metadata, renamedItems, isActiveContext, logger);
         }
 
         /// <summary>
@@ -143,36 +145,93 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             if (!difference.AnyChanges)
                 return;
 
+            IImmutableDictionary<string, string> renamedItems = difference.RenamedItems;
+
             difference = HandlerServices.NormalizeRenames(difference);
             difference = ResolveProjectBuildConflicts(version, difference);
 
-            ApplyChangesToContext(difference, ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal, isActiveContext, logger);
+            ApplyChangesToContext(difference, ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal, renamedItems, isActiveContext, logger);
         }
+
+        protected abstract void RenameContext(string fullPathBefore, string fullPathAfter, IProjectLogger logger);
 
         protected abstract void AddToContext(string fullPath, IImmutableDictionary<string, string> metadata, bool isActiveContext, IProjectLogger logger);
 
+        protected abstract Task AddToContextAsync(string fullPath, IImmutableDictionary<string, string> metadata, bool isActiveContext, IProjectLogger logger);
+
+        protected abstract Task RemoveFromContextAsync(string fullPath, IProjectLogger logger);
+
         protected abstract void RemoveFromContext(string fullPath, IProjectLogger logger);
 
-        private void ApplyChangesToContext(IProjectChangeDiff difference, IImmutableDictionary<string, IImmutableDictionary<string, string>> metadata, bool isActiveContext, IProjectLogger logger)
+        private void ApplyChangesToContext(IProjectChangeDiff difference, IImmutableDictionary<string, IImmutableDictionary<string, string>> metadata, IImmutableDictionary<string, string> renamedItems, bool isActiveContext, IProjectLogger logger)
         {
+            Action<string> handleRemove;
+            Action<string> handleAdd;
+            List<ValueTask> valueTasks = null;
+            bool trackRenames = renamedItems.Count > 0;
+
+            // Only track these context changes if there are renames
+            if (trackRenames)
+            {
+                valueTasks = new List<ValueTask>();
+                handleRemove = (includePath) => valueTasks.Add(RemoveFromContextIfPresentAsync(includePath, logger));
+                handleAdd = (includePath) => valueTasks.Add(AddToContextIfNotPresentAsync(includePath, metadata, isActiveContext, logger));
+            }
+            else
+            {
+                handleRemove = (includePath) => RemoveFromContextIfPresent(includePath, logger);
+                handleAdd = (includePath) => AddToContextIfNotPresent(includePath, metadata, isActiveContext, logger);
+            }
+
             foreach (string includePath in difference.RemovedItems)
             {
-                RemoveFromContextIfPresent(includePath, logger);
+                handleRemove(includePath);
             }
 
             foreach (string includePath in difference.AddedItems)
             {
-                AddToContextIfNotPresent(includePath, metadata, isActiveContext, logger);
+                handleAdd(includePath);
             }
 
             // We Remove then Add changed items to pick up the Linked metadata
             foreach (string includePath in difference.ChangedItems)
             {
-                RemoveFromContextIfPresent(includePath, logger);
-                AddToContextIfNotPresent(includePath, metadata, isActiveContext, logger);
+                handleRemove(includePath);
+                handleAdd(includePath);
+            }
+
+            if (trackRenames)
+            {
+                _project.Services.ThreadingPolicy.Fork(async () =>
+                {
+                    try
+                    {
+                        // Wait for all context changed to be propogated
+                        await valueTasks.WhenAll();
+                        foreach ((string pathBefore, string pathAfter) in renamedItems)
+                        {
+                            ProccessFileRename(pathBefore, pathAfter, metadata, isActiveContext, logger);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        // async void means that any exceptions thrown here 
+                        // will be hard to track without logging
+                        logger.WriteLine(ex.ToString());
+                    }
+                },
+                factory: _project.Services.ThreadingPolicy.JoinableTaskFactory,
+                unconfiguredProject: _project);
             }
 
             Assumes.True(difference.RenamedItems.Count == 0, "We should have normalized renames.");
+        }
+
+        private void ProccessFileRename(string pathBefore, string pathAfter, IImmutableDictionary<string, IImmutableDictionary<string, string>> metadata, bool isActiveContext, IProjectLogger logger)
+        {
+            string fullPathBefore = _project.MakeRooted(pathBefore);
+            string fullPathAfter = _project.MakeRooted(pathAfter);
+            RenameContext(fullPathBefore, fullPathAfter, logger);
         }
 
         private void RemoveFromContextIfPresent(string includePath, IProjectLogger logger)
@@ -189,6 +248,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             }
         }
 
+        private async ValueTask RemoveFromContextIfPresentAsync(string includePath, IProjectLogger logger)
+        {
+            string fullPath = _project.MakeRooted(includePath);
+
+            if (_paths.Contains(fullPath))
+            {
+                // Remove from the context first so if Roslyn throws due to a bug 
+                // or other reason, that our state of the world remains consistent
+                await RemoveFromContextAsync(fullPath, logger);
+                bool removed = _paths.Remove(fullPath);
+                Assumes.True(removed);
+            }
+        }
+
         private void AddToContextIfNotPresent(string includePath, IImmutableDictionary<string, IImmutableDictionary<string, string>> metadata, bool isActiveContext, IProjectLogger logger)
         {
             string fullPath = _project.MakeRooted(includePath);
@@ -200,6 +273,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
                 // Add to the context first so if Roslyn throws due to a bug or
                 // other reason, that our state of the world remains consistent
                 AddToContext(fullPath, itemMetadata, isActiveContext, logger);
+                bool added = _paths.Add(fullPath);
+                Assumes.True(added);
+            }
+        }
+
+        private async ValueTask AddToContextIfNotPresentAsync(string includePath, IImmutableDictionary<string, IImmutableDictionary<string, string>> metadata, bool isActiveContext, IProjectLogger logger)
+        {
+            string fullPath = _project.MakeRooted(includePath);
+
+            if (!_paths.Contains(fullPath))
+            {
+                IImmutableDictionary<string, string> itemMetadata = metadata.GetValueOrDefault(includePath, ImmutableStringDictionary<string>.EmptyOrdinal);
+
+                // Add to the context first so if Roslyn throws due to a bug or
+                // other reason, that our state of the world remains consistent
+                await AddToContextAsync(fullPath, itemMetadata, isActiveContext, logger);
                 bool added = _paths.Add(fullPath);
                 Assumes.True(added);
             }

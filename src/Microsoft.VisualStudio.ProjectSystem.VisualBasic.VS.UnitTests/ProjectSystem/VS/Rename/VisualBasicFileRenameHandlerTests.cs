@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using Microsoft.CodeAnalysis;
+using Microsoft.VisualStudio.LanguageServices;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 
 using Moq;
@@ -11,7 +12,7 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 {
-    public class VisualBasicSimpleRenameTests : SimpleRenamerTestsBase
+    public class VisualBasicFileRenameHandlerTests : FileRenameHandlerTestsBase
     {
         protected override string ProjectFileExtension => "vbproj";
 
@@ -131,10 +132,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                 Solution solution = ws.AddSolution(InitializeWorkspace(projectId, newFilePath, sourceCode, language));
                 Project project = (from d in solution.Projects where d.Id == projectId select d).FirstOrDefault();
 
-                var environmentOptionsFactory = IEnvironmentOptionsFactory.Implement((string category, string page, string property, bool defaultValue) => { return true; });
-
-                var renamer = new Renamer(ws, IProjectThreadingServiceFactory.Create(), userNotificationServices, environmentOptionsFactory, roslynServices, project, oldFilePath, newFilePath);
-                await renamer.RenameAsync(project)
+                var environmentOptionsFactory = IEnvironmentOptionsFactory.Implement((string category, string page, string property, bool defaultValue) => true);
+                var projectServices = IUnconfiguredProjectVsServicesFactory.Implement(threadingServiceCreator: () => IProjectThreadingServiceFactory.Create());
+                var renamer = new CSharpOrVisualBasicFileRenameHandler(projectServices, solution.Workspace, environmentOptionsFactory, userNotificationServices, roslynServices);
+                await renamer.HandleRenameAsync(oldFilePath, newFilePath)
                              .TimeoutAfter(TimeSpan.FromSeconds(1));
             }
         }

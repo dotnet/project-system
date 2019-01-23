@@ -3,9 +3,10 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-
+using System.Linq;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
+using Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers.Rename;
 using Microsoft.VisualStudio.ProjectSystem.Logging;
 
 using Moq;
