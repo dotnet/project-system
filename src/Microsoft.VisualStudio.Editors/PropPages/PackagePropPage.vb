@@ -15,8 +15,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Private ReadOnly _fileVersionTextBoxes As TextBox()
         Private ReadOnly _assemblyVersionTextBoxes As TextBox()
-        Private _licenseFileSelected As Boolean = False
-        Private _licenseExpressionSelected As Boolean = False
         Private _licenseUrlDetected As Boolean = False
         Private _newLicensePropertyDetectedAtInit As Boolean = False
 
@@ -29,7 +27,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private Const MaxAssemblyVersionPartValue As UInteger = 65534
 
         ''' <summary>
-        ''' Customizable processing done before the class has populated controls in the ControlData array	
+        ''' Customizable processing done before the class has populated controls in the ControlData array
         ''' </summary>
         ''' <remarks>
         ''' Override this to implement custom processing.
@@ -43,7 +41,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Protected Overrides Sub PostInitPage()
             MyBase.PostInitPage()
-            InitLicensing()
+            InitializeLicensing()
         End Sub
 
         Private Shared Function GetUnconfiguredProject(hierarchy As IVsHierarchy) As ProjectSystem.UnconfiguredProject
@@ -86,20 +84,20 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' This checks the properties for licenses to determine the initial state of the licensing section.
         ''' Currently, If both are set, it will default to just enabling the PackageLicenseExpression.
-        ''' In the future, it might be a good idea to have a warning and only output one value, but the nuget error is helpful.
+        ''' In the future, it might be a good idea to have a warning and only output one value, but the nuget error after packing is helpful.
         ''' TryGetNonCommonPropertyValue will get the property if it is set even if it is empty, but because the empty properties 
-        ''' are ignored elsewhere we need to check and make sure they are ignored here.
+        ''' are ignored elsewhere, they are ignored here.
         ''' </summary>
-        Private Sub InitLicensing()
+        Private Sub InitializeLicensing()
             Dim PackageLicenseFileSet = TryCast(TryGetNonCommonPropertyValue(GetPropertyDescriptor("PackageLicenseFile")), String)
             If (PackageLicenseFileSet IsNot Nothing And PackageLicenseFileSet IsNot "") Then
                 _newLicensePropertyDetectedAtInit = True
-                SetLicenseFileRadioButton()
+                SetLicenseRadioButtons(False)
             End If
             Dim PackageLicenseExpressionSet = TryCast(TryGetNonCommonPropertyValue(GetPropertyDescriptor("PackageLicenseExpression")), String)
             If (PackageLicenseExpressionSet IsNot Nothing And PackageLicenseExpressionSet IsNot "") Then
                 _newLicensePropertyDetectedAtInit = True
-                SetLicenseExpressionRadioButton()
+                SetLicenseRadioButtons(True)
             End If
             Dim PackageLicenseUrlSet = TryCast(TryGetNonCommonPropertyValue(GetPropertyDescriptor("PackageLicenseUrl")), String)
             If (PackageLicenseUrlSet IsNot Nothing And PackageLicenseUrlSet IsNot "") Then
@@ -290,35 +288,27 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             SetComboBoxDropdownWidth(NeutralLanguageComboBox)
         End Sub
 
-        Private Sub SetLicenseExpressionRadioButton()
-            LicenseFileRadioButton.Checked = False
-            LicenseExpressionRadioButton.Checked = True
-            PackageLicenseExpression.Enabled = True
-            LicenseFileNameTextBox.Enabled = False
-            LicenseBrowseButton.Enabled = False
-            _licenseFileSelected = False
-            _licenseExpressionSelected = True
-            If Not LicenseFileNameTextBox.Text = "" Then
+        ''' <summary>
+        '''  Set the radio button selection and update both textboxes
+        ''' </summary>
+        ''' <param name="setLicenseExpression">Sets the radio button for LicensesExpression, if false sets to LicenseFile</param>
+        Private Sub SetLicenseRadioButtons(setLicenseExpression As Boolean)
+            LicenseFileRadioButton.Checked = Not setLicenseExpression
+            LicenseExpressionRadioButton.Checked = setLicenseExpression
+            PackageLicenseExpression.Enabled = setLicenseExpression
+            LicenseFileNameTextBox.Enabled = Not setLicenseExpression
+            LicenseBrowseButton.Enabled = Not setLicenseExpression
+            If setLicenseExpression Then
                 SetCommonPropertyValue(GetPropertyDescriptor("PackageLicenseFile"), "")
+                LicenseFileNameTextBox.Text = ""
+            Else
+                PackageLicenseExpression.Text = ""
             End If
-            LicenseFileNameTextBox.Text = ""
-        End Sub
-
-        Private Sub SetLicenseFileRadioButton()
-            LicenseExpressionRadioButton.Checked = False
-            LicenseFileRadioButton.Checked = True
-            PackageLicenseExpression.Enabled = False
-            LicenseFileNameTextBox.Enabled = True
-            LicenseBrowseButton.Enabled = True
-            _licenseFileSelected = True
-            _licenseExpressionSelected = False
-            PackageLicenseExpression.Text = ""
         End Sub
 
         Private Sub LicenseTypeFirstSelected()
+            'When the project has neither of the new license properties AND it has the license URL property and a new license type is selected
             If (_licenseUrlDetected) Then
-                'This is to handle when the property page has neither of the new license properties AND it has the license URL selected
-                'We want the warning to go away and set the line label back to just a dividing line
                 LicenseLineLabel.BackColor = Drawing.SystemColors.ControlDark
                 LicenseLineLabel.Size = New Drawing.Size(LicenseLineLabel.Size.Width, 1)
                 SetCommonPropertyValue(GetPropertyDescriptor("PackageLicenseUrl"), "")
@@ -332,7 +322,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 _newLicensePropertyDetectedAtInit = False
             End If
             If (LicenseExpressionRadioButton.Checked) Then
-                SetLicenseExpressionRadioButton()
+                SetLicenseRadioButtons(True)
             End If
         End Sub
 
@@ -342,7 +332,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 _newLicensePropertyDetectedAtInit = False
             End If
             If (LicenseFileRadioButton.Checked) Then
-                SetLicenseFileRadioButton()
+                SetLicenseRadioButtons(False)
             End If
         End Sub
 
@@ -351,22 +341,22 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 'The license expression is not selected, and the text was changed while it was disabled
                 'This means there was probably an undo which populated the textbox with text, so give it back control
                 'I don't believe that undo will work with the license file text box because it is not user populated
-                SetLicenseExpressionRadioButton()
+                SetLicenseRadioButtons(True)
             End If
         End Sub
 
         'These GotFocus methods are for when the property page is first entered and neither have a value
         'It would make sense to selected the corresponding radio button when the text box recieves focus
         Private Sub PackageLicenseExpression_GotFocus(sender As Object, e As EventArgs) Handles PackageLicenseExpression.GotFocus
-            SetLicenseExpressionRadioButton()
+            SetLicenseRadioButtons(True)
         End Sub
 
         Private Sub LicenseFileNameTextBox_GotFocus(sender As Object, e As EventArgs) Handles LicenseFileNameTextBox.GotFocus
-            SetLicenseFileRadioButton()
+            SetLicenseRadioButtons(False)
         End Sub
 
         Private Sub LicenseBrowseButton_GotFocus(sender As Object, e As EventArgs) Handles LicenseBrowseButton.GotFocus
-            SetLicenseFileRadioButton()
+            SetLicenseRadioButtons(False)
         End Sub
 
         Private Shared Function GetRelativePath(fullPath As String, basePath As String) As String
@@ -385,7 +375,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Dim correctDirectory = Directory.GetParent(unconfiguredProject.FullPath).ToString
             Dim relativePath As String = GetRelativePath(Path.GetFullPath(fileName), correctDirectory + "\")
             LicenseFileNameTextBox.Text = relativePath
-            'Because we want the TextBox to have the relative path, we do not link it to the TextBox and have to set it manually
+            'The TextBox needs to have the relative path, so the property isn't linked to the TextBox. It must be set manually.
             SetCommonPropertyValue(GetPropertyDescriptor("PackageLicenseFile"), Path.GetFileName(fileName))
             ThreadHelper.JoinableTaskFactory.Run(Function()
                                                      Return projectSourceItemProvider.AddAsync("None", relativePath, {(New KeyValuePair(Of String, String)("Pack", "True")), New KeyValuePair(Of String, String)("PackagePath", "")})
