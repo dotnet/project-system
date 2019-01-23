@@ -28,14 +28,14 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         'After 65535, the project system doesn't complain, but you get a compile error.
         Private Const MaxAssemblyVersionPartValue As UInteger = 65534
 
-        ''' <summary>	
+        ''' <summary>
         ''' Customizable processing done before the class has populated controls in the ControlData array	
-        ''' </summary>	
-        ''' <remarks>	
-        ''' Override this to implement custom processing.	
-        ''' IMPORTANT NOTE: this method can be called multiple times on the same page.  In particular,	
-        '''   it is called on every SetObjects call, which means that when the user changes the	
-        '''   selected configuration, it is called again. 	
+        ''' </summary>
+        ''' <remarks>
+        ''' Override this to implement custom processing.
+        ''' IMPORTANT NOTE: this method can be called multiple times on the same page.  In particular,
+        '''   it is called on every SetObjects call, which means that when the user changes the
+        '''   selected configuration, it is called again.
         ''' </remarks>
         Protected Overrides Sub PreInitPage()
             MyBase.PreInitPage()
@@ -46,7 +46,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             InitLicensing()
         End Sub
 
-        Private Function GetUnconfiguredProject(hierarchy As IVsHierarchy) As ProjectSystem.UnconfiguredProject
+        Private Shared Function GetUnconfiguredProject(hierarchy As IVsHierarchy) As ProjectSystem.UnconfiguredProject
             Dim context = CType(hierarchy, IVsBrowseObjectContext)
             If context IsNot Nothing Then
                 Dim dteProject = CType(GetDTEProject(hierarchy), EnvDTE.Project)
@@ -122,7 +122,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             If (control Is FileVersionLayoutPanel) Then
                 ValidateAssemblyFileVersion(Version)
             Else
-                'Debug.Assert(control Is AssemblyVersionLayoutPanel)
+                Debug.Assert(control Is AssemblyVersionLayoutPanel)
                 ValidateAssemblyVersion(Version)
             End If
 
@@ -155,7 +155,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             If (control Is FileVersionLayoutPanel) Then
                 Textboxes = _fileVersionTextBoxes
             Else
-                'Debug.Assert(control Is AssemblyVersionLayoutPanel)
+                Debug.Assert(control Is AssemblyVersionLayoutPanel)
                 Textboxes = _assemblyVersionTextBoxes
             End If
             For index As Integer = 0 To 3
@@ -425,7 +425,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Dim sFileName = ""
             Dim fileNames As ArrayList = GetFilesViaBrowse(ServiceProvider, Handle, GetProjectPath(), My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_AddExistingFilesTitle,
                     CombineDialogFilters(
-                        CreateDialogFilter(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Filter_Text, ".txt", ".md", "."),
+                        "License File (*.txt, *.md, *.)|*.txt;*.md;*.",
                         GetAllFilesDialogFilter()
                         ),
                         0, False, sFileName)
