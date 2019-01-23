@@ -784,7 +784,7 @@
     <value>824, 26</value>
   </data>
   <data name="PackageLicenseExpression.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="&gt;&gt;PackageLicenseExpression.Name" xml:space="preserve">
     <value>PackageLicenseExpression</value>
@@ -805,7 +805,7 @@
     <value>859, 40</value>
   </data>
   <data name="ExpressionLayoutPanel.TabIndex" type="System.Int32, mscorlib">
-    <value>19</value>
+    <value>9</value>
   </data>
   <data name="&gt;&gt;ExpressionLayoutPanel.Name" xml:space="preserve">
     <value>ExpressionLayoutPanel</value>
@@ -964,7 +964,7 @@
     <value>854, 40</value>
   </data>
   <data name="LicenseFileLayoutPanel.TabIndex" type="System.Int32, mscorlib">
-    <value>20</value>
+    <value>10</value>
   </data>
   <data name="&gt;&gt;LicenseFileLayoutPanel.Name" xml:space="preserve">
     <value>LicenseFileLayoutPanel</value>
@@ -1030,7 +1030,7 @@
     <value>854, 26</value>
   </data>
   <data name="PackageProjectUrl.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
+    <value>11</value>
   </data>
   <data name="&gt;&gt;PackageProjectUrl.Name" xml:space="preserve">
     <value>PackageProjectUrl</value>
@@ -1093,7 +1093,7 @@
     <value>854, 26</value>
   </data>
   <data name="PackageIconUrl.TabIndex" type="System.Int32, mscorlib">
-    <value>11</value>
+    <value>12</value>
   </data>
   <data name="&gt;&gt;PackageIconUrl.Name" xml:space="preserve">
     <value>PackageIconUrl</value>
@@ -1156,7 +1156,7 @@
     <value>854, 26</value>
   </data>
   <data name="RepositoryUrl.TabIndex" type="System.Int32, mscorlib">
-    <value>12</value>
+    <value>13</value>
   </data>
   <data name="&gt;&gt;RepositoryUrl.Name" xml:space="preserve">
     <value>RepositoryUrl</value>
@@ -1219,7 +1219,7 @@
     <value>854, 26</value>
   </data>
   <data name="RepositoryType.TabIndex" type="System.Int32, mscorlib">
-    <value>13</value>
+    <value>14</value>
   </data>
   <data name="&gt;&gt;RepositoryType.Name" xml:space="preserve">
     <value>RepositoryType</value>
@@ -1282,7 +1282,7 @@
     <value>854, 26</value>
   </data>
   <data name="PackageTags.TabIndex" type="System.Int32, mscorlib">
-    <value>14</value>
+    <value>15</value>
   </data>
   <data name="&gt;&gt;PackageTags.Name" xml:space="preserve">
     <value>PackageTags</value>
@@ -1351,7 +1351,7 @@
     <value>854, 79</value>
   </data>
   <data name="PackageReleaseNotes.TabIndex" type="System.Int32, mscorlib">
-    <value>15</value>
+    <value>16</value>
   </data>
   <data name="&gt;&gt;PackageReleaseNotes.Name" xml:space="preserve">
     <value>PackageReleaseNotes</value>
@@ -1414,7 +1414,7 @@
     <value>854, 28</value>
   </data>
   <data name="NeutralLanguageComboBox.TabIndex" type="System.Int32, mscorlib">
-    <value>16</value>
+    <value>17</value>
   </data>
   <data name="&gt;&gt;NeutralLanguageComboBox.Name" xml:space="preserve">
     <value>NeutralLanguageComboBox</value>
@@ -1588,7 +1588,7 @@
     <value>345, 40</value>
   </data>
   <data name="AssemblyVersionLayoutPanel.TabIndex" type="System.Int32, mscorlib">
-    <value>17</value>
+    <value>18</value>
   </data>
   <data name="&gt;&gt;AssemblyVersionLayoutPanel.Name" xml:space="preserve">
     <value>AssemblyVersionLayoutPanel</value>
@@ -1768,7 +1768,7 @@
     <value>345, 38</value>
   </data>
   <data name="FileVersionLayoutPanel.TabIndex" type="System.Int32, mscorlib">
-    <value>18</value>
+    <value>19</value>
   </data>
   <data name="&gt;&gt;FileVersionLayoutPanel.Name" xml:space="preserve">
     <value>FileVersionLayoutPanel</value>

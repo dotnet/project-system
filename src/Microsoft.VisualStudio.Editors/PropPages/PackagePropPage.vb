@@ -83,24 +83,24 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         ''' <summary>
         ''' This checks the properties for licenses to determine the initial state of the licensing section.
-        ''' Currently, If both are set, it will default to just enabling the PackageLicenseExpression.
+        ''' Currently, If both are set, it will default to just enabling the <see cref="PackageLicenseExpression" />.
         ''' In the future, it might be a good idea to have a warning and only output one value, but the nuget error after packing is helpful.
-        ''' TryGetNonCommonPropertyValue will get the property if it is set even if it is empty, but because the empty properties 
+        ''' <see cref="TryGetNonCommonPropertyValue" /> will get the property if it is set even if it is empty, but because the empty properties 
         ''' are ignored elsewhere, they are ignored here.
         ''' </summary>
         Private Sub InitializeLicensing()
             Dim PackageLicenseFileSet = TryCast(TryGetNonCommonPropertyValue(GetPropertyDescriptor("PackageLicenseFile")), String)
-            If (PackageLicenseFileSet IsNot Nothing And PackageLicenseFileSet IsNot "") Then
+            If (PackageLicenseFileSet IsNot Nothing AndAlso PackageLicenseFileSet IsNot "") Then
                 _newLicensePropertyDetectedAtInit = True
                 SetLicenseRadioButtons(False)
             End If
             Dim PackageLicenseExpressionSet = TryCast(TryGetNonCommonPropertyValue(GetPropertyDescriptor("PackageLicenseExpression")), String)
-            If (PackageLicenseExpressionSet IsNot Nothing And PackageLicenseExpressionSet IsNot "") Then
+            If (PackageLicenseExpressionSet IsNot Nothing AndAlso PackageLicenseExpressionSet IsNot "") Then
                 _newLicensePropertyDetectedAtInit = True
                 SetLicenseRadioButtons(True)
             End If
             Dim PackageLicenseUrlSet = TryCast(TryGetNonCommonPropertyValue(GetPropertyDescriptor("PackageLicenseUrl")), String)
-            If (PackageLicenseUrlSet IsNot Nothing And PackageLicenseUrlSet IsNot "") Then
+            If (PackageLicenseUrlSet IsNot Nothing AndAlso PackageLicenseUrlSet IsNot "") Then
                 LicenseLineLabel.BackColor = Drawing.SystemColors.Control
                 LicenseLineLabel.Size = New Drawing.Size(LicenseLineLabel.Size.Width, 30)
                 _licenseUrlDetected = True
@@ -241,7 +241,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     datalist.Add(data)
                     data = New PropertyControlData(105, "Copyright", Copyright, ControlDataFlags.None, New Control() {CopyrightLabel})
                     datalist.Add(data)
-                    data = New PropertyControlData(106, "PackageLicenseExpression", PackageLicenseExpression, ControlDataFlags.None, New Control() {PackageLicenseLabel})
+                    data = New PropertyControlData(106, "PackageLicenseExpression", PackageLicenseExpression, ControlDataFlags.None, New Control() {ExpressionLabel})
                     datalist.Add(data)
                     data = New PropertyControlData(107, "PackageProjectUrl", PackageProjectUrl, ControlDataFlags.None, New Control() {PackageProjectUrlLabel})
                     datalist.Add(data)
@@ -293,15 +293,19 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <param name="setLicenseExpression">Sets the radio button for LicensesExpression, if false sets to LicenseFile</param>
         Private Sub SetLicenseRadioButtons(setLicenseExpression As Boolean)
+            If (Not _newLicensePropertyDetectedAtInit) Then
+                LicenseTypeFirstSelected()
+                _newLicensePropertyDetectedAtInit = False
+            End If
             LicenseFileRadioButton.Checked = Not setLicenseExpression
             LicenseExpressionRadioButton.Checked = setLicenseExpression
             PackageLicenseExpression.Enabled = setLicenseExpression
             LicenseFileNameTextBox.Enabled = Not setLicenseExpression
             LicenseBrowseButton.Enabled = Not setLicenseExpression
-            If setLicenseExpression Then
+            If setLicenseExpression AndAlso Not LicenseFileNameTextBox.Text = "" Then
                 SetCommonPropertyValue(GetPropertyDescriptor("PackageLicenseFile"), "")
                 LicenseFileNameTextBox.Text = ""
-            Else
+            ElseIf (Not PackageLicenseExpression.Text = "") Then
                 PackageLicenseExpression.Text = ""
             End If
         End Sub
@@ -317,20 +321,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
         Private Sub LicenseExpressionRadioButton_CheckedChanged(sender As Object, e As EventArgs) Handles LicenseExpressionRadioButton.CheckedChanged
-            If (Not _newLicensePropertyDetectedAtInit) Then
-                LicenseTypeFirstSelected()
-                _newLicensePropertyDetectedAtInit = False
-            End If
             If (LicenseExpressionRadioButton.Checked) Then
                 SetLicenseRadioButtons(True)
             End If
         End Sub
 
         Private Sub LicenseFileRadioButton_CheckChanged(sender As Object, e As EventArgs) Handles LicenseFileRadioButton.CheckedChanged
-            If (Not _newLicensePropertyDetectedAtInit) Then
-                LicenseTypeFirstSelected()
-                _newLicensePropertyDetectedAtInit = False
-            End If
             If (LicenseFileRadioButton.Checked) Then
                 SetLicenseRadioButtons(False)
             End If
@@ -386,7 +382,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Dim fileName = ""
             Dim fileNames As ArrayList = GetFilesViaBrowse(ServiceProvider, Handle, GetProjectPath(), My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_AddExistingFilesTitle,
                     CombineDialogFilters(
-                        "License File (*.txt, *.md)|*.txt;*.md;",
+                        My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Filter_License + " (*.txt, *.md)|*.txt;*.md",
                         GetAllFilesDialogFilter()
                         ),
                         0, False, fileName)

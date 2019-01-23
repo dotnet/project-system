@@ -2778,6 +2778,15 @@ El nuevo valor del archivo app.config es '{1}'
         <target state="new">Extended Metafile</target>
         <note />
       </trans-unit>
+      <trans-unit id="RSE_Filter_License">
+        <source>License Files</source>
+        <target state="new">License Files</target>
+        <note># File dialog filters
+#
+# E.g., for icons, the actual filter created would look like "Icons (*.ico)".  These resources
+#  represent the first part of that filter
+#</note>
+      </trans-unit>
     </body>
   </file>
 </xliff>

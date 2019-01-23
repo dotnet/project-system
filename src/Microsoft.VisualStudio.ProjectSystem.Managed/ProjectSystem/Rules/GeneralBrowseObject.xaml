@@ -145,7 +145,6 @@
         </StringProperty.DataSource>
     </StringProperty>
     <BoolProperty Name="PackageRequireLicenseAcceptance" Default="False" Visible="False"/>
-    <StringProperty Name="PackageLicenseFileLocation" Visible="False"/>
     <StringProperty Name="PackageLicenseExpression" Visible="False"/>
     <StringProperty Name="PackageLicenseFile" Visible="False"/>
     <StringProperty Name="PackageLicenseUrl" Visible="False"/>
