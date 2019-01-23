@@ -89,7 +89,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                 {
                     HashSet<string> files = GetFilesToCompile(moniker, inputs.SharedInputs);
                     string outputFileName = GetOutputFileName(inputs.OutputPath, moniker);
-                    CompileTempPEAsync(scheduler, files, outputFileName).Forget();
+                    scheduler.ScheduleAsyncTask(token => CompileTempPEAsync(files, outputFileName, token)).Task.Forget();
                 }
             }
             _buildManager.Value.OnDesignTimeOutputDirty(moniker);
@@ -117,7 +117,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                 if (inputs.TaskSchedulers.TryGetValue(moniker, out ITaskDelayScheduler scheduler))
                 {
                     // For parity with legacy we don't care about the compilation result: Legacy only errors here if it runs out of memory queuing the compilation
-                    await CompileTempPEAsync(scheduler, files, outputFileName);
+                    // Additionally for parity, we compile here on the UI thread and block (whilst still preventing simultaneous work)
+                    await scheduler.RunAsyncTask(token => CompileTempPEAsync(files, outputFileName, token));
                 }
             }
 
@@ -166,26 +167,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             return Path.Combine(outputPath, moniker.Replace('\\', '.') + ".dll");
         }
 
-        protected virtual Task CompileTempPEAsync(ITaskDelayScheduler scheduler, HashSet<string> filesToCompile, string outputFileName)
+        protected virtual async Task CompileTempPEAsync(HashSet<string> filesToCompile, string outputFileName, CancellationToken token)
         {
-            return scheduler.ScheduleAsyncTask(async token =>
-            {
-                _telemetryService.PostProperty(TelemetryEventName.TempPECompilation, TelemetryPropertyName.TempPECompilationOutputFileName, outputFileName);
-                bool result = await _compiler.CompileAsync(_languageServiceHost.ActiveProjectContext, outputFileName, filesToCompile, token);
+            _telemetryService.PostProperty(TelemetryEventName.TempPECompilation, TelemetryPropertyName.TempPECompilationOutputFileName, outputFileName);
+            bool result = await _compiler.CompileAsync(_languageServiceHost.ActiveProjectContext, outputFileName, filesToCompile, token);
 
-                // if the compilation failed or was cancelled we should clean up any old TempPE outputs lest a designer gets the wrong types, plus its what legacy did
-                if (!result)
+            // if the compilation failed or was cancelled we should clean up any old TempPE outputs lest a designer gets the wrong types, plus its what legacy did
+            if (!result)
+            {
+                try
                 {
-                    try
-                    {
-                        _fileSystem.RemoveFile(outputFileName);
-                    }
-                    catch (IOException)
-                    { }
-                    catch (UnauthorizedAccessException)
-                    { }
+                    _fileSystem.RemoveFile(outputFileName);
                 }
-            }).Task;
+                catch (IOException)
+                { }
+                catch (UnauthorizedAccessException)
+                { }
+            }
         }
 
         protected virtual HashSet<string> GetFilesToCompile(string moniker, ImmutableHashSet<string> sharedInputs)
@@ -232,7 +230,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                     {
                         addedDesignTimeInputs.Add(item);
                         await SubscribeToFileChangesAsync(cookies, item);
-                        schedulers.Add(item, new TaskDelayScheduler(s_compilationWaitTime, _unconfiguredProjectServices.ThreadingService, DisposalToken));
+                        schedulers.Add(item, CreateTaskScheduler());
                     }
                 }
 
@@ -268,7 +266,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                         }
                         if (!schedulers.ContainsKey(item))
                         {
-                            schedulers.Add(item, new TaskDelayScheduler(s_compilationWaitTime, ThreadingService, DisposalToken));
+                            schedulers.Add(item, CreateTaskScheduler());
                         }
                     }
                 }
@@ -360,6 +358,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
         }
 
+        protected virtual ITaskDelayScheduler CreateTaskScheduler()
+        {
+            return new TaskDelayScheduler(s_compilationWaitTime, _unconfiguredProjectServices.ThreadingService, DisposalToken);
+        }
 
         private async Task NotifySourceFileDirtyAsync(string projectRelativeSourceFileName)
         {

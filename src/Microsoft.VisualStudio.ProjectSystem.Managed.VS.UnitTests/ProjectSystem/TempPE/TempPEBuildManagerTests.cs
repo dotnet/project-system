@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.IO;
@@ -1143,10 +1144,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 AppliedValue = new ProjectVersionedValue<DesignTimeInputsItem>(new DesignTimeInputsItem() { OutputPath = "TempPE" }, ImmutableDictionary<NamedIdentity, IComparable>.Empty);
             }
 
-            protected override Task CompileTempPEAsync(ITaskDelayScheduler scheduler, HashSet<string> filesToCompile, string outputFileName)
+            protected override Task CompileTempPEAsync(HashSet<string> filesToCompile, string outputFileName, CancellationToken token)
             {
                 CompiledItems.Add(outputFileName);
                 return Task.CompletedTask;
+            }
+
+            protected override ITaskDelayScheduler CreateTaskScheduler()
+            {
+                return new TaskDelayScheduler(TimeSpan.Zero, IProjectThreadingServiceFactory.Create(), default);
             }
 
             protected override Task SubscribeToFileChangesAsync(ImmutableDictionary<string, uint>.Builder cookies, string projectRelativeSourceFileName)
@@ -1189,6 +1195,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 var result = await base.PreprocessAsync(input, previousOutput);
 
                 await base.ApplyAsync(result);
+                await Task.Delay(600);
                 return AppliedValue.Value;
             }
 
