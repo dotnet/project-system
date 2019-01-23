@@ -11,6 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
     /// </summary>
     [Export(typeof(IProjectTreePropertiesProvider))]
     [AppliesTo(ProjectCapability.DotNet)]
+    [Order(Order.Default)]
     internal class ProjectRootImageProjectTreePropertiesProvider : IProjectTreePropertiesProvider
     {
         private readonly IProjectCapabilitiesService _capabilities;

@@ -16,6 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
     [Export(typeof(IProjectTreePropertiesProvider))]
     [Export(typeof(IProjectTreeSettingsProvider))]
     [AppliesTo(ProjectCapability.AppDesigner)]
+    [Order(Order.Default)]
     internal class AppDesignerFolderProjectTreePropertiesProvider : AbstractSpecialFolderProjectTreePropertiesProvider, IProjectTreeSettingsProvider
     {
         private static readonly ProjectTreeFlags s_defaultFolderFlags = ProjectTreeFlags.Create(ProjectTreeFlags.Common.AppDesignerFolder | ProjectTreeFlags.Common.BubbleUp);
