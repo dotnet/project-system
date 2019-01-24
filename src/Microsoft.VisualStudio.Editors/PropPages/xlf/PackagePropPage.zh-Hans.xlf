@@ -114,7 +114,7 @@
       </trans-unit>
       <trans-unit id="PackageIdLabel.Text">
         <source>Package &amp;id:</source>
-        <target state="translated">包 ID(&amp;I)</target>
+        <target state="translated">包 ID (&amp;I):</target>
         <note />
       </trans-unit>
       <trans-unit id="AuthorsLabel.Text">

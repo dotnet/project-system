@@ -39,12 +39,12 @@
       </trans-unit>
       <trans-unit id="DebugTargetMenuDebugFrameworkMenu|ButtonText">
         <source>Framework</source>
-        <target state="translated">フレームワーク&lt;/target&gt;
-        &lt;note /&gt;
-      &lt;/trans-unit&gt;
-      &lt;trans-unit id="cmdidDebugFrameworks|ButtonText"&gt;
-        &lt;source&gt;Framework&lt;/source&gt;
-        &lt;target state="translated"&gt;フレームワーク&lt;</target>
+        <target state="translated">フレームワーク</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidDebugFrameworks|ButtonText">
+        <source>Framework</source>
+        <target state="translated">フレームワーク</target>
         <note />
       </trans-unit>
       <trans-unit id="AddAboveMenu|ButtonText">

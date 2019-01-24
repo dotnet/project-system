@@ -24,7 +24,7 @@
       </trans-unit>
       <trans-unit id="EnvVariableNameWatermark">
         <source>Key</source>
-        <target state="translated">Taste</target>
+        <target state="translated">Schlüssel</target>
         <note />
       </trans-unit>
       <trans-unit id="EnvVariableValueWatermark">
