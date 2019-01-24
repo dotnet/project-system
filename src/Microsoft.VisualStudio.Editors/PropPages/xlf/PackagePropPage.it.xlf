@@ -242,7 +242,17 @@
         <target state="new">Package Tags</target>
         <note />
       </trans-unit>
-      <trans-unit id="LicenseLineLabel.Text">
+      <trans-unit id="LicenseExpressionRadioButton.AccessibleName">
+        <source>Package License Expression Radio Button</source>
+        <target state="new">Package License Expression Radio Button</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="LicenseFileRadioButton.AccessibleName">
+        <source>Package License File Radio Button</source>
+        <target state="new">Package License File Radio Button</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="LicenseUrlWarning.Text">
         <source>PackageLicenseURL property was detected, but it has been deprecated. Please change to either an Expression or File.</source>
         <target state="new">PackageLicenseURL property was detected, but it has been deprecated. Please change to either an Expression or File.</target>
         <note />

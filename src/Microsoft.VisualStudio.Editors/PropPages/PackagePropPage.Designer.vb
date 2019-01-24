@@ -36,6 +36,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Me.Copyright = New System.Windows.Forms.TextBox()
             Me.PackageLicenseLabel = New System.Windows.Forms.Label()
             Me.LicenseLineLabel = New System.Windows.Forms.Label()
+            Me.LicenseUrlWarning = New System.Windows.Forms.TextBox()
             Me.ExpressionLabel = New System.Windows.Forms.Label()
             Me.ExpressionLayoutPanel = New System.Windows.Forms.TableLayoutPanel()
             Me.LicenseExpressionRadioButton = New System.Windows.Forms.RadioButton()
@@ -101,6 +102,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Me.TableLayoutPanel.Controls.Add(Me.Copyright, 1, 8)
             Me.TableLayoutPanel.Controls.Add(Me.PackageLicenseLabel, 0, 9)
             Me.TableLayoutPanel.Controls.Add(Me.LicenseLineLabel, 1, 9)
+            Me.TableLayoutPanel.Controls.Add(Me.LicenseUrlWarning, 2, 9)
             Me.TableLayoutPanel.Controls.Add(Me.ExpressionLabel, 0, 10)
             Me.TableLayoutPanel.Controls.Add(Me.ExpressionLayoutPanel, 1, 10)
             Me.TableLayoutPanel.Controls.Add(Me.FileLabel, 0, 11)
@@ -219,6 +221,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             resources.ApplyResources(Me.LicenseLineLabel, "LicenseLineLabel")
             Me.LicenseLineLabel.BackColor = System.Drawing.SystemColors.ControlDark
             Me.LicenseLineLabel.Name = "LicenseLineLabel"
+            '
+            'LicenseUrlWarning
+            '
+            Me.LicenseUrlWarning.BorderStyle = System.Windows.Forms.BorderStyle.None
+            resources.ApplyResources(Me.LicenseUrlWarning, "LicenseUrlWarning")
+            Me.LicenseUrlWarning.Name = "LicenseUrlWarning"
+            Me.LicenseUrlWarning.ReadOnly = True
             '
             'ExpressionLabel
             '
@@ -488,6 +497,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Friend WithEvents FileVersionMajorTextBox As Windows.Forms.TextBox
         Friend WithEvents AssemblyFileVersionLabel As Windows.Forms.Label
         Friend WithEvents LicenseLineLabel As System.Windows.Forms.Label
+        Friend WithEvents LicenseUrlWarning As System.Windows.Forms.TextBox
 
         Friend WithEvents LicenseLayoutPanel As Windows.Forms.TableLayoutPanel
         Friend WithEvents ExpressionLayoutPanel As Windows.Forms.TableLayoutPanel

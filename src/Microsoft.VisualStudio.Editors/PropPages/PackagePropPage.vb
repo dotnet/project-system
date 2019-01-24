@@ -92,7 +92,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Dim PackageLicenseFileSet = TryCast(TryGetNonCommonPropertyValue(GetPropertyDescriptor("PackageLicenseFile")), String)
             If (PackageLicenseFileSet IsNot Nothing AndAlso PackageLicenseFileSet IsNot "") Then
                 _newLicensePropertyDetectedAtInit = True
+                Dim projectItems = DTEProject.ProjectItems
                 SetLicenseRadioButtons(False)
+                'HUGE problem here. Because we are not linking the property with the textbox, I need to get the relative path from the license item to populate the text box. 
+
             End If
             Dim PackageLicenseExpressionSet = TryCast(TryGetNonCommonPropertyValue(GetPropertyDescriptor("PackageLicenseExpression")), String)
             If (PackageLicenseExpressionSet IsNot Nothing AndAlso PackageLicenseExpressionSet IsNot "") Then
@@ -101,8 +104,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
             Dim PackageLicenseUrlSet = TryCast(TryGetNonCommonPropertyValue(GetPropertyDescriptor("PackageLicenseUrl")), String)
             If (PackageLicenseUrlSet IsNot Nothing AndAlso PackageLicenseUrlSet IsNot "") Then
-                LicenseLineLabel.BackColor = Drawing.SystemColors.Control
-                LicenseLineLabel.Size = New Drawing.Size(LicenseLineLabel.Size.Width, 30)
+                SetLicenseUrlWarningActive(True)
                 _licenseUrlDetected = True
             End If
         End Sub
@@ -305,17 +307,29 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             If setLicenseExpression AndAlso Not LicenseFileNameTextBox.Text = "" Then
                 SetCommonPropertyValue(GetPropertyDescriptor("PackageLicenseFile"), "")
                 LicenseFileNameTextBox.Text = ""
-            ElseIf (Not PackageLicenseExpression.Text = "") Then
+            ElseIf Not setLicenseExpression AndAlso Not PackageLicenseExpression.Text = "" Then
                 PackageLicenseExpression.Text = ""
+            End If
+        End Sub 'Size of file was 410
+
+        Private Sub SetLicenseUrlWarningActive(setActive As Boolean)
+            LicenseLineLabel.Visible = Not setActive
+            LicenseUrlWarning.Visible = setActive
+            LicenseUrlWarning.Enabled = setActive
+            If setActive Then
+                TableLayoutPanel.SetColumn(LicenseUrlWarning, 1)
+                TableLayoutPanel.SetColumn(LicenseLineLabel, 2)
+            Else
+                TableLayoutPanel.SetColumn(LicenseUrlWarning, 2)
+                TableLayoutPanel.SetColumn(LicenseLineLabel, 1)
+                SetCommonPropertyValue(GetPropertyDescriptor("PackageLicenseUrl"), "")
             End If
         End Sub
 
         Private Sub LicenseTypeFirstSelected()
             'When the project has neither of the new license properties AND it has the license URL property and a new license type is selected
             If (_licenseUrlDetected) Then
-                LicenseLineLabel.BackColor = Drawing.SystemColors.ControlDark
-                LicenseLineLabel.Size = New Drawing.Size(LicenseLineLabel.Size.Width, 1)
-                SetCommonPropertyValue(GetPropertyDescriptor("PackageLicenseUrl"), "")
+                SetLicenseUrlWarningActive(False)
                 _licenseUrlDetected = False
             End If
         End Sub
@@ -355,27 +369,21 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             SetLicenseRadioButtons(False)
         End Sub
 
-        Private Shared Function GetRelativePath(fullPath As String, basePath As String) As String
-            Dim baseUri = New Uri(basePath)
-            Dim fullUri = New Uri(fullPath)
-            Dim relativeUri = baseUri.MakeRelativeUri(fullUri)
-            Return relativeUri.ToString().Replace("/", "\")
-        End Function
-
         Private Sub AddLicenseItemToProject(fileName As String)
             Dim unconfiguredProject = GetUnconfiguredProject(ProjectHierarchy)
             Dim configuredProject As ProjectSystem.ConfiguredProject = ThreadHelper.JoinableTaskFactory.Run(Function()
                                                                                                                 Return unconfiguredProject.GetSuggestedConfiguredProjectAsync
                                                                                                             End Function)
             Dim projectSourceItemProvider = configuredProject.Services.ExportProvider.GetExportedValue(Of ProjectSystem.IProjectSourceItemProvider)()
-            Dim correctDirectory = Directory.GetParent(unconfiguredProject.FullPath).ToString
-            Dim relativePath As String = GetRelativePath(Path.GetFullPath(fileName), correctDirectory + "\")
+            Dim correctDirectory = Path.GetDirectoryName(unconfiguredProject.FullPath)
+            Dim relativePath As String = GetRelativePath(correctDirectory + "\", Path.GetFullPath(fileName))
             LicenseFileNameTextBox.Text = relativePath
             'The TextBox needs to have the relative path, so the property isn't linked to the TextBox. It must be set manually.
             SetCommonPropertyValue(GetPropertyDescriptor("PackageLicenseFile"), Path.GetFileName(fileName))
             ThreadHelper.JoinableTaskFactory.Run(Function()
                                                      Return projectSourceItemProvider.AddAsync("None", relativePath, {(New KeyValuePair(Of String, String)("Pack", "True")), New KeyValuePair(Of String, String)("PackagePath", "")})
                                                  End Function)
+
         End Sub
 
         Private Sub LicenseBrowseButton_Click(sender As Object, e As EventArgs) Handles LicenseBrowseButton.Click
