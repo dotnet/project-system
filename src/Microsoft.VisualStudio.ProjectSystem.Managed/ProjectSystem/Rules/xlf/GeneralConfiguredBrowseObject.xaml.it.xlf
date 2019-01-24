@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="it" original="../GeneralConfiguredBrowseObject.xaml">
     <body>
@@ -29,12 +29,12 @@
       </trans-unit>
       <trans-unit id="EnumValue|OptionExplicit.Off|DisplayName">
         <source>Off</source>
-        <target state="translated">OFF</target>
+        <target state="translated">No</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|OptionExplicit.On|DisplayName">
         <source>On</source>
-        <target state="translated">ON</target>
+        <target state="translated">Sì</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|OptionCompare.Binary|DisplayName">
@@ -49,12 +49,12 @@
       </trans-unit>
       <trans-unit id="EnumValue|OptionInfer.Off|DisplayName">
         <source>Off</source>
-        <target state="translated">OFF</target>
+        <target state="translated">No</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|OptionInfer.On|DisplayName">
         <source>On</source>
-        <target state="translated">ON</target>
+        <target state="translated">Sì</target>
         <note />
       </trans-unit>
     </body>

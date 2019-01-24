@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="fr" original="../Microsoft.VisualStudio.Editors.Designer.resx">
     <body>
@@ -39,7 +39,7 @@
       </trans-unit>
       <trans-unit id="PPG_DebugTitle">
         <source>Debug</source>
-        <target state="translated">déboguer</target>
+        <target state="translated">Déboguer</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_DeployTitle">
@@ -49,7 +49,7 @@
       </trans-unit>
       <trans-unit id="PPG_VdtGeneralTitle">
         <source>Database</source>
-        <target state="translated">Base de données </target>
+        <target state="translated">Base de données</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Security">
@@ -355,7 +355,7 @@ Sélectionnez un chemin de dossier valide.</target>
       </trans-unit>
       <trans-unit id="PPG_Compile_Notification_None">
         <source>None</source>
-        <target state="translated">Aucun(e)</target>
+        <target state="translated">Aucun</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Compile_Notification_Warning">
@@ -370,7 +370,7 @@ Sélectionnez un chemin de dossier valide.</target>
       </trans-unit>
       <trans-unit id="PPG_Compile_OptionStrict_Custom">
         <source>(custom)</source>
-        <target state="translated">(Personnalisé)</target>
+        <target state="translated">(personnalisé)</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Compile_42016">
@@ -729,7 +729,7 @@ Erreur :</target>
       </trans-unit>
       <trans-unit id="PPG_Signing_ExpirationDate">
         <source>Expiration Date</source>
-        <target state="translated">Date d’expiration</target>
+        <target state="translated">Date d'expiration</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Signing_InvalidPassword">
@@ -779,7 +779,7 @@ Erreur :</target>
       </trans-unit>
       <trans-unit id="PPG_Signing_NoData">
         <source>(none)</source>
-        <target state="translated">(Aucun)</target>
+        <target state="translated">(aucun)</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Signing_OpenExistingKeyPasswordTitle">
@@ -1282,7 +1282,7 @@ Erreur :</target>
       </trans-unit>
       <trans-unit id="RSE_ResourceNameColumn">
         <source>Name</source>
-        <target state="translated">Nom </target>
+        <target state="translated">Nom</target>
         <note>Column names for the string table</note>
       </trans-unit>
       <trans-unit id="RSE_TypeColumn">
@@ -1468,7 +1468,7 @@ CONSIDER: get this from CodeDom</note>
       </trans-unit>
       <trans-unit id="RSE_DetailsCol_Name">
         <source>Name</source>
-        <target state="translated">Nom </target>
+        <target state="translated">Nom</target>
         <note>Columns for the "Details" view of the resource editor</note>
       </trans-unit>
       <trans-unit id="RSE_DetailsCol_Filename">
@@ -1498,9 +1498,8 @@ CONSIDER: get this from CodeDom</note>
       </trans-unit>
       <trans-unit id="RSE_GraphicSizeFormat">
         <source>{0} x {1}</source>
-        <target state="needs-review-translation">{0} x {1}</target>
+        <target state="translated">{0} x {1}</target>
         <note>Format string for showing a graphic's size
-
 #  {0} = width (as an integer)
 #  {1} = height (as an integer)
 #Example, for a bitmap of width=123, height = 456, the English version of this string would be "123x456"</note>
@@ -1624,7 +1623,7 @@ CONSIDER: get this from CodeDom</note>
       </trans-unit>
       <trans-unit id="RSE_Type_GIF">
         <source>Graphics Interchange Format</source>
-        <target state="translated">Graphics Interchange Format</target>
+        <target state="new">Graphics Interchange Format</target>
         <note>Friendly Image types</note>
       </trans-unit>
       <trans-unit id="RSE_Type_JPEG">
@@ -1639,12 +1638,12 @@ CONSIDER: get this from CodeDom</note>
       </trans-unit>
       <trans-unit id="RSE_Type_PNG">
         <source>Portable Network Graphics</source>
-        <target state="translated">Portable Network Graphics</target>
+        <target state="new">Portable Network Graphics</target>
         <note>Friendly Image types</note>
       </trans-unit>
       <trans-unit id="RSE_Type_TIFF">
         <source>Tag Image File Format</source>
-        <target state="translated">Tag Image File Format</target>
+        <target state="new">Tag Image File Format</target>
         <note>Friendly Image types</note>
       </trans-unit>
       <trans-unit id="RSE_Type_Icon">
@@ -1733,7 +1732,7 @@ CONSIDER: get this from CodeDom</note>
       </trans-unit>
       <trans-unit id="RSE_FilterSave_PNG">
         <source>Portable Network Graphics</source>
-        <target state="translated">Portable Network Graphics</target>
+        <target state="new">Portable Network Graphics</target>
         <note># File dialog filters
 #
 # E.g., for icons, the actual filter created would look like "Icons (*.ico)".  These resources
@@ -1742,7 +1741,7 @@ CONSIDER: get this from CodeDom</note>
       </trans-unit>
       <trans-unit id="RSE_FilterSave_GIF">
         <source>Graphics Interchange Format</source>
-        <target state="translated">Graphics Interchange Format</target>
+        <target state="new">Graphics Interchange Format</target>
         <note># File dialog filters
 #
 # E.g., for icons, the actual filter created would look like "Icons (*.ico)".  These resources
@@ -1760,7 +1759,7 @@ CONSIDER: get this from CodeDom</note>
       </trans-unit>
       <trans-unit id="RSE_FilterSave_TIFF">
         <source>Tag Image File Format</source>
-        <target state="translated">Tag Image File Format</target>
+        <target state="new">Tag Image File Format</target>
         <note># File dialog filters
 #
 # E.g., for icons, the actual filter created would look like "Icons (*.ico)".  These resources
@@ -2006,7 +2005,7 @@ CONSIDER: get this from CodeDom</note>
       </trans-unit>
       <trans-unit id="SD_ComboBoxItem_BrowseType">
         <source>Browse...</source>
-        <target state="translated">Parcourir</target>
+        <target state="translated">Parcourir...</target>
         <note>Added as the last item in the list of available types to let the user browse for a new type</note>
       </trans-unit>
       <trans-unit id="SD_ComboBoxItem_ApplicationScope">
@@ -2031,7 +2030,7 @@ CONSIDER: get this from CodeDom</note>
       </trans-unit>
       <trans-unit id="SD_GridViewNameColumnHeaderText">
         <source>Name</source>
-        <target state="translated">Nom </target>
+        <target state="translated">Nom</target>
         <note />
       </trans-unit>
       <trans-unit id="SD_GridViewTypeColumnHeaderText">
@@ -2505,22 +2504,22 @@ Voulez-vous mettre à jour la valeur dans le fichier .settings ?</target>
       </trans-unit>
       <trans-unit id="PPG_Services_Seconds">
         <source>seconds</source>
-        <target state="translated">Secondes</target>
+        <target state="translated">secondes</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Services_Minutes">
         <source>minutes</source>
-        <target state="translated">Minutes</target>
+        <target state="translated">minutes</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Services_Hours">
         <source>hours</source>
-        <target state="translated">Heures</target>
+        <target state="translated">heures</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Services_Days">
         <source>days</source>
-        <target state="translated">Jours</target>
+        <target state="translated">jours</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Services_VersionWarning">
@@ -2720,7 +2719,7 @@ Voulez-vous mettre à jour la valeur dans le fichier .settings ?</target>
       </trans-unit>
       <trans-unit id="PPG_AdvancedBuildSettings_ReportCompilerErrors_None">
         <source>None</source>
-        <target state="translated">Aucun(e)</target>
+        <target state="translated">Aucun</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_AdvancedBuildSettings_ReportCompilerErrors_Prompt">
@@ -2745,12 +2744,12 @@ Voulez-vous mettre à jour la valeur dans le fichier .settings ?</target>
       </trans-unit>
       <trans-unit id="PPG_AdvancedBuildSettings_DebugInfo_Full">
         <source>Full</source>
-        <target state="translated">Full</target>
+        <target state="translated">Complet</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_AdvancedBuildSettings_DebugInfo_None">
         <source>None</source>
-        <target state="translated">Aucun(e)</target>
+        <target state="translated">Aucun</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_AdvancedBuildSettings_DebugInfo_PdbOnly">
@@ -2770,12 +2769,12 @@ Voulez-vous mettre à jour la valeur dans le fichier .settings ?</target>
       </trans-unit>
       <trans-unit id="RSE_Type_WMF">
         <source>Windows Metafile</source>
-        <target state="translated">Windows Metafile</target>
+        <target state="new">Windows Metafile</target>
         <note />
       </trans-unit>
       <trans-unit id="RSE_Type_EMF">
         <source>Extended Metafile</source>
-        <target state="translated">Extended Metafile</target>
+        <target state="new">Extended Metafile</target>
         <note />
       </trans-unit>
     </body>

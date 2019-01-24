@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="de" original="../ProjectItemsSchema.xaml">
     <body>
@@ -49,7 +49,7 @@
       </trans-unit>
       <trans-unit id="ItemType|None|DisplayName">
         <source>None</source>
-        <target state="translated">NONE</target>
+        <target state="translated">Ohne</target>
         <note />
       </trans-unit>
       <trans-unit id="ItemType|Content|DisplayName">
@@ -79,12 +79,12 @@
       </trans-unit>
       <trans-unit id="ContentType|XamlAppDef|DisplayName">
         <source>Workflow definition</source>
-        <target state="translated">Workflow definition</target>
+        <target state="new">Workflow definition</target>
         <note />
       </trans-unit>
       <trans-unit id="ItemType|XamlAppDef|DisplayName">
         <source>Workflow definition</source>
-        <target state="translated">Workflow definition</target>
+        <target state="new">Workflow definition</target>
         <note />
       </trans-unit>
       <trans-unit id="ContentType|Resource|DisplayName">

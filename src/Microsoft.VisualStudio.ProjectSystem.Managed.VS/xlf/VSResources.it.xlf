@@ -1,10 +1,10 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="it" original="../VSResources.resx">
     <body>
       <trans-unit id="ClassTemplateName">
         <source>Class</source>
-        <target state="translated">classe</target>
+        <target state="translated">Classe</target>
         <note />
       </trans-unit>
       <trans-unit id="ProjectModificationsPrompt">
@@ -278,7 +278,7 @@ Per eseguire il debug del progetto, aggiungere a questa soluzione un progetto es
       </trans-unit>
       <trans-unit id="OutputWindowPaneTitle">
         <source>Project</source>
-        <target state="translated">PROGETTO</target>
+        <target state="translated">Progetto</target>
         <note />
       </trans-unit>
       <trans-unit id="PartialSupportedDotNetCoreProject">

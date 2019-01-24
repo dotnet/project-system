@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="es" original="../Microsoft.VisualStudio.Editors.Designer.resx">
     <body>
@@ -39,7 +39,7 @@
       </trans-unit>
       <trans-unit id="PPG_DebugTitle">
         <source>Debug</source>
-        <target state="translated">depurar</target>
+        <target state="translated">Depurar</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_DeployTitle">
@@ -355,7 +355,7 @@ Seleccione una ruta de acceso de carpeta válida.</target>
       </trans-unit>
       <trans-unit id="PPG_Compile_Notification_None">
         <source>None</source>
-        <target state="translated">NONE</target>
+        <target state="translated">Ninguno</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Compile_Notification_Warning">
@@ -365,12 +365,12 @@ Seleccione una ruta de acceso de carpeta válida.</target>
       </trans-unit>
       <trans-unit id="PPG_Compile_Notification_Error">
         <source>Error</source>
-        <target state="translated">Fehler</target>
+        <target state="translated">Error</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Compile_OptionStrict_Custom">
         <source>(custom)</source>
-        <target state="translated">(Personalizado)</target>
+        <target state="translated">(personalizado)</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Compile_42016">
@@ -619,7 +619,7 @@ Error:</target>
       </trans-unit>
       <trans-unit id="PPG_SecurityPage_PermCalcFailedCaption">
         <source>Error</source>
-        <target state="translated">Fehler</target>
+        <target state="translated">Error</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_SecurityAdvancedPage_Title">
@@ -1498,9 +1498,8 @@ CONSIDER: get this from CodeDom</note>
       </trans-unit>
       <trans-unit id="RSE_GraphicSizeFormat">
         <source>{0} x {1}</source>
-        <target state="needs-review-translation">{0} x {1}</target>
+        <target state="translated">{0} x {1}</target>
         <note>Format string for showing a graphic's size
-
 #  {0} = width (as an integer)
 #  {1} = height (as an integer)
 #Example, for a bitmap of width=123, height = 456, the English version of this string would be "123x456"</note>
@@ -1733,7 +1732,7 @@ CONSIDER: get this from CodeDom</note>
       </trans-unit>
       <trans-unit id="RSE_FilterSave_PNG">
         <source>Portable Network Graphics</source>
-        <target state="translated">Formato PNG (Portable Network Graphics)</target>
+        <target state="new">Portable Network Graphics</target>
         <note># File dialog filters
 #
 # E.g., for icons, the actual filter created would look like "Icons (*.ico)".  These resources
@@ -2505,22 +2504,22 @@ El nuevo valor del archivo app.config es '{1}'
       </trans-unit>
       <trans-unit id="PPG_Services_Seconds">
         <source>seconds</source>
-        <target state="translated">Segundos</target>
+        <target state="translated">segundos</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Services_Minutes">
         <source>minutes</source>
-        <target state="translated">Minutos</target>
+        <target state="translated">minutos</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Services_Hours">
         <source>hours</source>
-        <target state="translated">Horas</target>
+        <target state="translated">horas</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Services_Days">
         <source>days</source>
-        <target state="translated">Días</target>
+        <target state="translated">días</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Services_VersionWarning">
@@ -2720,7 +2719,7 @@ El nuevo valor del archivo app.config es '{1}'
       </trans-unit>
       <trans-unit id="PPG_AdvancedBuildSettings_ReportCompilerErrors_None">
         <source>None</source>
-        <target state="translated">NONE</target>
+        <target state="translated">Ninguno</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_AdvancedBuildSettings_ReportCompilerErrors_Prompt">
@@ -2730,7 +2729,7 @@ El nuevo valor del archivo app.config es '{1}'
       </trans-unit>
       <trans-unit id="PPG_AdvancedBuildSettings_ReportCompilerErrors_Queue">
         <source>Queue</source>
-        <target state="translated">Cola</target>
+        <target state="translated">Poner en cola</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_AdvancedBuildSettings_ReportCompilerErrors_Send">
@@ -2750,7 +2749,7 @@ El nuevo valor del archivo app.config es '{1}'
       </trans-unit>
       <trans-unit id="PPG_AdvancedBuildSettings_DebugInfo_None">
         <source>None</source>
-        <target state="translated">NONE</target>
+        <target state="translated">Ninguno</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_AdvancedBuildSettings_DebugInfo_PdbOnly">
@@ -2770,12 +2769,12 @@ El nuevo valor del archivo app.config es '{1}'
       </trans-unit>
       <trans-unit id="RSE_Type_WMF">
         <source>Windows Metafile</source>
-        <target state="translated">Windows Metafile</target>
+        <target state="new">Windows Metafile</target>
         <note />
       </trans-unit>
       <trans-unit id="RSE_Type_EMF">
         <source>Extended Metafile</source>
-        <target state="translated">Extended Metafile</target>
+        <target state="new">Extended Metafile</target>
         <note />
       </trans-unit>
     </body>

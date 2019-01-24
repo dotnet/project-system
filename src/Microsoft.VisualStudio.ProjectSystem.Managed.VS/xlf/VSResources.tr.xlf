@@ -1,10 +1,10 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="tr" original="../VSResources.resx">
     <body>
       <trans-unit id="ClassTemplateName">
         <source>Class</source>
-        <target state="translated">sınıf</target>
+        <target state="translated">Sınıf</target>
         <note />
       </trans-unit>
       <trans-unit id="ProjectModificationsPrompt">
@@ -278,7 +278,7 @@ Bu projede hata ayıklamak için bu çözüme, kitaplık projesine başvuran bir
       </trans-unit>
       <trans-unit id="OutputWindowPaneTitle">
         <source>Project</source>
-        <target state="translated">PROJE</target>
+        <target state="translated">Proje</target>
         <note />
       </trans-unit>
       <trans-unit id="PartialSupportedDotNetCoreProject">

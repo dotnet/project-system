@@ -79,12 +79,12 @@
       </trans-unit>
       <trans-unit id="ContentType|XamlAppDef|DisplayName">
         <source>Workflow definition</source>
-        <target state="translated">Workflow definition</target>
+        <target state="new">Workflow definition</target>
         <note />
       </trans-unit>
       <trans-unit id="ItemType|XamlAppDef|DisplayName">
         <source>Workflow definition</source>
-        <target state="translated">Workflow definition</target>
+        <target state="new">Workflow definition</target>
         <note />
       </trans-unit>
       <trans-unit id="ContentType|Resource|DisplayName">

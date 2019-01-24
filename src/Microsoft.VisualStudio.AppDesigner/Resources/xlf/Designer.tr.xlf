@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="tr" original="../Designer.resx">
     <body>
@@ -186,7 +186,7 @@
       </trans-unit>
       <trans-unit id="PermissionSet_Requires">
         <source>Requires:</source>
-        <target state="translated">Gereksinimler:</target>
+        <target state="translated">Şunları gerektirir:</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_ActiveConfigOrPlatformFormatString_1Arg">
@@ -211,7 +211,7 @@
       </trans-unit>
       <trans-unit id="PPG_ComboBoxSelect_None">
         <source>(None)</source>
-        <target state="translated">(Yok)</target>
+        <target state="translated">(Hiçbiri)</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_ConfigNotFound_2Args">
@@ -241,12 +241,12 @@
       </trans-unit>
       <trans-unit id="PPG_NeutralLanguage_None">
         <source>(None)</source>
-        <target state="translated">(Yok)</target>
+        <target state="translated">(Hiçbiri)</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_NonePermissionSet">
         <source>(None)</source>
-        <target state="translated">(Yok)</target>
+        <target state="translated">(Hiçbiri)</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_NotApplicable">
@@ -305,7 +305,7 @@ Yoksayıp devam etmek için Tamam'a tıklayın. Farklı bir çıkış yolu seçm
       </trans-unit>
       <trans-unit id="PPG_StartupObjectNone">
         <source>(None)</source>
-        <target state="translated">(Yok)</target>
+        <target state="translated">(Hiçbiri)</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_UndoTransaction">

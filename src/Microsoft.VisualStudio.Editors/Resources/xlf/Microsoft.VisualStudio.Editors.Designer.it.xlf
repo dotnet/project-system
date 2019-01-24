@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="it" original="../Microsoft.VisualStudio.Editors.Designer.resx">
     <body>
@@ -507,7 +507,7 @@ Se si modifica questa impostazione, verranno ripristinate le impostazioni in tut
       </trans-unit>
       <trans-unit id="PPG_SecurityPage_CustomZone">
         <source>(Custom)</source>
-        <target state="translated">(personalizzato)</target>
+        <target state="translated">(Personalizzata)</target>
         <note>Don't use</note>
       </trans-unit>
       <trans-unit id="PPG_SecurityPage_ZoneDefault">
@@ -649,7 +649,7 @@ Errore:</target>
       </trans-unit>
       <trans-unit id="PPG_CustomPermissionSet">
         <source>(Custom)</source>
-        <target state="translated">(personalizzato)</target>
+        <target state="translated">(Personalizzata)</target>
         <note>Don't use</note>
       </trans-unit>
       <trans-unit id="PPG_NonePermissionSet">
@@ -779,7 +779,7 @@ Errore:</target>
       </trans-unit>
       <trans-unit id="PPG_Signing_NoData">
         <source>(none)</source>
-        <target state="translated">(Nessuno)</target>
+        <target state="translated">(nessuno)</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Signing_OpenExistingKeyPasswordTitle">
@@ -1498,9 +1498,8 @@ CONSIDER: get this from CodeDom</note>
       </trans-unit>
       <trans-unit id="RSE_GraphicSizeFormat">
         <source>{0} x {1}</source>
-        <target state="needs-review-translation">{0} x {1}</target>
+        <target state="translated">{0} x {1}</target>
         <note>Format string for showing a graphic's size
-
 #  {0} = width (as an integer)
 #  {1} = height (as an integer)
 #Example, for a bitmap of width=123, height = 456, the English version of this string would be "123x456"</note>
@@ -1639,12 +1638,12 @@ CONSIDER: get this from CodeDom</note>
       </trans-unit>
       <trans-unit id="RSE_Type_PNG">
         <source>Portable Network Graphics</source>
-        <target state="translated">Portable Network Graphics</target>
+        <target state="new">Portable Network Graphics</target>
         <note>Friendly Image types</note>
       </trans-unit>
       <trans-unit id="RSE_Type_TIFF">
         <source>Tag Image File Format</source>
-        <target state="translated">Tag Image File Format</target>
+        <target state="new">Tag Image File Format</target>
         <note>Friendly Image types</note>
       </trans-unit>
       <trans-unit id="RSE_Type_Icon">
@@ -1733,7 +1732,7 @@ CONSIDER: get this from CodeDom</note>
       </trans-unit>
       <trans-unit id="RSE_FilterSave_PNG">
         <source>Portable Network Graphics</source>
-        <target state="translated">Portable Network Graphics</target>
+        <target state="new">Portable Network Graphics</target>
         <note># File dialog filters
 #
 # E.g., for icons, the actual filter created would look like "Icons (*.ico)".  These resources
@@ -1760,7 +1759,7 @@ CONSIDER: get this from CodeDom</note>
       </trans-unit>
       <trans-unit id="RSE_FilterSave_TIFF">
         <source>Tag Image File Format</source>
-        <target state="translated">Tag Image File Format</target>
+        <target state="new">Tag Image File Format</target>
         <note># File dialog filters
 #
 # E.g., for icons, the actual filter created would look like "Icons (*.ico)".  These resources
@@ -2355,7 +2354,7 @@ Aggiornare il valore nel file .settings?</target>
       </trans-unit>
       <trans-unit id="RSE_AccessModifier_Custom">
         <source>(Custom)</source>
-        <target state="translated">(personalizzato)</target>
+        <target state="translated">(Personalizzata)</target>
         <note>Entry in the "Accessibility dropdown"</note>
       </trans-unit>
       <trans-unit id="RSE_NoCodeGeneration">
@@ -2505,22 +2504,22 @@ Aggiornare il valore nel file .settings?</target>
       </trans-unit>
       <trans-unit id="PPG_Services_Seconds">
         <source>seconds</source>
-        <target state="translated">Secondi</target>
+        <target state="translated">secondi</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Services_Minutes">
         <source>minutes</source>
-        <target state="translated">Minuti</target>
+        <target state="translated">minuti</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Services_Hours">
         <source>hours</source>
-        <target state="translated">Ore</target>
+        <target state="translated">ore</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Services_Days">
         <source>days</source>
-        <target state="translated">Giorni</target>
+        <target state="translated">giorni</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Services_VersionWarning">
@@ -2770,12 +2769,12 @@ Aggiornare il valore nel file .settings?</target>
       </trans-unit>
       <trans-unit id="RSE_Type_WMF">
         <source>Windows Metafile</source>
-        <target state="translated">Windows Metafile</target>
+        <target state="new">Windows Metafile</target>
         <note />
       </trans-unit>
       <trans-unit id="RSE_Type_EMF">
         <source>Extended Metafile</source>
-        <target state="translated">Extended Metafile</target>
+        <target state="new">Extended Metafile</target>
         <note />
       </trans-unit>
     </body>

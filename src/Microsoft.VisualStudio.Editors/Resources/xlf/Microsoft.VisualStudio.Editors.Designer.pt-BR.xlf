@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="pt-BR" original="../Microsoft.VisualStudio.Editors.Designer.resx">
     <body>
@@ -39,7 +39,7 @@
       </trans-unit>
       <trans-unit id="PPG_DebugTitle">
         <source>Debug</source>
-        <target state="translated">depurar</target>
+        <target state="translated">Depurar</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_DeployTitle">
@@ -355,7 +355,7 @@ Selecione um caminho da pasta válido.</target>
       </trans-unit>
       <trans-unit id="PPG_Compile_Notification_None">
         <source>None</source>
-        <target state="translated">NENHUM</target>
+        <target state="translated">Nenhum</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Compile_Notification_Warning">
@@ -507,7 +507,7 @@ A alteração dessa configuração redefinirá as definições em todas as confi
       </trans-unit>
       <trans-unit id="PPG_SecurityPage_CustomZone">
         <source>(Custom)</source>
-        <target state="translated">(personalizado)</target>
+        <target state="translated">(Personalizado)</target>
         <note>Don't use</note>
       </trans-unit>
       <trans-unit id="PPG_SecurityPage_ZoneDefault">
@@ -649,7 +649,7 @@ Erro:</target>
       </trans-unit>
       <trans-unit id="PPG_CustomPermissionSet">
         <source>(Custom)</source>
-        <target state="translated">(personalizado)</target>
+        <target state="translated">(Personalizado)</target>
         <note>Don't use</note>
       </trans-unit>
       <trans-unit id="PPG_NonePermissionSet">
@@ -1277,7 +1277,7 @@ Erro:</target>
       </trans-unit>
       <trans-unit id="PermissionSet_Requires">
         <source>Requires:</source>
-        <target state="translated">Necessita de:</target>
+        <target state="translated">Requer:</target>
         <note />
       </trans-unit>
       <trans-unit id="RSE_ResourceNameColumn">
@@ -1498,9 +1498,8 @@ CONSIDER: get this from CodeDom</note>
       </trans-unit>
       <trans-unit id="RSE_GraphicSizeFormat">
         <source>{0} x {1}</source>
-        <target state="needs-review-translation">{0} x {1}</target>
+        <target state="translated">{0} x {1}</target>
         <note>Format string for showing a graphic's size
-
 #  {0} = width (as an integer)
 #  {1} = height (as an integer)
 #Example, for a bitmap of width=123, height = 456, the English version of this string would be "123x456"</note>
@@ -1624,7 +1623,7 @@ CONSIDER: get this from CodeDom</note>
       </trans-unit>
       <trans-unit id="RSE_Type_GIF">
         <source>Graphics Interchange Format</source>
-        <target state="translated">Graphics Interchange Format</target>
+        <target state="new">Graphics Interchange Format</target>
         <note>Friendly Image types</note>
       </trans-unit>
       <trans-unit id="RSE_Type_JPEG">
@@ -1742,7 +1741,7 @@ CONSIDER: get this from CodeDom</note>
       </trans-unit>
       <trans-unit id="RSE_FilterSave_GIF">
         <source>Graphics Interchange Format</source>
-        <target state="translated">Graphics Interchange Format</target>
+        <target state="new">Graphics Interchange Format</target>
         <note># File dialog filters
 #
 # E.g., for icons, the actual filter created would look like "Icons (*.ico)".  These resources
@@ -2355,7 +2354,7 @@ Deseja atualizar o valor no arquivo .settings?</target>
       </trans-unit>
       <trans-unit id="RSE_AccessModifier_Custom">
         <source>(Custom)</source>
-        <target state="translated">(personalizado)</target>
+        <target state="translated">(Personalizado)</target>
         <note>Entry in the "Accessibility dropdown"</note>
       </trans-unit>
       <trans-unit id="RSE_NoCodeGeneration">
@@ -2505,22 +2504,22 @@ Deseja atualizar o valor no arquivo .settings?</target>
       </trans-unit>
       <trans-unit id="PPG_Services_Seconds">
         <source>seconds</source>
-        <target state="translated">Segundos</target>
+        <target state="translated">segundos</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Services_Minutes">
         <source>minutes</source>
-        <target state="translated">Minutos</target>
+        <target state="translated">minutos</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Services_Hours">
         <source>hours</source>
-        <target state="translated">Horas</target>
+        <target state="translated">horas</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Services_Days">
         <source>days</source>
-        <target state="translated">Dias</target>
+        <target state="translated">dias</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Services_VersionWarning">
@@ -2720,12 +2719,12 @@ Deseja atualizar o valor no arquivo .settings?</target>
       </trans-unit>
       <trans-unit id="PPG_AdvancedBuildSettings_ReportCompilerErrors_None">
         <source>None</source>
-        <target state="translated">NENHUM</target>
+        <target state="translated">Nenhum</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_AdvancedBuildSettings_ReportCompilerErrors_Prompt">
         <source>Prompt</source>
-        <target state="translated">Prompt</target>
+        <target state="new">Prompt</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_AdvancedBuildSettings_ReportCompilerErrors_Queue">
@@ -2750,7 +2749,7 @@ Deseja atualizar o valor no arquivo .settings?</target>
       </trans-unit>
       <trans-unit id="PPG_AdvancedBuildSettings_DebugInfo_None">
         <source>None</source>
-        <target state="translated">NENHUM</target>
+        <target state="translated">Nenhum</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_AdvancedBuildSettings_DebugInfo_PdbOnly">
@@ -2770,12 +2769,12 @@ Deseja atualizar o valor no arquivo .settings?</target>
       </trans-unit>
       <trans-unit id="RSE_Type_WMF">
         <source>Windows Metafile</source>
-        <target state="translated">Windows Metafile</target>
+        <target state="new">Windows Metafile</target>
         <note />
       </trans-unit>
       <trans-unit id="RSE_Type_EMF">
         <source>Extended Metafile</source>
-        <target state="translated">Extended Metafile</target>
+        <target state="new">Extended Metafile</target>
         <note />
       </trans-unit>
     </body>

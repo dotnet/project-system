@@ -39,12 +39,12 @@
       </trans-unit>
       <trans-unit id="DebugTargetMenuDebugFrameworkMenu|ButtonText">
         <source>Framework</source>
-        <target state="translated">FRAMEWORK</target>
+        <target state="translated">Платформа</target>
         <note />
       </trans-unit>
       <trans-unit id="cmdidDebugFrameworks|ButtonText">
         <source>Framework</source>
-        <target state="translated">FRAMEWORK</target>
+        <target state="translated">Платформа</target>
         <note />
       </trans-unit>
       <trans-unit id="AddAboveMenu|ButtonText">

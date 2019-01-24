@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="ru" original="../AdvCompilerSettingsPropPage.resx">
     <body>
@@ -49,7 +49,7 @@
       </trans-unit>
       <trans-unit id="CustomConstantsExampleLabel.Text">
         <source>Example: Name1="Value1",Name2="Value2",Name3="Value3"</source>
-        <target state="translated">Пример: Name1="Значение1",Name2="Значение2",Name3="Value3"</target>
+        <target state="translated">Пример: Name1="значение1",Name2="значение2",Name3="значение3"</target>
         <note />
       </trans-unit>
       <trans-unit id="CompilationConstantsLabel.Text">

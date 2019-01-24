@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="zh-Hans" original="../PackagePropPage.resx">
     <body>
@@ -9,7 +9,7 @@
       </trans-unit>
       <trans-unit id="CopyrightLabel.Text">
         <source>&amp;Copyright:</source>
-        <target state="translated">版权(&amp;C)：</target>
+        <target state="translated">版权(&amp;C):</target>
         <note />
       </trans-unit>
       <trans-unit id="DescriptionLabel.Text">
@@ -19,7 +19,7 @@
       </trans-unit>
       <trans-unit id="PackageIconUrlLabel.Text">
         <source>&amp;Icon URL:</source>
-        <target state="translated">图标 URL(&amp;I):</target>
+        <target state="translated">图标 URL (&amp;I):</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageVersionLabel.Text">
@@ -29,7 +29,7 @@
       </trans-unit>
       <trans-unit id="PackageLicenseUrlLabel.Text">
         <source>&amp;License URL:</source>
-        <target state="translated">许可证 URL(&amp;L):</target>
+        <target state="translated">许可证 URL (&amp;L):</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageTagsLabel.Text">
@@ -39,7 +39,7 @@
       </trans-unit>
       <trans-unit id="RepositoryUrlLabel.Text">
         <source>&amp;Repository URL:</source>
-        <target state="translated">存储库 URL(&amp;R):</target>
+        <target state="translated">存储库 URL (&amp;R):</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageReleaseNotesLabel.Text">
@@ -54,7 +54,7 @@
       </trans-unit>
       <trans-unit id="PackageProjectUrlLabel.Text">
         <source>&amp;Project URL:</source>
-        <target state="translated">项目 URL(&amp;P):</target>
+        <target state="translated">项目 URL (&amp;P):</target>
         <note />
       </trans-unit>
       <trans-unit id="GeneratePackageOnBuild.Text">
@@ -129,12 +129,12 @@
       </trans-unit>
       <trans-unit id="ProductLabel.Text">
         <source>&amp;Product:</source>
-        <target state="translated">产品（&amp;P）：</target>
+        <target state="translated">产品(&amp;P):</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyFileVersionLabel.Text">
         <source>Assembly &amp;file version:</source>
-        <target state="translated">程序集文件版本(&amp;f):</target>
+        <target state="translated">程序集文件版本(&amp;F):</target>
         <note />
       </trans-unit>
     </body>

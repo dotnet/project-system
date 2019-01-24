@@ -84,7 +84,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|Culture|DisplayName">
         <source>Culture</source>
-        <target state="translated">Culture</target>
+        <target state="translated">문화권</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Culture|Description">

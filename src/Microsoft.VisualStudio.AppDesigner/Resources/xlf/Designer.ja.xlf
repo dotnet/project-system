@@ -186,7 +186,7 @@
       </trans-unit>
       <trans-unit id="PermissionSet_Requires">
         <source>Requires:</source>
-        <target state="translated">必要なアクセス許可:</target>
+        <target state="translated">必須:</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_ActiveConfigOrPlatformFormatString_1Arg">
