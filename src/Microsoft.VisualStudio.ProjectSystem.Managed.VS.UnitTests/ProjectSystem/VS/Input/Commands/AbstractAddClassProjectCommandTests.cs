@@ -14,27 +14,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
     public abstract class AbstractAddClassProjectCommandTests
     {
         [Fact]
-        public void Constructor_NullAsProjectTree_ThrowsArgumentNull()
-        {
-            Assert.Throws<ArgumentNullException>(() => CreateInstance(null, IUnconfiguredProjectVsServicesFactory.Create(),
-                SVsServiceProviderFactory.Create()));
-        }
-
-        [Fact]
-        public void Constructor_NullAsProjectVsService_ThrowsArgumentNull()
-        {
-            Assert.Throws<ArgumentNullException>(() => CreateInstance(IPhysicalProjectTreeFactory.Create(), null,
-                SVsServiceProviderFactory.Create()));
-        }
-
-        [Fact]
-        public void Constructor_NullAsSVsServiceProvider_ThrowsArgumentNull()
-        {
-            Assert.Throws<ArgumentNullException>(() => CreateInstance(IPhysicalProjectTreeFactory.Create(),
-                IUnconfiguredProjectVsServicesFactory.Create(), null));
-        }
-
-        [Fact]
         public void GetCommandStatusAsync_NullAsNodes_ThrowsArgumentNull()
         {
             var command = CreateInstance();
@@ -82,7 +61,7 @@ Root (flags: {ProjectRoot})
         [Fact]
         public async Task GetCommandStatusAsync_NonAppDesignerFolderAsNodes_ReturnsUnhandled()
         {
-            var command = CreateInstance(provider: IProjectTreeProviderFactory.Create(), dlg: IVsAddProjectItemDlgFactory.Create());
+            var command = CreateInstance(provider: IProjectTreeProviderFactory.Create(), addItemDialog: IVsAddProjectItemDlgFactory.Create());
 
             var tree = ProjectTreeParser.Parse(@"
 Root (flags: {ProjectRoot})
@@ -99,7 +78,7 @@ Root (flags: {ProjectRoot})
         [Fact]
         public async Task TryHandleCommandAsync_NonRegularFolderAsNodes_ReturnsFalse()
         {
-            var command = CreateInstance(provider: IProjectTreeProviderFactory.Create(), dlg: IVsAddProjectItemDlgFactory.Create());
+            var command = CreateInstance(provider: IProjectTreeProviderFactory.Create(), addItemDialog: IVsAddProjectItemDlgFactory.Create());
 
             var tree = ProjectTreeParser.Parse(@"
 Root (flags: {ProjectRoot})
@@ -116,7 +95,7 @@ Root (flags: {ProjectRoot})
         [Fact]
         public async Task GetCommandStatusAsync_FolderAsNodes_ReturnsHandled()
         {
-            var command = CreateInstance(provider: IProjectTreeProviderFactory.Create(""), dlg:
+            var command = CreateInstance(provider: IProjectTreeProviderFactory.Create(""), addItemDialog:
                 IVsAddProjectItemDlgFactory.Create(0));
 
             var tree = ProjectTreeParser.Parse(@"
@@ -136,7 +115,7 @@ Root (flags: {ProjectRoot})
         [Fact]
         public async Task TryHandleCommandAsync_FolderAsNodes_ReturnsTrue()
         {
-            var command = CreateInstance(provider: IProjectTreeProviderFactory.Create(""), dlg:
+            var command = CreateInstance(provider: IProjectTreeProviderFactory.Create(""), addItemDialog:
                 IVsAddProjectItemDlgFactory.Create(0));
 
             var tree = ProjectTreeParser.Parse(@"
@@ -170,7 +149,7 @@ Root (flags: {ProjectRoot})
                 return 0;
             }, g, folder, string.Empty, 0);
 
-            var command = CreateInstance(provider: IProjectTreeProviderFactory.Create(folder), dlg: dlg);
+            var command = CreateInstance(provider: IProjectTreeProviderFactory.Create(folder), addItemDialog: dlg);
 
             var tree = ProjectTreeParser.Parse(@"
 Root (flags: {ProjectRoot})
@@ -190,7 +169,7 @@ Root (flags: {ProjectRoot})
         [Fact]
         public async Task TryHandleCommand_FolderAsNodes_ReturnsTrueWhenUserClicksCancel()
         {
-            var command = CreateInstance(provider: IProjectTreeProviderFactory.Create(""), dlg:
+            var command = CreateInstance(provider: IProjectTreeProviderFactory.Create(""), addItemDialog:
                 IVsAddProjectItemDlgFactory.Create(VSConstants.OLE_E_PROMPTSAVECANCELLED));
 
             var tree = ProjectTreeParser.Parse(@"
@@ -210,15 +189,15 @@ Root (flags: {ProjectRoot})
 
         internal abstract string DirName { get; }
 
-        internal AbstractAddClassProjectCommand CreateInstance(IPhysicalProjectTree projectTree = null, IUnconfiguredProjectVsServices projectVsServices = null, Shell.SVsServiceProvider serviceProvider = null, IProjectTreeProvider provider = null, IVsAddProjectItemDlg dlg = null)
+        internal AbstractAddClassProjectCommand CreateInstance(IPhysicalProjectTree projectTree = null, IUnconfiguredProjectVsServices projectVsServices = null, IProjectTreeProvider provider = null, IVsAddProjectItemDlg addItemDialog = null)
         {
             projectTree = projectTree ?? IPhysicalProjectTreeFactory.Create(provider);
             projectVsServices = projectVsServices ?? IUnconfiguredProjectVsServicesFactory.Implement(threadingServiceCreator: () => IProjectThreadingServiceFactory.Create());
-            serviceProvider = serviceProvider ?? SVsServiceProviderFactory.Create(dlg);
+            var addItemDialogService = IVsUIServiceFactory.Create<SVsAddProjectItemDlg, IVsAddProjectItemDlg>(addItemDialog);
 
-            return CreateInstance(projectTree, projectVsServices, serviceProvider);
+            return CreateInstance(projectTree, projectVsServices, addItemDialogService);
         }
 
-        internal abstract AbstractAddClassProjectCommand CreateInstance(IPhysicalProjectTree tree, IUnconfiguredProjectVsServices services, Shell.SVsServiceProvider serviceProvider);
+        internal abstract AbstractAddClassProjectCommand CreateInstance(IPhysicalProjectTree tree, IUnconfiguredProjectVsServices services, IVsUIService<SVsAddProjectItemDlg, IVsAddProjectItemDlg> addItemDialog);
     }
 }
