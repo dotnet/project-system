@@ -4,7 +4,6 @@ using System;
 using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.ProjectSystem.Input;
-using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
@@ -19,9 +18,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 
         protected AbstractAddClassProjectCommand(IPhysicalProjectTree projectTree, IUnconfiguredProjectVsServices projectVsServices, IVsUIService<IVsAddProjectItemDlg> addItemDialog)
         {
-            Requires.NotNull(projectTree, nameof(IPhysicalProjectTree));
-            Requires.NotNull(projectVsServices, nameof(IUnconfiguredProjectVsServices));
-            Requires.NotNull(addItemDialog, nameof(SVsServiceProvider));
+            Requires.NotNull(projectTree, nameof(projectTree));
+            Requires.NotNull(projectVsServices, nameof(projectVsServices));
+            Requires.NotNull(addItemDialog, nameof(addItemDialog));
 
             _projectTree = projectTree;
             _projectVsServices = projectVsServices;
