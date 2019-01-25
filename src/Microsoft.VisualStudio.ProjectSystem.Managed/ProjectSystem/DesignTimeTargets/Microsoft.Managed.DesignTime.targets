@@ -94,7 +94,8 @@
                           VisualStudioWellKnownOutputGroups;
                           SingleFileGenerators;
                           DeclaredSourceItems;
-                          UserSourceItems;" />
+                          UserSourceItems;
+                          SupportAvailableItemName;" />
 
     <!-- Reference Manager capabilities -->
     <ProjectCapability Include="ReferenceManagerAssemblies" />
