@@ -4,7 +4,7 @@ using System.ComponentModel.Composition;
 
 using Microsoft.VisualStudio.ProjectSystem.Imaging;
 
-namespace Microsoft.VisualStudio.ProjectSystem
+namespace Microsoft.VisualStudio.ProjectSystem.Tree
 {
     /// <summary>
     ///     Modifies the Solution Explorer tree image for the project root.

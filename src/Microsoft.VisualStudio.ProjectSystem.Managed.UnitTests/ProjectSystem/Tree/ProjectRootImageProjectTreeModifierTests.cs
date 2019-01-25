@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.ProjectSystem.Imaging;
 
 using Xunit;
 
-namespace Microsoft.VisualStudio.ProjectSystem
+namespace Microsoft.VisualStudio.ProjectSystem.Tree
 {
     public class ProjectRootImageProjectTreeModifierTests
     {

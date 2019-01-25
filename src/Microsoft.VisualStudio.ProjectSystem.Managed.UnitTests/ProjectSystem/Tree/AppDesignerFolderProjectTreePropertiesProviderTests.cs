@@ -8,7 +8,7 @@ using Microsoft.VisualStudio.ProjectSystem.Properties;
 
 using Xunit;
 
-namespace Microsoft.VisualStudio.ProjectSystem
+namespace Microsoft.VisualStudio.ProjectSystem.Tree
 {
     public class AppDesignerFolderProjectTreePropertiesProviderTests
     {
