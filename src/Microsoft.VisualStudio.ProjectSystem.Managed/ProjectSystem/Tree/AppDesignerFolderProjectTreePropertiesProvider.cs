@@ -7,7 +7,7 @@ using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.ProjectSystem.Imaging;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
-namespace Microsoft.VisualStudio.ProjectSystem
+namespace Microsoft.VisualStudio.ProjectSystem.Tree
 {
     /// <summary>
     ///     Provides a <see cref="IProjectTreePropertiesProvider"/> that handles the AppDesigner 
