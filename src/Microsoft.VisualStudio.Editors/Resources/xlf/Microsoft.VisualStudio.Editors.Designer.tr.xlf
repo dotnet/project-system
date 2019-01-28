@@ -34,7 +34,7 @@
       </trans-unit>
       <trans-unit id="PPG_CompileTitle">
         <source>Compile</source>
-        <target state="translated">Derle</target>
+        <target state="translated">Derleme</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_DebugTitle">
@@ -59,7 +59,7 @@
       </trans-unit>
       <trans-unit id="PPG_BuildTitle">
         <source>Build</source>
-        <target state="translated">Oluştur</target>
+        <target state="translated">Derleme</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_BuildEventsTitle">
@@ -93,7 +93,7 @@ Yoksayıp devam etmek için Tamam'a tıklayın. Farklı bir çıkış yolu seçm
       </trans-unit>
       <trans-unit id="PPG_BrowseText">
         <source>&lt;Browse...&gt;</source>
-        <target state="translated">&lt; gözat... &gt;</target>
+        <target state="translated">&lt;Gözat...&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_StartupObjectNone">
@@ -355,7 +355,7 @@ Lütfen geçerli bir klasör yolu seçin.</target>
       </trans-unit>
       <trans-unit id="PPG_Compile_Notification_None">
         <source>None</source>
-        <target state="translated">Yok</target>
+        <target state="translated">Hiçbiri</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Compile_Notification_Warning">
@@ -370,7 +370,7 @@ Lütfen geçerli bir klasör yolu seçin.</target>
       </trans-unit>
       <trans-unit id="PPG_Compile_OptionStrict_Custom">
         <source>(custom)</source>
-        <target state="translated">(Özel)</target>
+        <target state="translated">(özel)</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Compile_42016">
@@ -779,7 +779,7 @@ Hata:</target>
       </trans-unit>
       <trans-unit id="PPG_Signing_NoData">
         <source>(none)</source>
-        <target state="translated">(Hiçbiri)</target>
+        <target state="translated">(hiçbiri)</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Signing_OpenExistingKeyPasswordTitle">
@@ -1087,7 +1087,7 @@ Hata:</target>
       </trans-unit>
       <trans-unit id="PPG_Property_RootNamespace">
         <source>Root Namespace</source>
-        <target state="translated">Kök ad alanı</target>
+        <target state="translated">Kök Ad Alanı</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Property_StartupObject">
@@ -1107,7 +1107,7 @@ Hata:</target>
       </trans-unit>
       <trans-unit id="PPG_Property_AssemblyFileVersion">
         <source>Assembly File Version</source>
-        <target state="translated">Bütünleştirilmiş Kod Dosyası Sürümü</target>
+        <target state="translated">Bütünleştirilmiş Kod Dosya Sürümü</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Property_AssemblyGuid">
@@ -1197,7 +1197,7 @@ Hata:</target>
       </trans-unit>
       <trans-unit id="DFX_ReplaceTextStreamFailed">
         <source>Replacing text stream failed:{0}</source>
-        <target state="translated">Metin akışı değiştirilemedi:{0}</target>
+        <target state="translated">Metin akışı değiştirilemedi: {0}</target>
         <note>#exception {0}=err msg</note>
       </trans-unit>
       <trans-unit id="DFX_BufferReadOnly">
@@ -1787,7 +1787,7 @@ CONSIDER: get this from CodeDom</note>
       </trans-unit>
       <trans-unit id="RSE_Btn_Views_Thumbnail">
         <source>&amp;Thumbnail</source>
-        <target state="translated">&amp;Küçük Resim</target>
+        <target state="translated">&amp;Küçük resim</target>
         <note>Resource editor listview view styles (like changing the view style of a folder in Windows XP)</note>
       </trans-unit>
       <trans-unit id="RSE_ResourceEditor">
@@ -2719,7 +2719,7 @@ app.config dosyasındaki yeni değer: '{1}'
       </trans-unit>
       <trans-unit id="PPG_AdvancedBuildSettings_ReportCompilerErrors_None">
         <source>None</source>
-        <target state="translated">Yok</target>
+        <target state="translated">Hiçbiri</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_AdvancedBuildSettings_ReportCompilerErrors_Prompt">
@@ -2749,7 +2749,7 @@ app.config dosyasındaki yeni değer: '{1}'
       </trans-unit>
       <trans-unit id="PPG_AdvancedBuildSettings_DebugInfo_None">
         <source>None</source>
-        <target state="translated">Yok</target>
+        <target state="translated">Hiçbiri</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_AdvancedBuildSettings_DebugInfo_PdbOnly">

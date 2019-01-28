@@ -4,7 +4,7 @@
     <body>
       <trans-unit id="Rule|ProjectDebugger|DisplayName">
         <source>Start</source>
-        <target state="translated">Início</target>
+        <target state="translated">Iniciar</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|ProjectDebugger|Description">

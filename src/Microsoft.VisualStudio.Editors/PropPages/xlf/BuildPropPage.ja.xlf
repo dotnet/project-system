@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+﻿﻿<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="ja" original="../BuildPropPage.resx">
     <body>
@@ -54,7 +54,7 @@
       </trans-unit>
       <trans-unit id="rbWarningAll.Text">
         <source>A&amp;ll</source>
-        <target state="translated">すべて(&amp;A)</target>
+        <target state="translated">すべて(&amp;L)</target>
         <note />
       </trans-unit>
       <trans-unit id="rbWarningNone.Text">
@@ -124,7 +124,7 @@
       </trans-unit>
       <trans-unit id="lblSGenOption.Text">
         <source>G&amp;enerate serialization assembly:</source>
-        <target state="translated">シリアル化アセンブリの生成(&amp;A):</target>
+        <target state="translated">シリアル化アセンブリの生成(&amp;E):</target>
         <note />
       </trans-unit>
       <trans-unit id="btnAdvanced.Text">

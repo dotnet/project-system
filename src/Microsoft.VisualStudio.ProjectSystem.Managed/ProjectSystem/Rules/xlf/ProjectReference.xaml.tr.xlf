@@ -4,7 +4,7 @@
     <body>
       <trans-unit id="Rule|ProjectReference|DisplayName">
         <source>Project Reference</source>
-        <target state="translated">Proje başvurusu</target>
+        <target state="translated">Proje Başvurusu</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|ProjectReference|Description">

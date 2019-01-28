@@ -4,12 +4,12 @@
     <body>
       <trans-unit id="ContentType|Text|DisplayName">
         <source>Text file</source>
-        <target state="translated">Metin Dosyası</target>
+        <target state="translated">Metin dosyası</target>
         <note />
       </trans-unit>
       <trans-unit id="ContentType|XML|DisplayName">
         <source>Xml file</source>
-        <target state="translated">XML Dosyası</target>
+        <target state="translated">XML dosyası</target>
         <note />
       </trans-unit>
       <trans-unit id="ContentType|HTML|DisplayName">
@@ -44,12 +44,12 @@
       </trans-unit>
       <trans-unit id="ContentType|EmbeddedResource|DisplayName">
         <source>Embedded resource</source>
-        <target state="translated">Eklenmiş Kaynak</target>
+        <target state="translated">Eklenmiş kaynak</target>
         <note />
       </trans-unit>
       <trans-unit id="ItemType|None|DisplayName">
         <source>None</source>
-        <target state="translated">Yok</target>
+        <target state="translated">Hiçbiri</target>
         <note />
       </trans-unit>
       <trans-unit id="ItemType|Content|DisplayName">
@@ -59,7 +59,7 @@
       </trans-unit>
       <trans-unit id="ItemType|EmbeddedResource|DisplayName">
         <source>Embedded resource</source>
-        <target state="translated">Eklenmiş Kaynak</target>
+        <target state="translated">Eklenmiş kaynak</target>
         <note />
       </trans-unit>
       <trans-unit id="ContentType|Page|DisplayName">

@@ -4,7 +4,7 @@
     <body>
       <trans-unit id="Rule|Page|DisplayName">
         <source>Page</source>
-        <target state="translated">Page</target>
+        <target state="translated">Страница</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|Page|Description">

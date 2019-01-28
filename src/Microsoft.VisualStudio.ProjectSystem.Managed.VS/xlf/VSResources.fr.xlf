@@ -253,12 +253,12 @@ Pour déboguer ce projet, ajoutez à cette solution un projet exécutable qui fa
       </trans-unit>
       <trans-unit id="PackCommand">
         <source>&amp;Pack</source>
-        <target state="translated">&amp;Pack</target>
+        <target state="translated">&amp;Compresser</target>
         <note />
       </trans-unit>
       <trans-unit id="PackSelectedProjectCommand">
         <source>&amp;Pack {0}</source>
-        <target state="translated">&amp;Pack {0}</target>
+        <target state="translated">&amp;Compresser {0}</target>
         <note />
       </trans-unit>
       <trans-unit id="XprojMigrationFailedCannotReadReport">

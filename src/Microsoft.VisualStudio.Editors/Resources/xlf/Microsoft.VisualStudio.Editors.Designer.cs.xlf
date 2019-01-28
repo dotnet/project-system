@@ -779,7 +779,7 @@ Chyba:</target>
       </trans-unit>
       <trans-unit id="PPG_Signing_NoData">
         <source>(none)</source>
-        <target state="translated">(Žádné)</target>
+        <target state="translated">(žádné)</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Signing_OpenExistingKeyPasswordTitle">

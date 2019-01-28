@@ -230,7 +230,7 @@ Seleccione una ruta de acceso de carpeta válida.</target>
       </trans-unit>
       <trans-unit id="PPG_AssemblyInfo_InvalidVersion">
         <source>Invalid version format, expected "[Major]", "[Major].[Minor]", "[Major].[Minor].[Build]" or "[Major].[Minor].[Build].[Revision]"</source>
-        <target state="translated">Formato de versión no válido; se esperaba "[Principal]", "[Principal].[Secundaria]", "[Principal].[Secundaria].[Compilación]" o "[Principal].[Secundaria].[Compilación].[Revisión]"</target>
+        <target state="translated">Formato de versión no válido, se esperaba "[Principal]", "[Principal].[Secundaria]", "[Principal].[Secundaria].[Compilación]" o "[Principal].[Secundaria].[Compilación].[Revisión]"</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_AssemblyInfo_BadWildcard">
@@ -779,7 +779,7 @@ Error:</target>
       </trans-unit>
       <trans-unit id="PPG_Signing_NoData">
         <source>(none)</source>
-        <target state="translated">(Ninguno)</target>
+        <target state="translated">(ninguno)</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Signing_OpenExistingKeyPasswordTitle">
@@ -2744,7 +2744,7 @@ El nuevo valor del archivo app.config es '{1}'
       </trans-unit>
       <trans-unit id="PPG_AdvancedBuildSettings_DebugInfo_Full">
         <source>Full</source>
-        <target state="translated">Completo</target>
+        <target state="translated">Completa</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_AdvancedBuildSettings_DebugInfo_None">

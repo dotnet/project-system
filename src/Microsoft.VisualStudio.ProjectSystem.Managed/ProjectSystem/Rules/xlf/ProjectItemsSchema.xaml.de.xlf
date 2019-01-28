@@ -49,7 +49,7 @@
       </trans-unit>
       <trans-unit id="ItemType|None|DisplayName">
         <source>None</source>
-        <target state="translated">Ohne</target>
+        <target state="translated">Keine</target>
         <note />
       </trans-unit>
       <trans-unit id="ItemType|Content|DisplayName">

@@ -1000,7 +1000,7 @@ Error:</source>
       </trans-unit>
       <trans-unit id="PPG_InvalidHexString">
         <source>Base address must be a hexadecimal number with less than or equal to 8 digits, for example, &amp;H11000000.</source>
-        <target state="translated">基址必须是小于或等于 8 位数字的十六进制数字，例如 &amp;H11000000。</target>
+        <target state="translated">基址必须是十六进制数，位数小于或等于 8，如 &amp;H11000000。</target>
         <note />
       </trans-unit>
       <trans-unit id="PropPage_NeedResFile">
@@ -2349,7 +2349,7 @@ app.config 文件中的新值为“{1}”
       </trans-unit>
       <trans-unit id="PPG_Application_RootNamespaceJSharp">
         <source>Default pac&amp;kage:</source>
-        <target state="translated">默认包(&amp;K)：</target>
+        <target state="translated">默认包(&amp;K):</target>
         <note>J# Specific String for Root Namespace</note>
       </trans-unit>
       <trans-unit id="RSE_AccessModifier_Custom">
@@ -2404,7 +2404,7 @@ app.config 文件中的新值为“{1}”
       </trans-unit>
       <trans-unit id="PPG_Application_StartupUriLabelText">
         <source>Startup &amp;URI:</source>
-        <target state="translated">启动 URI(&amp;U):</target>
+        <target state="translated">启动 URI (&amp;U):</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_WPFApp_AppXamlOpenInUnsupportedEditor">
@@ -2744,7 +2744,7 @@ app.config 文件中的新值为“{1}”
       </trans-unit>
       <trans-unit id="PPG_AdvancedBuildSettings_DebugInfo_Full">
         <source>Full</source>
-        <target state="translated">满</target>
+        <target state="translated">完全</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_AdvancedBuildSettings_DebugInfo_None">

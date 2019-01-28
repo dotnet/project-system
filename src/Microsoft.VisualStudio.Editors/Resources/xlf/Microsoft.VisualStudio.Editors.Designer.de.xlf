@@ -24,7 +24,7 @@
       </trans-unit>
       <trans-unit id="PPG_SigningTitle">
         <source>Signing</source>
-        <target state="translated">Signieren</target>
+        <target state="translated">Signierung</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_ApplicationTitle">
@@ -355,7 +355,7 @@ Wählen Sie einen gültigen Ordnerpfad aus.</target>
       </trans-unit>
       <trans-unit id="PPG_Compile_Notification_None">
         <source>None</source>
-        <target state="translated">Ohne</target>
+        <target state="translated">Keine</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Compile_Notification_Warning">
@@ -779,7 +779,7 @@ Fehler:</target>
       </trans-unit>
       <trans-unit id="PPG_Signing_NoData">
         <source>(none)</source>
-        <target state="translated">(Keine)</target>
+        <target state="translated">(keine)</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Signing_OpenExistingKeyPasswordTitle">
@@ -880,7 +880,7 @@ Fehler:</target>
       </trans-unit>
       <trans-unit id="PPG_UrlBehavior_Static">
         <source>Static</source>
-        <target state="translated">Static</target>
+        <target state="translated">Statisch</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_UrlBehavior_Dynamic">
@@ -2719,7 +2719,7 @@ Möchten Sie den Wert in der SETTINGS-Datei aktualisieren?</target>
       </trans-unit>
       <trans-unit id="PPG_AdvancedBuildSettings_ReportCompilerErrors_None">
         <source>None</source>
-        <target state="translated">Ohne</target>
+        <target state="translated">Keine</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_AdvancedBuildSettings_ReportCompilerErrors_Prompt">
@@ -2749,7 +2749,7 @@ Möchten Sie den Wert in der SETTINGS-Datei aktualisieren?</target>
       </trans-unit>
       <trans-unit id="PPG_AdvancedBuildSettings_DebugInfo_None">
         <source>None</source>
-        <target state="translated">Ohne</target>
+        <target state="translated">Keine</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_AdvancedBuildSettings_DebugInfo_PdbOnly">

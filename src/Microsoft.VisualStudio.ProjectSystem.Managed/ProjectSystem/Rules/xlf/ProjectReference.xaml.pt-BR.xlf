@@ -4,7 +4,7 @@
     <body>
       <trans-unit id="Rule|ProjectReference|DisplayName">
         <source>Project Reference</source>
-        <target state="translated">Referência do projeto</target>
+        <target state="translated">Referência de projeto</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|ProjectReference|Description">

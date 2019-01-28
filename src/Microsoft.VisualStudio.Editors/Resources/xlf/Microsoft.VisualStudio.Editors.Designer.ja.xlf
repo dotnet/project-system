@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+﻿﻿<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="ja" original="../Microsoft.VisualStudio.Editors.Designer.resx">
     <body>
@@ -103,7 +103,7 @@ Click OK to ignore and continue. Click CANCEL to choose a different output path.
       </trans-unit>
       <trans-unit id="PPG_KeyFileNewText">
         <source>&lt;New...&gt;</source>
-        <target state="translated">&lt;新規作成...&gt;</target>
+        <target state="translated">&lt;新規...&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_KeyFileBrowseText">
@@ -1603,7 +1603,7 @@ CONSIDER: get this from CodeDom</note>
       </trans-unit>
       <trans-unit id="RSE_Btn_Add_Icon">
         <source>New I&amp;con...</source>
-        <target state="translated">新しいアイコン(&amp;C)...</target>
+        <target state="translated">新しいアイコン(&amp;I)...</target>
         <note>Menu items under the "Add" button</note>
       </trans-unit>
       <trans-unit id="RSE_Btn_Add_TextFile">

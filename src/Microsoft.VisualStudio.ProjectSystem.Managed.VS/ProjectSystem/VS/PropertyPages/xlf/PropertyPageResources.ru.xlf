@@ -154,7 +154,7 @@
       </trans-unit>
       <trans-unit id="NewBtn">
         <source>New...</source>
-        <target state="translated">Новые функции...</target>
+        <target state="translated">Создать...</target>
         <note />
       </trans-unit>
       <trans-unit id="Profile">

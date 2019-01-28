@@ -64,7 +64,7 @@
       </trans-unit>
       <trans-unit id="ProfileKindExecutableName">
         <source>Executable</source>
-        <target state="translated">Ke spuštění</target>
+        <target state="translated">Spustitelný soubor</target>
         <note />
       </trans-unit>
       <trans-unit id="ProfileKindIISExpressName">

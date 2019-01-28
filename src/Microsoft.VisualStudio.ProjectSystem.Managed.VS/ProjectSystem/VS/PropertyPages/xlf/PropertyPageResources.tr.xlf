@@ -4,7 +4,7 @@
     <body>
       <trans-unit id="AllFiles">
         <source>All files</source>
-        <target state="translated">Tüm Dosyalar</target>
+        <target state="translated">Tüm dosyalar</target>
         <note />
       </trans-unit>
       <trans-unit id="ApplicationArgumentsWatermark">
@@ -34,7 +34,7 @@
       </trans-unit>
       <trans-unit id="ExecutableFiles">
         <source>Executable files</source>
-        <target state="translated">Yürütülebilir Dosyalar</target>
+        <target state="translated">Yürütülebilir dosyalar</target>
         <note />
       </trans-unit>
       <trans-unit id="ExecutablePathWatermark">

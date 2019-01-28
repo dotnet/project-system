@@ -350,7 +350,7 @@ Please select a valid folder path.</source>
       </trans-unit>
       <trans-unit id="PPG_AdvancedBuildSettings_InvalidBaseAddress">
         <source>Base address must be a hexadecimal number with less than or equal to 8 digits, for example, 0x11000000.</source>
-        <target state="translated">基底位址必須是小於或等於 8 位數的十六進位數字，例如 0x11000000。</target>
+        <target state="translated">基址必须是小于或等于 8 位数字的十六进制数字，例如 0x11000000。</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Compile_Notification_None">
@@ -2614,7 +2614,7 @@ app.config 檔的新值是 '{1}'
       </trans-unit>
       <trans-unit id="PPG_SecurityPage_XBAPOutOfTrustZoneToolTip">
         <source>The application will fail to run in the selected zone because of this requested elevated permission. Click the help link above for more info.</source>
-        <target state="translated">由於這項要求的更高權限，此應用程式將無法在選取的區域中執行。如需詳細資訊，請按一下上方的 [說明]5D; 連結。</target>
+        <target state="translated">由於這項要求的更高使用權限，此應用程式將無法在選取的區域中執行。如需詳細資訊，請按一下上方的 [說明] 連結。</target>
         <note />
       </trans-unit>
       <trans-unit id="XmlToSchema_InvalidXMLFormat">
@@ -2744,7 +2744,7 @@ app.config 檔的新值是 '{1}'
       </trans-unit>
       <trans-unit id="PPG_AdvancedBuildSettings_DebugInfo_Full">
         <source>Full</source>
-        <target state="new">Full</target>
+        <target state="translated">完整</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_AdvancedBuildSettings_DebugInfo_None">

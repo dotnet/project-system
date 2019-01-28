@@ -370,7 +370,7 @@ Selezionare un percorso della cartella valido.</target>
       </trans-unit>
       <trans-unit id="PPG_Compile_OptionStrict_Custom">
         <source>(custom)</source>
-        <target state="translated">(personalizzato)</target>
+        <target state="translated">(personalizzata)</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Compile_42016">

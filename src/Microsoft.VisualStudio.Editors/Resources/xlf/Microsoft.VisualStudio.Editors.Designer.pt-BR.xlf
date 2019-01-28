@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="pt-BR" original="../Microsoft.VisualStudio.Editors.Designer.resx">
     <body>
@@ -49,7 +49,7 @@
       </trans-unit>
       <trans-unit id="PPG_VdtGeneralTitle">
         <source>Database</source>
-        <target state="translated">Banco de dados</target>
+        <target state="translated">Banco de Dados</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Security">
@@ -103,7 +103,7 @@ Clique em OK para ignorar e continuar. Clique em CANCELAR para escolher um camin
       </trans-unit>
       <trans-unit id="PPG_KeyFileNewText">
         <source>&lt;New...&gt;</source>
-        <target state="translated">&lt;Novo... &gt;</target>
+        <target state="translated">&lt;Novo...&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_KeyFileBrowseText">
@@ -779,7 +779,7 @@ Erro:</target>
       </trans-unit>
       <trans-unit id="PPG_Signing_NoData">
         <source>(none)</source>
-        <target state="translated">(Nenhum)</target>
+        <target state="translated">(nenhum)</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Signing_OpenExistingKeyPasswordTitle">

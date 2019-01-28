@@ -156,7 +156,7 @@
       </trans-unit>
       <trans-unit id="DFX_ReplaceTextStreamFailed">
         <source>Replacing text stream failed:{0}</source>
-        <target state="translated">Metin akışı değiştirilemedi:{0}</target>
+        <target state="translated">Metin akışı değiştirilemedi: {0}</target>
         <note>#exception {0}=err msg</note>
       </trans-unit>
       <trans-unit id="DFX_UnableCreateTextBuffer">

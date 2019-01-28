@@ -19,12 +19,12 @@
       </trans-unit>
       <trans-unit id="PackageIconUrlLabel.Text">
         <source>&amp;Icon URL:</source>
-        <target state="translated">&amp;URL dell'icona:</target>
+        <target state="translated">&amp;URL icona:</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageVersionLabel.Text">
         <source>Package &amp;version:</source>
-        <target state="translated">&amp;Versione pacchetto:</target>
+        <target state="translated">&amp;Versione del pacchetto:</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageLicenseUrlLabel.Text">

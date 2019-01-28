@@ -4,7 +4,7 @@
     <body>
       <trans-unit id="AllFiles">
         <source>All files</source>
-        <target state="translated">Todos os Arquivos</target>
+        <target state="translated">Todos os arquivos</target>
         <note />
       </trans-unit>
       <trans-unit id="ApplicationArgumentsWatermark">
@@ -34,7 +34,7 @@
       </trans-unit>
       <trans-unit id="ExecutableFiles">
         <source>Executable files</source>
-        <target state="translated">Arquivos Executáveis</target>
+        <target state="translated">Arquivos executáveis</target>
         <note />
       </trans-unit>
       <trans-unit id="ExecutablePathWatermark">
@@ -74,7 +74,7 @@
       </trans-unit>
       <trans-unit id="ProfileKindNoActionName">
         <source>Start</source>
-        <target state="translated">Início</target>
+        <target state="translated">Iniciar</target>
         <note />
       </trans-unit>
       <trans-unit id="ProfileKindProjectName">

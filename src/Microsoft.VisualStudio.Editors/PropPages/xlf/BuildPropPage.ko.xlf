@@ -124,7 +124,7 @@
       </trans-unit>
       <trans-unit id="lblSGenOption.Text">
         <source>G&amp;enerate serialization assembly:</source>
-        <target state="translated">serialization 어셈블리 생성(&amp;E):</target>
+        <target state="translated">Serialization 어셈블리 생성(&amp;E):</target>
         <note />
       </trans-unit>
       <trans-unit id="btnAdvanced.Text">

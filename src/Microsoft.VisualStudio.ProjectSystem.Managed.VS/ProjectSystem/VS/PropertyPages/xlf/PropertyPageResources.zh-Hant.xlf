@@ -109,7 +109,7 @@
       </trans-unit>
       <trans-unit id="AddBtn">
         <source>Add</source>
-        <target state="translated">加入</target>
+        <target state="translated">新增</target>
         <note />
       </trans-unit>
       <trans-unit id="ApplicationArguments">

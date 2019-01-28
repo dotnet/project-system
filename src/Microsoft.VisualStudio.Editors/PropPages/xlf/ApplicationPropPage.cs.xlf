@@ -59,7 +59,7 @@
       </trans-unit>
       <trans-unit id="ApplicationManifestLabel.Text">
         <source>Manifest:</source>
-        <target state="new">Manifest:</target>
+        <target state="translated">Manifest:</target>
         <note />
       </trans-unit>
       <trans-unit id="Win32ResourceRadioButton.Text">

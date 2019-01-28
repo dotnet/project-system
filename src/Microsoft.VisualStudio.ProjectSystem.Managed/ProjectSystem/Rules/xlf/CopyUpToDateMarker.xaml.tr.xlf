@@ -9,7 +9,7 @@
       </trans-unit>
       <trans-unit id="Rule|CopyUpToDateMarker|Description">
         <source>File Properties</source>
-        <target state="translated">Dosya özellikleri</target>
+        <target state="translated">Dosya Özellikleri</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|Advanced|DisplayName">

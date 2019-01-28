@@ -69,7 +69,7 @@
       </trans-unit>
       <trans-unit id="14">
         <source>A project that contains NUnit tests that can run on .NET Core on Windows, Linux and MacOS.</source>
-        <target state="translated">Ein Projekt, das NUnit-Tests enthält und für .NET Core unter Windows, Linux und macOS ausgeführt werden kann.</target>
+        <target state="translated">Ein Projekt, das NUnit-Tests enthält, die auf .NET Core unter Windows, Linux und MacOS ausgeführt werden können.</target>
         <note />
       </trans-unit>
     </body>

@@ -54,7 +54,7 @@
       </trans-unit>
       <trans-unit id="rbWarningAll.Text">
         <source>A&amp;ll</source>
-        <target state="translated">全部(&amp;l)</target>
+        <target state="translated">所有(&amp;L)</target>
         <note />
       </trans-unit>
       <trans-unit id="rbWarningNone.Text">
@@ -144,7 +144,7 @@
       </trans-unit>
       <trans-unit id="txtXMLDocumentationFile.AccessibleName">
         <source>XML Document File Path</source>
-        <target state="translated">xml 文档文件路径</target>
+        <target state="translated">XML 文档文件路径</target>
         <note />
       </trans-unit>
     </body>

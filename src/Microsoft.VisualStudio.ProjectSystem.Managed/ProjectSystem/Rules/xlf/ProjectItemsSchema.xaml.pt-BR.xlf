@@ -4,7 +4,7 @@
     <body>
       <trans-unit id="ContentType|Text|DisplayName">
         <source>Text file</source>
-        <target state="translated">Arquivo de Texto</target>
+        <target state="translated">Arquivo de texto</target>
         <note />
       </trans-unit>
       <trans-unit id="ContentType|XML|DisplayName">
@@ -44,7 +44,7 @@
       </trans-unit>
       <trans-unit id="ContentType|EmbeddedResource|DisplayName">
         <source>Embedded resource</source>
-        <target state="translated">Recurso Inserido</target>
+        <target state="translated">Recurso inserido</target>
         <note />
       </trans-unit>
       <trans-unit id="ItemType|None|DisplayName">
@@ -59,7 +59,7 @@
       </trans-unit>
       <trans-unit id="ItemType|EmbeddedResource|DisplayName">
         <source>Embedded resource</source>
-        <target state="translated">Recurso Inserido</target>
+        <target state="translated">Recurso inserido</target>
         <note />
       </trans-unit>
       <trans-unit id="ContentType|Page|DisplayName">
