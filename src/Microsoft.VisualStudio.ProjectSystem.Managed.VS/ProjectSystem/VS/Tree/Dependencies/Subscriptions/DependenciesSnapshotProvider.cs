@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
         private readonly TimeSpan _dependenciesUpdateThrottleInterval = TimeSpan.FromMilliseconds(250);
 
-        private readonly SemaphoreSlim _gate = new SemaphoreSlim(initialCount: 1);
+        private readonly SemaphoreSlim _contextUpdateGate = new SemaphoreSlim(initialCount: 1);
         private readonly object _snapshotLock = new object();
         private readonly object _subscribersLock = new object();
         private readonly object _linksLock = new object();
@@ -215,7 +215,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
             _dependenciesUpdateScheduler.Dispose();
 
-            _gate.Dispose();
+            _contextUpdateGate.Dispose();
 
             if (initialized)
             {
@@ -374,8 +374,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         /// </summary>
         private async Task UpdateProjectContextAndSubscriptionsAsync()
         {
-            // Ensure that only single thread is attempting to create a project context.
-            AggregateCrossTargetProjectContext newProjectContext = await ExecuteWithinLockAsync(TryUpdateCurrentAggregateProjectContextAsync);
+            // Prevent concurrent project context updates.
+            AggregateCrossTargetProjectContext newProjectContext 
+                = await _contextUpdateGate.ExecuteWithinLockAsync(JoinableCollection, JoinableFactory, TryUpdateCurrentAggregateProjectContextAsync);
 
             if (newProjectContext != null)
             {
@@ -598,11 +599,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
                 _evaluationSubscriptionLinks.Clear();
             }
-        }
-
-        private Task<T> ExecuteWithinLockAsync<T>(Func<Task<T>> task)
-        {
-            return _gate.ExecuteWithinLockAsync(JoinableCollection, JoinableFactory, task);
         }
     }
 }
