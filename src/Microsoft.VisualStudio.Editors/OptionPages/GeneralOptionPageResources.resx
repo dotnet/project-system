@@ -138,4 +138,7 @@
   <data name="General_UsePreviewSdk" xml:space="preserve">
     <value>Use previews of the .NET Core SDK</value>
   </data>
+  <data name="General_DoubleClickOpenProjectFile" xml:space="preserve">
+    <value>Double click on project node to edit project file.</value>
+  </data>
 </root>

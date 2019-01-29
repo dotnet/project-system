@@ -17,6 +17,9 @@
             <StackPanel Orientation="Horizontal">
                 <CheckBox x:Name="UsePreviewSdk" x:Uid="General_UsePreviewSdk" Content="{x:Static r:GeneralOptionPageResources.General_UsePreviewSdk}" Margin="13, 10" />
             </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <CheckBox x:Name="DoubleClickOpenProjectFile" x:Uid="General_DoubleClickOpenProjectFile" Content="{x:Static r:GeneralOptionPageResources.General_DoubleClickOpenProjectFile}" Margin="13, 10" />
+            </StackPanel>
         </StackPanel>
     </ScrollViewer>
 </local:OptionPageControl>

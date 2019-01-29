@@ -1,0 +1,3 @@
+Microsoft.VisualStudio.Editors.OptionPages.GeneralOptions.DoubleClickOpenProjectFile() -> Boolean
+Microsoft.VisualStudio.Editors.OptionPages.GeneralOptions.DoubleClickOpenProjectFile(value As Boolean) -> Void
+Shared My.Resources.GeneralOptionPageResources.General_DoubleClickOpenProjectFile() -> String

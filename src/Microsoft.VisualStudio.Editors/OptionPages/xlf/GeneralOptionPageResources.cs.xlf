@@ -37,6 +37,11 @@
         <target state="translated">Používat verze Preview sady .NET Core SDK</target>
         <note />
       </trans-unit>
+      <trans-unit id="General_DoubleClickOpenProjectFile">
+        <source>Double click on project node to edit project file.</source>
+        <target state="new">Double click on project node to edit project file.</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>

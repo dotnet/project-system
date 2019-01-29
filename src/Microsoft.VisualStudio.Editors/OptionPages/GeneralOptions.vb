@@ -20,6 +20,7 @@ Namespace Microsoft.VisualStudio.Editors.OptionPages
         Private Const FastUpToDateEnabledSettingKey As String = "ManagedProjectSystem\FastUpToDateCheckEnabled"
         Private Const FastUpToDateLogLevelSettingKey As String = "ManagedProjectSystem\FastUpToDateLogLevel"
         Private Const UsePreviewSdkSettingKey As String = "ManagedProjectSystem\UsePreviewSdk"
+        Private Const DoubleClickOpenProjectFileSettingKey As String = "ManagedProjectSystem\DoubleClickOpenProjectFile"
 
         Private ReadOnly _settingsManager As ISettingsManager
         Private ReadOnly _localAppData As String
@@ -76,6 +77,15 @@ Namespace Microsoft.VisualStudio.Editors.OptionPages
             Get
                 Return Not _isPreview
             End Get
+        End Property
+
+        Public Property DoubleClickOpenProjectFile As Boolean
+            Get
+                Return If(_settingsManager?.GetValueOrDefault(DoubleClickOpenProjectFileSettingKey, True), True)
+            End Get
+            Set(value As Boolean)
+                _settingsManager.SetValueAsync(DoubleClickOpenProjectFileSettingKey, value, isMachineLocal:=False)
+            End Set
         End Property
 
         Public Sub New(serviceProvider As IServiceProvider)

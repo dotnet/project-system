@@ -37,6 +37,11 @@
         <target state="translated">.NET Core SDK의 미리 보기 사용</target>
         <note />
       </trans-unit>
+      <trans-unit id="General_DoubleClickOpenProjectFile">
+        <source>Double click on project node to edit project file.</source>
+        <target state="new">Double click on project node to edit project file.</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>

@@ -59,6 +59,15 @@ Namespace Microsoft.VisualStudio.Editors.OptionPages
             bindingExpression = UsePreviewSdk.SetBinding(IsEnabledProperty, binding)
             AddBinding(bindingExpression)
 
+            binding = New Binding() With {
+                .Source = _generalOptions,
+                .Path = New Windows.PropertyPath(NameOf(GeneralOptions.DoubleClickOpenProjectFile)),
+                .UpdateSourceTrigger = UpdateSourceTrigger.Explicit
+            }
+
+            bindingExpression = DoubleClickOpenProjectFile.SetBinding(ToggleButton.IsCheckedProperty, binding)
+            AddBinding(bindingExpression)
+
         End Sub
     End Class
 End Namespace
