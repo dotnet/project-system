@@ -1,4 +1,4 @@
-**Version Used**: 
+**Visual Studio Version**:
 
 **Summary:**
 
