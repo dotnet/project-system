@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Immutable;
 
-using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
@@ -113,26 +112,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         /// In some cases dependency should be present in snapshot, but not displayed in the Tree.
         /// </summary>
         bool Visible { get; }
-
-        /// <summary>
-        /// Node's regular icon
-        /// </summary>
-        ImageMoniker Icon { get; }
-
-        /// <summary>
-        /// Node's expanded icon, if not provided regular icon should be used
-        /// </summary>
-        ImageMoniker ExpandedIcon { get; }
-
-        /// <summary>
-        /// Unresolved node's regular icon
-        /// </summary>
-        ImageMoniker UnresolvedIcon { get; }
-
-        /// <summary>
-        /// Unresolved node's expanded icon, if not provided regular icon should be used
-        /// </summary>
-        ImageMoniker UnresolvedExpandedIcon { get; }
 
         /// <summary>
         /// Priority specifies node's order among it's peers. Default is 0 and it means node will 

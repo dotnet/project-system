@@ -198,9 +198,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     ""SchemaItemType"":""Xxx"",
                     ""Resolved"":""true"",
                     ""TopLevel"":""true""
-                }",
-                icon: KnownMonikers.Uninstall,
-                expandedIcon: KnownMonikers.Uninstall);
+                }");
 
             var dependencyChild1 = IDependencyFactory.FromJson(@"
                 {
@@ -211,9 +209,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     ""SchemaItemType"":""Xxx"",
                     ""Resolved"":""true"",
                     ""TopLevel"":""false""
-                }",
-                icon: KnownMonikers.Uninstall,
-                expandedIcon: KnownMonikers.Uninstall);
+                }");
 
             var catalogs = IProjectCatalogSnapshotFactory.Create();
             var previousSnapshot = ITargetedDependenciesSnapshotFactory.Implement(
@@ -255,9 +251,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     ""SchemaItemType"":""Xxx"",
                     ""Resolved"":""true"",
                     ""TopLevel"":""true""
-                }",
-                icon: KnownMonikers.Uninstall,
-                expandedIcon: KnownMonikers.Uninstall);
+                }");
 
             var dependencyChild1 = IDependencyFactory.FromJson(@"
                 {
@@ -268,9 +262,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     ""SchemaItemType"":""Xxx"",
                     ""Resolved"":""true"",
                     ""TopLevel"":""false""
-                }",
-                icon: KnownMonikers.Uninstall,
-                expandedIcon: KnownMonikers.Uninstall);
+                }");
 
             var catalogs = IProjectCatalogSnapshotFactory.Create();
             var previousSnapshot = ITargetedDependenciesSnapshotFactory.Implement(
@@ -322,9 +314,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     ""SchemaItemType"":""Xxx"",
                     ""Resolved"":""true"",
                     ""TopLevel"":""true""
-                }",
-                icon: KnownMonikers.Uninstall,
-                expandedIcon: KnownMonikers.Uninstall);
+                }");
 
             var dependencyChild1 = IDependencyFactory.FromJson(@"
                 {
@@ -335,9 +325,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     ""SchemaItemType"":""Xxx"",
                     ""Resolved"":""true"",
                     ""TopLevel"":""false""
-                }",
-                icon: KnownMonikers.Uninstall,
-                expandedIcon: KnownMonikers.Uninstall);
+                }");
 
             var dependencyModelNew1 = IDependencyModelFactory.FromJson(@"
                 {
@@ -392,9 +380,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     ""SchemaItemType"":""Xxx"",
                     ""Resolved"":""true"",
                     ""TopLevel"":""true""
-                }",
-                icon: KnownMonikers.Uninstall,
-                expandedIcon: KnownMonikers.Uninstall);
+                }");
 
             var dependencyChild1 = IDependencyFactory.FromJson(@"
                 {
@@ -405,9 +391,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     ""SchemaItemType"":""Xxx"",
                     ""Resolved"":""true"",
                     ""TopLevel"":""false""
-                }",
-                icon: KnownMonikers.Uninstall,
-                expandedIcon: KnownMonikers.Uninstall);
+                }");
 
             var dependencyModelNew1 = IDependencyModelFactory.FromJson(@"
                 {
@@ -477,9 +461,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     ""SchemaItemType"":""Xxx"",
                     ""Resolved"":""true"",
                     ""TopLevel"":""true""
-                }",
-                icon: KnownMonikers.Uninstall,
-                expandedIcon: KnownMonikers.Uninstall);
+                }");
 
             var dependencyChild1 = IDependencyFactory.FromJson(@"
                 {
@@ -490,9 +472,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     ""SchemaItemType"":""Xxx"",
                     ""Resolved"":""true"",
                     ""TopLevel"":""false""
-                }",
-                icon: KnownMonikers.Uninstall,
-                expandedIcon: KnownMonikers.Uninstall);
+                }");
 
             var dependencyModelAdded1 = IDependencyModelFactory.FromJson(@"
                 {
@@ -542,9 +522,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     ""SchemaItemType"":""Xxx"",
                     ""Resolved"":""true"",
                     ""TopLevel"":""true""
-                }",
-                icon: KnownMonikers.Uninstall,
-                expandedIcon: KnownMonikers.Uninstall);
+                }");
 
             var dependencyRemoved1 = IDependencyFactory.FromJson(@"
                 {
@@ -555,9 +533,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     ""SchemaItemType"":""Xxx"",
                     ""Resolved"":""true"",
                     ""TopLevel"":""false""
-                }",
-                icon: KnownMonikers.Uninstall,
-                expandedIcon: KnownMonikers.Uninstall);
+                }");
 
             var dependencyInsteadRemoved1 = IDependencyFactory.FromJson(@"
                 {
@@ -568,9 +544,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     ""SchemaItemType"":""Xxx"",
                     ""Resolved"":""true"",
                     ""TopLevel"":""false""
-                }",
-                icon: KnownMonikers.Uninstall,
-                expandedIcon: KnownMonikers.Uninstall);
+                }");
 
             Assert.True(dependencyTop1.TopLevel);
             Assert.False(dependencyChild1.TopLevel);
@@ -635,9 +609,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     ""Caption"": ""TopDependency1"",
                     ""SchemaItemType"": ""Xxx"",
                     ""Resolved"": ""true""
-                }",
-                icon: KnownMonikers.Uninstall,
-                expandedIcon: KnownMonikers.Uninstall);
+                }");
 
             var dependencyModelTopAdded = IDependencyModelFactory.FromJson(@"
                 {
@@ -659,9 +631,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     ""Caption"": ""TopDependency1"",
                     ""SchemaItemType"": ""Xxx"",
                     ""Resolved"": ""true""
-                }",
-                icon: KnownMonikers.Uninstall,
-                expandedIcon: KnownMonikers.Uninstall);
+                }");
 
             var catalogs = IProjectCatalogSnapshotFactory.Create();
             var previousSnapshot = ITargetedDependenciesSnapshotFactory.Implement(

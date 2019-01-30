@@ -52,10 +52,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                    && Implicit == dependency.Implicit
                    && Visible == dependency.Visible
                    && Priority == dependency.Priority
-                   && Equals(Icon, dependency.Icon)
-                   && Equals(ExpandedIcon, dependency.ExpandedIcon)
-                   && Equals(UnresolvedIcon, dependency.UnresolvedIcon)
-                   && Equals(UnresolvedExpandedIcon, dependency.UnresolvedExpandedIcon)
+                   && Equals(Icon, dependency.IconSet.Icon)
+                   && Equals(ExpandedIcon, dependency.IconSet.ExpandedIcon)
+                   && Equals(UnresolvedIcon, dependency.IconSet.UnresolvedIcon)
+                   && Equals(UnresolvedExpandedIcon, dependency.IconSet.UnresolvedExpandedIcon)
                    && Equals(Properties, dependency.Properties)
                    && SetEquals(DependencyIDs, dependency.DependencyIDs);
         }

@@ -4,7 +4,7 @@ using System;
 using System.Collections.Immutable;
 using System.Diagnostics;
 
-using Microsoft.VisualStudio.Imaging.Interop;
+using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 
@@ -13,6 +13,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     [DebuggerDisplay("{" + nameof(Id) + ",nq}")]
     internal sealed class TestDependency : IDependency
     {
+        private static readonly DependencyIconSet s_defaultIconSet = new DependencyIconSet(
+            KnownMonikers.Accordian,
+            KnownMonikers.Bug,
+            KnownMonikers.CrashDumpFile,
+            KnownMonikers.DataCenter);
+
         public IDependency ClonePropertiesFrom
         {
             set
@@ -31,10 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 Implicit = value.Implicit;
                 Visible = value.Visible;
                 Priority = value.Priority;
-                Icon = value.Icon;
-                ExpandedIcon = value.ExpandedIcon;
-                UnresolvedIcon = value.UnresolvedIcon;
-                UnresolvedExpandedIcon = value.UnresolvedExpandedIcon;
+                IconSet = value.IconSet;
                 Properties = value.Properties;
                 DependencyIDs = value.DependencyIDs;
                 Flags = value.Flags;
@@ -58,28 +61,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         public bool Implicit { get; set; } = false;
         public bool Visible { get; set; } = true;
         public int Priority { get; set; } = 0;
-        public ImageMoniker Icon { get; set; }
-        public ImageMoniker ExpandedIcon { get; set; }
-        public ImageMoniker UnresolvedIcon { get; set; }
-        public ImageMoniker UnresolvedExpandedIcon { get; set; }
         public IImmutableDictionary<string, string> Properties { get; set; }
         public IImmutableList<string> DependencyIDs { get; set; } = ImmutableList<string>.Empty;
         public ProjectTreeFlags Flags { get; set; } = ProjectTreeFlags.Empty;
         public string Id { get; set; }
         public string Alias { get; set; }
         public ITargetFramework TargetFramework { get; set; }
-
-        public DependencyIconSet IconSet
-        {
-            get => new DependencyIconSet(Icon, ExpandedIcon, UnresolvedIcon, UnresolvedExpandedIcon);
-            set
-            {
-                Icon = value.Icon;
-                ExpandedIcon = value.ExpandedIcon;
-                UnresolvedIcon = value.UnresolvedIcon;
-                UnresolvedExpandedIcon = value.UnresolvedExpandedIcon;
-            }
-        }
+        public DependencyIconSet IconSet { get; set; } = s_defaultIconSet;
 
         public IDependency SetProperties(
             string caption = null,
@@ -101,10 +89,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 Flags = flags ?? Flags,
                 SchemaName = schemaName ?? SchemaName,
                 DependencyIDs = dependencyIDs ?? DependencyIDs,
-                Icon = iconSet?.Icon ?? Icon,
-                ExpandedIcon = iconSet?.ExpandedIcon ?? ExpandedIcon,
-                UnresolvedIcon = iconSet?.UnresolvedIcon ?? UnresolvedIcon,
-                UnresolvedExpandedIcon = iconSet?.UnresolvedExpandedIcon ?? UnresolvedExpandedIcon,
+                IconSet = iconSet ?? IconSet,
                 Implicit = isImplicit ?? Implicit
             };
         }

@@ -4,7 +4,6 @@ using System;
 using System.Collections.Immutable;
 
 using Microsoft.VisualStudio.Buffers.PooledObjects;
-using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
@@ -207,11 +206,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         public bool TopLevel { get; }
         public bool Implicit { get; }
         public bool Visible { get; }
-
-        public ImageMoniker Icon => IconSet.Icon;
-        public ImageMoniker ExpandedIcon => IconSet.ExpandedIcon;
-        public ImageMoniker UnresolvedIcon => IconSet.UnresolvedIcon;
-        public ImageMoniker UnresolvedExpandedIcon => IconSet.UnresolvedExpandedIcon;
 
         public DependencyIconSet IconSet { get; }
 

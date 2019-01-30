@@ -3,7 +3,6 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 
-using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
@@ -153,10 +152,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         public static IDependency FromJson(
             string jsonString,
             ProjectTreeFlags? flags = null,
-            ImageMoniker? icon = null,
-            ImageMoniker? expandedIcon = null,
-            ImageMoniker? unresolvedIcon = null,
-            ImageMoniker? unresolvedExpandedIcon = null,
+            DependencyIconSet iconSet = null,
             Dictionary<string, string> properties = null,
             IEnumerable<string> dependenciesIds = null,
             ITargetFramework targetFramework = null)
@@ -174,24 +170,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 data.Flags = data.Flags.Union(flags.Value);
             }
 
-            if (icon.HasValue)
+            if (iconSet != null)
             {
-                data.Icon = icon.Value;
-            }
-
-            if (expandedIcon.HasValue)
-            {
-                data.ExpandedIcon = expandedIcon.Value;
-            }
-
-            if (unresolvedIcon.HasValue)
-            {
-                data.UnresolvedIcon = unresolvedIcon.Value;
-            }
-
-            if (unresolvedExpandedIcon.HasValue)
-            {
-                data.UnresolvedExpandedIcon = unresolvedExpandedIcon.Value;
+                data.IconSet = iconSet;
             }
 
             if (properties != null)
