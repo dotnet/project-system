@@ -133,6 +133,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// </summary>
         IImmutableDictionary<string, string> Properties { get; }
 
+        /// <summary>
+        /// Gets the set of child dependency IDs. May be empty, but never <see langword="null"/>.
+        /// </summary>
+        /// <remarks>
+        /// Each ID is of the form provided by the dependency model.
+        /// For dependencies obtained via MSBuild, these will be <see cref="OriginalItemSpec"/> values.
+        /// </remarks>
         IImmutableList<string> DependencyIDs { get; }
     }
 }

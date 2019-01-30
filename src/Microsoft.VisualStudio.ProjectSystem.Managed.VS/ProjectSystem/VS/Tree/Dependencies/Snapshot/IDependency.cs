@@ -42,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             bool? resolved = null,
             ProjectTreeFlags? flags = null,
             string schemaName = null,
-            IImmutableList<string> dependencyIDs = null,
+            ImmutableArray<string> dependencyIDs = default,
             DependencyIconSet iconSet = null,
             bool? isImplicit = null);
 
@@ -145,7 +145,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         /// </summary>
         IImmutableDictionary<string, string> Properties { get; }
 
-        IImmutableList<string> DependencyIDs { get; }
+        /// <summary>
+        /// Gets the set of child dependency IDs. May be empty, but never <see cref="ImmutableArray{T}.IsDefault"/>.
+        /// </summary>
+        /// <remarks>
+        /// Each ID is of the form <c>"tfm-name\provider-type\model-id"</c>.
+        /// See <see cref="Dependency.GetID"/> for details on how this string is constructed.
+        /// </remarks>
+        ImmutableArray<string> DependencyIDs { get; }
 
         #endregion
     }

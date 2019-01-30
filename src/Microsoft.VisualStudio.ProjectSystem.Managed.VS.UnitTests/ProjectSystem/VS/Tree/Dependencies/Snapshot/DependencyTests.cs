@@ -211,7 +211,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 caption: "newcaption",
                 resolved: true,
                 flags: DependencyTreeFlags.BaseReferenceFlags,
-                dependencyIDs: ImmutableList<string>.Empty.Add("aaa"));
+                dependencyIDs: ImmutableArray.Create("aaa"));
 
             Assert.Equal("newcaption", newDependency.Caption);
             Assert.True(newDependency.Resolved);
@@ -242,7 +242,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal("newcaption", newDependency.Caption);
 
             Assert.Equal(expectedId, newDependency.Id);
-            Assert.True(newDependency.DependencyIDs.Count == 1);
+            Assert.Single(newDependency.DependencyIDs);
             Assert.Equal(expectedDependencyId, newDependency.DependencyIDs[0]);
         }
 

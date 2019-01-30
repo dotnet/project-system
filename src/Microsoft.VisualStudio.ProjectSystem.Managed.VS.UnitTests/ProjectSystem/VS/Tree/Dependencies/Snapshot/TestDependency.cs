@@ -60,7 +60,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         public bool Visible { get; set; } = true;
         public int Priority { get; set; } = 0;
         public IImmutableDictionary<string, string> Properties { get; set; }
-        public IImmutableList<string> DependencyIDs { get; set; } = ImmutableList<string>.Empty;
+        public ImmutableArray<string> DependencyIDs { get; set; } = ImmutableArray<string>.Empty;
         public ProjectTreeFlags Flags { get; set; } = ProjectTreeFlags.Empty;
         public string Id { get; set; }
         public string Alias { get; set; }
@@ -72,7 +72,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             bool? resolved = null,
             ProjectTreeFlags? flags = null,
             string schemaName = null,
-            IImmutableList<string> dependencyIDs = null,
+            ImmutableArray<string> dependencyIDs = default,
             DependencyIconSet iconSet = null,
             bool? isImplicit = null)
         {
@@ -86,7 +86,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 Resolved = resolved ?? Resolved,
                 Flags = flags ?? Flags,
                 SchemaName = schemaName ?? SchemaName,
-                DependencyIDs = dependencyIDs ?? DependencyIDs,
+                DependencyIDs = dependencyIDs.IsDefault ? DependencyIDs : dependencyIDs,
                 IconSet = iconSet ?? IconSet,
                 Implicit = isImplicit ?? Implicit
             };

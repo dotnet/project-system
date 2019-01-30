@@ -109,7 +109,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         public static IDependency ToResolved(
             this IDependency dependency,
             string schemaName = null,
-            IImmutableList<string> dependencyIDs = null)
+            ImmutableArray<string> dependencyIDs = default)
         {
             return dependency.SetProperties(
                 resolved: true,
@@ -121,7 +121,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         public static IDependency ToUnresolved(
             this IDependency dependency,
             string schemaName = null,
-            IImmutableList<string> dependencyIDs = null)
+            ImmutableArray<string> dependencyIDs = default)
         {
             return dependency.SetProperties(
                 resolved: false,

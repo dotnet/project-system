@@ -676,7 +676,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 Id = id1,
                 ProviderType = providerType,
                 TopLevel = true,
-                DependencyIDs = ImmutableList.Create(id2)
+                DependencyIDs = ImmutableArray.Create(id2)
             };
 
             var dependency2 = new TestDependency
@@ -684,7 +684,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 Id = id2,
                 ProviderType = providerType,
                 TopLevel = true,
-                DependencyIDs = ImmutableList.Create(id1)
+                DependencyIDs = ImmutableArray.Create(id1)
             };
 
             var snapshot = new TargetedDependenciesSnapshot(

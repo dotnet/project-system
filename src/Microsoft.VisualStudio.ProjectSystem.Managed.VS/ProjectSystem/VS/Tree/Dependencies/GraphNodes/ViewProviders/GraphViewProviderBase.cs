@@ -28,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
 
         public virtual bool HasChildren(string projectPath, IDependency dependency)
         {
-            return dependency.DependencyIDs.Count != 0;
+            return dependency.DependencyIDs.Length != 0;
         }
 
         public abstract void BuildGraph(

@@ -29,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         [Fact]
         public void BeforeAddOrUpdate_WhenSdk_ShouldFindMatchingPackageAndSetProperties()
         {
-            var dependencyIDs = ImmutableList.Create("id1", "id2");
+            var dependencyIDs = ImmutableArray.Create("id1", "id2");
 
             var targetFramework = new TargetFramework("tfm");
 
@@ -127,7 +127,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         [Fact]
         public void BeforeAddOrUpdate_WhenPackage_ShouldFindMatchingSdkAndSetProperties()
         {
-            var dependencyIDs = ImmutableList.Create("id1", "id2");
+            var dependencyIDs = ImmutableArray.Create("id1", "id2");
 
             var targetFramework = new TargetFramework("tfm");
 
@@ -227,7 +227,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             afterSdkDependency.AssertEqualTo(
                 afterSdkDependency.ToUnresolved(
                     SdkReference.SchemaName,
-                    dependencyIDs: ImmutableList<string>.Empty));
+                    dependencyIDs: ImmutableArray<string>.Empty));
         }
     }
 }

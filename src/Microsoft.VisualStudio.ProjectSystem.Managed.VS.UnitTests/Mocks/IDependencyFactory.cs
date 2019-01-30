@@ -39,7 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                                             bool? setPropertiesImplicit = null,
                                             IDependency setPropertiesReturn = null,
                                             bool? equals = null,
-                                            IImmutableList<string> setPropertiesDependencyIDs = null,
+                                            ImmutableArray<string> setPropertiesDependencyIDs = default,
                                             string setPropertiesSchemaName = null,
                                             ITargetFramework targetFramework = null,
                                             DependencyIconSet iconSet = null,
@@ -90,7 +90,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             if (dependencyIDs != null)
             {
-                mock.Setup(x => x.DependencyIDs).Returns(ImmutableList<string>.Empty.AddRange(dependencyIDs));
+                mock.Setup(x => x.DependencyIDs).Returns(ImmutableArray.CreateRange(dependencyIDs));
             }
 
             if (resolved.HasValue)
@@ -124,7 +124,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             }
 
             if (setPropertiesCaption != null
-                || setPropertiesDependencyIDs != null
+                || !setPropertiesDependencyIDs.IsDefault
                 || setPropertiesResolved != null
                 || setPropertiesFlags != null
                 || setPropertiesImplicit != null
@@ -182,7 +182,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             if (dependenciesIds != null)
             {
-                data.DependencyIDs = ImmutableList<string>.Empty.AddRange(dependenciesIds);
+                data.DependencyIDs = ImmutableArray.CreateRange(dependenciesIds);
             }
 
             if (targetFramework != null)

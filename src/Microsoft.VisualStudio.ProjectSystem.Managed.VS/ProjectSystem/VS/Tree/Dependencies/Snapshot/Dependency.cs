@@ -80,7 +80,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
             if (dependencyModel.DependencyIDs == null || dependencyModel.DependencyIDs.Count == 0)
             {
-                DependencyIDs = ImmutableList<string>.Empty;
+                DependencyIDs = ImmutableArray<string>.Empty;
             }
             else
             {
@@ -101,7 +101,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             bool? resolved,
             ProjectTreeFlags? flags,
             string schemaName,
-            IImmutableList<string> dependencyIDs,
+            ImmutableArray<string> dependencyIDs,
             DependencyIconSet iconSet,
             bool? isImplicit)
         {
@@ -124,7 +124,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Resolved = resolved ?? dependency.Resolved;
             Flags = flags ?? dependency.Flags;
             SchemaName = schemaName ?? dependency.SchemaName;
-            DependencyIDs = dependencyIDs ?? dependency.DependencyIDs;
+            DependencyIDs = dependencyIDs.IsDefault ? dependency.DependencyIDs : dependencyIDs;
             IconSet = iconSet != null ? DependencyIconSetCache.Instance.GetOrAddIconSet(iconSet) : dependency.IconSet;
             Implicit = isImplicit ?? dependency.Implicit;
         }
@@ -211,7 +211,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
         public IImmutableDictionary<string, string> Properties { get; }
 
-        public IImmutableList<string> DependencyIDs { get; }
+        public ImmutableArray<string> DependencyIDs { get; }
 
         #endregion
 
@@ -234,7 +234,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             bool? resolved = null,
             ProjectTreeFlags? flags = null,
             string schemaName = null,
-            IImmutableList<string> dependencyIDs = null,
+            ImmutableArray<string> dependencyIDs = default,
             DependencyIconSet iconSet = null,
             bool? isImplicit = null)
         {
