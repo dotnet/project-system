@@ -8,12 +8,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
     internal class BuildOptions
     {
-        public BuildOptions(ImmutableArray<CommandLineSourceFile> sourceFiles, ImmutableArray<CommandLineSourceFile> additionalFiles, ImmutableArray<CommandLineReference> metadataReferences, ImmutableArray<CommandLineAnalyzerReference> analyzerReferences)
+        public BuildOptions(ImmutableArray<CommandLineSourceFile> sourceFiles, ImmutableArray<CommandLineSourceFile> additionalFiles, ImmutableArray<CommandLineReference> metadataReferences, ImmutableArray<CommandLineAnalyzerReference> analyzerReferences, ImmutableArray<string> analyzerConfigFiles)
         {
             SourceFiles = sourceFiles;
             AdditionalFiles = additionalFiles;
             MetadataReferences = metadataReferences;
             AnalyzerReferences = analyzerReferences;
+            AnalyzerConfigFiles = analyzerConfigFiles;
         }
 
         public ImmutableArray<CommandLineSourceFile> SourceFiles
@@ -36,6 +37,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             get;
         }
 
+        public ImmutableArray<string> AnalyzerConfigFiles
+        {
+            get;
+        }
+        
+
         public static BuildOptions FromCommandLineArguments(CommandLineArguments commandLineArguments)
         {
             Requires.NotNull(commandLineArguments, nameof(commandLineArguments));
@@ -44,7 +51,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 commandLineArguments.SourceFiles,
                 commandLineArguments.AdditionalFiles,
                 commandLineArguments.MetadataReferences,
-                commandLineArguments.AnalyzerReferences);
+                commandLineArguments.AnalyzerReferences,
+                commandLineArguments.AnalyzerConfigPaths);
         }
     }
 }
