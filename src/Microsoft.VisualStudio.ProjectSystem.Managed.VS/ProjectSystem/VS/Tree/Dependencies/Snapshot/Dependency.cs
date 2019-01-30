@@ -60,9 +60,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             // This is needed for tree update logic to track if tree node changing state from unresolved 
             // to resolved or vice-versa (it helps to decide if we need to remove it or update in-place
             // in the tree to avoid flicks).
-            Flags += Resolved
-                ? DependencyTreeFlags.ResolvedFlags
-                : DependencyTreeFlags.UnresolvedFlags;
+            if (Resolved)
+            {
+                if (!Flags.Contains(DependencyTreeFlags.ResolvedFlags))
+                {
+                    Flags += DependencyTreeFlags.ResolvedFlags;
+                }
+            }
+            else
+            {
+                if (!Flags.Contains(DependencyTreeFlags.UnresolvedFlags))
+                {
+                    Flags += DependencyTreeFlags.UnresolvedFlags;
+                }
+            }
 
             // If this is one of our implementations of IDependencyModel then we can just reuse the icon
             // set rather than creating a new one.
