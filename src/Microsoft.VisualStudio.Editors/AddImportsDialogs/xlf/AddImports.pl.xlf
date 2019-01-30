@@ -11,24 +11,29 @@
       </trans-unit>
       <trans-unit id="ImportsAnywaysFormatString">
         <source>&amp;Import '{0}' and qualify the affected identifiers.</source>
-        <target state="translated">&amp;Importuj „{0}” i kwalifikuj zmienione identyfikatory.</target>
+        <target state="needs-review-translation">&amp;Importuj „{0}” i kwalifikuj zmienione identyfikatory.</target>
         <note>
       Defines the replacement string for use in "Imports Anyways" option of the add imports collision dialog.
       This text will be formated as richtext.
+      
       See the comments for AddImportsMainTextFormatString for more details about the richt text formating codes
       contained in this resource.
+
       Also, the "&amp;" is used to define the mnemonic  character for the radio button associated
       with the label this text will be inserted into.
     </note>
       </trans-unit>
       <trans-unit id="QualifyCurrentLineFormatString">
         <source>&amp;Do not import '{0}', but change '{1}' to '{2}'.</source>
-        <target state="translated">&amp;Nie importuj „{0}”, ale zmień „{1}” na „{2}”.</target>
+        <target state="needs-review-translation">&amp;Nie importuj „{0}”, ale zmień „{1}” na „{2}”.</target>
         <note>
       Defines the replacement string for use in the "Qualify Current Line" option of the Add Imports collision dialog. 
       This text will be formated as richtext. 
+      
       See the comments for AddImportsMainTextFormatString for more details about the richt text formating codes
       contained in this resource.
+
+
       Also, the "&amp;" is used to define the mnemonic  character for the radio button associated
       with the label this text will be inserted into.
     </note>
