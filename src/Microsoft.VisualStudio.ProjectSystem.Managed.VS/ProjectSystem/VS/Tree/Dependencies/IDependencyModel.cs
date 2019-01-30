@@ -13,8 +13,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     public interface IDependencyModel
     {
         /// <summary>
-        /// Includes information about dependency and its target framework for identification
+        /// Uniquely identifies the dependency within its project (for a given configuration).
         /// </summary>
+        /// <remarks>
+        /// For dependencies obtained via MSBuild, this equals <see cref="OriginalItemSpec"/>.
+        /// </remarks>
         string Id { get; }
 
         /// <summary>
@@ -40,7 +43,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         string OriginalItemSpec { get; }
 
         /// <summary>
-        /// Path to the dependency when known
+        /// When <see cref="Resolved"/> is <see langword="true"/>, this contains the resolved path
+        /// of the dependency, otherwise it is equal to <see cref="OriginalItemSpec"/>.
         /// </summary>
         string Path { get; }
 
@@ -49,8 +53,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// </summary>
         string Caption { get; }
 
+        /// <summary>
+        /// Used in <see cref="IDependenciesTreeServices.GetRuleAsync"/> to determine the browse
+        /// object rule for this dependency.
+        /// </summary>
         string SchemaName { get; }
 
+        /// <summary>
+        /// Used in <see cref="IDependenciesTreeServices.GetRuleAsync"/> to determine the browse
+        /// object rule for this dependency.
+        /// </summary>
         string SchemaItemType { get; }
 
         /// <summary>
@@ -80,31 +92,37 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         bool Visible { get; }
 
         /// <summary>
-        /// Node's regular icon
+        /// Gets the icon to use when the dependency is resolved and collapsed.
         /// </summary>
         ImageMoniker Icon { get; }
 
         /// <summary>
-        /// Node's expanded icon, if not provided regular icon should be used
+        /// Gets the icon to use when the dependency is resolved and expanded.
         /// </summary>
         ImageMoniker ExpandedIcon { get; }
 
         /// <summary>
-        /// Unresolved node's regular icon
+        /// Gets the icon to use when the dependency is unresolved and collapsed.
         /// </summary>
         ImageMoniker UnresolvedIcon { get; }
 
         /// <summary>
-        /// Unresolved node's expanded icon, if not provided regular icon should be used
+        /// Gets the icon to use when the dependency is unresolved and expanded.
         /// </summary>
         ImageMoniker UnresolvedExpandedIcon { get; }
 
         /// <summary>
-        /// Priority specifies node's order among it's peers. Default is 0 and it means node will 
-        /// be positioned according it's name in alphabetical order. If it is not 0, then node is 
-        /// positioned after all nodes having lower priority. 
-        /// Note: This is property is in effect only for graph nodes.
+        /// Gets a value that determines this node's order relative to its peers.
         /// </summary>
+        /// <remarks>
+        /// <para>
+        ///     This behaviour only applies to graph nodes (i.e. children of top-level dependencies).
+        /// </para>
+        /// <para>
+        ///     The default is zero, which means ordering will be alphabetical.
+        ///     If non-zero, the node will be positioned after all nodes having lower priority.
+        /// </para>
+        /// </remarks>
         int Priority { get; }
 
         ProjectTreeFlags Flags { get; }

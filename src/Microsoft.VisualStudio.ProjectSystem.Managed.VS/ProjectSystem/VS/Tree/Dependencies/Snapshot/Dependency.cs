@@ -311,6 +311,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             return true;
         }
 
+        /// <summary>
+        /// Constructs the string identifier for a dependency from its target framework, provider type and dependency model ID.
+        /// </summary>
+        /// <remarks>
+        /// This string has form <c>"tfm-name\provider-type\model-id"</c>.
+        /// <list type="bullet">
+        ///   <item>All characters are lower-case.</item>
+        ///   <item><c>".."</c> is replaced with <c>"__"</c>.</item>
+        ///   <item><c>"/"</c> is replaced with <c>"\"</c>.</item>
+        ///   <item>Any trailing <c>"\"</c> characters are trimmed.</item>
+        /// </list>
+        /// </remarks>
+        /// <param name="targetFramework"></param>
+        /// <param name="providerType"></param>
+        /// <param name="modelId"></param>
+        /// <returns></returns>
         public static string GetID(ITargetFramework targetFramework, string providerType, string modelId)
         {
             Requires.NotNull(targetFramework, nameof(targetFramework));

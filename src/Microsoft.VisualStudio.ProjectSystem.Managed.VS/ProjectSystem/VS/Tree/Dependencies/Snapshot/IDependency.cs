@@ -29,12 +29,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         /// </summary>
         string Alias { get; }
 
+        /// <summary>
+        /// Gets the set of icons to use for this dependency based on its state (e.g. resolved, expanded).
+        /// </summary>
         DependencyIconSet IconSet { get; }
 
         /// <summary>
-        /// IDependency is immutable and sometimes tree view provider or snapshot filters need 
-        /// to change some properties of a given dependency. This method creates a new instance 
-        /// of IDependency with new properties set.
+        /// Returns a copy of this immutable instance with the specified property changes.
         /// </summary>
         IDependency SetProperties(
             string caption = null,
@@ -48,8 +49,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         #region Copied from IDependencyModel
 
         /// <summary>
-        /// Includes information about dependency and its target framework for identification
+        /// Gets an composite identifier comprised of <see cref="TargetFramework"/>, <see cref="ProviderType"/>
+        /// and the originating <see cref="IDependencyModel"/>'s <see cref="IDependencyModel.Id"/>.
         /// </summary>
+        /// <remarks>
+        /// This string has form <c>"tfm-name\provider-type\model-id"</c>.
+        /// See <see cref="Dependency.GetID"/> for details on how this string is constructed.
+        /// </remarks>
         string Id { get; }
 
         /// <summary>
@@ -75,7 +81,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         string OriginalItemSpec { get; }
 
         /// <summary>
-        /// Path to the dependency when known
+        /// When <see cref="Resolved"/> is <see langword="true"/>, this contains the resolved path
+        /// of the dependency, otherwise it is equal to <see cref="OriginalItemSpec"/>.
         /// </summary>
         string Path { get; }
 
@@ -84,8 +91,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         /// </summary>
         string Caption { get; }
 
+        /// <summary>
+        /// Used in <see cref="IDependenciesTreeServices.GetRuleAsync"/> to determine the browse
+        /// object rule for this dependency.
+        /// </summary>
         string SchemaName { get; }
 
+        /// <summary>
+        /// Used in <see cref="IDependenciesTreeServices.GetRuleAsync"/> to determine the browse
+        /// object rule for this dependency.
+        /// </summary>
         string SchemaItemType { get; }
 
         /// <summary>
@@ -109,11 +124,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         bool Visible { get; }
 
         /// <summary>
-        /// Priority specifies node's order among it's peers. Default is 0 and it means node will 
-        /// be positioned according it's name in alphabetical order. If it is not 0, then node is 
-        /// positioned after all nodes having lower priority. 
-        /// Note: This is property is in effect only for graph nodes.
+        /// Gets a value that determines this node's order relative to its peers.
         /// </summary>
+        /// <remarks>
+        /// <para>
+        ///     This behaviour only applies to graph nodes (i.e. children of top-level dependencies).
+        /// </para>
+        /// <para>
+        ///     The default is zero, which means ordering will be alphabetical.
+        ///     If non-zero, the node will be positioned after all nodes having lower priority.
+        /// </para>
+        /// </remarks>
         int Priority { get; }
 
         ProjectTreeFlags Flags { get; }
