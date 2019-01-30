@@ -91,14 +91,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 
         public override bool Equals(object obj)
         {
-            return obj is IDependencyModel other && Equals(other);
-        }
-
-        public bool Equals(IDependencyModel other)
-        {
-            return other != null
-                && other.Id.Equals(Id, StringComparison.OrdinalIgnoreCase)
-                && StringComparers.DependencyProviderTypes.Equals(other.ProviderType, ProviderType);
+            return obj is IDependencyModel other &&
+                   other.Id.Equals(Id, StringComparison.OrdinalIgnoreCase) &&
+                   StringComparers.DependencyProviderTypes.Equals(other.ProviderType, ProviderType);
         }
 
         public override string ToString() => Id;
