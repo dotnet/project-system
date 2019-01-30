@@ -3,8 +3,8 @@
   <file datatype="xml" source-language="en" target-language="fr" original="../GeneralOptionPageResources.resx">
     <body>
       <trans-unit id="General_FastUpToDateCheck">
-        <source>Don't call MSBuild if a project appears to be up to date.</source>
-        <target state="translated">N'appelez pas MSBuild si un projet semble être à jour.</target>
+        <source>Don't call _MSBuild if a project appears to be up to date</source>
+        <target state="needs-review-translation">N'appelez pas MSBuild si un projet semble être à jour.</target>
         <note />
       </trans-unit>
       <trans-unit id="General_FastUpToDateCheck_LogLevel">
@@ -33,13 +33,13 @@
         <note />
       </trans-unit>
       <trans-unit id="General_UsePreviewSdk">
-        <source>Use previews of the .NET Core SDK</source>
-        <target state="translated">Utiliser les préversions du kit SDK .NET Core</target>
+        <source>Use _previews of the .NET Core SDK</source>
+        <target state="needs-review-translation">Utiliser les préversions du kit SDK .NET Core</target>
         <note />
       </trans-unit>
       <trans-unit id="General_DoubleClickOpenProjectFile">
-        <source>Double click on project node to edit project file.</source>
-        <target state="new">Double click on project node to edit project file.</target>
+        <source>_Double click on project node to edit project file</source>
+        <target state="new">_Double click on project node to edit project file</target>
         <note />
       </trans-unit>
     </body>
