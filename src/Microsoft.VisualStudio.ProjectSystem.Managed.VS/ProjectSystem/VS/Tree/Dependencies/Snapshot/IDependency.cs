@@ -89,11 +89,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         string SchemaItemType { get; }
 
         /// <summary>
-        /// Version of the dependency
-        /// </summary>
-        string Version { get; }
-
-        /// <summary>
         /// Specifies if dependency is resolved or not
         /// </summary>
         bool Resolved { get; }

@@ -42,7 +42,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
             ProviderType = dependencyModel.ProviderType;
             Name = dependencyModel.Name ?? string.Empty;
-            Version = dependencyModel.Version ?? string.Empty;
             Caption = dependencyModel.Caption ?? string.Empty;
             OriginalItemSpec = dependencyModel.OriginalItemSpec ?? string.Empty;
             Path = dependencyModel.Path ?? string.Empty;
@@ -114,7 +113,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             _containingProjectPath = dependency._containingProjectPath;
             ProviderType = dependency.ProviderType;
             Name = dependency.Name;
-            Version = dependency.Version;
             OriginalItemSpec = dependency.OriginalItemSpec;
             Path = dependency.Path;
             _schemaItemType = dependency.SchemaItemType;
@@ -201,7 +199,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         }
 
         public string Caption { get; }
-        public string Version { get; }
         public bool Resolved { get; }
         public bool TopLevel { get; }
         public bool Implicit { get; }

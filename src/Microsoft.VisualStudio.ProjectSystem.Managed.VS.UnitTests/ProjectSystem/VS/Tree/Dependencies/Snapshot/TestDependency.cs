@@ -31,7 +31,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 FullPath = value.FullPath;
                 SchemaName = value.SchemaName;
                 SchemaItemType = value.SchemaItemType;
-                Version = value.Version;
                 Resolved = value.Resolved;
                 TopLevel = value.TopLevel;
                 Implicit = value.Implicit;
@@ -55,7 +54,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         public string FullPath { get; set; }
         public string SchemaName { get; set; }
         public string SchemaItemType { get; set; }
-        public string Version { get; set; }
         public bool Resolved { get; set; } = false;
         public bool TopLevel { get; set; } = true;
         public bool Implicit { get; set; } = false;

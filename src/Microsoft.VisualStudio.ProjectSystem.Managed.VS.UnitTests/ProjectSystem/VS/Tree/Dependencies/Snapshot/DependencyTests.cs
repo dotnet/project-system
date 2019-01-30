@@ -61,7 +61,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             Assert.Equal(mockModel.ProviderType, dependency.ProviderType);
             Assert.Equal(string.Empty, dependency.Name);
-            Assert.Equal(string.Empty, dependency.Version);
             Assert.Equal(string.Empty, dependency.Caption);
             Assert.Equal(string.Empty, dependency.OriginalItemSpec);
             Assert.Equal(string.Empty, dependency.Path);
@@ -107,7 +106,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             Assert.Equal(mockModel.ProviderType, dependency.ProviderType);
             Assert.Equal(mockModel.Name, dependency.Name);
-            Assert.Equal(mockModel.Version, dependency.Version);
             Assert.Equal(mockModel.Caption, dependency.Caption);
             Assert.Equal(mockModel.OriginalItemSpec, dependency.OriginalItemSpec);
             Assert.Equal(mockModel.Path, dependency.Path);

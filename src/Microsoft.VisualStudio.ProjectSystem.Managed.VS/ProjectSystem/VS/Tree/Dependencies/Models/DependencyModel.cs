@@ -101,7 +101,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
         public string Path { get; }
         public virtual string SchemaName => null;
         public virtual string SchemaItemType => null;
-        public virtual string Version => null;
+        public virtual string Version => throw new NotImplementedException();
         public bool Resolved => (_flags & DependencyFlags.Resolved) != 0;
         public bool TopLevel => (_flags & DependencyFlags.TopLevel) != 0;
         public bool Implicit => (_flags & DependencyFlags.Implicit) != 0;
