@@ -16,11 +16,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     internal static class IDependencyFactory
     {
-        public static IDependency Create()
-        {
-            return Mock.Of<IDependency>();
-        }
-
         public static Mock<IDependency> Implement(string providerType = null,
                                             string id = null,
                                             string originalItemSpec = null,
