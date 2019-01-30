@@ -315,7 +315,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
 #pragma warning disable RS0030 // symbol LoadedProject is banned
             using (UnconfiguredProjectAsynchronousTasksService.LoadedProject())
-#pragma warning restore RS0030 // symbol LoadedProject is banned
             {
                 base.Initialize();
 
@@ -357,6 +356,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     },
                     registerFaultHandler: true);
             }
+#pragma warning restore RS0030 // symbol LoadedProject is banned
 
             IProjectTree CreateDependenciesFolder()
             {
