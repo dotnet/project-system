@@ -164,6 +164,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         public string Name { get; }
         public string OriginalItemSpec { get; }
         public string Path { get; }
+
         public string FullPath
         {
             get
@@ -172,17 +173,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 // we have a lot of Dependency instances floating around
                 if (_fullPath == null)
                 {
-                    _fullPath = GetFullPath(OriginalItemSpec, _containingProjectPath);
+                    _fullPath = GetFullPath();
                 }
 
                 return _fullPath;
 
-                string GetFullPath(string originalItemSpec, string containingProjectPath)
+                string GetFullPath()
                 {
-                    if (string.IsNullOrEmpty(originalItemSpec) || ManagedPathHelper.IsRooted(originalItemSpec))
-                        return originalItemSpec ?? string.Empty;
+                    if (string.IsNullOrEmpty(OriginalItemSpec) || ManagedPathHelper.IsRooted(OriginalItemSpec))
+                        return OriginalItemSpec ?? string.Empty;
 
-                    return ManagedPathHelper.TryMakeRooted(containingProjectPath, originalItemSpec);
+                    return ManagedPathHelper.TryMakeRooted(_containingProjectPath, OriginalItemSpec);
                 }
             }
         }
@@ -199,7 +200,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 // provided by third party extensions we can not guarantee that item type will be known. 
                 // Thus always set predefined itemType for all custom nodes.
                 // TODO: generate specific xaml rule for generic Dependency nodes
-                // tracking issue: https://github.com/dotnet/roslyn-project-system/issues/1102
+                // tracking issue: https://github.com/dotnet/project-system/issues/1102
                 bool isGenericNodeType = Flags.Contains(DependencyTreeFlags.GenericDependencyFlags);
                 return isGenericNodeType ? _schemaItemType : Folder.PrimaryDataSourceItemType;
             }
