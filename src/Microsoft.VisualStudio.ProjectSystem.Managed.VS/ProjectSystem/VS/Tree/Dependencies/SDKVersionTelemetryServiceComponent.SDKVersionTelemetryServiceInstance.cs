@@ -40,23 +40,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     // Wait for the project to be loaded so that we don't prematurely load the active configuration
                     await _unconfiguredProjectTasksService.ProjectLoadedInHost;
 
-                    await _unconfiguredProjectTasksService.LoadedProjectAsync(async () =>
+                    ConfigurationGeneral projectProperties = await _projectVsServices.ActiveConfiguredProjectProperties.GetConfigurationGeneralPropertiesAsync();
+                    Task<object> task = projectProperties?.NETCoreSdkVersion?.GetValueAsync();
+                    string version = task == null ? string.Empty : (string)await task;
+                    string projectId = await GetProjectIdAsync();
+
+                    if (string.IsNullOrEmpty(version) || string.IsNullOrEmpty(projectId))
                     {
-                        ConfigurationGeneral projectProperties = await _projectVsServices.ActiveConfiguredProjectProperties.GetConfigurationGeneralPropertiesAsync();
-                        Task<object> task = projectProperties?.NETCoreSdkVersion?.GetValueAsync();
-                        string version = task == null ? string.Empty : (string)await task;
-                        string projectId = await GetProjectIdAsync();
+                        return;
+                    }
 
-                        if (string.IsNullOrEmpty(version) || string.IsNullOrEmpty(projectId))
-                        {
-                            return;
-                        }
-
-                        _telemetryService.PostProperties(TelemetryEventName.SDKVersion, new[]
-                        {
-                            (TelemetryPropertyName.SDKVersionProject, (object)projectId),
-                            (TelemetryPropertyName.SDKVersionNETCoreSdkVersion, version)
-                        });
+                    _telemetryService.PostProperties(TelemetryEventName.SDKVersion, new[]
+                    {
+                        (TelemetryPropertyName.SDKVersionProject, (object)projectId),
+                        (TelemetryPropertyName.SDKVersionNETCoreSdkVersion, version)
                     });
                 }, 
                 factory: _projectVsServices.ThreadingService.JoinableTaskFactory);
