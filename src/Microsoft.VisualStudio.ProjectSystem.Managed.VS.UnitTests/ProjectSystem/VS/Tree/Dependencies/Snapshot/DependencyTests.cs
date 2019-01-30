@@ -6,6 +6,7 @@ using System.Collections.Immutable;
 
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
+using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 
 using Xunit;
@@ -314,16 +315,29 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         [Fact]
         public void WhenCreatingADependencyFromAnotherDependency_ExistingIconSetInstanceIsReused()
         {
-            var mockModel = IDependencyModelFactory.Implement(
-                providerType: "providerType",
-                id: "someId");
+            var projectPath = @"C:\Foo\Project.csproj";
 
-            var dependency = new Dependency(mockModel, ITargetFrameworkFactory.Implement("tfm1"), @"C:\Foo\Project.csproj")
-                .SetProperties(iconSet: new DependencyIconSet(KnownMonikers.Reference, KnownMonikers.Reference, KnownMonikers.Reference, KnownMonikers.Reference));
+            var dependencyModel = new TestableDependencyModel(
+                    projectPath,
+                    "ItemSpec", 
+                    iconSet: new DependencyIconSet(KnownMonikers.Reference, KnownMonikers.Reference, KnownMonikers.Reference, KnownMonikers.Reference));
 
-            var newDependency = new Dependency(dependency, ITargetFrameworkFactory.Implement("tfm2"), @"C:\Foo\Project.csproj");
+            var dependency = new Dependency(dependencyModel, ITargetFrameworkFactory.Implement("tfm2"), projectPath);
 
-            Assert.Same(dependency.IconSet, newDependency.IconSet);
+            Assert.Same(dependencyModel.IconSet, dependency.IconSet);
+        }
+
+        private sealed class TestableDependencyModel : DependencyModel
+        {
+            public override string ProviderType => "someProvider";
+
+            public override DependencyIconSet IconSet { get; }
+
+            public TestableDependencyModel(string path, string originalItemSpec, DependencyIconSet iconSet)
+                : base(path, originalItemSpec, ProjectTreeFlags.Empty, isResolved: false, isImplicit: false, properties: null)
+            {
+                IconSet = iconSet;
+            }
         }
 
         [Fact]

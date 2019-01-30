@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Immutable;
 
+using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions.RuleHandlers;
 
@@ -34,6 +35,30 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         {
             return new DependencyViewModel(self, hasUnresolvedDependency: self.IsOrHasUnresolvedDependency(snapshot));
         }
+
+        private sealed class DependencyViewModel : IDependencyViewModel
+        {
+            private readonly IDependency _model;
+            private readonly bool _hasUnresolvedDependency;
+
+            public DependencyViewModel(IDependency dependency, bool hasUnresolvedDependency)
+            {
+                _model = dependency;
+                _hasUnresolvedDependency = hasUnresolvedDependency;
+            }
+
+            public IDependency OriginalModel => _model;
+            public string Caption => _model.Caption;
+            public string FilePath => _model.Id;
+            public string SchemaName => _model.SchemaName;
+            public string SchemaItemType => _model.SchemaItemType;
+            public int Priority => _model.Priority;
+            public ImageMoniker Icon => _hasUnresolvedDependency ? _model.UnresolvedIcon : _model.Icon;
+            public ImageMoniker ExpandedIcon => _hasUnresolvedDependency ? _model.UnresolvedExpandedIcon : _model.ExpandedIcon;
+            public IImmutableDictionary<string, string> Properties => _model.Properties;
+            public ProjectTreeFlags Flags => _model.Flags;
+        }
+
 
         /// <summary>
         /// Returns id having full path instead of OriginalItemSpec

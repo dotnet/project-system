@@ -4,7 +4,6 @@ using System;
 
 using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
-using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 
 using Moq;
 
@@ -19,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         public static IProjectDependenciesSubTreeProvider Implement(
             string providerType = null,
-            IDependency createRootDependencyNode = null,
+            IDependencyModel createRootDependencyNode = null,
             MockBehavior mockBehavior = MockBehavior.Strict)
         {
             var mock = new Mock<IProjectDependenciesSubTreeProvider>(mockBehavior);

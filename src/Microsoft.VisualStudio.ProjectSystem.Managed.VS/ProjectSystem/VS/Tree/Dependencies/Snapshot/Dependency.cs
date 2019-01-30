@@ -66,11 +66,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
             // If this is one of our implementations of IDependencyModel then we can just reuse the icon
             // set rather than creating a new one.
-            if (dependencyModel is Dependency dependency)
-            {
-                IconSet = dependency.IconSet;
-            }
-            else if (dependencyModel is DependencyModel model)
+            if (dependencyModel is DependencyModel model)
             {
                 IconSet = model.IconSet;
             }

@@ -149,7 +149,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         [Fact]
         public async Task WhenOneTargetSnapshotAndDependencySupportsHierarchyAndIsResolved_ShouldRead()
         {
-            var dependencyRootYyy = new TestDependency
+            var dependencyModelRootYyy = new TestDependencyModel
             {
                 ProviderType = "Yyy",
                 Id = "YyyDependencyRoot",
@@ -196,7 +196,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 }
             };
 
-            var provider = CreateProvider(rootModels: new[] { dependencyRootYyy });
+            var provider = CreateProvider(rootModels: new[] { dependencyModelRootYyy });
 
             var snapshot = GetSnapshot((_tfm1, new[] { dependencyYyyExisting }));
 
@@ -214,7 +214,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         [Fact]
         public async Task WhenOneTargetSnapshotAndDependencySupportsHierarchyAndIsUnresolved_ShouldRead()
         {
-            var dependencyRootYyy = new TestDependency
+            var dependencyModelRootYyy = new TestDependencyModel
             {
                 ProviderType = "Yyy",
                 Id = "YyyDependencyRoot",
@@ -261,7 +261,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 }
             };
 
-            var provider = CreateProvider(rootModels: new[] { dependencyRootYyy });
+            var provider = CreateProvider(rootModels: new[] { dependencyModelRootYyy });
 
             var snapshot = GetSnapshot((_tfm1, new[] { dependencyYyyExisting }));
 
@@ -279,7 +279,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         [Fact]
         public async Task WhenOneTargetSnapshotAndDependencySupportsRule_ShouldCreateRule()
         {
-            var dependencyRootYyy = new TestDependency
+            var dependencyModelRootYyy = new TestDependencyModel
             {
                 ProviderType = "Yyy",
                 Id = "YyyDependencyRoot",
@@ -323,7 +323,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 }
             };
 
-            var provider = CreateProvider(rootModels: new[] { dependencyRootYyy });
+            var provider = CreateProvider(rootModels: new[] { dependencyModelRootYyy });
 
             var snapshot = GetSnapshot((_tfm1, new[] { dependencyYyyExisting }));
 
@@ -341,7 +341,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         [Fact]
         public async Task WheEmptySnapshotAndVisibilityMarkerProvided_ShouldDisplaySubTreeRoot()
         {
-            var dependencyRootYyy = new TestDependency
+            var dependencyModelRootYyy = new TestDependencyModel
             {
                 ProviderType = "Yyy",
                 Id = "YyyDependencyRoot",
@@ -374,7 +374,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 }
             };
 
-            var provider = CreateProvider(rootModels: new[] { dependencyRootYyy });
+            var provider = CreateProvider(rootModels: new[] { dependencyModelRootYyy });
 
             var snapshot = GetSnapshot((_tfm1, new[] { dependencyVisibilityMarker }));
 
