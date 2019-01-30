@@ -2,6 +2,7 @@
 
 Imports System.ComponentModel
 Imports System.Windows
+
 Imports Microsoft.VisualStudio.Shell
 
 Namespace Microsoft.VisualStudio.Editors.OptionPages

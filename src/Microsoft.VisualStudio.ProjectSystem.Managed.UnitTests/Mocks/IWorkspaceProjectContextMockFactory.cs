@@ -5,6 +5,7 @@ using System.Collections.Generic;
 
 using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.ProjectSystem;
+
 using Moq;
 
 namespace Microsoft.VisualStudio.LanguageServices.ProjectSystem
@@ -16,6 +17,16 @@ namespace Microsoft.VisualStudio.LanguageServices.ProjectSystem
             var mock = new Mock<IWorkspaceProjectContext>();
 
             mock.Setup(c => c.Dispose())
+                .Callback(action);
+
+            return mock.Object;
+        }
+
+        public static IWorkspaceProjectContext ImplementSetProperty(Action<string, string> action)
+        {
+            var mock = new Mock<IWorkspaceProjectContext>();
+
+            mock.Setup(c => c.SetProperty(It.IsAny<string>(), It.IsAny<string>()))
                 .Callback(action);
 
             return mock.Object;

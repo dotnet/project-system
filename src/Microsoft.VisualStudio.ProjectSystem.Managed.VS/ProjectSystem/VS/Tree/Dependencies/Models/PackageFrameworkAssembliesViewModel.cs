@@ -11,6 +11,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
     internal sealed class PackageFrameworkAssembliesViewModel : IDependencyViewModel
     {
+        public static PackageFrameworkAssembliesViewModel Instance { get; } = new PackageFrameworkAssembliesViewModel();
+
         public static readonly ImageMoniker RegularIcon = KnownMonikers.Library;
 
         public string Caption => VSResources.FrameworkAssembliesNodeName;

@@ -4,12 +4,15 @@ Option Strict On
 Option Explicit On
 Imports System.IO
 Imports System.Windows.Forms
+
 Imports EnvDTE
-Imports Microsoft.VisualStudio.Shell.Interop
+
 Imports Microsoft.VisualStudio.Editors.Common
 Imports Microsoft.VisualStudio.Editors.DesignerFramework
 Imports Microsoft.VisualStudio.Editors.MyApplication
 Imports Microsoft.VisualStudio.Editors.MyExtensibility.MyExtensibilityUtil
+Imports Microsoft.VisualStudio.Shell.Interop
+
 Imports Res = My.Resources.MyExtensibilityRes
 
 Namespace Microsoft.VisualStudio.Editors.MyExtensibility
@@ -220,7 +223,6 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             Dim parentProjectItems As ProjectItems = GetParentProjectItems()
             Debug.Assert(parentProjectItems IsNot Nothing, "Could not find parent ProjectItems!")
 
-            Dim result As ProjectItem = Nothing
             For Each projectItem As ProjectItem In parentProjectItems
                 If StringEquals(projectItem.Name, EXTENSION_FOLDER_NAME) Then
                     _extensionFolderProjectItem = projectItem

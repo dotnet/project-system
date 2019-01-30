@@ -7,6 +7,7 @@ Imports System.Drawing
 Imports System.Runtime.InteropServices
 Imports System.Windows.Forms
 Imports System.Windows.Forms.Design
+
 Imports Microsoft.VisualStudio.Editors.AppDesCommon
 Imports Microsoft.VisualStudio.Editors.AppDesCommon.Utils
 Imports Microsoft.VisualStudio.Editors.AppDesDesignerFramework
@@ -16,6 +17,7 @@ Imports Microsoft.VisualStudio.Editors.PropertyPages
 Imports Microsoft.VisualStudio.ManagedInterfaces.ProjectDesigner
 Imports Microsoft.VisualStudio.PlatformUI
 Imports Microsoft.VisualStudio.Shell.Interop
+
 Imports OleInterop = Microsoft.VisualStudio.OLE.Interop
 Imports VSITEMID = Microsoft.VisualStudio.Editors.VSITEMIDAPPDES
 
@@ -561,7 +563,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             End Select
         End Sub
 
-        Friend Sub SetControls(propPage As OleInterop.IPropertyPage, firstControl As Boolean)
+        Friend Sub SetControls(firstControl As Boolean)
             If firstControl Then
                 If _isNativeHostedPropertyPage Then
                     'Try to set initial focus to the property page, not the configuration panel
@@ -791,9 +793,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' </summary>
         ''' <remarks></remarks>
         Private Sub OnPropertyChanged(Component As Component, PropDesc As PropertyDescriptor, OldValue As Object, NewValue As Object)
-            Dim ChangeService As IComponentChangeService = Nothing
-
-            ChangeService = DirectCast(GetService(GetType(IComponentChangeService)), IComponentChangeService)
+            Dim ChangeService As IComponentChangeService = DirectCast(GetService(GetType(IComponentChangeService)), IComponentChangeService)
             ChangeService.OnComponentChanged(Component, PropDesc, OldValue, NewValue)
         End Sub
 
@@ -819,10 +819,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' </summary>
         ''' <remarks></remarks>
         Private Sub OnPropertyChanging(Component As Component, PropDesc As PropertyDescriptor)
-            Dim ChangeService As IComponentChangeService = Nothing
-            Dim oldValue As Object = Nothing
-
-            ChangeService = DirectCast(GetService(GetType(IComponentChangeService)), IComponentChangeService)
+            Dim ChangeService As IComponentChangeService = DirectCast(GetService(GetType(IComponentChangeService)), IComponentChangeService)
 
             If PropDesc Is Nothing Then
                 Debug.Fail("We should not be here")

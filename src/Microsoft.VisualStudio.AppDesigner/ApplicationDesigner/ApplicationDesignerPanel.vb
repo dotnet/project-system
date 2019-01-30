@@ -2,9 +2,11 @@
 
 Imports System.Runtime.InteropServices
 Imports System.Windows.Forms
-Imports Common = Microsoft.VisualStudio.Editors.AppDesCommon
+
 Imports Microsoft.VisualStudio.Editors.AppDesInterop
 Imports Microsoft.VisualStudio.Shell.Interop
+
+Imports Common = Microsoft.VisualStudio.Editors.AppDesCommon
 Imports VSITEMID = Microsoft.VisualStudio.Editors.VSITEMIDAPPDES
 
 Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner

@@ -1,10 +1,12 @@
 ﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-Imports Common = Microsoft.VisualStudio.Editors.AppDesCommon
-Imports Microsoft.VisualStudio.Shell.Interop
 Imports System.Drawing
 Imports System.Drawing.Drawing2D
 Imports System.Windows.Forms
+
+Imports Microsoft.VisualStudio.Shell.Interop
+
+Imports Common = Microsoft.VisualStudio.Editors.AppDesCommon
 
 
 Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
@@ -325,10 +327,8 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             Try
                 CreateGDIObjects()
 
-                Dim rect As Rectangle = _owner.Bounds
-
                 ' Calling this calculates the button width and height for each tab, we need the height for calculating the VerticalButtonSpace 
-                CalcLineOffsets(rect)
+                CalcLineOffsets()
 
                 'Calculate the number of buttons we have space to show
                 Dim VerticalButtonSpace As Integer = _owner.Height - _buttonPagePadding.Vertical - _owner.OverflowButton.Height
@@ -340,8 +340,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 End If
 
 
-                rect = _owner.ClientRectangle
-                _tabControlRect = rect
+                _tabControlRect = _owner.ClientRectangle
 
                 'Reposition the tab panel
                 Dim BoundingRect As Rectangle = Rectangle.FromLTRB(_tabControlRect.Left + _buttonWidth + _buttonPagePadding.Left, _tabControlRect.Top, _tabControlRect.Right, _tabControlRect.Bottom)
@@ -378,11 +377,8 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' Calculates the positions of various lines in the UI
         ''' </summary>
-        ''' <param name="rect"></param>
-        Private Sub CalcLineOffsets(rect As Rectangle)
+        Private Sub CalcLineOffsets()
             'const int yOffset = 10;
-            Dim width As Integer = rect.Width
-            Dim height As Integer = rect.Height
             Dim minimumWidth, minimumHeight As Integer
 
             Dim largestButtonTextSize As Size = GetLargestButtonTextSize()
@@ -392,15 +388,12 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
             'Now calculate the minimum width 
             minimumWidth = _owner.HostingPanel.MinimumSize.Width + 1 + _buttonPagePadding.Right + 1
-            width = Math.Max(width, minimumWidth)
 
             'Now calculate required height 
             minimumHeight = _owner.HostingPanel.MinimumSize.Height + 1 + _buttonPagePadding.Bottom + 1
-            height = Math.Max(height, minimumHeight)
 
             ' Calculate the required height by tab button area...
             Dim panelMinimumHeight As Integer = _buttonHeight * _visibleButtonSlots + 1 + _buttonPagePadding.Bottom + 1
-            height = Math.Max(height, panelMinimumHeight)
 
             _owner.MinimumSize = New Size(minimumWidth, minimumHeight)
 

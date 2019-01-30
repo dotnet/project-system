@@ -20,7 +20,7 @@
     <StringProperty Name="ApplicationIcon" Visible="False" />
     <StringProperty Name="TargetFrameworkMoniker" Visible="False">
         <StringProperty.DataSource>
-            <DataSource Persistence="ProjectFileWithInterception" PersistedName="TargetFrameworkMoniker" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+            <DataSource Persistence="ProjectFileWithInterceptionViaSnapshot" PersistedName="TargetFrameworkMoniker" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
         </StringProperty.DataSource>
     </StringProperty>
     <StringProperty Name="TargetFrameworkMonikers" Visible="False" ReadOnly="True">
@@ -43,7 +43,7 @@
     </StringProperty>
     <IntProperty Name="TargetFramework" ReadOnly="True" Visible="False">
         <IntProperty.DataSource>
-            <DataSource Persistence="ProjectFileWithInterception" PersistedName="TargetFramework" SourceOfDefaultValue="AfterContext" />
+            <DataSource Persistence="ProjectFileWithInterceptionViaSnapshot" PersistedName="TargetFramework" SourceOfDefaultValue="AfterContext" />
         </IntProperty.DataSource>
     </IntProperty>
     <StringProperty Name="OutputName" Visible="False" />
@@ -63,19 +63,19 @@
     <!-- This property is used to provide the value of OutputType through BrowseObject, which is used by Property pages-->
     <IntProperty Name="OutputType" Visible="False">
         <IntProperty.DataSource>
-            <DataSource Persistence="ProjectFileWithInterception" PersistedName="OutputType" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+            <DataSource Persistence="ProjectFileWithInterceptionViaSnapshot" PersistedName="OutputType" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
         </IntProperty.DataSource>
     </IntProperty>
     <!-- This property is used to provide the value of OutputTypeEx through BrowseObject, which is used by Property pages-->
     <IntProperty Name="OutputTypeEx" Visible="False">
         <IntProperty.DataSource>
-            <DataSource Persistence="ProjectFileWithInterception" PersistedName="OutputTypeEx" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+            <DataSource Persistence="ProjectFileWithInterceptionViaSnapshot" PersistedName="OutputTypeEx" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
         </IntProperty.DataSource>
     </IntProperty>
     <DynamicEnumProperty Name="StartupObject" EnumProvider="StartupObjectsEnumProvider" Visible="False"/>
     <StringProperty Name="ApplicationManifest" Visible="False">
         <StringProperty.DataSource>
-            <DataSource Persistence="ProjectFileWithInterception" PersistedName="ApplicationManifest" HasConfigurationCondition="false" SourceOfDefaultValue="AfterContext" />
+            <DataSource Persistence="ProjectFileWithInterceptionViaSnapshot" PersistedName="ApplicationManifest" HasConfigurationCondition="false" SourceOfDefaultValue="AfterContext" />
         </StringProperty.DataSource>
     </StringProperty>
     <StringProperty Name="Win32ResourceFile" Visible="False">
@@ -131,7 +131,7 @@
     <BoolProperty Name="GeneratePackageOnBuild" Default="False" Visible="False"/>
     <StringProperty Name="PackageId" DisplayName="Package Id" Visible="False">
         <StringProperty.DataSource>
-            <DataSource Persistence="ProjectFileWithInterception" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+            <DataSource Persistence="ProjectFileWithInterceptionViaSnapshot" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
         </StringProperty.DataSource>
     </StringProperty>
     <StringProperty Name="Version" Visible="False">
@@ -141,7 +141,7 @@
     </StringProperty>
     <StringProperty Name="Authors" Visible="False">
         <StringProperty.DataSource>
-            <DataSource Persistence="ProjectFileWithInterception" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+            <DataSource Persistence="ProjectFileWithInterceptionViaSnapshot" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
         </StringProperty.DataSource>
     </StringProperty>
     <BoolProperty Name="PackageRequireLicenseAcceptance" Default="False" Visible="False"/>
@@ -193,7 +193,7 @@
     <BoolProperty Name="DelaySign" Visible="False"/>
     <StringProperty Name="AssemblyOriginatorKeyFile" Visible="False">
         <StringProperty.DataSource>
-            <DataSource Persistence="ProjectFileWithInterception" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+            <DataSource Persistence="ProjectFileWithInterceptionViaSnapshot" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
         </StringProperty.DataSource>
     </StringProperty>
 

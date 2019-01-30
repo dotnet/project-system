@@ -58,7 +58,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
                     int expectedItemSpecIndex = dependency.Caption.Length + 2;        // " (".Length
                     int expectedLength = expectedItemSpecIndex + itemSpec.Length + 1; // ")".Length
 
-                    if (other.Caption.Length == expectedLength && 
+                    if (other.Caption.Length == expectedLength &&
                         string.Compare(other.Caption, expectedItemSpecIndex, itemSpec, 0, itemSpec.Length, StringComparison.OrdinalIgnoreCase) == 0)
                     {
                         shouldApplyAlias = true;

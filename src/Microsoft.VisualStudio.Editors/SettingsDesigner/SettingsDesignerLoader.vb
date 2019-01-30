@@ -3,12 +3,13 @@
 Imports System.ComponentModel.Design
 Imports System.ComponentModel.Design.Serialization
 Imports System.Runtime.InteropServices
+
 Imports Microsoft.VisualStudio.Editors.Common
 Imports Microsoft.VisualStudio.Editors.Interop
 Imports Microsoft.VisualStudio.Shell
 Imports Microsoft.VisualStudio.Shell.Design
-Imports Microsoft.VisualStudio.Shell.Interop
 Imports Microsoft.VisualStudio.Shell.Design.Serialization
+Imports Microsoft.VisualStudio.Shell.Interop
 
 Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
@@ -67,11 +68,10 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             LoaderHost.AddService(GetType(ComponentSerializationService), New DesignerFramework.GenericComponentSerializationService(Nothing))
 
             ' Add our dynamic type service...
-            Dim typeDiscoveryService As ITypeDiscoveryService = Nothing
             Dim dynamicTypeService As DynamicTypeService =
                 DirectCast(_serviceProvider.GetService(GetType(DynamicTypeService)), DynamicTypeService)
             If dynamicTypeService IsNot Nothing Then
-                typeDiscoveryService = dynamicTypeService.GetTypeDiscoveryService(VsHierarchy, ProjectItemid)
+                Dim typeDiscoveryService As ITypeDiscoveryService = dynamicTypeService.GetTypeDiscoveryService(VsHierarchy, ProjectItemid)
             End If
 
             Dim cm As EnvDTE.CodeModel = Nothing
@@ -498,7 +498,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 Dim objectDirty As AppConfigSerializer.DirtyState =
                     AppConfigSerializer.Deserialize(RootComponent,
                                                     DirectCast(GetService(GetType(SettingsTypeCache)), SettingsTypeCache),
-                                                    DirectCast(GetService(GetType(SettingsValueCache)), SettingsValueCache),
                                                     cfgHelper.GetSectionName(ProjectUtils.FullyQualifiedClassName(GeneratedClassNamespace(True), GeneratedClassName), String.Empty),
                                                     _appConfigDocData,
                                                     AppConfigSerializer.MergeValueMode.Prompt,

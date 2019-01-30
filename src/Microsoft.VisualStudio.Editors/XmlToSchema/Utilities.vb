@@ -6,7 +6,9 @@ Imports System.Diagnostics.CodeAnalysis
 Imports System.Drawing
 Imports System.Security.Permissions
 Imports System.Windows.Forms
+
 Imports Microsoft.VisualStudio.Editors.DesignerFramework
+
 Imports VsShell = Microsoft.VisualStudio.Shell.Interop
 
 Namespace Microsoft.VisualStudio.Editors.XmlToSchema

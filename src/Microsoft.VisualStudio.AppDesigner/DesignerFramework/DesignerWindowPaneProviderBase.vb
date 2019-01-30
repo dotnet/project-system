@@ -1,15 +1,17 @@
 ﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-Imports System.Drawing
-Imports System.Runtime.InteropServices
-Imports Common = Microsoft.VisualStudio.Editors.AppDesCommon
-Imports Microsoft.VisualStudio.Shell.Interop
-Imports Microsoft.VisualStudio.Editors.AppDesInterop
-Imports Microsoft.VisualStudio.Shell.Design
-Imports System.Windows.Forms
 Imports System.ComponentModel.Design
 Imports System.ComponentModel.Design.Serialization
+Imports System.Drawing
 Imports System.Reflection
+Imports System.Runtime.InteropServices
+Imports System.Windows.Forms
+
+Imports Microsoft.VisualStudio.Editors.AppDesInterop
+Imports Microsoft.VisualStudio.Shell.Design
+Imports Microsoft.VisualStudio.Shell.Interop
+
+Imports Common = Microsoft.VisualStudio.Editors.AppDesCommon
 Imports IOleDataObject = Microsoft.VisualStudio.OLE.Interop.IDataObject
 
 Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework

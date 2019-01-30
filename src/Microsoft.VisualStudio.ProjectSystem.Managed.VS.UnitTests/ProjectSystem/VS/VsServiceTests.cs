@@ -2,6 +2,7 @@
 
 using System;
 using System.Threading.Tasks;
+
 using Xunit;
 
 using IAsyncServiceProvider = Microsoft.VisualStudio.Shell.IAsyncServiceProvider;

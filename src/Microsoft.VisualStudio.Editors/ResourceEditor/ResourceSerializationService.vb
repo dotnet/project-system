@@ -4,10 +4,11 @@ Option Explicit On
 Option Strict On
 Option Compare Binary
 
-Imports Microsoft.VisualStudio.Editors.Common
 Imports System.ComponentModel
 Imports System.ComponentModel.Design.Serialization
 Imports System.IO
+
+Imports Microsoft.VisualStudio.Editors.Common
 
 
 Namespace Microsoft.VisualStudio.Editors.ResourceEditor
@@ -51,10 +52,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   be passed to any of the various Serialize methods to build up serialization 
         '''   state for a group of objects.
         ''' </summary>
-        ''' <param name="Provider">Ignored.</param>
-        ''' <remarks></remarks>
-        Public Sub New(Provider As IServiceProvider)
-            'We don't need th service provider, we ignore it.
+        Public Sub New()
         End Sub
 
 

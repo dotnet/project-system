@@ -1,8 +1,9 @@
 ﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-Imports Common = Microsoft.VisualStudio.Editors.AppDesCommon
 Imports System.Drawing
 Imports System.Windows.Forms
+
+Imports Common = Microsoft.VisualStudio.Editors.AppDesCommon
 
 Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
@@ -154,7 +155,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 Case Keys.Up
                     Dim parent As ProjectDesignerTabControl = ParentTabControl
                     If parent IsNot Nothing Then
-                        Dim nextIndex As Int32 = ButtonIndex - 1
+                        Dim nextIndex As Integer = ButtonIndex - 1
                         If nextIndex < 0 Then
                             nextIndex = parent.TabButtonCount - 1
                         End If
@@ -166,7 +167,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 Case Keys.Down
                     Dim parent As ProjectDesignerTabControl = ParentTabControl
                     If parent IsNot Nothing Then
-                        Dim nextIndex As Int32 = ButtonIndex + 1
+                        Dim nextIndex As Integer = ButtonIndex + 1
                         If nextIndex >= parent.TabButtonCount Then
                             nextIndex = 0
                         End If

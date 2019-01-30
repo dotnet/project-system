@@ -47,8 +47,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
                 isImplicit,
                 properties)
         {
-            Caption = isResolved 
-                ? System.IO.Path.GetFileNameWithoutExtension(path) 
+            Caption = isResolved
+                ? System.IO.Path.GetFileNameWithoutExtension(path)
                 : path;
         }
     }

@@ -22,31 +22,31 @@ namespace Microsoft.VisualStudio.ProjectSystem.ProjectPropertiesProviders
             string projectFullPath = $@"{projectFolder}\project.testproj";
             string keyFileName = "KeyFile.snk";
             string keyFileFullPath = $@"{projectFolder}\{keyFileName}";
-            var delegatePropertiesMock = IProjectPropertiesFactory
+            var instancePropertiesMock = IProjectPropertiesFactory
                 .MockWithPropertiesAndValues(new Dictionary<string, string>() {
                     { AssemblyOriginatorKeyFilePropertyName, keyFileFullPath }
                 });
 
-            var delegateProperties = delegatePropertiesMock.Object;
-            var delegateProvider = IProjectPropertiesProviderFactory.Create(delegateProperties);
+            var instanceProperties = instancePropertiesMock.Object;
+            var instanceProvider = IProjectInstancePropertiesProviderFactory.ImplementsGetCommonProperties(instanceProperties);
 
             // Verify get key file value without intercepted provider.
-            var properties = delegateProvider.GetProperties("path/to/project.testproj", null, null);
+            var properties = instanceProvider.GetCommonProperties(null);
             var propertyValue = await properties.GetEvaluatedPropertyValueAsync(AssemblyOriginatorKeyFilePropertyName);
             Assert.Equal(keyFileFullPath, propertyValue);
 
             // Verify relative path key file value from intercepted key file provider.
             var project = UnconfiguredProjectFactory.Create(filePath: projectFullPath);
-            var instanceProvider = IProjectInstancePropertiesProviderFactory.Create();
+            var delegateProvider = IProjectPropertiesProviderFactory.Create();
             var keyFileProvider = new AssemblyOriginatorKeyFileValueProvider(project);
             var providerMetadata = IInterceptingPropertyValueProviderMetadataFactory.Create(AssemblyOriginatorKeyFilePropertyName);
             var lazyArray = new[] { new Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>(
                 () => keyFileProvider, providerMetadata) };
-            var interceptedProvider = new ProjectFileInterceptedProjectPropertiesProvider(delegateProvider, instanceProvider, project, lazyArray);
+            var interceptedProvider = new ProjectFileInterceptedViaSnapshotProjectPropertiesProvider(delegateProvider, instanceProvider, project, lazyArray);
             var propertyNames = await properties.GetPropertyNamesAsync();
             Assert.Single(propertyNames);
             Assert.Equal(AssemblyOriginatorKeyFilePropertyName, propertyNames.First());
-            properties = interceptedProvider.GetProperties("path/to/project.testproj", null, null);
+            properties = interceptedProvider.GetCommonProperties(null);
             string newKeyFileName = "KeyFile2.snk";
             string newKeyFileFullPath = $@"{projectFolder}\{newKeyFileName}";
             await properties.SetPropertyValueAsync(AssemblyOriginatorKeyFilePropertyName, newKeyFileFullPath);

@@ -6,6 +6,7 @@ Option Strict On
 Option Explicit On
 Imports System.ComponentModel.Design
 Imports System.Windows.Forms
+
 #If Not WINFORMEDITOR Then
 Imports Microsoft.VisualStudio.Editors.DesignerFramework
 Imports Microsoft.VisualStudio.Editors.MyExtensibility

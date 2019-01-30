@@ -2,8 +2,8 @@
 
 Option Strict On
 Option Explicit On
-Imports System.Runtime.InteropServices
 Imports System.Runtime.CompilerServices
+Imports System.Runtime.InteropServices
 
 Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
 

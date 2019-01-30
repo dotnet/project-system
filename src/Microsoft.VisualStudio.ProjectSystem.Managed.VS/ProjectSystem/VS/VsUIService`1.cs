@@ -15,7 +15,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     {
         private readonly Lazy<T> _value;
         private readonly IProjectThreadingService _threadingService;
-        private readonly IServiceProvider _serviceProvider;
 
         [ImportingConstructor]
         public VsUIService([Import(typeof(SVsServiceProvider))]IServiceProvider serviceProvider, IProjectThreadingService threadingService)
@@ -23,8 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             Requires.NotNull(serviceProvider, nameof(serviceProvider));
             Requires.NotNull(threadingService, nameof(threadingService));
 
-            _value = new Lazy<T>(GetService);
-            _serviceProvider = serviceProvider;
+            _value = new Lazy<T>(() => (T)serviceProvider.GetService(ServiceType));
             _threadingService = threadingService;
         }
 
@@ -44,11 +42,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         protected virtual Type ServiceType
         {
             get { return typeof(T); }
-        }
-
-        protected virtual T GetService()
-        {
-            return (T)_serviceProvider.GetService(ServiceType);
         }
     }
 }

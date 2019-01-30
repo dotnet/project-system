@@ -2,10 +2,10 @@
 
 Option Infer On
 Imports System.IO
-Imports System.Xml
-Imports System.Xml.Schema
 Imports System.Windows.Forms
 Imports System.Windows.Forms.Design
+Imports System.Xml
+Imports System.Xml.Schema
 
 Namespace Microsoft.VisualStudio.Editors.XmlToSchema
 

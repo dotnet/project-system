@@ -189,7 +189,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         private Task<string> FindDimensionPropertyAsync(UnconfiguredProject project)
         {
             return ProjectAccessor.OpenProjectXmlForReadAsync(
-                project, 
+                project,
                 projectXml => FindDimensionProperty(projectXml)?.GetUnescapedValue());
         }
 

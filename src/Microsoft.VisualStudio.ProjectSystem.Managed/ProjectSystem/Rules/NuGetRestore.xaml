@@ -2,9 +2,7 @@
 <!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
 <Rule
     Name="NuGetRestore"
-    DisplayName="NuGetRestore"
     PageTemplate="generic"
-    Description="General Configuration Properties used in NuGet Restore"
     xmlns="http://schemas.microsoft.com/build/2009/properties">
     
     <Rule.DataSource>
@@ -38,7 +36,7 @@
     </StringProperty>    
     <StringProperty Name="TargetFrameworkMoniker" DisplayName="Target Framework Moniker">
         <StringProperty.DataSource>
-            <DataSource Persistence="ProjectFileWithInterception" PersistedName="TargetFrameworkMoniker" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+            <DataSource Persistence="ProjectFileWithInterceptionViaSnapshot" PersistedName="TargetFrameworkMoniker" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
         </StringProperty.DataSource>
     </StringProperty>
 

@@ -42,11 +42,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             SubscribeToConfiguredProject(subscriptionService);
         }
 
-        public void AddSubscriptions(AggregateCrossTargetProjectContext newProjectContext)
+        public void AddSubscriptions(AggregateCrossTargetProjectContext projectContext)
         {
-            Requires.NotNull(newProjectContext, nameof(newProjectContext));
+            Requires.NotNull(projectContext, nameof(projectContext));
 
-            foreach (ConfiguredProject configuredProject in newProjectContext.InnerConfiguredProjects)
+            foreach (ConfiguredProject configuredProject in projectContext.InnerConfiguredProjects)
             {
                 SubscribeToConfiguredProject(configuredProject.Services.ProjectSubscription);
             }
@@ -81,7 +81,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                     suppressVersionOnlyUpdates: false,
                     linkOptions: DataflowOption.PropagateCompletion));
 
-            var actionBlock =
+            ITargetBlock<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectSharedFoldersSnapshot, IProjectCatalogSnapshot>>> actionBlock =
                 DataflowBlockSlim.CreateActionBlock<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectSharedFoldersSnapshot, IProjectCatalogSnapshot>>>(
                     e => OnProjectChangedAsync(e.Value),
                     new ExecutionDataflowBlockOptions()
@@ -116,7 +116,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
         private async Task HandleAsync(Tuple<IProjectSubscriptionUpdate, IProjectSharedFoldersSnapshot, IProjectCatalogSnapshot> e)
         {
-            AggregateCrossTargetProjectContext currentAggregateContext = await _host.GetCurrentAggregateProjectContext();
+            AggregateCrossTargetProjectContext currentAggregateContext = await _host.GetCurrentAggregateProjectContextAsync();
             if (currentAggregateContext == null)
             {
                 return;
@@ -167,14 +167,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             }
 
             IEnumerable<string> sharedFolderProjectPaths = sharedFolders.Value.Select(sf => sf.ProjectPath);
-            var currentSharedImportNodes = targetedSnapshot.TopLevelDependencies
+            var currentSharedImportNodePaths = targetedSnapshot.TopLevelDependencies
                 .Where(x => x.Flags.Contains(DependencyTreeFlags.SharedProjectFlags))
+                .Select(x => x.Path)
                 .ToList();
-            IEnumerable<string> currentSharedImportNodePaths = currentSharedImportNodes.Select(x => x.Path);
+
+            var diff = new SetDiff<string>(currentSharedImportNodePaths, sharedFolderProjectPaths);
 
             // process added nodes
-            IEnumerable<string> addedSharedImportPaths = sharedFolderProjectPaths.Except(currentSharedImportNodePaths);
-            foreach (string addedSharedImportPath in addedSharedImportPaths)
+            foreach (string addedSharedImportPath in diff.Added)
             {
                 IDependencyModel added = new SharedProjectDependencyModel(
                     addedSharedImportPath,
@@ -186,16 +187,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             }
 
             // process removed nodes
-            IEnumerable<string> removedSharedImportPaths = currentSharedImportNodePaths.Except(sharedFolderProjectPaths);
-            foreach (string removedSharedImportPath in removedSharedImportPaths)
+            foreach (string removedSharedImportPath in diff.Removed)
             {
-                bool exists = currentSharedImportNodes.Any(node => PathHelper.IsSamePath(node.Path, removedSharedImportPath));
+                bool exists = currentSharedImportNodePaths.Any(nodePath => PathHelper.IsSamePath(nodePath, removedSharedImportPath));
 
                 if (exists)
                 {
                     changesBuilder.Removed(
-                        targetFramework, 
-                        ProjectRuleHandler.ProviderTypeString, 
+                        targetFramework,
+                        ProjectRuleHandler.ProviderTypeString,
                         dependencyId: removedSharedImportPath);
                 }
             }
@@ -204,7 +204,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         public event EventHandler<DependencySubscriptionChangedEventArgs> DependenciesChanged;
 
         protected override void Initialize()
-        {   
+        {
         }
 
         protected override void Dispose(bool disposing)

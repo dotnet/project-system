@@ -14,13 +14,13 @@ using Task = System.Threading.Tasks.Task;
 
 // Register ourselves as a CPS project type
 [assembly: ProjectTypeRegistration(
-    projectTypeGuid: FSharpProjectSystemPackage.ProjectTypeGuid, 
-    displayName: "#1", 
-    displayProjectFileExtensions: "#2", 
-    defaultProjectExtension: "fsproj", 
-    language: "FSharp", 
-    resourcePackageGuid: FSharpProjectSystemPackage.PackageGuid, 
-    Capabilities = ManagedProjectSystemPackage.DefaultCapabilities + "; " + ProjectCapability.FSharp + "; " + ProjectCapability.SortByDisplayOrder, 
+    projectTypeGuid: FSharpProjectSystemPackage.ProjectTypeGuid,
+    displayName: "#1",
+    displayProjectFileExtensions: "#2",
+    defaultProjectExtension: "fsproj",
+    language: "FSharp",
+    resourcePackageGuid: FSharpProjectSystemPackage.PackageGuid,
+    Capabilities = ManagedProjectSystemPackage.DefaultCapabilities + "; " + ProjectCapability.FSharp + "; " + ProjectCapability.SortByDisplayOrder,
     DisableAsynchronousProjectTreeLoad = true)]
 
 namespace Microsoft.VisualStudio.Packaging

@@ -3,8 +3,6 @@
 Option Explicit On
 Option Strict On
 Option Compare Binary
-Imports Microsoft.VisualStudio.Editors.Common.Utils
-Imports Microsoft.VisualStudio.Shell
 Imports System.CodeDom.Compiler
 Imports System.ComponentModel
 Imports System.ComponentModel.Design
@@ -14,6 +12,10 @@ Imports System.Reflection
 Imports System.Resources
 Imports System.Runtime.Serialization
 Imports System.Text
+
+Imports Microsoft.VisualStudio.Editors.Common.Utils
+Imports Microsoft.VisualStudio.Shell
+
 Imports VB = Microsoft.VisualBasic
 
 
@@ -2519,7 +2521,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <remarks></remarks>
         Private Shared Function ValidateNames(ResourceFile As ResourceFile, NewNames() As String, Optional OldNames() As String = Nothing, Optional ByRef NewFormattedNames() As String = Nothing, Optional ByRef Exception As Exception = Nothing, Optional FixInvalidIDs As Boolean = False, Optional CheckForDuplicateNames As Boolean = True) As Boolean
             Dim CodeDomProvider As CodeDomProvider = Nothing
-            Dim CodeGenerator As ICodeGenerator = Nothing
             Dim CheckForInvalidIdentifiers As Boolean = True
 
             If CheckForInvalidIdentifiers Then

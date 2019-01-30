@@ -1,10 +1,8 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
 
-using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions.RuleHandlers;
 
@@ -55,17 +53,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             return string.IsNullOrEmpty(self.Path)
                 ? string.Equals(self.Id, id, StringComparison.OrdinalIgnoreCase)
                 : Dependency.IdEquals(id, self.TargetFramework, self.ProviderType, self.Path);
-        }
-
-        /// <summary>
-        /// Returns all icons specified for given dependency.
-        /// </summary>
-        public static IEnumerable<ImageMoniker> GetIcons(this IDependency self)
-        {
-            yield return self.Icon;
-            yield return self.ExpandedIcon;
-            yield return self.UnresolvedIcon;
-            yield return self.UnresolvedExpandedIcon;
         }
 
         /// <summary>

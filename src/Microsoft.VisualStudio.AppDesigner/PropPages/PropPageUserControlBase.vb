@@ -1960,8 +1960,6 @@ NextControl:
             '  EndBatch).  This could be a superset of m_Objects because individual properties can proffer objects not in
             '  m_Objects.  Entries which have not called BeginBatch or which do not support it will be Nothing.
             Dim BatchObjects() As ILangPropertyProvideBatchUpdate = Nothing
-            Dim vsProjectBuildSystem As IVsProjectBuildSystem = Nothing
-
             Debug.Assert(Not _fIsApplying)
             _fIsApplying = True
             EnterProjectCheckoutSection()
@@ -1985,7 +1983,7 @@ NextControl:
                 '   happened to run.
 
                 Debug.Assert(ProjectHierarchy IsNot Nothing, "no hierarchy?")
-                vsProjectBuildSystem = TryCast(ProjectHierarchy, IVsProjectBuildSystem)
+                Dim vsProjectBuildSystem As IVsProjectBuildSystem = TryCast(ProjectHierarchy, IVsProjectBuildSystem)
                 Debug.Assert(vsProjectBuildSystem IsNot Nothing, "hierarchy is not IVsProjectBuildSystem?")
 
                 Try

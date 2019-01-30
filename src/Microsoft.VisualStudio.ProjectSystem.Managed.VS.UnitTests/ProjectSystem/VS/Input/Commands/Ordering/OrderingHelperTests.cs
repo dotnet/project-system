@@ -3,9 +3,11 @@
 using System;
 using System.Collections.Immutable;
 using System.IO;
+
 using Microsoft.Build.Construction;
 using Microsoft.Build.Evaluation;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
+
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering

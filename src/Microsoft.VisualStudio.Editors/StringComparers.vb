@@ -4,7 +4,7 @@ Namespace Microsoft.VisualStudio
 
     Friend NotInheritable Class StringComparers
 
-        Private Sub StringComparers()
+        Private Sub New()
         End Sub
 
         Public Shared ReadOnly Property SettingNames As StringComparer

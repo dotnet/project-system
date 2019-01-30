@@ -39,7 +39,7 @@ namespace Microsoft.VisualStudio.Buffers.PooledObjects
         // factory is stored for the lifetime of the pool. We will call this only when pool needs to
         // expand. compared to "new T()", Func gives more flexibility to implementers and faster
         // than "new T()".
-        private readonly Func<T> _factory;  
+        private readonly Func<T> _factory;
 
         internal ObjectPool(Func<T> factory)
             : this(factory, Environment.ProcessorCount * 2)

@@ -13,12 +13,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         /// <summary>
         /// Current immutable dependencies snapshot.
         /// </summary>
+        /// <remarks>
+        /// Never null.
+        /// </remarks>
         IDependenciesSnapshot CurrentSnapshot { get; }
-
-        /// <summary>
-        /// Provider's project path.
-        /// </summary>
-        string ProjectFilePath { get; }
 
         /// <summary>
         /// Triggered when snapshot's project was renamed.

@@ -4,12 +4,13 @@ Option Explicit On
 Option Strict On
 Option Compare Binary
 
-Imports EnvDTE
-Imports EnvDTE.Constants
 Imports System.IO
 Imports System.Text
 Imports System.Threading
 Imports System.Windows.Forms
+
+Imports EnvDTE
+Imports EnvDTE.Constants
 
 Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 

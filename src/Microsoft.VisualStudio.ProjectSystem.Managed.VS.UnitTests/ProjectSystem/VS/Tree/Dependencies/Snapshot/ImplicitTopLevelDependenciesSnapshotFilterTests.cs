@@ -88,6 +88,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         [Fact]
+        public void BeforeAddOrUpdate_WhenSharedProject_ShouldDoNothing()
+        {
+            VerifyUnchangedOnAdd(
+                new TestDependency
+                {
+                    ClonePropertiesFrom = _acceptable,
+                    Flags = DependencyTreeFlags.SharedProjectFlags
+                },
+                projectItemSpecs: ImmutableHashSet<string>.Empty);
+        }
+
+        [Fact]
         public void BeforeAddOrUpdate_WhenCanApplyImplicitProjectContainsItem_ShouldDoNothing()
         {
             VerifyUnchangedOnAdd(

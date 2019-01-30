@@ -3,6 +3,7 @@
 Option Strict On
 Option Explicit On
 Imports System.Runtime.InteropServices
+
 Imports Res = My.Resources.MyExtensibilityRes
 
 Namespace Microsoft.VisualStudio.Editors.PropertyPages

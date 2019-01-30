@@ -3,10 +3,13 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.Logging;
+
 using Moq;
+
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers

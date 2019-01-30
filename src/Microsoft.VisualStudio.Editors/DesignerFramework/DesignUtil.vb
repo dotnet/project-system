@@ -1,9 +1,10 @@
 ﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.Drawing
-Imports System.Windows.Forms
-Imports Microsoft.VisualStudio.Shell.Interop
 Imports System.Runtime.InteropServices
+Imports System.Windows.Forms
+
+Imports Microsoft.VisualStudio.Shell.Interop
 
 
 Namespace Microsoft.VisualStudio.Editors.DesignerFramework
@@ -205,7 +206,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="m">Window's message.</param>
         ''' <returns>The context event args to use for raising the event.</returns>
         ''' <remarks></remarks>
-        Public Shared Function GetContextMenuMouseEventArgs(Control As Control, ByRef m As Message) As MouseEventArgs
+        Public Shared Function GetContextMenuMouseEventArgs(ByRef m As Message) As MouseEventArgs
             Dim x As Integer = SignedLoWord(m.LParam)
             Dim y As Integer = SignedHiWord(m.LParam)
 

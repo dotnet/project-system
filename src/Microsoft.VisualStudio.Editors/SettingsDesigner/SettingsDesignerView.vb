@@ -15,8 +15,8 @@ Imports Microsoft.VisualStudio.Editors.Common
 Imports Microsoft.VisualStudio.Editors.DesignerFramework
 Imports Microsoft.VisualStudio.Editors.Interop
 Imports Microsoft.VisualStudio.Editors.PropertyPages
-Imports Microsoft.VisualStudio.Shell.Interop
 Imports Microsoft.VisualStudio.PlatformUI
+Imports Microsoft.VisualStudio.Shell.Interop
 Imports Microsoft.VSDesigner.VSDesignerPackage
 
 Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
@@ -1768,9 +1768,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Dim allDeletedFiles As New List(Of String)
             Dim allDeletedDirectories As New List(Of String)
 
-            Dim OneOrMoreFailed As Boolean = False
-
-
             If DesignerLoader IsNot Nothing AndAlso DesignerLoader.VsHierarchy IsNot Nothing Then
                 Dim configDirs As List(Of String) = Nothing
                 Dim filesToDelete As List(Of String) = Nothing
@@ -2014,21 +2011,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         End Sub
 
 #End Region
-
-        ''' <summary>
-        ''' The SettingsDesigner will forward IOleCommandTarget calls to it's view. In this case, we never actually implement any
-        ''' commands, so we always return FALSE to indicate that we haven't done anything
-        ''' </summary>
-        ''' <param name="pguidCmdGroup"></param>
-        ''' <param name="nCmdID"></param>
-        ''' <param name="nCmdexecopt"></param>
-        ''' <param name="pvaIn"></param>
-        ''' <param name="pvaOut"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Friend Function HandleCommand(ByRef pguidCmdGroup As Guid, nCmdID As UInteger, nCmdexecopt As UInteger, pvaIn As IntPtr, pvaOut As IntPtr) As Boolean
-            Return False
-        End Function
 
 #Region "IVsWindowPaneCommit implementation"
         Public Function IVsWindowPaneCommit_CommitPendingEdit(ByRef pfCommitFailed As Integer) As Integer Implements IVsWindowPaneCommit.CommitPendingEdit
