@@ -56,7 +56,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                         (TelemetryPropertyName.SDKVersionNETCoreSdkVersion, version)
                     });
                 }, 
-                factory: _projectVsServices.ThreadingService.JoinableTaskFactory);
+                factory: _projectVsServices.ThreadingService.JoinableTaskFactory,
+                unconfiguredProject: _projectVsServices.Project);
 
                 return Task.CompletedTask;
             }
