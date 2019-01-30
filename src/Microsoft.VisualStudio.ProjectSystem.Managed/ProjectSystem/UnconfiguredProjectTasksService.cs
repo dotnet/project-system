@@ -56,6 +56,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             get { return _tasksService.UnloadCancellationToken; }
         }
 
+#pragma warning disable RS0030 // Do not use LoadedProjectAsync (this is the replacement)
         public Task LoadedProjectAsync(Func<Task> action)
         {
             JoinableTask joinable = _tasksService.LoadedProjectAsync(action);
@@ -69,6 +70,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             return joinable.Task;
         }
+
+#pragma warning restore RS0030 // Do not use LoadedProjectAsync
 
         public Task<T> PrioritizedProjectLoadedInHostAsync<T>(Func<Task<T>> action)
         {

@@ -273,9 +273,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                     TraceUtilities.TraceVerbose("{0} changed on disk. Marking project dirty", _fileBeingWatched);
                     _previousContentsHash = newHash;
                     cancellationToken.ThrowIfCancellationRequested();
-                    await _projectServices.Project.Services.ProjectAsynchronousTasks.LoadedProjectAsync(async () =>
+                    await _projectTasksService.LoadedProjectAsync(() =>
                     {
-                        await _projectServices.ProjectAccessor.EnterWriteLockAsync(async (collection, token) =>
+                        return _projectServices.ProjectAccessor.EnterWriteLockAsync(async (collection, token) =>
                         {
                             // notify all the loaded configured projects
                             IEnumerable<ConfiguredProject> currentProjects = _projectServices.Project.LoadedConfiguredProjects;
