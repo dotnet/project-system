@@ -9,7 +9,7 @@
       </trans-unit>
       <trans-unit id="BuildOutputPathButton.Text">
         <source>B&amp;rowse...</source>
-        <target state="translated">Pa&amp;rcourir...</target>
+        <target state="translated">P&amp;arcourir...</target>
         <note />
       </trans-unit>
       <trans-unit id="OptionExplicitLabel.Text">

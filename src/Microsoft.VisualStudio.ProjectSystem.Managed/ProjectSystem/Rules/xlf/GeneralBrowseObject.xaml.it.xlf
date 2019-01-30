@@ -9,7 +9,7 @@
       </trans-unit>
       <trans-unit id="Rule|ConfigurationGeneralBrowseObject|Description">
         <source>Project Properties</source>
-        <target state="translated">Proprietà del progetto</target>
+        <target state="translated">Proprietà progetto</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|General|DisplayName">

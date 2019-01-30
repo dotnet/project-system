@@ -4,7 +4,7 @@
     <body>
       <trans-unit id="lblPreBuildEventCommandLine.Text">
         <source>P&amp;re-build event command line:</source>
-        <target state="translated">&amp;Příkazový řádek události před sestavením:</target>
+        <target state="translated">Příkazový řádek události &amp;před sestavením:</target>
         <note />
       </trans-unit>
       <trans-unit id="btnPreBuildBuilder.Text">
@@ -14,7 +14,7 @@
       </trans-unit>
       <trans-unit id="lblPostBuildEventCommandLine.Text">
         <source>P&amp;ost-build event command line:</source>
-        <target state="translated">Příkaz&amp;ový řádek události po sestavení:</target>
+        <target state="translated">Příkazový řádek události p&amp;o sestavení:</target>
         <note />
       </trans-unit>
       <trans-unit id="btnPostBuildBuilder.Text">

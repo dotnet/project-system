@@ -29,7 +29,7 @@
       </trans-unit>
       <trans-unit id="chkRegisterForCOM.Text">
         <source>Register for &amp;COM interop</source>
-        <target state="translated">&amp;Registra per interoperabilità COM</target>
+        <target state="translated">Registra per interoperabilità &amp;COM</target>
         <note />
       </trans-unit>
       <trans-unit id="chkXMLDocumentationFile.Text">
@@ -44,7 +44,7 @@
       </trans-unit>
       <trans-unit id="lblOutputPath.Text">
         <source>&amp;Output path:</source>
-        <target state="translated">Perc&amp;orso di output:</target>
+        <target state="translated">Percorso di &amp;output:</target>
         <note />
       </trans-unit>
       <trans-unit id="rbWarningSpecific.Text">
@@ -54,7 +54,7 @@
       </trans-unit>
       <trans-unit id="rbWarningAll.Text">
         <source>A&amp;ll</source>
-        <target state="translated">T&amp;utti</target>
+        <target state="translated">T&amp;utto</target>
         <note />
       </trans-unit>
       <trans-unit id="rbWarningNone.Text">
@@ -64,7 +64,7 @@
       </trans-unit>
       <trans-unit id="lblSupressWarnings.Text">
         <source>&amp;Suppress warnings:</source>
-        <target state="translated">Non visualizzare avvi&amp;si:</target>
+        <target state="translated">Non &amp;visualizzare avvisi:</target>
         <note />
       </trans-unit>
       <trans-unit id="cboWarningLevel.Items">
@@ -104,7 +104,7 @@
       </trans-unit>
       <trans-unit id="chkAllowUnsafeCode.Text">
         <source>Allow unsa&amp;fe code</source>
-        <target state="translated">Consenti codice &amp;unsafe</target>
+        <target state="translated">Consenti codice unsa&amp;fe</target>
         <note />
       </trans-unit>
       <trans-unit id="chkPrefer32Bit.Text">
@@ -114,22 +114,22 @@
       </trans-unit>
       <trans-unit id="chkDefineTrace.Text">
         <source>Define &amp;TRACE constant</source>
-        <target state="translated">Definisci costante TRAC&amp;E</target>
+        <target state="translated">Definisci costante &amp;TRACE</target>
         <note />
       </trans-unit>
       <trans-unit id="lblPlatformTarget.Text">
         <source>Platform tar&amp;get:</source>
-        <target state="translated">&amp;Piattaforma di destinazione:</target>
+        <target state="translated">Piatta&amp;forma di destinazione:</target>
         <note />
       </trans-unit>
       <trans-unit id="lblSGenOption.Text">
         <source>G&amp;enerate serialization assembly:</source>
-        <target state="translated">Genera assembl&amp;y di serializzazione:</target>
+        <target state="translated">G&amp;enera assembly di serializzazione:</target>
         <note />
       </trans-unit>
       <trans-unit id="btnAdvanced.Text">
         <source>A&amp;dvanced...</source>
-        <target state="translated">Avan&amp;zate...</target>
+        <target state="translated">A&amp;vanzate...</target>
         <note />
       </trans-unit>
       <trans-unit id="chkDefineDebug.Text">
@@ -139,12 +139,12 @@
       </trans-unit>
       <trans-unit id="txtSpecificWarnings.AccessibleName">
         <source>Specific Warnings To Treat As Errors</source>
-        <target state="new">Specific Warnings To Treat As Errors</target>
+        <target state="translated">Avvisi specifici da considerare come errori</target>
         <note />
       </trans-unit>
       <trans-unit id="txtXMLDocumentationFile.AccessibleName">
         <source>XML Document File Path</source>
-        <target state="new">XML Document File Path</target>
+        <target state="translated">Percorso file di documentazione XML</target>
         <note />
       </trans-unit>
     </body>

@@ -24,7 +24,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|FullPath|DisplayName">
         <source>Project Folder</source>
-        <target state="translated">Carpeta de proyecto</target>
+        <target state="translated">Carpeta del proyecto</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|OptionExplicit.Off|DisplayName">

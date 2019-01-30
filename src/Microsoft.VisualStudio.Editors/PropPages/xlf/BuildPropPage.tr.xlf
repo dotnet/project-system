@@ -29,7 +29,7 @@
       </trans-unit>
       <trans-unit id="chkRegisterForCOM.Text">
         <source>Register for &amp;COM interop</source>
-        <target state="translated">&amp;COM ile birlikte çalışmaya kaydet</target>
+        <target state="translated">COM birlikte çalışabilirliği için kaydolun</target>
         <note />
       </trans-unit>
       <trans-unit id="chkXMLDocumentationFile.Text">
@@ -39,12 +39,12 @@
       </trans-unit>
       <trans-unit id="btnOutputPathBrowse.Text">
         <source>B&amp;rowse...</source>
-        <target state="translated">Gö&amp;zat...</target>
+        <target state="translated">Göz&amp;at...</target>
         <note />
       </trans-unit>
       <trans-unit id="lblOutputPath.Text">
         <source>&amp;Output path:</source>
-        <target state="translated">Çıkış y&amp;olu:</target>
+        <target state="translated">&amp;Çıkış yolu:</target>
         <note />
       </trans-unit>
       <trans-unit id="rbWarningSpecific.Text">
@@ -54,7 +54,7 @@
       </trans-unit>
       <trans-unit id="rbWarningAll.Text">
         <source>A&amp;ll</source>
-        <target state="translated">&amp;Tümü</target>
+        <target state="translated">T&amp;ümü</target>
         <note />
       </trans-unit>
       <trans-unit id="rbWarningNone.Text">
@@ -64,7 +64,7 @@
       </trans-unit>
       <trans-unit id="lblSupressWarnings.Text">
         <source>&amp;Suppress warnings:</source>
-        <target state="translated">&amp;Uyarıları kapat:</target>
+        <target state="translated">&amp;Uyarıları gizle:</target>
         <note />
       </trans-unit>
       <trans-unit id="cboWarningLevel.Items">
@@ -99,32 +99,32 @@
       </trans-unit>
       <trans-unit id="chkOptimizeCode.Text">
         <source>Optimi&amp;ze code</source>
-        <target state="translated">Kodu iyileş&amp;tir</target>
+        <target state="translated">Kodu iyil&amp;leştir</target>
         <note />
       </trans-unit>
       <trans-unit id="chkAllowUnsafeCode.Text">
         <source>Allow unsa&amp;fe code</source>
-        <target state="translated">Güvenli olma&amp;yan koda izin ver</target>
+        <target state="translated">Güv&amp;ensiz koda izin ver</target>
         <note />
       </trans-unit>
       <trans-unit id="chkPrefer32Bit.Text">
         <source>&amp;Prefer 32-bit</source>
-        <target state="translated">&amp;32 bit tercih et</target>
+        <target state="translated">&amp;32 bit'i tercih et</target>
         <note />
       </trans-unit>
       <trans-unit id="chkDefineTrace.Text">
         <source>Define &amp;TRACE constant</source>
-        <target state="translated">&amp;TRACE sabitini tanımla</target>
+        <target state="translated">&amp;TRACE sabit değerini tanımlayın</target>
         <note />
       </trans-unit>
       <trans-unit id="lblPlatformTarget.Text">
         <source>Platform tar&amp;get:</source>
-        <target state="translated">Platform h&amp;edefi:</target>
+        <target state="translated">Platform hed&amp;efi:</target>
         <note />
       </trans-unit>
       <trans-unit id="lblSGenOption.Text">
         <source>G&amp;enerate serialization assembly:</source>
-        <target state="translated">Serileştirme bütünleştirilmiş kodu o&amp;luştur:</target>
+        <target state="translated">Seri duruma getirme derlemesi o&amp;luştur:</target>
         <note />
       </trans-unit>
       <trans-unit id="btnAdvanced.Text">
@@ -134,17 +134,17 @@
       </trans-unit>
       <trans-unit id="chkDefineDebug.Text">
         <source>Define DEB&amp;UG constant</source>
-        <target state="translated">DEB&amp;UG sabitini tanımla</target>
+        <target state="translated">DEB&amp;UG sabit değerini tanımlayın</target>
         <note />
       </trans-unit>
       <trans-unit id="txtSpecificWarnings.AccessibleName">
         <source>Specific Warnings To Treat As Errors</source>
-        <target state="new">Specific Warnings To Treat As Errors</target>
+        <target state="translated">Hata Olarak Görülecek Belirli Hatalar</target>
         <note />
       </trans-unit>
       <trans-unit id="txtXMLDocumentationFile.AccessibleName">
         <source>XML Document File Path</source>
-        <target state="new">XML Document File Path</target>
+        <target state="translated">XML Belgesi Dosya Yolu</target>
         <note />
       </trans-unit>
     </body>

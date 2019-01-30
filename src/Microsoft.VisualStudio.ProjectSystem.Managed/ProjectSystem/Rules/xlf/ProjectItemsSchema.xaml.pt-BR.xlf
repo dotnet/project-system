@@ -9,7 +9,7 @@
       </trans-unit>
       <trans-unit id="ContentType|XML|DisplayName">
         <source>Xml file</source>
-        <target state="translated">Arquivo Xml</target>
+        <target state="translated">Arquivo XML</target>
         <note />
       </trans-unit>
       <trans-unit id="ContentType|HTML|DisplayName">
@@ -89,12 +89,12 @@
       </trans-unit>
       <trans-unit id="ContentType|Resource|DisplayName">
         <source>Resource</source>
-        <target state="new">Resource</target>
+        <target state="translated">Recurso</target>
         <note />
       </trans-unit>
       <trans-unit id="ItemType|Resource|DisplayName">
         <source>Resource</source>
-        <target state="new">Resource</target>
+        <target state="translated">Recurso</target>
         <note />
       </trans-unit>
     </body>

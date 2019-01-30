@@ -69,7 +69,7 @@
       </trans-unit>
       <trans-unit id="PPG_ReferencePathsTitle">
         <source>Reference Paths</source>
-        <target state="translated">Chemins des références</target>
+        <target state="translated">Chemins d'accès des références</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_PreBuildCommandLineTitle">
@@ -215,7 +215,7 @@ Sélectionnez un chemin de dossier valide.</target>
       </trans-unit>
       <trans-unit id="PPG_ReferencePaths_Title">
         <source>Reference Paths</source>
-        <target state="translated">Chemins des références</target>
+        <target state="translated">Chemins d'accès des références</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_CompatibleSettings_Title">
@@ -225,7 +225,7 @@ Sélectionnez un chemin de dossier valide.</target>
       </trans-unit>
       <trans-unit id="PPG_AssemblyInfo_Title">
         <source>Assembly Information</source>
-        <target state="translated">Informations de l'assembly</target>
+        <target state="translated">Informations sur l'assembly</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_AssemblyInfo_InvalidVersion">
@@ -405,7 +405,7 @@ Sélectionnez un chemin de dossier valide.</target>
       </trans-unit>
       <trans-unit id="PPG_Compile_42024">
         <source>Unused local variable</source>
-        <target state="translated">Variable locale inutilisée</target>
+        <target state="translated">Variable locale non utilisée</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Compile_42025">
@@ -789,12 +789,12 @@ Erreur :</target>
       </trans-unit>
       <trans-unit id="PPG_Signing_OpenExistingKeyPasswordPrompt">
         <source>Enter &amp;password to open file {0}</source>
-        <target state="translated">Entrez le &amp;mot de passe pour ouvrir le fichier {0}</target>
+        <target state="translated">Entrer un &amp;mot de passe pour ouvrir le fichier {0}</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Signing_CreateNewKeyPasswordPrompt">
         <source>Enter &amp;password for new file {0}</source>
-        <target state="translated">Entrez le &amp;mot de passe du nouveau fichier {0}</target>
+        <target state="translated">Entrer un &amp;mot de passe pour le nouveau fichier {0}</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Signing_ProjectAlreadyContainsFile">
@@ -975,7 +975,7 @@ Erreur :</target>
       </trans-unit>
       <trans-unit id="PropPage_UnusedReferenceRemoveButton">
         <source>&amp;Remove</source>
-        <target state="translated">Supp&amp;rimer</target>
+        <target state="translated">&amp;Supprimer</target>
         <note />
       </trans-unit>
       <trans-unit id="PropPage_UnusedReferenceNoUnusedReferences">
@@ -1000,7 +1000,7 @@ Erreur :</target>
       </trans-unit>
       <trans-unit id="PPG_InvalidHexString">
         <source>Base address must be a hexadecimal number with less than or equal to 8 digits, for example, &amp;H11000000.</source>
-        <target state="translated">L'adresse de base doit être un nombre hexadécimal contenant au maximum 8 chiffres, par exemple, &amp;H11000000.</target>
+        <target state="translated">L'adresse de base doit être un nombre hexadécimal inférieur ou égal à 8 chiffres, par exemple, &amp;H11000000.</target>
         <note />
       </trans-unit>
       <trans-unit id="PropPage_NeedResFile">
@@ -1367,7 +1367,7 @@ Erreur :</target>
       </trans-unit>
       <trans-unit id="RSE_Err_BadIdentifier_2Arg">
         <source>The name of the resource '{0}' cannot be used as a valid identifier, because it contains one or more invalid characters: '{1}'.  Please remove or replace those characters and try again.</source>
-        <target state="translated">Impossible d'utiliser le nom de la ressource '{0}' comme identificateur valide, car il contient un ou plusieurs caractères non valides : '{1}'. Supprimez ou remplacez ces caractères et réessayez.</target>
+        <target state="translated">Impossible d'utiliser le nom de la ressource '{0}' comme identificateur valide, car il contient un ou plusieurs caractères non valides : '{1}'. Supprimez ou remplacez ces caractères et réessayez.</target>
         <note>{0} = Resource name</note>
       </trans-unit>
       <trans-unit id="RSE_Err_MaxFilesLimitation">
@@ -1500,7 +1500,6 @@ CONSIDER: get this from CodeDom</note>
         <source>{0} x {1}</source>
         <target state="translated">{0} x {1}</target>
         <note>Format string for showing a graphic's size
-
 #  {0} = width (as an integer)
 #  {1} = height (as an integer)
 #Example, for a bitmap of width=123, height = 456, the English version of this string would be "123x456"</note>
@@ -1549,27 +1548,27 @@ CONSIDER: get this from CodeDom</note>
       </trans-unit>
       <trans-unit id="RSE_Btn_Add">
         <source>&amp;Add</source>
-        <target state="translated">&amp;Ajouter</target>
+        <target state="translated">Aj&amp;outer</target>
         <note>Add, Delete and Views button text in the main ToolStrip</note>
       </trans-unit>
       <trans-unit id="RSE_Btn_Remove">
         <source>&amp;Remove</source>
-        <target state="translated">Supp&amp;rimer</target>
+        <target state="translated">&amp;Supprimer</target>
         <note>Add, Delete and Views button text in the main ToolStrip</note>
       </trans-unit>
       <trans-unit id="RSE_Btn_Views">
         <source>&amp;Views</source>
-        <target state="translated">A&amp;ffichages</target>
+        <target state="translated">&amp;Vues</target>
         <note>Add, Delete and Views button text in the main ToolStrip</note>
       </trans-unit>
       <trans-unit id="RSE_Btn_Add_ExistingFile">
         <source>&amp;Existing File...</source>
-        <target state="translated">Fichi&amp;er existant...</target>
+        <target state="translated">Fichier &amp;existant...</target>
         <note>Menu items under the "Add" button</note>
       </trans-unit>
       <trans-unit id="RSE_Btn_Add_String">
         <source>New &amp;String</source>
-        <target state="translated">Nou&amp;velle chaîne</target>
+        <target state="translated">Nouvelle &amp;chaîne</target>
         <note>Menu items under the "Add" button</note>
       </trans-unit>
       <trans-unit id="RSE_Btn_Add_Image">
@@ -1609,7 +1608,7 @@ CONSIDER: get this from CodeDom</note>
       </trans-unit>
       <trans-unit id="RSE_Btn_Add_TextFile">
         <source>New &amp;Text File...</source>
-        <target state="translated">Nouveau fichier &amp;texte...</target>
+        <target state="translated">Nouveau fichier de &amp;texte...</target>
         <note>Menu items under the "Add" button</note>
       </trans-unit>
       <trans-unit id="RSE_Type_BMP">
@@ -1624,7 +1623,7 @@ CONSIDER: get this from CodeDom</note>
       </trans-unit>
       <trans-unit id="RSE_Type_GIF">
         <source>Graphics Interchange Format</source>
-        <target state="translated">Graphics Interchange Format</target>
+        <target state="new">Graphics Interchange Format</target>
         <note>Friendly Image types</note>
       </trans-unit>
       <trans-unit id="RSE_Type_JPEG">
@@ -1639,12 +1638,12 @@ CONSIDER: get this from CodeDom</note>
       </trans-unit>
       <trans-unit id="RSE_Type_PNG">
         <source>Portable Network Graphics</source>
-        <target state="translated">Portable Network Graphics</target>
+        <target state="new">Portable Network Graphics</target>
         <note>Friendly Image types</note>
       </trans-unit>
       <trans-unit id="RSE_Type_TIFF">
         <source>Tag Image File Format</source>
-        <target state="translated">Tag Image File Format</target>
+        <target state="new">Tag Image File Format</target>
         <note>Friendly Image types</note>
       </trans-unit>
       <trans-unit id="RSE_Type_Icon">
@@ -1706,7 +1705,7 @@ CONSIDER: get this from CodeDom</note>
       </trans-unit>
       <trans-unit id="RSE_Filter_Text">
         <source>Text Files</source>
-        <target state="translated">Fichiers texte</target>
+        <target state="translated">Fichiers textes</target>
         <note># File dialog filters
 #
 # E.g., for icons, the actual filter created would look like "Icons (*.ico)".  These resources
@@ -1733,7 +1732,7 @@ CONSIDER: get this from CodeDom</note>
       </trans-unit>
       <trans-unit id="RSE_FilterSave_PNG">
         <source>Portable Network Graphics</source>
-        <target state="translated">Portable Network Graphics</target>
+        <target state="new">Portable Network Graphics</target>
         <note># File dialog filters
 #
 # E.g., for icons, the actual filter created would look like "Icons (*.ico)".  These resources
@@ -1742,7 +1741,7 @@ CONSIDER: get this from CodeDom</note>
       </trans-unit>
       <trans-unit id="RSE_FilterSave_GIF">
         <source>Graphics Interchange Format</source>
-        <target state="translated">Graphics Interchange Format</target>
+        <target state="new">Graphics Interchange Format</target>
         <note># File dialog filters
 #
 # E.g., for icons, the actual filter created would look like "Icons (*.ico)".  These resources
@@ -1760,7 +1759,7 @@ CONSIDER: get this from CodeDom</note>
       </trans-unit>
       <trans-unit id="RSE_FilterSave_TIFF">
         <source>Tag Image File Format</source>
-        <target state="translated">Tag Image File Format</target>
+        <target state="new">Tag Image File Format</target>
         <note># File dialog filters
 #
 # E.g., for icons, the actual filter created would look like "Icons (*.ico)".  These resources
@@ -1778,7 +1777,7 @@ CONSIDER: get this from CodeDom</note>
       </trans-unit>
       <trans-unit id="RSE_Btn_Views_List">
         <source>&amp;List</source>
-        <target state="translated">&amp;Répertorier</target>
+        <target state="translated">&amp;Liste</target>
         <note>Resource editor listview view styles (like changing the view style of a folder in Windows XP)</note>
       </trans-unit>
       <trans-unit id="RSE_Btn_Views_Details">
@@ -2197,7 +2196,7 @@ Voulez-vous mettre à jour la valeur dans le fichier .settings ?</target>
       </trans-unit>
       <trans-unit id="SD_MNU_RemoveSettingText">
         <source>R&amp;emove Setting</source>
-        <target state="translated">Supprim&amp;er un paramètre</target>
+        <target state="translated">Supprim&amp;er le paramètre</target>
         <note />
       </trans-unit>
       <trans-unit id="SD_FullDescriptionText">
@@ -2350,7 +2349,7 @@ Voulez-vous mettre à jour la valeur dans le fichier .settings ?</target>
       </trans-unit>
       <trans-unit id="PPG_Application_RootNamespaceJSharp">
         <source>Default pac&amp;kage:</source>
-        <target state="translated">Pac&amp;kage par défaut :</target>
+        <target state="translated">Pac&amp;kage par défaut :</target>
         <note>J# Specific String for Root Namespace</note>
       </trans-unit>
       <trans-unit id="RSE_AccessModifier_Custom">
@@ -2530,7 +2529,7 @@ Voulez-vous mettre à jour la valeur dans le fichier .settings ?</target>
       </trans-unit>
       <trans-unit id="PPG_Services_InvalidAppConfigXml">
         <source>An error occurred while reading the Application configuration file.  The file might be corrupted or contain invalid XML.</source>
-        <target state="translated">Une erreur s'est produite pendant la lecture du fichier de configuration de l'application.  Ce fichier est peut-être endommagé ou contient du code XML non valide.</target>
+        <target state="translated">Une erreur s'est produite durant la lecture du fichier config de l'application. Ce fichier est peut-être endommagé ou contient du code XML non valide.</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Services_InvalidUrl">
@@ -2615,7 +2614,7 @@ Voulez-vous mettre à jour la valeur dans le fichier .settings ?</target>
       </trans-unit>
       <trans-unit id="PPG_SecurityPage_XBAPOutOfTrustZoneToolTip">
         <source>The application will fail to run in the selected zone because of this requested elevated permission. Click the help link above for more info.</source>
-        <target state="translated">L'application ne peut pas s'exécuter dans la zone sélectionnée en raison de cette demande d'autorisation élevée. Cliquez sur le lien d'aide ci-dessus pour plus d'informations.</target>
+        <target state="translated">L'application ne pourra pas s'exécuter dans la zone sélectionnée en raison de cette demande d'autorisation élevée. Cliquez sur le lien d'aide ci-dessus pour plus d'informations.</target>
         <note />
       </trans-unit>
       <trans-unit id="XmlToSchema_InvalidXMLFormat">
@@ -2745,7 +2744,7 @@ Voulez-vous mettre à jour la valeur dans le fichier .settings ?</target>
       </trans-unit>
       <trans-unit id="PPG_AdvancedBuildSettings_DebugInfo_Full">
         <source>Full</source>
-        <target state="translated">Total</target>
+        <target state="translated">Complet</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_AdvancedBuildSettings_DebugInfo_None">

@@ -14,7 +14,7 @@
       </trans-unit>
       <trans-unit id="ReferencePath.AccessibleName">
         <source>Order of Reference Paths</source>
-        <target state="translated">Ordine dei percorsi del riferimento</target>
+        <target state="translated">Ordine dei percorsi di riferimento</target>
         <note />
       </trans-unit>
       <trans-unit id="ReferencePathLabel.Text">

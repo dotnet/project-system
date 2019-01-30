@@ -4,7 +4,7 @@
     <body>
       <trans-unit id="HelpLabel.Text">
         <source>Client application services enable your Windows-based applications to use the ASP.NET login (authentication), roles, and profile (settings) services.  Learn more about client application services...</source>
-        <target state="translated">클라이언트 응용 프로그램 서비스를 사용하면 Windows 기반 응용 프로그램에서 ASP.NET 로그인(인증), 역할 및 프로필(설정) 서비스를 사용할 수 있습니다.  클라이언트 응용 프로그램 서비스에 대한 자세한 정보...</target>
+        <target state="translated">클라이언트 애플리케이션 서비스를 사용하면 Windows 기반 애플리케이션에서 ASP.NET 로그인(인증), 역할 및 프로필(설정) 서비스를 사용할 수 있습니다.  클라이언트 애플리케이션 서비스에 대한 자세한 정보...</target>
         <note />
       </trans-unit>
       <trans-unit id="WindowsBasedAuth.Text">
@@ -51,7 +51,7 @@
       </trans-unit>
       <trans-unit id="EnableApplicationServices.Text">
         <source>&amp;Enable client application services</source>
-        <target state="translated">클라이언트 응용 프로그램 서비스 사용(&amp;E)</target>
+        <target state="translated">클라이언트 애플리케이션 서비스 사용(&amp;E)</target>
         <note />
       </trans-unit>
     </body>
