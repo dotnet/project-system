@@ -339,14 +339,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
                             _dependenciesSnapshotProvider.SnapshotChanged += OnDependenciesSnapshotChanged;
 
-                            Task<IProjectVersionedValue<IProjectTreeSnapshot>> nowait = SubmitTreeUpdateAsync(
-                                (treeSnapshot, configuredProjectExports, cancellationToken) =>
+                            _ = SubmitTreeUpdateAsync(
+                                delegate
                                 {
                                     IProjectTree dependenciesNode = CreateDependenciesFolder();
-
-                                    // TODO create providers nodes that can be visible when empty
-                                    //dependenciesNode = CreateOrUpdateSubTreeProviderNodes(dependenciesNode, 
-                                    //                                                      cancellationToken);
 
                                     return Task.FromResult(new TreeUpdateResult(dependenciesNode));
                                 },
@@ -427,6 +423,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 async (treeSnapshot, configuredProjectExports, cancellationToken) =>
                 {
                     IProjectTree dependenciesNode = treeSnapshot.Value.Tree;
+
                     if (!cancellationToken.IsCancellationRequested)
                     {
                         dependenciesNode = await viewProvider.BuildTreeAsync(dependenciesNode, snapshot, cancellationToken);
