@@ -72,13 +72,13 @@ The [`DependenciesTreeViewProvider`][DependenciesTreeViewProvider] traverses dow
 
 #### `IDependencyModel` Identifiers
 
-Instances of `IDependencyModel`'s produced by an `IProjectDependenciesSubTreeProvider` must have an `Id` propety that's unique to that provider and that project.
+Instances of [`IDependencyModel`][IDependencyModel]'s produced by an [`IProjectDependenciesSubTreeProvider`][IProjectDependenciesSubTreeProvider] must have an `Id` propety that's unique to that provider and that project.
 
 For dependencies obtained via MSBuild evaluations (Packages, Assemblies, etc...) the `Id` is just the `OriginalItemSpec`.
 
 #### `IDependency` Identifiers
 
-Once a dependency model is integrated into a dependencies snapshot as an `IDependency`, its `Id` will be constructed from the target framework, provider type and model ID. For example: `netstandard2.0/nugetdependency/newtonsoft.json`
+Once a dependency model is integrated into a dependencies snapshot as an [`IDependency`][IDependency], its `Id` will be constructed from the target framework, provider type and model ID. For example: `netstandard2.0/nugetdependency/newtonsoft.json`
 
 This allows the ID to be unique within both the provider and the target framework.
 
@@ -128,14 +128,14 @@ Whenever this event fires we find the corresponding [`IDependency`][IDependency]
 
 Each `GraphNode` must have a unique ID of type `Microsoft.VisualStudio.GraphModel.GraphNodeId`.
 
-`GraphNodeId` is a recursive type, meaning an instance may be comprised of several partial `GrahNodeId` objects. This composition is performed by `GraphNodeId.GetNested`.
+`GraphNodeId` is a recursive type, meaning an instance may be comprised of several partial `GraphNodeId` objects. This composition is performed by `GraphNodeId.GetNested`.
 
 As mentioned earlier, `GraphNode`s are automatically created for `IProjectTree` nodes marked with the `ProjectTreeFlags.Common.ResolvedReference` flag. These graph nodes are created with IDs comprising two sub-IDs:
 
 1. `Assembly` which identifies the project (a `Uri` of full path to the containing project file)
 2. `File` which identifies the graph node within that project (a `Uri` modelling something unique about that node)
    - For top level dependency nodes, this is the numeric ID assigned to the node as a string prefixed with `>` (e.g. `>56`)
-   - For child nodes (created lazily when the user expands top level nodes), this is the composite `IDependency.Id` discussed above (e.g. `netstandard2.0/nugetdependency/newtonsoft.json`)
+   - For child nodes (created lazily when the user expands top level nodes), this is the composite [`IDependency.Id`][IDependency] discussed above (e.g. `netstandard2.0/nugetdependency/newtonsoft.json`)
 
 If a project is renamed, the `Assembly` URI of graph nodes within that project are automatically updated to reflect the new project path.
 
@@ -143,8 +143,8 @@ If a project is renamed, the `Assembly` URI of graph nodes within that project a
 
 Project flavors can extend the Dependencies node with additional sub-trees. To do so:
 
-- Implement and export an `IProjectDependenciesSubTreeProvider` implementation per sub-tree
-- Provide a custom implementation of `IDependencyModel`
+- Implement and export an [`IProjectDependenciesSubTreeProvider`][IProjectDependenciesSubTreeProvider] implementation per sub-tree
+- Provide a custom implementation of [`IDependencyModel`][IDependencyModel]
 - Potentially implement `IProjectTreeProvider` (usually by deriving from `ProjectTreeProviderBase`)
 
 The _Web Tools Extensions_ project is a good example of a project flavor that does this.
