@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
             return true;
         }
 
-        public virtual bool HasChildren(string projectPath, IDependency dependency)
+        public virtual bool HasChildren(IDependency dependency)
         {
             return dependency.DependencyIDs.Length != 0;
         }
@@ -117,7 +117,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
         }
 
         public virtual bool MatchSearchResults(
-            string projectPath,
             IDependency topLevelDependency,
             Dictionary<string, HashSet<IDependency>> searchResultsPerContext,
             out HashSet<IDependency> topLevelDependencyMatches)

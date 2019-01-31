@@ -25,7 +25,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             filter.BeforeAddOrUpdate(
                 null,
-                null,
                 unresolvedDependency,
                 null,
                 null,
@@ -51,7 +50,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             filter.BeforeAddOrUpdate(
                 null,
-                null,
                 unresolvedDependency,
                 null,
                 null,
@@ -76,7 +74,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var filter = new UnresolvedDependenciesSnapshotFilter();
 
             filter.BeforeAddOrUpdate(
-                null,
                 null,
                 resolvedDependency,
                 null,

@@ -21,7 +21,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             filter.BeforeAddOrUpdate(
                 null,
-                null,
                 dependency,
                 null,
                 projectItemSpecs,

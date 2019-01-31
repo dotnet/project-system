@@ -729,7 +729,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             }
 
             public void BeforeAddOrUpdate(
-                string projectPath,
                 ITargetFramework targetFramework,
                 IDependency dependency,
                 IReadOnlyDictionary<string, IProjectDependenciesSubTreeProvider> subTreeProviderByProviderType,
@@ -763,7 +762,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             }
 
             public void BeforeRemove(
-                string projectPath,
                 ITargetFramework targetFramework,
                 IDependency dependency,
                 IRemoveDependencyContext context)

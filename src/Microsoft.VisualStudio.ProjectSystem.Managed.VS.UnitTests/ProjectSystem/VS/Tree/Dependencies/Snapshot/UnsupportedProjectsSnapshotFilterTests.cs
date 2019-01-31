@@ -62,7 +62,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
                 filter.BeforeAddOrUpdate(
                     null,
-                    null,
                     dependency,
                     null,
                     null,
@@ -106,7 +105,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             filter.BeforeAddOrUpdate(
                 null,
-                null,
                 dependency,
                 null,
                 null,
@@ -147,7 +145,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var filter = new UnsupportedProjectsSnapshotFilter(aggregateSnapshotProvider.Object);
 
             filter.BeforeAddOrUpdate(
-                null,
                 null,
                 dependency,
                 null,
@@ -191,7 +188,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var filter = new UnsupportedProjectsSnapshotFilter(aggregateSnapshotProvider.Object);
 
             filter.BeforeAddOrUpdate(
-                null,
                 null,
                 dependency,
                 null,

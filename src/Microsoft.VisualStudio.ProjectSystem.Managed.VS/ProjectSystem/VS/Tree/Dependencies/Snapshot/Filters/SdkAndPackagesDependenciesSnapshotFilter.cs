@@ -24,7 +24,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
         public const int Order = 110;
 
         public override void BeforeAddOrUpdate(
-            string projectPath,
             ITargetFramework targetFramework,
             IDependency dependency,
             IReadOnlyDictionary<string, IProjectDependenciesSubTreeProvider> subTreeProviderByProviderType,
@@ -81,7 +80,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
         }
 
         public override void BeforeRemove(
-            string projectPath,
             ITargetFramework targetFramework,
             IDependency dependency,
             IRemoveDependencyContext context)
