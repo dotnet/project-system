@@ -20,7 +20,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
             filter.BeforeAddOrUpdate(
                 null,
-                null,
                 dependency,
                 null,
                 projectItemSpecs,

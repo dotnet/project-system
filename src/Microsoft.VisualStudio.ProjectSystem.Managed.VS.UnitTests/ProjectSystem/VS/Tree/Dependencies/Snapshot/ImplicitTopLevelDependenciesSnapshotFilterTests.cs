@@ -137,7 +137,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
             filter.BeforeAddOrUpdate(
                 null,
-                null,
                 dependency,
                 new Dictionary<string, IProjectDependenciesSubTreeProvider> { { providerType, subTreeProvider } },
                 ImmutableHashSet<string>.Empty,

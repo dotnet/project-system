@@ -44,7 +44,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
             filter.BeforeAddOrUpdate(
                 null,
-                null,
                 dependency,
                 null,
                 null,
@@ -92,7 +91,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             var filter = new DuplicatedDependenciesSnapshotFilter();
 
             filter.BeforeAddOrUpdate(
-                null,
                 null,
                 dependency,
                 null,
@@ -150,7 +148,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
             filter.BeforeAddOrUpdate(
                 null,
-                null,
                 dependency,
                 null,
                 null,
@@ -202,7 +199,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             var filter = new DuplicatedDependenciesSnapshotFilter();
 
             filter.BeforeAddOrUpdate(
-                null,
                 null,
                 dependency,
                 null,

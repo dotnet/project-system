@@ -41,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
             return dependency.IsProject();
         }
 
-        public override bool HasChildren(string projectPath, IDependency dependency)
+        public override bool HasChildren(IDependency dependency)
         {
             ITargetedDependenciesSnapshot targetedSnapshot = _aggregateSnapshotProvider.GetSnapshot(dependency);
 
@@ -119,7 +119,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
         }
 
         public override bool MatchSearchResults(
-            string projectPath,
             IDependency topLevelDependency,
             Dictionary<string, HashSet<IDependency>> searchResultsPerContext,
             out HashSet<IDependency> topLevelDependencyMatches)

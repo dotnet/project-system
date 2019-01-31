@@ -58,7 +58,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             var filter = new SdkAndPackagesDependenciesSnapshotFilter();
 
             filter.BeforeAddOrUpdate(
-                null,
                 targetFramework,
                 sdkDependency,
                 null,
@@ -109,7 +108,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             var filter = new SdkAndPackagesDependenciesSnapshotFilter();
 
             filter.BeforeAddOrUpdate(
-                null,
                 targetFramework,
                 sdkDependency,
                 null,
@@ -157,7 +155,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             var filter = new SdkAndPackagesDependenciesSnapshotFilter();
 
             filter.BeforeAddOrUpdate(
-                null,
                 targetFramework,
                 packageDependency,
                 null,
@@ -208,7 +205,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             var filter = new SdkAndPackagesDependenciesSnapshotFilter();
 
             filter.BeforeRemove(
-                projectPath: null,
                 targetFramework: targetFramework,
                 dependency: packageDependency,
                 context);
