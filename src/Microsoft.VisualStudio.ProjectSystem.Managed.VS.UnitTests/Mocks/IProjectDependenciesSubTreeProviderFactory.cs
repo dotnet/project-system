@@ -12,11 +12,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     internal static class IProjectDependenciesSubTreeProviderFactory
     {
-        public static IProjectDependenciesSubTreeProvider Create()
-        {
-            return Mock.Of<IProjectDependenciesSubTreeProvider>();
-        }
-
         public static IProjectDependenciesSubTreeProvider Implement(
             string providerType = null,
             IDependency createRootDependencyNode = null,
