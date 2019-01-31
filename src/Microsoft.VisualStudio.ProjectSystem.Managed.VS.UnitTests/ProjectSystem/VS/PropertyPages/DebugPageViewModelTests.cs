@@ -60,7 +60,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                     {
                         data.Profiles = new List<ILaunchProfile>(newProfiles.Profiles);
                     }
-                ).Returns(Task.Run(() => { })).Verifiable();
+                ).ReturnsAsync(() => { }).Verifiable();
 
             data.ProfileProvider = mockProfileProvider.Object;
 

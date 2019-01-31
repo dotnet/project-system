@@ -48,19 +48,19 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 It.IsIn<string>(propertyNameAndValues.Keys),
                 It.IsAny<string>(), null))
                  .Returns<string, string, IReadOnlyDictionary<string, string>>((k, v, d) =>
-                    Task.Run(() =>
                     {
                         propertyNameAndValues[k] = v;
-                    }));
+                        return Task.CompletedTask;
+                    });
 
             mock.Setup(t => t.DeletePropertyAsync(
                 It.IsIn<string>(propertyNameAndValues.Keys),
                 null))
                  .Returns<string, IReadOnlyDictionary<string, string>>((propName, d) =>
-                    Task.Run(() =>
                     {
                         propertyNameAndValues[propName] = null;
-                    }));
+                        return Task.CompletedTask;
+                    });
 
             return mock;
         }
