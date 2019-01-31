@@ -58,7 +58,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         public void CreateRootViewModel()
         {
             var project = UnconfiguredProjectFactory.Create();
-            var dependency = IDependencyFactory.FromJson(@"
+            var dependencyModel = IDependencyModelFactory.FromJson(@"
 {
     ""ProviderType"": ""MyProvider1"",
     ""Id"": ""ZzzDependencyRoot"",
@@ -68,7 +68,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             var subTreeProvider1 = IProjectDependenciesSubTreeProviderFactory.Implement(
                 providerType: "MyProvider1",
-                createRootDependencyNode: dependency);
+                createRootDependencyNode: dependencyModel);
             var subTreeProvider2 = IProjectDependenciesSubTreeProviderFactory.Implement(
                 providerType: "MyProvider2");
 

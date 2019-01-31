@@ -105,7 +105,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
 
                     context.AddOrUpdate(sdk.ToUnresolved(
                         schemaName: SdkReference.SchemaName,
-                        dependencyIDs: ImmutableList<string>.Empty));
+                        dependencyIDs: ImmutableArray<string>.Empty));
                 }
             }
 

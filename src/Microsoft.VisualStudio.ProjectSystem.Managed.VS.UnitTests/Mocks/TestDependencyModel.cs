@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -20,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         public string Path { get; set; }
         public string SchemaName { get; set; }
         public string SchemaItemType { get; set; }
-        public string Version { get; set; }
+        public string Version => throw new NotImplementedException();
         public bool Resolved { get; set; } = false;
         public bool TopLevel { get; set; } = true;
         public bool Implicit { get; set; } = false;
@@ -46,16 +47,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                    && (Path == null || OriginalItemSpec == dependency.Path)
                    && (SchemaName == null || SchemaName == dependency.SchemaName)
                    && (SchemaItemType == null || !Flags.Contains(DependencyTreeFlags.GenericDependencyFlags) || SchemaItemType == dependency.SchemaItemType)
-                   && (Version == null || Version == dependency.Version)
                    && Resolved == dependency.Resolved
                    && TopLevel == dependency.TopLevel
                    && Implicit == dependency.Implicit
                    && Visible == dependency.Visible
                    && Priority == dependency.Priority
-                   && Equals(Icon, dependency.Icon)
-                   && Equals(ExpandedIcon, dependency.ExpandedIcon)
-                   && Equals(UnresolvedIcon, dependency.UnresolvedIcon)
-                   && Equals(UnresolvedExpandedIcon, dependency.UnresolvedExpandedIcon)
+                   && Equals(Icon, dependency.IconSet.Icon)
+                   && Equals(ExpandedIcon, dependency.IconSet.ExpandedIcon)
+                   && Equals(UnresolvedIcon, dependency.IconSet.UnresolvedIcon)
+                   && Equals(UnresolvedExpandedIcon, dependency.IconSet.UnresolvedExpandedIcon)
                    && Equals(Properties, dependency.Properties)
                    && SetEquals(DependencyIDs, dependency.DependencyIDs);
         }

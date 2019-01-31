@@ -38,8 +38,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 
         public override string SchemaName => Resolved ? ResolvedSdkReference.SchemaName : SdkReference.SchemaName;
 
-        public override string Version { get; }
-
         public SdkDependencyModel(
             string path,
             string originalItemSpec,
@@ -54,9 +52,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
                 isImplicit,
                 properties)
         {
-            Version = properties.GetStringProperty(ProjectItemMetadata.Version) ?? string.Empty;
+            string version = properties.GetStringProperty(ProjectItemMetadata.Version) ?? string.Empty;
             string baseCaption = new LazyStringSplit(path, ',').FirstOrDefault();
-            Caption = string.IsNullOrEmpty(Version) ? baseCaption : $"{baseCaption} ({Version})";
+            Caption = string.IsNullOrEmpty(version) ? baseCaption : $"{baseCaption} ({version})";
         }
     }
 }
