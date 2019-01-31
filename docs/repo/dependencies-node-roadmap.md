@@ -139,6 +139,16 @@ As mentioned earlier, `GraphNode`s are automatically created for `IProjectTree` 
 
 If a project is renamed, the `Assembly` URI of graph nodes within that project are automatically updated to reflect the new project path.
 
+## Extensibility Model
+
+Project flavors can extend the Dependencies node with additional sub-trees. To do so:
+
+- Implement and export an `IProjectDependenciesSubTreeProvider` implementation per sub-tree
+- Provide a custom implementation of `IDependencyModel`
+- Potentially implement `IProjectTreeProvider` (usually by deriving from `ProjectTreeProviderBase`)
+
+The _Web Tools Extensions_ project is a good example of a project flavor that does this.
+
 
 [AggregateCrossTargetProjectContext]:     /src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/Tree/Dependencies/CrossTarget/AggregateCrossTargetProjectContext.cs "AggregateCrossTargetProjectContext.cs"
 [IDependenciesRuleHandler]:               /src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/Tree/Dependencies/CrossTarget/IDependenciesRuleHandler.cs "IDependenciesRuleHandler.cs"
