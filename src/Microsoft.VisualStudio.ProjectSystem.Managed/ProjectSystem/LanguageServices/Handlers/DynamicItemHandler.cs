@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     [Export(typeof(IWorkspaceContextHandler))]
     internal class DynamicItemHandler : AbstractWorkspaceContextHandler, IProjectEvaluationHandler
     {
-        private const string DynamicFileExtension = ".cshtml";
+        private static readonly HashSet<string> s_fileExtenstions = new HashSet<string>(StringComparers.Paths) { ".cshtml", ".razor" };
         private readonly UnconfiguredProject _project;
         private readonly HashSet<string> _paths = new HashSet<string>(StringComparers.Paths);
 
@@ -104,7 +104,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         private static bool IsDynamicFile(string includePath)
         {
             // Note a file called just '.cshtml' is still considered a Razor file
-            return includePath.EndsWith(DynamicFileExtension, StringComparison.OrdinalIgnoreCase);
+            return s_fileExtenstions.Contains(Path.GetExtension(includePath));
         }
     }
 }
