@@ -1714,13 +1714,20 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
                 _valueChangedWasFired = False
                 Try
-                    'Go ahead and do the SetValue.  It will throw if there's an exception
-                    '  (other than cancel/checkout exceptions).
-                    Descriptor.SetValue(Component, Value)
+                    Dim _didNotSetEqualValue = False
+                    If String.Equals(TryCast(GetCommonPropertyValue(Descriptor, Component), String), TryCast(Value, String)) Then
+                        'Setting a value equal to its current value can create a useless empty value in the proj file
+                        _didNotSetEqualValue = True
+                    Else
+                        'Go ahead and do the SetValue.  It will throw if there's an exception
+                        '  (other than cancel/checkout exceptions).
+                        Descriptor.SetValue(Component, Value)
+                    End If
 
-                    'If we made it here, either the value was successfully changed, or
+                    'If we made it here, either the value was successfully changed,
+                    '  the value was not changed because it was already equal, or
                     '  the set was canceled by the user in a checkout dialog, etc.
-                    If _valueChangedWasFired Then
+                    If _valueChangedWasFired OrElse _didNotSetEqualValue Then
                         'The set was successful
                         Return
                     Else
