@@ -11,7 +11,7 @@
       </trans-unit>
       <trans-unit id="ImportsAnywaysFormatString">
         <source>&amp;Import '{0}' and qualify the affected identifiers.</source>
-        <target state="translated">&amp;Importer '{0}' et qualifier les identificateurs affectés.</target>
+        <target state="needs-review-translation">&amp;Importer '{0}' et qualifier les identificateurs affectés.</target>
         <note>
       Defines the replacement string for use in "Imports Anyways" option of the add imports collision dialog.
       This text will be formated as richtext.
@@ -25,7 +25,7 @@
       </trans-unit>
       <trans-unit id="QualifyCurrentLineFormatString">
         <source>&amp;Do not import '{0}', but change '{1}' to '{2}'.</source>
-        <target state="translated">&amp;Ne pas importer '{0}', mais remplacer '{1}' par '{2}'.</target>
+        <target state="needs-review-translation">&amp;Ne pas importer '{0}', mais remplacer '{1}' par '{2}'.</target>
         <note>
       Defines the replacement string for use in the "Qualify Current Line" option of the Add Imports collision dialog. 
       This text will be formated as richtext. 

@@ -34,7 +34,7 @@
       </trans-unit>
       <trans-unit id="EnumValue|RunPostBuildEvent.OnOutputUpdated|DisplayName">
         <source>When the build updates the project output</source>
-        <target state="translated">Bei der Aktualisierung der Projektausgabe während der Erstellung</target>
+        <target state="translated">Wenn der Build die Projektausgabe aktualisiert</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|FileName|DisplayName">

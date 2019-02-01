@@ -9,7 +9,7 @@
       </trans-unit>
       <trans-unit id="TrademarkLabel.Text">
         <source>T&amp;rademark:</source>
-        <target state="translated">&amp;Marchio:</target>
+        <target state="translated">Ma&amp;rchio:</target>
         <note />
       </trans-unit>
       <trans-unit id="CopyrightLabel.Text">
@@ -29,7 +29,7 @@
       </trans-unit>
       <trans-unit id="DescriptionLabel.Text">
         <source>&amp;Description:</source>
-        <target state="translated">Descri&amp;zione:</target>
+        <target state="translated">&amp;Descrizione:</target>
         <note />
       </trans-unit>
       <trans-unit id="ComVisibleCheckBox.Text">
@@ -39,37 +39,37 @@
       </trans-unit>
       <trans-unit id="NeutralLanguageLabel.Text">
         <source>&amp;Neutral language:</source>
-        <target state="translated">&amp;Lingua di sistema:</target>
+        <target state="translated">Lingua di &amp;sistema:</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyVersionLabel.Text">
         <source>&amp;Assembly version:</source>
-        <target state="translated">Versione dell'&amp;assembly:</target>
+        <target state="translated">Versione &amp;assembly:</target>
         <note />
       </trans-unit>
       <trans-unit id="FileVersionLabel.Text">
         <source>&amp;File version:</source>
-        <target state="translated">V&amp;ersione del file:</target>
+        <target state="translated">Versione &amp;file:</target>
         <note />
       </trans-unit>
       <trans-unit id="FileVersionMajorTextBox.AccessibleName">
         <source>File Version major</source>
-        <target state="needs-review-translation">Principale</target>
+        <target state="translated">Versione principale versione del file</target>
         <note />
       </trans-unit>
       <trans-unit id="FileVersionMinorTextBox.AccessibleName">
         <source>File Version minor</source>
-        <target state="needs-review-translation">Secondaria</target>
+        <target state="translated">Versione secondaria versione del file</target>
         <note />
       </trans-unit>
       <trans-unit id="FileVersionBuildTextBox.AccessibleName">
         <source>File Version build</source>
-        <target state="needs-review-translation">Compilazione</target>
+        <target state="translated">Build versione del file</target>
         <note />
       </trans-unit>
       <trans-unit id="FileVersionRevisionTextBox.AccessibleName">
         <source>File Version revision</source>
-        <target state="needs-review-translation">Revisione</target>
+        <target state="translated">Revisione versione del file</target>
         <note />
       </trans-unit>
       <trans-unit id="GuidLabel.Text">
@@ -79,22 +79,22 @@
       </trans-unit>
       <trans-unit id="AssemblyVersionMajorTextBox.AccessibleName">
         <source>Assembly Version major</source>
-        <target state="needs-review-translation">Principale</target>
+        <target state="translated">Versione principale versione dell'assembly</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyVersionMinorTextBox.AccessibleName">
         <source>Assembly Version minor</source>
-        <target state="needs-review-translation">Secondaria</target>
+        <target state="translated">Versione secondaria versione dell'assembly</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyVersionBuildTextBox.AccessibleName">
         <source>Assembly Version build</source>
-        <target state="needs-review-translation">Compilazione</target>
+        <target state="translated">Build versione dell'assembly</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyVersionRevisionTextBox.AccessibleName">
         <source>Assembly Version revision</source>
-        <target state="needs-review-translation">Revisione</target>
+        <target state="translated">Revisione versione dell'assembly</target>
         <note />
       </trans-unit>
     </body>

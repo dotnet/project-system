@@ -34,7 +34,7 @@
       </trans-unit>
       <trans-unit id="General_UsePreviewSdk">
         <source>Use previews of the .NET Core SDK</source>
-        <target state="translated">.NET Core SDK のプレビューを使用する</target>
+        <target state="translated">プレビューの .NET Core SDK を使用</target>
         <note />
       </trans-unit>
     </body>

@@ -44,12 +44,12 @@
       </trans-unit>
       <trans-unit id="StartOptionsLabel.Text">
         <source>Start options</source>
-        <target state="translated">Opções de inicialização</target>
+        <target state="translated">Opções de Inicialização</target>
         <note />
       </trans-unit>
       <trans-unit id="CommandLineArgsLabel.Text">
         <source>Comma&amp;nd line arguments:</source>
-        <target state="translated">Argumentos da linha de coma&amp;ndo:</target>
+        <target state="translated">Argumentos de linha de coma&amp;ndo:</target>
         <note />
       </trans-unit>
       <trans-unit id="WorkingDirLabel.Text">

@@ -4,7 +4,7 @@
     <body>
       <trans-unit id="lblConditionalCompilationSymbols.Text">
         <source>Conditional compilation s&amp;ymbols:</source>
-        <target state="translated">條件式編譯的符號(&amp;Y):</target>
+        <target state="translated">條件式編譯符號(&amp;Y):</target>
         <note />
       </trans-unit>
       <trans-unit id="outputLabel.Text">
@@ -99,12 +99,12 @@
       </trans-unit>
       <trans-unit id="chkOptimizeCode.Text">
         <source>Optimi&amp;ze code</source>
-        <target state="translated">最佳化程式碼(&amp;Z)</target>
+        <target state="translated">將程式碼最佳化(&amp;Z)</target>
         <note />
       </trans-unit>
       <trans-unit id="chkAllowUnsafeCode.Text">
         <source>Allow unsa&amp;fe code</source>
-        <target state="translated">容許不安全的程式碼(&amp;F)</target>
+        <target state="translated">允許不安全的程式碼(&amp;F)</target>
         <note />
       </trans-unit>
       <trans-unit id="chkPrefer32Bit.Text">
@@ -139,12 +139,12 @@
       </trans-unit>
       <trans-unit id="txtSpecificWarnings.AccessibleName">
         <source>Specific Warnings To Treat As Errors</source>
-        <target state="new">Specific Warnings To Treat As Errors</target>
+        <target state="translated">要視為錯誤的特定警告</target>
         <note />
       </trans-unit>
       <trans-unit id="txtXMLDocumentationFile.AccessibleName">
         <source>XML Document File Path</source>
-        <target state="new">XML Document File Path</target>
+        <target state="translated">XML 文件檔案路徑</target>
         <note />
       </trans-unit>
     </body>

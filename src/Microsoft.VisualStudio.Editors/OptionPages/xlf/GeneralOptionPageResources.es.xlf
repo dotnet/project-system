@@ -14,7 +14,7 @@
       </trans-unit>
       <trans-unit id="General_FastUpToDateCheck_LogLevel_Info">
         <source>Info</source>
-        <target state="translated">Info</target>
+        <target state="translated">Información</target>
         <note />
       </trans-unit>
       <trans-unit id="General_FastUpToDateCheck_LogLevel_None">
@@ -34,7 +34,7 @@
       </trans-unit>
       <trans-unit id="General_UsePreviewSdk">
         <source>Use previews of the .NET Core SDK</source>
-        <target state="translated">Usar versiones preliminares del SDK de .NET Core</target>
+        <target state="translated">Utiliza versiones preliminares del SDK de .NET Core</target>
         <note />
       </trans-unit>
     </body>

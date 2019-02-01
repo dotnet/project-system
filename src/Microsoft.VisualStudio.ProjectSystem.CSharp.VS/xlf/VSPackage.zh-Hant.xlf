@@ -69,7 +69,7 @@
       </trans-unit>
       <trans-unit id="14">
         <source>A project that contains NUnit tests that can run on .NET Core on Windows, Linux and MacOS.</source>
-        <target state="translated">此專案包含 NUnit 測試，可以在 Windows、Linux 及 MacOS 的 .NET Core 上執行。</target>
+        <target state="translated">包含可在 Windows、Linux 和 MacOS 上於 .NET Core 執行之 NUnit 測試的專案。</target>
         <note />
       </trans-unit>
     </body>

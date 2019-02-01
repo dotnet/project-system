@@ -49,7 +49,7 @@
       </trans-unit>
       <trans-unit id="NameCannotBeEmpty">
         <source>Name cannot be empty.</source>
-        <target state="translated">O nome não pode estar vazio.</target>
+        <target state="translated">O nome não pode ficar vazio.</target>
         <note />
       </trans-unit>
       <trans-unit id="NewProfileCaption">
