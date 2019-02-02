@@ -34,7 +34,7 @@
       </trans-unit>
       <trans-unit id="colHeaderExtensionDescription.HeaderText">
         <source>Description</source>
-        <target state="translated">描述</target>
+        <target state="translated">說明</target>
         <note />
       </trans-unit>
     </body>

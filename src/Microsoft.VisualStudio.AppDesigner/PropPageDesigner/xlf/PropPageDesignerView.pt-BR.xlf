@@ -4,7 +4,7 @@
     <body>
       <trans-unit id="PlatformLabel.Text">
         <source>Platfor&amp;m:</source>
-        <target state="translated">Platafor&amp;ma:</target>
+        <target state="translated">Plataform&amp;a:</target>
         <note />
       </trans-unit>
       <trans-unit id="ConfigurationLabel.Text">

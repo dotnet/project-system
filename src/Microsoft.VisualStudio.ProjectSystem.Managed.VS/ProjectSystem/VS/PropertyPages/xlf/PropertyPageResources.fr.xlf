@@ -164,7 +164,7 @@
       </trans-unit>
       <trans-unit id="RemoveBtn">
         <source>Remove</source>
-        <target state="translated">Effacer</target>
+        <target state="translated">Supprimer</target>
         <note />
       </trans-unit>
       <trans-unit id="ValueHeader">

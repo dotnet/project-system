@@ -49,7 +49,7 @@
       </trans-unit>
       <trans-unit id="RepositoryTypeLabel.Text">
         <source>&amp;Repository type:</source>
-        <target state="translated">리포지토리 유형(&amp;R):</target>
+        <target state="translated">리포지토리 형식(&amp;R):</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageProjectUrlLabel.Text">
@@ -69,42 +69,42 @@
       </trans-unit>
       <trans-unit id="AssemblyVersionRevisionTextBox.AccessibleName">
         <source>Assembly Version Revision</source>
-        <target state="needs-review-translation">수정 버전</target>
+        <target state="translated">어셈블리 수정 버전</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyVersionBuildTextBox.AccessibleName">
         <source>Assembly Version Build</source>
-        <target state="needs-review-translation">빌드</target>
+        <target state="translated">어셈블리 버전 빌드</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyVersionMinorTextBox.AccessibleName">
         <source>Assembly Version Minor</source>
-        <target state="needs-review-translation">부</target>
+        <target state="translated">어셈블리 부 버전</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyVersionMajorTextBox.AccessibleName">
         <source>Assembly Version Major</source>
-        <target state="needs-review-translation">주</target>
+        <target state="translated">어셈블리 주 버전</target>
         <note />
       </trans-unit>
       <trans-unit id="FileVersionRevisionTextBox.AccessibleName">
         <source>Assembly File Verison Revision</source>
-        <target state="needs-review-translation">수정 버전</target>
+        <target state="translated">어셈블리 파일 수정 버전</target>
         <note />
       </trans-unit>
       <trans-unit id="FileVersionBuildTextBox.AccessibleName">
         <source>Assembly File Verison Build</source>
-        <target state="needs-review-translation">빌드</target>
+        <target state="translated">어셈블리 파일 버전 빌드</target>
         <note />
       </trans-unit>
       <trans-unit id="FileVersionMinorTextBox.AccessibleName">
         <source>Assembly File Verison Minor</source>
-        <target state="needs-review-translation">부</target>
+        <target state="translated">어셈블리 파일 부 버전</target>
         <note />
       </trans-unit>
       <trans-unit id="FileVersionMajorTextBox.AccessibleName">
         <source>Assembly File Verison Major</source>
-        <target state="needs-review-translation">주</target>
+        <target state="translated">어셈블리 파일 주 버전</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageRequireLicenseAcceptance.Text">

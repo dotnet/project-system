@@ -84,7 +84,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|CustomToolNamespace|Description">
         <source>The namespace into which the output of the custom tool is placed.</source>
-        <target state="translated">Özel aracın çıkışının yerleştirileceği isim uzayı.</target>
+        <target state="translated">Özel aracın çıktısının yerleştirileceği ad alanı.</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|Compile|DisplayName">

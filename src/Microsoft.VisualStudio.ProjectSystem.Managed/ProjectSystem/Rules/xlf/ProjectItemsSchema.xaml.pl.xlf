@@ -9,7 +9,7 @@
       </trans-unit>
       <trans-unit id="ContentType|XML|DisplayName">
         <source>Xml file</source>
-        <target state="translated">Plik xml</target>
+        <target state="translated">Plik XML</target>
         <note />
       </trans-unit>
       <trans-unit id="ContentType|HTML|DisplayName">
@@ -44,7 +44,7 @@
       </trans-unit>
       <trans-unit id="ContentType|EmbeddedResource|DisplayName">
         <source>Embedded resource</source>
-        <target state="translated">Osadzony zasób</target>
+        <target state="translated">Zasób osadzony</target>
         <note />
       </trans-unit>
       <trans-unit id="ItemType|None|DisplayName">
@@ -59,7 +59,7 @@
       </trans-unit>
       <trans-unit id="ItemType|EmbeddedResource|DisplayName">
         <source>Embedded resource</source>
-        <target state="translated">Osadzony zasób</target>
+        <target state="translated">Zasób osadzony</target>
         <note />
       </trans-unit>
       <trans-unit id="ContentType|Page|DisplayName">
@@ -89,12 +89,12 @@
       </trans-unit>
       <trans-unit id="ContentType|Resource|DisplayName">
         <source>Resource</source>
-        <target state="new">Resource</target>
+        <target state="translated">Zasób</target>
         <note />
       </trans-unit>
       <trans-unit id="ItemType|Resource|DisplayName">
         <source>Resource</source>
-        <target state="new">Resource</target>
+        <target state="translated">Zasób</target>
         <note />
       </trans-unit>
     </body>

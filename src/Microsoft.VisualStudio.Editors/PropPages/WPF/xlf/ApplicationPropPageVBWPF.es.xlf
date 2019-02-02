@@ -4,7 +4,7 @@
     <body>
       <trans-unit id="AssemblyNameLabel.Text">
         <source>Assembly &amp;name:</source>
-        <target state="translated">&amp;Nombre de ensamblado:</target>
+        <target state="translated">&amp;Nombre del ensamblado:</target>
         <note />
       </trans-unit>
       <trans-unit id="RootNamespaceLabel.Text">

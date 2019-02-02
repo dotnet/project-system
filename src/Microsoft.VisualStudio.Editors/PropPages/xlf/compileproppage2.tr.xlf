@@ -94,7 +94,7 @@
       </trans-unit>
       <trans-unit id="Prefer32BitCheckBox.Text">
         <source>&amp;Prefer 32-bit</source>
-        <target state="translated">&amp;32 bit tercih et</target>
+        <target state="translated">32 Biti &amp;Tercih Et</target>
         <note />
       </trans-unit>
     </body>

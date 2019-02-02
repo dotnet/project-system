@@ -9,17 +9,17 @@
       </trans-unit>
       <trans-unit id="UpdateFolder.Text">
         <source>&amp;Update</source>
-        <target state="translated">Mettre à jo&amp;ur</target>
+        <target state="translated">&amp;Mettre à jour</target>
         <note />
       </trans-unit>
       <trans-unit id="ReferencePath.AccessibleName">
         <source>Order of Reference Paths</source>
-        <target state="translated">Ordre des chemins des références</target>
+        <target state="translated">Ordre des chemins d'accès des références</target>
         <note />
       </trans-unit>
       <trans-unit id="ReferencePathLabel.Text">
         <source>Reference &amp;paths:</source>
-        <target state="translated">Chemins des &amp;références :</target>
+        <target state="translated">C&amp;hemins d'accès des références :</target>
         <note />
       </trans-unit>
       <trans-unit id="FolderBrowse.AccessibleName">

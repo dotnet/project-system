@@ -9,12 +9,12 @@
       </trans-unit>
       <trans-unit id="TrademarkLabel.Text">
         <source>T&amp;rademark:</source>
-        <target state="translated">&amp;Товарный знак:</target>
+        <target state="translated">Т&amp;орговая марка:</target>
         <note />
       </trans-unit>
       <trans-unit id="CopyrightLabel.Text">
         <source>C&amp;opyright:</source>
-        <target state="translated">&amp;Авторские права:</target>
+        <target state="translated">А&amp;вторские права:</target>
         <note />
       </trans-unit>
       <trans-unit id="ProductLabel.Text">
@@ -29,12 +29,12 @@
       </trans-unit>
       <trans-unit id="DescriptionLabel.Text">
         <source>&amp;Description:</source>
-        <target state="translated">Опи&amp;сание:</target>
+        <target state="translated">&amp;Описание:</target>
         <note />
       </trans-unit>
       <trans-unit id="ComVisibleCheckBox.Text">
         <source>&amp;Make assembly COM-Visible</source>
-        <target state="translated">Сделать сборку &amp;видимой для COM</target>
+        <target state="translated">&amp;Сделать сборку видимой для COM</target>
         <note />
       </trans-unit>
       <trans-unit id="NeutralLanguageLabel.Text">
@@ -44,32 +44,32 @@
       </trans-unit>
       <trans-unit id="AssemblyVersionLabel.Text">
         <source>&amp;Assembly version:</source>
-        <target state="translated">Версия &amp;сборки:</target>
+        <target state="translated">&amp;Версия сборки:</target>
         <note />
       </trans-unit>
       <trans-unit id="FileVersionLabel.Text">
         <source>&amp;File version:</source>
-        <target state="translated">Версия ф&amp;айла:</target>
+        <target state="translated">&amp;Версия файла:</target>
         <note />
       </trans-unit>
       <trans-unit id="FileVersionMajorTextBox.AccessibleName">
         <source>File Version major</source>
-        <target state="needs-review-translation">Основной номер</target>
+        <target state="translated">Основная версия файла</target>
         <note />
       </trans-unit>
       <trans-unit id="FileVersionMinorTextBox.AccessibleName">
         <source>File Version minor</source>
-        <target state="needs-review-translation">Дополнительный номер</target>
+        <target state="translated">Дополнительная версия файла</target>
         <note />
       </trans-unit>
       <trans-unit id="FileVersionBuildTextBox.AccessibleName">
         <source>File Version build</source>
-        <target state="needs-review-translation">Сборка</target>
+        <target state="translated">Сборка версии файла</target>
         <note />
       </trans-unit>
       <trans-unit id="FileVersionRevisionTextBox.AccessibleName">
         <source>File Version revision</source>
-        <target state="needs-review-translation">Редакция</target>
+        <target state="translated">Редакция версии файла</target>
         <note />
       </trans-unit>
       <trans-unit id="GuidLabel.Text">
@@ -79,22 +79,22 @@
       </trans-unit>
       <trans-unit id="AssemblyVersionMajorTextBox.AccessibleName">
         <source>Assembly Version major</source>
-        <target state="needs-review-translation">Основной номер</target>
+        <target state="translated">Основная версия сборки</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyVersionMinorTextBox.AccessibleName">
         <source>Assembly Version minor</source>
-        <target state="needs-review-translation">Дополнительный номер</target>
+        <target state="translated">Дополнительная версия сборки</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyVersionBuildTextBox.AccessibleName">
         <source>Assembly Version build</source>
-        <target state="needs-review-translation">Сборка</target>
+        <target state="translated">Сборка версии сборки</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyVersionRevisionTextBox.AccessibleName">
         <source>Assembly Version revision</source>
-        <target state="needs-review-translation">Редакция</target>
+        <target state="translated">Редакция версии сборки</target>
         <note />
       </trans-unit>
     </body>

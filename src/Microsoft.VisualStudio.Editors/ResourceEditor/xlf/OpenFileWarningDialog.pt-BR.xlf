@@ -29,7 +29,7 @@
       </trans-unit>
       <trans-unit id="$this.Text">
         <source>Open File</source>
-        <target state="translated">Abrir Arquivo</target>
+        <target state="translated">Abrir arquivo</target>
         <note />
       </trans-unit>
     </body>

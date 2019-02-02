@@ -270,7 +270,7 @@ Kliknij przycisk OK, aby to zignorować i kontynuować. Kliknij przycisk ANULUJ,
       </trans-unit>
       <trans-unit id="PPG_PreBuildCommandLineTitle">
         <source>Pre-build Event Command Line</source>
-        <target state="translated">Wiersz polecenia zdarzenia sprzed kompilacji</target>
+        <target state="translated">Wiersz polecenia zdarzenia przed kompilowaniem</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_ProjectReloadedSomePropertiesMayNotHaveBeenSet">

@@ -29,7 +29,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|FolderName|Description">
         <source>Name of this folder</source>
-        <target state="translated">Nome di questa cartella</target>
+        <target state="translated">Nome della cartella corrente</target>
         <note />
       </trans-unit>
     </body>
