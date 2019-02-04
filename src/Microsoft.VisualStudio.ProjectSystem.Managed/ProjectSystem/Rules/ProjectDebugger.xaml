@@ -8,7 +8,7 @@
       xmlns:sys="clr-namespace:System;assembly=mscorlib"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns="http://schemas.microsoft.com/build/2009/properties">
-  
+
   <Rule.DataSource>
     <DataSource Persistence="ProjectFile"  HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
@@ -17,13 +17,13 @@
   <Rule.Metadata>
     <sys:Guid x:Key="DebugTargetTypeCommandGuid">568ABDF7-D522-474D-9EED-34B5E5095BA5</sys:Guid>
     <sys:UInt32 x:Key="DebugTargetTypeCommandId">0x100</sys:UInt32>
-    <sys:String x:Key="DebugTargetDropdownEnum">ActiveDebugProfile</sys:String>  
+    <sys:String x:Key="DebugTargetDropdownEnum">ActiveDebugProfile</sys:String>
   </Rule.Metadata>
 
   <DynamicEnumProperty Name="ActiveDebugProfile" DisplayName="Debug Target" EnumProvider="DebugProfileProvider"
                        Description="Specifies the profile to use for debugging">
     <DynamicEnumProperty.DataSource>
-        <DataSource Persistence="UserFile" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+      <DataSource Persistence="UserFile" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </DynamicEnumProperty.DataSource>
   </DynamicEnumProperty>
 

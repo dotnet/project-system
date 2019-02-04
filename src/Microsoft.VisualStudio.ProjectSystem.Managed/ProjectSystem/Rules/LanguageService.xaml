@@ -5,17 +5,17 @@
     DisplayName="LanguageService"
     PageTemplate="generic"
     xmlns="http://schemas.microsoft.com/build/2009/properties">
-    
-    <Rule.DataSource>
-        <DataSource Persistence="ProjectFile" SourceOfDefaultValue="AfterContext" />
-    </Rule.DataSource>
 
-    <StringProperty Name="RootNamespace" 
-                    Visible="False" 
-                    ReadOnly="True" />
+  <Rule.DataSource>
+    <DataSource Persistence="ProjectFile" SourceOfDefaultValue="AfterContext" />
+  </Rule.DataSource>
 
-    <StringProperty Name="TargetPath" 
-                    Visible="False" 
-                    ReadOnly="True" />
+  <StringProperty Name="RootNamespace"
+                  Visible="False"
+                  ReadOnly="True" />
+
+  <StringProperty Name="TargetPath"
+                  Visible="False"
+                  ReadOnly="True" />
 
 </Rule>

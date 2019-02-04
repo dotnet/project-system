@@ -24,9 +24,9 @@
       <DataSource Persistence="ProjectFile" HasConfigurationCondition="True" SourceOfDefaultValue="BeforeContext"/>
     </StringProperty.DataSource>
   </StringProperty>
-  
+
   <EnumProperty Name="PlatformTarget" Visible="False"/>
-  
+
   <StringProperty Name="IntermediatePath" Visible="false">
     <StringProperty.DataSource>
       <DataSource Persistence="ProjectFile" PersistedName="IntermediateOutputPath" HasConfigurationCondition="True" SourceOfDefaultValue="AfterContext" />
@@ -63,7 +63,7 @@
   <!-- ** removed for RTM: needs translation
   <BoolProperty Name="RegisterForComInterop" Default="False" DisplayName="Register for COM Interop" Visible="False"/>
     -->
-    
+
   <!-- Advanced Build Page Properties -->
   <EnumProperty Name="LanguageVersion" Visible="False">
     <EnumProperty.DataSource>
@@ -99,7 +99,7 @@
       <DataSource Persistence="ProjectFile" HasConfigurationCondition="True" SourceOfDefaultValue="AfterContext" />
     </DynamicEnumProperty.DataSource>
   </DynamicEnumProperty>
-  
+
   <!-- VB Compile Page Properties-->
   <EnumProperty Name="OptionExplicit" Visible="False">
     <EnumProperty.DataSource>

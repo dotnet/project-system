@@ -6,9 +6,9 @@
     PageTemplate="generic"
     Description="Visual Basic Namespace Import"
     xmlns="http://schemas.microsoft.com/build/2009/properties">
-    
-    <Rule.DataSource>
-        <DataSource Persistence="ProjectFile" ItemType="Import" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
-    </Rule.DataSource>
-    
+
+  <Rule.DataSource>
+    <DataSource Persistence="ProjectFile" ItemType="Import" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+  </Rule.DataSource>
+
 </Rule>
