@@ -68,13 +68,23 @@
         <note />
       </trans-unit>
       <trans-unit id="CSharpLanguageVerison.Default">
-        <source>C# latest major version (default)</source>
-        <target state="translated">Последний основной номер версии C# (по умолчанию)</target>
+        <source>C# latest version with preview opt-in (default)</source>
+        <target state="needs-review-translation">Последний основной номер версии C# (по умолчанию)</target>
         <note />
       </trans-unit>
       <trans-unit id="CSharpLanguageVerison.Latest">
         <source>C# latest minor version (latest)</source>
         <target state="translated">Последний дополнительный номер версии C#</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CSharpLanguageVerison.LatestMajor">
+        <source>C# latest major version (latestmajor)</source>
+        <target state="new">C# latest major version (latestmajor)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CSharpLanguageVerison.Preview">
+        <source>unsupported preview of next C# version (preview)</source>
+        <target state="new">unsupported preview of next C# version (preview)</target>
         <note />
       </trans-unit>
     </body>
