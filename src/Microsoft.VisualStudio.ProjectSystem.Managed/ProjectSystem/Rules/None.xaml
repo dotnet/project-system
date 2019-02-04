@@ -5,32 +5,32 @@
   PageTemplate="generic"
   PropertyPagesHidden="true"
   xmlns="http://schemas.microsoft.com/build/2009/properties">
-    <Rule.DataSource>
-        <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" ItemType="None" SourceOfDefaultValue="AfterContext" />
-    </Rule.DataSource>
+  <Rule.DataSource>
+    <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" ItemType="None" SourceOfDefaultValue="AfterContext" />
+  </Rule.DataSource>
 
-    <DynamicEnumProperty Name="{}{ItemType}"
-                     EnumProvider="ItemTypes" />
-    <EnumProperty
-      Name="CopyToOutputDirectory">
-        <EnumValue Name="Never" />
-        <EnumValue Name="Always" />
-        <EnumValue Name="PreserveNewest" />
-    </EnumProperty>
+  <DynamicEnumProperty Name="{}{ItemType}"
+                   EnumProvider="ItemTypes" />
+  <EnumProperty
+    Name="CopyToOutputDirectory">
+    <EnumValue Name="Never" />
+    <EnumValue Name="Always" />
+    <EnumValue Name="PreserveNewest" />
+  </EnumProperty>
 
-    <StringProperty
-      Name="Generator" />
-    <StringProperty
-      Name="CustomToolNamespace" />
+  <StringProperty
+    Name="Generator" />
+  <StringProperty
+    Name="CustomToolNamespace" />
 
-    <StringProperty Name="LastGenOutput" Visible="false" />
-    <BoolProperty Name="DesignTime" Visible="false" />
-    <BoolProperty Name="AutoGen" Visible="false" />
-    <StringProperty Name="CustomTool" Visible="false">
-        <StringProperty.DataSource>
-            <DataSource Persistence="ProjectFile" ItemType="None" PersistedName="Generator" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
-        </StringProperty.DataSource>
-    </StringProperty>
+  <StringProperty Name="LastGenOutput" Visible="false" />
+  <BoolProperty Name="DesignTime" Visible="false" />
+  <BoolProperty Name="AutoGen" Visible="false" />
+  <StringProperty Name="CustomTool" Visible="false">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFile" ItemType="None" PersistedName="Generator" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
 
   <StringProperty Name="FullPath" Visible="false" ReadOnly="true">
     <StringProperty.DataSource>

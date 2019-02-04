@@ -6,12 +6,12 @@
     PageTemplate="generic"
     Description="File Properties"
     xmlns="http://schemas.microsoft.com/build/2009/properties">
-    <Rule.DataSource>
-        <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" ItemType="CopyUpToDateMarker" SourceOfDefaultValue="AfterContext" />
-    </Rule.DataSource>
-    <Rule.Categories>
-        <Category Name="Advanced" DisplayName="Advanced" />
-        <Category Name="Misc" DisplayName="Misc" />
-    </Rule.Categories>
-    <BoolProperty Name="Visible" Default="false" Visible="false" />
+  <Rule.DataSource>
+    <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" ItemType="CopyUpToDateMarker" SourceOfDefaultValue="AfterContext" />
+  </Rule.DataSource>
+  <Rule.Categories>
+    <Category Name="Advanced" DisplayName="Advanced" />
+    <Category Name="Misc" DisplayName="Misc" />
+  </Rule.Categories>
+  <BoolProperty Name="Visible" Default="false" Visible="false" />
 </Rule>

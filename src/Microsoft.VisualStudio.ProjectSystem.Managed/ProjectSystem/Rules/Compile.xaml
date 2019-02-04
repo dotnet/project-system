@@ -5,51 +5,51 @@
     PageTemplate="generic"
     PropertyPagesHidden="true"
     xmlns="http://schemas.microsoft.com/build/2009/properties">
-    <Rule.DataSource>
-        <DataSource Persistence="ProjectFile" Label="Configuration" ItemType="Compile" HasConfigurationCondition="false" SourceOfDefaultValue="AfterContext" />
-    </Rule.DataSource>
-   
-    <DynamicEnumProperty Name="{}{ItemType}"
-                   EnumProvider="ItemTypes" />
-    <EnumProperty
-      Name="CopyToOutputDirectory">
-        <EnumValue Name="Never" />
-        <EnumValue Name="Always" />
-        <EnumValue Name="PreserveNewest" />
-    </EnumProperty>
+  <Rule.DataSource>
+    <DataSource Persistence="ProjectFile" Label="Configuration" ItemType="Compile" HasConfigurationCondition="false" SourceOfDefaultValue="AfterContext" />
+  </Rule.DataSource>
 
-    <StringProperty
-      Name="Generator" />
-    <StringProperty
-      Name="CustomToolNamespace" />
+  <DynamicEnumProperty Name="{}{ItemType}"
+                 EnumProvider="ItemTypes" />
+  <EnumProperty
+    Name="CopyToOutputDirectory">
+    <EnumValue Name="Never" />
+    <EnumValue Name="Always" />
+    <EnumValue Name="PreserveNewest" />
+  </EnumProperty>
 
-    <StringProperty Name="FullPath" Visible="false" ReadOnly="true">
-        <StringProperty.DataSource>
-            <DataSource Persistence="Intrinsic" ItemType="Compile" PersistedName="FullPath" SourceOfDefaultValue="AfterContext" />
-        </StringProperty.DataSource>
-    </StringProperty>
+  <StringProperty
+    Name="Generator" />
+  <StringProperty
+    Name="CustomToolNamespace" />
 
-    <BoolProperty Name="ExcludedFromBuild">
-        <BoolProperty.DataSource>
-            <DataSource Persistence="ProjectFile" Label="Configuration" ItemType="Compile" HasConfigurationCondition="true" SourceOfDefaultValue="AfterContext" />
-        </BoolProperty.DataSource>
-    </BoolProperty>
-    <BoolProperty Name="Visible" Visible="false" />
-    <StringProperty Name="DependentUpon" Visible="false">
-        <StringProperty.Metadata>
-            <NameValuePair Name="DoNotCopyAcrossProjects" Value="true" />
-        </StringProperty.Metadata>
-    </StringProperty>
-    <StringProperty Name="Link" Visible="false">
-        <StringProperty.DataSource>
-            <DataSource PersistenceStyle="Attribute" SourceOfDefaultValue="AfterContext" />
-        </StringProperty.DataSource>
-        <StringProperty.Metadata>
-            <NameValuePair Name="DoNotCopyAcrossProjects" Value="true" />
-        </StringProperty.Metadata>
-    </StringProperty>
-    <StringProperty Name="SubType" Visible="false" />
-    <StringProperty Name="LastGenOutput" Visible="false" />
-    <BoolProperty Name="DesignTime" Visible="false" />
-    <BoolProperty Name="AutoGen" Visible="false" />
+  <StringProperty Name="FullPath" Visible="false" ReadOnly="true">
+    <StringProperty.DataSource>
+      <DataSource Persistence="Intrinsic" ItemType="Compile" PersistedName="FullPath" SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
+
+  <BoolProperty Name="ExcludedFromBuild">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="ProjectFile" Label="Configuration" ItemType="Compile" HasConfigurationCondition="true" SourceOfDefaultValue="AfterContext" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
+  <BoolProperty Name="Visible" Visible="false" />
+  <StringProperty Name="DependentUpon" Visible="false">
+    <StringProperty.Metadata>
+      <NameValuePair Name="DoNotCopyAcrossProjects" Value="true" />
+    </StringProperty.Metadata>
+  </StringProperty>
+  <StringProperty Name="Link" Visible="false">
+    <StringProperty.DataSource>
+      <DataSource PersistenceStyle="Attribute" SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+    <StringProperty.Metadata>
+      <NameValuePair Name="DoNotCopyAcrossProjects" Value="true" />
+    </StringProperty.Metadata>
+  </StringProperty>
+  <StringProperty Name="SubType" Visible="false" />
+  <StringProperty Name="LastGenOutput" Visible="false" />
+  <BoolProperty Name="DesignTime" Visible="false" />
+  <BoolProperty Name="AutoGen" Visible="false" />
 </Rule>
