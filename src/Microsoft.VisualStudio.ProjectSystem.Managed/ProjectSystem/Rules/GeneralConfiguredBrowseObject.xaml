@@ -157,4 +157,5 @@
 
   <!-- F# specific properties-->
   <BoolProperty Name="Tailcalls" Visible="False" />
+  <StringProperty Name="OtherFlags" Visible="False" />
 </Rule>
