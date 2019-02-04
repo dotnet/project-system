@@ -114,7 +114,7 @@
       </trans-unit>
       <trans-unit id="EnumValue|OutputType.WinExe|DisplayName">
         <source>Windows Application</source>
-        <target state="translated">Aplikace pro systém Windows</target>
+        <target state="translated">Aplikace systému Windows</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|TargetFrameworkMonikers|DisplayName">

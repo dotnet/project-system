@@ -4,7 +4,7 @@
     <body>
       <trans-unit id="StartActionLabel.Text">
         <source>Start action</source>
-        <target state="translated">Uruchom akcję</target>
+        <target state="translated">Akcja uruchamiania</target>
         <note />
       </trans-unit>
       <trans-unit id="rbStartProject.Text">

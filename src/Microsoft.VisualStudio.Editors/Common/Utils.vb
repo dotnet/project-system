@@ -331,6 +331,8 @@ Namespace Microsoft.VisualStudio.Editors.Common
             Debug.Assert(Not String.IsNullOrEmpty(throwingComponentName))
             Debug.Assert(Not String.IsNullOrEmpty(exceptionEventDescription))
 
+            If IsCheckoutCanceledException(ex) Then Return True
+
             ' Follow naming convention for entity name: A string to identify the entity in the feature. E.g. open-project, build-project, fix-error.
             throwingComponentName = Regex.Replace(throwingComponentName, "([A-Z])", "-$1").TrimPrefix("-").ToLower() + "-fault"
 

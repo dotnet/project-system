@@ -49,7 +49,7 @@ As evaluations and design-time builds occur, CPS pushes project changes through 
 
 Various implementations of [`IDependenciesRuleHandler`][IDependenciesRuleHandler] exist, and each specifies the set of rules they wish to handle (e.g. `PackageReference`, `ResolvedProjectReference`, etc.). The abstract class [`DependenciesRuleHandlerBase`][DependenciesRuleHandlerBase] exists to make implementing [`IDependenciesRuleHandler`][IDependenciesRuleHandler] easier.
 
-The [`DependencyRulesSubscriber`][DependencyRulesSubscriber] (implementing [`IDependencyCrossTargetSubscriber`][IDependencyCrossTargetSubscriber]) subscribes via Dataflow to the union of rules specified by the handlers. When updates are received, a [`CrossTargetDependenciesChangesBuilder`][CrossTargetDependenciesChangesBuilder] is instantiated and each handler is given a chance to add/update/remove `IDependencyModel` instances through the builder. Once complete, the `IDependencyCrossTargetSubscriber.DependenciesChanged` event is fired, carrying dependency model changes.
+The [`DependencyRulesSubscriber`][DependencyRulesSubscriber] (implementing [`IDependencyCrossTargetSubscriber`][IDependencyCrossTargetSubscriber]) subscribes via Dataflow to the union of rules specified by the handlers. When updates are received, a [`CrossTargetDependenciesChangesBuilder`][CrossTargetDependenciesChangesBuilder] is instantiated and each handler is given a chance to add/update/remove [`IDependencyModel`][IDependencyModel] instances through the builder. Once complete, the `IDependencyCrossTargetSubscriber.DependenciesChanged` event is fired, carrying dependency model changes.
 
 Each project has an instance of [`DependenciesSnapshotProvider`][DependenciesSnapshotProvider] (implementing [`IDependenciesSnapshotProvider`][IDependenciesSnapshotProvider]) that holds the latest `DependenciesSnapshot` object. It imports `IDependencyCrossTargetSubscriber` implementations (such as `DependencyRulesSubscriber`) and subscribes to their `DependenciesChanged` events. When these events fire, the current snapshot is combined with changes to produce a new snapshot. That snapshot is then propagated via the `IDependenciesSnapshotProvider.SnapshotChanged` event.
 
@@ -66,11 +66,21 @@ The [`DependenciesTreeViewProvider`][DependenciesTreeViewProvider] traverses dow
 
 > Aside: The `IProjectTree` nodes are intentionally updated from top to bottom as it prevents the Solution Explorer from collapsing expanded nodes during the update. At the very least this would be visually distracting to the user.
 
-[`IDependency`][IDependency]s are not translated directly into `IProjectTree`s. They are first converted to [`IDependencyViewModel`][IDependencyViewModel]s and those in turn become the `IProjectTree`s. This makes it a little easier to create the `IProjectTree`s for targets and groups (e.g. the Assemblies, NuGet, Projects, etc. nodes) which are not themselves [`IDependency`][IDependency]s.
+[`IDependency`][IDependency]s are not translated directly into `IProjectTree`s. They are first converted to [`IDependencyViewModel`][IDependencyViewModel]s and those in turn become the `IProjectTree`s. This makes it a little easier to create the `IProjectTree`s for targets and groups (e.g. the Assemblies, NuGet, Projects, etc. nodes) which are not themselves [`IDependency`][IDependency]s. In some cases a [`IDependencyModel`][IDependencyModel] may be converted directly to a [`IDependencyViewModel`][IDependencyViewModel].
 
 ### Identifiers
 
-> TODO: Describe the role and implementation of the [`IDependency`][IDependency]`.Id` property.
+#### `IDependencyModel` Identifiers
+
+Instances of [`IDependencyModel`][IDependencyModel]'s produced by an [`IProjectDependenciesSubTreeProvider`][IProjectDependenciesSubTreeProvider] must have an `Id` propety that's unique to that provider and that project.
+
+For dependencies obtained via MSBuild evaluations (Packages, Assemblies, etc...) the `Id` is just the `OriginalItemSpec`.
+
+#### `IDependency` Identifiers
+
+Once a dependency model is integrated into a dependencies snapshot as an [`IDependency`][IDependency], its `Id` will be constructed from the target framework, provider type and model ID. For example: `netstandard2.0/nugetdependency/newtonsoft.json`
+
+This allows the ID to be unique within both the provider and the target framework.
 
 ## Graph/Project System Interaction
 
@@ -116,7 +126,29 @@ Whenever this event fires we find the corresponding [`IDependency`][IDependency]
 
 ### Identifiers
 
-> TODO: Describe how identifiers work with graph nodes.
+Each `GraphNode` must have a unique ID of type `Microsoft.VisualStudio.GraphModel.GraphNodeId`.
+
+`GraphNodeId` is a recursive type, meaning an instance may be comprised of several partial `GraphNodeId` objects. This composition is performed by `GraphNodeId.GetNested`.
+
+As mentioned earlier, `GraphNode`s are automatically created for `IProjectTree` nodes marked with the `ProjectTreeFlags.Common.ResolvedReference` flag. These graph nodes are created with IDs comprising two sub-IDs:
+
+1. `Assembly` which identifies the project (a `Uri` of full path to the containing project file)
+2. `File` which identifies the graph node within that project (a `Uri` modelling something unique about that node)
+   - For top level dependency nodes, this is the numeric ID assigned to the node as a string prefixed with `>` (e.g. `>56`)
+   - For child nodes (created lazily when the user expands top level nodes), this is the composite [`IDependency.Id`][IDependency] discussed above (e.g. `netstandard2.0/nugetdependency/newtonsoft.json`)
+
+If a project is renamed, the `Assembly` URI of graph nodes within that project are automatically updated to reflect the new project path.
+
+## Extensibility Model
+
+Project flavors can extend the Dependencies node with additional sub-trees. To do so:
+
+- Implement and export an [`IProjectDependenciesSubTreeProvider`][IProjectDependenciesSubTreeProvider] implementation per sub-tree
+- Provide a custom implementation of [`IDependencyModel`][IDependencyModel]
+- Potentially implement `IProjectTreeProvider` (usually by deriving from `ProjectTreeProviderBase`)
+
+The _Web Tools Extensions_ project is a good example of a project flavor that does this.
+
 
 [AggregateCrossTargetProjectContext]:     /src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/Tree/Dependencies/CrossTarget/AggregateCrossTargetProjectContext.cs "AggregateCrossTargetProjectContext.cs"
 [IDependenciesRuleHandler]:               /src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/Tree/Dependencies/CrossTarget/IDependenciesRuleHandler.cs "IDependenciesRuleHandler.cs"
@@ -129,6 +161,7 @@ Whenever this event fires we find the corresponding [`IDependency`][IDependency]
 [IDependenciesGraphBuilder]:              /src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/Tree/Dependencies/GraphNodes/IDependenciesGraphBuilder.cs "IDependenciesGraphBuilder.cs"
 [IDependenciesGraphViewProvider]:         /src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/Tree/Dependencies/GraphNodes/ViewProviders/IDependenciesGraphViewProvider.cs "IDependenciesGraphViewProvider.cs"
 [ProjectGraphViewProvider]:               /src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/Tree/Dependencies/GraphNodes/ViewProviders/ProjectGraphViewProvider.cs "ProjectGraphViewProvider.cs"
+[IDependencyModel]:                       /src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/Tree/Dependencies/IDependencyModel.cs "IDependencyModel.cs"
 [IDependenciesTreeViewProvider]:          /src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/Tree/Dependencies/IDependenciesTreeViewProvider.cs "IDependenciesTreeViewProvider.cs"
 [IProjectDependenciesSubTreeProvider]:    /src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/Tree/Dependencies/IProjectDependenciesSubTreeProvider.cs "IProjectDependenciesSubTreeProvider.cs"
 [IDependencyViewModel]:                   /src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/Tree/Dependencies/Models/IDependencyViewModel.cs "IDependencyViewModel.cs"

@@ -76,6 +76,7 @@ steps:
      artifacts\$(BuildConfiguration)\log
      artifacts\$(BuildConfiguration)\packages
      artifacts\$(BuildConfiguration)\VSSetup
+     artifacts\$(BuildConfiguration)\TestResults
     ArtifactName: '$(Build.BuildNumber)'
     ArtifactType: FilePath
     TargetPath: '$(DropRoot)\$(TeamName)\$(Build.SourceBranchName)'

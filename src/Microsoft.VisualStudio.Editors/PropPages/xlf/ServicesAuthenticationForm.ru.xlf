@@ -14,7 +14,7 @@
       </trans-unit>
       <trans-unit id="PasswordLabel.Text">
         <source>&amp;Password:</source>
-        <target state="translated">&amp;Пароль:</target>
+        <target state="translated">Пар&amp;оль:</target>
         <note />
       </trans-unit>
       <trans-unit id="OKButton.Text">

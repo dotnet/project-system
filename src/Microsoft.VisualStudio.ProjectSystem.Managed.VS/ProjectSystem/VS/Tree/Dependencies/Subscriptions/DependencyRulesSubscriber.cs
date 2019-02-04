@@ -24,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         private DisposableBag _subscriptions;
 #pragma warning restore CA2213
         private readonly IUnconfiguredProjectCommonServices _commonServices;
-        private readonly IProjectAsynchronousTasksService _tasksService;
+        private readonly IUnconfiguredProjectTasksService _tasksService;
         private readonly IDependencyTreeTelemetryService _treeTelemetryService;
         private ICrossTargetSubscriptionsHost _host;
         private AggregateCrossTargetProjectContext _currentProjectContext;
@@ -35,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         [ImportingConstructor]
         public DependencyRulesSubscriber(
             IUnconfiguredProjectCommonServices commonServices,
-            [Import(ExportContractNames.Scopes.UnconfiguredProject)] IProjectAsynchronousTasksService tasksService,
+            IUnconfiguredProjectTasksService tasksService,
             IDependencyTreeTelemetryService treeTelemetryService)
             : base(synchronousDisposal: true)
         {
@@ -186,11 +186,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
             await _tasksService.LoadedProjectAsync(async () =>
             {
-                if (_tasksService.UnloadCancellationToken.IsCancellationRequested)
-                {
-                    return;
-                }
-
                 using (ProjectCapabilitiesContext.CreateIsolatedContext(configuredProject, capabilities))
                 {
                     await HandleAsync(projectUpdate, catalogSnapshot, handlerType);

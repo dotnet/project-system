@@ -34,7 +34,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|IncludeAssets|DisplayName">
         <source>Included assets</source>
-        <target state="needs-review-translation">IncludeAssets</target>
+        <target state="translated">Asset inclusi</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|IncludeAssets|Description">
@@ -44,7 +44,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|ExcludeAssets|DisplayName">
         <source>Excluded assets</source>
-        <target state="needs-review-translation">ExcludeAssets</target>
+        <target state="translated">Asset esclusi</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ExcludeAssets|Description">
@@ -54,7 +54,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|PrivateAssets|DisplayName">
         <source>Private assets</source>
-        <target state="needs-review-translation">PrivateAssets</target>
+        <target state="translated">Asset privati</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PrivateAssets|Description">
@@ -64,7 +64,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|NoWarn|DisplayName">
         <source>Suppress warnings</source>
-        <target state="needs-review-translation">NoWarn</target>
+        <target state="translated">Non visualizzare avvisi</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|NoWarn|Description">

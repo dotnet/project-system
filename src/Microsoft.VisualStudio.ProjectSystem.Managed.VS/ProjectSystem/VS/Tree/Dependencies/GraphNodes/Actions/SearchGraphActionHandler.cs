@@ -94,7 +94,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
                             }
 
                             bool processed = viewProvider.MatchSearchResults(
-                                snapshot.ProjectPath,
                                 topLevelDependency,
                                 searchResultsPerContext,
                                 out topLevelDependencyMatches);

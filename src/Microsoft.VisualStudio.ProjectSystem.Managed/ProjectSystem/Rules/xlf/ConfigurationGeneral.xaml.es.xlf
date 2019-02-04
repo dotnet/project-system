@@ -64,7 +64,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|RootNamespace|DisplayName">
         <source>Root namespace</source>
-        <target state="translated">Espacio de nombres de la raíz</target>
+        <target state="translated">Espacio de nombres raíz</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|OutputType.Library|DisplayName">

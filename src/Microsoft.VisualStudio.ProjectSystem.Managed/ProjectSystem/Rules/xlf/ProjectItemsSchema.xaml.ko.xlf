@@ -74,7 +74,7 @@
       </trans-unit>
       <trans-unit id="ItemType|ApplicationDefinition|DisplayName">
         <source>Application definition</source>
-        <target state="translated">응용 프로그램 정의</target>
+        <target state="translated">애플리케이션 정의</target>
         <note />
       </trans-unit>
       <trans-unit id="ContentType|XamlAppDef|DisplayName">
@@ -89,12 +89,12 @@
       </trans-unit>
       <trans-unit id="ContentType|Resource|DisplayName">
         <source>Resource</source>
-        <target state="new">Resource</target>
+        <target state="translated">리소스</target>
         <note />
       </trans-unit>
       <trans-unit id="ItemType|Resource|DisplayName">
         <source>Resource</source>
-        <target state="new">Resource</target>
+        <target state="translated">리소스</target>
         <note />
       </trans-unit>
     </body>

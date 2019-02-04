@@ -64,12 +64,12 @@
       </trans-unit>
       <trans-unit id="13">
         <source>NUnit Test Project (.NET Core)</source>
-        <target state="translated">NUnit Test Projesi (.NET Core)</target>
+        <target state="new">NUnit Test Project (.NET Core)</target>
         <note />
       </trans-unit>
       <trans-unit id="14">
         <source>A project that contains NUnit tests that can run on .NET Core on Windows, Linux and MacOS.</source>
-        <target state="translated">Windows, Linux ve MacOS’ta .NET Core üzerinde çalışabilen NUnit testlerini içeren bir proje.</target>
+        <target state="translated">Windows, Linux ve MacOS üzerinde .NET Core'da çalışabilen NUnit testleri içeren bir proje.</target>
         <note />
       </trans-unit>
     </body>

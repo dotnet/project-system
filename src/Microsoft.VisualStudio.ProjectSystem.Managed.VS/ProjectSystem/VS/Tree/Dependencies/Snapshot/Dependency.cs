@@ -4,7 +4,6 @@ using System;
 using System.Collections.Immutable;
 
 using Microsoft.VisualStudio.Buffers.PooledObjects;
-using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
@@ -43,7 +42,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
             ProviderType = dependencyModel.ProviderType;
             Name = dependencyModel.Name ?? string.Empty;
-            Version = dependencyModel.Version ?? string.Empty;
             Caption = dependencyModel.Caption ?? string.Empty;
             OriginalItemSpec = dependencyModel.OriginalItemSpec ?? string.Empty;
             Path = dependencyModel.Path ?? string.Empty;
@@ -60,17 +58,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             // This is needed for tree update logic to track if tree node changing state from unresolved 
             // to resolved or vice-versa (it helps to decide if we need to remove it or update in-place
             // in the tree to avoid flicks).
-            Flags += Resolved
-                ? DependencyTreeFlags.ResolvedFlags
-                : DependencyTreeFlags.UnresolvedFlags;
+            if (Resolved)
+            {
+                if (!Flags.Contains(DependencyTreeFlags.ResolvedFlags))
+                {
+                    Flags += DependencyTreeFlags.ResolvedFlags;
+                }
+            }
+            else
+            {
+                if (!Flags.Contains(DependencyTreeFlags.UnresolvedFlags))
+                {
+                    Flags += DependencyTreeFlags.UnresolvedFlags;
+                }
+            }
 
             // If this is one of our implementations of IDependencyModel then we can just reuse the icon
             // set rather than creating a new one.
-            if (dependencyModel is Dependency dependency)
-            {
-                IconSet = dependency.IconSet;
-            }
-            else if (dependencyModel is DependencyModel model)
+            if (dependencyModel is DependencyModel model)
             {
                 IconSet = model.IconSet;
             }
@@ -86,7 +91,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
             if (dependencyModel.DependencyIDs == null || dependencyModel.DependencyIDs.Count == 0)
             {
-                DependencyIDs = ImmutableList<string>.Empty;
+                DependencyIDs = ImmutableArray<string>.Empty;
             }
             else
             {
@@ -107,7 +112,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             bool? resolved,
             ProjectTreeFlags? flags,
             string schemaName,
-            IImmutableList<string> dependencyIDs,
+            ImmutableArray<string> dependencyIDs,
             DependencyIconSet iconSet,
             bool? isImplicit)
         {
@@ -119,7 +124,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             _containingProjectPath = dependency._containingProjectPath;
             ProviderType = dependency.ProviderType;
             Name = dependency.Name;
-            Version = dependency.Version;
             OriginalItemSpec = dependency.OriginalItemSpec;
             Path = dependency.Path;
             _schemaItemType = dependency.SchemaItemType;
@@ -131,7 +135,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Resolved = resolved ?? dependency.Resolved;
             Flags = flags ?? dependency.Flags;
             SchemaName = schemaName ?? dependency.SchemaName;
-            DependencyIDs = dependencyIDs ?? dependency.DependencyIDs;
+            DependencyIDs = dependencyIDs.IsDefault ? dependency.DependencyIDs : dependencyIDs;
             IconSet = iconSet != null ? DependencyIconSetCache.Instance.GetOrAddIconSet(iconSet) : dependency.IconSet;
             Implicit = isImplicit ?? dependency.Implicit;
         }
@@ -164,6 +168,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         public string Name { get; }
         public string OriginalItemSpec { get; }
         public string Path { get; }
+
         public string FullPath
         {
             get
@@ -172,17 +177,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 // we have a lot of Dependency instances floating around
                 if (_fullPath == null)
                 {
-                    _fullPath = GetFullPath(OriginalItemSpec, _containingProjectPath);
+                    _fullPath = GetFullPath();
                 }
 
                 return _fullPath;
 
-                string GetFullPath(string originalItemSpec, string containingProjectPath)
+                string GetFullPath()
                 {
-                    if (string.IsNullOrEmpty(originalItemSpec) || ManagedPathHelper.IsRooted(originalItemSpec))
-                        return originalItemSpec ?? string.Empty;
+                    if (string.IsNullOrEmpty(OriginalItemSpec) || ManagedPathHelper.IsRooted(OriginalItemSpec))
+                        return OriginalItemSpec ?? string.Empty;
 
-                    return ManagedPathHelper.TryMakeRooted(containingProjectPath, originalItemSpec);
+                    return ManagedPathHelper.TryMakeRooted(_containingProjectPath, OriginalItemSpec);
                 }
             }
         }
@@ -199,23 +204,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 // provided by third party extensions we can not guarantee that item type will be known. 
                 // Thus always set predefined itemType for all custom nodes.
                 // TODO: generate specific xaml rule for generic Dependency nodes
-                // tracking issue: https://github.com/dotnet/roslyn-project-system/issues/1102
+                // tracking issue: https://github.com/dotnet/project-system/issues/1102
                 bool isGenericNodeType = Flags.Contains(DependencyTreeFlags.GenericDependencyFlags);
                 return isGenericNodeType ? _schemaItemType : Folder.PrimaryDataSourceItemType;
             }
         }
 
         public string Caption { get; }
-        public string Version { get; }
         public bool Resolved { get; }
         public bool TopLevel { get; }
         public bool Implicit { get; }
         public bool Visible { get; }
-
-        public ImageMoniker Icon => IconSet.Icon;
-        public ImageMoniker ExpandedIcon => IconSet.ExpandedIcon;
-        public ImageMoniker UnresolvedIcon => IconSet.UnresolvedIcon;
-        public ImageMoniker UnresolvedExpandedIcon => IconSet.UnresolvedExpandedIcon;
 
         public DependencyIconSet IconSet { get; }
 
@@ -224,7 +223,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
         public IImmutableDictionary<string, string> Properties { get; }
 
-        public IImmutableList<string> DependencyIDs { get; }
+        public ImmutableArray<string> DependencyIDs { get; }
 
         #endregion
 
@@ -247,7 +246,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             bool? resolved = null,
             ProjectTreeFlags? flags = null,
             string schemaName = null,
-            IImmutableList<string> dependencyIDs = null,
+            ImmutableArray<string> dependencyIDs = default,
             DependencyIconSet iconSet = null,
             bool? isImplicit = null)
         {
@@ -324,6 +323,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             return true;
         }
 
+        /// <summary>
+        /// Constructs the string identifier for a dependency from its target framework, provider type and dependency model ID.
+        /// </summary>
+        /// <remarks>
+        /// This string has form <c>"tfm-name\provider-type\model-id"</c>.
+        /// <list type="bullet">
+        ///   <item>All characters are lower-case.</item>
+        ///   <item><c>".."</c> is replaced with <c>"__"</c>.</item>
+        ///   <item><c>"/"</c> is replaced with <c>"\"</c>.</item>
+        ///   <item>Any trailing <c>"\"</c> characters are trimmed.</item>
+        /// </list>
+        /// </remarks>
+        /// <param name="targetFramework"></param>
+        /// <param name="providerType"></param>
+        /// <param name="modelId"></param>
+        /// <returns></returns>
         public static string GetID(ITargetFramework targetFramework, string providerType, string modelId)
         {
             Requires.NotNull(targetFramework, nameof(targetFramework));

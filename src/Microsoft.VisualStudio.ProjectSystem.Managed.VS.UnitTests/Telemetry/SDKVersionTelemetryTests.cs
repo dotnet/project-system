@@ -68,32 +68,25 @@ namespace Microsoft.VisualStudio.Telemetry
 
         private static async Task<(bool success, TelemetryParameters result)> CreateComponentAndGetResult(Guid guid, string version = null)
         {
-            var semaphore = new SemaphoreSlim(0);
             bool success = false;
             TelemetryParameters result = default;
             void onTelemetryLogged(TelemetryParameters callParameters)
             {
                 success = true;
                 result = callParameters;
-                semaphore.Release();
             }
-            var component = CreateComponent(guid, onTelemetryLogged, version, semaphore);
+            var component = CreateComponent(guid, onTelemetryLogged, version);
             await component.LoadAsync();
-            await semaphore.WaitAsync();
             await component.UnloadAsync();
             return (success, result);
         }
 
-        private static SDKVersionTelemetryServiceComponent CreateComponent(Guid guid, Action<TelemetryParameters> onTelemetryLogged, string version, SemaphoreSlim semaphore)
+        private static SDKVersionTelemetryServiceComponent CreateComponent(Guid guid, Action<TelemetryParameters> onTelemetryLogged, string version)
         {
             var projectVsServices = CreateProjectServices(version);
             var projectGuidService = CreateISafeProjectGuidService(guid);
             var telemetryService = CreateITelemetryService(onTelemetryLogged);
-            var unconfiguredProjectTasksService = IUnconfiguredProjectTasksServiceFactory.ImplementLoadedProjectAsync(async t =>
-            {
-                await t();
-                semaphore.Release();
-            });
+            var unconfiguredProjectTasksService = IUnconfiguredProjectTasksServiceFactory.ImplementLoadedProjectAsync(async t => await t());
             return new SDKVersionTelemetryServiceComponent(
                 projectVsServices,
                 projectGuidService,

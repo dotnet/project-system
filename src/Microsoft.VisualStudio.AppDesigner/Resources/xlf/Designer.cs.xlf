@@ -211,7 +211,7 @@
       </trans-unit>
       <trans-unit id="PPG_ComboBoxSelect_None">
         <source>(None)</source>
-        <target state="translated">(žádné)</target>
+        <target state="translated">(Žádné)</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_ConfigNotFound_2Args">
@@ -241,12 +241,12 @@
       </trans-unit>
       <trans-unit id="PPG_NeutralLanguage_None">
         <source>(None)</source>
-        <target state="translated">(žádné)</target>
+        <target state="translated">(Žádné)</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_NonePermissionSet">
         <source>(None)</source>
-        <target state="translated">(žádné)</target>
+        <target state="translated">(Žádné)</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_NotApplicable">
@@ -305,7 +305,7 @@ Pokud chcete tento stav ignorovat a pokračovat v operaci , klikněte na OK. Pok
       </trans-unit>
       <trans-unit id="PPG_StartupObjectNone">
         <source>(None)</source>
-        <target state="translated">(žádné)</target>
+        <target state="translated">(Žádné)</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_UndoTransaction">

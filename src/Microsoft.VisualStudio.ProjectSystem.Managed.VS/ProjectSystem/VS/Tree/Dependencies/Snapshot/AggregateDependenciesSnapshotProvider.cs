@@ -50,9 +50,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 snapshotProvider.SnapshotProviderUnloading += OnSnapshotProviderUnloading;
             }
 
-            // When a given project context is unloaded, remove it from the cache and unregister event handlers
             void OnSnapshotProviderUnloading(object sender, SnapshotProviderUnloadingEventArgs e)
             {
+                // Project has unloaded, so remove it from the cache and unregister event handlers
                 SnapshotProviderUnloading?.Invoke(this, e);
 
                 lock (_snapshotProviders)
@@ -82,6 +82,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
             void OnSnapshotChanged(object sender, SnapshotChangedEventArgs e)
             {
+                // Propagate the change event
                 SnapshotChanged?.Invoke(this, e);
             }
         }
@@ -107,6 +108,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             }
         }
 
+        /// <inheritdoc />
         public ITargetedDependenciesSnapshot GetSnapshot(IDependency dependency)
         {
             IDependenciesSnapshot snapshot = GetSnapshot(dependency.FullPath);
