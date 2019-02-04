@@ -10,7 +10,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private Shared ReadOnly s_resources As ComponentModel.ComponentResourceManager = New ComponentModel.ComponentResourceManager(GetType(AdvBuildSettingsPropPage))
 
         Private Const LanguageVersion_Default As String = "default"
+        Private Const LanguageVersion_LatestMajor As String = "latestmajor"
         Private Const LanguageVersion_Latest As String = "latest"
+        Private Const LanguageVersion_Preview As String = "preview"
         Private Const LanguageVersion_ISO1 As String = "ISO-1"
         Private Const LanguageVersion_ISO2 As String = "ISO-2"
         Private Const LanguageVersion_3 As String = "3"
@@ -78,12 +80,26 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End Get
         End Property
 
+        Public Shared ReadOnly Property LatestMajor() As CSharpLanguageVersion
+            Get
+                Static value As New CSharpLanguageVersion(LanguageVersion_LatestMajor, s_resources.GetString("CSharpLanguageVersion.LatestMajor"))
+                Return value
+            End Get
+        End Property
+
         ''' <summary>
         ''' Return the 'latest' language version object
         ''' </summary>
         Public Shared ReadOnly Property Latest() As CSharpLanguageVersion
             Get
                 Static value As New CSharpLanguageVersion(LanguageVersion_Latest, s_resources.GetString("CSharpLanguageVerison.Latest"))
+                Return value
+            End Get
+        End Property
+
+        Public Shared ReadOnly Property Preview() As CSharpLanguageVersion
+            Get
+                Static value As New CSharpLanguageVersion(LanguageVersion_Preview, s_resources.GetString("CSharpLanguageVersion.Preview"))
                 Return value
             End Get
         End Property

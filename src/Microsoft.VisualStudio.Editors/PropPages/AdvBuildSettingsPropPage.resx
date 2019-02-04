@@ -718,9 +718,15 @@
     <value>Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase, Microsoft.VisualStudio.AppDesigner, Version=42.42.42.42, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="CSharpLanguageVerison.Default" xml:space="preserve">
-    <value>C# latest major version (default)</value>
+    <value>C# latest version with preview opt-in (default)</value>
+  </data>
+  <data name="CSharpLanguageVerison.LatestMajor" xml:space="preserve">
+    <value>C# latest major version (latestmajor)</value>
   </data>
   <data name="CSharpLanguageVerison.Latest" xml:space="preserve">
     <value>C# latest minor version (latest)</value>
+  </data>
+  <data name="CSharpLanguageVerison.Preview" xml:space="preserve">
+    <value>unsupported preview of next C# version (preview)</value>
   </data>
 </root>
