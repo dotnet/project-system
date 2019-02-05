@@ -345,6 +345,10 @@ Namespace Microsoft.VisualStudio.Editors.Common
             Return True
         End Function
 
+        Public Function IsIOException(ex As Exception) As Boolean
+            Return TypeOf ex Is IOException OrElse TypeOf ex Is UnauthorizedAccessException
+        End Function
+
         ''' <summary>
         ''' Given an exception, returns True if it is a CheckOut exception.
         ''' </summary>
