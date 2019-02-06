@@ -101,7 +101,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Dim projectItems = DTEProject.ProjectItems
                 LicenseFileNameTextBox.Text = LicenseTryGetExistingLicenseItemPath(PackageLicenseFileSet)
                 SetLicenseRadioButtons(False)
-                'HUGE problem here. Because we are not linking the property with the textbox, I need to get the relative path from the license item to populate the text box. 
             End If
             Dim PackageLicenseExpressionSet = TryCast(TryGetNonCommonPropertyValue(GetPropertyDescriptor("PackageLicenseExpression")), String)
             If (PackageLicenseExpressionSet IsNot Nothing AndAlso PackageLicenseExpressionSet IsNot "") Then
@@ -388,26 +387,19 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Private Sub AddOrChangeLicenseItem(oldInclude As String, newInclude As String)
             Dim projectLock = _configuredProject.Services.ExportProvider.GetExportedValue(Of IProjectLockService)()
-#Disable Warning RS0030 ' Do not used banned APIs
+#Disable Warning RS0030 ' Do not used banned APIs. The project lock is needed here - there is no IVT for ProjectAccessor
             ThreadHelper.JoinableTaskFactory.Run(
                 Async Function()
                     Await projectLock.WriteLockAsync(
                         Async Function(access)
                             Await access.CheckoutAsync(_unconfiguredProject.FullPath)
                             Dim projectXML = Await access.GetProjectXmlAsync(_unconfiguredProject.FullPath)
-                            Dim foundAndUpdated = False
-                            For Each itemGroup In projectXML.ItemGroups
-                                For Each item In itemGroup.Items
-                                    If oldInclude = item.Include Then
-                                        item.Include = newInclude
-                                        foundAndUpdated = True
-                                        Exit For
-                                    End If
-                                Next
-                            Next
-                            If (Not foundAndUpdated) Then
+                            Dim foundItem = projectXML.ItemGroups.SelectMany(Function(x) x.Items).FirstOrDefault(Function(x) x.Include = oldInclude)
+                            If foundItem IsNot Nothing Then
+                                foundItem.Include = newInclude
+                            Else
                                 'We couldn't find one to change so we should add it 
-                                projectXML.AddItem("None", newInclude, {(New KeyValuePair(Of String, String)("Pack", "True")), New KeyValuePair(Of String, String)("PackagePath", "")})
+                                projectXML.AddItem("None", newInclude, {New KeyValuePair(Of String, String)("Pack", "True"), New KeyValuePair(Of String, String)("PackagePath", "")})
                             End If
                             Await access.ReleaseAsync()
                         End Function)
@@ -416,17 +408,27 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
         Private Sub LicenseRemoveLicenseItem(include As String)
-            ThreadHelper.JoinableTaskFactory.Run(Function()
-                                                     Return _projectSourceItemProvider.RemoveAsync("None", include)
-                                                 End Function)
+            Dim projectLock = _configuredProject.Services.ExportProvider.GetExportedValue(Of IProjectLockService)()
+#Disable Warning RS0030 ' Do not used banned APIs. The project lock is needed here - there is no IVT for ProjectAccessor
+            ThreadHelper.JoinableTaskFactory.Run(
+                Async Function()
+                    Await projectLock.WriteLockAsync(
+                        Async Function(access)
+                            Await access.CheckoutAsync(_unconfiguredProject.FullPath)
+                            Await _projectSourceItemProvider.RemoveAsync("None", include)
+                            Await access.ReleaseAsync()
+                        End Function)
+                End Function)
+#Enable Warning RS0030
         End Sub
 
         Private Sub AddLicenseItemToProject(fileName As String)
-            GetProjectsAndProvider()
+            If _unconfiguredProject Is Nothing OrElse _configuredProject Is Nothing Then
+                GetProjectsAndProvider()
+            End If
             Dim correctDirectory = Path.GetDirectoryName(_unconfiguredProject.FullPath)
             Dim relativePath As String = GetRelativePath(correctDirectory + "\", Path.GetFullPath(fileName))
             AddOrChangeLicenseItem(LicenseFileNameTextBox.Text, relativePath)
-
             LicenseFileNameTextBox.Text = relativePath
             'The TextBox needs to have the relative path, so the property isn't linked to the TextBox. It must be set manually.
             'Also, if the user has changed the directory on their PackageLicenseFile, we should keep it there.
@@ -442,7 +444,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         'I want to be able to, given a license file name, try to find an item that matches the file name to populate the textbox
         Private Function LicenseTryGetExistingLicenseItemPath(packageLicenseFile As String) As String
-            GetProjectsAndProvider()
+            If _allItems Is Nothing Then
+                GetProjectsAndProvider()
+            End If
             For Each item As IProjectItem In _allItems
                 'PackageLicenseFile can have a package path as a prefix, so we need to just look at file name
                 If Path.GetFileName(packageLicenseFile) = Path.GetFileName(item.EvaluatedIncludeAsRelativePath) Then
