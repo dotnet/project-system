@@ -67,22 +67,22 @@
         <target state="translated">Co&amp;mprobar el desbordamiento y subdesbordamiento aritmético</target>
         <note />
       </trans-unit>
-      <trans-unit id="CSharpLanguageVerison.Default">
+      <trans-unit id="CSharpLanguageVersion.Default">
         <source>C# latest supported minor version (default)</source>
-        <target state="needs-review-translation">Versión principal más reciente de C# (predeterminada)</target>
+        <target state="new">C# latest supported minor version (default)</target>
         <note />
       </trans-unit>
-      <trans-unit id="CSharpLanguageVerison.Latest">
-        <source>C# latest supported minor version (latest)</source>
-        <target state="needs-review-translation">Versión secundaria más reciente de C# (más reciente)</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="CSharpLanguageVerison.LatestMajor">
+      <trans-unit id="CSharpLanguageVersion.LatestMajor">
         <source>C# latest supported major version (latestmajor)</source>
         <target state="new">C# latest supported major version (latestmajor)</target>
         <note />
       </trans-unit>
-      <trans-unit id="CSharpLanguageVerison.Preview">
+      <trans-unit id="CSharpLanguageVersion.Latest">
+        <source>C# latest supported minor version (latest)</source>
+        <target state="new">C# latest supported minor version (latest)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CSharpLanguageVersion.Preview">
         <source>unsupported preview of next C# version (preview)</source>
         <target state="new">unsupported preview of next C# version (preview)</target>
         <note />

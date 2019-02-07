@@ -75,7 +75,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         Public Shared ReadOnly Property [Default]() As CSharpLanguageVersion
             Get
-                Static value As New CSharpLanguageVersion(LanguageVersion_Default, s_resources.GetString("CSharpLanguageVerison.Default"))
+                Static value As New CSharpLanguageVersion(LanguageVersion_Default, s_resources.GetString("CSharpLanguageVersion.Default"))
                 Return value
             End Get
         End Property
@@ -92,7 +92,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         Public Shared ReadOnly Property Latest() As CSharpLanguageVersion
             Get
-                Static value As New CSharpLanguageVersion(LanguageVersion_Latest, s_resources.GetString("CSharpLanguageVerison.Latest"))
+                Static value As New CSharpLanguageVersion(LanguageVersion_Latest, s_resources.GetString("CSharpLanguageVersion.Latest"))
                 Return value
             End Get
         End Property
