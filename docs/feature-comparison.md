@@ -39,7 +39,7 @@ Simplified project format                                                   |   
 Simplified configuration syntax                                             |          | ●    | `<Configurations>Debug;Release<Configurations>;<Platforms>AnyCPU;x64</Platforms>`
 Implicit configuration syntax                                               | ●        |      | `<PropertyGroup Condition="'$(Configuration)\|$(Platform)' == 'Debug\|AnyCPU'">`
 Edit project XML while loaded                                               |          | ●
-Find & Find in Files in project file                                        |          | [16.0](https://github.com/dotnet/project-system/issues/4061)
+Find & Find in Files in project file                                        |          | [16.x](https://github.com/dotnet/project-system/issues/4061)
 Automatically reload project file with no prompts                           |          | ●
 Automatically reload targets files                                          |          | ●
 Automatically refresh Solution Explorer to reflect file system              |          | ●
@@ -53,8 +53,8 @@ Generate NuGet package on build                                             |   
 **Features**|
 Add Service Reference                                                       | ●        | 
 Add Web Reference                                                           | ●        | 
-Add Data Source                                                             | ●        | 16.0
-DataSet Designer                                                            | ●        | 16.0
+Add Data Source                                                             | ●        | 16.x
+DataSet Designer                                                            | ●        | 16.x
 "Initialize Interactive Window with Project"                                | ●        | ● (15.8) | Only when targeting .NET Framework.
 Class Diagrams                                                              | ●        | ● (15.8) |
 Code Analysis                                                               | ●        | 
