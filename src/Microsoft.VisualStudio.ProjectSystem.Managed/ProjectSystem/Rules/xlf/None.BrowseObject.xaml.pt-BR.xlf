@@ -97,16 +97,6 @@
         <target state="new">Name of the file or folder.</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|PackagePath|DisplayName">
-        <source>PackagePath</source>
-        <target state="new">PackagePath</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|PackagePath|Description">
-        <source>Version of dependency.</source>
-        <target state="new">Version of dependency.</target>
-        <note />
-      </trans-unit>
     </body>
   </file>
 </xliff>
