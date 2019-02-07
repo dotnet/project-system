@@ -5,20 +5,24 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
+using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions
 {
     [Export(typeof(IDependencyCrossTargetSubscriber))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
-    internal sealed class DependencyRulesSubscriber : OnceInitializedOnceDisposed, IDependencyCrossTargetSubscriber
+    internal sealed class DependencyRulesSubscriber : OnceInitializedOnceDisposedAsync, IDependencyCrossTargetSubscriber
     {
         public const string DependencyRulesSubscriberContract = "DependencyRulesSubscriberContract";
+
+        private readonly SemaphoreSlim _updateGate = new SemaphoreSlim(initialCount: 1);
 
 #pragma warning disable CA2213 // OnceInitializedOnceDisposedAsync are not tracked correctly by the IDisposeable analyzer
         private DisposableBag _subscriptions;
@@ -37,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             IUnconfiguredProjectCommonServices commonServices,
             IUnconfiguredProjectTasksService tasksService,
             IDependencyTreeTelemetryService treeTelemetryService)
-            : base(synchronousDisposal: true)
+            : base(commonServices.ThreadingService.JoinableTaskContext)
         {
             _handlers = new OrderPrecedenceImportCollection<IDependenciesRuleHandler>(
                 projectCapabilityCheckProvider: commonServices.Project);
@@ -49,11 +53,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
         public event EventHandler<DependencySubscriptionChangedEventArgs> DependenciesChanged;
 
-        public void InitializeSubscriber(ICrossTargetSubscriptionsHost host, IProjectSubscriptionService subscriptionService)
+        public async Task InitializeSubscriberAsync(ICrossTargetSubscriptionsHost host, IProjectSubscriptionService subscriptionService)
         {
             _host = host;
 
-            EnsureInitialized();
+            await InitializeAsync();
 
             IReadOnlyCollection<string> watchedEvaluationRules = GetWatchedRules(RuleHandlerType.Evaluation);
             IReadOnlyCollection<string> watchedDesignTimeBuildRules = GetWatchedRules(RuleHandlerType.DesignTimeBuild);
@@ -184,12 +188,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 return;
             }
 
-            await _tasksService.LoadedProjectAsync(async () =>
+            // Ensure updates don't overlap
+            await _updateGate.ExecuteWithinLockAsync(JoinableCollection, JoinableFactory, async () =>
             {
-                using (ProjectCapabilitiesContext.CreateIsolatedContext(configuredProject, capabilities))
+                // Ensure the project doesn't unload during the update
+                await _tasksService.LoadedProjectAsync(async () =>
                 {
-                    await HandleAsync(projectUpdate, catalogSnapshot, handlerType);
-                }
+                    // Ensure the project's capabilities don't change during the update
+                    using (ProjectCapabilitiesContext.CreateIsolatedContext(configuredProject, capabilities))
+                    {
+                        await HandleAsync(projectUpdate, catalogSnapshot, handlerType);
+                    }
+                });
             });
         }
 
@@ -256,16 +266,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             _treeTelemetryService.ObserveTargetFrameworkRules(targetFrameworkToUpdate, projectUpdate.ProjectChanges.Keys);
         }
 
-        protected override void Initialize()
+        protected override Task InitializeCoreAsync(CancellationToken cancellationToken)
         {
+            return Task.CompletedTask;
         }
 
-        protected override void Dispose(bool disposing)
+        protected override Task DisposeCoreAsync(bool initialized)
         {
-            if (disposing)
-            {
-                ReleaseSubscriptions();
-            }
+            ReleaseSubscriptions();
+
+            _updateGate.Dispose();
+
+            return Task.CompletedTask;
         }
     }
 }

@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Immutable;
+using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
@@ -16,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
     ///     Instances are imported into a <see cref="ICrossTargetSubscriptionsHost"/>.
     /// </para>
     /// <para>
-    ///     That host will call <see cref="InitializeSubscriber"/> once, then call <see cref="AddSubscriptions"/>
+    ///     That host will call <see cref="InitializeSubscriberAsync"/> once, then call <see cref="AddSubscriptions"/>
     ///     with details of target frameworks to subscribe to.
     /// </para>
     /// <para>
@@ -40,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         /// </summary>
         /// <param name="host">The object that's hosting this subscriber.</param>
         /// <param name="subscriptionService">An object that provides access to project data.</param>
-        void InitializeSubscriber(ICrossTargetSubscriptionsHost host, IProjectSubscriptionService subscriptionService);
+        Task InitializeSubscriberAsync(ICrossTargetSubscriptionsHost host, IProjectSubscriptionService subscriptionService);
 
         /// <summary>
         ///     Requests this subscriber to create subscriptions based on the target frameworks specified in <paramref name="projectContext"/>.
