@@ -4,7 +4,7 @@
     <body>
       <trans-unit id="Category|Advanced|DisplayName">
         <source>Advanced</source>
-        <target state="translated">詳細設定</target>
+        <target state="translated">詳細</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|Misc|DisplayName">

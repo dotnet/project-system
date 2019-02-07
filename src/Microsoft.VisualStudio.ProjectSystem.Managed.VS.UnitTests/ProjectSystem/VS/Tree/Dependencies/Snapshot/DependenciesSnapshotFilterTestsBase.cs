@@ -1,11 +1,10 @@
 ﻿using System.Collections.Immutable;
 
-using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Filters;
 
 using Xunit;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
     public abstract class DependenciesSnapshotFilterTestsBase
     {
@@ -20,7 +19,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var filter = CreateFilter();
 
             filter.BeforeAddOrUpdate(
-                null,
                 null,
                 dependency,
                 null,

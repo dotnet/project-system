@@ -265,12 +265,12 @@ Yoksayıp devam etmek için Tamam'a tıklayın. Farklı bir çıkış yolu seçm
       </trans-unit>
       <trans-unit id="PPG_PostBuildCommandLineTitle">
         <source>Post-build Event Command Line</source>
-        <target state="translated">Derleme Sonrası Olay Komut Satırı</target>
+        <target state="translated">Oluşturma sonrası olay komut satırı</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_PreBuildCommandLineTitle">
         <source>Pre-build Event Command Line</source>
-        <target state="translated">Derleme Öncesi Olay Komut Satırı</target>
+        <target state="translated">Oluşturma öncesi olay komut satırı</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_ProjectReloadedSomePropertiesMayNotHaveBeenSet">

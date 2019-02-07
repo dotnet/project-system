@@ -9,7 +9,7 @@
       </trans-unit>
       <trans-unit id="ApplicationArgumentsWatermark">
         <source>Arguments to be passed to the application</source>
-        <target state="translated">응용 프로그램에 전달할 인수</target>
+        <target state="translated">애플리케이션에 전달할 인수</target>
         <note />
       </trans-unit>
       <trans-unit id="DebugPropertyPageTitle">
@@ -49,7 +49,7 @@
       </trans-unit>
       <trans-unit id="NameCannotBeEmpty">
         <source>Name cannot be empty.</source>
-        <target state="translated">이름은 비워 둘 수 없습니다.</target>
+        <target state="translated">이름을 비워 둘 수 없습니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="NewProfileCaption">
@@ -114,7 +114,7 @@
       </trans-unit>
       <trans-unit id="ApplicationArguments">
         <source>Application arguments:</source>
-        <target state="translated">응용 프로그램 인수:</target>
+        <target state="translated">애플리케이션 인수:</target>
         <note />
       </trans-unit>
       <trans-unit id="BrowseBtn">

@@ -34,7 +34,7 @@
       </trans-unit>
       <trans-unit id="RepositoryUrlLabel.Text">
         <source>&amp;Repository URL:</source>
-        <target state="translated">リポジトリの URL(&amp;R):</target>
+        <target state="translated">リポジトリ URL(&amp;R):</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageReleaseNotesLabel.Text">
@@ -49,57 +49,57 @@
       </trans-unit>
       <trans-unit id="PackageProjectUrlLabel.Text">
         <source>&amp;Project URL:</source>
-        <target state="translated">プロジェクトの URL(&amp;P):</target>
+        <target state="translated">プロジェクト URL(&amp;P):</target>
         <note />
       </trans-unit>
       <trans-unit id="GeneratePackageOnBuild.Text">
         <source>&amp;Generate NuGet package on build</source>
-        <target state="translated">構築時に NuGet パッケージを生成する(&amp;G)</target>
+        <target state="translated">ビルドで NuGet パッケージを生成(&amp;G)</target>
         <note />
       </trans-unit>
       <trans-unit id="NeutralLanguageLabel.Text">
         <source>Assembly &amp;neutral language:</source>
-        <target state="translated">アセンブリのニュートラル言語(&amp;N):</target>
+        <target state="translated">アセンブリ ニュートラル言語(&amp;N):</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyVersionRevisionTextBox.AccessibleName">
         <source>Assembly Version Revision</source>
-        <target state="needs-review-translation">リビジョン</target>
+        <target state="translated">アセンブリ バージョンのリビジョン</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyVersionBuildTextBox.AccessibleName">
         <source>Assembly Version Build</source>
-        <target state="needs-review-translation">ビルド</target>
+        <target state="translated">アセンブリ バージョン ビルド</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyVersionMinorTextBox.AccessibleName">
         <source>Assembly Version Minor</source>
-        <target state="needs-review-translation">マイナー</target>
+        <target state="translated">アセンブリのマイナー バージョン</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyVersionMajorTextBox.AccessibleName">
         <source>Assembly Version Major</source>
-        <target state="needs-review-translation">メジャー</target>
+        <target state="translated">アセンブリのメジャーバージョン</target>
         <note />
       </trans-unit>
       <trans-unit id="FileVersionRevisionTextBox.AccessibleName">
         <source>Assembly File Verison Revision</source>
-        <target state="needs-review-translation">リビジョン</target>
+        <target state="translated">アセンブリ ファイル バージョンのリビジョン</target>
         <note />
       </trans-unit>
       <trans-unit id="FileVersionBuildTextBox.AccessibleName">
         <source>Assembly File Verison Build</source>
-        <target state="needs-review-translation">ビルド</target>
+        <target state="translated">アセンブリ ファイル バージョンのビルド</target>
         <note />
       </trans-unit>
       <trans-unit id="FileVersionMinorTextBox.AccessibleName">
         <source>Assembly File Verison Minor</source>
-        <target state="needs-review-translation">マイナー</target>
+        <target state="translated">アセンブリ ファイルのマイナー バージョン</target>
         <note />
       </trans-unit>
       <trans-unit id="FileVersionMajorTextBox.AccessibleName">
         <source>Assembly File Verison Major</source>
-        <target state="needs-review-translation">メジャー</target>
+        <target state="translated">アセンブリ ファイルのメジャー バージョン</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageRequireLicenseAcceptance.Text">
@@ -129,7 +129,7 @@
       </trans-unit>
       <trans-unit id="AssemblyFileVersionLabel.Text">
         <source>Assembly &amp;file version:</source>
-        <target state="translated">アセンブリ ファイル バージョン(&amp;F):</target>
+        <target state="translated">アセンブリ ファイルのバージョン(&amp;F):</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageLicenseLabel.Text">

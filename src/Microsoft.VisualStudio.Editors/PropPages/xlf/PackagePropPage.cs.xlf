@@ -9,17 +9,17 @@
       </trans-unit>
       <trans-unit id="CopyrightLabel.Text">
         <source>&amp;Copyright:</source>
-        <target state="translated">Autors&amp;ká práva:</target>
+        <target state="translated">&amp;Autorská práva:</target>
         <note />
       </trans-unit>
       <trans-unit id="DescriptionLabel.Text">
         <source>&amp;Description:</source>
-        <target state="translated">Pop&amp;is:</target>
+        <target state="translated">&amp;Popis:</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageIconUrlLabel.Text">
         <source>&amp;Icon URL:</source>
-        <target state="translated">URL &amp;ikony:</target>
+        <target state="translated">Adresa URL &amp;ikony:</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageVersionLabel.Text">
@@ -34,22 +34,22 @@
       </trans-unit>
       <trans-unit id="RepositoryUrlLabel.Text">
         <source>&amp;Repository URL:</source>
-        <target state="translated">U&amp;RL úložiště:</target>
+        <target state="translated">Ad&amp;resa URL úložiště:</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageReleaseNotesLabel.Text">
         <source>Release &amp;notes:</source>
-        <target state="translated">Poz&amp;námky k verzi:</target>
+        <target state="translated">Zpráva k vydá&amp;ní verze:</target>
         <note />
       </trans-unit>
       <trans-unit id="RepositoryTypeLabel.Text">
         <source>&amp;Repository type:</source>
-        <target state="translated">T&amp;yp úložiště:</target>
+        <target state="translated">&amp;Typ úložiště:</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageProjectUrlLabel.Text">
         <source>&amp;Project URL:</source>
-        <target state="translated">URL &amp;projektu:</target>
+        <target state="translated">Adresa URL &amp;projektu:</target>
         <note />
       </trans-unit>
       <trans-unit id="GeneratePackageOnBuild.Text">
@@ -64,42 +64,42 @@
       </trans-unit>
       <trans-unit id="AssemblyVersionRevisionTextBox.AccessibleName">
         <source>Assembly Version Revision</source>
-        <target state="needs-review-translation">Revize</target>
+        <target state="translated">Revize verze sestavení</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyVersionBuildTextBox.AccessibleName">
         <source>Assembly Version Build</source>
-        <target state="needs-review-translation">Sestavení</target>
+        <target state="translated">Build verze sestavení</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyVersionMinorTextBox.AccessibleName">
         <source>Assembly Version Minor</source>
-        <target state="needs-review-translation">Vedlejší</target>
+        <target state="translated">Podverze sestavení</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyVersionMajorTextBox.AccessibleName">
         <source>Assembly Version Major</source>
-        <target state="needs-review-translation">Hlavní</target>
+        <target state="translated">Hlavní verze sestavení</target>
         <note />
       </trans-unit>
       <trans-unit id="FileVersionRevisionTextBox.AccessibleName">
         <source>Assembly File Verison Revision</source>
-        <target state="needs-review-translation">Revize</target>
+        <target state="translated">Revize verze souboru sestavení</target>
         <note />
       </trans-unit>
       <trans-unit id="FileVersionBuildTextBox.AccessibleName">
         <source>Assembly File Verison Build</source>
-        <target state="needs-review-translation">Sestavení</target>
+        <target state="translated">Build verze souboru sestavení</target>
         <note />
       </trans-unit>
       <trans-unit id="FileVersionMinorTextBox.AccessibleName">
         <source>Assembly File Verison Minor</source>
-        <target state="needs-review-translation">Vedlejší</target>
+        <target state="translated">Podverze souboru sestavení</target>
         <note />
       </trans-unit>
       <trans-unit id="FileVersionMajorTextBox.AccessibleName">
         <source>Assembly File Verison Major</source>
-        <target state="needs-review-translation">Hlavní</target>
+        <target state="translated">Hlavní verze souboru sestavení</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageRequireLicenseAcceptance.Text">
@@ -119,7 +119,7 @@
       </trans-unit>
       <trans-unit id="AssemblyCompanyLabel.Text">
         <source>Compan&amp;y:</source>
-        <target state="translated">Společnos&amp;t:</target>
+        <target state="translated">Spo&amp;lečnost:</target>
         <note />
       </trans-unit>
       <trans-unit id="ProductLabel.Text">
@@ -129,7 +129,7 @@
       </trans-unit>
       <trans-unit id="AssemblyFileVersionLabel.Text">
         <source>Assembly &amp;file version:</source>
-        <target state="translated">V&amp;erze souboru sestavení:</target>
+        <target state="translated">Verze &amp;souboru sestavení:</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageLicenseLabel.Text">

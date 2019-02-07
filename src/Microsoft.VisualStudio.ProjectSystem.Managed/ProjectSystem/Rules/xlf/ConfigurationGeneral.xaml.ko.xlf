@@ -24,7 +24,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|ApplicationIcon|DisplayName">
         <source>Application Icon</source>
-        <target state="translated">응용 프로그램 아이콘</target>
+        <target state="translated">애플리케이션 아이콘</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|TargetFrameworkIdentifier|DisplayName">
@@ -109,12 +109,12 @@
       </trans-unit>
       <trans-unit id="EnumValue|OutputType.Exe|DisplayName">
         <source>Console Application</source>
-        <target state="translated">콘솔 응용 프로그램</target>
+        <target state="translated">콘솔 애플리케이션</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|OutputType.WinExe|DisplayName">
         <source>Windows Application</source>
-        <target state="translated">Windows 응용 프로그램</target>
+        <target state="translated">Windows 애플리케이션</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|TargetFrameworkMonikers|DisplayName">

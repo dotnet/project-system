@@ -54,22 +54,22 @@
       </trans-unit>
       <trans-unit id="FileVersionMajorTextBox.AccessibleName">
         <source>File Version major</source>
-        <target state="needs-review-translation">メジャー</target>
+        <target state="translated">ファイルのメジャー バージョン</target>
         <note />
       </trans-unit>
       <trans-unit id="FileVersionMinorTextBox.AccessibleName">
         <source>File Version minor</source>
-        <target state="needs-review-translation">マイナー</target>
+        <target state="translated">ファイルのマイナー バージョン</target>
         <note />
       </trans-unit>
       <trans-unit id="FileVersionBuildTextBox.AccessibleName">
         <source>File Version build</source>
-        <target state="needs-review-translation">ビルド</target>
+        <target state="translated">ファイル バージョン ビルド</target>
         <note />
       </trans-unit>
       <trans-unit id="FileVersionRevisionTextBox.AccessibleName">
         <source>File Version revision</source>
-        <target state="needs-review-translation">リビジョン</target>
+        <target state="translated">ファイル バージョン リビジョン</target>
         <note />
       </trans-unit>
       <trans-unit id="GuidLabel.Text">
@@ -79,22 +79,22 @@
       </trans-unit>
       <trans-unit id="AssemblyVersionMajorTextBox.AccessibleName">
         <source>Assembly Version major</source>
-        <target state="needs-review-translation">メジャー</target>
+        <target state="translated">アセンブリのメジャー バージョン</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyVersionMinorTextBox.AccessibleName">
         <source>Assembly Version minor</source>
-        <target state="needs-review-translation">マイナー</target>
+        <target state="translated">アセンブリのマイナー バージョン</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyVersionBuildTextBox.AccessibleName">
         <source>Assembly Version build</source>
-        <target state="needs-review-translation">ビルド</target>
+        <target state="translated">アセンブリ バージョンのビルド</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyVersionRevisionTextBox.AccessibleName">
         <source>Assembly Version revision</source>
-        <target state="needs-review-translation">リビジョン</target>
+        <target state="translated">アセンブリ バージョンのリビジョン</target>
         <note />
       </trans-unit>
     </body>

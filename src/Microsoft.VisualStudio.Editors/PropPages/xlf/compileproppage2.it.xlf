@@ -44,7 +44,7 @@
       </trans-unit>
       <trans-unit id="OptionStrictLabel.Text">
         <source>Option &amp;strict:</source>
-        <target state="translated">Option &amp;Strict:</target>
+        <target state="new">Option &amp;strict:</target>
         <note />
       </trans-unit>
       <trans-unit id="OptionCompareLabel.Text">
@@ -59,7 +59,7 @@
       </trans-unit>
       <trans-unit id="WarningsConfigurationsGridViewLabel.Text">
         <source>Warning configurations:</source>
-        <target state="translated">Configurazioni degli avvisi:</target>
+        <target state="translated">Configurazioni avvisi:</target>
         <note />
       </trans-unit>
       <trans-unit id="ConditionColumn.HeaderText">

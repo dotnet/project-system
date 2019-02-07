@@ -4,7 +4,7 @@
     <body>
       <trans-unit id="Rule|ProjectReference|DisplayName">
         <source>Project Reference</source>
-        <target state="translated">Ссылка проекта</target>
+        <target state="translated">Ссылка на проект</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|ProjectReference|Description">
@@ -39,12 +39,12 @@
       </trans-unit>
       <trans-unit id="BoolProperty|CopyLocal|Description">
         <source>Indicates whether the reference will be copied to the output directory.</source>
-        <target state="translated">Указывает, будет ли ссылочная сборка скопирована в выходной каталог.</target>
+        <target state="translated">Указывает, что ссылка будет скопирована в папку вывода.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|IncludeAssets|DisplayName">
         <source>Include Assets</source>
-        <target state="translated">Include Assets</target>
+        <target state="new">Include Assets</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|IncludeAssets|Description">
@@ -54,7 +54,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|ExcludeAssets|DisplayName">
         <source>Exclude Assets</source>
-        <target state="translated">Exclude Assets</target>
+        <target state="new">Exclude Assets</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ExcludeAssets|Description">
@@ -64,7 +64,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|PrivateAssets|DisplayName">
         <source>Private Assets</source>
-        <target state="translated">Private Assets</target>
+        <target state="new">Private Assets</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PrivateAssets|Description">

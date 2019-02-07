@@ -4,7 +4,7 @@
     <body>
       <trans-unit id="Category|Advanced|DisplayName">
         <source>Advanced</source>
-        <target state="translated">Дополнительно</target>
+        <target state="translated">Дополнительный</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|Misc|DisplayName">
@@ -29,7 +29,7 @@
       </trans-unit>
       <trans-unit id="EnumProperty|CopyToOutputDirectory|Description">
         <source>Specifies the source file will be copied to the output directory.</source>
-        <target state="translated">Указывает, что файл исходного кода будет скопирован в выходной каталог.</target>
+        <target state="translated">Указывает, что исходный файл будет скопирован в указанный каталог</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|CopyToOutputDirectory.Never|DisplayName">

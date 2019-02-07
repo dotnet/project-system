@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
     {
         bool SupportsDependency(IDependency dependency);
 
-        bool HasChildren(string projectPath, IDependency dependency);
+        bool HasChildren(IDependency dependency);
 
         void BuildGraph(
             IGraphContext graphContext,
@@ -54,7 +54,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
             ITargetedDependenciesSnapshot targetedSnapshot);
 
         bool MatchSearchResults(
-            string projectPath,
             IDependency topLevelDependency,
             Dictionary<string, HashSet<IDependency>> searchResultsPerContext,
             out HashSet<IDependency> topLevelDependencyMatches);

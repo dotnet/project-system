@@ -19,12 +19,12 @@
       </trans-unit>
       <trans-unit id="ProductLabel.Text">
         <source>&amp;Product:</source>
-        <target state="translated">Ü&amp;rün:</target>
+        <target state="translated">&amp;Ürün:</target>
         <note />
       </trans-unit>
       <trans-unit id="CompanyLabel.Text">
         <source>&amp;Company:</source>
-        <target state="translated">Şir&amp;ket:</target>
+        <target state="translated">&amp;Şirket:</target>
         <note />
       </trans-unit>
       <trans-unit id="DescriptionLabel.Text">
@@ -34,17 +34,17 @@
       </trans-unit>
       <trans-unit id="ComVisibleCheckBox.Text">
         <source>&amp;Make assembly COM-Visible</source>
-        <target state="translated">Bütünleştirilmiş kodu &amp;COM-Görünür yap</target>
+        <target state="translated">&amp;Derlemeyi COM-Visible yap</target>
         <note />
       </trans-unit>
       <trans-unit id="NeutralLanguageLabel.Text">
         <source>&amp;Neutral language:</source>
-        <target state="translated">Bağımsı&amp;z dil:</target>
+        <target state="translated">&amp;Nötr dil:</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyVersionLabel.Text">
         <source>&amp;Assembly version:</source>
-        <target state="translated">Bütünleştirilmiş k&amp;od sürümü:</target>
+        <target state="translated">&amp;Derleme sürümü:</target>
         <note />
       </trans-unit>
       <trans-unit id="FileVersionLabel.Text">
@@ -54,22 +54,22 @@
       </trans-unit>
       <trans-unit id="FileVersionMajorTextBox.AccessibleName">
         <source>File Version major</source>
-        <target state="needs-review-translation">Önemli</target>
+        <target state="translated">Dosya Sürümü ana</target>
         <note />
       </trans-unit>
       <trans-unit id="FileVersionMinorTextBox.AccessibleName">
         <source>File Version minor</source>
-        <target state="needs-review-translation">Önemsiz</target>
+        <target state="translated">Dosya Sürümü alt</target>
         <note />
       </trans-unit>
       <trans-unit id="FileVersionBuildTextBox.AccessibleName">
         <source>File Version build</source>
-        <target state="needs-review-translation">Derleme</target>
+        <target state="translated">Dosya Sürümü derlemesi</target>
         <note />
       </trans-unit>
       <trans-unit id="FileVersionRevisionTextBox.AccessibleName">
         <source>File Version revision</source>
-        <target state="needs-review-translation">Düzeltme</target>
+        <target state="translated">Dosya Sürümü düzeltme</target>
         <note />
       </trans-unit>
       <trans-unit id="GuidLabel.Text">
@@ -79,22 +79,22 @@
       </trans-unit>
       <trans-unit id="AssemblyVersionMajorTextBox.AccessibleName">
         <source>Assembly Version major</source>
-        <target state="needs-review-translation">Önemli</target>
+        <target state="translated">Derleme Sürümü ana</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyVersionMinorTextBox.AccessibleName">
         <source>Assembly Version minor</source>
-        <target state="needs-review-translation">Önemsiz</target>
+        <target state="translated">Derleme Sürümü alt</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyVersionBuildTextBox.AccessibleName">
         <source>Assembly Version build</source>
-        <target state="needs-review-translation">Derleme</target>
+        <target state="translated">Derleme Sürüm derlemesi</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyVersionRevisionTextBox.AccessibleName">
         <source>Assembly Version revision</source>
-        <target state="needs-review-translation">Düzeltme</target>
+        <target state="translated">Derleme Sürümü düzeltme</target>
         <note />
       </trans-unit>
     </body>

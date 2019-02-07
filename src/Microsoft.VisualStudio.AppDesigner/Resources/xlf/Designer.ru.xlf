@@ -265,12 +265,12 @@ Click OK to ignore and continue. Click CANCEL to choose a different output path.
       </trans-unit>
       <trans-unit id="PPG_PostBuildCommandLineTitle">
         <source>Post-build Event Command Line</source>
-        <target state="translated">Командная строка событий после сборки</target>
+        <target state="translated">Командная строка события после сборки</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_PreBuildCommandLineTitle">
         <source>Pre-build Event Command Line</source>
-        <target state="translated">Командная строка событий перед сборкой</target>
+        <target state="translated">Командная строка события перед сборкой</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_ProjectReloadedSomePropertiesMayNotHaveBeenSet">
@@ -290,12 +290,12 @@ Click OK to ignore and continue. Click CANCEL to choose a different output path.
       </trans-unit>
       <trans-unit id="PPG_SelectOutputPathTitle">
         <source>Select Output Path</source>
-        <target state="translated">Выбор выходного пути</target>
+        <target state="translated">Выбор пути для вывода</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_SelectReferencePath">
         <source>Select Reference Path</source>
-        <target state="translated">Выбор пути для ссылок</target>
+        <target state="translated">Выберите путь для ссылки</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_SelectWorkingDirectoryTitle">

@@ -48,7 +48,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
             inputGraphNode.SetValue(DependenciesGraphSchema.DependencyIdProperty, dependency.Id);
             inputGraphNode.SetValue(DependenciesGraphSchema.ResolvedProperty, dependency.Resolved);
 
-            if (viewProvider.HasChildren(projectPath, dependency))
+            if (viewProvider.HasChildren(dependency))
             {
                 inputGraphNode.SetValue(DgmlNodeProperties.ContainsChildren, true);
             }

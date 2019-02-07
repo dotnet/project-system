@@ -59,7 +59,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
         /// <summary>
         /// ProjectContextChanged gets fired every time dependencies change for projects across solution.
         /// <see cref="_expandedGraphContexts"/> contains all nodes that we need to check for potential updates
-        /// in their children dependencies.
+        /// in their child dependencies.
         /// </summary>
         private void OnSnapshotChanged(object sender, SnapshotChangedEventArgs e)
         {

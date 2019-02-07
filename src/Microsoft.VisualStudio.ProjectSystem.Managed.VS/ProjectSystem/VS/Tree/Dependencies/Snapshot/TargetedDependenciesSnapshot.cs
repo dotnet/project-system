@@ -106,7 +106,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 foreach (IDependenciesSnapshotFilter filter in snapshotFilters)
                 {
                     filter.BeforeRemove(
-                        projectPath,
                         targetFramework,
                         dependency,
                         context);
@@ -134,7 +133,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 foreach (IDependenciesSnapshotFilter filter in snapshotFilters)
                 {
                     filter.BeforeAddOrUpdate(
-                        projectPath,
                         targetFramework,
                         dependency,
                         subTreeProviderByProviderType,

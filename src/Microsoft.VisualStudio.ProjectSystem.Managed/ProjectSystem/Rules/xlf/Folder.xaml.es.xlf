@@ -9,7 +9,7 @@
       </trans-unit>
       <trans-unit id="Rule|Folder|Description">
         <source>Folder Properties</source>
-        <target state="translated">Propiedades de carpeta</target>
+        <target state="translated">Propiedades de la carpeta</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|FullPath|DisplayName">

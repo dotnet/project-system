@@ -717,10 +717,16 @@
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
     <value>Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase, Microsoft.VisualStudio.AppDesigner, Version=42.42.42.42, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="CSharpLanguageVerison.Default" xml:space="preserve">
-    <value>C# latest major version (default)</value>
+  <data name="CSharpLanguageVersion.Default" xml:space="preserve">
+    <value>C# latest supported minor version (default)</value>
   </data>
-  <data name="CSharpLanguageVerison.Latest" xml:space="preserve">
-    <value>C# latest minor version (latest)</value>
+  <data name="CSharpLanguageVersion.LatestMajor" xml:space="preserve">
+    <value>C# latest supported major version (latestmajor)</value>
+  </data>
+  <data name="CSharpLanguageVersion.Latest" xml:space="preserve">
+    <value>C# latest supported minor version (latest)</value>
+  </data>
+  <data name="CSharpLanguageVersion.Preview" xml:space="preserve">
+    <value>unsupported preview of next C# version (preview)</value>
   </data>
 </root>

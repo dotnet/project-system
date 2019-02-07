@@ -15,8 +15,8 @@ ASP.NET Core (.NET Framework & .NET Core)                                   |   
 ASP.NET                                                                     | ●        |   
 Xamarin                                                                     | ●        |   
 Universal Windows Platform (UWP)                                            | ●        |
-Windows Presentation Framework (WPF)                                        | ●        | [16.0](https://github.com/dotnet/project-system/labels/Feature-XAML)
-Windows Forms                                                               | ●        | [16.0](https://github.com/dotnet/project-system/labels/Feature-WinForms)  
+Windows Presentation Framework (WPF)                                        | ●        | [16.x](https://github.com/dotnet/project-system/labels/Feature-XAML)
+Windows Forms                                                               | ●        | [16.x](https://github.com/dotnet/project-system/labels/Feature-WinForms)  
 Windows Workflow Foundation (WWF)                                           | ●        |
 **Build**|
 Target multiple frameworks (multi-target) from single project               |          | ●
@@ -53,8 +53,8 @@ Generate NuGet package on build                                             |   
 **Features**|
 Add Service Reference                                                       | ●        | 
 Add Web Reference                                                           | ●        | 
-Add Data Source                                                             | ●        | 16.0
-DataSet Designer                                                            | ●        | 16.0
+Add Data Source                                                             | ●        | 16.x
+DataSet Designer                                                            | ●        | 16.x
 "Initialize Interactive Window with Project"                                | ●        | ● (15.8) | Only when targeting .NET Framework.
 Class Diagrams                                                              | ●        | ● (15.8) |
 Code Analysis                                                               | ●        | 
