@@ -466,7 +466,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Private Sub LicenseBrowseButton_Click(sender As Object, e As EventArgs) Handles LicenseBrowseButton.Click
             Dim fileName = ""
-            Dim fileNames As ArrayList = GetFilesViaBrowse(ServiceProvider, Handle, GetProjectPath(), My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_AddExistingFilesTitle,
+            Dim initialDirectory = Path.GetFullPath(DTEProject.FullName)
+            Dim fileNames As ArrayList = GetFilesViaBrowse(ServiceProvider, Handle, initialDirectory, My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_AddExistingFilesTitle,
                     CombineDialogFilters(
                         My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Filter_License + " (*.txt, *.md)|*.txt;*.md",
                         GetAllFilesDialogFilter()
