@@ -248,33 +248,35 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     datalist.Add(data)
                     data = New PropertyControlData(106, "PackageLicenseExpression", PackageLicenseExpression, ControlDataFlags.None, New Control() {ExpressionLabel})
                     datalist.Add(data)
-                    data = New PropertyControlData(107, "PackageProjectUrl", PackageProjectUrl, ControlDataFlags.None, New Control() {PackageProjectUrlLabel})
+                    data = New PropertyControlData(107, "PackageLicenseFile", Nothing, ControlDataFlags.None)
                     datalist.Add(data)
-                    data = New PropertyControlData(108, "PackageIconUrl", PackageIconUrl, ControlDataFlags.None, New Control() {PackageIconUrlLabel})
+                    data = New PropertyControlData(108, "PackageProjectUrl", PackageProjectUrl, ControlDataFlags.None, New Control() {PackageProjectUrlLabel})
                     datalist.Add(data)
-                    data = New PropertyControlData(109, "RepositoryUrl", RepositoryUrl, ControlDataFlags.None, New Control() {RepositoryUrlLabel})
+                    data = New PropertyControlData(109, "PackageIconUrl", PackageIconUrl, ControlDataFlags.None, New Control() {PackageIconUrlLabel})
                     datalist.Add(data)
-                    data = New PropertyControlData(110, "RepositoryType", RepositoryType, ControlDataFlags.None, New Control() {RepositoryTypeLabel})
+                    data = New PropertyControlData(110, "RepositoryUrl", RepositoryUrl, ControlDataFlags.None, New Control() {RepositoryUrlLabel})
                     datalist.Add(data)
-                    data = New PropertyControlData(111, "PackageTags", PackageTags, ControlDataFlags.None, New Control() {PackageTagsLabel})
+                    data = New PropertyControlData(111, "RepositoryType", RepositoryType, ControlDataFlags.None, New Control() {RepositoryTypeLabel})
                     datalist.Add(data)
-                    data = New PropertyControlData(112, "PackageReleaseNotes", PackageReleaseNotes, ControlDataFlags.None, New Control() {PackageReleaseNotesLabel})
+                    data = New PropertyControlData(112, "PackageTags", PackageTags, ControlDataFlags.None, New Control() {PackageTagsLabel})
                     datalist.Add(data)
-                    data = New PropertyControlData(113, "PackageRequireLicenseAcceptance", PackageRequireLicenseAcceptance, ControlDataFlags.None)
+                    data = New PropertyControlData(113, "PackageReleaseNotes", PackageReleaseNotes, ControlDataFlags.None, New Control() {PackageReleaseNotesLabel})
                     datalist.Add(data)
-                    data = New PropertyControlData(114, "PackageReleaseNotes", PackageReleaseNotes, ControlDataFlags.None, New Control() {PackageReleaseNotesLabel})
+                    data = New PropertyControlData(114, "PackageRequireLicenseAcceptance", PackageRequireLicenseAcceptance, ControlDataFlags.None)
                     datalist.Add(data)
-                    data = New PropertyControlData(115, "Company", AssemblyCompany, ControlDataFlags.None, New Control() {AssemblyCompanyLabel})
+                    data = New PropertyControlData(115, "PackageReleaseNotes", PackageReleaseNotes, ControlDataFlags.None, New Control() {PackageReleaseNotesLabel})
                     datalist.Add(data)
-                    data = New PropertyControlData(116, "Product", Product, ControlDataFlags.None, New Control() {ProductLabel})
+                    data = New PropertyControlData(116, "Company", AssemblyCompany, ControlDataFlags.None, New Control() {AssemblyCompanyLabel})
                     datalist.Add(data)
-                    data = New PropertyControlData(117, "NeutralLanguage", NeutralLanguageComboBox, AddressOf NeutralLanguageSet, AddressOf NeutralLanguageGet, ControlDataFlags.None, New Control() {NeutralLanguageLabel})
+                    data = New PropertyControlData(117, "Product", Product, ControlDataFlags.None, New Control() {ProductLabel})
                     datalist.Add(data)
-                    data = New PropertyControlData(118, "AssemblyVersion", AssemblyVersionLayoutPanel, AddressOf VersionSet, AddressOf VersionGet, ControlDataFlags.None, New Control() {AssemblyVersionLabel}) With {
+                    data = New PropertyControlData(118, "NeutralLanguage", NeutralLanguageComboBox, AddressOf NeutralLanguageSet, AddressOf NeutralLanguageGet, ControlDataFlags.None, New Control() {NeutralLanguageLabel})
+                    datalist.Add(data)
+                    data = New PropertyControlData(119, "AssemblyVersion", AssemblyVersionLayoutPanel, AddressOf VersionSet, AddressOf VersionGet, ControlDataFlags.None, New Control() {AssemblyVersionLabel}) With {
                         .DisplayPropertyName = My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Property_AssemblyVersion
                     }
                     datalist.Add(data)
-                    data = New PropertyControlData(119, "FileVersion", FileVersionLayoutPanel, AddressOf VersionSet, AddressOf VersionGet, ControlDataFlags.None, New Control() {AssemblyFileVersionLabel}) With {
+                    data = New PropertyControlData(120, "FileVersion", FileVersionLayoutPanel, AddressOf VersionSet, AddressOf VersionGet, ControlDataFlags.None, New Control() {AssemblyFileVersionLabel}) With {
                         .DisplayPropertyName = My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Property_AssemblyFileVersion
                     }
                     datalist.Add(data)
@@ -385,6 +387,14 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                                                              End Function)
         End Sub
 
+        Protected Overrides Sub OnExternalPropertyChanged(data As PropertyControlData, source As PropertyChangeSource)
+            MyBase.OnExternalPropertyChanged(data, source)
+            If String.Equals(data.PropertyName, "PackageLicenseFile") Then
+                Dim PackageLicenseFileSet = TryCast(TryGetNonCommonPropertyValue(GetPropertyDescriptor("PackageLicenseFile")), String)
+                LicenseFileNameTextBox.Text = LicenseTryGetExistingLicenseItemPath(PackageLicenseFileSet)
+            End If
+        End Sub
+
         Private Sub AddOrChangeLicenseItem(oldInclude As String, newInclude As String)
             Dim projectLock = _configuredProject.Services.ExportProvider.GetExportedValue(Of IProjectLockService)()
 #Disable Warning RS0030 ' Do not used banned APIs. The project lock is needed here - there is no IVT for ProjectAccessor
@@ -444,9 +454,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         'I want to be able to, given a license file name, try to find an item that matches the file name to populate the textbox
         Private Function LicenseTryGetExistingLicenseItemPath(packageLicenseFile As String) As String
-            If _allItems Is Nothing Then
-                GetProjectsAndProvider()
-            End If
+            GetProjectsAndProvider()
             For Each item As IProjectItem In _allItems
                 'PackageLicenseFile can have a package path as a prefix, so we need to just look at file name
                 If Path.GetFileName(packageLicenseFile) = Path.GetFileName(item.EvaluatedIncludeAsRelativePath) Then
