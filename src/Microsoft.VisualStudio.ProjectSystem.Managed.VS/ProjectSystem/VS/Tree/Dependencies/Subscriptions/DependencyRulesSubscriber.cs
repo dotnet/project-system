@@ -12,17 +12,14 @@ using System.Threading.Tasks.Dataflow;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
-using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions
 {
     [Export(typeof(IDependencyCrossTargetSubscriber))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
-    internal sealed class DependencyRulesSubscriber : OnceInitializedOnceDisposedAsync, IDependencyCrossTargetSubscriber
+    internal sealed class DependencyRulesSubscriber : OnceInitializedOnceDisposedUnderLockAsync, IDependencyCrossTargetSubscriber
     {
         public const string DependencyRulesSubscriberContract = "DependencyRulesSubscriberContract";
-
-        private readonly SemaphoreSlim _updateGate = new SemaphoreSlim(initialCount: 1);
 
 #pragma warning disable CA2213 // OnceInitializedOnceDisposedAsync are not tracked correctly by the IDisposeable analyzer
         private DisposableBag _subscriptions;
@@ -188,8 +185,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 return;
             }
 
-            // Ensure updates don't overlap
-            await _updateGate.ExecuteWithinLockAsync(JoinableCollection, JoinableFactory, async () =>
+            // Ensure updates don't overlap and that we aren't disposed during the update without cleaning up properly
+            await ExecuteUnderLockAsync(async token =>
             {
                 // Ensure the project doesn't unload during the update
                 await _tasksService.LoadedProjectAsync(async () =>
@@ -273,11 +270,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             return Task.CompletedTask;
         }
 
-        protected override Task DisposeCoreAsync(bool initialized)
+        protected override Task DisposeCoreUnderLockAsync(bool initialized)
         {
             ReleaseSubscriptions();
-
-            _updateGate.Dispose();
 
             return Task.CompletedTask;
         }
