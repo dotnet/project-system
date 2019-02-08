@@ -39,7 +39,9 @@ namespace Microsoft.VisualStudio.Shell
         {
             var serviceType = Type.GetTypeFromCLSID(riid, throwOnError: true); // Should only throw on OOM according to MSDN
 
+#pragma warning disable RS0030 // Do not used banned APIs (deliberately adapting)
             service = _serviceProvider.GetService(serviceType);
+#pragma warning restore RS0030 // Do not used banned APIs
             if (service == null)
                 return false;
 

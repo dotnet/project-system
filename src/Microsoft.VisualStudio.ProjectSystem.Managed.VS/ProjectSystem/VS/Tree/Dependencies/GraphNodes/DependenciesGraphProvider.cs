@@ -243,7 +243,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
 
             public static async Task<GraphIconCache> CreateAsync(IAsyncServiceProvider serviceProvider)
             {
+#pragma warning disable RS0030 // Do not used banned APIs
                 var imageService = (IVsImageService2)await serviceProvider.GetServiceAsync(typeof(SVsImageService));
+#pragma warning restore RS0030 // Do not used banned APIs
 
                 return new GraphIconCache(imageService);
             }

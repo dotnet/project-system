@@ -3,6 +3,10 @@
   <Import Project="..\Directory.Build.targets" />
   <Import Project="$(RepoToolsetDir)Imports.targets" Condition="'$(RepoToolsetDir)' != ''" />
   <Import Project="..\build\VisualStudio.XamlRules.targets"/>
+
+  <ItemGroup>
+    <AdditionalFiles Include="$(MSBuildThisFileDirectory)\BannedSymbols.txt" Condition="'$(BannedSymbolsOptOut)' != 'true'" />
+  </ItemGroup> 
   
   <!-- 
     Defining this target will disable the new SDK behavior of implicit transitive project
