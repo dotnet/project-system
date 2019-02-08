@@ -194,6 +194,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 // Ensure the project doesn't unload during the update
                 await _tasksService.LoadedProjectAsync(async () =>
                 {
+                    // TODO pass _tasksService.UnloadCancellationToken into handler to reduce redundant work on unload
+
                     // Ensure the project's capabilities don't change during the update
                     using (ProjectCapabilitiesContext.CreateIsolatedContext(configuredProject, capabilities))
                     {
