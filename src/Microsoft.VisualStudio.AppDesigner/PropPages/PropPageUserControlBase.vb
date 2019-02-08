@@ -282,9 +282,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '  property changes
         Private ReadOnly _suspendPropertyChangeListeningDispIds As New List(Of Integer)
 
-        'DISPID_UNKNOWN
-        Public DISPID_UNKNOWN As Integer = DISPID_UNKNOWN
-
         'Cookie for use with IVsShell.{Advise,Unadvise}BroadcastMessages
         Private _cookieBroadcastMessages As UInteger
         Private _vsShellForUnadvisingBroadcastMessages As IVsShell
