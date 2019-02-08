@@ -68,7 +68,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         /// </summary>
         private static int ShowAddItemDialog(SVsServiceProvider serviceProvider, IProjectTree target, IVsProject vsProject, string strBrowseLocations, AddItemAction addItemAction)
         {
+#pragma warning disable RS0030 // Do not used banned APIs
             IVsAddProjectItemDlg addItemDialog = serviceProvider.GetService<IVsAddProjectItemDlg, SVsAddProjectItemDlg>();
+#pragma warning restore RS0030 // Do not used banned APIs
             Assumes.Present(addItemDialog);
 
             __VSADDITEMFLAGS uiFlags = __VSADDITEMFLAGS.VSADDITEM_AddNewItems | __VSADDITEMFLAGS.VSADDITEM_SuggestTemplateName | __VSADDITEMFLAGS.VSADDITEM_AllowHiddenTreeView;
