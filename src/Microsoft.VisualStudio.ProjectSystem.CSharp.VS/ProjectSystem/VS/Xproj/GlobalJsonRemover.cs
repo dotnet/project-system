@@ -76,8 +76,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
             UIThreadHelper.VerifyOnUIThread();
 #pragma warning disable RS0030 // Do not used banned APIs
             DTE2 dte = _serviceProvider.GetService<DTE2, DTE>();
-#pragma warning restore RS0030 // Do not used banned APIs
-#pragma warning disable RS0030 // Do not used banned APIs
             IVsSolution solution = _serviceProvider.GetService<IVsSolution, SVsSolution>();
 #pragma warning restore RS0030 // Do not used banned APIs
             try
