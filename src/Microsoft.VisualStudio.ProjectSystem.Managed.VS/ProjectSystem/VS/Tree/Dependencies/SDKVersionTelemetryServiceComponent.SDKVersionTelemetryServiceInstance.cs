@@ -35,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             protected override Task InitializeCoreAsync(CancellationToken cancellationToken)
             {
                 // Do not block initialization on reporting the sdk version. It is possible to deadlock.
-                _projectVsServices.ThreadingService.Fork(async () =>
+                _projectVsServices.ThreadingService.RunAndForget(async () =>
                 {
                     // Wait for the project to be loaded so that we don't prematurely load the active configuration
                     await _unconfiguredProjectTasksService.ProjectLoadedInHost;
@@ -56,7 +56,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                         (TelemetryPropertyName.SDKVersionNETCoreSdkVersion, version)
                     });
                 }, 
-                factory: _projectVsServices.ThreadingService.JoinableTaskFactory,
                 unconfiguredProject: _projectVsServices.Project);
 
                 return Task.CompletedTask;
