@@ -58,7 +58,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
                 return VSConstants.VS_E_PROJECTMIGRATIONFAILED;
             }
 
+#pragma warning disable RS0030 // Do not used banned APIs
             IVsSolution solution = _serviceProvider.GetService<IVsSolution, SVsSolution>();
+#pragma warning restore RS0030 // Do not used banned APIs
             Verify.HResult(solution.GetSolutionInfo(out string solutionDirectory, out _, out _));
 
             HResult backupResult = BackupAndDeleteGlobalJson(solutionDirectory, solution, backupDirectory, projectName, logger);

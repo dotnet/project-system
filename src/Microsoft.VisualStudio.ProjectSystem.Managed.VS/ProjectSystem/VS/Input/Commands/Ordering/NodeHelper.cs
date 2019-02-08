@@ -70,7 +70,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
             }
 
 
+#pragma warning disable RS0030 // Do not used banned APIs
             IVsUIShell shell = serviceProvider.GetService<IVsUIShell, SVsUIShell>();
+#pragma warning restore RS0030 // Do not used banned APIs
 
             object pvar = null;
             IVsUIHierarchyWindow uiHierarchyWindow = null;
