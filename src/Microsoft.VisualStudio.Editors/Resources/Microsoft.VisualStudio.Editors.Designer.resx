@@ -1256,6 +1256,14 @@ CONSIDER: get this from CodeDom</comment>
 #  represent the first part of that filter
 #</comment>
   </data>
+  <data name="RSE_Filter_License" xml:space="preserve">
+    <value>License Files</value>
+    <comment># File dialog filters
+#
+# E.g., for icons, the actual filter created would look like "Icons (*.ico)".  These resources
+#  represent the first part of that filter
+#</comment>
+  </data>
   <data name="RSE_Filter_All" xml:space="preserve">
     <value>All Files</value>
     <comment># File dialog filters

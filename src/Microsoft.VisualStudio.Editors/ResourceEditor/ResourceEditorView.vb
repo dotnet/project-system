@@ -2738,6 +2738,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     If TempFileName <> "" Then
                         ResourceFileNames.Add(TempFileName)
                     End If
+                Catch ex As Exception When IsIOException(ex)
+                    ' I/O failures are expected when the linked file from the RESX is missing on disk
+
                 Catch ex As Exception When ReportWithoutCrash(ex,
                                                                            $"Failed trying to copy linked or non-linked resource {Resource.Name} to temporary file {TempFileName} - ignoring and moving to next resource",
                                                                            NameOf(ResourceEditorView))

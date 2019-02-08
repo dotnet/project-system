@@ -89,10 +89,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 properties);
         }
 
-        public override ImageMoniker GetImplicitIcon()
-        {
-            return ManagedImageMonikers.ApplicationPrivate;
-        }
+        public override ImageMoniker GetImplicitIcon() => ManagedImageMonikers.ApplicationPrivate;
 
         /// <summary>
         /// When some other project's snapshot changed we need to check if our snapshot has a top level

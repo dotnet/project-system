@@ -21,13 +21,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
     internal class DependencySharedProjectsSubscriber : OnceInitializedOnceDisposed, IDependencyCrossTargetSubscriber
     {
         private readonly List<IDisposable> _subscriptionLinks = new List<IDisposable>();
-        private readonly IProjectAsynchronousTasksService _tasksService;
+        private readonly IUnconfiguredProjectTasksService _tasksService;
         private readonly IDependenciesSnapshotProvider _dependenciesSnapshotProvider;
         private ICrossTargetSubscriptionsHost _host;
 
         [ImportingConstructor]
         public DependencySharedProjectsSubscriber(
-            [Import(ExportContractNames.Scopes.UnconfiguredProject)] IProjectAsynchronousTasksService tasksService,
+            IUnconfiguredProjectTasksService tasksService,
             IDependenciesSnapshotProvider dependenciesSnapshotProvider)
             : base(synchronousDisposal: true)
         {
@@ -108,8 +108,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
             await _tasksService.LoadedProjectAsync(() =>
             {
-                _tasksService.UnloadCancellationToken.ThrowIfCancellationRequested();
-
                 return HandleAsync(e);
             });
         }

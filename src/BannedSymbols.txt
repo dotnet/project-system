@@ -6,6 +6,8 @@ T:Microsoft.VisualStudio.ProjectSystem.VS.IProjectGuidService2; Using ISafeProje
 P:Microsoft.VisualStudio.ProjectSystem.VS.IProjectAsyncLoadDashboard.ProjectLoadedInHost; Using IUnconfiguredProjectTasksService.ProjectLoadedInHost prevents waiting indefinitely when the project is closed before it has finished loading
 
 M:Microsoft.VisualStudio.ProjectSystem.CommonProjectSystemTools.LoadedProject(Microsoft.VisualStudio.ProjectSystem.IProjectAsynchronousTasksService); Using IUnconfiguredProjectTasksService.LoadedProjectAsync is unit testable
+M:Microsoft.VisualStudio.ProjectSystem.CommonProjectSystemTools.LoadedProjectAsync(Microsoft.VisualStudio.ProjectSystem.IProjectAsynchronousTasksService,System.Func{System.Threading.Tasks.Task},System.Boolean); Using IUnconfiguredProjectTasksService.LoadedProjectAsync is unit testable
+M:Microsoft.VisualStudio.ProjectSystem.CommonProjectSystemTools.LoadedProjectAsync`1(Microsoft.VisualStudio.ProjectSystem.IProjectAsynchronousTasksService,System.Func{System.Threading.Tasks.Task{``0}},System.Boolean); Using IUnconfiguredProjectTasksService.LoadedProjectAsync is unit testable
 
 T:Microsoft.VisualStudio.ProjectSystem.ProjectAutoLoadAttribute; Using IProjectDynamicLoadComponent avoids accidently reloading the project while loading, switching branches, installing NuGet package, etc.
 T:Microsoft.VisualStudio.ProjectSystem.ConfiguredProjectAutoLoadAttribute; Using IProjectDynamicLoadComponent avoids accidently reloading the project while loading, switching branches, installing NuGet package, etc.
@@ -14,3 +16,12 @@ M:System.Threading.Tasks.Task.ConfigureAwait(System.Boolean); "ConfigureAwait(tr
 M:System.Threading.Tasks.Task`1.ConfigureAwait(System.Boolean); "ConfigureAwait(true)" should be removed, and "ConfigureAwait(false)" should be replaced with "await TaskScheduler.Default"
 M:System.Threading.Tasks.ValueTask.ConfigureAwait(System.Boolean); "ConfigureAwait(true)" should be removed, and "ConfigureAwait(false)" should be replaced with "await TaskScheduler.Default"
 M:System.Threading.Tasks.ValueTask`1.ConfigureAwait(System.Boolean); "ConfigureAwait(true)" should be removed, and "ConfigureAwait(false)" should be replaced with "await TaskScheduler.Default"
+
+M:System.Threading.Tasks.Task.Run(System.Action); Task.Run should be replaced with IProjectThreadingService.Fork, which prevents the project being unloaded while the Task is running
+M:System.Threading.Tasks.Task.Run`1(System.Func{``0}); Task.Run should be replaced with IProjectThreadingService.Fork, which prevents the project being unloaded while the Task is running
+M:System.Threading.Tasks.Task.Run`1(System.Func{System.Threading.Tasks.Task{``0}}); Task.Run should be replaced with IProjectThreadingService.Fork, which prevents the project being unloaded while the Task is running
+M:System.Threading.Tasks.Task.Run(System.Func{System.Threading.Tasks.Task}); Task.Run should be replaced with IProjectThreadingService.Fork, which prevents the project being unloaded while the Task is running
+M:System.Threading.Tasks.Task.Run(System.Action,System.Threading.CancellationToken); Task.Run should be replaced with IProjectThreadingService.Fork, which prevents the project being unloaded while the Task is running
+M:System.Threading.Tasks.Task.Run`1(System.Func`1{``0},System.Threading.CancellationToken); Task.Run should be replaced with IProjectThreadingService.Fork, which prevents the project being unloaded while the Task is running
+M:System.Threading.Tasks.Task.Run(System.Func{System.Threading.Tasks.Task},System.Threading.CancellationToken); Task.Run should be replaced with IProjectThreadingService.Fork, which prevents the project being unloaded while the Task is running
+M:System.Threading.Tasks.Task.Run`1(System.Func{System.Threading.Tasks.Task{``0}},System.Threading.CancellationToken); Task.Run should be replaced with IProjectThreadingService.Fork, which prevents the project being unloaded while the Task is running

@@ -22,9 +22,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             UnresolvedExpandedIcon = unresolvedExpandedIcon;
         }
 
+        /// <summary>
+        /// Gets the icon to use when the dependency is resolved and collapsed.
+        /// </summary>
         public ImageMoniker Icon { get; }
+
+        /// <summary>
+        /// Gets the icon to use when the dependency is resolved and expanded.
+        /// </summary>
         public ImageMoniker ExpandedIcon { get; }
+
+        /// <summary>
+        /// Gets the icon to use when the dependency is unresolved and collapsed.
+        /// </summary>
         public ImageMoniker UnresolvedIcon { get; }
+
+        /// <summary>
+        /// Gets the icon to use when the dependency is unresolved and expanded.
+        /// </summary>
         public ImageMoniker UnresolvedExpandedIcon { get; }
 
         public override bool Equals(object obj)

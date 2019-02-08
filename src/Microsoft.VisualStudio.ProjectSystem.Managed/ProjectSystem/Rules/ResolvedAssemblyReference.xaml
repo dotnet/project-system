@@ -7,161 +7,161 @@
     Description="Reference Properties"
     xmlns="http://schemas.microsoft.com/build/2009/properties">
 
-    <Rule.DataSource>
-        <DataSource Persistence="ResolvedReference"
-                    ItemType="Reference"
-                    HasConfigurationCondition="False" 
-                    SourceType="TargetResults"
-                    MSBuildTarget="ResolveAssemblyReferencesDesignTime"
-                    SourceOfDefaultValue="AfterContext" />
-    </Rule.DataSource>
+  <Rule.DataSource>
+    <DataSource Persistence="ResolvedReference"
+                ItemType="Reference"
+                HasConfigurationCondition="False"
+                SourceType="TargetResults"
+                MSBuildTarget="ResolveAssemblyReferencesDesignTime"
+                SourceOfDefaultValue="AfterContext" />
+  </Rule.DataSource>
 
-    <!-- Visible properties -->
+  <!-- Visible properties -->
 
-    <StringListProperty Name="Aliases"
-                        DisplayName="Aliases"
-                        Description="A comma-delimited list of aliases to this reference."
-                        Separator=",">
-        <StringListProperty.DataSource>
-            <DataSource Persistence="ProjectFile"
-                        ItemType="Reference" 
-                        HasConfigurationCondition="False" 
-                        SourceOfDefaultValue="AfterContext" />
-        </StringListProperty.DataSource>
-    </StringListProperty>
+  <StringListProperty Name="Aliases"
+                      DisplayName="Aliases"
+                      Description="A comma-delimited list of aliases to this reference."
+                      Separator=",">
+    <StringListProperty.DataSource>
+      <DataSource Persistence="ProjectFile"
+                  ItemType="Reference"
+                  HasConfigurationCondition="False"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringListProperty.DataSource>
+  </StringListProperty>
 
-    <BoolProperty Name="CopyLocal"
-                  DisplayName="Copy Local"
-                  Description="Indicates whether the reference will be copied to the output directory.">
-        <BoolProperty.DataSource>
-            <DataSource Persistence="ProjectFile" 
-                        ItemType="Reference" 
-                        HasConfigurationCondition="False" 
-                        PersistedName="Private" 
-                        SourceOfDefaultValue="AfterContext" />
-        </BoolProperty.DataSource>
-    </BoolProperty>
+  <BoolProperty Name="CopyLocal"
+                DisplayName="Copy Local"
+                Description="Indicates whether the reference will be copied to the output directory.">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="ProjectFile"
+                  ItemType="Reference"
+                  HasConfigurationCondition="False"
+                  PersistedName="Private"
+                  SourceOfDefaultValue="AfterContext" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
 
-    <BoolProperty Name="EmbedInteropTypes"
-                  DisplayName="Embed Interop Types"
-                  Description="Indicates whether types defined in this assembly will be embedded into the target assembly.">
-        <BoolProperty.DataSource>
-            <DataSource Persistence="ProjectFile" 
-                        ItemType="Reference"
-                        HasConfigurationCondition="False"
-                        SourceOfDefaultValue="AfterContext" />
-        </BoolProperty.DataSource>
-    </BoolProperty>
+  <BoolProperty Name="EmbedInteropTypes"
+                DisplayName="Embed Interop Types"
+                Description="Indicates whether types defined in this assembly will be embedded into the target assembly.">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="ProjectFile"
+                  ItemType="Reference"
+                  HasConfigurationCondition="False"
+                  SourceOfDefaultValue="AfterContext" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
 
-    <StringProperty Name="Identity"
-                    ReadOnly="True"
-                    DisplayName="Identity"
-                    Description="Security identity of the referenced assembly (see System.Reflection.Assembly.Evidence or System.Security.Policy.Evidence).">
-        <StringProperty.DataSource>
-            <DataSource PersistedName="{}{Identity}" 
-                        SourceOfDefaultValue="AfterContext" />
-        </StringProperty.DataSource>
-    </StringProperty>
+  <StringProperty Name="Identity"
+                  ReadOnly="True"
+                  DisplayName="Identity"
+                  Description="Security identity of the referenced assembly (see System.Reflection.Assembly.Evidence or System.Security.Policy.Evidence).">
+    <StringProperty.DataSource>
+      <DataSource PersistedName="{}{Identity}"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
 
-    <StringProperty Name="ResolvedPath"
-                    ReadOnly="True"
-                    DisplayName="Path"
-                    Description="Location of the file being referenced.">
-        <StringProperty.DataSource>
-            <DataSource PersistedName="Identity" 
-                        SourceOfDefaultValue="AfterContext" />
-        </StringProperty.DataSource>
-    </StringProperty>
+  <StringProperty Name="ResolvedPath"
+                  ReadOnly="True"
+                  DisplayName="Path"
+                  Description="Location of the file being referenced.">
+    <StringProperty.DataSource>
+      <DataSource PersistedName="Identity"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
 
-    <BoolProperty Name="SpecificVersion" 
-                  DisplayName="Specific Version"
-                  Description="Indicates whether this assembly can be resolved without regard to multi-targeting rules for assembly resolution.">
-        <BoolProperty.DataSource>
-            <DataSource Persistence="AssemblyReference" 
-                        ItemType="Reference" 
-                        HasConfigurationCondition="False" 
-                        SourceOfDefaultValue="AfterContext" />
-        </BoolProperty.DataSource>
-    </BoolProperty>
+  <BoolProperty Name="SpecificVersion"
+                DisplayName="Specific Version"
+                Description="Indicates whether this assembly can be resolved without regard to multi-targeting rules for assembly resolution.">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="AssemblyReference"
+                  ItemType="Reference"
+                  HasConfigurationCondition="False"
+                  SourceOfDefaultValue="AfterContext" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
 
-    <StringProperty Name="Version"
-                    ReadOnly="True"
-                    DisplayName="Version"
-                    Description="Version of reference.">
-    </StringProperty>
+  <StringProperty Name="Version"
+                  ReadOnly="True"
+                  DisplayName="Version"
+                  Description="Version of reference.">
+  </StringProperty>
 
-    <!-- Hidden properties -->
+  <!-- Hidden properties -->
 
-    <StringProperty Name="Culture" 
-                    ReadOnly="True"
-                    Visible="False" />
+  <StringProperty Name="Culture"
+                  ReadOnly="True"
+                  Visible="False" />
 
-    <StringProperty Name="Description" 
-                    ReadOnly="True" 
-                    Visible="False" />
+  <StringProperty Name="Description"
+                  ReadOnly="True"
+                  Visible="False" />
 
-    <EnumProperty Name="FileType"
+  <EnumProperty Name="FileType"
+                ReadOnly="True"
+                Visible="False">
+    <EnumValue Name="Assembly" />
+    <EnumValue Name="ActiveX" />
+    <EnumValue Name="Native Assembly" />
+  </EnumProperty>
+
+  <StringProperty Name="HintPath" Visible="false" />
+
+  <StringProperty Name="RequiredTargetFramework"
+                  Visible="False" />
+
+  <StringProperty Name="RuntimeVersion"
                   ReadOnly="True"
                   Visible="False">
-        <EnumValue Name="Assembly" />
-        <EnumValue Name="ActiveX" />
-        <EnumValue Name="Native Assembly" />
-    </EnumProperty>
+  </StringProperty>
 
-    <StringProperty Name="HintPath" Visible="false" />
+  <StringProperty Name="SDKIdentity" Visible="false" />
 
-    <StringProperty Name="RequiredTargetFramework" 
-                    Visible="False" />
+  <BoolProperty Name="StrongName"
+                ReadOnly="True"
+                Visible="False">
+  </BoolProperty>
 
-    <StringProperty Name="RuntimeVersion"
-                    ReadOnly="True"
-                    Visible="False">
-    </StringProperty>
+  <!-- This is the metadata we store on the reference item when we add it. -->
+  <BoolProperty Name="IsWinMDFile"
+                Visible="false" />
 
-    <StringProperty Name="SDKIdentity" Visible="false" />
+  <!-- These are metadata added to the resolved item by MSBuild that we don't show to the user but use internally. -->
 
-    <BoolProperty Name="StrongName"
-                  ReadOnly="True"
-                  Visible="False">
-    </BoolProperty>
+  <StringProperty Name="FrameworkFile"
+                  Visible="False"
+                  ReadOnly="True" />
 
-    <!-- This is the metadata we store on the reference item when we add it. -->
-    <BoolProperty Name="IsWinMDFile" 
-                  Visible="false" />
+  <StringProperty Name="FusionName"
+                  Visible="False"
+                  ReadOnly="True" />
 
-    <!-- These are metadata added to the resolved item by MSBuild that we don't show to the user but use internally. -->
+  <StringProperty Name="IsImplicitlyDefined"
+                  Visible="False"
+                  ReadOnly="True" />
 
-    <StringProperty Name="FrameworkFile" 
-                    Visible="False" 
-                    ReadOnly="True" />
-
-    <StringProperty Name="FusionName" 
-                    Visible="False" 
-                    ReadOnly="True" />
-
-    <StringProperty Name="IsImplicitlyDefined" 
-                    Visible="False" 
-                    ReadOnly="True" />
-
-    <StringProperty Name="Name"
-                    Visible="false"
-                    ReadOnly="True" />
-
-    <StringProperty Name="OriginalItemSpec"
-                    Visible="False" 
-                    ReadOnly="True" />
-
-    <StringProperty Name="ReferenceFromSDK"
-                    Visible="False"
-                    ReadOnly="True" />
-
-    <StringProperty Name="ResolvedFrom"
-                    Visible="False"
-                    ReadOnly="True" />
-
-    <BoolProperty Name="Visible" Visible="False" ReadOnly="True" />
-    
-    <BoolProperty Name="WinMDFile" 
+  <StringProperty Name="Name"
                   Visible="false"
                   ReadOnly="True" />
+
+  <StringProperty Name="OriginalItemSpec"
+                  Visible="False"
+                  ReadOnly="True" />
+
+  <StringProperty Name="ReferenceFromSDK"
+                  Visible="False"
+                  ReadOnly="True" />
+
+  <StringProperty Name="ResolvedFrom"
+                  Visible="False"
+                  ReadOnly="True" />
+
+  <BoolProperty Name="Visible" Visible="False" ReadOnly="True" />
+
+  <BoolProperty Name="WinMDFile"
+                Visible="false"
+                ReadOnly="True" />
 </Rule>

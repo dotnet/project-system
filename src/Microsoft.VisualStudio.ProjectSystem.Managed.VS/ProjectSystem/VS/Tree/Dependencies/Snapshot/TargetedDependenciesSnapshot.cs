@@ -106,7 +106,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 foreach (IDependenciesSnapshotFilter filter in snapshotFilters)
                 {
                     filter.BeforeRemove(
-                        projectPath,
                         targetFramework,
                         dependency,
                         context);
@@ -134,7 +133,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 foreach (IDependenciesSnapshotFilter filter in snapshotFilters)
                 {
                     filter.BeforeAddOrUpdate(
-                        projectPath,
                         targetFramework,
                         dependency,
                         subTreeProviderByProviderType,
@@ -255,7 +253,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
             bool FindUnresolvedDependenciesRecursive(IDependency parent)
             {
-                if (parent.DependencyIDs.Count == 0)
+                if (parent.DependencyIDs.Length == 0)
                 {
                     return false;
                 }
@@ -309,7 +307,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         /// <inheritdoc />
         public ImmutableArray<IDependency> GetDependencyChildren(IDependency dependency)
         {
-            if (dependency.DependencyIDs.Count == 0)
+            if (dependency.DependencyIDs.Length == 0)
             {
                 return ImmutableArray<IDependency>.Empty;
             }
@@ -327,7 +325,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             ImmutableArray<IDependency> BuildChildren()
             {
                 ImmutableArray<IDependency>.Builder children =
-                    ImmutableArray.CreateBuilder<IDependency>(dependency.DependencyIDs.Count);
+                    ImmutableArray.CreateBuilder<IDependency>(dependency.DependencyIDs.Length);
 
                 foreach (string id in dependency.DependencyIDs)
                 {
