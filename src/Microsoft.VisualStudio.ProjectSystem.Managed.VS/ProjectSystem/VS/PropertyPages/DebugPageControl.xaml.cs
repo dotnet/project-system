@@ -7,6 +7,7 @@ using System.Windows.Controls;
 
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Telemetry;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 {
@@ -60,7 +61,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                         cell.Focus();
                         dataGridEnvironmentVariables.BeginEdit();
                     }
-                }).FileAndForget(TelemetryEvents.ProjectSystemRootPath);
+                }).FileAndForget(TelemetryEventName.Prefix);
             }
         }
 
