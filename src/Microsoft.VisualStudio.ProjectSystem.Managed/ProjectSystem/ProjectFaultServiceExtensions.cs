@@ -21,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             submitUIOptions: ImmutableDictionary.Create<ErrorReportUIType, string>());
 
         /// <summary>
-        ///     Immediately handles the specified fault.
+        ///     Reports the specified fault.
         /// </summary>
         /// <param name="faultHandlerService">
         ///     The <see cref="IProjectFaultHostHandler"/> that should handle the fault.
@@ -35,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// <param name="project">
         ///     The project related to the failure, if applicable. Can be <see langword="null"/>.
         /// </param>
-        public static Task HandleFaultAsync2(this IProjectFaultHandlerService faultHandlerService, Exception ex, UnconfiguredProject project, ProjectFaultSeverity severity = ProjectFaultSeverity.Recoverable)
+        public static Task ReportFaultAsync(this IProjectFaultHandlerService faultHandlerService, Exception ex, UnconfiguredProject project, ProjectFaultSeverity severity = ProjectFaultSeverity.Recoverable)
         {
             Requires.NotNull(faultHandlerService, nameof(faultHandlerService));
 
@@ -58,7 +58,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// <param name="severity">
         ///     The severity of the failure.
         /// </param>
-        public static void RegisterFaultHandler2(this IProjectFaultHandlerService faultHandlerService, Task task, UnconfiguredProject project, ProjectFaultSeverity severity = ProjectFaultSeverity.Recoverable)
+        public static void Forget(this IProjectFaultHandlerService faultHandlerService, Task task, UnconfiguredProject project, ProjectFaultSeverity severity = ProjectFaultSeverity.Recoverable)
         {
             Requires.NotNull(faultHandlerService, nameof(faultHandlerService));
 
@@ -81,7 +81,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// <param name="severity">
         ///     The severity of the failure.
         /// </param>
-        public static void RegisterFaultHandler2<TResult>(this IProjectFaultHandlerService faultHandlerService, Task<TResult> task, UnconfiguredProject project, ProjectFaultSeverity severity = ProjectFaultSeverity.Recoverable)
+        public static void Forget<TResult>(this IProjectFaultHandlerService faultHandlerService, Task<TResult> task, UnconfiguredProject project, ProjectFaultSeverity severity = ProjectFaultSeverity.Recoverable)
         {
             Requires.NotNull(faultHandlerService, nameof(faultHandlerService));
 
@@ -107,7 +107,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// <param name="options">
         ///     Influences the environment in which the delegate is executed.
         /// </param>
-        public static void Fork2(this IProjectThreadingService threadingService, Func<Task> asyncAction, UnconfiguredProject unconfiguredProject, ProjectFaultSeverity faultSeverity = ProjectFaultSeverity.Recoverable, ForkOptions options = ForkOptions.Default)
+        public static void RunAndForget(this IProjectThreadingService threadingService, Func<Task> asyncAction, UnconfiguredProject unconfiguredProject, ProjectFaultSeverity faultSeverity = ProjectFaultSeverity.Recoverable, ForkOptions options = ForkOptions.Default)
         {
             Requires.NotNull(threadingService, nameof(threadingService));
 
@@ -133,7 +133,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// <param name="options">
         ///     Influences the environment in which the delegate is executed.
         /// </param>
-        public static void Fork2(this IProjectThreadingService threadingService, Func<Task> asyncAction, ConfiguredProject configuredProject, ProjectFaultSeverity faultSeverity = ProjectFaultSeverity.Recoverable, ForkOptions options = ForkOptions.Default)
+        public static void RunAndForget(this IProjectThreadingService threadingService, Func<Task> asyncAction, ConfiguredProject configuredProject, ProjectFaultSeverity faultSeverity = ProjectFaultSeverity.Recoverable, ForkOptions options = ForkOptions.Default)
         {
             Requires.NotNull(threadingService, nameof(threadingService));
 

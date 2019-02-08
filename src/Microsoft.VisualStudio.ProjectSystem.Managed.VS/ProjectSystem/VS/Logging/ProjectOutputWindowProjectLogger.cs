@@ -40,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Logging
                 // Extremely naive implementation of a Windows Pane logger - the assumption here is that text is rarely written,
                 // so transitions to the UI thread are uncommon and are fire and forget. If we start writing to this a lot (such
                 // as via build), then we'll need to implement a better queueing mechanism.
-                _threadingService.Fork2(async () =>
+                _threadingService.RunAndForget(async () =>
                 {
                     IVsOutputWindowPane pane = await _outputWindowProvider.GetOutputWindowPaneAsync();
 
