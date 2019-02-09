@@ -37,6 +37,22 @@ namespace Microsoft.VisualStudio.LanguageServices.ProjectSystem
             return new IWorkspaceProjectContextMock().Object;
         }
 
+        public static IWorkspaceProjectContext CreateForDynamicFiles(UnconfiguredProject project, Action<string> addDynamicFile = null)
+        {
+            var context = new IWorkspaceProjectContextMock();
+
+            context.SetupGet(c => c.ProjectFilePath)
+                .Returns(project.FullPath);
+
+            if (addDynamicFile != null)
+            {
+                context.Setup(c => c.AddDynamicFile(It.IsAny<string>(), It.IsAny<IEnumerable<string>>()))
+                    .Callback<string, IEnumerable<string>>((p1, p2) => addDynamicFile(p1));
+            }
+
+            return context.Object;
+        }
+
         public static IWorkspaceProjectContext CreateForSourceFiles(UnconfiguredProject project, Action<string> addSourceFile = null, Action<string> removeSourceFile = null)
         {
             var context = new IWorkspaceProjectContextMock();
