@@ -65,7 +65,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to _Double click on project node to edit project file.
+        '''  Looks up a localized string similar to _Double-click opens project files in editor.
         '''</summary>
         Public Shared ReadOnly Property General_DoubleClickOpenProjectFile() As String
             Get

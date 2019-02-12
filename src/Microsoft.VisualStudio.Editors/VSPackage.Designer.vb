@@ -61,9 +61,9 @@ Namespace My.Resources
                 resourceCulture = value
             End Set
         End Property
-        
+
         '''<summary>
-        '''  Looks up a localized string similar to .NET Core.
+        '''  Looks up a localized string similar to .NET SDK Projects.
         '''</summary>
         Friend Shared ReadOnly Property _1001() As String
             Get

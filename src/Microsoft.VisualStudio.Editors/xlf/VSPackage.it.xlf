@@ -3,8 +3,8 @@
   <file datatype="xml" source-language="en" target-language="it" original="../VSPackage.resx">
     <body>
       <trans-unit id="1001">
-        <source>.NET Core</source>
-        <target state="translated">.NET Core</target>
+        <source>.NET SDK Projects</source>
+        <target state="needs-review-translation">.NET Core</target>
         <note />
       </trans-unit>
     </body>

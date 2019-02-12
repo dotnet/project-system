@@ -139,6 +139,6 @@
     <value>Use _previews of the .NET Core SDK</value>
   </data>
   <data name="General_DoubleClickOpenProjectFile" xml:space="preserve">
-    <value>_Double click on project node to edit project file</value>
+    <value>_Double-click opens project files in editor</value>
   </data>
 </root>

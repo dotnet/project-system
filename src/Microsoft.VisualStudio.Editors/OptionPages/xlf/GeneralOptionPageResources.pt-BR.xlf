@@ -38,8 +38,8 @@
         <note />
       </trans-unit>
       <trans-unit id="General_DoubleClickOpenProjectFile">
-        <source>_Double click on project node to edit project file</source>
-        <target state="new">_Double click on project node to edit project file</target>
+        <source>_Double-click opens project files in editor</source>
+        <target state="new">_Double-click opens project files in editor</target>
         <note />
       </trans-unit>
     </body>
