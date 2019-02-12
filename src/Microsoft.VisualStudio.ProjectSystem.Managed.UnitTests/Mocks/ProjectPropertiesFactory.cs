@@ -34,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             return Create(UnconfiguredProjectFactory.Create(), data);
         }
-               
+
         public static ProjectProperties Create(UnconfiguredProject project, params PropertyPageData[] data)
         {
             var catalog = CreateCatalog(CreateCatalogLookup(data));

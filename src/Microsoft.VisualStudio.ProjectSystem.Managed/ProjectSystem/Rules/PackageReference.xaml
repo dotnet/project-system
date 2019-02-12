@@ -6,85 +6,90 @@
     PageTemplate="generic"
     Description="Package Properties"
     xmlns="http://schemas.microsoft.com/build/2009/properties">
-    
-    <Rule.DataSource>
-        <DataSource Persistence="ProjectFile" ItemType="PackageReference" HasConfigurationCondition="False"
-                    SourceType="TargetResults" MSBuildTarget="CollectPackageReferences" SourceOfDefaultValue="AfterContext" />
-    </Rule.DataSource>
-    
-    <StringProperty Name="Description" 
-                    ReadOnly="True" 
-                    Visible="True"
-                    DisplayName="Description" 
-                    Description="Dependency description." />
 
-    <StringProperty Name="Version"
-                    ReadOnly="True"
-                    DisplayName="Version"
-                    Description="Version of dependency.">
-        <StringProperty.DataSource>
-            <DataSource PersistenceStyle="Attribute" SourceOfDefaultValue="AfterContext" />
-        </StringProperty.DataSource>
-    </StringProperty>
+  <Rule.DataSource>
+    <DataSource Persistence="ProjectFile" ItemType="PackageReference" HasConfigurationCondition="False"
+                SourceType="TargetResults" MSBuildTarget="CollectPackageReferences" SourceOfDefaultValue="AfterContext" />
+  </Rule.DataSource>
 
-    <StringProperty Name="IncludeAssets" 
-                    Visible="True"
-                    DisplayName="Included assets"
-                    Description="Assets to include from this reference" />
+  <StringProperty Name="Description"
+                  ReadOnly="True"
+                  Visible="True"
+                  DisplayName="Description"
+                  Description="Dependency description." />
 
-    <StringProperty Name="ExcludeAssets" 
-                    Visible="True"
-                    DisplayName="Excluded assets"
-                    Description="Assets to exclude from this reference" />
+  <StringProperty Name="Version"
+                  ReadOnly="True"
+                  DisplayName="Version"
+                  Description="Version of dependency.">
+    <StringProperty.DataSource>
+      <DataSource PersistenceStyle="Attribute" SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
 
-    <StringProperty Name="PrivateAssets" 
-                    Visible="True"
-                    DisplayName="Private assets"
-                    Description="Assets that are private in this reference" />
+  <StringProperty Name="IncludeAssets"
+                  Visible="True"
+                  DisplayName="Included assets"
+                  Description="Assets to include from this reference" />
 
-    <StringProperty Name="Name" 
-                    Visible="True" 
-                    ReadOnly="True" />
+  <StringProperty Name="ExcludeAssets"
+                  Visible="True"
+                  DisplayName="Excluded assets"
+                  Description="Assets to exclude from this reference" />
 
-    <StringProperty Name="OriginalItemSpec" 
-                    Visible="False" 
-                    ReadOnly="True" />
+  <StringProperty Name="PrivateAssets"
+                  Visible="True"
+                  DisplayName="Private assets"
+                  Description="Assets that are private in this reference" />
 
-    <StringProperty Name="Path" 
-                    Visible="True" 
-                    ReadOnly="True"
-                    Description="Location of the package being referenced." />
+  <StringProperty Name="Name"
+                  Visible="True"
+                  ReadOnly="True" />
 
-    <StringProperty Name="Type" 
-                    Visible="False" 
-                    ReadOnly="True" />
-
-    <StringProperty Name="RuntimeIdentifier" 
-                    Visible="False" 
-                    ReadOnly="True" />
-
-    <StringProperty Name="TargetFramework" 
-                    Visible="False" 
-                    ReadOnly="True" />
-
-    <StringProperty Name="FrameworkName" 
-                    Visible="False" 
-                    ReadOnly="True" />
-
-    <StringProperty Name="FrameworkVersion" 
-                    Visible="False" 
-                    ReadOnly="True" />
-
-    <StringProperty Name="IsImplicitlyDefined" 
-                    Visible="False" 
-                    ReadOnly="True" />
-
-    <StringProperty Name="NoWarn" 
-                    Visible="True"
-                    DisplayName="Suppress warnings"
-                    Description="Comma-delimited list of warnings that should be suppressed for this package" />
-
-    <BoolProperty Name="Visible"
+  <StringProperty Name="OriginalItemSpec"
                   Visible="False"
                   ReadOnly="True" />
+
+  <StringProperty Name="Path"
+                  Visible="True"
+                  ReadOnly="True"
+                  Description="Location of the package being referenced." />
+
+  <StringProperty Name="Type"
+                  Visible="False"
+                  ReadOnly="True" />
+
+  <StringProperty Name="RuntimeIdentifier"
+                  Visible="False"
+                  ReadOnly="True" />
+
+  <StringProperty Name="TargetFramework"
+                  Visible="False"
+                  ReadOnly="True" />
+
+  <StringProperty Name="FrameworkName"
+                  Visible="False"
+                  ReadOnly="True" />
+
+  <StringProperty Name="FrameworkVersion"
+                  Visible="False"
+                  ReadOnly="True" />
+
+  <StringProperty Name="IsImplicitlyDefined"
+                  Visible="False"
+                  ReadOnly="True" />
+
+  <StringProperty Name="NoWarn"
+                  Visible="True"
+                  DisplayName="Suppress warnings"
+                  Description="Comma-delimited list of warnings that should be suppressed for this package" />
+
+  <BoolProperty Name="GeneratePathProperty"
+                  Visible="True"
+                  DisplayName="Generate path property"
+                  Description="Indicates whether to generate an MSBuild property with the location of the package's root directory. The generated property name is in the form of 'Pkg[PackageID]', where '[PackageID]' is the ID of the package with any periods '.' replaced with underscores '_'." />
+
+  <BoolProperty Name="Visible"
+                Visible="False"
+                ReadOnly="True" />
 </Rule>

@@ -5,6 +5,7 @@ using System.Collections.Immutable;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using System.Windows.Controls;
+
 using Microsoft.VisualStudio.PlatformUI;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 
@@ -59,7 +60,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                     {
                         data.Profiles = new List<ILaunchProfile>(newProfiles.Profiles);
                     }
-                ).Returns(Task.Run(() => { })).Verifiable();
+                ).ReturnsAsync(() => { }).Verifiable();
 
             data.ProfileProvider = mockProfileProvider.Object;
 

@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+
 using Microsoft.VisualStudio.Imaging.Interop;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
@@ -21,9 +22,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             UnresolvedExpandedIcon = unresolvedExpandedIcon;
         }
 
+        /// <summary>
+        /// Gets the icon to use when the dependency is resolved and collapsed.
+        /// </summary>
         public ImageMoniker Icon { get; }
+
+        /// <summary>
+        /// Gets the icon to use when the dependency is resolved and expanded.
+        /// </summary>
         public ImageMoniker ExpandedIcon { get; }
+
+        /// <summary>
+        /// Gets the icon to use when the dependency is unresolved and collapsed.
+        /// </summary>
         public ImageMoniker UnresolvedIcon { get; }
+
+        /// <summary>
+        /// Gets the icon to use when the dependency is unresolved and expanded.
+        /// </summary>
         public ImageMoniker UnresolvedExpandedIcon { get; }
 
         public override bool Equals(object obj)

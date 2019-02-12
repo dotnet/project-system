@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
+
 using Microsoft.VisualStudio.Buffers.PooledObjects;
 using Microsoft.VisualStudio.ProjectSystem.VS.Extensibility;
 using Microsoft.VisualStudio.Shell;
@@ -32,12 +33,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         /// </summary>
         public ImmutableArray<T> GetExportFromDotNetStartupProjects<T>(string capabilityMatch) where T : class
         {
+#pragma warning disable RS0030 // Do not used banned APIs
             EnvDTE.DTE dte = ServiceProvider.GetService<EnvDTE.DTE, EnvDTE.DTE>();
+#pragma warning restore RS0030 // Do not used banned APIs
             if (dte != null)
             {
                 if (dte.Solution.SolutionBuild.StartupProjects is Array startupProjects && startupProjects.Length > 0)
                 {
+#pragma warning disable RS0030 // Do not used banned APIs
                     IVsSolution sln = ServiceProvider.GetService<IVsSolution, SVsSolution>();
+#pragma warning restore RS0030 // Do not used banned APIs
                     var results = PooledArray<T>.GetInstance();
                     foreach (string projectName in startupProjects)
                     {

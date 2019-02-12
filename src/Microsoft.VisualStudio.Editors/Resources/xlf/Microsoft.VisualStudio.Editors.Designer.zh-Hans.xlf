@@ -395,17 +395,17 @@ Please select a valid folder path.</source>
       </trans-unit>
       <trans-unit id="PPG_Compile_42105_42106_42107">
         <source>Function returning reference type without return value</source>
-        <target state="translated">可返回引用类型但没有返回值的函数</target>
+        <target state="translated">函数返回了不返回值的引用类型</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Compile_42353_42354_42355">
         <source>Function returning intrinsic value type without return value</source>
-        <target state="translated">可返回内部值类型但没有返回值的函数</target>
+        <target state="translated">函数返回了不返回值的固有值类型</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Compile_42024">
         <source>Unused local variable</source>
-        <target state="translated">未使用的本地变量</target>
+        <target state="translated">未使用的局部变量</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Compile_42025">
@@ -719,7 +719,7 @@ Error:</source>
       </trans-unit>
       <trans-unit id="PPG_Signing_IssuedBy">
         <source>Issued By</source>
-        <target state="translated">颁发者</target>
+        <target state="translated">发布者</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Signing_Purpose">
@@ -789,12 +789,12 @@ Error:</source>
       </trans-unit>
       <trans-unit id="PPG_Signing_OpenExistingKeyPasswordPrompt">
         <source>Enter &amp;password to open file {0}</source>
-        <target state="translated">输入密码(&amp;P)以打开文件 {0}</target>
+        <target state="translated">输入密码打开文件 {0}(&amp;P)</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Signing_CreateNewKeyPasswordPrompt">
         <source>Enter &amp;password for new file {0}</source>
-        <target state="translated">输入新文件 {0} 的密码(&amp;P)</target>
+        <target state="translated">为新文件 {0} 输入密码(&amp;P)</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Signing_ProjectAlreadyContainsFile">
@@ -955,7 +955,7 @@ Error:</source>
       </trans-unit>
       <trans-unit id="PropPage_ReferenceNotFound">
         <source>&lt;The system cannot find the reference specified&gt;</source>
-        <target state="translated">&lt;系统无法找到指定的引用&gt;</target>
+        <target state="translated">&lt;系统找不到指定的引用&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="PropPage_ImportedNamespacesTitle">
@@ -1000,7 +1000,7 @@ Error:</source>
       </trans-unit>
       <trans-unit id="PPG_InvalidHexString">
         <source>Base address must be a hexadecimal number with less than or equal to 8 digits, for example, &amp;H11000000.</source>
-        <target state="translated">基址必须是十六进制数，位数小于或等于 8，如 H11000000(&amp;H)。</target>
+        <target state="translated">基址必须是十六进制数，位数小于或等于 8，如 &amp;H11000000。</target>
         <note />
       </trans-unit>
       <trans-unit id="PropPage_NeedResFile">
@@ -1367,7 +1367,7 @@ Error:</source>
       </trans-unit>
       <trans-unit id="RSE_Err_BadIdentifier_2Arg">
         <source>The name of the resource '{0}' cannot be used as a valid identifier, because it contains one or more invalid characters: '{1}'.  Please remove or replace those characters and try again.</source>
-        <target state="translated">资源“{0}”的名称无法用作有效的标识符，因为它含有一个或多个无效字符:“{1}”。请删除或替换这些字符，然后重试。</target>
+        <target state="translated">资源“{0}”的名称无法用作有效的标识符，因为其含有一个或多个无效字符:“{1}”。请删除或替换这些字符，然后重试。</target>
         <note>{0} = Resource name</note>
       </trans-unit>
       <trans-unit id="RSE_Err_MaxFilesLimitation">
@@ -1498,7 +1498,7 @@ CONSIDER: get this from CodeDom</note>
       </trans-unit>
       <trans-unit id="RSE_GraphicSizeFormat">
         <source>{0} x {1}</source>
-        <target state="translated">{0} x {1}</target>
+        <target state="needs-review-translation">{0} x {1}</target>
         <note>Format string for showing a graphic's size
 
 #  {0} = width (as an integer)
@@ -1569,12 +1569,12 @@ CONSIDER: get this from CodeDom</note>
       </trans-unit>
       <trans-unit id="RSE_Btn_Add_String">
         <source>New &amp;String</source>
-        <target state="translated">新建字符串(&amp;S)</target>
+        <target state="translated">新字符串(&amp;S)</target>
         <note>Menu items under the "Add" button</note>
       </trans-unit>
       <trans-unit id="RSE_Btn_Add_Image">
         <source>New &amp;Image</source>
-        <target state="translated">新建图像(&amp;I)</target>
+        <target state="translated">新图像(&amp;I)</target>
         <note>Menu items under the "Add" button</note>
       </trans-unit>
       <trans-unit id="RSE_Btn_Add_Image_PNG">
@@ -2197,7 +2197,7 @@ app.config 文件中的新值为“{1}”
       </trans-unit>
       <trans-unit id="SD_MNU_RemoveSettingText">
         <source>R&amp;emove Setting</source>
-        <target state="translated">删除设置(&amp;R)</target>
+        <target state="translated">删除设置(&amp;E)</target>
         <note />
       </trans-unit>
       <trans-unit id="SD_FullDescriptionText">
@@ -2530,7 +2530,7 @@ app.config 文件中的新值为“{1}”
       </trans-unit>
       <trans-unit id="PPG_Services_InvalidAppConfigXml">
         <source>An error occurred while reading the Application configuration file.  The file might be corrupted or contain invalid XML.</source>
-        <target state="translated">读取应用程序配置文件时出错。该文件可能已损坏或者包含无效的 XML。</target>
+        <target state="translated">读取应用程序配置文件时出错。 该文件可能已损坏或包含无效 XML。</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Services_InvalidUrl">
@@ -2777,6 +2777,15 @@ app.config 文件中的新值为“{1}”
         <source>Extended Metafile</source>
         <target state="new">Extended Metafile</target>
         <note />
+      </trans-unit>
+      <trans-unit id="RSE_Filter_License">
+        <source>License Files</source>
+        <target state="new">License Files</target>
+        <note># File dialog filters
+#
+# E.g., for icons, the actual filter created would look like "Icons (*.ico)".  These resources
+#  represent the first part of that filter
+#</note>
       </trans-unit>
     </body>
   </file>

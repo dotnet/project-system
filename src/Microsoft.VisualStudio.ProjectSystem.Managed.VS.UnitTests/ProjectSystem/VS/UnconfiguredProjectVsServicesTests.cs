@@ -59,7 +59,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         public void Constructor_ValueAsCommonServices_SetsThreadingServiceToCommonServicesThreadingService()
         {
             var threadingService = IProjectThreadingServiceFactory.Create();
-            var project = UnconfiguredProjectFactory.Create();
             var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(threadingService: threadingService);
 
             var vsServices = CreateInstance(commonServices);

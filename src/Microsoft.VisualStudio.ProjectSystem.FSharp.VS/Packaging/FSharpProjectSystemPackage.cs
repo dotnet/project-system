@@ -14,13 +14,13 @@ using Task = System.Threading.Tasks.Task;
 
 // Register ourselves as a CPS project type
 [assembly: ProjectTypeRegistration(
-    projectTypeGuid: FSharpProjectSystemPackage.ProjectTypeGuid, 
-    displayName: "#1", 
-    displayProjectFileExtensions: "#2", 
-    defaultProjectExtension: "fsproj", 
-    language: "FSharp", 
-    resourcePackageGuid: FSharpProjectSystemPackage.PackageGuid, 
-    Capabilities = ManagedProjectSystemPackage.DefaultCapabilities + "; " + ProjectCapability.FSharp + "; " + ProjectCapability.SortByDisplayOrder, 
+    projectTypeGuid: FSharpProjectSystemPackage.ProjectTypeGuid,
+    displayName: "#1",
+    displayProjectFileExtensions: "#2",
+    defaultProjectExtension: "fsproj",
+    language: "FSharp",
+    resourcePackageGuid: FSharpProjectSystemPackage.PackageGuid,
+    Capabilities = ManagedProjectSystemPackage.DefaultCapabilities + "; " + ProjectCapability.FSharp + "; " + ProjectCapability.SortByDisplayOrder,
     DisableAsynchronousProjectTreeLoad = true)]
 
 namespace Microsoft.VisualStudio.Packaging
@@ -44,7 +44,9 @@ namespace Microsoft.VisualStudio.Packaging
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
 
+#pragma warning disable RS0030 // Do not used banned APIs
             _projectSelectorService = this.GetService<IVsRegisterProjectSelector, SVsRegisterProjectTypes>();
+#pragma warning restore RS0030 // Do not used banned APIs
             Guid selectorGuid = typeof(FSharpProjectSelector).GUID;
             _projectSelectorService.RegisterProjectSelector(ref selectorGuid, new FSharpProjectSelector(), out _projectSelectorCookie);
 

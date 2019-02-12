@@ -1,12 +1,14 @@
 ﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-Imports System.Runtime.InteropServices
-Imports Microsoft.VisualStudio.Editors.AppDesInterop
-Imports Win32Constant = Microsoft.VisualStudio.Editors.AppDesInterop.Win32Constant
-Imports Common = Microsoft.VisualStudio.Editors.AppDesCommon
-Imports System.Windows.Forms
 Imports System.ComponentModel.Design
 Imports System.Reflection
+Imports System.Runtime.InteropServices
+Imports System.Windows.Forms
+
+Imports Microsoft.VisualStudio.Editors.AppDesInterop
+
+Imports Common = Microsoft.VisualStudio.Editors.AppDesCommon
+Imports Win32Constant = Microsoft.VisualStudio.Editors.AppDesInterop.Win32Constant
 
 
 Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
@@ -32,7 +34,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <returns></returns>
         ''' <remarks></remarks>
         Private Function GetPropPageDesignerView() As PropPageDesignerView
-            Dim PPDView As PropPageDesignerView = Nothing
             If View IsNot Nothing AndAlso View.Controls IsNot Nothing AndAlso View.Controls.Count > 0 Then
                 Return TryCast(View.Controls(0), PropPageDesignerView)
             End If

@@ -3,10 +3,12 @@
 Option Strict On
 Option Explicit On
 Imports System.Runtime.InteropServices
+
 Imports EnvDTE
-Imports Microsoft.VisualStudio.Shell.Interop
+
 Imports Microsoft.VisualStudio.Editors.Common
 Imports Microsoft.VisualStudio.Editors.MyExtensibility.MyExtensibilityUtil
+Imports Microsoft.VisualStudio.Shell.Interop
 
 Namespace Microsoft.VisualStudio.Editors.MyExtensibility
 
@@ -325,7 +327,6 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
                 _projectServices.Remove(project)
                 If removedProjectService IsNot Nothing Then
                     removedProjectService.Dispose()
-                    removedProjectService = Nothing
                 End If
             End If
         End Sub

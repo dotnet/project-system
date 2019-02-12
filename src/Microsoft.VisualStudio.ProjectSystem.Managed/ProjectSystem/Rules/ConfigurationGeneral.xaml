@@ -7,54 +7,54 @@
 	Description="General"
     OverrideMode="Replace"
 	xmlns="http://schemas.microsoft.com/build/2009/properties">
-    <Rule.Categories>
-        <Category Name="General" DisplayName="General" Description="General" />
-    </Rule.Categories>
-    <Rule.DataSource>
-        <DataSource Persistence="ProjectFile" Label="Configuration" SourceOfDefaultValue="AfterContext" />
-    </Rule.DataSource>
-    <StringProperty Name="ApplicationIcon" DisplayName="Application Icon" />
-    <StringListProperty Name="ProjectTypeGuids" Visible="False" />
-    <StringProperty Name="TargetFrameworkIdentifier" DisplayName="Target Framework Identifier">
-        <StringProperty.DataSource>
-            <DataSource Persistence="ProjectFile" PersistedName="TargetFrameworkIdentifier" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
-        </StringProperty.DataSource>
-    </StringProperty>
-    <StringProperty Name="TargetFrameworks" DisplayName="Target Frameworks">
-        <StringProperty.DataSource>
-            <DataSource Persistence="ProjectFile" PersistedName="TargetFrameworks" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
-        </StringProperty.DataSource>
-    </StringProperty>
-    <StringProperty Name="TargetFramework" DisplayName="Target Framework">
-        <StringProperty.DataSource>
-            <DataSource Persistence="ProjectFile" PersistedName="TargetFramework" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
-        </StringProperty.DataSource>
-    </StringProperty>
-    <StringProperty Name="TargetFrameworkProfile" DisplayName="Target Framework Profile">
-        <StringProperty.DataSource>
-            <DataSource Persistence="ProjectFile" PersistedName="TargetFrameworkProfile" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
-        </StringProperty.DataSource>
-    </StringProperty>
-    <StringProperty Name="TargetFrameworkVersion" DisplayName="Target Framework Version">
-        <StringProperty.DataSource>
-            <DataSource Persistence="ProjectFile" PersistedName="TargetFrameworkVersion" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
-        </StringProperty.DataSource>
-    </StringProperty>    
-    <StringProperty Name="TargetFrameworkMoniker" DisplayName="Target Framework Moniker">
-        <StringProperty.DataSource>
-            <DataSource Persistence="ProjectFileWithInterception" PersistedName="TargetFrameworkMoniker" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
-        </StringProperty.DataSource>
-    </StringProperty>
-    <StringProperty Name="TargetFrameworkMonikers" DisplayName="Target Framework Monikers" ReadOnly="True">
-        <StringProperty.DataSource>
-            <DataSource Persistence="ProjectFileWithInterception" PersistedName="TargetFrameworkMonikers" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext"/>
-        </StringProperty.DataSource>
-    </StringProperty>
-    <BoolProperty Name="DisableFastUpToDateCheck" DisplayName="Disable Fast Up To Date Check">
-        <BoolProperty.DataSource>
-            <DataSource Persistence="ProjectFile" PersistedName="DisableFastUpToDateCheck" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
-        </BoolProperty.DataSource>
-    </BoolProperty>
+  <Rule.Categories>
+    <Category Name="General" DisplayName="General" Description="General" />
+  </Rule.Categories>
+  <Rule.DataSource>
+    <DataSource Persistence="ProjectFile" Label="Configuration" SourceOfDefaultValue="AfterContext" />
+  </Rule.DataSource>
+  <StringProperty Name="ApplicationIcon" DisplayName="Application Icon" />
+  <StringListProperty Name="ProjectTypeGuids" Visible="False" />
+  <StringProperty Name="TargetFrameworkIdentifier" DisplayName="Target Framework Identifier">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="TargetFrameworkIdentifier" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="TargetFrameworks" DisplayName="Target Frameworks">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="TargetFrameworks" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="TargetFramework" DisplayName="Target Framework">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="TargetFramework" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="TargetFrameworkProfile" DisplayName="Target Framework Profile">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="TargetFrameworkProfile" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="TargetFrameworkVersion" DisplayName="Target Framework Version">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="TargetFrameworkVersion" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="TargetFrameworkMoniker" DisplayName="Target Framework Moniker">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterceptionViaSnapshot" PersistedName="TargetFrameworkMoniker" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="TargetFrameworkMonikers" DisplayName="Target Framework Monikers" ReadOnly="True">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception" PersistedName="TargetFrameworkMonikers" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext"/>
+    </StringProperty.DataSource>
+  </StringProperty>
+  <BoolProperty Name="DisableFastUpToDateCheck" DisplayName="Disable Fast Up To Date Check">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="DisableFastUpToDateCheck" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
 
     <StringProperty Name="TargetPath" />
     <StringProperty Name="DocumentationFile" DisplayName="XML doc comments file" />

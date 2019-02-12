@@ -2,12 +2,11 @@
 
 using System.Collections.Immutable;
 
-using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Filters;
 
 using Xunit;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
     public sealed class DuplicatedDependenciesSnapshotFilterTests
     {
@@ -44,7 +43,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var filter = new DuplicatedDependenciesSnapshotFilter();
 
             filter.BeforeAddOrUpdate(
-                null,
                 null,
                 dependency,
                 null,
@@ -93,7 +91,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var filter = new DuplicatedDependenciesSnapshotFilter();
 
             filter.BeforeAddOrUpdate(
-                null,
                 null,
                 dependency,
                 null,
@@ -151,7 +148,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             filter.BeforeAddOrUpdate(
                 null,
-                null,
                 dependency,
                 null,
                 null,
@@ -203,7 +199,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var filter = new DuplicatedDependenciesSnapshotFilter();
 
             filter.BeforeAddOrUpdate(
-                null,
                 null,
                 dependency,
                 null,

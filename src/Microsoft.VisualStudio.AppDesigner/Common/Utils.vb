@@ -7,6 +7,7 @@ Imports System.Reflection
 Imports System.Runtime.InteropServices
 Imports System.Text.RegularExpressions
 Imports System.Windows.Forms
+
 Imports Microsoft.VisualStudio.Shell
 Imports Microsoft.VisualStudio.Telemetry
 
@@ -227,6 +228,8 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
             Debug.Assert(ex IsNot Nothing)
             Debug.Assert(Not String.IsNullOrEmpty(throwingComponentName))
             Debug.Assert(Not String.IsNullOrEmpty(exceptionEventDescription))
+
+            If IsCheckoutCanceledException(ex) Then Return True
 
             ' Follow naming convention for entity name: A string to identify the entity in the feature. E.g. open-project, build-project, fix-error.
             throwingComponentName = Regex.Replace(throwingComponentName, "([A-Z])", "-$1").TrimPrefix("-").ToLower() + "-fault"

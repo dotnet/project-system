@@ -4,9 +4,10 @@ Option Explicit On
 Option Strict On
 Option Compare Binary
 
-Imports EnvDTE
 Imports System.ComponentModel
 Imports System.ComponentModel.Design
+
+Imports EnvDTE
 
 Imports Microsoft.VisualStudio.Shell.Interop
 

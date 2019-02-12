@@ -1,8 +1,8 @@
 ﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+Imports System.Configuration
 Imports System.IO
 Imports System.Windows.Forms.Design
-Imports System.Configuration
 
 Imports Microsoft.VisualStudio.Shell.Design.Serialization
 Imports Microsoft.VisualStudio.Shell.Interop
@@ -48,14 +48,9 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' new setting will be added to it. 
         ''' If one or more values have been added to the settings object, the user is notified after deserialization is complete.
         ''' </summary>
-        ''' <param name="Settings"></param>
-        ''' <param name="SectionName"></param>
-        ''' <param name="AppConfigDocData"></param>
-        ''' <param name="mergeMode"></param>
-        ''' <param name="UIService"></param>
         ''' <returns>True if we made any changes to the object, false otherwise</returns>
         ''' <remarks></remarks>
-        Friend Shared Function Deserialize(Settings As DesignTimeSettings, typeCache As SettingsTypeCache, valueCache As SettingsValueCache, SectionName As String, AppConfigDocData As DocData, mergeMode As MergeValueMode, Optional UIService As IUIService = Nothing) As DirtyState
+        Friend Shared Function Deserialize(Settings As DesignTimeSettings, typeCache As SettingsTypeCache, SectionName As String, AppConfigDocData As DocData, mergeMode As MergeValueMode, Optional UIService As IUIService = Nothing) As DirtyState
             Dim objectDirty As DirtyState = DirtyState.NoChange
 
             ' Create a "master" list of existing settings....
@@ -299,8 +294,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Dim AddedInstances As New Specialized.StringCollection()
 
             Dim ConfigHelperService As New ConfigurationHelperService(AddressOf typeCache.TypeTransformer)
-            Dim valueSerializer As New SettingsValueSerializer()
-
 
             For Each Instance As DesignTimeSettingInstance In Settings
                 Dim settingType As Type = typeCache.GetSettingType(Instance.SettingTypeName)

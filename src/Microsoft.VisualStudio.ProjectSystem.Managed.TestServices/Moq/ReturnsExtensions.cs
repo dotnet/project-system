@@ -57,7 +57,7 @@ namespace Moq
             where TMock : class
         {
             valueFunction.GetType()
-                         .InvokeMember("SetReturnDelegate", BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance, binder:null, valueFunction, new[] { action });
+                         .InvokeMember("SetReturnDelegate", BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance, binder: null, valueFunction, new[] { action });
 
             return (IReturnsThrows<TMock, TReturn>)valueFunction;
         }

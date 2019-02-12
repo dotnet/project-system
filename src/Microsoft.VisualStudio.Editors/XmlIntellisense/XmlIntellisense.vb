@@ -2,15 +2,16 @@
 
 Option Strict On
 Option Explicit On
+Imports System.ComponentModel.Design
 Imports System.IO
 Imports System.Runtime.InteropServices
+Imports System.Threading
 Imports System.Xml
 Imports System.Xml.Schema
-Imports System.Threading
-Imports System.ComponentModel.Design
-Imports Microsoft.VisualStudio.XmlEditor
+
 Imports Microsoft.VisualStudio.Shell.Interop
 Imports Microsoft.VisualStudio.WCFReference.Interop
+Imports Microsoft.VisualStudio.XmlEditor
 
 Imports NativeMethods = Microsoft.VisualStudio.ErrorHandler
 

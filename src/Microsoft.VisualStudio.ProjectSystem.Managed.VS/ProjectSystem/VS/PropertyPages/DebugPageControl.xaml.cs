@@ -7,6 +7,7 @@ using System.Windows.Controls;
 
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Telemetry;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 {
@@ -50,6 +51,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         {
             if (DataContext != null && DataContext is DebugPageViewModel)
             {
+#pragma warning disable RS0030 // Do not used banned APIs
                 ThreadHelper.JoinableTaskFactory.StartOnIdle(async () =>
                 {
                     await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
@@ -60,7 +62,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                         cell.Focus();
                         dataGridEnvironmentVariables.BeginEdit();
                     }
-                }).FileAndForget(TelemetryEvents.ProjectSystemRootPath);
+                }).FileAndForget(TelemetryEventName.Prefix);
+#pragma warning restore RS0030 // Do not used banned APIs
             }
         }
 

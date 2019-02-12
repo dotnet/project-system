@@ -12,7 +12,7 @@ Namespace Microsoft.VisualStudio.Editors.AddImports
             MyBase.New(isp)
             SuspendLayout()
             Try
-                _helpCallBack = helpCallback
+                _helpCallback = helpCallback
                 InitializeComponent()
                 txtMain_.Text = String.Format(My.Resources.AddImports.AddImportsExtensionMethodsMainFormatString, [namespace], identifier, minimallyQualifiedName)
                 txtMain_.AutoSize = True
@@ -42,8 +42,8 @@ Namespace Microsoft.VisualStudio.Editors.AddImports
         End Sub
 
         Private Sub RequestHelp(sender As Object, hlpevent As HelpEventArgs) Handles Me.HelpRequested
-            If (_helpCallBack IsNot Nothing) Then
-                _helpCallBack.InvokeHelp()
+            If (_helpCallback IsNot Nothing) Then
+                _helpCallback.InvokeHelp()
             End If
         End Sub
     End Class

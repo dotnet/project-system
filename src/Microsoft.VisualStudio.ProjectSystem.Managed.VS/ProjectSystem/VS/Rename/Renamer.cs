@@ -78,12 +78,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
         public async Task RenameAsync(Project project)
         {
             bool isCaseSensitive = await IsCompilationCaseSensitiveAsync(project);
-            IRenameStrategy renameStrategy = GetStrategy(project, isCaseSensitive);
+            IRenameStrategy renameStrategy = GetStrategy(isCaseSensitive);
             if (renameStrategy != null)
                 await renameStrategy.RenameAsync(project, _oldFilePath, _newFilePath, isCaseSensitive);
         }
 
-        private IRenameStrategy GetStrategy(Project project, bool isCaseSensitive)
+        private IRenameStrategy GetStrategy(bool isCaseSensitive)
         {
             var strategies = new IRenameStrategy[] {
                 new SimpleRenameStrategy(_threadingService, _userNotificationServices, _environmentOptions, _roslynServices)

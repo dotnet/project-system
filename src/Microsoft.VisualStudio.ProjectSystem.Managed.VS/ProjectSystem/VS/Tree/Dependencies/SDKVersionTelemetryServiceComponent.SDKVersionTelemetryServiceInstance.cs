@@ -4,13 +4,14 @@ using System;
 using System.ComponentModel.Composition;
 using System.Threading;
 using System.Threading.Tasks;
+
 using Microsoft.VisualStudio.Telemetry;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
     internal partial class SDKVersionTelemetryServiceComponent
     {
-        protected class SDKVersionTelemetryServiceInstance : OnceInitializedOnceDisposedAsync, IMultiLifetimeInstance
+        internal class SDKVersionTelemetryServiceInstance : OnceInitializedOnceDisposedAsync, IMultiLifetimeInstance
         {
             private readonly IUnconfiguredProjectVsServices _projectVsServices;
             private readonly ISafeProjectGuidService _projectGuidService;
@@ -34,30 +35,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             protected override Task InitializeCoreAsync(CancellationToken cancellationToken)
             {
                 // Do not block initialization on reporting the sdk version. It is possible to deadlock.
-                Task.Run(async () =>
+                _projectVsServices.ThreadingService.RunAndForget(async () =>
                 {
                     // Wait for the project to be loaded so that we don't prematurely load the active configuration
                     await _unconfiguredProjectTasksService.ProjectLoadedInHost;
-                    
-                    await _unconfiguredProjectTasksService.LoadedProjectAsync(async () =>
+
+                    ConfigurationGeneral projectProperties = await _projectVsServices.ActiveConfiguredProjectProperties.GetConfigurationGeneralPropertiesAsync();
+                    Task<object> task = projectProperties?.NETCoreSdkVersion?.GetValueAsync();
+                    string version = task == null ? string.Empty : (string)await task;
+                    string projectId = await GetProjectIdAsync();
+
+                    if (string.IsNullOrEmpty(version) || string.IsNullOrEmpty(projectId))
                     {
-                        ConfigurationGeneral projectProperties = await _projectVsServices.ActiveConfiguredProjectProperties.GetConfigurationGeneralPropertiesAsync();
-                        Task<object> task = projectProperties?.NETCoreSdkVersion?.GetValueAsync();
-                        string version = task == null ? string.Empty : (string)await task;
-                        string projectId = await GetProjectIdAsync();
+                        return;
+                    }
 
-                        if (string.IsNullOrEmpty(version) || string.IsNullOrEmpty(projectId))
-                        {
-                            return;
-                        }
-
-                        _telemetryService.PostProperties(TelemetryEventName.SDKVersion, new []
-                        {
-                            (TelemetryPropertyName.SDKVersionProject, (object)projectId),
-                            (TelemetryPropertyName.SDKVersionNETCoreSdkVersion, version)
-                        });
+                    _telemetryService.PostProperties(TelemetryEventName.SDKVersion, new[]
+                    {
+                        (TelemetryPropertyName.SDKVersionProject, (object)projectId),
+                        (TelemetryPropertyName.SDKVersionNETCoreSdkVersion, version)
                     });
-                }, cancellationToken);
+                }, 
+                unconfiguredProject: _projectVsServices.Project);
 
                 return Task.CompletedTask;
             }

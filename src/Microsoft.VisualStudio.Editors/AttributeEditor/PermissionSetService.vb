@@ -2,10 +2,11 @@
 
 Option Strict On
 Option Explicit On
+Imports System.IO
 Imports System.Security
 Imports System.Security.Permissions
 Imports System.Xml
-Imports System.IO
+
 Imports Microsoft.Build.Tasks.Deployment.ManifestUtilities
 Imports Microsoft.VisualStudio.Shell.Design.Serialization
 

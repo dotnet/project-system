@@ -315,7 +315,7 @@ Wählen Sie einen gültigen Ordnerpfad aus.</target>
       </trans-unit>
       <trans-unit id="PPG_Application_StartupFormLabelText">
         <source>Startup f&amp;orm:</source>
-        <target state="translated">Startf&amp;ormular:</target>
+        <target state="translated">&amp;Startformular:</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Application_AppEventsCommentLine1">
@@ -457,7 +457,7 @@ Wenn diese Einstellung geändert wird, werden die Einstellungen in allen Konfigu
       </trans-unit>
       <trans-unit id="PPG_SecurityPage_Calculate">
         <source>&amp;Calculate Permissions</source>
-        <target state="translated">Bere&amp;chtigungen berechnen</target>
+        <target state="translated">&amp;Berechtigungen berechnen</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_MgdStatus_Stopped">
@@ -789,12 +789,12 @@ Fehler:</target>
       </trans-unit>
       <trans-unit id="PPG_Signing_OpenExistingKeyPasswordPrompt">
         <source>Enter &amp;password to open file {0}</source>
-        <target state="translated">&amp;Kennwort zum Öffnen der Datei "{0}" eingeben</target>
+        <target state="translated">&amp;Kennwort eingeben, um Datei {0} zu öffnen</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Signing_CreateNewKeyPasswordPrompt">
         <source>Enter &amp;password for new file {0}</source>
-        <target state="translated">&amp;Kennwort für die neue Datei "{0}" eingeben</target>
+        <target state="translated">&amp;Kennwort für neue Datei {0} eingeben</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Signing_ProjectAlreadyContainsFile">
@@ -955,7 +955,7 @@ Fehler:</target>
       </trans-unit>
       <trans-unit id="PropPage_ReferenceNotFound">
         <source>&lt;The system cannot find the reference specified&gt;</source>
-        <target state="translated">&lt;Angegebener Verweis wurde nicht gefunden&gt;</target>
+        <target state="translated">&lt;Das System kann die angegebene Referenz nicht finden.&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="PropPage_ImportedNamespacesTitle">
@@ -1000,7 +1000,7 @@ Fehler:</target>
       </trans-unit>
       <trans-unit id="PPG_InvalidHexString">
         <source>Base address must be a hexadecimal number with less than or equal to 8 digits, for example, &amp;H11000000.</source>
-        <target state="translated">Die Basisadresse muss eine Hexadezimalzahl mit höchstens 8 Ziffern sein, z.B. &amp;H11000000.</target>
+        <target state="translated">Die Basisadresse muss eine hexadezimale Zahl mit 8 oder weniger Ziffern sein, z. B. "&amp;H11000000".</target>
         <note />
       </trans-unit>
       <trans-unit id="PropPage_NeedResFile">
@@ -1367,7 +1367,7 @@ Fehler:</target>
       </trans-unit>
       <trans-unit id="RSE_Err_BadIdentifier_2Arg">
         <source>The name of the resource '{0}' cannot be used as a valid identifier, because it contains one or more invalid characters: '{1}'.  Please remove or replace those characters and try again.</source>
-        <target state="translated">Der Name der Ressource "{0}" kann nicht als gültiger Bezeichner verwendet werden, weil er mindestens ein ungültiges Zeichen enthält: "{1}". Entfernen oder ersetzen Sie diese Zeichen, und versuchen Sie es noch einmal.</target>
+        <target state="translated">Der Name der Ressource "{0}" kann nicht als gültiger Bezeichner verwendet werden, da er mindestens ein ungültiges Zeichen enthält: {1}.  Entfernen oder ersetzen Sie die Zeichen, und versuchen Sie es noch einmal.</target>
         <note>{0} = Resource name</note>
       </trans-unit>
       <trans-unit id="RSE_Err_MaxFilesLimitation">
@@ -1498,7 +1498,7 @@ CONSIDER: get this from CodeDom</note>
       </trans-unit>
       <trans-unit id="RSE_GraphicSizeFormat">
         <source>{0} x {1}</source>
-        <target state="translated">{0} x {1}</target>
+        <target state="needs-review-translation">{0} x {1}</target>
         <note>Format string for showing a graphic's size
 
 #  {0} = width (as an integer)
@@ -1549,7 +1549,7 @@ CONSIDER: get this from CodeDom</note>
       </trans-unit>
       <trans-unit id="RSE_Btn_Add">
         <source>&amp;Add</source>
-        <target state="translated">&amp;Hinzufügen</target>
+        <target state="translated">Hinz&amp;ufügen</target>
         <note>Add, Delete and Views button text in the main ToolStrip</note>
       </trans-unit>
       <trans-unit id="RSE_Btn_Remove">
@@ -1604,7 +1604,7 @@ CONSIDER: get this from CodeDom</note>
       </trans-unit>
       <trans-unit id="RSE_Btn_Add_Icon">
         <source>New I&amp;con...</source>
-        <target state="translated">Neues S&amp;ymbol...</target>
+        <target state="translated">Neues &amp;Symbol...</target>
         <note>Menu items under the "Add" button</note>
       </trans-unit>
       <trans-unit id="RSE_Btn_Add_TextFile">
@@ -1629,7 +1629,7 @@ CONSIDER: get this from CodeDom</note>
       </trans-unit>
       <trans-unit id="RSE_Type_JPEG">
         <source>JPEG File Interchange Format</source>
-        <target state="translated">JPEG File Interchange Format</target>
+        <target state="new">JPEG File Interchange Format</target>
         <note>Friendly Image types</note>
       </trans-unit>
       <trans-unit id="RSE_Type_MEMBMP">
@@ -1639,12 +1639,12 @@ CONSIDER: get this from CodeDom</note>
       </trans-unit>
       <trans-unit id="RSE_Type_PNG">
         <source>Portable Network Graphics</source>
-        <target state="translated">Portable Network Graphics</target>
+        <target state="new">Portable Network Graphics</target>
         <note>Friendly Image types</note>
       </trans-unit>
       <trans-unit id="RSE_Type_TIFF">
         <source>Tag Image File Format</source>
-        <target state="translated">Tag Image File Format</target>
+        <target state="new">Tag Image File Format</target>
         <note>Friendly Image types</note>
       </trans-unit>
       <trans-unit id="RSE_Type_Icon">
@@ -1733,7 +1733,7 @@ CONSIDER: get this from CodeDom</note>
       </trans-unit>
       <trans-unit id="RSE_FilterSave_PNG">
         <source>Portable Network Graphics</source>
-        <target state="translated">Portable Network Graphics</target>
+        <target state="new">Portable Network Graphics</target>
         <note># File dialog filters
 #
 # E.g., for icons, the actual filter created would look like "Icons (*.ico)".  These resources
@@ -1751,7 +1751,7 @@ CONSIDER: get this from CodeDom</note>
       </trans-unit>
       <trans-unit id="RSE_FilterSave_JPEG">
         <source>JPEG File Interchange Format</source>
-        <target state="translated">JPEG File Interchange Format</target>
+        <target state="new">JPEG File Interchange Format</target>
         <note># File dialog filters
 #
 # E.g., for icons, the actual filter created would look like "Icons (*.ico)".  These resources
@@ -1760,7 +1760,7 @@ CONSIDER: get this from CodeDom</note>
       </trans-unit>
       <trans-unit id="RSE_FilterSave_TIFF">
         <source>Tag Image File Format</source>
-        <target state="translated">Tag Image File Format</target>
+        <target state="new">Tag Image File Format</target>
         <note># File dialog filters
 #
 # E.g., for icons, the actual filter created would look like "Icons (*.ico)".  These resources
@@ -1778,7 +1778,7 @@ CONSIDER: get this from CodeDom</note>
       </trans-unit>
       <trans-unit id="RSE_Btn_Views_List">
         <source>&amp;List</source>
-        <target state="translated">&amp;Auflisten</target>
+        <target state="translated">&amp;Liste</target>
         <note>Resource editor listview view styles (like changing the view style of a folder in Windows XP)</note>
       </trans-unit>
       <trans-unit id="RSE_Btn_Views_Details">
@@ -2197,7 +2197,7 @@ Möchten Sie den Wert in der SETTINGS-Datei aktualisieren?</target>
       </trans-unit>
       <trans-unit id="SD_MNU_RemoveSettingText">
         <source>R&amp;emove Setting</source>
-        <target state="translated">E&amp;instellung entfernen</target>
+        <target state="translated">Einstellung &amp;entfernen</target>
         <note />
       </trans-unit>
       <trans-unit id="SD_FullDescriptionText">
@@ -2350,7 +2350,7 @@ Möchten Sie den Wert in der SETTINGS-Datei aktualisieren?</target>
       </trans-unit>
       <trans-unit id="PPG_Application_RootNamespaceJSharp">
         <source>Default pac&amp;kage:</source>
-        <target state="translated">Standardpa&amp;ket:</target>
+        <target state="translated">&amp;Standardpaket:</target>
         <note>J# Specific String for Root Namespace</note>
       </trans-unit>
       <trans-unit id="RSE_AccessModifier_Custom">
@@ -2370,7 +2370,7 @@ Möchten Sie den Wert in der SETTINGS-Datei aktualisieren?</target>
       </trans-unit>
       <trans-unit id="PPG_WPFApp_InvalidShutdownMode">
         <source>(Invalid value: "{0}")</source>
-        <target state="translated">(Ungültiger Wert: {0})</target>
+        <target state="translated">(Ungültiger Wert: "{0}")</target>
         <note>Goes into the ShutdownMode combobox</note>
       </trans-unit>
       <trans-unit id="PPG_WPFApp_ShutdownMode_OnExplicitShutdown">
@@ -2400,12 +2400,12 @@ Möchten Sie den Wert in der SETTINGS-Datei aktualisieren?</target>
       </trans-unit>
       <trans-unit id="PPG_Application_StartupObjectLabelText">
         <source>Startup &amp;object:</source>
-        <target state="translated">Start&amp;objekt:</target>
+        <target state="translated">&amp;Startobjekt:</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Application_StartupUriLabelText">
         <source>Startup &amp;URI:</source>
-        <target state="translated">Start-&amp;URI:</target>
+        <target state="translated">&amp;Start-URI:</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_WPFApp_AppXamlOpenInUnsupportedEditor">
@@ -2485,7 +2485,7 @@ Möchten Sie den Wert in der SETTINGS-Datei aktualisieren?</target>
       </trans-unit>
       <trans-unit id="PPG_Services_HelpLabelLink">
         <source>Learn more about client application services...</source>
-        <target state="translated">Erfahren Sie mehr über Clientanwendungsdienste</target>
+        <target state="translated">Weitere Informationen zu Clientanwendungsdiensten...</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_ServicesAdvancedPage_Title">
@@ -2505,22 +2505,22 @@ Möchten Sie den Wert in der SETTINGS-Datei aktualisieren?</target>
       </trans-unit>
       <trans-unit id="PPG_Services_Seconds">
         <source>seconds</source>
-        <target state="translated">Sekunden</target>
+        <target state="translated">sekunden</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Services_Minutes">
         <source>minutes</source>
-        <target state="translated">Minuten</target>
+        <target state="translated">minuten</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Services_Hours">
         <source>hours</source>
-        <target state="translated">Stunden</target>
+        <target state="translated">stunden</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Services_Days">
         <source>days</source>
-        <target state="translated">Tage</target>
+        <target state="translated">tage</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Services_VersionWarning">
@@ -2530,7 +2530,7 @@ Möchten Sie den Wert in der SETTINGS-Datei aktualisieren?</target>
       </trans-unit>
       <trans-unit id="PPG_Services_InvalidAppConfigXml">
         <source>An error occurred while reading the Application configuration file.  The file might be corrupted or contain invalid XML.</source>
-        <target state="translated">Fehler beim Lesen der Anwendungskonfigurationsdatei.  Die Datei ist möglicherweise beschädigt oder enthält ungültigen XML-Code.</target>
+        <target state="translated">Fehler beim Lesen der Anwendungskonfigurationsdatei. Möglicherweise ist die Datei beschädigt oder enthält ungültige XML.</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Services_InvalidUrl">
@@ -2615,7 +2615,7 @@ Möchten Sie den Wert in der SETTINGS-Datei aktualisieren?</target>
       </trans-unit>
       <trans-unit id="PPG_SecurityPage_XBAPOutOfTrustZoneToolTip">
         <source>The application will fail to run in the selected zone because of this requested elevated permission. Click the help link above for more info.</source>
-        <target state="translated">Die Anwendung kann aufgrund dieser angeforderten erweiterten Berechtigung nicht in der ausgewählten Zone ausgeführt werden. Klicken Sie auf den Hilfelink weiter oben, um weitere Informationen zu erhalten.</target>
+        <target state="translated">Die Anwendung kann aufgrund dieser angeforderten erweiterten Berechtigung in der ausgewählten Zone nicht ausgeführt werden. Klicken Sie auf den Hilfelink oben, um weitere Informationen zu erhalten.</target>
         <note />
       </trans-unit>
       <trans-unit id="XmlToSchema_InvalidXMLFormat">
@@ -2777,6 +2777,15 @@ Möchten Sie den Wert in der SETTINGS-Datei aktualisieren?</target>
         <source>Extended Metafile</source>
         <target state="new">Extended Metafile</target>
         <note />
+      </trans-unit>
+      <trans-unit id="RSE_Filter_License">
+        <source>License Files</source>
+        <target state="new">License Files</target>
+        <note># File dialog filters
+#
+# E.g., for icons, the actual filter created would look like "Icons (*.ico)".  These resources
+#  represent the first part of that filter
+#</note>
       </trans-unit>
     </body>
   </file>

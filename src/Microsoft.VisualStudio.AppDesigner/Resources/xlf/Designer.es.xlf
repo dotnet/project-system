@@ -211,7 +211,7 @@
       </trans-unit>
       <trans-unit id="PPG_ComboBoxSelect_None">
         <source>(None)</source>
-        <target state="translated">(Ninguna)</target>
+        <target state="translated">(Ninguno)</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_ConfigNotFound_2Args">

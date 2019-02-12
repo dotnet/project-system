@@ -4,6 +4,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
+
 using Microsoft.VisualStudio.Buffers.PooledObjects;
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.Packaging;
@@ -45,7 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
             UIThreadHelper.VerifyOnUIThread();
             bool success = false;
             string projectName = Path.GetFileNameWithoutExtension(xprojLocation);
-            int hr = UpgradeProject_CheckOnly(xprojLocation, logger, out upgradeRequired, out migratedProjectGuid, out uint dummy);
+            int hr = UpgradeProject_CheckOnly(xprojLocation, logger, out upgradeRequired, out migratedProjectGuid, out _);
 
             // This implementation can only return S_OK. Throw if it returned something else.
             Verify.HResult(hr);
@@ -57,10 +58,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
                 return VSConstants.VS_E_PROJECTMIGRATIONFAILED;
             }
 
+#pragma warning disable RS0030 // Do not used banned APIs
             IVsSolution solution = _serviceProvider.GetService<IVsSolution, SVsSolution>();
-            Verify.HResult(solution.GetSolutionInfo(out string solutionDirectory, out string solutionFile, out string userOptsFile));
+#pragma warning restore RS0030 // Do not used banned APIs
+            Verify.HResult(solution.GetSolutionInfo(out string solutionDirectory, out _, out _));
 
-            HResult backupResult = BackupAndDeleteGlobalJson(solutionDirectory, solution, backupDirectory, xprojLocation, projectName, logger);
+            HResult backupResult = BackupAndDeleteGlobalJson(solutionDirectory, solution, backupDirectory, projectName, logger);
             if (!backupResult.Succeeded)
             {
                 migratedProjectGuid = GetType().GUID;
@@ -136,7 +139,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
             return true;
         }
 
-        internal HResult BackupAndDeleteGlobalJson(string solutionDirectory, IVsSolution solution, string backupLocation, string xprojLocation, string projectName, IVsUpgradeLogger pLogger)
+        internal HResult BackupAndDeleteGlobalJson(string solutionDirectory, IVsSolution solution, string backupLocation, string projectName, IVsUpgradeLogger pLogger)
         {
             string globalJson = Path.Combine(solutionDirectory, "global.json");
             if (_fileSystem.FileExists(globalJson))

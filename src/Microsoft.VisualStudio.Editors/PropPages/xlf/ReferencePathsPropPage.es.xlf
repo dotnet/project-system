@@ -9,7 +9,7 @@
       </trans-unit>
       <trans-unit id="UpdateFolder.Text">
         <source>&amp;Update</source>
-        <target state="translated">Actuali&amp;zar</target>
+        <target state="translated">&amp;Actualizar</target>
         <note />
       </trans-unit>
       <trans-unit id="ReferencePath.AccessibleName">
@@ -19,7 +19,7 @@
       </trans-unit>
       <trans-unit id="ReferencePathLabel.Text">
         <source>Reference &amp;paths:</source>
-        <target state="translated">Rutas de acce&amp;so de referencias:</target>
+        <target state="translated">&amp;Rutas de acceso de referencia:</target>
         <note />
       </trans-unit>
       <trans-unit id="FolderBrowse.AccessibleName">

@@ -8,8 +8,11 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.VS;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
+
 using Moq;
+
 using Xunit;
+
 using static Microsoft.VisualStudio.Telemetry.ITelemetryServiceFactory;
 
 namespace Microsoft.VisualStudio.Telemetry
@@ -42,7 +45,7 @@ namespace Microsoft.VisualStudio.Telemetry
         {
             var guid = Guid.Empty;
             var version = "42.42.42.42";
-            var (success, result) = await CreateComponentAndGetResult(guid, version);
+            var (success, _) = await CreateComponentAndGetResult(guid, version);
             Assert.False(success);
         }
 
@@ -51,7 +54,7 @@ namespace Microsoft.VisualStudio.Telemetry
         public static async Task TestCreateComponentNoSDKVersionDefined()
         {
             var guid = Guid.NewGuid();
-            var (success, result) = await CreateComponentAndGetResult(guid);
+            var (success, _) = await CreateComponentAndGetResult(guid);
             Assert.False(success);
         }
 
@@ -59,38 +62,31 @@ namespace Microsoft.VisualStudio.Telemetry
         public static async Task TestCreateComponentNoSDKVersionDefinedInvalidProjectGuid()
         {
             var guid = Guid.Empty;
-            var (success, result) = await CreateComponentAndGetResult(guid);
+            var (success, _) = await CreateComponentAndGetResult(guid);
             Assert.False(success);
         }
 
         private static async Task<(bool success, TelemetryParameters result)> CreateComponentAndGetResult(Guid guid, string version = null)
         {
-            var semaphore = new SemaphoreSlim(0);
             bool success = false;
             TelemetryParameters result = default;
             void onTelemetryLogged(TelemetryParameters callParameters)
             {
                 success = true;
                 result = callParameters;
-                semaphore.Release();
             }
-            var component = CreateComponent(guid, onTelemetryLogged, version, semaphore);
+            var component = CreateComponent(guid, onTelemetryLogged, version);
             await component.LoadAsync();
-            await semaphore.WaitAsync();
             await component.UnloadAsync();
             return (success, result);
         }
 
-        private static SDKVersionTelemetryServiceComponent CreateComponent(Guid guid, Action<TelemetryParameters> onTelemetryLogged, string version, SemaphoreSlim semaphore)
+        private static SDKVersionTelemetryServiceComponent CreateComponent(Guid guid, Action<TelemetryParameters> onTelemetryLogged, string version)
         {
             var projectVsServices = CreateProjectServices(version);
             var projectGuidService = CreateISafeProjectGuidService(guid);
             var telemetryService = CreateITelemetryService(onTelemetryLogged);
-            var unconfiguredProjectTasksService = IUnconfiguredProjectTasksServiceFactory.ImplementLoadedProjectAsync(async t =>
-            {
-                await t();
-                semaphore.Release();
-            });
+            var unconfiguredProjectTasksService = IUnconfiguredProjectTasksServiceFactory.ImplementLoadedProjectAsync(async t => await t());
             return new SDKVersionTelemetryServiceComponent(
                 projectVsServices,
                 projectGuidService,

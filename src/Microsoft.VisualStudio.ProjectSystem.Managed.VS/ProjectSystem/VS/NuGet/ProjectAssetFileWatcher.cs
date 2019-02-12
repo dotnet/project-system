@@ -8,6 +8,8 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Threading.Tasks.Dataflow;
+
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.Shell;
@@ -123,7 +125,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                     StandardRuleDataflowLinkOptions sourceLinkOptions = DataflowOption.WithRuleNames(ConfigurationGeneral.SchemaName);
 
                     ProjectDataSources.SourceBlockAndLink<IProjectVersionedValue<IProjectSubscriptionUpdate>> propertySource = _activeConfiguredProjectSubscriptionService.ProjectRuleSource.SourceBlock.SyncLinkOptions(sourceLinkOptions);
-                    var target = DataflowBlockSlim.CreateActionBlock<IProjectVersionedValue<Tuple<IProjectTreeSnapshot, IProjectSubscriptionUpdate>>>(DataFlow_ChangedAsync);
+                    ITargetBlock<IProjectVersionedValue<Tuple<IProjectTreeSnapshot, IProjectSubscriptionUpdate>>> target = DataflowBlockSlim.CreateActionBlock<IProjectVersionedValue<Tuple<IProjectTreeSnapshot, IProjectSubscriptionUpdate>>>(DataFlow_ChangedAsync);
 
                     // Join the two sources so that we get synchronized versions of the data.
                     _treeWatcher = ProjectDataSources.SyncLinkTo(treeSource, propertySource, target);
@@ -271,9 +273,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                     TraceUtilities.TraceVerbose("{0} changed on disk. Marking project dirty", _fileBeingWatched);
                     _previousContentsHash = newHash;
                     cancellationToken.ThrowIfCancellationRequested();
-                    await _projectServices.Project.Services.ProjectAsynchronousTasks.LoadedProjectAsync(async () =>
+                    await _projectTasksService.LoadedProjectAsync(() =>
                     {
-                        await _projectServices.ProjectAccessor.EnterWriteLockAsync(async (collection, token) =>
+                        return _projectServices.ProjectAccessor.EnterWriteLockAsync(async (collection, token) =>
                         {
                             // notify all the loaded configured projects
                             IEnumerable<ConfiguredProject> currentProjects = _projectServices.Project.LoadedConfiguredProjects;

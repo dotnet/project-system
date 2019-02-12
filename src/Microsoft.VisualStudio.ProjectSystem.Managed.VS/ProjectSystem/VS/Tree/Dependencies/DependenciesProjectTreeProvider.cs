@@ -62,7 +62,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             IProjectAccessor projectAccessor,
             UnconfiguredProject unconfiguredProject,
             IDependenciesSnapshotProvider dependenciesSnapshotProvider,
-            [Import(DependencySubscriptionsHost.DependencySubscriptionsHostContract)] ICrossTargetSubscriptionsHost dependenciesHost,
+            [Import(DependenciesSnapshotProvider.DependencySubscriptionsHostContract)] ICrossTargetSubscriptionsHost dependenciesHost,
             [Import(ExportContractNames.Scopes.UnconfiguredProject)] IProjectAsynchronousTasksService tasksService,
             IDependencyTreeTelemetryService treeTelemetryService)
             : base(threadingService, unconfiguredProject)
@@ -94,13 +94,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         /// <summary>
-        /// See <see cref="IProjectTreeProvider"/>
+        /// Gets the source block for the <see cref="IProjectTreeSnapshot" />.
         /// </summary>
         /// <remarks>
         /// This stub defined for code contracts.
         /// </remarks>
-        IReceivableSourceBlock<IProjectVersionedValue<IProjectTreeSnapshot>> IProjectTreeProvider.Tree 
-            => Tree;
+        IReceivableSourceBlock<IProjectVersionedValue<IProjectTreeSnapshot>> IProjectTreeProvider.Tree => Tree;
 
         /// <summary>
         /// Gets a value indicating whether a given set of nodes can be copied or moved underneath some given node.
@@ -221,7 +220,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     IProjectPropertiesContext nodeItemContext = node.BrowseObjectProperties.Context;
                     ProjectItem unresolvedReferenceItem = project.GetItemsByEvaluatedInclude(nodeItemContext.ItemName)
                         .FirstOrDefault(
-                            (item, t) => string.Equals(item.ItemType, t, StringComparisons.ItemTypes), 
+                            (item, t) => string.Equals(item.ItemType, t, StringComparisons.ItemTypes),
                             nodeItemContext.ItemType);
 
                     Report.IfNot(unresolvedReferenceItem != null, "Cannot find reference to remove.");
@@ -275,26 +274,37 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         /// <summary>
-        /// Finds dependencies child nodes by their path. We need to override it since
-        /// we need to find children under either:
-        ///     - our dependencies root node.
-        ///     - dependency sub tree nodes
-        ///     - dependency sub tree top level nodes
-        /// (deeper levels will be graph nodes with additional info, not direct dependencies
-        /// specified in the project file)
+        /// Efficiently finds a descendent with the given path in the given tree.
         /// </summary>
+        /// <param name="root">The root of the tree.</param>
+        /// <param name="path">The absolute or project-relative path to the item sought.</param>
+        /// <returns>The item in the tree if found; otherwise <c>null</c>.</returns>
         public override IProjectTree FindByPath(IProjectTree root, string path)
         {
+            // We override this since we need to find children under either:
+            //
+            // - our dependencies root node
+            // - dependency sub tree nodes
+            // - dependency sub tree top level nodes
+            //
+            // Deeper levels will be graph nodes with additional info, not direct dependencies
+            // specified in the project file.
+
             return _viewProviders.FirstOrDefault()?.Value.FindByPath(root, path);
         }
 
         /// <summary>
-        /// This is still needed for graph nodes search
+        /// Gets the path to a given node that can later be provided to <see cref="IProjectTreeProvider.FindByPath" /> to locate the node again.
         /// </summary>
-        /// <param name="node"></param>
-        /// <returns></returns>
+        /// <param name="node">The node whose path is sought.</param>
+        /// <returns>
+        /// A non-empty string, or <c>null</c> if searching is not supported.
+        /// For nodes that represent files on disk, this is the project-relative path to that file.
+        /// The root node of a project is the absolute path to the project file.
+        /// </returns>
         public override string GetPath(IProjectTree node)
         {
+            // Needed for graph nodes search
             return node.FilePath;
         }
 
@@ -305,7 +315,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
 #pragma warning disable RS0030 // symbol LoadedProject is banned
             using (UnconfiguredProjectAsynchronousTasksService.LoadedProject())
-#pragma warning restore RS0030 // symbol LoadedProject is banned
             {
                 base.Initialize();
 
@@ -330,14 +339,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
                             _dependenciesSnapshotProvider.SnapshotChanged += OnDependenciesSnapshotChanged;
 
-                            Task<IProjectVersionedValue<IProjectTreeSnapshot>> nowait = SubmitTreeUpdateAsync(
-                                (treeSnapshot, configuredProjectExports, cancellationToken) =>
+                            _ = SubmitTreeUpdateAsync(
+                                delegate
                                 {
                                     IProjectTree dependenciesNode = CreateDependenciesFolder();
-
-                                    // TODO create providers nodes that can be visible when empty
-                                    //dependenciesNode = CreateOrUpdateSubTreeProviderNodes(dependenciesNode, 
-                                    //                                                      cancellationToken);
 
                                     return Task.FromResult(new TreeUpdateResult(dependenciesNode));
                                 },
@@ -347,6 +352,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     },
                     registerFaultHandler: true);
             }
+#pragma warning restore RS0030 // symbol LoadedProject is banned
 
             IProjectTree CreateDependenciesFolder()
             {
@@ -417,6 +423,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 async (treeSnapshot, configuredProjectExports, cancellationToken) =>
                 {
                     IProjectTree dependenciesNode = treeSnapshot.Value.Tree;
+
                     if (!cancellationToken.IsCancellationRequested)
                     {
                         dependenciesNode = await viewProvider.BuildTreeAsync(dependenciesNode, snapshot, cancellationToken);
@@ -494,7 +501,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             ConfiguredProject project = dependency.TargetFramework.Equals(TargetFramework.Any)
                 ? ActiveConfiguredProject
-                : await _dependenciesHost.GetConfiguredProject(dependency.TargetFramework) ?? ActiveConfiguredProject;
+                : _dependenciesHost.GetConfiguredProject(dependency.TargetFramework) ?? ActiveConfiguredProject;
 
             IImmutableDictionary<string, IPropertyPagesCatalog> namedCatalogs = await GetNamedCatalogsAsync();
             Requires.NotNull(namedCatalogs, nameof(namedCatalogs));

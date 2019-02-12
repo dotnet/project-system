@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
 
 using Microsoft.VisualStudio.Imaging.Interop;
@@ -37,6 +36,30 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             return new DependencyViewModel(self, hasUnresolvedDependency: self.IsOrHasUnresolvedDependency(snapshot));
         }
 
+        private sealed class DependencyViewModel : IDependencyViewModel
+        {
+            private readonly IDependency _model;
+            private readonly bool _hasUnresolvedDependency;
+
+            public DependencyViewModel(IDependency dependency, bool hasUnresolvedDependency)
+            {
+                _model = dependency;
+                _hasUnresolvedDependency = hasUnresolvedDependency;
+            }
+
+            public IDependency OriginalModel => _model;
+            public string Caption => _model.Caption;
+            public string FilePath => _model.Id;
+            public string SchemaName => _model.SchemaName;
+            public string SchemaItemType => _model.SchemaItemType;
+            public int Priority => _model.Priority;
+            public ImageMoniker Icon => _hasUnresolvedDependency ? _model.IconSet.UnresolvedIcon : _model.IconSet.Icon;
+            public ImageMoniker ExpandedIcon => _hasUnresolvedDependency ? _model.IconSet.UnresolvedExpandedIcon : _model.IconSet.ExpandedIcon;
+            public IImmutableDictionary<string, string> Properties => _model.Properties;
+            public ProjectTreeFlags Flags => _model.Flags;
+        }
+
+
         /// <summary>
         /// Returns id having full path instead of OriginalItemSpec
         /// </summary>
@@ -55,17 +78,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             return string.IsNullOrEmpty(self.Path)
                 ? string.Equals(self.Id, id, StringComparison.OrdinalIgnoreCase)
                 : Dependency.IdEquals(id, self.TargetFramework, self.ProviderType, self.Path);
-        }
-
-        /// <summary>
-        /// Returns all icons specified for given dependency.
-        /// </summary>
-        public static IEnumerable<ImageMoniker> GetIcons(this IDependency self)
-        {
-            yield return self.Icon;
-            yield return self.ExpandedIcon;
-            yield return self.UnresolvedIcon;
-            yield return self.UnresolvedExpandedIcon;
         }
 
         /// <summary>
@@ -97,7 +109,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         public static IDependency ToResolved(
             this IDependency dependency,
             string schemaName = null,
-            IImmutableList<string> dependencyIDs = null)
+            ImmutableArray<string> dependencyIDs = default)
         {
             return dependency.SetProperties(
                 resolved: true,
@@ -109,7 +121,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         public static IDependency ToUnresolved(
             this IDependency dependency,
             string schemaName = null,
-            IImmutableList<string> dependencyIDs = null)
+            ImmutableArray<string> dependencyIDs = default)
         {
             return dependency.SetProperties(
                 resolved: false,

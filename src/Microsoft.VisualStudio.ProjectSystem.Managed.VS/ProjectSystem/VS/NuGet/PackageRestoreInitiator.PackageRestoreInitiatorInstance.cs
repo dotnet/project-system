@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
     internal partial class PackageRestoreInitiator
     {
-        private class PackageRestoreInitiatorInstance : OnceInitializedOnceDisposedAsync, IMultiLifetimeInstance
+        internal class PackageRestoreInitiatorInstance : OnceInitializedOnceDisposedAsync, IMultiLifetimeInstance
         {
             private readonly IUnconfiguredProjectVsServices _projectVsServices;
             private readonly IVsSolutionRestoreService _solutionRestoreService;
@@ -101,7 +101,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                         });
 
                     Action<Tuple<ImmutableList<IProjectValueVersions>, TIdentityDictionary>> action = ProjectPropertyChanged;
-                    var target = DataflowBlockSlim.CreateActionBlock(action);
+                    ITargetBlock<Tuple<ImmutableList<IProjectValueVersions>, TIdentityDictionary>> target = DataflowBlockSlim.CreateActionBlock(action);
 
                     DataflowLinkOptions targetLinkOptions = DataflowOption.PropagateCompletion;
 
@@ -116,7 +116,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
             private static IPropagatorBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>, IProjectVersionedValue<IProjectSubscriptionUpdate>> CreateVersionDropperBlock()
             {
-                var transformBlock = DataflowBlockSlim.CreateTransformBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>, IProjectVersionedValue<IProjectSubscriptionUpdate>>(data =>
+                IPropagatorBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>, IProjectVersionedValue<IProjectSubscriptionUpdate>> transformBlock = DataflowBlockSlim.CreateTransformBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>, IProjectVersionedValue<IProjectSubscriptionUpdate>>(data =>
                 {
                     return new ProjectVersionedValue<IProjectSubscriptionUpdate>(data.Value, data.DataSourceVersions.RemoveRange(s_keysToDrop));
                 });

@@ -14,7 +14,7 @@
       </trans-unit>
       <trans-unit id="ReferencePath.AccessibleName">
         <source>Order of Reference Paths</source>
-        <target state="translated">Verweispfadreihenfolge</target>
+        <target state="translated">Reihenfolge der Verweispfade</target>
         <note />
       </trans-unit>
       <trans-unit id="ReferencePathLabel.Text">
@@ -24,7 +24,7 @@
       </trans-unit>
       <trans-unit id="FolderBrowse.AccessibleName">
         <source>Browse for Folder</source>
-        <target state="translated">Nach Ordner suchen</target>
+        <target state="translated">Ordner suchen</target>
         <note />
       </trans-unit>
       <trans-unit id="FolderBrowse.Text">

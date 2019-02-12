@@ -4,12 +4,15 @@
 
 Imports System.ComponentModel
 Imports System.IO
+Imports System.Reflection
 Imports System.Windows.Forms
+
 Imports Microsoft.VisualStudio.Editors.Common
 Imports Microsoft.VisualStudio.Shell.Interop
-Imports VSLangProj80
+
 Imports VSLangProj110
-Imports System.Reflection
+
+Imports VSLangProj80
 
 Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
@@ -339,7 +342,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Function
 
         Private Function TreatSpecificWarningsGet(control As Control, prop As PropertyDescriptor, ByRef value As Object) As Boolean
-            Dim bRetVal As Boolean = True
+            Dim bRetVal As Boolean
 
             If rbWarningAll.Checked Then
                 value = ""
@@ -364,7 +367,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Function
 
         Private Function TreatWarningsGet(control As Control, prop As PropertyDescriptor, ByRef value As Object) As Boolean
-            Dim bRetVal As Boolean = True
+            Dim bRetVal As Boolean
 
             If rbWarningAll.Checked Then
                 value = rbWarningAll.Checked
@@ -964,7 +967,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             '// See if we find it
             Dim rgConstants() As String
             Dim bFound As Boolean = False
-            Dim stNewConstants As String = ""
 
             If (Not (IsNothing(stOldCondCompConstants))) Then
                 rgConstants = stOldCondCompConstants.Split(New Char() {";"c})
@@ -983,7 +985,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             If (Not bFound) Then
                 '// Add it to the beginning
-                stNewConstants = stSymbol
+                Dim stNewConstants As String = stSymbol
+
 
                 If stOldCondCompConstants <> "" Then
                     stNewConstants += ";"

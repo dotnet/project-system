@@ -4,12 +4,11 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 
 using Microsoft.VisualStudio.Imaging;
-using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Filters;
 
 using Xunit;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
     public sealed class ImplicitTopLevelDependenciesSnapshotFilterTests : DependenciesSnapshotFilterTestsBase
     {
@@ -88,6 +87,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         [Fact]
+        public void BeforeAddOrUpdate_WhenSharedProject_ShouldDoNothing()
+        {
+            VerifyUnchangedOnAdd(
+                new TestDependency
+                {
+                    ClonePropertiesFrom = _acceptable,
+                    Flags = DependencyTreeFlags.SharedProjectFlags
+                },
+                projectItemSpecs: ImmutableHashSet<string>.Empty);
+        }
+
+        [Fact]
         public void BeforeAddOrUpdate_WhenCanApplyImplicitProjectContainsItem_ShouldDoNothing()
         {
             VerifyUnchangedOnAdd(
@@ -125,7 +136,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 implicitIcon: implicitIcon);
 
             filter.BeforeAddOrUpdate(
-                null,
                 null,
                 dependency,
                 new Dictionary<string, IProjectDependenciesSubTreeProvider> { { providerType, subTreeProvider } },

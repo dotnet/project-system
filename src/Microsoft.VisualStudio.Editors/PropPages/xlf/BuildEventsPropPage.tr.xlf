@@ -4,7 +4,7 @@
     <body>
       <trans-unit id="lblPreBuildEventCommandLine.Text">
         <source>P&amp;re-build event command line:</source>
-        <target state="translated">D&amp;erleme öncesi olay komut satırı:</target>
+        <target state="translated">&amp;Derleme öncesi olay komut satırı:</target>
         <note />
       </trans-unit>
       <trans-unit id="btnPreBuildBuilder.Text">

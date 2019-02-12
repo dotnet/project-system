@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Threading;
@@ -67,7 +68,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         /// </summary>
         private static int ShowAddItemDialog(SVsServiceProvider serviceProvider, IProjectTree target, IVsProject vsProject, string strBrowseLocations, AddItemAction addItemAction)
         {
+#pragma warning disable RS0030 // Do not used banned APIs
             IVsAddProjectItemDlg addItemDialog = serviceProvider.GetService<IVsAddProjectItemDlg, SVsAddProjectItemDlg>();
+#pragma warning restore RS0030 // Do not used banned APIs
             Assumes.Present(addItemDialog);
 
             __VSADDITEMFLAGS uiFlags = __VSADDITEMFLAGS.VSADDITEM_AddNewItems | __VSADDITEMFLAGS.VSADDITEM_SuggestTemplateName | __VSADDITEMFLAGS.VSADDITEM_AllowHiddenTreeView;
@@ -80,7 +83,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
             Guid addItemTemplateGuid = Guid.Empty;  // Let the dialog ask the hierarchy itself
 
             return addItemDialog.AddProjectItemDlg(target.GetHierarchyId(), ref addItemTemplateGuid, vsProject, (uint)uiFlags,
-                null, null, ref strBrowseLocations, ref strFilter, out int iDontShowAgain);
+                null, null, ref strBrowseLocations, ref strFilter, out _);
         }
     }
 }

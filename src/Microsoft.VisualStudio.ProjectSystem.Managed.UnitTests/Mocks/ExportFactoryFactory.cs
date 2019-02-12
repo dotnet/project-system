@@ -21,7 +21,7 @@ namespace System.ComponentModel.Composition
 
         public static ExportFactory<T> ImplementCreateValueWithAutoDispose<T>(Func<T> factory)
         {
-            return new ExportFactory<T>(()=>
+            return new ExportFactory<T>(() =>
             {
                 T value = factory();
 

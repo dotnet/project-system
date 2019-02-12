@@ -30,15 +30,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     [AppliesTo(ProjectCapability.LaunchProfiles)]
     internal class LaunchSettingsProvider : OnceInitializedOnceDisposed, ILaunchSettingsProvider2
     {
+        private readonly UnconfiguredProject _project;
         private readonly ActiveConfiguredProject<AppDesignerFolderSpecialFileProvider> _appDesignerSpecialFileProvider;
+        private readonly IProjectFaultHandlerService _projectFaultHandler;
         private readonly AsyncLazy<string> _launchSettingsFilePath;
 
         [ImportingConstructor]
         public LaunchSettingsProvider(UnconfiguredProject project, IUnconfiguredProjectServices projectServices,
                                       IFileSystem fileSystem, IUnconfiguredProjectCommonServices commonProjectServices,
                                       IActiveConfiguredProjectSubscriptionService projectSubscriptionService,
-                                      ActiveConfiguredProject<AppDesignerFolderSpecialFileProvider> appDesignerSpecialFileProvider)
+                                      ActiveConfiguredProject<AppDesignerFolderSpecialFileProvider> appDesignerSpecialFileProvider,
+                                      IProjectFaultHandlerService projectFaultHandler)
         {
+            _project = project;
             ProjectServices = projectServices;
             FileManager = fileSystem;
             CommonProjectServices = commonProjectServices;
@@ -48,11 +52,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             ProjectSubscriptionService = projectSubscriptionService;
             _appDesignerSpecialFileProvider = appDesignerSpecialFileProvider;
+            _projectFaultHandler = projectFaultHandler;
             _launchSettingsFilePath = new AsyncLazy<string>(GetLaunchSettingsFilePathNoCacheAsync, commonProjectServices.ThreadingService.JoinableTaskFactory);
         }
-
-        // TODO: Add error list support. Tracked by https://github.com/dotnet/roslyn-project-system/issues/424
-        //protected IProjectErrorManager ProjectErrorManager { get; }
 
         private IUnconfiguredProjectServices ProjectServices { get; }
         private IUnconfiguredProjectCommonServices CommonProjectServices { get; }
@@ -184,7 +186,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 // The use of AsyncLazy with dataflow can allow state stored in the execution context to leak through. The downstream affect is
                 // calls to say, get properties, may fail. To avoid this, we capture the execution context here, and it will be reapplied when
                 // we get new subscription data from the dataflow.
-                var projectChangesBlock = DataflowBlockSlim.CreateActionBlock(
+                ITargetBlock<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectCapabilitiesSnapshot>>> projectChangesBlock = DataflowBlockSlim.CreateActionBlock(
                             DataflowUtilities.CaptureAndApplyExecutionContext<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectCapabilitiesSnapshot>>>(ProjectRuleBlock_ChangedAsync));
                 StandardRuleDataflowLinkOptions evaluationLinkOptions = DataflowOption.WithRuleNames(ProjectDebugger.SchemaName);
 
@@ -416,9 +418,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             }
             else
             {
-                // Still clear errors even if no file on disk. This handles the case where there was a file with errors on
-                // disk and the user deletes the file.
-                ClearErrors();
                 settings = new LaunchSettingsData();
             }
 
@@ -439,63 +438,40 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         {
             string fileName = await GetLaunchSettingsFilePathAsync();
 
-            // Clear errors
-            ClearErrors();
-            try
-            {
-                string jsonString = FileManager.ReadAllText(fileName);
+            string jsonString = FileManager.ReadAllText(fileName);
 
-                // Since the sections in the settings file are extensible we iterate through each one and have the appropriate provider
-                // serialize their section. Unfortunately, this means the data is string to object which is messy to deal with
-                var launchSettingsData = new LaunchSettingsData() { OtherSettings = new Dictionary<string, object>(StringComparer.Ordinal) };
-                var jsonObject = JObject.Parse(jsonString);
-                foreach ((string key, JToken jToken) in jsonObject)
+            // Since the sections in the settings file are extensible we iterate through each one and have the appropriate provider
+            // serialize their section. Unfortunately, this means the data is string to object which is messy to deal with
+            var launchSettingsData = new LaunchSettingsData() { OtherSettings = new Dictionary<string, object>(StringComparer.Ordinal) };
+            var jsonObject = JObject.Parse(jsonString);
+            foreach ((string key, JToken jToken) in jsonObject)
+            {
+                if (key.Equals(ProfilesSectionName, StringComparison.Ordinal) && jToken is JObject jObject)
                 {
-                    if (key.Equals(ProfilesSectionName, StringComparison.Ordinal) && jToken is JObject jObject)
+                    Dictionary<string, LaunchProfileData> profiles = LaunchProfileData.DeserializeProfiles(jObject);
+                    launchSettingsData.Profiles = FixupProfilesAndLogErrors(profiles);
+                }
+                else
+                {
+                    // Find the matching json serialization handler for this section
+                    Lazy<ILaunchSettingsSerializationProvider, IJsonSection> handler = JsonSerializationProviders.FirstOrDefault(sp => string.Equals(sp.Metadata.JsonSection, key));
+                    if (handler != null)
                     {
-                        Dictionary<string, LaunchProfileData> profiles = LaunchProfileData.DeserializeProfiles(jObject);
-                        launchSettingsData.Profiles = FixupProfilesAndLogErrors(profiles);
+                        object sectionObject = JsonConvert.DeserializeObject(jToken.ToString(), handler.Metadata.SerializationType);
+                        launchSettingsData.OtherSettings.Add(key, sectionObject);
                     }
                     else
                     {
-                        // Find the matching json serialization handler for this section
-                        Lazy<ILaunchSettingsSerializationProvider, IJsonSection> handler = JsonSerializationProviders.FirstOrDefault(sp => string.Equals(sp.Metadata.JsonSection, key));
-                        if (handler != null)
-                        {
-                            object sectionObject = JsonConvert.DeserializeObject(jToken.ToString(), handler.Metadata.SerializationType);
-                            launchSettingsData.OtherSettings.Add(key, sectionObject);
-                        }
-                        else
-                        {
-                            // We still need to remember settings for which we don't have an extensibility component installed. For this we
-                            // just keep the jObject which can be serialized back out when the file is written.
-                            launchSettingsData.OtherSettings.Add(key, jToken);
-                        }
+                        // We still need to remember settings for which we don't have an extensibility component installed. For this we
+                        // just keep the jObject which can be serialized back out when the file is written.
+                        launchSettingsData.OtherSettings.Add(key, jToken);
                     }
                 }
+            }
 
-                // Remember the time we are sync'd to
-                LastSettingsFileSyncTime = FileManager.LastFileWriteTime(fileName);
-                return launchSettingsData;
-            }
-            catch (JsonReaderException readerEx)
-            {
-                string err = string.Format(Resources.JsonErrorReadingLaunchSettings, readerEx.Message);
-                LogError(err, fileName, readerEx.LineNumber, readerEx.LinePosition, false);
-                throw;
-            }
-            catch (JsonException jsonEx)
-            {
-                string err = string.Format(Resources.JsonErrorReadingLaunchSettings, jsonEx.Message);
-                LogError(err, fileName, -1, -1, false);
-                throw;
-            }
-            catch (Exception ex)
-            {
-                string err = string.Format(Resources.ErrorReadingLaunchSettings, fileName, ex.Message);
-                LogError(err, false);
-                throw;
-            }
+            // Remember the time we are sync'd to
+            LastSettingsFileSyncTime = FileManager.LastFileWriteTime(fileName);
+            return launchSettingsData;
         }
 
         public Task<string> GetLaunchSettingsFilePathAsync()
@@ -525,27 +501,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 }
             }
 
-            if (validProfiles.Count < profilesData.Count)
-            {
-                LogError(Resources.ProfileMissingName, false);
-            }
-
             return validProfiles;
-        }
-
-        private static void LogError(string errorText, bool isWarning)
-        {
-            // ProjectErrorManager.AddError(ErrorOwnerString, errorText, isWarning);
-        }
-
-        private static void LogError(string errorText, string filename, int line, int col, bool isWarning)
-        {
-            // ProjectErrorManager.AddError(ErrorOwnerString, errorText, filename, line, col, isWarning);
-        }
-
-        private static void ClearErrors()
-        {
-            //ProjectErrorManager.ClearErrorsForOwner(ErrorOwnerString);
         }
 
         /// <summary>
@@ -554,8 +510,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// </summary>
         protected async Task SaveSettingsToDiskAsync(ILaunchSettings newSettings)
         {
-            // Clear stale errors since we are saving
-            ClearErrors();
             Dictionary<string, object> serializationData = GetSettingsToSerialize(newSettings);
             string fileName = await GetLaunchSettingsFilePathAsync();
 
@@ -572,12 +526,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
                 // Update the last write time
                 LastSettingsFileSyncTime = FileManager.LastFileWriteTime(fileName);
-            }
-            catch (Exception ex)
-            {
-                string err = string.Format(Resources.ErrorWritingDebugSettings, fileName, ex.Message);
-                LogError(err, false);
-                throw;
             }
             finally
             {
@@ -648,9 +596,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// </summary>
         private void LaunchSettingsFile_Changed(object sender, FileSystemEventArgs e)
         {
-            HandleLaunchSettingsFileChangedAsync().Forget();
+            _projectFaultHandler.Forget(HandleLaunchSettingsFileChangedAsync(), _project);
         }
-        
+
         protected Task HandleLaunchSettingsFileChangedAsync()
         {
             if (!IgnoreFileChanges)
@@ -717,7 +665,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 // Create our scheduler for processing file changes
                 FileChangeScheduler = new TaskDelayScheduler(FileChangeProcessingDelay, CommonProjectServices.ThreadingService,
                     ProjectServices.ProjectAsynchronousTasks.UnloadCancellationToken);
-               
+
                 try
                 {
                     FileWatcher = new SimpleFileWatcher(Path.GetDirectoryName(CommonProjectServices.Project.FullPath),
@@ -727,7 +675,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                                                         LaunchSettingsFile_Changed,
                                                         LaunchSettingsFile_Changed);
                 }
-                catch (Exception ex)  when (ex is IOException || ex is ArgumentException)
+                catch (Exception ex) when (ex is IOException || ex is ArgumentException)
                 {
                     // If the project folder is no longer available this will throw, which can happen during branch switching
                 }

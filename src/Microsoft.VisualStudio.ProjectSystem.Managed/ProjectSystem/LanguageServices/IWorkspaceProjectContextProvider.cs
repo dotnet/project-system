@@ -3,33 +3,30 @@
 using System;
 using System.Threading.Tasks;
 
-using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
-
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
     /// <summary>
-    ///     Provides methods for creating and releasing <see cref="IWorkspaceProjectContext"/> instances.
+    ///     Provides methods for creating and releasing <see cref="IWorkspaceProjectContextAccessor"/> instances.
     /// </summary>
     internal interface IWorkspaceProjectContextProvider
     {
         /// <summary>
-        ///     Creates a <see cref="IWorkspaceProjectContext"/> for the specified <see cref="ConfiguredProject"/>.
+        ///     Creates a <see cref="IWorkspaceProjectContextAccessor"/> for the specified <see cref="ConfiguredProject"/>.
         /// </summary>
         /// <returns>
-        ///     The created <see cref="IWorkspaceProjectContext"/>; otherwise, <see langword="null"/> if the context
-        ///     could not be created due to missing data.
+        ///     The created <see cref="IWorkspaceProjectContextAccessor"/>.
         /// </returns>
         /// <exception cref="ArgumentNullException">
         ///     <paramref name="project"/> is <see langword="null"/>.
         /// </exception>
-        Task<IWorkspaceProjectContext> CreateProjectContextAsync(ConfiguredProject project);
+        Task<IWorkspaceProjectContextAccessor> CreateProjectContextAsync(ConfiguredProject project);
 
         /// <summary>
-        ///     Release the <see cref="IWorkspaceProjectContext"/>.
+        ///     Release the <see cref="IWorkspaceProjectContextAccessor"/>.
         /// </summary>
         /// <exception cref="ArgumentNullException">
-        ///     <paramref name="projectContext"/> is <see langword="null"/>.
+        ///     <paramref name="accessor"/> is <see langword="null"/>.
         /// </exception>
-        Task ReleaseProjectContextAsync(IWorkspaceProjectContext projectContext);
+        Task ReleaseProjectContextAsync(IWorkspaceProjectContextAccessor accessor);
     }
 }

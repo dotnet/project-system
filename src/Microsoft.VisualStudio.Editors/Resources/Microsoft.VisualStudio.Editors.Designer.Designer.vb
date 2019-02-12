@@ -22,7 +22,7 @@ Namespace My.Resources
     '''<summary>
     '''  A strongly-typed resource class, for looking up localized strings, etc.
     '''</summary>
-    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0"),  _
+    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0"),  _
      Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
      Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute()>  _
     Friend Class Microsoft_VisualStudio_Editors_Designer
@@ -3759,6 +3759,15 @@ Namespace My.Resources
         Friend Shared ReadOnly Property RSE_Filter_Icon() As String
             Get
                 Return ResourceManager.GetString("RSE_Filter_Icon", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to License Files.
+        '''</summary>
+        Friend Shared ReadOnly Property RSE_Filter_License() As String
+            Get
+                Return ResourceManager.GetString("RSE_Filter_License", resourceCulture)
             End Get
         End Property
         

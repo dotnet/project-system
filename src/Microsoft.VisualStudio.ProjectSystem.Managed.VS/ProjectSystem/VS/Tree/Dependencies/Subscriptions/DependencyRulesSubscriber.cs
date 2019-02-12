@@ -8,7 +8,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 
-using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
@@ -25,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         private DisposableBag _subscriptions;
 #pragma warning restore CA2213
         private readonly IUnconfiguredProjectCommonServices _commonServices;
-        private readonly IProjectAsynchronousTasksService _tasksService;
+        private readonly IUnconfiguredProjectTasksService _tasksService;
         private readonly IDependencyTreeTelemetryService _treeTelemetryService;
         private ICrossTargetSubscriptionsHost _host;
         private AggregateCrossTargetProjectContext _currentProjectContext;
@@ -36,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         [ImportingConstructor]
         public DependencyRulesSubscriber(
             IUnconfiguredProjectCommonServices commonServices,
-            [Import(ExportContractNames.Scopes.UnconfiguredProject)] IProjectAsynchronousTasksService tasksService,
+            IUnconfiguredProjectTasksService tasksService,
             IDependencyTreeTelemetryService treeTelemetryService)
             : base(synchronousDisposal: true)
         {
@@ -63,23 +62,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 _commonServices.ActiveConfiguredProject, subscriptionService, watchedEvaluationRules, watchedDesignTimeBuildRules);
         }
 
-        public void AddSubscriptions(AggregateCrossTargetProjectContext newProjectContext)
+        public void AddSubscriptions(AggregateCrossTargetProjectContext projectContext)
         {
-            Requires.NotNull(newProjectContext, nameof(newProjectContext));
+            Requires.NotNull(projectContext, nameof(projectContext));
 
-            _currentProjectContext = newProjectContext;
+            _currentProjectContext = projectContext;
 
             IReadOnlyCollection<string> watchedEvaluationRules = GetWatchedRules(RuleHandlerType.Evaluation);
             IReadOnlyCollection<string> watchedDesignTimeBuildRules = GetWatchedRules(RuleHandlerType.DesignTimeBuild);
 
             // initialize telemetry with all rules for each target framework
-            foreach (ITargetFramework targetFramework in newProjectContext.TargetFrameworks)
+            foreach (ITargetFramework targetFramework in projectContext.TargetFrameworks)
             {
                 _treeTelemetryService.InitializeTargetFrameworkRules(targetFramework, watchedEvaluationRules);
                 _treeTelemetryService.InitializeTargetFrameworkRules(targetFramework, watchedDesignTimeBuildRules);
             }
 
-            foreach (ConfiguredProject configuredProject in newProjectContext.InnerConfiguredProjects)
+            foreach (ConfiguredProject configuredProject in projectContext.InnerConfiguredProjects)
             {
                 SubscribeToConfiguredProject(
                     configuredProject, configuredProject.Services.ProjectSubscription, watchedEvaluationRules, watchedDesignTimeBuildRules);
@@ -135,7 +134,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     suppressVersionOnlyUpdates: true,
                     linkOptions: DataflowOption.PropagateCompletion));
 
-            var actionBlockDesignTimeBuild =
+            ITargetBlock<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectCatalogSnapshot, IProjectCapabilitiesSnapshot>>> actionBlockDesignTimeBuild =
                 DataflowBlockSlim.CreateActionBlock<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectCatalogSnapshot, IProjectCapabilitiesSnapshot>>>(
                     e => OnProjectChangedAsync(e.Value.Item1, e.Value.Item2, e.Value.Item3, configuredProject, RuleHandlerType.DesignTimeBuild),
                     new ExecutionDataflowBlockOptions()
@@ -143,7 +142,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                         NameFormat = "CrossTarget DesignTime Input: {1}"
                     });
 
-            var actionBlockEvaluation =
+            ITargetBlock<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectCatalogSnapshot, IProjectCapabilitiesSnapshot>>> actionBlockEvaluation =
                 DataflowBlockSlim.CreateActionBlock<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectCatalogSnapshot, IProjectCapabilitiesSnapshot>>>(
                      e => OnProjectChangedAsync(e.Value.Item1, e.Value.Item2, e.Value.Item3, configuredProject, RuleHandlerType.Evaluation),
                      new ExecutionDataflowBlockOptions()
@@ -187,11 +186,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
             await _tasksService.LoadedProjectAsync(async () =>
             {
-                if (_tasksService.UnloadCancellationToken.IsCancellationRequested)
-                {
-                    return;
-                }
-
                 using (ProjectCapabilitiesContext.CreateIsolatedContext(configuredProject, capabilities))
                 {
                     await HandleAsync(projectUpdate, catalogSnapshot, handlerType);
@@ -204,7 +198,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             IProjectCatalogSnapshot catalogSnapshot,
             RuleHandlerType handlerType)
         {
-            AggregateCrossTargetProjectContext currentAggregateContext = await _host.GetCurrentAggregateProjectContext();
+            AggregateCrossTargetProjectContext currentAggregateContext = await _host.GetCurrentAggregateProjectContextAsync();
             if (currentAggregateContext == null || _currentProjectContext != currentAggregateContext)
             {
                 return;

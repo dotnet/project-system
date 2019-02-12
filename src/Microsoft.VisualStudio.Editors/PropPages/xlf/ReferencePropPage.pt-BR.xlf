@@ -69,7 +69,7 @@
       </trans-unit>
       <trans-unit id="UpdateReferences.Text">
         <source>&amp;Update</source>
-        <target state="translated">At&amp;ualizar</target>
+        <target state="translated">&amp;Atualizar</target>
         <note />
       </trans-unit>
       <trans-unit id="AddUserImportButton.Text">

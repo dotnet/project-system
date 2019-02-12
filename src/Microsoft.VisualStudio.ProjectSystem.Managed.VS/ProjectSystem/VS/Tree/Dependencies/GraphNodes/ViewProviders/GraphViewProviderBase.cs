@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -23,13 +22,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
 
         public virtual bool SupportsDependency(IDependency dependency)
         {
-            // we support any dependency type
+            // Supports all dependencies
             return true;
         }
 
-        public virtual bool HasChildren(string projectPath, IDependency dependency)
+        public virtual bool HasChildren(IDependency dependency)
         {
-            return dependency.DependencyIDs.Count != 0;
+            return dependency.DependencyIDs.Length != 0;
         }
 
         public abstract void BuildGraph(
@@ -39,45 +38,60 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
             GraphNode dependencyGraphNode,
             ITargetedDependenciesSnapshot targetedSnapshot);
 
-        public virtual bool ShouldTrackChanges(string projectPath, string updatedProjectPath, IDependency dependency)
+        public virtual bool ShouldApplyChanges(string nodeProjectPath, string updatedSnapshotProjectPath, IDependency updatedDependency)
         {
-            return projectPath.Equals(updatedProjectPath, StringComparison.OrdinalIgnoreCase);
+            return nodeProjectPath.Equals(updatedSnapshotProjectPath, StringComparisons.Paths);
         }
 
-        public virtual bool TrackChanges(
+        public virtual bool ApplyChanges(
             IGraphContext graphContext,
-            string projectPath,
+            string nodeProjectPath,
             IDependency updatedDependency,
             GraphNode dependencyGraphNode,
             ITargetedDependenciesSnapshot targetedSnapshot)
         {
-            if (!AnyChanges(projectPath,
-                            targetedSnapshot,
-                            updatedDependency,
-                            dependencyGraphNode,
-                            out IReadOnlyList<DependencyNodeInfo> nodesToAdd,
-                            out IReadOnlyList<DependencyNodeInfo> nodesToRemove))
+            return ApplyChangesInternal(
+                graphContext,
+                updatedDependency,
+                dependencyGraphNode,
+                updatedChildren: targetedSnapshot.GetDependencyChildren(updatedDependency),
+                nodeProjectPath: nodeProjectPath,
+                targetedSnapshot);
+        }
+
+        protected bool ApplyChangesInternal(
+            IGraphContext graphContext,
+            IDependency updatedDependency,
+            GraphNode dependencyGraphNode,
+            ImmutableArray<IDependency> updatedChildren,
+            string nodeProjectPath,
+            ITargetedDependenciesSnapshot targetedSnapshot)
+        {
+            IEnumerable<string> existingChildModelIds = GetExistingChildren();
+            IEnumerable<string> updatedChildModelIds = updatedChildren.Select(dependency => dependency.Id);
+
+            var diff = new SetDiff<string>(existingChildModelIds, updatedChildModelIds);
+
+            bool anyChanges = false;
+
+            foreach (string childModelIdToRemove in diff.Removed)
             {
-                return false;
+                anyChanges = true;
+                Builder.RemoveGraphNode(graphContext, nodeProjectPath, childModelIdToRemove, dependencyGraphNode);
             }
 
-            foreach (DependencyNodeInfo nodeToRemove in nodesToRemove)
+            foreach (string childModeIdToAdd in diff.Added)
             {
-                Builder.RemoveGraphNode(graphContext, projectPath, nodeToRemove.Id, dependencyGraphNode);
-            }
-
-            foreach (DependencyNodeInfo nodeToAdd in nodesToAdd)
-            {
-                if (!targetedSnapshot.DependenciesWorld.TryGetValue(nodeToAdd.Id, out IDependency dependency)
-                    || dependency == null
+                if (!targetedSnapshot.DependenciesWorld.TryGetValue(childModeIdToAdd, out IDependency dependency)
                     || !dependency.Visible)
                 {
                     continue;
                 }
 
+                anyChanges = true;
                 Builder.AddGraphNode(
                     graphContext,
-                    projectPath,
+                    nodeProjectPath,
                     dependencyGraphNode,
                     dependency.ToViewModel(targetedSnapshot));
             }
@@ -86,65 +100,29 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
             dependencyGraphNode.SetValue(DependenciesGraphSchema.DependencyIdProperty, updatedDependency.Id);
             dependencyGraphNode.SetValue(DependenciesGraphSchema.ResolvedProperty, updatedDependency.Resolved);
 
-            return true;
+            return anyChanges;
+
+            IEnumerable<string> GetExistingChildren()
+            {
+                foreach (GraphNode childNode in dependencyGraphNode.FindDescendants())
+                {
+                    string id = childNode.GetValue<string>(DependenciesGraphSchema.DependencyIdProperty);
+
+                    if (!string.IsNullOrEmpty(id))
+                    {
+                        yield return id;
+                    }
+                }
+            }
         }
 
         public virtual bool MatchSearchResults(
-            string projectPath,
             IDependency topLevelDependency,
             Dictionary<string, HashSet<IDependency>> searchResultsPerContext,
             out HashSet<IDependency> topLevelDependencyMatches)
         {
             topLevelDependencyMatches = null;
             return false;
-        }
-
-        protected virtual bool AnyChanges(
-            string projectPath,
-            ITargetedDependenciesSnapshot targetedSnapshot,
-            IDependency updatedDependency,
-            GraphNode dependencyGraphNode,
-            out IReadOnlyList<DependencyNodeInfo> nodesToAdd,
-            out IReadOnlyList<DependencyNodeInfo> nodesToRemove)
-        {
-            IReadOnlyList<DependencyNodeInfo> existingChildrenInfo = GetExistingChildren(dependencyGraphNode);
-            ImmutableArray<IDependency> updatedChildren = targetedSnapshot.GetDependencyChildren(updatedDependency);
-            IReadOnlyList<DependencyNodeInfo> updatedChildrenInfo = updatedChildren.Select(x => DependencyNodeInfo.FromDependency(x)).ToList();
-
-            return AnyChanges(existingChildrenInfo, updatedChildrenInfo, out nodesToAdd, out nodesToRemove);
-        }
-
-        protected static bool AnyChanges(
-            IReadOnlyList<DependencyNodeInfo> existingChildren,
-            IReadOnlyList<DependencyNodeInfo> updatedChildren,
-            out IReadOnlyList<DependencyNodeInfo> nodesToAdd,
-            out IReadOnlyList<DependencyNodeInfo> nodesToRemove)
-        {
-            nodesToRemove = existingChildren.Except(updatedChildren).ToList();
-            nodesToAdd = updatedChildren.Except(existingChildren).ToList();
-
-            return nodesToAdd.Count != 0 || nodesToRemove.Count != 0;
-        }
-
-        protected static IReadOnlyList<DependencyNodeInfo> GetExistingChildren(GraphNode inputGraphNode)
-        {
-            var children = new List<DependencyNodeInfo>();
-
-            foreach (GraphNode childNode in inputGraphNode.FindDescendants())
-            {
-                string id = childNode.GetValue<string>(DependenciesGraphSchema.DependencyIdProperty);
-                if (string.IsNullOrEmpty(id))
-                {
-                    continue;
-                }
-
-                children.Add(new DependencyNodeInfo(
-                    id, 
-                    childNode.Label, 
-                    childNode.GetValue<bool>(DependenciesGraphSchema.ResolvedProperty)));
-            }
-
-            return children;
         }
     }
 }

@@ -4,6 +4,7 @@ Option Strict On
 Option Explicit On
 Option Compare Binary
 Imports System.IO
+
 Imports Microsoft.VisualBasic.FileIO
 
 
@@ -198,14 +199,18 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 If Resource.IsConvertibleFromToString() Then
                     Dim Name As String = Resource.Name
                     Dim Comment As String = Resource.Comment
-                    Dim ValueAsString As String = Resource.GetTypeConverter().ConvertToString(Resource.GetValue())
+                    Dim value = Resource.TryGetValue()
 
-                    Results.Append(EscapeField(Name, EncodingType))
-                    Results.Append(Delimiter)
-                    Results.Append(EscapeField(ValueAsString, EncodingType))
-                    Results.Append(Delimiter)
-                    Results.Append(EscapeField(Comment, EncodingType))
-                    Results.AppendLine()
+                    If value IsNot Nothing Then
+                        Dim ValueAsString As String = Resource.GetTypeConverter().ConvertToString(value)
+
+                        Results.Append(EscapeField(Name, EncodingType))
+                        Results.Append(Delimiter)
+                        Results.Append(EscapeField(ValueAsString, EncodingType))
+                        Results.Append(Delimiter)
+                        Results.Append(EscapeField(Comment, EncodingType))
+                        Results.AppendLine()
+                    End If
                 End If
             Next
 

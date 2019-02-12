@@ -75,7 +75,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
                 // This is a completely new target framework. Create, cache and return it.
                 var targetFramework = new TargetFramework(frameworkName, shortName);
-                
+
                 ImmutableInterlocked.TryAdd(ref _targetFrameworkByName, shortOrFullName, targetFramework);
 
                 return targetFramework;

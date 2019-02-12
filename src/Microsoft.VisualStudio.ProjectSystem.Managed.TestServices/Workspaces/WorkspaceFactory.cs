@@ -22,7 +22,6 @@ namespace Microsoft.VisualStudio.Workspaces
                                                  metadataReferences: new[] { s_corlibReference, s_systemCoreReference, s_systemReference });
             Project project = workspace.AddProject(projectInfo);
 
-            var documentInfo = DocumentInfo.Create(DocumentId.CreateNewId(projectInfo.Id), "TestDocument");
             workspace.AddDocument(project.Id, "TestDocument", SourceText.From(text));
 
             return workspace;

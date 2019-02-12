@@ -5,29 +5,29 @@
     PageTemplate="generic"
     PropertyPagesHidden="true"
     xmlns="http://schemas.microsoft.com/build/2009/properties">
-    <Rule.DataSource>
-        <DataSource Persistence="ProjectFile" Label="Configuration" ItemType="Compile" HasConfigurationCondition="false" SourceOfDefaultValue="AfterContext" />
-    </Rule.DataSource>
-   
-    <DynamicEnumProperty Name="{}{ItemType}"
-                   EnumProvider="ItemTypes" />
-    <EnumProperty
-      Name="CopyToOutputDirectory">
-        <EnumValue Name="Never" />
-        <EnumValue Name="Always" />
-        <EnumValue Name="PreserveNewest" />
-    </EnumProperty>
+  <Rule.DataSource>
+    <DataSource Persistence="ProjectFile" Label="Configuration" ItemType="Compile" HasConfigurationCondition="false" SourceOfDefaultValue="AfterContext" />
+  </Rule.DataSource>
 
-    <StringProperty
-      Name="Generator" />
-    <StringProperty
-      Name="CustomToolNamespace" />
+  <DynamicEnumProperty Name="{}{ItemType}"
+                 EnumProvider="ItemTypes" />
+  <EnumProperty
+    Name="CopyToOutputDirectory">
+    <EnumValue Name="Never" />
+    <EnumValue Name="Always" />
+    <EnumValue Name="PreserveNewest" />
+  </EnumProperty>
 
-    <StringProperty Name="FullPath" Visible="false" ReadOnly="true">
-        <StringProperty.DataSource>
-            <DataSource Persistence="Intrinsic" ItemType="Compile" PersistedName="FullPath" SourceOfDefaultValue="AfterContext" />
-        </StringProperty.DataSource>
-    </StringProperty>
+  <StringProperty
+    Name="Generator" />
+  <StringProperty
+    Name="CustomToolNamespace" />
+
+  <StringProperty Name="FullPath" Visible="false" ReadOnly="true">
+    <StringProperty.DataSource>
+      <DataSource Persistence="Intrinsic" ItemType="Compile" PersistedName="FullPath" SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
 
     <BoolProperty Name="ExcludedFromBuild">
         <BoolProperty.DataSource>

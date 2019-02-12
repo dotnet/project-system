@@ -116,7 +116,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             difference = HandlerServices.NormalizeRenames(difference);
             EnqueueProjectEvaluation(version, difference);
 
-            ApplyChangesToContext(version, difference, metadata, isActiveContext, logger);
+            ApplyChangesToContext(difference, metadata, isActiveContext, logger);
         }
 
         /// <summary>
@@ -146,14 +146,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             difference = HandlerServices.NormalizeRenames(difference);
             difference = ResolveProjectBuildConflicts(version, difference);
 
-            ApplyChangesToContext(version, difference, ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal, isActiveContext, logger);
+            ApplyChangesToContext(difference, ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal, isActiveContext, logger);
         }
 
         protected abstract void AddToContext(string fullPath, IImmutableDictionary<string, string> metadata, bool isActiveContext, IProjectLogger logger);
 
         protected abstract void RemoveFromContext(string fullPath, IProjectLogger logger);
 
-        private void ApplyChangesToContext(IComparable version, IProjectChangeDiff difference, IImmutableDictionary<string, IImmutableDictionary<string, string>> metadata, bool isActiveContext, IProjectLogger logger)
+        private void ApplyChangesToContext(IProjectChangeDiff difference, IImmutableDictionary<string, IImmutableDictionary<string, string>> metadata, bool isActiveContext, IProjectLogger logger)
         {
             foreach (string includePath in difference.RemovedItems)
             {
@@ -196,7 +196,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             if (!_paths.Contains(fullPath))
             {
                 IImmutableDictionary<string, string> itemMetadata = metadata.GetValueOrDefault(includePath, ImmutableStringDictionary<string>.EmptyOrdinal);
-                
+
                 // Add to the context first so if Roslyn throws due to a bug or
                 // other reason, that our state of the world remains consistent
                 AddToContext(fullPath, itemMetadata, isActiveContext, logger);

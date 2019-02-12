@@ -3,18 +3,19 @@
 Option Explicit On
 Option Strict On
 Option Compare Binary
+Imports System.CodeDom.Compiler
+Imports System.ComponentModel.Design
+Imports System.IO
+Imports System.Resources
+Imports System.Windows.Forms
+Imports System.Xml
+
 Imports Microsoft.VisualStudio.Designer.Interfaces
 Imports Microsoft.VisualStudio.Editors.Common
 Imports Microsoft.VisualStudio.Shell
 Imports Microsoft.VisualStudio.Shell.Interop
 Imports Microsoft.VSDesigner
-Imports System.CodeDom.Compiler
-Imports System.ComponentModel.Design
-Imports System.Resources
-Imports System.IO
-Imports System.Windows.Forms
 Imports Microsoft.Win32
-Imports System.Xml
 
 Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
@@ -1757,9 +1758,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <returns></returns>
         ''' <remarks></remarks>
         Public Function GetCodeDomProvider() As CodeDomProvider
-            Dim CodeDomProvider As CodeDomProvider = Nothing
-            Dim CodeGenerator As ICodeGenerator = Nothing
-
             If RootComponent IsNot Nothing AndAlso RootComponent.IsGlobalResourceInASP() Then
                 ' Venus project always use C# CodeDomProvider to generate StrongType code for the resource file.
                 Return New CSharp.CSharpCodeProvider()

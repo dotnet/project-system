@@ -2,6 +2,7 @@
 
 using System.Threading;
 using System.Threading.Tasks;
+
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem
@@ -103,11 +104,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var tasksService = IProjectAsynchronousTasksServiceFactory.ImplementUnloadCancellationToken(source.Token);
             var service = CreateInstance(tasksService);
 
-            Assert.False(tasksService.UnloadCancellationToken.IsCancellationRequested);
+            Assert.False(service.UnloadCancellationToken.IsCancellationRequested);
 
             source.Cancel();
 
-            Assert.True(tasksService.UnloadCancellationToken.IsCancellationRequested);
+            Assert.True(service.UnloadCancellationToken.IsCancellationRequested);
         }
 
         [Fact]

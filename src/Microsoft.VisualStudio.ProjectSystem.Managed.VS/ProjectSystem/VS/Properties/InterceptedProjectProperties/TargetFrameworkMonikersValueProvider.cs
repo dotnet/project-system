@@ -2,6 +2,7 @@
 
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
+
 using Microsoft.VisualStudio.Buffers.PooledObjects;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 

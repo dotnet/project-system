@@ -4,12 +4,12 @@
     <body>
       <trans-unit id="AssemblyVersionLabel.Text">
         <source>&amp;Assembly version:</source>
-        <target state="translated">&amp;Versão do assembly:</target>
+        <target state="translated">Versão do &amp;assembly:</target>
         <note />
       </trans-unit>
       <trans-unit id="CopyrightLabel.Text">
         <source>&amp;Copyright:</source>
-        <target state="translated">&amp;Copyright:</target>
+        <target state="translated">&amp;Direitos Autorais:</target>
         <note />
       </trans-unit>
       <trans-unit id="DescriptionLabel.Text">
@@ -19,32 +19,27 @@
       </trans-unit>
       <trans-unit id="PackageIconUrlLabel.Text">
         <source>&amp;Icon URL:</source>
-        <target state="translated">&amp;URL do ícone:</target>
+        <target state="translated">URL do &amp;ícone:</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageVersionLabel.Text">
         <source>Package &amp;version:</source>
-        <target state="translated">Versão do &amp;pacote:</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PackageLicenseUrlLabel.Text">
-        <source>&amp;License URL:</source>
-        <target state="translated">&amp;URL da licença:</target>
+        <target state="translated">&amp;Versão do pacote:</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageTagsLabel.Text">
         <source>&amp;Tags:</source>
-        <target state="translated">&amp;Marcas:</target>
+        <target state="translated">&amp;Marcações:</target>
         <note />
       </trans-unit>
       <trans-unit id="RepositoryUrlLabel.Text">
         <source>&amp;Repository URL:</source>
-        <target state="translated">&amp;URL do repositório:</target>
+        <target state="translated">URL do &amp;Repositório:</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageReleaseNotesLabel.Text">
         <source>Release &amp;notes:</source>
-        <target state="translated">Notas de &amp;versão:</target>
+        <target state="translated">&amp;Notas de versão:</target>
         <note />
       </trans-unit>
       <trans-unit id="RepositoryTypeLabel.Text">
@@ -54,67 +49,67 @@
       </trans-unit>
       <trans-unit id="PackageProjectUrlLabel.Text">
         <source>&amp;Project URL:</source>
-        <target state="translated">&amp;URL do projeto:</target>
+        <target state="translated">URL do &amp;Projeto:</target>
         <note />
       </trans-unit>
       <trans-unit id="GeneratePackageOnBuild.Text">
         <source>&amp;Generate NuGet package on build</source>
-        <target state="translated">&amp;Gerar pacote NuGet durante o build</target>
+        <target state="translated">&amp;Gerar pacote NuGet no build</target>
         <note />
       </trans-unit>
       <trans-unit id="NeutralLanguageLabel.Text">
         <source>Assembly &amp;neutral language:</source>
-        <target state="translated">Idioma &amp;neutro do assembly:</target>
+        <target state="translated">Idioma neutro do assembly:</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyVersionRevisionTextBox.AccessibleName">
         <source>Assembly Version Revision</source>
-        <target state="needs-review-translation">Revisão</target>
+        <target state="translated">Revisão da Versão do Assembly</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyVersionBuildTextBox.AccessibleName">
         <source>Assembly Version Build</source>
-        <target state="needs-review-translation">Build</target>
+        <target state="translated">Versão do Build do Assembly</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyVersionMinorTextBox.AccessibleName">
         <source>Assembly Version Minor</source>
-        <target state="needs-review-translation">Secundário</target>
+        <target state="translated">Versão Secundária do Assembly</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyVersionMajorTextBox.AccessibleName">
         <source>Assembly Version Major</source>
-        <target state="needs-review-translation">Principal</target>
+        <target state="translated">Versão Principal do Assembly</target>
         <note />
       </trans-unit>
       <trans-unit id="FileVersionRevisionTextBox.AccessibleName">
         <source>Assembly File Verison Revision</source>
-        <target state="needs-review-translation">Revisão</target>
+        <target state="translated">Revisão da Versão do Arquivo do Assembly</target>
         <note />
       </trans-unit>
       <trans-unit id="FileVersionBuildTextBox.AccessibleName">
         <source>Assembly File Verison Build</source>
-        <target state="needs-review-translation">Build</target>
+        <target state="translated">Versão do Build do Arquivo do Assembly</target>
         <note />
       </trans-unit>
       <trans-unit id="FileVersionMinorTextBox.AccessibleName">
         <source>Assembly File Verison Minor</source>
-        <target state="needs-review-translation">Secundário</target>
+        <target state="translated">Versão Secundária do Arquivo do Assembly</target>
         <note />
       </trans-unit>
       <trans-unit id="FileVersionMajorTextBox.AccessibleName">
         <source>Assembly File Verison Major</source>
-        <target state="needs-review-translation">Principal</target>
+        <target state="translated">Versão Principal do Arquivo do Assembly</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageRequireLicenseAcceptance.Text">
         <source>Require &amp;license acceptance</source>
-        <target state="translated">Exigir a &amp;aceitação da licença</target>
+        <target state="translated">Exigir aceitação da &amp;licença</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageIdLabel.Text">
         <source>Package &amp;id:</source>
-        <target state="translated">ID do &amp;pacote:</target>
+        <target state="translated">&amp;ID do pacote:</target>
         <note />
       </trans-unit>
       <trans-unit id="AuthorsLabel.Text">
@@ -135,6 +130,131 @@
       <trans-unit id="AssemblyFileVersionLabel.Text">
         <source>Assembly &amp;file version:</source>
         <target state="translated">Versão do &amp;arquivo do assembly:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PackageLicenseLabel.Text">
+        <source>&amp;Licensing:</source>
+        <target state="new">&amp;Licensing:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ExpressionLabel.Text">
+        <source>&amp;Expression:</source>
+        <target state="new">&amp;Expression:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="OrLabel.Text">
+        <source>&amp;OR</source>
+        <target state="new">&amp;OR</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FileLabel.Text">
+        <source>&amp;File:</source>
+        <target state="new">&amp;File:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="LicenseBrowseButton.Text">
+        <source>Browse...</source>
+        <target state="new">Browse...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Copyright.AccessibleName">
+        <source>Package Copyright</source>
+        <target state="new">Package Copyright</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Description.AccessibleName">
+        <source>Package Description</source>
+        <target state="new">Package Description</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PackageIconUrl.AccessibleName">
+        <source>Package Icon URL</source>
+        <target state="new">Package Icon URL</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PackageProjectUrl.AccessibleName">
+        <source>Package Project URL</source>
+        <target state="new">Package Project URL</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PackageVersion.AccessibleName">
+        <source>Package Version</source>
+        <target state="new">Package Version</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RepositoryUrl.AccessibleName">
+        <source>Package Repository URL</source>
+        <target state="new">Package Repository URL</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RepositoryType.AccessibleName">
+        <source>Package Repository Type</source>
+        <target state="new">Package Repository Type</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PackageReleaseNotes.AccessibleName">
+        <source>Package Release Notes</source>
+        <target state="new">Package Release Notes</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="NeutralLanguageComboBox.AccessibleName">
+        <source>Package Assembly Neutral Language</source>
+        <target state="new">Package Assembly Neutral Language</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PackageId.AccessibleName">
+        <source>Package ID</source>
+        <target state="new">Package ID</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Authors.AccessibleName">
+        <source>Package Authors</source>
+        <target state="new">Package Authors</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="AssemblyCompany.AccessibleName">
+        <source>Package Company</source>
+        <target state="new">Package Company</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Product.AccessibleName">
+        <source>Package Product</source>
+        <target state="new">Package Product</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="LicenseBrowseButton.AccessibleName">
+        <source>Package License File Browse</source>
+        <target state="new">Package License File Browse</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="LicenseFileNameTextBox.AccessibleName">
+        <source>Package License File Path</source>
+        <target state="new">Package License File Path</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PackageLicenseExpression.AccessibleName">
+        <source>Package License Expression</source>
+        <target state="new">Package License Expression</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PackageTags.AccessibleName">
+        <source>Package Tags</source>
+        <target state="new">Package Tags</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="LicenseExpressionRadioButton.AccessibleName">
+        <source>Package License Expression Radio Button</source>
+        <target state="new">Package License Expression Radio Button</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="LicenseFileRadioButton.AccessibleName">
+        <source>Package License File Radio Button</source>
+        <target state="new">Package License File Radio Button</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="LicenseUrlWarning.Text">
+        <source>PackageLicenseURL property was detected, but it has been deprecated. Please change to either an Expression or File.</source>
+        <target state="new">PackageLicenseURL property was detected, but it has been deprecated. Please change to either an Expression or File.</target>
         <note />
       </trans-unit>
     </body>

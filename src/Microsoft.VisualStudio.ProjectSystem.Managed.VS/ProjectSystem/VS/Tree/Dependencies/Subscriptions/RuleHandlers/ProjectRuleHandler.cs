@@ -89,10 +89,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 properties);
         }
 
-        public override ImageMoniker GetImplicitIcon()
-        {
-            return ManagedImageMonikers.ApplicationPrivate;
-        }
+        public override ImageMoniker GetImplicitIcon() => ManagedImageMonikers.ApplicationPrivate;
 
         /// <summary>
         /// When some other project's snapshot changed we need to check if our snapshot has a top level
@@ -113,7 +110,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             bool shouldBeResolved,
             CancellationToken token)
         {
-            if (token.IsCancellationRequested || 
+            if (token.IsCancellationRequested ||
                 StringComparers.Paths.Equals(thisProjectSnapshot.ProjectPath, otherProjectSnapshot.ProjectPath))
             {
                 // if any of the snapshots is not provided or this is the same project - skip

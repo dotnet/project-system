@@ -13,7 +13,9 @@ Imports System.Runtime.InteropServices
 Imports System.Text
 Imports System.Windows.Forms
 Imports System.Windows.Forms.Design
+
 Imports EnvDTE
+
 Imports Microsoft.VisualStudio.Editors.Common
 Imports Microsoft.VisualStudio.Editors.Common.DTEUtils
 Imports Microsoft.VisualStudio.Editors.DesignerFramework
@@ -23,6 +25,7 @@ Imports Microsoft.VisualStudio.PlatformUI
 Imports Microsoft.VisualStudio.Shell.Design
 Imports Microsoft.VisualStudio.Shell.Interop
 Imports Microsoft.Win32
+
 Imports VB = Microsoft.VisualBasic
 
 Namespace Microsoft.VisualStudio.Editors.ResourceEditor
@@ -204,7 +207,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             SetFonts(ServiceProvider)
 
             InitializeResourceCategories()
-            InitializeUI(ServiceProvider)
+            InitializeUI()
         End Sub
 
 
@@ -592,7 +595,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Initializes all UI elements.
         ''' </summary>
         ''' <remarks></remarks>
-        Private Sub InitializeUI(ServiceProvider As IServiceProvider)
+        Private Sub InitializeUI()
             AllowDrop = True
             StringTable.RowHeadersWidth = DpiHelper.LogicalToDeviceUnitsX(35)
         End Sub
@@ -2735,6 +2738,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     If TempFileName <> "" Then
                         ResourceFileNames.Add(TempFileName)
                     End If
+                Catch ex As Exception When IsIOException(ex)
+                    ' I/O failures are expected when the linked file from the RESX is missing on disk
+
                 Catch ex As Exception When ReportWithoutCrash(ex,
                                                                            $"Failed trying to copy linked or non-linked resource {Resource.Name} to temporary file {TempFileName} - ignoring and moving to next resource",
                                                                            NameOf(ResourceEditorView))
@@ -3036,7 +3042,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                             ActualEffect = DragDropEffects.None
                     End Select
                 Catch ex As Exception
-                    ActualEffect = DragDropEffects.None
                     Throw
                 End Try
             End Using
@@ -5338,7 +5343,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     Dim FindFunctionFilter As New SettingsDesigner.ProjectUtils.FindFunctionFilter(GeneratedClassCodeElement, "get_" & OldName)
                     Dim FunctionCodeElement As CodeElement = SettingsDesigner.ProjectUtils.FindElement(ProjItem, ExpandChildElements:=True, ExpandChildItems:=True, Filter:=FindFunctionFilter)
                     If FunctionCodeElement IsNot Nothing Then
-                        OldName = "get_" & OldName
                         NewName = "get_" & NewName
                         PropertyDefinitionCodeElement2 = TryCast(FunctionCodeElement, EnvDTE80.CodeElement2)
                         Debug.Assert(PropertyDefinitionCodeElement2 IsNot Nothing, "Failed to get CodeElement2 interface from CodeElement - CodeModel doesn't support ReplaceSymbol?")
@@ -5391,14 +5395,12 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Dim CurrentCustomTool As String = TryCast(ToolProperty.Value, String)
             Dim Hierarchy As IVsHierarchy = GetVsHierarchy()
             Dim ItemId As UInteger = GetVsItemId()
-            Dim UsingVbMyCustomTool As Boolean
 
             If CurrentCustomTool.Equals(STANDARDCUSTOMTOOL, StringComparison.OrdinalIgnoreCase) Then
                 'This uses our standard single file generator.  We know how it works, so we can go ahead and
                 '  attempt a rename.
             ElseIf CurrentCustomTool.Equals(VBMYCUSTOMTOOL, StringComparison.OrdinalIgnoreCase) Then
                 'This uses our special My.VB file generator.  We can attempt a rename.
-                UsingVbMyCustomTool = True
             Else
                 'We don't recognize this generator, so we don't want to try renaming, so we return empty string.
                 Return String.Empty
@@ -5407,7 +5409,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             Dim ClassName As String = GetGeneratedClassNameFromFileName(Path.GetFileName(RootDesigner.GetResXFileNameAndPath()))
             Dim Project As Project = GetProject()
-            Dim RootNamespace As String = GetRootNamespace(Hierarchy, ItemId, Project)
+            Dim RootNamespace As String = GetRootNamespace(Project)
 
             'Now get the custom tool namespace
             Dim CustomToolNamespace As String = String.Empty
@@ -5429,7 +5431,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 End If
             End If
 
-            Dim defaultNamespace As String = GetDefaultNamespace(Hierarchy, ItemId, Project)
+            Dim defaultNamespace As String = GetDefaultNamespace(Hierarchy, ItemId)
             If String.IsNullOrEmpty(defaultNamespace) Then
                 defaultNamespace = RootNamespace
             End If
@@ -5441,12 +5443,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Gets the namespace that will be generated for the given hierarchy/itemid
         ''' </summary>
-        ''' <param name="Hierarchy"></param>
-        ''' <param name="ItemId"></param>
-        ''' <param name="Project"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Private Shared Function GetDefaultNamespace(Hierarchy As IVsHierarchy, ItemId As UInteger, Project As Project) As String
+        Private Shared Function GetDefaultNamespace(Hierarchy As IVsHierarchy, ItemId As UInteger) As String
             Dim objDefaultNamespace As Object = Nothing
             Hierarchy.GetProperty(ItemId, __VSHPROPID.VSHPROPID_DefaultNamespace, objDefaultNamespace)
 
@@ -5462,12 +5459,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Gets the namespace that will be generated for the given hierarchy/itemid
         ''' </summary>
-        ''' <param name="Hierarchy"></param>
-        ''' <param name="ItemId"></param>
-        ''' <param name="Project"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Private Shared Function GetRootNamespace(Hierarchy As IVsHierarchy, ItemId As UInteger, Project As Project) As String
+        Private Shared Function GetRootNamespace(Project As Project) As String
             Dim RootNamespace As String = String.Empty
             If Project IsNot Nothing Then
                 Try

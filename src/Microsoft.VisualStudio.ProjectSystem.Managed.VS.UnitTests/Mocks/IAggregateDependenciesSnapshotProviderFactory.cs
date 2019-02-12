@@ -12,20 +12,5 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             return Mock.Of<IAggregateDependenciesSnapshotProvider>();
         }
-
-        public static IAggregateDependenciesSnapshotProvider Implement(
-            IDependenciesSnapshotProvider getSnapshotProvider = null,
-            MockBehavior mockBehavior = MockBehavior.Default)
-        {
-            var mock = new Mock<IAggregateDependenciesSnapshotProvider>(mockBehavior);
-
-            if (getSnapshotProvider != null)
-            {
-                mock.Setup(x => x.GetSnapshotProvider(It.IsAny<string>()))
-                    .Returns(getSnapshotProvider);
-            }
-
-            return mock.Object;
-        }
     }
 }

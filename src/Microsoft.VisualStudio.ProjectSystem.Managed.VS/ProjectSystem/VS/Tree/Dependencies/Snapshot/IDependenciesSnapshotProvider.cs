@@ -6,37 +6,35 @@ using System.Threading;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
     /// <summary>
-    /// Provides immutable dependencies snapshot for given project.
+    /// Provides immutable dependencies snapshot for a given project.
     /// </summary>
     internal interface IDependenciesSnapshotProvider
     {
         /// <summary>
-        /// Current immutable dependencies snapshot.
+        /// Gets the current immutable dependencies snapshot for the project.
         /// </summary>
+        /// <remarks>
+        /// Never null.
+        /// </remarks>
         IDependenciesSnapshot CurrentSnapshot { get; }
 
         /// <summary>
-        /// Provider's project path.
-        /// </summary>
-        string ProjectFilePath { get; }
-
-        /// <summary>
-        /// Triggered when snapshot's project was renamed.
+        /// Raised when the project's full path changes (i.e. due to being renamed).
         /// </summary>
         event EventHandler<ProjectRenamedEventArgs> SnapshotRenamed;
 
         /// <summary>
-        /// Triggered when snapshot was changed.
+        /// Raised when the project's dependencies snapshot changed.
         /// </summary>
         event EventHandler<SnapshotChangedEventArgs> SnapshotChanged;
 
         /// <summary>
-        /// Triggered when project and it's dependencies snapshot being unloaded
+        /// Raised when the project and its snapshot provider are unloading.
         /// </summary>
         event EventHandler<SnapshotProviderUnloadingEventArgs> SnapshotProviderUnloading;
     }
 
-    internal sealed class SnapshotChangedEventArgs
+    internal sealed class SnapshotChangedEventArgs : EventArgs
     {
         public SnapshotChangedEventArgs(IDependenciesSnapshot snapshot, CancellationToken token)
         {

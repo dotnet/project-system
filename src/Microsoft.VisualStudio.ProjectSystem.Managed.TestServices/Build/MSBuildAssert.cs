@@ -2,7 +2,9 @@
 
 using System.IO;
 using System.Text;
+
 using Microsoft.Build.Construction;
+
 using Xunit;
 
 namespace Microsoft.Build

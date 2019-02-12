@@ -6,6 +6,7 @@ Option Compare Binary
 Imports System.Drawing
 Imports System.Runtime.InteropServices
 Imports System.Windows.Forms
+
 Imports Microsoft.VisualStudio.Editors.Common.Utils
 Imports Microsoft.VisualStudio.PlatformUI
 
@@ -1035,7 +1036,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 If Resource.IsLink Then
                     LinkFileName = Resource.RelativeLinkPathAndFileName
                 Else
-                    LinkFileName = ""
                 End If
 
                 'The order of items here corresponds to the order of the columns we established in InitializeUI(),

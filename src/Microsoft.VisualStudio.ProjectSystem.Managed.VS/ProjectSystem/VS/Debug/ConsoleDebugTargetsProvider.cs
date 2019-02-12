@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Threading.Tasks;
+
 using Microsoft.VisualStudio.Buffers.PooledObjects;
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
@@ -354,7 +355,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             if ((options & DebugLaunchOptions.IntegratedConsole) == DebugLaunchOptions.IntegratedConsole)
                 return false;
-            
+
             if ((options & DebugLaunchOptions.Profiling) == DebugLaunchOptions.Profiling)
                 return false;
 

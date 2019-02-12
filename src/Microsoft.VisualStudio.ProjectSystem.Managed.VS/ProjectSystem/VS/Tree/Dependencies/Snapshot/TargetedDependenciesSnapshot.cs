@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics;
 
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
@@ -10,6 +11,7 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Filters
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
+    [DebuggerDisplay("{TargetFramework.FriendlyName} - {DependenciesWorld.Count} dependencies ({TopLevelDependencies} top level) - {ProjectPath}")]
     internal sealed class TargetedDependenciesSnapshot : ITargetedDependenciesSnapshot
     {
         #region Factories and internal constructor
@@ -104,7 +106,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 foreach (IDependenciesSnapshotFilter filter in snapshotFilters)
                 {
                     filter.BeforeRemove(
-                        projectPath,
                         targetFramework,
                         dependency,
                         context);
@@ -132,7 +133,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 foreach (IDependenciesSnapshotFilter filter in snapshotFilters)
                 {
                     filter.BeforeAddOrUpdate(
-                        projectPath,
                         targetFramework,
                         dependency,
                         subTreeProviderByProviderType,
@@ -253,7 +253,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
             bool FindUnresolvedDependenciesRecursive(IDependency parent)
             {
-                if (parent.DependencyIDs.Count == 0)
+                if (parent.DependencyIDs.Length == 0)
                 {
                     return false;
                 }
@@ -294,7 +294,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         {
             foreach ((string _, IDependency dependency) in DependenciesWorld)
             {
-                if (StringComparers.DependencyProviderTypes.Equals(dependency.ProviderType, providerType) && 
+                if (StringComparers.DependencyProviderTypes.Equals(dependency.ProviderType, providerType) &&
                     !dependency.Resolved)
                 {
                     return true;
@@ -307,7 +307,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         /// <inheritdoc />
         public ImmutableArray<IDependency> GetDependencyChildren(IDependency dependency)
         {
-            if (dependency.DependencyIDs.Count == 0)
+            if (dependency.DependencyIDs.Length == 0)
             {
                 return ImmutableArray<IDependency>.Empty;
             }
@@ -325,7 +325,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             ImmutableArray<IDependency> BuildChildren()
             {
                 ImmutableArray<IDependency>.Builder children =
-                    ImmutableArray.CreateBuilder<IDependency>(dependency.DependencyIDs.Count);
+                    ImmutableArray.CreateBuilder<IDependency>(dependency.DependencyIDs.Length);
 
                 foreach (string id in dependency.DependencyIDs)
                 {

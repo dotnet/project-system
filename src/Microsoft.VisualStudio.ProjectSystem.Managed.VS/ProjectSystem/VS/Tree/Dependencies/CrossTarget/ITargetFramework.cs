@@ -24,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         string ShortName { get; }
 
         /// <summary>
-        /// Gets the display name.
+        /// Gets the display name. Can be an empty string.
         /// </summary>
         string FriendlyName { get; }
     }

@@ -109,7 +109,7 @@ namespace Microsoft.VisualStudio.Text
                 Current = default;
             }
 
-            void IDisposable.Dispose() {}
+            void IDisposable.Dispose() { }
         }
     }
 

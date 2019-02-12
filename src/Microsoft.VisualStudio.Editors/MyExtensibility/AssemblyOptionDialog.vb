@@ -4,7 +4,9 @@ Option Strict On
 Option Explicit On
 Imports System.ComponentModel
 Imports System.Reflection
+
 Imports Microsoft.VisualStudio.Editors.MyExtensibility.MyExtensibilityUtil
+
 Imports Res = My.Resources.MyExtensibilityRes
 
 Namespace Microsoft.VisualStudio.Editors.MyExtensibility

@@ -13,7 +13,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             where InterfaceType : class
             where ServiceType : class
         {
+#pragma warning disable RS0030 // Do not used banned APIs
             return (InterfaceType)sp.GetService(typeof(ServiceType));
+#pragma warning restore RS0030 // Do not used banned APIs
         }
     }
 }

@@ -4,6 +4,7 @@ Option Strict Off
 
 Imports System.IO
 Imports System.Runtime.InteropServices
+
 Imports Microsoft.VisualStudio.Editors.Common.Utils
 Imports Microsoft.VisualStudio.Settings
 Imports Microsoft.VisualStudio.Setup.Configuration
