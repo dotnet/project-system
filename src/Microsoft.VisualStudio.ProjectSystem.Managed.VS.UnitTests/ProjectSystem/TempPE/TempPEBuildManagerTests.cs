@@ -1131,13 +1131,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             public TestTempPEBuildManager(IFileSystem fileSystem)
                 : base(IProjectThreadingServiceFactory.Create(),
                       IUnconfiguredProjectCommonServicesFactory.Create(threadingService: IProjectThreadingServiceFactory.Create()),
-                      ILanguageServiceHostFactory.Create(),
+                      IActiveWorkspaceProjectContextHostFactory.Create(),
                       IActiveConfiguredProjectSubscriptionServiceFactory.Create(),
                       null,
                       null,
                       fileSystem,
                       IVsServiceFactory.Create<SVsFileChangeEx, IVsAsyncFileChangeEx>(IVsFileChangeExFactory.CreateWithAdviseUnadviseFileChange(1)),
-                      Telemetry.ITelemetryServiceFactory.Create())
+                      Telemetry.ITelemetryServiceFactory.Create(),
+                      IProjectFaultHandlerServiceFactory.Create())
             {
                 _buildManager = new Lazy<VSBuildManager>(() => new TestBuildManager(this));
 

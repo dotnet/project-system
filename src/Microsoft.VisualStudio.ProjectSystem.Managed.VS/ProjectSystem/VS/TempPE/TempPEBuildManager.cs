@@ -34,11 +34,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         private static readonly TimeSpan s_compilationWaitTime = TimeSpan.FromMilliseconds(500);
 
         protected readonly IUnconfiguredProjectCommonServices _unconfiguredProjectServices;
-        private readonly ILanguageServiceHost _languageServiceHost;
+        private readonly IActiveWorkspaceProjectContextHost _activeWorkspaceProjectContextHost;
         private readonly IActiveConfiguredProjectSubscriptionService _projectSubscriptionService;
         private readonly IFileSystem _fileSystem;
         private readonly IVsService<SVsFileChangeEx, IVsAsyncFileChangeEx> _fileChangeService;
         private readonly ITelemetryService _telemetryService;
+        private readonly IProjectFaultHandlerService _projectFaultHandlerService;
         private readonly SequentialTaskExecutor _sequentialTaskQueue = new SequentialTaskExecutor();
 
         // protected for unit test purposes
@@ -48,23 +49,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         [ImportingConstructor]
         public TempPEBuildManager(IProjectThreadingService threadingService,
                                   IUnconfiguredProjectCommonServices unconfiguredProjectServices,
-                                  ILanguageServiceHost languageServiceHost,
+                                  IActiveWorkspaceProjectContextHost activeWorkspaceProjectContextHost,
                                   IActiveConfiguredProjectSubscriptionService projectSubscriptionService,
                                   VSLangProj.VSProjectEvents projectEvents,
                                   ITempPECompiler compiler,
                                   IFileSystem fileSystem,
                                   IVsService<SVsFileChangeEx, IVsAsyncFileChangeEx> fileChangeService,
-                                  ITelemetryService telemetryService)
+                                  ITelemetryService telemetryService,
+                                  IProjectFaultHandlerService projectFaultHandlerService)
              : base(threadingService.JoinableTaskContext)
         {
             _unconfiguredProjectServices = unconfiguredProjectServices;
-            _languageServiceHost = languageServiceHost;
+            _activeWorkspaceProjectContextHost = activeWorkspaceProjectContextHost;
             _projectSubscriptionService = projectSubscriptionService;
             _buildManager = new Lazy<VSBuildManager>(() => (VSBuildManager)projectEvents.BuildManagerEvents);
             _compiler = compiler;
             _fileSystem = fileSystem;
             _fileChangeService = fileChangeService;
             _telemetryService = telemetryService;
+            _projectFaultHandlerService = projectFaultHandlerService;
         }
 
         public string[] GetTempPEMonikers()
@@ -89,7 +92,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                 {
                     HashSet<string> files = GetFilesToCompile(moniker, inputs.SharedInputs);
                     string outputFileName = GetOutputFileName(inputs.OutputPath, moniker);
-                    scheduler.ScheduleAsyncTask(token => CompileTempPEAsync(files, outputFileName, token)).Task.Forget();
+                    _projectFaultHandlerService.Forget(scheduler.ScheduleAsyncTask(token => CompileTempPEAsync(files, outputFileName, token)).Task, UnconfiguredProject);
                 }
             }
             _buildManager.Value.OnDesignTimeOutputDirty(moniker);
@@ -170,7 +173,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         protected virtual async Task CompileTempPEAsync(HashSet<string> filesToCompile, string outputFileName, CancellationToken token)
         {
             _telemetryService.PostProperty(TelemetryEventName.TempPECompilation, TelemetryPropertyName.TempPECompilationOutputFileName, outputFileName);
-            bool result = await _compiler.CompileAsync(_languageServiceHost.ActiveProjectContext, outputFileName, filesToCompile, token);
+            bool result = await _activeWorkspaceProjectContextHost.OpenContextForWriteAsync(accessor =>
+            {
+                return _compiler.CompileAsync(accessor.Context, outputFileName, filesToCompile, token);
+            });
 
             // if the compilation failed or was cancelled we should clean up any old TempPE outputs lest a designer gets the wrong types, plus its what legacy did
             if (!result)
