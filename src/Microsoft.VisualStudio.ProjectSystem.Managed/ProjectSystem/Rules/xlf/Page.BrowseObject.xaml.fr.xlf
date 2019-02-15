@@ -59,7 +59,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|Generator|DisplayName">
         <source>Custom Tool</source>
-        <target state="new">Custom Tool</target>
+        <target state="translated">Outil personnalisé</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Generator|Description">

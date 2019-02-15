@@ -9,7 +9,7 @@
       </trans-unit>
       <trans-unit id="lblReportCompilerErrors.Text">
         <source>&amp;Internal compiler error reporting:</source>
-        <target state="translated">内部コンパイル エラー報告(&amp;I):</target>
+        <target state="translated">内部コンパイラー エラーの報告(&amp;I):</target>
         <note />
       </trans-unit>
       <trans-unit id="lblDebugInfo.Text">
@@ -69,22 +69,22 @@
       </trans-unit>
       <trans-unit id="CSharpLanguageVersion.Default">
         <source>C# latest supported minor version (default)</source>
-        <target state="new">C# latest supported minor version (default)</target>
+        <target state="translated">サポートされる最新の C# マイナー バージョン (既定)</target>
         <note />
       </trans-unit>
       <trans-unit id="CSharpLanguageVersion.LatestMajor">
         <source>C# latest supported major version (latestmajor)</source>
-        <target state="new">C# latest supported major version (latestmajor)</target>
+        <target state="translated">サポートされる最新の C# メジャー バージョン (latestmajor)</target>
         <note />
       </trans-unit>
       <trans-unit id="CSharpLanguageVersion.Latest">
         <source>C# latest supported minor version (latest)</source>
-        <target state="new">C# latest supported minor version (latest)</target>
+        <target state="translated">サポートされる最新の C# マイナー バージョン (latest)</target>
         <note />
       </trans-unit>
       <trans-unit id="CSharpLanguageVersion.Preview">
         <source>unsupported preview of next C# version (preview)</source>
-        <target state="new">unsupported preview of next C# version (preview)</target>
+        <target state="translated">次の C＃バージョンのサポートされていないプレビュー (プレビュー)</target>
         <note />
       </trans-unit>
     </body>
