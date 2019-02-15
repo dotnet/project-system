@@ -1,7 +1,7 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <VisualStudioVersion>16.0.0</VisualStudioVersion>
-    <ProjectSystemVersion>3.0.0</ProjectSystemVersion>
+    <VisualStudioVersion>16.1.0</VisualStudioVersion>
+    <ProjectSystemVersion>3.1.0</ProjectSystemVersion>
     <VersionBase Condition="'$(UseVisualStudioVersion)' == 'true'">$(VisualStudioVersion)</VersionBase>
     <VersionBase Condition="'$(UseVisualStudioVersion)' != 'true'">$(ProjectSystemVersion)</VersionBase>
     <PreReleaseVersionLabel>beta1</PreReleaseVersionLabel>
