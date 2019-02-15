@@ -87,9 +87,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         [Fact]
         public async Task InitializedAsync_WhenInitializedWithContext_RegistersContextWithTracker()
         {
-            IWorkspaceProjectContext contextResult = null;
             string contextIdResult = null;
-            var activeWorkspaceProjectContextTracker = IActiveEditorContextTrackerFactory.ImplementRegisterContext((c, id) => { contextResult = c; contextIdResult = id; });
+            var activeWorkspaceProjectContextTracker = IActiveEditorContextTrackerFactory.ImplementRegisterContext(id => { contextIdResult = id; });
 
             var context = IWorkspaceProjectContextMockFactory.Create();
             var accessor = IWorkspaceProjectContextAccessorFactory.ImplementContext(context, "ContextId");
@@ -98,7 +97,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             var instance = await CreateInitializedInstanceAsync(workspaceProjectContextProvider: provider.Object, activeWorkspaceProjectContextTracker: activeWorkspaceProjectContextTracker);
 
-            Assert.Same(context, contextResult);
             Assert.Equal("ContextId", contextIdResult);
         }
 
@@ -122,11 +120,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         [Fact]
         public async Task Dispose_WhenInitializedWithContext_UnregistersContextWithTracker()
         {
-            IWorkspaceProjectContext result = null;
-            var activeWorkspaceProjectContextTracker = IActiveEditorContextTrackerFactory.ImplementReleaseContext(c => { result = c; });
+            string result = null;
+            var activeWorkspaceProjectContextTracker = IActiveEditorContextTrackerFactory.ImplementUnregisterContext(c => { result = c; });
 
             var context = IWorkspaceProjectContextMockFactory.Create();
-            var accessor = IWorkspaceProjectContextAccessorFactory.ImplementContext(context);
+            var accessor = IWorkspaceProjectContextAccessorFactory.ImplementContext(context, "ContextId");
             var provider = new WorkspaceProjectContextProviderMock();
             provider.ImplementCreateProjectContextAsync(project => accessor);
 
@@ -134,7 +132,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             await instance.DisposeAsync();
 
-            Assert.Same(context, result);
+            Assert.Equal("ContextId", result);
         }
 
         [Theory]

@@ -2,8 +2,6 @@
 
 using System;
 
-using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
-
 using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
@@ -15,28 +13,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             return Mock.Of<IActiveEditorContextTracker>();
         }
 
-        public static IActiveEditorContextTracker ImplementIsActiveEditorContext(Func<IWorkspaceProjectContext, bool> action)
+        public static IActiveEditorContextTracker ImplementIsActiveEditorContext(Func<string, bool> action)
         {
             var mock = new Mock<IActiveEditorContextTracker>();
-            mock.Setup(t => t.IsActiveEditorContext(It.IsAny<IWorkspaceProjectContext>()))
+            mock.Setup(t => t.IsActiveEditorContext(It.IsAny<string>()))
                 .Returns(action);
 
             return mock.Object;
         }
 
-        public static IActiveEditorContextTracker ImplementReleaseContext(Action<IWorkspaceProjectContext> action)
+        public static IActiveEditorContextTracker ImplementUnregisterContext(Action<string> action)
         {
             var mock = new Mock<IActiveEditorContextTracker>();
-            mock.Setup(t => t.UnregisterContext(It.IsAny<IWorkspaceProjectContext>()))
+            mock.Setup(t => t.UnregisterContext(It.IsAny<string>()))
                 .Callback(action);
 
             return mock.Object;
         }
 
-        public static IActiveEditorContextTracker ImplementRegisterContext(Action<IWorkspaceProjectContext, string> action)
+        public static IActiveEditorContextTracker ImplementRegisterContext(Action<string> action)
         {
             var mock = new Mock<IActiveEditorContextTracker>();
-            mock.Setup(t => t.RegisterContext(It.IsAny<IWorkspaceProjectContext>(), It.IsAny<string>()))
+            mock.Setup(t => t.RegisterContext(It.IsAny<string>()))
                 .Callback(action);
 
             return mock.Object;
