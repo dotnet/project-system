@@ -292,7 +292,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     catalogs,
                     activeTargetFramework,
                     _snapshotFilters.ToImmutableValueArray(),
-                    _subTreeProviders.ToValueDictionary(p => p.ProviderType),
+                    _subTreeProviders.ToValueDictionary(p => p.ProviderType, StringComparers.DependencyProviderTypes),
                     projectItemSpecs),
                 token);
 
