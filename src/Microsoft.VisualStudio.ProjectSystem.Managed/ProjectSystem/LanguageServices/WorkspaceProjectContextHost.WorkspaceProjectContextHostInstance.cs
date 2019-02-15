@@ -58,7 +58,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 if (_contextAccessor == null)
                     return;
 
-                _activeWorkspaceProjectContextTracker.RegisterContext(_contextAccessor.Context, _contextAccessor.ContextId);
+                _activeWorkspaceProjectContextTracker.RegisterContext(_contextAccessor.ContextId);
 
                 _applyChangesToWorkspaceContext = _applyChangesToWorkspaceContextFactory.CreateExport();
                 _applyChangesToWorkspaceContext.Value.Initialize(_contextAccessor.Context);
@@ -82,7 +82,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
                     if (_contextAccessor != null)
                     {
-                        _activeWorkspaceProjectContextTracker.UnregisterContext(_contextAccessor.Context);
+                        _activeWorkspaceProjectContextTracker.UnregisterContext(_contextAccessor.ContextId);
 
                         await _workspaceProjectContextProvider.ReleaseProjectContextAsync(_contextAccessor);
                     }
@@ -133,7 +133,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
                 try
                 {
-                    bool isActiveContext = _activeWorkspaceProjectContextTracker.IsActiveEditorContext(context);
+                    bool isActiveContext = _activeWorkspaceProjectContextTracker.IsActiveEditorContext(_contextAccessor.ContextId);
 
                     if (evaluation)
                     {

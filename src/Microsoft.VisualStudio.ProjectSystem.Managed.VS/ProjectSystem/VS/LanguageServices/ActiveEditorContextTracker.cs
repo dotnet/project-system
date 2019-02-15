@@ -3,9 +3,9 @@
 using System;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
+using System.Linq;
 using System.Threading.Tasks;
 
-using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 using Microsoft.VisualStudio.TextManager.Interop;
 using Microsoft.VisualStudio.Threading;
@@ -25,21 +25,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
     [AppliesTo(ProjectCapability.DotNetLanguageService)]
     internal class ActiveEditorContextTracker : IActiveIntellisenseProjectProvider, IVsContainedLanguageProjectNameProvider, IActiveEditorContextTracker
     {
-        private readonly IActiveWorkspaceProjectContextHost _activeWorkspaceProjectContextHost;
-        private readonly IProjectThreadingService _threadingService;
-        private ImmutableDictionary<IWorkspaceProjectContext, string> _contexts = ImmutableDictionary<IWorkspaceProjectContext, string>.Empty;
+        private ImmutableList<string> _contexts = ImmutableList<string>.Empty;
         private string _activeIntellisenseProjectContext;
 
         [ImportingConstructor]
-        public ActiveEditorContextTracker(IProjectThreadingService threadingService, IActiveWorkspaceProjectContextHost activeWorkspaceProjectContextHost)
+        public ActiveEditorContextTracker()
         {
-            _threadingService = threadingService;
-            _activeWorkspaceProjectContextHost = activeWorkspaceProjectContextHost;
         }
 
         public string ActiveIntellisenseProjectContext
         {
-            get { return _activeIntellisenseProjectContext ?? GetWorkspaceContextIdFromActiveContext(); }
+            get { return _activeIntellisenseProjectContext ?? _contexts.FirstOrDefault(); }
             set { _activeIntellisenseProjectContext = value; }
         }
 
@@ -56,57 +52,42 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             return HResult.OK;
         }
 
-        public bool IsActiveEditorContext(IWorkspaceProjectContext context)
+        public bool IsActiveEditorContext(string contextId)
         {
-            Requires.NotNull(context, nameof(context));
-
-            if (_contexts.TryGetValue(context, out string projectContextId))
-            {
-                return StringComparers.WorkspaceProjectContextIds.Equals(ActiveIntellisenseProjectContext, projectContextId);
-            }
-
-            throw new InvalidOperationException("'context' has not been registered or has already been unregistered");
-        }
-
-        public void RegisterContext(IWorkspaceProjectContext context, string contextId)
-        {
-            Requires.NotNull(context, nameof(context));
             Requires.NotNullOrEmpty(contextId, nameof(contextId));
 
-            bool changed = ThreadingTools.ApplyChangeOptimistically(ref _contexts,
-                                                                    projectContexts => projectContexts.SetItem(context, contextId));
+            if (!_contexts.Contains(contextId))
+                throw new InvalidOperationException($"'{nameof(contextId)}' has not been registered or has already been unregistered");
 
-            if (!changed)
-                throw new InvalidOperationException("'context' has already been registered.");
+            return StringComparers.WorkspaceProjectContextIds.Equals(ActiveIntellisenseProjectContext, contextId);
         }
 
-        public void UnregisterContext(IWorkspaceProjectContext context)
+        public void RegisterContext(string contextId)
         {
-            Requires.NotNull(context, nameof(context));
+            Requires.NotNullOrEmpty(contextId, nameof(contextId));
 
-            bool changed = ThreadingTools.ApplyChangeOptimistically(ref _contexts,
-                                                                    projectContexts => projectContexts.Remove(context));
-
-            if (!changed)
-                throw new InvalidOperationException("'context' has not been registered or has already been unregistered");
-        }
-
-        private string GetWorkspaceContextIdFromActiveContext()
-        {
-            return _threadingService.ExecuteSynchronously(async () =>
+            bool changed = ThreadingTools.ApplyChangeOptimistically(ref _contexts, projectContexts =>
             {
-                try
+                if (!projectContexts.Contains(contextId))
                 {
-                    // If we're never been set an active context, we just
-                    // pick one based on the active configuration.
-                    return await _activeWorkspaceProjectContextHost.OpenContextForWriteAsync(a => Task.FromResult(a.ContextId));
+                    projectContexts = projectContexts.Add(contextId);
                 }
-                catch (OperationCanceledException)
-                {   // Project unloading
 
-                    return null;
-                }
+                return projectContexts;
             });
+
+            if (!changed)
+                throw new InvalidOperationException($"'{nameof(contextId)}' has already been registered.");
+        }
+
+        public void UnregisterContext(string contextId)
+        {
+            Requires.NotNullOrEmpty(contextId, nameof(contextId));
+
+            bool changed = ThreadingTools.ApplyChangeOptimistically(ref _contexts, projectContexts => projectContexts.Remove(contextId));
+
+            if (!changed)
+                throw new InvalidOperationException($"'{nameof(contextId)}' has not been registered or has already been unregistered");
         }
     }
 }
