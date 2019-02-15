@@ -500,6 +500,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                         return Fail(logger, "Outputs", "Input '{0}' has been modified since the last up-to-date check, not up to date.", input, time.Value);
                     }
                 }
+
+                logger.Info("No inputs are newer than earliest output '{0}' ({1}).", outputPath, outputTime.Value);
             }
             else if (outputPath != null)
             {
