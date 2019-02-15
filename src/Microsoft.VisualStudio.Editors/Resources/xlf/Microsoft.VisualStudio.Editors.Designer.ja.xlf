@@ -1498,9 +1498,8 @@ CONSIDER: get this from CodeDom</note>
       </trans-unit>
       <trans-unit id="RSE_GraphicSizeFormat">
         <source>{0} x {1}</source>
-        <target state="needs-review-translation">{0} x {1}</target>
+        <target state="translated">{0} x {1}</target>
         <note>Format string for showing a graphic's size
-
 #  {0} = width (as an integer)
 #  {1} = height (as an integer)
 #Example, for a bitmap of width=123, height = 456, the English version of this string would be "123x456"</note>
@@ -2770,17 +2769,17 @@ app.config ファイルでの新しい値は '{1}' です
       </trans-unit>
       <trans-unit id="RSE_Type_WMF">
         <source>Windows Metafile</source>
-        <target state="new">Windows Metafile</target>
+        <target state="translated">Windows メタファイル</target>
         <note />
       </trans-unit>
       <trans-unit id="RSE_Type_EMF">
         <source>Extended Metafile</source>
-        <target state="new">Extended Metafile</target>
+        <target state="translated">拡張メタファイル</target>
         <note />
       </trans-unit>
       <trans-unit id="RSE_Filter_License">
         <source>License Files</source>
-        <target state="new">License Files</target>
+        <target state="translated">ライセンス ファイル</target>
         <note># File dialog filters
 #
 # E.g., for icons, the actual filter created would look like "Icons (*.ico)".  These resources

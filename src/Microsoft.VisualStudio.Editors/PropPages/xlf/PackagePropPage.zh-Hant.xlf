@@ -134,127 +134,127 @@
       </trans-unit>
       <trans-unit id="PackageLicenseLabel.Text">
         <source>&amp;Licensing:</source>
-        <target state="new">&amp;Licensing:</target>
+        <target state="translated">授權(&amp;L):</target>
         <note />
       </trans-unit>
       <trans-unit id="ExpressionLabel.Text">
         <source>&amp;Expression:</source>
-        <target state="new">&amp;Expression:</target>
+        <target state="translated">運算式(&amp;E):</target>
         <note />
       </trans-unit>
       <trans-unit id="OrLabel.Text">
         <source>&amp;OR</source>
-        <target state="new">&amp;OR</target>
+        <target state="translated">或(&amp;O)</target>
         <note />
       </trans-unit>
       <trans-unit id="FileLabel.Text">
         <source>&amp;File:</source>
-        <target state="new">&amp;File:</target>
+        <target state="translated">檔案(&amp;F):</target>
         <note />
       </trans-unit>
       <trans-unit id="LicenseBrowseButton.Text">
         <source>Browse...</source>
-        <target state="new">Browse...</target>
+        <target state="translated">瀏覽...</target>
         <note />
       </trans-unit>
       <trans-unit id="Copyright.AccessibleName">
         <source>Package Copyright</source>
-        <target state="new">Package Copyright</target>
+        <target state="translated">套件著作權</target>
         <note />
       </trans-unit>
       <trans-unit id="Description.AccessibleName">
         <source>Package Description</source>
-        <target state="new">Package Description</target>
+        <target state="translated">套件說明</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageIconUrl.AccessibleName">
         <source>Package Icon URL</source>
-        <target state="new">Package Icon URL</target>
+        <target state="translated">套件圖示 URL</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageProjectUrl.AccessibleName">
         <source>Package Project URL</source>
-        <target state="new">Package Project URL</target>
+        <target state="translated">套件專案 URL</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageVersion.AccessibleName">
         <source>Package Version</source>
-        <target state="new">Package Version</target>
+        <target state="translated">套件版本</target>
         <note />
       </trans-unit>
       <trans-unit id="RepositoryUrl.AccessibleName">
         <source>Package Repository URL</source>
-        <target state="new">Package Repository URL</target>
+        <target state="translated">套件存放庫 URL</target>
         <note />
       </trans-unit>
       <trans-unit id="RepositoryType.AccessibleName">
         <source>Package Repository Type</source>
-        <target state="new">Package Repository Type</target>
+        <target state="translated">套件存放庫類型</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageReleaseNotes.AccessibleName">
         <source>Package Release Notes</source>
-        <target state="new">Package Release Notes</target>
+        <target state="translated">套件版本資訊</target>
         <note />
       </trans-unit>
       <trans-unit id="NeutralLanguageComboBox.AccessibleName">
         <source>Package Assembly Neutral Language</source>
-        <target state="new">Package Assembly Neutral Language</target>
+        <target state="translated">套件組件中性語言</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageId.AccessibleName">
         <source>Package ID</source>
-        <target state="new">Package ID</target>
+        <target state="translated">套件識別碼</target>
         <note />
       </trans-unit>
       <trans-unit id="Authors.AccessibleName">
         <source>Package Authors</source>
-        <target state="new">Package Authors</target>
+        <target state="translated">套件作者</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyCompany.AccessibleName">
         <source>Package Company</source>
-        <target state="new">Package Company</target>
+        <target state="translated">套件公司</target>
         <note />
       </trans-unit>
       <trans-unit id="Product.AccessibleName">
         <source>Package Product</source>
-        <target state="new">Package Product</target>
+        <target state="translated">封裝產品</target>
         <note />
       </trans-unit>
       <trans-unit id="LicenseBrowseButton.AccessibleName">
         <source>Package License File Browse</source>
-        <target state="new">Package License File Browse</target>
+        <target state="translated">套件授權檔案瀏覽</target>
         <note />
       </trans-unit>
       <trans-unit id="LicenseFileNameTextBox.AccessibleName">
         <source>Package License File Path</source>
-        <target state="new">Package License File Path</target>
+        <target state="translated">套件授權檔案路徑</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageLicenseExpression.AccessibleName">
         <source>Package License Expression</source>
-        <target state="new">Package License Expression</target>
+        <target state="translated">套件授權運算式</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageTags.AccessibleName">
         <source>Package Tags</source>
-        <target state="new">Package Tags</target>
+        <target state="translated">套件標記</target>
         <note />
       </trans-unit>
       <trans-unit id="LicenseExpressionRadioButton.AccessibleName">
         <source>Package License Expression Radio Button</source>
-        <target state="new">Package License Expression Radio Button</target>
+        <target state="translated">套件授權運算式選項按鈕</target>
         <note />
       </trans-unit>
       <trans-unit id="LicenseFileRadioButton.AccessibleName">
         <source>Package License File Radio Button</source>
-        <target state="new">Package License File Radio Button</target>
+        <target state="translated">套件授權檔案選項按鈕</target>
         <note />
       </trans-unit>
       <trans-unit id="LicenseUrlWarning.Text">
         <source>PackageLicenseURL property was detected, but it has been deprecated. Please change to either an Expression or File.</source>
-        <target state="new">PackageLicenseURL property was detected, but it has been deprecated. Please change to either an Expression or File.</target>
+        <target state="translated">偵測到 PackageLicenseURL 屬性，但該屬性已淘汰。請變更為運算式或檔案。</target>
         <note />
       </trans-unit>
     </body>
