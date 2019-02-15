@@ -35,15 +35,6 @@
     <Compile Update="ProjectSystem\Rules\AnalyzerReference.xaml.cs">
       <DependentUpon>AnalyzerReference.xaml</DependentUpon>
     </Compile>
-    <Compile Update="ProjectSystem\Rules\AdditionalFiles.cs">
-      <DependentUpon>AdditionalFiles.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="ProjectSystem\Rules\ApplicationDefinition.cs">
-      <DependentUpon>ApplicationDefinition.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="ProjectSystem\Rules\Page.cs">
-      <DependentUpon>Page.xaml</DependentUpon>
-    </Compile>
     <Compile Update="ProjectSystem\Rules\ProjectDebugger.xaml.cs">
       <DependentUpon>ProjectDebugger.xaml</DependentUpon>
     </Compile>
@@ -152,9 +143,6 @@
     <Compile Update="ProjectSystem\Rules\VisualBasic.NamespaceImport.cs">
       <DependentUpon>VisualBasic.NamespaceImport.xaml</DependentUpon>
     </Compile>
-    <Compile Update="ProjectSystem\Rules\Resource.cs">
-      <DependentUpon>Resource.xaml</DependentUpon>
-    </Compile>
     <Compile Update="Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -179,16 +167,6 @@
       <XlfInput>false</XlfInput>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
-    </XamlPropertyRule>
-    <XamlPropertyRule Include="ProjectSystem\Rules\ApplicationDefinition.xaml">
-      <XlfInput>false</XlfInput>
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
-    </XamlPropertyRule>
-    <XamlPropertyRule Include="ProjectSystem\Rules\Page.xaml">
-      <XlfInput>false</XlfInput>
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
     </XamlPropertyRule>
     <XamlPropertyRule Include="ProjectSystem\Rules\EmbeddedResource.xaml">
       <XlfInput>false</XlfInput>
@@ -286,11 +264,6 @@
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
     </XamlPropertyRule>
-    <XamlPropertyRule Include="ProjectSystem\Rules\Resource.xaml">
-      <XlfInput>false</XlfInput>
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
-    </XamlPropertyRule>
     <XamlPropertyRule Include="ProjectSystem\Rules\AppDesigner.xaml">
       <XlfInput>false</XlfInput>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
@@ -334,24 +307,15 @@
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
     </XamlPropertyRule>
-    <XamlPropertyRule Include="ProjectSystem\Rules\AdditionalFiles.xaml">
-      <XlfInput>false</XlfInput>
-      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
-      <SubType>Designer</SubType>
-    </XamlPropertyRule>
     <XamlPropertyRule Include="ProjectSystem\Rules\XamlAppDef.xaml">
       <XlfInput>false</XlfInput>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
     </XamlPropertyRule>
-    <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\AdditionalFiles.BrowseObject.xaml" />
-    <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\ApplicationDefinition.BrowseObject.xaml" />
     <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\Compile.BrowseObject.xaml" />
     <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\Content.BrowseObject.xaml" />
     <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\EmbeddedResource.BrowseObject.xaml" />
     <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\None.BrowseObject.xaml" />
-    <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\Page.BrowseObject.xaml" />
-    <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\Resource.BrowseObject.xaml" />
     <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\XamlAppDef.BrowseObject.xaml" />
     <XamlPropertyProjectItemsSchema Include="ProjectSystem\Rules\ProjectItemsSchema.xaml" />
     <XamlPropertyProjectItemsSchema Include="ProjectSystem\Rules\CSharp.ProjectItemsSchema.xaml" />
