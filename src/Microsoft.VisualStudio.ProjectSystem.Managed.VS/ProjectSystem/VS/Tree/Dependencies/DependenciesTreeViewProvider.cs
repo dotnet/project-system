@@ -196,6 +196,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             {
                 IDependencyViewModel subTreeViewModel = _viewModelFactory.CreateRootViewModel(
                     providerType, targetedSnapshot.CheckForUnresolvedDependencies(providerType));
+
+                if (subTreeViewModel == null)
+                {
+                    // In theory this should never happen, as it means we have a dependency model of a type
+                    // that no provider claims. https://github.com/dotnet/project-system/issues/3653
+                    continue;
+                }
+
                 IProjectTree subTreeNode = rootNode.FindChildWithCaption(subTreeViewModel.Caption);
                 bool isNewSubTreeNode = subTreeNode == null;
 
