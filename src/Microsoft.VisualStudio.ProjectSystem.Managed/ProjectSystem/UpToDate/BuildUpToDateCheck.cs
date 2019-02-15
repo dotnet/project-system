@@ -108,7 +108,32 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
         public Task UnloadAsync()
         {
-            return Task.CompletedTask;
+            return ExecuteUnderLockAsync(_ =>
+            {
+                _link?.Dispose();
+                _link = null;
+
+                _lastCheckTimeUtc = DateTime.MinValue;
+                _isDisabled = true;
+                _itemsChangedSinceLastCheck = true;
+                _msBuildProjectFullPath = null;
+                _msBuildProjectDirectory = null;
+                _markerFile = null;
+                _outputRelativeOrFullPath = null;
+                _newestImportInput = null;
+
+                _itemTypes.Clear();
+                _items.Clear();
+                _customInputs.Clear();
+                _customOutputs.Clear();
+                _builtOutputs.Clear();
+                _copiedOutputFiles.Clear();
+                _analyzerReferences.Clear();
+                _compilationReferences.Clear();
+                _copyReferenceInputs.Clear();
+
+                return Task.CompletedTask;
+            });
         }
 
         protected override Task InitializeCoreAsync(CancellationToken cancellationToken)
