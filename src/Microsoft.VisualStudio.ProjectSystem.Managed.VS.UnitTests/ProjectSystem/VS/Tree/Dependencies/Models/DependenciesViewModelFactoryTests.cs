@@ -58,13 +58,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         public void CreateRootViewModel()
         {
             var project = UnconfiguredProjectFactory.Create();
-            var dependencyModel = IDependencyModelFactory.FromJson(@"
-{
-    ""ProviderType"": ""MyProvider1"",
-    ""Id"": ""ZzzDependencyRoot"",
-    ""Name"":""ZzzDependencyRoot"",
-    ""Caption"":""ZzzDependencyRoot""
-}", icon: KnownMonikers.AboutBox);
+
+            var dependencyModel = new TestDependencyModel
+            {
+                ProviderType = "MyProvider1",
+                Id = "ZzzDependencyRoot",
+                Name = "ZzzDependencyRoot",
+                Caption = "ZzzDependencyRoot",
+                Icon = KnownMonikers.AboutBox
+            };
 
             var subTreeProvider1 = IProjectDependenciesSubTreeProviderFactory.Implement(
                 providerType: "MyProvider1",
@@ -79,6 +81,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.NotNull(result);
             Assert.Equal("ZzzDependencyRoot", result.Caption);
             Assert.Equal(KnownMonikers.AboutBox, result.Icon);
+        }
+
+        [Fact]
+        public void CreateRootViewModelReturnsNullForUnknownProviderType()
+        {
+            var project = UnconfiguredProjectFactory.Create();
+
+            var subTreeProvider1 = IProjectDependenciesSubTreeProviderFactory.Implement(providerType: "MyProvider1");
+
+            var factory = new TestableDependenciesViewModelFactory(project, new[] { subTreeProvider1 });
+
+            var result = factory.CreateRootViewModel("UnknownProviderType", hasUnresolvedDependency: false);
+
+            Assert.Null(result);
         }
 
         [Fact]
