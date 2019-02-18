@@ -680,7 +680,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     $"Checking PreserveNewest file '{sourcePath}':",
                     $"    Source {sourceTime.ToLocalTime()}: '{sourcePath}'.",
                     $"    Destination {destinationTime.ToLocalTime()}: '{destinationPath}'.",
-                    "PreserveNewest destination is newer than source, not up to date."
+                    "PreserveNewest source is newer than destination, not up to date."
                 },
                 "CopyToOutputDirectory");
         }

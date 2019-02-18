@@ -657,7 +657,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 if (outputItemTime < itemTime)
                 {
-                    return Fail(logger, "CopyToOutputDirectory", "PreserveNewest destination is newer than source, not up to date.");
+                    return Fail(logger, "CopyToOutputDirectory", "PreserveNewest source is newer than destination, not up to date.");
                 }
             }
 
