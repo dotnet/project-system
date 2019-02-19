@@ -260,6 +260,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
                 foreach (IDependency child in GetDependencyChildren(parent))
                 {
+                    if (!child.Visible)
+                    {
+                        return false;
+                    }
+
                     if (!child.Resolved)
                     {
                         return true;
@@ -295,6 +300,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             foreach ((string _, IDependency dependency) in DependenciesWorld)
             {
                 if (StringComparers.DependencyProviderTypes.Equals(dependency.ProviderType, providerType) &&
+                    dependency.Visible &&
                     !dependency.Resolved)
                 {
                     return true;
