@@ -35,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         }
 
         [Fact]
-        public async Task Value_CancelledToken_ThrowsOperationCanceled()
+        public async Task GetValueAsync_CancelledToken_ThrowsOperationCanceled()
         {
             var threadingService = IProjectThreadingServiceFactory.Create();
             var serviceProvider = IAsyncServiceProviderFactory.ImplementGetServiceAsync(type => null);
@@ -49,7 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         }
 
         [Fact]
-        public async Task Value_WhenMissingService_ReturnsNull()
+        public async Task GetValueAsync_WhenMissingService_ReturnsNull()
         {
             var threadingService = IProjectThreadingServiceFactory.Create();
             var serviceProvider = IAsyncServiceProviderFactory.ImplementGetServiceAsync(type => null);
@@ -62,7 +62,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         }
 
         [Fact]
-        public async Task Value_ReturnsGetService()
+        public async Task GetValueAsync_ReturnsGetService()
         {
             object input = new object();
 
@@ -84,7 +84,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         }
 
         [Fact]
-        public async Task Value_CachesResult()
+        public async Task GetValueAsync_CachesResult()
         {
             var threadingService = IProjectThreadingServiceFactory.Create();
             var serviceProvider = IAsyncServiceProviderFactory.ImplementGetServiceAsync(type =>
