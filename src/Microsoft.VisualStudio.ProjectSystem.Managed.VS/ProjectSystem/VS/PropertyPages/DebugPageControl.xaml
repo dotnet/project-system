@@ -95,6 +95,7 @@
                     Margin="6,8,1,8"
                     VerticalContentAlignment="Center"
                     VerticalAlignment="Center"
+                    AutomationProperties.HelpText="{x:Static Member=local:PropertyPageResources.NewBtnHelpText}"
                     Content="{x:Static Member=local:PropertyPageResources.NewBtn}"
                     IsEnabled="{Binding Path=NewProfileEnabled, Mode=OneWay}"
                     Command="{Binding Path=NewProfileCommand}">
@@ -107,6 +108,7 @@
                     Margin="6,8,1,8"
                     VerticalContentAlignment="Center"
                     VerticalAlignment="Center"
+                    AutomationProperties.HelpText="{x:Static Member=local:PropertyPageResources.DeleteBtnHelpText}"
                     Content="{x:Static Member=local:PropertyPageResources.DeleteBtn}"
                     IsEnabled="{Binding Path=DeleteProfileEnabled, Mode=OneWay}"
                     Command="{Binding Path=DeleteProfileCommand}">
@@ -250,6 +252,7 @@
                 IsEnabled="{Binding Path=IsProfileSelected, Mode=OneWay}"
                 Visibility="{Binding Path=SupportsLaunchUrl, Mode=OneWay, Converter={StaticResource visibilityConverter}}"
                 VerticalContentAlignment="Center"
+                AutomationProperties.HelpText="{x:Static Member=local:PropertyPageResources.chkLaunchBrowserHelpText}"
                 Content="{x:Static Member=local:PropertyPageResources.LaunchURL}"/>
             <local:WatermarkTextBox 
                 Grid.Row="6"
