@@ -29,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         private string _activeIntellisenseProjectContext;
 
         [ImportingConstructor]
-        public ActiveEditorContextTracker()
+        public ActiveEditorContextTracker(UnconfiguredProject project) // For scoping
         {
         }
 
