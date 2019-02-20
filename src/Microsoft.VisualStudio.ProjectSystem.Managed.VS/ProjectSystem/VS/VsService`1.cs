@@ -4,6 +4,7 @@
 
 using System;
 using System.ComponentModel.Composition;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.Shell.Interop;
@@ -42,9 +43,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             }, threadingService.JoinableTaskFactory);
         }
 
-        public Task<T> GetValueAsync()
+        public Task<T> GetValueAsync(CancellationToken cancellationToken = default)
         {
-            return _value.GetValueAsync();
+            return _value.GetValueAsync(cancellationToken);
         }
 
         protected virtual Type ServiceType
