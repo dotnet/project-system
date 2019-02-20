@@ -1,8 +1,9 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+using System.Threading;
 using System.Threading.Tasks;
-
+using Microsoft.VisualStudio.Threading;
 using Xunit;
 
 using IAsyncServiceProvider = Microsoft.VisualStudio.Shell.IAsyncServiceProvider;
@@ -14,22 +15,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         [Fact]
         public void Constructor_NullAsServiceProvider_ThrowsArgumentNull()
         {
-            var threadingService = IProjectThreadingServiceFactory.Create();
+            var joinableTaskContext = IProjectThreadingServiceFactory.Create().JoinableTaskContext.Context;
 
             Assert.Throws<ArgumentNullException>("serviceProvider", () =>
             {
-                return new VsService<string, string>((IAsyncServiceProvider)null, threadingService);
+                return new VsService<string, string>((IAsyncServiceProvider)null, joinableTaskContext);
             });
         }
 
         [Fact]
-        public void Constructor_NullAsThreadingService_ThrowsArgumentNull()
+        public void Constructor_NullAsJoinableTaskContext_ThrowsArgumentNull()
         {
             var serviceProvider = IAsyncServiceProviderFactory.Create();
 
-            Assert.Throws<ArgumentNullException>("threadingService", () =>
+            Assert.Throws<ArgumentNullException>("joinableTaskContext", () =>
             {
-                return new VsService<string, string>(serviceProvider, (IProjectThreadingService)null);
+                return new VsService<string, string>(serviceProvider, (JoinableTaskContext)null);
             });
         }
 
@@ -90,7 +91,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             serviceProvider = serviceProvider ?? IAsyncServiceProviderFactory.Create();
             threadingService = threadingService ?? IProjectThreadingServiceFactory.Create();
 
-            return new VsService<TService, TInterface>(serviceProvider, threadingService);
+            return new VsService<TService, TInterface>(serviceProvider, threadingService.JoinableTaskContext.Context);
         }
     }
 }
