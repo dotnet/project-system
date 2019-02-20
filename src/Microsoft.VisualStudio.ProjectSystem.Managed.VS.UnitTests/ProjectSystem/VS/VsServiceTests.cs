@@ -35,6 +35,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         }
 
         [Fact]
+        public async Task Value_CancelledToken_ThrowsOperationCanceled()
+        {
+            var threadingService = IProjectThreadingServiceFactory.Create();
+            var serviceProvider = IAsyncServiceProviderFactory.ImplementGetServiceAsync(type => null);
+
+            var service = CreateInstance<string, string>(serviceProvider: serviceProvider, threadingService: threadingService);
+
+            await Assert.ThrowsAnyAsync<OperationCanceledException>(() =>
+            {
+                return service.GetValueAsync(new CancellationToken(true));
+            });
+        }
+
+        [Fact]
         public async Task Value_WhenMissingService_ReturnsNull()
         {
             var threadingService = IProjectThreadingServiceFactory.Create();
