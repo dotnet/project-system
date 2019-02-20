@@ -134,127 +134,127 @@
       </trans-unit>
       <trans-unit id="PackageLicenseLabel.Text">
         <source>&amp;Licensing:</source>
-        <target state="new">&amp;Licensing:</target>
+        <target state="translated">&amp;Licencjonowania:</target>
         <note />
       </trans-unit>
       <trans-unit id="ExpressionLabel.Text">
         <source>&amp;Expression:</source>
-        <target state="new">&amp;Expression:</target>
+        <target state="translated">&amp;Wyrażenie:</target>
         <note />
       </trans-unit>
       <trans-unit id="OrLabel.Text">
         <source>&amp;OR</source>
-        <target state="new">&amp;OR</target>
+        <target state="translated">&amp;LUB</target>
         <note />
       </trans-unit>
       <trans-unit id="FileLabel.Text">
         <source>&amp;File:</source>
-        <target state="new">&amp;File:</target>
+        <target state="translated">&amp;Plik:</target>
         <note />
       </trans-unit>
       <trans-unit id="LicenseBrowseButton.Text">
         <source>Browse...</source>
-        <target state="new">Browse...</target>
+        <target state="translated">Przeglądaj...</target>
         <note />
       </trans-unit>
       <trans-unit id="Copyright.AccessibleName">
         <source>Package Copyright</source>
-        <target state="new">Package Copyright</target>
+        <target state="translated">Pakiet — prawa autorskie</target>
         <note />
       </trans-unit>
       <trans-unit id="Description.AccessibleName">
         <source>Package Description</source>
-        <target state="new">Package Description</target>
+        <target state="translated">Pakiet — opis</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageIconUrl.AccessibleName">
         <source>Package Icon URL</source>
-        <target state="new">Package Icon URL</target>
+        <target state="translated">Adres URL ikony pakietu</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageProjectUrl.AccessibleName">
         <source>Package Project URL</source>
-        <target state="new">Package Project URL</target>
+        <target state="translated">Adres URL projektu pakietu</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageVersion.AccessibleName">
         <source>Package Version</source>
-        <target state="new">Package Version</target>
+        <target state="translated">Wersja pakietu</target>
         <note />
       </trans-unit>
       <trans-unit id="RepositoryUrl.AccessibleName">
         <source>Package Repository URL</source>
-        <target state="new">Package Repository URL</target>
+        <target state="translated">Pakiet — adres URL repozytorium</target>
         <note />
       </trans-unit>
       <trans-unit id="RepositoryType.AccessibleName">
         <source>Package Repository Type</source>
-        <target state="new">Package Repository Type</target>
+        <target state="translated">Pakiet — typ repozytorium</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageReleaseNotes.AccessibleName">
         <source>Package Release Notes</source>
-        <target state="new">Package Release Notes</target>
+        <target state="translated">Pakiet — informacje o wersji</target>
         <note />
       </trans-unit>
       <trans-unit id="NeutralLanguageComboBox.AccessibleName">
         <source>Package Assembly Neutral Language</source>
-        <target state="new">Package Assembly Neutral Language</target>
+        <target state="translated">Pakiet — język neutralny dla zestawu</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageId.AccessibleName">
         <source>Package ID</source>
-        <target state="new">Package ID</target>
+        <target state="translated">Identyfikator pakietu</target>
         <note />
       </trans-unit>
       <trans-unit id="Authors.AccessibleName">
         <source>Package Authors</source>
-        <target state="new">Package Authors</target>
+        <target state="translated">Pakiet — autorzy</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyCompany.AccessibleName">
         <source>Package Company</source>
-        <target state="new">Package Company</target>
+        <target state="translated">Pakiet — firma</target>
         <note />
       </trans-unit>
       <trans-unit id="Product.AccessibleName">
         <source>Package Product</source>
-        <target state="new">Package Product</target>
+        <target state="translated">Pakiet — produkt</target>
         <note />
       </trans-unit>
       <trans-unit id="LicenseBrowseButton.AccessibleName">
         <source>Package License File Browse</source>
-        <target state="new">Package License File Browse</target>
+        <target state="translated">Plik licencji pakietu — przeglądaj</target>
         <note />
       </trans-unit>
       <trans-unit id="LicenseFileNameTextBox.AccessibleName">
         <source>Package License File Path</source>
-        <target state="new">Package License File Path</target>
+        <target state="translated">Pakiet — ścieżka do pliku licencji</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageLicenseExpression.AccessibleName">
         <source>Package License Expression</source>
-        <target state="new">Package License Expression</target>
+        <target state="translated">Wyrażenie licencji pakietu</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageTags.AccessibleName">
         <source>Package Tags</source>
-        <target state="new">Package Tags</target>
+        <target state="translated">Tagi pakietu</target>
         <note />
       </trans-unit>
       <trans-unit id="LicenseExpressionRadioButton.AccessibleName">
         <source>Package License Expression Radio Button</source>
-        <target state="new">Package License Expression Radio Button</target>
+        <target state="translated">Wyrażenie licencji pakietu — przycisk radiowy</target>
         <note />
       </trans-unit>
       <trans-unit id="LicenseFileRadioButton.AccessibleName">
         <source>Package License File Radio Button</source>
-        <target state="new">Package License File Radio Button</target>
+        <target state="translated">Pakiet — przycisk radiowy pliku licencji</target>
         <note />
       </trans-unit>
       <trans-unit id="LicenseUrlWarning.Text">
         <source>PackageLicenseURL property was detected, but it has been deprecated. Please change to either an Expression or File.</source>
-        <target state="new">PackageLicenseURL property was detected, but it has been deprecated. Please change to either an Expression or File.</target>
+        <target state="translated">Wykryto właściwość PackageLicenseURL, ale została ona oznaczona jako przestarzała. Zmień wartość na wyrażenie lub plik.</target>
         <note />
       </trans-unit>
     </body>

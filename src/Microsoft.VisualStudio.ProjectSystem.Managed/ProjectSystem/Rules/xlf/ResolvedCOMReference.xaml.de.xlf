@@ -54,7 +54,7 @@
       </trans-unit>
       <trans-unit id="EnumValue|FileType.Native Assembly|DisplayName">
         <source>Native Assembly</source>
-        <target state="new">Native Assembly</target>
+        <target state="translated">Native Assembly</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Identity|DisplayName">

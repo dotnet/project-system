@@ -104,7 +104,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|ExcludeAssets|DisplayName">
         <source>Exclude Assets</source>
-        <target state="new">Exclude Assets</target>
+        <target state="translated">Objekte ausschließen</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ExcludeAssets|Description">
@@ -114,7 +114,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|IncludeAssets|DisplayName">
         <source>Include Assets</source>
-        <target state="new">Include Assets</target>
+        <target state="translated">Objekte einschließen</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|IncludeAssets|Description">
@@ -134,7 +134,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|PrivateAssets|DisplayName">
         <source>Private Assets</source>
-        <target state="new">Private Assets</target>
+        <target state="translated">Private Objekte</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PrivateAssets|Description">
