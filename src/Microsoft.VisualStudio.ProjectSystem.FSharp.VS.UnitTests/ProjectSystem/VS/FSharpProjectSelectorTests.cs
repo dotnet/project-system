@@ -2,8 +2,6 @@
 
 using System.Xml.Linq;
 
-using Microsoft.VisualStudio.Packaging;
-
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
@@ -17,14 +15,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         }
 
         [Theory]
-        [InlineData(@"<Project Sdk = ""FSharp.SDK""> </Project>", FSharpProjectSystemPackage.ProjectTypeGuid)]
-        [InlineData(@"<Project ToolsVersion=""15.0""> </Project>", FSharpProjectSystemPackage.LegacyProjectTypeGuid)]
-        [InlineData(@"<Project Sdk = ""FSharp.SDK"" xmlns=""http://schemas.microsoft.com/developer/msbuild/2003""> </Project>", FSharpProjectSystemPackage.ProjectTypeGuid)]
-        [InlineData(@"<Project ToolsVersion=""15.0"" xmlns=""http://schemas.microsoft.com/developer/msbuild/2003""> </Project>", FSharpProjectSystemPackage.LegacyProjectTypeGuid)]
-        [InlineData(@"<Project> <Import Project=""Sdk.props"" Sdk=""FSharp.Sdk"" /> </Project>", FSharpProjectSystemPackage.ProjectTypeGuid)]
-        [InlineData(@"<Project> <Import Project=""Sdk.props"" /> </Project>", FSharpProjectSystemPackage.LegacyProjectTypeGuid)]
-        [InlineData(@"<Project xmlns=""http://schemas.microsoft.com/developer/msbuild/2003""> <Import Project=""Sdk.props"" Sdk=""FSharp.Sdk"" /> </Project>", FSharpProjectSystemPackage.ProjectTypeGuid)]
-        [InlineData(@"<Project xmlns=""http://schemas.microsoft.com/developer/msbuild/2003""> <Import Project=""Sdk.props"" /> </Project>", FSharpProjectSystemPackage.LegacyProjectTypeGuid)]
+        [InlineData(@"<Project Sdk = ""FSharp.SDK""> </Project>", ProjectType.FSharp)]
+        [InlineData(@"<Project ToolsVersion=""15.0""> </Project>", ProjectType.LegacyFSharp)]
+        [InlineData(@"<Project Sdk = ""FSharp.SDK"" xmlns=""http://schemas.microsoft.com/developer/msbuild/2003""> </Project>", ProjectType.FSharp)]
+        [InlineData(@"<Project ToolsVersion=""15.0"" xmlns=""http://schemas.microsoft.com/developer/msbuild/2003""> </Project>", ProjectType.LegacyFSharp)]
+        [InlineData(@"<Project> <Import Project=""Sdk.props"" Sdk=""FSharp.Sdk"" /> </Project>", ProjectType.FSharp)]
+        [InlineData(@"<Project> <Import Project=""Sdk.props"" /> </Project>", ProjectType.LegacyFSharp)]
+        [InlineData(@"<Project xmlns=""http://schemas.microsoft.com/developer/msbuild/2003""> <Import Project=""Sdk.props"" Sdk=""FSharp.Sdk"" /> </Project>", ProjectType.FSharp)]
+        [InlineData(@"<Project xmlns=""http://schemas.microsoft.com/developer/msbuild/2003""> <Import Project=""Sdk.props"" /> </Project>", ProjectType.LegacyFSharp)]
 
         public void GetProjectFactoryGuid(string projectFile, string expectedGuid)
         {

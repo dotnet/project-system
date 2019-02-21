@@ -3,8 +3,6 @@
 using System;
 using System.ComponentModel.Composition;
 
-using Microsoft.VisualStudio.Packaging;
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     /// <summary>
@@ -14,8 +12,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     [AppliesTo(ProjectCapability.FSharp)]
     internal class FSharpProjectTypeGuidProvider : IItemTypeGuidProvider
     {
-        private static readonly Guid s_fsharpProjectType = new Guid(FSharpProjectSystemPackage.LegacyProjectTypeGuid);
-
         [ImportingConstructor]
         public FSharpProjectTypeGuidProvider(UnconfiguredProject project)
         {
@@ -23,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         public Guid ProjectTypeGuid
         {
-            get { return s_fsharpProjectType; }
+            get { return ProjectType.LegacyFSharpGuid; }
         }
 
     }
