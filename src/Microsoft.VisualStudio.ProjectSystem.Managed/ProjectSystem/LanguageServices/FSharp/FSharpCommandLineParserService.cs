@@ -9,7 +9,7 @@ using System.IO;
 using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.Text;
 
-namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
+namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.FSharp
 {
     [Export(typeof(ICommandLineParserService))]
     [AppliesTo(ProjectCapability.FSharp)]

@@ -4,7 +4,7 @@ using System.Collections.Immutable;
 
 using Microsoft.CodeAnalysis;
 
-namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
+namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.FSharp
 {
     internal class FSharpBuildOptions : BuildOptions
     {
