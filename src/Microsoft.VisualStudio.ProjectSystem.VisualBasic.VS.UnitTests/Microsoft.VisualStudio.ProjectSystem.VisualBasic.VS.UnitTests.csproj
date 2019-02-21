@@ -15,6 +15,5 @@
     <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.Managed.VS\Microsoft.VisualStudio.ProjectSystem.Managed.VS.csproj" />
     <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.Managed\Microsoft.VisualStudio.ProjectSystem.Managed.csproj" />
     <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS\Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS.csproj" />
-    <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.VisualBasic\Microsoft.VisualStudio.ProjectSystem.VisualBasic.csproj" />
   </ItemGroup>
 </Project>

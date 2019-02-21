@@ -10,7 +10,6 @@
   <ItemGroup>
     <ProjectReference Include="..\DeployTestDependencies\DeployTestDependencies.csproj" ReferenceOutputAssembly="false" />
     <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.FSharp.VS\Microsoft.VisualStudio.ProjectSystem.FSharp.VS.csproj" />
-    <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.FSharp\Microsoft.VisualStudio.ProjectSystem.FSharp.csproj" />
     <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.Managed.TestServices\Microsoft.VisualStudio.ProjectSystem.Managed.TestServices.csproj" />
     <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.Managed.UnitTests\Microsoft.VisualStudio.ProjectSystem.Managed.UnitTests.csproj" />
     <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.Managed.VS.UnitTests\Microsoft.VisualStudio.ProjectSystem.Managed.VS.UnitTests.csproj" />
