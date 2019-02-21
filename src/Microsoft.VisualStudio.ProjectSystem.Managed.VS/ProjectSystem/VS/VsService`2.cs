@@ -7,6 +7,7 @@ using System.ComponentModel.Composition;
 
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
+using Microsoft.VisualStudio.Threading;
 
 using IAsyncServiceProvider = Microsoft.VisualStudio.Shell.IAsyncServiceProvider;
 
@@ -19,8 +20,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     internal class VsService<TService, TInterface> : VsService<TInterface>, IVsService<TService, TInterface>
     {
         [ImportingConstructor]
-        public VsService([Import(typeof(SAsyncServiceProvider))]IAsyncServiceProvider serviceProvider, IProjectThreadingService threadingService)
-            : base(serviceProvider, threadingService)
+        public VsService([Import(typeof(SAsyncServiceProvider))]IAsyncServiceProvider serviceProvider, JoinableTaskContext joinableTaskContext)
+            : base(serviceProvider, joinableTaskContext)
         {
         }
 
