@@ -4,7 +4,7 @@ using System.Linq;
 
 using Xunit;
 
-namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
+namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.CSharp
 {
     public class CSharpCommandLineParserServiceTests : CommandLineParserServiceTestBase
     {

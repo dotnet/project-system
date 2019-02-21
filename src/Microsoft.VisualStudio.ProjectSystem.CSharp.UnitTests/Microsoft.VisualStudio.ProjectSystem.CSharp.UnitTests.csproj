@@ -15,4 +15,7 @@
     <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.Managed.UnitTests\Microsoft.VisualStudio.ProjectSystem.Managed.UnitTests.csproj" />
     <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.Managed\Microsoft.VisualStudio.ProjectSystem.Managed.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ProjectSystem\LanguageServices\" />
+  </ItemGroup>
 </Project>

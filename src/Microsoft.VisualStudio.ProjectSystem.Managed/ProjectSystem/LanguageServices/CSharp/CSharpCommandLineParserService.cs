@@ -5,7 +5,7 @@ using System.ComponentModel.Composition;
 
 using Microsoft.CodeAnalysis.CSharp;
 
-namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
+namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.CSharp
 {
     [Export(typeof(ICommandLineParserService))]
     [AppliesTo(ProjectCapability.CSharp)]
