@@ -10,7 +10,7 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename.VisualBasic
 {
-    public class VisualBasicSimpleRenameTests : SimpleRenamerTestsBase
+    public class VisualBasicFileRenameHandlerTests : FileRenameHandlerTestsBase
     {
         protected override string ProjectFileExtension => "vbproj";
 
