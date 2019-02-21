@@ -1,7 +1,7 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 //--------------------------------------------------------------------------------------------
 // <summary>
-// FileRenameTracker
+// CSharpOrVisualBasicFileRenameHandler
 //
 // Exports an IFileRenameHandler to listen to handle renames. If the file being renamed
 // is a code file, it will prompt the user to rename the class to match. The rename is done
@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 {
     [Export(typeof(IFileRenameHandler))]
     [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
-    internal class FileRenameTracker : IFileRenameHandler
+    internal class CSharpOrVisualBasicFileRenameHandler : IFileRenameHandler
     {
         private readonly IUnconfiguredProjectVsServices _projectVsServices;
         private readonly VisualStudioWorkspace _visualStudioWorkspace;
@@ -29,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
         private readonly IRoslynServices _roslynServices;
 
         [ImportingConstructor]
-        public FileRenameTracker(IUnconfiguredProjectVsServices projectVsServices,
+        public CSharpOrVisualBasicFileRenameHandler(IUnconfiguredProjectVsServices projectVsServices,
                                  VisualStudioWorkspace visualStudioWorkspace,
                                  IEnvironmentOptions environmentOptions,
                                  IUserNotificationServices userNotificationServices,
