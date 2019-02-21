@@ -4,9 +4,9 @@ using System.Linq;
 
 using Xunit;
 
-namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
+namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.CSharp
 {
-    public class VisualBasicCommandLineParserServiceTests : CommandLineParserServiceTestBase
+    public class CSharpCommandLineParserServiceTests : CommandLineParserServiceTestBase
     {
         // This isn't supposed to be a exhaustive set of tests as we assume that Roslyn has tested their 
         // command-line parsing code, just enough to make sure we're passing the data through correctly.
@@ -14,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         [Theory]
         [InlineData("/r:Foo.dll",                                                                           "Foo.dll")]
         [InlineData("/r:Foo.dll|/r:Bar.dll",                                                                "Foo.dll|Bar.dll")]
-        [InlineData("/r:Foo.dll|Foo.vb|/r:Bar.dll",                                                         "Foo.dll|Bar.dll")]
+        [InlineData("/r:Foo.dll|Foo.cs|/r:Bar.dll",                                                         "Foo.dll|Bar.dll")]
         public void Parse_SetsMetadataReferences(string arguments, string expected)
         {
             var service = CreateInstance();
@@ -26,10 +26,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
 
         [Theory]
-        [InlineData(@"Foo.vb",                                                                               @"C:\Project\Foo.vb")]
-        [InlineData(@"Foo.vb|Bar.cs",                                                                        @"C:\Project\Foo.vb|C:\Project\Bar.cs")]
-        [InlineData(@"C:\Foo\Foo.vb",                                                                        @"C:\Foo\Foo.vb")]
-        [InlineData(@"..\Foo.vb",                                                                            @"C:\Project\..\Foo.vb")]
+        [InlineData(@"Foo.cs",                                                                               @"C:\Project\Foo.cs")]
+        [InlineData(@"Foo.cs|Bar.cs",                                                                        @"C:\Project\Foo.cs|C:\Project\Bar.cs")]
+        [InlineData(@"C:\Foo\Foo.cs",                                                                        @"C:\Foo\Foo.cs")]
+        [InlineData(@"..\Foo.cs",                                                                            @"C:\Project\..\Foo.cs")]
         public void Parse_SetsSourceFiles(string arguments, string expected)
         {
             var service = CreateInstance();
@@ -65,7 +65,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
         internal override ICommandLineParserService CreateInstance()
         {
-            return new VisualBasicCommandLineParserService();
+            return new CSharpCommandLineParserService();
         }
     }
 }

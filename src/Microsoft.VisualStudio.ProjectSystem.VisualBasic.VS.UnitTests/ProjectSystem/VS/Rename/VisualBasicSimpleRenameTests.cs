@@ -3,8 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using Microsoft.CodeAnalysis;
-using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
-
+using Microsoft.VisualStudio.ProjectSystem.LanguageServices.VisualBasic;
 using Moq;
 
 using Xunit;

@@ -5,7 +5,7 @@ using System.ComponentModel.Composition;
 
 using Microsoft.VisualStudio.IO;
 
-namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
+namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders.VisualBasic
 {
     [ExportSpecialFileProvider(SpecialFiles.AssemblyInfo)]
     [AppliesTo(ProjectCapability.VisualBasic)]

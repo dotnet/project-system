@@ -2,12 +2,11 @@
 
 using Xunit;
 
-namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
+namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.CSharp
 {
-
-    public class VisualBasicSyntaxFactsServiceTests
+    public class CSharpSyntaxFactsServiceTests
     {
-        private static readonly ISyntaxFactsService s_service = new VisualBasicSyntaxFactsService(null);
+        private static readonly ISyntaxFactsService s_service = new CSharpSyntaxFactsService(null);
 
         [Fact]
         public void TestIsValidIdentifier()
