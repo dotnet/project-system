@@ -18,15 +18,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
     [Export(typeof(IStartupProjectHelper))]
     internal class StartupProjectHelper : IStartupProjectHelper
     {
+        private readonly IServiceProvider _serviceProvider;
+        private readonly IProjectExportProvider _projectExportProvider;
+
         [ImportingConstructor]
         public StartupProjectHelper([Import(typeof(SVsServiceProvider))] IServiceProvider serviceProvider, IProjectExportProvider projectExportProvider)
         {
-            ServiceProvider = serviceProvider;
-            ProjectExportProvider = projectExportProvider;
+            _serviceProvider = serviceProvider;
+            _projectExportProvider = projectExportProvider;
         }
-
-        private IProjectExportProvider ProjectExportProvider { get; }
-        private IServiceProvider ServiceProvider { get; }
 
         /// <summary>
         /// Returns the export T of the startup projects if those projects support the specified capabilities
@@ -34,14 +34,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         public ImmutableArray<T> GetExportFromDotNetStartupProjects<T>(string capabilityMatch) where T : class
         {
 #pragma warning disable RS0030 // Do not used banned APIs
-            EnvDTE.DTE dte = ServiceProvider.GetService<EnvDTE.DTE, EnvDTE.DTE>();
+            EnvDTE.DTE dte = _serviceProvider.GetService<EnvDTE.DTE, EnvDTE.DTE>();
 #pragma warning restore RS0030 // Do not used banned APIs
             if (dte != null)
             {
                 if (dte.Solution.SolutionBuild.StartupProjects is Array startupProjects && startupProjects.Length > 0)
                 {
 #pragma warning disable RS0030 // Do not used banned APIs
-                    IVsSolution sln = ServiceProvider.GetService<IVsSolution, SVsSolution>();
+                    IVsSolution sln = _serviceProvider.GetService<IVsSolution, SVsSolution>();
 #pragma warning restore RS0030 // Do not used banned APIs
                     var results = PooledArray<T>.GetInstance();
                     foreach (string projectName in startupProjects)
@@ -50,7 +50,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
                         if (hier != null && hier.IsCapabilityMatch(capabilityMatch))
                         {
                             string projectPath = hier.GetProjectFilePath();
-                            results.Add(ProjectExportProvider.GetExport<T>(projectPath));
+                            results.Add(_projectExportProvider.GetExport<T>(projectPath));
                         }
                     }
                     return results.ToImmutableAndFree();
