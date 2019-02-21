@@ -315,6 +315,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 LicenseFileNameTextBox.Text = ""
             ElseIf Not setLicenseExpression AndAlso Not PackageLicenseExpression.Text = "" Then
                 PackageLicenseExpression.Text = ""
+                SetDirty(PackageLicenseExpression)
             End If
         End Sub
 
