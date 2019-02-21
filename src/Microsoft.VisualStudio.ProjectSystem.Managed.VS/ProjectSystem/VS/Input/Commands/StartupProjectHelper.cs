@@ -4,6 +4,8 @@ using System;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 
+using EnvDTE;
+
 using Microsoft.VisualStudio.Buffers.PooledObjects;
 using Microsoft.VisualStudio.ProjectSystem.VS.Extensibility;
 using Microsoft.VisualStudio.Shell;
@@ -18,13 +20,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
     [Export(typeof(IStartupProjectHelper))]
     internal class StartupProjectHelper : IStartupProjectHelper
     {
-        private readonly IServiceProvider _serviceProvider;
+        private readonly IVsUIService<DTE> _dte;
+        private readonly IVsUIService<IVsSolution> _solution;
         private readonly IProjectExportProvider _projectExportProvider;
 
         [ImportingConstructor]
-        public StartupProjectHelper([Import(typeof(SVsServiceProvider))] IServiceProvider serviceProvider, IProjectExportProvider projectExportProvider)
+        public StartupProjectHelper(IVsUIService<SDTE, DTE> dte,
+                                    IVsUIService<SVsSolution, IVsSolution> solution,
+                                    IProjectExportProvider projectExportProvider)
         {
-            _serviceProvider = serviceProvider;
+            _dte = dte;
+            _solution = solution;
             _projectExportProvider = projectExportProvider;
         }
 
@@ -33,29 +39,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         /// </summary>
         public ImmutableArray<T> GetExportFromDotNetStartupProjects<T>(string capabilityMatch) where T : class
         {
-#pragma warning disable RS0030 // Do not used banned APIs
-            EnvDTE.DTE dte = _serviceProvider.GetService<EnvDTE.DTE, EnvDTE.DTE>();
-#pragma warning restore RS0030 // Do not used banned APIs
-            if (dte != null)
+            if (_dte.Value.Solution.SolutionBuild.StartupProjects is Array startupProjects && startupProjects.Length > 0)
             {
-                if (dte.Solution.SolutionBuild.StartupProjects is Array startupProjects && startupProjects.Length > 0)
+                IVsSolution solution = _solution.Value;
+
+                var results = PooledArray<T>.GetInstance();
+                foreach (string projectName in startupProjects)
                 {
-#pragma warning disable RS0030 // Do not used banned APIs
-                    IVsSolution sln = _serviceProvider.GetService<IVsSolution, SVsSolution>();
-#pragma warning restore RS0030 // Do not used banned APIs
-                    var results = PooledArray<T>.GetInstance();
-                    foreach (string projectName in startupProjects)
+                    solution.GetProjectOfUniqueName(projectName, out IVsHierarchy hier);
+                    if (hier != null && hier.IsCapabilityMatch(capabilityMatch))
                     {
-                        sln.GetProjectOfUniqueName(projectName, out IVsHierarchy hier);
-                        if (hier != null && hier.IsCapabilityMatch(capabilityMatch))
-                        {
-                            string projectPath = hier.GetProjectFilePath();
-                            results.Add(_projectExportProvider.GetExport<T>(projectPath));
-                        }
+                        string projectPath = hier.GetProjectFilePath();
+                        results.Add(_projectExportProvider.GetExport<T>(projectPath));
                     }
-                    return results.ToImmutableAndFree();
                 }
+
+                return results.ToImmutableAndFree();
             }
+
             return ImmutableArray<T>.Empty;
         }
     }
