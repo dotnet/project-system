@@ -3,28 +3,24 @@
 // <summary>
 // FileRenameTracker
 //
-// Exports an IProjectChangeHintReceiver to listen to file renames. If the file being renamed
+// Exports an IFileRenameHandler to listen to handle renames. If the file being renamed
 // is a code file, it will prompt the user to rename the class to match. The rename is done
 // using Roslyn Renamer API
 // </summary>
 //--------------------------------------------------------------------------------------------
 using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
-
+using System.Threading.Tasks;
 using Microsoft.VisualStudio.LanguageServices;
-
-using Task = System.Threading.Tasks.Task;
+using Microsoft.VisualStudio.ProjectSystem.Rename;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 {
-    [Export(typeof(IProjectChangeHintReceiver))]
-    [ProjectChangeHintKind(ProjectChangeFileSystemEntityRenameHint.RenamedFileAsString)]
+    [Export(typeof(IFileRenameHandler))]
     [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
-    internal class FileRenameTracker : IProjectChangeHintReceiver
+    internal class FileRenameTracker : IFileRenameHandler
     {
         private readonly IUnconfiguredProjectVsServices _projectVsServices;
         private readonly VisualStudioWorkspace _visualStudioWorkspace;
@@ -33,7 +29,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
         private readonly IRoslynServices _roslynServices;
 
         [ImportingConstructor]
-        public FileRenameTracker(IUnconfiguredProjectVsServices projectVsServices, VisualStudioWorkspace visualStudioWorkspace, IEnvironmentOptions environmentOptions, IUserNotificationServices userNotificationServices, IRoslynServices roslynServices)
+        public FileRenameTracker(IUnconfiguredProjectVsServices projectVsServices,
+                                 VisualStudioWorkspace visualStudioWorkspace,
+                                 IEnvironmentOptions environmentOptions,
+                                 IUserNotificationServices userNotificationServices,
+                                 IRoslynServices roslynServices)
         {
             _projectVsServices = projectVsServices;
             _visualStudioWorkspace = visualStudioWorkspace;
@@ -42,28 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             _roslynServices = roslynServices;
         }
 
-        public Task HintedAsync(IImmutableDictionary<Guid, IImmutableSet<IProjectChangeHint>> hints)
-        {
-            IImmutableSet<IProjectChangeHint> files = hints[ProjectChangeFileSystemEntityRenameHint.RenamedFile];
-            if (files.Count == 1)
-            {
-                var hint = (IProjectChangeFileRenameHint)files.First();
-                if (!hint.ChangeAlreadyOccurred)
-                {
-                    KeyValuePair<string, string> kvp = hint.RenamedFiles.First();
-                    ScheduleRename(kvp.Key, kvp.Value);
-                }
-            }
-
-            return Task.CompletedTask;
-        }
-
-        public Task HintingAsync(IProjectChangeHint hint)
-        {
-            return Task.CompletedTask;
-        }
-
-        private void ScheduleRename(string oldFilePath, string newFilePath)
+        public async ValueTask HandleRenameAsync(string oldFilePath, string newFilePath)
         {
             string codeExtension = Path.GetExtension(newFilePath);
             if (!oldFilePath.EndsWith(codeExtension, StringComparison.OrdinalIgnoreCase))
@@ -82,6 +61,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             }
 
             var renamer = new Renamer(_visualStudioWorkspace, _projectVsServices.ThreadingService, _userNotificationServices, _environmentOptions, _roslynServices, myProject, oldFilePath, newFilePath);
+
             _visualStudioWorkspace.WorkspaceChanged += renamer.OnWorkspaceChangedAsync;
         }
     }
