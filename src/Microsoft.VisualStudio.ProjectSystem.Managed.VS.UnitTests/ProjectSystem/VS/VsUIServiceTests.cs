@@ -1,7 +1,12 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System;
+#pragma warning disable VSSDK005 // Avoid instantiating JoinableTaskContext
+#pragma warning disable VSTHRD012 // Provide JoinableTaskFactory where allowed
 
+using System;
+using System.Runtime.InteropServices;
+using System.Threading.Tasks;
+using Microsoft.VisualStudio.Threading;
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
@@ -11,11 +16,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         [Fact]
         public void Constructor_NullAsServiceProvider_ThrowsArgumentNull()
         {
-            var threadingService = IProjectThreadingServiceFactory.Create();
+            var joinableTaskContext = new JoinableTaskContext();
 
             Assert.Throws<ArgumentNullException>("serviceProvider", () =>
             {
-                return new VsUIService<string, string>((IServiceProvider)null, threadingService);
+                return new VsUIService<string, string>((IServiceProvider)null, joinableTaskContext);
             });
         }
 
@@ -24,32 +29,34 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             var serviceProvider = SVsServiceProviderFactory.Create();
 
-            Assert.Throws<ArgumentNullException>("threadingService", () =>
+            Assert.Throws<ArgumentNullException>("joinableTaskContext", () =>
             {
-                return new VsUIService<string, string>(serviceProvider, (IProjectThreadingService)null);
+                return new VsUIService<string, string>(serviceProvider, (JoinableTaskContext)null);
             });
         }
 
         [Fact]
-        public void Value_MustBeCalledOnUIThread()
+        public async Task Value_MustBeCalledOnUIThread()
         {
-            var threadingService = IProjectThreadingServiceFactory.ImplementVerifyOnUIThread(() => throw new InvalidOperationException());
+            var service = CreateInstance<string, string>();
 
-            var service = CreateInstance<string, string>(threadingService: threadingService);
-
-            Assert.Throws<InvalidOperationException>(() =>
+            var exception = await Assert.ThrowsAsync<COMException>(() =>
             {
-                var value = service.Value;
+                return Task.Run(() =>
+                {
+                    var value = service.Value;
+                });
             });
+
+            Assert.Equal(VSConstants.RPC_E_WRONG_THREAD, exception.HResult);
         }
 
         [Fact]
         public void Value_WhenMissingService_ReturnsNull()
         {
-            var threadingService = IProjectThreadingServiceFactory.ImplementVerifyOnUIThread(() => { });
             var serviceProvider = IServiceProviderFactory.ImplementGetService(type => null);
 
-            var service = CreateInstance<string, string>(serviceProvider: serviceProvider, threadingService: threadingService);
+            var service = CreateInstance<string, string>(serviceProvider: serviceProvider);
 
             var result = service.Value;
 
@@ -61,7 +68,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             object input = new object();
 
-            var threadingService = IProjectThreadingServiceFactory.ImplementVerifyOnUIThread(() => { });
             var serviceProvider = IServiceProviderFactory.ImplementGetService(type =>
             {
                 if (type == typeof(string))
@@ -71,7 +77,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             });
 
-            var service = CreateInstance<string, object>(serviceProvider: serviceProvider, threadingService: threadingService);
+            var service = CreateInstance<string, object>(serviceProvider: serviceProvider);
 
             var result = service.Value;
 
@@ -81,13 +87,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         [Fact]
         public void Value_CachesResult()
         {
-            var threadingService = IProjectThreadingServiceFactory.ImplementVerifyOnUIThread(() => { });
             var serviceProvider = IServiceProviderFactory.ImplementGetService(type =>
             {
                 return new object();
             });
 
-            var service = CreateInstance<string, object>(serviceProvider: serviceProvider, threadingService: threadingService);
+            var service = CreateInstance<string, object>(serviceProvider: serviceProvider);
 
             var result1 = service.Value;
             var result2 = service.Value;
@@ -95,12 +100,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             Assert.Same(result1, result2);
         }
 
-        private VsUIService<TService, TInterface> CreateInstance<TService, TInterface>(IServiceProvider serviceProvider = null, IProjectThreadingService threadingService = null)
+        private VsUIService<TService, TInterface> CreateInstance<TService, TInterface>(IServiceProvider serviceProvider = null, JoinableTaskContext joinableTaskContext = null)
         {
             serviceProvider = serviceProvider ?? SVsServiceProviderFactory.Create();
-            threadingService = threadingService ?? IProjectThreadingServiceFactory.Create();
+            joinableTaskContext = joinableTaskContext ?? new JoinableTaskContext();
 
-            return new VsUIService<TService, TInterface>(serviceProvider, threadingService);
+            return new VsUIService<TService, TInterface>(serviceProvider, joinableTaskContext);
         }
     }
 }
