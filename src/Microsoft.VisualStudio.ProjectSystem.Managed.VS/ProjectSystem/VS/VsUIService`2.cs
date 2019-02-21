@@ -6,6 +6,7 @@ using System;
 using System.ComponentModel.Composition;
 
 using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
@@ -16,8 +17,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     internal class VsUIService<TService, TInterface> : VsUIService<TInterface>, IVsUIService<TService, TInterface>
     {
         [ImportingConstructor]
-        public VsUIService([Import(typeof(SVsServiceProvider))]IServiceProvider serviceProvider, IProjectThreadingService threadingService)
-            : base(serviceProvider, threadingService)
+        public VsUIService([Import(typeof(SVsServiceProvider))]IServiceProvider serviceProvider, JoinableTaskContext joinableTaskContext)
+            : base(serviceProvider, joinableTaskContext)
         {
         }
 
