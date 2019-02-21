@@ -75,11 +75,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         private readonly Lazy<IVsShellUtilitiesHelper> _shellUtilitiesHelper;
         private readonly Lazy<IFileSystem> _fileSystem;
         private readonly Lazy<IHttpClient> _httpClient;
-        private readonly IVsService<SVsSettingsPersistenceManager, ISettingsManager> _settingsManagerService;
-        private readonly IVsService<SVsUIShell, IVsUIShell> _vsUIShellService;
-        private readonly IVsService<SVsSolution, IVsSolution> _vsSolutionService;
-        private readonly IVsService<SVsAppId, IVsAppId> _vsAppIdService;
-        private readonly IVsService<SVsShell, IVsShell> _vsShellService;
+        private readonly IVsService<ISettingsManager> _settingsManagerService;
+        private readonly IVsService<IVsUIShell> _vsUIShellService;
+        private readonly IVsService<IVsSolution> _vsSolutionService;
+        private readonly IVsService<IVsAppId> _vsAppIdService;
+        private readonly IVsService<IVsShell> _vsShellService;
 
         private RemoteCacheFile _versionDataCacheFile;
         private Version _ourVSVersion;

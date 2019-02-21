@@ -50,7 +50,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             LaunchSettingsProvider = launchSettingsProvider;
         }
 
-        private readonly IVsService<SVsShellDebugger, IVsDebugger4> _vsDebuggerService;
+        private readonly IVsService<IVsDebugger4> _vsDebuggerService;
 
         /// <summary>
         /// Import the LaunchTargetProviders which know how to run profiles
