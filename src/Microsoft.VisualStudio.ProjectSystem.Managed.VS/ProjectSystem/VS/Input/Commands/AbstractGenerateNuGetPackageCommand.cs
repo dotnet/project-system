@@ -14,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
     internal abstract class AbstractGenerateNuGetPackageCommand : AbstractSingleNodeProjectCommand, IVsUpdateSolutionEvents, IDisposable
     {
         private readonly IProjectThreadingService _threadingService;
-        private readonly IVsService<SVsSolutionBuildManager, IVsSolutionBuildManager2> _vsSolutionBuildManagerService;
+        private readonly IVsService<IVsSolutionBuildManager2> _vsSolutionBuildManagerService;
         private readonly GeneratePackageOnBuildPropertyProvider _generatePackageOnBuildPropertyProvider;
         private IVsSolutionBuildManager2 _buildManager;
         private uint _solutionEventsCookie;

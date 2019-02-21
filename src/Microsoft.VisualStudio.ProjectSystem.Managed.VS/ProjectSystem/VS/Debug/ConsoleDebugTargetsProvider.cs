@@ -35,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         private readonly IActiveDebugFrameworkServices _activeDebugFramework;
         private readonly ProjectProperties _properties;
         private readonly IProjectThreadingService _threadingService;
-        private readonly IVsUIService<SVsShellDebugger, IVsDebugger10> _debugger;
+        private readonly IVsUIService<IVsDebugger10> _debugger;
         private readonly UnconfiguredProject _project;
 
         [ImportingConstructor]
