@@ -12,9 +12,7 @@ using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.Build;
-using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.Telemetry;
-using Microsoft.VisualStudio.Text;
 
 namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 {
@@ -22,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
     [Export(typeof(IBuildUpToDateCheckProvider))]
     [Export(ExportContractNames.Scopes.ConfiguredProject, typeof(IProjectDynamicLoadComponent))]
     [ExportMetadata("BeforeDrainCriticalTasks", true)]
-    internal sealed class BuildUpToDateCheck : OnceInitializedOnceDisposedUnderLockAsync, IBuildUpToDateCheckProvider, IProjectDynamicLoadComponent
+    internal sealed partial class BuildUpToDateCheck : OnceInitializedOnceDisposedUnderLockAsync, IBuildUpToDateCheckProvider, IProjectDynamicLoadComponent
     {
         private const string CopyToOutputDirectory = "CopyToOutputDirectory";
         private const string PreserveNewest = "PreserveNewest";
@@ -56,31 +54,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         private readonly ITelemetryService _telemetryService;
         private readonly IFileSystem _fileSystem;
 
-        private IDisposable? _link;
-        private IComparable? _lastVersionSeen;
+        private State _state = State.CreateEmpty();
 
-        private bool _isDisabled = true;
+        private IDisposable? _link;
+
         private bool _itemsChangedSinceLastCheck = true;
-        private string? _msBuildProjectFullPath;
-        private string? _msBuildProjectDirectory;
-        private string? _markerFile;
-        private string? _outputRelativeOrFullPath;
-        private string? _newestImportInput;
 
         internal DateTime LastCheckTimeUtc { get; private set; } = DateTime.MinValue;
-
-        private readonly HashSet<string> _itemTypes = new HashSet<string>(StringComparers.ItemTypes);
-        private readonly Dictionary<string, HashSet<(string path, string? link, CopyToOutputDirectoryType copyType)>> _items = new Dictionary<string, HashSet<(string, string?, CopyToOutputDirectoryType)>>(StringComparers.ItemTypes);
-        private readonly HashSet<string> _customInputs = new HashSet<string>(StringComparers.Paths);
-        private readonly HashSet<string> _customOutputs = new HashSet<string>(StringComparers.Paths);
-        private readonly HashSet<string> _builtOutputs = new HashSet<string>(StringComparers.Paths);
-
-        /// <summary>Key is destination, value is source.</summary>
-        private readonly Dictionary<string, string> _copiedOutputFiles = new Dictionary<string, string>(StringComparers.Paths);
-
-        private readonly HashSet<string> _analyzerReferences = new HashSet<string>(StringComparers.Paths);
-        private readonly HashSet<string> _compilationReferences = new HashSet<string>(StringComparers.Paths);
-        private readonly HashSet<string> _copyReferenceInputs = new HashSet<string>(StringComparers.Paths);
 
         [ImportingConstructor]
         public BuildUpToDateCheck(
@@ -113,24 +93,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 _link?.Dispose();
                 _link = null;
 
-                LastCheckTimeUtc = DateTime.MinValue;
-                _isDisabled = true;
-                _itemsChangedSinceLastCheck = true;
-                _msBuildProjectFullPath = null;
-                _msBuildProjectDirectory = null;
-                _markerFile = null;
-                _outputRelativeOrFullPath = null;
-                _newestImportInput = null;
+                _state = State.CreateEmpty();
 
-                _itemTypes.Clear();
-                _items.Clear();
-                _customInputs.Clear();
-                _customOutputs.Clear();
-                _builtOutputs.Clear();
-                _copiedOutputFiles.Clear();
-                _analyzerReferences.Clear();
-                _compilationReferences.Clear();
-                _copyReferenceInputs.Clear();
+                LastCheckTimeUtc = DateTime.MinValue;
+                _itemsChangedSinceLastCheck = true;
 
                 return Task.CompletedTask;
             });
@@ -142,7 +108,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 _configuredProject.Services.ProjectSubscription.JointRuleSource.SourceBlock.SyncLinkOptions(DataflowOption.WithRuleNames(ProjectPropertiesSchemas)),
                 _configuredProject.Services.ProjectSubscription.SourceItemsRuleSource.SourceBlock.SyncLinkOptions(),
                 _projectItemSchemaService.SourceBlock.SyncLinkOptions(),
-                target: DataflowBlockSlim.CreateActionBlock<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectSubscriptionUpdate, IProjectItemSchema>>>(OnChangedAsync),
+                target: DataflowBlockSlim.CreateActionBlock<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectSubscriptionUpdate, IProjectItemSchema>>>(OnChanged),
                 linkOptions: DataflowOption.PropagateCompletion);
 
             return Task.CompletedTask;
@@ -153,91 +119,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             _link?.Dispose();
 
             return Task.CompletedTask;
-        }
-
-        private void OnProjectChanged(IProjectSubscriptionUpdate e)
-        {
-            _isDisabled = e.CurrentState.IsPropertyTrue(ConfigurationGeneral.SchemaName, ConfigurationGeneral.DisableFastUpToDateCheckProperty, defaultValue: false);
-
-            _msBuildProjectFullPath = e.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.MSBuildProjectFullPathProperty, _msBuildProjectFullPath);
-            _msBuildProjectDirectory = e.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.MSBuildProjectDirectoryProperty, _msBuildProjectDirectory);
-            _outputRelativeOrFullPath = e.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.OutputPathProperty, _outputRelativeOrFullPath);
-            string msBuildAllProjects = e.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.MSBuildAllProjectsProperty, "");
-
-            // The first item in this semicolon-separated list of project files will always be the one
-            // with the newest timestamp. As we are only interested in timestamps on these files, we can
-            // save memory and time by only considering this first path (dotnet/project-system#4333).
-            _newestImportInput = new LazyStringSplit(msBuildAllProjects, ';').FirstOrDefault();
-
-            if (e.ProjectChanges.TryGetValue(ResolvedAnalyzerReference.SchemaName, out IProjectChangeDescription changes) &&
-                changes.Difference.AnyChanges)
-            {
-                _analyzerReferences.Clear();
-                _analyzerReferences.AddRange(changes.After.Items.Select(item => item.Value[ResolvedAnalyzerReference.ResolvedPathProperty]));
-            }
-
-            if (e.ProjectChanges.TryGetValue(ResolvedCompilationReference.SchemaName, out changes) &&
-                changes.Difference.AnyChanges)
-            {
-                _compilationReferences.Clear();
-                _copyReferenceInputs.Clear();
-
-                foreach (IImmutableDictionary<string, string> item in changes.After.Items.Values)
-                {
-                    _compilationReferences.Add(item[ResolvedCompilationReference.ResolvedPathProperty]);
-                    if (!string.IsNullOrWhiteSpace(item[CopyUpToDateMarker.SchemaName]))
-                    {
-                        _copyReferenceInputs.Add(item[CopyUpToDateMarker.SchemaName]);
-                    }
-                    if (!string.IsNullOrWhiteSpace(item[ResolvedCompilationReference.OriginalPathProperty]))
-                    {
-                        _copyReferenceInputs.Add(item[ResolvedCompilationReference.OriginalPathProperty]);
-                    }
-                }
-            }
-
-            if (e.ProjectChanges.TryGetValue(UpToDateCheckInput.SchemaName, out IProjectChangeDescription inputs) &&
-                inputs.Difference.AnyChanges)
-            {
-                _customInputs.Clear();
-                _customInputs.AddRange(inputs.After.Items.Keys);
-            }
-
-            if (e.ProjectChanges.TryGetValue(UpToDateCheckOutput.SchemaName, out IProjectChangeDescription outputs) &&
-                outputs.Difference.AnyChanges)
-            {
-                _customOutputs.Clear();
-                _customOutputs.AddRange(outputs.After.Items.Keys);
-            }
-
-            if (e.ProjectChanges.TryGetValue(UpToDateCheckBuilt.SchemaName, out IProjectChangeDescription built) &&
-                built.Difference.AnyChanges)
-            {
-                _copiedOutputFiles.Clear();
-                _builtOutputs.Clear();
-
-                foreach ((string destination, IImmutableDictionary<string, string> properties) in built.After.Items)
-                {
-                    if (properties.TryGetValue(UpToDateCheckBuilt.OriginalProperty, out string source) &&
-                        !string.IsNullOrEmpty(source))
-                    {
-                        // This file is copied, not built
-                        // Remember the `Original` source for later
-                        _copiedOutputFiles[destination] = source;
-                    }
-                    else
-                    {
-                        // This file is built, not copied
-                        _builtOutputs.Add(destination);
-                    }
-                }
-            }
-
-            if (e.ProjectChanges.TryGetValue(CopyUpToDateMarker.SchemaName, out IProjectChangeDescription upToDateMarkers) &&
-                upToDateMarkers.Difference.AnyChanges)
-            {
-                _markerFile = upToDateMarkers.After.Items.Count == 1 ? upToDateMarkers.After.Items.Single().Key : null;
-            }
         }
 
         private static string? GetLink(IImmutableDictionary<string, string> itemMetadata) =>
@@ -261,49 +142,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             return CopyToOutputDirectoryType.CopyNever;
         }
 
-        private void OnSourceItemChanged(IProjectSubscriptionUpdate e, IProjectItemSchema projectItemSchema)
+        internal void OnChanged(IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectSubscriptionUpdate, IProjectItemSchema>> e)
         {
-            string[] itemTypes = projectItemSchema.GetKnownItemTypes().Where(itemType => projectItemSchema.GetItemType(itemType).UpToDateCheckInput).ToArray();
-            bool itemTypesChanged = !_itemTypes.SetEquals(itemTypes);
+            _state = _state.Update(e, out bool itemsChanged);
 
-            if (itemTypesChanged)
+            if (itemsChanged)
             {
-                _itemTypes.Clear();
-                _itemTypes.AddRange(itemTypes);
-                _items.Clear();
-            }
-
-            foreach ((string itemType, IProjectChangeDescription changes) in e.ProjectChanges)
-            {
-                if (!_itemTypes.Contains(itemType))
-                    continue;
-                if (!itemTypesChanged && !changes.Difference.AnyChanges)
-                    continue;
-
-                _items[itemType] = new HashSet<(string path, string? link, CopyToOutputDirectoryType copyType)>(
-                    changes.After.Items.Select(item => (item.Key, GetLink(item.Value), GetCopyType(item.Value))),
-                    UpToDateCheckItemComparer.Instance);
                 _itemsChangedSinceLastCheck = true;
             }
-
-            if (e.ProjectChanges.TryGetValue(UpToDateCheckOutput.SchemaName, out IProjectChangeDescription outputs) &&
-                outputs.Difference.AnyChanges)
-            {
-                _customOutputs.Clear();
-                _customOutputs.AddRange(outputs.After.Items.Keys);
-            }
-        }
-
-        internal Task OnChangedAsync(IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectSubscriptionUpdate, IProjectItemSchema>> e)
-        {
-            return ExecuteUnderLockAsync(
-                token =>
-                {
-                    OnProjectChanged(e.Value.Item1);
-                    OnSourceItemChanged(e.Value.Item2, e.Value.Item3);
-                    _lastVersionSeen = e.DataSourceVersions[ProjectDataSources.ConfiguredProjectVersion];
-                    return Task.CompletedTask;
-                });
         }
 
         private DateTime? GetTimestampUtc(string path, IDictionary<string, DateTime> timestampCache)
@@ -328,7 +174,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             return false;
         }
 
-        private bool CheckGlobalConditions(BuildAction buildAction, BuildUpToDateCheckLogger logger)
+        private bool CheckGlobalConditions(BuildAction buildAction, BuildUpToDateCheckLogger logger, State state)
         {
             if (buildAction != BuildAction.Build)
             {
@@ -343,7 +189,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 return Fail(logger, "CriticalTasks", "Critical build tasks are running, not up to date.");
             }
 
-            if (_lastVersionSeen == null || _configuredProject.ProjectVersion.CompareTo(_lastVersionSeen) > 0)
+            if (state.LastVersionSeen == null || _configuredProject.ProjectVersion.CompareTo(state.LastVersionSeen) > 0)
             {
                 return Fail(logger, "ProjectInfoOutOfDate", "Project information is older than current project version, not up to date.");
             }
@@ -353,12 +199,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 return Fail(logger, "ItemInfoOutOfDate", "The list of source items has changed since the last build, not up to date.");
             }
 
-            if (_isDisabled)
+            if (state.IsDisabled)
             {
                 return Fail(logger, "Disabled", "The 'DisableFastUpToDateCheck' property is true, not up to date.");
             }
 
-            string copyAlwaysItemPath = _items.SelectMany(kvp => kvp.Value).FirstOrDefault(item => item.copyType == CopyToOutputDirectoryType.CopyAlways).path;
+            string copyAlwaysItemPath = state.Items.SelectMany(kvp => kvp.Value).FirstOrDefault(item => item.copyType == CopyToOutputDirectoryType.CopyAlways).path;
 
             if (copyAlwaysItemPath != null)
             {
@@ -368,23 +214,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             return true;
         }
 
-        private IEnumerable<string> CollectInputs(BuildUpToDateCheckLogger logger)
+        private IEnumerable<string> CollectInputs(BuildUpToDateCheckLogger logger, State state)
         {
-            if (_msBuildProjectFullPath != null)
+            if (state.MSBuildProjectFullPath != null)
             {
                 logger.Verbose("Adding project file inputs:");
-                logger.Verbose("    '{0}'", _msBuildProjectFullPath);
-                yield return _msBuildProjectFullPath;
+                logger.Verbose("    '{0}'", state.MSBuildProjectFullPath);
+                yield return state.MSBuildProjectFullPath;
             }
 
-            if (_newestImportInput != null)
+            if (state.NewestImportInput != null)
             {
                 logger.Verbose("Adding newest import input:");
-                logger.Verbose("    '{0}'", _newestImportInput);
-                yield return _newestImportInput;
+                logger.Verbose("    '{0}'", state.NewestImportInput);
+                yield return state.NewestImportInput;
             }
 
-            foreach ((string itemType, HashSet<(string path, string? link, CopyToOutputDirectoryType copyType)> changes) in _items)
+            foreach ((string itemType, ImmutableHashSet<(string path, string? link, CopyToOutputDirectoryType copyType)> changes) in state.Items)
             {
                 if (changes.Count != 0 && !NonCompilationItemTypes.Contains(itemType))
                 {
@@ -398,32 +244,32 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 }
             }
 
-            if (_analyzerReferences.Count != 0)
+            if (state.AnalyzerReferences.Count != 0)
             {
                 logger.Verbose("Adding " + ResolvedAnalyzerReference.SchemaName + " inputs:");
-                foreach (string input in _analyzerReferences)
+                foreach (string input in state.AnalyzerReferences)
                 {
                     logger.Verbose("    '{0}'", input);
                     yield return input;
                 }
             }
 
-            if (_compilationReferences.Count != 0)
+            if (state.CompilationReferences.Count != 0)
             {
                 logger.Verbose("Adding " + ResolvedCompilationReference.SchemaName + " inputs:");
-                foreach (string input in _compilationReferences)
+                foreach (string input in state.CompilationReferences)
                 {
                     logger.Verbose("    '{0}'", input);
                     yield return input;
                 }
             }
 
-            if (_customInputs.Count != 0)
+            if (state.CustomInputs.Count != 0)
             {
                 logger.Verbose("Adding " + UpToDateCheckInput.SchemaName + " inputs:");
                 // TODO remove pragmas when https://github.com/dotnet/roslyn/issues/37040 is fixed
 #pragma warning disable CS8622
-                foreach (string input in _customInputs.Select(_configuredProject.UnconfiguredProject.MakeRooted))
+                foreach (string input in state.CustomInputs.Select(_configuredProject.UnconfiguredProject.MakeRooted))
 #pragma warning restore CS8622
                 {
                     logger.Verbose("    '{0}'", input);
@@ -432,15 +278,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             }
         }
 
-        private IEnumerable<string> CollectOutputs(BuildUpToDateCheckLogger logger)
+        private IEnumerable<string> CollectOutputs(BuildUpToDateCheckLogger logger, State state)
         {
-            if (_customOutputs.Count != 0)
+            if (state.CustomOutputs.Count != 0)
             {
                 logger.Verbose("Adding " + UpToDateCheckOutput.SchemaName + " outputs:");
 
                 // TODO remove pragmas when https://github.com/dotnet/roslyn/issues/37040 is fixed
 #pragma warning disable CS8622
-                foreach (string output in _customOutputs.Select(_configuredProject.UnconfiguredProject.MakeRooted))
+                foreach (string output in state.CustomOutputs.Select(_configuredProject.UnconfiguredProject.MakeRooted))
 #pragma warning restore CS8622
                 {
                     logger.Verbose("    '{0}'", output);
@@ -448,13 +294,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 }
             }
 
-            if (_builtOutputs.Count != 0)
+            if (state.BuiltOutputs.Count != 0)
             {
                 logger.Verbose("Adding " + UpToDateCheckBuilt.SchemaName + " outputs:");
 
                 // TODO remove pragmas when https://github.com/dotnet/roslyn/issues/37040 is fixed
 #pragma warning disable CS8622
-                foreach (string output in _builtOutputs.Select(_configuredProject.UnconfiguredProject.MakeRooted))
+                foreach (string output in state.BuiltOutputs.Select(_configuredProject.UnconfiguredProject.MakeRooted))
 #pragma warning restore CS8622
                 {
                     logger.Verbose("    '{0}'", output);
@@ -522,10 +368,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 : (null, null);
         }
 
-        private bool CheckOutputs(BuildUpToDateCheckLogger logger, IDictionary<string, DateTime> timestampCache)
+        private bool CheckOutputs(BuildUpToDateCheckLogger logger, IDictionary<string, DateTime> timestampCache, State state)
         {
             // We assume there are fewer outputs than inputs, so perform a full scan of outputs to find the earliest
-            (DateTime? outputTime, string? outputPath) = GetEarliestOutput(CollectOutputs(logger), timestampCache);
+            (DateTime? outputTime, string? outputPath) = GetEarliestOutput(CollectOutputs(logger, state), timestampCache);
 
             if (outputTime != null)
             {
@@ -533,7 +379,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 // Search for an input that's either missing or newer than the earliest output.
                 // As soon as we find one, we can stop the scan.
-                foreach (string input in CollectInputs(logger))
+                foreach (string input in CollectInputs(logger, state))
                 {
                     DateTime? time = GetTimestampUtc(input, timestampCache);
 
@@ -573,18 +419,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         // regardless of whether or not the project produces a marker. So, basically, we only check
         // here if the project actually produced a marker and we only check it against references that
         // actually produced a marker.
-        private bool CheckMarkers(BuildUpToDateCheckLogger logger, IDictionary<string, DateTime> timestampCache)
+        private bool CheckMarkers(BuildUpToDateCheckLogger logger, IDictionary<string, DateTime> timestampCache, State state)
         {
-            if (string.IsNullOrWhiteSpace(_markerFile) || !_copyReferenceInputs.Any())
+            if (string.IsNullOrWhiteSpace(state.MarkerFile) || !state.CopyReferenceInputs.Any())
             {
                 return true;
             }
 
-            string markerFile = _configuredProject.UnconfiguredProject.MakeRooted(_markerFile);
+            string markerFile = _configuredProject.UnconfiguredProject.MakeRooted(state.MarkerFile);
 
             logger.Verbose("Adding input reference copy markers:");
 
-            foreach (string referenceMarkerFile in _copyReferenceInputs)
+            foreach (string referenceMarkerFile in state.CopyReferenceInputs)
             {
                 logger.Verbose("    '{0}'", referenceMarkerFile);
             }
@@ -592,7 +438,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             logger.Verbose("Adding output reference copy marker:");
             logger.Verbose("    '{0}'", markerFile);
 
-            (DateTime latestInputMarkerTime, string? latestInputMarkerPath) = GetLatestInput(_copyReferenceInputs, timestampCache);
+            (DateTime latestInputMarkerTime, string? latestInputMarkerPath) = GetLatestInput(state.CopyReferenceInputs, timestampCache);
 
             if (latestInputMarkerPath != null)
             {
@@ -624,9 +470,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             return true;
         }
 
-        private bool CheckCopiedOutputFiles(BuildUpToDateCheckLogger logger, IDictionary<string, DateTime> timestampCache)
+        private bool CheckCopiedOutputFiles(BuildUpToDateCheckLogger logger, IDictionary<string, DateTime> timestampCache, State state)
         {
-            foreach ((string destinationRelative, string sourceRelative) in _copiedOutputFiles)
+            foreach ((string destinationRelative, string sourceRelative) in state.CopiedOutputFiles)
             {
                 string source = _configuredProject.UnconfiguredProject.MakeRooted(sourceRelative);
                 string destination = _configuredProject.UnconfiguredProject.MakeRooted(destinationRelative);
@@ -664,11 +510,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             return true;
         }
 
-        private bool CheckCopyToOutputDirectoryFiles(BuildUpToDateCheckLogger logger, IDictionary<string, DateTime> timestampCache)
+        private bool CheckCopyToOutputDirectoryFiles(BuildUpToDateCheckLogger logger, IDictionary<string, DateTime> timestampCache, State state)
         {
-            IEnumerable<(string path, string? link, CopyToOutputDirectoryType copyType)> items = _items.SelectMany(kvp => kvp.Value).Where(item => item.copyType == CopyToOutputDirectoryType.CopyIfNewer);
+            IEnumerable<(string path, string? link, CopyToOutputDirectoryType copyType)> items = state.Items.SelectMany(kvp => kvp.Value).Where(item => item.copyType == CopyToOutputDirectoryType.CopyIfNewer);
 
-            string outputFullPath = Path.Combine(_msBuildProjectDirectory, _outputRelativeOrFullPath);
+            string outputFullPath = Path.Combine(state.MSBuildProjectDirectory, state.OutputRelativeOrFullPath);
 
             foreach ((string path, string? link, _) in items)
             {
@@ -735,7 +581,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 try
                 {
-                    if (!CheckGlobalConditions(buildAction, logger))
+                    State state = _state;
+
+                    if (!CheckGlobalConditions(buildAction, logger, state))
                     {
                         return false;
                     }
@@ -743,10 +591,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     // Short-lived cache of timestamp by path
                     var timestampCache = new Dictionary<string, DateTime>(StringComparers.Paths);
 
-                    if (!CheckOutputs(logger, timestampCache) ||
-                        !CheckMarkers(logger, timestampCache) ||
-                        !CheckCopyToOutputDirectoryFiles(logger, timestampCache) ||
-                        !CheckCopiedOutputFiles(logger, timestampCache))
+                    if (!CheckOutputs(logger, timestampCache, state) ||
+                        !CheckMarkers(logger, timestampCache, state) ||
+                        !CheckCopyToOutputDirectoryFiles(logger, timestampCache, state) ||
+                        !CheckCopiedOutputFiles(logger, timestampCache, state))
                     {
                         return false;
                     }
