@@ -239,7 +239,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
 
         //          Line        Column          Expected Line  Expected Column
         [Theory]
-        [InlineData(   0,            0,                     0,               0)]       // Is this the right behavior? See https://github.com/dotnet/roslyn-project-system/issues/145
+        [InlineData(   0,            0,                     0,               0)]       // Is this the right behavior? See https://github.com/dotnet/project-system/issues/145
         [InlineData(   0,           -1,                     0,               0)]       // Is this the right behavior?
         [InlineData(  -1,            0,                     0,               0)]       // Is this the right behavior?
         [InlineData(   1,            0,                     0,               0)]
@@ -270,7 +270,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
 
         //          Line        Column      End Line     End Column             Expected End Line  Expected End Column
         [Theory]
-        [InlineData(   0,            0,            0,             0,                            0,                   0)]       // Is this the right behavior? See https://github.com/dotnet/roslyn-project-system/issues/145
+        [InlineData(   0,            0,            0,             0,                            0,                   0)]       // Is this the right behavior? See https://github.com/dotnet/project-system/issues/145
         [InlineData(   0,           -1,            0,             0,                            0,                   0)]       // Is this the right behavior?
         [InlineData(  -1,            0,            0,             0,                            0,                   0)]       // Is this the right behavior?
         [InlineData(   1,            0,            0,             0,                            0,                   0)]
@@ -304,8 +304,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         [Theory]
         [InlineData(null,                                       null,                                   @"")]
         [InlineData(@"",                                        @"",                                    @"")]
-        [InlineData(@"Foo.txt",                                 @"",                                    @"")]                // Is this the right behavior?  See https://github.com/dotnet/roslyn-project-system/issues/146
-        [InlineData(@"C:\Foo.txt",                              @"",                                    @"")]                // Is this the right behavior?  See https://github.com/dotnet/roslyn-project-system/issues/146
+        [InlineData(@"Foo.txt",                                 @"",                                    @"")]                // Is this the right behavior?  See https://github.com/dotnet/project-system/issues/146
+        [InlineData(@"C:\Foo.txt",                              @"",                                    @"")]                // Is this the right behavior?  See https://github.com/dotnet/project-system/issues/146
         [InlineData(@"C:\Foo.txt",                              @"C:\MyProject.csproj",                 @"C:\Foo.txt")]
         [InlineData(@"Foo.txt",                                 @"C:\MyProject.csproj",                 @"C:\Foo.txt")]
         [InlineData(@"..\Foo.txt",                              @"C:\Bar\MyProject.csproj",             @"C:\Foo.txt")]

@@ -135,7 +135,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                         catch
                         {
                             // TODO: should have message indicating the setting is being ignored. Fix as part of issue
-                            //       https://github.com/dotnet/roslyn-project-system/issues/424
+                            //       https://github.com/dotnet/project-system/issues/424
                         }
                     }
                 }
