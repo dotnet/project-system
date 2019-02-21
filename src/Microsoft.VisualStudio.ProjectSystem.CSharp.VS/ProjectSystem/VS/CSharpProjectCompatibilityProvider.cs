@@ -4,7 +4,6 @@ using System.ComponentModel.Composition;
 using System.Threading.Tasks;
 
 using Microsoft.Build.Construction;
-using Microsoft.VisualStudio.Packaging;
 using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
@@ -12,10 +11,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     /// <summary>
     ///     Checks a legacy VB project for compability with the new project system.
     /// </summary>
-    [SupportedProjectTypeGuid(CSharpProjectSystemPackage.LegacyProjectTypeGuid)]
+    [SupportedProjectTypeGuid(ProjectType.LegacyCSharp)]
     [Export(ExportContractNames.Extensions.SupportedProjectTypeGuid)]
     [Export(typeof(IFlavoredProjectCompatibilityProvider))]
-    [ProjectTypeGuidFilter(CSharpProjectSystemPackage.LegacyProjectTypeGuid)]
+    [ProjectTypeGuidFilter(ProjectType.LegacyCSharp)]
     [AppliesTo(ProjectCapabilities.AlwaysApplicable)]
     internal class CSharpProjectCompatibilityProvider : IFlavoredProjectCompatibilityProvider
     {

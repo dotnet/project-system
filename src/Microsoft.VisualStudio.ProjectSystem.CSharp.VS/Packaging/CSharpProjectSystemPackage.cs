@@ -3,7 +3,7 @@
 using System;
 using System.Runtime.InteropServices;
 using System.Threading;
-
+using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.Packaging;
 using Microsoft.VisualStudio.ProjectSystem;
@@ -16,7 +16,7 @@ using Task = System.Threading.Tasks.Task;
 
 // Register ourselves as a CPS project type
 [assembly: ProjectTypeRegistration(
-    projectTypeGuid: CSharpProjectSystemPackage.ProjectTypeGuid,
+    projectTypeGuid: ProjectType.CSharp,
     displayName: "#1",                      // "C#"
     displayProjectFileExtensions: "#2",     // "C# Project Files (*.csproj);*.csproj"
     defaultProjectExtension: "csproj",
@@ -32,8 +32,6 @@ namespace Microsoft.VisualStudio.Packaging
     [ProvideProjectFactory(typeof(MigrateXprojProjectFactory), null, "#8", "xproj", "xproj", null)]
     internal class CSharpProjectSystemPackage : AsyncPackage
     {
-        public const string ProjectTypeGuid = "9A19103F-16F7-4668-BE54-9A1E7A4F7556";
-        public const string LegacyProjectTypeGuid = "FAE04EC0-301F-11d3-BF4B-00C04F79EFBC";
         public const string PackageGuid = "860A27C0-B665-47F3-BC12-637E16A1050A";
 
         private IVsProjectFactory _factory;

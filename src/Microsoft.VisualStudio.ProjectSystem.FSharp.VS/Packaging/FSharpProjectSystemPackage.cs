@@ -3,7 +3,7 @@
 using System;
 using System.Runtime.InteropServices;
 using System.Threading;
-
+using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Packaging;
 using Microsoft.VisualStudio.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.VS;
@@ -14,7 +14,7 @@ using Task = System.Threading.Tasks.Task;
 
 // Register ourselves as a CPS project type
 [assembly: ProjectTypeRegistration(
-    projectTypeGuid: FSharpProjectSystemPackage.ProjectTypeGuid,
+    projectTypeGuid: ProjectType.FSharp,
     displayName: "#1",                      // "F#"
     displayProjectFileExtensions: "#2",     // "F# Project Files (*.fsproj);*.fsproj"
     defaultProjectExtension: "fsproj",
@@ -29,8 +29,6 @@ namespace Microsoft.VisualStudio.Packaging
     [PackageRegistration(AllowsBackgroundLoading = true, RegisterUsing = RegistrationMethod.CodeBase, UseManagedResourcesOnly = true)]
     internal class FSharpProjectSystemPackage : AsyncPackage
     {
-        public const string ProjectTypeGuid = "6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705";
-        public const string LegacyProjectTypeGuid = "F2A71F9B-5D33-465A-A702-920D77279786";
         public const string PackageGuid = "a724c878-e8fd-4feb-b537-60baba7eda83";
 
         private IVsRegisterProjectSelector _projectSelectorService;

@@ -2,6 +2,7 @@
 
 using System.Runtime.InteropServices;
 
+using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Packaging;
 using Microsoft.VisualStudio.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.VS;
@@ -9,7 +10,7 @@ using Microsoft.VisualStudio.Shell;
 
 // Register ourselves as a CPS project type
 [assembly: ProjectTypeRegistration(
-    projectTypeGuid: VisualBasicProjectSystemPackage.ProjectTypeGuid,
+    projectTypeGuid: ProjectType.VisualBasic,
     displayName: "#1",                      // "Visual Basic"
     displayProjectFileExtensions: "#2",     // "Visual Basic Project Files (*.vbproj);*.vbproj"
     defaultProjectExtension: "vbproj",
@@ -24,8 +25,6 @@ namespace Microsoft.VisualStudio.Packaging
     [PackageRegistration(AllowsBackgroundLoading = true, RegisterUsing = RegistrationMethod.CodeBase, UseManagedResourcesOnly = true)]
     internal class VisualBasicProjectSystemPackage : AsyncPackage
     {
-        public const string ProjectTypeGuid = "778DAE3C-4631-46EA-AA77-85C1314464D9";
-        public const string LegacyProjectTypeGuid = "F184B08F-C81C-45F6-A57F-5ABD9991F28F";
         public const string PackageGuid = "D15F5C78-D04F-45FD-AEA2-D7982D8FA429";
 
         public VisualBasicProjectSystemPackage()

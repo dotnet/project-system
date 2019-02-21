@@ -7,7 +7,6 @@ using System.Runtime.InteropServices;
 
 using Microsoft.VisualStudio.Buffers.PooledObjects;
 using Microsoft.VisualStudio.IO;
-using Microsoft.VisualStudio.Packaging;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 using Microsoft.VisualStudio.Shell.Flavor;
 using Microsoft.VisualStudio.Shell.Interop;
@@ -17,7 +16,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
 {
-    [Guid("8bb2217d-0f2d-49d1-97bc-3654ed321f3b")]
+    [Guid(ProjectType.LegacyXProj)]
     internal sealed class MigrateXprojProjectFactory : FlavoredProjectFactoryBase, IVsProjectUpgradeViaFactory, IVsProjectUpgradeViaFactory4
     {
         private readonly ProcessRunner _runner;
@@ -316,7 +315,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
 
             if (isXproj)
             {
-                migratedProjectFactory = new Guid(CSharpProjectSystemPackage.ProjectTypeGuid);
+                migratedProjectFactory = new Guid(ProjectType.CSharp);
                 upgradeProjectCapabilityFlags = (uint)(__VSPPROJECTUPGRADEVIAFACTORYFLAGS.PUVFF_BACKUPSUPPORTED | __VSPPROJECTUPGRADEVIAFACTORYFLAGS.PUVFF_COPYBACKUP);
             }
             else

@@ -376,7 +376,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
             Assert.Equal(VSConstants.S_OK,
                 migrator.UpgradeProject_CheckOnly(XprojLocation, logger, out int upgradeRequired, out Guid newProjectFactory, out uint capabilityFlags));
             Assert.Equal((int)__VSPPROJECTUPGRADEVIAFACTORYREPAIRFLAGS.VSPUVF_PROJECT_ONEWAYUPGRADE, upgradeRequired);
-            Assert.Equal(Guid.Parse(CSharpProjectSystemPackage.ProjectTypeGuid), newProjectFactory);
+            Assert.Equal(Guid.Parse(ProjectType.CSharp), newProjectFactory);
             Assert.Equal((uint)(__VSPPROJECTUPGRADEVIAFACTORYFLAGS.PUVFF_BACKUPSUPPORTED | __VSPPROJECTUPGRADEVIAFACTORYFLAGS.PUVFF_COPYBACKUP),
                 capabilityFlags);
         }
@@ -497,7 +497,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
             Assert.False(fileSystem.FileExists(ProjectLockJsonLocation));
             Assert.Equal(CsprojLocation, outCsproj);
             Assert.Equal((int)__VSPPROJECTUPGRADEVIAFACTORYREPAIRFLAGS.VSPUVF_PROJECT_ONEWAYUPGRADE, upgradeRequired);
-            Assert.Equal(Guid.Parse(CSharpProjectSystemPackage.ProjectTypeGuid), newProjectFactory);
+            Assert.Equal(Guid.Parse(ProjectType.CSharp), newProjectFactory);
             Mock.Get(setup).Verify(g => g.SetupRemoval(solution, It.IsAny<IServiceProvider>(), fileSystem));
         }
 

@@ -4,7 +4,6 @@ using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
 
-using Microsoft.VisualStudio.Packaging;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
@@ -35,11 +34,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             if (hasProjectElementWithSdkAttribute || hasImportElementWithSdkAttribute)
             {
-                guidProjectFactory = Guid.Parse(FSharpProjectSystemPackage.ProjectTypeGuid);
+                guidProjectFactory = Guid.Parse(ProjectType.FSharp);
                 return;
             }
 
-            guidProjectFactory = Guid.Parse(FSharpProjectSystemPackage.LegacyProjectTypeGuid);
+            guidProjectFactory = Guid.Parse(ProjectType.LegacyFSharp);
         }
     }
 }
