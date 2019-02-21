@@ -14,6 +14,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rename
         /// </summary>
         /// <param name="oldFilePath">The original path and name of the file</param>
         /// <param name="newFilePath">The new path and name of the file</param>
-        ValueTask HandleRenameAsync(string oldFilePath, string newFilePath);
+        Task HandleRenameAsync(string oldFilePath, string newFilePath);
     }
 }

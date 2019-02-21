@@ -83,5 +83,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         ///     intention that the <see cref="IWorkspaceProjectContext"/> will be immediately disposed.
         /// </remarks>
         Task ApplyProjectBuildAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> update, bool isActiveContext, CancellationToken cancellationToken);
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="update"></param>
+        /// <param name="isActiveContext"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task ApplyProjectUpdatedAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> update, bool isActiveContext, CancellationToken cancellationToken);
     }
 }

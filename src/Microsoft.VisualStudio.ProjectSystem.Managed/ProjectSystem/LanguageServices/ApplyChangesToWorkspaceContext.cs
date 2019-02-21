@@ -18,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     ///     Applies <see cref="IProjectVersionedValue{T}"/> values to a <see cref="IWorkspaceProjectContext"/>.
     /// </summary>
     /// <remarks>
-    ///     This class is not thread-safe and it is up to callers to prevent overlapping of calls to 
+    ///     This class is not thread-safe and it is up to callers to prevent overlapping of calls to
     ///     <see cref="ApplyProjectBuildAsync(IProjectVersionedValue{IProjectSubscriptionUpdate}, bool, CancellationToken)"/> and
     ///     <see cref="ApplyProjectEvaluationAsync(IProjectVersionedValue{IProjectSubscriptionUpdate}, bool, CancellationToken)"/>.
     /// </remarks>
@@ -75,6 +75,37 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 ProcessOptions(projectChange.After);
                 await ProcessCommandLineAsync(version, projectChange.Difference, isActiveContext, cancellationToken);
                 ProcessProjectBuildFailure(projectChange.After);
+            }
+        }
+
+        public Task ApplyProjectUpdatedAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> update, bool isActiveContext, CancellationToken cancellationToken)
+        {
+            Requires.NotNull(update, nameof(update));
+
+            VerifyInitializedAndNotDisposed();
+
+            IComparable version = GetConfiguredProjectVersion(update);
+
+            return ProcessProjectUpdatedHandlersAsync(version, update, isActiveContext, cancellationToken);
+        }
+
+        private async Task ProcessProjectUpdatedHandlersAsync(IComparable version,
+                                                        IProjectVersionedValue<IProjectSubscriptionUpdate> update,
+                                                        bool isActiveContext,
+                                                        CancellationToken cancellationToken)
+        {
+            foreach (ExportLifetimeContext<IWorkspaceContextHandler> handler in _handlers)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+
+                if (handler.Value is IProjectUpdatedHandler projectUpdatedHandler)
+                {
+                    IProjectChangeDescription projectChange = update.Value.ProjectChanges[projectUpdatedHandler.ProjectUpdatedRule];
+                    if (!projectChange.Difference.AnyChanges)
+                        continue;
+
+                    await projectUpdatedHandler.HandleUpdateAsync(version, projectChange, isActiveContext, _logger);
+                }
             }
         }
 

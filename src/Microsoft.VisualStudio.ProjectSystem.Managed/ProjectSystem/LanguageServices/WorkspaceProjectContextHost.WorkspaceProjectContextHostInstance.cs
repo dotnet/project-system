@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     internal partial class WorkspaceProjectContextHost
     {
         /// <summary>
-        ///     Responsible for lifetime of a <see cref="IWorkspaceProjectContext"/> and appling changes to a 
+        ///     Responsible for lifetime of a <see cref="IWorkspaceProjectContext"/> and appling changes to a
         ///     project to the context via the <see cref="IApplyChangesToWorkspaceContext"/> service.
         /// </summary>
         internal partial class WorkspaceProjectContextHostInstance : OnceInitializedOnceDisposedUnderLockAsync, IMultiLifetimeInstance
@@ -99,8 +99,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 }
                 catch (OperationCanceledException ex) when (ex.CancellationToken == DisposalToken)
                 {   // We treat cancellation because our instance was disposed differently from when the project is unloading.
-                    // 
-                    // The former indicates that the active configuration changed, and our ConfiguredProject is no longer 
+                    //
+                    // The former indicates that the active configuration changed, and our ConfiguredProject is no longer
                     // considered implicitly "active", we throw a different exceptions to let callers handle that.
                     throw new ActiveProjectConfigurationChangedException();
                 }
@@ -131,6 +131,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
                 context.StartBatch();
 
+                bool isBatchEnded = false;
                 try
                 {
                     bool isActiveContext = _activeWorkspaceProjectContextTracker.IsActiveEditorContext(_contextAccessor.ContextId);
@@ -143,16 +144,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                     {
                         await _applyChangesToWorkspaceContext.Value.ApplyProjectBuildAsync(update, isActiveContext, cancellationToken);
                     }
+
+                    context.EndBatch();
+                    await _applyChangesToWorkspaceContext.Value.ApplyProjectUpdatedAsync(update, isActiveContext, cancellationToken);
+                    isBatchEnded = true;
                 }
                 finally
                 {
-                    context.EndBatch();
+                    if (!isBatchEnded)
+                        context.EndBatch();
                 }
             }
 
             private void CheckForInitialized()
             {
-                // We should have been initialized by our 
+                // We should have been initialized by our
                 // owner before they called into us
                 Assumes.True(IsInitialized);
 

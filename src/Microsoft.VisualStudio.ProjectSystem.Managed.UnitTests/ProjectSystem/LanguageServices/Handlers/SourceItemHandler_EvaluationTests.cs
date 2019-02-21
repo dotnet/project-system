@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             Assert.Throws<ArgumentNullException>("project", () =>
             {
-                new SourceItemHandler((UnconfiguredProject)null);
+                new SourceItemHandler((UnconfiguredProject)null, null);
             });
         }
 
@@ -30,7 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         {
             project = project ?? UnconfiguredProjectFactory.Create();
 
-            var handler = new SourceItemHandler(project);
+            var handler = new SourceItemHandler(project, null);
             if (context != null)
                 handler.Initialize(context);
 
