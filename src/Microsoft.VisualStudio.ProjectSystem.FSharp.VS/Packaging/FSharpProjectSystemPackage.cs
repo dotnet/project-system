@@ -15,8 +15,8 @@ using Task = System.Threading.Tasks.Task;
 // Register ourselves as a CPS project type
 [assembly: ProjectTypeRegistration(
     projectTypeGuid: FSharpProjectSystemPackage.ProjectTypeGuid,
-    displayName: "#1",
-    displayProjectFileExtensions: "#2",
+    displayName: "#1",                      // "F#"
+    displayProjectFileExtensions: "#2",     // "F# Project Files (*.fsproj);*.fsproj"
     defaultProjectExtension: "fsproj",
     language: "FSharp",
     resourcePackageGuid: FSharpProjectSystemPackage.PackageGuid,

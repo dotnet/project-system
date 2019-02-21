@@ -10,8 +10,8 @@ using Microsoft.VisualStudio.Shell;
 // Register ourselves as a CPS project type
 [assembly: ProjectTypeRegistration(
     projectTypeGuid: VisualBasicProjectSystemPackage.ProjectTypeGuid,
-    displayName: "#1",
-    displayProjectFileExtensions: "#2",
+    displayName: "#1",                      // "Visual Basic"
+    displayProjectFileExtensions: "#2",     // "Visual Basic Project Files (*.vbproj);*.vbproj"
     defaultProjectExtension: "vbproj",
     language: "VisualBasic",
     resourcePackageGuid: VisualBasicProjectSystemPackage.PackageGuid,
