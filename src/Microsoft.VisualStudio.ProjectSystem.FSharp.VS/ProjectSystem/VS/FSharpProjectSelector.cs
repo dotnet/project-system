@@ -34,11 +34,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             if (hasProjectElementWithSdkAttribute || hasImportElementWithSdkAttribute)
             {
-                guidProjectFactory = Guid.Parse(ProjectType.FSharp);
+                guidProjectFactory = ProjectType.FSharpGuid;
                 return;
             }
 
-            guidProjectFactory = Guid.Parse(ProjectType.LegacyFSharp);
+            guidProjectFactory = ProjectType.LegacyFSharpGuid;
         }
     }
 }

@@ -315,7 +315,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
 
             if (isXproj)
             {
-                migratedProjectFactory = new Guid(ProjectType.CSharp);
+                migratedProjectFactory = ProjectType.CSharpGuid;
                 upgradeProjectCapabilityFlags = (uint)(__VSPPROJECTUPGRADEVIAFACTORYFLAGS.PUVFF_BACKUPSUPPORTED | __VSPPROJECTUPGRADEVIAFACTORYFLAGS.PUVFF_COPYBACKUP);
             }
             else

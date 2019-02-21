@@ -37,6 +37,11 @@ namespace Microsoft.VisualStudio
         public const string CSharp = "9A19103F-16F7-4668-BE54-9A1E7A4F7556";
 
         /// <summary>
+        ///     A <see cref="Guid"/> representing the C# project type based on the Common Project System (CPS).
+        /// </summary>
+        public static readonly Guid CSharpGuid = new Guid(CSharp);
+
+        /// <summary>
         ///     A <see cref="string"/> representing the legacy C# project type based on the native project system in csproj.dll.
         /// </summary>
         public const string LegacyCSharp = "FAE04EC0-301F-11d3-BF4B-00C04F79EFBC";
@@ -50,6 +55,11 @@ namespace Microsoft.VisualStudio
         ///     A <see cref="string"/> representing the F# project type based on the Common Project System (CPS).
         /// </summary>
         public const string FSharp = "6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705";
+
+        /// <summary>
+        ///     A <see cref="Guid"/> representing the F# project type based on the Common Project System (CPS).
+        /// </summary>
+        public static readonly Guid FSharpGuid = new Guid(FSharp);
 
         /// <summary>
         ///     A <see cref="string"/> representing the legacy F# project type based on the Managed Package Framework (MPF).
