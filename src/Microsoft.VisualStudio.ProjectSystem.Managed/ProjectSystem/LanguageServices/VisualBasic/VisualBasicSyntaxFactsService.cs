@@ -4,7 +4,7 @@ using System.ComponentModel.Composition;
 
 using Microsoft.CodeAnalysis.VisualBasic;
 
-namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
+namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.VisualBasic
 {
     [Export(typeof(ISyntaxFactsService))]
     [Order(Order.Default)]

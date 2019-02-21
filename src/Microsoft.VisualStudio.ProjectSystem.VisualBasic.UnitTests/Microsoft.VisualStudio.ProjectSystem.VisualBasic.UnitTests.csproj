@@ -15,4 +15,7 @@
     <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.Managed\Microsoft.VisualStudio.ProjectSystem.Managed.csproj" />
     <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.VisualBasic\Microsoft.VisualStudio.ProjectSystem.VisualBasic.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ProjectSystem\LanguageServices\" />
+  </ItemGroup>
 </Project>

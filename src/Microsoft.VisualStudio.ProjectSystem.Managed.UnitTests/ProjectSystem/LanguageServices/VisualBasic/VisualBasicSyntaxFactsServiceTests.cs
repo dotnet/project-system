@@ -2,9 +2,8 @@
 
 using Xunit;
 
-namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
+namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.VisualBasic
 {
-
     public class VisualBasicSyntaxFactsServiceTests
     {
         private static readonly ISyntaxFactsService s_service = new VisualBasicSyntaxFactsService(null);
