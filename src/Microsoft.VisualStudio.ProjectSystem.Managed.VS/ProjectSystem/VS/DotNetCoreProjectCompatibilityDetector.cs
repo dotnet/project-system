@@ -27,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     /// <see cref="IDotNetCoreProjectCompatibilityDetector"/>
     /// </summary>
     [Export(typeof(IDotNetCoreProjectCompatibilityDetector))]
-    internal sealed class DotNetCoreProjectCompatibilityDetector : IDotNetCoreProjectCompatibilityDetector, IVsSolutionEvents, IVsSolutionLoadEvents, IDisposable
+    internal sealed partial class DotNetCoreProjectCompatibilityDetector : IDotNetCoreProjectCompatibilityDetector, IVsSolutionEvents, IVsSolutionLoadEvents, IDisposable
     {
         private const string SupportedLearnMoreFwlink = "https://go.microsoft.com/fwlink/?linkid=868064";
         private const string UnsupportedLearnMoreFwlink = "https://go.microsoft.com/fwlink/?linkid=866797";
@@ -55,16 +55,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         private DateTime _timeCurVersionDataLastUpdatedUtc = DateTime.MinValue; // Tracks how often we meed to look for new data
         private VersionCompatibilityData _curVersionCompatibilityData;
         private IVsSolution _vsSolution;
-
-        [Guid("9B164E40-C3A2-4363-9BC5-EB4039DEF653")]
-        internal class SVsSettingsPersistenceManager { }
-
-        private enum CompatibilityLevel
-        {
-            Recommended = 0,
-            Supported = 1,
-            NotSupported = 2
-        }
 
         [ImportingConstructor]
         public DotNetCoreProjectCompatibilityDetector(Lazy<IProjectServiceAccessor> projectAccessor,
