@@ -32,11 +32,6 @@
         <target state="translated">.NET Standard’ı hedefleyen bir sınıf kitaplığı oluşturmaya yönelik proje.</target>
         <note />
       </trans-unit>
-      <trans-unit id="7">
-        <source>Loaded Project File Editor</source>
-        <target state="translated">Yüklenen Proje Dosyası Düzenleyicisi</target>
-        <note />
-      </trans-unit>
       <trans-unit id="8">
         <source>.NET Core 2015 Project Files (*.xproj);*.xproj</source>
         <target state="translated">.NET Core 2015 Proje Dosyaları (*.xproj);*.xproj</target>

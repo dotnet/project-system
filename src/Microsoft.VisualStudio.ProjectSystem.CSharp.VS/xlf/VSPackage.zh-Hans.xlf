@@ -32,11 +32,6 @@
         <target state="translated">用于创建目标为 .NET Standard 的类库的项目。</target>
         <note />
       </trans-unit>
-      <trans-unit id="7">
-        <source>Loaded Project File Editor</source>
-        <target state="translated">已加载的项目文件编辑器</target>
-        <note />
-      </trans-unit>
       <trans-unit id="8">
         <source>.NET Core 2015 Project Files (*.xproj);*.xproj</source>
         <target state="translated">.NET Core 2015 项目文件(*.xproj);*.xproj</target>

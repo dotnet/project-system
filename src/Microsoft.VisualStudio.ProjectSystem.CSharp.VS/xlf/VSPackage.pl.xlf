@@ -32,11 +32,6 @@
         <target state="translated">Projekt służący do tworzenia biblioteki klas przeznaczonej dla środowiska .NET Standard.</target>
         <note />
       </trans-unit>
-      <trans-unit id="7">
-        <source>Loaded Project File Editor</source>
-        <target state="translated">Edytor plików załadowanego projektu</target>
-        <note />
-      </trans-unit>
       <trans-unit id="8">
         <source>.NET Core 2015 Project Files (*.xproj);*.xproj</source>
         <target state="translated">Pliki projektu .NET Core 2015 (*.xproj); *.xproj</target>
