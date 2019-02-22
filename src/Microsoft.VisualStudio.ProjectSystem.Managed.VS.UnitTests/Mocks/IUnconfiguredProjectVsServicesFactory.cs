@@ -15,7 +15,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             return Mock.Of<IUnconfiguredProjectVsServices>();
         }
 
-        public static IUnconfiguredProjectVsServices Implement(Func<IVsHierarchy> hierarchyCreator = null, Func<IVsProject4> projectCreator = null, Func<IProjectThreadingService> threadingServiceCreator = null, Func<ProjectProperties> projectProperties = null)
+        public static IUnconfiguredProjectVsServices Implement(Func<IVsHierarchy> hierarchyCreator = null,
+                                                               Func<IVsProject4> projectCreator = null,
+                                                               Func<IProjectThreadingService> threadingServiceCreator = null,
+                                                               Func<ProjectProperties> projectProperties = null,
+                                                               Func<UnconfiguredProject> unconfiguredProjectCreator = null)
         {
             var mock = new Mock<IUnconfiguredProjectVsServices>();
             if (hierarchyCreator != null)
@@ -38,6 +42,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             if (projectProperties != null)
             {
                 mock.SetupGet(h => h.ActiveConfiguredProjectProperties).Returns(projectProperties());
+            }
+
+            if (unconfiguredProjectCreator != null)
+            {
+                mock.SetupGet(h => h.Project).Returns(unconfiguredProjectCreator());
             }
 
             return mock.Object;
