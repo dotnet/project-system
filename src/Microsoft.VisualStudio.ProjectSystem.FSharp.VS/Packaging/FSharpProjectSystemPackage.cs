@@ -3,25 +3,12 @@
 using System;
 using System.Runtime.InteropServices;
 using System.Threading;
-using Microsoft.VisualStudio;
-using Microsoft.VisualStudio.Packaging;
 using Microsoft.VisualStudio.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.VS;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
 using Task = System.Threading.Tasks.Task;
-
-// Register ourselves as a CPS project type
-[assembly: ProjectTypeRegistration(
-    projectTypeGuid: ProjectType.FSharp,
-    displayName: "#1",                      // "F#"
-    displayProjectFileExtensions: "#2",     // "F# Project Files (*.fsproj);*.fsproj"
-    defaultProjectExtension: "fsproj",
-    language: "FSharp",
-    resourcePackageGuid: FSharpProjectSystemPackage.PackageGuid,
-    Capabilities = ManagedProjectSystemPackage.DefaultCapabilities + "; " + ProjectCapability.FSharp + "; " + ProjectCapability.SortByDisplayOrder,
-    DisableAsynchronousProjectTreeLoad = true)]
 
 namespace Microsoft.VisualStudio.Packaging
 {

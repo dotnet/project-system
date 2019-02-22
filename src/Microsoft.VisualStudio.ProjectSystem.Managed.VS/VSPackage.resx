@@ -123,4 +123,10 @@
   <data name="2" xml:space="preserve">
     <value>Visual Basic Project Files (*.vbproj);*.vbproj</value>
   </data>
+  <data name="3" xml:space="preserve">
+    <value>F#</value>
+  </data>
+  <data name="4" xml:space="preserve">
+    <value>F# Project Files (*.fsproj);*.fsproj</value>
+  </data>
 </root>

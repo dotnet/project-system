@@ -12,6 +12,16 @@
         <target state="translated">Soubory projektu Visual Basicu (*.vbproj);*.vbproj</target>
         <note />
       </trans-unit>
+      <trans-unit id="3">
+        <source>F#</source>
+        <target state="translated">F#</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="4">
+        <source>F# Project Files (*.fsproj);*.fsproj</source>
+        <target state="translated">Soubory projektů F# (*.fsproj);*.fsproj</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>
