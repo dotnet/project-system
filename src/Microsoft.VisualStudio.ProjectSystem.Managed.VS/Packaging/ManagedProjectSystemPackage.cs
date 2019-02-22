@@ -54,7 +54,7 @@ namespace Microsoft.VisualStudio.Packaging
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
 #pragma warning disable RS0030 // Do not used banned APIs
-            _projectSelectorService = this.GetService<IVsRegisterProjectSelector, SVsRegisterProjectTypes>();
+            _projectSelectorService = await this.GetServiceAsync<SVsRegisterProjectTypes, IVsRegisterProjectSelector>();
 #pragma warning restore RS0030 // Do not used banned APIs
             Guid selectorGuid = typeof(FSharpProjectSelector).GUID;
             _projectSelectorService.RegisterProjectSelector(ref selectorGuid, new FSharpProjectSelector(), out _projectSelectorCookie);

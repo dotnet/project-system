@@ -9,10 +9,9 @@ using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.FSharp
 {
-    [ComVisible(true)]
     [Guid("E720DAD0-1854-47FC-93AF-E719B54B84E6")]
     [ProvideObject(typeof(FSharpProjectSelector), RegisterUsing = RegistrationMethod.CodeBase)]
-    public sealed class FSharpProjectSelector : IVsProjectSelector
+    internal sealed class FSharpProjectSelector : IVsProjectSelector
     {
         private const string MSBuildXmlNamespace = "http://schemas.microsoft.com/developer/msbuild/2003";
 
