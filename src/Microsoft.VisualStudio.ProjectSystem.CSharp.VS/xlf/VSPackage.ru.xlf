@@ -32,11 +32,6 @@
         <target state="translated">Проект для создания библиотеки классов, предназначенной для .NET Standard.</target>
         <note />
       </trans-unit>
-      <trans-unit id="7">
-        <source>Loaded Project File Editor</source>
-        <target state="translated">Редактор файлов загруженного проекта</target>
-        <note />
-      </trans-unit>
       <trans-unit id="8">
         <source>.NET Core 2015 Project Files (*.xproj);*.xproj</source>
         <target state="translated">Файлы проектов .NET Core 2015 (*.xproj);*.xproj</target>

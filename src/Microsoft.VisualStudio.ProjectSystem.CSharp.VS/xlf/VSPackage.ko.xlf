@@ -32,11 +32,6 @@
         <target state="translated">.NET Standard를 대상으로 하는 클래스 라이브러리를 만드는 프로젝트입니다.</target>
         <note />
       </trans-unit>
-      <trans-unit id="7">
-        <source>Loaded Project File Editor</source>
-        <target state="translated">로드된 프로젝트 파일 편집기</target>
-        <note />
-      </trans-unit>
       <trans-unit id="8">
         <source>.NET Core 2015 Project Files (*.xproj);*.xproj</source>
         <target state="translated">.NET Core 2015 프로젝트 파일(*.xproj);*.xproj</target>
