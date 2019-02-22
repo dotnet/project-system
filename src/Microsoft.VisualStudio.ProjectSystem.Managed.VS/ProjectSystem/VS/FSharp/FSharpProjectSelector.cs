@@ -7,7 +7,7 @@ using System.Xml.XPath;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS
+namespace Microsoft.VisualStudio.ProjectSystem.VS.FSharp
 {
     [ComVisible(true)]
     [Guid("E720DAD0-1854-47FC-93AF-E719B54B84E6")]
