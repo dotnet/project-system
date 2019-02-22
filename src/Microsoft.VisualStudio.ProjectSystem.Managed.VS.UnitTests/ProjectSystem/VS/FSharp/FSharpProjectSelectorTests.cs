@@ -4,7 +4,7 @@ using System.Xml.Linq;
 
 using Xunit;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
+namespace Microsoft.VisualStudio.ProjectSystem.VS.FSharp
 {
     public class FSharpProjectSelectorTests
     {

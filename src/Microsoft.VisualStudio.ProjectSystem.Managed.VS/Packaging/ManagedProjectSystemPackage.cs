@@ -8,9 +8,10 @@ using System.Threading;
 using Microsoft.VisualStudio.ComponentModelHost;
 using Microsoft.VisualStudio.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.VS;
+using Microsoft.VisualStudio.ProjectSystem.VS.FSharp;
 using Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands;
 using Microsoft.VisualStudio.Shell;
-
+using Microsoft.VisualStudio.Shell.Interop;
 using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.Packaging
@@ -41,6 +42,8 @@ namespace Microsoft.VisualStudio.Packaging
                                                   ProjectCapability.DotNet;
 
         private IDotNetCoreProjectCompatibilityDetector _dotNetCoreCompatibilityDetector;
+        private IVsRegisterProjectSelector _projectSelectorService;
+        private uint _projectSelectorCookie = VSConstants.VSCOOKIE_NIL;
 
         public ManagedProjectSystemPackage()
         {
@@ -49,6 +52,12 @@ namespace Microsoft.VisualStudio.Packaging
         protected override async Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
+#pragma warning disable RS0030 // Do not used banned APIs
+            _projectSelectorService = await this.GetServiceAsync<SVsRegisterProjectTypes, IVsRegisterProjectSelector>();
+#pragma warning restore RS0030 // Do not used banned APIs
+            Guid selectorGuid = typeof(FSharpProjectSelector).GUID;
+            _projectSelectorService.RegisterProjectSelector(ref selectorGuid, new FSharpProjectSelector(), out _projectSelectorCookie);
 
             var componentModel = (IComponentModel)(await GetServiceAsync(typeof(SComponentModel)));
             Lazy<DebugFrameworksDynamicMenuCommand> debugFrameworksCmd = componentModel.DefaultExportProvider.GetExport<DebugFrameworksDynamicMenuCommand>();
@@ -67,6 +76,17 @@ namespace Microsoft.VisualStudio.Packaging
 #if DEBUG
             DebuggerTraceListener.RegisterTraceListener();
 #endif
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && _projectSelectorCookie != VSConstants.VSCOOKIE_NIL)
+            {
+                _projectSelectorService?.UnregisterProjectSelector(_projectSelectorCookie);
+                _projectSelectorCookie = VSConstants.VSCOOKIE_NIL;
+            }
+
+            base.Dispose(disposing);
         }
     }
 }

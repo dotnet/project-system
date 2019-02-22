@@ -15,3 +15,14 @@ using Microsoft.VisualStudio.ProjectSystem.VS;
     resourcePackageGuid: ManagedProjectSystemPackage.PackageGuid,
     Capabilities = ManagedProjectSystemPackage.DefaultCapabilities + "; " + ProjectCapability.VisualBasic,
     DisableAsynchronousProjectTreeLoad = true)]
+
+// F#
+[assembly: ProjectTypeRegistration(
+    projectTypeGuid: ProjectType.FSharp,
+    displayName: "#3",                      // "F#"
+    displayProjectFileExtensions: "#4",     // "F# Project Files (*.fsproj);*.fsproj"
+    defaultProjectExtension: "fsproj",
+    language: "FSharp",
+    resourcePackageGuid: ManagedProjectSystemPackage.PackageGuid,
+    Capabilities = ManagedProjectSystemPackage.DefaultCapabilities + "; " + ProjectCapability.FSharp + "; " + ProjectCapability.SortByDisplayOrder,
+    DisableAsynchronousProjectTreeLoad = true)]
