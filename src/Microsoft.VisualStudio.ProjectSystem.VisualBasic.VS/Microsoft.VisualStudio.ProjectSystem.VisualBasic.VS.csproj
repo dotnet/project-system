@@ -4,7 +4,7 @@
   <PropertyGroup>
     <RootNamespace>Microsoft.VisualStudio</RootNamespace>
     <!-- VSIX -->
-    <GeneratePkgDefFile>true</GeneratePkgDefFile>
+    <GeneratePkgDefFile>false</GeneratePkgDefFile>
     <CreateVsixContainer>false</CreateVsixContainer>
   </PropertyGroup>
   <ItemGroup>
@@ -27,7 +27,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="xlf\*" />
-    <EmbeddedResource Update="VSPackage.resx" />
     <EmbeddedResource Update="VisualBasicVSResources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>VisualBasicVSResources.Designer.cs</LastGenOutput>
