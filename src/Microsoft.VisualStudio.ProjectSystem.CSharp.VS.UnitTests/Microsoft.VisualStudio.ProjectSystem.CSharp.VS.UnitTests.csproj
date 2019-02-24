@@ -16,7 +16,4 @@
     <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.Managed.VS\Microsoft.VisualStudio.ProjectSystem.Managed.VS.csproj" />
     <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.Managed\Microsoft.VisualStudio.ProjectSystem.Managed.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Mocks\" />
-  </ItemGroup>
 </Project>

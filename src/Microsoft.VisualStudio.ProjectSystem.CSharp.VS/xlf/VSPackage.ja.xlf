@@ -22,11 +22,6 @@
         <target state="translated">.NET Standard を対象とするクラス ライブラリを作成するためのプロジェクト。</target>
         <note />
       </trans-unit>
-      <trans-unit id="8">
-        <source>.NET Core 2015 Project Files (*.xproj);*.xproj</source>
-        <target state="translated">.NET Core 2015 プロジェクト ファイル (*.xproj);*.xproj</target>
-        <note />
-      </trans-unit>
       <trans-unit id="9">
         <source>Class Library (.NET Core)</source>
         <target state="translated">クラス ライブラリ (.NET Core)</target>

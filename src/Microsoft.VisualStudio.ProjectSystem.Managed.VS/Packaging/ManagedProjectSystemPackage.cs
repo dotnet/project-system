@@ -6,10 +6,12 @@ using System.Runtime.InteropServices;
 using System.Threading;
 
 using Microsoft.VisualStudio.ComponentModelHost;
+using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.VS;
 using Microsoft.VisualStudio.ProjectSystem.VS.FSharp;
 using Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands;
+using Microsoft.VisualStudio.ProjectSystem.VS.Xproj;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Task = System.Threading.Tasks.Task;
@@ -18,6 +20,7 @@ namespace Microsoft.VisualStudio.Packaging
 {
     [Guid(PackageGuid)]
     [PackageRegistration(AllowsBackgroundLoading = true, RegisterUsing = RegistrationMethod.CodeBase, UseManagedResourcesOnly = true)]
+    [ProvideProjectFactory(typeof(MigrateXprojProjectFactory), null, "#7", "xproj", "xproj", null)]
     [ProvideAutoLoad(ActivationContextGuid, PackageAutoLoadFlags.BackgroundLoad)]
     [ProvideUIContextRule(ActivationContextGuid, "Load Managed Project Package",
         "dotnetcore",
@@ -72,6 +75,10 @@ namespace Microsoft.VisualStudio.Packaging
             Lazy<IProjectServiceAccessor> projectServiceAccessor = componentModel.DefaultExportProvider.GetExport<IProjectServiceAccessor>();
             _dotNetCoreCompatibilityDetector = projectServiceAccessor.Value.GetProjectService().Services.ExportProvider.GetExport<IDotNetCoreProjectCompatibilityDetector>().Value;
             await _dotNetCoreCompatibilityDetector.InitializeAsync();
+
+            IVsProjectFactory factory = new MigrateXprojProjectFactory(new ProcessRunner(), new Win32FileSystem(), ServiceProvider.GlobalProvider, new GlobalJsonRemover.GlobalJsonSetup());
+            factory.SetSite(new ServiceProviderToOleServiceProviderAdapter(ServiceProvider.GlobalProvider));
+            RegisterProjectFactory(factory);
 
 #if DEBUG
             DebuggerTraceListener.RegisterTraceListener();
