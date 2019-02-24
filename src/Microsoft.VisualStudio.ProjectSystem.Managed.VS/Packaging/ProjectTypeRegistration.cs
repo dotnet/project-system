@@ -26,3 +26,14 @@ using Microsoft.VisualStudio.ProjectSystem.VS;
     resourcePackageGuid: ManagedProjectSystemPackage.PackageGuid,
     Capabilities = ManagedProjectSystemPackage.DefaultCapabilities + "; " + ProjectCapability.FSharp + "; " + ProjectCapability.SortByDisplayOrder,
     DisableAsynchronousProjectTreeLoad = true)]
+
+// C#
+[assembly: ProjectTypeRegistration(
+    projectTypeGuid: ProjectType.CSharp,
+    displayName: "#5",                      // "C#"
+    displayProjectFileExtensions: "#6",     // "C# Project Files (*.csproj);*.csproj"
+    defaultProjectExtension: "csproj",
+    language: "CSharp",
+    resourcePackageGuid: ManagedProjectSystemPackage.PackageGuid,
+    Capabilities = ManagedProjectSystemPackage.DefaultCapabilities + "; " + ProjectCapability.CSharp,
+    DisableAsynchronousProjectTreeLoad = true)]
