@@ -445,6 +445,15 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Performing Rename.
+        /// </summary>
+        internal static string Performing_Rename {
+            get {
+                return ResourceManager.GetString("Performing_Rename", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Project Modification Detected.
         /// </summary>
         internal static string ProjectModificationDlgTitle {
@@ -519,6 +528,15 @@ namespace Microsoft.VisualStudio {
         internal static string RenameSymbolPrompt {
             get {
                 return ResourceManager.GetString("RenameSymbolPrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Renaming type from &apos;{0}&apos; to &apos;{1}&apos;..
+        /// </summary>
+        internal static string Renaming_type_from_0_to_1 {
+            get {
+                return ResourceManager.GetString("Renaming_type_from_0_to_1", resourceCulture);
             }
         }
         

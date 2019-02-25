@@ -101,8 +101,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             await _projectVsServices.ThreadingService.SwitchToUIThread();
 
             bool renamedSolutionApplied = _waitService.WaitForAsyncOperation(
-                title: "Performing Rename",
-                message: $"Renaming type from '{oldName}' to '{newName}'.",
+                title: VSResources.Performing_Rename,
+                message: string.Format(CultureInfo.CurrentCulture, VSResources.Renaming_type_from_0_to_1, oldName, newName),
                 allowCancel: true,
                 token =>
                     // Do not let the project close until this completes
