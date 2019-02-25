@@ -4,7 +4,7 @@
   <PropertyGroup>
     <RootNamespace>Microsoft.VisualStudio</RootNamespace>
     <!-- VSIX -->
-    <GeneratePkgDefFile>true</GeneratePkgDefFile>
+    <GeneratePkgDefFile>false</GeneratePkgDefFile>
     <CreateVsixContainer>false</CreateVsixContainer>
   </PropertyGroup>
   <ItemGroup>
@@ -19,9 +19,5 @@
     <Compile Update="ProjectSystem\VS\LanguageServices\CSharpCodeDomProvider.cs">
       <SubType>Component</SubType>
     </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="xlf\*" />
-    <EmbeddedResource Update="VSPackage.resx" />
   </ItemGroup>
 </Project>
