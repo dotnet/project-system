@@ -9,10 +9,6 @@ Project("{778DAE3C-4631-46EA-AA77-85C1314464D9}") = "Microsoft.VisualStudio.AppD
 EndProject
 Project("{778DAE3C-4631-46EA-AA77-85C1314464D9}") = "Microsoft.VisualStudio.Editors", "src\Microsoft.VisualStudio.Editors\Microsoft.VisualStudio.Editors.vbproj", "{CD6E5D00-7B0B-442D-9F5D-EAEC1A71838A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.VisualStudio.ProjectSystem.CSharp.VS", "src\Microsoft.VisualStudio.ProjectSystem.CSharp.VS\Microsoft.VisualStudio.ProjectSystem.CSharp.VS.csproj", "{765EF6EB-9F36-4D68-8C3D-9E11CD49E0BC}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.VisualStudio.ProjectSystem.CSharp.VS.UnitTests", "src\Microsoft.VisualStudio.ProjectSystem.CSharp.VS.UnitTests\Microsoft.VisualStudio.ProjectSystem.CSharp.VS.UnitTests.csproj", "{8123135E-B2A1-4CD1-9658-DDACABEAB8FC}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.VisualStudio.ProjectSystem.Managed", "src\Microsoft.VisualStudio.ProjectSystem.Managed\Microsoft.VisualStudio.ProjectSystem.Managed.csproj", "{6C6A41CE-72C5-4D77-8208-D01693F9BC88}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.VisualStudio.ProjectSystem.Managed.UnitTests", "src\Microsoft.VisualStudio.ProjectSystem.Managed.UnitTests\Microsoft.VisualStudio.ProjectSystem.Managed.UnitTests.csproj", "{C7EC63F8-F96A-4A8F-B879-D572516746B4}"
@@ -85,14 +81,6 @@ Global
 		{CD6E5D00-7B0B-442D-9F5D-EAEC1A71838A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CD6E5D00-7B0B-442D-9F5D-EAEC1A71838A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CD6E5D00-7B0B-442D-9F5D-EAEC1A71838A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{765EF6EB-9F36-4D68-8C3D-9E11CD49E0BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{765EF6EB-9F36-4D68-8C3D-9E11CD49E0BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{765EF6EB-9F36-4D68-8C3D-9E11CD49E0BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{765EF6EB-9F36-4D68-8C3D-9E11CD49E0BC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8123135E-B2A1-4CD1-9658-DDACABEAB8FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8123135E-B2A1-4CD1-9658-DDACABEAB8FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8123135E-B2A1-4CD1-9658-DDACABEAB8FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8123135E-B2A1-4CD1-9658-DDACABEAB8FC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6C6A41CE-72C5-4D77-8208-D01693F9BC88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6C6A41CE-72C5-4D77-8208-D01693F9BC88}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6C6A41CE-72C5-4D77-8208-D01693F9BC88}.Release|Any CPU.ActiveCfg = Release|Any CPU

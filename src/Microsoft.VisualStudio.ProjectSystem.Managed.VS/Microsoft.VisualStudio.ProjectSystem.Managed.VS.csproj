@@ -29,6 +29,9 @@
     <InternalsVisibleTo Include="DynamicProxyGenAssembly2" Key="$(MoqPublicKey)" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="ProjectSystem\VS\LanguageServices\CSharp\CSharpCodeDomProvider.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Update="ProjectSystem\VS\PropertyPages\DebugPageControl.xaml.cs">
       <DependentUpon>DebugPageControl.xaml</DependentUpon>
     </Compile>
