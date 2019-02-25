@@ -129,4 +129,10 @@
   <data name="4" xml:space="preserve">
     <value>F# Project Files (*.fsproj);*.fsproj</value>
   </data>
+  <data name="5" xml:space="preserve">
+    <value>C#</value>
+  </data>
+  <data name="6" xml:space="preserve">
+    <value>C# Project Files (*.csproj);*.csproj</value>
+  </data>
 </root>

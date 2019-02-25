@@ -3,27 +3,12 @@
 using System;
 using System.Runtime.InteropServices;
 using System.Threading;
-using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.IO;
-using Microsoft.VisualStudio.Packaging;
-using Microsoft.VisualStudio.ProjectSystem;
-using Microsoft.VisualStudio.ProjectSystem.VS;
 using Microsoft.VisualStudio.ProjectSystem.VS.Xproj;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
 using Task = System.Threading.Tasks.Task;
-
-// Register ourselves as a CPS project type
-[assembly: ProjectTypeRegistration(
-    projectTypeGuid: ProjectType.CSharp,
-    displayName: "#1",                      // "C#"
-    displayProjectFileExtensions: "#2",     // "C# Project Files (*.csproj);*.csproj"
-    defaultProjectExtension: "csproj",
-    language: "CSharp",
-    resourcePackageGuid: CSharpProjectSystemPackage.PackageGuid,
-    Capabilities = ManagedProjectSystemPackage.DefaultCapabilities + "; " + ProjectCapability.CSharp,
-    DisableAsynchronousProjectTreeLoad = true)]
 
 namespace Microsoft.VisualStudio.Packaging
 {

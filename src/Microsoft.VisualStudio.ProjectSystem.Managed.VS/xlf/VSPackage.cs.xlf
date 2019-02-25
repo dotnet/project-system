@@ -22,6 +22,16 @@
         <target state="translated">Soubory projektů F# (*.fsproj);*.fsproj</target>
         <note />
       </trans-unit>
+      <trans-unit id="5">
+        <source>C#</source>
+        <target state="translated">C#</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="6">
+        <source>C# Project Files (*.csproj);*.csproj</source>
+        <target state="translated">Soubory projektu C# (*.csproj);*.csproj</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>
