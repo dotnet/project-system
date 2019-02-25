@@ -117,25 +117,55 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="1" xml:space="preserve">
-    <value>Visual Basic</value>
+  <data name="10" xml:space="preserve">
+    <value>A project for creating a class library that targets .NET Core.</value>
   </data>
-  <data name="2" xml:space="preserve">
-    <value>Visual Basic Project Files (*.vbproj);*.vbproj</value>
+  <data name="11" xml:space="preserve">
+    <value>xUnit Test Project (.NET Core)</value>
+  </data>
+  <data name="12" xml:space="preserve">
+    <value>A project that contains xUnit.net tests that can run on .NET Core on Windows, Linux and MacOS.</value>
+  </data>
+  <data name="13" xml:space="preserve">
+    <value>NUnit Test Project (.NET Core)</value>
+  </data>
+  <data name="14" xml:space="preserve">
+    <value>A project that contains NUnit tests that can run on .NET Core on Windows, Linux and MacOS.</value>
   </data>
   <data name="3" xml:space="preserve">
-    <value>F#</value>
+    <value>Console App (.NET Core)</value>
   </data>
   <data name="4" xml:space="preserve">
-    <value>F# Project Files (*.fsproj);*.fsproj</value>
+    <value>A project for creating a command-line application that can run on .NET Core on Windows, Linux and MacOS.</value>
   </data>
   <data name="5" xml:space="preserve">
-    <value>C#</value>
+    <value>Class Library (.NET Standard)</value>
   </data>
   <data name="6" xml:space="preserve">
+    <value>A project for creating a class library that targets .NET Standard.</value>
+  </data>
+  <data name="9" xml:space="preserve">
+    <value>Class Library (.NET Core)</value>
+  </data>
+  <data name="21" xml:space="preserve">
+    <value>Visual Basic</value>
+  </data>
+  <data name="22" xml:space="preserve">
+    <value>Visual Basic Project Files (*.vbproj);*.vbproj</value>
+  </data>
+  <data name="23" xml:space="preserve">
+    <value>F#</value>
+  </data>
+  <data name="24" xml:space="preserve">
+    <value>F# Project Files (*.fsproj);*.fsproj</value>
+  </data>
+  <data name="25" xml:space="preserve">
+    <value>C#</value>
+  </data>
+  <data name="26" xml:space="preserve">
     <value>C# Project Files (*.csproj);*.csproj</value>
   </data>
-  <data name="7" xml:space="preserve">
+  <data name="27" xml:space="preserve">
     <value>.NET Core 2015 Project Files (*.xproj);*.xproj</value>
   </data>
 </root>

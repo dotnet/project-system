@@ -8,8 +8,8 @@ using Microsoft.VisualStudio.ProjectSystem.VS;
 // Visual Basic
 [assembly: ProjectTypeRegistration(
     projectTypeGuid: ProjectType.VisualBasic,
-    displayName: "#1",                      // "Visual Basic"
-    displayProjectFileExtensions: "#2",     // "Visual Basic Project Files (*.vbproj);*.vbproj"
+    displayName: "#21",                      // "Visual Basic"
+    displayProjectFileExtensions: "#22",     // "Visual Basic Project Files (*.vbproj);*.vbproj"
     defaultProjectExtension: "vbproj",
     language: "VisualBasic",
     resourcePackageGuid: ManagedProjectSystemPackage.PackageGuid,
@@ -19,8 +19,8 @@ using Microsoft.VisualStudio.ProjectSystem.VS;
 // F#
 [assembly: ProjectTypeRegistration(
     projectTypeGuid: ProjectType.FSharp,
-    displayName: "#3",                      // "F#"
-    displayProjectFileExtensions: "#4",     // "F# Project Files (*.fsproj);*.fsproj"
+    displayName: "#23",                      // "F#"
+    displayProjectFileExtensions: "#24",     // "F# Project Files (*.fsproj);*.fsproj"
     defaultProjectExtension: "fsproj",
     language: "FSharp",
     resourcePackageGuid: ManagedProjectSystemPackage.PackageGuid,
@@ -30,8 +30,8 @@ using Microsoft.VisualStudio.ProjectSystem.VS;
 // C#
 [assembly: ProjectTypeRegistration(
     projectTypeGuid: ProjectType.CSharp,
-    displayName: "#5",                      // "C#"
-    displayProjectFileExtensions: "#6",     // "C# Project Files (*.csproj);*.csproj"
+    displayName: "#25",                      // "C#"
+    displayProjectFileExtensions: "#26",     // "C# Project Files (*.csproj);*.csproj"
     defaultProjectExtension: "csproj",
     language: "CSharp",
     resourcePackageGuid: ManagedProjectSystemPackage.PackageGuid,

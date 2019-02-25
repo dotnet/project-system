@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.Packaging
 {
     [Guid(PackageGuid)]
     [PackageRegistration(AllowsBackgroundLoading = true, RegisterUsing = RegistrationMethod.CodeBase, UseManagedResourcesOnly = true)]
-    [ProvideProjectFactory(typeof(MigrateXprojProjectFactory), null, "#7", "xproj", "xproj", null)]
+    [ProvideProjectFactory(typeof(MigrateXprojProjectFactory), null, "#27", "xproj", "xproj", null)]
     [ProvideAutoLoad(ActivationContextGuid, PackageAutoLoadFlags.BackgroundLoad)]
     [ProvideUIContextRule(ActivationContextGuid, "Load Managed Project Package",
         "dotnetcore",
@@ -32,7 +32,7 @@ namespace Microsoft.VisualStudio.Packaging
     internal partial class ManagedProjectSystemPackage : AsyncPackage
     {
         public const string ActivationContextGuid = "E7DF1626-44DD-4E8C-A8A0-92EAB6DDC16E";
-        public const string PackageGuid = "A4F9D880-9492-4072-8BF3-2B5EEEDC9E68";
+        public const string PackageGuid = "860A27C0-B665-47F3-BC12-637E16A1050A";
 
 
         public const string DefaultCapabilities = ProjectCapability.AppDesigner + "; " +
