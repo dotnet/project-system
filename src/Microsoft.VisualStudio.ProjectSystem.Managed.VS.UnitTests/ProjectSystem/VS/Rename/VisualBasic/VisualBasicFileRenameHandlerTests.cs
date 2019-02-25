@@ -1,9 +1,13 @@
-﻿using System;
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
 using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices.VisualBasic;
+using Microsoft.VisualStudio.ProjectSystem.Waiting;
+
 using Moq;
 
 using Xunit;
@@ -141,9 +145,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename.VisualBasic
                     threadingServiceCreator: () => IProjectThreadingServiceFactory.Create(),
                     unconfiguredProjectCreator: () => unconfiguredProject);
                 var unconfiguredProjectTasksService = IUnconfiguredProjectTasksServiceFactory.Create();
+                var operationWaitIndicator = (new Mock<IOperationWaitIndicator>()).Object;
                 var renamer = new CSharpOrVisualBasicFileRenameHandler(projectServices, unconfiguredProjectTasksService,
                                                                        ws, environmentOptionsFactory,
-                                                                       userNotificationServices, roslynServices);
+                                                                       userNotificationServices, roslynServices, operationWaitIndicator);
                 await renamer.HandleRenameAsync(oldFilePath, newFilePath)
                              .TimeoutAfter(TimeSpan.FromSeconds(1));
             }

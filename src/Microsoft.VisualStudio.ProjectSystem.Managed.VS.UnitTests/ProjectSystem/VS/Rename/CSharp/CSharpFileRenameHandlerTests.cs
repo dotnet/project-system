@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices.CSharp;
+using Microsoft.VisualStudio.ProjectSystem.Waiting;
 
 using Moq;
 
@@ -79,9 +80,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename.CSharp
                     threadingServiceCreator: () => IProjectThreadingServiceFactory.Create(),
                     unconfiguredProjectCreator: () => unconfiguredProject);
                 var unconfiguredProjectTasksService = IUnconfiguredProjectTasksServiceFactory.Create();
+                var operationWaitIndicator = (new Mock<IOperationWaitIndicator>()).Object;
                 var renamer = new CSharpOrVisualBasicFileRenameHandler(projectServices, unconfiguredProjectTasksService,
                                                                        ws, environmentOptionsFactory,
-                                                                       userNotificationServices, roslynServices);
+                                                                       userNotificationServices, roslynServices, operationWaitIndicator);
                 await renamer.HandleRenameAsync(oldFilePath, newFilePath)
                              .TimeoutAfter(TimeSpan.FromSeconds(1));
             }
