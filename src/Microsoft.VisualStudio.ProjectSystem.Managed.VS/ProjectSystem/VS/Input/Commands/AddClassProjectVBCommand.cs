@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
     internal class AddClassProjectVBCommand : AbstractAddClassProjectCommand
     {
         [ImportingConstructor]
-        public AddClassProjectVBCommand(IPhysicalProjectTree projectTree, IUnconfiguredProjectVsServices projectVsServices, IVsUIService<SVsAddProjectItemDlg, IVsAddProjectItemDlg> addItemDialog) 
+        public AddClassProjectVBCommand(IPhysicalProjectTree projectTree, IUnconfiguredProjectVsServices projectVsServices, IVsUIService<SVsAddProjectItemDlg, IVsAddProjectItemDlg> addItemDialog)
             : base(projectTree, projectVsServices, addItemDialog)
         {
         }

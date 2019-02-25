@@ -372,7 +372,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         private async Task UpdateProjectContextAndSubscriptionsAsync()
         {
             // Prevent concurrent project context updates.
-            AggregateCrossTargetProjectContext newProjectContext 
+            AggregateCrossTargetProjectContext newProjectContext
                 = await _contextUpdateGate.ExecuteWithinLockAsync(JoinableCollection, JoinableFactory, TryUpdateCurrentAggregateProjectContextAsync);
 
             if (newProjectContext != null)

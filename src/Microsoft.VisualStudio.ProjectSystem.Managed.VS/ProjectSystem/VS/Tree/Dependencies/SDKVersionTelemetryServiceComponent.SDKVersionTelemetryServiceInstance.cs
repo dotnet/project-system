@@ -55,7 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                         (TelemetryPropertyName.SDKVersionProject, (object)projectId),
                         (TelemetryPropertyName.SDKVersionNETCoreSdkVersion, version)
                     });
-                }, 
+                },
                 unconfiguredProject: _projectVsServices.Project);
 
                 return Task.CompletedTask;
