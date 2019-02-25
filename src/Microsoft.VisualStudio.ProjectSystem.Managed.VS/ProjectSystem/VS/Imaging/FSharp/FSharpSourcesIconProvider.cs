@@ -5,7 +5,7 @@ using System.IO;
 
 using Microsoft.VisualStudio.Imaging;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Imaging
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Imaging.FSharp
 {
     [Export(typeof(IProjectTreePropertiesProvider))]
     [AppliesTo(ProjectCapability.FSharp)]

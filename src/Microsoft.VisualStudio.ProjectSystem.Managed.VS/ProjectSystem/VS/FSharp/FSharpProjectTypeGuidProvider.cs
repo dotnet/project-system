@@ -3,7 +3,7 @@
 using System;
 using System.ComponentModel.Composition;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS
+namespace Microsoft.VisualStudio.ProjectSystem.VS.FSharp
 {
     /// <summary>
     ///     Provides the Visual Basic implementation of <see cref="IItemTypeGuidProvider"/>.

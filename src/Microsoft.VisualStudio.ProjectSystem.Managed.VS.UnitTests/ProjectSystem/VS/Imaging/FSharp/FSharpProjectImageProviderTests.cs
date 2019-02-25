@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.ProjectSystem.Imaging;
 
 using Xunit;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Imaging
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Imaging.FSharp
 {
     public class FSharpProjectImageProviderTests
     {

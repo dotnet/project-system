@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.Buffers.PooledObjects;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.FSharp
 {
     /// <summary>
     ///     Provides project designer property pages.

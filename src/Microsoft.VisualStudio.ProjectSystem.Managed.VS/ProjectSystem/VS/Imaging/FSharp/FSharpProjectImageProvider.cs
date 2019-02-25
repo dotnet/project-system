@@ -5,7 +5,7 @@ using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.ProjectSystem.Imaging;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Imaging
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Imaging.FSharp
 {
     /// <summary>
     ///     Provides F# project images.

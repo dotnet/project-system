@@ -2,10 +2,10 @@
 
 using System;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.FSharp
 {
     /// <summary>
-    ///     Provides common well-known Visual Basic project property pages.
+    ///     Provides common well-known F# project property pages.
     /// </summary>
     internal static class FSharpProjectDesignerPage
     {

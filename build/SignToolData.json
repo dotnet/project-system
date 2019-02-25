@@ -4,8 +4,6 @@
       "certificate": "MicrosoftSHA2",
       "strongName": "MsSharedLib72",
       "values": [
-        "bin/Dlls/Microsoft.VisualStudio.ProjectSystem.FSharp.VS.dll",
-        "bin/Dlls/*/Microsoft.VisualStudio.ProjectSystem.FSharp.VS.resources.dll",
         "bin/Dlls/Microsoft.VisualStudio.ProjectSystem.Managed.dll",
         "bin/Dlls/*/Microsoft.VisualStudio.ProjectSystem.Managed.resources.dll",
         "bin/Dlls/Microsoft.VisualStudio.ProjectSystem.Managed.VS.dll",
