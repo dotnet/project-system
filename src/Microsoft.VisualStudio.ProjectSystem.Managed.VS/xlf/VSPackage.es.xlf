@@ -2,37 +2,37 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="es" original="../VSPackage.resx">
     <body>
-      <trans-unit id="1">
+      <trans-unit id="21">
         <source>Visual Basic</source>
         <target state="translated">Visual Basic</target>
         <note />
       </trans-unit>
-      <trans-unit id="2">
+      <trans-unit id="22">
         <source>Visual Basic Project Files (*.vbproj);*.vbproj</source>
         <target state="translated">Archivos de proyecto de Visual Basic (*.vbproj);*.vbproj</target>
         <note />
       </trans-unit>
-      <trans-unit id="3">
+      <trans-unit id="23">
         <source>F#</source>
         <target state="translated">F#</target>
         <note />
       </trans-unit>
-      <trans-unit id="4">
+      <trans-unit id="24">
         <source>F# Project Files (*.fsproj);*.fsproj</source>
         <target state="translated">Archivos de proyecto de F# (*.fsproj);*.fsproj</target>
         <note />
       </trans-unit>
-      <trans-unit id="5">
+      <trans-unit id="25">
         <source>C#</source>
         <target state="translated">C#</target>
         <note />
       </trans-unit>
-      <trans-unit id="6">
+      <trans-unit id="26">
         <source>C# Project Files (*.csproj);*.csproj</source>
         <target state="translated">Archivos de proyecto de C# (*.csproj);*.csproj</target>
         <note />
       </trans-unit>
-      <trans-unit id="7">
+      <trans-unit id="27">
         <source>.NET Core 2015 Project Files (*.xproj);*.xproj</source>
         <target state="translated">Archivos de proyecto de .NET Core 2015 (*.xproj);*.xproj</target>
         <note />

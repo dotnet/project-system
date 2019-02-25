@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.Packaging
 {
     [Guid(PackageGuid)]
     [PackageRegistration(AllowsBackgroundLoading = true, RegisterUsing = RegistrationMethod.CodeBase, UseManagedResourcesOnly = true)]
-    [ProvideProjectFactory(typeof(MigrateXprojProjectFactory), null, "#7", "xproj", "xproj", null)]
+    [ProvideProjectFactory(typeof(MigrateXprojProjectFactory), null, "#27", "xproj", "xproj", null)]
     [ProvideAutoLoad(ActivationContextGuid, PackageAutoLoadFlags.BackgroundLoad)]
     [ProvideUIContextRule(ActivationContextGuid, "Load Managed Project Package",
         "dotnetcore",
