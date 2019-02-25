@@ -7,7 +7,6 @@ using System.IO;
 using System.Linq;
 
 using Microsoft.VisualStudio.IO;
-using Microsoft.VisualStudio.Packaging;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 using Microsoft.VisualStudio.Shell.Interop;
 

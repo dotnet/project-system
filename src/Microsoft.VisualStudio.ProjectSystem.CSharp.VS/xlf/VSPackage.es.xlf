@@ -22,11 +22,6 @@
         <target state="translated">Proyecto para crear una biblioteca de clases para .NET Standard.</target>
         <note />
       </trans-unit>
-      <trans-unit id="8">
-        <source>.NET Core 2015 Project Files (*.xproj);*.xproj</source>
-        <target state="translated">Archivos de proyecto de .NET Core 2015 (*.xproj);*.xproj</target>
-        <note />
-      </trans-unit>
       <trans-unit id="9">
         <source>Class Library (.NET Core)</source>
         <target state="translated">Biblioteca de clases (.NET Core)</target>

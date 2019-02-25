@@ -22,11 +22,6 @@
         <target state="translated">專案，用於建立以 .NET Standard 為目標的類別庫。</target>
         <note />
       </trans-unit>
-      <trans-unit id="8">
-        <source>.NET Core 2015 Project Files (*.xproj);*.xproj</source>
-        <target state="translated">.NET Core 2015 專案檔 (*.xproj);*.xproj</target>
-        <note />
-      </trans-unit>
       <trans-unit id="9">
         <source>Class Library (.NET Core)</source>
         <target state="translated">類別庫 (.NET Core)</target>

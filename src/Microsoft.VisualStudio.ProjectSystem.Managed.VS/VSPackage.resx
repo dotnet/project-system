@@ -135,4 +135,7 @@
   <data name="6" xml:space="preserve">
     <value>C# Project Files (*.csproj);*.csproj</value>
   </data>
+  <data name="7" xml:space="preserve">
+    <value>.NET Core 2015 Project Files (*.xproj);*.xproj</value>
+  </data>
 </root>

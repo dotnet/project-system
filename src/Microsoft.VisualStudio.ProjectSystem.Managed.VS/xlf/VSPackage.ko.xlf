@@ -32,6 +32,11 @@
         <target state="translated">C# 프로젝트 파일(*.csproj);*.csproj</target>
         <note />
       </trans-unit>
+      <trans-unit id="7">
+        <source>.NET Core 2015 Project Files (*.xproj);*.xproj</source>
+        <target state="translated">.NET Core 2015 프로젝트 파일(*.xproj);*.xproj</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>
