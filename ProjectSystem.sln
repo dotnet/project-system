@@ -9,10 +9,6 @@ Project("{778DAE3C-4631-46EA-AA77-85C1314464D9}") = "Microsoft.VisualStudio.AppD
 EndProject
 Project("{778DAE3C-4631-46EA-AA77-85C1314464D9}") = "Microsoft.VisualStudio.Editors", "src\Microsoft.VisualStudio.Editors\Microsoft.VisualStudio.Editors.vbproj", "{CD6E5D00-7B0B-442D-9F5D-EAEC1A71838A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.VisualStudio.ProjectSystem.CSharp.VS", "src\Microsoft.VisualStudio.ProjectSystem.CSharp.VS\Microsoft.VisualStudio.ProjectSystem.CSharp.VS.csproj", "{765EF6EB-9F36-4D68-8C3D-9E11CD49E0BC}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.VisualStudio.ProjectSystem.CSharp.VS.UnitTests", "src\Microsoft.VisualStudio.ProjectSystem.CSharp.VS.UnitTests\Microsoft.VisualStudio.ProjectSystem.CSharp.VS.UnitTests.csproj", "{8123135E-B2A1-4CD1-9658-DDACABEAB8FC}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.VisualStudio.ProjectSystem.Managed", "src\Microsoft.VisualStudio.ProjectSystem.Managed\Microsoft.VisualStudio.ProjectSystem.Managed.csproj", "{6C6A41CE-72C5-4D77-8208-D01693F9BC88}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.VisualStudio.ProjectSystem.Managed.UnitTests", "src\Microsoft.VisualStudio.ProjectSystem.Managed.UnitTests\Microsoft.VisualStudio.ProjectSystem.Managed.UnitTests.csproj", "{C7EC63F8-F96A-4A8F-B879-D572516746B4}"
@@ -21,19 +17,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.VisualStudio.Proj
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.VisualStudio.ProjectSystem.Managed.VS.UnitTests", "src\Microsoft.VisualStudio.ProjectSystem.Managed.VS.UnitTests\Microsoft.VisualStudio.ProjectSystem.Managed.VS.UnitTests.csproj", "{469B50E9-FE67-459E-8AFA-44CBE523DBF6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS", "src\Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS\Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS.csproj", "{15DCB34C-B628-49B8-B472-BBA65A0AB6A5}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS.UnitTests", "src\Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS.UnitTests\Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS.UnitTests.csproj", "{2F58FC7F-85D9-427A-84F0-A6AA741E5BBA}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VisualStudioEditorsSetup", "src\VisualStudioEditorsSetup\VisualStudioEditorsSetup.csproj", "{49705330-A4F5-47EA-BB10-3B783CE91AEA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.VisualStudio.ProjectSystem.Managed.TestServices", "src\Microsoft.VisualStudio.ProjectSystem.Managed.TestServices\Microsoft.VisualStudio.ProjectSystem.Managed.TestServices.csproj", "{23BCBC90-ED65-4EE3-8AF1-DD7CAEFDBEE9}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.VisualStudio.ProjectSystem.Managed.TestServices.UnitTests", "src\Microsoft.VisualStudio.ProjectSystem.Managed.TestServices.UnitTests\Microsoft.VisualStudio.ProjectSystem.Managed.TestServices.UnitTests.csproj", "{369DCA0F-A079-4D0C-8B32-53879199B681}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.VisualStudio.ProjectSystem.FSharp.VS", "src\Microsoft.VisualStudio.ProjectSystem.FSharp.VS\Microsoft.VisualStudio.ProjectSystem.FSharp.VS.csproj", "{B9B06285-2AEB-4126-A825-31F738A4EDFA}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.VisualStudio.ProjectSystem.FSharp.VS.UnitTests", "src\Microsoft.VisualStudio.ProjectSystem.FSharp.VS.UnitTests\Microsoft.VisualStudio.ProjectSystem.FSharp.VS.UnitTests.csproj", "{B70FA177-894C-4964-B6A7-937A361321BF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.VisualStudio.ProjectSystem.IntegrationTests", "src\Microsoft.VisualStudio.ProjectSystem.IntegrationTests\Microsoft.VisualStudio.ProjectSystem.IntegrationTests.csproj", "{FB209C68-77C0-4EE9-BCA9-0B3D5721C436}"
 EndProject
@@ -85,14 +73,6 @@ Global
 		{CD6E5D00-7B0B-442D-9F5D-EAEC1A71838A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CD6E5D00-7B0B-442D-9F5D-EAEC1A71838A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CD6E5D00-7B0B-442D-9F5D-EAEC1A71838A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{765EF6EB-9F36-4D68-8C3D-9E11CD49E0BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{765EF6EB-9F36-4D68-8C3D-9E11CD49E0BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{765EF6EB-9F36-4D68-8C3D-9E11CD49E0BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{765EF6EB-9F36-4D68-8C3D-9E11CD49E0BC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8123135E-B2A1-4CD1-9658-DDACABEAB8FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8123135E-B2A1-4CD1-9658-DDACABEAB8FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8123135E-B2A1-4CD1-9658-DDACABEAB8FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8123135E-B2A1-4CD1-9658-DDACABEAB8FC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6C6A41CE-72C5-4D77-8208-D01693F9BC88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6C6A41CE-72C5-4D77-8208-D01693F9BC88}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6C6A41CE-72C5-4D77-8208-D01693F9BC88}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -109,14 +89,6 @@ Global
 		{469B50E9-FE67-459E-8AFA-44CBE523DBF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{469B50E9-FE67-459E-8AFA-44CBE523DBF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{469B50E9-FE67-459E-8AFA-44CBE523DBF6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{15DCB34C-B628-49B8-B472-BBA65A0AB6A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{15DCB34C-B628-49B8-B472-BBA65A0AB6A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{15DCB34C-B628-49B8-B472-BBA65A0AB6A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{15DCB34C-B628-49B8-B472-BBA65A0AB6A5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2F58FC7F-85D9-427A-84F0-A6AA741E5BBA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2F58FC7F-85D9-427A-84F0-A6AA741E5BBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2F58FC7F-85D9-427A-84F0-A6AA741E5BBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2F58FC7F-85D9-427A-84F0-A6AA741E5BBA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{49705330-A4F5-47EA-BB10-3B783CE91AEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{49705330-A4F5-47EA-BB10-3B783CE91AEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{49705330-A4F5-47EA-BB10-3B783CE91AEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -129,14 +101,6 @@ Global
 		{369DCA0F-A079-4D0C-8B32-53879199B681}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{369DCA0F-A079-4D0C-8B32-53879199B681}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{369DCA0F-A079-4D0C-8B32-53879199B681}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B9B06285-2AEB-4126-A825-31F738A4EDFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B9B06285-2AEB-4126-A825-31F738A4EDFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B9B06285-2AEB-4126-A825-31F738A4EDFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B9B06285-2AEB-4126-A825-31F738A4EDFA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B70FA177-894C-4964-B6A7-937A361321BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B70FA177-894C-4964-B6A7-937A361321BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B70FA177-894C-4964-B6A7-937A361321BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B70FA177-894C-4964-B6A7-937A361321BF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FB209C68-77C0-4EE9-BCA9-0B3D5721C436}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FB209C68-77C0-4EE9-BCA9-0B3D5721C436}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FB209C68-77C0-4EE9-BCA9-0B3D5721C436}.Release|Any CPU.ActiveCfg = Release|Any CPU
