@@ -4,4 +4,3 @@ using Microsoft.VisualStudio;
 
 [assembly: ProvideProjectSystemBindingRedirection("Microsoft.VisualStudio.ProjectSystem.Managed")]
 [assembly: ProvideProjectSystemBindingRedirection("Microsoft.VisualStudio.ProjectSystem.Managed.VS")]
-[assembly: ProvideProjectSystemBindingRedirection("Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS")]

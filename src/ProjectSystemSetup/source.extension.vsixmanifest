@@ -20,7 +20,6 @@
     <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.6,)" />
   </Dependencies>
   <Assets>
-    <Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS" Path="|Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS|" />
     <Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="Microsoft.VisualStudio.ProjectSystem.Managed" Path="|Microsoft.VisualStudio.ProjectSystem.Managed|" />
     <Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="Microsoft.VisualStudio.ProjectSystem.Managed.VS" Path="|Microsoft.VisualStudio.ProjectSystem.Managed.VS|" />
     <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="File" Path="ProjectSelectors.pkgdef" />

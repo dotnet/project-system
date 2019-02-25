@@ -8,8 +8,6 @@
         "bin/Dlls/*/Microsoft.VisualStudio.ProjectSystem.Managed.resources.dll",
         "bin/Dlls/Microsoft.VisualStudio.ProjectSystem.Managed.VS.dll",
         "bin/Dlls/*/Microsoft.VisualStudio.ProjectSystem.Managed.VS.resources.dll",
-        "bin/Dlls/Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS.dll",
-        "bin/Dlls/*/Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS.resources.dll"
       ]
     },
     {
