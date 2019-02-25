@@ -83,7 +83,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                 return;
 
             // Check if there are any symbols that need to be renamed
-            (success, _) = await TryGetSymbolToRename(oldName, oldFilePath, newFilePath, isCaseSensitive, project);
+            (success, _) = await TryGetSymbolToRename(oldName, newFilePath, isCaseSensitive, project);
             if (!success)
                 return;
 
@@ -99,7 +99,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             bool renamedSolutionApplied = await _unconfiguredProjectTasksService.LoadedProjectAsync(async () =>
             {
                 // Perform the rename operation
-                Solution renamedSolution = await GetRenamedSolutionAsync(oldName, oldFilePath, newFilePath, isCaseSensitive, GetCurrentProject());
+                Solution renamedSolution = await GetRenamedSolutionAsync(oldName, newFilePath, isCaseSensitive, GetCurrentProject());
                 if (renamedSolution == null)
                     return false;
 
@@ -151,7 +151,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                     : StringComparison.OrdinalIgnoreCase));
 
         private static async Task<(bool success, ISymbol symbolToRename)> TryGetSymbolToRename(string oldName,
-                                                                                               string oldFilePath,
                                                                                                string newFileName,
                                                                                                bool isCaseSensitive,
                                                                                                Project project)
@@ -215,9 +214,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             return true;
         }
 
-        private async Task<Solution> GetRenamedSolutionAsync(string oldName, string oldFileName, string newFileName, bool isCaseSensitive, Project project)
+        private async Task<Solution> GetRenamedSolutionAsync(string oldName, string newFileName, bool isCaseSensitive, Project project)
         {
-            (bool success, ISymbol symbolToRename) = await TryGetSymbolToRename(oldName, oldFileName, newFileName, isCaseSensitive, project);
+            (bool success, ISymbol symbolToRename) = await TryGetSymbolToRename(oldName, newFileName, isCaseSensitive, project);
             if (!success)
                 return null;
 
