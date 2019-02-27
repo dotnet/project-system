@@ -2,6 +2,9 @@
 
 namespace Microsoft.VisualStudio.ProjectSystem.Waiting
 {
+    /// <summary>
+    /// Indicates if the wait operation completed or was canceled.
+    /// </summary>
     internal enum WaitIndicatorResult
     {
         Completed,

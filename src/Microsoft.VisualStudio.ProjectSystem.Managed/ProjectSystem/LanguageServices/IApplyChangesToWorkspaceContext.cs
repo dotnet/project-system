@@ -85,12 +85,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         Task ApplyProjectBuildAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> update, bool isActiveContext, CancellationToken cancellationToken);
 
         /// <summary>
-        ///
+        /// Notifies consumers that the <see cref="IWorkspaceProjectContext"/> has been made up-to-date with the project changes.
         /// </summary>
-        /// <param name="update"></param>
-        /// <param name="isActiveContext"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
+        /// <exception cref="ArgumentNullException">
+        ///     <paramref name="update"/> is <see langword="null"/>.
+        /// </exception>
+        /// <exception cref="InvalidOperationException">
+        ///     <see cref="Initialize(IWorkspaceProjectContext)"/> has not been called.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        ///     The <see cref="IApplyChangesToWorkspaceContext"/> has been disposed of.
+        /// </exception>
+        /// <exception cref="OperationCanceledException">
+        ///     The result is awaited and <paramref name="cancellationToken"/> is cancelled.
+        /// </exception>
         Task ApplyProjectUpdatedAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> update, bool isActiveContext, CancellationToken cancellationToken);
     }
 }

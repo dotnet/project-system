@@ -19,8 +19,6 @@ namespace System.Threading.Tasks
             }
         }
 
-        public static Task TimeoutAfter(this ValueTask vtask, TimeSpan timeout) => vtask.AsTask().TimeoutAfter(timeout);
-
         public static async Task<TResult> TimeoutAfter<TResult>(this Task<TResult> task, TimeSpan timeout)
         {
             using (var cts = new CancellationTokenSource())
