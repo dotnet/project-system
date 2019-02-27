@@ -78,14 +78,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             foreach (KeyValuePair<MemberRef, ExportDefinition> exportDefinitionPair in definition.ExportDefinitions)
             {
                 ExportDefinition exportDefinition = exportDefinitionPair.Value;
-                if (exportDefinition.Metadata.TryGetValue(nameof(AppliesToAttribute.AppliesTo), out object metadata))
-                {
-                    appliesToMetadata.Add((string)metadata);
-                }
-                else
-                {
-                    appliesToMetadata.Add(null);
-                }
+                exportDefinition.Metadata.TryGetValue(nameof(AppliesToAttribute.AppliesTo), out object metadata);
+                appliesToMetadata.Add((string)metadata);
             }
 
             // Now check all of them should be the same.
