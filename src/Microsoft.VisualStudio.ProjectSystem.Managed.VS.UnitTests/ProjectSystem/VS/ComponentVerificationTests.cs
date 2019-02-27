@@ -14,8 +14,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     public partial class ComponentVerificationTests
     {
-        private readonly List<string> _errors = new List<string>();
-
         [Theory]
         [ClassData(typeof(SatisfyingExportsTestData))]
         public void ImportsMustFilterBasedOnCapabilities(ComposedPart part, KeyValuePair<ImportDefinitionBinding, IReadOnlyList<ExportDefinitionBinding>> binding)
