@@ -6,9 +6,9 @@ using System.Composition;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
-    public partial class ComponentVerificationTests
+    internal partial class ComponentComposition
     {
-        // These parts soley exist so that the MEF composition for 
+        // These components soley exist so that the MEF composition for 
         // these tests can see the "scopes" that used within CPS.
 
         [Export]
