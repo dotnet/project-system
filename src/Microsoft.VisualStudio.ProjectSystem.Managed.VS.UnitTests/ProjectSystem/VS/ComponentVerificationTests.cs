@@ -16,15 +16,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     {
         private readonly List<string> _errors = new List<string>();
 
-        /// <summary>
-        /// Verifies that a consumer should respect the capability of a component.
-        /// When a consumer imports a component, it requires to check the capability of the provider,
-        /// unless the consumer itself has more restrictive capability requirements than the provider.
-        /// </summary>
         [Theory]
         [ClassData(typeof(ComposedPartTestData))]
-        public void VerifyAllImportsRespectsAppliesToMetadataOfExports(ComposedPart part)
-        {
+        public void ImportsFilterBasedOnCapabilities(ComposedPart part)
+        {   // Imports should respect/filter the capabilities of the exports they receive
+
             foreach (KeyValuePair<ImportDefinitionBinding, IReadOnlyList<ExportDefinitionBinding>> importExportBindingPair in part.SatisfyingExports)
             {
                 ImportDefinitionBinding importBinding = importExportBindingPair.Key;
@@ -44,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                     {
                         if (!IsSubclassOfGenericType(typeof(OrderPrecedenceImportCollection<,>), memberType))
                         {
-                            _errors.Add($"{part.Definition.Type.FullName}.{importingProperty.Name} needs use OrderPrecedenceImportCollection to import componentss");
+                            ReportError($"{part.Definition.Type.FullName}.{importingProperty.Name} needs to use OrderPrecedenceImportCollection to import components.");
                         }
                     }
 
@@ -69,7 +65,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                                 if (requiredAppliesTo == null ||
                                     !ContainsExpression(requiredAppliesTo))
                                 {
-                                    _errors.Add($"{part.Definition.Type.FullName}.{ importingProperty.Name} needs to check AppliesTo metadata of the imported component.");
+                                    ReportError($"{part.Definition.Type.FullName}.{ importingProperty.Name} needs to check AppliesTo metadata of the imported component.");
                                 }
                             }
                         }
@@ -80,14 +76,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             AssertNoErrors();
         }
 
-        /// <summary>
-        /// If one component is exported through mutiple points/properties,
-        /// we requires all of them using the same capability filering.
-        /// </summary>
         [Theory]
         [ClassData(typeof(ComposablePartDefinitionTestData))]
-        public void VerifyAllExportsOfOneComponentComingWithSameAppliesToAttribute(ComposablePartDefinition definition)
-        {
+        public void ExportsFromSameComponentMustApplyToSameCapabilities(ComposablePartDefinition definition)
+        {   // Exports coming from a single component must apply to the same capabilities
 
             // Gather the appliesTo metadata from all exports of the same part.
             var appliesToMetadata = new List<string>();
@@ -107,21 +99,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             // Now check all of them should be the same.
             if (appliesToMetadata.Distinct().Count() > 1)
             {
-                _errors.Add($"{definition.Type.FullName} exports multiple values with different capability requirement.");
+                ReportError($"{definition.Type.FullName} exports multiple values with differing AppliesTo. All exports from a component must apply to the same capabilities.");
             }
 
             AssertNoErrors();
         }
 
-        /// <summary>
-        /// If a component should always carray AppliesTo metadata, if its consumer requires it.
-        /// </summary>
         [Theory]
         [ClassData(typeof(ComposablePartDefinitionTestData))]
-        public void VerifyExportsHasAppliesToMetadataWhenItIsRequired(ComposablePartDefinition definition)
-        {
-            var contractsRequiringMetadata = ComponentComposition.Instance.ContractsRequiringMetadata;
+        public void ExportsMustApplyToCapabilitiesIfRequired(ComposablePartDefinition definition)
+        {   // If a contract requires AppliesTo to be specified, then an export must specify it
 
+            var contractsRequiringMetadata = ComponentComposition.Instance.ContractsRequiringMetadata;
 
             foreach (KeyValuePair<MemberRef, ExportDefinition> exportDefinitionPair in definition.ExportDefinitions)
             {
@@ -149,7 +138,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
                     if (contractTypes.Any(t => t.IsAssignableFrom(exportType)))
                     {
-                        _errors.Add($"{definition.Type.FullName} needs to specify its capability requirement.");
+                        ReportError($"{definition.Type.FullName} must specify AppliesTo to its export of {exportType}.");
                     }
                 }
             }
@@ -159,8 +148,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         [Theory]
         [ClassData(typeof(ComposablePartDefinitionTestData))]
-        public void AllComponentsMatchesContractMetadata(ComposablePartDefinition definition)
-        {
+        public void ComponentsMatchContractMetadata(ComposablePartDefinition definition)
+        {   // MEF components respect [ProjectSystemContract]
+
             var contracts = ComponentComposition.Instance.Contracts;
 
             ProjectSystemContractScope? importScope = null;
@@ -172,7 +162,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 {
                     if (contractMetadata.Cardinality == ImportCardinality.ZeroOrMore && importDefinition.Cardinality != ImportCardinality.ZeroOrMore)
                     {
-                        _errors.Add($"Must use ImportMany in {definition.Type.FullName} to import a contract {importDefinition.ContractName} which can be implemented by an extension.");
+                        ReportError($"Must use [ImportMany] in {definition.Type.FullName} to import a contract {importDefinition.ContractName} which can be implemented by an extension.");
                     }
 
                     if (contractMetadata.Scope.HasValue &&
@@ -194,7 +184,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                         // Do we live in a child scope (ConfiguredProject) but export to a parent scope (UnconfiguredProject)?
                         if (contractMetadata.Scope.Value < importScope.Value)
                         {
-                            _errors.Add($"{definition.Type.FullName} exports to the {contractMetadata.Scope.Value.ToString()} scope, but it imports {relatedImports.ContractName} from {importScope.Value.ToString()} scope, which is invalid.");
+                            ReportError($"{definition.Type.FullName} exports to the {contractMetadata.Scope.Value.ToString()} scope, but it imports {relatedImports.ContractName} from {importScope.Value.ToString()} scope, which is invalid.");
                         }
                     }
                 }
@@ -205,8 +195,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         [Theory]
         [ClassData(typeof(ComposablePartDefinitionTestData))]
-        public void AllInterfaceContractsHaveMetadata(ComposablePartDefinition definition)
-        {
+        public void ContractsAreAppliedWithMetadata(ComposablePartDefinition definition)
+        {   // MEF Interfaces must be marked with [ProjectSystemContract]
+
             var contracts = ComponentComposition.Instance.Contracts;
 
             foreach (KeyValuePair<MemberRef, ExportDefinition> exportPair in definition.ExportDefinitions)
@@ -216,7 +207,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 {
                     if (exportDefinition.ContractName.StartsWith("Microsoft.VisualStudio.ProjectSystem.", StringComparison.Ordinal))
                     {
-                        _errors.Add($"{definition.Type.FullName} exports a contract {exportDefinition.ContractName}, which doesn't have contract metadata.");
+                        ReportError($"{definition.Type.FullName} exports a contract {exportDefinition.ContractName}, which is not applied with [ProjectSystemContract]");
                     }
                 }
             }
@@ -231,6 +222,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             AssertNoErrors();
         }
 
+        private void AssertNoErrors()
+        {
+            string message = $"There were {_errors.Count} errors." + Environment.NewLine;
+
+            Assert.True(_errors.Count == 0, message + string.Join(Environment.NewLine, _errors));
+        }
+
+        private void ReportError(string message)
+        {
+            _errors.Add(message);
+        }
 
         private bool CheckContractHasMetadata(string contractName, ComposablePartDefinition part, IDictionary<string, ComponentComposition.ContractMetadata> contractMetadata, ISet<string> interfaceNames)
         {
@@ -242,17 +244,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             if (interfaceNames.Contains(contractName))
             {
-                _errors.Add($"{part.Type.FullName} exports/imports a contract {contractName}, which doesn't have contract metadata.");
+                ReportError($"{part.Type.FullName} exports/imports a contract {contractName}, which is not applied with [ProjectSystemContract].");
             }
 
             return false;
-        }
-
-        private void AssertNoErrors()
-        {
-            string message = $"There were {_errors.Count} errors." + Environment.NewLine;
-
-            Assert.True(_errors.Count == 0, message + string.Join(Environment.NewLine, _errors));
         }
 
         /// <summary>
