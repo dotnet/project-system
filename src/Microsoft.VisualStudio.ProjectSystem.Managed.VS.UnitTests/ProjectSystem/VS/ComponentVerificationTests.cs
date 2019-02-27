@@ -143,37 +143,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         }
 
         [Theory]
-        [ClassData(typeof(ExportsTestData))]
-        public void ExportsMustMatchImportScope(ComposablePartDefinition definition, KeyValuePair<MemberRef, ExportDefinition> export)
-        {   // Exports cannot be exported into a parent scope (indicated by contract's [ProjectSystemContract]), when part imports something from a child scope
+        [ClassData(typeof(ImportsTestData))]
+        public void ImportsMustMatchExportScope(ComposablePartDefinition definition, ImportDefinitionBinding import)
+        {   // Imports cannot import something from a child scope, if the part comes from parent scope
+
+            ImportDefinition importDefinition = import.ImportDefinition;
+            if (importDefinition.ExportFactorySharingBoundaries.Count > 0)
+                return; // You can import something from child if its the start of a scope
 
             var contracts = ComponentComposition.Instance.Contracts;
 
-            ProjectSystemContractScope? importScope = null;
-            ImportDefinition relatedImports = null;
-            foreach (ImportDefinitionBinding import in definition.Imports)
+            if (contracts.TryGetValue(importDefinition.ContractName, out ComponentComposition.ContractMetadata importContractMetadata) && importContractMetadata.Scope != null)
             {
-                ImportDefinition importDefinition = import.ImportDefinition;
-                if (importDefinition.ExportFactorySharingBoundaries.Count == 0 && contracts.TryGetValue(importDefinition.ContractName, out ComponentComposition.ContractMetadata contractMetadata))
+                foreach (KeyValuePair<MemberRef, ExportDefinition> export in definition.ExportDefinitions)
                 {
-                    if (contractMetadata.Scope.HasValue &&
-                        (!importScope.HasValue || importScope.Value < contractMetadata.Scope.Value))
+                    if (contracts.TryGetValue(export.Value.ContractName, out ComponentComposition.ContractMetadata exportContractMetadata) && exportContractMetadata.Scope != null)
                     {
-                        importScope = contractMetadata.Scope;
-                        relatedImports = importDefinition;
-                    }
-                }
-            }
-
-            if (importScope.HasValue)
-            {
-                ExportDefinition exportDefinition = export.Value;
-                if (contracts.TryGetValue(exportDefinition.ContractName, out ComponentComposition.ContractMetadata contractMetadata) && contractMetadata.Scope.HasValue)
-                {
-                    // Do we live in a child scope (ConfiguredProject) but export to a parent scope (UnconfiguredProject)?
-                    if (contractMetadata.Scope.Value < importScope.Value)
-                    {
-                        Assert.False(true, $"{definition.Type.FullName} exports to the {contractMetadata.Scope.Value.ToString()} scope, but it imports {relatedImports.ContractName} from {importScope.Value.ToString()} scope, which is invalid.");
+                        // Do we import from a child scope but export to a parent scope? ie Importing ConfiguredProject, but exporting to an UnconfiguredProject service would be invalid
+                        if (exportContractMetadata.Scope < importContractMetadata.Scope)
+                        {
+                            Assert.False(true, $"{definition.Type.FullName} exports to the {exportContractMetadata.Scope.Value} scope, but it imports {importDefinition.ContractName} from {importContractMetadata.Scope} scope, which is a child of the preceeding scope.");
+                        }
                     }
                 }
             }
