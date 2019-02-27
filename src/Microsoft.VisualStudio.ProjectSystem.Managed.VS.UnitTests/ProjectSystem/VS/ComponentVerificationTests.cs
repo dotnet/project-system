@@ -17,69 +17,61 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         private readonly List<string> _errors = new List<string>();
 
         [Theory]
-        [ClassData(typeof(ComposedPartTestData))]
-        public void ImportsFilterBasedOnCapabilities(ComposedPart part)
+        [ClassData(typeof(SatisfyingExportsTestData))]
+        public void ImportsMustFilterBasedOnCapabilities(ComposedPart part, KeyValuePair<ImportDefinitionBinding, IReadOnlyList<ExportDefinitionBinding>> binding)
         {   // Imports should respect/filter the capabilities of the exports they receive
 
-            foreach (KeyValuePair<ImportDefinitionBinding, IReadOnlyList<ExportDefinitionBinding>> importExportBindingPair in part.SatisfyingExports)
+            ImportDefinitionBinding importBinding = binding.Key;
+            var importingProperty = importBinding.ImportingMember as PropertyInfo;
+            if (importingProperty == null)  // We don't verify ImportingConstructor, only check properties.
+                return;
+
+            Type memberType = importingProperty.PropertyType;
+
+            // ImportMany, we want to use OrderPrecedenceImportCollection
+            if (importBinding.ImportDefinition.Cardinality == ImportCardinality.ZeroOrMore)
             {
-                ImportDefinitionBinding importBinding = importExportBindingPair.Key;
-                var importingProperty = importBinding.ImportingMember as PropertyInfo;
-                if (importingProperty == null)
+                if (binding.Value.Any(b => !string.IsNullOrEmpty(GetAppliesToMetadata(b.ExportDefinition))))
                 {
-                    // we don't verify ImportingConstructor, only check properties.
-                    continue;
-                }
-
-                Type memberType = importingProperty.PropertyType;
-
-                // ImportMany, we want to use OrderPrecedenceImportCollection
-                if (importBinding.ImportDefinition.Cardinality == ImportCardinality.ZeroOrMore)
-                {
-                    if (importExportBindingPair.Value.Any(binding => !string.IsNullOrEmpty(GetAppliesToMetadata(binding.ExportDefinition))))
+                    if (!IsSubclassOfGenericType(typeof(OrderPrecedenceImportCollection<,>), memberType))
                     {
-                        if (!IsSubclassOfGenericType(typeof(OrderPrecedenceImportCollection<,>), memberType))
-                        {
-                            ReportError($"{part.Definition.Type.FullName}.{importingProperty.Name} needs to use OrderPrecedenceImportCollection to import components.");
-                        }
+                        Assert.False(true, $"{part.Definition.Type.FullName}.{importingProperty.Name} needs to use OrderPrecedenceImportCollection to import components.");
                     }
-
-                    continue;
                 }
 
-                // Single import
-                ExportDefinitionBinding exportBinding = importExportBindingPair.Value.SingleOrDefault();
-                if (exportBinding != null)
+                return;
+            }
+
+            // Single import
+            ExportDefinitionBinding exportBinding = binding.Value.SingleOrDefault();
+            if (exportBinding != null)
+            {
+                string appliesTo = GetAppliesToMetadata(exportBinding.ExportDefinition);
+                if (!string.IsNullOrEmpty(appliesTo) && !ContainsExpression(appliesTo))
                 {
-                    string appliesTo = GetAppliesToMetadata(exportBinding.ExportDefinition);
-                    if (!string.IsNullOrEmpty(appliesTo) && !ContainsExpression(appliesTo))
+                    // If the consumer imports metadata, we assume it will be checked.
+                    if (!IsSubclassOfGenericType(typeof(Lazy<,>), memberType))
                     {
-                        // If the consumer imports metadata, we assume it will be checked.
-                        if (!IsSubclassOfGenericType(typeof(Lazy<,>), memberType))
+                        // we require it to import the metadata, or the component requires the same capability, or the capability
+                        // of the consumed component can be inferred from the capability of the consumer.
+                        foreach (ExportDefinition exportDefinition in part.Definition.ExportDefinitions.Select(p => p.Value))
                         {
-                            // we require it to import the metadata, or the component requires the same capability, or the capability
-                            // of the consumed component can be inferred from the capability of the consumer.
-                            foreach (ExportDefinition exportDefinition in part.Definition.ExportDefinitions.Select(p => p.Value))
+                            string requiredAppliesTo = GetAppliesToMetadata(exportDefinition);
+                            if (requiredAppliesTo == null ||
+                                !ContainsExpression(requiredAppliesTo))
                             {
-                                string requiredAppliesTo = GetAppliesToMetadata(exportDefinition);
-                                if (requiredAppliesTo == null ||
-                                    !ContainsExpression(requiredAppliesTo))
-                                {
-                                    ReportError($"{part.Definition.Type.FullName}.{ importingProperty.Name} needs to check AppliesTo metadata of the imported component.");
-                                }
+                                Assert.False(true, $"{part.Definition.Type.FullName}.{ importingProperty.Name} needs to check AppliesTo metadata of the imported component.");
                             }
                         }
                     }
                 }
             }
-
-            AssertNoErrors();
         }
 
         [Theory]
         [ClassData(typeof(ComposablePartDefinitionTestData))]
-        public void ExportsFromSameComponentMustApplyToSameCapabilities(ComposablePartDefinition definition)
-        {   // Exports coming from a single component must apply to the same capabilities
+        public void ExportsFromSamePartMustApplyToSameCapabilities(ComposablePartDefinition definition)
+        {   // Exports coming from a single part must apply to the same capabilities
 
             // Gather the appliesTo metadata from all exports of the same part.
             var appliesToMetadata = new List<string>();
@@ -99,57 +91,67 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             // Now check all of them should be the same.
             if (appliesToMetadata.Distinct().Count() > 1)
             {
-                ReportError($"{definition.Type.FullName} exports multiple values with differing AppliesTo. All exports from a component must apply to the same capabilities.");
+                Assert.False(true, $"{definition.Type.FullName} exports multiple values with differing AppliesTo. All exports from a component must apply to the same capabilities.");
             }
-
-            AssertNoErrors();
         }
 
         [Theory]
-        [ClassData(typeof(ComposablePartDefinitionTestData))]
-        public void ExportsMustApplyToCapabilitiesIfRequired(ComposablePartDefinition definition)
+        [ClassData(typeof(ExportsTestData))]
+        public void ExportsMustBeMarkedWithApplyToIfRequired(ComposablePartDefinition definition, KeyValuePair<MemberRef, ExportDefinition> export)
         {   // If a contract requires AppliesTo to be specified, then an export must specify it
 
             var contractsRequiringMetadata = ComponentComposition.Instance.ContractsRequiringMetadata;
 
-            foreach (KeyValuePair<MemberRef, ExportDefinition> exportDefinitionPair in definition.ExportDefinitions)
+            // If the exports has already had the metadata, it is good.
+            ExportDefinition exportDefinition = export.Value;
+            if (exportDefinition.Metadata.ContainsKey(nameof(AppliesToAttribute.AppliesTo)))
             {
-                // If the exports has already had the metadata, it is good.
-                ExportDefinition exportDefinition = exportDefinitionPair.Value;
-                if (exportDefinition.Metadata.ContainsKey(nameof(AppliesToAttribute.AppliesTo)))
-                {
-                    continue;
-                }
-
-                // Check whether the export satisfy any contract required the appliesTo metadata.
-                // If it matches one of the contract, we will report an error, because it lacks the required metadata.
-                if (contractsRequiringMetadata.TryGetValue(exportDefinition.ContractName, out ISet<Type> contractTypes))
-                {
-                    MemberRef exportMember = exportDefinitionPair.Key;
-                    Type exportType;
-                    if (exportMember == null)
-                    {
-                        exportType = definition.Type;
-                    }
-                    else
-                    {
-                        exportType = exportMember.DeclaringType.Resolve();
-                    }
-
-                    if (contractTypes.Any(t => t.IsAssignableFrom(exportType)))
-                    {
-                        ReportError($"{definition.Type.FullName} must specify AppliesTo to its export of {exportType}.");
-                    }
-                }
+                return;
             }
 
-            AssertNoErrors();
+            // Check whether the export satisfy any contract required the appliesTo metadata.
+            // If it matches one of the contract, we will report an error, because it lacks the required metadata.
+            if (contractsRequiringMetadata.TryGetValue(exportDefinition.ContractName, out ISet<Type> contractTypes))
+            {
+                MemberRef exportMember = export.Key;
+                Type exportType;
+                if (exportMember == null)
+                {
+                    exportType = definition.Type;
+                }
+                else
+                {
+                    exportType = exportMember.DeclaringType.Resolve();
+                }
+
+                if (contractTypes.Any(t => t.IsAssignableFrom(exportType)))
+                {
+                    Assert.False(true, $"{definition.Type.FullName} must specify [AppliesTo] to its export of {exportType}.");
+                }
+            }
         }
 
         [Theory]
-        [ClassData(typeof(ComposablePartDefinitionTestData))]
-        public void ComponentsMatchContractMetadata(ComposablePartDefinition definition)
-        {   // MEF components respect [ProjectSystemContract]
+        [ClassData(typeof(ImportsTestData))]
+        public void ImportsMustRespectContractImportCardinality(ComposablePartDefinition definition, ImportDefinitionBinding import)
+        {   // Imports must respect import cardinality specified via [ProjectSystemContract]
+
+            var contracts = ComponentComposition.Instance.Contracts;
+
+            ImportDefinition importDefinition = import.ImportDefinition;
+            if (contracts.TryGetValue(importDefinition.ContractName, out ComponentComposition.ContractMetadata contractMetadata))
+            {
+                if (contractMetadata.Cardinality == ImportCardinality.ZeroOrMore && importDefinition.Cardinality != ImportCardinality.ZeroOrMore)
+                {
+                    Assert.False(true, $"Must use [ImportMany] in {definition.Type.FullName} to import a contract {importDefinition.ContractName} which can be implemented by an extension.");
+                }
+            }
+        }
+
+        [Theory]
+        [ClassData(typeof(ExportsTestData))]
+        public void ExportsMustMatchImportScope(ComposablePartDefinition definition, KeyValuePair<MemberRef, ExportDefinition> export)
+        {   // Exports cannot be exported into a parent scope (indicated by contract's [ProjectSystemContract]), when part imports something from a child scope
 
             var contracts = ComponentComposition.Instance.Contracts;
 
@@ -160,11 +162,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 ImportDefinition importDefinition = import.ImportDefinition;
                 if (importDefinition.ExportFactorySharingBoundaries.Count == 0 && contracts.TryGetValue(importDefinition.ContractName, out ComponentComposition.ContractMetadata contractMetadata))
                 {
-                    if (contractMetadata.Cardinality == ImportCardinality.ZeroOrMore && importDefinition.Cardinality != ImportCardinality.ZeroOrMore)
-                    {
-                        ReportError($"Must use [ImportMany] in {definition.Type.FullName} to import a contract {importDefinition.ContractName} which can be implemented by an extension.");
-                    }
-
                     if (contractMetadata.Scope.HasValue &&
                         (!importScope.HasValue || importScope.Value < contractMetadata.Scope.Value))
                     {
@@ -176,62 +173,41 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             if (importScope.HasValue)
             {
-                foreach (KeyValuePair<MemberRef, ExportDefinition> exportPair in definition.ExportDefinitions)
+                ExportDefinition exportDefinition = export.Value;
+                if (contracts.TryGetValue(exportDefinition.ContractName, out ComponentComposition.ContractMetadata contractMetadata) && contractMetadata.Scope.HasValue)
                 {
-                    ExportDefinition exportDefinition = exportPair.Value;
-                    if (contracts.TryGetValue(exportDefinition.ContractName, out ComponentComposition.ContractMetadata contractMetadata) && contractMetadata.Scope.HasValue)
+                    // Do we live in a child scope (ConfiguredProject) but export to a parent scope (UnconfiguredProject)?
+                    if (contractMetadata.Scope.Value < importScope.Value)
                     {
-                        // Do we live in a child scope (ConfiguredProject) but export to a parent scope (UnconfiguredProject)?
-                        if (contractMetadata.Scope.Value < importScope.Value)
-                        {
-                            ReportError($"{definition.Type.FullName} exports to the {contractMetadata.Scope.Value.ToString()} scope, but it imports {relatedImports.ContractName} from {importScope.Value.ToString()} scope, which is invalid.");
-                        }
+                        Assert.False(true, $"{definition.Type.FullName} exports to the {contractMetadata.Scope.Value.ToString()} scope, but it imports {relatedImports.ContractName} from {importScope.Value.ToString()} scope, which is invalid.");
                     }
                 }
             }
-
-            AssertNoErrors();
         }
 
         [Theory]
-        [ClassData(typeof(ComposablePartDefinitionTestData))]
-        public void ContractsAreAppliedWithMetadata(ComposablePartDefinition definition)
-        {   // MEF Interfaces must be marked with [ProjectSystemContract]
+        [ClassData(typeof(ImportsTestData))]
+        public void ImportsMustImportContractsMarkedWithProjectSystemContract(ComposablePartDefinition definition, ImportDefinitionBinding import)
+        {  // Imports must importsinterfaces that are marked with [ProjectSystemContract]
 
-            var contracts = ComponentComposition.Instance.Contracts;
-
-            foreach (KeyValuePair<MemberRef, ExportDefinition> exportPair in definition.ExportDefinitions)
+            ImportDefinition importDefinition = import.ImportDefinition;
+            if (!CheckContractHasMetadata(importDefinition.ContractName, definition, ComponentComposition.Instance.Contracts, ComponentComposition.Instance.InterfaceNames))
             {
-                ExportDefinition exportDefinition = exportPair.Value;
-                if (!CheckContractHasMetadata(exportDefinition.ContractName, definition, contracts, ComponentComposition.Instance.InterfaceNames))
-                {
-                    if (exportDefinition.ContractName.StartsWith("Microsoft.VisualStudio.ProjectSystem.", StringComparison.Ordinal))
-                    {
-                        ReportError($"{definition.Type.FullName} exports a contract {exportDefinition.ContractName}, which is not applied with [ProjectSystemContract]");
-                    }
-                }
+                Assert.False(true, $"{definition.Type.FullName} imports a contract {importDefinition.ContractName}, which is not applied with [ProjectSystemContract]");
             }
-
-            foreach (ImportDefinitionBinding import in definition.Imports)
-            {
-                ImportDefinition importDefinition = import.ImportDefinition;
-
-                CheckContractHasMetadata(importDefinition.ContractName, definition, contracts, ComponentComposition.Instance.InterfaceNames);
-            }
-
-            AssertNoErrors();
         }
 
-        private void AssertNoErrors()
-        {
-            string message = $"There were {_errors.Count} errors." + Environment.NewLine;
+        [Theory]
+        [ClassData(typeof(ExportsTestData))]
+        public void ExportsMustExportContractsMarkedWithProjectSystemContract(ComposablePartDefinition definition, KeyValuePair<MemberRef, ExportDefinition> export)
+        {   // Exports must export interfaces that are marked with [ProjectSystemContract]
 
-            Assert.True(_errors.Count == 0, message + string.Join(Environment.NewLine, _errors));
-        }
+            ExportDefinition exportDefinition = export.Value;
+            if (!CheckContractHasMetadata(exportDefinition.ContractName, definition, ComponentComposition.Instance.Contracts, ComponentComposition.Instance.InterfaceNames))
+            {
+                Assert.False(true, $"{definition.Type.FullName} exports a contract {exportDefinition.ContractName}, which is not applied with [ProjectSystemContract]");
+            }
 
-        private void ReportError(string message)
-        {
-            _errors.Add(message);
         }
 
         private bool CheckContractHasMetadata(string contractName, ComposablePartDefinition part, IDictionary<string, ComponentComposition.ContractMetadata> contractMetadata, ISet<string> interfaceNames)
@@ -242,12 +218,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 return true;
             }
 
-            if (interfaceNames.Contains(contractName))
-            {
-                ReportError($"{part.Type.FullName} exports/imports a contract {contractName}, which is not applied with [ProjectSystemContract].");
-            }
-
-            return false;
+            return interfaceNames.Contains(contractName);
         }
 
         /// <summary>
