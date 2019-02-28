@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
     public class VisualStudioOperationWaitIndicatorInstanceTests
     {
         [Fact]
-        public static async Task Dispose_Test()
+        public static async Task Dispose()
         {
             var (instance, _) = await CreateAsync();
             instance.Dispose();
@@ -24,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
         }
 
         [Fact]
-        public static async Task DisposeAsync_Test()
+        public static async Task DisposeAsync()
         {
             var (instance, _) = await CreateAsync();
             await instance.DisposeAsync();
@@ -32,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
         }
 
         [Fact]
-        public static async Task UsingBlock_Test()
+        public static async Task UsingBlock()
         {
             var (instance, _) = await CreateAsync();
             using (instance)
@@ -42,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
         }
 
         [Fact]
-        public static async Task WaitForOperation_Exception_Test()
+        public static async Task WaitForOperation_Exception()
         {
             var (instance, _) = await CreateAsync();
             using (instance)
@@ -58,7 +58,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
         }
 
         [Fact]
-        public static async Task WaitForOperation_Wrapped_Exception_Test()
+        public static async Task WaitForOperation_Wrapped_Exception()
         {
             var (instance, _) = await CreateAsync();
             using (instance)
@@ -74,7 +74,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
         }
 
         [Fact]
-        public static async Task WaitForOperation_Wrapped_Canceled_Test()
+        public static async Task WaitForOperation_Wrapped_Canceled()
         {
             var (instance, _) = await CreateAsync();
             using (instance)
@@ -88,7 +88,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
 
 
         [Fact]
-        public static async Task WaitForOperation_DoNotReturnTask_Test()
+        public static async Task WaitForOperation_DoNotReturnTask()
         {
             var (instance, _) = await CreateAsync();
             using (instance)
@@ -104,7 +104,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
         }
 
         [Fact]
-        public static async Task WaitForOperation_Wrapped_Canceled_Test2()
+        public static async Task WaitForOperation_Wrapped_Canceled2()
         {
             var (instance, _) = await CreateAsync();
             using (instance)
@@ -120,7 +120,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
         }
 
         [Fact]
-        public static async Task WaitForOperation_Wrapped_Canceled_Test3()
+        public static async Task WaitForOperation_Wrapped_Canceled3()
         {
             var (instance, _) = await CreateAsync();
             using (instance)
@@ -136,7 +136,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
         [Theory]
         [InlineData(true)]
         [InlineData(false)]
-        public static async Task WaitForOperation_Test(bool isCancelable)
+        public static async Task WaitForOperation(bool isCancelable)
         {
             bool wasCalled = false;
             string title = "Test01";
@@ -152,7 +152,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
         [Theory]
         [InlineData(true)]
         [InlineData(false)]
-        public static async Task WaitForOperationCanceled_Test(bool isCancelable)
+        public static async Task WaitForOperationCanceled(bool isCancelable)
         {
             bool wasCalled = false;
             string title = "Test01";
@@ -170,7 +170,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
         [Theory]
         [InlineData(true)]
         [InlineData(false)]
-        public static async Task WaitForOperationWithResult_Test(bool isCancelable)
+        public static async Task WaitForOperationWithResult(bool isCancelable)
         {
             bool wasCalled = false;
             string title = "Test02";
@@ -186,7 +186,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
         [Theory]
         [InlineData(true)]
         [InlineData(false)]
-        public static async Task WaitForOperationWithResultCanceled_Test(bool isCancelable)
+        public static async Task WaitForOperationWithResultCanceled(bool isCancelable)
         {
             bool wasCalled = false;
             string title = "Test02";
@@ -203,7 +203,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
         [Theory]
         [InlineData(true)]
         [InlineData(false)]
-        public static async Task WaitForAsyncOperation_Test(bool isCancelable)
+        public static async Task WaitForAsyncOperation(bool isCancelable)
         {
             bool wasCalled = false;
             string title = "Test03";
@@ -220,7 +220,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
         [Theory]
         [InlineData(true)]
         [InlineData(false)]
-        public static async Task WaitForAsyncOperationCanceled_Test(bool isCancelable)
+        public static async Task WaitForAsyncOperationCanceled(bool isCancelable)
         {
             bool wasCalled = false;
             string title = "Test03";
@@ -237,7 +237,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
         [Theory]
         [InlineData(true)]
         [InlineData(false)]
-        public static async Task WaitForAsyncOperationWithResult_Test(bool isCancelable)
+        public static async Task WaitForAsyncOperationWithResult(bool isCancelable)
         {
             bool wasCalled = false;
             string title = "Test04";
@@ -255,7 +255,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
         [Theory]
         [InlineData(true)]
         [InlineData(false)]
-        public static async Task WaitForAsyncOperationWithResultCanceled_Test(bool isCancelable)
+        public static async Task WaitForAsyncOperationWithResultCanceled(bool isCancelable)
         {
             bool wasCalled = false;
             string title = "Test04";
@@ -273,7 +273,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
         [Theory]
         [InlineData(true)]
         [InlineData(false)]
-        public static async Task WaitForOperationReturns_Test(bool isCancelable)
+        public static async Task WaitForOperationReturns(bool isCancelable)
         {
             string title = "Test05";
             string message = "Testing05";
@@ -287,7 +287,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
 
         [Theory]
         [InlineData(true)]
-        public static async Task WaitForOperationReturnsCanceled_Test(bool isCancelable)
+        public static async Task WaitForOperationReturnsCanceled(bool isCancelable)
         {
             string title = "Test05";
             string message = "Testing05";
@@ -307,7 +307,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
         [Theory]
         [InlineData(true)]
         [InlineData(false)]
-        public static async Task WaitForOperationWithResultReturns_Test(bool isCancelable)
+        public static async Task WaitForOperationWithResultReturns(bool isCancelable)
         {
             string title = "Test06";
             string message = "Testing06";
@@ -321,7 +321,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
 
         [Theory]
         [InlineData(true)]
-        public static async Task WaitForOperationWithResultReturnsCanceled_Test(bool isCancelable)
+        public static async Task WaitForOperationWithResultReturnsCanceled(bool isCancelable)
         {
             string title = "Test06";
             string message = "Testing06";
@@ -342,7 +342,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
         [Theory]
         [InlineData(true)]
         [InlineData(false)]
-        public static async Task WaitForAsyncOperationReturns_Test(bool isCancelable)
+        public static async Task WaitForAsyncOperationReturns(bool isCancelable)
         {
             string title = "Test07";
             string message = "Testing07";
@@ -356,7 +356,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
 
         [Theory]
         [InlineData(true)]
-        public static async Task WaitForAsyncOperationReturnsCanceled_Test(bool isCancelable)
+        public static async Task WaitForAsyncOperationReturnsCanceled(bool isCancelable)
         {
             string title = "Test07";
             string message = "Testing07";
@@ -376,7 +376,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
         [Theory]
         [InlineData(true)]
         [InlineData(false)]
-        public static async Task WaitForAsyncOperationWithResultReturns_Test(bool isCancelable)
+        public static async Task WaitForAsyncOperationWithResultReturns(bool isCancelable)
         {
             string title = "Test08";
             string message = "Testing08";
@@ -390,7 +390,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
 
         [Theory]
         [InlineData(true)]
-        public static async Task WaitForAsyncOperationWithResultReturnsCanceled_Test(bool isCancelable)
+        public static async Task WaitForAsyncOperationWithResultReturnsCanceled(bool isCancelable)
         {
             string title = "Test08";
             string message = "Testing08";
@@ -411,7 +411,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
         [Theory]
         [InlineData(true)]
         [InlineData(false)]
-        public static async Task WaitForOperation_Cancellation_Test(bool isCancelable)
+        public static async Task WaitForOperation_Cancellation(bool isCancelable)
         {
             bool wasCalled = false;
             string title = "Test01";

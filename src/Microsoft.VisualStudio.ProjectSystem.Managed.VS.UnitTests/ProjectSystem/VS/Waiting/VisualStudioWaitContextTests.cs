@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
     public class VisualStudioWaitContextTests
     {
         [Fact]
-        public static void SetPropertyAllowCancel_Test()
+        public static void SetPropertyAllowCancel()
         {
             string title = "Test001";
             string message = "Testing001";
@@ -24,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
         }
 
         [Fact]
-        public static void SetPropertyMessage_Test()
+        public static void SetPropertyMessage()
         {
             string title = "Test001";
             string message = "Testing001";
@@ -37,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
         }
 
         [Fact]
-        public static void CreateWrongType_Test()
+        public static void CreateWrongType()
         {
             Assert.Throws<ArgumentNullException>(() => _ = CreateWrongType(string.Empty, string.Empty, false));
         }
