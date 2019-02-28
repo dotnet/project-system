@@ -445,15 +445,6 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Performing Rename.
-        /// </summary>
-        internal static string Performing_Rename {
-            get {
-                return ResourceManager.GetString("Performing_Rename", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Project Modification Detected.
         /// </summary>
         internal static string ProjectModificationDlgTitle {
@@ -510,6 +501,15 @@ namespace Microsoft.VisualStudio {
         internal static string ReloadAll {
             get {
                 return ResourceManager.GetString("ReloadAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rename.
+        /// </summary>
+        internal static string Rename {
+            get {
+                return ResourceManager.GetString("Rename", resourceCulture);
             }
         }
         

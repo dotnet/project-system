@@ -102,7 +102,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             await _projectVsServices.ThreadingService.SwitchToUIThread();
 
             bool renamedSolutionApplied = _waitService.WaitForAsyncOperation(
-                title: VSResources.Performing_Rename,
+                title: VSResources.Rename,
                 message: string.Format(CultureInfo.CurrentCulture, VSResources.Renaming_type_from_0_to_1, oldName, newName),
                 allowCancel: true,
                 token =>

@@ -300,8 +300,8 @@ In order to debug this project, add an executable project to this solution which
   <data name="ImportsFromTargetCannotBeDeleted" xml:space="preserve">
     <value>{0} - Import comes fom target file. This import cannot be removed.</value>
   </data>
-  <data name="Performing_Rename" xml:space="preserve">
-    <value>Performing Rename</value>
+  <data name="Rename" xml:space="preserve">
+    <value>Rename</value>
   </data>
   <data name="Renaming_type_from_0_to_1" xml:space="preserve">
     <value>Renaming type from '{0}' to '{1}'.</value>
