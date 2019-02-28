@@ -173,7 +173,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {  // Imports must importsinterfaces that are marked with [ProjectSystemContract]
 
             ImportDefinition importDefinition = import.ImportDefinition;
-            if (!CheckContractHasMetadata(importDefinition.ContractName, definition, ComponentComposition.Instance.Contracts, ComponentComposition.Instance.InterfaceNames))
+            if (!CheckContractHasMetadata(GetContractName(importDefinition), definition, ComponentComposition.Instance.Contracts, ComponentComposition.Instance.InterfaceNames))
             {
                 Assert.False(true, $"{definition.Type.FullName} imports a contract {importDefinition.ContractName}, which is not applied with [ProjectSystemContract]");
             }
@@ -201,6 +201,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             }
 
             return interfaceNames.Contains(contractName);
+        }
+
+        private string GetContractName(ImportDefinition import)
+        {
+            if (import.Metadata.TryGetValue("System.ComponentModel.Composition.GenericContractName", out var value))
+            {
+                return (string)value;
+            }
+
+            return import.ContractName;
         }
 
         /// <summary>
