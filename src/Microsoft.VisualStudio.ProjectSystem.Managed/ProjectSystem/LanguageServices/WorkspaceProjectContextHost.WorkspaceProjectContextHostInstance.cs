@@ -130,11 +130,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 IWorkspaceProjectContext context = _contextAccessor.Context;
 
                 context.StartBatch();
-
-                bool isBatchEnded = false;
+                bool isActiveContext = default;
                 try
                 {
-                    bool isActiveContext = _activeWorkspaceProjectContextTracker.IsActiveEditorContext(_contextAccessor.ContextId);
+                    isActiveContext = _activeWorkspaceProjectContextTracker.IsActiveEditorContext(_contextAccessor.ContextId);
 
                     if (evaluation)
                     {
@@ -144,15 +143,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                     {
                         await _applyChangesToWorkspaceContext.Value.ApplyProjectBuildAsync(update, isActiveContext, cancellationToken);
                     }
-
-                    context.EndBatch();
-                    await _applyChangesToWorkspaceContext.Value.ApplyProjectUpdatedAsync(update, isActiveContext, cancellationToken);
-                    isBatchEnded = true;
                 }
                 finally
                 {
-                    if (!isBatchEnded)
-                        context.EndBatch();
+                    context.EndBatch();
+                    await _applyChangesToWorkspaceContext.Value.ApplyProjectUpdatedAsync(update, isActiveContext, cancellationToken); ;
                 }
             }
 
