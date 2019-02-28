@@ -296,6 +296,38 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             }
         }
 
+        public bool NativeCodeDebugging
+        {
+            get
+            {
+                if (!IsProfileSelected)
+                {
+                    return false;
+                }
+
+                if (SelectedDebugProfile.OtherSettings.Keys.Contains("nativeDebugging"))
+                {
+                    return (bool) SelectedDebugProfile.OtherSettings["nativeDebugging"];
+                }
+
+                return false;
+            }
+            set
+            {
+                //Unlike other properties that have default values, nativeDebugging may not be set yet. Because false is the default behavior adding it has no affect
+                if (!SelectedDebugProfile.OtherSettings.ContainsKey("nativeDebugging"))
+                {
+                    SelectedDebugProfile.OtherSettings.Add("nativeDebugging", false);
+                }
+
+                if (SelectedDebugProfile != null && (bool) SelectedDebugProfile.OtherSettings["nativeDebugging"] != value)
+                {
+                    SelectedDebugProfile.OtherSettings["nativeDebugging"] = value;
+                    OnPropertyChanged(nameof(NativeCodeDebugging));
+                }
+            }
+        }
+
         public bool SupportsExecutable
         {
             get
@@ -503,6 +535,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 OnPropertyChanged(nameof(ExecutablePath));
                 OnPropertyChanged(nameof(LaunchPage));
                 OnPropertyChanged(nameof(HasLaunchOption));
+                OnPropertyChanged(nameof(NativeCodeDebugging));
                 OnPropertyChanged(nameof(WorkingDirectory));
 
                 UpdateLaunchTypes();

@@ -217,6 +217,11 @@
         <target state="new">Checking enables a textbox to specify an absolute or relative URl</target>
         <note />
       </trans-unit>
+      <trans-unit id="chkNativeCodeDebuggingText">
+        <source>Enable native code debugging</source>
+        <target state="new">Enable native code debugging</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>

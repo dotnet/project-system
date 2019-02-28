@@ -395,6 +395,17 @@
                     </Button.IsEnabled>
                 </Button>
             </StackPanel>
+            <CheckBox 
+                Grid.Row="8"
+                Grid.Column="0"
+                x:Uid="chkNativeCodeDebugging"
+                x:Name="chkNativeCodeDebugging"
+                IsChecked="{Binding NativeCodeDebugging, Mode=TwoWay}"
+                Margin="9,7,3,7"
+                VerticalAlignment="Center"
+                IsEnabled="{Binding Path=IsProfileSelected, Mode=OneWay}"
+                VerticalContentAlignment="Center"
+                Content="{x:Static Member=local:PropertyPageResources.chkNativeCodeDebuggingText}"/>
             <!-- Where the custom control is placed for the active provider -->
             <ContentPresenter Grid.Row="8" Grid.Column="0"  Grid.ColumnSpan="3" Content="{Binding ActiveProviderUserControl, Mode=OneWay}" />
         </Grid>

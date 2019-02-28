@@ -133,6 +133,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enable native code debugging.
+        /// </summary>
+        public static string chkNativeCodeDebuggingText {
+            get {
+                return ResourceManager.GetString("chkNativeCodeDebuggingText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Debug.
         /// </summary>
         public static string DebugPropertyPageTitle {
