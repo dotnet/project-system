@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.CSharp
     internal class CSharpProjectTypeGuidProvider : IItemTypeGuidProvider
     {
         [ImportingConstructor]
-        public CSharpProjectTypeGuidProvider(UnconfiguredProject project)
+        public CSharpProjectTypeGuidProvider()
         {
         }
 

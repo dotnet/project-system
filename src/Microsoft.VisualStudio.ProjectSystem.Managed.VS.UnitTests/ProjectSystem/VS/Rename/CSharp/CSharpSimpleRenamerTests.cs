@@ -28,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename.CSharp
         public async Task Rename_Symbol_Should_TriggerUserConfirmationAsync(string sourceCode, string oldFilePath, string newFilePath)
         {
             var userNotificationServices = IUserNotificationServicesFactory.Create();
-            var roslynServices = IRoslynServicesFactory.Implement(new CSharpSyntaxFactsService(null));
+            var roslynServices = IRoslynServicesFactory.Implement(new CSharpSyntaxFactsService());
 
             await RenameAsync(sourceCode, oldFilePath, newFilePath, userNotificationServices, roslynServices, LanguageNames.CSharp);
 
@@ -51,7 +51,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename.CSharp
         public async Task Rename_Symbol_Should_Not_HappenAsync(string sourceCode, string oldFilePath, string newFilePath)
         {
             var userNotificationServices = IUserNotificationServicesFactory.Create();
-            var roslynServices = IRoslynServicesFactory.Implement(new CSharpSyntaxFactsService(null));
+            var roslynServices = IRoslynServicesFactory.Implement(new CSharpSyntaxFactsService());
 
             await RenameAsync(sourceCode, oldFilePath, newFilePath, userNotificationServices, roslynServices, LanguageNames.CSharp).TimeoutAfter(TimeSpan.FromSeconds(1));
 
