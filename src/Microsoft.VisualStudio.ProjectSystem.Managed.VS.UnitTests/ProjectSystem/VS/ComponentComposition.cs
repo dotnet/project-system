@@ -62,7 +62,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             Catalog = catalog;
             Configuration = CompositionConfiguration.Create(catalog);
             Contracts = CollectContractMetadata(ContractAssemblies.Union(BuildInAssemblies));
-            ContractsRequiringMetadata = CollectContractsRequiringMetadata(catalog);
+            ContractsRequiringAppliesTo = CollectContractsRequiringAppliesTo(catalog);
             InterfaceNames = CollectIntefaceNames(ContractAssemblies);
         }
 
@@ -81,7 +81,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             get;
         }
 
-        public IDictionary<string, ISet<Type>> ContractsRequiringMetadata
+        public IDictionary<string, ISet<Type>> ContractsRequiringAppliesTo
         {
             get;
         }
@@ -91,9 +91,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             get;
         }
 
-        private IDictionary<string, ISet<Type>> CollectContractsRequiringMetadata(ComposableCatalog catalog)
+        private IDictionary<string, ISet<Type>> CollectContractsRequiringAppliesTo(ComposableCatalog catalog)
         {
-            var contractsRequiringMetadata = new Dictionary<string, ISet<Type>>();
+            var contractsRequiringAppliesTo = new Dictionary<string, ISet<Type>>();
 
             // First step, we scan all imports, and gather all places requiring "AppliesTo" metadata.
             foreach (ComposablePartDefinition part in catalog.Parts)
@@ -102,10 +102,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 {
                     if (IsAppliesToRequired(import))
                     {
-                        if (!contractsRequiringMetadata.TryGetValue(import.ImportDefinition.ContractName, out ISet<Type> contractTypes))
+                        if (!contractsRequiringAppliesTo.TryGetValue(import.ImportDefinition.ContractName, out ISet<Type> contractTypes))
                         {
                             contractTypes = new HashSet<Type>();
-                            contractsRequiringMetadata.Add(import.ImportDefinition.ContractName, contractTypes);
+                            contractsRequiringAppliesTo.Add(import.ImportDefinition.ContractName, contractTypes);
                         }
 
                         contractTypes.Add(import.ImportingSiteElementType);
@@ -113,7 +113,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 }
             }
 
-            return contractsRequiringMetadata;
+            return contractsRequiringAppliesTo;
         }
 
         private ISet<string> CollectIntefaceNames(IEnumerable<Assembly> assemblies)

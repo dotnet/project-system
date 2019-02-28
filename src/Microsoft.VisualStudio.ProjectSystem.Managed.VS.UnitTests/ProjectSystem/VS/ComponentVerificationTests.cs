@@ -92,7 +92,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         public void ExportsMustBeMarkedWithApplyToIfRequired(ComposablePartDefinition definition, KeyValuePair<MemberRef, ExportDefinition> export)
         {   // If a contract requires AppliesTo to be specified, then an export must specify it
 
-            var contractsRequiringMetadata = ComponentComposition.Instance.ContractsRequiringMetadata;
+            var contractsRequiringMetadata = ComponentComposition.Instance.ContractsRequiringAppliesTo;
 
             // If the exports has already had the metadata, it is good.
             ExportDefinition exportDefinition = export.Value;
