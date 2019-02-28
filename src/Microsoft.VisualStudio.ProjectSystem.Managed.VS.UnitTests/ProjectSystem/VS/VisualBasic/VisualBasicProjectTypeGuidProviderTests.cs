@@ -20,9 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.VisualBasic
 
         private static VisualBasicProjectTypeGuidProvider CreateInstance()
         {
-            var unconfiguredProject = UnconfiguredProjectFactory.Create();
-
-            return new VisualBasicProjectTypeGuidProvider(unconfiguredProject);
+            return new VisualBasicProjectTypeGuidProvider();
         }
     }
 }

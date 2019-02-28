@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.VisualBasic
     internal class VisualBasicSyntaxFactsService : ISyntaxFactsService
     {
         [ImportingConstructor]
-        public VisualBasicSyntaxFactsService(UnconfiguredProject project)
+        public VisualBasicSyntaxFactsService()
         {
         }
 

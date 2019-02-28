@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.CSharp
     internal class CSharpSyntaxFactsService : ISyntaxFactsService
     {
         [ImportingConstructor]
-        public CSharpSyntaxFactsService(UnconfiguredProject project)
+        public CSharpSyntaxFactsService()
         {
         }
 
