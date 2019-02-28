@@ -9,7 +9,7 @@ using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
 {
-    internal class VisualStudioWaitContext : IWaitContext
+    internal partial class VisualStudioWaitContext : IWaitContext
     {
         private const int DelayToShowDialogSecs = 2;
 
@@ -55,21 +55,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
                 pCallback: callback);
 
             return dialog3;
-        }
-
-        private class Callback : IVsThreadedWaitDialogCallback
-        {
-            private readonly VisualStudioWaitContext _waitContext;
-
-            public Callback(VisualStudioWaitContext waitContext)
-            {
-                _waitContext = waitContext;
-            }
-
-            public void OnCanceled()
-            {
-                _waitContext.OnCanceled();
-            }
         }
 
         public CancellationToken CancellationToken => _allowCancel
