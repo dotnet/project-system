@@ -141,9 +141,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             Requires.NotNull(contractAssembly, nameof(contractAssembly));
             foreach (ProjectSystemContractAttribute assemblyAttribute in contractAssembly.GetCustomAttributes<ProjectSystemContractAttribute>())
             {
-                if (!string.IsNullOrEmpty(assemblyAttribute.ContractName))
+                if (assemblyAttribute.ContractName != null || assemblyAttribute.ContractType != null)
                 {
-                    AddContractMetadata(contracts, assemblyAttribute.ContractName, assemblyAttribute.Scope, assemblyAttribute.Provider, assemblyAttribute.Cardinality);
+                    AddContractMetadata(contracts, assemblyAttribute.ContractName ?? assemblyAttribute.ContractType.FullName, assemblyAttribute.Scope, assemblyAttribute.Provider, assemblyAttribute.Cardinality);
                 }
             }
 
