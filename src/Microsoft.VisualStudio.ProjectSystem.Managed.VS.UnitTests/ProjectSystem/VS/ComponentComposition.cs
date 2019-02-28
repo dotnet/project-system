@@ -35,16 +35,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         public static readonly ComponentComposition Instance = new ComponentComposition();
 
-        /// <summary>
-        /// CPS scopes in the right order.
-        /// </summary>
-        public static readonly IReadOnlyList<string> ScopesInOrder = new string[]
-        {
-            ExportContractNames.Scopes.ProjectService,
-            ExportContractNames.Scopes.UnconfiguredProject,
-            ExportContractNames.Scopes.ConfiguredProject,
-        };
-
         public ComponentComposition()
         {
             var discovery = PartDiscovery.Combine(new AttributedPartDiscoveryV1(Resolver.DefaultInstance),
