@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Runtime.InteropServices;
@@ -13,7 +13,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
     {
         private const int DelayToShowDialogSecs = 2;
 
-        private readonly string _title;
         private string _message;
         private bool _allowCancel;
         private readonly CancellationTokenSource _cancellationTokenSource;
@@ -24,7 +23,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
                                        string message,
                                        bool allowCancel)
         {
-            _title = title;
             _message = message;
             _allowCancel = allowCancel;
             if (_allowCancel)
@@ -32,20 +30,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
                 _cancellationTokenSource = new CancellationTokenSource();
             }
 
-            _dialog = CreateDialog(waitDialogFactory);
+            _dialog = CreateDialog(title, waitDialogFactory);
         }
 
-        private IVsThreadedWaitDialog3 CreateDialog(IVsThreadedWaitDialogFactory dialogFactory)
+        private IVsThreadedWaitDialog3 CreateDialog(string title, IVsThreadedWaitDialogFactory dialogFactory)
         {
             Marshal.ThrowExceptionForHR(dialogFactory.CreateInstance(out IVsThreadedWaitDialog2 dialog2));
-            if (dialog2 == null)
-                throw new ArgumentNullException(nameof(dialog2));
+            Assumes.NotNull(dialog2);
 
             var dialog3 = (IVsThreadedWaitDialog3)dialog2;
             var callback = new Callback(this);
 
             dialog3.StartWaitDialogWithCallback(
-                szWaitCaption: _title,
+                szWaitCaption: title,
                 szWaitMessage: _message,
                 szProgressText: null,
                 varStatusBmpAnim: null,

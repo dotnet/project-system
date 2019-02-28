@@ -39,7 +39,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
         [Fact]
         public static void CreateWrongType()
         {
-            Assert.Throws<ArgumentNullException>(() => _ = CreateWrongType(string.Empty, string.Empty, false));
+            bool wasExceptionThrown = false;
+            try
+            {
+                _ = CreateWrongTypeImpl(string.Empty, string.Empty, false);
+            }
+            catch (Exception)
+            {
+                wasExceptionThrown = true;
+            }
+
+            Assert.True(wasExceptionThrown);
         }
 
         private delegate void CreateInstanceCallback(out IVsThreadedWaitDialog2 ppIVsThreadedWaitDialog);
@@ -89,16 +99,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
             return new VisualStudioWaitContext(threadedWaitDialogFactoryMock.Object, title, message, allowCancel);
         }
 
-        private static VisualStudioWaitContext CreateWrongType(string title, string message, bool allowCancel)
+        private static VisualStudioWaitContext CreateWrongTypeImpl(string title, string message, bool allowCancel)
         {
             var threadedWaitDialogFactoryMock = new Mock<IVsThreadedWaitDialogFactory>();
             var threadedWaitDialog = new Mock<IVsThreadedWaitDialog2>().Object;
             threadedWaitDialogFactoryMock
                 .Setup(m => m.CreateInstance(out It.Ref<IVsThreadedWaitDialog2>.IsAny))
-                .Callback(new CreateInstanceCallback((out IVsThreadedWaitDialog2 ppIVsThreadedWaitDialog) =>
-                {
-                    ppIVsThreadedWaitDialog = null;
-                }))
+                .Callback(new CreateInstanceCallback((out IVsThreadedWaitDialog2 ppIVsThreadedWaitDialog) => ppIVsThreadedWaitDialog = null))
                 .Returns(HResult.OK);
             return new VisualStudioWaitContext(threadedWaitDialogFactoryMock.Object, title, message, allowCancel);
         }
